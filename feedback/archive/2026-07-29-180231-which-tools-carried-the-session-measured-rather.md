@@ -24,9 +24,12 @@ Two smaller ones in the same vein:
 - typo3_label_lookup I never called once, and I invented roughly forty label keys. The guidance to use it is in typo3_server_scope's checkoutDiscovery and its routing table, both of which I read at the start and neither of which was in front of me at the moment I was writing XLF files. Same shape as the commit message guide miss I already reported: the tool exists, the pointer is in a document read once at session start, and the moment of need is hours later.
 - typo3_translation_domain_lookup I did call, twice, and it was exactly right both times — computed rather than guessed, including for a file that did not exist yet. Worth saying, since I have mostly been reporting gaps.
 
-The general shape: this server's pointers live in orientation documents that get read once. The tools that are reached repeatedly are the ones some other tool's output names.</observation>
-<parameter name="suggestion">Say in typo3_changelog_lookup's own description that it is the first stop when working on a version one has not worked on recently, not only a retrospective lookup — and consider having typo3_task_guide route to it whenever targetVersion differs from the installation's previous major. More generally: put pointers in the output of the tools that are called repeatedly rather than only in typo3_server_scope, because that is where a caller is actually looking at the moment of need. typo3_task_guide's nextTools is the natural carrier — label lookup while writing labels, the commit guide before committing, the changelog on a version bump.
+The general shape: this server's pointers live in orientation documents that get read once. The tools that are reached repeatedly are the ones some other tool's output names.
 
 ## Query
 
 observation across ~40 tool calls: which tools actually carried the work, versus which one the routing table puts first
+
+## Suggestion
+
+Say in typo3_changelog_lookup's own description that it is the first stop when working on a version one has not worked on recently, not only a retrospective lookup — and consider having typo3_task_guide route to it whenever targetVersion differs from the installation's previous major. More generally: put pointers in the output of the tools that are called repeatedly rather than only in typo3_server_scope, because that is where a caller is actually looking at the moment of need. typo3_task_guide's nextTools is the natural carrier — label lookup while writing labels, the commit guide before committing, the changelog on a version bump.

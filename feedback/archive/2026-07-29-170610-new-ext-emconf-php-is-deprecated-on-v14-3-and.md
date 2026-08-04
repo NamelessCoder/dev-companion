@@ -21,9 +21,12 @@ Deprecation #108345 (v14.3): an extension that ships ext_emconf.php and does not
 
 How I found it is itself the argument for stating it: I did not read the changelog, the first functional test run did. phpunit runs with failOnDeprecation, the sitepackage still had an ext_emconf.php from before, and the deprecation turned a green suite red on the very first attempt. Without a test suite this sits in the deprecation log until v15 breaks the installation.
 
-One detail worth carrying with it, because it is not obvious from the changelog: with ext_emconf.php gone, the extension title comes from composer.json "description" split on the first " - " — Package::createPackageMetaData() takes the part before it as the title and the rest as the description. An extension that just deletes the file ends up with its whole description as its backend title.</observation>
-<parameter name="suggestion">Add ext_emconf.php to extension-files: deprecated since 14.3 (#108345), not evaluated from v15, replaced by extra.typo3/cms.version and extra.typo3/cms.Package.providesPackages in composer.json, and simply deletable in a Composer-only project. Include the " - " split that derives the title from the description, since that is what an extension notices right after deleting the file.
+One detail worth carrying with it, because it is not obvious from the changelog: with ext_emconf.php gone, the extension title comes from composer.json "description" split on the first " - " — Package::createPackageMetaData() takes the part before it as the title and the rest as the description. An extension that just deletes the file ends up with its whole description as its backend title.
 
 ## Query
 
 typo3_architecture_lookup id=extension-files, targetVersion=14.3 — the hint lists ext_tables.sql, JavaScriptModules.php, Icons.php, page.tsconfig, user.tsconfig and ext_localconf.php, and does not mention ext_emconf.php at all
+
+## Suggestion
+
+Add ext_emconf.php to extension-files: deprecated since 14.3 (#108345), not evaluated from v15, replaced by extra.typo3/cms.version and extra.typo3/cms.Package.providesPackages in composer.json, and simply deletable in a Composer-only project. Include the " - " split that derives the title from the description, since that is what an extension notices right after deleting the file.

@@ -26,10 +26,12 @@ Two things prevented FALSE findings, which is worth as much:
 
 typo3_changelog_lookup's design deserves specific credit: every response returns the full tag list for that version and type. That let me write an eight-call deprecation sweep bounded by real tags instead of guesses, and ext:seo / ext:fluid-styled-content / ext:impexp being absent from the list answered "no v14 deprecations there" by absence rather than by an empty search I would have had to distrust.
 
-typo3_extension_describe's artifacts block — manual, readme, tests, and languageFiles with the source language each declares — is the highest-value single response of the session. sourceLanguage: "de" on all four XLF files was a finding straight out of the answer, and re-running it after the work showed sourceLanguage: "en" with translations: ["de"] and manual/readme populated, which is how I verified two items were actually closed.</observation>
-<parameter name="suggestion">No change requested. If the hints are ever condensed, keep the causal sentences rather than the summaries — in all four cases what made the finding was one sentence naming the mechanism and the class it lives in, not the surrounding advice. Keep the tag list in every changelog response; it is what makes a bounded sweep writable before a file is opened.</suggestion>
-</invoke>
+typo3_extension_describe's artifacts block — manual, readme, tests, and languageFiles with the source language each declares — is the highest-value single response of the session. sourceLanguage: "de" on all four XLF files was a finding straight out of the answer, and re-running it after the work showed sourceLanguage: "en" with translations: ["de"] and manual/readme populated, which is how I verified two items were actually closed.
 
 ## Query
 
 Whole session: "fix this project" on a TYPO3 14.3.5 Composer project with one sitepackage — audit, then ten items worked off. Naming the calls that each produced a finding, so they survive later editing.
+
+## Suggestion
+
+No change requested. If the hints are ever condensed, keep the causal sentences rather than the summaries — in all four cases what made the finding was one sentence naming the mechanism and the class it lives in, not the surrounding advice. Keep the tag list in every changelog response; it is what makes a bounded sweep writable before a file is opened.

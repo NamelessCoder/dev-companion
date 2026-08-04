@@ -21,10 +21,12 @@ Two further things I had to read out of the tool's own source, both of which cha
 - ConfigurationLocator always loads the tool's own typoscript-lint.dist.yml first and merges the project config over it, so a sniff cannot be switched off by leaving it out of the list; it needs `disabled: true`.
 - DuplicateAssignment and RepeatingRValue both advise extracting a repeated value into a TypoScript *constant*. On v13+ that is wrong advice: site set settings replaced constants, so following it reintroduces the mechanism a modern sitepackage was built without.
 
-I also had to check whether the core could stand in: it ships LosslessTokenizer/LossyTokenizer and an AST builder, but TokenType has no invalid/error case, so a core-parser-based lint would catch almost nothing. That was worth knowing and cost a read of TokenType.php.</observation>
-<parameter name="suggestion">In static-quality.md: (1) state that helmich/typo3-typoscript-lint does not resolve against a Symfony 8 stack, so on TYPO3 14 it is an isolated install rather than a require-dev; (2) carry the isolated-tool-install pattern as a named option in "Establish one command per check", since it applies to any tool whose constraints cannot meet the project's; (3) note the dist-config merge (disabled: true, not omission) and that the two duplicate-value sniffs give constants-era advice. Optionally note that the core's own tokenizer is not a substitute because it has no error token.</suggestion>
-</invoke>
+I also had to check whether the core could stand in: it ships LosslessTokenizer/LossyTokenizer and an AST builder, but TokenType has no invalid/error case, so a core-parser-based lint would catch almost nothing. That was worth knowing and cost a read of TokenType.php.
 
 ## Query
 
 typo3-extension-testing references/static-quality.md, "Shipped configuration and data" row naming helmich/typo3-typoscript-lint, applied to a TYPO3 14.3.5 Composer project
+
+## Suggestion
+
+In static-quality.md: (1) state that helmich/typo3-typoscript-lint does not resolve against a Symfony 8 stack, so on TYPO3 14 it is an isolated install rather than a require-dev; (2) carry the isolated-tool-install pattern as a named option in "Establish one command per check", since it applies to any tool whose constraints cannot meet the project's; (3) note the dist-config merge (disabled: true, not omission) and that the two duplicate-value sniffs give constants-era advice. Optionally note that the core's own tokenizer is not a substitute because it has no error token.

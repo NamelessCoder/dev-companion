@@ -21,10 +21,12 @@ Everything I needed about the page module's DOM I established by writing a throw
 
 I never called typo3_component_lookup. I read its description — "backend UI components ... markup, classes, custom properties" — and assumed a page-module grid was not a curated component. I do not know whether that assumption held, and that is the finding: the tool may have had half of this and I did not ask.
 
-The content-element-preview hint does say a preview is asserted in a browser test rather than a functional one, which correctly routed me to this layer. It stops exactly where the selectors begin.</observation>
-<parameter name="suggestion">Add the page-module structural selectors somewhere a browser-test task will find them — either inside typo3_component_lookup, or as a hint (browser-tests already exists and would be the natural home). The single highest-value sentence is "a backend module renders inside #typo3-contentIframe, so every locator in a backend spec goes through a frame"; a session that does not know it writes specs that fail without saying why. Tile and preview-body selectors and the module-menu accessible name are the rest.</suggestion>
-</invoke>
+The content-element-preview hint does say a preview is asserted in a browser test rather than a functional one, which correctly routed me to this layer. It stops exactly where the selectors begin.
 
 ## Query
 
 Never asked. I loaded typo3_component_lookup's schema and passed it over; typo3_hint_lookup id=browser-tests and id=content-element-preview were read but neither names a page-module selector.
+
+## Suggestion
+
+Add the page-module structural selectors somewhere a browser-test task will find them — either inside typo3_component_lookup, or as a hint (browser-tests already exists and would be the natural home). The single highest-value sentence is "a backend module renders inside #typo3-contentIframe, so every locator in a backend spec goes through a frame"; a session that does not know it writes specs that fail without saying why. Tile and preview-body selectors and the module-menu accessible name are the rest.

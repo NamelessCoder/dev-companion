@@ -24,9 +24,12 @@ AbstractMenuContentObject defaults $excludedDoktypes to [DOKTYPE_BE_USER_SECTION
 
 silently puts every sysfolder into the main navigation, because 254 is no longer in the list. The sitepackage in this project had exactly that line, and it only became visible when a storage folder for records was added below the root page — until then there was no sysfolder to leak. Correct is 6,199,254,255.
 
-It fits the same shape as the two that were incorporated: a configuration that looks additive but replaces, no error, a wrong page.</observation>
-<parameter name="suggestion">One sentence in frontend-page-rendering next to the data processor line: excludeDoktypes on a menu replaces AbstractMenuContentObject's default of [6, 254] rather than extending it, so a list that does not repeat 254 puts sysfolders into the menu.
+It fits the same shape as the two that were incorporated: a configuration that looks additive but replaces, no error, a wrong page.
 
 ## Query
 
 typo3_architecture_lookup id=frontend-page-rendering, targetVersion=14.3 — re-report, this one did not survive the last round
+
+## Suggestion
+
+One sentence in frontend-page-rendering next to the data processor line: excludeDoktypes on a menu replaces AbstractMenuContentObject's default of [6, 254] rather than extending it, so a list that does not repeat 254 puts sysfolders into the menu.

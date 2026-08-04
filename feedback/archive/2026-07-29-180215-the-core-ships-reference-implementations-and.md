@@ -25,9 +25,12 @@ The knowledge base has since gained hints for the first two subjects, which is e
 
 A first list from what I met: theme_camino for sitepackage and theme layout; styleguide for backend components and TCA demos (the CSS hints already lean on it, so the convention exists); blog_example for Extbase domain, repository and controller plus their tests; Build/tests/playwright for acceptance and accessibility testing; Build/phpstan and Build/php-cs-fixer for the static analysis setup a project might copy.
 
-The value is not that these are documentation. It is that they are the version-correct, currently-passing, actually-maintained form of the answer — which a hint, however good, is a summary of. When a hint is thin, "read X" is a better answer than a thin hint, and right now the server cannot give it.</observation>
-<parameter name="suggestion">Add a lookup — or a section of typo3_server_scope — that maps subjects to the core's reference implementations, with the caveat the sitepackage-layout hint already gets right for camino: read it, do not depend on it. When a hint has a matching reference, name it in the hint too. For an installation without a core checkout the paths are still useful as a pointer to github.com/TYPO3/typo3.
+The value is not that these are documentation. It is that they are the version-correct, currently-passing, actually-maintained form of the answer — which a hint, however good, is a summary of. When a hint is thin, "read X" is a better answer than a thin hint, and right now the server cannot give it.
 
 ## Query
 
 pattern across the whole session — three times the real answer was "read the reference implementation the core already ships", and nothing pointed at any of them
+
+## Suggestion
+
+Add a lookup — or a section of typo3_server_scope — that maps subjects to the core's reference implementations, with the caveat the sitepackage-layout hint already gets right for camino: read it, do not depend on it. When a hint has a matching reference, name it in the hint too. For an installation without a core checkout the paths are still useful as a pointer to github.com/TYPO3/typo3.

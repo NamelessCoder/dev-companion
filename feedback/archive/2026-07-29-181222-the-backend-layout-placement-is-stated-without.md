@@ -25,9 +25,12 @@ Camino has a reason that a project does not. It is a distributable theme, announ
 
 What I changed, and what I would put in the hint: the directory keeps the name — Configuration/Sets/<Set>/BackendLayouts/*.tsconfig — because the name should say what is inside rather than which mechanism carries it, and because it stays recognisable to someone who read the hint. Only the location moves. The name also stays honest when other page TSconfig arrives: a TCEFORM or TCEMAIN block does not belong in a directory called BackendLayouts, and would go into page.tsconfig directly or into a sibling.
 
-The general shape of this is the one I reported separately about a second axis for project work. Here it is concrete: a convention read off a core reference implementation, stated unconditionally, and wrong for the case the reader is most likely in.</observation>
-<parameter name="suggestion">Give that hint its condition. Where an extension ships one set — the normal project sitepackage — the backend layouts belong in Configuration/Sets/&lt;Set&gt;/BackendLayouts/, imported relatively with @import './BackendLayouts/*.tsconfig', for the same reason the TypoScript split already sits there. Where an extension ships several sets or is a distributable theme like theme_camino, Configuration/BackendLayouts/ at extension level is right. Naming the test rather than the layout is what makes it transfer: does anything reach a backend without the set? If not, it belongs in the set.
+The general shape of this is the one I reported separately about a second axis for project work. Here it is concrete: a convention read off a core reference implementation, stated unconditionally, and wrong for the case the reader is most likely in.
 
 ## Query
 
 typo3_architecture_lookup id=sitepackage-layout — "One page layout per file in Configuration/BackendLayouts/&lt;Name&gt;.tsconfig, pulled in by the set's page.tsconfig with a single @import over that directory."
+
+## Suggestion
+
+Give that hint its condition. Where an extension ships one set — the normal project sitepackage — the backend layouts belong in Configuration/Sets/&lt;Set&gt;/BackendLayouts/, imported relatively with @import './BackendLayouts/*.tsconfig', for the same reason the TypoScript split already sits there. Where an extension ships several sets or is a distributable theme like theme_camino, Configuration/BackendLayouts/ at extension level is right. Naming the test rather than the layout is what makes it transfer: does anything reach a backend without the set? If not, it belongs in the set.

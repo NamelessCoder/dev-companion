@@ -37,9 +37,12 @@ The problem is what it costs:
 
 3. status="all" promises otherwise. The parameter documents itself as "all: every recorded note", and the enum open/all implies a closed state exists. A closed note showing up as closed would solve both points above; a deleted note cannot.
 
-This is also a self-referential risk for every note I have written: I report a gap, the note is consumed, and if the fix does not happen there is nothing left that says it was ever asked for.</observation>
-<parameter name="suggestion">Do not delete an ingested note — mark it. status="closed" or "incorporated", with a pointer to the hint it became, and let status="all" return it. That makes typo3_feedback_list answer "what did I report and what came of it", which is the question a caller actually has, and it stops requests that need code rather than prose from falling out of the system entirely. If the deletion is a deliberate archive step, an archive/ directory next to feedback/ and a status filter that reaches it would do the same job.
+This is also a self-referential risk for every note I have written: I report a gap, the note is consumed, and if the fix does not happen there is nothing left that says it was ever asked for.
 
 ## Query
 
 typo3_feedback_list status="all" — returns 3 notes; I recorded 8 in this session and 9 in the one before it
+
+## Suggestion
+
+Do not delete an ingested note — mark it. status="closed" or "incorporated", with a pointer to the hint it became, and let status="all" return it. That makes typo3_feedback_list answer "what did I report and what came of it", which is the question a caller actually has, and it stops requests that need code rather than prose from falling out of the system entirely. If the deletion is a deliberate archive step, an archive/ directory next to feedback/ and a status filter that reaches it would do the same job.

@@ -19,10 +19,12 @@ I had guessed the parameter name from every other search tool on this server, al
 
 Cost: one failed call plus a ToolSearch round trip to fetch the schema. That cost is higher on this server than it would be elsewhere, because in this client the typo3_* tools arrive schema-deferred — a name has to be guessed or a schema fetched before any call, so an inconsistent parameter name is paid for twice.
 
-The error message itself is decent: it names both alternatives (`queries` or `page`) and the exactly-one-of constraint.</observation>
-<parameter name="suggestion">Either accept `query` as a singular alias that is folded into `queries`, or have the validation error say "did you mean `queries`?" when an unknown `query` property was supplied. The constraint text already explains the queries/page split; one extra line naming the near-miss spelling would remove the round trip entirely.</suggestion>
-</invoke>
+The error message itself is decent: it names both alternatives (`queries` or `page`) and the exactly-one-of constraint.
 
 ## Query
 
 typo3_documentation_lookup with query="extension documentation guides.xml" and targetVersion="14.3" — singular `query`
+
+## Suggestion
+
+Either accept `query` as a singular alias that is folded into `queries`, or have the validation error say "did you mean `queries`?" when an unknown `query` property was supplied. The constraint text already explains the queries/page split; one extra line naming the near-miss spelling would remove the round trip entirely.

@@ -22,10 +22,12 @@ The re-check is what found it, and only because it re-ran the environment rather
 
 The second regression it caught in the same pass was smaller but real: Playwright runs a project whose dependency skipped, so the backend specs I had added failed rather than skipped when no credentials were set, turning `npm run test:e2e` red on a fresh clone for something that is not a defect.
 
-Also worth keeping: the conformance checklist's "What a dropped candidate owes". It forced me to write down 13 candidates I had raised and let go — including several that would have been false findings, such as the content elements' <f:layout name="Default"/> which the package's own settings.yaml documents as deliberate.</observation>
-<parameter name="suggestion">Keep step 12 exactly as it is. If anything is added, add one line saying the re-check has to re-run whatever the finding was about rather than re-read the files — reading showed a correct file here, and only restarting the environment showed the defect. That distinction is what made the difference between a closed finding and a shipped regression.</suggestion>
-</invoke>
+Also worth keeping: the conformance checklist's "What a dropped candidate owes". It forced me to write down 13 candidates I had raised and let go — including several that would have been false findings, such as the content elements' <f:layout name="Default"/> which the package's own settings.yaml documents as deliberate.
 
 ## Query
 
 typo3-extension-cleanup step 12: "Hand the worked list back to typo3-extension-conformance for the re-check. It kept responsibility for that when it handed the finding over, and a cleanup that grades its own work has no evidence the finding is gone."
+
+## Suggestion
+
+Keep step 12 exactly as it is. If anything is added, add one line saying the re-check has to re-run whatever the finding was about rather than re-read the files — reading showed a correct file here, and only restarting the environment showed the defect. That distinction is what made the difference between a closed finding and a shipped regression.

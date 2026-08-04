@@ -25,9 +25,12 @@ Two of those three colours were in the sitepackage before I touched it; the thir
 
 The fix is worth recording too, because it is the shape the answer usually takes: split the palette rather than darken the brand. --pw-accent stays #ff6b2c for the dark surfaces, borders and marks where it is decorative; --pw-accent-text is the same hue darkened to #cd3d00, which clears 4.5:1 as text on white (4.93), as text on the grey surface (4.55) and as a background for white text (4.93). One variable, one rule: anything a reader has to read uses the text one.
 
-This is the argument for the hint the previous note asks for. A theme extension without an axe pass ships contrast failures and nobody notices, because every other kind of test says the page is fine.</observation>
-<parameter name="suggestion">When the Playwright hint gets written, lead with accessibility rather than with clicking: @axe-core/playwright over the site's own page types is the check that finds something on day one, and it is the one thing no PHP test can substitute for. Worth naming the two traps that produce it — a brand colour used both decoratively and as text, and a disabled control styled with a border colour — together with the palette split that fixes the first.
+This is the argument for the hint the previous note asks for. A theme extension without an axe pass ships contrast failures and nobody notices, because every other kind of test says the page is fine.
 
 ## Query
 
 follow-up to the Playwright note — the suite is now built and run, and the first run produced a concrete result worth attaching to that gap
+
+## Suggestion
+
+When the Playwright hint gets written, lead with accessibility rather than with clicking: @axe-core/playwright over the site's own page types is the check that finds something on day one, and it is the one thing no PHP test can substitute for. Worth naming the two traps that produce it — a brand colour used both decoratively and as text, and a disabled control styled with a border colour — together with the palette split that fixes the first.

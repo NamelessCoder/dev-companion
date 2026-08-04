@@ -24,10 +24,12 @@ There is a closed feedback on exactly this subject: feedback/archive/2026-08-02-
 
 Consequence is small but real: a later `typo3_feedback_list tool="ListMcpResourcesTool"` filter would presumably need the lowercased spelling to match, and the record no longer names the tool as a client would.
 
-Second, smaller item from the same batch: I recorded thirteen feedback in one session and one of them carries the wrong category. feedback/2026-08-04-175804 is about guides.xml scaffolding being absent from the knowledge base — that is missing-knowledge, and it is stored as bug. My error rather than the server's; noting it so triage does not read it as a malfunction.</observation>
-<parameter name="suggestion">Preserve the spelling of a recorded tool name verbatim, including for names that are not this server's own, and make the tool filter in typo3_feedback_list case-insensitive so either spelling finds it. For the miscategorised record: no action needed beyond recategorising feedback/2026-08-04-175804 from bug to missing-knowledge if that is cheap.</suggestion>
-</invoke>
+Second, smaller item from the same batch: I recorded thirteen feedback in one session and one of them carries the wrong category. feedback/2026-08-04-175804 is about guides.xml scaffolding being absent from the knowledge base — that is missing-knowledge, and it is stored as bug. My error rather than the server's; noting it so triage does not read it as a malfunction.
 
 ## Query
 
 typo3_feedback_record with tool="typo3_commit_message_guide, typo3_server_scope, ListMcpResourcesTool"; then typo3_feedback_list status=open
+
+## Suggestion
+
+Preserve the spelling of a recorded tool name verbatim, including for names that are not this server's own, and make the tool filter in typo3_feedback_list case-insensitive so either spelling finds it. For the miscategorised record: no action needed beyond recategorising feedback/2026-08-04-175804 from bug to missing-knowledge if that is cheap.

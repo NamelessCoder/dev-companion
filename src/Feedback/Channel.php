@@ -98,6 +98,9 @@ final class Channel
 
         $redacted = [];
         $cut = [];
+        self::assertNoCallFrame('observation', $args['observation'] ?? null);
+        self::assertNoCallFrame('query', $args['query'] ?? null);
+        self::assertNoCallFrame('suggestion', $args['suggestion'] ?? null);
         $observation = self::text('observation', $args['observation'] ?? '', $cut);
         if ($observation === '') {
             throw new \InvalidArgumentException('An observation is required.');
@@ -650,6 +653,42 @@ final class Channel
         $cut[] = $field . ': ' . $what;
 
         return mb_substr($text, 0, self::MAX_FIELD_LENGTH) . ' ' . sprintf(self::CUT_MARKER, $what);
+    }
+
+    /**
+     * A field that arrived carrying the call it was sent in is refused.
+     *
+     * On 2026-08-04 one session filed fourteen feedback whose observation ended
+     * in `</observation>`, the whole `suggestion` parameter and `</invoke>`: the
+     * parameters had been closed with a tag named after themselves, so
+     * everything after the first bad close was folded into the first field and
+     * the arguments behind it never arrived. `suggestion` is optional, so
+     * nothing rejected the call, and fourteen reports were stored with their
+     * proposal buried in the middle of a paragraph — `D-FBK-044`.
+     *
+     * The two shapes are structural rather than topical: a field that ends in
+     * the closing tag of the call, and a parameter opening a line of its own. A
+     * session reporting *about* this failure quotes those markers inline and
+     * mid-sentence, which is why neither check is a search for the string.
+     */
+    private static function assertNoCallFrame(string $field, mixed $value): void
+    {
+        if (!is_string($value)) {
+            return;
+        }
+
+        $text = trim($value);
+        if (!str_ends_with($text, '</invoke>') && preg_match('/\n<parameter name="[^"]+">/', $text) !== 1) {
+            return;
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'The %s carries the frame of the call it arrived in. A parameter closed with a tag named after itself '
+            . 'swallows everything after it, arguments included, so what reached this server is one field holding '
+            . 'the rest of the call. Close every parameter with the closing tag its opening declared and send the '
+            . 'call again.',
+            $field,
+        ));
     }
 
     private static function category(mixed $value): string

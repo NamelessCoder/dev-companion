@@ -21,10 +21,12 @@ Two problems followed that a read might have prevented. I cannot claim it would 
 
 Why it slipped: the skill names three guides in one sentence and leaves the choice to the reader mid-task. By the time I was writing browser specs I was several layers into a nested activation — cleanup → conformance → testing — and was working from the checklist I had already read. static-quality.md got read because the check-layer half of the task named it first and I was in it continuously.
 
-This is not a complaint about the guide's content, which I cannot judge. It is about a pointer that competes with two siblings at the moment of choosing.</observation>
-<parameter name="suggestion">Have typo3_task_guide name the implementation guide alongside the skill when the task's paths or text imply a layer — a Playwright config or a Tests/E2E path in `paths` is a strong signal. A named file arriving in a tool answer is harder to walk past than one of three options in a sentence. Failing that, the skill could put the three guides in a table keyed by the layer chosen in the preceding step, so the selection and the pointer are the same act.</suggestion>
-</invoke>
+This is not a complaint about the guide's content, which I cannot judge. It is about a pointer that competes with two siblings at the moment of choosing.
 
 ## Query
 
 typo3-extension-testing: "After selecting a layer, read only its implementation guide: references/phpunit.md ... references/playwright.md ... references/static-quality.md" — during a task that added a backend Playwright project
+
+## Suggestion
+
+Have typo3_task_guide name the implementation guide alongside the skill when the task's paths or text imply a layer — a Playwright config or a Tests/E2E path in `paths` is a strong signal. A named file arriving in a tool answer is harder to walk past than one of three options in a sentence. Failing that, the skill could put the three guides in a table keyed by the layer chosen in the preceding step, so the selection and the pointer are the same act.

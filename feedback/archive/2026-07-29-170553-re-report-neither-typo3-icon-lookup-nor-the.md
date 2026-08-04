@@ -19,9 +19,12 @@ I reported this after the user stopped me mid-task: "die icons welche du findest
 
 Checking now: icon-usage has been extended and is good — <core:icon>, IconFactory with the IconSize enum, the two TypeScript entry points, shape-not-intent naming, Configuration/Icons.php. Every one of those is a backend path. But the hint never states the boundary, and a reader who is working on a frontend template will not infer it from a list of backend APIs; they will read "here is how you render an icon". typo3_icon_lookup answers still carry no scope note either.
 
-The asymmetry is what makes this worth repeating: typo3_component_lookup states its backend scope, and typo3_architecture_lookup actively withholds the Backend CSS and Backend TypeScript hints when a task names the frontend. The icon side has neither guard, and it is the one a frontend task reaches for by name.</observation>
-<parameter name="suggestion">One line in icon-usage — the icon registry serves the backend; a frontend template has no access to it and ships its own SVG — and a scope field on every typo3_icon_lookup answer saying the same. Better still, mirror what typo3_architecture_lookup already does for Backend CSS: when the query context reads as frontend, say so instead of answering as if the identifiers were usable there.
+The asymmetry is what makes this worth repeating: typo3_component_lookup states its backend scope, and typo3_architecture_lookup actively withholds the Backend CSS and Backend TypeScript hints when a task names the frontend. The icon side has neither guard, and it is the one a frontend task reaches for by name.
 
 ## Query
 
 typo3_icon_lookup query="product package box" (previous round) and typo3_architecture_lookup id=icon-usage (now) — re-report, still unaddressed
+
+## Suggestion
+
+One line in icon-usage — the icon registry serves the backend; a frontend template has no access to it and ships its own SVG — and a scope field on every typo3_icon_lookup answer saying the same. Better still, mirror what typo3_architecture_lookup already does for Backend CSS: when the query context reads as frontend, say so instead of answering as if the identifiers were usable there.

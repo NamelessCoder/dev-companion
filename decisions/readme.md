@@ -397,6 +397,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
 - [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
+- [`D-FBK-044`][D-FBK-044] — A mangled call is refused rather than taken apart · 2026-08-04
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
@@ -429,6 +430,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-FBK-041]: feedback/fbk-041-what-nothing-answers-for-is-called-unresolved.md
 [D-FBK-042]: feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
 [D-FBK-043]: feedback/fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md
+[D-FBK-044]: feedback/fbk-044-a-mangled-call-is-refused-rather-than-taken-apart.md
 [D-FBK-025]: feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md

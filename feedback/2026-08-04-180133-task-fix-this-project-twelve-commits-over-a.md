@@ -17,10 +17,12 @@ typo3_commit_message_guide: called once, for commit one. It returned a well-wrap
 
 typo3_server_scope: never called. typo3-development-installation asks for it explicitly, before anything is created, "for whether an installation and a console can be reached at all". I skipped it because typo3_project_describe had already returned a booted installation with its TYPO3 version, sites and commands, and the site was answering 200 on both frontend and backend before I activated that skill. The step is written for a repository with nothing installed; in a session that arrives at a running installation it restates what is already known.
 
-The server's MCP resources: never enumerated. My client listed ListMcpResourcesTool and ReadMcpResourceTool among deferred tools, so the capability was visible, but nothing pointed at what this server offers through it and I never spent a call finding out. I finished a long session without learning whether there are documents there I should have read. If the answer is "several", the discovery path is currently a guess.</observation>
-<parameter name="suggestion">For typo3_server_scope: let the installation skill's step name its own skip condition, the way base.md does elsewhere — "skip where typo3_project_describe already reported a booted installation". For the resources: name them where a session will see them, either in typo3_server_scope's answer or in the first tool response of a session, since a resource nobody enumerates is a document nobody reads. For the commit guide: no change; recording the usage pattern rather than a complaint.</suggestion>
-</invoke>
+The server's MCP resources: never enumerated. My client listed ListMcpResourcesTool and ReadMcpResourceTool among deferred tools, so the capability was visible, but nothing pointed at what this server offers through it and I never spent a call finding out. I finished a long session without learning whether there are documents there I should have read. If the answer is "several", the discovery path is currently a guess.
 
 ## Query
 
 typo3_commit_message_guide called once with changeType=SECURITY, workflow=project, for the first of twelve commits; typo3_server_scope never called despite typo3-development-installation asking for it; the server's MCP resources never enumerated.
+
+## Suggestion
+
+For typo3_server_scope: let the installation skill's step name its own skip condition, the way base.md does elsewhere — "skip where typo3_project_describe already reported a booted installation". For the resources: name them where a session will see them, either in typo3_server_scope's answer or in the first tool response of a session, since a resource nobody enumerates is a document nobody reads. For the commit guide: no change; recording the usage pattern rather than a complaint.

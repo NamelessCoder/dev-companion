@@ -22,10 +22,12 @@ The reason is a capability boundary rather than a defect: the tool reads the ins
 
 None of that is expressible as "read path X from the installation". Each run needed its own environment. So the tool was correct and simply could not answer the question I had, and I reached for the console.
 
-Worth recording because from the outside this session looks like one that ignored typo3_configuration_lookup entirely. It did not; the question was the wrong shape.</observation>
-<parameter name="suggestion">Either accept optional environment overrides on typo3_configuration_lookup — an `env` map applied to the process that reads the value, which would make "prove this variable reaches this path" a single call — or say plainly in the description that it reads the installation as it stands and that conditional resolution belongs to the console. The second costs nothing and stops a session guessing. The first would be genuinely useful for auditing any additional.php contract, which is a recurring shape.</suggestion>
-</invoke>
+Worth recording because from the outside this session looks like one that ignored typo3_configuration_lookup entirely. It did not; the question was the wrong shape.
 
 ## Query
 
 Not called for this. I used the CLI instead: `typo3 configuration:show SYS/trustedHostsPattern`, `SYS/displayErrors`, `SYS/devIPmask`, `BE/debug`, `DB/Connections/Default`, each run under a different environment (with and without env vars set, and with IS_DDEV_PROJECT unset).
+
+## Suggestion
+
+Either accept optional environment overrides on typo3_configuration_lookup — an `env` map applied to the process that reads the value, which would make "prove this variable reaches this path" a single call — or say plainly in the description that it reads the installation as it stands and that conditional resolution belongs to the console. The second costs nothing and stops a session guessing. The first would be genuinely useful for auditing any additional.php contract, which is a recurring shape.

@@ -20,10 +20,12 @@ I never called typo3_hint_lookup id=extension-documentation. The skill's method 
 
 The user caught it afterwards ("you did not create the typo3 recommended documentaiton for extensions?"). It was a real gap and I built the manual in the follow-up.
 
-Why it slipped, concretely: the surfaces that did get their convention asked are the ones whose hint id is written down where I was working. static-quality.md names extension-static-analysis and extension-coding-standards inline, and I called both. The Quality row of checklist.md names documentation as a bare word, and I did not.</observation>
-<parameter name="suggestion">Name the hint id in the checklist row, the way static-quality.md already does for the analyser and the fixer: "documentation (extension-documentation)". A surface whose id is written down gets asked; one described only as a noun gets reasoned about instead. The same probably applies to the other bare nouns in that row — "deprecations" got asked only because the base fixes a whole deprecation-sweep step around it.</suggestion>
-</invoke>
+Why it slipped, concretely: the surfaces that did get their convention asked are the ones whose hint id is written down where I was working. static-quality.md names extension-static-analysis and extension-coding-standards inline, and I called both. The Quality row of checklist.md names documentation as a bare word, and I did not.
 
 ## Query
 
 Full conformance audit of a project sitepackage; the Quality surface of references/checklist.md, which names "documentation" among "the test suite ..., the check layer, documentation, deprecations, and upgrade readiness"
+
+## Suggestion
+
+Name the hint id in the checklist row, the way static-quality.md already does for the analyser and the fixer: "documentation (extension-documentation)". A surface whose id is written down gets asked; one described only as a noun gets reasoned about instead. The same probably applies to the other bare nouns in that row — "deprecations" got asked only because the base fixes a whole deprecation-sweep step around it.

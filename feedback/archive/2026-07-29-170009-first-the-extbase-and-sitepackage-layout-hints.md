@@ -33,9 +33,12 @@ The "core-tests" hint is correct and useful: UnitTestCase / FunctionalTestCase, 
 
 7. InternalRequest::withQueryParameters() accepts scalars only. An Extbase plugin argument is nested two levels deep, so a search request has to be built into the URL with http_build_query().
 
-Two more findings from the run itself, which are arguments for the suite existing at all: failOnDeprecation surfaced that ext_emconf.php is deprecated on 14.3 unless composer.json declares extra.typo3/cms.version and Package.providesPackages (#108345) — a project sitepackage should simply delete the file. And the FULLTEXT index in ext_tables.sql is created by the testing framework, so a repository test covers that file as a side effect.</observation>
-<parameter name="suggestion">Add a hint next to core-tests — "Testing a project extension" — carrying: copy the two phpunit XMLs and bootstraps out of typo3/testing-framework rather than referencing them; t
+Two more findings from the run itself, which are arguments for the suite existing at all: failOnDeprecation surfaced that ext_emconf.php is deprecated on 14.3 unless composer.json declares extra.typo3/cms.version and Package.providesPackages (#108345) — a project sitepackage should simply delete the file. And the FULLTEXT index in ext_tables.sql is created by the testing framework, so a repository test covers that file as a side effect.
 
 ## Query
 
 typo3_task_guide task="Add automated tests for a project sitepackage extension: unit and functional tests for an Extbase model, repository and controller, plus frontend tests for the rendered pages", changeType=test, targetVersion=14.3 → hint "core-tests" plus the "Testing Strategy" rule
+
+## Suggestion
+
+Add a hint next to core-tests — "Testing a project extension" — carrying: copy the two phpunit XMLs and bootstraps out of typo3/testing-framework rather than referencing them; t

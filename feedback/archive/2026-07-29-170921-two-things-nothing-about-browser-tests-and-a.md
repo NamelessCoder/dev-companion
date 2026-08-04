@@ -21,9 +21,12 @@ What a hint would carry: that Playwright replaced codeception for acceptance tes
 
 2. The scope signal is contradictory, and it cost me confidence rather than time. typo3_server_scope lists under doesNotCover: "Work outside TYPO3 core contribution: site setup, project or third-party extension development" and refers to docs.typo3.org. But typo3_task_guide answers project tasks readily, sets outsideCore: true, and filters the core-only items out — and over this session the knowledge base grew hints that are explicitly about project work: sitepackage-layout, extbase, frontend-records, content-elements, sitepackage-initial-content. So the behaviour is "project work is covered", while the declared scope still says it is not.
 
-I could not tell from the server whether a thin answer meant "out of scope, go to the documentation" or "in scope, not written yet" — and those call for different reactions from me. Every gap I reported this session I reported as the second, because the hints kept appearing. The scope text is the last place that still says the first.</observation>
-<parameter name="suggestion">Add a Playwright/acceptance hint built from the core's Build/tests/playwright, and include the project-shaped part: host-side browsers, a served site instead of a test instance, and the explicit contrast with functional rendering tests so the two are not confused. Separately, bring the doesNotCover text in typo3_server_scope in line with what the server now does — project and sitepackage work is covered; what is genuinely out of scope is a project's own CSS and JavaScript.
+I could not tell from the server whether a thin answer meant "out of scope, go to the documentation" or "in scope, not written yet" — and those call for different reactions from me. Every gap I reported this session I reported as the second, because the hints kept appearing. The scope text is the last place that still says the first.
 
 ## Query
 
 typo3_architecture_lookup task="acceptance and end-to-end browser tests for a TYPO3 site with Playwright", targetVersion=14.3 → no hint matched; the knowledge section returned was about site sets and TSconfig
+
+## Suggestion
+
+Add a Playwright/acceptance hint built from the core's Build/tests/playwright, and include the project-shaped part: host-side browsers, a served site instead of a test instance, and the explicit contrast with functional rendering tests so the two are not confused. Separately, bring the doesNotCover text in typo3_server_scope in line with what the server now does — project and sitepackage work is covered; what is genuinely out of scope is a project's own CSS and JavaScript.

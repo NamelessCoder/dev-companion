@@ -271,6 +271,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-FBK-013`][R-FBK-013] — A recorded name keeps the spelling it was given in · held
 - [`R-FBK-014`][R-FBK-014] — A judgement takes the card it replaced with it · held
 - [`R-FBK-015`][R-FBK-015] — A feedback field that was cut says so · held
+- [`R-FBK-016`][R-FBK-016] — A field that arrived carrying its call is refused · held
 
 [R-FBK-001]: feedback/fbk-001-a-feedback-is-about-as-many-tools-as-it-is-about.md
 [R-FBK-002]: feedback/fbk-002-a-feedback-that-was-worked-off-stays-answerable-for.md
@@ -287,6 +288,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-FBK-013]: feedback/fbk-013-a-recorded-name-keeps-the-spelling-it-was-given-in.md
 [R-FBK-014]: feedback/fbk-014-a-judgement-takes-the-card-it-replaced-with-it.md
 [R-FBK-015]: feedback/fbk-015-a-feedback-field-that-was-cut-says-so.md
+[R-FBK-016]: feedback/fbk-016-a-field-that-arrived-carrying-its-call-is-refused.md
 
 ### knowledge
 

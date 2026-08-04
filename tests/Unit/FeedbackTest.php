@@ -209,6 +209,36 @@ final class FeedbackTest extends TestCase
     }
 
     /**
+     * The fourteen feedback of 2026-08-04 17:58 to 18:02, which arrived with the
+     * suggestion parameter inside the observation because each one had been
+     * closed with a tag named after itself — `D-FBK-044`.
+     */
+    #[Test]
+    public function aFieldCarryingTheCallItArrivedInIsRefused(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->recordFeedback([
+            'observation' => self::MARKER . " the lookup found nothing</observation>\n"
+                . "<parameter name=\"suggestion\">say what it should have answered</suggestion>\n</invoke>",
+        ]);
+    }
+
+    /**
+     * The report about that failure is the one report this check must not
+     * refuse, and it is the only kind that names those markers at all.
+     */
+    #[Test]
+    public function aReportQuotingTheMarkersIsStillRecorded(): void
+    {
+        $file = $this->recordFeedback([
+            'observation' => self::MARKER . ' the observation came back holding `</invoke>` and a '
+                . '`<parameter name="suggestion">` block, so the argument behind it never arrived.',
+        ]);
+
+        self::assertStringContainsString('</invoke>', (string) file_get_contents($this->inStore($file)));
+    }
+
+    /**
      * The feedback of 2026-07-31 praised typo3_configuration_lookup for
      * returning the effective runtime value, and proved it by pasting the live
      * encryption key of the audited site into a repository that is committed and

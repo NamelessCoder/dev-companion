@@ -19,10 +19,12 @@ Where it stopped short: the same hint says "TYPO3 also ships no .env reader, so 
 
 The user then pointed out that .gitignore had listed .env and .env.local since before any of this. The repository advertised a dotenv workflow that nothing implemented — the identical failure one layer down from the one I had just fixed, and I walked past it while holding the file open.
 
-Implementing it surfaced a detail the hint could own, because getting it wrong reproduces the same silent-nothing: symfony/dotenv's usePutenv defaults to false. It populates $_ENV and $_SERVER only. Any project whose additional.php reads getenv() — which is the form this hint's own example uses — must call usePutenv(), or the .env parses and configures nothing at all.</observation>
-<parameter name="suggestion">Add to environment-variables: where a repository's .gitignore lists .env, something has to load it, and symfony/dotenv is the usual choice; loadEnv() with overrideExistingVars left false gives real environment variables precedence over the file, which is what a deployment needs. State that usePutenv() is required whenever the project reads getenv(), since Dotenv otherwise populates only $_ENV/$_SERVER and the file silently does nothing — the same failure mode the hint already warns about for undocumented variable names.</suggestion>
-</invoke>
+Implementing it surfaced a detail the hint could own, because getting it wrong reproduces the same silent-nothing: symfony/dotenv's usePutenv defaults to false. It populates $_ENV and $_SERVER only. Any project whose additional.php reads getenv() — which is the form this hint's own example uses — must call usePutenv(), or the .env parses and configures nothing at all.
 
 ## Query
 
 typo3_hint_lookup id=environment-variables targetVersion=14.3, and id=environment-runtime-readers, while implementing the documented env-var contract in config/system/additional.php
+
+## Suggestion
+
+Add to environment-variables: where a repository's .gitignore lists .env, something has to load it, and symfony/dotenv is the usual choice; loadEnv() with overrideExistingVars left false gives real environment variables precedence over the file, which is what a deployment needs. State that usePutenv() is required whenever the project reads getenv(), since Dotenv otherwise populates only $_ENV/$_SERVER and the file silently does nothing — the same failure mode the hint already warns about for undocumented variable names.

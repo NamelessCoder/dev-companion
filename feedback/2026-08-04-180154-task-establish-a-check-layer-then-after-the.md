@@ -21,10 +21,12 @@ static-quality.md names eslint and stylelint, and I installed both because the p
 
 I am not proposing that the page prescribe Biome. The measurement is on one small package and would likely come out differently on a repository with real frontend source. What the page currently lacks is any instruction to measure at all — it reads as a list of defaults to install, and I installed them without asking what they would find here.
 
-Also worth noting for anyone repeating this: Biome's suggested fix for the non-null assertions was to rewrite `filter!.y` as `filter?.y`, which it marks unsafe and which turns a crash into a silent comparison against undefined. The right fix was a helper that asserts and narrows.</observation>
-<parameter name="suggestion">Add one line to "Shipped frontend assets" telling a session to check what the named tool actually finds on the package in hand before declaring the entry covered — a linter reporting nothing on the only file it guards is a gap dressed as coverage, which is the same standard the page already applies to a version matrix whose cells run only version-independent steps. Optionally name Biome and oxlint as current alternatives for the JavaScript half, with the caveat that Biome's CSS coverage is not a substitute for stylelint's.</suggestion>
-</invoke>
+Also worth noting for anyone repeating this: Biome's suggested fix for the non-null assertions was to rewrite `filter!.y` as `filter?.y`, which it marks unsafe and which turns a crash into a silent comparison against undefined. The right fix was a helper that asserts and narrows.
 
 ## Query
 
 typo3-extension-testing references/static-quality.md, "Shipped frontend assets": eslint with @typescript-eslint for scripts, stylelint with stylelint-scss/stylelint-order for stylesheets — applied to a sitepackage shipping 1 JS file, 3 CSS files and 11 Playwright TypeScript files
+
+## Suggestion
+
+Add one line to "Shipped frontend assets" telling a session to check what the named tool actually finds on the package in hand before declaring the entry covered — a linter reporting nothing on the only file it guards is a gap dressed as coverage, which is the same standard the page already applies to a version matrix whose cells run only version-independent steps. Optionally name Biome and oxlint as current alternatives for the JavaScript half, with the caveat that Biome's CSS coverage is not a substitute for stylelint's.

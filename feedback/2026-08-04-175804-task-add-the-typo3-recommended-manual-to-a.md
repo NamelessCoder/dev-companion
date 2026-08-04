@@ -17,10 +17,12 @@ Both lookups gave me the policy and neither gave me the scaffold. The hint `exte
 
 I got the rest by reading installed packages: vendor/typo3fluid/fluid/Documentation/guides.xml and vendor/typo3/cms-dashboard/Documentation/guides.xml for the file shape (xmlns https://www.phpdoc.org/guides, xsi:schemaLocation pointing at guides-cli's schema, the \T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension element, the project element with title/release/version/copyright), plus Includes.rst.txt and the Index.rst header block with the toctree. That is four extra file reads to learn a fixed scaffold.
 
-I also had to find the renderer myself: ghcr.io/typo3-documentation/render-guides, and that --fail-on-log is what turns a warning into a non-zero exit. Without that flag a broken reference renders quietly.</observation>
-<parameter name="suggestion">Extend `extension-documentation` — or add a neighbour id such as extension-documentation-scaffold — with the file inventory (guides.xml, Includes.rst.txt, Index.rst plus one directory per chapter), a minimal guides.xml an extension can copy, and the render command with --fail-on-log. The policy half is already good; what is missing is the half that lets a session produce the directory without reading three vendor packages to reverse-engineer it.</suggestion>
-</invoke>
+I also had to find the renderer myself: ghcr.io/typo3-documentation/render-guides, and that --fail-on-log is what turns a warning into a non-zero exit. Without that flag a broken reference renders quietly.
 
 ## Query
 
 typo3_documentation_lookup queries=["extension documentation guides.xml","rendering documentation locally","Documentation Index.rst structure"] targetVersion=14; then page=".../ExtensionArchitecture/HowTo/Documentation.html"; then typo3_hint_lookup id=extension-documentation targetVersion=14.3
+
+## Suggestion
+
+Extend `extension-documentation` — or add a neighbour id such as extension-documentation-scaffold — with the file inventory (guides.xml, Includes.rst.txt, Index.rst plus one directory per chapter), a minimal guides.xml an extension can copy, and the render command with --fail-on-log. The policy half is already good; what is missing is the half that lets a session produce the directory without reading three vendor packages to reverse-engineer it.

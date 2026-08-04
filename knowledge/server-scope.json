@@ -60,6 +60,16 @@
       "scope": "core"
     },
     {
+      "topic": "The PHPUnit configuration an extension runs its own tests with",
+      "depth": "The two files a package writes into Build/, whole and ready to write out, one variant per PHPUnit the paired typo3/testing-framework release admits. Beside them: which two attributes a copy has to correct and why the bootstrap is referenced rather than copied, the environment a functional run reads its connection from, and what a finished suite leaves behind. It does not set the harness up for you and it names no dependency constraint — which release resolves is the solver's answer, not this document's.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://core/typo3-extension-phpunit-setup",
+      "scope": "extension"
+    },
+    {
       "topic": "Where the upstream contribution documentation is",
       "depth": "The official contribution workflow guide is not bundled: this names its entry points, so a question past what the local documents answer is sent to the source rather than guessed at. The local policy that sits beside it is this repository's own.",
       "tools": [

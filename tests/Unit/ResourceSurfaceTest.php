@@ -90,9 +90,20 @@ final class ResourceSurfaceTest extends TestCase
     public function aDocumentThatStopsAtTheCoreSaysSoWhereItIsPicked(): void
     {
         foreach (Documents::documents() as $document) {
-            self::assertStringContainsString(
-                Documents::isCoreOnly($document['id']) ? 'does not transfer' : 'Holds for',
-                (string) Documents::description($document['id']),
+            $description = (string) Documents::description($document['id']);
+            if (Documents::isCoreOnly($document['id'])) {
+                self::assertStringContainsString('does not transfer', $description, $document['id']);
+                continue;
+            }
+
+            // Everything outside the core used to be one case and is now
+            // several: a document may hold everywhere, or answer for a package
+            // or for the repository around an installation and for neither of
+            // the others. All of them still owe the card the same thing, which
+            // is a sentence naming who the answers oblige.
+            self::assertMatchesRegularExpression(
+                '/(Holds for|Answers for) /',
+                $description,
                 $document['id'] . ' is offered without saying who its answers oblige',
             );
         }

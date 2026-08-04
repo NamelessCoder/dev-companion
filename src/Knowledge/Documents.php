@@ -120,9 +120,16 @@ final class Documents
             return null;
         }
 
-        return $covered['topic'] . '. ' . (self::isCoreOnly($id)
-            ? "The TYPO3 core's own process, which does not transfer to extension or site work."
-            : 'Holds for core contribution, extension development and site work alike.');
+        return $covered['topic'] . '. ' . match ($covered['scope']) {
+            Scope::Core => "The TYPO3 core's own process, which does not transfer to extension or site work.",
+            // Named rather than folded into the sentence below it: a document
+            // about setting a package up answers for the package, and telling a
+            // core contributor it holds for their work too is how the core's own
+            // harness gets rebuilt by hand.
+            Scope::Extension => 'Answers for a package rather than for the core repository, whose own harness is a different one.',
+            Scope::Project => 'Answers for the repository around an installation rather than for the core repository.',
+            default => 'Holds for core contribution, extension development and site work alike.',
+        };
     }
 
     /**

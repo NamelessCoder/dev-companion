@@ -1215,7 +1215,23 @@ final class ScopeTest extends TestCase
                 $named,
                 $document['id'] . ' is served and searched, and no covered topic names it',
             );
-            self::assertContains($named[$document['id']], [Scope::Core, Scope::Any]);
+            // Four of the five cases are legitimate for a document; `uncertain`
+            // is what a path lands in when nothing placed it, and a topic that
+            // cannot say who its document answers for has not been thought
+            // through. What the scope decides is the sentence the resource is
+            // offered under, and only one of them may claim the document holds
+            // everywhere — that claim was the default until a document answered
+            // for a package alone.
+            $scope = $named[$document['id']];
+            self::assertNotSame(Scope::Uncertain, $scope);
+            self::assertSame(
+                $scope === Scope::Any,
+                str_contains(
+                    (string) Documents::description($document['id']),
+                    'core contribution, extension development and site work alike',
+                ),
+                $document['id'] . ' is offered under a sentence its scope does not support',
+            );
         }
     }
 

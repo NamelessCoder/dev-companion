@@ -155,13 +155,13 @@ final class ResourceSurfaceTest extends TestCase
     {
         $offered = array_column(Factory::resources(), 'uri');
 
-        foreach (Installer::SKILLS as $skill) {
+        foreach (Installer::skills() as $skill) {
             self::assertContains(ResourceHandler::skillUri($skill), $offered);
         }
 
         $published = Finder::create()->directories()->in(Paths::root() . '/skills')->depth(0);
         foreach ($published as $directory) {
-            if (in_array($directory->getFilename(), Installer::SKILLS, true)) {
+            if (in_array($directory->getFilename(), Installer::skills(), true)) {
                 continue;
             }
             self::assertNotContains(

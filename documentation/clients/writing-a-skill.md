@@ -67,14 +67,22 @@ So the draft is shown before it is published: `SKILL.md` and every reference,
 whole, not summarised. And feedback is **asked for by name** — does this match
 how the task is really done, which step is missing, which one is wrong, what
 does it claim that is not true here. "Does this look good?" gets agreement, not
-review. What comes back is worked in before the skill reaches
-`Installer::SKILLS`, because the copy in somebody else's project is not
-corrected by the next release of this server.
+review. What comes back is worked in before the skill is published, because the
+copy in somebody else's project is not corrected by the next release of this
+server.
+
+Until then the draft says so in its own front matter: `status: draft`, above the
+name. That line is what holds it back rather than a label beside something else
+that does — `Installer::skills()` is the directory minus what declares it — so a
+session that opens the workflow can see that it is reading something nobody has
+reviewed, and publishing is the one edit that takes the line out.
 
 ## The rules, and what holds each one
 
 - It is filed under the name it calls itself, with a description a client can
   route on — `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself`
+- A draft says so in its own front matter until it is published —
+  `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
 - It starts from the base before it reaches for anything of its own —
   `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - It keeps no second copy of what a tool owns —
@@ -152,18 +160,28 @@ that owner, carry across only the scope and verified behaviour it needs
 
 ## Publishing it
 
-A skill exists for its readers once it is in `Installer::SKILLS`, and nothing
-this server answers with may name one before that: `knowledge/task-intents.json`
-routes a recognized task to the skill that owns it
-([`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md)),
-and `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
-that list. A route into a skill nobody has installed is worse than none, because
-the caller cannot tell the two apart. Add it there, add it to the lists in
-`tests/Smoke/InstallerTest.php` that read the published directory back, and the
+Publishing is deleting the `status: draft` line, and `Installer::skills()` is
+the directory minus what still carries it. There is no list to add the name to:
+one existed, and a list beside the file is a second place the same fact lives.
+
+What that one edit turns on: the skill is copied into every client's own skills
+directory by `bin/typo3-cms-mcp install`, it is served as a `typo3://skill`
+resource, and `knowledge/task-intents.json` may name it. Nothing this server
+answers with may name a skill before that — a route into one nobody has
+installed is worse than none, because the caller cannot tell the two apart — and
+`SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to what
+is published. The intent that routes to it is written in the same commit and
+never before it
+([`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md)).
+
+Two things the skill does not carry itself are supplied at publication. The
 installer copies `skills/base.md` into the new directory as `references/base.md`
 — one copy per skill, because each of them lands in another project alone and a
-link out of its own directory would resolve here and nowhere it is actually
-read.
+link out of its own directory would resolve here and nowhere it is actually read.
+And `knowledge/server-scope.json` has to name the workflow among what the server
+covers, or `ScopeTest::everyPublishedSkillIsAnnouncedByTheScope` fails: a skill
+served to a client that the scope does not announce is one nothing tells the
+caller about.
 
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy

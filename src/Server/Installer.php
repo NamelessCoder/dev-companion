@@ -12,25 +12,9 @@ final class Installer
 {
     private const SERVER = 'typo3-cms-mcp';
 
-    /**
-     * The skills this server publishes, which is also where a skill starts
-     * existing for its readers. An answer that names one names it from here —
-     * `knowledge/task-intents.json` routes a task to the skill that owns it,
-     * and a name this list does not carry is one nobody can load.
-     *
-     * @var array<int, string>
-     */
-    public const SKILLS = [
-        'typo3-backend-module-development',
-        'typo3-content-element-development',
-        'typo3-core-patch-development',
-        'typo3-core-patch-review',
-        'typo3-extension-conformance',
-        'typo3-extension-documentation',
-        'typo3-extension-testing',
-        'typo3-extension-upgrade',
-    ];
     private const BASE = 'references/base.md';
+    /** What a skill declares while it is not to be published. */
+    private const DRAFT = 'draft';
     private const STATE_DIRECTORY = '.typo3-cms-mcp';
     private const STATE = self::STATE_DIRECTORY . '/state.json';
     /**
@@ -176,6 +160,54 @@ final class Installer
     ) {}
 
     /**
+     * The skills this server publishes, which is also where a skill starts
+     * existing for its readers. An answer that names one names it from here —
+     * `knowledge/task-intents.json` routes a task to the skill that owns it,
+     * and a name this does not carry is one nobody can load.
+     *
+     * It is the directory minus the drafts rather than a list beside it. A list
+     * is a second place the same fact lives, and the two disagree in the
+     * direction nobody notices: a draft that was reviewed and added here while
+     * its file still says `status: draft` is published and reads as unfinished,
+     * and one taken out of the list while its file says nothing reads as ready
+     * and is loadable by nobody. Now publishing is one edit — the line comes out
+     * of the front matter — and the file in somebody else's project is the same
+     * file that decided it would go there.
+     *
+     * Sorted, because it is written into `.typo3-cms-mcp/state.json` and
+     * compared against what the last run left; a listing whose order moved
+     * would read as a change.
+     *
+     * @return array<int, string>
+     */
+    public static function skills(): array
+    {
+        $skills = [];
+        foreach (Finder::create()->directories()->in(Paths::root() . '/skills')->depth(0)->sortByName() as $skill) {
+            $body = $skill->getPathname() . '/SKILL.md';
+            if (is_file($body) && !self::draft((string) file_get_contents($body))) {
+                $skills[] = $skill->getFilename();
+            }
+        }
+
+        return $skills;
+    }
+
+    /**
+     * Whether a skill says it is not to be published, read out of the front
+     * matter block alone so that a line of the body opening with the same word
+     * is not the declaration.
+     */
+    public static function draft(string $body): bool
+    {
+        if (preg_match('/\A---\R(.*?)\R---\R/s', $body, $block) !== 1) {
+            return false;
+        }
+
+        return preg_match('/^status:[ \t]*' . self::DRAFT . '[ \t]*$/m', $block[1]) === 1;
+    }
+
+    /**
      * The clients `--agent=` accepts, for the entrypoint's own help.
      *
      * @return array<int, string>
@@ -272,7 +304,7 @@ final class Installer
         $this->writeJson($this->project . '/' . self::STATE, [
             'version' => 1,
             'agents' => $agents,
-            'skills' => self::SKILLS,
+            'skills' => self::skills(),
         ]);
         $this->write($this->project . '/' . self::STATE_DIRECTORY . '/.gitignore', self::IGNORE_ALL);
 
@@ -658,10 +690,10 @@ final class Installer
     private function publishSkills(string $skillsPath, array $previousSkills): string
     {
         $messages = [];
-        foreach (self::SKILLS as $skill) {
+        foreach (self::skills() as $skill) {
             $messages[] = $this->publishSkill($skillsPath, $skill);
         }
-        foreach (array_diff($previousSkills, self::SKILLS) as $skill) {
+        foreach (array_diff($previousSkills, self::skills()) as $skill) {
             $this->removeDirectory($this->project . '/' . $skillsPath . '/' . $skill);
             $messages[] = 'Removed stale ' . $skill . ' from ' . $this->project . '/' . $skillsPath . '.';
         }

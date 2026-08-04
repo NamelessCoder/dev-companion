@@ -1,7 +1,8 @@
 ---
 date: 2026-08-03T16:27:45+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-04
 model: claude-opus-5[1m]
 tool: typo3_task_guide, typo3-extension-testing
 directory: /home/benji/projects/ext-guidedtour

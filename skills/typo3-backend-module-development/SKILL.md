@@ -78,8 +78,12 @@ suite reports none of the five, and a registration file has no schema behind it
 to fail against.
 
 Opening it needs a backend that runs. Where this repository has none, that is a
-prerequisite of the task rather than a part of it: establish it, or report the
-module as written and unproven and say which of the five is unestablished.
+prerequisite of the task rather than a part of it, and it has an owner:
+`typo3-development-installation` brings one into existence or boots the one the
+repository declares. Cross to it at the verified point — the module is written
+and registered, and nothing has been opened — and come back to these five. Where
+that is not wanted, report the module as written and unproven and say which of
+the five is unestablished.
 Correcting a mistake from a test afterwards is what the lookups above are there
 to make unnecessary.
 

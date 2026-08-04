@@ -61,9 +61,11 @@ removing it left the work with no owner at all.
   re-derive the findings and does not give the audit a change step: it starts
   from the report `typo3-extension-conformance` produces, which `R-GUI-006`
   keeps free of a patch checklist.
-- **The worklist is written down and committed before any of it is worked.**
+- ~~**The worklist is written down and committed before any of it is worked.**
   What the audit found becomes an ordered list of its own, and the commit that
-  carries it is what a session interrupted halfway comes back to.
+  carries it is what a session interrupted halfway comes back to.~~ Reversed on
+  2026-08-04, see **Since then**. It is written down and agreed before any of it
+  is worked, and it is not committed.
 - **What it adds is the entry point, the order and the carrying-through.** Which
   workflow owns a finding is already conformance's answer and is not restated
   here; what this skill contributes is being reachable from a change-worded
@@ -89,9 +91,9 @@ removing it left the work with no owner at all.
 - **That the conformance report carries enough to derive a list from.** Nothing
   measures whether what the audit returns is ordered or specific enough to
   become items somebody works off.
-- **That committing the list before the work is what is wanted of it**, rather
+- ~~**That committing the list before the work is what is wanted of it**, rather
   than one commit at the end. It is what was asked for and no run has been
-  through it.
+  through it.~~ Answered on 2026-08-04: it is not.
 
 ## Wrong if
 

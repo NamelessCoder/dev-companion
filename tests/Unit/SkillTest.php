@@ -81,7 +81,7 @@ final class SkillTest extends TestCase
         // is made in the workflow that owns it. What is left for it to route to
         // is the commit, and the commit is the whole of the checkpoint the
         // order turns on — `D-SKL-016`.
-        'typo3-extension-remediation' => [
+        'typo3-extension-cleanup' => [
             'typo3_commit_message_guide',
         ],
         'typo3-extension-upgrade' => [
@@ -109,7 +109,7 @@ final class SkillTest extends TestCase
         'typo3-content-element-development',
         'typo3-development-installation',
         'typo3-extension-documentation',
-        'typo3-extension-remediation',
+        'typo3-extension-cleanup',
         'typo3-extension-testing',
         'typo3-extension-upgrade',
     ];
@@ -1198,6 +1198,44 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A draft is a skill nobody may load yet, and its own front matter is what
+     * says so: `status: draft`, above the name.
+     *
+     * That line is the decider rather than a label beside one. `Installer` used
+     * to carry a list of the published names, which is a second place one fact
+     * lives, and the two disagree in the direction nobody notices — a reviewed
+     * draft added to the list with the marker still in its file is published and
+     * reads as unfinished, and one dropped from the list while its file says
+     * nothing reads as ready and can be loaded by nobody. So publishing is one
+     * edit now, and this holds the derivation that made it one: every directory
+     * that declares itself a draft is published to nobody, and every one that
+     * does not is published.
+     */
+    #[Test]
+    public function aDraftSaysSoInItsOwnFrontMatter(): void
+    {
+        $published = Installer::skills();
+        self::assertNotSame([], $published, 'nothing at all is published');
+
+        foreach (self::skills() as $name => $skill) {
+            self::assertSame(
+                1,
+                preg_match('/\A---\R(.*?)\R---\R/s', $skill, $block),
+                $name . ' has no front matter',
+            );
+            $declared = preg_match('/^status:[ \t]*draft[ \t]*$/m', $block[1]) === 1;
+            self::assertSame($declared, Installer::draft($skill), $name . ' is read as a draft two ways');
+            self::assertSame(
+                !$declared,
+                in_array($name, $published, true),
+                $declared
+                    ? $name . ' says it is a draft and is published anyway'
+                    : $name . ' says nothing and is published to nobody',
+            );
+        }
+    }
+
+    /**
      * The description is the only part of a skill read before it is chosen, so
      * a domain named by one of its sides leaves the other side reading as
      * somebody else's work — and the body that covers it is never loaded. This
@@ -1269,7 +1307,7 @@ final class SkillTest extends TestCase
         foreach ($named as [$intent, $skill]) {
             self::assertContains(
                 $skill,
-                Installer::SKILLS,
+                Installer::skills(),
                 $intent . ' routes to ' . $skill . ', which this server does not publish',
             );
         }
@@ -1369,7 +1407,7 @@ final class SkillTest extends TestCase
                 'typo3-extension-upgrade',
                 'typo3-core-patch-development',
                 'typo3-development-installation',
-                'typo3-extension-remediation',
+                'typo3-extension-cleanup',
             ],
         );
 
@@ -1639,7 +1677,7 @@ final class SkillTest extends TestCase
             '[references/base.md](references/base.md)',
             '## Boot what the repository already declares',
             '## Create one where none is declared',
-            '## Prove it from the state it will be started in again',
+            '## Prove it, and how far depends on who wrote the sequence',
             '## Where this stops',
         ];
         $position = -1;

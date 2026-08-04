@@ -72,11 +72,13 @@ this entry.
   `typo3-development-installation`, which is drafted and not published — a name
   this server answers with before that is one nobody can load, so the route is
   the second half of publishing it and is written into that card.
-- **`Installer::SKILLS` is public and is what a name is held to.** A skill
-  exists for its readers once it is in that list —
+- **Publication is public and is what a name is held to.** A skill exists for
+  its readers once it is published —
   [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) — and
   `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name in
-  `knowledge/` to it.
+  `knowledge/` to it. It was the `Installer::SKILLS` list when this was decided
+  and is `Installer::skills()` since 2026-08-04, which is the same statement
+  read out of the skills' own front matter; see **Since then**.
 - **`skills/base.md` is unchanged.** That is the half of this answer that cost
   nothing: step 3 now says what the call does, and the growth `D-SKL-001`'s
   **Wrong if** watches did not happen.
@@ -146,3 +148,31 @@ warns against is untouched by that: a name invented for a row nobody asked for
 is still a route into a workflow nobody asked for, and
 [`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md)
 is the entry that had to answer to it.
+
+### 2026-08-04 — publication is read off the skill, and the list is gone
+
+`Installer::SKILLS` was a list of published names beside the directory it
+described, which is one fact in two places. `Installer::skills()` is that
+directory minus every skill whose front matter says `status: draft`, and there
+is no list any more.
+
+The disagreement it removes runs one way in practice and is invisible from
+either end. A draft that was reviewed and added to the list with the marker
+still in its file was published and read as unfinished by whoever opened it; one
+dropped from the list while its file said nothing read as ready and could be
+loaded by nobody. Both are two edits where publishing should be one, and neither
+side reports the other.
+
+What it also buys is the reason it was asked for: a session opening a workflow
+in `skills/` can now see that nobody has reviewed it, without holding the
+directory against a constant in another file.
+`SkillTest::aDraftSaysSoInItsOwnFrontMatter` holds the derivation in both
+directions, and the three published-skill lists in `tests/Smoke/InstallerTest.php`
+are derived from the same call — the state file's list is the one kept literal,
+because what it asserts is what was written.
+
+`typo3-development-installation` and `typo3-extension-cleanup` were published in
+the same commit, which is what the paragraph above about `installation-setup` and
+`installation-operations` was waiting for. Both take `skill` and neither takes
+`skillCore`: setting a development installation up and putting a repository right
+are not core work.

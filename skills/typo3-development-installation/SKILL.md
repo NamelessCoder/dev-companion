@@ -116,7 +116,16 @@ afterwards. Establish what the merged result actually is with
 `typo3_configuration_lookup` rather than from the files, because the merge is
 what the installation runs on.
 
-## Prove it from the state it will be started in again
+## Prove it, and how far depends on who wrote the sequence
+
+A repository that was booted from what it already declares is proved by the site
+answering: the backend, and the frontend on the URL the installation is
+configured for. Nothing here is torn down to establish that. Booting is not
+authoring, there is no new sequence to test, and an installation that was asked
+for and then destroyed is a change nobody asked for.
+
+Where the sequence was written in this session, it is proved from the state it
+will be started in again, and every step below is part of the work:
 
 1. Start from the state a colleague's clone is in — no installed dependencies,
    no installation, no container — and let the declared sequence run unattended.
@@ -142,6 +151,14 @@ package that installs TYPO3 beneath it, the container the repository declares,
 the non-interactive install, the content it is seeded with, and what the install
 writes into the repository. It does not own hosting, deployment or backups, and
 it does not own what runs against the installation once it answers.
+
+The installation a suite boots is not this one, and the difference is what each
+is for rather than how it is laid out. This workflow produces a site somebody
+opens in a browser and clicks through, which is why the package's own manifest
+becomes the Composer root. A package whose TYPO3 is installed below a build
+directory, with the package linked in and no site to visit, is a test fixture and
+belongs to `typo3-extension-testing` — a repository can have both, and asking
+which one the task needs is the first thing that decides the layout.
 
 Tests and static checks are `typo3-extension-testing`, and the crossing is
 explicit in both directions. Going out: state the verified point — the document

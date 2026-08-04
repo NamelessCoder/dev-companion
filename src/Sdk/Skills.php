@@ -20,7 +20,7 @@ use Typo3CmsMcp\Server\Installer;
  * own skills directory, and for a client that never ran it this resource is the
  * one route there is (`R-ANS-022`).
  *
- * What is offered is `Installer::SKILLS` and never the directory listing.
+ * What is offered is `Installer::skills()` and never the directory listing.
  * Publication is that list, so a skill the list leaves out is not served here
  * either — `D-SKL-013`.
  */
@@ -48,7 +48,7 @@ final class Skills
             'id' => $id,
             'title' => self::title($id),
             'path' => self::published($id),
-        ], Installer::SKILLS);
+        ], Installer::skills());
     }
 
     /** The name the skill declares, which is what a client loading it knows it by. */
@@ -137,7 +137,7 @@ final class Skills
     /** The body of a skill this server publishes, and of nothing else. */
     private static function published(string $id): string
     {
-        if (!in_array($id, Installer::SKILLS, true)) {
+        if (!in_array($id, Installer::skills(), true)) {
             throw new \RuntimeException(sprintf('Unknown task skill: %s', $id));
         }
 

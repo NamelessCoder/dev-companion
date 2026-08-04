@@ -40,8 +40,8 @@ workflow that owns the task it recognized.
   `skills/`. Mostly extension, sitepackage and project work.
   `bin/typo3-cms-mcp install` writes the same file into the client's own skills
   directory, and this is the route for a client that never ran it. Published
-  means named in `Installer::SKILLS`: a skill that list leaves out is a
-  directory in `skills/` and is offered nowhere.
+  means the skill's own front matter does not say `status: draft`: one that does
+  is a directory in `skills/` and is offered nowhere.
 - **`typo3://skill/{skillId}/references/{file}`** — what a workflow hands over
   at a step. A resource template rather than one list entry each, because these
   are followed from the body that names them, and a checklist offered beside its

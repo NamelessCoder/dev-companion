@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Server\Installer;
 use Typo3CmsMcp\Tests\Support\Directory;
 
 final class InstallerTest extends TestCase
@@ -131,6 +132,8 @@ final class InstallerTest extends TestCase
                     'typo3-content-element-development',
                     'typo3-core-patch-development',
                     'typo3-core-patch-review',
+                    'typo3-development-installation',
+                    'typo3-extension-cleanup',
                     'typo3-extension-conformance',
                     'typo3-extension-documentation',
                     'typo3-extension-testing',
@@ -141,30 +144,13 @@ final class InstallerTest extends TestCase
             // and every directory this package wrote says `*` about itself.
             self::assertSame("/vendor/\n", file_get_contents($directory . '/.gitignore'));
             self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
-            foreach ([
-                'typo3-backend-module-development',
-                'typo3-content-element-development',
-                'typo3-core-patch-development',
-                'typo3-core-patch-review',
-                'typo3-extension-conformance',
-                'typo3-extension-documentation',
-                'typo3-extension-testing',
-                'typo3-extension-upgrade',
-            ] as $publishedSkill) {
+            foreach (Installer::skills() as $publishedSkill) {
                 self::assertSame(
                     "*\n",
                     file_get_contents($directory . '/.agents/skills/' . $publishedSkill . '/.gitignore'),
                 );
             }
-            foreach ([
-                'typo3-content-element-development',
-                'typo3-core-patch-development',
-                'typo3-core-patch-review',
-                'typo3-extension-conformance',
-                'typo3-extension-documentation',
-                'typo3-extension-testing',
-                'typo3-extension-upgrade',
-            ] as $publishedSkill) {
+            foreach (array_diff(Installer::skills(), ['typo3-backend-module-development']) as $publishedSkill) {
                 self::assertFileEquals(
                     Paths::root() . '/skills/' . $publishedSkill . '/SKILL.md',
                     $directory . '/.agents/skills/' . $publishedSkill . '/SKILL.md',
@@ -180,16 +166,7 @@ final class InstallerTest extends TestCase
             // each of them lands in somebody else's project alone, so a skill
             // pointing out of its own directory would resolve in this
             // repository and nowhere it is actually read.
-            foreach ([
-                'typo3-backend-module-development',
-                'typo3-content-element-development',
-                'typo3-core-patch-development',
-                'typo3-core-patch-review',
-                'typo3-extension-conformance',
-                'typo3-extension-documentation',
-                'typo3-extension-testing',
-                'typo3-extension-upgrade',
-            ] as $publishedSkill) {
+            foreach (Installer::skills() as $publishedSkill) {
                 self::assertFileEquals(
                     Paths::root() . '/skills/base.md',
                     $directory . '/.agents/skills/' . $publishedSkill . '/references/base.md',

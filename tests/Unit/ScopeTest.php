@@ -1238,7 +1238,7 @@ final class ScopeTest extends TestCase
             }
         }
 
-        foreach (Installer::SKILLS as $skill) {
+        foreach (Installer::skills() as $skill) {
             self::assertArrayHasKey(
                 $skill,
                 $named,
@@ -1248,7 +1248,7 @@ final class ScopeTest extends TestCase
         }
         self::assertSame(
             [],
-            array_diff(array_keys($named), Installer::SKILLS),
+            array_diff(array_keys($named), Installer::skills()),
             'a covered topic names a skill this server does not publish',
         );
     }

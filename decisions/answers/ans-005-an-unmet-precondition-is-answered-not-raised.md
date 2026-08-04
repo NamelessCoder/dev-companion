@@ -64,3 +64,34 @@ The shape was never the thing worth keeping.
 - `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
 - `ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer`
 - `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`
+
+## Since then
+
+A client met the shape on 2026-08-04, which is what `D-ANS-001` inherited this
+entry and never had. `META-02` ran in the `E-NONE` this checkout now makes
+itself — `bin/cli environment:create E-NONE` — as a session driven with the
+case's prompt and nothing besides. `typo3_icon_lookup` and `typo3_label_lookup`
+both answered `unsupported` with `cause: no-installation`, the reason, and the
+seven directories discovery walked from that directory to the root.
+
+Neither **Wrong if** about a client reading the answer happened. The session
+told the user the installation could not be asked, named `TYPO3_MCP_ROOT` and
+`TYPO3_MCP_CONSOLE` as the way out, and wrote that an identifier recalled from
+memory is the answer it would not give — it branched on the key rather than
+reading the fields under it, and it surfaced a non-error answer rather than
+swallowing it. The third was not exercised: the client read `structuredContent`
+and validated nothing, so a validator that cannot read `oneOf` is still a client
+nobody here has met.
+
+That leaves the `instructions` lever `D-ANS-001` named unspent, and there is
+nothing left asking for it. The sentence it would have added — that a miss and
+an unanswerable answer are two things — is what the client did without being
+told, and `R-ANS-013` holds those instructions to a budget it would have had to
+displace something to enter.
+
+The other half of `META-02` never reached this shape at all. Its `E-STOPPED` run
+asks the same prompt of a site project whose DDEV is stopped, and both lookups
+it reaches read the package files where the console cannot (`R-ANS-008`), so the
+session was answered rather than told nothing could be asked. What `todo/`
+carries from that is where the case now stands, and one defect the run found on
+the way.

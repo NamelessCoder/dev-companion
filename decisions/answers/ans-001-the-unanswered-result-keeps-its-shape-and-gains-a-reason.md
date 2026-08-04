@@ -110,3 +110,11 @@ is about every field of all of them.
 
 The **Wrong if** never fired and was never observed; it is inherited rather than
 settled, and the session it needs is still `todo/waiting/`.
+
+## Since then
+
+The session ran on 2026-08-04, in the `E-NONE` this checkout now makes itself,
+and what it met was `D-ANS-005`'s shape rather than this one. The inherited
+**Wrong if** did not fire: the client reported that the installation could not
+be asked and named the two settings that end it. What the run established is
+recorded on the successor.

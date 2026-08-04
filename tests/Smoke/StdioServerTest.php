@@ -360,6 +360,29 @@ final class StdioServerTest extends TestCase
         );
     }
 
+    /**
+     * The session of `feedback/2026-08-04-175819` spelled the argument `query`,
+     * the way five other lookups here spell theirs. The unknown property was
+     * dropped, both `oneOf` branches failed, and the message named two
+     * arguments the call had not been about — `D-ANS-053`.
+     */
+    #[Test]
+    public function aCallNamingAnArgumentTheToolDoesNotHaveIsRejectedByThatName(): void
+    {
+        $response = $this->session([$this->request(2, 'tools/call', [
+            'name' => 'typo3_documentation_lookup',
+            'arguments' => ['query' => 'extension documentation', 'targetVersion' => '14.3'],
+        ])])[2];
+
+        self::assertSame(-32602, $response['error']['code']);
+        self::assertStringContainsString('query', $response['error']['message']);
+        self::assertStringNotContainsString(
+            'Missing required properties',
+            $response['error']['message'],
+            'the rejection describes a call the caller did not make',
+        );
+    }
+
     #[Test]
     public function anUnknownToolIsAnError(): void
     {

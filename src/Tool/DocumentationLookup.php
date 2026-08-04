@@ -73,6 +73,15 @@ final class DocumentationLookup extends ReadOnlyTool
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6],
             ],
             'required' => ['targetVersion'],
+            // The one tool here whose search argument is a plural, against five
+            // that spell theirs `query`. A caller that guesses from those five
+            // used to have its property dropped, both `oneOf` branches fail and
+            // the message name two arguments it had not been about; declared,
+            // the validator answers `Additional object properties are not
+            // allowed: ["query"]` instead — `D-ANS-053`. It stands on this tool
+            // rather than on all of them, because a tool whose argument is
+            // simply required already names the missing one.
+            'additionalProperties' => false,
             'oneOf' => [
                 ['required' => ['queries']],
                 ['required' => ['page']],

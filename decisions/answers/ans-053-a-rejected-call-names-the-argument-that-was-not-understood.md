@@ -60,3 +60,23 @@ the rejection named neither the guess nor the near miss.
   lookups, which is a rename and a breaking one.
 - A client is found that sends its own extra properties. Then the strict schema
   is a break for a message, and the alias is the answer.
+
+**Since then**, on 2026-08-04, both candidates were measured against this
+checkout over stdio and the first one was taken.
+
+`{"query": "…", "targetVersion": "14.3"}` is answered today with "Missing
+required properties: `queries`.; Missing required properties: `page`." — the two
+`oneOf` branches, neither of which the caller was asking about. With
+`additionalProperties` declared on this tool's input schema the same call comes
+back as "Additional object properties are not allowed: [\"query\"]", so the
+SDK's validator does name a property it refuses, and the assumption above holds.
+
+It is declared on this tool and on no other. A lookup whose search argument is
+simply `required` already names the missing one, so what the keyword buys
+elsewhere is the risk of refusing a client that sends a property of its own —
+and nothing here has evidence about such a client either way. The alias stays
+unbuilt for the reason this entry gave: a second spelling that works is what
+makes a third arrive.
+
+`StdioServerTest::aCallNamingAnArgumentTheToolDoesNotHaveIsRejectedByThatName`
+holds it, beside the case `D-ANS-012` left.

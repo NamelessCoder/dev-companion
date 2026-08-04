@@ -166,11 +166,17 @@ final class Typo3Cli
         // what a stopped project takes away; the runtime the project declares
         // is, and which answer meets that limit is a property of the
         // installation rather than of the tool asked.
+        // Naming the way out is half of it. The caller that acts on it holds an
+        // answer given from the weaker source, and nothing revises that answer
+        // where it stands — so the step that ends the state is the second call,
+        // and a caveat that names only the first leaves the session working
+        // from what it was told to stop trusting. `R-DIS-010`.
         self::$caveat = $ddevReason === '' ? '' : $ddevReason
             . '. Until then the console runs on an interpreter of this machine rather than in the runtime the '
             . 'project declares. What TYPO3 assembles from its own files answers as it would there; what needs '
             . 'the services that runtime brings, its database first of all, may not. An answer that needs one '
-            . 'says so rather than coming back thin';
+            . 'says so rather than coming back thin. Ask again once it is up: this answer stands as it was '
+            . 'given, and the runtime the project declares reaches only the calls that come after the start';
 
         // A caveated resolution is the weaker of two and the stronger one
         // arrives during the session, so it is not remembered — `R-DIS-009`,

@@ -18,7 +18,10 @@ failing lookup repeats it where the error alone does not say it. What it costs
 is stated as what the boot cannot reach — the runtime the project declares, and
 the services it brings — and never as a list of tools, because which answer
 meets that limit is a property of the installation rather than of the tool
-asked. A server already running inside that project's DDEV web container is
+asked. It is reported with **both** steps that end the state, the start and the
+call after it: an answer given from the weaker source is not revised where it
+stands, so a caller told only to start the project acts on that and works on
+from what it was just told to stop trusting. A server already running inside that project's DDEV web container is
 ready through its direct PHP and must not be diagnosed as a host with an
 unreachable DDEV project merely because the container has no nested `ddev`
 binary.

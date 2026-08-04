@@ -445,6 +445,36 @@ final class Typo3CliTest extends TestCase
     }
 
     /**
+     * Naming the start is half of it. The resolution above makes the second
+     * call return the stronger answer, and nothing asked the caller to make
+     * that call: a session that reads "start it with ddev start", starts it and
+     * works on from the answer it already holds never reaches the resolution
+     * this state exists to reach. That is `META-02`'s third **How it fails** —
+     * the session having to be restarted after the installation became
+     * reachable — surviving the fix that was written for it, because what
+     * changed was what a second call returns rather than whether one is made.
+     */
+    #[Test]
+    public function theCaveatAsksForTheCallThatEndsTheStateAndNotOnlyForTheStart(): void
+    {
+        $root = $this->installation();
+        $this->console($root);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        Typo3Cli::useRunner($this->ddevThatStartsAfterTheFirstLook($status));
+        $this->discover($root);
+
+        $caveat = Typo3Cli::caveat();
+
+        self::assertStringContainsString('ddev start', $caveat, 'the caveat names no way out of the state');
+        self::assertStringContainsString(
+            'Ask again',
+            $caveat,
+            'the caveat names the start and not the call that ends the state',
+        );
+    }
+
+    /**
      * What that state costs the tool that reports it. A caveated resolution is
      * not remembered, so every read of the console state resolves again and
      * pays a `ddev describe -j` for it — 0.25s against

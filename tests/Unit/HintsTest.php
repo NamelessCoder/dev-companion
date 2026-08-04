@@ -152,6 +152,83 @@ final class HintsTest extends TestCase
         self::assertNotContains('extension-static-analysis', array_column($core['matchedHints'], 'id'));
     }
 
+    /**
+     * `D-KNW-055`. The corpus held the analyser half of the static-quality layer
+     * and spelled the whole layer with the analyser's words, so every word a
+     * fixer task carries reached something else: the reported query returned
+     * `extension-repository-layout` on text alone, and "php-cs-fixer" reached
+     * nothing out of 81 candidates.
+     *
+     * Read back out of an installed `typo3/coding-standards` v0.9.0, because the
+     * package is in no checkout and in no environment here. Two of the three
+     * things the report asked for do not hold: the excludes are directory names
+     * matched at any depth rather than literal paths, and `.build` is hidden, so
+     * the shipped `->in(__DIR__)` is not the trap it was reported as. What is
+     * one is a build directory that is neither hidden nor one of the four names.
+     */
+    #[Test]
+    public function theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable(): void
+    {
+        // The words a fixer task arrives with, none of which is the analyser's.
+        foreach ([
+            'coding standards php-cs-fixer setup for an extension',
+            'php-cs-fixer',
+            'code style fixer extension',
+            'editorconfig',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('extension-coding-standards', $ids[0] ?? null, $task);
+        }
+
+        $text = self::statementsOf('extension-coding-standards');
+
+        // What the setup command takes, which the report had from `--help`.
+        self::assertStringContainsString('type argument is optional', $text);
+        self::assertStringContainsString('extra.typo3/cms.extension-key', $text);
+        self::assertStringContainsString('--rule-set defaults to both sets', $text);
+
+        // What the shipped configuration already excludes, and the two claims
+        // that decide whether the template needs correcting.
+        self::assertStringContainsString('directory name matched at any depth and case-sensitively', $text);
+        self::assertStringContainsString('covered twice over', $text);
+        self::assertStringContainsString('neither hidden nor one of the excluded names', $text);
+
+        // The verdict is the dry run's, because the fixing run has none.
+        self::assertStringContainsString('exits 0 whether it changed anything or not', $text);
+        self::assertStringContainsString('exits 8 where a file would change', $text);
+
+        // And the neighbour, which is the only route the reporting session had.
+        self::assertStringContainsString('extension-static-analysis', $text);
+    }
+
+    /**
+     * The other half of the same gap: the guide answered the task with
+     * `intents: []` and the core patch checklist, so nothing named the skill
+     * that owns the work.
+     */
+    #[Test]
+    public function aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt(): void
+    {
+        $intents = TaskIntents::detect(
+            'add a code style fixer (php-cs-fixer) to a standalone TYPO3 extension repository',
+        );
+
+        self::assertContains('coding-standards', array_column($intents, 'id'));
+        self::assertSame(
+            ['typo3-extension-testing'],
+            TaskIntents::skills($intents, false),
+        );
+
+        // A word that names the subject without naming the work stays weak, so
+        // the whole workflow is not loaded on it.
+        $weak = TaskIntents::detect('reformat the generated output');
+        self::assertSame(
+            ['coding-standards' => 'weak'],
+            array_column($weak, 'confidence', 'id'),
+        );
+        self::assertSame([], TaskIntents::skills($weak, false));
+    }
+
     #[Test]
     public function aSassPathReachesTheCssHints(): void
     {
@@ -979,7 +1056,24 @@ final class HintsTest extends TestCase
 
         self::assertSame(['language-files'], array_column($result['matchedHints'], 'id'));
         self::assertSame([], $result['domains'], 'nothing was inferred, so nothing is claimed');
-        self::assertSame([], $result['availableHints']);
+
+        // An id is often the first id a caller learned, and the subject it
+        // belongs to is larger than it. The neighbours are the hints in its own
+        // domains, and it is not among them: the answer carries it in full.
+        $available = array_column($result['availableHints'], 'id');
+        self::assertNotSame([], $available, 'a hit names what stands beside it');
+        self::assertNotContains('language-files', $available);
+        $asked = Hints::byId('language-files');
+        self::assertNotNull($asked);
+        foreach ($available as $id) {
+            $neighbour = Hints::byId($id);
+            self::assertNotNull($neighbour, $id . ' is not a hint');
+            self::assertNotSame(
+                [],
+                array_intersect($neighbour['domains'], $asked['domains']),
+                $id . ' is not in a domain the hint that was asked for is in',
+            );
+        }
     }
 
     #[Test]
@@ -995,7 +1089,10 @@ final class HintsTest extends TestCase
     public function aMissNamesWhatThereWouldHaveBeenToFind(): void
     {
         $hit = Hints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);
-        self::assertSame([], $hit['availableHints'], 'an index would only bury the hints it lists');
+        $matched = array_column($hit['matchedHints'], 'id');
+        $available = array_column($hit['availableHints'], 'id');
+        self::assertNotSame([], $available, 'the index is what an answer is corrected with, hit or miss');
+        self::assertSame([], array_intersect($matched, $available), 'what the answer carries in full is not offered again');
 
         $miss = Hints::find([], 'how do I write a good sonnet', 6);
         self::assertSame([], $miss['matchedHints']);
@@ -1004,6 +1101,51 @@ final class HintsTest extends TestCase
             self::assertNotSame('', $entry['title']);
             self::assertNotSame('', $entry['category']);
         }
+    }
+
+    /**
+     * The near-miss is the answer the index is worth most on, and it was the
+     * one answer without it.
+     *
+     * `feedback/2026-08-04-055626`: a query for a code style fixer matched
+     * `extension-manifest`, `extension-repository-layout` and
+     * `extension-boot-files` — three hints about something else — and
+     * `availableHints` came back empty. So the field that would have named
+     * `extension-static-analysis` was present and empty exactly where the
+     * caller needed it, and the session reached that id only because a skill
+     * file happens to name it in prose (`D-KNW-055`).
+     *
+     * The whole domain index rather than the categories the matched hints are
+     * in, and the measurement is why: of the 81 hints the `php` domain holds,
+     * 76 are in the category `PHP`, so narrowing to the categories that matched
+     * this query drops five of them and none of the length. What it costs is
+     * the length the empty answer in the same domains already carries — 81
+     * entries at about 5.7 kB of text, against 127 for an id that does not
+     * exist — so a near miss is now at most as long as the miss beside it, and
+     * no answer of this tool grew a ceiling it did not have.
+     */
+    #[Test]
+    public function anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn(): void
+    {
+        $result = Registry::call('typo3_hint_lookup', [
+            'task' => 'coding standards php-cs-fixer setup for an extension',
+            'paths' => ['composer.json', 'Classes/', 'ext_localconf.php'],
+            'targetVersion' => '14.3',
+        ]);
+
+        $matched = array_column($result->data['hints'], 'id');
+        $available = array_column($result->data['availableHints'], 'id');
+
+        self::assertNotSame([], $matched, 'this query is a near miss, and a miss would prove nothing here');
+        self::assertContains(
+            'extension-static-analysis',
+            $available,
+            'the neighbouring subject the report had no route to',
+        );
+        self::assertSame([], array_intersect($matched, $available));
+        // Named in the copy as well as in the payload: the id is what a second
+        // call is made with, and a client that reads only the text has it too.
+        self::assertStringContainsString('extension-static-analysis', $result->text);
     }
 
     /**

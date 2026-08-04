@@ -208,6 +208,31 @@ analyser and nothing else in that layer.
 
 ## Covered by
 
+- `ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn`
 - `ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares`
 - `ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent`
 - `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`
+- `HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable`
+- `HintsTest::aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt`
+
+## Since then
+
+The reading the corpus todo was queued for was done on 2026-08-04, out of a
+`typo3/coding-standards` v0.9.0 installed into a scratch Composer project — the
+package is in no checkout, in no environment and in no lock file here. Two of
+the three things `055420` described hold and one does not. The two rule sets and
+the two setup types are there, with two corrections: the type argument is
+optional and detected from `composer.json`, and `--rule-set` defaults to both
+sets, so a bare `setup` writes both files.
+
+What does not hold is the trap the report drew, which is what made it rewrite
+the finder. `CsFixerConfig::create()` excludes `.build`, `typo3temp`, `var` and
+`vendor`, and those are directory names matched at any depth rather than literal
+paths: `packages/foo/vendor/` and `Classes/var/` are excluded, and
+`PhpCsFixer\Finder` excludes `vendor` and ignores dot files before
+`CsFixerConfig` is reached at all. A package whose `vendor-dir` sits under
+`.build/` is therefore covered twice over and the shipped `->in(__DIR__)` needs
+no correction for it. What does need one is a build directory or document root
+that is neither hidden nor one of those names, and the match is case-sensitive,
+so `Vendor/` is not excluded. Measured against a fixture tree with the installed
+package, and the hint states the reading rather than the account.

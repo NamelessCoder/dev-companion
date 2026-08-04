@@ -204,6 +204,44 @@
     ]
   },
   {
+    "id": "coding-standards",
+    "title": "Coding standards and the code style fixer",
+    "skill": "typo3-extension-testing",
+    "skillCore": "typo3-core-patch-development",
+    "match": [
+      "coding standard",
+      "coding standards",
+      "coding guidelines",
+      "code style",
+      "php-cs-fixer",
+      "cs fixer",
+      "code formatter",
+      "code formatting",
+      "editorconfig",
+      "cgl"
+    ],
+    "matchWeak": [
+      "formatting",
+      "fixer",
+      "reformat"
+    ],
+    "condition": "only if the change establishes or runs a code style check rather than editing code the check happens to cover",
+    "rulesQuery": "",
+    "checklist": [
+      "Read what the repository already has before adding anything: a .php-cs-fixer.dist.php, an .editorconfig, a Composer script naming either, and a CI step calling one. Half an infrastructure is the ordinary case, and a second rule set beside an existing one is a second answer to maintain.",
+      "Take the rule set from typo3/coding-standards rather than assembling one, and let the solver pick the release: the package is below 1.0 and its PHP floor decides which one the extension's declared range can have.",
+      "Keep the check and the fix as two commands. The fixing run exits 0 whether it rewrote the tree or not, so only the dry run is a verdict CI can read.",
+      "Confirm what the fixer's paths actually reach with its own dry run before the first write, and read the file list rather than the summary. The shipped extension configuration scans the whole package directory, and what an installed TYPO3 beneath it costs depends on where that installation was put.",
+      "Where the tree does not pass the check yet, the conformance commits come first and the commit adding the check comes last, so no commit fails the check it introduces. Verify by running the check at the new HEAD."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup with id=extension-coding-standards, for what typo3/coding-standards ships, what its setup command writes, what the configuration already excludes and which run is the check",
+      "typo3_hint_lookup with id=extension-static-analysis, for the analyser half of the same layer",
+      "typo3_project_scope, for the TYPO3 and PHP range the package declares and the commands it already has"
+    ]
+  },
+  {
     "id": "submission",
     "title": "Patch submission",
     "scope": "core",

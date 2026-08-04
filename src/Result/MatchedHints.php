@@ -199,7 +199,10 @@ final class MatchedHints
 
         return [
             'matchedHints' => array_values($matched),
-            'availableHints' => array_values($available),
+            // Subtracted across the groups as well as inside each: a hint the
+            // core path matched is in the answer, and the extension path's
+            // index would otherwise offer it as something still to ask for.
+            'availableHints' => array_values(array_diff_key($available, $matched)),
             'domains' => array_values(array_unique($domains)),
             'withheldCategories' => array_values(array_unique($withheld)),
         ];

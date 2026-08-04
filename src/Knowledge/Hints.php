@@ -273,7 +273,7 @@ final class Hints
      * with their own answer instead of waiting for a matching query.
      *
      * @param int|array<int, int>|null $target
-     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, category: string}|null
+     * @return array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, category: string, scope: ?Scope}|null
      */
     public static function byId(string $id, int|array|null $target = null): ?array
     {
@@ -291,7 +291,7 @@ final class Hints
      * input actually touches.
      *
      * A hint asked for by id is returned as it is. Matching is a guess about
-     * what the caller meant; an id is not, and the index returned on a miss
+     * what the caller meant; an id is not, and the index every answer carries
      * exists so that guessing at phrasings can be replaced by naming one.
      *
      * @param array<int, string> $paths
@@ -315,7 +315,13 @@ final class Hints
                 // claimed about them.
                 'domains' => [],
                 'withheldCategories' => [],
-                'availableHints' => $hint === null ? self::index(null) : [],
+                // A miss lists every id there is, because nothing narrows it.
+                // A hit lists what stands beside the hint in its own domains:
+                // an id is often the first id a caller learned, and the ones
+                // next to it are the rest of the subject it belongs to.
+                'availableHints' => $hint === null
+                    ? self::index(null)
+                    : self::index($hint['domains'], [$id]),
             ];
         }
 
@@ -447,10 +453,13 @@ final class Hints
             'matchedHints' => $matchedHints,
             'domains' => $domains,
             'withheldCategories' => $withheld,
-            // What there would have been to find. A caller that phrased the
-            // query differently from the hint has no way to tell that from a
-            // subject nobody wrote down, and tries another phrasing either way.
-            'availableHints' => $matchedHints === [] ? self::index($selected) : [],
+            // What there was to find, minus what was found. A caller that
+            // phrased the query differently from the hint has no way to tell
+            // that from a subject nobody wrote down, and tries another phrasing
+            // either way — and the answer that matched three hints about
+            // something else leaves it in exactly that position, without even
+            // an empty result to read as an absence (`D-KNW-055`).
+            'availableHints' => self::index($selected, array_column($matchedHints, 'id')),
         ];
     }
 
@@ -497,16 +506,21 @@ final class Hints
     }
 
     /**
-     * Every hint there is, by id and title, optionally narrowed to domains.
+     * Every hint there is, by id and title, optionally narrowed to domains and
+     * without the ones an answer already carries in full.
      *
      * @param array<int, string>|null $domains
+     * @param array<int, string> $except
      * @return array<int, array{id: string, title: string, category: string}>
      */
-    public static function index(?array $domains): array
+    public static function index(?array $domains, array $except = []): array
     {
         $index = [];
         foreach (self::load() as $hint) {
             if ($domains !== null && array_intersect($hint['domains'], $domains) === []) {
+                continue;
+            }
+            if (in_array($hint['id'], $except, true)) {
                 continue;
             }
             $index[] = ['id' => $hint['id'], 'title' => $hint['title'], 'category' => $hint['category']];

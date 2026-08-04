@@ -49,7 +49,7 @@ final class HintLookup extends ReadOnlyTool
             'properties' => [
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately, and a statement is labelled where it obliges the other one.'],
                 'task' => ['type' => 'string', 'description' => 'Short task description or topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
-                'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
+                'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer lists the ids it did not return, so a subject a query missed can be requested by name rather than guessed at in other words.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". Statements that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration; where there is neither, nothing is filtered and every statement carries the versions it holds for.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::MAX_HINTS, 'default' => 6, 'description' => 'Maximum number of hints.'],
             ],
@@ -67,7 +67,7 @@ final class HintLookup extends ReadOnlyTool
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
-            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
+            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
         ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints']);
     }
 
@@ -180,12 +180,18 @@ final class HintLookup extends ReadOnlyTool
         // The index is the difference between "nothing matched your words" and
         // "nobody wrote this down". Without it both answers read the same, and
         // the caller tries another phrasing for a subject that does not exist —
-        // or gives up on one that does.
+        // or gives up on one that does. It is carried on an answer that matched
+        // as well, because a match is a guess at the caller's words: three
+        // hints about something else read as a subject nobody wrote down, and
+        // that answer has not even an empty result to be read as one.
         if ($result['availableHints'] !== []) {
             $lines[] = '';
-            $lines[] = $id !== ''
-                ? 'The ids there are:'
-                : 'Hints that exist in these domains, requestable by id:';
+            $lines[] = match (true) {
+                $result['matchedHints'] === [] && $id !== '' => 'The ids there are:',
+                $result['matchedHints'] === [] => 'Hints that exist in these domains, requestable by id:',
+                $id !== '' => 'The hints alongside it, requestable by id:',
+                default => 'What matched above is a guess at your words. The rest of these domains, requestable by id:',
+            };
             foreach ($result['availableHints'] as $entry) {
                 $lines[] = '- ' . $entry['id'] . ' — ' . $entry['title'] . ' (' . $entry['category'] . ')';
             }

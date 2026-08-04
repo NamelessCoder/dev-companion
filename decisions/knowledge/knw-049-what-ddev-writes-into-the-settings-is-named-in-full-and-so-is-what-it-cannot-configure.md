@@ -169,3 +169,15 @@ and prints that intent's six items under their condition, the
 `fail_on_hook_fail` one included. `bin/cli hints:probe` on the feedback's query
 now reaches `project-configuration-files` at `appliesTo(47) + text(808)`,
 against the `appliesTo(32) + text(467)` this entry recorded before the rewrite.
+
+**Since then**, on 2026-08-04, the generated file was read in a repository of
+the other shape. `/home/benji/projects/syntax` is an extension whose own
+`composer.json` is the Composer root, with TYPO3 14.3 below `.build/vendor` and
+the docroot at `.build/public`, and DDEV writes the same `#ddev-generated`
+`config/system/additional.php` there — the file sits at the repository root,
+because `typo3/cms-composer-installers` keeps the application directory at the
+Composer root whatever the web directory is (`Plugin/Config.php:37`, and the
+warning at 222 that no other value is supported).
+
+So the layout does not decide whether the file appears, and a card that claimed
+it did was wrong when it was worked off.

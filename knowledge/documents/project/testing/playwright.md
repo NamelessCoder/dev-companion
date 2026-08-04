@@ -225,6 +225,21 @@ intermittently, because the toggle is added by script and a fast run can fill
 the field before it exists. `getByRole('textbox', { name: 'Password' })` names
 the one element meant.
 
+## When the extension itself is the Composer root
+
+An extension repository that installs TYPO3 into itself — `config.bin-dir` and
+`config.vendor-dir` below `.build/`, `extra.typo3/cms.web-dir` at
+`.build/public` — runs everything above unchanged. `config/` and `var/` sit at
+the repository root rather than below the web directory, because
+`typo3/cms-composer-installers` sets the application directory to the Composer
+root and refuses any other value. So the report and the results land where the
+configuration already sends them, and the `.env` files stay beside `Build/`.
+
+The two things that differ are the two the suite never names: the site is served
+out of `.build/public`, and the console is `.build/bin/typo3`. A spec reaches
+the site over HTTP through `TYPO3_BASE_URL` and calls no console, so neither
+path appears in a Playwright file.
+
 ## What is not committed
 
 `.env.local` is the first entry. `Build/.auth/` holds the session the setup

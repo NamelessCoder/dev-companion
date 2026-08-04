@@ -101,8 +101,9 @@ installation:
     # Why it cannot be run. Null when it can.
     reason: string or null  # optional
     # What limits the console that was found — a project whose containers are
-    # stopped answers what its files say and fails on everything that boots
-    # TYPO3 against its database. Null when nothing limits it.
+    # stopped is answered by an interpreter of this machine, which reaches what
+    # TYPO3 assembles from its own files and not the services the project's own
+    # runtime brings. Null when nothing limits it.
     caveat: string or null  # optional
   settings:  # optional
     # Environment variable that names the installation root.

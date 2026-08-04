@@ -94,7 +94,7 @@ final class ServerScope extends ReadOnlyTool
                     'php' => Schema::nullableString('The PHP version it runs on, where that is known.'),
                     'command' => Schema::nullableString('The invocation, as it is run.'),
                     'reason' => Schema::nullableString('Why it cannot be run. Null when it can.'),
-                    'caveat' => Schema::nullableString('What limits the console that was found — a project whose containers are stopped answers what its files say and fails on everything that boots TYPO3 against its database. Null when nothing limits it.'),
+                    'caveat' => Schema::nullableString('What limits the console that was found — a project whose containers are stopped is answered by an interpreter of this machine, which reaches what TYPO3 assembles from its own files and not the services the project\'s own runtime brings. Null when nothing limits it.'),
                 ], ['reachable']),
                 'settings' => Schema::object([
                     'root' => Schema::string('Environment variable that names the installation root.'),
@@ -357,7 +357,7 @@ final class ServerScope extends ReadOnlyTool
                 // Reachable and ready are two questions, and the second one has
                 // its own answer: a console reached through an interpreter on
                 // this machine while the project's containers are stopped runs,
-                // and cannot boot TYPO3 against a database that is not there.
+                // and runs outside the runtime the project declares.
                 'caveat' => Typo3Cli::caveat() === '' ? null : Typo3Cli::caveat(),
             ],
             'settings' => [

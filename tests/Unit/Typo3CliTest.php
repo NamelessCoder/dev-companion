@@ -302,9 +302,9 @@ final class Typo3CliTest extends TestCase
     public function aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs(): void
     {
         // The console answers, on an interpreter of this machine, because the
-        // project that is meant to run in containers has none running. Every
-        // question that boots TYPO3 against its database fails, and "reachable"
-        // said none of that.
+        // project that is meant to run in containers has none running. The
+        // answers then come from outside the runtime that project declares, and
+        // "reachable" said none of that.
         $root = $this->installation();
         mkdir($root . '/bin');
         file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
@@ -315,6 +315,18 @@ final class Typo3CliTest extends TestCase
         self::assertTrue(Typo3Cli::isAvailable());
         self::assertSame('', Typo3Cli::reason(), 'it can be run, so nothing says it cannot');
         self::assertStringContainsString('database', Typo3Cli::caveat());
+
+        // What the caveat may not do is name the answers it believes are lost.
+        // It named three lookups until 2026-08-04, when all seven
+        // installation-backed tools answered a stopped `.environments/e-site-14.3`
+        // exactly as the running one did. Which answer a stopped project costs
+        // is a property of the installation — its database driver settles it —
+        // so a sentence listing lookups is wrong on some installation.
+        self::assertStringNotContainsString(
+            'lookup',
+            Typo3Cli::caveat(),
+            'the caveat says what the boot cannot reach, never which lookups are lost',
+        );
 
         $scope = Registry::call('typo3_server_scope', []);
         self::assertNotNull($scope->data['installation']['console']['caveat']);

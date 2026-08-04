@@ -155,14 +155,21 @@ final class Typo3Cli
         }
 
         // An interpreter on this machine reaches the console of a project that
-        // is meant to run elsewhere. It answers what can be answered from
-        // files, and fails on everything that boots TYPO3 against its database,
-        // because the database is in the containers that are not running. That
-        // is not "unreachable", and it is not "reachable" either.
+        // is meant to run elsewhere. That is not "unreachable", and it is not
+        // "reachable" either — but what it costs is not the list of tools this
+        // sentence used to name. Driven against `.environments/e-site-14.3`
+        // with its DDEV project stopped on 2026-08-04, all seven
+        // installation-backed tools answered, byte for byte what the same calls
+        // answered through `ddev exec` with the project up, on a host PHP 8.3
+        // that had no database driver compiled in at all. Booting TYPO3 is not
+        // what a stopped project takes away; the runtime the project declares
+        // is, and which answer meets that limit is a property of the
+        // installation rather than of the tool asked.
         self::$caveat = $ddevReason === '' ? '' : $ddevReason
-            . '. Until then only what the console can answer without booting TYPO3 against its database '
-            . 'is available — the configuration lookup reads files, the label, module and Fluid namespace '
-            . 'lookups need the database';
+            . '. Until then the console runs on an interpreter of this machine rather than in the runtime the '
+            . 'project declares. What TYPO3 assembles from its own files answers as it would there; what needs '
+            . 'the services that runtime brings, its database first of all, may not. An answer that needs one '
+            . 'says so rather than coming back thin';
 
         return self::$resolved = $invocation;
     }
@@ -195,10 +202,19 @@ final class Typo3Cli
     /**
      * What limits the console that was found. Empty when nothing does.
      *
-     * Reachable is not one state: a project whose containers are stopped can
-     * still be asked what its configuration files say, and cannot be asked
-     * anything that boots TYPO3. Reporting that as reachable is what let five
-     * tools be presented as usable while four of them were not.
+     * Reachable is not one state: a project whose containers are stopped is
+     * answered by an interpreter of this machine, which is not the runtime the
+     * project declares. Reporting that as reachable is what let five tools be
+     * presented as usable without a word about where the answer came from.
+     *
+     * What it says is what the boot cannot reach, never which lookups are lost.
+     * The list this used to carry was measured wrong: with
+     * `.environments/e-site-14.3` stopped on 2026-08-04 every installation-backed
+     * tool answered, and only `typo3_schema_lookup` asks the connection for
+     * anything at all — the platform, which `pdo_sqlite` supplies with no
+     * server and `pdo_mysql` fetches by connecting unless `serverVersion` is
+     * configured (`D-DIS-008`). So which answer a stopped project costs depends
+     * on the installation, and a sentence naming tools is wrong somewhere.
      */
     public static function caveat(): string
     {

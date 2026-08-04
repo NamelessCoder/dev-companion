@@ -6,6 +6,7 @@ whenToUse: >-
 hints:
   - browser-tests
   - browser-tests-outside-core
+  - environment-variables
 ---
 
 # Setting Up Playwright in a TYPO3 Project
@@ -176,12 +177,19 @@ TYPO3_BACKEND_USER=admin
 TYPO3_BACKEND_PASSWORD=
 ```
 
-Both files sit at the project root, beside `Build/` — which is where a TYPO3
-project keeps its `.env` anyway, so the suite reads the same file the rest of
-the repository does rather than one of its own. Commit `.env` with the password
-left empty, and keep `.env.local` out of the repository for what one developer
-fills in. CI exports the same three as environment variables and needs neither
-file.
+Both files sit at the project root, beside `Build/`, which is where a project
+that reads a `.env` at all keeps it — so the suite reads the same file the rest
+of the repository does rather than one of its own. Commit `.env` with the
+password left empty, and keep `.env.local` out of the repository for what one
+developer fills in. CI exports the same three as environment variables and needs
+neither file.
+
+That the suite brings its own reader is not a duplication of something the
+installation does. TYPO3 ships no `.env` reader: whatever puts that file into
+the process environment — the development environment, the container runtime, a
+dotenv component the project required — is the project's own choice, and a
+project that has made none still runs this suite. The two readers meet on one
+file and depend on each other for nothing.
 
 Three properties of the loader decide that layout, and none of them is the
 default anybody assumes. It resolves a relative path against `process.cwd()`, so

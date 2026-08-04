@@ -3177,16 +3177,22 @@ final class HintsTest extends TestCase
             self::assertStringContainsString('gap in the check layer', $checklist);
         }
 
-        // The caller's own classification wins over the words: the same task
+        // The caller's own classification keeps the skeleton: the same task
         // text, stated as a deprecation, is authoring work seen from the
-        // reviewer's side and keeps every step that patch owes.
+        // reviewer's side and keeps every step that patch owes. What the words
+        // recognized is appended rather than dropped, because the other caller
+        // — a reviewer naming the type of the patch under review — cannot be
+        // told apart from this one (`D-GUI-009`).
         $authoring = Registry::call('typo3_task_guide', [
             'task' => 'Review the patch that deprecates the AssetCollector media handling',
             'changeType' => 'deprecation',
         ]);
 
-        self::assertNotContains('audit', array_column($authoring->data['intents'], 'id'));
         self::assertContains('Keep the patch focused on the stated task.', $authoring->data['checklist']);
+        self::assertContains('audit', array_column($authoring->data['intents'], 'id'));
+        $both = implode("\n", $authoring->data['checklist']);
+        self::assertStringContainsString('enumerate what it removes or renames', $both);
+        self::assertStringContainsString('typo3_commit_message_guide', $both);
     }
 
     /**
@@ -3345,16 +3351,21 @@ final class HintsTest extends TestCase
         self::assertSame('weak', $confidences($installing)['installation-operations'] ?? null);
         self::assertContains('Keep the patch focused on the stated task.', $installing->data['checklist']);
 
-        // A stated change type that does change something drops both intents
-        // that write no file, so the patch steps stay for work that boots
-        // something and fixes it — D-GUI-008's own **Wrong if**.
+        // A stated change type that does change something keeps the skeleton,
+        // so the patch steps stay for work that boots something and fixes it —
+        // D-GUI-008's own **Wrong if**. What the words recognized is appended
+        // below them rather than dropped (`D-GUI-009`).
         $patch = Registry::call('typo3_task_guide', [
             'task' => 'fix the deploy hook so the import runs when booting the installation',
             'changeType' => 'bugfix',
         ]);
 
-        self::assertArrayNotHasKey('installation-operations', $confidences($patch));
+        self::assertSame('strong', $confidences($patch)['installation-operations'] ?? null);
         self::assertContains('Keep the patch focused on the stated task.', $patch->data['checklist']);
+        self::assertStringNotContainsString(
+            'the URL the installation answers on',
+            implode("\n", $patch->data['checklist']),
+        );
     }
 
     /**
@@ -3406,6 +3417,38 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('enumerate what it removes or renames', $outside);
         self::assertStringNotContainsString('ExtensionScanner', $outside);
         self::assertStringNotContainsString('runTests.sh', $outside);
+    }
+
+    /**
+     * The call the feedback reported, answered from the side that still had the
+     * failure.
+     *
+     * It states the type of the patch under review rather than of its own work,
+     * so the audit intent was filtered out and the surface `R-GUI-010` states
+     * never reached it (`D-GUI-009`).
+     */
+    #[Test]
+    public function aReviewThatStatesTheTypeOfThePatchUnderReviewNamesWhatItRemoves(): void
+    {
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'review the core patch replacing GD-based error thumbnails with a static SVG placeholder',
+            'changeType' => 'cleanup',
+        ]);
+
+        $checklist = implode("\n", $result->data['checklist']);
+        self::assertStringContainsString('enumerate what it removes or renames', $checklist);
+        self::assertStringContainsString('typo3/sysext/install/Configuration/ExtensionScanner/Php/', $checklist);
+
+        // The stated type keeps its skeleton and its own item, so the caller
+        // who was authoring after all loses nothing to the appended half.
+        self::assertContains('Keep the patch focused on the stated task.', $result->data['checklist']);
+        self::assertStringContainsString('Keep the cleanup mechanical', $checklist);
+
+        // Reading a patch is not putting one up. The Gerrit steps reached this
+        // brief through "review" as a needle of the submission intent, which is
+        // the workflow for the push and the patch set.
+        self::assertNotContains('submission', array_column($result->data['intents'], 'id'));
+        self::assertStringNotContainsString('refs/for/', $checklist);
     }
 
     #[Test]

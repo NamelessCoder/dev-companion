@@ -131,3 +131,12 @@ reviewing and classified the patch under review rather than their own work.
 Whether a review that names a change type should be answered as one is a
 question about what is wanted rather than about this code, and the card that
 served this feedback carries it.
+
+Answered on 2026-08-04 by
+[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md),
+and this feedback's own call now reaches the surface. It is answered as both:
+the stated type keeps the patch skeleton and the words append the removal
+surface, because which of the two callers made the call cannot be read off it.
+The Gerrit steps are gone from it for a second reason — `review` was a needle of
+the `submission` intent, which is the workflow for pushing a patch rather than
+for reading one.

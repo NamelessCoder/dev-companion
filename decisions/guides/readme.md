@@ -7,6 +7,7 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-GUI-009`][D-GUI-009] — A stated change type keeps the skeleton and the words keep their surface · 2026-08-04
 - [`D-GUI-003`][D-GUI-003] — The wrapping conflict is resolved in the answer rather than in silence · 2026-08-03
 - [`D-GUI-004`][D-GUI-004] — A review brief states the removal surface rather than matching it · 2026-08-03
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
@@ -16,6 +17,7 @@ one is added.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 - [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29
 
+[D-GUI-009]: gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md
 [D-GUI-003]: gui-003-the-wrapping-conflict-is-resolved-in-the-answer-rather-than-in-silence.md
 [D-GUI-004]: gui-004-a-review-brief-states-the-removal-surface-rather-than-matching-it.md
 [D-GUI-005]: gui-005-the-product-premise-is-one-statement-on-the-brief-every-task-passes-through.md

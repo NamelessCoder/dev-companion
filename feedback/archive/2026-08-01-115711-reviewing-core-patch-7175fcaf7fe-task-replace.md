@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T11:57:11+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-04
 model: deepseek-v4-flash-free
 tool: typo3_task_guide
 directory: /home/benji/projects/typo3-cms

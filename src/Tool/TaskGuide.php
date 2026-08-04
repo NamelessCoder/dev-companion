@@ -97,15 +97,6 @@ final class TaskGuide extends ReadOnlyTool
     private const OPERATIONS = 'operations';
     private const OPERATIONS_INTENT = 'installation-operations';
 
-    /**
-     * The intents whose brief is not a patch's. A stated change type that does
-     * change something drops both, because the caller's own classification is
-     * what the words of the task do not overrule.
-     *
-     * @var array<int, string>
-     */
-    private const CHANGES_NOTHING = [self::AUDIT, self::OPERATIONS_INTENT];
-
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -278,23 +269,20 @@ final class TaskGuide extends ReadOnlyTool
             $scope,
             $coreWork
         );
-        // A stated change type is the caller's own classification and the words
-        // of the task do not overrule it: "review the patch that deprecates X"
-        // is authoring work described from the reviewer's side, and a brief
-        // that answered it as a review would leave out the steps that patch
-        // owes. The same holds for the boot half of "fix the post-start hook so
-        // the import runs". Where no type was stated, the words are all there
-        // is.
-        if (!in_array($changeType, [self::AUDIT, self::OPERATIONS, 'unknown'], true)) {
-            $intents = array_values(array_filter(
-                $intents,
-                static fn(array $intent): bool => !in_array($intent['id'], self::CHANGES_NOTHING, true),
-            ));
-        }
+        // A stated change type is the caller's own classification and it keeps
+        // the skeleton: "review the patch that deprecates X" is authoring work
+        // described from the reviewer's side, and a brief that answered it as a
+        // review would leave out the steps that patch owes. The same holds for
+        // the boot half of "fix the post-start hook so the import runs". What
+        // the words add is kept, because the other caller is real too — one who
+        // states the type of the patch under review rather than of their own
+        // work — and appending is what costs neither of them a step
+        // (`D-GUI-009`).
+        $stated = !in_array($changeType, [self::AUDIT, self::OPERATIONS, 'unknown'], true);
         $confirmed = TaskIntents::confirmed($intents);
         $confirmedIds = array_column($confirmed, 'id');
-        $reviews = in_array(self::AUDIT, $confirmedIds, true);
-        $operates = in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
+        $reviews = !$stated && in_array(self::AUDIT, $confirmedIds, true);
+        $operates = !$stated && in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
         $changesNothing = $reviews || $operates;
         $conditional = array_values(array_filter(
             $intents,

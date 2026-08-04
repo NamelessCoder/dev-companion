@@ -142,3 +142,10 @@ writes backend markup. So the hint half of `feedback/2026-08-03-154508` is open,
 and what it needs is a statement about the subject rather than a domain signal —
 which is what the cards behind `D-SKL-012` hold. That feedback is trimmed to it
 rather than archived.
+
+The first **Wrong if** holds and is now held by less. On 2026-08-04
+[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md)
+stopped filtering the intent out of a call that states a type, so "fix the
+deploy hook so the import runs" as a bugfix reaches `installation-operations`
+and keeps the patch steps: the skeleton is what the stated type decides, and
+that is all this fork ever needed from it.

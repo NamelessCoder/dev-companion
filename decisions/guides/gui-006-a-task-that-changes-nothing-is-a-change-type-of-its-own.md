@@ -90,3 +90,12 @@ is where that lands. It takes the mechanism this entry established — a value o
 the enum and an intent of the same word, because the type is fed to the intent
 matcher — and it keeps the skeletons apart rather than sharing the review's:
 "report what the review did not reach" is a step a boot does not take either.
+
+The second **Assumed** met its instance on 2026-08-04 and is now half true. A
+caller who states a type and describes a review can also be a reviewer naming
+the type of the patch under review, which is what `feedback/2026-08-01-115711`
+was. What follows from that is
+[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md):
+the stated type still decides the skeleton, which is what this entry rests on,
+and the intent it used to filter out is appended instead of dropped, because
+nothing in a call tells the two callers apart.

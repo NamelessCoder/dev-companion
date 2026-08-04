@@ -435,7 +435,7 @@ final class TaskGuide extends ReadOnlyTool
         // Only the confirmed intents may state a rule as applying: a
         // conditionally matched one would fill the whole section with rules for
         // work the task may not contain at all.
-        $rules = TaskIntents::rules($confirmed);
+        $rules = TaskIntents::rules($confirmed, 2, $targets);
         if ($rules !== []) {
             $lines[] = '';
             $lines[] = 'Rules that apply to this task:';

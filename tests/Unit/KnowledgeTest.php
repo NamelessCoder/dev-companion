@@ -15,6 +15,7 @@ use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Tool\Registry;
 
 final class KnowledgeTest extends TestCase
@@ -28,6 +29,151 @@ final class KnowledgeTest extends TestCase
      * reported as a suspect and reads the files itself.
      */
     private const GIT_DRIVEN_SUITES = ['cglGit', 'cglHeaderGit'];
+
+    /**
+     * A corpus of this test's own, because `D-VER-005` cannot be held against
+     * the real one: no bundled document declares a binding, and one written to
+     * carry a `**Since:**` for a test would be a statement in the knowledge
+     * base whose purpose is the test.
+     */
+    private ?string $corpus = null;
+
+    protected function tearDown(): void
+    {
+        Paths::useDocuments(null);
+        if ($this->corpus !== null) {
+            foreach (Finder::create()->files()->in($this->corpus) as $file) {
+                unlink($file->getPathname());
+            }
+            rmdir($this->corpus);
+            $this->corpus = null;
+        }
+
+        parent::tearDown();
+    }
+
+    /**
+     * A second document with a vocabulary of its own comes with every corpus.
+     * The matcher weighs a term by how far it separates one section from the
+     * next, so in a corpus where every section says the same words nothing
+     * discriminates, every weight is zero and the coverage threshold drops the
+     * lot — which is a property of the fixture rather than of the binding.
+     *
+     * @param array<string, string> $documents Filename without .md, to content.
+     */
+    private function useCorpus(array $documents): void
+    {
+        $this->corpus = sys_get_temp_dir() . '/typo3-mcp-documents-' . bin2hex(random_bytes(6));
+        mkdir($this->corpus);
+        $documents['contrast'] = <<<'MD'
+            # Contrast
+
+            ## Pushing a patch
+
+            the review server, the change id the hook writes, and amending
+
+            ## The subject line
+
+            which keyword opens it and how long a body line may be
+            MD;
+        foreach ($documents as $id => $content) {
+            file_put_contents($this->corpus . '/' . $id . '.md', $content);
+        }
+        Paths::useDocuments($this->corpus);
+    }
+
+    #[Test]
+    public function aBoundSectionIsKeptOnTheMajorItHoldsFor(): void
+    {
+        $this->useCorpus(['bound' => <<<'MD'
+            # Bound
+
+            ## Build/UnitTests.xml
+
+            **Since:** 14
+
+            the fourteen variant of the phpunit configuration
+
+            ## Build/UnitTests.xml
+
+            **Until:** 13
+
+            the thirteen variant of the phpunit configuration
+            MD]);
+
+        $bodies = static fn(?int $target): array => array_column(
+            Documents::search('phpunit configuration variant', [], 6, $target),
+            'body',
+        );
+
+        self::assertCount(1, $bodies(14));
+        self::assertStringContainsString('fourteen', $bodies(14)[0]);
+        self::assertCount(1, $bodies(13));
+        self::assertStringContainsString('thirteen', $bodies(13)[0]);
+
+        // A package serving both majors needs both, and the range beside each
+        // is what says which is which. Handing over two variants of one file
+        // with nothing separating them is `D-VER-005`'s first **Wrong if**, so
+        // the rendered answer is what the range has to reach.
+        self::assertCount(2, $bodies(null));
+        $both = Documents::search('phpunit configuration variant', [], 6, [13, 14]);
+        self::assertCount(2, $both);
+
+        $rendered = Prose::sections($both);
+        self::assertStringContainsString('[TYPO3 v14 and newer]', $rendered);
+        self::assertStringContainsString('[up to TYPO3 v13]', $rendered);
+        self::assertSame(
+            ['TYPO3 v14 and newer', 'up to TYPO3 v13'],
+            array_column(Prose::records($both), 'versions'),
+        );
+    }
+
+    #[Test]
+    public function theBindingDoesNotReachTheCallerAsPartOfWhatItBinds(): void
+    {
+        $this->useCorpus(['bound' => <<<'MD'
+            # Bound
+
+            ## Build/UnitTests.xml
+
+            **Since:** 14
+            **Until:** 14
+
+            ```xml
+            <phpunit/>
+            ```
+            MD]);
+
+        $match = Documents::search('build unittests xml', [], 6, 14)[0];
+
+        self::assertStringStartsWith('```xml', $match['body']);
+        self::assertStringNotContainsString('**Since:**', $match['body']);
+        self::assertStringNotContainsString('**Until:**', $match['body']);
+        self::assertSame(14, $match['since']);
+        self::assertSame(14, $match['until']);
+    }
+
+    #[Test]
+    public function aDeclarationBelowTheFirstLineOfContentBindsNothing(): void
+    {
+        // The declaration has one place, so a reader never has to search a
+        // section for the range it holds on — and a sentence that happens to
+        // start that way stays prose.
+        $this->useCorpus(['loose' => <<<'MD'
+            # Loose
+
+            ## A section
+
+            a first line of content
+
+            **Since:** 14
+            MD]);
+
+        $match = Documents::search('first line of content', [], 6, 13)[0];
+
+        self::assertNull($match['since']);
+        self::assertStringContainsString('**Since:** 14', $match['body']);
+    }
 
     #[Test]
     public function everyBundledDocumentIsListedWithATitle(): void
@@ -69,14 +215,15 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function noProseDocumentDatesAStatementInItsSentence(): void
     {
-        // The same rule VersionsTest holds the hints to, for the corpus it
-        // cannot see. A statement in markdown carries no since/until, so a
-        // version written into the sentence cannot be filtered and typo3_rule_
-        // lookup — which has no targetVersion and searches every document —
-        // hands it to a caller on any branch. That is how "Since TYPO3 v14.1 a
-        // label marked that way raises an E_USER_DEPRECATED" was answering a
-        // 13.4 question. A version inside an example command is a different
-        // thing and stays: "git push origin HEAD:refs/for/13.4" is the command.
+        // The same rule VersionsTest holds the hints to. A section can declare
+        // since/until since `D-VER-005`, and that is the whole of how it says
+        // what it holds for: a version written into the sentence is still
+        // invisible to the filter, so it reaches a caller on any branch. That
+        // is how "Since TYPO3 v14.1 a label marked that way raises an
+        // E_USER_DEPRECATED" was answering a 13.4 question — a sentence the
+        // binding would have carried. A version inside an example command is a
+        // different thing and stays: "git push origin HEAD:refs/for/13.4" is
+        // the command.
         foreach (Documents::documents() as $document) {
             self::assertDoesNotMatchRegularExpression(
                 '/\bTYPO3 v\d|\bsince v?\d|\bfrom v\d/i',
@@ -93,10 +240,12 @@ final class KnowledgeTest extends TestCase
         // without a digit in it. `-s checkIntegrityXliff` reads as timeless and
         // arrives in 14; a 12.4 contributor asking typo3_script_lookup about
         // language files was handed it, plus `-s normalizeXliff` and `-s build`,
-        // none of which that branch has. The suite is where the range already
-        // lives, so a prose document may only name one that every covered major
-        // carries — anything narrower belongs in test-suite-hints.json, where
-        // typo3_test_run_guide filters it by targetVersion.
+        // none of which that branch has. A section binding could filter that
+        // now and still must not: the range of a suite already lives on the
+        // suite in test-suite-hints.json, and declaring it here as well is one
+        // fact in two places that can disagree. So a prose document may only
+        // name a suite every covered major carries, and anything narrower stays
+        // where typo3_test_run_guide filters it by targetVersion.
         $everywhere = array_intersect(...array_map(TestSuiteHints::availableOn(...), Versions::majors()));
 
         foreach (Documents::documents() as $document) {

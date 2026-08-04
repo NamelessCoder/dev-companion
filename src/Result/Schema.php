@@ -180,6 +180,7 @@ final class Schema
             'uri' => self::string('typo3://core resource holding the full document.'),
             'heading' => self::string('Heading of the matched section.'),
             'body' => self::string('The section as written, formatting included.'),
+            'versions' => self::string('The TYPO3 majors this section holds for, in words. Empty means every covered major, which is what a section that declares nothing says.'),
             'coverage' => ['type' => 'number', 'description' => 'Share of the query terms the section covers, 0 to 1.'],
             'score' => self::integer('Weighted match score; headings weigh more than body text.'),
             'truncated' => ['type' => 'boolean', 'description' => 'Whether the body was cut; read the resource for the rest.'],

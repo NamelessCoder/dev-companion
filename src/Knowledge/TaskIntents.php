@@ -196,9 +196,10 @@ final class TaskIntents
      * The rule sections behind the detected intents, deduplicated.
      *
      * @param array<int, array<string, mixed>> $intents
-     * @return array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>
+     * @param int|array<int, int>|null $target The majors the answer has to hold on.
+     * @return array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}>
      */
-    public static function rules(array $intents, int $limitPerIntent = 2): array
+    public static function rules(array $intents, int $limitPerIntent = 2, int|array|null $target = null): array
     {
         $sections = [];
         $seen = [];
@@ -206,8 +207,11 @@ final class TaskIntents
             if ($intent['rulesQuery'] === '') {
                 continue;
             }
-            foreach (Documents::search($intent['rulesQuery'], self::RULE_DOCUMENTS, $limitPerIntent) as $section) {
-                $key = $section['id'] . '#' . $section['heading'];
+            foreach (Documents::search($intent['rulesQuery'], self::RULE_DOCUMENTS, $limitPerIntent, $target) as $section) {
+                // The range is part of the key: one subject bound to two of them
+                // is two sections under one heading, and a package serving both
+                // majors needs both.
+                $key = $section['id'] . '#' . $section['heading'] . '#' . $section['since'] . '-' . $section['until'];
                 if (isset($seen[$key])) {
                     continue;
                 }

@@ -54,6 +54,17 @@ final class Documents
     /** Longest section body returned verbatim before it is cut on a line boundary. */
     private const MAX_SECTION_LENGTH = 2400;
 
+    /**
+     * How a section says which majors it holds for.
+     *
+     * Two labelled lines directly under the heading, the shape a todo head is
+     * written in, so one habit covers both. They are data rather than a
+     * sentence — `D-VER-001` — and they are stripped before the body is handed
+     * over, because a section whose body is a file would otherwise carry them
+     * into the file the caller writes out.
+     */
+    private const BINDING = '/^\*\*(Since|Until):\*\*\s*(\d+)\s*$/';
+
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
     {
@@ -151,13 +162,16 @@ final class Documents
         return array_map(static fn(array $document): array => [
             'id' => $document['id'],
             'title' => $document['title'],
-            'topics' => array_map(
+            // Deduplicated, because one subject bound to two ranges is two
+            // sections under one heading, and this list is what the corpus
+            // covers rather than how many variants of it there are.
+            'topics' => array_values(array_unique(array_map(
                 static fn(array $section): string => $section['heading'],
                 array_values(array_filter(
                     self::sections((string) file_get_contents($document['path'])),
                     static fn(array $section): bool => $section['heading'] !== ''
                 ))
-            ),
+            ))),
         ], self::documents());
     }
 
@@ -167,9 +181,10 @@ final class Documents
      * documents is returned once.
      *
      * @param array<int, string> $documentIds Restrict the search to these documents.
-     * @return array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>
+     * @param int|array<int, int>|null $target The major, or the majors a repository serves at once.
+     * @return array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}>
      */
-    public static function search(string $query, array $documentIds = [], int $limit = 6): array
+    public static function search(string $query, array $documentIds = [], int $limit = 6, int|array|null $target = null): array
     {
         $terms = TermSearch::terms($query);
         if ($terms === []) {
@@ -183,12 +198,14 @@ final class Documents
             }
 
             $content = (string) file_get_contents($document['path']);
-            foreach (self::sections($content) as $section) {
+            foreach (self::forVersion(self::sections($content), $target) as $section) {
                 $candidates[] = [
                     'id' => $document['id'],
                     'title' => $document['title'],
                     'heading' => $section['heading'],
                     'body' => $section['body'],
+                    'since' => $section['since'],
+                    'until' => $section['until'],
                 ];
             }
         }
@@ -245,6 +262,39 @@ final class Documents
     }
 
     /**
+     * The sections that hold on the target, the way `Hints::forVersion()` keeps
+     * a statement.
+     *
+     * The target is one major, or the several a repository serves at once: a
+     * package declaring `^13.4 || ^14.3` has to see both variants of a file it
+     * ships on both, and the range beside each is what says which is which.
+     * Without a target nothing is filtered and every variant comes back with
+     * its range, which is the honest answer when nobody said which version this
+     * is for.
+     *
+     * @param array<int, array{heading: string, body: string, since: ?int, until: ?int}> $sections
+     * @param int|array<int, int>|null $target
+     * @return array<int, array{heading: string, body: string, since: ?int, until: ?int}>
+     */
+    private static function forVersion(array $sections, int|array|null $target): array
+    {
+        $targets = is_array($target) ? array_values($target) : ($target === null ? [] : [$target]);
+        if ($targets === []) {
+            return $sections;
+        }
+
+        return array_values(array_filter($sections, static function (array $section) use ($targets): bool {
+            foreach ($targets as $major) {
+                if (Versions::holds($section['since'], $section['until'], $major)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }));
+    }
+
+    /**
      * The most of a query some section still carries, as a query that can be
      * asked outright.
      *
@@ -266,9 +316,10 @@ final class Documents
      * across the subsets, which is what the caller picks one by.
      *
      * @param array<int, string> $documentIds Restrict to these documents.
+     * @param int|array<int, int>|null $target The majors the same call searched.
      * @return array<int, array{terms: array<int, string>, matchCount: int}> Narrowest first.
      */
-    public static function largestReachingSubsets(string $query, array $documentIds = []): array
+    public static function largestReachingSubsets(string $query, array $documentIds = [], int|array|null $target = null): array
     {
         $texts = [];
         foreach (self::documents() as $document) {
@@ -277,7 +328,7 @@ final class Documents
             }
 
             $content = (string) file_get_contents($document['path']);
-            foreach (self::sections($content) as $section) {
+            foreach (self::forVersion(self::sections($content), $target) as $section) {
                 $texts[] = $section['heading'] . ' ' . $section['body'];
             }
         }
@@ -293,9 +344,10 @@ final class Documents
 
     /**
      * Splits a document into its `##` sections. The heading line and the body
-     * are kept as written, so code fences and nested lists survive.
+     * are kept as written, so code fences and nested lists survive, and the
+     * binding lines below the heading are read off and removed.
      *
-     * @return array<int, array{heading: string, body: string}>
+     * @return array<int, array{heading: string, body: string, since: ?int, until: ?int}>
      */
     private static function sections(string $content): array
     {
@@ -331,20 +383,62 @@ final class Documents
 
     /**
      * Appends the buffered section, unless it has no body: a heading with
-     * nothing under it is not an answer.
+     * nothing under it is not an answer. A section that is nothing but its
+     * binding is one of those, and it is dropped rather than returned empty.
      *
-     * @param array<int, array{heading: string, body: string}> $sections
+     * @param array<int, array{heading: string, body: string, since: ?int, until: ?int}> $sections
      * @param array<int, string> $buffer
-     * @return array<int, array{heading: string, body: string}>
+     * @return array<int, array{heading: string, body: string, since: ?int, until: ?int}>
      */
     private static function flushSection(array $sections, string $heading, array $buffer): array
     {
-        $body = trim(implode("\n", $buffer));
+        $bound = self::readBinding($buffer);
+        $body = trim(implode("\n", $bound['lines']));
         if ($body !== '') {
-            $sections[] = ['heading' => $heading, 'body' => $body];
+            $sections[] = [
+                'heading' => $heading,
+                'body' => $body,
+                'since' => $bound['since'],
+                'until' => $bound['until'],
+            ];
         }
 
         return $sections;
+    }
+
+    /**
+     * The binding declared at the top of a section, and the section without it.
+     *
+     * Only the run of lines before the first line of content is read, so a
+     * `**Since:**` written further down is body text and binds nothing — the
+     * declaration has one place, which is what keeps a reader from having to
+     * search a section for the range it holds on.
+     *
+     * @param array<int, string> $lines
+     * @return array{since: ?int, until: ?int, lines: array<int, string>}
+     */
+    private static function readBinding(array $lines): array
+    {
+        $since = null;
+        $until = null;
+
+        foreach ($lines as $index => $line) {
+            if (trim($line) === '') {
+                continue;
+            }
+            if (preg_match(self::BINDING, trim($line), $matches) !== 1) {
+                break;
+            }
+
+            if ($matches[1] === 'Since') {
+                $since = (int) $matches[2];
+            } else {
+                $until = (int) $matches[2];
+            }
+            unset($lines[$index]);
+        }
+
+        return ['since' => $since, 'until' => $until, 'lines' => array_values($lines)];
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Miss;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
@@ -40,6 +41,7 @@ final class RuleLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Topic to look up, in English, for example testing, review, deprecation, or code style.'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold on, for example "13.4" or "14". A section bound to another major is left out. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in; where there is neither, every section comes back with the range it holds for.'],
             ],
             'required' => ['query'],
         ];
@@ -67,13 +69,14 @@ final class RuleLookup extends ReadOnlyTool
     public static function answer(array $args): ToolResult
     {
         $query = (string) ($args['query'] ?? '');
+        $targets = Versions::targets(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
         // This tool is asked about a topic rather than about paths, so the call
         // has one scope — the same reading typo3_script_lookup makes.
         $scope = Scope::of('', $query);
         $outsideCore = $scope->isOutsideTheCore();
 
-        $found = Documents::search($query);
+        $found = Documents::search($query, [], 6, $targets);
         // Withheld per document rather than per call: this corpus is the
         // contribution process and the commit conventions at once, and only the
         // first half stops at the core repository. Dropping the tool whole —
@@ -99,7 +102,7 @@ final class RuleLookup extends ReadOnlyTool
         // `D-ANS-037`. Every other empty result is a miss and gets the miss
         // answer.
         if ($results === [] && $withheld === []) {
-            return self::noMatch($query, $scope, $outsideCore, $hints);
+            return self::noMatch($query, $scope, $outsideCore, $hints, $targets);
         }
 
         $lines = [];
@@ -146,8 +149,9 @@ final class RuleLookup extends ReadOnlyTool
      * outside the core is not answered with the withholding notice.
      *
      * @param array<int, array<string, mixed>> $hints
+     * @param array<int, int> $targets
      */
-    private static function noMatch(string $query, Scope $scope, bool $outsideCore, array $hints): ToolResult
+    private static function noMatch(string $query, Scope $scope, bool $outsideCore, array $hints, array $targets): ToolResult
     {
         $visible = array_values(array_filter(
             array_column(Documents::documents(), 'id'),
@@ -155,7 +159,7 @@ final class RuleLookup extends ReadOnlyTool
         ));
 
         $blocks = [sprintf('No knowledge section matched "%s".', $query)];
-        $subsets = Documents::largestReachingSubsets($query, $visible);
+        $subsets = Documents::largestReachingSubsets($query, $visible, $targets);
         if ($subsets !== []) {
             $blocks[] = Miss::largestReaching($subsets, count(TermSearch::terms($query)), 'section', 'sections');
         }

@@ -178,17 +178,18 @@ final class VersionsTest extends TestCase
 
     #[Test]
     #[DataProvider('theProseLookupsAndAQueryEachAnswers')]
-    public function proseSaysThatItIsNotTheBoundHalf(string $tool, string $query): void
+    public function proseSaysWhereARangeItDoesNotCarryLives(string $tool, string $query): void
     {
-        // The markdown documents are the long form of what the hints carry, and
-        // they carry no range at all — a section describing a shape that
-        // arrived in v13 reads on v12 exactly as it reads on main. Rather than
-        // a second binding mechanism for prose, the answer says which of the
-        // two the caller is holding and where the bound form is.
+        // A section carries its own range since `D-VER-005`, so the sentence no
+        // longer stands in for a binding. Two ranges are still somewhere else
+        // and a caller sent to the wrong one is sent nowhere: a runTests.sh
+        // command is bound to the suite in test-suite-hints.json, a convention
+        // to the statement in the hints.
         $text = Registry::call($tool, ['query' => $query, 'task' => $query])->text;
 
-        self::assertStringContainsString('not filtered by version', $text);
+        self::assertStringContainsString('A section carries the range it holds for', $text);
         self::assertStringContainsString('typo3_hint_lookup with targetVersion', $text);
+        self::assertStringContainsString('typo3_test_run_guide with targetVersion', $text);
     }
 
     /** @return array<string, array{0: string, 1: string}> */

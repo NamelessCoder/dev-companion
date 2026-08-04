@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
@@ -37,6 +38,7 @@ final class ScriptLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'The TYPO3 core task, in English, for example unit tests, functional tests, CGL, npm, or dependency install.'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold on, for example "13.4" or "14". A section bound to another major is left out. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in; where there is neither, every section comes back with the range it holds for.'],
             ],
             'required' => ['task'],
         ];
@@ -58,6 +60,7 @@ final class ScriptLookup extends ReadOnlyTool
     public static function answer(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
+        $targets = Versions::targets(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
         // Every command in these feedback runs in a core checkout. Handing them to
         // a repository that has none is the same mistake typo3_test_run_guide
@@ -73,7 +76,7 @@ final class ScriptLookup extends ReadOnlyTool
             );
         }
 
-        $results = Documents::search($task, ['typo3-core-scripts']);
+        $results = Documents::search($task, ['typo3-core-scripts'], 6, $targets);
 
         if ($results !== []) {
             $text = Prose::sections($results);
@@ -100,7 +103,7 @@ final class ScriptLookup extends ReadOnlyTool
             Prose::topics('typo3-core-scripts')
         );
 
-        $elsewhere = Documents::search($task);
+        $elsewhere = Documents::search($task, [], 6, $targets);
         $titles = array_values(array_unique(array_map(
             static fn(array $result): string => $result['title'],
             $elsewhere

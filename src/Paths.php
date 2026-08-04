@@ -36,7 +36,25 @@ final class Paths
      */
     public static function documents(): string
     {
-        return self::knowledge() . '/documents';
+        return self::$documents ?? self::knowledge() . '/documents';
+    }
+
+    /**
+     * A prose corpus other than this checkout's, which only a test asks for.
+     *
+     * `R-COD-003`: a unit test writes into no directory this repository keeps.
+     * What the section binding of `D-VER-005` does cannot be held against the
+     * corpus itself — a document written to carry a `**Since:**` for a test
+     * would be a statement in the knowledge base whose purpose is the test,
+     * and every guard over that directory would have to make an exception for
+     * it.
+     */
+    private static ?string $documents = null;
+
+    /** Where the prose corpus is read, for as long as a test says so. */
+    public static function useDocuments(?string $directory): void
+    {
+        self::$documents = $directory;
     }
 
     public static function catalogFile(string ...$segments): string

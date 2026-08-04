@@ -15,6 +15,12 @@ Answers from [`knowledge`](answer-sources.md#knowledge).
 # The TYPO3 core task, in English, for example unit tests, functional tests,
 # CGL, npm, or dependency install.
 task: string
+# The TYPO3 version the answer has to hold on, for example "13.4" or "14". A
+# section bound to another major is left out. Defaults to every major this
+# repository declares typo3/cms-core for, or to the installation this server was
+# started in; where there is neither, every section comes back with the range it
+# holds for.
+targetVersion: string  # optional
 ```
 
 ## Answers with
@@ -35,6 +41,9 @@ matches:
     heading: string
     # The section as written, formatting included.
     body: string
+    # The TYPO3 majors this section holds for, in words. Empty means every
+    # covered major, which is what a section that declares nothing says.
+    versions: string  # optional
     # Share of the query terms the section covers, 0 to 1.
     coverage: number
     # Weighted match score; headings weigh more than body text.
@@ -84,7 +93,7 @@ Called with:
 Text:
 
 ````
-These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_hint_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
+A section carries the range it holds for where it has one. What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Invoking runTests.sh
 Source: TYPO3 Core Script Help (typo3://core/typo3-core-scripts) — matches 100% of the query terms
@@ -216,6 +225,7 @@ Data:
             "uri": "typo3://core/typo3-core-scripts",
             "heading": "Invoking runTests.sh",
             "body": "`Build/Scripts/runTests.sh` runs every suite inside a container and is started\nfrom the core checkout root.\n\n- Prefix scripted or non-interactive runs with `CI=true`. It drops the\n  interactive container flags, skips the SIGINT trap, and picks the CI phpstan\n  configuration. Without a TTY the script removes the interactive flags on its\n  own, but `CI=true` is the explicit form.\n- Everything after `--` is passed through unchanged: to phpunit for the test\n  suites, to npm for `-s npm`, to composer for `-s composer`.\n- Run one file or one method while iterating; a full suite costs minutes per\n  round.\n- `./Build/Scripts/runTests.sh -h` lists the suites and option values the\n  checked-out branch supports.\n\n```bash\n# one unit test file\nCI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one unit test method\nCI=true ./Build/Scripts/runTests.sh -s unit -- --filter fixPermissionsSetsGroup typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one functional test file, sqlite (default)\nCI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/impexp/Tests/Functional/Export/ExportTest.php\n```\n\nFrequently needed options:\n\n- `-d sqlite|mariadb|mysql|postgres` selects the database for `-s functional`\n  and for whichever installer suite the branch carries. sqlite is the default\n  and the fastest.\n- `-a mysqli|pdo_mysql` selects the driver for mysql and mariadb.\n- `-i <version>` pins a database version, for example `-d mariadb -i 11.4`.\n- `-p <php minor>` selects the PHP version of the container.\n- `-n` turns the `cgl` suites, and any other suite the branch lists under it,\n  into a dry run that only reports.\n- `-c <chunk>/<total>` splits `-s functional`, and the browser suite where the\n  branch has one, into chunks.\n- `-x` (with optional `-y <port>`) enables xdebug towards a listening IDE.\n- `-b docker|podman` selects the container runtime; podman is the default.",
+            "versions": "",
             "coverage": 1,
             "score": 10,
             "truncated": false
@@ -226,6 +236,7 @@ Data:
             "uri": "typo3://core/typo3-core-scripts",
             "heading": "Common Commands",
             "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s phpstan\n```\n\nUseful for type-sensitive PHP changes and API contract changes.\n\n### Check ReST Documentation",
+            "versions": "",
             "coverage": 0.688,
             "score": 7,
             "truncated": true

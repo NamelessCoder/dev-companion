@@ -72,4 +72,15 @@ document is the only place the range could be stated.
   carry bound.
 - The declaration reaches a caller as part of the file it binds.
 - A section is bound and the range it declares is never read, because the tool
-  the caller used passes no target.
+  the caller used passes no target. Nothing runs over that one: which tools
+  render this corpus is read rather than counted, and a fourth would have to be
+  given the target by whoever adds it.
+
+## Covered by
+
+- `KnowledgeTest::aBoundSectionIsKeptOnTheMajorItHoldsFor`
+- `KnowledgeTest::theBindingDoesNotReachTheCallerAsPartOfWhatItBinds`
+- `KnowledgeTest::aDeclarationBelowTheFirstLineOfContentBindsNothing`
+- `KnowledgeTest::noProseDocumentDatesAStatementInItsSentence`
+- `KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave`
+- `VersionsTest::proseSaysWhereARangeItDoesNotCarryLives`

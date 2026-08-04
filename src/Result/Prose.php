@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Versions;
 
 /**
  * Matched sections of the markdown knowledge documents, as an answer.
@@ -16,24 +17,17 @@ use Typo3CmsMcp\Knowledge\Documents;
 final class Prose
 {
     /**
-     * What the prose cannot say of itself.
+     * Where a range that is not this corpus's own is carried.
      *
-     * The hints carry since/until per statement and are filtered or labelled
-     * by version. The markdown documents are the long form of the
-     * same subjects and carry nothing, so a section describing a shape that
-     * arrived in v13 reads on v12 exactly as it reads on main. Rather than
-     * building a second binding mechanism for prose, every prose answer says
-     * which of the two the caller is holding.
-     *
-     * It names both bound corpora, because a caller sent to the wrong one is
-     * sent nowhere. The script notes are commands, and a command's range sits
-     * on the suite in test-suite-hints.json rather than in the hints — a 12.4
-     * reader following this sentence to typo3_hint_lookup would have found
-     * nothing about which suites that branch has.
+     * A section says what it holds for beside itself since `D-VER-005`, so this
+     * no longer stands in for a binding. What it still answers is the question
+     * the ranges here cannot: a runTests.sh command is bound to the suite in
+     * test-suite-hints.json rather than to the section quoting it, and a
+     * convention is bound to the statement in the hints — a 12.4 reader
+     * following the wrong one of those finds nothing.
      */
-    public const NOT_VERSION_BOUND = 'These sections are prose and are not filtered by version. '
-        . 'Where a subsystem changed inside the covered range, the statement that changed carries the range '
-        . 'elsewhere: call typo3_hint_lookup with targetVersion for the convention, and '
+    public const BOUND_ELSEWHERE = 'A section carries the range it holds for where it has one. '
+        . 'What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and '
         . 'typo3_test_run_guide with targetVersion for a runTests.sh command.';
 
     /**
@@ -41,16 +35,18 @@ final class Prose
      * keeps its own heading and original formatting, so code blocks and nested
      * lists survive.
      *
-     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
     public static function sections(array $results): string
     {
-        return self::NOT_VERSION_BOUND . "\n\n" . implode("\n\n", array_map(static function (array $result): string {
+        return self::BOUND_ELSEWHERE . "\n\n" . implode("\n\n", array_map(static function (array $result): string {
             $heading = $result['heading'] === '' ? $result['title'] : $result['heading'];
+            $versions = Versions::label($result['since'] ?? null, $result['until'] ?? null);
             $source = sprintf(
-                'Source: %s (typo3://core/%s) — matches %d%% of the query terms',
+                'Source: %s (typo3://core/%s)%s — matches %d%% of the query terms',
                 $result['title'],
                 $result['id'],
+                $versions === '' ? '' : ' [' . $versions . ']',
                 (int) round($result['coverage'] * 100),
             );
 
@@ -67,7 +63,7 @@ final class Prose
      * The same matched sections as data: the document they come from, how much
      * of the query they cover, and the resource holding the full text.
      *
-     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      * @return array<int, array<string, mixed>>
      */
     public static function records(array $results): array
@@ -78,6 +74,7 @@ final class Prose
             'uri' => 'typo3://core/' . $result['id'],
             'heading' => $result['heading'] === '' ? $result['title'] : $result['heading'],
             'body' => $result['body'],
+            'versions' => Versions::label($result['since'] ?? null, $result['until'] ?? null),
             'coverage' => round($result['coverage'], 3),
             'score' => $result['score'],
             'truncated' => $result['truncated'],

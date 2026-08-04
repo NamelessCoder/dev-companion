@@ -7,6 +7,10 @@ from it.
 Which versions are covered is declared in `knowledge/versions.json` and nowhere
 else; every check that needs the list reads it from there.
 
+![TYPO3 12 through 15 form the covered timeline; unbound statements apply to
+all of it, while since and until bind one statement and require verification on
+both sides of the boundary.](../images/version-binding.svg)
+
 A statement that does not hold on all of them says so **as data, not as prose**.
 `since` and `until` carry the major it starts and stops holding at, and the
 answer renders that beside the sentence. A statement without either holds

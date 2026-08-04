@@ -9,6 +9,10 @@ The rules stay in [AGENTS.md](../../AGENTS.md); what a change assumed is in
 [decisions/discovery/](../../decisions/discovery/readme.md). This is the
 procedure.
 
+![An installation lookup uses a TYPO3 console command where one exists, boots
+the runtime where none does, and falls back to package files with the reason
+and limitations stated.](../images/installation-fallback.svg)
+
 ## The order
 
 1. **The console, where a command exists.** `Typo3Cli::run()` invokes the

@@ -4,6 +4,10 @@ What a forward review is, and the five of them, are in
 [scenarios/forward/readme.md](../../scenarios/forward/readme.md). This is how
 one is carried out.
 
+![A recorded scenario runs in a clean real project without steering, produces
+a transcript and working-tree reading, is judged against fixed criteria and
+leaves reusable findings as feedback or a contract case.](../images/forward-run.svg)
+
 ## Running one
 
 1. Start the MCP client in the environment the review names — a fresh session,

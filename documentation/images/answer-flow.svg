@@ -19,6 +19,8 @@
       .whiteLabel { font: 700 18px system-ui, sans-serif; fill: white; }
       .whiteCopy { font: 400 14px system-ui, sans-serif; fill: #fff4e7; }
       .line { fill: none; stroke: #98a2b3; stroke-width: 2.5; marker-end: url(#arrow); }
+      .bus { fill: none; stroke: #98a2b3; stroke-width: 2.5; }
+      .whiteCode { font: 600 14px ui-monospace, SFMono-Regular, Consolas, monospace; fill: #fff4e7; }
     </style>
   </defs>
 
@@ -32,7 +34,7 @@
     <circle cx="91" cy="240" r="16" fill="#ff8700"/>
     <text x="91" y="245" text-anchor="middle" class="number">1</text>
     <text x="119" y="246" class="whiteLabel">Read the project</text>
-    <text x="86" y="280" class="code" fill="#fff4e7">typo3_project_scope</text>
+    <text x="86" y="280" class="whiteCode">typo3_project_scope</text>
     <text x="86" y="303" class="whiteCopy">version · extensions · commands</text>
   </g>
 
@@ -58,31 +60,30 @@
     <text x="666" y="303" class="copy">rule · hint · test · commit · Forge · Gerrit</text>
   </g>
 
-  <path d="M890 324 V374" class="line"/>
-  <path d="M890 374 H233 V414" class="line"/>
-  <path d="M890 374 H600 V414" class="line"/>
-  <path d="M890 374 H967 V414" class="line"/>
+  <path d="M890 324 V374 H220 M220 374 H980" class="bus"/>
+  <path d="M220 374 V414" class="line"/>
+  <path d="M600 374 V414" class="line"/>
+  <path d="M980 374 V414" class="line"/>
 
   <g aria-label="Source choice">
-    <rect x="60" y="414" width="346" height="94" rx="18" fill="#ffffff" stroke="#ffb55c"/>
+    <rect x="60" y="414" width="320" height="94" rx="18" fill="#ffffff" stroke="#ffb55c"/>
     <rect x="60" y="414" width="8" height="94" rx="4" fill="#ff8700"/>
     <text x="90" y="449" class="label">Bundled knowledge</text>
     <text x="90" y="476" class="copy">Version-bound and available offline</text>
 
-    <rect x="427" y="414" width="346" height="94" rx="18" fill="#ffffff" stroke="#a4bcfd"/>
-    <rect x="427" y="414" width="8" height="94" rx="4" fill="#6172f3"/>
-    <text x="457" y="449" class="label">Project or installation</text>
-    <text x="457" y="476" class="copy">The state that is active here</text>
+    <rect x="440" y="414" width="320" height="94" rx="18" fill="#ffffff" stroke="#a4bcfd"/>
+    <rect x="440" y="414" width="8" height="94" rx="4" fill="#6172f3"/>
+    <text x="470" y="449" class="label">Project or installation</text>
+    <text x="470" y="476" class="copy">The state that is active here</text>
 
-    <rect x="794" y="414" width="346" height="94" rx="18" fill="#ffffff" stroke="#75e0a7"/>
-    <rect x="794" y="414" width="8" height="94" rx="4" fill="#12b76a"/>
-    <text x="824" y="449" class="label">Official live source</text>
-    <text x="824" y="476" class="copy">Canonical docs or core service</text>
+    <rect x="820" y="414" width="320" height="94" rx="18" fill="#ffffff" stroke="#75e0a7"/>
+    <rect x="820" y="414" width="8" height="94" rx="4" fill="#12b76a"/>
+    <text x="850" y="449" class="label">Official live source</text>
+    <text x="850" y="476" class="copy">Canonical docs or core service</text>
   </g>
 
-  <path d="M233 508 V544 H600" class="line"/>
-  <path d="M600 508 V544" class="line"/>
-  <path d="M967 508 V544 H600" class="line"/>
+  <path d="M220 508 V536 H980 M600 508 V536 M980 508 V536" class="bus"/>
+  <path d="M600 536 V560" class="line"/>
 
   <rect x="350" y="560" width="500" height="74" rx="18" fill="#101828"/>
   <text x="379" y="591" class="whiteLabel">Answer with evidence</text>

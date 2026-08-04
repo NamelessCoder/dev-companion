@@ -79,6 +79,10 @@ expensive answer and regularly the right one; the cheap rungs exist so that a
 rule which was already written and never arrived is not rebuilt, not so that the
 answer stays small. `bin/cli feedback:list` tells the two apart in one call.
 
+![A feedback is diagnosed from gap through delivery, routing and wording to a
+design decision, stopping at the first step supported by repository
+evidence.](../images/feedback-judging-ladder.svg)
+
 ### 1. Gap — the answer is not here
 
 Two halves, told apart by what is missing rather than by what the feedback asks

@@ -7,6 +7,8 @@ tools under knowledge and packages are the ones still worth calling. Which
 source answered one call is `answeredBy` in that answer, where the tool has two.
 This page is written by `bin/cli tools:index` from the Source enum.
 
+![A tool may answer from the installation, installed packages, bundled knowledge, an official network service or this server's own checkout, and keeps the source visible in its answer.](../images/answer-sources.svg)
+
 ## installation
 
 The installation this server was started in, booted or asked through its

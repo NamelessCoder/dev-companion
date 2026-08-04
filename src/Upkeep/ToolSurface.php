@@ -241,6 +241,12 @@ final class ToolSurface
                 . 'where the tool has two. This page is written by `bin/cli tools:index` from the Source enum.',
             ),
             '',
+            self::wrap(
+                '![A tool may answer from the installation, installed packages, bundled knowledge, an official '
+                . 'network service or this server\'s own checkout, and keeps the source visible in its answer.]'
+                . '(../images/answer-sources.svg)',
+            ),
+            '',
         ];
 
         foreach (Source::cases() as $source) {

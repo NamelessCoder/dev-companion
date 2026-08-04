@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690" role="img" aria-labelledby="title description">
+  <title id="title">Forward run lifecycle</title>
+  <desc id="description">A recorded scenario is run in a clean real project with current skills and server. A fresh unsteered session produces a transcript and working-tree state. These are graded against fixed criteria, recorded as a run, and may produce server feedback or a new contract case.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#98a2b3"/></marker>
+    <style>.eyebrow{font:700 14px system-ui,sans-serif;letter-spacing:1.8px;fill:#ff8700}.title{font:700 34px system-ui,sans-serif;fill:#101828}.subtitle{font:400 17px system-ui,sans-serif;fill:#475467}.number{font:700 15px system-ui,sans-serif;fill:#101828}.label{font:700 18px system-ui,sans-serif;fill:#101828}.copy{font:400 14px system-ui,sans-serif;fill:#475467}.code{font:600 13px ui-monospace,monospace;fill:#344054}.whiteLabel{font:700 18px system-ui,sans-serif;fill:#fff}.whiteCopy{font:400 14px system-ui,sans-serif;fill:#fff4e7}.line{fill:none;stroke:#98a2b3;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="690" rx="28" fill="#f8fafc"/>
+  <text x="60" y="62" class="eyebrow">EVIDENCE FROM A REAL TASK</text>
+  <text x="60" y="106" class="title">From scenario to a reusable finding</text>
+  <text x="60" y="138" class="subtitle">The prompt is fixed, the session is unsteered, and the transcript decides the judgment.</text>
+
+  <rect x="60" y="204" width="220" height="126" rx="20" fill="#ffffff" stroke="#ffb55c"/>
+  <circle cx="91" cy="235" r="17" fill="#ff8700"/><text x="91" y="241" text-anchor="middle" class="number">1</text>
+  <text x="118" y="241" class="label">Prepare</text>
+  <text x="86" y="276" class="copy">recorded scenario</text>
+  <text x="86" y="300" class="copy">clean real project</text>
+  <text x="86" y="322" class="copy">current skills + server</text>
+  <path d="M280 267 H330" class="line"/>
+
+  <rect x="330" y="204" width="220" height="126" rx="20" fill="#101828"/>
+  <circle cx="361" cy="235" r="17" fill="#ff8700"/><text x="361" y="241" text-anchor="middle" class="number">2</text>
+  <text x="388" y="241" class="whiteLabel">Run</text>
+  <text x="356" y="276" class="whiteCopy">fresh agent session</text>
+  <text x="356" y="300" class="whiteCopy">prompt pasted verbatim</text>
+  <text x="356" y="322" class="whiteCopy">no steering</text>
+  <path d="M550 267 H600" class="line"/>
+
+  <rect x="600" y="204" width="220" height="126" rx="20" fill="#ffffff" stroke="#a4bcfd"/>
+  <circle cx="631" cy="235" r="17" fill="#d1e0ff"/><text x="631" y="241" text-anchor="middle" class="number">3</text>
+  <text x="658" y="241" class="label">Collect</text>
+  <text x="626" y="276" class="copy">transcript + tool arguments</text>
+  <text x="626" y="300" class="copy">skills activated</text>
+  <text x="626" y="322" class="copy">git status afterwards</text>
+  <path d="M820 267 H870" class="line"/>
+
+  <rect x="870" y="204" width="270" height="126" rx="20" fill="#ecfdf3" stroke="#75e0a7"/>
+  <circle cx="901" cy="235" r="17" fill="#75e0a7"/><text x="901" y="241" text-anchor="middle" class="number">4</text>
+  <text x="928" y="241" class="label">Judge and record</text>
+  <text x="896" y="276" class="copy">criteria as written</text>
+  <text x="896" y="300" class="copy">one evidence-based judgment each</text>
+  <text x="896" y="322" class="copy">one file in scenarios/runs/</text>
+
+  <path d="M1005 330 V372 H600 V404" class="line"/>
+  <rect x="405" y="404" width="390" height="92" rx="20" fill="#fff4e7" stroke="#ffb55c"/>
+  <text x="431" y="440" class="label">Ask what transfers beyond this project</text>
+  <text x="431" y="468" class="copy">The verdict stays in the run; the reusable lesson moves on.</text>
+  <path d="M515 496 V534 H327 V552" class="line"/>
+  <path d="M685 496 V534 H872 V552" class="line"/>
+
+  <rect x="150" y="564" width="354" height="82" rx="18" fill="#ffffff" stroke="#ffb55c"/>
+  <text x="176" y="597" class="label">Server feedback</text>
+  <text x="176" y="623" class="copy">missing, wrong or unhelpful answer</text>
+  <rect x="696" y="564" width="354" height="82" rx="18" fill="#ffffff" stroke="#a4bcfd"/>
+  <text x="722" y="597" class="label">New contract case</text>
+  <text x="722" y="623" class="copy">repeatable task or failure shape</text>
+</svg>

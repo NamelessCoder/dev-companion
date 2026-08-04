@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">TYPO3 CMS MCP repository architecture</title>
+  <desc id="description">The repository has a runtime lane starting at the stdio entrypoint and an upkeep lane starting at bin cli. Runtime tools compose results from knowledge, installation, manuals and core services. Upkeep commands maintain the repository's knowledge, evidence and work records.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#98a2b3"/></marker>
+    <style>.eyebrow{font:700 14px system-ui,sans-serif;letter-spacing:1.8px;fill:#ff8700}.title{font:700 34px system-ui,sans-serif;fill:#101828}.subtitle{font:400 17px system-ui,sans-serif;fill:#475467}.lane{font:700 14px system-ui,sans-serif;letter-spacing:1.4px}.label{font:700 17px system-ui,sans-serif;fill:#101828}.copy{font:400 13px system-ui,sans-serif;fill:#475467}.code{font:600 13px ui-monospace,monospace;fill:#344054}.whiteCode{font:600 13px ui-monospace,monospace;fill:#fff}.whiteLabel{font:700 17px system-ui,sans-serif;fill:#fff}.whiteCopy{font:400 13px system-ui,sans-serif;fill:#fff4e7}.line{fill:none;stroke:#98a2b3;stroke-width:2.3;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="#f8fafc"/>
+  <text x="60" y="62" class="eyebrow">TWO ENTRYPOINTS · ONE REPOSITORY</text>
+  <text x="60" y="106" class="title">Runtime answers; upkeep maintains</text>
+  <text x="60" y="138" class="subtitle">The server surface and the repository workflow share paths and bootstrap, not responsibilities.</text>
+
+  <rect x="60" y="182" width="1080" height="44" rx="12" fill="#fff4e7"/>
+  <text x="84" y="210" class="lane" fill="#b54708">RUNTIME — WHAT CLIENTS ASK</text>
+  <rect x="60" y="244" width="225" height="82" rx="16" fill="#101828"/>
+  <text x="84" y="277" class="whiteLabel">stdio entrypoint</text>
+  <text x="84" y="303" class="whiteCode">bin/typo3-cms-mcp</text>
+  <path d="M285 285 H330" class="line"/>
+  <rect x="330" y="244" width="225" height="82" rx="16" fill="#ffffff" stroke="#ffb55c"/>
+  <text x="354" y="277" class="label">Server/</text>
+  <text x="354" y="303" class="copy">entrypoint · factory · profile</text>
+  <path d="M555 285 H600" class="line"/>
+  <rect x="600" y="244" width="225" height="82" rx="16" fill="#ffffff" stroke="#a4bcfd"/>
+  <text x="624" y="277" class="label">Tool/ + Sdk/</text>
+  <text x="624" y="303" class="copy">registry · schemas · dispatch</text>
+  <path d="M825 285 H870" class="line"/>
+  <rect x="870" y="244" width="270" height="82" rx="16" fill="#ecfdf3" stroke="#75e0a7"/>
+  <text x="894" y="277" class="label">Result/</text>
+  <text x="894" y="303" class="copy">readable text + structured content</text>
+
+  <path d="M712 326 V350 H260 V372" class="line"/>
+  <path d="M712 350 H480 V372" class="line"/>
+  <path d="M712 350 H700 V372" class="line"/>
+  <path d="M712 350 H920 V372" class="line"/>
+  <rect x="160" y="372" width="200" height="76" rx="16" fill="#ffffff" stroke="#ffb55c"/>
+  <text x="184" y="403" class="label">Knowledge/</text><text x="184" y="427" class="copy">bundled corpus</text>
+  <rect x="380" y="372" width="200" height="76" rx="16" fill="#ffffff" stroke="#a4bcfd"/>
+  <text x="404" y="403" class="label">Installation/</text><text x="404" y="427" class="copy">project and runtime</text>
+  <rect x="600" y="372" width="200" height="76" rx="16" fill="#ffffff" stroke="#75e0a7"/>
+  <text x="624" y="403" class="label">Manual/</text><text x="624" y="427" class="copy">official manuals</text>
+  <rect x="820" y="372" width="200" height="76" rx="16" fill="#ffffff" stroke="#75e0a7"/>
+  <text x="844" y="403" class="label">Contribution/</text><text x="844" y="427" class="copy">Forge and Gerrit</text>
+
+  <rect x="60" y="486" width="1080" height="44" rx="12" fill="#eef4ff"/>
+  <text x="84" y="514" class="lane" fill="#3538cd">UPKEEP — WHAT MAINTAINS THIS CHECKOUT</text>
+  <rect x="60" y="548" width="225" height="82" rx="16" fill="#101828"/>
+  <text x="84" y="581" class="whiteLabel">repository CLI</text>
+  <text x="84" y="607" class="whiteCode">bin/cli</text>
+  <path d="M285 589 H330" class="line"/>
+  <rect x="330" y="548" width="225" height="82" rx="16" fill="#ffffff" stroke="#a4bcfd"/>
+  <text x="354" y="581" class="label">Upkeep/Cli</text>
+  <text x="354" y="607" class="copy">registers every command</text>
+  <path d="M555 589 H600" class="line"/>
+  <rect x="600" y="548" width="225" height="82" rx="16" fill="#ffffff" stroke="#a4bcfd"/>
+  <text x="624" y="581" class="label">Upkeep/Command/</text>
+  <text x="624" y="607" class="copy">one subject:verb each</text>
+  <path d="M825 589 H870" class="line"/>
+  <rect x="870" y="548" width="270" height="82" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+  <text x="894" y="581" class="label">Repository records</text>
+  <text x="894" y="607" class="copy">knowledge · evidence · todo · decisions</text>
+
+  <text x="60" y="677" class="copy">Shared foundation: src/bootstrap.php locates the autoloader; src/Paths.php resolves this checkout.</text>
+</svg>

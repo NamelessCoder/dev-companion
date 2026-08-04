@@ -3,6 +3,10 @@
 For someone changing this repository rather than using it. The conventions are
 in [AGENTS.md](../AGENTS.md); these are the commands they rest on.
 
+![The stdio runtime routes client calls through Server, Tool and Result classes
+to four answer sources, while the separate repository CLI runs upkeep commands
+over knowledge, evidence and work records.](images/repository-map.svg)
+
 ## Keeping the repository in order
 
 Everything this repository is kept in order by is one command — the requirement

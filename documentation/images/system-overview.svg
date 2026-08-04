@@ -83,11 +83,11 @@
   <g aria-label="Answer format">
     <rect x="365" y="560" width="775" height="100" rx="20" fill="#ffffff" stroke="#d0d5dd"/>
     <text x="397" y="594" class="small">ONE ANSWER, TWO FORMS</text>
-    <text x="397" y="630" class="label">Readable text</text>
-    <text x="548" y="630" class="copy">for the agent and user</text>
+    <text x="397" y="624" class="label">Readable text</text>
+    <text x="397" y="648" class="copy">for the agent and user</text>
     <path d="M740 582 V640" stroke="#e4e7ec"/>
-    <text x="774" y="630" class="label">Structured content</text>
-    <text x="974" y="630" class="copy">for reliable composition</text>
+    <text x="774" y="624" class="label">Structured content</text>
+    <text x="774" y="648" class="copy">for reliable composition</text>
   </g>
   <path d="M525 490 V548" class="line"/>
   <path d="M946 476 V548" class="line"/>

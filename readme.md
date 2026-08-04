@@ -9,6 +9,8 @@ testing suite feedback, commit message conventions — and a catalog of backend 
 components: context that is otherwise spread across project knowledge, core
 conventions, and the official documentation.
 
+![The three TYPO3 audiences ask a local MCP server, which routes each question to bundled knowledge, the active project and installation, or an official live source.](documentation/images/system-overview.svg)
+
 **It answers from three sources.** Almost everything comes from the bundled
 `knowledge/` files, which are bound to versions: a statement that does not hold
 on every covered TYPO3 line carries the ones it does. Broad API, reference and
@@ -133,6 +135,8 @@ tool, rendered from the classes rather than kept beside them, and each carrying
 what that tool answered when it was last recorded. Below is the same surface
 grouped by where an answer comes from.
 
+![A task starts by reading the project and identifying its workflow, then uses a specialist tool and returns the source, version, scope and limits with the answer.](documentation/images/answer-flow.svg)
+
 - **Orientation.** `typo3_server_scope` says what this server covers and at
   which depth, what it deliberately does not, and which tool to call when. It
   also names any tool the caller excluded, so a shorter list than this one has a
@@ -235,6 +239,8 @@ Both tools exist **only in a standalone checkout**. Installed as a Composer
 dependency the package lives in `vendor/`, where anything written would be lost
 on the next `composer install`; there the server stays strictly read-only and
 neither tool appears in `tools/list`.
+
+![A real task exposes a gap, records one feedback, moves it through the queue into a guarded improvement and verifies it in another real task.](documentation/images/feedback-loop.svg)
 
 Working on this repository — layout, conventions, and how feedback is worked off
 — is documented in [AGENTS.md](AGENTS.md).

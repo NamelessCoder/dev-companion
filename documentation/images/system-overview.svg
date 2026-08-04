@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">TYPO3 CMS MCP system overview</title>
+  <desc id="description">Three TYPO3 audiences ask an MCP-enabled client. The local server routes questions to bundled knowledge, the active installation, official documentation, or core services and returns readable and structured answers.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#101828" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 10 5 0 10Z" fill="#667085"/>
+    </marker>
+    <style>
+      .eyebrow { font: 700 14px system-ui, sans-serif; letter-spacing: 1.8px; fill: #ff8700; }
+      .title { font: 700 34px system-ui, sans-serif; fill: #101828; }
+      .subtitle { font: 400 17px system-ui, sans-serif; fill: #475467; }
+      .label { font: 700 18px system-ui, sans-serif; fill: #101828; }
+      .copy { font: 400 14px system-ui, sans-serif; fill: #475467; }
+      .small { font: 600 13px system-ui, sans-serif; fill: #344054; }
+      .whiteLabel { font: 700 20px system-ui, sans-serif; fill: white; }
+      .whiteCopy { font: 400 14px system-ui, sans-serif; fill: #fff4e7; }
+      .line { fill: none; stroke: #98a2b3; stroke-width: 2.5; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" rx="28" fill="#f8fafc"/>
+  <text x="60" y="62" class="eyebrow">LOCAL · CURATED · VERSION-AWARE</text>
+  <text x="60" y="106" class="title">One TYPO3 question, the right source</text>
+  <text x="60" y="138" class="subtitle">The MCP server adds project context without writing the patch.</text>
+
+  <g aria-label="Audiences">
+    <text x="60" y="204" class="small">WHO ASKS</text>
+    <rect x="60" y="226" width="210" height="76" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+    <circle cx="92" cy="264" r="13" fill="#ff8700"/>
+    <text x="118" y="259" class="label">Core contributor</text>
+    <text x="118" y="281" class="copy">Contribution workflow</text>
+
+    <rect x="60" y="320" width="210" height="76" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+    <circle cx="92" cy="358" r="13" fill="#ffb55c"/>
+    <text x="118" y="353" class="label">Extension author</text>
+    <text x="118" y="375" class="copy">Reusable packages</text>
+
+    <rect x="60" y="414" width="210" height="76" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+    <circle cx="92" cy="452" r="13" fill="#ffd39b"/>
+    <text x="118" y="447" class="label">Site developer</text>
+    <text x="118" y="469" class="copy">Project integration</text>
+  </g>
+
+  <path d="M270 264 C320 264 318 337 365 337" class="line"/>
+  <path d="M270 358 H365" class="line"/>
+  <path d="M270 452 C320 452 318 379 365 379" class="line"/>
+
+  <g filter="url(#shadow)" aria-label="Local server">
+    <rect x="365" y="226" width="320" height="264" rx="26" fill="#101828"/>
+    <rect x="393" y="254" width="78" height="30" rx="15" fill="#ff8700"/>
+    <text x="432" y="274" text-anchor="middle" class="small" fill="#101828">stdio</text>
+    <text x="393" y="326" class="whiteLabel">MCP-enabled client</text>
+    <text x="393" y="352" class="whiteCopy">starts one local PHP subprocess</text>
+    <path d="M393 378 H657" stroke="#344054"/>
+    <text x="393" y="414" class="whiteLabel">TYPO3 CMS MCP</text>
+    <text x="393" y="440" class="whiteCopy">routes by task, version and scope</text>
+    <text x="393" y="464" class="whiteCopy">read-only except explicit feedback</text>
+  </g>
+
+  <path d="M685 358 H752" class="line"/>
+
+  <g aria-label="Answer sources">
+    <text x="752" y="204" class="small">WHERE THE ANSWER COMES FROM</text>
+    <rect x="752" y="226" width="388" height="74" rx="16" fill="#fff4e7" stroke="#ffb55c"/>
+    <rect x="752" y="226" width="8" height="74" rx="4" fill="#ff8700"/>
+    <text x="782" y="258" class="label">Bundled knowledge</text>
+    <text x="782" y="280" class="copy">Works with no installation running</text>
+
+    <rect x="752" y="314" width="388" height="74" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+    <rect x="752" y="314" width="8" height="74" rx="4" fill="#6172f3"/>
+    <text x="782" y="346" class="label">Project, packages &amp; installation</text>
+    <text x="782" y="368" class="copy">What this checkout actually supplies</text>
+
+    <rect x="752" y="402" width="388" height="74" rx="16" fill="#ffffff" stroke="#d0d5dd"/>
+    <rect x="752" y="402" width="8" height="74" rx="4" fill="#12b76a"/>
+    <text x="782" y="434" class="label">Official docs &amp; core services</text>
+    <text x="782" y="456" class="copy">Live, canonical, read-only sources</text>
+  </g>
+
+  <g aria-label="Answer format">
+    <rect x="365" y="560" width="775" height="100" rx="20" fill="#ffffff" stroke="#d0d5dd"/>
+    <text x="397" y="594" class="small">ONE ANSWER, TWO FORMS</text>
+    <text x="397" y="630" class="label">Readable text</text>
+    <text x="548" y="630" class="copy">for the agent and user</text>
+    <path d="M740 582 V640" stroke="#e4e7ec"/>
+    <text x="774" y="630" class="label">Structured content</text>
+    <text x="974" y="630" class="copy">for reliable composition</text>
+  </g>
+  <path d="M525 490 V548" class="line"/>
+  <path d="M946 476 V548" class="line"/>
+</svg>

@@ -219,9 +219,9 @@ feedback archived since is answered by the commit that archived it.
 ## Where the answer goes
 
 Archiving the feedback takes the question out of the open ones, and the commit
-message records the answer. What outlives both goes to three directories, and
-two of them are not this workflow's: `requirements/` and `decisions/` are the
-record this repository keeps whether or not a feedback was what produced an
+message records the answer. What outlives both goes to four places, and only
+`todo/` is this workflow's: `requirements/`, `decisions/` and the documents are
+the record this repository keeps whether or not a feedback was what produced an
 entry. How each one is written has a page of its own —
 [writing-a-requirement.md](../requirements/writing-a-requirement.md) and
 [writing-a-decision.md](../decisions/writing-a-decision.md).
@@ -250,6 +250,12 @@ entry. How each one is written has a page of its own —
   here can give, or what is kept for reading, and a queued one carries the
   priority that decides how soon — that is what `bin/cli todo:next` reads and
   what `bin/cli todo:check` holds.
+- `knowledge/documents/` and `documentation/` — the thing itself, where the
+  other three would describe it instead. What the caller was missing is a
+  document in the corpus, which is what this server hands out; what a session
+  working here was missing is a page under `documentation/`. Which of the two,
+  and which of them a judging run may write rather than queue, is
+  [judging.md](judging.md).
 
 ## What nothing fails on
 

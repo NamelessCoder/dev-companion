@@ -436,6 +436,11 @@ without taking a case with it.
   there, `decisions/` for what a change rested on and what would show it wrong,
   `todo/` for the order of the work. A feedback is one route into the first two,
   and an entry is read long after the question that produced it was answered.
+- Where what the session found unclear is a **structure** rather than a
+  statement — in which order the steps go, what a thing consists of — the answer
+  is a document instead: `knowledge/documents/` where the caller needed it,
+  `documentation/` where a session working here did. A structure written as a
+  requirement is one sentence saying the shape should be clear.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `open` whose **Wrong if** nobody has been back
   to. All three are legitimate, so no check may fail on them, and

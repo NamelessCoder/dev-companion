@@ -129,15 +129,14 @@ is where the placement it asks for is decided.
 
 The first half of the **Wrong if** is what this entry was revoked on, and the
 measurement recorded above is what settled it: without the argument the answer
-in a project repository is `Resolves: #ISSUE_NUMBER`, `Releases:
-RELEASE_TARGET` and a hard `missing-issue` error. The judgement of 2026-08-04
-read that as a delivery failure rather than a wrong default, and the maintainer
-read it the other way — three audiences reach this server and one of them has a
-Forge issue.
+in a project repository is `Resolves: #ISSUE_NUMBER`, `Releases: RELEASE_TARGET`
+and a hard `missing-issue` error. The judgement of 2026-08-04 read that as a
+delivery failure rather than a wrong default, and the maintainer read it the
+other way — three audiences reach this server and one of them has a Forge issue.
 
 What holds instead is
 [`D-GUI-010`](gui-010-the-commit-workflow-defaults-to-the-repository-most-callers-are-in.md),
 whose **Wrong if** is a different list: what can go wrong now is a core patch
-whose missing trailer nobody names, not a project message nobody can commit.
-The argument itself survives — the workflow is still asked for and still not
+whose missing trailer nobody names, not a project message nobody can commit. The
+argument itself survives — the workflow is still asked for and still not
 inferred from the subject text.

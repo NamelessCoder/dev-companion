@@ -41,8 +41,8 @@ namespace the draft leaves unnamed is the one that actually collides.
 This server serves four shapes under `typo3://`, and the first two predate the
 draft:
 
-- `typo3://guides` — the index: what the server covers, how it routes a question,
-  and a listing of the documents below it.
+- `typo3://guides` — the index: what the server covers, how it routes a
+  question, and a listing of the documents below it.
 - `typo3://guides/{id}` — one markdown document per entry in the knowledge base.
 - `typo3://skill/{id}/SKILL.md` — the body of each published task skill.
 - `typo3://skill/{id}/references/{file}` — a resource template for the files a
@@ -86,7 +86,8 @@ no claim is made on it here.
   published skill body, whose relative links resolve against the URI it is
   served at.
 - **A fixed authority segment inside it**, such as `typo3://tca/…`. Then
-  `typo3://guides` and `typo3://skill/` stay as they are, and the cost is nothing.
+  `typo3://guides` and `typo3://skill/` stay as they are, and the cost is
+  nothing.
 - **A reservation catching `typo3_`** — a rule about the string `typo3` under
   any separator, or a conformance suite that rejects a non-contract tool whose
   name begins with it. Then all 26 tool names go.

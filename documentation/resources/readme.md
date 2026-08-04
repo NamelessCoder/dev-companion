@@ -30,9 +30,10 @@ workflow that owns the task it recognized.
 
 ## The four shapes
 
-- **`typo3://guides`** — the index: the purpose, coverage and routing this client
-  is offered, plus every document and skill with its URI, and each skill's
-  references. The one to read first, and the one that enumerates the rest.
+- **`typo3://guides`** — the index: the purpose, coverage and routing this
+  client is offered, plus every document and skill with its URI, and each
+  skill's references. The one to read first, and the one that enumerates the
+  rest.
 - **`typo3://guides/{documentId}`** — one document from `knowledge/documents/`,
   which is also the corpus `typo3_rule_lookup` searches. Mostly the core's own
   process.
@@ -118,8 +119,8 @@ Two fields the spec has stay absent, and the first is where the confusion is:
 description and two schemas that a class declares, and a hand copy stops
 describing the answer at the first change nobody carried across. The same
 generator here would have one line per entry to write, and those entries are
-already enumerated where they cannot go stale: the `typo3://guides` index is built
-from the same functions and its declared size is asserted against what is
+already enumerated where they cannot go stale: the `typo3://guides` index is
+built from the same functions and its declared size is asserted against what is
 served, and `knowledge/server-scope.json` names every document and every skill
 with the scope it is offered under. A generated table would be a third copy, and
 its size column would change on every edit to a knowledge document.

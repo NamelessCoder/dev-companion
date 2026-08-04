@@ -36,9 +36,9 @@ and the measurement it records is that the cost is the ordinary answer there.
 
 - The default is `project`: the keyword, the 52/72 widths and the wrapping, with
   no trailer added or demanded.
-- Core is stated rather than assumed. The two core skills, the core task
-  intents and the core branch of `typo3_task_guide` name `workflow="core"`, and
-  a core checkout is where a caller is most likely to be reading one of them.
+- Core is stated rather than assumed. The two core skills, the core task intents
+  and the core branch of `typo3_task_guide` name `workflow="core"`, and a core
+  checkout is where a caller is most likely to be reading one of them.
 - `[SECURITY]` follows the workflow it already followed: refused where the
   caller says `core`, accepted otherwise, because outside the core nobody holds
   the Security Team's reservation. What changes is that the reservation is now

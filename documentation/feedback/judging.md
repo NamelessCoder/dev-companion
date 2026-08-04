@@ -325,6 +325,41 @@ question goes up. What comes back is either a decision that stands with the cost
 now written into it, or one that is revised — and both are answers the feedback
 earned.
 
+## Where the answer is a document
+
+The seven answers say what becomes of the feedback. What the judgement
+established still has to land, and three directories carry most of it:
+`requirements/` a rule, `decisions/` a rationale, `todo/` a next step.
+
+Some feedback fits none of the three, and what marks it is this: the session
+found a **structure** unclear rather than a statement. In which order the steps
+go, what a thing consists of, what one of them looks like. Written as a rule
+that is one sentence saying the shape should be clear; written as a document it
+is the shape.
+
+Then the answer is a document, and who was lost decides which one.
+
+- **`knowledge/documents/`** where the caller was. That corpus is what this
+  server hands out, and a document in it declares what it is and when to reach
+  for it —
+  [`D-KNW-057`](../../decisions/knowledge/knw-057-a-document-declares-what-it-is-and-when-to-reach-for-it.md).
+  This is step 1a landing as prose rather than as a hint: a hint states one
+  thing, and what was missing is a procedure.
+- **`documentation/`** where a session working in this repository was. How a
+  procedure here is carried out, grouped by subject, which is what that
+  directory is for.
+
+Which of the two may be written in the judging run is the line this page already
+draws. A `documentation/` page describes this repository, which the run has just
+read, so it is written in the same commit under the test *closed on the spot*
+sets: no contract moves, and nothing about TYPO3 is looked up. A
+`knowledge/documents/` page states what holds about TYPO3, so it is *taken on*
+and the reading is the todo's first step.
+
+The invariant is unchanged. A document written on the spot archives the
+feedback; one that is taken on leaves a todo serving it —
+[`D-FBK-043`](../../decisions/feedback/fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md).
+
 ## One at a time, and where the answer is written
 
 Every open feedback has a card on the board, written by `bin/cli todo:sync`, and

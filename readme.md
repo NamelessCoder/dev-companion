@@ -198,8 +198,9 @@ grouped by where an answer comes from.
 Everything the tools and resources answer from lives in `knowledge/`:
 
 - `documents/` — the prose corpus `typo3://guides/{documentId}` serves and
-  `typo3_rule_lookup` searches: `core/contribution/rules.md`, `core/testing/scripts.md`,
-  `core/contribution/commit-messages.md`, `core/contribution/gerrit-workflow.md`,
+  `typo3_rule_lookup` searches: `core/contribution/rules.md`,
+  `core/testing/scripts.md`, `core/contribution/commit-messages.md`,
+  `core/contribution/gerrit-workflow.md`,
   `core/contribution/sources.md`
 - `hints/` — one file per subject: `datahandler.json`, `fal.json`,
   `labels.json`, `site-sets.json` and many more. Each entry names the domains it

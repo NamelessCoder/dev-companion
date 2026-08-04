@@ -270,7 +270,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### scope
 
-- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the scheme is raised in the RFC's comment period · 2026-08-04
+- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
 - [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
@@ -279,7 +279,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
 
-[D-SCO-010]: scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-scheme-is-raised.md
+[D-SCO-010]: scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md
 [D-SCO-011]: scope/sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
@@ -363,6 +363,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### feedback
 
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
+- [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
@@ -393,6 +394,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
 [D-FBK-041]: feedback/fbk-041-what-nothing-answers-for-is-called-unresolved.md
+[D-FBK-042]: feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
 [D-FBK-025]: feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md

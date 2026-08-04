@@ -145,6 +145,12 @@ with what it costs and what it does not buy.
   before proposing that it goes.
 - Keep a formatting pass in its own commit, apart from behavioural change. A
   diff that mixes both is one nobody can review.
+- Where a check is introduced onto a repository that does not yet pass it, the
+  conformance commits come first and the commit that adds the check comes last,
+  so no commit fails the check it introduces. The obvious split does the
+  opposite: tooling first leaves the new check standing on a tree the
+  conformance pass has not reached yet. Verify it by running the check at the
+  new HEAD.
 - Report a finding in code the task does not touch instead of quietly fixing it
   alongside the requested work.
 

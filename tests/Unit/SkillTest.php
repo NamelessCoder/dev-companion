@@ -197,6 +197,49 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill(): void
+    {
+        // A session adding a code style fixer to an extension was routed to
+        // typo3-extension-testing, skipped steps 3 and 5, and reported that a
+        // prescription which gets skipped teaches the next reader to skip the
+        // ones that matter too — `feedback/2026-08-04-055741`. What makes step 3
+        // already done is the route and not the coverage: `D-SKL-013` gave the
+        // guide the skill's name, so a session the guide sent here has the brief
+        // already and one that matched the skill's own description never had it.
+        // `D-SKL-015` is the answer and the reading it rejected.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $step = strpos($base, '**`typo3_task_guide`**');
+        self::assertNotFalse($step, 'the base no longer carries the workflow step');
+        $condition = strpos($base, "Skip it only where this skill's own name came out of that call");
+        self::assertNotFalse($condition, 'the base states no condition on the workflow step');
+        self::assertGreaterThan($step, $condition);
+        self::assertLessThan(
+            (int) strpos($base, '**`typo3_hint_lookup`**'),
+            $condition,
+            'the condition on the workflow step stands at another step',
+        );
+
+        // The broad reading, which was rejected: a skill that covers the task
+        // end to end still does not know the caller's paths.
+        self::assertStringNotContainsString('end to end', $base);
+        self::assertStringContainsString(
+            'the brief is built from the paths as well as the task text, and no skill knows which paths the caller is holding',
+            self::flat($base),
+        );
+        // And the step a skip loses with it until `D-SKL-014` is in the bodies
+        // of the skills that own extension work.
+        self::assertStringContainsString('`typo3_commit_message_guide` with `workflow="project"`', $base);
+
+        // A condition that reads as an invitation is taken as one, so the order
+        // says once what a skipped prescription costs the steps around it.
+        self::assertStringContainsString(
+            'a prescription that gets skipped teaches the next reader to skip the ones that matter too',
+            self::flat($base),
+        );
+    }
+
+    #[Test]
     public function theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing(): void
     {
         // REVIEW-02 against an extension declaring two majors on an
@@ -261,6 +304,40 @@ final class SkillTest extends TestCase
         // indistinguishable from one that never ran, which is what made that
         // run's clean frontend surface writable.
         self::assertStringContainsString('the sweep ran and came back empty', $skill);
+    }
+
+    #[Test]
+    public function theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api(): void
+    {
+        // The second half of `feedback/2026-08-04-055741`: the sweep was
+        // prescribed and skipped on a change that added a fixer, an
+        // `.editorconfig` and two CI commands. A deprecation is a statement
+        // about API the package calls, so that sweep was empty before it ran —
+        // at one call per declared major per tag, which is what makes this step
+        // the expensive one to leave prescribed and unrun. The condition is on
+        // this step alone and is not the one step 3 carries (`D-SKL-015`).
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $condition = strpos($base, 'Skip the sweep only where the change touches no TYPO3 API');
+        self::assertNotFalse($condition, 'the base states no condition on the deprecation sweep');
+        self::assertGreaterThan((int) strpos($base, 'typo3_changelog_lookup'), $condition);
+        self::assertLessThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $condition,
+            'the condition on the sweep stands after the reading it bounds',
+        );
+        // Empty rather than merely unlikely to find anything, which is the
+        // whole of what makes the call skippable.
+        self::assertStringContainsString(
+            'a change that calls none has nothing for the sweep to land on',
+            self::flat($base),
+        );
+        // And what keeps a tooling task that ends up editing one PHP file from
+        // reading the condition off the task it was described as.
+        self::assertStringContainsString(
+            'read off the files it touches and never off the task it started as',
+            self::flat($base),
+        );
     }
 
     #[Test]
@@ -1318,6 +1395,17 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('Keep checking and fixing apart', $guidance);
         self::assertStringContainsString('never receives an error the change in hand introduced', $guidance);
         self::assertStringContainsString('first-party paths the project intends it', $guidance);
+
+        // Splitting the commits is half the rule and the order is the other
+        // half. `feedback/2026-08-04-055741` worked it out on its own: tooling
+        // first would have landed `ci:editorconfig` on a tree whose XLF files
+        // still held tabs, so the session inverted the split and ran the checks
+        // at the new HEAD.
+        self::assertStringContainsString(
+            'the conformance commits come first and the commit that adds the check comes last, so no commit fails the check it introduces',
+            self::flat($guidance),
+        );
+        self::assertStringContainsString('running the check at the new HEAD', self::flat($guidance));
 
         // The core's own build script is named once, in the skill, where the
         // harness step it belongs to is. Repeating it in an extension-facing

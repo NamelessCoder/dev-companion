@@ -1,7 +1,7 @@
 ---
 id: R-SKL-005
 status: held
-restsOn: [D-EVI-003, D-SKL-003, D-SKL-004]
+restsOn: [D-EVI-003, D-SKL-003, D-SKL-004, D-SKL-015]
 ---
 
 # R-SKL-005 — The order a task starts in is written once
@@ -12,6 +12,21 @@ skill.**
 It is the installation and its commands, the extension and what it ships, the
 workflow, the conventions of each subsystem in scope, the deprecations of the
 installed core over what that extension ships — and only then the checkout.
+
+Two of those steps carry a condition, and each one names what makes the step
+already done or empty rather than optional. The workflow step is skipped where
+the guide's own answer is what named the skill the session is in: the call has
+been made and its brief is in the session. A skill reached from its own
+description keeps the step, because the brief is built from the caller's paths
+as well as the task text and no skill knows those paths — so a skip there costs
+the hints and core checks they match, and the commit step the guide names for
+every task that changes a file. The deprecation sweep is skipped where the
+change touches no TYPO3 API, because a deprecation is a statement about API the
+package calls and a change that calls none leaves the sweep empty before it is
+run. Which side a change falls on is read off the files it touches rather than
+the task it started as. Everywhere else both steps are run, because a
+prescription that gets skipped teaches the next reader to skip the ones that
+matter too.
 
 A skill states what it adds to that order, never a second copy of the order
 itself. The base also separates the two kinds of lookup, so a runtime answer is
@@ -94,11 +109,22 @@ came from the other kind of session: `feedback/2026-08-01-003933` was building a
 content element in `site-new`, guessed at the `f:if` branch contract and changed
 the markup until the user corrected it, and the base's one sentence for an
 exhausted question was addressed to a review it was not writing — `D-SKL-004`.
+The two conditions came last, from one session adding a code style fixer to an
+extension in `/home/benji/projects/ext-guidedtour` (2026-08-04). Routed to
+`typo3-extension-testing`, it skipped steps 3 and 5 and reported both:
+`feedback/2026-08-04-055741` warns that a prescription which gets skipped
+teaches the next reader to skip the ones that matter too, and
+`feedback/2026-08-04-055715` asks what the guide adds when a skill has already
+routed the task. Which of the two readings to write is a question about what is
+wanted, and the maintainer answered it on 2026-08-04 — the narrow one, in
+`D-SKL-015`.
 
 ## Held by
 
 - `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`
+- `SkillTest::theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill`
 - `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
+- `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
 - `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
 - `SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`

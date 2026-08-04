@@ -1,0 +1,106 @@
+---
+id: D-SKL-015
+date: 2026-08-04
+status: open
+---
+
+# D-SKL-015 — A step of the order is skipped only where it has already run or has nothing to find
+
+**Step 3 of `skills/base.md` is skipped where the guide named this skill, and
+step 5 where the change touches no TYPO3 API.**
+
+Both steps were prescribed and skipped by one session, which reported it rather
+than leaving it in the transcript. What to write was a question about what is
+wanted, and the maintainer answered it on 2026-08-04.
+
+## Evidence
+
+- **The session.** `feedback/2026-08-04-055741` and
+  `feedback/2026-08-04-055715`, `/home/benji/projects/ext-guidedtour` on
+  2026-08-04, a German request for a php-cs-fixer setup in a TYPO3 14.3
+  extension with no test or static-quality infrastructure. It activated
+  `typo3-extension-testing`, read `references/static-quality.md`, and skipped
+  steps 3 and 5 of the base that skill carries. Its own warning is why this was
+  asked at all: "a prescription that gets skipped teaches the next reader to
+  skip the ones that matter too."
+- **Two ways into a skill, and only one of them has already made the call.**
+  `D-SKL-013` gave `typo3_task_guide` the name of the task skill that owns the
+  work, so a session can arrive here from the guide's own answer or from the
+  skill's `description`. `055715` reports the second: the schema was loaded in
+  the same batch as the scope tools and the call was never made, because the
+  reference already carried the layer's workflow.
+- **What the guide carries that no skill can.** Read in `src/Tool/TaskGuide.php`
+  on 2026-08-04: the brief is composed from `paths` as well as `task` — the
+  scopes, the groups and `Hints::find()` all run over the paths — and its own
+  description calls it "a task checklist enriched with matching hints and
+  relevant core checks". A skill is a published file in another project and
+  knows none of the caller's paths.
+- **And the step that would go with it today.** `TaskGuide` appends
+  `typo3_commit_message_guide` to the checklist and to the next lookups for
+  every task that changes a file, with `workflow="project"` outside the core.
+  `D-SKL-014` decided on the same day that the skills whose workflow ends in a
+  change name it too, and it is queued rather than in their bodies: grep over
+  `skills/` on 2026-08-04 finds the tool in `typo3-core-patch-development` and
+  `typo3-core-patch-review` and in none of the extension-facing ones.
+- **What the sweep costs where it can find nothing.** Step 5 is one
+  `typo3_changelog_lookup` per declared major per tag, which is the most
+  expensive step of the order. `055715` states the condition it was skipped
+  under: "the change was tooling and whitespace, touching no TYPO3 API".
+
+## Decided
+
+- **Step 3's condition is the route, not the coverage.** The skill was named by
+  the guide's own answer, so the call has been made and the base is asking for
+  it a second time — which is the redundancy the feedback hit.
+- **The broad reading is rejected: "skip it whenever a skill covers the task end
+  to end".** It costs the path-specific half of the brief, which no skill
+  carries, and it costs the commit step until `D-SKL-014` is in the skill
+  bodies. A session that matched the skill on its `description` has had neither.
+- **Step 5's condition is that a deprecation is a statement about API the
+  package calls.** A change that calls none leaves the sweep empty before it is
+  run, so the condition is emptiness rather than unlikelihood.
+- **The two are conditions on different steps and are written at their own
+  steps.** Read together they become one licence to shorten the order, which is
+  what `055741` asked for and what is not being given.
+- **Each condition says what a wrong skip costs**, and the order says once, in
+  its own preamble, that a step whose condition does not hold is run. A
+  condition that reads as an invitation is taken as one.
+- **`R-SKL-005` carries the same two conditions in prose**, because the
+  requirement's body describes the order the base states and the two have to say
+  one thing.
+
+## Assumed
+
+- That a session can tell which of the two ways it arrived by. Both hold the
+  same file, and only the one the guide named has the brief in its context;
+  nothing measures whether a session reads that difference off its own history.
+- That the path-specific half of the brief is worth the call for a session that
+  arrived without it. What is measured is that the brief is built from the paths
+  — not what a session loses by not having it.
+- That "touches no TYPO3 API" is answerable before the change is finished. The
+  condition is written against the files a change touches for that reason, and a
+  task described as tooling can still end in a PHP file that calls the core.
+
+## Wrong if
+
+- A session arrives from the guide, skips step 3, and turns out to have needed
+  something only the path-specific brief carries — a hint matched on its paths,
+  a core check, or the commit step while `D-SKL-014` is not yet in the skill
+  bodies. Then the route is not what makes the call already done, and step 3
+  goes back to unconditional.
+- A session skips the sweep on a change it then extends into code that calls the
+  core, and a deprecation the sweep would have returned lands in the commit.
+  Then the condition is being read off the task and not off the files, which the
+  step's own wording is what has to fix.
+- Either condition is read as a licence: step 3 skipped by a session that
+  activated the skill from its `description`, or the sweep skipped on a change
+  that touches TYPO3 API. Then narrow wording did not survive publication, and
+  what is left is to take the conditions out again.
+- `D-SKL-014` lands in the skill bodies and the commit step stays written into
+  step 3 as a cost of skipping it. That half stops being true on that commit;
+  the path-specific brief is what carries the condition afterwards.
+
+## Covered by
+
+- `SkillTest::theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill`
+- `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`

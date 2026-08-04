@@ -19,7 +19,10 @@ call below is also the check.
 This is the order, and it is an order rather than a list because each step
 decides what the next one is worth. A convention fetched after the code has been
 read confirms a view instead of testing it. A command recommended before the
-project's own are known is a guess that sounds like advice.
+project's own are known is a guess that sounds like advice. Where a step below
+carries a condition for skipping it, that condition is narrow on purpose: a
+prescription that gets skipped teaches the next reader to skip the ones that
+matter too.
 
 1. **`typo3_project_scope`** — the installation, its TYPO3 and PHP version, the
    extensions that are the project's own, its sites, and the commands this
@@ -33,6 +36,16 @@ project's own are known is a guess that sounds like advice.
 3. **`typo3_task_guide`** with a short English task, the paths it touches, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
+
+   Skip it only where this skill's own name came out of that call. The guide
+   routed the task here, so its answer is already in the session and the step is
+   asking for it a second time. A skill reached from its own `description`
+   arrived without that answer, and there the step stays: the brief is built
+   from the paths as well as the task text, and no skill knows which paths the
+   caller is holding. Skipping it there costs the hints and the core checks
+   those paths match. It costs the commit step with them, because the guide
+   names `typo3_commit_message_guide` with `workflow="project"` for every task
+   that changes a file and the skills that own extension work do not.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
    One query per subsystem; a single broad query is not subsystem evidence.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
@@ -78,6 +91,16 @@ project's own are known is a guess that sounds like advice.
    writing it however the change was titled, and then to the class below. Where
    the manual has no page for a surface either, that is a result and not an
    answer. Undocumented is not unsupported.
+
+   Skip the sweep only where the change touches no TYPO3 API — a code style
+   fixer, a CI file, an `.editorconfig`. A deprecation is a statement about API
+   the package calls, so a change that calls none has nothing for the sweep to
+   land on and it is empty before it is run. That condition is worth stating
+   because this is the most expensive step of the order: one call per declared
+   major per tag. Which side a change falls on is read off the files it touches
+   and never off the task it started as — one PHP file edited along the way puts
+   it back among the ordinary ones, and a skip there costs the deprecation no
+   finding would have walked into.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a

@@ -321,6 +321,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### task-skills
 
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
+- [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -336,6 +337,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-014]: task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
+[D-SKL-015]: task-skills/skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md

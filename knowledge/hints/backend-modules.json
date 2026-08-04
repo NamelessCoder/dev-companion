@@ -16,7 +16,12 @@
       "shortcut button",
       "setShortcutContext",
       "POST redirect",
-      "redirect after POST"
+      "redirect after POST",
+      "ModuleTemplate",
+      "moduleTemplateFactory",
+      "module controller",
+      "moduleData",
+      "renderResponse"
     ],
     "hints": [
       "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
@@ -40,6 +45,8 @@
       },
       "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
+      "A module's controller answers with a response the module template renders: $this->moduleTemplateFactory->create($request), the variables assigned to it, then $view->renderResponse('<Directory>/<Template>') for the Fluid template below Resources/Private/Templates. It is the doc header, the module menu and the backend chrome the module sits in, so a response built any other way is a page outside the backend.",
+      "The module's persisted per-user state arrives on the request as the moduleData attribute, built from the moduleData key of the registration. set() changes the object alone: what writes it back for the next request is $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray()), and a module that never calls it looks like one whose state is not persisted at all.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ]
   }

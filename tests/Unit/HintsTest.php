@@ -597,6 +597,34 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('RedirectResponse with HTTP 303 status', $onFourteen);
     }
 
+    /**
+     * The two statements a module needs after it is registered and before it
+     * has a doc header: what its controller answers with, and what makes the
+     * state it keeps per user survive the request.
+     *
+     * Both are read off `.checkouts/12.4` through `.checkouts/main`, where
+     * `AboutController` builds its response the one way and every controller
+     * setting a `ModuleData` property pushes it back itself — `set()` writes to
+     * the object. Neither is bound: the shape is the same on all four.
+     */
+    #[Test]
+    public function aBackendModuleNamesHowItAnswersAndHowItsStateIsPersisted(): void
+    {
+        $result = Registry::call('typo3_hint_lookup', [
+            'task' => 'build a backend module controller that renders a listing and persists the filter the user set',
+            'targetVersion' => '14',
+        ])->text;
+
+        self::assertStringContainsString('moduleTemplateFactory->create($request)', $result);
+        self::assertStringContainsString('renderResponse(', $result);
+        self::assertStringContainsString('pushModuleData(', $result);
+
+        foreach ([12, 13, 14] as $major) {
+            $statements = implode("\n", array_column(Hints::byId('backend-modules', $major)['hints'], 'text'));
+            self::assertStringContainsString('pushModuleData(', $statements, 'not stated for ' . $major);
+        }
+    }
+
     #[Test]
     public function siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist(): void
     {

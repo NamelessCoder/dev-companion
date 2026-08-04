@@ -227,7 +227,7 @@ final class ResourceSurfaceTest extends TestCase
     {
         $offered = [];
         foreach (Documents::documents() as $document) {
-            $offered[ResourceHandler::DOCUMENT_PREFIX . $document['id']] = Documents::isCoreOnly($document['id']);
+            $offered[Documents::uri($document['id'])] = Documents::isCoreOnly($document['id']);
         }
         foreach (Skills::skills() as $skill) {
             $offered[ResourceHandler::skillUri($skill['id'])] = Skills::isCoreOnly($skill['id']);

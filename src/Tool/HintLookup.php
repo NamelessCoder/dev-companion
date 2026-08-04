@@ -196,7 +196,7 @@ final class HintLookup extends ReadOnlyTool
             $lines[] = '';
             $lines[] = 'Read at length, as a resource:';
             foreach ($expanding as $documentId => $label) {
-                $lines[] = '- typo3://guides/' . $documentId . ' (' . $label . ')';
+                $lines[] = '- ' . Documents::uri($documentId) . ' (' . $label . ')';
             }
         }
 
@@ -232,7 +232,7 @@ final class HintLookup extends ReadOnlyTool
             'availableHints' => $result['availableHints'],
             'documents' => array_map(
                 static fn(string $documentId): array => [
-                    'uri' => 'typo3://guides/' . $documentId,
+                    'uri' => Documents::uri($documentId),
                     'hint' => strtok($expanding[$documentId], ' '),
                 ],
                 array_keys($expanding),

@@ -67,6 +67,29 @@ final class Documents
     private const BINDING = '/^\*\*(Since|Until):\*\*\s*(\d+)\s*$/';
 
     /**
+     * How a document is addressed from outside this process.
+     *
+     * The corpus owns it rather than the SDK adapter, because the tools and the
+     * answer shapes need it too and neither may reach into `Sdk\` for a name.
+     * It was spelled by hand in three classes before `D-KNW-059`.
+     */
+    public const URI_PREFIX = 'typo3://guides/';
+
+    /** The resource URI of a document id. */
+    public static function uri(string $id): string
+    {
+        return self::URI_PREFIX . $id;
+    }
+
+    /** The document id in a resource URI, or null where the URI is another kind. */
+    public static function idOf(string $uri): ?string
+    {
+        return str_starts_with($uri, self::URI_PREFIX)
+            ? substr($uri, strlen(self::URI_PREFIX))
+            : null;
+    }
+
+    /**
      * How deep a document sits: the scope, one topic, one name — `D-KNW-058`.
      *
      * The depth is what publishes a file rather than the directory alone. Lying

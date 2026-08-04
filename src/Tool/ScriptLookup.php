@@ -16,6 +16,9 @@ use Typo3CmsMcp\Result\ToolResult;
  */
 final class ScriptLookup extends ReadOnlyTool
 {
+    /** The one document this tool answers from. */
+    private const DOCUMENT = 'core/testing/scripts';
+
     public static function name(): string
     {
         return 'typo3_script_lookup';
@@ -76,7 +79,7 @@ final class ScriptLookup extends ReadOnlyTool
             );
         }
 
-        $results = Documents::search($task, ['core/testing/scripts'], 6, $targets);
+        $results = Documents::search($task, [self::DOCUMENT], 6, $targets);
 
         if ($results !== []) {
             $text = Prose::sections($results);
@@ -100,7 +103,7 @@ final class ScriptLookup extends ReadOnlyTool
         $message = sprintf(
             'No section of the TYPO3 core script notes matched "%s". They cover: %s.',
             $task,
-            Prose::topics('core/testing/scripts')
+            Prose::topics(self::DOCUMENT)
         );
 
         $elsewhere = Documents::search($task, [], 6, $targets);

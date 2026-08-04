@@ -149,7 +149,7 @@ final class Factory
 
         foreach (Documents::documents() as $document) {
             $resources[] = new ResourceDefinition(
-                uri: ResourceHandler::DOCUMENT_PREFIX . $document['id'],
+                uri: Documents::uri($document['id']),
                 // The id is a path since `D-KNW-058` and a resource name may not
                 // be: the SDK holds a name to alphanumerics, underscores and
                 // hyphens, and rejects the definition outright. Only the URI is

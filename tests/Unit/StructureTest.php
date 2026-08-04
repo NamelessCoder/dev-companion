@@ -88,6 +88,33 @@ final class StructureTest extends TestCase
      * Both are `symfony/finder` now (D-COD-003), and a returning `glob()` is the
      * split coming back rather than a style slip.
      */
+    /**
+     * One place spells how a document is addressed — `D-KNW-059`.
+     *
+     * The prefix was written by hand in `Result\Prose`, `Tool\HintLookup` and
+     * `Sdk\ResourceHandler` at once, and neither of the first two may reach
+     * into the SDK adapter for a name. `Documents::uri()` is what they call, so
+     * a namespace that moves again moves in one file.
+     *
+     * The source alone. A test that drives the wire spells the URI out on
+     * purpose: an expectation computed from the code under test asserts that
+     * the code equals itself.
+     */
+    #[Test]
+    public function onlyTheCorpusSpellsHowADocumentIsAddressed(): void
+    {
+        $files = Finder::create()->files()->in(dirname(__DIR__, 2) . '/src')
+            ->name('*.php')->notName('Documents.php')->sortByName();
+
+        foreach ($files as $file) {
+            self::assertDoesNotMatchRegularExpression(
+                "/['\"]typo3:\/\/guides\//",
+                (string) file_get_contents($file->getPathname()),
+                $file->getRelativePathname() . ' builds a document URI of its own; call Documents::uri()',
+            );
+        }
+    }
+
     #[Test]
     public function everyDirectoryIsReadThroughTheFinder(): void
     {

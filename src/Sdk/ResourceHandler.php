@@ -21,7 +21,6 @@ use Typo3CmsMcp\Knowledge\Documents;
 final class ResourceHandler implements ResourceHandlerInterface
 {
     public const INDEX_URI = 'typo3://guides';
-    public const DOCUMENT_PREFIX = 'typo3://guides/';
     public const SKILL_PREFIX = 'typo3://skill/';
 
     /**
@@ -66,8 +65,9 @@ final class ResourceHandler implements ResourceHandlerInterface
             ));
         }
 
-        if (str_starts_with($uri, self::DOCUMENT_PREFIX)) {
-            $id = substr($uri, strlen(self::DOCUMENT_PREFIX));
+        $documentId = Documents::idOf($uri);
+        if ($documentId !== null) {
+            $id = $documentId;
 
             return Documents::read($id);
         }
@@ -94,7 +94,7 @@ final class ResourceHandler implements ResourceHandlerInterface
             'documents' => array_map(static fn(array $document): array => [
                 'id' => $document['id'],
                 'title' => $document['title'],
-                'uri' => self::DOCUMENT_PREFIX . $document['id'],
+                'uri' => Documents::uri($document['id']),
             ], Documents::documents()),
             // A skill's references are named here rather than left to be found
             // by resolving the links in its body: they are a resource template,

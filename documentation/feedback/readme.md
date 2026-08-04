@@ -120,6 +120,14 @@ confirms the surface the server already has —
 is a session the published skill's body would have carried, which never loaded
 it and went through Bash instead.
 
+The documents are asked about on their own because the model never picks one. A
+resource is chosen by the host application or by the user rather than mid-task,
+so a client that lists none leaves the session nothing to find. What that
+surface is and what a picker chooses by:
+[the resource surface](../resources/readme.md). It is the half this side is
+blindest to — the server sees the calls that were made, and a list nobody
+rendered makes no call at all.
+
 ```text
 The work is done. What follows is a debrief about the TYPO3 knowledge server you
 had available, not about the repository you just worked in. Change no files.
@@ -144,6 +152,12 @@ your window is not the same as what did not happen.
   lookup that returned nothing usable, one you had to repeat with different
   arguments to get an answer, one that only restated what the previous answer
   already said.
+- Which of the documents it offers as resources you read whole, and whether your
+  client showed you that list at all. They are picked out of a list rather than
+  called mid-task, so a session can finish without learning they exist. Where you
+  read one, say whether it carried the procedure end to end or sent you back to a
+  search. Where you assembled the steps yourself, say what the page you wanted
+  would have been called.
 - What you never put to it. A question you took elsewhere because you did not
   expect an answer, or a tool you read and passed over, is a finding the server
   has no other way of learning — it sees the calls that were made and nothing

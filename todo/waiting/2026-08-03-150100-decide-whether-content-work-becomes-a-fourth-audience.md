@@ -2,12 +2,19 @@
 
 **Serves:** R-AUD-001
 **Priority:** normal
-**Waiting on:** stay on the model side and write it into `doesNotCover`, or open
-    the record side and take backend identity, workspaces and the DataHandler
-    with it? The second is a second server rather than a further tool, because
-    the stdio process boundary is the whole of this one's security and a record
-    read is where that stops holding. Nothing in the checkout decides this;
-    `R-AUD-001` counts three audiences because somebody chose three.
+**Waiting on:** put to the maintainer on 2026-08-04 with both options priced,
+    and deliberately left open — not unread. The answer was that this one waits,
+    so a session that reaches this card is not the first to look at it and
+    re-deriving the question buys nothing. What would move it is evidence rather
+    than another reading: a session that needed a record and said so, or the
+    interface contract fixing what a conformant server owes on identity. The
+    question as it stands: stay on the model side and write it into
+    `doesNotCover`, or open the record side and take backend identity,
+    workspaces and the DataHandler with it? The second is a second server rather
+    than a further tool, because the stdio process boundary is the whole of this
+    one's security and a record read is where that stops holding. Nothing in the
+    checkout decides this; `R-AUD-001` counts three audiences because somebody
+    chose three.
 
 Decide in `decisions/audience/` whether an editor — or an agent acting on
 records — becomes a fourth audience beside the core contributor, the extension

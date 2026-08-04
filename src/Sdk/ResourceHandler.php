@@ -19,13 +19,13 @@ use Typo3CmsMcp\Knowledge\Documents;
  */
 final class ResourceHandler implements ResourceHandlerInterface
 {
-    private const INDEX_URI = 'typo3://core';
-    private const DOCUMENT_PREFIX = 'typo3://core/';
+    public const INDEX_URI = 'typo3://core';
+    public const DOCUMENT_PREFIX = 'typo3://core/';
 
     public function read(string $uri, ClientGateway $gateway): string
     {
         if ($uri === self::INDEX_URI) {
-            return $this->index();
+            return self::index();
         }
 
         if (str_starts_with($uri, self::DOCUMENT_PREFIX)) {
@@ -37,7 +37,12 @@ final class ResourceHandler implements ResourceHandlerInterface
         throw new \RuntimeException(sprintf('Unknown resource: %s', $uri));
     }
 
-    private function index(): string
+    /**
+     * The index as it is served, which is also what its declared size counts:
+     * the definition tells a client how many bytes reading it costs, and the
+     * only honest source for that number is the string handed over.
+     */
+    public static function index(): string
     {
         // The profile's scope, not the stored one: the index is read by the
         // same client that gets the tool list, and a topic it cannot reach is

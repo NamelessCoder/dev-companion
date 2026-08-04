@@ -54,8 +54,6 @@ final class Documents
     /** Longest section body returned verbatim before it is cut on a line boundary. */
     private const MAX_SECTION_LENGTH = 2400;
 
-    /** What server-scope.json calls a topic whose answers are the core's own. */
-
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
     {
@@ -85,17 +83,51 @@ final class Documents
      */
     public static function isCoreOnly(string $id): bool
     {
-        foreach (Coverage::read()['covers'] as $entry) {
-            if (str_contains($entry['source'], 'typo3://core/' . $id)) {
-                return $entry['scope'] === Scope::Core;
-            }
-        }
+        $covered = self::covered($id);
 
         // A document the coverage does not announce. Held against by ScopeTest, so
         // this is what an unnoticed one gets in the meantime: withheld outside
         // the core, because the corpus is the contribution material by default
         // and handing it over is the mistake worth avoiding.
-        return true;
+        return $covered === null || $covered['scope'] === Scope::Core;
+    }
+
+    /**
+     * What a client reads to understand what it is being offered, for a
+     * document offered as a resource.
+     *
+     * A resource is picked out of a list rather than called mid-task, so the
+     * list is the whole of what the choice is made on — `R-ANS-022`. It says
+     * the subject and who the answers oblige, and both are read off the
+     * coverage rather than written a second time here, for the reason
+     * isCoreOnly is.
+     */
+    public static function description(string $id): ?string
+    {
+        $covered = self::covered($id);
+        if ($covered === null) {
+            return null;
+        }
+
+        return $covered['topic'] . '. ' . (self::isCoreOnly($id)
+            ? "The TYPO3 core's own process, which does not transfer to extension or site work."
+            : 'Holds for core contribution, extension development and site work alike.');
+    }
+
+    /**
+     * The covered topic naming this document as its source, where one does.
+     *
+     * @return array{topic: string, depth: string, tools: array<int, string>, source: string, scope: Scope}|null
+     */
+    private static function covered(string $id): ?array
+    {
+        foreach (Coverage::read()['covers'] as $entry) {
+            if (str_contains($entry['source'], 'typo3://core/' . $id)) {
+                return $entry;
+            }
+        }
+
+        return null;
     }
 
     public static function read(string $id): string

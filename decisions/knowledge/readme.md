@@ -7,6 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-KNW-055`][D-KNW-055] — The first check a standalone extension repository gets is a gap this server owns · 2026-08-04
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -55,6 +56,7 @@ one is added.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-055]: knw-055-the-first-check-a-standalone-extension-repository-gets-is-a-gap-this-server-owns.md
 [D-KNW-029]: knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md

@@ -1,7 +1,8 @@
 ---
 date: 2026-08-04T05:56:58+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-04
 model: claude-opus-5[1m]
 tool: typo3_project_scope, typo3_extension_scope
 directory: /home/benji/projects/ext-guidedtour

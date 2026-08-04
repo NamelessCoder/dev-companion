@@ -119,6 +119,63 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn(): void
+    {
+        // A session asked to declare a 14.3 extension's own `php` constraint
+        // had this answer in hand and neither of its two PHP numbers was the
+        // one: the project declared none, and the DDEV container in front of it
+        // ran 8.4. Written from that, the extension would have claimed ^8.4
+        // against a core requiring ^8.2 — two minors narrower, with every check
+        // still green — so it was read out of the vendor tree by hand instead
+        // (feedback/2026-08-04-055638, D-KNW-055). The major does not carry it:
+        // 12.4 requires ^8.1, 13.4 and 14.3 both ^8.2, main ^8.5, read in
+        // .checkouts/ and in the installed package below .environments/ alike
+        // on 2026-08-04.
+        $root = $this->composerProject('vendor', '14.3.5');
+        $this->declare($root . '/vendor/typo3/cms-core/composer.json', json_encode([
+            'name' => 'typo3/cms-core',
+            'type' => 'typo3-cms-framework',
+            'require' => ['php' => '^8.2'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/.ddev/config.yaml', "name: ext-guidedtour\ntype: typo3\nphp_version: \"8.4\"\n");
+        $this->manifest($root, ['require' => ['typo3/cms-core' => '^14.3']]);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertNull($project['phpConstraint'], 'declaring none is what this project declares');
+        self::assertSame('^8.2', $project['corePhpConstraint']);
+        self::assertStringContainsString(
+            'PHP unconstrained declared and 8.4 in DDEV, and the installed core requires ^8.2 — the lowest a '
+                . 'package here may declare',
+            Registry::call('typo3_project_scope', [])->text,
+        );
+
+        // The other shape: a project whose own floor is above the core's. Both
+        // are stated and neither is judged against the other — a tool that
+        // reported two declarations as disagreeing would be judging rather than
+        // answering, which is D-ANS-011.
+        $this->manifest($root, ['require' => ['php' => '^8.4', 'typo3/cms-core' => '^14.3']]);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertSame('^8.4', $project['phpConstraint']);
+        self::assertSame('^8.2', $project['corePhpConstraint']);
+
+        // And where the installed core's manifest requires no PHP at all, the
+        // answer is null rather than a floor derived from the major.
+        $bare = $this->composerProject();
+        Instance::discoverFrom($bare);
+
+        self::assertNull(Project::describe()['corePhpConstraint']);
+        self::assertStringNotContainsString(
+            'the installed core requires',
+            Registry::call('typo3_project_scope', [])->text,
+        );
+    }
+
+    #[Test]
     public function aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave(): void
     {
         // DDEV takes php_version as major.minor and falls back to the default

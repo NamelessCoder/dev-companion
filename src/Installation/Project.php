@@ -73,6 +73,7 @@ final class Project
      *     typo3Version: ?string,
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
+     *     corePhpConstraint: ?string,
      *     environment: array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
@@ -96,6 +97,7 @@ final class Project
             'typo3Version' => Instance::typo3Version(),
             'phpConstraint' => self::requirement($manifest, 'php'),
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),
+            'corePhpConstraint' => self::corePhpConstraint(),
             'environment' => self::environment($root),
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
@@ -736,6 +738,26 @@ final class Project
         $constraint = $manifest['require'][$package] ?? null;
 
         return is_string($constraint) ? $constraint : null;
+    }
+
+    /**
+     * The PHP the installed core requires, out of that package's own manifest.
+     *
+     * A third number rather than a second reading of the first two: the project
+     * states what it accepts, the environment states what it runs, and this is
+     * the lowest a package installed beside this core may declare. It is not
+     * derivable from the major — `^8.1` on 12.4, `^8.2` on 13.4 and on 14.3,
+     * `^8.5` on main, read in `.checkouts/` and in the installed package alike
+     * on 2026-08-04 — so an extension given the container's PHP 8.4 as its
+     * minimum narrows its own range by two minors with every check still green
+     * (`D-KNW-055`). The manifest sits beside the `Typo3Version.php` that
+     * `Instance::typo3Version()` already resolves the directory for.
+     */
+    private static function corePhpConstraint(): ?string
+    {
+        $core = Instance::packages()['core'] ?? null;
+
+        return $core === null ? null : self::requirement(self::json($core . '/composer.json'), 'php');
     }
 
     /**

@@ -33,7 +33,7 @@ final class ProjectScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -49,6 +49,7 @@ final class ProjectScope extends ReadOnlyTool
             'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package.'),
             'phpConstraint' => Schema::nullableString('What composer.json requires of PHP. What the project declares, not what runs it — see environment.'),
             'coreConstraint' => Schema::nullableString('What it requires of typo3/cms-core.'),
+            'corePhpConstraint' => Schema::nullableString('What the installed typo3/cms-core requires of PHP, out of that package\'s own composer.json — the lowest a package here may declare it supports. Neither of the other two PHP numbers: not what this project declares, and not what environment.php runs. Not derivable from the TYPO3 major either — v13.4 and v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was found to read.'),
             'environment' => [
                 'type' => ['object', 'null'],
                 'description' => 'The environment this repository configures to run itself in, read from that environment\'s own files. Null means nothing here configures one that this server reads — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what it reads — so the commands below run wherever the caller runs them.',
@@ -107,12 +108,13 @@ final class ProjectScope extends ReadOnlyTool
         }
 
         $lines = [sprintf(
-            '%s — %s, TYPO3 %s, PHP %s%s',
+            '%s — %s, TYPO3 %s, PHP %s%s%s',
             $project['root'],
             $project['kind'],
             $project['typo3Version'] ?? 'version unknown',
             $project['phpConstraint'] ?? 'unconstrained',
             self::runtime($project['environment']),
+            self::floor($project['corePhpConstraint']),
         )];
 
         $lines[] = '';
@@ -232,6 +234,30 @@ final class ProjectScope extends ReadOnlyTool
             $environment['php'],
             $environment['entered'] ? ', which this server is already inside' : '',
         );
+    }
+
+    /**
+     * The third PHP number, on the same line as the other two.
+     *
+     * A task that has to state what PHP a package supports needs the floor the
+     * core requires, and the two numbers already here are the wrong ones to
+     * take it from: the project's own constraint is what it accepts and may be
+     * absent, the environment's is what the container happens to run. A session
+     * asked to declare an extension's `php` had `phpConstraint: null` and a
+     * DDEV container at 8.4 in this answer, and read `^8.2` out of the vendor
+     * tree by hand (`feedback/2026-08-04-055638`, `D-KNW-055`). Here rather
+     * than in a section of its own, because it is the line the first call of a
+     * workflow is read for. Stated even where it repeats the project's own,
+     * which is the ordinary case in a core checkout: a number the answer drops
+     * where the two agree cannot be told from one it never read.
+     */
+    private static function floor(?string $constraint): string
+    {
+        if ($constraint === null) {
+            return '';
+        }
+
+        return sprintf(', and the installed core requires %s — the lowest a package here may declare', $constraint);
     }
 
     /**

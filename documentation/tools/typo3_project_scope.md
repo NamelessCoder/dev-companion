@@ -1,13 +1,14 @@
 # `typo3_project_scope`
 
 Describe the project around the TYPO3 installation this server was started in:
-its TYPO3 and PHP constraints, the extensions that are its own rather than
-TYPO3's, the sites it configures with the site sets each depends on, and the
-commands it declares in composer.json and package.json — each marked a check
-that hands the code back as it was, a change that rewrites something, or unknown
-where the declared body does not say. Read from files only, no console and no
-database, so it answers on a fresh clone. It also names the environment the
-repository configures to run itself in: a DDEV project states the PHP its
+its TYPO3 and PHP constraints, including the PHP floor the installed core
+requires and not only the one this project declares, the extensions that are its
+own rather than TYPO3's, the sites it configures with the site sets each depends
+on, and the commands it declares in composer.json and package.json — each marked
+a check that hands the code back as it was, a change that rewrites something, or
+unknown where the declared body does not say. Read from files only, no console
+and no database, so it answers on a fresh clone. It also names the environment
+the repository configures to run itself in: a DDEV project states the PHP its
 container runs, which is a different interpreter from the caller's shell and
 where the commands below are run, plus what that environment runs without being
 asked — each hook as the stage it fires at and the command it runs, and the pull
@@ -38,6 +39,13 @@ typo3Version: string or null  # optional
 phpConstraint: string or null  # optional
 # What it requires of typo3/cms-core.
 coreConstraint: string or null  # optional
+# What the installed typo3/cms-core requires of PHP, out of that package's own
+# composer.json — the lowest a package here may declare it supports. Neither
+# of the other two PHP numbers: not what this project declares, and not what
+# environment.php runs. Not derivable from the TYPO3 major either — v13.4 and
+# v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was
+# found to read.
+corePhpConstraint: string or null  # optional
 # The environment this repository configures to run itself in, read from that
 # environment's own files. Null means nothing here configures one that this
 # server reads — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what it reads —
@@ -171,7 +179,7 @@ The answer carries exactly one of these sets of fields: `root`, `environment`,
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
+Recorded on 2026-08-04 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -197,7 +205,7 @@ Called with:
 Text:
 
 ```
-<installation> — core-checkout, TYPO3 14.3.6-dev, PHP ^8.2
+<installation> — core-checkout, TYPO3 14.3.6-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
 Extensions: none beyond TYPO3's own.
 
@@ -220,6 +228,7 @@ Data:
     "typo3Version": "14.3.6-dev",
     "phpConstraint": "^8.2",
     "coreConstraint": null,
+    "corePhpConstraint": "^8.2",
     "environment": null,
     "extensions": [],
     "sites": [],
@@ -283,6 +292,7 @@ Data:
     "typo3Version": "14.3.0",
     "phpConstraint": "^8.2",
     "coreConstraint": "^14.3",
+    "corePhpConstraint": null,
     "environment": null,
     "extensions": [
         {

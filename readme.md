@@ -103,6 +103,12 @@ project's — and the skills the project wrote itself stay visible beside them.
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
+`--drafts`, on either command, also publishes the task skills nobody has
+reviewed yet, so a draft can be tried where it is actually loaded rather than
+read here. It is a choice per run: an `update` that does not ask for them takes
+them back out and says so, which is the way off one and why there is no second
+flag for it.
+
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,
 and the two environment variables that end a failed discovery:

@@ -38,6 +38,29 @@ records every client it set up in `.typo3-cms-mcp/state.json`, and without an
 agent `update` refreshes all of them. A project is usually worked on by more
 than one, and which ones is knowledge only the project has.
 
+## Trying a draft where it is loaded
+
+Both commands take `--drafts`, which publishes the skills that still declare
+`status: draft` beside the ones this server publishes:
+
+```bash
+/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude --drafts
+```
+
+What it is for is the review step
+[writing-a-skill.md](writing-a-skill.md) makes a condition of publishing.
+Reading a draft in this repository is not reading it where it loads, and the
+questions it exists to raise — is this the order the work actually goes in, is
+the step that decides the outcome in it — are raised by using it on a real task.
+
+The drafts are recorded under their own key in `.typo3-cms-mcp/state.json`,
+because what is in a project unreviewed is the question somebody opens that file
+to answer. They are the one thing an `update` does not carry over: a run that
+does not ask for them removes them again and says so. Sticky would be the
+convenient reading and the wrong one — an unreviewed workflow that stays in a
+project because somebody once tried it is what publishing being a deliberate
+edit exists to prevent.
+
 Both commands write the client entry, because what belongs in it is a property
 of the project rather than of the run: a project that required this package
 after it was first installed, or that gained a DDEV configuration since, needs a

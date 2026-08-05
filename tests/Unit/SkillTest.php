@@ -1243,7 +1243,20 @@ final class SkillTest extends TestCase
                     ? $name . ' says it is a draft and is published anyway'
                     : $name . ' says nothing and is published to nobody',
             );
+            self::assertSame(
+                $declared,
+                in_array($name, Installer::drafts(), true),
+                $name . ' is one of the two sets and has to be the other',
+            );
         }
+
+        // The two are the whole directory and share nothing. `--drafts` adds
+        // the second set to the first, so a skill in both would be published
+        // twice and one in neither would be installable by no command at all.
+        self::assertSame([], array_intersect($published, Installer::drafts()));
+        $both = [...$published, ...Installer::drafts()];
+        sort($both);
+        self::assertSame(array_keys(self::skills()), $both);
     }
 
     /**

@@ -182,10 +182,45 @@ final class Installer
      */
     public static function skills(): array
     {
+        return self::declaring(false);
+    }
+
+    /**
+     * The drafts, which is the rest of the same directory.
+     *
+     * They are published to nobody by default and to a project that asks for
+     * them by name, because a draft has one reader before it is finished: the
+     * person who has to say whether the workflow is the one they actually run.
+     * `documentation/clients/writing-a-skill.md` makes that a step, and a step
+     * nobody can carry out is one that gets skipped — reading a skill in the
+     * repository is not reading it where it loads, and the questions it exists
+     * to raise are raised by using it.
+     *
+     * Kept apart from the published set rather than merged into it under a
+     * flag, so that everything answering "what does this server publish" keeps
+     * answering it: `knowledge/task-intents.json` routes to a name from there,
+     * and a draft reachable by routing is one nobody chose.
+     *
+     * @return array<int, string>
+     */
+    public static function drafts(): array
+    {
+        return self::declaring(true);
+    }
+
+    /**
+     * The skills directory, split on the one line that decides where a skill
+     * goes. Two walks over one directory asking opposite questions is one walk
+     * with the answer as its argument.
+     *
+     * @return array<int, string>
+     */
+    private static function declaring(bool $draft): array
+    {
         $skills = [];
         foreach (Finder::create()->directories()->in(Paths::root() . '/skills')->depth(0)->sortByName() as $skill) {
             $body = $skill->getPathname() . '/SKILL.md';
-            if (is_file($body) && !self::draft((string) file_get_contents($body))) {
+            if (is_file($body) && self::draft((string) file_get_contents($body)) === $draft) {
                 $skills[] = $skill->getFilename();
             }
         }
@@ -217,9 +252,9 @@ final class Installer
         return array_keys(self::AGENTS);
     }
 
-    public function install(?string $agent): string
+    public function install(?string $agent, bool $drafts = false): string
     {
-        return $this->setUp([$agent ?? self::GENERIC]);
+        return $this->setUp([$agent ?? self::GENERIC], $drafts);
     }
 
     /**
@@ -233,8 +268,16 @@ final class Installer
      *
      * The setup that named no client is one of them, so it is refreshed the
      * same way and needs no case of its own.
+     *
+     * The drafts are the one thing an update does not carry over. They are a
+     * per-run choice on both commands, so an update that does not ask for them
+     * takes them out again and says so — which is the way back off a draft, and
+     * the reason there is no second flag for it. Sticky would be the more
+     * convenient reading and the wrong one: an unreviewed workflow that stays
+     * in a project because somebody once tried it is exactly what publishing is
+     * a deliberate edit to prevent.
      */
-    public function update(?string $agent): string
+    public function update(?string $agent, bool $drafts = false): string
     {
         $update = $agent !== null ? [$agent] : $this->readState()['agents'];
         if ($update === []) {
@@ -243,7 +286,7 @@ final class Installer
             );
         }
 
-        return $this->setUp($update);
+        return $this->setUp($update, $drafts);
     }
 
     /**
@@ -261,7 +304,7 @@ final class Installer
      *
      * @param list<string> $names
      */
-    private function setUp(array $names): string
+    private function setUp(array $names, bool $drafts): string
     {
         $state = $this->readState();
 
@@ -278,10 +321,14 @@ final class Installer
                 continue;
             }
             $published[] = $definition['skills'];
-            $messages[] = $this->publishSkills($definition['skills'], $state['skills']);
+            $messages[] = $this->publishSkills(
+                $definition['skills'],
+                [...$state['skills'], ...$state['drafts']],
+                $drafts,
+            );
         }
 
-        return implode("\n", $this->record($state, $names, $messages));
+        return implode("\n", $this->record($state, $names, $messages, $drafts));
     }
 
     /**
@@ -292,12 +339,12 @@ final class Installer
      * one file for the whole project. Writing it inside the loop would let the
      * first client of a run decide what the second one sees.
      *
-     * @param array{skills: list<string>, agents: list<string>} $state
+     * @param array{skills: list<string>, drafts: list<string>, agents: list<string>} $state
      * @param list<string> $installed
      * @param list<string> $messages
      * @return list<string>
      */
-    private function record(array $state, array $installed, array $messages): array
+    private function record(array $state, array $installed, array $messages, bool $drafts): array
     {
         $agents = array_values(array_unique([...$state['agents'], ...$installed]));
         sort($agents);
@@ -305,6 +352,10 @@ final class Installer
             'version' => 1,
             'agents' => $agents,
             'skills' => self::skills(),
+            // Their own key rather than the same list, because what is in this
+            // project unreviewed is the question somebody opens this file to
+            // answer, and a name among the published ones does not answer it.
+            'drafts' => $drafts ? self::drafts() : [],
         ]);
         $this->write($this->project . '/' . self::STATE_DIRECTORY . '/.gitignore', self::IGNORE_ALL);
 
@@ -687,15 +738,26 @@ final class Installer
     }
 
     /** @param list<string> $previousSkills */
-    private function publishSkills(string $skillsPath, array $previousSkills): string
+    private function publishSkills(string $skillsPath, array $previousSkills, bool $drafts): string
     {
+        $publish = self::skills();
+        foreach ($drafts ? self::drafts() : [] as $draft) {
+            $publish[] = $draft;
+        }
+        sort($publish);
+
         $messages = [];
-        foreach (self::skills() as $skill) {
+        foreach ($publish as $skill) {
             $messages[] = $this->publishSkill($skillsPath, $skill);
         }
-        foreach (array_diff($previousSkills, self::skills()) as $skill) {
+        foreach (array_diff($previousSkills, $publish) as $skill) {
             $this->removeDirectory($this->project . '/' . $skillsPath . '/' . $skill);
             $messages[] = 'Removed stale ' . $skill . ' from ' . $this->project . '/' . $skillsPath . '.';
+        }
+        if ($drafts && self::drafts() !== []) {
+            $messages[] = 'Drafts published here: ' . implode(', ', self::drafts())
+                . '. Nobody has reviewed these, and the next update takes them out again unless it is'
+                . ' asked for them too.';
         }
 
         return implode("\n", $messages);
@@ -742,13 +804,13 @@ final class Installer
      * empty list rather than an error — nothing is wrong there, there is just
      * nothing an `update` without an agent could act on.
      *
-     * @return array{skills: list<string>, agents: list<string>}
+     * @return array{skills: list<string>, drafts: list<string>, agents: list<string>}
      */
     private function readState(): array
     {
         $path = $this->project . '/' . self::STATE;
         if (!is_file($path)) {
-            return ['skills' => [], 'agents' => []];
+            return ['skills' => [], 'drafts' => [], 'agents' => []];
         }
         try {
             $state = json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
@@ -762,13 +824,19 @@ final class Installer
             $state['skills'],
             static fn(mixed $skill): bool => is_string($skill) && $skill !== '',
         ));
+        // Absent in a state file written before drafts could be installed, and
+        // absent is right there: that project has none.
+        $drafts = array_values(array_filter(
+            is_array($state['drafts'] ?? null) ? $state['drafts'] : [],
+            static fn(mixed $draft): bool => is_string($draft) && $draft !== '',
+        ));
         $agents = array_values(array_filter(
             is_array($state['agents'] ?? null) ? $state['agents'] : [],
             static fn(mixed $agent): bool => is_string($agent)
                 && (isset(self::AGENTS[$agent]) || $agent === self::GENERIC),
         ));
 
-        return ['skills' => $skills, 'agents' => $agents];
+        return ['skills' => $skills, 'drafts' => $drafts, 'agents' => $agents];
     }
 
     private function copyDirectory(string $source, string $target): void

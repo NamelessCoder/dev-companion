@@ -84,6 +84,13 @@ before the evidence did.
   standard failure of this work.
 - Which branch the verification ran on, said out loud. A verdict with no branch
   is unrepeatable.
+- Where the suites ran. Inside the checkout's DDEV project or in your own shell
+  are two different PHP versions and two different databases, and an old report
+  about behaviour that depends on either is settled by neither if this is left
+  unsaid.
+- Whether a suite that reported success inspected anything. A green over no
+  files is what turns "not reproducible as written" into "gone" without anybody
+  noticing.
 - Whether the review server was asked. The cheapest outcome sits there and it
   costs one call.
 - What was not established. The part that was skipped is the next person's whole

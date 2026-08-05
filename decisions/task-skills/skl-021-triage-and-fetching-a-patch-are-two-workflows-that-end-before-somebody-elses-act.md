@@ -58,9 +58,12 @@ resolves past them, which is how a session produces a patch nobody wrote.
   carry no command the checkout has not been asked for, and a ref form written
   into a file installed in somebody else's project is a fact no release here
   corrects.
-- Both ship as drafts. `documentation/clients/writing-a-skill.md` requires the
-  person who asked for a skill to read it whole before it is published, and
-  neither has been.
+- Both shipped as drafts first, which is what `--drafts` on the installer was
+  written for: reading a workflow in this repository is not reading it where it
+  loads. Published on 2026-08-05 after the maintainer read them, with the core
+  suites and the DDEV project named at the step that reproduces — the two facts
+  the first draft left to `typo3_test_run_guide` alone and that decide whether a
+  reproduction is about this checkout at all.
 
 ## Assumed
 

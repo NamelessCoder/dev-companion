@@ -1,5 +1,4 @@
 ---
-status: draft
 name: typo3-core-issue-triage
 description: Say what is still true about an open issue on forge.typo3.org — find the candidates in the backlog, read what the report actually claims, and establish against the core checkout you are standing in whether it still happens, was fixed in the meantime, or was never a defect. Use for going through old or untouched issues, for asking what is known about one area, for deciding whether a report is worth taking on, and for saying what a maintainer would need before it can move. Writing the patch that fixes it is a different workflow, and so is reviewing one somebody pushed.
 ---
@@ -98,9 +97,33 @@ handed to somebody else, and it is the patch's first half already written. Where
 no layer can hold it — backend markup, a build step, shipped JavaScript — say so
 and reproduce by hand instead, writing down the steps and what you saw.
 
-Run the project's own commands and not the host's. A suite run through an
-installed binary rather than through the checkout's own runner is a result
-nobody can reproduce, and a check that inspected no files is not a green.
+**The core's suites are not the ones a manifest here declares, and they are not
+run the way an extension's are.** They belong to the core's own runner, which no
+`composer` script names, and `typo3_test_run_guide` is what gives the targeted
+invocation for the paths in hand rather than a suite name to guess at.
+`typo3_script_lookup` is the rest of what that runner offers — the options that
+decide which PHP and which database a suite runs against, which is exactly what
+an old report turns on when it says the behaviour depends on either.
+
+Two of those decide whether a reproduction means anything, and both were already
+answered by the step the base opens with:
+
+- **Where the checkout has a DDEV project, the suites and the console run inside
+  it.** The same command in your own shell runs on whatever PHP the machine
+  carries and against whatever database it has, which reproduces something else
+  and looks identical in the output. `typo3_project_describe` says whether this
+  checkout is one of those and what the form is; take it from there rather than
+  from what worked in another repository.
+- **A green that ran over no files is not a green.** Where a suite reports
+  success, confirm it inspected something — the count of tests or files it names
+  — before reading it as the behaviour being gone. That is the failure mode a
+  triage is most exposed to, because "the suite passes" is the evidence it is
+  about to write a verdict on.
+
+An old report frequently names the versions it was seen on. Those are what the
+reporter had, not what it still reproduces on, and the version the suites run
+against here is a property of this checkout. Say which one the verification
+used; a verdict that names no version and no branch cannot be repeated.
 
 **A reproduction that fails to reproduce is a result and not a dead end.** Say
 which of the three it is: the behaviour is gone, the steps were insufficient, or

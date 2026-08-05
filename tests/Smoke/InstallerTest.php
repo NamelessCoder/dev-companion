@@ -130,6 +130,8 @@ final class InstallerTest extends TestCase
                 'skills' => [
                     'typo3-backend-module-development',
                     'typo3-content-element-development',
+                    'typo3-core-issue-triage',
+                    'typo3-core-patch-checkout',
                     'typo3-core-patch-development',
                     'typo3-core-patch-review',
                     'typo3-development-installation',

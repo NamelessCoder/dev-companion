@@ -147,7 +147,10 @@ workflow: its default is a repository of your own, which demands neither the
 Forge issue nor the `Releases:` trailer a patch here owes. Then
 `typo3_rule_lookup` for the Gerrit workflow: what the push actually is, how a
 change is amended into a new patch set rather than a second commit, and what
-must not be edited between patch sets.
+must not be edited between patch sets. That procedure exists whole as one page,
+`typo3://guides/core/contribution/gerrit-workflow`. Read it before the first
+push rather than a section at a time: a lookup returns the part your words
+matched, and everything below here is a different part of the same page.
 
 Before pushing, establish where you are pushing to. A core checkout's remote is
 not necessarily the one it fetches from, and the answer is in the checkout's own

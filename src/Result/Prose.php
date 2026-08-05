@@ -39,7 +39,39 @@ final class Prose
      */
     public static function sections(array $results): string
     {
-        return self::BOUND_ELSEWHERE . "\n\n" . implode("\n\n", array_map(static function (array $result): string {
+        return self::BOUND_ELSEWHERE . "\n\n" . self::excerpts($results) . "\n\n" . self::readWhole($results);
+    }
+
+    /**
+     * The pages the excerpts were cut out of, as the resources they are readable
+     * whole as.
+     *
+     * A search answers the section the query matched, and a procedure is several
+     * of them: the session that reported this had the Gerrit push page in three
+     * different answers and never learned it was one page — `D-AUD-007`. The
+     * `Source:` line above each excerpt carries the same uri and was read as
+     * attribution, which is what this says out loud instead.
+     *
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
+     */
+    private static function readWhole(array $results): string
+    {
+        $documents = [];
+        foreach ($results as $result) {
+            $documents[$result['id']] = sprintf('%s (%s)', $result['title'], Documents::uri($result['id']));
+        }
+
+        return 'Each excerpt above is one section of a longer document. Where the task is the whole procedure '
+            . 'rather than the fact you searched for, read the page: ' . implode(', ', $documents)
+            . '. A client may render no resource list, so that address is how one is reached.';
+    }
+
+    /**
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
+     */
+    private static function excerpts(array $results): string
+    {
+        return implode("\n\n", array_map(static function (array $result): string {
             $heading = $result['heading'] === '' ? $result['title'] : $result['heading'];
             $versions = Versions::label($result['since'] ?? null, $result['until'] ?? null);
             $source = sprintf(

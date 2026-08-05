@@ -95,6 +95,24 @@ section a search matched, with nothing saying the rest of the page is there.
 What follows is not a `typo3_document_list`. The session named the lever itself:
 a skill names the resource it expects read whole, at the step that needs it, and
 a lookup answer that is one section of a procedure says which procedure. Both
-are contracts, and
-`todo/open/2026-08-05-190500-name-the-page-a-skill-expects-read-whole.md`
-carries it.
+are contracts.
+
+**Since then**, on 2026-08-05, both were built. Every answer rendered by
+`Result\Prose` — the rule lookup, the script lookup and the task guide — closes
+with the pages its excerpts were cut from, saying they are sections and that a
+client may render no resource list. The `Source:` line above each excerpt
+already carried the same uri and was read as attribution, which is why saying it
+once at the foot is the change rather than another field.
+
+The skill half is two skills and one rule. `typo3-core-patch-development` names
+`typo3://guides/core/contribution/gerrit-workflow` at the push step and
+`typo3-core-patch-checkout` at the fetch step, which are the two places a step
+described a whole procedure and routed to a search for it — the sweep found no
+third. `SkillTest::everyResourceASkillNamesIsOneTheServerServes` holds every uri
+in a published skill or its references to a document this server serves, because
+a dead address in a copy nobody updates is worse than none.
+
+What that does not settle is the first **Wrong if**, which asked whether naming
+the documents is enough. It was answered for the two skills that route to a
+procedure and for every corpus answer; whether a session now opens the page is
+the next run's evidence and not this change's.

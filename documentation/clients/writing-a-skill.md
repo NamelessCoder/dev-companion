@@ -94,13 +94,16 @@ reviewed, and publishing is the one edit that takes the line out.
 - A skill that judges keeps its checklist beside it —
   `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`
 - It says what it owns — `SkillTest::everySkillStatesWhatItOwns`
+- Every `typo3://` resource it names is one this server serves —
+  `SkillTest::everyResourceASkillNamesIsOneTheServerServes`
 
-Those seven run over the skills directory rather than over a list, so a skill
-added later is held to them without anybody registering it anywhere — which is
-the point, because the list is the thing a new skill is written without ever
-seeing. `SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt` holds
-this table and that set to each other in both directions: a rule here with no
-test behind it, or a directory-wide assertion nobody wrote down, fails.
+All of them but the routing rule run over the skills directory rather than over
+a list, so a skill added later is held to them without anybody registering it
+anywhere — which is the point, because the list is the thing a new skill is
+written without ever seeing.
+`SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt` holds this
+table and that set to each other in both directions: a rule here with no test
+behind it, or a directory-wide assertion nobody wrote down, fails.
 
 **The name and the description.** The directory name, the `name:` in the front
 matter and the name every other skill calls it by are one string. The
@@ -142,6 +145,17 @@ than where every task carries it.
 **Routing, in order.** What a skill adds to the base is a short list of tools in
 the order it needs them, recorded in the `ROUTING_SKILLS` map of `SkillTest`.
 The four calls the base already fixes are deliberately absent from that list.
+
+**The page a step expects read whole.** Where a step describes a whole procedure
+and routes to a search for it, name the `typo3://guides` resource the procedure
+exists whole as, at that step. A lookup answers the section the query matched,
+so a session that only searches reads a procedure in pieces without learning it
+is one — which is what a core session did with the Gerrit push page
+([`D-AUD-007`](../../decisions/audience/aud-007-the-prose-documents-are-named-where-a-session-already-looks.md)).
+Name it once, where it is needed, and not at every mention: a client may render
+no resource list, so the address in the skill is the only one the session gets.
+This is not a licence to restate the page — the uri is the routing, and what is
+behind it stays there.
 
 **References.** Anything a task reads once — a checklist, a rubric, one layer's
 implementation guide — is a file below `references/`, named in `SKILL.md`

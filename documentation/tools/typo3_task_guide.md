@@ -316,6 +316,8 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
   direction. A missing entry surfaces when somebody audits the matcher files
   against the changelog.
 
+Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages). A client may render no resource list, so that address is how one is reached.
+
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
 - `CI=true ./Build/Scripts/runTests.sh -s functional`
@@ -783,6 +785,8 @@ Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) â
   or administrator workflows and only breaks in the assembled backend. They
   replaced the former acceptance suites.
 - Document tests that could not be executed and why.
+
+Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules). A client may render no resource list, so that address is how one is reached.
 
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`

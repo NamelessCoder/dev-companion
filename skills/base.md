@@ -34,6 +34,11 @@ matter too.
    layers, its XLF files with the source language each one declares. What it
    does *not* ship is answered too, and that is the half no file listing can
    give you.
+
+   Where step 1 reported none — a core checkout is the case, since it names the
+   project's own extensions and not TYPO3's — that answer is this step, and
+   there is nothing to call. Say so. A step passed over in silence cannot be
+   told from one that was dropped.
 3. **`typo3_task_guide`** with a short English task, the paths it touches, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.

@@ -209,6 +209,8 @@ Useful for type-sensitive PHP changes and API contract changes.
 
 (section truncated — read typo3://guides/core/testing/scripts for the rest)
 
+Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Script Help (typo3://guides/core/testing/scripts). A client may render no resource list, so that address is how one is reached.
+
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 ````
 

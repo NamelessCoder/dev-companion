@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Server\Installer;
@@ -1346,6 +1347,34 @@ final class SkillTest extends TestCase
         }
     }
 
+    /**
+     * A skill is a copy in somebody else's project, so a uri it names is a
+     * promise no release of this server corrects. It is also the only address a
+     * session gets where the client renders no resource list, which is the case
+     * `D-AUD-007` was reopened by — a dead one there is worse than none.
+     */
+    #[Test]
+    public function everyResourceASkillNamesIsOneTheServerServes(): void
+    {
+        $served = array_map(
+            static fn(array $document): string => Documents::uri($document['id']),
+            Documents::topics(),
+        );
+
+        foreach (self::skills() as $name => $skill) {
+            foreach (self::published($name, $skill) as $file => $text) {
+                preg_match_all('#typo3://[a-zA-Z0-9/_-]+#', $text, $matches);
+                foreach (array_unique($matches[0]) as $uri) {
+                    self::assertContains(
+                        $uri,
+                        $served,
+                        $name . '/' . $file . ' names ' . $uri . ', which this server does not serve',
+                    );
+                }
+            }
+        }
+    }
+
     #[Test]
     public function noSkillKeepsASecondCopyOfWhatAToolOwns(): void
     {
@@ -2044,6 +2073,27 @@ final class SkillTest extends TestCase
         return (string) preg_replace('/\s+/', ' ', $skill);
     }
 
+
+    /**
+     * Everything one skill installs into another project: its body and every
+     * reference beside it.
+     *
+     * @return array<string, string>
+     */
+    private static function published(string $name, string $skill): array
+    {
+        $files = ['SKILL.md' => $skill];
+
+        $directory = Paths::root() . '/skills/' . $name . '/references';
+        if (!is_dir($directory)) {
+            return $files;
+        }
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.md')->sortByName() as $reference) {
+            $files['references/' . $reference->getFilename()] = (string) file_get_contents($reference->getPathname());
+        }
+
+        return $files;
+    }
 
     /**
      * Every published skill, read from the directory the installer publishes.

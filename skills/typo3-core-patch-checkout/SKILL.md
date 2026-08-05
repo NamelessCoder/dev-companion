@@ -32,7 +32,9 @@ has an end, and reaching one is a result.
 3. `typo3_rule_lookup` for the Gerrit workflow. It carries the ref a patch set
    is fetched by, and the one thing about fetching a core change that is not
    guessable: which remote the ref is on, which is not the one the checkout
-   fetches from.
+   fetches from. Those are two sections of one page,
+   `typo3://guides/core/contribution/gerrit-workflow`, and a lookup returns the
+   one your words matched — read the page whole where the fetch is the task.
 
 ## Before the checkout is changed
 
@@ -121,10 +123,10 @@ order because each part makes the next one possible.
    only one of them. Take the update as a fast-forward: a merge commit on a
    local branch tracking the core is a state nothing here asked for.
 5. **Bring the installed dependencies back in step with the branch.** Moving
-   between a patch set and current code can change what the lock file pins,
-   and a suite run against dependencies belonging to the other revision fails
-   for a reason that is not in the diff. This is the step that is skipped and
-   then spends an hour being diagnosed as a test failure.
+   between a patch set and current code can change what the lock file pins, and
+   a suite run against dependencies belonging to the other revision fails for a
+   reason that is not in the diff. This is the step that is skipped and then
+   spends an hour being diagnosed as a test failure.
 
 Say the end state in the answer: which branch, which commit, and that the tree
 is clean. "Restored" without those three is the claim rather than the result.
@@ -134,9 +136,9 @@ it: finding it, fetching the patch set, rebasing it where that is what the work
 needs, resolving what the change itself decides, stopping where it does not, and
 restoring the checkout to a clean branch that is current with its remote. It
 owns the undo as much as the do, and the undo is what runs whichever way the
-rest went. It does not own judging the patch
-— where the request is to say what is wrong with it, `typo3-core-patch-review`
-owns that, and it starts from the checkout this leaves behind. It does not own
-changing the patch either: amending a change into a new patch set and pushing it
-belongs to `typo3-core-patch-development`, and carry over the change number, the
-patch set that was fetched and whether it needed a rebase to apply.
+rest went. It does not own judging the patch — where the request is to say what
+is wrong with it, `typo3-core-patch-review` owns that, and it starts from the
+checkout this leaves behind. It does not own changing the patch either: amending
+a change into a new patch set and pushing it belongs to
+`typo3-core-patch-development`, and carry over the change number, the patch set
+that was fetched and whether it needed a rebase to apply.

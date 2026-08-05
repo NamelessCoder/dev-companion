@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\CommitMessage;
+use Typo3CmsMcp\Knowledge\ReleaseLines;
 
 final class CommitMessageTest extends TestCase
 {
@@ -565,6 +566,94 @@ final class CommitMessageTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         CommitMessage::parse("   \n");
+    }
+
+    /**
+     * The trailer the feedback was filed about came back clean, and a long dead
+     * branch would have come back the same way — `D-ANS-058`.
+     */
+    #[Test]
+    public function aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Keep the line breaks',
+            'issue' => '88556',
+            'releases' => ['main', '9.5'],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'unmaintained-release-line');
+        self::assertCount(1, $checks);
+        self::assertSame('error', $checks[0]['level']);
+        self::assertStringContainsString('2025-09-30', $checks[0]['message']);
+        self::assertStringContainsString('main', $checks[0]['message']);
+        self::assertNotContains('no-issues-found', array_column($result['checks'], 'code'));
+    }
+
+    /**
+     * A branch the list has never heard of is a warning, because the list ages
+     * in one direction: a line that ends does so on a date it already carries,
+     * and a line that opens is a branch created after it was read.
+     */
+    #[Test]
+    public function aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Keep the line breaks',
+            'issue' => '88556',
+            'releases' => ['14.1'],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'unknown-release-line');
+        self::assertCount(1, $checks);
+        self::assertSame('warning', $checks[0]['level']);
+        self::assertStringContainsString(ReleaseLines::readAt(), $checks[0]['message']);
+        self::assertStringContainsString(ReleaseLines::source(), $checks[0]['message']);
+    }
+
+    /**
+     * A check that only refuses arrives too late: the session that filed this
+     * had already counted the trailers on 40 commits by then.
+     */
+    #[Test]
+    public function theMissingTrailerNamesTheLinesThatTakeAPatch(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Keep the line breaks',
+            'issue' => '88556',
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'missing-releases');
+        self::assertCount(1, $checks);
+        foreach (ReleaseLines::releasable() as $branch) {
+            self::assertStringContainsString($branch, $checks[0]['message']);
+        }
+    }
+
+    /**
+     * The trailer belongs to the core repository alone, so a project that writes
+     * one is naming its own releases and there is nothing here to hold it
+     * against.
+     */
+    #[Test]
+    public function outsideTheCoreNoBranchIsHeldAgainstTheLines(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Keep the line breaks',
+            'releases' => ['9.5', '14.1'],
+            'workflow' => CommitMessage::WORKFLOW_PROJECT,
+        ]);
+
+        self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+        self::assertStringContainsString("\nReleases: 9.5, 14.1", $result['message']);
     }
 
     /** @return array<int, string> */

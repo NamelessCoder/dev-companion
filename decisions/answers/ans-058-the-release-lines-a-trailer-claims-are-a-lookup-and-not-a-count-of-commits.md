@@ -1,7 +1,7 @@
 ---
 id: D-ANS-058
 date: 2026-08-05
-status: open
+status: confirmed
 ---
 
 # D-ANS-058 — The release lines a trailer claims are a lookup, and not a count of commits
@@ -68,3 +68,42 @@ server does not offer anywhere, and accepts whatever comes back.
   trailers, which is worse than the silence it replaced.
 - What a change type owes each line turns out to be a judgement rather than a
   rule, in which case the check can only report the branch and not the set.
+
+## Covered by
+
+- `ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose`
+- `CommitMessageTest::aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch`
+- `CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead`
+- `CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch`
+
+## Confirmed on 2026-08-05
+
+The reading was done and the assumption held. `https://get.typo3.org/api/v1/major/`
+answers one entry per major with `maintained_until` and `elts_until`, which is
+what `knowledge/release-lines.json` now carries. It knows nothing about the
+development line — there is no entry for 15 — so `main` is stated in that file
+rather than read, and it is the one line whose end date nothing supplies.
+
+The checkout confirms the API instead of replacing it. The public branch of a
+line stops receiving commits when regular support ends: `origin/12.4` last moved
+on 2026-04-14 against a `maintained_until` of 2026-04-30, `origin/11.5` on
+2024-10-16 against 2024-10-31, while `main`, `14.3` and `13.4` all carried a
+commit on 2026-08-04. So the three lines the reported session inferred from 40
+trailers were the right three, which is the outcome that makes the silence worth
+closing rather than the inference worth distrusting.
+
+What the two **Wrong if** about staleness bought is a design rather than a
+promise: the windows are stored and the state is derived on the day the question
+is asked, so a line moving into ELTS needs no re-read and cannot start failing a
+valid trailer. Only a branch created after the file was read is missing from it,
+and that case is a warning naming the source and the read date rather than an
+error.
+
+The third is settled and went the way it warned it might. Measured on the core
+checkout, `origin/main..origin/14.3` carries no `[FEATURE]` and no `[!!!]` at
+all, and `origin/main..origin/13.4` carries three `[FEATURE]` against 969
+`[BUGFIX]` — all of them explicit backports. A feature on a release line is
+therefore rare and permitted, which makes it the release managers' call and not
+a set the check can hold. It is written into
+`knowledge/documents/core/contribution/commit-messages.md` as prose, and the
+check still reports the branch alone.

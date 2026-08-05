@@ -7,7 +7,8 @@ the checks name every run of lines the wrapping joined and every line it could
 not bring under the width. Defaults to a repository of your own, where the
 subject and body conventions apply but the Forge issue, the Releases: trailer
 and the changelog do not; pass workflow="core" for a patch against the TYPO3
-core. Answers from: knowledge.
+core, where the Releases: trailer is also held against the branches that take a
+patch today. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -37,8 +38,11 @@ issue: string  # optional
 # Optional related Forge issue numbers.
 relatedIssues: [string]  # optional
 # Target releases, for example main or 13.4. Left out, the draft carries a
-# RELEASE_TARGET placeholder and the checks ask for it — the branches a change
-# is released on are not guessed.
+# RELEASE_TARGET placeholder and the checks name the lines taking a patch today
+# — the branches a change is released on are not guessed. Each one passed is
+# held against those lines: a branch out of regular support is an error, since
+# ELTS releases come from the ELTS partners rather than from a patch to that
+# branch.
 releases: [string]  # optional
 # Optional commit body. It is wrapped at 72 characters in the draft: indent a
 # block to keep the line breaks you wrote, and keep those lines under the width

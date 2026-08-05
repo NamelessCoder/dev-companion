@@ -57,6 +57,29 @@ Guide.
 - Do not create or change `Change-Id:` manually. The commit hook creates it.
   Keep it when amending an existing Gerrit patch set.
 
+## Release Targets
+
+- `Releases:` names branches: `main` and the maintained release lines, comma
+  separated.
+- Which lines those are changes with every LTS release and every support window
+  that closes, so it is a lookup and not a rule to remember.
+  `typo3_commit_message_guide` names them where the trailer is left out, and
+  reports a branch that is out of regular support as an error.
+- A line out of regular support still has releases, and the ELTS partners make
+  them. A patch pushed to Gerrit is not one of them.
+- The branch list in a checkout does not answer this. `git branch -r` reaches
+  back to `TYPO3_3-6`, and counting `Releases:` trailers on recent commits
+  samples what other changes needed rather than what this one does.
+- Which of the maintained lines a change reaches is your reading of where the
+  defect is, and the trailer is the claim you verified it there — by reading the
+  changed file on each branch you name.
+- A feature, a deprecation and a breaking change go to `main`. A backport of one
+  happens and is the release managers' call: `origin/main..origin/13.4` carries
+  three `[FEATURE]` commits against 969 `[BUGFIX]` ones, and
+  `origin/main..origin/14.3` carries none at all.
+- A bug fix goes to every maintained line that carries the defect, which is what
+  makes it the change type the trailer is worth checking on.
+
 ## Breaking Changes
 
 - Breaking changes must use `[!!!]` before the keyword.

@@ -6,7 +6,8 @@ namespace Typo3CmsMcp\Knowledge;
 
 /**
  * Drafts a TYPO3 core commit message and checks it against the contribution
- * rules. Pure logic — reads nothing and touches no checkout.
+ * rules. Touches no checkout, and the one thing it reads is the release lines a
+ * `Releases:` trailer is held against.
  *
  * The draft is emitted ready to use, so everything the rules demand of a commit
  * message has to hold for what this class returns: an agent copies the block
@@ -398,6 +399,55 @@ final class CommitMessage
         ];
     }
 
+    /**
+     * What is wrong with one branch in the `Releases:` trailer, or null when
+     * nothing is.
+     *
+     * The check says the line takes a patch and no more than that. Whether the
+     * defect is on it stays the author's reading, verified by looking at the
+     * changed file on that branch — `D-ANS-058`.
+     *
+     * A branch nothing is known about is a warning rather than an error,
+     * because the list ages in one direction only: a line that ends does so on
+     * a date this already carries, and a line that opens is a branch created
+     * after the list was read.
+     *
+     * @return array{level: string, code: string, message: string}|null
+     */
+    private static function releaseLineCheck(string $release): ?array
+    {
+        $state = ReleaseLines::state($release);
+        if ($state === ReleaseLines::DEVELOPMENT || $state === ReleaseLines::MAINTAINED) {
+            return null;
+        }
+
+        if ($state === ReleaseLines::UNKNOWN) {
+            return [
+                'level' => 'warning',
+                'code' => 'unknown-release-line',
+                'message' => sprintf(
+                    '"%s" is not a release line this server knows. The lines taking a patch today are %s, read from '
+                        . '%s on %s — a branch opened since then is one this list is missing rather than one you may '
+                        . 'not name.',
+                    $release,
+                    implode(', ', ReleaseLines::releasable()),
+                    ReleaseLines::source(),
+                    ReleaseLines::readAt(),
+                ),
+            ];
+        }
+
+        return [
+            'level' => 'error',
+            'code' => 'unmaintained-release-line',
+            'message' => sprintf(
+                '%s, so a patch pushed to Gerrit is not released there. The lines taking one today are %s.',
+                ReleaseLines::describe($release),
+                implode(', ', ReleaseLines::releasable()),
+            ),
+        ];
+    }
+
     private static function isTrailer(string $line): bool
     {
         if (preg_match('/^([A-Za-z][A-Za-z-]*):\s*\S/', $line, $matches) !== 1) {
@@ -454,9 +504,21 @@ final class CommitMessage
             $checks[] = [
                 'level' => 'warning',
                 'code' => 'missing-releases',
-                'message' => 'The draft carries "Releases: ' . self::RELEASE_PLACEHOLDER . '". Replace it with the '
-                    . 'target versions, for example "Releases: main, 13.4".',
+                'message' => sprintf(
+                    'The draft carries "Releases: %s". Replace it with the branches this change is released on. '
+                        . 'The lines taking a patch today are %s; which of them the change reaches is your reading '
+                        . 'of where the defect is, and the trailer claims you verified it there.',
+                    self::RELEASE_PLACEHOLDER,
+                    implode(', ', ReleaseLines::releasable()),
+                ),
             ];
+        }
+
+        foreach ($isCore ? $releases : [] as $release) {
+            $releaseCheck = self::releaseLineCheck($release);
+            if ($releaseCheck !== null) {
+                $checks[] = $releaseCheck;
+            }
         }
 
         $length = mb_strlen($subject);

@@ -1,0 +1,47 @@
+{
+  "source": "https://get.typo3.org/api/v1/major/",
+  "readAt": "2026-08-05",
+  "confirmedBy": "git -C <typo3-core-checkout> log -1 origin/<branch>",
+  "development": {
+    "major": 15,
+    "branch": "main"
+  },
+  "released": [
+    {
+      "major": 14,
+      "branch": "14.3",
+      "maintainedUntil": "2029-06-30",
+      "eltsUntil": "2032-06-30"
+    },
+    {
+      "major": 13,
+      "branch": "13.4",
+      "maintainedUntil": "2027-12-31",
+      "eltsUntil": "2030-12-31"
+    },
+    {
+      "major": 12,
+      "branch": "12.4",
+      "maintainedUntil": "2026-04-30",
+      "eltsUntil": "2030-04-30"
+    },
+    {
+      "major": 11,
+      "branch": "11.5",
+      "maintainedUntil": "2024-10-31",
+      "eltsUntil": "2028-10-31"
+    },
+    {
+      "major": 10,
+      "branch": "10.4",
+      "maintainedUntil": "2023-04-30",
+      "eltsUntil": "2027-04-30"
+    },
+    {
+      "major": 9,
+      "branch": "9.5",
+      "maintainedUntil": "2021-09-30",
+      "eltsUntil": "2025-09-30"
+    }
+  ]
+}

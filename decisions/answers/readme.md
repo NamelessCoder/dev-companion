@@ -11,7 +11,7 @@ one is added.
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
 - [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named, and the reading is the caller's · 2026-08-05
-- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup, and not a count of commits · 2026-08-05
+- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup, and not a count of commits · 2026-08-05 · confirmed
 - [`D-ANS-059`][D-ANS-059] — What this server holds carried the task, and what it read elsewhere is where it misled · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04

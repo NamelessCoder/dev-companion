@@ -26,7 +26,7 @@ final class CommitMessageGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to a repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not; pass workflow="core" for a patch against the TYPO3 core.';
+        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to a repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not; pass workflow="core" for a patch against the TYPO3 core, where the Releases: trailer is also held against the branches that take a patch today.';
     }
 
     public static function inputSchema(): array
@@ -40,7 +40,7 @@ final class CommitMessageGuide extends ReadOnlyTool
                 'summary' => ['type' => 'string', 'minLength' => 1, 'description' => 'Summary text without the TYPO3 keyword prefix.'],
                 'issue' => ['type' => 'string', 'description' => 'Forge issue number, with or without leading #.'],
                 'relatedIssues' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'Optional related Forge issue numbers.'],
-                'releases' => ['type' => 'array', 'items' => ['type' => 'string'], 'description' => 'Target releases, for example main or 13.4. Left out, the draft carries a RELEASE_TARGET placeholder and the checks ask for it — the branches a change is released on are not guessed.'],
+                'releases' => ['type' => 'array', 'items' => ['type' => 'string'], 'description' => 'Target releases, for example main or 13.4. Left out, the draft carries a RELEASE_TARGET placeholder and the checks name the lines taking a patch today — the branches a change is released on are not guessed. Each one passed is held against those lines: a branch out of regular support is an error, since ELTS releases come from the ELTS partners rather than from a patch to that branch.'],
                 'body' => ['type' => 'string', 'description' => 'Optional commit body. It is wrapped at 72 characters in the draft: indent a block to keep the line breaks you wrote, and keep those lines under the width yourself.'],
                 'isBreaking' => ['type' => 'boolean', 'description' => 'Whether this is a breaking change requiring [!!!]. Left out, the checks say the classification was assumed: it is a property of the diff, which this tool never sees.'],
                 'isDeprecation' => ['type' => 'boolean', 'description' => 'Whether this is a deprecation. Left out, it is assumed the same way and the checks say so.'],

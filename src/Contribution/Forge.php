@@ -128,7 +128,7 @@ final class Forge
     public function issue(string $issue): array
     {
         $number = ltrim(trim($issue), '#');
-        $url = self::HOST . '/issues/' . rawurlencode($number) . '.json?include=journals,relations';
+        $url = self::HOST . '/issues/' . rawurlencode($number) . '.json?include=journals,relations,attachments';
 
         $answer = $this->api($url, 'issue');
         // A tracker that says 404 has answered: there is no such issue, which
@@ -187,9 +187,80 @@ final class Forge
             'url' => $url,
             'query' => $words,
             'total' => $answer['total'],
-            'results' => $results,
+            'results' => $this->filled($results),
             'cause' => null,
         ];
+    }
+
+    /**
+     * The fields a search hit is not made of, read for the whole page at once.
+     *
+     * `/search.json` answers with a title and a URL, so the area, the assignee
+     * and the two dates are absent from every hit — and a record carrying them
+     * empty is a false statement rather than a missing one: it reads as an
+     * issue nobody has categorised, nobody holds and nothing has moved on. A
+     * session took 50 of 50 rows that way on 2026-08-05
+     * (`feedback/2026-08-05-033902`), and the search path is where a triage
+     * asks about age.
+     *
+     * `/issues.json` filtered by an id list answers all four for the page in
+     * one request, which is what makes filling them cheaper than explaining
+     * them. `status_id=*` is what keeps a closed hit in it — a search answers
+     * with closed issues, and the default of that endpoint is open ones.
+     *
+     * Where it cannot be reached the hits stand as they came back. A search
+     * that answered is not turned into an outage by a second call that did not.
+     *
+     * @param list<array<string, mixed>> $results
+     * @return list<array<string, mixed>>
+     */
+    private function filled(array $results): array
+    {
+        $numbers = [];
+        foreach ($results as $hit) {
+            if (is_int($hit['issue']) && $hit['issue'] > 0) {
+                $numbers[] = $hit['issue'];
+            }
+        }
+        if ($numbers === []) {
+            return $results;
+        }
+
+        $url = self::HOST . '/issues.json?' . http_build_query([
+            'issue_id' => implode(',', $numbers),
+            'status_id' => '*',
+            'limit' => count($numbers),
+        ]);
+        $answer = $this->api($url, 'issues');
+        if ($answer['part'] === null) {
+            return $results;
+        }
+
+        $fields = [];
+        foreach ($answer['part'] as $entry) {
+            if (is_array($entry)) {
+                $read = self::entry($entry);
+                $fields[$read['issue']] = $read;
+            }
+        }
+
+        foreach ($results as $at => $hit) {
+            $read = $fields[$hit['issue']] ?? null;
+            if ($read === null) {
+                continue;
+            }
+            $results[$at]['category'] = $read['category'];
+            $results[$at]['assignedTo'] = $read['assignedTo'];
+            $results[$at]['createdOn'] = $read['createdOn'];
+            $results[$at]['updatedOn'] = $read['updatedOn'];
+            // The tracker and the status are read off the title, which is the
+            // tracker's own wording and usually parses. Where it did not, they
+            // are fields here.
+            $results[$at]['tracker'] = $hit['tracker'] !== '' ? $hit['tracker'] : $read['tracker'];
+            $results[$at]['status'] = $hit['status'] !== '' ? $hit['status'] : $read['status'];
+        }
+
+        return $results;
     }
 
     /**
@@ -456,10 +527,9 @@ final class Forge
             'subject' => $subject,
             'tracker' => $tracker,
             'status' => $status,
-            // A search hit is a title and a URL. Who holds the issue and the two
-            // dates are fields of the issue, which only a read of the issue and
-            // the enumeration answer with — and an empty string here says the
-            // hit did not carry them rather than that nobody holds it.
+            // A search hit is a title and a URL. The four below are fields of
+            // the issue, and `filled()` is what reads them for the whole page —
+            // what is left empty here is what that call could not reach.
             'category' => '',
             'assignedTo' => '',
             'createdOn' => '',
@@ -558,9 +628,48 @@ final class Forge
             'url' => self::HOST . '/issues/' . (int) ($raw['id'] ?? $number),
             'description' => is_string($raw['description'] ?? null) ? trim($raw['description']) : '',
             'relations' => $relations,
+            'attachments' => self::attachments($raw),
             'noteCount' => count($notes),
             'notes' => array_slice($notes, -self::NOTES),
         ];
+    }
+
+    /**
+     * The files hanging off an issue, named rather than fetched.
+     *
+     * On a bug report about rendering, the evidence is regularly a screenshot,
+     * and Redmine's inline syntax puts it into a comment as `!name.jpg!` — so
+     * the text of that comment is a bare filename and reads as an empty
+     * comment. On #88556 two of the seven attachments decided the triage: one
+     * showed the editor's source view, the other the reporter's literal
+     * database content, and a session that read only the text would have filed
+     * one wrong verdict for two different defects
+     * (`feedback/2026-08-05-033846`).
+     *
+     * What comes back is the list and not the bytes. The URLs answer without a
+     * credential, an image is read by a caller that can read images, and this
+     * server transcribes nothing.
+     *
+     * @param array<string, mixed> $raw
+     * @return list<array<string, mixed>>
+     */
+    private static function attachments(array $raw): array
+    {
+        $attachments = [];
+        foreach (is_array($raw['attachments'] ?? null) ? $raw['attachments'] : [] as $file) {
+            if (!is_array($file) || !is_string($file['filename'] ?? null)) {
+                continue;
+            }
+            $attachments[] = [
+                'filename' => $file['filename'],
+                'contentType' => is_string($file['content_type'] ?? null) ? $file['content_type'] : '',
+                'size' => isset($file['filesize']) && is_numeric($file['filesize']) ? (int) $file['filesize'] : 0,
+                'on' => is_string($file['created_on'] ?? null) ? $file['created_on'] : '',
+                'url' => is_string($file['content_url'] ?? null) ? $file['content_url'] : '',
+            ];
+        }
+
+        return $attachments;
     }
 
     /** @param mixed $field */

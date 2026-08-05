@@ -2,19 +2,20 @@
 
 Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass
 issue with a number to read that one: subject, tracker, status, target version,
-the TYPO3 and PHP versions it was reported against, related issues, and the
-comments — where a maintainer who closed or reassigned it said why, which the
-description never says. Or pass query with words to find out which other issues
-describe the same thing, which the relations of one issue only answer for what
-somebody linked by hand. Or pass open to enumerate the core project's unresolved
-issues without holding a number or a wording — oldest filed or longest
-untouched, narrowed by tracker and by date, which is where a triage of the
-backlog starts; the count of everything that matched comes back with the page,
-so a limited answer says whether it is the whole set. Each entry carries its
-number, subject, tracker, status and URL. A call carries issue, query or open,
-never two of them. An issue that does not exist is answered as such, and so is a
-tracker that could not be reached. Reading only, and no credential: commenting,
-assigning and closing stay yours. Answers from: network.
+the TYPO3 and PHP versions it was reported against, related issues, the files
+hanging off it — which on a report about rendering is where the evidence usually
+is — and the comments, where a maintainer who closed or reassigned it said why,
+which the description never says. Or pass query with words to find out which
+other issues describe the same thing, which the relations of one issue only
+answer for what somebody linked by hand. Or pass open to enumerate the core
+project's unresolved issues without holding a number or a wording — oldest filed
+or longest untouched, narrowed by tracker and by date, which is where a triage
+of the backlog starts; the count of everything that matched comes back with the
+page, so a limited answer says whether it is the whole set. Each entry carries
+its number, subject, tracker, status and URL. A call carries issue, query or
+open, never two of them. An issue that does not exist is answered as such, and
+so is a tracker that could not be reached. Reading only, and no credential:
+commenting, assigning and closing stay yours. Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
@@ -140,6 +141,24 @@ issue:
       issue: integer
       # duplicates, relates, blocked, precedes.
       relation: string
+  # The files hanging off the issue. On a report about rendering these are
+  # usually screenshots, and they are regularly where the evidence is: a comment
+  # that consists of !image.jpg! references reads as an empty comment otherwise.
+  # Empty where the issue carries none.
+  attachments:
+    - # The name the file was uploaded under, which is also how a comment refers
+      # to it: Redmine writes an inline image as !name.png! and the text around
+      # it says nothing else about it.
+      filename: string
+      # image/png, image/jpeg, text/plain.
+      contentType: string
+      # Bytes.
+      size: integer
+      # When it was uploaded, which is what says which comment it belongs to.
+      on: string
+      # Where the file itself is. It answers without a credential, and reading
+      # it is the caller's: nothing here fetches or transcribes one.
+      url: string
   # How many comments the issue carries in total.
   noteCount: integer
   # The most recent comments, oldest first. A closure, a reassignment and a "we
@@ -159,20 +178,19 @@ results:
     tracker: string
     # Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.
     status: string
-    # The area the core files it under, empty where none is set or where the
-    # entry did not carry it. Empty on a query, whose hits are titles rather
-    # than issues.
+    # The area the core files it under, empty where none is set. A search hit is
+    # a title and carries none of the four fields below, so they are read for
+    # the whole page in one further call — and empty here means that call did
+    # not reach the tracker rather than that the issue has no area.
     category: string
-    # Who the tracker says holds this, empty where nobody does or where the
-    # entry did not carry it. What it decides for a triage is whether the issue
-    # is free to take, and on an old one it is usually who last touched it
-    # rather than who is on it.
+    # Who the tracker says holds this, empty where nobody does. What it decides
+    # for a triage is whether the issue is free to take, and on an old one it is
+    # usually who last touched it rather than who is on it.
     assignedTo: string
-    # When it was filed. Empty on a query, whose hits are titles rather than
-    # issues.
+    # When it was filed.
     createdOn: string
     # When anything last moved on it, which is the measure of neglect rather
-    # than of age. Empty on a query.
+    # than of age.
     updatedOn: string
     # Where a person reads it.
     url: string
@@ -189,11 +207,11 @@ unavailable:
 ## Answered
 
 Recorded on 2026-08-05 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 15.0.0-dev, an installation outside this repository, whose
-console could not be reached: the DDEV project is paused — start it with
-"ddev start" in <installation> to answer from the installation. Nothing checks
-what is below this heading; everything above it is derived from the class that
-answers the call, and `bin/cli tools:check` holds it.
+core-checkout, TYPO3 14.3.0, the core checkout this repository writes below
+.fixtures/, whose console could not be reached: <installation> has no TYPO3
+console — none of vendor/bin/typo3, bin/typo3 exists. Nothing checks what is
+below this heading; everything above it is derived from the class that answers
+the call, and `bin/cli tools:check` holds it.
 
 ### forge: what an issue says and what was decided
 
@@ -238,7 +256,7 @@ Data:
 {
     "status": "answered",
     "source": "https://forge.typo3.org",
-    "url": "https://forge.typo3.org/issues/110348.json?include=journals,relations",
+    "url": "https://forge.typo3.org/issues/110348.json?include=journals,relations,attachments",
     "query": "",
     "total": 0,
     "categories": [],
@@ -258,6 +276,7 @@ Data:
         "url": "https://forge.typo3.org/issues/110348",
         "description": "The \"imagesOnPage\" feature is older than git. It needs to be revised to be integrated into FAL.",
         "relations": [],
+        "attachments": [],
         "noteCount": 3,
         "notes": [
             {
@@ -274,6 +293,443 @@ Data:
                 "author": "Benni Mack",
                 "on": "2026-08-02T20:45:10Z",
                 "note": "Applied in changeset commit:e82b930e6e0587842427496c5ce01f625b27fb66."
+            }
+        ]
+    },
+    "results": [],
+    "unavailable": null
+}
+```
+
+### forge: an issue whose evidence hangs off it
+
+Called with:
+
+```json
+{
+    "issue": "88556"
+}
+```
+
+Text:
+
+```
+#88556 One line break in DB field causes 3 rendered p-tags in CKEditor
+Bug · Under Review · priority Should have · https://forge.typo3.org/issues/88556
+Assigned to nobody.
+Target version: Candidate for patchlevel
+Reported against TYPO3 12, PHP 8.2 — which is what the reporter had, not what it still reproduces on.
+Relation: relates #96466
+
+## Reported
+<pre><code class="html">
+<p>Hello World
+</p><ul><li>foo bar</li></ul>
+</code></pre>
+
+When writing this into a DB field with enabled RTE it causes 3 additional empty p-tags in CKEditor. These can be saved too. See attachment for a sample.
+
+Not sure whether this is a CKEditor or TYPO3 related issue.
+
+## Attachments (7)
+On a report about rendering these are usually where the evidence is, and Redmine writes an inline image into a comment as !filename! — so a comment below that is nothing but a filename is referring to one of these. Read the ones the report turns on; this server does not fetch them.
+- ckeditor-3-p-tags.png · image/png · 15 kB · 2019-06-13 · https://forge.typo3.org/attachments/download/34363/ckeditor-3-p-tags.png
+- db_field_value.jpg · image/jpeg · 17 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37897/db_field_value.jpg
+- rte_view.jpg · image/jpeg · 11 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37898/rte_view.jpg
+- rte_view_sourcecode.jpg · image/jpeg · 21 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37899/rte_view_sourcecode.jpg
+- fe_output.jpg · image/jpeg · 17 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37900/fe_output.jpg
+- fe_output_sourcecode.jpg · image/jpeg · 32 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37901/fe_output_sourcecode.jpg
+- db_field_value_wo_linebreak.jpg · image/jpeg · 15 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37902/db_field_value_wo_linebreak.jpg
+
+## Comments (12 of 12, oldest first)
+What was decided is here rather than above.
+
+**Benni Mack**, 2019-06-13T13:37:33Z
+Are you using the RTE in a FlexForm?
+
+**Alex Nostadt**, 2019-06-13T13:40:26Z
+Benni Mack wrote:
+> Are you using the RTE in a FlexForm?
+
+No, I use it in a TCA.
+
+When removing the single existing line break between "World" and closing p-tag no additional line breaks are created. I have switched temporary to T3's default preset but the behaviour was the same.
+
+That's my TCA field config:
+<pre><code class="php">
+<?php
+        'myField' => [
+            'exclude' => 1,
+            'label' => $ll . 'myField',
+            'config' => [
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 15,
+                'eval' => 'trim',
+                'enableRichtext' => true,
+            ],
+        ],
+</code></pre>
+
+**Riccardo De Contardi**, 2019-06-29T21:50:09Z
+Is this somehow related? #88655
+
+**Alex Nostadt**, 2019-07-02T12:07:18Z
+Riccardo De Contardi wrote:
+> Is this somehow related? #88655
+
+I will check within this week.
+
+**Alex Nostadt**, 2019-07-08T18:57:16Z
+I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.
+
+**Benni Mack**, 2019-08-16T12:46:29Z
+Alex Nostadt wrote:
+> I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.
+
+Can you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure.
+
+**Alex Nostadt**, 2019-08-17T09:05:59Z
+Benni Mack wrote:
+> Alex Nostadt wrote:
+> > I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.
+> 
+> Can you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure.
+
+I could reproduce it with the default T3 config as well but can provide it as well within the next days.
+
+**Alex Nostadt**, 2019-08-26T15:38:15Z
+Alex Nostadt wrote:
+> Benni Mack wrote:
+> > Alex Nostadt wrote:
+> > > I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.
+> > 
+> > Can you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure.
+> 
+> I could reproduce it with the default T3 config as well but can provide it as well within the next days.
+
+Sorry, forgot this ticket. Add this to my priority list now.
+
+**Alex Nostadt**, 2019-08-30T08:42:51Z
+That's the RTE configuration:
+(I include Specific.yaml. We have multiple "Specific.yaml" files and our Default.yaml is our common denominator)
+*Default.yaml*
+<pre><code class="yaml">
+imports:
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
+    - { resource: "EXT:rte_ckeditor_image/Configuration/RTE/Plugin.yaml" }
+
+processing:
+    ## allowed default attributes (added by us is..: "style")
+    allowAttributes: [class, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop, style]
+
+editor:
+    externalPlugins:
+        find:
+            resource: "EXT:provider/Resources/Public/CKEditor/Plugins/find/"
+
+    config:
+        # can be "default", but a custom stylesSet can be defined here, which fits TYPO3 best
+        stylesSet:
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:align-center", element: "p", styles: { text-align: "center"} }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:justify", element: "p", styles: { text-align: "justify"} }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:author", element: "p", attributes: { class: 'author' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:citation", element: "p", attributes: { class: 'citation' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:check", element: ["ul"], attributes: { class: 'check' } }
+
+        toolbarGroups:
+            - { name: styles, groups: [ styles ] }
+            - "/"
+            - { name: editing, groups: [ find, selection, spellchecker, editing ] }
+            - { name: forms, groups: [ forms ] }
+            - { name: basicstyles, groups: [ basicstyles, cleanup ] }
+            - { name: paragraph, groups: [ list, indent, blocks, align, bidi, paragraph ] }
+            - { name: links, groups: [ links ] }
+            - { name: insert, groups: [ insert ] }
+            - { name: colors, groups: [ colors ] }
+            - { name: others, groups: [ others ] }
+            - "/"
+            - { name: clipboard, groups: [ clipboard, undo ] }
+            - { name: document, groups: [ mode, document, doctools ] }
+            - { name: tools, groups: [ tools ] }
+            - { name: about, groups: [ about ] }
+
+        format_tags: "p;h1;h2;h3;h4"
+
+        justifyClasses:
+            - text-left
+            - text-center
+            - text-right
+            - text-justify
+
+        buttons:
+            link:
+                url:
+                    properties:
+                        class:
+                            default: 'external-link'
+                properties:
+                    class:
+                        allowedClasses: 'external-link'
+
+        classes:
+            external-link:
+                name: 'External Link'
+
+        classesAnchor:
+            externalLink:
+                class: 'external-link'
+                type: 'url'
+                target: '_blank'
+
+        removeButtons:
+            - Save
+            - NewPage
+            - Preview
+            - Print
+            - Templates
+            - Cut
+            - Copy
+            - Paste
+            - PasteFromWord
+            - Form
+            - Checkbox
+            - Radio,
+            - TextField
+            - Textarea
+            - Select
+            - Button
+            - ImageButton
+            - HiddenField
+            - Outdent
+            - Indent
+            - Flash
+            - HorizontalRule
+            - Smiley
+            - PageBreak
+            - Iframe
+            - Font
+            - FontSize
+            - TextColor
+            - BGColor
+            - ShowBlocks
+            - Blockquote
+            - About
+</code></pre>
+
+*Specific.yaml*
+<pre><code class="yaml">
+imports:
+    - { resource: "EXT:provider/Configuration/RTE/Default.yaml" }
+
+editor:
+    externalPlugins:
+        placeholder_select:
+            resource: "EXT:provider/Resources/Public/CKEditor/Plugins/placeholder_select/"
+
+    config:
+        contentsCss: ["EXT:rte_ckeditor/Resources/Public/Css/contents.css", "EXT:provider/Resources/Public/Css/editor.css"]
+        # can be "default", but a custom stylesSet can be defined here, which fits TYPO3 best
+        stylesSet:
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:large", element:  ["p", "ul", "ol", "h1", "h2", "h3"], attributes: { class: 'large' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:teaser-text", element: "p", attributes: { class: 'teaser-text' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:light-gray", element: ["p", "ul", "ol"], attributes: { class: 'light-gray' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:all-borders", element: "table", attributes: { class: 'all-borders' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:horizontal-borders", element: "table", attributes: { class: 'horizontal-borders' } }
+            - { name: "LLL:EXT:provider/Resources/Private/Language/rte.xlf:vertical-borders", element: "table", attributes: { class: 'vertical-borders' } }
+
+</code></pre>
+
+**David Menzel**, 2023-08-07T18:58:28Z
+We have the same problem since (at least) TYPO3 10. Now using TYPO3 11.
+
+A bodytext database field has the following text:
+
+!db_field_value.jpg!
+
+The RTE ckeditor looks like this:
+
+!rte_view.jpg!
+
+RTE ckeditor Source code view:
+
+!rte_view_sourcecode.jpg!
+
+Output in FE:
+
+!fe_output.jpg!
+
+FE source code:
+
+!fe_output_sourcecode.jpg!
+
+You notice the additional empty p-Tags before/after the pre-tag?
+
+However, when I remove the linebreaks in the database field:
+!db_field_value_wo_linebreak.jpg!
+
+the FE works and there are no additional empty p-tags.
+When I save the RTE field again, the empty p-tags are back again because the linebreaks are back in the db field.
+
+Not sure why it only happens before/after the pre-tag.
+
+TYPO3 11.5.30 and PHP 7.4
+
+**David Menzel**, 2025-03-06T05:47:19Z
+Problem still exists in TYPO3 12.4.27 and CKEditor 5.
+
+There's an additional empty <p>-Tag before and after the codeblock.
+
+**Gerrit Code Review**, 2026-08-05T03:25:06Z
+Patch set 1 for branch *main* of project *Packages/TYPO3.CMS* has been pushed to the review server.
+It is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95108
+```
+
+Data:
+
+```json
+{
+    "status": "answered",
+    "source": "https://forge.typo3.org",
+    "url": "https://forge.typo3.org/issues/88556.json?include=journals,relations,attachments",
+    "query": "",
+    "total": 0,
+    "categories": [],
+    "categoriesUsed": [],
+    "issue": {
+        "id": 88556,
+        "subject": "One line break in DB field causes 3 rendered p-tags in CKEditor",
+        "status": "Under Review",
+        "tracker": "Bug",
+        "priority": "Should have",
+        "assignedTo": "",
+        "targetVersion": "Candidate for patchlevel",
+        "typo3Version": "12",
+        "phpVersion": "8.2",
+        "createdOn": "2019-06-13T13:35:40Z",
+        "updatedOn": "2026-08-05T03:25:05Z",
+        "url": "https://forge.typo3.org/issues/88556",
+        "description": "<pre><code class=\"html\">\r\n<p>Hello World\r\n</p><ul><li>foo bar</li></ul>\r\n</code></pre>\r\n\r\nWhen writing this into a DB field with enabled RTE it causes 3 additional empty p-tags in CKEditor. These can be saved too. See attachment for a sample.\r\n\r\nNot sure whether this is a CKEditor or TYPO3 related issue.",
+        "relations": [
+            {
+                "issue": 96466,
+                "relation": "relates"
+            }
+        ],
+        "attachments": [
+            {
+                "filename": "ckeditor-3-p-tags.png",
+                "contentType": "image/png",
+                "size": 15472,
+                "on": "2019-06-13T13:31:29Z",
+                "url": "https://forge.typo3.org/attachments/download/34363/ckeditor-3-p-tags.png"
+            },
+            {
+                "filename": "db_field_value.jpg",
+                "contentType": "image/jpeg",
+                "size": 17301,
+                "on": "2023-08-07T18:36:48Z",
+                "url": "https://forge.typo3.org/attachments/download/37897/db_field_value.jpg"
+            },
+            {
+                "filename": "rte_view.jpg",
+                "contentType": "image/jpeg",
+                "size": 11397,
+                "on": "2023-08-07T18:39:23Z",
+                "url": "https://forge.typo3.org/attachments/download/37898/rte_view.jpg"
+            },
+            {
+                "filename": "rte_view_sourcecode.jpg",
+                "contentType": "image/jpeg",
+                "size": 21339,
+                "on": "2023-08-07T18:40:49Z",
+                "url": "https://forge.typo3.org/attachments/download/37899/rte_view_sourcecode.jpg"
+            },
+            {
+                "filename": "fe_output.jpg",
+                "contentType": "image/jpeg",
+                "size": 17378,
+                "on": "2023-08-07T18:42:14Z",
+                "url": "https://forge.typo3.org/attachments/download/37900/fe_output.jpg"
+            },
+            {
+                "filename": "fe_output_sourcecode.jpg",
+                "contentType": "image/jpeg",
+                "size": 31557,
+                "on": "2023-08-07T18:46:05Z",
+                "url": "https://forge.typo3.org/attachments/download/37901/fe_output_sourcecode.jpg"
+            },
+            {
+                "filename": "db_field_value_wo_linebreak.jpg",
+                "contentType": "image/jpeg",
+                "size": 15438,
+                "on": "2023-08-07T18:50:25Z",
+                "url": "https://forge.typo3.org/attachments/download/37902/db_field_value_wo_linebreak.jpg"
+            }
+        ],
+        "noteCount": 12,
+        "notes": [
+            {
+                "author": "Benni Mack",
+                "on": "2019-06-13T13:37:33Z",
+                "note": "Are you using the RTE in a FlexForm?"
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-06-13T13:40:26Z",
+                "note": "Benni Mack wrote:\r\n> Are you using the RTE in a FlexForm?\r\n\r\nNo, I use it in a TCA.\r\n\r\nWhen removing the single existing line break between \"World\" and closing p-tag no additional line breaks are created. I have switched temporary to T3's default preset but the behaviour was the same.\r\n\r\nThat's my TCA field config:\r\n<pre><code class=\"php\">\r\n<?php\r\n        'myField' => [\r\n            'exclude' => 1,\r\n            'label' => $ll . 'myField',\r\n            'config' => [\r\n                'type' => 'text',\r\n                'cols' => 40,\r\n                'rows' => 15,\r\n                'eval' => 'trim',\r\n                'enableRichtext' => true,\r\n            ],\r\n        ],\r\n</code></pre>"
+            },
+            {
+                "author": "Riccardo De Contardi",
+                "on": "2019-06-29T21:50:09Z",
+                "note": "Is this somehow related? #88655"
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-07-02T12:07:18Z",
+                "note": "Riccardo De Contardi wrote:\r\n> Is this somehow related? #88655\r\n\r\nI will check within this week."
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-07-08T18:57:16Z",
+                "note": "I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process."
+            },
+            {
+                "author": "Benni Mack",
+                "on": "2019-08-16T12:46:29Z",
+                "note": "Alex Nostadt wrote:\r\n> I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.\r\n\r\nCan you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure."
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-08-17T09:05:59Z",
+                "note": "Benni Mack wrote:\r\n> Alex Nostadt wrote:\r\n> > I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.\r\n> \r\n> Can you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure.\r\n\r\nI could reproduce it with the default T3 config as well but can provide it as well within the next days."
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-08-26T15:38:15Z",
+                "note": "Alex Nostadt wrote:\r\n> Benni Mack wrote:\r\n> > Alex Nostadt wrote:\r\n> > > I don't think this is related as #88655 is about ignored RTE config. whereas this issue is rather related to DB=>CKEditor parse-process.\r\n> > \r\n> > Can you share your CKEditor config? (if you have a manually configured RTE configuration) just to be sure.\r\n> \r\n> I could reproduce it with the default T3 config as well but can provide it as well within the next days.\r\n\r\nSorry, forgot this ticket. Add this to my priority list now."
+            },
+            {
+                "author": "Alex Nostadt",
+                "on": "2019-08-30T08:42:51Z",
+                "note": "That's the RTE configuration:\r\n(I include Specific.yaml. We have multiple \"Specific.yaml\" files and our Default.yaml is our common denominator)\r\n*Default.yaml*\r\n<pre><code class=\"yaml\">\r\nimports:\r\n    - { resource: \"EXT:rte_ckeditor/Configuration/RTE/Processing.yaml\" }\r\n    - { resource: \"EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml\" }\r\n    - { resource: \"EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml\" }\r\n    - { resource: \"EXT:rte_ckeditor_image/Configuration/RTE/Plugin.yaml\" }\r\n\r\nprocessing:\r\n    ## allowed default attributes (added by us is..: \"style\")\r\n    allowAttributes: [class, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop, style]\r\n\r\neditor:\r\n    externalPlugins:\r\n        find:\r\n            resource: \"EXT:provider/Resources/Public/CKEditor/Plugins/find/\"\r\n\r\n    config:\r\n        # can be \"default\", but a custom stylesSet can be defined here, which fits TYPO3 best\r\n        stylesSet:\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:align-center\", element: \"p\", styles: { text-align: \"center\"} }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:justify\", element: \"p\", styles: { text-align: \"justify\"} }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:author\", element: \"p\", attributes: { class: 'author' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:citation\", element: \"p\", attributes: { class: 'citation' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:check\", element: [\"ul\"], attributes: { class: 'check' } }\r\n\r\n        toolbarGroups:\r\n            - { name: styles, groups: [ styles ] }\r\n            - \"/\"\r\n            - { name: editing, groups: [ find, selection, spellchecker, editing ] }\r\n            - { name: forms, groups: [ forms ] }\r\n            - { name: basicstyles, groups: [ basicstyles, cleanup ] }\r\n            - { name: paragraph, groups: [ list, indent, blocks, align, bidi, paragraph ] }\r\n            - { name: links, groups: [ links ] }\r\n            - { name: insert, groups: [ insert ] }\r\n            - { name: colors, groups: [ colors ] }\r\n            - { name: others, groups: [ others ] }\r\n            - \"/\"\r\n            - { name: clipboard, groups: [ clipboard, undo ] }\r\n            - { name: document, groups: [ mode, document, doctools ] }\r\n            - { name: tools, groups: [ tools ] }\r\n            - { name: about, groups: [ about ] }\r\n\r\n        format_tags: \"p;h1;h2;h3;h4\"\r\n\r\n        justifyClasses:\r\n            - text-left\r\n            - text-center\r\n            - text-right\r\n            - text-justify\r\n\r\n        buttons:\r\n            link:\r\n                url:\r\n                    properties:\r\n                        class:\r\n                            default: 'external-link'\r\n                properties:\r\n                    class:\r\n                        allowedClasses: 'external-link'\r\n\r\n        classes:\r\n            external-link:\r\n                name: 'External Link'\r\n\r\n        classesAnchor:\r\n            externalLink:\r\n                class: 'external-link'\r\n                type: 'url'\r\n                target: '_blank'\r\n\r\n        removeButtons:\r\n            - Save\r\n            - NewPage\r\n            - Preview\r\n            - Print\r\n            - Templates\r\n            - Cut\r\n            - Copy\r\n            - Paste\r\n            - PasteFromWord\r\n            - Form\r\n            - Checkbox\r\n            - Radio,\r\n            - TextField\r\n            - Textarea\r\n            - Select\r\n            - Button\r\n            - ImageButton\r\n            - HiddenField\r\n            - Outdent\r\n            - Indent\r\n            - Flash\r\n            - HorizontalRule\r\n            - Smiley\r\n            - PageBreak\r\n            - Iframe\r\n            - Font\r\n            - FontSize\r\n            - TextColor\r\n            - BGColor\r\n            - ShowBlocks\r\n            - Blockquote\r\n            - About\r\n</code></pre>\r\n\r\n*Specific.yaml*\r\n<pre><code class=\"yaml\">\r\nimports:\r\n    - { resource: \"EXT:provider/Configuration/RTE/Default.yaml\" }\r\n\r\neditor:\r\n    externalPlugins:\r\n        placeholder_select:\r\n            resource: \"EXT:provider/Resources/Public/CKEditor/Plugins/placeholder_select/\"\r\n\r\n    config:\r\n        contentsCss: [\"EXT:rte_ckeditor/Resources/Public/Css/contents.css\", \"EXT:provider/Resources/Public/Css/editor.css\"]\r\n        # can be \"default\", but a custom stylesSet can be defined here, which fits TYPO3 best\r\n        stylesSet:\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:large\", element:  [\"p\", \"ul\", \"ol\", \"h1\", \"h2\", \"h3\"], attributes: { class: 'large' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:teaser-text\", element: \"p\", attributes: { class: 'teaser-text' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:light-gray\", element: [\"p\", \"ul\", \"ol\"], attributes: { class: 'light-gray' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:all-borders\", element: \"table\", attributes: { class: 'all-borders' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:horizontal-borders\", element: \"table\", attributes: { class: 'horizontal-borders' } }\r\n            - { name: \"LLL:EXT:provider/Resources/Private/Language/rte.xlf:vertical-borders\", element: \"table\", attributes: { class: 'vertical-borders' } }\r\n\r\n</code></pre>"
+            },
+            {
+                "author": "David Menzel",
+                "on": "2023-08-07T18:58:28Z",
+                "note": "We have the same problem since (at least) TYPO3 10. Now using TYPO3 11.\r\n\r\nA bodytext database field has the following text:\r\n\r\n!db_field_value.jpg!\r\n\r\nThe RTE ckeditor looks like this:\r\n\r\n!rte_view.jpg!\r\n\r\nRTE ckeditor Source code view:\r\n\r\n!rte_view_sourcecode.jpg!\r\n\r\nOutput in FE:\r\n\r\n!fe_output.jpg!\r\n\r\nFE source code:\r\n\r\n!fe_output_sourcecode.jpg!\r\n\r\nYou notice the additional empty p-Tags before/after the pre-tag?\r\n\r\nHowever, when I remove the linebreaks in the database field:\r\n!db_field_value_wo_linebreak.jpg!\r\n\r\nthe FE works and there are no additional empty p-tags.\r\nWhen I save the RTE field again, the empty p-tags are back again because the linebreaks are back in the db field.\r\n\r\nNot sure why it only happens before/after the pre-tag.\r\n\r\nTYPO3 11.5.30 and PHP 7.4"
+            },
+            {
+                "author": "David Menzel",
+                "on": "2025-03-06T05:47:19Z",
+                "note": "Problem still exists in TYPO3 12.4.27 and CKEditor 5.\r\n\r\nThere's an additional empty <p>-Tag before and after the codeblock."
+            },
+            {
+                "author": "Gerrit Code Review",
+                "on": "2026-08-05T03:25:06Z",
+                "note": "Patch set 1 for branch *main* of project *Packages/TYPO3.CMS* has been pushed to the review server.\nIt is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95108"
             }
         ]
     },
@@ -304,7 +760,7 @@ Data:
 {
     "status": "empty",
     "source": "https://forge.typo3.org",
-    "url": "https://forge.typo3.org/issues/99999999.json?include=journals,relations",
+    "url": "https://forge.typo3.org/issues/99999999.json?include=journals,relations,attachments",
     "query": "",
     "total": 0,
     "categories": [],
@@ -333,13 +789,13 @@ TYPO3 issue tracker: 3 issues match "cache busting"
 These words, in the tracker's own order and unranked. Another wording finds another set, so this is which issues mention it rather than which one it duplicates. Read one whole by passing its number as issue.
 
 ## #107904 Cache-busting applied to folder paths
-Bug · Closed · https://forge.typo3.org/issues/107904
+Bug · Closed · Frontend · filed 2025-10-29 · last touched 2025-12-02 · https://forge.typo3.org/issues/107904
 
 ## #107869 Add option to not add cache busting to generated URIs
-Bug · Closed · https://forge.typo3.org/issues/107869
+Bug · Closed · filed 2025-10-27 · last touched 2025-12-02 · https://forge.typo3.org/issues/107869
 
 ## #105953 f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled
-Bug · Closed · https://forge.typo3.org/issues/105953
+Bug · Closed · Fluid · filed 2025-01-16 · last touched 2025-08-12 · https://forge.typo3.org/issues/105953
 ```
 
 Data:
@@ -360,10 +816,10 @@ Data:
             "subject": "Cache-busting applied to folder paths",
             "tracker": "Bug",
             "status": "Closed",
-            "category": "",
+            "category": "Frontend",
             "assignedTo": "",
-            "createdOn": "",
-            "updatedOn": "",
+            "createdOn": "2025-10-29T11:00:18Z",
+            "updatedOn": "2025-12-02T12:04:43Z",
             "url": "https://forge.typo3.org/issues/107904"
         },
         {
@@ -373,8 +829,8 @@ Data:
             "status": "Closed",
             "category": "",
             "assignedTo": "",
-            "createdOn": "",
-            "updatedOn": "",
+            "createdOn": "2025-10-27T19:48:27Z",
+            "updatedOn": "2025-12-02T12:04:41Z",
             "url": "https://forge.typo3.org/issues/107869"
         },
         {
@@ -382,10 +838,10 @@ Data:
             "subject": "f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled",
             "tracker": "Bug",
             "status": "Closed",
-            "category": "",
+            "category": "Fluid",
             "assignedTo": "",
-            "createdOn": "",
-            "updatedOn": "",
+            "createdOn": "2025-01-16T20:23:02Z",
+            "updatedOn": "2025-08-12T14:36:32Z",
             "url": "https://forge.typo3.org/issues/105953"
         }
     ],
@@ -441,7 +897,7 @@ Called with:
 Text:
 
 ```
-TYPO3 issue tracker: 3 of 2487 open issues of the TYPO3 Core project, oldest filed first
+TYPO3 issue tracker: 3 of 2484 open issues of the TYPO3 Core project, oldest filed first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
 
@@ -463,7 +919,7 @@ Data:
     "source": "https://forge.typo3.org",
     "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3",
     "query": "",
-    "total": 2487,
+    "total": 2484,
     "categories": [
         "AdminPanel",
         "Authentication",
@@ -581,6 +1037,7 @@ Text:
 TYPO3 issue tracker: 3 of 23 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
+An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
 
 ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
 Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400

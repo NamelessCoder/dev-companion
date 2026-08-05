@@ -51,6 +51,35 @@ final class ForgeTest extends TestCase
         'limit' => 15,
     ];
 
+    /**
+     * The issues those two hits are, as `/issues.json` answers a list of ids:
+     * fields where a search hit has a title, which is what makes the area, the
+     * assignee and the two dates answerable at all.
+     */
+    private const FIELDS = [
+        'issues' => [
+            [
+                'id' => 105403,
+                'subject' => 'f:image and cache busting issue',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'Under Review'],
+                'category' => ['name' => 'Fluid'],
+                'assigned_to' => ['name' => 'Andreas Kienast'],
+                'created_on' => '2024-10-23T08:42:11Z',
+                'updated_on' => '2026-08-02T17:24:18Z',
+            ],
+            [
+                'id' => 107869,
+                'subject' => 'Add option to not add cache busting to generated URIs',
+                'tracker' => ['name' => 'Feature'],
+                'status' => ['name' => 'Closed'],
+                'created_on' => '2025-10-27T19:48:27Z',
+                'updated_on' => '2025-12-02T12:04:41Z',
+            ],
+        ],
+        'total_count' => 2,
+    ];
+
     private const ISSUE = [
         'id' => 110348,
         'subject' => 'Rework AdminPanel "imagesOnPage" feature',
@@ -68,6 +97,17 @@ final class ForgeTest extends TestCase
         'relations' => [
             ['issue_id' => 105403, 'issue_to_id' => 110348, 'relation_type' => 'relates'],
             ['issue_id' => 110348, 'issue_to_id' => 105953, 'relation_type' => 'duplicates'],
+        ],
+        'attachments' => [
+            [
+                'id' => 34363,
+                'filename' => 'ckeditor-3-p-tags.png',
+                'filesize' => 15472,
+                'content_type' => 'image/png',
+                'created_on' => '2019-06-13T13:35:40Z',
+                'content_url' => 'https://forge.typo3.org/attachments/download/34363/ckeditor-3-p-tags.png',
+            ],
+            ['id' => 37897, 'filename' => 'db_field_value.jpg', 'content_url' => 'https://forge.typo3.org/attachments/download/37897/db_field_value.jpg'],
         ],
         'journals' => [
             ['user' => ['name' => 'Gerrit Code Review'], 'created_on' => '2026-07-31T19:23:24Z', 'notes' => 'Patch set 1 has been pushed.'],
@@ -108,6 +148,41 @@ final class ForgeTest extends TestCase
         self::assertSame(2, $issue['noteCount']);
         self::assertSame(['Gerrit Code Review', 'Benni Mack'], array_column($issue['notes'], 'author'));
         self::assertSame('Closing, the rework landed.', $issue['notes'][1]['note']);
+    }
+
+    /**
+     * The files are named, and the bytes are the caller's to read.
+     *
+     * Redmine writes an inline image into a comment as `!name.jpg!`, so the
+     * text of such a comment is a bare filename referring to something the
+     * answer otherwise never mentions exists. On #88556 two attachments decided
+     * the triage and the text alone was actively misleading
+     * (`feedback/2026-08-05-033846`).
+     */
+    #[Test]
+    public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
+    {
+        $asked = '';
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked = $url;
+
+            return (string) json_encode(['issue' => self::ISSUE]);
+        });
+
+        $attachments = $forge->issue('110348')['issue']['attachments'];
+
+        self::assertStringContainsString('include=journals,relations,attachments', $asked);
+        self::assertSame(['ckeditor-3-p-tags.png', 'db_field_value.jpg'], array_column($attachments, 'filename'));
+        self::assertSame('image/png', $attachments[0]['contentType']);
+        self::assertSame(15472, $attachments[0]['size']);
+        self::assertSame(
+            'https://forge.typo3.org/attachments/download/34363/ckeditor-3-p-tags.png',
+            $attachments[0]['url'],
+        );
+        // A field the tracker did not carry is absent rather than guessed at,
+        // and the file is still named.
+        self::assertSame('', $attachments[1]['contentType']);
+        self::assertSame(0, $attachments[1]['size']);
     }
 
     /**
@@ -168,18 +243,18 @@ final class ForgeTest extends TestCase
     #[Test]
     public function theSearchAsksTheTrackerForIssuesMatchingTheWords(): void
     {
-        $asked = '';
+        $asked = [];
         $forge = new Forge(function (string $url) use (&$asked): string {
-            $asked = $url;
+            $asked[] = $url;
 
-            return (string) json_encode(self::HITS);
+            return (string) json_encode(str_contains($url, '/issues.json') ? self::FIELDS : self::HITS);
         });
 
         $answer = $forge->search('  cache busting  ', 3);
 
-        self::assertStringContainsString('q=cache%20busting', $asked);
-        self::assertStringContainsString('issues=1', $asked);
-        self::assertStringContainsString('limit=3', $asked);
+        self::assertStringContainsString('q=cache%20busting', $asked[0]);
+        self::assertStringContainsString('issues=1', $asked[0]);
+        self::assertStringContainsString('limit=3', $asked[0]);
         // The query comes back as it was asked, because a caller holding two
         // hits has to see which words produced them before concluding anything
         // from how few there are.
@@ -226,6 +301,62 @@ final class ForgeTest extends TestCase
         self::assertSame('f:image and cache busting issue', $hit['subject']);
         self::assertSame('', $hit['tracker']);
         self::assertSame('https://forge.typo3.org/issues/105403', $hit['url']);
+    }
+
+    /**
+     * The fields a hit is not made of, read for the whole page in one call.
+     *
+     * A record carrying them empty is a false statement rather than a missing
+     * one: 50 of 50 rows read as issues nobody has categorised and nothing has
+     * moved on, when every one of them had an area and a date
+     * (`feedback/2026-08-05-033902`). The search path is also where a triage
+     * asks about age, which no title carries.
+     */
+    #[Test]
+    public function aSearchHitIsFilledFromTheIssuesTheHitsAre(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return (string) json_encode(str_contains($url, '/issues.json') ? self::FIELDS : self::HITS);
+        });
+
+        $results = $forge->search('cache busting')['results'];
+
+        // One further call for the page, not one per hit.
+        self::assertCount(2, $asked);
+        self::assertStringContainsString('issue_id=105403%2C107869', $asked[1]);
+        // A search answers with closed issues, and the default of that endpoint
+        // is the open ones.
+        self::assertStringContainsString('status_id=%2A', $asked[1]);
+
+        self::assertSame('Fluid', $results[0]['category']);
+        self::assertSame('Andreas Kienast', $results[0]['assignedTo']);
+        self::assertSame('2024-10-23T08:42:11Z', $results[0]['createdOn']);
+        self::assertSame('2026-08-02T17:24:18Z', $results[0]['updatedOn']);
+        // What the title already carried stands: the tracker words its own
+        // titles, and the fields are what the title did not carry.
+        self::assertSame('Under Review', $results[0]['status']);
+        self::assertSame('Bug', $results[0]['tracker']);
+    }
+
+    /**
+     * A second call that did not answer does not turn a search that did into an
+     * outage. The hits stand with the fields the title carried.
+     */
+    #[Test]
+    public function aPageThatCouldNotBeFilledIsStillTheHitsThatMatched(): void
+    {
+        $forge = new Forge(static fn(string $url): ?string => str_contains($url, '/issues.json')
+            ? null
+            : (string) json_encode(self::HITS));
+
+        $answer = $forge->search('cache busting');
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame([105403, 107869], array_column($answer['results'], 'issue'));
+        self::assertSame('', $answer['results'][0]['category']);
     }
 
     /**

@@ -139,6 +139,11 @@ final class ToolCalls
             'forge: what an issue says and what was decided' => ['typo3_forge_lookup', [
                 'issue' => '110348',
             ]],
+            // A report about rendering, whose evidence is in seven screenshots
+            // and whose comments are the filenames of them.
+            'forge: an issue whose evidence hangs off it' => ['typo3_forge_lookup', [
+                'issue' => '88556',
+            ]],
             'forge: no such issue' => ['typo3_forge_lookup', [
                 'issue' => '99999999',
             ]],

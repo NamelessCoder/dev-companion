@@ -40,7 +40,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -140,6 +140,13 @@ final class ForgeLookup extends ReadOnlyTool
                         'issue' => Schema::integer('The other issue.'),
                         'relation' => Schema::string('duplicates, relates, blocked, precedes.'),
                     ], ['issue', 'relation']), 'Issues this one is filed against, which is where a duplicate or a blocker is named.'),
+                    'attachments' => Schema::listOf(Schema::object([
+                        'filename' => Schema::string('The name the file was uploaded under, which is also how a comment refers to it: Redmine writes an inline image as !name.png! and the text around it says nothing else about it.'),
+                        'contentType' => Schema::string('image/png, image/jpeg, text/plain.'),
+                        'size' => Schema::integer('Bytes.'),
+                        'on' => Schema::string('When it was uploaded, which is what says which comment it belongs to.'),
+                        'url' => Schema::string('Where the file itself is. It answers without a credential, and reading it is the caller\'s: nothing here fetches or transcribes one.'),
+                    ], ['filename', 'contentType', 'size', 'on', 'url']), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
                     'notes' => Schema::listOf(Schema::object([
                         'author' => Schema::string(),
@@ -147,17 +154,17 @@ final class ForgeLookup extends ReadOnlyTool
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'noteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'noteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
                 'subject' => Schema::string(),
                 'tracker' => Schema::string('Bug, Feature, Task, Epic.'),
                 'status' => Schema::string('Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.'),
-                'category' => Schema::string('The area the core files it under, empty where none is set or where the entry did not carry it. Empty on a query, whose hits are titles rather than issues.'),
-                'assignedTo' => Schema::string('Who the tracker says holds this, empty where nobody does or where the entry did not carry it. What it decides for a triage is whether the issue is free to take, and on an old one it is usually who last touched it rather than who is on it.'),
-                'createdOn' => Schema::string('When it was filed. Empty on a query, whose hits are titles rather than issues.'),
-                'updatedOn' => Schema::string('When anything last moved on it, which is the measure of neglect rather than of age. Empty on a query.'),
+                'category' => Schema::string('The area the core files it under, empty where none is set. A search hit is a title and carries none of the four fields below, so they are read for the whole page in one further call — and empty here means that call did not reach the tracker rather than that the issue has no area.'),
+                'assignedTo' => Schema::string('Who the tracker says holds this, empty where nobody does. What it decides for a triage is whether the issue is free to take, and on an old one it is usually who last touched it rather than who is on it.'),
+                'createdOn' => Schema::string('When it was filed.'),
+                'updatedOn' => Schema::string('When anything last moved on it, which is the measure of neglect rather than of age.'),
                 'url' => Schema::string('Where a person reads it.'),
             ], ['issue', 'subject', 'tracker', 'status', 'category', 'assignedTo', 'createdOn', 'updatedOn', 'url']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
             'unavailable' => [
@@ -271,6 +278,25 @@ final class ForgeLookup extends ReadOnlyTool
         $lines[] = '';
         $lines[] = '## Reported';
         $lines[] = $found['description'];
+        if ($found['attachments'] !== []) {
+            $lines[] = '';
+            $lines[] = sprintf('## Attachments (%d)', count($found['attachments']));
+            $lines[] = 'On a report about rendering these are usually where the evidence is, and Redmine writes an'
+                . ' inline image into a comment as !filename! — so a comment below that is nothing but a filename is'
+                . ' referring to one of these. Read the ones the report turns on; this server does not fetch them.';
+            foreach ($found['attachments'] as $file) {
+                $lines[] = sprintf(
+                    '- %s · %s · %s',
+                    $file['filename'],
+                    implode(' · ', array_filter([
+                        $file['contentType'],
+                        $file['size'] > 0 ? sprintf('%.0f kB', $file['size'] / 1000) : '',
+                        $file['on'] !== '' ? substr($file['on'], 0, 10) : '',
+                    ])),
+                    $file['url'],
+                );
+            }
+        }
         if ($found['notes'] !== []) {
             $lines[] = '';
             $lines[] = sprintf('## Comments (%d of %d, oldest first)', count($found['notes']), $found['noteCount']);
@@ -335,8 +361,18 @@ final class ForgeLookup extends ReadOnlyTool
             $lines[] = '';
             $lines[] = sprintf('## #%d %s', $hit['issue'], $hit['subject']);
             // The tracker and the status where the title carried them, which is
-            // every hit the tracker words as it words its own.
-            $lines[] = implode(' · ', array_filter([$hit['tracker'], $hit['status'], $hit['url']]));
+            // every hit the tracker words as it words its own; the area, the
+            // assignee and the two dates where the fields behind them were
+            // reachable.
+            $lines[] = implode(' · ', array_filter([
+                $hit['tracker'],
+                $hit['status'],
+                $hit['category'],
+                $hit['assignedTo'] !== '' ? 'assigned to ' . $hit['assignedTo'] : '',
+                $hit['createdOn'] !== '' ? 'filed ' . substr($hit['createdOn'], 0, 10) : '',
+                $hit['updatedOn'] !== '' ? 'last touched ' . substr($hit['updatedOn'], 0, 10) : '',
+                $hit['url'],
+            ]));
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
@@ -423,6 +459,15 @@ final class ForgeLookup extends ReadOnlyTool
             : 'That is the whole set on these filters.';
         $lines[] = 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
             . ' still claims is established in the checkout rather than off this list.';
+        if ($answer['categoriesUsed'] !== []) {
+            // Where the reporter filed it, which is not everything about the
+            // subject: three of the RTE reports a session went looking for on
+            // 2026-08-05 sat under System/Bootstrap/Configuration and under
+            // Link Handling.
+            $lines[] = 'An area is where an issue was filed and not everything it is about. A report about this one'
+                . ' regularly sits under another area, so what came back is a floor rather than the set — query the'
+                . ' words as well where the question is about a subject.';
+        }
         foreach ($answer['results'] as $entry) {
             $lines[] = '';
             $lines[] = sprintf('## #%d %s', $entry['issue'], $entry['subject']);

@@ -1,7 +1,7 @@
 ---
 id: D-ANS-054
 date: 2026-08-05
-status: open
+status: confirmed
 ---
 
 # D-ANS-054 — The backlog is a third way into the tracker, and the areas are read from it
@@ -21,8 +21,8 @@ written Redmine URL, which is the shape `D-FBK-027` names as earning a tool.
 
 - Measured against forge.typo3.org on 2026-08-05: 2487 issues stand open on the
   core project, the oldest filed 2004-08-20. `/issues.json` takes `status_id`,
-  `tracker_id`, `category_id`, `created_on`, `updated_on`, `sort` and `limit`
-  in one request and answers `total_count` beside the page.
+  `tracker_id`, `category_id`, `created_on`, `updated_on`, `sort` and `limit` in
+  one request and answers `total_count` beside the page.
 - `/search.json`, which the wording route uses, takes none of those and cannot
   order by age at all. So the third way in is a different endpoint rather than a
   parameter on the second.
@@ -89,3 +89,35 @@ written Redmine URL, which is the shape `D-FBK-027` names as earning a tool.
 - `ForgeTest::theAreasAreReadFromTheProjectAndHeldRatherThanCopied`
 - `ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage`
 - `ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes`
+
+## Confirmed on 2026-08-05
+
+The question this was written for was asked for real an hour before it landed. A
+session was told by `typo3-core-issue-triage` to call this tool with `open`,
+narrowed by `category` and `tracker`, and the schema had none of it
+(`feedback/2026-08-05-033805`); it left the server and wrote the Redmine URL by
+hand, then spent three round trips guessing at the category id because
+`/issue_categories.json` answers 401 without a credential. That is the shape
+this entry describes, reported independently of it.
+
+Re-run today with the enumeration in place: `open: "oldest"`, `category: "rte"`,
+`tracker: "Bug"` answers 5 of 23, oldest first, with the area resolved to "RTE
+(rtehtmlarea + ckeditor)" and both dates on every row — which is the call that
+session could not make.
+
+## Since then
+
+Two of its **Decided** bullets have moved, and neither statement above them has.
+
+A search hit no longer answers the four fields empty. What that reads as to a
+caller was the next thing reported, and
+[`D-ANS-056`](ans-056-a-search-hit-is-filled-from-the-issue-it-is.md) is where
+that was decided; the reasoning here — a hit is a title, and the fields are not
+in it — is why it takes a further call rather than a wider parse.
+
+The same feedback found that RTE reports sit under
+System/Bootstrap/Configuration and under Link Handling as well as under RTE, so
+an area filter is a floor rather than the set. The enumeration says that in its
+answer where a category was used, which the "the areas that exist come back"
+bullet did not cover: a word that matched is as much of a partial answer as a
+word that did not.

@@ -1,7 +1,7 @@
 ---
 status: draft
 name: typo3-core-patch-checkout
-description: Get a patch that is under review on review.typo3.org into a core checkout and onto the branch it targets — find the change, fetch the patch set, put it on current code, and rebase it where the branch has moved under it. Use for trying out somebody's patch, for reading a change against the code it applies to, for checking whether a patch still applies at all, and for picking up a change to carry on with. It stops rather than improvises: a conflict it cannot resolve from the change itself, a checkout that is not clean, or a patch set that is not the current one ends the work with what it found.
+description: Get a patch that is under review on review.typo3.org into a core checkout and back out again — find the change, fetch the patch set, put it on the branch it targets, rebase it where the branch has moved under it, and restore the checkout to a clean current branch when you are done or when it will not apply. Use for trying out somebody's patch, for reading a change against the code it applies to, for checking whether a patch still applies at all, for picking one up to carry on with, and for getting a checkout that is sitting on a fetched patch back onto an up-to-date main. It stops rather than improvises: a conflict it cannot resolve from the change itself, a checkout that is not clean, or a patch set that is not the current one ends the work with what it found.
 ---
 
 # TYPO3 Core Patch Checkout
@@ -77,9 +77,9 @@ what you are allowed to know, and it cannot be applied backwards.
 ## Stopping is the normal ending
 
 When a rule above ends the work, undo what was started rather than leaving the
-checkout half-way: abort the rebase, return to the commit written down at the
-start, and say what state it is in now. A checkout left mid-rebase is a trap for
-whoever opens it next, including you.
+checkout half-way — the section below is that undo, and it is the same one that
+ends a run which went fine. A checkout left mid-rebase is a trap for whoever
+opens it next, including you.
 
 Report what was found and not what was attempted. The change, its patch set, its
 target branch, how far it got, and the specific thing that stopped it — the
@@ -97,10 +97,45 @@ reproduce, and a check that inspected no files is not a green.
 Say which branch and which patch set every result is about. A green reported
 without them is unattributable the moment a new patch set is pushed.
 
-This skill owns getting a change under review into a checkout and onto code it
-applies to: finding it, fetching the patch set, rebasing it where that is what
-the work needs, resolving what the change itself decides, and stopping where it
-does not. It owns the undo as much as the do. It does not own judging the patch
+## Put the checkout back
+
+A checkout sitting on somebody's patch set is not a state to leave behind, and
+it is not a state to start the next piece of work from either. Restoring it is a
+step of its own, taken whether the patch applied or stopped, and it goes in this
+order because each part makes the next one possible.
+
+1. **End whatever is in progress first.** A rebase that is half applied, or one
+   that stopped in a conflict, owns the working tree until it is aborted, and
+   every later step fails against it in a way that reads like something else.
+2. **Return to the branch that was recorded at the start**, not to whichever
+   branch looks right. The patch set was fetched onto no branch, so leaving it
+   loses nothing that is not still on the review server — but say the commit in
+   the answer, because that is the only local name it had.
+3. **Establish that nothing of the patch is left.** An aborted rebase can leave
+   files the change added lying untracked, and they belong to no commit and to
+   no branch: the next suite run picks them up and fails for a reason that has
+   nothing to do with anything. What the working tree holds and what is
+   untracked are two different questions and both have to be asked.
+4. **Update the branch from the remote it is fetched from, not from the review
+   server.** These are two different URLs on a core clone — `typo3_rule_lookup`
+   for the Gerrit workflow says which is which — and the change refs live on
+   only one of them. Take the update as a fast-forward: a merge commit on a
+   local branch tracking the core is a state nothing here asked for.
+5. **Bring the installed dependencies back in step with the branch.** Moving
+   between a patch set and current code can change what the lock file pins,
+   and a suite run against dependencies belonging to the other revision fails
+   for a reason that is not in the diff. This is the step that is skipped and
+   then spends an hour being diagnosed as a test failure.
+
+Say the end state in the answer: which branch, which commit, and that the tree
+is clean. "Restored" without those three is the claim rather than the result.
+
+This skill owns getting a change under review into a checkout and back out of
+it: finding it, fetching the patch set, rebasing it where that is what the work
+needs, resolving what the change itself decides, stopping where it does not, and
+restoring the checkout to a clean branch that is current with its remote. It
+owns the undo as much as the do, and the undo is what runs whichever way the
+rest went. It does not own judging the patch
 — where the request is to say what is wrong with it, `typo3-core-patch-review`
 owns that, and it starts from the checkout this leaves behind. It does not own
 changing the patch either: amending a change into a new patch set and pushing it

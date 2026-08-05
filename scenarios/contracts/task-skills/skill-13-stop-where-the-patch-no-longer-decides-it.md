@@ -28,6 +28,11 @@ something that compiles, is **not guarded** and is what this case measures.
   resolved before the stop.
 - Any result from a rebased checkout says that it is about the rebase and not
   about the patch set the reviewers see.
+- The checkout is put back whichever way it went: nothing in progress, on the
+  branch it started on, nothing of the patch left untracked, the branch
+  fast-forwarded from the remote it fetches from, and the installed dependencies
+  back in step with it. The answer names the branch, the commit and that the
+  tree is clean.
 
 **How it fails**
 
@@ -39,6 +44,11 @@ something that compiles, is **not guarded** and is what this case measures.
   patch rather than applying it.
 - The checkout is left mid-rebase, on a detached head nobody named, or with the
   starting commit unrecorded.
+- The branch is restored but left behind its remote, or updated by merging
+  rather than fast-forwarding, or updated from the review server's URL.
+- Files the patch added are left untracked in a checkout reported as clean, or
+  the dependencies are left belonging to the other revision and the next failure
+  is diagnosed as a test failure.
 - The rebased commit is pushed, or offered to be pushed, in the author's name.
 - An older patch set is fetched and reported on as the change.
 - The suites are run through something the checkout does not declare, or a green

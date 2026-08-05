@@ -45,6 +45,15 @@ resolves past them, which is how a session produces a patch nobody wrote.
 - The conflict rule is one sentence: a conflict is resolvable only where the
   change itself decides it. Everything else in that checklist is worked examples
   of the two sides of it.
+- Restoring the checkout is a step of the workflow and not an afterthought of
+  the stop. It runs whichever way the rest went, because a checkout sitting on a
+  fetched patch set is as bad a place to start the next task from as to abandon,
+  and it is one order: end what is in progress, return to the recorded branch,
+  establish that nothing of the patch is left untracked, fast-forward from the
+  remote the checkout fetches from rather than from the review server, and put
+  the installed dependencies back in step. The last two are where it goes wrong
+  silently — the change refs are on the other URL, and dependencies belonging to
+  the other revision fail as a test failure.
 - The fetch went into `knowledge/documents/`, not into the skill. A skill may
   carry no command the checkout has not been asked for, and a ref form written
   into a file installed in somebody else's project is a fact no release here

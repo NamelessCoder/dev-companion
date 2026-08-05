@@ -26,6 +26,10 @@ What to ask about, because a general question gets agreement rather than review:
   are the maintainer's act.
 - Whether `typo3-core-patch-checkout` is the right name, given the pair it joins
   is `typo3-core-patch-development` and `typo3-core-patch-review`.
+- The restore order at the foot of the checkout skill. Whether bringing the
+  installed dependencies back in step belongs there at all, and whether a
+  fast-forward is what a maintainer actually does to a local branch tracking the
+  core.
 
 Publishing takes three more edits per skill, and `SkillTest` and `ScopeTest`
 fail until each is made:

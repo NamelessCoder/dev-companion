@@ -75,3 +75,26 @@ What survived is the clause on the sentence that was already there: what
 as `typo3://guides` resources, which the client may not list at all. That keeps
 the entry's own decision — the index rather than the documents — and the budget
 is why it could not have gone the other way.
+
+**The first Wrong if happened**, on 2026-08-05, five hours after that line
+shipped. A core session ran two skills end to end and finished without learning
+what `typo3://guides` holds (`feedback/2026-08-05-034022`). Its client offered
+`ListMcpResourcesTool` and `ReadMcpResourceTool` and rendered no list, and the
+clause naming the index was in a sentence about `typo3_server_scope`, which the
+session skipped deliberately: the skills gave it an order of calls, so it never
+needed orientation.
+
+That is the case this entry could not see from where it stood. A session
+arriving through a skill reads the skill, and the instructions reach it as
+background it has no reason to act on. The page it wanted was the Gerrit push
+procedure, which exists whole at
+`typo3://guides/core/contribution/gerrit-workflow`, and the skill sends it to
+`typo3_rule_lookup` for the same subject — so what it would have got is the
+section a search matched, with nothing saying the rest of the page is there.
+
+What follows is not a `typo3_document_list`. The session named the lever itself:
+a skill names the resource it expects read whole, at the step that needs it, and
+a lookup answer that is one section of a procedure says which procedure. Both
+are contracts, and
+`todo/open/2026-08-05-190500-name-the-page-a-skill-expects-read-whole.md`
+carries it.

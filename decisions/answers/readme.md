@@ -7,7 +7,12 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05
+- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05 · confirmed
+- [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
+- [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
+- [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named, and the reading is the caller's · 2026-08-05
+- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup, and not a count of commits · 2026-08-05
+- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task, and what it read elsewhere is where it misled · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
@@ -59,6 +64,11 @@ one is added.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-054]: ans-054-the-backlog-is-a-third-way-into-the-tracker-and-the-areas-are-read-from-it.md
+[D-ANS-055]: ans-055-a-change-answers-for-an-issue-only-where-its-commit-message-names-it.md
+[D-ANS-056]: ans-056-a-search-hit-is-filled-from-the-issue-it-is.md
+[D-ANS-057]: ans-057-what-hangs-off-an-issue-is-named-and-the-reading-is-the-callers.md
+[D-ANS-058]: ans-058-the-release-lines-a-trailer-claims-are-a-lookup-and-not-a-count-of-commits.md
+[D-ANS-059]: ans-059-what-this-server-holds-carried-the-task-and-what-it-read-elsewhere-misled-it.md
 [D-ANS-048]: ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md

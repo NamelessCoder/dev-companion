@@ -30,6 +30,9 @@ when it is added.
 - [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · held
 - [`R-ANS-021`][R-ANS-021] — The review answer says which patch set it is about · held
 - [`R-ANS-022`][R-ANS-022] — A resource is picked out of a list · held
+- [`R-ANS-023`][R-ANS-023] — A review answer names only changes that name the issue · held
+- [`R-ANS-024`][R-ANS-024] — A field that is answered empty is one nothing could fill · held
+- [`R-ANS-025`][R-ANS-025] — An issue answer says what its comments refer to · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -54,3 +57,6 @@ when it is added.
 [R-ANS-020]: ans-020-the-classes-section-covers-the-directory-it-names.md
 [R-ANS-021]: ans-021-the-review-answer-says-which-patch-set-it-is-about.md
 [R-ANS-022]: ans-022-a-resource-is-picked-out-of-a-list.md
+[R-ANS-023]: ans-023-a-review-answer-names-only-changes-that-name-the-issue.md
+[R-ANS-024]: ans-024-a-field-that-is-answered-empty-is-one-nothing-could-fill.md
+[R-ANS-025]: ans-025-an-issue-answer-says-what-its-comments-refer-to.md

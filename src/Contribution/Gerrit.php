@@ -46,23 +46,83 @@ final class Gerrit
     /**
      * The changes that name a Forge issue in their commit message.
      *
-     * `message:` searches the commit message, which is where `Resolves:` and
-     * `Related:` put the issue number, so this answers "has somebody already
-     * fixed this" rather than "is there a change called this".
+     * `message:` is what asks the question — `Resolves:` and `Related:` are
+     * where the issue number sits — but it is not the whole of the answer. The
+     * index behind that operator also carries the change's own number, so a
+     * query for issue 88556 comes back with change 88556 as well, whatever that
+     * change is about. Five of seven calls in one session were that
+     * (`feedback/2026-08-05-033826`), every one of them a MERGED core change
+     * with a plausible subject and nothing to do with the issue.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, cause: ?string}
+     * That is the most expensive answer this tool can give, because both core
+     * skills treat a hit as grounds to stop: somebody has a patch up, so the
+     * triage is that it is under review. So what the server matched is held
+     * against what the commit message actually says, and a change that does not
+     * name the issue is not handed back.
+     *
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     public function changesForIssue(string $issue, int $limit = 10): array
     {
         $number = ltrim(trim($issue), '#');
+        $answer = $this->search('message:' . $number, $limit, true);
 
-        return $this->search('message:' . $number, $limit);
+        $named = [];
+        foreach ($answer['changes'] as $change) {
+            if (self::names($change, $number)) {
+                // The message was read to decide this and is not part of the
+                // answer: what a caller asked for is which changes exist, and
+                // the commit is what it holds a checkout against.
+                unset($change['message']);
+                $named[] = $change;
+            }
+        }
+
+        $answer['dropped'] = count($answer['changes']) - count($named);
+        $answer['changes'] = $named;
+        if ($answer['status'] === 'answered' && $named === []) {
+            $answer['status'] = 'empty';
+        }
+
+        return $answer;
+    }
+
+    /**
+     * Whether this change's commit message really names the issue.
+     *
+     * Two places carry the number without meaning it. The `Reviewed-on:`
+     * trailer a merged change gains ends in the change's own number, which is
+     * exactly the false positive above wearing the evidence that would clear
+     * it; and any other URL in the message can carry digits. Both are dropped
+     * before the message is read, so what is left is prose and trailers —
+     * `Resolves: #88556`, `Related: #88556`, an issue named in a sentence.
+     *
+     * A change whose message did not come back is judged by the one rule that
+     * needs none: it is the false positive when its own number is the number
+     * that was asked for, and it is an ordinary hit otherwise.
+     *
+     * @param array<string, mixed> $change
+     */
+    private static function names(array $change, string $number): bool
+    {
+        $message = is_string($change['message'] ?? null) ? $change['message'] : '';
+        if ($message === '') {
+            return ((string) ($change['number'] ?? '')) !== $number;
+        }
+
+        $prose = preg_replace('~https?://\S+~', ' ', $message) ?? $message;
+        $prose = preg_replace('~^Change-Id:.*$~mi', ' ', $prose) ?? $prose;
+
+        return preg_match('~(?<![\d.])' . preg_quote($number, '~') . '(?![\d.])~', $prose) === 1;
     }
 
     /**
      * One change by its number, the form a review URL carries.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, cause: ?string}
+     * Nothing is filtered here. A caller naming a change has named it, and the
+     * answer is that change whatever its commit message says.
+     *
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     public function change(string $change, int $limit = 1): array
     {
@@ -82,11 +142,22 @@ final class Gerrit
     private const CURRENT_REVISION = '&o=CURRENT_REVISION';
 
     /**
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, cause: ?string}
+     * The option that adds the commit message to the current revision.
+     *
+     * Asked for only where the answer has to be held against what the message
+     * says, which is the issue search: a query naming a change is answered with
+     * that change and has nothing to check. Verified against `review.typo3.org`
+     * on 2026-08-05, over the same anonymous path as everything else.
      */
-    private function search(string $query, int $limit): array
+    private const CURRENT_COMMIT = '&o=CURRENT_COMMIT';
+
+    /**
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     */
+    private function search(string $query, int $limit, bool $withMessage = false): array
     {
-        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(25, $limit)) . self::CURRENT_REVISION;
+        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(25, $limit))
+            . self::CURRENT_REVISION . ($withMessage ? self::CURRENT_COMMIT : '');
         $held = Recent::held($url, self::HELD_FOR);
         if (is_array($held)) {
             return $held;
@@ -94,18 +165,22 @@ final class Gerrit
 
         $body = $this->fetch->get($url, ['Accept: application/json']);
         if ($body === null) {
-            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'cause' => 'source-not-answering'];
+            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'cause' => 'source-not-answering'];
         }
 
         $decoded = Fetch::decode($body);
         if ($decoded === null) {
-            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'cause' => 'source-not-parseable'];
+            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'cause' => 'source-not-parseable'];
         }
 
         $changes = [];
         foreach ($decoded as $entry) {
             if (is_array($entry)) {
-                $changes[] = self::change_($entry);
+                $change = self::change_($entry);
+                if (!$withMessage) {
+                    unset($change['message']);
+                }
+                $changes[] = $change;
             }
         }
 
@@ -113,6 +188,7 @@ final class Gerrit
             'status' => $changes === [] ? 'empty' : 'answered',
             'query' => $query,
             'changes' => $changes,
+            'dropped' => 0,
             'cause' => null,
         ];
         // Only a change that was found. "No change for this issue" is the
@@ -147,8 +223,17 @@ final class Gerrit
             ? (int) $entry['current_revision_number']
             : 0;
 
+        $revision = is_string($entry['current_revision'] ?? null) ? $entry['current_revision'] : '';
+        $revisions = is_array($entry['revisions'] ?? null) ? $entry['revisions'] : [];
+        $commit = is_array($revisions[$revision] ?? null) ? $revisions[$revision] : [];
+        $commit = is_array($commit['commit'] ?? null) ? $commit['commit'] : [];
+
         return [
             'number' => $number,
+            // What `o=CURRENT_COMMIT` adds, where it was asked for. Read to
+            // decide whether the change is about the issue, and dropped before
+            // the answer is handed over.
+            'message' => is_string($commit['message'] ?? null) ? $commit['message'] : '',
             'subject' => is_string($entry['subject'] ?? null) ? $entry['subject'] : '',
             'status' => is_string($entry['status'] ?? null) ? $entry['status'] : '',
             'branch' => is_string($entry['branch'] ?? null) ? $entry['branch'] : '',

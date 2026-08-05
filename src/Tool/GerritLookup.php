@@ -135,6 +135,9 @@ final class GerritLookup extends ReadOnlyTool
             $lines[] = $issue !== ''
                 ? 'No change names this issue in its commit message. This reads the review server anonymously, so a change pushed as private is invisible here — the answer is that nothing public exists, not that nobody has fixed it.'
                 : 'The review server knows no change with this number.';
+            if ($answer['dropped'] > 0) {
+                $lines[] = self::held($answer['dropped']);
+            }
         } else {
             $named = false;
             foreach ($answer['changes'] as $entry) {
@@ -161,8 +164,32 @@ final class GerritLookup extends ReadOnlyTool
                     . 'differ, the checkout is not the revision under review, and a review says which of '
                     . 'the two it read.';
             }
+            if ($answer['dropped'] > 0) {
+                $lines[] = '';
+                $lines[] = self::held($answer['dropped']);
+            }
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * What the same query answers by hand and this one does not.
+     *
+     * The `query` field is there so the question can be asked again outside
+     * this server, and a hand-run one comes back with more than this — so what
+     * was held back is said, rather than left as a difference the caller finds
+     * and reads as this answer being short.
+     */
+    private static function held(int $dropped): string
+    {
+        return sprintf(
+            '%d change%s the review server matched by its own change number rather than by its commit message %s '
+                . 'held back. The number a query carries is indexed both ways there, so a search for an issue '
+                . 'answers with the change of the same number whatever it is about.',
+            $dropped,
+            $dropped === 1 ? '' : 's',
+            $dropped === 1 ? 'was' : 'were',
+        );
     }
 }

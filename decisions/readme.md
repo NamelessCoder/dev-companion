@@ -56,6 +56,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
@@ -106,6 +107,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-054]: answers/ans-054-the-backlog-is-a-third-way-into-the-tracker-and-the-areas-are-read-from-it.md
 [D-ANS-048]: answers/ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: answers/ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: answers/ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md
@@ -350,6 +352,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
 - [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04
 - [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04
@@ -371,6 +374,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-021]: task-skills/skl-021-triage-and-fetching-a-patch-are-two-workflows-that-end-before-somebody-elses-act.md
 [D-SKL-014]: task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
 [D-SKL-015]: task-skills/skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
 [D-SKL-016]: task-skills/skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md

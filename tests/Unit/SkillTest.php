@@ -57,6 +57,17 @@ final class SkillTest extends TestCase
             'typo3_script_lookup',
             'typo3_commit_message_guide',
         ],
+        'typo3-core-issue-triage' => [
+            'typo3_forge_lookup',
+            'typo3_gerrit_lookup',
+            'typo3_changelog_lookup',
+            'typo3_test_run_guide',
+        ],
+        'typo3-core-patch-checkout' => [
+            'typo3_gerrit_lookup',
+            'typo3_rule_lookup',
+            'typo3_test_run_guide',
+        ],
         'typo3-core-patch-development' => [
             'typo3_rule_lookup',
             'typo3_forge_lookup',

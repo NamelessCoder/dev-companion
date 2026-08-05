@@ -282,4 +282,212 @@ final class ForgeTest extends TestCase
         self::assertSame('unavailable', $answer['status']);
         self::assertSame('source-not-answering', $answer['cause']);
     }
+
+    /**
+     * The two calls an enumeration makes, answered by the URL that was asked
+     * for: the project carries the areas, the issues carry the page.
+     *
+     * @param list<string> $asked
+     * @return \Closure(string): string
+     */
+    private static function tracker(array &$asked): \Closure
+    {
+        return function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return (string) json_encode(str_contains($url, '/issues.json') ? self::PAGE : self::PROJECT);
+        };
+    }
+
+    private const PROJECT = [
+        'project' => [
+            'id' => 27,
+            'identifier' => 'typo3cms-core',
+            'issue_categories' => [
+                ['id' => 971, 'name' => 'Backend API'],
+                ['id' => 972, 'name' => 'Backend User Interface'],
+                ['id' => 1001, 'name' => 'RTE (rtehtmlarea + ckeditor)'],
+                ['id' => 977, 'name' => 'Frontend'],
+                // Carries "rte" as a substring and not as a word, which is what
+                // separates the two matchers.
+                ['id' => 1005, 'name' => 'Performance Reporter'],
+            ],
+        ],
+    ];
+
+    /** A page of `/issues.json`, whose entries are fields rather than a title. */
+    private const PAGE = [
+        'issues' => [
+            [
+                'id' => 14858,
+                'subject' => 'extended clipboard: setCopyMode can`t be set to copy by default',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'New', 'is_closed' => false],
+                'category' => ['name' => 'Backend User Interface'],
+                'assigned_to' => ['name' => 'Sacha Vorbeck'],
+                'created_on' => '2005-07-11T10:22:33Z',
+                'updated_on' => '2026-01-23T08:11:00Z',
+            ],
+            [
+                'id' => 23633,
+                'subject' => 'regex in TCA eval function',
+                'tracker' => ['name' => 'Feature'],
+                'status' => ['name' => 'New', 'is_closed' => false],
+                'category' => ['name' => 'Backend API'],
+                'created_on' => '2010-09-28T11:00:00Z',
+                'updated_on' => '2023-07-04T09:00:00Z',
+            ],
+        ],
+        'total_count' => 479,
+        'offset' => 0,
+        'limit' => 2,
+    ];
+
+    /**
+     * The filters go to the tracker and the entries come back as fields.
+     *
+     * What this holds against the search above is where a triage state is read
+     * from: a search hit carries it in a title and an enumeration carries it in
+     * fields, which is why the two dates are answerable here at all.
+     */
+    #[Test]
+    public function theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open('stale', 'Bug', '', '2015-01-01', '2020-01-01', 2);
+
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        self::assertStringContainsString('status_id=open', $issues[0]);
+        self::assertStringContainsString('sort=updated_on%3Aasc', $issues[0]);
+        self::assertStringContainsString('tracker_id=1', $issues[0]);
+        self::assertStringContainsString('created_on=%3C%3D2015-01-01', $issues[0]);
+        self::assertStringContainsString('updated_on=%3C%3D2020-01-01', $issues[0]);
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame([14858, 23633], array_column($answer['results'], 'issue'));
+        self::assertSame('Backend User Interface', $answer['results'][0]['category']);
+        self::assertSame('Sacha Vorbeck', $answer['results'][0]['assignedTo']);
+        // Who holds an issue is what says whether it is free to take, and
+        // nobody holding it is a state rather than a missing field.
+        self::assertSame('', $answer['results'][1]['assignedTo']);
+        self::assertSame('2005-07-11T10:22:33Z', $answer['results'][0]['createdOn']);
+        self::assertSame('2026-01-23T08:11:00Z', $answer['results'][0]['updatedOn']);
+    }
+
+    /**
+     * A page is not the set, and only the tracker's own count says which of the
+     * two the caller is holding.
+     */
+    #[Test]
+    public function theCountOfEverythingThatMatchedComesBackWithThePage(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open('oldest', '', '', '', '', 2);
+
+        self::assertSame(479, $answer['total']);
+        self::assertCount(2, $answer['results']);
+    }
+
+    /**
+     * A date the tracker cannot read is dropped rather than sent. Redmine
+     * answers an unparseable filter with the unfiltered set, which is a set
+     * about everything wearing the shape of a set about one thing.
+     */
+    #[Test]
+    public function onlyADateReachesTheDateFilter(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $forge->open('oldest', '', '', 'last year', '', 2);
+
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        self::assertStringNotContainsString('created_on=', $issues[0]);
+    }
+
+    /**
+     * Nobody types "RTE (rtehtmlarea + ckeditor)", so the caller's own word is
+     * matched against the project's names — at a word boundary, because a
+     * substring match answers "rte" with every category carrying "Reporter".
+     */
+    #[Test]
+    public function anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary(): void
+    {
+        $categories = [
+            'Backend API' => 971,
+            'Backend User Interface' => 972,
+            'RTE (rtehtmlarea + ckeditor)' => 1001,
+            'Performance Reporter' => 1005,
+        ];
+
+        self::assertSame(['RTE (rtehtmlarea + ckeditor)'], Forge::named($categories, 'rte'));
+        // Every word beats one word: an exact name is not widened by the
+        // fallback that makes a half-remembered one work at all.
+        self::assertSame(['Backend API'], Forge::named($categories, 'backend api'));
+        // And a word carried by several selects them all rather than guessing
+        // which was meant.
+        self::assertSame(
+            ['Backend API', 'Backend User Interface'],
+            Forge::named($categories, 'backend ui'),
+        );
+        self::assertSame([], Forge::named($categories, 'quantumflux'));
+    }
+
+    /** The areas selected reach the tracker as its own alternation, in one call. */
+    #[Test]
+    public function anAreaNamingSeveralCategoriesIsOneCallAndSaysWhichItUsed(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open('oldest', '', 'backend', '', '', 2);
+
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        self::assertCount(1, $issues);
+        self::assertStringContainsString('category_id=971%7C972', $issues[0]);
+        self::assertSame(['Backend API', 'Backend User Interface'], $answer['categoriesUsed']);
+    }
+
+    /**
+     * A word naming no area is an answer about the word. Sent on unfiltered it
+     * would come back as the whole backlog, which reads as "everything is about
+     * the RTE" and is the one mistake this path can make.
+     */
+    #[Test]
+    public function awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open('oldest', '', 'quantumflux', '', '', 2);
+
+        self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        self::assertSame('empty', $answer['status']);
+        self::assertSame([], $answer['categoriesUsed']);
+        self::assertContains('RTE (rtehtmlarea + ckeditor)', $answer['categories']);
+    }
+
+    /**
+     * The areas are read from the project rather than written down here, so a
+     * category the core adds is one this can filter by without a release.
+     */
+    #[Test]
+    public function theAreasAreReadFromTheProjectAndHeldRatherThanCopied(): void
+    {
+        $calls = 0;
+        $forge = new Forge(function (string $url) use (&$calls): string {
+            $calls++;
+
+            return (string) json_encode(str_contains($url, '/issues.json') ? self::PAGE : self::PROJECT);
+        });
+
+        self::assertArrayHasKey('RTE (rtehtmlarea + ckeditor)', $forge->categories());
+        $forge->categories();
+
+        self::assertSame(1, $calls, 'the project was read again for a list that changes between releases');
+    }
 }

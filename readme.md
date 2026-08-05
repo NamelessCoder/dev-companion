@@ -169,9 +169,11 @@ grouped by where an answer comes from.
   public tables of contents on `docs.typo3.org` for an explicitly requested
   covered release, and reads a result it returned as text.
 - **The core's own services.** `typo3_forge_lookup` reads an issue and its
-  comments before a patch is written for it, and `typo3_gerrit_lookup` answers
-  whether a patch for it exists already. Reading only: voting, uploading and
-  amending stay with the caller's git and the web UI.
+  comments before a patch is written for it, and answers the backlog it came out
+  of — what stands open, oldest or longest untouched, in one area named in your
+  own words. `typo3_gerrit_lookup` answers whether a patch for it exists
+  already. Reading only: voting, uploading and amending stay with the caller's
+  git and the web UI.
 - **This server itself.** `typo3_feedback_record` records what was missing,
   wrong or unhelpful about an answer, and `typo3_feedback_list` reads those
   back, open ones and archived ones. Both exist only in a standalone checkout,

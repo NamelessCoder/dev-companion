@@ -149,6 +149,20 @@ final class ToolCalls
             'forge: nothing matches these words' => ['typo3_forge_lookup', [
                 'query' => 'quantumflux transponder',
             ]],
+            'forge: the oldest issues nobody has resolved' => ['typo3_forge_lookup', [
+                'open' => 'oldest',
+                'limit' => 3,
+            ]],
+            'forge: what is known about one area' => ['typo3_forge_lookup', [
+                'open' => 'stale',
+                'category' => 'rte',
+                'tracker' => 'Bug',
+                'limit' => 3,
+            ]],
+            'forge: a word that names no area' => ['typo3_forge_lookup', [
+                'open' => 'oldest',
+                'category' => 'quantumflux',
+            ]],
             'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
                 'issue' => '110348',
                 'limit' => 3,

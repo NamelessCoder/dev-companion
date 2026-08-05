@@ -22,8 +22,8 @@
       "scope": "core"
     },
     {
-      "topic": "What a Forge issue says and what was decided about it, and which other issues describe the same thing",
-      "depth": "The tracker's own API, read live. By number: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported.",
+      "topic": "What a Forge issue says and what was decided about it, which other issues describe the same thing, and what stands open in the core's backlog",
+      "depth": "The tracker's own API, read live. By number: subject, tracker, status, target version, who it is assigned to, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported. As a backlog: the unresolved issues of the core project, ordered by when they were filed or by how long nobody has touched them, narrowed by tracker, by area in the caller's own words, and by date, each with who holds it and both dates, and the count of everything that matched beside the page. The areas are read from the project itself, so a word naming none is answered with the ones that exist.",
       "tools": [
         "typo3_forge_lookup"
       ],
@@ -302,6 +302,10 @@
     {
       "when": "Asked to review, audit or assess a project, a site package or an extension — before opening the first file, because what a finding is worth depends on the version and the commands this repository has",
       "call": "typo3_project_describe, then typo3_task_guide for the workflow and typo3_extension_describe for each extension in scope"
+    },
+    {
+      "when": "Going through the core's open issues — the oldest, the ones nobody has touched for years, or what stands open in one area such as the RTE or the backend UI",
+      "call": "typo3_forge_lookup with open=\"oldest\" or open=\"stale\", narrowed with category in the user's own words and with tracker, then typo3_forge_lookup with the number of the one being taken further"
     },
     {
       "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",

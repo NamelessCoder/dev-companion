@@ -19,6 +19,11 @@ use Typo3CmsMcp\Result\ToolResult;
  * is asked before a patch and no number answers it, so `query` searches the
  * tracker by words — the step two sessions took by hand between reading an
  * issue and looking for its patch (`D-ANS-038`).
+ *
+ * Nor is a wording. A triage starts before there is an issue in hand at all,
+ * and what it needs is the backlog ordered by age or by neglect, which no
+ * number holds and no query reaches: the issue nobody has touched since 2015 is
+ * worded the way nobody thinks of. `open` is that way in.
  */
 final class ForgeLookup extends ReadOnlyTool
 {
@@ -35,7 +40,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand; each hit comes back with its number, subject, tracker, status and URL. A call carries issue or query, never both. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -56,18 +61,50 @@ final class ForgeLookup extends ReadOnlyTool
                 'issue' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Forge issue number, with or without the leading #, for example "110348". Reads that one issue whole, comments included. A call carries issue or query, never both.',
+                    'description' => 'Forge issue number, with or without the leading #, for example "110348". Reads that one issue whole, comments included. A call carries issue, query or open, never two of them.',
                 ],
                 'query' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Words to search the tracker for, for example "image cache busting". Answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue or query, never both.',
+                    'description' => 'Words to search the tracker for, for example "image cache busting". Answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue, query or open, never two of them.',
                 ],
-                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 25, 'default' => 15],
+                'open' => [
+                    'type' => 'string',
+                    'enum' => ['oldest', 'stale'],
+                    'description' => 'Enumerate the core project\'s unresolved issues instead of reading one or matching words: "oldest" orders them by when they were filed, "stale" by how long nobody has touched them. The two answer different questions about one backlog — filed long ago is about the report, untouched for years is about the attention it got — and an issue that is both is the candidate a triage is looking for. Unresolved is the tracker\'s own set of open statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and Postponed are all in it. Narrow with tracker, createdBefore and updatedBefore. A call carries issue, query or open, never two of them.',
+                ],
+                'tracker' => [
+                    'type' => 'string',
+                    'enum' => ['Bug', 'Feature', 'Major Feature', 'Support', 'Task', 'Story', 'Suggestion', 'Impediment', 'Epic', 'Work Package', 'Topic'],
+                    'description' => 'Only issues filed under this tracker, for example "Bug". Worth setting before reading a set: an old Bug and an old Feature are two different findings, since one claims something is broken today and the other that something was wanted once. Narrows open and is ignored by issue and query.',
+                ],
+                'category' => [
+                    'type' => 'string',
+                    'minLength' => 1,
+                    'description' => 'Only issues the core files under this area, in your own words: "rte", "backend ui", "workspaces", "fluid". Matched against the project\'s own category names one word at a time, so a half-remembered name reaches the right area and a word naming several — "backend" — selects all of them and says which. That is the way in for "are there known bugs in the RTE" and "the oldest issues in the backend UI", which no wording of the report itself reaches. The categories that exist come back with every answer, so a word matching none is corrected without a second call. Narrows open and is ignored by issue and query.',
+                ],
+                'createdBefore' => [
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}-\d{2}$',
+                    'description' => 'Only issues filed before this day, as YYYY-MM-DD. Narrows open and is ignored by issue and query.',
+                ],
+                'updatedBefore' => [
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}-\d{2}$',
+                    'description' => 'Only issues nobody has touched since this day, as YYYY-MM-DD. This is the one that finds a report everybody has walked past, which age alone does not: an issue filed in 2009 and commented on last month is being worked. Narrows open and is ignored by issue and query.',
+                ],
+                'limit' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                    'maximum' => 50,
+                    'default' => 15,
+                    'description' => 'How many entries come back. A search answers with at most 25 whatever is asked for, because a set that has to be paged through is answered by other words rather than by more of these.',
+                ],
             ],
             'oneOf' => [
                 ['required' => ['issue']],
                 ['required' => ['query']],
+                ['required' => ['open']],
             ],
         ];
     }
@@ -78,7 +115,10 @@ final class ForgeLookup extends ReadOnlyTool
             'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
             'source' => Schema::string('The tracker the answer came from.'),
             'url' => Schema::string('What was read, so the same question can be asked again by hand.'),
-            'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number.'),
+            'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number and where the open issues were enumerated.'),
+            'total' => Schema::integer('How many issues matched in total, of which results carries at most limit. Where the two differ the answer is a page and not the set, and asking for more of it is a narrower filter rather than a bigger limit. Zero where an issue was read by number.'),
+            'categories' => Schema::listOf(Schema::string(), 'Every area the core files its issues under, read from the project itself. Answered on every enumeration, so a category word that matched none is corrected from the answer rather than from a second call. Empty where an issue was read by number and where words were searched for.'),
+            'categoriesUsed' => Schema::listOf(Schema::string(), 'The categories the category word resolved to, in the tracker\'s own spelling. Empty where none was asked for — and empty where the word matched none, which is answered as no issues and is a statement about the word rather than about the backlog.'),
             'issue' => [
                 'type' => ['object', 'null'],
                 'description' => 'The issue, where status says answered and a number was asked for. Null otherwise.',
@@ -88,6 +128,7 @@ final class ForgeLookup extends ReadOnlyTool
                     'status' => Schema::string('New, Accepted, Resolved, Closed, Rejected — the tracker\'s own word.'),
                     'tracker' => Schema::string('Bug, Feature, Task, Epic.'),
                     'priority' => Schema::string(),
+                    'assignedTo' => Schema::string('Who the tracker says holds this, empty where nobody does. An assignee is not a promise that somebody is working on it — on an issue nothing has moved on for years it is usually who last did.'),
                     'targetVersion' => Schema::string('The release it is scheduled for, empty where none is set.'),
                     'typo3Version' => Schema::string('The TYPO3 version it was reported against, which is not the version it still reproduces on.'),
                     'phpVersion' => Schema::string(),
@@ -106,15 +147,19 @@ final class ForgeLookup extends ReadOnlyTool
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'noteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'noteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
                 'subject' => Schema::string(),
                 'tracker' => Schema::string('Bug, Feature, Task, Epic.'),
                 'status' => Schema::string('Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.'),
+                'category' => Schema::string('The area the core files it under, empty where none is set or where the entry did not carry it. Empty on a query, whose hits are titles rather than issues.'),
+                'assignedTo' => Schema::string('Who the tracker says holds this, empty where nobody does or where the entry did not carry it. What it decides for a triage is whether the issue is free to take, and on an old one it is usually who last touched it rather than who is on it.'),
+                'createdOn' => Schema::string('When it was filed. Empty on a query, whose hits are titles rather than issues.'),
+                'updatedOn' => Schema::string('When anything last moved on it, which is the measure of neglect rather than of age. Empty on a query.'),
                 'url' => Schema::string('Where a person reads it.'),
-            ], ['issue', 'subject', 'tracker', 'status', 'url']), 'The issues whose text matches the query, in the tracker\'s own order — nothing here ranks them, and what a hit is worth is the caller\'s to judge. Empty where an issue was read by number.'),
+            ], ['issue', 'subject', 'tracker', 'status', 'category', 'assignedTo', 'createdOn', 'updatedOn', 'url']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
@@ -130,7 +175,7 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 'required' => ['cause', 'reason'],
             ],
-        ], ['status', 'source', 'url', 'query', 'issue', 'results', 'unavailable']);
+        ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'issue', 'results', 'unavailable']);
     }
 
     /** @param array<string, mixed> $args */
@@ -138,9 +183,45 @@ final class ForgeLookup extends ReadOnlyTool
     {
         $issue = is_string($args['issue'] ?? null) ? trim($args['issue']) : '';
         $query = is_string($args['query'] ?? null) ? trim($args['query']) : '';
+        $open = is_string($args['open'] ?? null) ? trim($args['open']) : '';
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 15;
 
-        return $issue !== '' ? self::read($issue) : self::searched($query, $limit);
+        if ($issue !== '') {
+            return self::read($issue);
+        }
+        if ($open !== '') {
+            return self::enumerated(
+                $open,
+                is_string($args['tracker'] ?? null) ? trim($args['tracker']) : '',
+                is_string($args['category'] ?? null) ? trim($args['category']) : '',
+                is_string($args['createdBefore'] ?? null) ? trim($args['createdBefore']) : '',
+                is_string($args['updatedBefore'] ?? null) ? trim($args['updatedBefore']) : '',
+                $limit,
+            );
+        }
+
+        return self::searched($query, $limit);
+    }
+
+    /**
+     * Why nothing was answered, in the caller's terms rather than the
+     * transport's — one shape for all three ways in, because what a caller does
+     * about it is the same whichever question it asked.
+     *
+     * @return array{cause: string, reason: string}|null
+     */
+    private static function unreachable(?string $cause): ?array
+    {
+        if ($cause === null) {
+            return null;
+        }
+
+        return [
+            'cause' => $cause,
+            'reason' => $cause === 'source-not-answering'
+                ? 'The tracker did not answer. It is reachable at ' . Forge::HOST . ' in a browser; nothing here can answer this offline.'
+                : 'Something answered with a page rather than with the API. The tracker sits behind bot protection, and what it challenges is a browser-shaped request.',
+        ];
     }
 
     /** One issue, whole, which is what a number is asked for. */
@@ -153,14 +234,12 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Forge::HOST,
             'url' => $answer['url'],
             'query' => '',
+            'total' => 0,
+            'categories' => [],
+            'categoriesUsed' => [],
             'issue' => $answer['issue'],
             'results' => [],
-            'unavailable' => $answer['cause'] === null ? null : [
-                'cause' => $answer['cause'],
-                'reason' => $answer['cause'] === 'source-not-answering'
-                    ? 'The tracker did not answer. It is reachable at ' . Forge::HOST . ' in a browser; nothing here can answer this offline.'
-                    : 'Something answered with a page rather than with the API. The tracker sits behind bot protection, and what it challenges is a browser-shaped request.',
-            ],
+            'unavailable' => self::unreachable($answer['cause']),
         ];
 
         if ($answer['status'] === 'unavailable') {
@@ -175,6 +254,9 @@ final class ForgeLookup extends ReadOnlyTool
             sprintf('#%d %s', $found['id'], $found['subject']),
             sprintf('%s · %s · priority %s · %s', $found['tracker'], $found['status'], $found['priority'], $found['url']),
         ];
+        $lines[] = $found['assignedTo'] !== ''
+            ? 'Assigned to ' . $found['assignedTo'] . ' — which says who holds it and not that somebody is working on it.'
+            : 'Assigned to nobody.';
         if ($found['targetVersion'] !== '') {
             $lines[] = 'Target version: ' . $found['targetVersion'];
         }
@@ -221,14 +303,12 @@ final class ForgeLookup extends ReadOnlyTool
             'source' => Forge::HOST,
             'url' => $answer['url'],
             'query' => $answer['query'],
+            'total' => $answer['total'],
+            'categories' => [],
+            'categoriesUsed' => [],
             'issue' => null,
             'results' => $answer['results'],
-            'unavailable' => $answer['cause'] === null ? null : [
-                'cause' => $answer['cause'],
-                'reason' => $answer['cause'] === 'source-not-answering'
-                    ? 'The tracker did not answer. It is reachable at ' . Forge::HOST . ' in a browser; nothing here can answer this offline.'
-                    : 'Something answered with a page rather than with the API. The tracker sits behind bot protection, and what it challenges is a browser-shaped request.',
-            ],
+            'unavailable' => self::unreachable($answer['cause']),
         ];
 
         if ($answer['status'] === 'unavailable') {
@@ -257,6 +337,104 @@ final class ForgeLookup extends ReadOnlyTool
             // The tracker and the status where the title carried them, which is
             // every hit the tracker words as it words its own.
             $lines[] = implode(' · ', array_filter([$hit['tracker'], $hit['status'], $hit['url']]));
+        }
+
+        return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * The open issues, ordered by the thing that was asked about them.
+     *
+     * What this owes a caller beyond the entries is the size of what it is
+     * looking at. A backlog answers a filter with thousands, and a page of
+     * thirty read as the set is a triage that believes it has seen the problem.
+     * So the count of everything that matched leads, and where it is larger
+     * than the page the answer says which way to make it smaller: a narrower
+     * filter and not a larger limit, because the order is the tracker's and
+     * more of it is more of the same end.
+     */
+    private static function enumerated(
+        string $order,
+        string $tracker,
+        string $category,
+        string $createdBefore,
+        string $updatedBefore,
+        int $limit,
+    ): ToolResult {
+        $answer = (new Forge())->open($order, $tracker, $category, $createdBefore, $updatedBefore, $limit);
+
+        $data = [
+            'status' => $answer['status'],
+            'source' => Forge::HOST,
+            'url' => $answer['url'],
+            'query' => '',
+            'total' => $answer['total'],
+            'categories' => $answer['categories'],
+            'categoriesUsed' => $answer['categoriesUsed'],
+            'issue' => null,
+            'results' => $answer['results'],
+            'unavailable' => self::unreachable($answer['cause']),
+        ];
+
+        $narrowed = implode(', ', array_filter([
+            $tracker !== '' ? 'tracker ' . $tracker : '',
+            $answer['categoriesUsed'] !== [] ? 'in ' . implode(' and ', $answer['categoriesUsed']) : '',
+            $createdBefore !== '' ? 'filed before ' . $createdBefore : '',
+            $updatedBefore !== '' ? 'untouched since ' . $updatedBefore : '',
+        ]));
+        $selection = 'open issues of the TYPO3 Core project'
+            . ($narrowed !== '' ? ', ' . $narrowed : '')
+            . ', ' . ($order === 'stale' ? 'longest untouched first' : 'oldest filed first');
+
+        if ($answer['status'] === 'unavailable') {
+            return ToolResult::create(
+                'TYPO3 issue tracker, ' . $selection . "\nCould not answer: " . $data['unavailable']['reason'],
+                $data,
+            );
+        }
+        // A word that named no category is a different answer to a filter that
+        // excluded everything, and reading it as an empty backlog is the one
+        // mistake this path can make.
+        if ($category !== '' && $answer['categoriesUsed'] === []) {
+            return ToolResult::create(
+                'TYPO3 issue tracker: "' . $category . '" names no area the core files issues under, so nothing was'
+                . " read. That is about the word and not about the backlog.\nThe areas are: "
+                . implode(', ', $answer['categories']),
+                $data,
+            );
+        }
+        if ($answer['status'] === 'empty') {
+            return ToolResult::create(
+                'TYPO3 issue tracker: nothing open matches ' . $selection . ".\n"
+                . 'The filters excluded everything, which is an answer about them and not about the backlog. Widen the '
+                . 'dates or drop the tracker.',
+                $data,
+            );
+        }
+
+        $shown = count($answer['results']);
+        $lines = [
+            sprintf('TYPO3 issue tracker: %d of %d %s', $shown, $answer['total'], $selection),
+        ];
+        $lines[] = $shown < $answer['total']
+            ? 'This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one'
+                . ' tracker — rather than by a larger limit, because the order is the tracker\'s own and more of it is more'
+                . ' of the same end.'
+            : 'That is the whole set on these filters.';
+        $lines[] = 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
+            . ' still claims is established in the checkout rather than off this list.';
+        foreach ($answer['results'] as $entry) {
+            $lines[] = '';
+            $lines[] = sprintf('## #%d %s', $entry['issue'], $entry['subject']);
+            $lines[] = implode(' · ', array_filter([
+                $entry['tracker'],
+                $entry['status'],
+                $entry['category'],
+                $entry['assignedTo'] !== '' ? 'assigned to ' . $entry['assignedTo'] : 'unassigned',
+                $entry['createdOn'] !== '' ? 'filed ' . substr($entry['createdOn'], 0, 10) : '',
+                $entry['updatedOn'] !== '' ? 'last touched ' . substr($entry['updatedOn'], 0, 10) : '',
+                $entry['url'],
+            ]));
         }
 
         return ToolResult::create(implode("\n", $lines), $data);

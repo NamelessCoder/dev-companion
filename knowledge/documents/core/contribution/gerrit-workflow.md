@@ -1,8 +1,8 @@
 ---
 description: >-
-  How a core patch reaches review: the one-time git setup, pushing, amending a patch set, and backporting.
+  How a core patch reaches review: the one-time git setup, fetching a patch set into the checkout, pushing, amending a patch set, and backporting.
 whenToUse: >-
-  When a change is ready to leave the checkout, or a patch already under review has to be changed.
+  When a change is ready to leave the checkout, when a patch under review has to be read or tried out locally, or when a patch already under review has to be changed.
 hints: []
 ---
 
@@ -72,6 +72,35 @@ cat .gitreview
   lives on Gerrit even in a clone whose remote points nowhere near it. With an
   account name those values are the push URL:
   `ssh://<username>@<host>:<port>/<project>.git`.
+
+## Fetch a Change Into This Checkout
+
+A patch under review is a ref named after the change's own number, and every
+patch set keeps its own:
+
+```bash
+git fetch <the Gerrit URL above> refs/changes/<last two digits>/<change>/<patch set>
+git switch --detach FETCH_HEAD
+```
+
+`refs/changes/02/95102/2` is change 95102, patch set 2, filed under the last two
+digits of the number. Patch set 1 stays fetchable after 2 is pushed, so a review
+comment about an earlier revision can be read against the revision it was
+written on. There is no ref for "the current one": the patch set number is read
+off the change rather than defaulted to, and the only other ref a change carries
+is `meta`, which is its review history and not a commit anybody builds on.
+
+**The ref is on Gerrit and not on GitHub.** A core clone fetches from the mirror
+and pushes to the review server, so `git fetch origin refs/changes/…` reports
+that the ref does not exist in a checkout whose push would reach it — the same
+asymmetry as above, from the reading side. What to fetch from is
+`remote.origin.pushurl`, or a remote of its own pointed at the review server.
+Measured on 2026-08-05: `refs/changes/02/95102/2` resolved over the Gerrit URL
+and returned nothing at all over the GitHub one.
+
+A fetched patch set is somebody else's commit and is not on a branch. Detaching
+onto `FETCH_HEAD` says that in the checkout, which is what keeps a local branch
+from quietly acquiring a commit that belongs to a review.
 
 ## Push a Patch for Review
 
@@ -164,9 +193,8 @@ git push origin HEAD:refs/for/main
   second change.
 - Earlier patch sets are never overwritten. Reviewers can diff between them, so
   amending is safe.
-- Before amending, fetch the current patch set from Gerrit (the "Download" menu
-  of the change offers the `git fetch … && git cherry-pick FETCH_HEAD` command)
-  when it is not already the local commit.
+- Before amending, fetch the current patch set when it is not already the local
+  commit. Which ref that is and where it is fetched from is above.
 
 ## The Forge Issue a Change Hangs Off
 

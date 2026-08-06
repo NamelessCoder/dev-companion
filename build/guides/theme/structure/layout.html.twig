@@ -102,12 +102,24 @@
         margin: 1rem 0; padding: .2rem 0 .2rem 1rem;
         border-left: 3px solid var(--line); color: var(--dim);
     }
+    nav.side #menu { display: none; }
     @media (max-width: 860px) {
         .wrap { display: block; }
         nav.side {
             position: static; max-height: none; width: auto;
             border-right: 0; border-bottom: 1px solid var(--line);
         }
+        /* The list is 47 entries. Left open it is the whole first screen, and
+           the page a reader came for starts below it. */
+        nav.side.js #menu {
+            display: block; width: 100%; margin-top: .35rem; padding: .35rem .5rem;
+            font: inherit; font-size: 13px; text-align: left; color: var(--ink);
+            background: var(--soft); border: 1px solid var(--line);
+            border-radius: 3px; cursor: pointer;
+        }
+        nav.side.js #menu::before { content: '▸ '; color: var(--dim); }
+        nav.side.js.open #menu::before { content: '▾ '; }
+        nav.side.js:not(.open) #pages { display: none; }
         main { padding: 1.6rem 1.1rem 4rem; }
     }
     </style>
@@ -119,6 +131,12 @@
     <nav class="side">
         <a class="brand" href="{{ up }}index.html">{{ env.projectNode.title ?? 'Documentation' }}</a>
         <input id="q" type="search" autocomplete="off" placeholder="Search" aria-label="Search the documentation">
+        {#
+            Shown by the script and on a narrow screen alone. Written hidden so
+            that a reader without JavaScript keeps the list rather than a button
+            that cannot open it.
+        #}
+        <button id="menu" type="button" aria-expanded="false" aria-controls="pages" hidden>All pages</button>
         <ul id="hits" hidden></ul>
         <p id="miss" hidden>Nothing carries that.</p>
         {% set group = '__none__' %}
@@ -149,8 +167,19 @@
         hits = document.getElementById('hits'),
         miss = document.getElementById('miss'),
         pages = document.getElementById('pages'),
+        menu = document.getElementById('menu'),
+        side = document.querySelector('nav.side'),
         up = {{ up|json_encode|raw }},
         index = null, pending = false;
+
+    // Only now is there something that can open the list again.
+    side.className += ' js';
+    menu.hidden = false;
+    menu.addEventListener('click', function () {
+        var open = side.className.indexOf(' open') === -1;
+        side.className = open ? side.className + ' open' : side.className.replace(' open', '');
+        menu.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
 
     function terms(value) {
         return value.toLowerCase().split(/[^a-z0-9_:.-]+/).filter(function (t) { return t.length > 1; });

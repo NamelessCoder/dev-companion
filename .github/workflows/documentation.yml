@@ -25,14 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # `deploy-pages` cannot create the Pages site and answers 404 while there
-      # is none, which is what the first run of this workflow did. This one
-      # creates it, so the repository is switched on by the workflow that needs
-      # it rather than by somebody remembering a setting.
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'

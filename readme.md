@@ -1,5 +1,10 @@
 # TYPO3 Dev Companion
 
+> **Experimental.** This is a 0.x package and its surface is not settled. The
+> package name, the binary, the namespace and the environment variables all
+> changed in one cut on 2026-08-06. The tool names and the shapes they answer in
+> can move the same way. Pin a commit where you depend on it.
+
 A local MCP server (plain PHP) that helps coding agents implement, review and
 verify TYPO3 work for the three audiences that do it: the core contributor, the
 extension author and the site developer. It establishes the project and

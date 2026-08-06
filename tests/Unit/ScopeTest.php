@@ -214,7 +214,11 @@ final class ScopeTest extends TestCase
         // release runs of 2026-07-31 were handed instructions cut from 3662 to
         // 2048 characters, and the half that fell off ended with "in English".
         // The prefix naming what was excluded is measured too, because it grows
-        // with the list and a caller may exclude most of the server.
+        // with the list and a caller may exclude most of the server. That case
+        // is at the budget exactly as of 2026-08-05, so anything added to the
+        // instructions has to come out of them first: a session asked for one
+        // line there saying that clients expose tool names with a prefix of
+        // their own, and there was nowhere to put it.
         self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
         putenv(ExcludedTools::VARIABLE . '=' . implode(',', array_column(Registry::definitions(), 'name')));

@@ -37,8 +37,8 @@ The [readme](../../readme.md) groups the tools by where their answers come from;
 a page here says what one tool is for, what goes in and what shape comes back.
 
 - [`typo3_server_scope`](typo3_server_scope.md) — Orientation for this server.
-- [`typo3_rule_lookup`](typo3_rule_lookup.md) — Search the local TYPO3 core
-  contribution rules and script notes by topic.
+- [`typo3_rule_lookup`](typo3_rule_lookup.md) — Search the TYPO3 rules and
+  procedures this server carries, by topic.
 - [`typo3_script_lookup`](typo3_script_lookup.md) — Find notes for TYPO3 core
   scripts and commands.
 - [`typo3_task_guide`](typo3_task_guide.md) — Build a task checklist enriched

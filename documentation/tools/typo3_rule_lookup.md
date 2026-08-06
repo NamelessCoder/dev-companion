@@ -1,7 +1,15 @@
 # `typo3_rule_lookup`
 
-Search the local TYPO3 core contribution rules and script notes by topic.
-Answers from: knowledge.
+Search the TYPO3 rules and procedures this server carries, by topic. The core
+contribution process is most of it: the commit message conventions, which
+branches take a patch today, the changelog entry each change type owes, the
+Gerrit push and amend workflow with both refspecs, and the notes beside
+runTests.sh. It answers outside a core checkout too — setting up an extension
+manual, PHPUnit in an extension, Playwright in a project — and there the
+core-only documents are withheld and named rather than dropped in silence. What
+comes back is the sections that matched, each naming the document it was cut
+from, which is readable whole as its typo3://guides resource. Answers from:
+knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 

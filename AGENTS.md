@@ -53,8 +53,10 @@ todo/open/         # the queue, read by the priority in each head and then by th
 todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
 src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
+src/Upkeep/Site.php  # documentation/ as the source a generator publishes: the links that leave it, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
+documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there; the one directory published as a site
+build/guides/      # the renderer that publishes documentation/, in a manifest of its own; its own composer.json says why
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

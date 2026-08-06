@@ -15,6 +15,7 @@ use TYPO3\DevCompanion\Upkeep\Command\DecisionCheck;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionIndex;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionList;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionRenumber;
+use TYPO3\DevCompanion\Upkeep\Command\DocumentationBuild;
 use TYPO3\DevCompanion\Upkeep\Command\EnvironmentCreate;
 use TYPO3\DevCompanion\Upkeep\Command\EnvironmentStatus;
 use TYPO3\DevCompanion\Upkeep\Command\FeedbackArchive;
@@ -114,6 +115,7 @@ final class Cli
         $application->addCommand(new ProseCheck());
         $application->addCommand(new ProseFormat());
         $application->addCommand(new LinkCheck());
+        $application->addCommand(new DocumentationBuild());
         $application->addCommand(new FeedbackList());
         $application->addCommand(new FeedbackArchive());
         $application->addCommand(new UnresolvedList());

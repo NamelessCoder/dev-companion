@@ -86,6 +86,35 @@ forward review: a scaffold's defects are this repository's own, so a review
 still runs in a real project. The other three environments say where they come
 from when you ask for them, and the reasoning is `D-EVI-004`.
 
+## The published documentation
+
+This directory is published as a site, and nothing else in the repository is.
+What is generated is a copy of it rather than these files:
+
+```bash
+bin/cli documentation:build           # write the copy, below .site/source
+build/guides/vendor/bin/guides        # render it into .site/html
+```
+
+87 of the links here point at a decision, a requirement or a class, and a
+visitor of the site has none of those. The copy turns each of them into the file
+on GitHub and leaves the rest as written, so these pages keep the paths a reader
+of the checkout follows. It also publishes every `readme.md` as the `index.md` a
+generator serves as the directory itself, and drops the heading a link names in
+another page, which this renderer answers by discarding the link. What that
+costs is `D-DOC-017`.
+
+The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
+from a manifest of its own — `build/guides/composer.json` says why it is not in
+this package's `require-dev`. `.github/workflows/documentation.yml` runs both
+commands on every push to `main` and deploys the result to
+[GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
+`Settings → Pages → Source: GitHub Actions` on the repository: a deployment from
+a branch serves the root or `/docs`, and this directory is neither.
+
+The site has no search of its own. That is what a renderer written for one
+manual rather than for a corpus leaves out, and 58 pages is where it is felt.
+
 ## Tests
 
 ```bash

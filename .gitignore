@@ -10,3 +10,5 @@ vendor/
 /.fixtures
 /.worktrees
 /.session-command
+/.site
+/build/guides/vendor

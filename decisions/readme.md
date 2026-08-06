@@ -480,6 +480,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### documentation
 
+- [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
 - [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked like the fields above it · 2026-08-04
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
@@ -497,6 +498,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-017]: documentation/doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
 [D-DOC-016]: documentation/doc-016-an-answer-that-reads-no-installation-is-derived-and-checked.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md

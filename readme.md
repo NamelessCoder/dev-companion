@@ -125,6 +125,8 @@ and the two environment variables that end a failed discovery:
 [documentation/clients/installing.md](documentation/clients/installing.md).
 Changing this repository rather than using it:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
+All of it reads as a site at
+[benjaminkott.github.io/typo3-dev-companion](https://benjaminkott.github.io/typo3-dev-companion/).
 
 ## Tools
 

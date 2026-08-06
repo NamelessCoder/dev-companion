@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    The published documentation. What is rendered is not `documentation/` itself
+    but the copy `bin/cli documentation:build` writes, because only that copy has
+    the links a reader without the checkout can follow.
+
+        bin/cli documentation:build && build/guides/vendor/bin/guides
+
+    An error fails the build and a warning does not, because one warning stands
+    that this repository will not remove: `typo3_icon_lookup` describes itself
+    with the Fluid tag `<core:icon>`, which CommonMark reads as an autolink and
+    the renderer then cannot resolve. That sentence is the tool's `description`,
+    which is what a client reads, and it is not rewritten to suit a renderer.
+
+    What the warning would otherwise have guarded is held in the suite instead,
+    by `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`.
+-->
+<guides
+    xmlns="https://www.phpdoc.org/guides"
+    input=".site/source"
+    output=".site/html"
+    input-format="md"
+    fail-on-error="true"
+    links-are-relative="true"
+>
+    <project title="TYPO3 Dev Companion"/>
+    <extension class="phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension"/>
+</guides>

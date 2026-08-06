@@ -101,6 +101,41 @@ final class Links
     }
 
     /**
+     * The same links, each put through a function saying what it becomes.
+     *
+     * `documentation:build` publishes a copy of a tree whose links were written
+     * for a checkout: some have to be rewritten and the rest left exactly as
+     * they stand. Which link is which is this class's question already, and a
+     * second reading of what a link is would answer it differently the first
+     * time either one changed.
+     *
+     * The function is offered the internal ones alone. An external target and a
+     * bare heading are no paths this repository keeps, and what rewrites paths
+     * has no business seeing them.
+     *
+     * @param callable(string): string $rewrite
+     */
+    public static function rewritten(string $contents, callable $rewrite): string
+    {
+        return (string) preg_replace_callback(
+            self::PATTERN,
+            static function (array $match) use ($rewrite): string {
+                // The inline form where it matched, the reference definition
+                // where it did not — and the offsets are what puts the new
+                // target back exactly where the old one stood.
+                $target = $match[1][0] !== '' ? $match[1] : $match[2];
+                if (str_starts_with($target[0], '#') || self::isExternal($target[0])) {
+                    return $match[0][0];
+                }
+
+                return substr_replace($match[0][0], $rewrite($target[0]), $target[1] - $match[0][1], strlen($target[0]));
+            },
+            $contents,
+            flags: PREG_OFFSET_CAPTURE,
+        );
+    }
+
+    /**
      * The link targets in a document, each with where it stands, so the report
      * names a line rather than a file somebody then has to search.
      *

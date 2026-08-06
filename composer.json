@@ -3,6 +3,11 @@
     "description": "Local MCP server that guides coding agents through TYPO3 implementation, review and verification with version-bound knowledge and project facts.",
     "type": "library",
     "license": "MIT",
+    "support": {
+        "source": "https://github.com/benjaminkott/typo3-dev-companion",
+        "issues": "https://github.com/benjaminkott/typo3-dev-companion/issues",
+        "docs": "https://benjaminkott.github.io/typo3-dev-companion/"
+    },
     "require": {
         "php": ">=8.2",
         "ext-curl": "*",

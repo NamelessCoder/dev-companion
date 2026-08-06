@@ -78,8 +78,7 @@ it takes are declared beside the code that does it, never in `bin/`.
     bin/cli todo:next
 
 That is the whole of it, and it prints **one todo** — the first that is due,
-whole, with its own command already run. `bin/cli todo:list` is the overview,
-for whoever wants it.
+whole, with its own command already run. `bin/cli todo:list` is the overview.
 
 The todo it prints is a claim, not an instruction: one session's belief about
 where to start, written before the work it describes and by somebody who has
@@ -105,8 +104,7 @@ not a place this repository keeps anything: what was established goes into
 `todo/`, `requirements/`, `decisions/` or `documentation/`, where the next
 session reads it and a wrong line can be corrected. A note only one agent can
 see drifts as the checkout moves under it and is believed anyway, because it
-arrives sounding settled — the failure this server exists to answer, turned on
-the repository itself.
+arrives sounding settled.
 
 Keeping [todo/](todo/readme.md) current is part of the work, not a step after
 it. A session that ends with the queue matching what is actually true has handed
@@ -301,10 +299,8 @@ them, and the only place a tool is switched on. Nothing else belongs below
 `Typo3CmsMcp\Result\`, and the adapters onto `mcp/sdk` are `Typo3CmsMcp\Sdk\`.
 
 The word is the protocol's: an MCP tool is what the SDK declares as
-`Mcp\Schema\Tool`, beside `Prompt` and `Resource`, so the qualifier saying which
-kind of tool is meant is already the root namespace. Nothing here is a "server
-tool" — a tool is defined by the protocol rather than by the side offering it,
-and both sides speak of the same one.
+`Mcp\Schema\Tool`, beside `Prompt` and `Resource`. Nothing here is a "server
+tool" — a tool is defined by the protocol rather than by the side offering it.
 
 Every tool returns a `ToolResult`: the text plus the same answer as data. The
 data half is a contract — clients may validate it against the `outputSchema()`
@@ -392,9 +388,8 @@ bin/cli knowledge:format <path>   # only that part of it
 - `FeedbackTest` writes real feedback below `feedback/` and removes them again.
   A leftover file carries `phpunit-feedback-fixture` in its text.
 
-`bin/cli` is what everything else in this repository is kept in order by, and
-`bin/cli checkouts:update` is what creates the core checkouts a knowledge change
-is verified against:
+`bin/cli checkouts:update` creates the core checkouts a knowledge change is
+verified against:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
 `bin/cli environment:create E-SITE` makes the other kind — a DDEV project with
 TYPO3 installed in it, below `.environments/` and gitignored the same way, for
@@ -523,11 +518,10 @@ grep for.
 - Only commit the files you changed yourself in this session. The working tree
   may already contain unrelated modifications or staged changes from someone
   else — leave them alone.
-- Always stage explicitly with `git add <path>`. Never use `git add -A`,
-  `git add .`, `git commit -a`, or any other blanket staging.
-- Before committing, check `git status` and `git diff --staged`. If something is
-  staged that you did not change, unstage it (`git restore --staged <path>`)
-  instead of committing it along.
+- Stage explicitly with `git add <path>`; never `git add -A`, `git add .`,
+  `git commit -a` or any other blanket staging. Check `git status` and
+  `git diff --staged` first, and `git restore --staged <path>` anything you did
+  not change.
 
 ## Knowledge base
 

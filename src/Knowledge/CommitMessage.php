@@ -400,6 +400,31 @@ final class CommitMessage
     }
 
     /**
+     * How long the subject is, what made it that long, and what the limit
+     * leaves the summary.
+     *
+     * The caller passes `summary` and the rule measures the subject the keyword
+     * makes of it, so a message naming one and counting the other reads as a
+     * claim about what was passed. A session shortened by the nine characters
+     * it was over, twice, before the arithmetic became visible — the feedback
+     * of 2026-08-05. The room is stated so the first answer is enough.
+     */
+    private static function subjectLength(int $length, string $summary, int $limit, string $verdict): string
+    {
+        $prefix = $length - mb_strlen($summary);
+
+        return sprintf(
+            'The subject line is %d characters long: a %d-character summary plus %d for the keyword prefix. '
+                . '%s in total, which leaves the summary %d.',
+            $length,
+            $length - $prefix,
+            $prefix,
+            $verdict,
+            $limit - $prefix,
+        );
+    }
+
+    /**
      * What is wrong with one branch in the `Releases:` trailer, or null when
      * nothing is.
      *
@@ -523,9 +548,17 @@ final class CommitMessage
 
         $length = mb_strlen($subject);
         if ($length > 72) {
-            $checks[] = ['level' => 'error', 'code' => 'summary-too-long', 'message' => sprintf('The summary line is %d characters long. Keep it below 72 characters.', $length)];
+            $checks[] = [
+                'level' => 'error',
+                'code' => 'summary-too-long',
+                'message' => self::subjectLength($length, $summary, 72, 'Keep it under 72 characters'),
+            ];
         } elseif ($length > 52) {
-            $checks[] = ['level' => 'warning', 'code' => 'summary-length-preferred', 'message' => sprintf('The summary line is %d characters long. Below 52 characters is preferred.', $length)];
+            $checks[] = [
+                'level' => 'warning',
+                'code' => 'summary-length-preferred',
+                'message' => self::subjectLength($length, $summary, 52, 'Under 52 characters is preferred'),
+            ];
         }
 
         if (!preg_match('/^[A-Z]/', $summary)) {

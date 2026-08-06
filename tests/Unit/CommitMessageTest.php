@@ -569,6 +569,32 @@ final class CommitMessageTest extends TestCase
     }
 
     /**
+     * The caller passes `summary` and the rule measures the subject, so the
+     * message says which of the two it counted and what the limit leaves. The
+     * session that reported this shortened by the nine characters it was over,
+     * twice, before the arithmetic became visible.
+     */
+    #[Test]
+    public function theLengthCheckSaysWhatMadeTheSubjectLongAndWhatTheLimitLeaves(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Implode array placeholder values on every recursion level',
+            'issue' => '76536',
+            'releases' => ['main'],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'summary-length-preferred');
+        self::assertCount(1, $checks);
+        self::assertStringContainsString('66 characters', $checks[0]['message']);
+        self::assertStringContainsString('57-character summary', $checks[0]['message']);
+        self::assertStringContainsString('9 for the keyword prefix', $checks[0]['message']);
+        self::assertStringContainsString('leaves the summary 43', $checks[0]['message']);
+    }
+
+    /**
      * The trailer the feedback was filed about came back clean, and a long dead
      * branch would have come back the same way — `D-ANS-058`.
      */

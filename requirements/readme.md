@@ -58,6 +58,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-DIS-022`][R-DIS-022] — A call can tell where it came from · held
 - [`R-DIS-023`][R-DIS-023] — An install says what is left before a tool can be called · held
 - [`R-DIS-024`][R-DIS-024] — The published directories ignore themselves · held
+- [`R-DIS-025`][R-DIS-025] — A publication that went stale says so before the first call · held
 
 [R-DIS-001]: discovery/dis-001-discovery-belongs-to-the-stdio-entrypoint-alone.md
 [R-DIS-002]: discovery/dis-002-the-packages-are-read-from-the-declared-vendor-directory.md
@@ -83,6 +84,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-DIS-022]: discovery/dis-022-a-call-can-tell-where-it-came-from.md
 [R-DIS-023]: discovery/dis-023-an-install-says-what-is-left-before-a-tool-can-be-called.md
 [R-DIS-024]: discovery/dis-024-the-published-directories-ignore-themselves.md
+[R-DIS-025]: discovery/dis-025-a-publication-that-went-stale-says-so-before-the-first-call.md
 
 ### answers
 

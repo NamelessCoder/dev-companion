@@ -103,6 +103,11 @@ project's — and the skills the project wrote itself stay visible beside them.
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
+The record also carries what was published and not only its names, so a server
+started in that project says before the first call where the skills down there
+are no longer the ones it publishes — on stderr for whoever can run `update`,
+and in one sentence of the instructions for the agent about to load one.
+
 `--drafts`, on either command, also publishes the task skills nobody has
 reviewed yet, so a draft can be tried where it is actually loaded rather than
 read here. It is a choice per run: an `update` that does not ask for them takes

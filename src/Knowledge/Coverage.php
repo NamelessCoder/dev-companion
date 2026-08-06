@@ -47,7 +47,11 @@ final class Coverage
      * the limit is a sentence nobody reads, and neither side says so. R-ANS-013
      * holds the whole of it, prefix and suffix included, to that budget.
      */
-    public static function instructions(): string
+    /**
+     * @param string $notice what is wrong with the project this server was
+     *     started in, which nothing here can work out; `Installer::NOTICE`
+     */
+    public static function instructions(string $notice = ''): string
     {
         $instructions = self::read()['instructions'];
         if (Channel::isAvailable()) {
@@ -58,8 +62,10 @@ final class Coverage
         // In front of it, not behind: what a client is not being offered
         // belongs before the routing it is offered, and a client told where to
         // start and only then that a tool is missing has been told and then
-        // corrected.
-        return self::exclusionPrefix($instructions) . $instructions;
+        // corrected. The notice goes in front of both — it is about files in
+        // the project rather than about this server's own surface, and
+        // "Otherwise:" has to stay next to the routing it qualifies.
+        return $notice . self::exclusionPrefix($notice . $instructions) . $instructions;
     }
 
     /**

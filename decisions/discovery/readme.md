@@ -7,6 +7,7 @@ because it looks exactly like an installation that has nothing to say.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
@@ -17,6 +18,7 @@ one is added.
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-013]: dis-013-the-record-holds-a-digest-of-what-was-published.md
 [D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-012]: dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md
 [D-DIS-010]: dis-010-what-this-package-writes-into-a-project-ignores-itself.md

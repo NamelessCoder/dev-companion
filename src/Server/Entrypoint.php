@@ -36,7 +36,7 @@ final class Entrypoint
         if ($command === null) {
             Instance::discoverFrom(getcwd() ?: null);
             self::reportExclusionsThatTookNothingAway();
-            Factory::create()->run(new StdioTransport());
+            Factory::create(self::reportSkillsNobodyHasUpdated())->run(new StdioTransport());
 
             return 0;
         }
@@ -96,6 +96,33 @@ final class Entrypoint
                 count($offeredAnyway) === 1 ? 'it' : 'they',
             ));
         }
+    }
+
+    /**
+     * The task skills in this project that are no longer the ones this server
+     * publishes, said on both channels a starting server has.
+     *
+     * A published skill is a copy and goes stale silently: the client loads
+     * what it finds, and the workflow reads as current whatever version wrote
+     * it. So it is said on stderr for whoever can run the command, and returned
+     * for the instructions, which is the one channel the agent itself reads
+     * before its first call. The long form goes to the terminal, because the
+     * instructions are budgeted and stderr is not.
+     *
+     * The directory is the one this process was started in, which is where
+     * `install` writes and therefore where the record is. Walking up for one
+     * would find a parent project's, and the entry a client starts this from
+     * names the project it belongs to.
+     */
+    private static function reportSkillsNobodyHasUpdated(): string
+    {
+        $outdated = Installer::outdated(getcwd() ?: '');
+        if ($outdated === null) {
+            return '';
+        }
+        fwrite(STDERR, 'typo3-cms-mcp: ' . $outdated . "\n");
+
+        return Installer::NOTICE;
     }
 
     /**

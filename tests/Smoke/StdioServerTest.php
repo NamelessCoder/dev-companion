@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Server\Installer;
 use Typo3CmsMcp\Tests\Support\Directory;
 
 /**
@@ -88,6 +89,68 @@ final class StdioServerTest extends TestCase
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen($result['result']['instructions']),
         );
+    }
+
+    /**
+     * A project whose task skills nobody has updated is told so before its
+     * first call, on both channels a starting server has.
+     *
+     * This is the case the check exists for and the only one that goes over the
+     * wire: a published skill is a copy, so it reads as current whatever
+     * version wrote it, and the agent loading it has nothing that says
+     * otherwise. The instructions are what that agent reads; stderr is what the
+     * person who can run the command reads, and it carries what differs, since
+     * only one of the two is budgeted — `R-DIS-025`.
+     */
+    #[Test]
+    public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void
+    {
+        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-stale-' . bin2hex(random_bytes(8));
+        self::assertTrue(mkdir($this->temporaryRoot));
+        self::assertSame(0, $this->install($this->temporaryRoot));
+
+        $stderr = null;
+        $current = $this->call([$this->request(1, 'initialize', [
+            'protocolVersion' => self::PROTOCOL_VERSION,
+            'capabilities' => new \stdClass(),
+            'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+        ])], $this->temporaryRoot, $stderr)[1];
+        self::assertStringNotContainsString('stale', $current['result']['instructions']);
+        self::assertStringNotContainsString('typo3-cms-mcp update', (string) $stderr);
+
+        // What every release of this package does to a project that installed
+        // an earlier one, and what nothing said until now.
+        Directory::remove($this->temporaryRoot . '/.agents/skills');
+
+        $result = $this->call([$this->request(1, 'initialize', [
+            'protocolVersion' => self::PROTOCOL_VERSION,
+            'capabilities' => new \stdClass(),
+            'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+        ])], $this->temporaryRoot, $stderr)[1];
+
+        self::assertStringStartsWith(Installer::NOTICE, $result['result']['instructions']);
+        self::assertStringContainsString('checkout', $result['result']['instructions'], 'the routing is still there');
+        self::assertLessThanOrEqual(
+            Coverage::INSTRUCTIONS_BUDGET,
+            mb_strlen($result['result']['instructions']),
+        );
+        self::assertStringContainsString('nothing is published at .agents/skills', (string) $stderr);
+    }
+
+    private function install(string $directory): int
+    {
+        $process = proc_open(
+            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', 'install'],
+            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            $directory,
+        );
+        self::assertIsResource($process);
+        foreach ($pipes as $pipe) {
+            fclose($pipe);
+        }
+
+        return proc_close($process);
     }
 
     #[Test]
@@ -571,9 +634,11 @@ final class StdioServerTest extends TestCase
 
     /**
      * @param array<int, string> $lines
+     * @param string|null $stderr what the server said beside the protocol
+     * @param-out string $stderr
      * @return array<int, array<string, mixed>>
      */
-    private function call(array $lines, ?string $cwd = null): array
+    private function call(array $lines, ?string $cwd = null, ?string &$stderr = null): array
     {
         // The working directory is the whole of what a client tells this server
         // about where it is, so a test about discovery is a test about this

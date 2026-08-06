@@ -18,6 +18,17 @@ final class Installer
     private const STATE_DIRECTORY = '.typo3-cms-mcp';
     private const STATE = self::STATE_DIRECTORY . '/state.json';
     /**
+     * The same fact as `outdated()` states, in the length the initialize
+     * instructions have room for.
+     *
+     * Short because it competes for a budget that is already spent: what a
+     * client keeps is 2048 characters, the prefix naming excluded tools can
+     * take most of what is left, and `R-ANS-013` holds the whole assembly to
+     * it. So this says the one thing that has to be acted on and leaves what
+     * differs to the line on stderr, which no budget bounds.
+     */
+    public const NOTICE = 'The task skills installed in this project are stale; run typo3-cms-mcp update. ';
+    /**
      * What a directory this package owns says to git about itself: everything
      * below it, this file included, so the directory is invisible and no line
      * about it is owed to anybody else's file.
@@ -209,6 +220,135 @@ final class Installer
     }
 
     /**
+     * What a publication of this set would write, as one string.
+     *
+     * The record holds the names of what was published, and a name is what does
+     * not move when a skill is rewritten: a body edited in this package leaves
+     * a project with the old workflow under the current name, and every listing
+     * on both sides keeps saying the same twelve words. So the record holds this
+     * beside them, and a run that finds it different from what the package would
+     * write now is the run that says so.
+     *
+     * It covers what decides the published bytes: each skill's own files, and
+     * `skills/base.md`, which is copied into every one of them. The `.gitignore`
+     * each published directory carries is a constant of this class and moves
+     * only when this class does.
+     *
+     * The set is part of it rather than beside it — a project that asked for
+     * the drafts and a project that did not are two publications, and the digest
+     * of one must not read as current in the other.
+     */
+    public static function digest(bool $drafts): string
+    {
+        $digest = hash_init('sha256');
+        hash_update_file($digest, Paths::root() . '/skills/' . basename(self::BASE));
+        foreach (self::publishSet($drafts) as $skill) {
+            hash_update($digest, "\0" . $skill . "\0");
+            foreach (Finder::create()->files()->in(Paths::root() . '/skills/' . $skill)->sortByName() as $file) {
+                hash_update($digest, $file->getRelativePathname() . "\0");
+                hash_update_file($digest, $file->getPathname());
+            }
+        }
+
+        return hash_final($digest);
+    }
+
+    /**
+     * Whether what a project has is what this server publishes now, said as the
+     * line somebody can act on — null where there is nothing to say.
+     *
+     * A published skill is a copy, so it goes stale the moment this package
+     * moves and nothing on either side notices: the client loads the file it
+     * finds, the workflow it carries reads exactly as current, and a tool name
+     * that has since been renamed fails at the call rather than at the load.
+     * `update` was always the answer and nothing ever said it was due.
+     *
+     * The record is what this reads, so a project this package never installed
+     * into is silent rather than wrong. Two things make it speak: a skills
+     * directory that no longer holds what was published there — `R-DIS-024` has
+     * those ignoring themselves, which is also what `git clean -xdf` takes with
+     * it — and a digest that no longer matches. A record written before the
+     * digest existed counts as the second, because "not established" and
+     * "current" are what this exists to keep apart.
+     */
+    public static function outdated(string $project): ?string
+    {
+        $state = self::readState($project);
+        if ($state['agents'] === [] && $state['skills'] === []) {
+            return null;
+        }
+
+        $reasons = [];
+        foreach (self::unpublished($project, $state) as $path) {
+            $reasons[] = 'nothing is published at ' . $path;
+        }
+        if ($state['digest'] === '') {
+            $reasons[] = 'the record predates this check and says nothing about what was published';
+        } elseif ($state['digest'] !== self::digest($state['drafts'] !== [])) {
+            $reasons[] = 'this server publishes something other than what was published here';
+        }
+        if ($reasons === []) {
+            return null;
+        }
+
+        // The drafts are a per-run choice, so an update that does not ask for
+        // them takes them out. Somebody acting on this line wants the project
+        // it has, not the one a shorter command would leave.
+        $drafts = $state['drafts'] === []
+            ? ''
+            : ' --drafts is what keeps the unreviewed drafts this project has: ' . implode(', ', $state['drafts']) . '.';
+
+        return 'the task skills in this project are not the ones this server publishes now — '
+            . implode('; ', $reasons) . '. Run typo3-cms-mcp update' . ($drafts === '' ? '' : ' --drafts') . '.'
+            . $drafts;
+    }
+
+    /**
+     * The skills directories a recorded client reads that no longer hold what
+     * was published into them.
+     *
+     * One `is_dir` per recorded skill rather than a comparison of what is in
+     * it: the question here is whether the publication is still there at all,
+     * and what its files say is the digest's half.
+     *
+     * @param array{skills: list<string>, drafts: list<string>, agents: list<string>, digest: string} $state
+     * @return list<string>
+     */
+    private static function unpublished(string $project, array $state): array
+    {
+        $unpublished = [];
+        foreach ($state['agents'] as $agent) {
+            $path = self::definition($agent)['skills'];
+            if (in_array($path, $unpublished, true)) {
+                continue;
+            }
+            foreach ([...$state['skills'], ...$state['drafts']] as $skill) {
+                if (!is_dir($project . '/' . $path . '/' . $skill)) {
+                    $unpublished[] = $path;
+
+                    break;
+                }
+            }
+        }
+
+        return $unpublished;
+    }
+
+    /**
+     * The skills a run publishes, which is this package's own set and the
+     * drafts where the run asked for them.
+     *
+     * @return array<int, string>
+     */
+    private static function publishSet(bool $drafts): array
+    {
+        $publish = [...self::skills(), ...($drafts ? self::drafts() : [])];
+        sort($publish);
+
+        return $publish;
+    }
+
+    /**
      * The skills directory, split on the one line that decides where a skill
      * goes. Two walks over one directory asking opposite questions is one walk
      * with the answer as its argument.
@@ -279,7 +419,7 @@ final class Installer
      */
     public function update(?string $agent, bool $drafts = false): string
     {
-        $update = $agent !== null ? [$agent] : $this->readState()['agents'];
+        $update = $agent !== null ? [$agent] : self::readState($this->project)['agents'];
         if ($update === []) {
             throw new \RuntimeException(
                 'nothing is installed here; run install, or install --agent=<client> for a client of its own',
@@ -306,12 +446,12 @@ final class Installer
      */
     private function setUp(array $names, bool $drafts): string
     {
-        $state = $this->readState();
+        $state = self::readState($this->project);
 
         $messages = [];
         $published = [];
         foreach ($names as $name) {
-            $definition = $this->definition($name);
+            $definition = self::definition($name);
             if (isset($definition['mcp'])) {
                 $messages[] = $this->installAgentConfiguration($name, $definition['mcp']);
             }
@@ -339,7 +479,7 @@ final class Installer
      * one file for the whole project. Writing it inside the loop would let the
      * first client of a run decide what the second one sees.
      *
-     * @param array{skills: list<string>, drafts: list<string>, agents: list<string>} $state
+     * @param array{skills: list<string>, drafts: list<string>, agents: list<string>, digest: string} $state
      * @param list<string> $installed
      * @param list<string> $messages
      * @return list<string>
@@ -356,6 +496,8 @@ final class Installer
             // project unreviewed is the question somebody opens this file to
             // answer, and a name among the published ones does not answer it.
             'drafts' => $drafts ? self::drafts() : [],
+            // What the names cannot say: which version of them is down there.
+            'digest' => self::digest($drafts),
         ]);
         $this->write($this->project . '/' . self::STATE_DIRECTORY . '/.gitignore', self::IGNORE_ALL);
 
@@ -368,13 +510,13 @@ final class Installer
      *
      * @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}
      */
-    private function definition(string $name): array
+    private static function definition(string $name): array
     {
-        return $name === self::GENERIC ? self::GENERIC_DEFINITION : $this->agent($name);
+        return $name === self::GENERIC ? self::GENERIC_DEFINITION : self::agent($name);
     }
 
     /** @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}} */
-    private function agent(string $agent): array
+    private static function agent(string $agent): array
     {
         if (!isset(self::AGENTS[$agent])) {
             throw new \RuntimeException(
@@ -740,11 +882,7 @@ final class Installer
     /** @param list<string> $previousSkills */
     private function publishSkills(string $skillsPath, array $previousSkills, bool $drafts): string
     {
-        $publish = self::skills();
-        foreach ($drafts ? self::drafts() : [] as $draft) {
-            $publish[] = $draft;
-        }
-        sort($publish);
+        $publish = self::publishSet($drafts);
 
         $messages = [];
         foreach ($publish as $skill) {
@@ -804,13 +942,13 @@ final class Installer
      * empty list rather than an error — nothing is wrong there, there is just
      * nothing an `update` without an agent could act on.
      *
-     * @return array{skills: list<string>, drafts: list<string>, agents: list<string>}
+     * @return array{skills: list<string>, drafts: list<string>, agents: list<string>, digest: string}
      */
-    private function readState(): array
+    private static function readState(string $project): array
     {
-        $path = $this->project . '/' . self::STATE;
+        $path = $project . '/' . self::STATE;
         if (!is_file($path)) {
-            return ['skills' => [], 'drafts' => [], 'agents' => []];
+            return ['skills' => [], 'drafts' => [], 'agents' => [], 'digest' => ''];
         }
         try {
             $state = json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
@@ -835,8 +973,13 @@ final class Installer
             static fn(mixed $agent): bool => is_string($agent)
                 && (isset(self::AGENTS[$agent]) || $agent === self::GENERIC),
         ));
+        // Absent in a state file written before the publication was recorded
+        // as anything but names, and absent is not current there: what is in
+        // the project was never established, and `outdated()` says so rather
+        // than reading silence as a match.
+        $digest = is_string($state['digest'] ?? null) ? $state['digest'] : '';
 
-        return ['skills' => $skills, 'drafts' => $drafts, 'agents' => $agents];
+        return ['skills' => $skills, 'drafts' => $drafts, 'agents' => $agents, 'digest' => $digest];
     }
 
     private function copyDirectory(string $source, string $target): void

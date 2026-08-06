@@ -56,11 +56,15 @@ final class Factory
      */
     private const REFERENCE_PRIORITY = 0.2;
 
-    public static function create(): Server
+    /**
+     * @param string $notice what is wrong with this project before the first
+     *     call, in front of the routing; empty where nothing is
+     */
+    public static function create(string $notice = ''): Server
     {
         $builder = Server::builder()
             ->setServerInfo(self::SERVER_NAME, self::SERVER_VERSION)
-            ->setInstructions(Coverage::instructions());
+            ->setInstructions(Coverage::instructions($notice));
 
         foreach (Registry::definitions() as $definition) {
             $tool = new Tool(

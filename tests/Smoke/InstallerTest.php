@@ -144,6 +144,9 @@ final class InstallerTest extends TestCase
                 // Nothing unreviewed unless the run asked for it, which is what
                 // somebody opens this file to find out.
                 'drafts' => [],
+                // What the names cannot say, and what a later session compares
+                // against to find out that an update is due — `R-DIS-025`.
+                'digest' => Installer::digest(false),
             ], json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR));
             // The project's own .gitignore is what it was before the install,
             // and every directory this package wrote says `*` about itself.

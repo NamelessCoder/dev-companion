@@ -227,6 +227,15 @@ final class ScopeTest extends TestCase
             mb_strlen(Coverage::instructions()),
             'instructions where the caller excluded everything it could',
         );
+        // The worst case is both at once, and it is the one the notice was
+        // sized against: a caller that excluded every tool, in a project whose
+        // task skills nobody has updated. What made room for it is the sentence
+        // R-DIS-025 displaced, which is what adding one here costs.
+        self::assertLessThanOrEqual(
+            Coverage::INSTRUCTIONS_BUDGET,
+            mb_strlen(Coverage::instructions(Installer::NOTICE)),
+            'instructions where the caller excluded everything and the skills are stale too',
+        );
     }
 
     #[Test]

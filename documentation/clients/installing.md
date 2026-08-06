@@ -38,6 +38,30 @@ records every client it set up in `.typo3-cms-mcp/state.json`, and without an
 agent `update` refreshes all of them. A project is usually worked on by more
 than one, and which ones is knowledge only the project has.
 
+## Being told that they are due
+
+A published skill is a copy, so it goes stale without saying so: the client
+loads the file it finds, the workflow reads as current whatever version wrote
+it, and a tool name that has been renamed since fails at the call rather than at
+the load. The record therefore carries a digest of what was published, and a
+server started in that project compares it before the first call — `R-DIS-025`.
+
+Where they no longer match, the server says so twice. The long line goes to
+stderr, naming what differs and the command that fixes it, for whoever is at a
+terminal. One short sentence goes into the instructions a client is handed at
+initialize, for the agent that is about to load a skill; it is short because
+that statement is budgeted and the exclusion prefix competes for the same room.
+
+Three things make it speak: a skills directory that no longer holds what was
+published there, a digest that no longer matches, and a record written before
+the digest existed. The first is the one to expect — every published directory
+ignores itself, which is also what `git clean -xdf` takes with it. A project
+this package never installed into is silent.
+
+Where the record carries drafts, the line says `update --drafts`: a run that
+does not ask for them removes them, and somebody acting on the line wants the
+project they have.
+
 ## Trying a draft where it is loaded
 
 Both commands take `--drafts`, which publishes the skills that still declare
@@ -47,11 +71,11 @@ Both commands take `--drafts`, which publishes the skills that still declare
 /absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude --drafts
 ```
 
-What it is for is the review step
-[writing-a-skill.md](writing-a-skill.md) makes a condition of publishing.
-Reading a draft in this repository is not reading it where it loads, and the
-questions it exists to raise — is this the order the work actually goes in, is
-the step that decides the outcome in it — are raised by using it on a real task.
+What it is for is the review step [writing-a-skill.md](writing-a-skill.md) makes
+a condition of publishing. Reading a draft in this repository is not reading it
+where it loads, and the questions it exists to raise — is this the order the
+work actually goes in, is the step that decides the outcome in it — are raised
+by using it on a real task.
 
 The drafts are recorded under their own key in `.typo3-cms-mcp/state.json`,
 because what is in a project unreviewed is the question somebody opens that file

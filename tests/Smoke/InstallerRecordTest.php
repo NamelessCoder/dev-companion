@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Server\Installer;
 use Typo3CmsMcp\Tests\Support\Directory;
 
 /**
@@ -169,7 +170,85 @@ final class InstallerRecordTest extends TestCase
         }
     }
 
-    /** @return array{agents: list<string>, skills: list<string>} */
+    /**
+     * What the record is read for once the install is over: whether the copies
+     * down there are still the ones this server publishes.
+     *
+     * The four cases are the four ways a project drifts. A publication that was
+     * never made is silence, because this package has nothing to say about a
+     * project it never wrote into. The rest each name themselves, so the line
+     * says which of them happened rather than only that something did.
+     */
+    #[Test]
+    public function aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted(): void
+    {
+        $directory = $this->directory();
+
+        try {
+            $stdout = '';
+            $stderr = '';
+            self::assertNull(Installer::outdated($directory), 'a project this never installed into');
+
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stdout, $stderr), $stderr);
+            self::assertNull(Installer::outdated($directory), 'the run that just published them');
+            self::assertSame(Installer::digest(false), $this->state($directory)['digest']);
+
+            // The skills this package ships have moved on since the install.
+            // Nothing in the project changes when they do — the names are the
+            // names — which is the whole reason the digest is recorded.
+            $this->rewriteState($directory, ['digest' => str_repeat('0', 64)]);
+            $moved = (string) Installer::outdated($directory);
+            self::assertStringContainsString('publishes something other than what was published here', $moved);
+            self::assertStringContainsString('Run typo3-cms-mcp update.', $moved);
+
+            self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
+            self::assertNull(Installer::outdated($directory), 'the update that put them back');
+
+            // What `git clean -xdf` does to a directory that ignores itself:
+            // the record still names twelve skills and none of them is there.
+            Directory::remove($directory . '/.claude/skills');
+            self::assertStringContainsString(
+                'nothing is published at .claude/skills',
+                (string) Installer::outdated($directory),
+            );
+
+            self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
+            $this->rewriteState($directory, ['digest' => null]);
+            self::assertStringContainsString(
+                'the record predates this check',
+                (string) Installer::outdated($directory),
+                'a state file written before anything but the names was recorded',
+            );
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * The state file with those keys set, and null taking one out.
+     *
+     * Written rather than installed, because what is being reproduced is a
+     * record no run of this version would write: one from a build before the
+     * digest, and one whose skills have moved under it.
+     *
+     * @param array<string, string|null> $keys
+     */
+    private function rewriteState(string $directory, array $keys): void
+    {
+        $path = $directory . '/.typo3-cms-mcp/state.json';
+        $state = $this->state($directory);
+        foreach ($keys as $key => $value) {
+            if ($value === null) {
+                unset($state[$key]);
+
+                continue;
+            }
+            $state[$key] = $value;
+        }
+        file_put_contents($path, json_encode($state, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR) . "\n");
+    }
+
+    /** @return array{agents: list<string>, skills: list<string>, drafts: list<string>, digest: string} */
     private function state(string $directory): array
     {
         return json_decode(

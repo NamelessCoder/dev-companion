@@ -106,7 +106,10 @@ costs is `D-DOC-017`.
 
 The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
 from a manifest of its own — `build/guides/composer.json` says why it is not in
-this package's `require-dev`. `.github/workflows/documentation.yml` runs both
+this package's `require-dev`. The look is this repository's, in one file:
+`build/guides/theme/structure/layout.html.twig` shadows the layout the renderer
+would otherwise use, carries the stylesheet inline, and builds the sidebar from
+the documents the renderer knows. `.github/workflows/documentation.yml` runs both
 commands on every push to `main` and deploys the result to
 [GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
 `Settings → Pages → Source: GitHub Actions` on the repository: a deployment from

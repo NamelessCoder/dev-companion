@@ -56,7 +56,7 @@ src/Upkeep/Links.php # every path this repository writes between its own files, 
 src/Upkeep/Site.php  # documentation/ as the source a generator publishes: the links that leave it, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there; the one directory published as a site
-build/guides/      # the renderer that publishes documentation/, in a manifest of its own; its own composer.json says why
+build/guides/      # the renderer that publishes documentation/ and the theme it is published in; its own composer.json says why it is separate
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

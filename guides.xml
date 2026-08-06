@@ -24,5 +24,12 @@
     links-are-relative="true"
 >
     <project title="TYPO3 Dev Companion"/>
+    <!--
+        Twice, and not by accident: the option is an array, and Symfony's XML
+        reader makes one only out of a repeated element. A single occurrence
+        arrives as a string and the build stops on the type.
+    -->
+    <base-template-paths>build/guides/theme</base-template-paths>
+    <base-template-paths>build/guides/theme</base-template-paths>
     <extension class="phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension"/>
 </guides>

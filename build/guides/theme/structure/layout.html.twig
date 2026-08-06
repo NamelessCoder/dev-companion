@@ -1,0 +1,130 @@
+{#
+    The page every rendered document is written into.
+
+    It shadows the same path in phpDocumentor's default theme, which produces
+    a bare document with no way to leave it. The navigation is built here from
+    `allDocumentEntries` rather than from a toctree, because a toctree is a
+    reStructuredText directive and this corpus is markdown.
+
+    The stylesheet is inlined. It is 4 KB against pages of up to 88 KB, and an
+    external file would need a copier, a path that survives a subdirectory, and
+    a cache buster — three moving parts to save nothing.
+#}
+{% set here = env.currentFileName %}
+{% set depth = here|split('/')|length - 1 %}
+{% set up = '' %}
+{% if depth > 0 %}{% for i in 1..depth %}{% set up = up ~ '../' %}{% endfor %}{% endif %}
+{% set pages = env.allDocuments|sort((a, b) => a.filePath <=> b.filePath) %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}
+        {%- if title != null and env.projectNode.title != null %} — {% endif -%}
+        {%- if env.projectNode.title -%}{{ env.projectNode.title }}{%- endif -%}</title>
+    <style>
+    :root {
+        --ink: #1a1a1a; --dim: #5c5c5c; --line: #e0e0e0; --bg: #fff;
+        --soft: #f7f7f6; --link: #0b5cad; --mark: #e8710a;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --ink: #e8e6e3; --dim: #a0a0a0; --line: #33322f; --bg: #1b1b19;
+            --soft: #232320; --link: #7ab7f0; --mark: #f5a35c;
+        }
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; background: var(--bg); color: var(--ink);
+        font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    a { color: var(--link); }
+    .wrap { display: flex; align-items: flex-start; max-width: 1180px; margin: 0 auto; }
+    nav.side {
+        flex: 0 0 17rem; position: sticky; top: 0; align-self: flex-start;
+        max-height: 100vh; overflow-y: auto; padding: 1.6rem 1rem 3rem;
+        border-right: 1px solid var(--line); font-size: 14px;
+    }
+    nav.side .brand {
+        display: block; font-weight: 600; font-size: 15px; letter-spacing: .01em;
+        color: var(--ink); text-decoration: none; padding-bottom: .9rem;
+        margin-bottom: .6rem; border-bottom: 1px solid var(--line);
+    }
+    nav.side h2 {
+        font-size: 11px; text-transform: uppercase; letter-spacing: .09em;
+        color: var(--dim); margin: 1.4rem 0 .4rem; font-weight: 600;
+    }
+    nav.side ul { list-style: none; margin: 0; padding: 0; }
+    nav.side li { margin: 0; }
+    nav.side a.page {
+        display: block; padding: .2rem .5rem; border-radius: 3px;
+        color: var(--ink); text-decoration: none; overflow-wrap: anywhere;
+    }
+    nav.side a.page:hover { background: var(--soft); }
+    nav.side a.page.current {
+        background: var(--soft); color: var(--mark); font-weight: 600;
+        box-shadow: inset 2px 0 0 var(--mark);
+    }
+    main { flex: 1 1 auto; min-width: 0; padding: 2.4rem 2rem 6rem; }
+    main > .section > h1:first-child { margin-top: 0; }
+    h1, h2, h3, h4 { line-height: 1.25; margin: 2.2rem 0 .8rem; }
+    h1 { font-size: 1.9rem; letter-spacing: -.01em; }
+    h2 { font-size: 1.35rem; padding-top: .6rem; border-top: 1px solid var(--line); }
+    h3 { font-size: 1.1rem; }
+    p, li { max-width: 44rem; }
+    code {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        font-size: .87em; background: var(--soft); padding: .1em .35em; border-radius: 3px;
+    }
+    pre {
+        background: var(--soft); border: 1px solid var(--line); border-radius: 4px;
+        padding: .9rem 1rem; overflow-x: auto;
+    }
+    pre code { background: none; padding: 0; font-size: .85em; line-height: 1.5; }
+    table { border-collapse: collapse; display: block; overflow-x: auto; max-width: 100%; }
+    th, td { border: 1px solid var(--line); padding: .4rem .7rem; text-align: left; vertical-align: top; }
+    th { background: var(--soft); }
+    img, svg { max-width: 100%; height: auto; }
+    blockquote {
+        margin: 1rem 0; padding: .2rem 0 .2rem 1rem;
+        border-left: 3px solid var(--line); color: var(--dim);
+    }
+    @media (max-width: 860px) {
+        .wrap { display: block; }
+        nav.side {
+            position: static; max-height: none; width: auto;
+            border-right: 0; border-bottom: 1px solid var(--line);
+        }
+        main { padding: 1.6rem 1.1rem 4rem; }
+    }
+    </style>
+    {%~ block head %}
+    {%~ endblock %}
+</head>
+<body>
+<div class="wrap">
+    <nav class="side">
+        <a class="brand" href="{{ up }}index.html">{{ env.projectNode.title ?? 'Documentation' }}</a>
+        {% set group = '__none__' %}
+        <ul>
+        {%- for entry in pages -%}
+            {%- set path = entry.filePath|trim('/') -%}
+            {%- set dir = path matches '#/#' ? path|split('/')|first : '' -%}
+            {%- if dir != group -%}
+                {%- set group = dir -%}
+                {%- if dir != '' %}<li><h2>{{ dir|replace({'-': ' '}) }}</h2></li>{% endif -%}
+            {%- endif -%}
+            <li><a class="page{{ path == here ? ' current' : '' }}" href="{{ up }}{{ path }}.html">{{ entry.title ? entry.title.toString : path }}</a></li>
+        {%- endfor -%}
+        </ul>
+    </nav>
+    <main>
+<!-- content start -->
+{%~ block body %}
+{%~ endblock %}
+<!-- content end -->
+    </main>
+</div>
+</body>
+</html>

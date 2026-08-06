@@ -155,6 +155,45 @@ try {
             'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
         ];
     }
+    // A form data group is a dependency graph and not a list: every provider
+    // declares `depends` and `before`, and what orders the run is what the core
+    // resolves from those. The raw registry hands a reader the inputs and calls
+    // it the answer — tcaDatabaseRecord has 61 providers, and the pair any one
+    // question is about sits far apart in it with no edge between them.
+    //
+    // Ordered by the core's own service, with the two keys
+    // `Form\FormDataGroup\OrderedProviderList` passes it. A second
+    // implementation on the other side would answer confidently and, the day
+    // the resolution changes, differently.
+    //
+    // In a try of its own, for the reason the enrichment above has one.
+    try {
+        $groups = [];
+        $registry = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'] ?? [];
+        $ordering = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            TYPO3\CMS\Core\Service\DependencyOrderingService::class,
+        );
+        foreach (is_array($registry) ? $registry : [] as $group => $providers) {
+            if (!is_array($providers)) {
+                continue;
+            }
+            $ordered = [];
+            foreach ($ordering->orderByDependencies($providers, 'before', 'depends') as $provider => $declared) {
+                $declared = is_array($declared) ? $declared : [];
+                $ordered[] = [
+                    'provider' => (string) $provider,
+                    'depends' => array_values(array_map('strval', (array) ($declared['depends'] ?? []))),
+                    'before' => array_values(array_map('strval', (array) ($declared['before'] ?? []))),
+                ];
+            }
+            $groups[(string) $group] = $ordered;
+        }
+        $answer['topics']['formDataGroups'] = ['groups' => $groups];
+    } catch (Throwable $failure) {
+        $answer['topics']['formDataGroups'] = [
+            'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
+        ];
+    }
 } catch (Throwable $failure) {
     if ($answer['reason'] === '') {
         $answer['state'] = 'unreachable';

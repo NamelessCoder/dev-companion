@@ -129,6 +129,45 @@ final class Typo3RuntimeTest extends TestCase
         self::assertArrayHasKey('acme_teaser', $answer['topics']['contentElements']);
     }
 
+    /**
+     * A form data group is a graph, and what the caller wants is what it
+     * resolves to. The fixture's ordering service reverses rather than
+     * resolves, so what is held here is that the probe reports the service's
+     * answer and not the order the registry was written in — a passthrough
+     * could not tell those apart, and an ordering written into the probe would
+     * be the second implementation it exists to avoid.
+     */
+    #[Test]
+    public function aFormDataGroupComesBackInTheOrderTheInstallationResolved(): void
+    {
+        $root = $this->installationWithAConsole();
+        Fixture::bootsInto($root, formDataGroups: [
+            'tcaDatabaseRecord' => [
+                'Acme\\First' => [],
+                'Acme\\Second' => ['depends' => ['Acme\\First']],
+                'Acme\\Third' => ['depends' => ['Acme\\Second'], 'before' => ['Acme\\Fourth']],
+            ],
+        ]);
+        $this->discover($root);
+
+        $groups = Typo3Runtime::topic('formDataGroups');
+
+        self::assertIsArray($groups);
+        self::assertArrayNotHasKey('unavailable', $groups);
+        self::assertSame(
+            ['Acme\\Third', 'Acme\\Second', 'Acme\\First'],
+            array_column($groups['groups']['tcaDatabaseRecord'], 'provider'),
+        );
+        self::assertSame(
+            [['Acme\\Second'], ['Acme\\First'], []],
+            array_column($groups['groups']['tcaDatabaseRecord'], 'depends'),
+        );
+        self::assertSame(
+            [['Acme\\Fourth'], [], []],
+            array_column($groups['groups']['tcaDatabaseRecord'], 'before'),
+        );
+    }
+
     #[Test]
     public function aFailsafeContainerIsAReasonRatherThanAResult(): void
     {

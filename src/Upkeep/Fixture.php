@@ -102,6 +102,7 @@ final class Fixture
      * @param array<string, string> $icons identifier => source, as the registry resolves it
      * @param array<string, string> $tables table => ctrl title
      * @param array<string, array{0: string, 1: string}> $contentElements CType => [label, icon]
+     * @param array<string, array<string, array<string, array<int, string>>>> $formDataGroups group => provider => depends/before
      */
     public static function bootsInto(
         string $root,
@@ -109,6 +110,7 @@ final class Fixture
         array $tables = [],
         array $contentElements = [],
         bool $failsafe = false,
+        array $formDataGroups = [],
     ): void {
         $items = [];
         foreach ($contentElements as $value => [$label, $icon]) {
@@ -120,6 +122,7 @@ final class Fixture
             'tables' => $tables,
             'items' => $items,
             'failsafe' => $failsafe,
+            'formDataGroups' => $formDataGroups,
         ], true);
 
         self::put($root . '/vendor/autoload.php', <<<PHP
@@ -131,6 +134,20 @@ final class Fixture
                 ]]]]];
                 foreach (\$GLOBALS['FAKE']['tables'] as \$table => \$title) {
                     \$GLOBALS['TCA'][\$table] = ['ctrl' => ['title' => \$title]];
+                }
+                \$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']
+                    = \$GLOBALS['FAKE']['formDataGroups'];
+            }
+            namespace TYPO3\\CMS\\Core\\Service {
+                // Reverses rather than resolves. What the probe has to be held
+                // to is that it hands the registry to the core's service and
+                // reports what comes back — an ordering of its own would be the
+                // second implementation the probe exists to avoid, and a
+                // passthrough here could not tell the two apart.
+                class DependencyOrderingService {
+                    public function orderByDependencies(array \$items, string \$before = 'before', string \$after = 'after'): array {
+                        return array_reverse(\$items, true);
+                    }
                 }
             }
             namespace TYPO3\\CMS\\Core\\Core {

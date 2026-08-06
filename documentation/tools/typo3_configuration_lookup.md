@@ -3,9 +3,13 @@
 Read an effective TYPO3_CONF_VARS value from the installation you are working in
 — the value as it is at runtime after every extension has had its say, not the
 shipped default. Use it for configuration whose assembled shape matters, such as
-SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid. It
-answers for the installation as it stands, in the environment it is in: a value
-that has to be shown resolving under another environment — a variable set, a
+SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid. Ask
+it for one form data group — SYS/formEngine/formDataGroup/tcaDatabaseRecord —
+and the answer also carries the order the providers actually run in, resolved by
+the installation from the depends and before each declares, which is what
+decides whether one provider sees what another wrote. It answers for the
+installation as it stands, in the environment it is in: a value that has to be
+shown resolving under another environment — a variable set, a
 development-environment marker absent — is the project's own console, one run
 per environment. Answers from: installation.
 
@@ -32,6 +36,19 @@ path: string
 found: boolean  # optional
 # The effective runtime value, of whatever shape the configuration has.
 value: object  # optional
+# The order the providers actually run in, present only where the path names one
+# form data group and the installation answered. The registry under it is a
+# dependency graph, so this is what it resolves to rather than what it is
+# written as.
+resolvedOrder:  # optional
+  - # Position in the run, counting from zero.
+    index: integer
+    # Fully qualified class name of the form data provider.
+    provider: string
+    # What it declares it runs after.
+    depends: [string]
+    # What it declares it runs before.
+    before: [string]
 # One of: installation. installation: its assembled runtime state answered.
 answeredBy: string  # optional
 unsupported:  # optional

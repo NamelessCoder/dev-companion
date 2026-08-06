@@ -14,6 +14,15 @@ Answers from [`checkout`](answer-sources.md#checkout).
 ## Takes
 
 ```yaml
+# One short line saying what only this feedback reports, in English — "a
+# release branch's log answers about the history from before it was cut". It
+# becomes the title and the file name, which is all a maintainer reads when
+# deciding what to open. Left out, both are taken from the opening of the
+# observation, and a session filing several at once then gets several that begin
+# on the same words: the observation is asked to open with the task, so every
+# feedback from one session opens alike. Say what this one says and nothing the
+# others do.
+subject: string  # optional
 # What was missing, wrong, or unhelpful, specific enough to act on later, in
 # English. Open with one line naming the task you were given, so the feedback
 # can be traced back to what exposed it. A finding is the path a value was read

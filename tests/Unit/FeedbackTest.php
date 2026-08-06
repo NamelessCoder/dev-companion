@@ -757,6 +757,56 @@ final class FeedbackTest extends TestCase
      * capitals, and it is the kind that arrives because a session reached for
      * somebody else's tool instead of one of these — `D-FBK-039`.
      */
+    /**
+     * The observation is asked to open with the task, so every feedback from
+     * one session opens on the same words and the title derived from it says
+     * nothing that tells them apart. The subject is what only this one says,
+     * and it names both surfaces a maintainer triages on.
+     */
+    #[Test]
+    public function theSubjectNamesTheTitleAndTheFileWhereTheOpeningIsShared(): void
+    {
+        $opening = self::MARKER . ' task was to work off the open todos in this checkout, and then ';
+
+        $first = $this->recordFeedback([
+            'observation' => $opening . 'the release branch log misled the measurement.',
+            'subject' => self::MARKER . ' a release branch log answers about shared history',
+        ]);
+        $second = $this->recordFeedback([
+            'observation' => $opening . 'the source had three properties nothing wrote down.',
+            'subject' => self::MARKER . ' what a re-read of get.typo3.org has to know',
+        ]);
+
+        // The slug is cut to what a file name has room for, so what is held is
+        // that the two differ where they used to share an opening.
+        self::assertStringContainsString('a-release-branch-log', $first);
+        self::assertStringContainsString('what-a-re-read', $second);
+
+        $body = (string) file_get_contents($this->inStore($first));
+        self::assertStringContainsString(
+            '# ' . self::MARKER . ' a release branch log answers about shared history',
+            $body,
+        );
+        // The task line is what traces the report back to what exposed it, so
+        // naming the subject separately must not take it out of the report.
+        self::assertStringContainsString('task was to work off the open todos', $body);
+    }
+
+    /** Without one, the opening still names both, which is what every feedback filed so far did. */
+    #[Test]
+    public function withoutASubjectTheOpeningStillNamesIt(): void
+    {
+        $file = $this->recordFeedback([
+            'observation' => self::MARKER . ' the resources were never enumerated at all.',
+        ]);
+
+        self::assertStringContainsString('the-resources-were', $file);
+        self::assertStringContainsString(
+            '# ' . self::MARKER . ' the resources were never enumerated at all.',
+            (string) file_get_contents($this->inStore($file)),
+        );
+    }
+
     #[Test]
     public function aNameFromOutsideThisServerKeepsItsCapitals(): void
     {

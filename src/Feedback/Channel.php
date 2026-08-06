@@ -122,8 +122,13 @@ final class Channel
             throw new \RuntimeException(sprintf('Cannot create the feedback directory: %s', $directory));
         }
 
-        $file = self::uniquePath($directory, $observation);
-        $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin());
+        // The one field that is a name rather than a report, so it is redacted
+        // like the rest and never cut: a title with a marker in the middle of
+        // it is what a listing shows.
+        $subject = self::withoutSecrets('subject', trim((string) ($args['subject'] ?? '')), $redacted);
+
+        $file = self::uniquePath($directory, $subject === '' ? $observation : $subject);
+        $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin(), $subject);
 
         if (file_put_contents($file, $document) === false) {
             throw new \RuntimeException(sprintf('Cannot write the feedback feedback: %s', $file));
@@ -477,6 +482,7 @@ final class Channel
         string $suggestion,
         string $model,
         string $origin,
+        string $subject = '',
     ): string {
         $frontMatter = [
             'date: ' . date('c'),
@@ -496,7 +502,7 @@ final class Channel
         }
 
         $document = "---\n" . implode("\n", $frontMatter) . "\n---\n\n";
-        $document .= '# ' . self::title($observation) . "\n\n";
+        $document .= '# ' . self::title($subject === '' ? $observation : $subject) . "\n\n";
         $document .= "## Observation\n\n" . $observation . "\n";
 
         if ($query !== '') {

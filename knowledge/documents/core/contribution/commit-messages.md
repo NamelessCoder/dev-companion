@@ -1,6 +1,6 @@
 ---
 description: >-
-  The subject line, the body and the trailers a core commit message carries, Gerrit's own among them.
+  Who a core commit message is written for, and the subject line, the body and the trailers it carries, Gerrit's own among them.
 whenToUse: >-
   When writing or amending the message of a patch to the core, which is the only repository these rules describe.
 hints: []
@@ -14,6 +14,14 @@ https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/Co
 TYPO3 core commit messages are part of the contribution workflow and are checked
 by tooling. Keep this document aligned with the official TYPO3 Core Contribution
 Guide.
+
+## Who Reads It
+
+- A commit message is read by a person who wants to know what the commit did —
+  in `git log`, in a blame, in a review.
+- Write it in plain English, and only as long as that answer needs.
+- The diff carries the detail, so the message does not repeat it. Nothing here
+  asks for a full account of the change.
 
 ## Summary Line
 

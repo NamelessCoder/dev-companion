@@ -249,7 +249,7 @@ Data:
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
             "coverage": 1,
-            "score": 94,
+            "score": 95,
             "truncated": false
         },
         {
@@ -324,7 +324,7 @@ Text:
 No knowledge section matched "quantum entanglement pineapple".
 
 This knowledge base covers:
-- TYPO3 Core Commit Message Rules: Summary Line, Work in Progress, Body, Relationships, Release Targets, Breaking Changes, Deprecations, Changelog Files
+- TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Breaking Changes, Deprecations, Changelog Files
 - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
 - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Review Readiness
 - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
@@ -351,6 +351,7 @@ Data:
             "id": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
             "topics": [
+                "Who Reads It",
                 "Summary Line",
                 "Work in Progress",
                 "Body",

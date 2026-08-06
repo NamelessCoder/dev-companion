@@ -1,10 +1,12 @@
 # `typo3_commit_message_guide`
 
-Draft and check a TYPO3 commit message. Either assemble one from parts
-(changeType plus summary) or pass an existing message to check and correct it.
-The returned draft is ready to commit: the body is wrapped at 72 characters, and
-the checks name every run of lines the wrapping joined and every line it could
-not bring under the width. Defaults to a repository of your own, where the
+Draft and check a TYPO3 commit message. The message is read by a person who
+wants to know what the commit did, so write it in plain English and only as long
+as that answer needs: the diff carries the detail. Either assemble one from
+parts (changeType plus summary) or pass an existing message to check and correct
+it. The returned draft is ready to commit: the body is wrapped at 72 characters,
+and the checks name every run of lines the wrapping joined and every line it
+could not bring under the width. Defaults to a repository of your own, where the
 subject and body conventions apply but the Forge issue, the Releases: trailer
 and the changelog do not; pass workflow="core" for a patch against the TYPO3
 core, where the Releases: trailer is also held against the branches that take a
@@ -31,7 +33,8 @@ workflow: string  # optional
 # [SECURITY] is reserved for the TYPO3 Security Team and is only accepted with
 # workflow="project".
 changeType: string  # optional
-# Summary text without the TYPO3 keyword prefix.
+# Summary text without the TYPO3 keyword prefix. Say what the commit did, in
+# words a reader understands from the log alone.
 summary: string  # optional
 # Forge issue number, with or without leading #.
 issue: string  # optional
@@ -44,8 +47,9 @@ relatedIssues: [string]  # optional
 # ELTS releases come from the ELTS partners rather than from a patch to that
 # branch.
 releases: [string]  # optional
-# Optional commit body. It is wrapped at 72 characters in the draft: indent a
-# block to keep the line breaks you wrote, and keep those lines under the width
+# Optional commit body, for what the diff does not say: why the change was made,
+# what it rests on. It is wrapped at 72 characters in the draft: indent a block
+# to keep the line breaks you wrote, and keep those lines under the width
 # yourself.
 body: string  # optional
 # Whether this is a breaking change requiring [!!!]. Left out, the checks say

@@ -495,12 +495,16 @@ grep for.
 
 ## Commits
 
+A commit message is read by a person who wants to know what the commit did.
+Write it for them: plain English, and only as long as that answer needs. The
+diff carries the detail, so the message does not have to.
+
 - Split changes into small, single-purpose commits and commit as soon as each
   part is verified.
-- The subject is a keyword and then what the commit did, condensed: `[TASK]`,
-  `[BUGFIX]` or `[FEATURE]`, and none other. A documentation change here is a
-  `[TASK]` — `[DOCS]`, `[SECURITY]` and `[!!!]` belong to the core's process,
-  which this checkout does not run.
+- The subject is a keyword and then what the commit did, in plain words:
+  `[TASK]`, `[BUGFIX]` or `[FEATURE]`, and none other. A documentation change
+  here is a `[TASK]` — `[DOCS]`, `[SECURITY]` and `[!!!]` belong to the core's
+  process, which this checkout does not run.
 - Keep the whole subject line, keyword included, under 52 characters, and never
   past 72. Wrap the body at 72. Those are the numbers
   `typo3_commit_message_guide` returns for `workflow="project"`, so what this
@@ -512,9 +516,10 @@ grep for.
   that, the body names the id instead. A body that summarises the entry beside
   it is two copies of one reading, and the file is the one a reader searches.
 - The prose rule holds here as everywhere: one point per sentence, no sentence
-  restating the one above it. Nothing measures a commit message — not the
-  keyword, not the two widths, not this rule — so all of it is held by rereading
-  it before `git commit`.
+  restating the one above it. What it does not ask for is density: a subject
+  nobody understands without the diff open is too short, not short enough.
+  Nothing measures a commit message — not the keyword, not the two widths, not
+  this rule — so all of it is held by rereading it before `git commit`.
 - Only commit the files you changed yourself in this session. The working tree
   may already contain unrelated modifications or staged changes from someone
   else — leave them alone.

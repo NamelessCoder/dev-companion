@@ -130,8 +130,8 @@ Data:
         ],
         "misconfiguration": null,
         "settings": {
-            "root": "TYPO3_MCP_ROOT",
-            "console": "TYPO3_MCP_CONSOLE"
+            "root": "TYPO3_DEV_COMPANION_ROOT",
+            "console": "TYPO3_DEV_COMPANION_CONSOLE"
         }
     }
 }
@@ -222,8 +222,8 @@ Data:
         ],
         "misconfiguration": null,
         "settings": {
-            "root": "TYPO3_MCP_ROOT",
-            "console": "TYPO3_MCP_CONSOLE"
+            "root": "TYPO3_DEV_COMPANION_ROOT",
+            "console": "TYPO3_DEV_COMPANION_CONSOLE"
         }
     }
 }

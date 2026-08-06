@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge\Catalog;
+namespace TYPO3\DevCompanion\Knowledge\Catalog;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * Provenance of the static catalogs.

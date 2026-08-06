@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Search;
+namespace TYPO3\DevCompanion\Search;
 
 /**
  * The most of a query a corpus still carries, as a query that can be asked.

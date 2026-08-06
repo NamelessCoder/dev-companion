@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Server;
+namespace TYPO3\DevCompanion\Server;
 
 use Mcp\Schema\Annotations;
 use Mcp\Schema\ResourceDefinition;
@@ -10,13 +10,13 @@ use Mcp\Schema\ResourceTemplate;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Sdk\ResourceHandler;
-use Typo3CmsMcp\Sdk\SkillReferenceHandler;
-use Typo3CmsMcp\Sdk\Skills;
-use Typo3CmsMcp\Sdk\ToolHandler;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Sdk\ResourceHandler;
+use TYPO3\DevCompanion\Sdk\SkillReferenceHandler;
+use TYPO3\DevCompanion\Sdk\Skills;
+use TYPO3\DevCompanion\Sdk\ToolHandler;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * Builds the MCP server on the official mcp/sdk, wiring the existing knowledge
@@ -25,7 +25,7 @@ use Typo3CmsMcp\Tool\Registry;
  */
 final class Factory
 {
-    public const SERVER_NAME = 'typo3-cms-mcp';
+    public const SERVER_NAME = 'typo3-dev-companion';
     public const SERVER_VERSION = '0.3.0';
 
     /**

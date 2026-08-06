@@ -16,12 +16,12 @@ two disagree.
 
 ## Evidence
 
-- `feedback/2026-07-31-190653`, re-run on 2026-08-02 through `bin/typo3-cms-mcp`
-  from `/home/benji/projects/site-new`, the directory it was written in.
-  `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4".
-  `typo3_extension_scope` with `printworks_sitepackage` carries "Requires: php
-  ^8.3, typo3/cms-core ^14.3" and, on its own line, "Ships: manual none, readme
-  none, tests Functional+Unit".
+- `feedback/2026-07-31-190653`, re-run on 2026-08-02 through
+  `bin/typo3-dev-companion` from `/home/benji/projects/site-new`, the directory
+  it was written in. `typo3_project_scope` opens with "composer-project, TYPO3
+  14.3.5, PHP ^8.4". `typo3_extension_scope` with `printworks_sitepackage`
+  carries "Requires: php ^8.3, typo3/cms-core ^14.3" and, on its own line,
+  "Ships: manual none, readme none, tests Functional+Unit".
 - Both things the feedback records as established elsewhere were in answers it
   says it already had. It lists both calls as made, then reports reading
   composer.json for the PHP constraint and being surprised by the absent manual
@@ -30,7 +30,7 @@ two disagree.
   `9e06675` (2026-07-29 16:51), `artifacts` from `fc80db8` (2026-07-31 02:08),
   and `main` stood at `77cd0e7` (18:42) when the report was written at 21:06
   local. Both are ancestors of `main`, and `.mcp.json` in that project names
-  `/home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp`.
+  `/home/benji/projects/typo3-dev-companion/bin/typo3-dev-companion`.
 - What no answer states is that `^8.3` and `^8.4` disagree.
   `feedback/2026-07-31-193611` is that boundary from the other side: same
   directory, half an hour later, it compared the extension's declared constraint

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Hints;
 
 /**
  * What one query reaches in the hint corpus, and why.

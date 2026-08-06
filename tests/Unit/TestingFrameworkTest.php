@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Upkeep\TestingFramework;
+use TYPO3\DevCompanion\Upkeep\TestingFramework;
 
 /**
  * Which harness a statement about testing a project extension was read in.

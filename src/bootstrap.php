@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * The file lives in a different place depending on how this package is used:
  * in a standalone checkout it is ./vendor/autoload.php, while as an installed
- * dependency the package sits in vendor/typo3/cms-mcp/ and the autoloader is
+ * dependency the package sits in vendor/typo3/dev-companion/ and the autoloader is
  * three levels up. Composer's bin proxy tells us the exact path via
  * $_composer_autoload_path, so that is preferred when present.
  */
@@ -21,7 +21,7 @@ declare(strict_types=1);
     }
 
     $candidates[] = dirname(__DIR__) . '/vendor/autoload.php'; // standalone checkout
-    $candidates[] = dirname(__DIR__, 3) . '/autoload.php';     // vendor/typo3/cms-mcp/
+    $candidates[] = dirname(__DIR__, 3) . '/autoload.php';     // vendor/typo3/dev-companion/
 
     foreach ($candidates as $candidate) {
         if (is_file($candidate)) {
@@ -31,7 +31,7 @@ declare(strict_types=1);
         }
     }
 
-    fwrite(STDERR, 'typo3-cms-mcp: Composer autoloader not found.'
+    fwrite(STDERR, 'typo3-dev-companion: Composer autoloader not found.'
         . " Run 'composer install' in the package root.\n");
     exit(1);
 })();

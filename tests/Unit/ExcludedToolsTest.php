@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Server\ExcludedTools;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Server\ExcludedTools;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
 
 final class ExcludedToolsTest extends TestCase
 {
@@ -118,7 +118,7 @@ final class ExcludedToolsTest extends TestCase
     /**
      * What both client surfaces said before this: the name the caller wrote,
      * whether or not it took a tool away. Measured on 2026-08-04 with
-     * `TYPO3_MCP_EXCLUDE_TOOLS=typo3_project_scope` — the instructions opened
+     * `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope` — the instructions opened
      * "typo3_project_scope is left out of your tool list" out of the budget
      * `R-ANS-013` holds, while `typo3_project_describe` was in the list.
      */

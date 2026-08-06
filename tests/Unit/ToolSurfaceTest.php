@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Upkeep\ToolAnswers;
-use Typo3CmsMcp\Upkeep\ToolCalls;
-use Typo3CmsMcp\Upkeep\ToolSurface;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\ToolAnswers;
+use TYPO3\DevCompanion\Upkeep\ToolCalls;
+use TYPO3\DevCompanion\Upkeep\ToolSurface;
 
 /**
  * The tool reference against the registry it is rendered from.

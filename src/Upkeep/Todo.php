@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Command\TodoSync;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
 
 /**
  * Reads todo/, where one todo is one file and the order is in the names.

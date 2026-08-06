@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Installation;
+namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
+use TYPO3\DevCompanion\Knowledge\Catalog\TranslationDomain;
 
 /**
  * The labels shipped by the packages of the discovered installation, read from

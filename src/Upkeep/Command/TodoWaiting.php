@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Upkeep\Todo;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 /**
  * The questions nothing else will ask again.

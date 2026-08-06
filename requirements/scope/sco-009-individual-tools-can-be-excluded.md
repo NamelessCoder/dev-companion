@@ -6,8 +6,8 @@ restsOn: [D-AUD-004, D-FBK-042, D-AUD-006]
 
 # R-SCO-009 — Individual tools can be excluded
 
-**A caller can exclude individual tools with `TYPO3_MCP_EXCLUDE_TOOLS`, except
-the three the server names.**
+**A caller can exclude individual tools with
+`TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`, except the three the server names.**
 
 The scope answer names the resulting omissions, so a shorter tool list carries
 its reason — and names nothing else, because a name in the variable that took no

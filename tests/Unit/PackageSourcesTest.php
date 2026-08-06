@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\FluidNamespaces;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Installation\FluidNamespaces;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * What the installed packages can answer when the console cannot.

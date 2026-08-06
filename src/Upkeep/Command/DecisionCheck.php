@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Decisions;
-use Typo3CmsMcp\Upkeep\DecisionStatus;
-use Typo3CmsMcp\Upkeep\Requirements;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\DecisionStatus;
+use TYPO3\DevCompanion\Upkeep\Requirements;
 
 /**
  * Everything the format of decisions/ promises a reader, checked against the

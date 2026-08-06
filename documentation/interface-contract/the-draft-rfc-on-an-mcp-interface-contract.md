@@ -74,7 +74,7 @@ gives the separator a rule.
 
 The draft is also the first document to draw a line around what may present
 itself as TYPO3's MCP surface, which is where the package name meets it. This
-package declares `typo3/cms-mcp` in its `composer.json` and is published
+package declares `typo3/dev-companion` in its `composer.json` and is published
 nowhere. The `typo3` vendor on Packagist belongs to the TYPO3 Association, and
 no claim is made on it here.
 

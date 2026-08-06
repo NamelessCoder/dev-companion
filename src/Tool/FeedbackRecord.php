@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
  * This server's only write: one markdown feedback per call, in its own

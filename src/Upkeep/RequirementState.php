@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 /**
  * Whether a requirement is built, and whether anything holds it there.

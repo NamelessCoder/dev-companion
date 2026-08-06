@@ -15,9 +15,9 @@ path that is not there.
 ## From
 
 Naming `E-EXT`: `install --agent=claude` in an extension repository with
-`"bin-dir": ".build/bin"` wrote `ddev exec php vendor/bin/typo3-cms-mcp`, a file
-that does not exist in that checkout, and nothing reported it until a client
-tried to start the server (2026-07-31).
+`"bin-dir": ".build/bin"` wrote `ddev exec php vendor/bin/typo3-dev-companion`,
+a file that does not exist in that checkout, and nothing reported it until a
+client tried to start the server (2026-07-31).
 
 ## Held by
 

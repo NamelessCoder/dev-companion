@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Knowledge\Catalog\Components;
-use Typo3CmsMcp\Knowledge\Catalog\InstalledComponents;
-use Typo3CmsMcp\Knowledge\Catalog\Meta as CatalogMeta;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Provenance;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
+use TYPO3\DevCompanion\Knowledge\Catalog\Components;
+use TYPO3\DevCompanion\Knowledge\Catalog\InstalledComponents;
+use TYPO3\DevCompanion\Knowledge\Catalog\Meta as CatalogMeta;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\Provenance;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
  * TYPO3 backend UI components: their markup, classes and custom properties.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Versions;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
  * Matched sections of the markdown knowledge documents, as an answer.

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Installer;
-use Typo3CmsMcp\Tests\Support\Directory;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Directory;
 
 /**
  * Drives the real entrypoint the way a client does: a subprocess speaking
@@ -79,7 +79,7 @@ final class StdioServerTest extends TestCase
             'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
         ])])[1];
 
-        self::assertSame('typo3-cms-mcp', $result['result']['serverInfo']['name']);
+        self::assertSame('typo3-dev-companion', $result['result']['serverInfo']['name']);
         self::assertSame(self::PROTOCOL_VERSION, $result['result']['protocolVersion']);
         self::assertStringContainsString('checkout', $result['result']['instructions']);
         // Held here as well as in ScopeTest, because this is the string a
@@ -105,7 +105,7 @@ final class StdioServerTest extends TestCase
     #[Test]
     public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void
     {
-        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-stale-' . bin2hex(random_bytes(8));
+        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-dev-companion-stale-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($this->temporaryRoot));
         self::assertSame(0, $this->install($this->temporaryRoot));
 
@@ -116,7 +116,7 @@ final class StdioServerTest extends TestCase
             'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
         ])], $this->temporaryRoot, $stderr)[1];
         self::assertStringNotContainsString('stale', $current['result']['instructions']);
-        self::assertStringNotContainsString('typo3-cms-mcp update', (string) $stderr);
+        self::assertStringNotContainsString('typo3-dev-companion update', (string) $stderr);
 
         // What every release of this package does to a project that installed
         // an earlier one, and what nothing said until now.
@@ -140,7 +140,7 @@ final class StdioServerTest extends TestCase
     private function install(string $directory): int
     {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', 'install'],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', 'install'],
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $directory,
@@ -213,7 +213,7 @@ final class StdioServerTest extends TestCase
     #[Test]
     public function aQuestionThatCannotBeAnsweredHereIsStillAnAnswer(): void
     {
-        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-nothing-' . bin2hex(random_bytes(6));
+        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-dev-companion-nothing-' . bin2hex(random_bytes(6));
         mkdir($this->temporaryRoot, 0o777, true);
 
         $result = $this->session([$this->request(2, 'tools/call', [
@@ -478,11 +478,11 @@ final class StdioServerTest extends TestCase
     {
         $root = $this->installationWithADrainingConsole();
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp'],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion'],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $root,
-            getenv() + ['TYPO3_MCP_CONSOLE' => PHP_BINARY . ' ' . $root . '/console.php', Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()]
+            getenv() + ['TYPO3_DEV_COMPANION_CONSOLE' => PHP_BINARY . ' ' . $root . '/console.php', Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()]
         );
         self::assertIsResource($process);
 
@@ -573,7 +573,7 @@ final class StdioServerTest extends TestCase
     /** A Composer project with TYPO3 in it, which is what most callers stand in. */
     private function installation(): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-discovery-' . bin2hex(random_bytes(6));
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-discovery-' . bin2hex(random_bytes(6));
         $this->temporaryRoot = $root;
         mkdir($root . '/vendor/composer', 0o777, true);
         mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
@@ -599,7 +599,7 @@ final class StdioServerTest extends TestCase
      */
     private function installationWithADrainingConsole(): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-stdio-' . bin2hex(random_bytes(6));
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-stdio-' . bin2hex(random_bytes(6));
         $this->temporaryRoot = $root;
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', (string) json_encode([
@@ -644,7 +644,7 @@ final class StdioServerTest extends TestCase
         // about where it is, so a test about discovery is a test about this
         // argument.
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp'],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion'],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $cwd,

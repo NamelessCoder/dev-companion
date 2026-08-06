@@ -75,13 +75,13 @@ both answered `unsupported` with `cause: no-installation`, the reason, and the
 seven directories discovery walked from that directory to the root.
 
 Neither **Wrong if** about a client reading the answer happened. The session
-told the user the installation could not be asked, named `TYPO3_MCP_ROOT` and
-`TYPO3_MCP_CONSOLE` as the way out, and wrote that an identifier recalled from
-memory is the answer it would not give — it branched on the key rather than
-reading the fields under it, and it surfaced a non-error answer rather than
-swallowing it. The third was not exercised: the client read `structuredContent`
-and validated nothing, so a validator that cannot read `oneOf` is still a client
-nobody here has met.
+told the user the installation could not be asked, named
+`TYPO3_DEV_COMPANION_ROOT` and `TYPO3_DEV_COMPANION_CONSOLE` as the way out, and
+wrote that an identifier recalled from memory is the answer it would not give —
+it branched on the key rather than reading the fields under it, and it surfaced
+a non-error answer rather than swallowing it. The third was not exercised: the
+client read `structuredContent` and validated nothing, so a validator that
+cannot read `oneOf` is still a client nobody here has met.
 
 That leaves the `instructions` lever `D-ANS-001` named unspent, and there is
 nothing left asking for it. The sentence it would have added — that a miss and
@@ -99,7 +99,7 @@ the way.
 That last sentence held for `.environments/e-site-main`, where no interpreter on
 this machine satisfies what the installation pins. It does not hold for the
 three released lines, and the run that settled it was made on 2026-08-04 in
-`.environments/e-site-14.3`: `bin/typo3-cms-mcp` over stdio, one process
+`.environments/e-site-14.3`: `bin/typo3-dev-companion` over stdio, one process
 throughout, the project stopped when the session opened, five calls, a real
 `ddev start` — 18.2s, exit 0 — and then the same five.
 

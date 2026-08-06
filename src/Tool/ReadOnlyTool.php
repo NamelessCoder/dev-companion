@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
 /**
  * A tool that only reads bundled knowledge or the installation it was started

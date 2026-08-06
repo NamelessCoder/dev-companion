@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Decisions;
-use Typo3CmsMcp\Upkeep\DecisionStatus;
-use Typo3CmsMcp\Upkeep\Requirements;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\DecisionStatus;
+use TYPO3\DevCompanion\Upkeep\Requirements;
 
 /**
  * The shape of decisions/, as far as one branch can be right about it.

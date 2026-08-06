@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Search\Subsets;
-use Typo3CmsMcp\Search\TermSearch;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Search\Subsets;
+use TYPO3\DevCompanion\Search\TermSearch;
 
 /**
  * Reads and searches the bundled markdown knowledge documents.

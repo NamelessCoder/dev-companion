@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Http;
+namespace TYPO3\DevCompanion\Http;
 
-use Typo3CmsMcp\Server\Factory;
+use TYPO3\DevCompanion\Server\Factory;
 
 /**
  * The one way this server reads a host outside itself.
@@ -152,7 +152,7 @@ final class Fetch
             CURLOPT_MAXREDIRS => self::MAX_REDIRECTS,
             CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT,
             CURLOPT_TIMEOUT => self::TIMEOUT,
-            CURLOPT_USERAGENT => $agent ?? 'typo3-cms-mcp/' . Factory::SERVER_VERSION,
+            CURLOPT_USERAGENT => $agent ?? 'typo3-dev-companion/' . Factory::SERVER_VERSION,
             CURLOPT_HTTPHEADER => $headers,
         ]);
         $body = curl_exec($handle);

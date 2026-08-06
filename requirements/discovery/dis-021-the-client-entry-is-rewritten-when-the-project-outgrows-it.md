@@ -19,8 +19,9 @@ somebody else is still never replaced.
 ## From
 
 `update` in `E-SITE` reporting
-`.mcp.json has a different or missing typo3-cms-mcp entry` after the project
-required the server, with `install` refusing the same entry (2026-07-31).
+`.mcp.json has a different or missing typo3-dev-companion entry` after the
+project required the server, with `install` refusing the same entry
+(2026-07-31).
 
 ## Held by
 

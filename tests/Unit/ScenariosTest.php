@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tests\Support\Directory;
-use Typo3CmsMcp\Upkeep\Scenarios;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class ScenariosTest extends TestCase
 {
@@ -306,7 +306,7 @@ final class ScenariosTest extends TestCase
 
         $run = $spoil($run);
 
-        $this->runs = sys_get_temp_dir() . '/typo3-cms-mcp-runs-' . getmypid();
+        $this->runs = sys_get_temp_dir() . '/typo3-dev-companion-runs-' . getmypid();
         if (!is_dir($this->runs)) {
             mkdir($this->runs, 0775, true);
         }

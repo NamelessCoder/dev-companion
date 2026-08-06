@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Installation;
+namespace TYPO3\DevCompanion\Installation;
 
-use Typo3CmsMcp\Process\CommandRunner;
-use Typo3CmsMcp\Process\SystemRunner;
+use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Process\SystemRunner;
 
 /**
  * Runs the TYPO3 console of the discovered installation and hands back what it
@@ -38,7 +38,7 @@ final class Typo3Cli
     public const VIA_OVERRIDE = 'override';
 
     /** The command that reaches the console, for the layouts autodiscovery cannot. */
-    public const CONSOLE_VARIABLE = 'TYPO3_MCP_CONSOLE';
+    public const CONSOLE_VARIABLE = 'TYPO3_DEV_COMPANION_CONSOLE';
 
     /** A TYPO3 bootstrap can hang on a broken configuration; an MCP session must not. */
     private const TIMEOUT_SECONDS = 90;
@@ -306,7 +306,7 @@ final class Typo3Cli
      * Only the DDEV transport is quoted. The direct one reaches the console
      * through `proc_open` with no shell between, where a quoted argument would
      * arrive with its quotes. A stated one is left alone for a reason rather
-     * than an oversight: what `TYPO3_MCP_CONSOLE` names may put a shell in the
+     * than an oversight: what `TYPO3_DEV_COMPANION_CONSOLE` names may put a shell in the
      * way or may not — `docker compose exec` does not, another wrapper might —
      * and this cannot tell. Quoting it would break every stated command that
      * needs no quoting, to fix the ones that do; the caller who names a
@@ -477,7 +477,7 @@ final class Typo3Cli
      * interpreter that satisfies the platform — and every link is something
      * about a machine this server does not control. When one breaks there is
      * nothing left to try, and five tools go quiet over a layout its owner
-     * could have described in a sentence: TYPO3_MCP_CONSOLE="ddev exec
+     * could have described in a sentence: TYPO3_DEV_COMPANION_CONSOLE="ddev exec
      * .build/bin/typo3". Lando, a compose stack, a container this server has
      * never heard of are then all one setting rather than a feature request.
      *

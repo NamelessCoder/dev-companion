@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Catalog\Meta as CatalogMeta;
-use Typo3CmsMcp\Knowledge\Versions;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Catalog\Meta as CatalogMeta;
+use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
  * What a component answer says about where it came from.

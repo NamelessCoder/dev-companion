@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
 /**
  * What a tool answers: the text a human (or a model) reads, and the same answer

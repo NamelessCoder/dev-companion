@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Upkeep\Decisions;
-use Typo3CmsMcp\Upkeep\DecisionStatus;
-use Typo3CmsMcp\Upkeep\Requirements;
-use Typo3CmsMcp\Upkeep\Todo;
-use Typo3CmsMcp\Upkeep\Unresolved;
+use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\DecisionStatus;
+use TYPO3\DevCompanion\Upkeep\Requirements;
+use TYPO3\DevCompanion\Upkeep\Todo;
+use TYPO3\DevCompanion\Upkeep\Unresolved;
 
 final class UnresolvedTest extends TestCase
 {

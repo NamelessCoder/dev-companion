@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Tool\CommitMessageGuide;
+use TYPO3\DevCompanion\Tool\CommitMessageGuide;
 
 /**
  * What the caller reads, rather than what the class behind it returns: the

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 /**
  * The generated listing at the foot of a readme.

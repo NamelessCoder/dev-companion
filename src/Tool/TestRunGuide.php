@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Knowledge\Domains;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\TestSuiteHints;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
+use TYPO3\DevCompanion\Knowledge\Domains;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
  * Which Build/Scripts/runTests.sh suites a change actually needs.

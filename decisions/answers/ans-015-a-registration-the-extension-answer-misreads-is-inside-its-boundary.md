@@ -17,9 +17,9 @@ registrations.
 
 ## Evidence
 
-- `feedback/2026-07-31-193109`, re-run on 2026-08-02 through `bin/typo3-cms-mcp`
-  from `/home/benji/projects/site-new`, the directory it was written in.
-  `.mcp.json` there names this repository's binary.
+- `feedback/2026-07-31-193109`, re-run on 2026-08-02 through
+  `bin/typo3-dev-companion` from `/home/benji/projects/site-new`, the directory
+  it was written in. `.mcp.json` there names this repository's binary.
 - Six costs are the contents of files the caller already has open: TCA,
   TypoScript, Fluid, controllers, repositories, eight test classes,
   `Initialisation/data.xml`, and a `PageTitleProvider` the extension does not

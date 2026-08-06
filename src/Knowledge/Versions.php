@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Project;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Project;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * The TYPO3 versions this knowledge base covers, and what a statement bound to

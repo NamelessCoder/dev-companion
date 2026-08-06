@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\TaskIntents;
-use Typo3CmsMcp\Knowledge\TestSuiteHints;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Result\Prose;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\TaskIntents;
+use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Result\Prose;
+use TYPO3\DevCompanion\Tool\Registry;
 
 final class KnowledgeTest extends TestCase
 {

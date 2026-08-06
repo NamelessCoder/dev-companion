@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Sdk;
+namespace TYPO3\DevCompanion\Sdk;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Installer;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Installer;
 
 /**
  * The published task skills, as the resource surface offers them.
@@ -16,7 +16,7 @@ use Typo3CmsMcp\Server\Installer;
  * They are here rather than in `Knowledge\` because this is the only thing that
  * reads a skill body: `Server\Installer` copies the directory without opening
  * it, and no tool answers from one. What a client picks up is the workflow
- * itself — `bin/typo3-cms-mcp install` writes the same file into that client's
+ * itself — `bin/typo3-dev-companion install` writes the same file into that client's
  * own skills directory, and for a client that never ran it this resource is the
  * one route there is (`R-ANS-022`).
  *

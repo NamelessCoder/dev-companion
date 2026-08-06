@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
-use Typo3CmsMcp\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Instance;
 
 /**
  * Which of the three kinds of work a path, or a statement about one, belongs to.
@@ -293,7 +293,7 @@ enum Scope: string
      * anything else has already said it is not the core.
      *
      * The repository the session sits in, rather than the installation named
-     * for reading — the two are the same until `TYPO3_MCP_ROOT` says otherwise.
+     * for reading — the two are the same until `TYPO3_DEV_COMPANION_ROOT` says otherwise.
      *
      * Where the session sits in no installation, the shape is left standing —
      * a `Build/Sources/` path is then the only evidence there is.

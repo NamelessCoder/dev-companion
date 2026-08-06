@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Support;
+namespace TYPO3\DevCompanion\Tests\Support;
 
 use PHPUnit\Framework\Attributes\After;
 
@@ -115,7 +115,7 @@ trait TemporaryInstallation
 
     private function temporaryDirectory(): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-instance-' . bin2hex(random_bytes(6));
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-instance-' . bin2hex(random_bytes(6));
         mkdir($root, 0o777, true);
         $this->temporaryRoots[] = $root;
 

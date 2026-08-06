@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Installation;
+namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
  * primary answer for those.
  *
  * Discovery is opt-in per entrypoint and is never derived from getcwd() on its
- * own. Only bin/typo3-cms-mcp hands its working directory in, because only
+ * own. Only bin/typo3-dev-companion hands its working directory in, because only
  * there is that directory the agent's own: the client launches the server as a
  * subprocess of the session it is working in. An HTTP endpoint has no such
  * relationship to its callers — its document root may itself sit inside a TYPO3
@@ -38,7 +38,7 @@ final class Instance
     public const VIA_ENVIRONMENT = 'environment';
 
     /** Names the installation to read, whatever the working directory says. */
-    public const ROOT_VARIABLE = 'TYPO3_MCP_ROOT';
+    public const ROOT_VARIABLE = 'TYPO3_DEV_COMPANION_ROOT';
 
     /** How far up from the starting directory to look before giving up. */
     private const MAX_DEPTH = 12;
@@ -86,7 +86,7 @@ final class Instance
      * The kind of installation the session is standing in, or null where it is
      * standing in none. Not always the installation being read.
      *
-     * `TYPO3_MCP_ROOT` names the one to read — its labels, its icons, its
+     * `TYPO3_DEV_COMPANION_ROOT` names the one to read — its labels, its icons, its
      * packages — and a core contributor sets it at a site installation for
      * exactly that. Which repository the work is in is a different question,
      * and the checkout the server was started in is its weakest signal.

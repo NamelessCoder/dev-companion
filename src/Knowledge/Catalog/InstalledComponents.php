@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge\Catalog;
+namespace TYPO3\DevCompanion\Knowledge\Catalog;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Instance;
 
 /**
  * Re-reads the component contract from the packages of the active installation.

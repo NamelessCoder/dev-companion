@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Process\CommandRunner;
-use Typo3CmsMcp\Upkeep\Fixture;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Upkeep\Fixture;
 
 /**
  * Asking the installation itself, and what happens on the three ways that fail.
@@ -223,7 +223,7 @@ final class Typo3RuntimeTest extends TestCase
     /** @param array<string, mixed> $manifest */
     private function installation(array $manifest = []): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-runtime-' . bin2hex(random_bytes(6));
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-runtime-' . bin2hex(random_bytes(6));
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', json_encode(
             $manifest + ['name' => 'typo3/cms', 'type' => 'typo3-cms-core'],

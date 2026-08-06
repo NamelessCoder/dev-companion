@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Tool\Source;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Source;
 
 /**
  * The tool surface as a directory: one page per tool, and an index that reaches

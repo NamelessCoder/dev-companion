@@ -44,8 +44,8 @@ not there. It did not say where they were.
   `bin/cli hints:probe "run PHPUnit tests in the TYPO3 core checkout"` reaches
   `project-extension-tests`, and `knowledge/test-suite-hints.json` carries the
   invocation notes. `typo3_test_run_guide`, re-run on 2026-08-02 through
-  `bin/typo3-cms-mcp` from that directory with the two processing classes the
-  session read, answers `unit`, `functional` and `e2e`, each as a
+  `bin/typo3-dev-companion` from that directory with the two processing classes
+  the session read, answers `unit`, `functional` and `e2e`, each as a
   `CI=true ./Build/Scripts/runTests.sh` command with a targeted form beside it.
 - One hop away, `typo3_task_guide` hands it over by name. Asked with the
   session's own task on the same day it answers "Find the file there, then ask
@@ -149,8 +149,8 @@ the commands being non-empty, because what a core checkout happens to declare is
 not what makes the pointer true.
 
 `typo3_test_run_guide` alone, and not the pair `115716` credits. Both were
-called through `bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms` on
-2026-08-03 with a test question. `typo3_test_run_guide` answered `unit`,
+called through `bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`
+on 2026-08-03 with a test question. `typo3_test_run_guide` answered `unit`,
 `functional` and `e2e` as `CI=true ./Build/Scripts/runTests.sh` commands,
 narrowed to the php domain by the changed path, with a targeted form beside each
 and the option list. `typo3_script_lookup` answered with the same *Invoking

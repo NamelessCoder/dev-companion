@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Decisions;
-use Typo3CmsMcp\Upkeep\Requirements;
-use Typo3CmsMcp\Upkeep\RequirementState;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\Requirements;
+use TYPO3\DevCompanion\Upkeep\RequirementState;
 
 /**
  * Everything the format of requirements/ promises a reader, checked against the

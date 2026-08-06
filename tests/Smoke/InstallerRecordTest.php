@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Installer;
-use Typo3CmsMcp\Tests\Support\Directory;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Directory;
 
 /**
  * What a project records about the clients installed in it.
  *
  * A project is worked on by more than one client, and which ones is knowledge
- * only the project has. It keeps it in `.typo3-cms-mcp/state.json`, so that an
+ * only the project has. It keeps it in `.typo3-dev-companion/state.json`, so that an
  * update needs no list from whoever runs it, and so that a skill this package
  * has stopped shipping can be taken out of every client it reached.
  */
@@ -132,7 +132,7 @@ final class InstallerRecordTest extends TestCase
             self::assertSame(1, $this->execute($directory, ['update'], $stdout, $stderr));
             self::assertStringContainsString('nothing is installed here', $stderr);
             self::assertStringContainsString('install --agent=', $stderr);
-            self::assertFileDoesNotExist($directory . '/.typo3-cms-mcp/state.json');
+            self::assertFileDoesNotExist($directory . '/.typo3-dev-companion/state.json');
         } finally {
             Directory::remove($directory);
         }
@@ -164,7 +164,7 @@ final class InstallerRecordTest extends TestCase
                 "*\n",
                 file_get_contents($directory . '/.claude/skills/' . self::SKILL . '/.gitignore'),
             );
-            self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
+            self::assertSame("*\n", file_get_contents($directory . '/.typo3-dev-companion/.gitignore'));
         } finally {
             Directory::remove($directory);
         }
@@ -199,7 +199,7 @@ final class InstallerRecordTest extends TestCase
             $this->rewriteState($directory, ['digest' => str_repeat('0', 64)]);
             $moved = (string) Installer::outdated($directory);
             self::assertStringContainsString('publishes something other than what was published here', $moved);
-            self::assertStringContainsString('Run typo3-cms-mcp update.', $moved);
+            self::assertStringContainsString('Run typo3-dev-companion update.', $moved);
 
             self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
             self::assertNull(Installer::outdated($directory), 'the update that put them back');
@@ -235,7 +235,7 @@ final class InstallerRecordTest extends TestCase
      */
     private function rewriteState(string $directory, array $keys): void
     {
-        $path = $directory . '/.typo3-cms-mcp/state.json';
+        $path = $directory . '/.typo3-dev-companion/state.json';
         $state = $this->state($directory);
         foreach ($keys as $key => $value) {
             if ($value === null) {
@@ -252,7 +252,7 @@ final class InstallerRecordTest extends TestCase
     private function state(string $directory): array
     {
         return json_decode(
-            (string) file_get_contents($directory . '/.typo3-cms-mcp/state.json'),
+            (string) file_get_contents($directory . '/.typo3-dev-companion/state.json'),
             true,
             flags: JSON_THROW_ON_ERROR,
         );
@@ -262,7 +262,7 @@ final class InstallerRecordTest extends TestCase
     private function execute(string $directory, array $arguments, string &$stdout, string &$stderr): int
     {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', ...$arguments],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', ...$arguments],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $directory,
@@ -279,7 +279,7 @@ final class InstallerRecordTest extends TestCase
 
     private function directory(): string
     {
-        $directory = sys_get_temp_dir() . '/typo3-cms-mcp-record-' . bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . '/typo3-dev-companion-record-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($directory));
 
         return $directory;

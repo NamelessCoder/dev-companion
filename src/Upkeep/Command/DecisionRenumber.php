@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Decisions;
-use Typo3CmsMcp\Upkeep\Renumber;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\Renumber;
 
 /**
  * Giving a decision another number, and handing over the references it cannot.

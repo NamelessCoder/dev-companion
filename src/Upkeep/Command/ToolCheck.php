@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\ToolSurface;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\ToolSurface;
 
 /**
  * Whether the tool reference still says what the registry declares.

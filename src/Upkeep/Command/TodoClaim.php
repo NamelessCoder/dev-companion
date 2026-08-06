@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Todo;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 /**
  * Taking the front of the queue on, and putting the sessions in front of it.

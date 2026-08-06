@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PhpCsFixer\ConfigInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Tests\Support\Editorconfig;
+use TYPO3\DevCompanion\Tests\Support\Editorconfig;
 
 /**
  * What holds the shape of the source tree itself, rather than what any one

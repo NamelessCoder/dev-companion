@@ -31,8 +31,8 @@ answers the task with a core patch checklist.
   had to boot it. Neither found an order, and both ended at the same two
   findings: nothing owns the task, and the server answers it as patch work.
 - **The re-run reproduces it.** `typo3_task_guide` was called through
-  `bin/typo3-cms-mcp` from this worktree on 2026-08-03, with `162745`'s own
-  query translated into English and the repository described, at
+  `bin/typo3-dev-companion` from this worktree on 2026-08-03, with `162745`'s
+  own query translated into English and the repository described, at
   `changeType: unknown`. The answer opens `Recognized as: Test coverage`.
   `installation-setup` appears only under `Possibly also`, at weak confidence.
   The hints are `How a Distributed Extension Repository Is Laid Out` and

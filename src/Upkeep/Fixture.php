@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * A TYPO3 installation this repository writes, whose console answers.
@@ -262,7 +262,7 @@ final class Fixture
         return [
             'composer.json' => self::json([
                 'name' => 'typo3-mcp/fixture-installation',
-                'description' => 'Written by Typo3CmsMcp\\Upkeep\\Fixture so this server has an installation to '
+                'description' => 'Written by TYPO3\\DevCompanion\\Upkeep\\Fixture so this server has an installation to '
                     . 'answer from. It is nobody\'s site.',
                 'type' => 'project',
                 'require' => [

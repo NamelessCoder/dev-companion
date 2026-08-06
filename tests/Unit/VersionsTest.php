@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\TaskIntents;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Tool\TranslationDomainLookup;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\TaskIntents;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
 
 /**
  * Which TYPO3 an answer is for, and what that leaves out.

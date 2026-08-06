@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Tool\Source;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Tool\Source;
 
 /**
  * The record shapes several tools answer with, and the builders they are

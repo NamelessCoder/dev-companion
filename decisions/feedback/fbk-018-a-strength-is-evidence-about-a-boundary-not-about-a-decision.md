@@ -22,11 +22,12 @@ other side: what is the strength evidence of?
   the v14 Page module renders a backend layout without column identifiers; and
   `2026-07-31-174526` reports that no lookup says whether a
   `contentRenderingTemplates` registration is still consumed.
-- The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
-  that directory: `ext_tables.php` reaches *14.3 Deprecation: ext_tables.php in
-  extensions* (#109438), `UpgradeWizard` reaches the 14.0 deprecation of the
-  moved interfaces (#106947), `addPiFlexFormValue` reaches its 14.0 deprecation
-  (#107047), and all three `.rst` files are in `.checkouts/main`.
+- The strength reproduces. Re-run on 2026-08-02 through
+  `bin/typo3-dev-companion` from that directory: `ext_tables.php` reaches *14.3
+  Deprecation: ext_tables.php in extensions* (#109438), `UpgradeWizard` reaches
+  the 14.0 deprecation of the moved interfaces (#106947), `addPiFlexFormValue`
+  reaches its 14.0 deprecation (#107047), and all three `.rst` files are in
+  `.checkouts/main`.
 - Two of its claims are looser than the answer. `typo3_project_scope` classifies
   six of ten declared commands as `check` or `change` and three as `unknown` —
   the phpunit suites, which the answer's own prose says it will not classify —
@@ -150,8 +151,8 @@ nobody registered, a `PageTitleProvider` that is missing, the runtime PHP
 version. `R-PRJ-005` states the first half as what is answered; neither it nor
 `D-ANS-003` states the second half as the boundary it is.
 
-The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
-that directory: `typo3_project_scope` answers TYPO3 14.3.5, the project
+The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-dev-companion`
+from that directory: `typo3_project_scope` answers TYPO3 14.3.5, the project
 extension, `main at https://site-new.ddev.site/` with set `bk2k/printworks`, and
 six declared commands; `typo3_extension_scope` answers seven content elements of
 which five carry a `templateName` and two do not, three icons, and three XLF
@@ -237,7 +238,7 @@ The quotation is evidence about a file, and the file holds it.
 `sitepackage-initial-content`, and the sentence is in that hint verbatim — the
 import "remaps the root page id to the page that was actually imported, and
 nothing else", with an error handler naming `t3://page?uid=...` as the example
-that ships stale. Re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+that ships stale. Re-run on 2026-08-02 through `bin/typo3-dev-companion` from
 `/home/benji/projects/site-new`: `typo3_architecture_lookup` with the task the
 feedback names returns *Shipping Initial Content with an Extension* whole,
 answered for TYPO3 v14. The core confirms the statement.
@@ -287,8 +288,8 @@ it never names; not a recitation of a file this repository owns. It is the
 praise itself, read against the thing praised.
 
 The **Since then** above says a quotation is checked before the boundary is.
-Four of them are here, re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
-`/home/benji/projects/site-new`, the directory it was written in:
+Four of them are here, re-run on 2026-08-02 through `bin/typo3-dev-companion`
+from `/home/benji/projects/site-new`, the directory it was written in:
 
 - *no manual, no README, which test layers exist and which do not* reproduces.
   `typo3_extension_scope` with `printworks_sitepackage` answers
@@ -384,8 +385,8 @@ covered by functional tests and why, that a ViewHelper is public API and owes a
 changelog entry, and `typo3_project_scope` reporting `15.0.0-dev`.
 
 The quotations are checked before the boundary is. Re-run on 2026-08-03 through
-`bin/typo3-cms-mcp` from that directory with the feedback's own arguments —
-`typo3_task_guide` with the task *Fix f:image ViewHelper failing when src
+`bin/typo3-dev-companion` from that directory with the feedback's own arguments
+— `typo3_task_guide` with the task *Fix f:image ViewHelper failing when src
 contains a cache busting query string produced by f:uri.resource*,
 `changeType=bugfix`, `area=fluid`, `targetVersion=15.0` — and both sentences
 come back verbatim in the `fluid-viewhelpers` block. The third reproduces by
@@ -483,8 +484,8 @@ source, and a keep-request is therefore answered against the file as it is now
 rather than against the praise.
 
 The rest of the report reproduces. Re-run on 2026-08-03 through
-`bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, whose DDEV project is
-paused, so the console was not reachable and neither tool needs it:
+`bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`, whose DDEV
+project is paused, so the console was not reachable and neither tool needs it:
 
 - `typo3_test_run_guide` with the eleven changed paths of `e82b930e6e0`, the
   patch under review, narrows to the php, fluid and docs domains and answers
@@ -537,11 +538,11 @@ session states.
 
 The **Since then** holds: the quotations were checked before the boundary was,
 and all three reproduce in the report's own words — re-run on 2026-08-03 through
-`bin/typo3-cms-mcp` from that directory, `15.0.0-dev`, `PHP ^8.5`, no extensions
-and no sites; `## Breaking Changes` and `## Changelog Files` at 100% for
-`breaking change`; and *the summary line is 68 characters long* on the patch's
-own subject. The credit is not misplaced here, which is the third corpus in
-which that was worth checking and the first where it held.
+`bin/typo3-dev-companion` from that directory, `15.0.0-dev`, `PHP ^8.5`, no
+extensions and no sites; `## Breaking Changes` and `## Changelog Files` at 100%
+for `breaking change`; and *the summary line is 68 characters long* on the
+patch's own subject. The credit is not misplaced here, which is the third corpus
+in which that was worth checking and the first where it held.
 
 The boundary is **what a topic is asked for in**. Everything the strength
 credits was asked for as a topic or as an artifact: a directory, a two-word

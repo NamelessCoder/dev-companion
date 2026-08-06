@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Result\ToolResult;
+use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
  * One tool: what a client is told about it, and what it answers.
@@ -22,7 +22,7 @@ use Typo3CmsMcp\Result\ToolResult;
  * the protocol rather than by the side offering it, and both sides speak of the
  * same one.
  *
- * Typo3CmsMcp\Tool\Registry is the list of them, and the only place a tool is switched
+ * TYPO3\DevCompanion\Tool\Registry is the list of them, and the only place a tool is switched
  * on.
  */
 interface Tool

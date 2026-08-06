@@ -63,7 +63,7 @@ much less than it looks like it does.
   than what a check polices, and a suite that greps itself reports on its own
   shape instead of on this server's.
 - What stands in for a guard is that the seams exist —
-  `Typo3CmsMcp\Process\CommandRunner` for what leaves the process,
+  `TYPO3\DevCompanion\Process\CommandRunner` for what leaves the process,
   `Todo::useDirectory()` for a queue to write into — so the cheaper way to write
   the test is the one this asks for, and what fills the seam is PHPUnit's own
   double. `D-COD-004` is where that reasoning is.

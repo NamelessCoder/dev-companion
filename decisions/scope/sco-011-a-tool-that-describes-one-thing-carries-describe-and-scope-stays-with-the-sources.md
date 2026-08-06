@@ -64,8 +64,8 @@ also the two carrying the verb wrongly, so one rename settles both.
 
 - No client stores a tool name anywhere this server could not reach. The names
   go out at `tools/list` on every connection and the skills are republished by
-  `bin/typo3-cms-mcp update`, so a stale name survives only in a skill file
-  somebody copied by hand.
+  `bin/typo3-dev-companion update`, so a stale name survives only in a skill
+  file somebody copied by hand.
 - That a caller reads the verb at all. Nothing measures it; what the verb buys
   is that two tools with one answer shape cannot be named apart, which
   `ToolNamingTest::toolsSharingAnOutputSchemaShareTheirVerb` does hold.

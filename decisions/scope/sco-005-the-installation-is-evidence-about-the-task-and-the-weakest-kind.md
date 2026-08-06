@@ -37,9 +37,9 @@ now consulted, and the installation this server was started in is one of them.
   core checked out somewhere else, or passes paths relative to the system
   extension directory they are standing in. Both then read as extension work,
   and the way out is to say `typo3/sysext/` once.
-- `TYPO3_MCP_ROOT` points at a site installation for the label and icon lookups
-  while the questions are about the core. The variable now moves the boundary
-  too, which it was not introduced to do.
+- `TYPO3_DEV_COMPANION_ROOT` points at a site installation for the label and
+  icon lookups while the questions are about the core. The variable now moves
+  the boundary too, which it was not introduced to do.
 
 ## Covered by
 
@@ -50,7 +50,8 @@ now consulted, and the installation this server was started in is one of them.
 ## Since then
 
 The second **Wrong if** was read on 2026-08-02 and it was happening. With
-`TYPO3_MCP_ROOT` set to a site installation and the server started inside
+`TYPO3_DEV_COMPANION_ROOT` set to a site installation and the server started
+inside
 `.checkouts/14.3`,
 `Scope::of('', 'Add a content element with a backend preview')` came back
 `project`, and so did `Build/Sources/Sass/theme.scss` — a path shape that exists

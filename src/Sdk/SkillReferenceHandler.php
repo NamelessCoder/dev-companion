@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Sdk;
+namespace TYPO3\DevCompanion\Sdk;
 
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ResourceTemplateHandlerInterface;

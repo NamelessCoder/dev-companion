@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Miss;
-use Typo3CmsMcp\Result\Prose;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Search\TermSearch;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\Miss;
+use TYPO3\DevCompanion\Result\Prose;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Search\TermSearch;
 
 /**
  * The local TYPO3 core contribution rules and script notes, by topic.

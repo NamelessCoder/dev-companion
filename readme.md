@@ -1,4 +1,4 @@
-# TYPO3 CMS MCP
+# TYPO3 Dev Companion
 
 A local MCP server (plain PHP) that helps coding agents implement, review and
 verify TYPO3 work for the three audiences that do it: the core contributor, the
@@ -71,8 +71,8 @@ back yet, and a boundary is the other thing and is stated as one in
 `typo3_server_scope`. See [Improvement feedback](#improvement-feedback).
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
-and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
-subprocess, so there is no server to host, no network exposure, and no auth to
+and speaks **stdio** (`bin/typo3-dev-companion`): the MCP client launches it as
+a subprocess, so there is no server to host, no network exposure, and no auth to
 configure — the process boundary is the trust boundary. Request serving is
 read-only apart from the explicit feedback tool, and setup writes only when
 asked. Nothing on your machine is started as a side effect of a lookup: a
@@ -86,21 +86,21 @@ standalone checkout and as a Composer dependency of another project.
 ```bash
 # standalone: clone, install once, then point a project at it
 composer install
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install
+/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install
 
 # as a dependency: from the consuming project's root
-vendor/bin/typo3-cms-mcp install
+vendor/bin/typo3-dev-companion install
 ```
 
-`install` writes the `typo3-cms-mcp` entry into the project's `.mcp.json`,
+`install` writes the `typo3-dev-companion` entry into the project's `.mcp.json`,
 leaves every other entry alone, and publishes the task skills to
 `.agents/skills` — the two locations a client finds without being configured for
 it. `--agent=<id>` writes them where that client actually reads them instead.
-Either way the setup is recorded in `.typo3-cms-mcp/state.json`, so a later
-`update` refreshes all of them without being told which. Every directory the
-package writes carries its own `.gitignore`, so nothing has to be added to the
-project's — and the skills the project wrote itself stay visible beside them.
-The knowledge base ships inside the package, so nothing else needs to be
+Either way the setup is recorded in `.typo3-dev-companion/state.json`, so a
+later `update` refreshes all of them without being told which. Every directory
+the package writes carries its own `.gitignore`, so nothing has to be added to
+the project's — and the skills the project wrote itself stay visible beside
+them. The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
 The record also carries what was published and not only its names, so a server

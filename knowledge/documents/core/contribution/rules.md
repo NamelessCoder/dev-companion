@@ -8,8 +8,8 @@ hints: []
 
 # TYPO3 Core Contribution Rules
 
-This file is the first local knowledge base for the TYPO3 CMS MCP server. Keep
-it practical, versioned, and conservative. Prefer links to official TYPO3
+This file is the first local knowledge base for the TYPO3 Dev Companion server.
+Keep it practical, versioned, and conservative. Prefer links to official TYPO3
 documentation when rules depend on a specific branch or current policy.
 
 ## Contribution Flow

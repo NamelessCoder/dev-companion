@@ -17,7 +17,7 @@ for. This is the entry it said the card would produce.
 
 ## Evidence
 
-- The feedback re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+- The feedback re-run on 2026-08-02 through `bin/typo3-dev-companion` from
   `/home/benji/projects/site-new`, the directory it was written in.
   `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4"
   and lists "composer test:unit (composer.json) — unknown: phpunit -c

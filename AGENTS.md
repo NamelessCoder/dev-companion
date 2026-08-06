@@ -3,14 +3,14 @@
 ## Layout
 
 ```
-bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
+bin/typo3-dev-companion  # stdio entrypoint (the client launches it as a subprocess)
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
 src/               # grouped by what a class is: only Paths and the bootstrap sit loose
 src/Server/        # starting this server and setting a project up for it
-src/Server/Entrypoint.php  # what `bin/typo3-cms-mcp` runs: the commands, the usage, the transport
+src/Server/Entrypoint.php  # what `bin/typo3-dev-companion` runs: the commands, the usage, the transport
 src/Server/Factory.php     # builds the mcp/sdk server from the tool definitions
 src/Server/Installer.php   # writes guarded generic or agent-specific client setup, publishes the skills, and says when what it published has gone stale
-src/Server/ExcludedTools.php  # the tools a caller asked not to be offered (TYPO3_MCP_EXCLUDE_TOOLS)
+src/Server/ExcludedTools.php  # the tools a caller asked not to be offered (TYPO3_DEV_COMPANION_EXCLUDE_TOOLS)
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
 src/Tool/Registry.php  # every tool this server has, and the only place one is switched on
@@ -290,13 +290,14 @@ so that list stays the only place the vocabulary is defined.
 Leave `core` out of a name: this server is about the TYPO3 core throughout, so
 the segment separates nothing.
 
-A tool is one class in `src/Tool/`, implementing `Typo3CmsMcp\Tool\Tool`: what
-it is called, what it takes, what shape it answers in, and the answer itself
-stand in one file, so a description cannot go stale against the answer it
-describes without the two being edited apart. `Typo3CmsMcp\Tools` is the list of
-them, and the only place a tool is switched on. Nothing else belongs below
-`src/Tool/` — what more than one tool builds its answer from is
-`Typo3CmsMcp\Result\`, and the adapters onto `mcp/sdk` are `Typo3CmsMcp\Sdk\`.
+A tool is one class in `src/Tool/`, implementing `TYPO3\DevCompanion\Tool\Tool`:
+what it is called, what it takes, what shape it answers in, and the answer
+itself stand in one file, so a description cannot go stale against the answer it
+describes without the two being edited apart. `TYPO3\DevCompanion\Tools` is the
+list of them, and the only place a tool is switched on. Nothing else belongs
+below `src/Tool/` — what more than one tool builds its answer from is
+`TYPO3\DevCompanion\Result\`, and the adapters onto `mcp/sdk` are
+`TYPO3\DevCompanion\Sdk\`.
 
 The word is the protocol's: an MCP tool is what the SDK declares as
 `Mcp\Schema\Tool`, beside `Prompt` and `Resource`. Nothing here is a "server
@@ -307,7 +308,7 @@ data half is a contract — clients may validate it against the `outputSchema()`
 the tool declares, so a field a schema requires has to be present on every path
 through the tool, misses included. Add fields rather than renaming them. A
 record shape more than one tool answers with belongs in
-`Typo3CmsMcp\Result\Schema`, so a client reads one model rather than two.
+`TYPO3\DevCompanion\Result\Schema`, so a client reads one model rather than two.
 
 ## Checks
 
@@ -343,8 +344,8 @@ bin/cli knowledge:format <path>   # only that part of it
   written into a temporary directory and put on the `PATH` is the same
   dependency one layer down, and this repository had two of those. What the code
   reaches outside through is a seam a caller replaces —
-  `Typo3CmsMcp\Process\CommandRunner` for a command or an executable lookup,
-  handed in with `Typo3Cli::useRunner()`, `Environments::useRunner()` or
+  `TYPO3\DevCompanion\Process\CommandRunner` for a command or an executable
+  lookup, handed in with `Typo3Cli::useRunner()`, `Environments::useRunner()` or
   `Checkouts::useRunner()`, and `Todo::useDirectory()` for a queue to write
   into. The double is PHPUnit's — `self::createStub()` where it only has to
   answer, `self::createMock()` where the call itself is the assertion — rather
@@ -368,8 +369,8 @@ bin/cli knowledge:format <path>   # only that part of it
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
   a hit and on a miss, and to the naming schema; `tests/Smoke/` drives both
-  entrypoints as subprocesses — `bin/typo3-cms-mcp` over JSON-RPC, `bin/cli` by
-  its reading commands.
+  entrypoints as subprocesses — `bin/typo3-dev-companion` over JSON-RPC,
+  `bin/cli` by its reading commands.
 - `src/Upkeep/Command/` and the console are held to each other by
   `UpkeepCommandTest`: every class in the directory is registered, the
   application carries no command that is not one of them, each is named
@@ -404,9 +405,9 @@ Agents using this server record improvement feedback through
 **The channel is a development tool for building this server, not part of using
 it.** `Channel::isAvailable()` offers the two tools only where this package is
 the Composer root package, so a project that installed the server as a
-dependency never sees them. That is also why `TYPO3_MCP_EXCLUDE_TOOLS` does not
-reach them — `R-SCO-009` names them beside `typo3_server_scope` as what a caller
-cannot take away.
+dependency never sees them. That is also why `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`
+does not reach them — `R-SCO-009` names them beside `typo3_server_scope` as what
+a caller cannot take away.
 
 `scenarios/` holds the sessions those came out of, so they can be run again:
 open forward reviews in `scenarios/forward/`, targeted contract cases in
@@ -572,8 +573,9 @@ machine-readable uses.
   up from a directory it was handed, keeps it private and null until then, and
   `Server\Entrypoint` is the only thing that hands one in — a request-serving
   endpoint has no such relationship to its callers, and its document root may
-  itself sit inside an installation. Naming the root with `TYPO3_MCP_ROOT` is a
-  decision rather than a derivation and holds everywhere.
+  itself sit inside an installation. Naming the root with
+  `TYPO3_DEV_COMPANION_ROOT` is a decision rather than a derivation and holds
+  everywhere.
 - Never load an installation into this process. `Typo3Cli` shells out, so its
   autoloader, its dependencies, and its PHP version stay on the other side of a
   process boundary and a failure is an exit code rather than a dead session.

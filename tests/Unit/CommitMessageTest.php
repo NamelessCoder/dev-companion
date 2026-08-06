@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Knowledge\CommitMessage;
-use Typo3CmsMcp\Knowledge\ReleaseLines;
+use TYPO3\DevCompanion\Knowledge\CommitMessage;
+use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 
 final class CommitMessageTest extends TestCase
 {

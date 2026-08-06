@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Support;
+namespace TYPO3\DevCompanion\Tests\Support;
 
 use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\Todo;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 /**
  * A queue of the test's own, for the cases that need a todo in it to hold.

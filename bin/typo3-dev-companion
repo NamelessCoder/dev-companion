@@ -14,6 +14,6 @@ declare(strict_types=1);
 
 require dirname(__DIR__) . '/src/bootstrap.php';
 
-use Typo3CmsMcp\Server\Entrypoint;
+use TYPO3\DevCompanion\Server\Entrypoint;
 
 exit(Entrypoint::run(array_slice($argv, 1), realpath($argv[0]) ?: $argv[0]));

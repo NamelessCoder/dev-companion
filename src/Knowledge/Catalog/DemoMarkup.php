@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge\Catalog;
+namespace TYPO3\DevCompanion\Knowledge\Catalog;
 
 /**
  * The markup a styleguide demo carries for one component.

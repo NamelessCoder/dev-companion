@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Http;
+namespace TYPO3\DevCompanion\Http;
 
 /**
  * What a host outside this machine answered a moment ago.

@@ -79,7 +79,7 @@ one this entry was waiting on. Calls per session fell from 66.6 to 56.1, and the
 cached tokens fell with them rather than staying put.
 
 The ten are the directories under
-`~/.claude/projects/-home-benji-projects-typo3-cms-mcp--worktrees-*` whose
+`~/.claude/projects/-home-benji-projects-typo3-dev-companion--worktrees-*` whose
 transcript was last written after 16:00; the other 82 are the baseline, and no
 directory is in both sets. One of the ten is the aborted first attempt at this
 measurement, `6ee04fe8-8d02-4101-b875-65683cefdac3`, which read transcripts and

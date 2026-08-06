@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Process\CommandRunner;
-use Typo3CmsMcp\Tests\Support\QueuedTodo;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\Command\TodoSync;
-use Typo3CmsMcp\Upkeep\OpenFeedback;
-use Typo3CmsMcp\Upkeep\Todo;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
+use TYPO3\DevCompanion\Upkeep\OpenFeedback;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 /**
  * @phpstan-import-type Section from Todo

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title description">
-  <title id="title">TYPO3 CMS MCP feedback loop</title>
+  <title id="title">TYPO3 Dev Companion feedback loop</title>
   <desc id="description">A real task uses the server, exposes one knowledge gap, records a feedback, turns it into a tested improvement, and verifies that improvement in the next real task.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#98a2b3"/></marker>

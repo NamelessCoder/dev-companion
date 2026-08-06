@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\ExcludedTools;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\ExcludedTools;
 
 /**
  * The server's own description of what it knows and which tool answers what.

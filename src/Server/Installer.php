@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Server;
+namespace TYPO3\DevCompanion\Server;
 
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Paths;
 
 final class Installer
 {
-    private const SERVER = 'typo3-cms-mcp';
+    private const SERVER = 'typo3-dev-companion';
 
     private const BASE = 'references/base.md';
     /** What a skill declares while it is not to be published. */
     private const DRAFT = 'draft';
-    private const STATE_DIRECTORY = '.typo3-cms-mcp';
+    private const STATE_DIRECTORY = '.typo3-dev-companion';
     private const STATE = self::STATE_DIRECTORY . '/state.json';
     /**
      * The same fact as `outdated()` states, in the length the initialize
@@ -27,7 +27,7 @@ final class Installer
      * it. So this says the one thing that has to be acted on and leaves what
      * differs to the line on stderr, which no budget bounds.
      */
-    public const NOTICE = 'The task skills installed in this project are stale; run typo3-cms-mcp update. ';
+    public const NOTICE = 'The task skills installed in this project are stale; run typo3-dev-companion update. ';
     /**
      * What a directory this package owns says to git about itself: everything
      * below it, this file included, so the directory is invisible and no line
@@ -134,7 +134,7 @@ final class Installer
             . 'claude mcp reset-project-choices if it was once refused.',
         'amp' => 'Amp requires a workspace server in .amp/settings.json to be approved before it '
             . 'runs: approve at the prompt when it is first detected, or run '
-            . 'amp mcp approve typo3-cms-mcp. amp mcp doctor names one still awaiting it.',
+            . 'amp mcp approve typo3-dev-companion. amp mcp doctor names one still awaiting it.',
         'copilot' => 'VS Code asks you to confirm that you trust a workspace server before it '
             . 'starts it, so start it from the MCP view and confirm there. chat.mcp.autoStart, '
             . 'still experimental, restarts it when this file changes.',
@@ -185,7 +185,7 @@ final class Installer
      * of the front matter — and the file in somebody else's project is the same
      * file that decided it would go there.
      *
-     * Sorted, because it is written into `.typo3-cms-mcp/state.json` and
+     * Sorted, because it is written into `.typo3-dev-companion/state.json` and
      * compared against what the last run left; a listing whose order moved
      * would read as a change.
      *
@@ -299,7 +299,7 @@ final class Installer
             : ' --drafts is what keeps the unreviewed drafts this project has: ' . implode(', ', $state['drafts']) . '.';
 
         return 'the task skills in this project are not the ones this server publishes now — '
-            . implode('; ', $reasons) . '. Run typo3-cms-mcp update' . ($drafts === '' ? '' : ' --drafts') . '.'
+            . implode('; ', $reasons) . '. Run typo3-dev-companion update' . ($drafts === '' ? '' : ' --drafts') . '.'
             . $drafts;
     }
 
@@ -400,7 +400,7 @@ final class Installer
     /**
      * Bring the clients installed here up to date.
      *
-     * Without an agent that is every client `.typo3-cms-mcp/state.json`
+     * Without an agent that is every client `.typo3-dev-companion/state.json`
      * records, which is the case that matters: a project is usually worked on
      * by more than one client, and naming them one at a time meant remembering
      * which of them the project had — a list nobody keeps, so the second client
@@ -586,7 +586,7 @@ final class Installer
         $existing = $target[self::SERVER] ?? null;
         if ($existing !== null && !$this->namesThisServer($this->commandWords($existing))) {
             throw new \RuntimeException(
-                $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
+                $relativePath . ' already has a different typo3-dev-companion server; refusing to replace it',
             );
         }
         $target[self::SERVER] = $this->jsonServer($shape) + $this->carriedOver($existing);
@@ -600,7 +600,7 @@ final class Installer
      *
      * The command and the shape around it are a property of the project and are
      * rewritten on every run, which is what `update` is for. The rest is the
-     * caller's, and `env` is why this exists: a `TYPO3_MCP_EXCLUDE_TOOLS`
+     * caller's, and `env` is why this exists: a `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`
      * written into the entry by hand was replaced away by the next install, and
      * the tools it had taken out came back with nothing said on either side —
      * `D-AUD-005`.
@@ -736,7 +736,7 @@ final class Installer
      * The two lines this package owns are `command` and `args`, which are a
      * property of the project and are rewritten on every run. Everything else
      * in the section is the caller's — `env` above all, since it is the only
-     * place a TOML client can carry `TYPO3_MCP_EXCLUDE_TOOLS`, and it was being
+     * place a TOML client can carry `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`, and it was being
      * deleted by the `install` that was supposed to keep the entry current
      * (measured 2026-08-04 in a fixture project, `D-AUD-006`).
      *
@@ -763,7 +763,7 @@ final class Installer
         // nothing about whose server this is.
         if ($words !== [] && !$this->namesThisServer($words)) {
             throw new \RuntimeException(
-                $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
+                $relativePath . ' already has a different typo3-dev-companion server; refusing to replace it',
             );
         }
 
@@ -850,7 +850,7 @@ final class Installer
 
     private function message(bool $written, string $path): string
     {
-        return ($written ? 'Configured' : 'Reused') . ' typo3-cms-mcp in ' . $path . '.';
+        return ($written ? 'Configured' : 'Reused') . ' typo3-dev-companion in ' . $path . '.';
     }
 
     private function expectedTomlSection(string $key): string
@@ -869,7 +869,7 @@ final class Installer
     private function tomlSection(string $configuration, string $key): ?string
     {
         if (preg_match(
-            '/^\[' . preg_quote($key, '/') . '\.typo3-cms-mcp\]\R(?:(?!^\[).*(?:\R|$))*/m',
+            '/^\[' . preg_quote($key, '/') . '\.typo3-dev-companion\]\R(?:(?!^\[).*(?:\R|$))*/m',
             $configuration,
             $matches,
         ) !== 1) {

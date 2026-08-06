@@ -44,10 +44,10 @@ Three details are load-bearing, and each of them cost a measurement:
 
 - **The interpreter comes from the resolved console.** Directly it is the PHP
   that satisfied the installation's platform requirement; under DDEV it is
-  `ddev exec -- php`; behind a stated `TYPO3_MCP_CONSOLE` the transport is kept
-  and only the binary is exchanged — `ddev exec .build/bin/typo3` becomes
-  `ddev exec php`. Where no interpreter can be derived, that is the reason the
-  answer carries.
+  `ddev exec -- php`; behind a stated `TYPO3_DEV_COMPANION_CONSOLE` the
+  transport is kept and only the binary is exchanged —
+  `ddev exec .build/bin/typo3` becomes `ddev exec php`. Where no interpreter can
+  be derived, that is the reason the answer carries.
 - **The payload is base64-encoded.** `ddev exec` joins its arguments and hands
   the line to `bash`, so a payload passes through a shell nobody controls from
   here. Encoded, it carries no character that shell could act on. Raw PHP with a
@@ -107,8 +107,8 @@ checked by hand against a set-up installation:
 ```bash
 php -r '
     require "vendor/autoload.php";
-    Typo3CmsMcp\Installation\Instance::discoverFrom("/path/to/a/site");
-    $answer = Typo3CmsMcp\Installation\Typo3Runtime::ask();
+    TYPO3\DevCompanion\Installation\Instance::discoverFrom("/path/to/a/site");
+    $answer = TYPO3\DevCompanion\Installation\Typo3Runtime::ask();
     printf("%s %s\n", $answer["state"], $answer["reason"]);
     print_r(array_map("count", $answer["topics"]));
 '

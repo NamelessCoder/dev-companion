@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 /**
  * A core checkout this repository writes, holding nothing but what it is.
@@ -56,7 +56,7 @@ final class CoreFixture
 
         self::put($root . '/composer.json', self::json([
             'name' => 'typo3/cms',
-            'description' => 'Written by Typo3CmsMcp\\Upkeep\\CoreFixture so an answer that reads no installation '
+            'description' => 'Written by TYPO3\\DevCompanion\\Upkeep\\CoreFixture so an answer that reads no installation '
                 . 'can be derived. It is not a TYPO3 checkout and holds none of one.',
             'type' => 'typo3-cms-core',
         ]));

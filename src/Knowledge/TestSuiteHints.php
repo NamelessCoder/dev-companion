@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * Loads and ranks runTests.sh suite hints from test-suite-hints.json, plus the

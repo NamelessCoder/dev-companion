@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Feedback;
+namespace TYPO3\DevCompanion\Feedback;
 
 /**
  * Takes a value that looks like a credential out of text a session wrote, and

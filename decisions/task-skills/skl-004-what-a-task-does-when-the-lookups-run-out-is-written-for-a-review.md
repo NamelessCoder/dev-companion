@@ -226,11 +226,11 @@ whose reading ends by handing this sentence here.
 
 The feedback's own remaining doubt is settled with it. It asks whether
 `typo3_documentation_lookup` would in fact have answered its first question, and
-run through `bin/typo3-cms-mcp` on 2026-08-03 it does not: at `14.3` the queries
-*backend entry point URL path* and *backend routing request context* return the
-routing pages of TYPO3 Explained, and none of them states the backend entry
-path, which sits in `backend/Classes/Routing/UriBuilder.php:199`. That is this
-boundary from the other side rather than a second gap, so the feedback is
+run through `bin/typo3-dev-companion` on 2026-08-03 it does not: at `14.3` the
+queries *backend entry point URL path* and *backend routing request context*
+return the routing pages of TYPO3 Explained, and none of them states the backend
+entry path, which sits in `backend/Classes/Routing/UriBuilder.php:199`. That is
+this boundary from the other side rather than a second gap, so the feedback is
 archived rather than trimmed. The same two queries at `main` answer
 `version-not-covered` with the reason *TYPO3 main is outside the covered
 versions: 12.4, 13.4, 14.3, main*, which names `main` on both sides of itself.

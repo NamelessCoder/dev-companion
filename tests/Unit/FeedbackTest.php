@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Feedback\Redaction;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tests\Support\RecordedFeedback;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Feedback\Redaction;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\RecordedFeedback;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * Feedback is the one part of the server that writes, so these tests write too.

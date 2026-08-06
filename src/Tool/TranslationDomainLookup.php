@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Catalog\TranslationDomain;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
 
 /**
  * The translation domain an XLF file resolves to, computed from its path.

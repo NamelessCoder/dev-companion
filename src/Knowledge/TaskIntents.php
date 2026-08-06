@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge;
+namespace TYPO3\DevCompanion\Knowledge;
 
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Search\Text;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Search\Text;
 
 /**
  * Recognises what kind of core work a task description asks for.

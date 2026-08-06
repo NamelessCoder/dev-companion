@@ -26,7 +26,7 @@ value came from, is the one reader who still knows what stood there.
 
 ## From
 
-`feedback/archive/2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md`
+`feedback/archive/2026-07-31-185900-after-the-audit-i-invoked-typo3-dev-companion.md`
 (2026-07-31), which pasted the live encryption key of the audited site into its
 observation while reporting that `typo3_configuration_lookup` had worked.
 

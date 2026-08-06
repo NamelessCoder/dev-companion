@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Manual\Documentation;
-use Typo3CmsMcp\Tool\DocumentationLookup;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Manual\Documentation;
+use TYPO3\DevCompanion\Tool\DocumentationLookup;
+use TYPO3\DevCompanion\Tool\Registry;
 
 final class DocumentationTest extends TestCase
 {

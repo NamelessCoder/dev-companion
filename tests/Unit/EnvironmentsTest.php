@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Environments;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Environments;
 
 /**
  * What `bin/cli environment:create` would do, held without doing it.

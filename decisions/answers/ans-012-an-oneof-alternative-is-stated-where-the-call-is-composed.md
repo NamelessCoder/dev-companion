@@ -19,7 +19,7 @@ different property and neither stating the rule.
 ## Evidence
 
 - `feedback/2026-07-31-185900`, re-run on 2026-08-02 against the server as it is
-  now — `bin/typo3-cms-mcp` over stdio from this worktree.
+  now — `bin/typo3-dev-companion` over stdio from this worktree.
   `{"queries": ["encryption key environment variable TYPO3_ENCRYPTION_KEY"], "targetVersion": "14.3"}`,
   no `page`, is answered: six results from docs.typo3.org, the first the coreapi
   page on environment variables in site handling at 14.3. The chicken-and-egg
@@ -33,8 +33,8 @@ different property and neither stating the rule.
   on the last half sends `page: ""`, which is the second thing the feedback
   reports and is rejected correctly: `Minimum string length is 1, found 0`.
 - The session called this checkout. `/home/benji/projects/site-new/.mcp.json`
-  runs `/home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp`, and `9ced27c` —
-  2026-07-30, the day before the report — is where `required` became
+  runs `/home/benji/projects/typo3-dev-companion/bin/typo3-dev-companion`, and
+  `9ced27c` — 2026-07-30, the day before the report — is where `required` became
   `['targetVersion']` with the `oneOf` beside it. So the schema the session read
   and the server it called are the ones above, and its reading of the schema was
   right.

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Tests\Support\Directory;
-use Typo3CmsMcp\Upkeep\Links;
-use Typo3CmsMcp\Upkeep\Renumber;
+use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Upkeep\Links;
+use TYPO3\DevCompanion\Upkeep\Renumber;
 
 /**
  * A decision really moved to another number, in a corpus of this case's own.

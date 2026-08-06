@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Project;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Upkeep\Fixture;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Project;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Fixture;
 
 /**
  * What the repository around the installation consists of.

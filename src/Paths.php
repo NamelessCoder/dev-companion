@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace TYPO3\DevCompanion;
 
 /**
  * Resolves paths to the bundled knowledge base. The project root is the parent
@@ -91,7 +91,7 @@ final class Paths
      * binary, and without this the file lands in the corpus this repository
      * keeps.
      */
-    public const FEEDBACK_VARIABLE = 'TYPO3_MCP_FEEDBACK_DIR';
+    public const FEEDBACK_VARIABLE = 'TYPO3_DEV_COMPANION_FEEDBACK_DIR';
 
     /**
      * Improvement feedback recorded by agents. Only written to in a standalone

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\Domains;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Upkeep\Scenarios;
+use TYPO3\DevCompanion\Knowledge\Domains;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 /**
  * What the hint corpus cannot be found by. It never writes.

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tests\Support\Directory;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Directory;
 
 final class InstallerAgentSupportTest extends TestCase
 {
@@ -34,7 +34,7 @@ final class InstallerAgentSupportTest extends TestCase
     public function itInstallsEverySupportedAgent(): void
     {
         foreach (self::AGENTS as $agent => $paths) {
-            $directory = sys_get_temp_dir() . '/typo3-cms-mcp-agent-' . bin2hex(random_bytes(8));
+            $directory = sys_get_temp_dir() . '/typo3-dev-companion-agent-' . bin2hex(random_bytes(8));
             self::assertTrue(mkdir($directory));
 
             try {
@@ -58,7 +58,7 @@ final class InstallerAgentSupportTest extends TestCase
                 // project owns, so an install into a project that has no
                 // .gitignore leaves it without one.
                 self::assertFileDoesNotExist($directory . '/.gitignore');
-                self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
+                self::assertSame("*\n", file_get_contents($directory . '/.typo3-dev-companion/.gitignore'));
                 self::assertSame(
                     "*\n",
                     file_get_contents(
@@ -95,7 +95,7 @@ final class InstallerAgentSupportTest extends TestCase
             if (!isset($paths['mcp'])) {
                 continue;
             }
-            $directory = sys_get_temp_dir() . '/typo3-cms-mcp-remaining-' . bin2hex(random_bytes(8));
+            $directory = sys_get_temp_dir() . '/typo3-dev-companion-remaining-' . bin2hex(random_bytes(8));
             self::assertTrue(mkdir($directory));
 
             try {
@@ -127,8 +127,8 @@ final class InstallerAgentSupportTest extends TestCase
     private function entryLine(array $lines, string $path): int
     {
         foreach ($lines as $number => $line) {
-            if ($line === 'Configured typo3-cms-mcp in ' . $path . '.'
-                || $line === 'Reused typo3-cms-mcp in ' . $path . '.') {
+            if ($line === 'Configured typo3-dev-companion in ' . $path . '.'
+                || $line === 'Reused typo3-dev-companion in ' . $path . '.') {
                 return $number;
             }
         }
@@ -140,7 +140,7 @@ final class InstallerAgentSupportTest extends TestCase
     private function execute(string $directory, array $arguments, string &$stdout, string &$stderr): int
     {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', ...$arguments],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', ...$arguments],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $directory,

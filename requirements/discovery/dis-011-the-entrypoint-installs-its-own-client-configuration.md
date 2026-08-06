@@ -9,8 +9,9 @@ status: held
 `.mcp.json` on an explicit `install` command.**
 
 It preserves every unrelated entry, is idempotent for its own command, and
-refuses to replace a `typo3-cms-mcp` entry that points somewhere else. Serving
-requests remains read-only; no ordinary lookup writes client configuration.
+refuses to replace a `typo3-dev-companion` entry that points somewhere else.
+Serving requests remains read-only; no ordinary lookup writes client
+configuration.
 
 ## From
 

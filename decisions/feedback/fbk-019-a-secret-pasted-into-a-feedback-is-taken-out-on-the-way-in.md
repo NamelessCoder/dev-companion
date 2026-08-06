@@ -16,17 +16,18 @@ live encryption key of the site it had just audited into this repository.
 ## Evidence
 
 - What the feedback says.
-  `feedback/2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md`
+  `feedback/2026-07-31-185900-after-the-audit-i-invoked-typo3-dev-companion.md`
   reports a success: `typo3_configuration_lookup` with path `SYS/encryptionKey`
   returned the effective runtime value, which turned an inferred audit finding
   into an established one. Its observation quotes the 96-character key verbatim
   — once, and this entry said twice until 2026-08-02, which **Since then** reads
   back.
 - The behaviour it praises still stands. Re-run on 2026-08-02 against the server
-  as it is now, over stdio with `TYPO3_MCP_ROOT=/home/benji/projects/site-new`:
-  `SYS/encryptionKey` came back `found: true`, `answeredBy: installation`, a
-  96-character string; `SYS/trustedHostsPattern` came back `.*.*`. Nothing about
-  the observation half is out of date.
+  as it is now, over stdio with
+  `TYPO3_DEV_COMPANION_ROOT=/home/benji/projects/site-new`: `SYS/encryptionKey`
+  came back `found: true`, `answeredBy: installation`, a 96-character string;
+  `SYS/trustedHostsPattern` came back `.*.*`. Nothing about the observation half
+  is out of date.
 - The suggestion half is already delivered. It asks for the tool to be
   advertised more prominently, and for the conformance skill in particular. That
   skill already names it — `skills/typo3-extension-conformance/SKILL.md` under

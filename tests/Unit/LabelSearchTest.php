@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Search\LabelSearch;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Search\LabelSearch;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * What a label query means, and what an empty answer to one means.
@@ -378,7 +378,7 @@ final class LabelSearchTest extends TestCase
 
     private function console(string $script): void
     {
-        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-labels-' . bin2hex(random_bytes(6)));
+        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-dev-companion-labels-' . bin2hex(random_bytes(6)));
         $this->installationRoot = $root;
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', json_encode(

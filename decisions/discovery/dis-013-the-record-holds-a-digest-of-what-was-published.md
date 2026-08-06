@@ -17,8 +17,8 @@ under the current name, and every listing on both sides agreed.
 ## Evidence
 
 - The checkout this was raised in, read on 2026-08-06:
-  `.typo3-cms-mcp/state.json` recording the client `claude` and twelve skills,
-  and no `.claude/` directory at all. The published directories ignore
+  `.typo3-dev-companion/state.json` recording the client `claude` and twelve
+  skills, and no `.claude/` directory at all. The published directories ignore
   themselves (`R-DIS-024`), so `git clean -xdf` removes them and the record
   survives saying they are there.
 - The instructions handed to a client at initialize were 1925 characters of the

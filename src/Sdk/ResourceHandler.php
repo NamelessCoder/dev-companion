@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Sdk;
+namespace TYPO3\DevCompanion\Sdk;
 
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ResourceHandlerInterface;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Documents;
 
 /**
  * Serves the typo3:// resources from what this package ships.

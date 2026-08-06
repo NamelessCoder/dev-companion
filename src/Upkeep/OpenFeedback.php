@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
-use Typo3CmsMcp\Feedback\Channel;
+use TYPO3\DevCompanion\Feedback\Channel;
 
 /**
  * The feedback that arrived from outside this repository and are still open,

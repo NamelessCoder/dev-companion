@@ -81,7 +81,7 @@ installation:
   # core-checkout or composer-project.
   kind: string or null  # optional
   # How it was determined: discovery (walked up from the start directory) or
-  # environment (named by TYPO3_MCP_ROOT).
+  # environment (named by TYPO3_DEV_COMPANION_ROOT).
   via: string or null  # optional
   # Where the search started, or the configured value.
   startedFrom: string or null  # optional
@@ -282,8 +282,8 @@ Which tool to call when:
 - About to claim that an extension is (or is not) part of the core, or to require one → typo3_system_extension_lookup
 - About to write or review an ext_tables.sql, and needing to know which columns TYPO3 creates by itself → typo3_schema_lookup with the table
 
-Found the TYPO3 installation at <installation> (core-checkout, found by walking up, from <installation>), which holds 36 packages. If that is not the installation you are working on, this server was started in the wrong directory — or set TYPO3_MCP_ROOT to the one you mean.
-Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Where the command that would work is known, TYPO3_MCP_CONSOLE states it, for example "ddev exec .build/bin/typo3".
+Found the TYPO3 installation at <installation> (core-checkout, found by walking up, from <installation>), which holds 36 packages. If that is not the installation you are working on, this server was started in the wrong directory — or set TYPO3_DEV_COMPANION_ROOT to the one you mean.
+Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
 
 Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, executed, or looked up online.
 The one exception is typo3_feedback_record, this server's only write: it creates a new markdown feedback under feedback/ and touches nothing else. Missing something that belongs here? Leave feedback about it.
@@ -691,7 +691,7 @@ Data:
     ],
     "excludedTools": {
         "names": [],
-        "variable": "TYPO3_MCP_EXCLUDE_TOOLS"
+        "variable": "TYPO3_DEV_COMPANION_EXCLUDE_TOOLS"
     },
     "answersFrom": [
         {
@@ -778,8 +778,8 @@ Data:
             "caveat": null
         },
         "settings": {
-            "root": "TYPO3_MCP_ROOT",
-            "console": "TYPO3_MCP_CONSOLE"
+            "root": "TYPO3_DEV_COMPANION_ROOT",
+            "console": "TYPO3_DEV_COMPANION_CONSOLE"
         }
     }
 }

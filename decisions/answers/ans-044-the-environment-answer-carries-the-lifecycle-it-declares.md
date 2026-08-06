@@ -18,10 +18,11 @@ it was read from. The rest of that file is how the project boots.
 
 ## Evidence
 
-- The feedback re-run on 2026-08-03 through this branch's `bin/typo3-cms-mcp`,
-  from `/home/benji/projects/site-demo-typo3-org`, the directory it was written
-  in. `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.3
-  declared and 8.3 in DDEV", its `environment` is
+- The feedback re-run on 2026-08-03 through this branch's
+  `bin/typo3-dev-companion`, from `/home/benji/projects/site-demo-typo3-org`,
+  the directory it was written in. `typo3_project_scope` opens with
+  "composer-project, TYPO3 14.3.5, PHP ^8.3 declared and 8.3 in DDEV", its
+  `environment` is
   `{"via":"ddev","php":"8.3","source":".ddev/config.yaml","entered":false}`, and
   its `commands` hold one entry — `composer frontend-builds`. The four fields
   and the one command are what the feedback quotes.

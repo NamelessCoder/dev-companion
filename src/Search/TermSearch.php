@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Search;
+namespace TYPO3\DevCompanion\Search;
 
 /**
  * Scores free-text queries against a corpus of field-addressed documents.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Installation;
+namespace TYPO3\DevCompanion\Installation;
 
 /**
  * Reads the keys of the array a TYPO3 declaration file returns, without running

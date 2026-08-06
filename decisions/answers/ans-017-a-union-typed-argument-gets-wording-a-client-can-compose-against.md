@@ -15,8 +15,9 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 
 ## Evidence
 
-- Re-run on 2026-08-02 against the server as it is now — `bin/typo3-cms-mcp`
-  over stdio from this worktree. `tool: "typo3_extension_scope"` is written as
+- Re-run on 2026-08-02 against the server as it is now —
+  `bin/typo3-dev-companion` over stdio from this worktree.
+  `tool: "typo3_extension_scope"` is written as
   `tool: typo3_extension_scope`;
   `tool: ["typo3_extension_scope", "typo3_feedback_record"]` is written as
   `tool: typo3_extension_scope, typo3_feedback_record`. Both forms are accepted

@@ -19,7 +19,7 @@ produced a diff in a file this package does not own.
 A directory can say the same thing about itself. `*` covers everything below it
 and that file with it, so git reports nothing there, while a skill the project
 wrote itself, in the same skills directory, stays visible. The record moves to
-`.typo3-cms-mcp/state.json` for the same reason: a file at the root cannot
+`.typo3-dev-companion/state.json` for the same reason: a file at the root cannot
 ignore itself, and it was the one artefact that left no other option.
 
 Merged agent and MCP configuration — `.mcp.json`, `.codex/config.toml` and the

@@ -31,15 +31,15 @@ than part of using it.
   something" and the `VERBS` list in `ToolNamingTest` repeats it. Neither says
   where, and where is the whole of the distinction.
 - `Channel::isAvailable()` is
-  `InstalledVersions::getRootPackage()['name'] === 'typo3/cms-mcp'`. Installed
-  as a dependency the channel is not offered at all, so the exemption reaches
-  nobody who is using this server — only somebody working on it, in a checkout
-  they own.
+  `InstalledVersions::getRootPackage()['name'] === 'typo3/dev-companion'`.
+  Installed as a dependency the channel is not offered at all, so the exemption
+  reaches nobody who is using this server — only somebody working on it, in a
+  checkout they own.
 - Measured on 2026-08-04 in this checkout with
-  `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered, the named
-  one among them, `typo3_server_scope` reporting it under `excludedTools.names`
-  and the initialize instructions opening "typo3_feedback_record is left out of
-  your tool list".
+  `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered,
+  the named one among them, `typo3_server_scope` reporting it under
+  `excludedTools.names` and the initialize instructions opening
+  "typo3_feedback_record is left out of your tool list".
 
 ## Decided
 

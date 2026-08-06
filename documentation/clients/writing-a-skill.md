@@ -179,11 +179,11 @@ the directory minus what still carries it. There is no list to add the name to:
 one existed, and a list beside the file is a second place the same fact lives.
 
 What that one edit turns on: the skill is copied into every client's own skills
-directory by `bin/typo3-cms-mcp install`, it is served as a `typo3://skill`
-resource, and `knowledge/task-intents.json` may name it. Nothing this server
-answers with may name a skill before that — a route into one nobody has
-installed is worse than none, because the caller cannot tell the two apart — and
-`SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
+directory by `bin/typo3-dev-companion install`, it is served as a
+`typo3://skill` resource, and `knowledge/task-intents.json` may name it. Nothing
+this server answers with may name a skill before that — a route into one nobody
+has installed is worse than none, because the caller cannot tell the two apart —
+and `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
 what is published. The intent that routes to it is written in the same commit
 and never before it
 ([`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md)).

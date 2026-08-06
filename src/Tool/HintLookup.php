@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\MatchedHints;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\VersionScope;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\MatchedHints;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\VersionScope;
 
 /**
  * Hints for TYPO3 core paths or task topics, grouped by section.

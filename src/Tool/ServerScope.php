@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Server\ExcludedTools;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Server\ExcludedTools;
 
 /**
  * What this server covers, what it deliberately does not, and which tool to
@@ -84,7 +84,7 @@ final class ServerScope extends ReadOnlyTool
                 'found' => ['type' => 'boolean', 'description' => 'Whether there is an installation to read at all.'],
                 'root' => Schema::nullableString('Absolute path of the installation.'),
                 'kind' => Schema::nullableString('core-checkout or composer-project.'),
-                'via' => Schema::nullableString('How it was determined: discovery (walked up from the start directory) or environment (named by TYPO3_MCP_ROOT).'),
+                'via' => Schema::nullableString('How it was determined: discovery (walked up from the start directory) or environment (named by TYPO3_DEV_COMPANION_ROOT).'),
                 'startedFrom' => Schema::nullableString('Where the search started, or the configured value.'),
                 'searched' => Schema::listOf(Schema::string(), 'The directories the search walked. A failure here means a layout that cannot be read or a server started in the wrong place — this says which.'),
                 'packageCount' => Schema::integer('TYPO3 packages found in it.'),

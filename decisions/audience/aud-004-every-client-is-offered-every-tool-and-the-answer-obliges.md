@@ -9,8 +9,8 @@ status: open
 **Every client is offered every tool; what an answer is worth outside the core
 is said in the answer, and only the caller shortens the tool list.**
 
-The list is shortened by naming tools in `TYPO3_MCP_EXCLUDE_TOOLS`, and by
-nothing else.
+The list is shortened by naming tools in `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`,
+and by nothing else.
 
 [`D-AUD-002`](aud-002-two-profiles-because-a-third-would-have-been-the-same-set.md)
 withheld three tools from a Composer project, on the grounds that a repository
@@ -39,8 +39,8 @@ the right one at all.
 ## Decided
 
 - `Server\Profile` is deleted rather than reduced to an explicit preset.
-  `TYPO3_MCP_PROFILE=project` was a name for one exclude list, and keeping it
-  would have kept the concept that made the collision possible.
+  `TYPO3_DEV_COMPANION_PROFILE=project` was a name for one exclude list, and
+  keeping it would have kept the concept that made the collision possible.
 - `typo3_server_scope` cannot be excluded. It is what tells a client why the
   list is shorter than the documentation says, and a client that has lost it
   cannot tell a configured server from a broken one.

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Installer;
-use Typo3CmsMcp\Tests\Support\Directory;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Directory;
 
 final class InstallerTest extends TestCase
 {
     #[Test]
     public function installWritesAnIdempotentConfigurationAndPreservesOtherServers(): void
     {
-        $directory = sys_get_temp_dir() . '/typo3-cms-mcp-install-' . bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . '/typo3-dev-companion-install-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($directory));
         file_put_contents($directory . '/.mcp.json', json_encode([
             'mcpServers' => ['other' => ['command' => 'other-server']],
@@ -35,8 +35,8 @@ final class InstallerTest extends TestCase
             self::assertSame([
                 'type' => 'stdio',
                 'command' => 'php',
-                'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
-            ], $configuration['mcpServers']['typo3-cms-mcp']);
+                'args' => [Paths::root() . '/bin/typo3-dev-companion'],
+            ], $configuration['mcpServers']['typo3-dev-companion']);
         } finally {
             Directory::remove($directory);
         }
@@ -55,11 +55,11 @@ final class InstallerTest extends TestCase
         $directory = $this->directory();
         file_put_contents($directory . '/.mcp.json', json_encode([
             'mcpServers' => [
-                'typo3-cms-mcp' => [
+                'typo3-dev-companion' => [
                     'type' => 'stdio',
                     'command' => 'php',
-                    'args' => ['/gone/bin/typo3-cms-mcp'],
-                    'env' => ['TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_icon_lookup'],
+                    'args' => ['/gone/bin/typo3-dev-companion'],
+                    'env' => ['TYPO3_DEV_COMPANION_EXCLUDE_TOOLS' => 'typo3_icon_lookup'],
                 ],
             ],
         ], JSON_THROW_ON_ERROR));
@@ -72,10 +72,10 @@ final class InstallerTest extends TestCase
                 (string) file_get_contents($directory . '/.mcp.json'),
                 true,
                 flags: JSON_THROW_ON_ERROR,
-            )['mcpServers']['typo3-cms-mcp'];
+            )['mcpServers']['typo3-dev-companion'];
 
-            self::assertSame(['TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_icon_lookup'], $entry['env']);
-            self::assertSame([Paths::root() . '/bin/typo3-cms-mcp'], $entry['args'], 'the command is still rewritten');
+            self::assertSame(['TYPO3_DEV_COMPANION_EXCLUDE_TOOLS' => 'typo3_icon_lookup'], $entry['env']);
+            self::assertSame([Paths::root() . '/bin/typo3-dev-companion'], $entry['args'], 'the command is still rewritten');
         } finally {
             Directory::remove($directory);
         }
@@ -84,9 +84,9 @@ final class InstallerTest extends TestCase
     #[Test]
     public function installRefusesToReplaceAnotherCommand(): void
     {
-        $directory = sys_get_temp_dir() . '/typo3-cms-mcp-install-' . bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . '/typo3-dev-companion-install-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($directory));
-        $original = '{"mcpServers":{"typo3-cms-mcp":{"command":"somewhere-else"}}}';
+        $original = '{"mcpServers":{"typo3-dev-companion":{"command":"somewhere-else"}}}';
         file_put_contents($directory . '/.mcp.json', $original);
 
         try {
@@ -113,16 +113,16 @@ final class InstallerTest extends TestCase
             self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
             $configuration = (string) file_get_contents($directory . '/.codex/config.toml');
             self::assertStringStartsWith($unrelated, $configuration);
-            self::assertStringContainsString('[mcp_servers.typo3-cms-mcp]', $configuration);
-            self::assertStringContainsString(Paths::root() . '/bin/typo3-cms-mcp', $configuration);
+            self::assertStringContainsString('[mcp_servers.typo3-dev-companion]', $configuration);
+            self::assertStringContainsString(Paths::root() . '/bin/typo3-dev-companion', $configuration);
 
             $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
-            $state = $directory . '/.typo3-cms-mcp/state.json';
+            $state = $directory . '/.typo3-dev-companion/state.json';
             self::assertFileEquals(
                 Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
                 $skill,
             );
-            self::assertFileDoesNotExist(dirname($skill) . '/.typo3-cms-mcp.json');
+            self::assertFileDoesNotExist(dirname($skill) . '/.typo3-dev-companion.json');
             self::assertFileExists($state);
             self::assertSame([
                 'version' => 1,
@@ -151,7 +151,7 @@ final class InstallerTest extends TestCase
             // The project's own .gitignore is what it was before the install,
             // and every directory this package wrote says `*` about itself.
             self::assertSame("/vendor/\n", file_get_contents($directory . '/.gitignore'));
-            self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
+            self::assertSame("*\n", file_get_contents($directory . '/.typo3-dev-companion/.gitignore'));
             foreach (Installer::skills() as $publishedSkill) {
                 self::assertSame(
                     "*\n",
@@ -214,19 +214,19 @@ final class InstallerTest extends TestCase
             $server = [
                 'type' => 'stdio',
                 'command' => 'ddev',
-                'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
+                'args' => ['exec', 'php', 'vendor/bin/typo3-dev-companion'],
             ];
             $mcpConfiguration = json_decode(
                 (string) file_get_contents($directory . '/.mcp.json'),
                 true,
                 flags: JSON_THROW_ON_ERROR,
             );
-            self::assertSame($server, $mcpConfiguration['mcpServers']['typo3-cms-mcp']);
+            self::assertSame($server, $mcpConfiguration['mcpServers']['typo3-dev-companion']);
 
             $codexConfiguration = (string) file_get_contents($directory . '/.codex/config.toml');
             self::assertStringContainsString('command = "ddev"', $codexConfiguration);
             self::assertStringContainsString(
-                'args = ["exec","php","vendor/bin/typo3-cms-mcp"]',
+                'args = ["exec","php","vendor/bin/typo3-dev-companion"]',
                 $codexConfiguration,
             );
             self::assertFileExists(
@@ -260,8 +260,8 @@ final class InstallerTest extends TestCase
             self::assertSame([
                 'type' => 'stdio',
                 'command' => 'ddev',
-                'args' => ['exec', 'php', '.build/bin/typo3-cms-mcp'],
-            ], $configuration['mcpServers']['typo3-cms-mcp']);
+                'args' => ['exec', 'php', '.build/bin/typo3-dev-companion'],
+            ], $configuration['mcpServers']['typo3-dev-companion']);
         } finally {
             Directory::remove($directory);
         }
@@ -286,8 +286,8 @@ final class InstallerTest extends TestCase
             self::assertSame([
                 'type' => 'stdio',
                 'command' => 'php',
-                'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
-            ], $configuration['mcpServers']['typo3-cms-mcp']);
+                'args' => [Paths::root() . '/bin/typo3-dev-companion'],
+            ], $configuration['mcpServers']['typo3-dev-companion']);
         } finally {
             Directory::remove($directory);
         }
@@ -316,8 +316,8 @@ final class InstallerTest extends TestCase
             self::assertSame([
                 'type' => 'stdio',
                 'command' => 'ddev',
-                'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
-            ], $configuration['mcpServers']['typo3-cms-mcp']);
+                'args' => ['exec', 'php', 'vendor/bin/typo3-dev-companion'],
+            ], $configuration['mcpServers']['typo3-dev-companion']);
         } finally {
             Directory::remove($directory);
         }
@@ -330,7 +330,7 @@ final class InstallerTest extends TestCase
         try {
             $stderr = '';
             self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
-            $original = '{"mcpServers":{"typo3-cms-mcp":{"command":"somewhere-else"}}}';
+            $original = '{"mcpServers":{"typo3-dev-companion":{"command":"somewhere-else"}}}';
             file_put_contents($directory . '/.mcp.json', $original);
 
             self::assertSame(1, $this->execute($directory, ['update'], $stderr));
@@ -346,7 +346,7 @@ final class InstallerTest extends TestCase
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
-        $original = "[mcp_servers.typo3-cms-mcp]\ncommand = \"other\"\nargs = [\"elsewhere\"]\n";
+        $original = "[mcp_servers.typo3-dev-companion]\ncommand = \"other\"\nargs = [\"elsewhere\"]\n";
         file_put_contents($directory . '/.codex/config.toml', $original);
 
         try {
@@ -366,12 +366,12 @@ final class InstallerTest extends TestCase
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
         $unrelated = "model = \"gpt-5\"\n\n";
-        $stale = "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\"/elsewhere/bin/typo3-cms-mcp\"]\n\n";
+        $stale = "[mcp_servers.typo3-dev-companion]\ncommand = \"php\"\nargs = [\"/elsewhere/bin/typo3-dev-companion\"]\n\n";
         $below = "[features]\nweb_search = true\n";
         file_put_contents($directory . '/.codex/config.toml', $unrelated . $stale . $below);
-        self::assertTrue(mkdir($directory . '/.typo3-cms-mcp'));
+        self::assertTrue(mkdir($directory . '/.typo3-dev-companion'));
         file_put_contents(
-            $directory . '/.typo3-cms-mcp/state.json',
+            $directory . '/.typo3-dev-companion/state.json',
             json_encode(['version' => 1, 'agents' => ['codex'], 'skills' => []], JSON_THROW_ON_ERROR),
         );
 
@@ -381,8 +381,8 @@ final class InstallerTest extends TestCase
             $configuration = (string) file_get_contents($directory . '/.codex/config.toml');
             self::assertSame(
                 $unrelated
-                . "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\"" . Paths::root()
-                . "/bin/typo3-cms-mcp\"]\n\n"
+                . "[mcp_servers.typo3-dev-companion]\ncommand = \"php\"\nargs = [\"" . Paths::root()
+                . "/bin/typo3-dev-companion\"]\n\n"
                 . $below,
                 $configuration,
             );
@@ -394,7 +394,7 @@ final class InstallerTest extends TestCase
     /**
      * The TOML half of what `453e439` fixed for JSON. The section was replaced
      * whole, so the `env` block that is the only place a TOML client can carry
-     * `TYPO3_MCP_EXCLUDE_TOOLS` was gone after an `install` — measured
+     * `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` was gone after an `install` — measured
      * 2026-08-04, `D-AUD-006`.
      */
     #[Test]
@@ -402,9 +402,9 @@ final class InstallerTest extends TestCase
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
-        $original = "model = \"gpt-5\"\n\n[mcp_servers.typo3-cms-mcp]\n# kept\ncommand = \"php\"\n"
-            . "args = [\"/elsewhere/bin/typo3-cms-mcp\"]\n"
-            . "env = { TYPO3_MCP_EXCLUDE_TOOLS = \"typo3_icon_lookup\" }\nstartup_timeout_sec = 30\n\n"
+        $original = "model = \"gpt-5\"\n\n[mcp_servers.typo3-dev-companion]\n# kept\ncommand = \"php\"\n"
+            . "args = [\"/elsewhere/bin/typo3-dev-companion\"]\n"
+            . "env = { TYPO3_DEV_COMPANION_EXCLUDE_TOOLS = \"typo3_icon_lookup\" }\nstartup_timeout_sec = 30\n\n"
             . "[features]\nweb_search = true\n";
         file_put_contents($directory . '/.codex/config.toml', $original);
 
@@ -412,7 +412,7 @@ final class InstallerTest extends TestCase
             $stderr = '';
             self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
             self::assertSame(
-                str_replace('/elsewhere/bin/typo3-cms-mcp', Paths::root() . '/bin/typo3-cms-mcp', $original),
+                str_replace('/elsewhere/bin/typo3-dev-companion', Paths::root() . '/bin/typo3-dev-companion', $original),
                 file_get_contents($directory . '/.codex/config.toml'),
             );
         } finally {
@@ -431,8 +431,8 @@ final class InstallerTest extends TestCase
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
-        $original = "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\n"
-            . "  \"/elsewhere/bin/typo3-cms-mcp\"\n]\n";
+        $original = "[mcp_servers.typo3-dev-companion]\ncommand = \"php\"\nargs = [\n"
+            . "  \"/elsewhere/bin/typo3-dev-companion\"\n]\n";
         file_put_contents($directory . '/.codex/config.toml', $original);
 
         try {
@@ -499,13 +499,13 @@ final class InstallerTest extends TestCase
             self::assertTrue(mkdir($stale));
             self::assertNotFalse(file_put_contents($stale . '/SKILL.md', "obsolete\n"));
             $state = json_decode(
-                (string) file_get_contents($directory . '/.typo3-cms-mcp/state.json'),
+                (string) file_get_contents($directory . '/.typo3-dev-companion/state.json'),
                 true,
                 flags: JSON_THROW_ON_ERROR,
             );
             $state['skills'][] = 'obsolete-typo3-skill';
             file_put_contents(
-                $directory . '/.typo3-cms-mcp/state.json',
+                $directory . '/.typo3-dev-companion/state.json',
                 json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
             );
 
@@ -605,7 +605,7 @@ final class InstallerTest extends TestCase
             $stderr = '';
             self::assertSame(0, $this->execute($directory, ['install', '--drafts'], $stderr), $stderr);
 
-            $state = $directory . '/.typo3-cms-mcp/state.json';
+            $state = $directory . '/.typo3-dev-companion/state.json';
             $recorded = json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR);
             self::assertSame($drafts, $recorded['drafts']);
             self::assertSame(Installer::skills(), $recorded['skills']);
@@ -641,7 +641,7 @@ final class InstallerTest extends TestCase
     private function execute(string $directory, array $arguments, string &$stderr): int
     {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', ...$arguments],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', ...$arguments],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $directory
@@ -658,7 +658,7 @@ final class InstallerTest extends TestCase
 
     private function directory(): string
     {
-        $directory = sys_get_temp_dir() . '/typo3-cms-mcp-install-' . bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . '/typo3-dev-companion-install-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($directory));
 
         return $directory;
@@ -668,7 +668,7 @@ final class InstallerTest extends TestCase
     private function installEntrypoint(string $directory, string $binDirectory): void
     {
         self::assertTrue(mkdir($directory . '/' . $binDirectory, 0777, true));
-        file_put_contents($directory . '/' . $binDirectory . '/typo3-cms-mcp', "#!/usr/bin/env php\n");
+        file_put_contents($directory . '/' . $binDirectory . '/typo3-dev-companion', "#!/usr/bin/env php\n");
     }
 
 }

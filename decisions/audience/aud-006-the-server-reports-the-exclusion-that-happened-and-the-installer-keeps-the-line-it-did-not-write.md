@@ -7,8 +7,8 @@ status: open
 # D-AUD-006 — The server reports the exclusion that happened, and the installer keeps the line it did not write
 
 **What the client is told is missing is what the offered list is actually
-missing, and a name in `TYPO3_MCP_EXCLUDE_TOOLS` that took nothing away is
-reported as that.**
+missing, and a name in `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` that took nothing
+away is reported as that.**
 
 `ExcludedTools::all()` was what the caller wrote, so both client-facing surfaces
 described a capability the same server had just offered.
@@ -16,14 +16,14 @@ described a capability the same server had just offered.
 ## Evidence
 
 - Measured on 2026-08-04 in this checkout, over one stdio session per case.
-  `TYPO3_MCP_EXCLUDE_TOOLS=typo3_project_scope, typo3_icon_lookup`: 25 tools
-  offered including `typo3_project_describe`, the initialize instructions
+  `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope, typo3_icon_lookup`: 25
+  tools offered including `typo3_project_describe`, the initialize instructions
   opening "typo3_project_scope, typo3_icon_lookup are left out of your tool
   list" at 1940 characters, and `excludedTools.names` carrying both.
-  `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered including
-  it, the instructions opening "typo3_feedback_record is left out of your tool
-  list" at 1920 characters, `excludedTools.names` carrying it, and nothing said
-  on stderr, because that name is in the registry.
+  `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered
+  including it, the instructions opening "typo3_feedback_record is left out of
+  your tool list" at 1920 characters, `excludedTools.names` carrying it, and
+  nothing said on stderr, because that name is in the registry.
 - The instructions are capped at 2048 characters by
   [`R-ANS-013`](../../requirements/answers/ans-013-the-instructions-fit-what-a-client-keeps.md),
   and the exclusion prefix is counted against it. So the false sentence was
@@ -35,7 +35,8 @@ described a capability the same server had just offered.
   appends the feedback tools past the filter under
   [`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md).
 - The TOML half of the installer, measured the same day in a fixture project:
-  `.codex/config.toml` carrying `env = { TYPO3_MCP_EXCLUDE_TOOLS = ... }` and
+  `.codex/config.toml` carrying
+  `env = { TYPO3_DEV_COMPANION_EXCLUDE_TOOLS = ... }` and
   `startup_timeout_sec = 30` in its section had both gone after
   `install --agent=codex`, with a `Configured` message and nothing else said.
   `installTomlConfiguration` matched the section with a regex and replaced the

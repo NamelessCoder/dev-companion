@@ -5,8 +5,8 @@ status: held
 
 # R-DIS-020 — The project records which clients are installed in it
 
-**Install records every client it set up in `.typo3-cms-mcp/state.json`, and an
-update without `--agent` refreshes all of them.**
+**Install records every client it set up in `.typo3-dev-companion/state.json`,
+and an update without `--agent` refreshes all of them.**
 
 A project is usually worked on by more than one client, and which ones is
 knowledge only the project has. Naming them one at a time meant remembering a

@@ -7,8 +7,9 @@ status: open
 # D-SCO-010 — All three `typo3` namespaces are kept, and the draft RFC is read as a reference
 
 **This server keeps the `typo3_` tool prefix, the `typo3://` resource scheme and
-the `typo3/cms-mcp` package name. The draft RFC on an MCP interface contract for
-TYPO3 is read as a reference, not as a process this repository takes part in.**
+the `typo3/dev-companion` package name. The draft RFC on an MCP interface
+contract for TYPO3 is read as a reference, not as a process this repository
+takes part in.**
 
 The draft reserves `typo3.` for the mandatory part of the contract and requires
 the content model to be served as a resource under a uniform scheme it does not
@@ -62,9 +63,10 @@ draft ever became a contract.
   marekskopal/typo3-mcp-server. It does not name this package. Both of those
   publish under a vendor of their own — `hn/typo3-mcp-server` and
   `marekskopal/typo3-mcp-server` on Packagist, read 2026-08-04.
-- `typo3/cms-mcp` is declared in `composer.json` and published nowhere.
+- `typo3/dev-companion` is declared in `composer.json` and published nowhere.
   Packagist's search answers `{"results":[],"total":0}` for it and
-  `repo.packagist.org/p2/typo3/cms-mcp.json` answers 404, both read 2026-08-04.
+  `repo.packagist.org/p2/typo3/dev-companion.json` answers 404, both read
+  2026-08-04.
 - Packagist protects a vendor once a package has been published under it, and
   says publishing under an existing one requires being a maintainer of at least
   one package already in it. `typo3/cms-core` lists the maintainers `typo3`,
@@ -73,7 +75,7 @@ draft ever became a contract.
 ## Decided
 
 - All three namespaces are kept, unchanged: the 26 `typo3_` tool names, the
-  `typo3://` scheme, and `typo3/cms-mcp` in `composer.json`.
+  `typo3://` scheme, and `typo3/dev-companion` in `composer.json`.
 - The tool prefix stays because the reservation is `typo3.` and an underscore
   name does not literally collide with it. That is the first reason this
   repository has ever written down for the prefix, and it is a reading of
@@ -88,15 +90,15 @@ draft ever became a contract.
   change if it were adopted is written down rather than argued with:
   [documentation/interface-contract/the-draft-rfc-on-an-mcp-interface-contract.md](../../documentation/interface-contract/the-draft-rfc-on-an-mcp-interface-contract.md).
   Nothing is filed anywhere, and nothing in this repository waits on the draft.
-- Whether this package may publish as `typo3/cms-mcp` is **unresolved**. The
-  vendor belongs to the TYPO3 Association and Packagist would refuse the
+- Whether this package may publish as `typo3/dev-companion` is **unresolved**.
+  The vendor belongs to the TYPO3 Association and Packagist would refuse the
   submission. What is decided here is only that the name stays in
   `composer.json` while nothing is published, because a name that resolves
   nothing costs nothing.
-- Rejected: renaming the scheme now, to `typo3-cms-mcp://` or similar. This
-  server is pre-release and can change any of the three names on the day there
-  is something to change them against, so a rename today buys a guess and loses
-  the four URI shapes that already work.
+- Rejected: renaming the scheme now, to `typo3-dev-companion://` or similar.
+  This server is pre-release and can change any of the three names on the day
+  there is something to change them against, so a rename today buys a guess and
+  loses the four URI shapes that already work.
 - Rejected: renaming the tool prefix. The reservation does not reach it, and a
   tool name is what clients installed months ago call — the outward name
   `AGENTS.md` says wins where two spellings compete.

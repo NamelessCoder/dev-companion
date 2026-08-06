@@ -58,9 +58,9 @@ analyser and nothing else in that layer.
   than recalling a configuration from another project". There is no such
   sentence for the fixer, because there is no such id.
 - **The guide recognizes the task as nothing.** Re-run through
-  `bin/typo3-cms-mcp` from this worktree on 2026-08-04, with the session's task
-  and its paths at `targetVersion: 14.3`: `intents` is `[]`, `skills` is `[]`,
-  the checks are `runTests.sh` suites, and the checklist is the core patch
+  `bin/typo3-dev-companion` from this worktree on 2026-08-04, with the session's
+  task and its paths at `targetVersion: 14.3`: `intents` is `[]`, `skills` is
+  `[]`, the checks are `runTests.sh` suites, and the checklist is the core patch
   shape. `knowledge/task-intents.json` carries no entry this task's words reach
   — the nearest, `tests`, matches `test`, `coverage` and `regression` — so the
   guide cannot name the skill that owns the work, which is what `D-SKL-013` put
@@ -72,7 +72,7 @@ analyser and nothing else in that layer.
   `typo3_server_scope` nor `typo3_task_guide` and paying a `hint_lookup` to find
   the coverage out; had it called them, neither would have said.
 - **The near-miss reproduces exactly.** Both calls of `055626` re-run through
-  `bin/typo3-cms-mcp` on 2026-08-04: the topical query returns
+  `bin/typo3-dev-companion` on 2026-08-04: the topical query returns
   `extension-manifest`, `extension-repository-layout` and `extension-boot-files`
   with `availableHints` empty, and `id=extension-static-analysis` returns that
   hint with `availableHints` empty. `HintLookup` documents the index on the `id`

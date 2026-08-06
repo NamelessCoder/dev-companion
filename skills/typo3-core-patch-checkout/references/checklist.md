@@ -60,9 +60,10 @@ whatever happened in the first.
 - The build and the suites that cover the touched paths are what says the
   resolution holds. A rebase that produced a checkout nobody ran is not a rebase
   that worked.
-- Say that the checkout is rebased and no longer the revision under review. Every
-  result from it is about your rebase and not about the patch set the reviewers
-  see, and reporting one as the other is the failure this whole file guards.
+- Say that the checkout is rebased and no longer the revision under review.
+  Every result from it is about your rebase and not about the patch set the
+  reviewers see, and reporting one as the other is the failure this whole file
+  guards.
 - The rebased state is local. It is not pushed, and pushing it would be opening
   a patch set in somebody else's name — that belongs to the workflow that owns
   amending a change, and only where the change is yours to amend.

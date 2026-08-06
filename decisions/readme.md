@@ -18,6 +18,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### audience
 
+- [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06
 - [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
 - [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
 - [`D-AUD-007`][D-AUD-007] — The prose documents are named where a session already looks · 2026-08-04
@@ -25,6 +26,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-008]: audience/aud-008-the-server-is-called-dev-companion-under-the-tooling-vendor.md
 [D-AUD-005]: audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md
 [D-AUD-006]: audience/aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md
 [D-AUD-007]: audience/aud-007-the-prose-documents-are-named-where-a-session-already-looks.md

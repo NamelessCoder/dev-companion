@@ -35,8 +35,9 @@ belongs to somebody else, on every run.
   extends: merged agent or MCP configuration "is not ignored, because the
   project may share it". A `.gitignore` is shared more than any of those files,
   and it was the one this package wrote into.
-- The record was the one artefact with no other option. `typo3-cms-mcp.json` sat
-  at the project root, and a file cannot ignore itself.
+- The record was the one artefact with no other option.
+  `typo3-dev-companion.json` sat at the project root, and a file cannot ignore
+  itself.
 - The package is not published on Packagist and is required from a local
   checkout, which `documentation/clients/installing.md` says outright. Every
   project that has the old layout was set up by hand from a checkout somebody
@@ -44,10 +45,11 @@ belongs to somebody else, on every run.
 
 ## Decided
 
-- Each published skill directory and `.typo3-cms-mcp/` get `.gitignore` with
-  `*`. The effect is written where the effect belongs, and it scales with
+- Each published skill directory and `.typo3-dev-companion/` get `.gitignore`
+  with `*`. The effect is written where the effect belongs, and it scales with
   nothing: one file per directory this package already replaces whole.
-- The record moves to `.typo3-cms-mcp/state.json` and is read from nowhere else.
+- The record moves to `.typo3-dev-companion/state.json` and is read from nowhere
+  else.
 - Nothing migrates a project that a development build set up. The old record and
   the old block are left where they are, and the code that would find them is
   gone rather than kept for a case that is somebody's own checkout: this package

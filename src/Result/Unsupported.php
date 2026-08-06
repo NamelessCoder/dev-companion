@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
 
 /**
  * The answer to a question this server cannot answer here.

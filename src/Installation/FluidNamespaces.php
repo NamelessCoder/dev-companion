@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Installation;
+namespace TYPO3\DevCompanion\Installation;
 
 /**
  * The globally registered Fluid namespaces, read from the packages that declare

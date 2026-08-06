@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Contribution\Forge;
-use Typo3CmsMcp\Contribution\Gerrit;
-use Typo3CmsMcp\Http\Recent;
+use TYPO3\DevCompanion\Contribution\Forge;
+use TYPO3\DevCompanion\Contribution\Gerrit;
+use TYPO3\DevCompanion\Http\Recent;
 
 /**
  * What is held from a host outside this machine, and what is fetched again.

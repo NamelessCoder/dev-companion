@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -11,8 +11,8 @@ use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Cli;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Cli;
 
 /**
  * Holds `src/Upkeep/Command/` and the application to each other.
@@ -37,7 +37,7 @@ final class UpkeepCommandTest extends TestCase
         $cases = [];
         foreach (Finder::create()->files()->in(Paths::root() . '/src/Upkeep/Command')->depth(0)->name('*.php')->sortByName() as $path) {
             /** @var class-string $class */
-            $class = 'Typo3CmsMcp\\Upkeep\\Command\\' . $path->getBasename('.php');
+            $class = 'TYPO3\\DevCompanion\\Upkeep\\Command\\' . $path->getBasename('.php');
             $reflection = new \ReflectionClass($class);
             if ($reflection->isAbstract()) {
                 continue;

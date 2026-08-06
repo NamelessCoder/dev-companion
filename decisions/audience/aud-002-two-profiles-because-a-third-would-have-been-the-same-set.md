@@ -47,9 +47,9 @@ contribution surface. The item written from it named three profiles — `core`,
 ## Wrong if
 
 - Someone contributes to the core from a session started in a site installation
-  and then has to set `TYPO3_MCP_PROFILE=all` to get the rules back — or a
-  deployment has no installation to read at all, which is where a profile that
-  leaves out the installation-backed half would earn its name.
+  and then has to set `TYPO3_DEV_COMPANION_PROFILE=all` to get the rules back —
+  or a deployment has no installation to read at all, which is where a profile
+  that leaves out the installation-backed half would earn its name.
 
 ## Revoked on 2026-08-02
 
@@ -78,12 +78,12 @@ requirement failing, and it is now `open` with a todo against it. Nobody has met
 it in the wild. Ten recorded sessions in `E-SITE` called `typo3_task_guide`
 eight times, and not one of the eight was core-shaped, so the derivation was
 right every time it ran. The way back is one variable as promised —
-`TYPO3_MCP_PROFILE=all` there offers 23 tools and drops the profile sentence
-from the instructions — and the profile caveat reached all ten sessions, so a
-client that reads the instructions can find it. What no protocol-level run can
-show is what an agent does with a route it cannot follow; that needs a session
-in `E-SITE` given core work. The second half of the **Wrong if**, a deployment
-with no installation, is untouched by this run.
+`TYPO3_DEV_COMPANION_PROFILE=all` there offers 23 tools and drops the profile
+sentence from the instructions — and the profile caveat reached all ten
+sessions, so a client that reads the instructions can find it. What no
+protocol-level run can show is what an agent does with a route it cannot follow;
+that needs a session in `E-SITE` given core work. The second half of the **Wrong
+if**, a deployment with no installation, is untouched by this run.
 
 ## Since then
 
@@ -99,9 +99,9 @@ profile left for a deployment without an installation to earn.
 
 The second half is read, and what survives of it is what a deployment with no
 installation is offered. The profile it was written against is gone
-(`D-AUD-004`), so the question is no longer which set: `bin/typo3-cms-mcp` was
-driven over stdio on 2026-08-02 from a directory with no TYPO3 anywhere above
-it, and it offers all 23 tools, the six that can only answer from an
+(`D-AUD-004`), so the question is no longer which set: `bin/typo3-dev-companion`
+was driven over stdio on 2026-08-02 from a directory with no TYPO3 anywhere
+above it, and it offers all 23 tools, the six that can only answer from an
 installation included.
 
 Every layer says where it stands. The `installation` block of

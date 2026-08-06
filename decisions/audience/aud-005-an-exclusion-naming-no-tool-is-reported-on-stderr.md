@@ -9,17 +9,18 @@ status: open
 **An excluded name that no tool answers to is written to stderr at startup, and
 the server starts with the rest of the list.**
 
-`TYPO3_MCP_EXCLUDE_TOOLS` was read out of the caller's environment and compared
-to nothing, so a name that matched no tool took nothing away and said so
-nowhere.
+`TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` was read out of the caller's environment and
+compared to nothing, so a name that matched no tool took nothing away and said
+so nowhere.
 
 ## Evidence
 
 - `a4470ee` renamed `typo3_project_scope` to `typo3_project_describe` and
   `typo3_extension_scope` to `typo3_extension_describe`. Started on 2026-08-04
-  with `TYPO3_MCP_EXCLUDE_TOOLS=typo3_project_scope`, the server offered 25
-  tools including `typo3_project_describe`, and neither side said the exclusion
-  had stopped applying. The same hole swallows every typo in that variable.
+  with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope`, the server
+  offered 25 tools including `typo3_project_describe`, and neither side said the
+  exclusion had stopped applying. The same hole swallows every typo in that
+  variable.
 - stdout is the protocol: the transport writes one JSON-RPC line per response
   and the client parses each line, so anything else printed there is a
   corruption the client reports as a broken server. stderr is the other stream a
@@ -38,9 +39,10 @@ nowhere.
 - The same silence had a second route, measured on 2026-08-04 in a fixture
   project: `install` and `update` replaced the whole server entry, so an `env`
   block a caller had written into `.mcp.json` — the only place a client
-  configuration can carry `TYPO3_MCP_EXCLUDE_TOOLS` — was gone after the next
-  run, and the tools came back. Nothing this package writes ever names the
-  variable, so the installer was not writing exclusions; it was deleting them.
+  configuration can carry `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` — was gone after
+  the next run, and the tools came back. Nothing this package writes ever names
+  the variable, so the installer was not writing exclusions; it was deleting
+  them.
 
 ## Decided
 
@@ -112,8 +114,8 @@ not fired.
 
 What is left of that reading is this entry's own open half, and it turns out to
 reach further than the renamed tools. Measured on 2026-08-04 with
-`TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record` in this checkout: 26 tools
-offered including that one, while `typo3_server_scope` reported it under
+`TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record` in this checkout: 26
+tools offered including that one, while `typo3_server_scope` reported it under
 `excludedTools.names` and the initialize instructions opened
 "typo3_feedback_record is left out of your tool list". A name that is real but
 unexcludable tells the client the same falsehood an unknown one does, and

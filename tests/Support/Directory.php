@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Support;
+namespace TYPO3\DevCompanion\Tests\Support;
 
 use Symfony\Component\Finder\Finder;
 

@@ -42,7 +42,7 @@ instead of arranging for the real thing.
 
 ## Decided
 
-- `Typo3CmsMcp\Process\CommandRunner` is the seam: `run()` for a command,
+- `TYPO3\DevCompanion\Process\CommandRunner` is the seam: `run()` for a command,
   `locate()` for whether the machine has an executable. Both are the same
   boundary — asking whether `ddev` exists is asking the machine — so putting
   them on one interface is what lets a test stub the whole question.

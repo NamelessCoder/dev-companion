@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Server;
+namespace TYPO3\DevCompanion\Server;
 
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * The tools a caller has asked not to be offered.
@@ -27,7 +27,7 @@ use Typo3CmsMcp\Tool\Registry;
 final class ExcludedTools
 {
     /** Comma-separated tool names the caller does not want offered. */
-    public const VARIABLE = 'TYPO3_MCP_EXCLUDE_TOOLS';
+    public const VARIABLE = 'TYPO3_DEV_COMPANION_EXCLUDE_TOOLS';
 
     /**
      * The one tool that cannot be excluded: it is what tells a client why the

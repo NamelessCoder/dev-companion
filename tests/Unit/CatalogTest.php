@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Catalog\Components;
-use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
-use Typo3CmsMcp\Knowledge\Catalog\Meta;
-use Typo3CmsMcp\Knowledge\Catalog\References;
-use Typo3CmsMcp\Knowledge\Catalog\SystemExtensions;
-use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Upkeep\Catalogs;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Knowledge\Catalog\Components;
+use TYPO3\DevCompanion\Knowledge\Catalog\DemoMarkup;
+use TYPO3\DevCompanion\Knowledge\Catalog\Meta;
+use TYPO3\DevCompanion\Knowledge\Catalog\References;
+use TYPO3\DevCompanion\Knowledge\Catalog\SystemExtensions;
+use TYPO3\DevCompanion\Knowledge\Catalog\TranslationDomain;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Catalogs;
 
 final class CatalogTest extends TestCase
 {

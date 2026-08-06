@@ -20,8 +20,8 @@ marker that ends the question outright: prose that names the core in order to
 rule it out reads to a substring search exactly like claiming it.
 
 That last signal is the installation the session is **standing in**, not the one
-`TYPO3_MCP_ROOT` names. The variable says which registry the icons and labels
-are read from and moves nothing else; only where the walk-up reaches no
+`TYPO3_DEV_COMPANION_ROOT` names. The variable says which registry the icons and
+labels are read from and moves nothing else; only where the walk-up reaches no
 installation is it the sole evidence there is, and then it answers.
 
 What a path carries is read before anything said about the call, which is what

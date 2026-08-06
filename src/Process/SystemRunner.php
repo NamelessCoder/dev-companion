@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Process;
+namespace TYPO3\DevCompanion\Process;
 
 /**
  * The runner that actually starts something, which is the only one outside a

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Contract;
+namespace TYPO3\DevCompanion\Tests\Contract;
 
 use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Result\Unsupported;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Upkeep\ToolCalls;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Result\Unsupported;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\ToolCalls;
 
 /**
  * What every tool promises its callers: a declared input and output schema,

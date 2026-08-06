@@ -20,7 +20,7 @@ the ladder, on a hint that already exists, and it is queued as
 ## Evidence
 
 - The subject is delivered. `typo3_task_guide` and `typo3_hint_lookup`, called
-  through `bin/typo3-cms-mcp` from this repository on 2026-08-03 with the
+  through `bin/typo3-dev-companion` from this repository on 2026-08-03 with the
   feedback's own task, both return `project-configuration-files` and quote its
   four statements whole. `bin/cli hints:probe` on the feedback's query reaches
   the same hint at `appliesTo(32) + text(467)`, and on "DDEV settings management
@@ -162,7 +162,7 @@ more of them is `D-GUI-008`'s to add.
 
 So nothing is owed beyond what those two carry, and `feedback/2026-08-03-162858`
 is archived by this commit. The reporting session's own task, re-run through
-`bin/typo3-cms-mcp` on 2026-08-03 — "run a local TYPO3 14.3.5 development
+`bin/typo3-dev-companion` on 2026-08-03 — "run a local TYPO3 14.3.5 development
 instance under DDEV for an extension, on SQLite with no database container" —
 reaches `installation-operations` weakly, so the brief keeps the patch skeleton
 and prints that intent's six items under their condition, the

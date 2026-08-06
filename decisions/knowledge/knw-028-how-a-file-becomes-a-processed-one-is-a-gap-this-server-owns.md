@@ -17,11 +17,12 @@ files. What is actually missing is a statement in `knowledge/`.
 ## Evidence
 
 - The strength reproduces, except the half it credits. Re-run on 2026-08-02 over
-  stdio through `bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, the
-  directory it was written in. `typo3_project_scope` opens with "core-checkout,
-  TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", then no extensions, no
-  sites, and four `gerrit:setup` commands that all answer `runs: unknown`.
-  Neither the text nor the data names a processor or a task type.
+  stdio through `bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`,
+  the directory it was written in. `typo3_project_scope` opens with
+  "core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", then no
+  extensions, no sites, and four `gerrit:setup` commands that all answer
+  `runs: unknown`. Neither the text nor the data names a processor or a task
+  type.
 - The feedback contradicts itself on exactly that point. It credits the tool
   with returning "the declared processors and processingTaskTypes", lists the
   processing classes it read by hand two paragraphs later, and then asks for the

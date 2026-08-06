@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\TestingFramework;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\TestingFramework;
 
 /**
  * What is below .checkouts/, and how old it is.

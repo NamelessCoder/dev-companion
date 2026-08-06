@@ -1,5 +1,5 @@
 {
-    "name": "typo3/cms-mcp",
+    "name": "typo3/dev-companion",
     "description": "Local MCP server that guides coding agents through TYPO3 implementation, review and verification with version-bound knowledge and project facts.",
     "type": "library",
     "license": "MIT",
@@ -13,11 +13,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Typo3CmsMcp\\": "src/"
+            "TYPO3\\DevCompanion\\": "src/"
         }
     },
     "bin": [
-        "bin/typo3-cms-mcp"
+        "bin/typo3-dev-companion"
     ],
     "config": {
         "sort-packages": true,
@@ -33,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Typo3CmsMcp\\Tests\\": "tests/"
+            "TYPO3\\DevCompanion\\Tests\\": "tests/"
         }
     },
     "scripts": {

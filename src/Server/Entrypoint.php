@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Server;
+namespace TYPO3\DevCompanion\Server;
 
 use Mcp\Server\Transport\StdioTransport;
-use Typo3CmsMcp\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Instance;
 
 /**
- * What `bin/typo3-cms-mcp` runs.
+ * What `bin/typo3-dev-companion` runs.
  *
  * With no argument it speaks MCP over stdin and stdout, which is how a client
  * launches it. Everything else is somebody at a terminal, and starting the
@@ -25,7 +25,7 @@ use Typo3CmsMcp\Installation\Instance;
 final class Entrypoint
 {
     /** @param array<int, string> $arguments what the shell passed, without the binary */
-    public static function run(array $arguments, string $binary = 'typo3-cms-mcp'): int
+    public static function run(array $arguments, string $binary = 'typo3-dev-companion'): int
     {
         $command = $arguments[0] ?? null;
 
@@ -47,7 +47,7 @@ final class Entrypoint
             return 0;
         }
 
-        fwrite(STDERR, 'typo3-cms-mcp: no such command "' . $command . "\".\n\n" . self::usage());
+        fwrite(STDERR, 'typo3-dev-companion: no such command "' . $command . "\".\n\n" . self::usage());
 
         return 2;
     }
@@ -78,7 +78,7 @@ final class Entrypoint
         $unknown = ExcludedTools::unknown();
         if ($unknown !== []) {
             fwrite(STDERR, sprintf(
-                'typo3-cms-mcp: %s names %s, which this server does not offer, so %s excluded nothing. '
+                'typo3-dev-companion: %s names %s, which this server does not offer, so %s excluded nothing. '
                 . "typo3_server_scope lists the tools it does offer.\n",
                 ExcludedTools::VARIABLE,
                 implode(', ', $unknown),
@@ -89,7 +89,7 @@ final class Entrypoint
         $offeredAnyway = ExcludedTools::offeredAnyway();
         if ($offeredAnyway !== []) {
             fwrite(STDERR, sprintf(
-                'typo3-cms-mcp: %s names %s, which this server offers whatever the variable says, so %s '
+                'typo3-dev-companion: %s names %s, which this server offers whatever the variable says, so %s '
                 . "excluded nothing. typo3_server_scope says which tools are really gone.\n",
                 ExcludedTools::VARIABLE,
                 implode(', ', $offeredAnyway),
@@ -120,7 +120,7 @@ final class Entrypoint
         if ($outdated === null) {
             return '';
         }
-        fwrite(STDERR, 'typo3-cms-mcp: ' . $outdated . "\n");
+        fwrite(STDERR, 'typo3-dev-companion: ' . $outdated . "\n");
 
         return Installer::NOTICE;
     }
@@ -135,7 +135,7 @@ final class Entrypoint
     {
         $directory = getcwd();
         if ($directory === false) {
-            fwrite(STDERR, "typo3-cms-mcp: cannot determine the current directory.\n");
+            fwrite(STDERR, "typo3-dev-companion: cannot determine the current directory.\n");
 
             return 1;
         }
@@ -157,7 +157,7 @@ final class Entrypoint
                 ? $installer->install($agent, $drafts)
                 : $installer->update($agent, $drafts);
         } catch (\RuntimeException $exception) {
-            fwrite(STDERR, 'typo3-cms-mcp: ' . $exception->getMessage() . ".\n");
+            fwrite(STDERR, 'typo3-dev-companion: ' . $exception->getMessage() . ".\n");
 
             return 1;
         }
@@ -169,7 +169,7 @@ final class Entrypoint
 
     private static function usage(): string
     {
-        return "Usage: typo3-cms-mcp [command]\n\n"
+        return "Usage: typo3-dev-companion [command]\n\n"
             . "With no command this speaks MCP over stdin and stdout, which is how a\n"
             . "client launches it. The commands below set that up, in the directory\n"
             . "they are run in.\n\n"

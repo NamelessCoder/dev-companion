@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Installation\Icons;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Tool\Source;
-use Typo3CmsMcp\Upkeep\CoreFixture;
-use Typo3CmsMcp\Upkeep\ToolCalls;
+use TYPO3\DevCompanion\Installation\Icons;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Source;
+use TYPO3\DevCompanion\Upkeep\CoreFixture;
+use TYPO3\DevCompanion\Upkeep\ToolCalls;
 
 /**
  * The core checkout this repository writes, and the set of answers it may
@@ -181,7 +181,7 @@ final class CoreFixtureTest extends TestCase
      */
     private function variantRoot(): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-core-variant';
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-core-variant';
         $core = $root . '/typo3/sysext/core';
         $backend = $root . '/typo3/sysext/backend';
         $major = explode('.', CoreFixture::typo3Version())[0];

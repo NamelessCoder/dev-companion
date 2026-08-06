@@ -19,7 +19,7 @@ bin/cli repository:check  # requirements, decisions, scenarios and the todos aga
 bin/cli help <command>    # what one command takes, and what each argument is
 ```
 
-`bin/typo3-cms-mcp` is the server itself and carries none of this.
+`bin/typo3-dev-companion` is the server itself and carries none of this.
 
 ## Core checkouts
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Support;
+namespace TYPO3\DevCompanion\Tests\Support;
 
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * What `.editorconfig` states for a file, for the tests that hold something to

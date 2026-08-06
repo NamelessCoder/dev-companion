@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * That `bin/cli` still runs, driven the way a session drives it.

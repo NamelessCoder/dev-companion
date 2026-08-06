@@ -8,9 +8,9 @@ use PhpCsFixer\Finder;
 $finder = (new Finder())
     ->in([__DIR__ . '/src', __DIR__ . '/tests'])
     // The entrypoints carry no extension, so the finder never sees them.
-    ->append([__DIR__ . '/bin/cli', __DIR__ . '/bin/typo3-cms-mcp']);
+    ->append([__DIR__ . '/bin/cli', __DIR__ . '/bin/typo3-dev-companion']);
 
-return (new Config('typo3-cms-mcp'))
+return (new Config('typo3-dev-companion'))
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setRules([

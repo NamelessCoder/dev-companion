@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge\Catalog;
+namespace TYPO3\DevCompanion\Knowledge\Catalog;
 
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * Loads and ranks the curated TYPO3 backend component index from

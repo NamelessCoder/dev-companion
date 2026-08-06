@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Typo3CmsMcp\Tests\Support\QueuedTodo;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Command\TodoClaim;
-use Typo3CmsMcp\Upkeep\Todo;
+use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\Command\TodoClaim;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 final class CliTest extends TestCase
 {

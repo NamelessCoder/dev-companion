@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Result;
+namespace TYPO3\DevCompanion\Result;
 
-use Typo3CmsMcp\Installation\Project;
-use Typo3CmsMcp\Knowledge\Versions;
+use TYPO3\DevCompanion\Installation\Project;
+use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
  * Which TYPO3 versions an answer was selected for, and why.

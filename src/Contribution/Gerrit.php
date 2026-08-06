@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Contribution;
+namespace TYPO3\DevCompanion\Contribution;
 
-use Typo3CmsMcp\Http\Fetch;
-use Typo3CmsMcp\Http\Recent;
+use TYPO3\DevCompanion\Http\Fetch;
+use TYPO3\DevCompanion\Http\Recent;
 
 /**
  * The review server the core's patches live on, read over its REST API.

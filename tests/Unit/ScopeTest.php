@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Knowledge\Coverage;
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Server\ExcludedTools;
-use Typo3CmsMcp\Server\Installer;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Server\ExcludedTools;
+use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
 
 final class ScopeTest extends TestCase
 {
@@ -123,7 +123,7 @@ final class ScopeTest extends TestCase
     #[Test]
     public function namingAnInstallationToReadDoesNotMoveWhereTheWorkIs(): void
     {
-        // What TYPO3_MCP_ROOT is for: a core contributor points it at a site
+        // What TYPO3_DEV_COMPANION_ROOT is for: a core contributor points it at a site
         // installation because that is where the registered icons and the
         // shipped labels are. Reading the last signal off the same value made
         // it move the boundary as well, and every unmarked question about the

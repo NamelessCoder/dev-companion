@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Knowledge\Catalog;
+namespace TYPO3\DevCompanion\Knowledge\Catalog;
 
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * Which extensions the TYPO3 core ships, and on which of the covered versions.

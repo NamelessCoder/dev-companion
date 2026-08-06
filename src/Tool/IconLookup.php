@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Installation\Icons;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unsupported;
+use TYPO3\DevCompanion\Installation\Icons;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unsupported;
 
 /**
  * Icon identifiers registered in the installation.

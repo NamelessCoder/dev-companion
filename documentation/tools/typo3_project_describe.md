@@ -48,22 +48,22 @@ coreConstraint: string or null  # optional
 corePhpConstraint: string or null  # optional
 # The environment this repository configures to run itself in, read from that
 # environment's own files. Null means nothing here configures one that this
-# server reads — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what it reads —
-# so the commands below run wherever the caller runs them.
+# server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it
+# reads — so the commands below run wherever the caller runs them.
 environment:  # optional
   # One of: ddev, override. ddev: the repository carries a .ddev/config.yaml.
-  # override: nothing in the files says so, and TYPO3_MCP_CONSOLE names a
-  # command that reaches this installation somewhere other than the caller's own
-  # shell.
+  # override: nothing in the files says so, and TYPO3_DEV_COMPANION_CONSOLE
+  # names a command that reaches this installation somewhere other than the
+  # caller's own shell.
   via: string
   # The PHP that environment runs, where its files state it. Null is not "none":
   # a DDEV project that states no php_version gets the default of the installed
-  # DDEV, and an environment named by TYPO3_MCP_CONSOLE states its version
-  # nowhere this server can read. typo3_server_scope reports the version the
-  # console actually answers on.
+  # DDEV, and an environment named by TYPO3_DEV_COMPANION_CONSOLE states its
+  # version nowhere this server can read. typo3_server_scope reports the version
+  # the console actually answers on.
   php: string or null
   # Where this was read: the .ddev config file that states the version last, or
-  # TYPO3_MCP_CONSOLE.
+  # TYPO3_DEV_COMPANION_CONSOLE.
   source: string
   # True when this server is already running inside that environment, so its
   # shell is that environment and a declared command needs nothing in front of
@@ -213,7 +213,7 @@ Extensions: none beyond TYPO3's own.
 Sites: none configured below config/sites/.
 
 Commands this repository declares — these exist here, the core's testing suites do not. The core's suites are run by Build/Scripts/runTests.sh, which no manifest here declares. typo3_test_run_guide names the ones a change needs, with the invocation. What each one does to the sources is read off its body, never by running it: a check reports and leaves them as they are, a change rewrites something, and unknown is a body that does not say — a test suite runs the project's own code, and no declaration covers that. A task told not to change files can run the checks and nothing else. A check may still write a cache of its own; what it does not do is hand the code back different.
-Nothing in this repository configures an environment of its own — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what this reads — so these run wherever you run them.
+Nothing in this repository configures an environment of its own — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what this reads — so these run wherever you run them.
 - composer gerrit:setup (composer.json) — unknown: @gerrit:setup:commitMessageHook:enable && @gerrit:setup:preCommitHook:enable
 - composer gerrit:setup:commitMessageHook:enable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::enableCommitMessageHook
 - composer gerrit:setup:preCommitHook:enable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::enablePreCommitHook
@@ -278,7 +278,7 @@ Sites, with the sets each one depends on:
 - fixture at https://fixture.example.org/, root page 1, sets: typo3/fluid-styled-content, acme/acme-events
 
 Commands this repository declares — these exist here, the core's testing suites do not. What each one does to the sources is read off its body, never by running it: a check reports and leaves them as they are, a change rewrites something, and unknown is a body that does not say — a test suite runs the project's own code, and no declaration covers that. A task told not to change files can run the checks and nothing else. A check may still write a cache of its own; what it does not do is hand the code back different.
-Nothing in this repository configures an environment of its own — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what this reads — so these run wherever you run them.
+Nothing in this repository configures an environment of its own — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what this reads — so these run wherever you run them.
 - composer cgl (composer.json) — change: php-cs-fixer fix
 - composer cgl:ci (composer.json) — check: php-cs-fixer fix --dry-run --diff
 - composer test (composer.json) — unknown: phpunit -c Build/phpunit.xml

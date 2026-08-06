@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Contribution;
+namespace TYPO3\DevCompanion\Contribution;
 
-use Typo3CmsMcp\Http\Fetch;
-use Typo3CmsMcp\Http\Recent;
-use Typo3CmsMcp\Search\Text;
+use TYPO3\DevCompanion\Http\Fetch;
+use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Search\Text;
 
 /**
  * The issue tracker a core patch starts from, read over its Redmine API.
@@ -28,7 +28,7 @@ use Typo3CmsMcp\Search\Text;
  * would be scraped anywhere else.
  *
  * Which agent gets through was measured on 2026-08-03: this server's own
- * `typo3-cms-mcp/<version>` and a plain `curl/…` both answer 200 with JSON, and
+ * `typo3-dev-companion/<version>` and a plain `curl/…` both answer 200 with JSON, and
  * a `Mozilla/5.0 …` answers 200 with a 7.5 kB challenge page. So the first
  * attempt is already the shape that works, and the retry below is what happens
  * if that stops being true.

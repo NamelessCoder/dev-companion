@@ -45,8 +45,8 @@ container.
 
 - Every DDEV project this server meets mounts its files at `/var/www/html`.
   DDEV's own template hardcodes it, so a project where it differs has overridden
-  DDEV's default in `.ddev/docker-compose.*.yaml` — the case `TYPO3_MCP_CONSOLE`
-  exists for.
+  DDEV's default in `.ddev/docker-compose.*.yaml` — the case
+  `TYPO3_DEV_COMPANION_CONSOLE` exists for.
 
 ## Wrong if
 
@@ -69,10 +69,10 @@ console either. `typo3_label_lookup` builds one — `--regex=/(save)/i` for
 `language:domain:search`, where the parentheses are a subshell — and it came
 back exit 2 in every DDEV project, silently, as a fallback to reading the
 package files. `Typo3Cli::run` now quotes for this transport and only for this
-transport: the direct one has no shell between, and what `TYPO3_MCP_CONSOLE`
-names may or may not. Measured against DDEV v1.25.1 on 2026-08-02, by the first
-recording made against an installation of this repository's own — `D-DOC-006`
-has that run.
+transport: the direct one has no shell between, and what
+`TYPO3_DEV_COMPANION_CONSOLE` names may or may not. Measured against DDEV
+v1.25.1 on 2026-08-02, by the first recording made against an installation of
+this repository's own — `D-DOC-006` has that run.
 
 - `Typo3CliTest::everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell`
 
@@ -89,10 +89,11 @@ project is what the measurement above could not have.
 The query was re-run there on 2026-08-02, through this branch's server over
 stdio. `Typo3Cli::resolve()` answers
 `ddev exec -- /var/www/html/vendor/bin/typo3` in that root, with no
-`TYPO3_MCP_CONSOLE` set and no caveat — the mount path, autodiscovered.
-`typo3_label_lookup` comes back `answeredBy: "installation"` with
-`matchCount: 53`, the labels of `printworks_sitepackage`, and the argument built
-unchanged as `--regex=/(printworks)/i`. DDEV v1.25.1, PHP 8.4 in the container.
+`TYPO3_DEV_COMPANION_CONSOLE` set and no caveat — the mount path,
+autodiscovered. `typo3_label_lookup` comes back `answeredBy: "installation"`
+with `matchCount: 53`, the labels of `printworks_sitepackage`, and the argument
+built unchanged as `--regex=/(printworks)/i`. DDEV v1.25.1, PHP 8.4 in the
+container.
 
 So the mount is reached in a second project, and a parenthesised regex now
 survives the container's shell where that report says it did not. The feedback

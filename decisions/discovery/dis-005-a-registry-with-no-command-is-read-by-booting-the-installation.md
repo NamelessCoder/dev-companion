@@ -36,11 +36,11 @@ The registry is not reconstructed from the files the packages ship.
   is a reason to fall back.
 - Against shipping a console command in a package of our own, for now. It would
   reach the same container through the invocation already resolved, and would
-  work for a stated `TYPO3_MCP_CONSOLE` where deriving an interpreter does not —
-  but it has to be installed into somebody else's project first, and in a
-  non-configured system it is not registered either. Worth revisiting when the
-  payload outgrows a few dozen lines or the topics need more than a read-only
-  dump.
+  work for a stated `TYPO3_DEV_COMPANION_CONSOLE` where deriving an interpreter
+  does not — but it has to be installed into somebody else's project first, and
+  in a non-configured system it is not registered either. Worth revisiting when
+  the payload outgrows a few dozen lines or the topics need more than a
+  read-only dump.
 
 ## Assumed
 

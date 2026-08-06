@@ -17,8 +17,8 @@ spared the work is the one about to write the patch.
 ## Evidence
 
 Everything below was measured on 2026-08-03 through this branch's
-`bin/typo3-cms-mcp`, started in `/home/benji/projects/typo3-cms`, which is the
-checkout the feedback was written in.
+`bin/typo3-dev-companion`, started in `/home/benji/projects/typo3-cms`, which is
+the checkout the feedback was written in.
 
 - The judged feedback is `feedback/2026-08-02-145128`: nine assessment steps
   from the Forge #105403 session, offered as a procedure for `typo3_task_guide`

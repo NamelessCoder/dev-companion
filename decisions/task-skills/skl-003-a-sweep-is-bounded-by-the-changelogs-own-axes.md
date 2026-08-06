@@ -23,7 +23,7 @@ nothing and the silence reads as a clean bill for the next major.
   `form set yaml registration deprecated` and
   `form sets discover yaml configuration`, both empty.
 - Re-run on 2026-08-02 from `/home/benji/projects/site-new` through
-  `bin/typo3-cms-mcp`, against TYPO3 14.3. The first query still returns
+  `bin/typo3-dev-companion`, against TYPO3 14.3. The first query still returns
   nothing, and the per-word reach line says why — "form" reaches 63 entries,
   "deprecated" 87, "yaml" 2, and no entry carries all five.
 - The same call bounded by the changelog's own axes answers it.

@@ -14,10 +14,11 @@ there is no directory to walk from and nothing is found. That is what a
 request-serving endpoint has to get: it has no such relationship to its callers,
 and its document root may itself sit inside an installation.
 
-Naming the root outright with `TYPO3_MCP_ROOT` is a decision rather than a
-derivation, so it holds for every entrypoint and is not what this restricts.
+Naming the root outright with `TYPO3_DEV_COMPANION_ROOT` is a decision rather
+than a derivation, so it holds for every entrypoint and is not what this
+restricts.
 
-The one call is in `Server\Entrypoint`, which `bin/typo3-cms-mcp` runs and
+The one call is in `Server\Entrypoint`, which `bin/typo3-dev-companion` runs and
 nothing else does.
 
 ## Held by

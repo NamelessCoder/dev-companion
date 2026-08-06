@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Installer;
-use Typo3CmsMcp\Upkeep\Scenarios;
+use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class SkillTest extends TestCase
 {

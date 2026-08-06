@@ -39,10 +39,10 @@ workflow that owns the task it recognized.
   process.
 - **`typo3://skill/{skillId}/SKILL.md`** — one published task workflow from
   `skills/`. Mostly extension, sitepackage and project work.
-  `bin/typo3-cms-mcp install` writes the same file into the client's own skills
-  directory, and this is the route for a client that never ran it. Published
-  means the skill's own front matter does not say `status: draft`: one that does
-  is a directory in `skills/` and is offered nowhere.
+  `bin/typo3-dev-companion install` writes the same file into the client's own
+  skills directory, and this is the route for a client that never ran it.
+  Published means the skill's own front matter does not say `status: draft`: one
+  that does is a directory in `skills/` and is offered nowhere.
 - **`typo3://skill/{skillId}/references/{file}`** — what a workflow hands over
   at a step. A resource template rather than one list entry each, because these
   are followed from the body that names them, and a checklist offered beside its
@@ -60,7 +60,7 @@ topic, and that topic's `scope` is what the description and the priority are
 derived from. `ScopeTest` holds it in both directions, so a skill no topic names
 fails the suite rather than reaching an extension author as core-only.
 
-`TYPO3_MCP_EXCLUDE_TOOLS` reaches the index and not the list.
+`TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` reaches the index and not the list.
 `Coverage::offered()` drops a topic nothing left can answer, so the index a
 client reads matches the tools it has; the resources stay. Excluding a tool
 takes away a call, not a document.

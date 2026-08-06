@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Project;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unsupported;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Project;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unsupported;
 
 /**
  * What the repository around the installation consists of.
@@ -52,11 +52,11 @@ final class ProjectDescribe extends ReadOnlyTool
             'corePhpConstraint' => Schema::nullableString('What the installed typo3/cms-core requires of PHP, out of that package\'s own composer.json — the lowest a package here may declare it supports. Neither of the other two PHP numbers: not what this project declares, and not what environment.php runs. Not derivable from the TYPO3 major either — v13.4 and v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was found to read.'),
             'environment' => [
                 'type' => ['object', 'null'],
-                'description' => 'The environment this repository configures to run itself in, read from that environment\'s own files. Null means nothing here configures one that this server reads — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what it reads — so the commands below run wherever the caller runs them.',
+                'description' => 'The environment this repository configures to run itself in, read from that environment\'s own files. Null means nothing here configures one that this server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it reads — so the commands below run wherever the caller runs them.',
                 'properties' => [
-                    'via' => ['type' => 'string', 'enum' => ['ddev', 'override'], 'description' => 'ddev: the repository carries a .ddev/config.yaml. override: nothing in the files says so, and TYPO3_MCP_CONSOLE names a command that reaches this installation somewhere other than the caller\'s own shell.'],
-                    'php' => Schema::nullableString('The PHP that environment runs, where its files state it. Null is not "none": a DDEV project that states no php_version gets the default of the installed DDEV, and an environment named by TYPO3_MCP_CONSOLE states its version nowhere this server can read. typo3_server_scope reports the version the console actually answers on.'),
-                    'source' => Schema::string('Where this was read: the .ddev config file that states the version last, or TYPO3_MCP_CONSOLE.'),
+                    'via' => ['type' => 'string', 'enum' => ['ddev', 'override'], 'description' => 'ddev: the repository carries a .ddev/config.yaml. override: nothing in the files says so, and TYPO3_DEV_COMPANION_CONSOLE names a command that reaches this installation somewhere other than the caller\'s own shell.'],
+                    'php' => Schema::nullableString('The PHP that environment runs, where its files state it. Null is not "none": a DDEV project that states no php_version gets the default of the installed DDEV, and an environment named by TYPO3_DEV_COMPANION_CONSOLE states its version nowhere this server can read. typo3_server_scope reports the version the console actually answers on.'),
+                    'source' => Schema::string('Where this was read: the .ddev config file that states the version last, or TYPO3_DEV_COMPANION_CONSOLE.'),
                     'entered' => ['type' => 'boolean', 'description' => 'True when this server is already running inside that environment, so its shell is that environment and a declared command needs nothing in front of it.'],
                     'hooks' => Schema::listOf(Schema::object([
                         'stage' => Schema::string('The DDEV stage it fires at: post-start, post-import-db, pre-pull and the rest.'),

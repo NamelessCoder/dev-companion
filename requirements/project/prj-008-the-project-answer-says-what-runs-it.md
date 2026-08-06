@@ -16,10 +16,11 @@ them holding — so `R-PRJ-001` holds: no console, no database, nothing started 
 find out, and an answer on a fresh clone.
 
 An environment this server cannot read a version from is still an environment.
-Where nothing in the files configures one and `TYPO3_MCP_CONSOLE` names a
-command that reaches the installation somewhere other than the caller's shell,
-the answer says that and says the version is unstated. Silence there would say
-"these run where you are", which is the claim the requirement exists against.
+Where nothing in the files configures one and `TYPO3_DEV_COMPANION_CONSOLE`
+names a command that reaches the installation somewhere other than the caller's
+shell, the answer says that and says the version is unstated. Silence there
+would say "these run where you are", which is the claim the requirement exists
+against.
 
 Without it the answer offers one number where there are two. A review holds the
 declared constraint against the interpreter its own shell has, and in a

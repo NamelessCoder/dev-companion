@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Smoke;
+namespace TYPO3\DevCompanion\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * What the entrypoint does with an argument that is not a command.
@@ -27,7 +27,7 @@ final class EntrypointTest extends TestCase
         $stderr = '';
         $stdout = '';
         self::assertSame(0, $this->execute(['help'], $stdout, $stderr), $stderr);
-        self::assertStringContainsString('Usage: typo3-cms-mcp', $stdout);
+        self::assertStringContainsString('Usage: typo3-dev-companion', $stdout);
         self::assertStringContainsString('install', $stdout);
         self::assertStringContainsString('update', $stdout);
         self::assertStringContainsString('codex', $stdout);
@@ -41,7 +41,7 @@ final class EntrypointTest extends TestCase
         $stdout = '';
         self::assertSame(2, $this->execute(['bogus'], $stdout, $stderr));
         self::assertStringContainsString('no such command "bogus"', $stderr);
-        self::assertStringContainsString('Usage: typo3-cms-mcp', $stderr);
+        self::assertStringContainsString('Usage: typo3-dev-companion', $stderr);
         self::assertSame('', $stdout);
     }
 
@@ -61,7 +61,7 @@ final class EntrypointTest extends TestCase
         $stderr = '';
         $stdout = '';
         $status = $this->execute([], $stdout, $stderr, [
-            'TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_project_scope, typo3_icon_lookup',
+            'TYPO3_DEV_COMPANION_EXCLUDE_TOOLS' => 'typo3_project_scope, typo3_icon_lookup',
         ], implode("\n", [
             '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25",'
                 . '"capabilities":{},"clientInfo":{"name":"phpunit","version":"1"}}}',
@@ -70,7 +70,7 @@ final class EntrypointTest extends TestCase
         ]) . "\n");
 
         self::assertSame(0, $status, 'a stale exclusion took the server down: ' . $stderr);
-        self::assertStringContainsString('TYPO3_MCP_EXCLUDE_TOOLS', $stderr);
+        self::assertStringContainsString('TYPO3_DEV_COMPANION_EXCLUDE_TOOLS', $stderr);
         self::assertStringContainsString('typo3_project_scope', $stderr);
         self::assertStringNotContainsString('typo3_icon_lookup', $stderr, 'a real exclusion is not a problem');
 
@@ -91,7 +91,7 @@ final class EntrypointTest extends TestCase
      * The other name that takes nothing away: one of the three `R-SCO-009` says
      * a caller cannot exclude. It said nothing at all before, on either stream,
      * while the instructions claimed the tool was gone — measured 2026-08-04
-     * with `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools offered
+     * with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools offered
      * including it.
      */
     #[Test]
@@ -100,7 +100,7 @@ final class EntrypointTest extends TestCase
         $stderr = '';
         $stdout = '';
         $status = $this->execute([], $stdout, $stderr, [
-            'TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_server_scope',
+            'TYPO3_DEV_COMPANION_EXCLUDE_TOOLS' => 'typo3_server_scope',
         ], implode("\n", [
             '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25",'
                 . '"capabilities":{},"clientInfo":{"name":"phpunit","version":"1"}}}',
@@ -138,7 +138,7 @@ final class EntrypointTest extends TestCase
         string $input = '',
     ): int {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', ...$arguments],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', ...$arguments],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             Paths::root(),

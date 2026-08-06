@@ -17,9 +17,9 @@ hint half of `feedback/2026-08-03-154508` was open behind that.
 ## Evidence
 
 - The reported call, re-run on 2026-08-03 through this branch's
-  `bin/typo3-cms-mcp`, at `changeType: unknown` and with no path. The intent is
-  `installation-operations` at strong confidence and the checklist is the one
-  `D-GUI-008` landed, and the hints were `extension-asset-build`,
+  `bin/typo3-dev-companion`, at `changeType: unknown` and with no path. The
+  intent is `installation-operations` at strong confidence and the checklist is
+  the one `D-GUI-008` landed, and the hints were `extension-asset-build`,
   `datahandler-basics`, `fal-basics` and `public-assets` — the four the feedback
   reported, unchanged.
 - What had landed by then and was still not reached. `bin/cli hints:probe` with

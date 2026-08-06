@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Upkeep\Environments;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Upkeep\Environments;
 
 /**
  * Every environment a scenario names, and where this checkout stands on it.

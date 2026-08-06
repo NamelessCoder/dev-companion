@@ -2,48 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Upkeep\Command\CatalogCheck;
-use Typo3CmsMcp\Upkeep\Command\CatalogPaths;
-use Typo3CmsMcp\Upkeep\Command\CheckoutStatus;
-use Typo3CmsMcp\Upkeep\Command\CheckoutUpdate;
-use Typo3CmsMcp\Upkeep\Command\DecisionCheck;
-use Typo3CmsMcp\Upkeep\Command\DecisionIndex;
-use Typo3CmsMcp\Upkeep\Command\DecisionList;
-use Typo3CmsMcp\Upkeep\Command\DecisionRenumber;
-use Typo3CmsMcp\Upkeep\Command\EnvironmentCreate;
-use Typo3CmsMcp\Upkeep\Command\EnvironmentStatus;
-use Typo3CmsMcp\Upkeep\Command\FeedbackArchive;
-use Typo3CmsMcp\Upkeep\Command\FeedbackList;
-use Typo3CmsMcp\Upkeep\Command\HintCoverage;
-use Typo3CmsMcp\Upkeep\Command\HintProbe;
-use Typo3CmsMcp\Upkeep\Command\KnowledgeFormat;
-use Typo3CmsMcp\Upkeep\Command\LinkCheck;
-use Typo3CmsMcp\Upkeep\Command\ProseCheck;
-use Typo3CmsMcp\Upkeep\Command\ProseFormat;
-use Typo3CmsMcp\Upkeep\Command\RepositoryCheck;
-use Typo3CmsMcp\Upkeep\Command\RequirementCheck;
-use Typo3CmsMcp\Upkeep\Command\RequirementIndex;
-use Typo3CmsMcp\Upkeep\Command\RequirementList;
-use Typo3CmsMcp\Upkeep\Command\ScenarioCheck;
-use Typo3CmsMcp\Upkeep\Command\ScenarioContract;
-use Typo3CmsMcp\Upkeep\Command\ScenarioRecord;
-use Typo3CmsMcp\Upkeep\Command\ScenarioShow;
-use Typo3CmsMcp\Upkeep\Command\TodoCheck;
-use Typo3CmsMcp\Upkeep\Command\TodoClaim;
-use Typo3CmsMcp\Upkeep\Command\TodoList;
-use Typo3CmsMcp\Upkeep\Command\TodoNext;
-use Typo3CmsMcp\Upkeep\Command\TodoRelease;
-use Typo3CmsMcp\Upkeep\Command\TodoSync;
-use Typo3CmsMcp\Upkeep\Command\TodoWaiting;
-use Typo3CmsMcp\Upkeep\Command\ToolCheck;
-use Typo3CmsMcp\Upkeep\Command\ToolIndex;
-use Typo3CmsMcp\Upkeep\Command\ToolRecord;
-use Typo3CmsMcp\Upkeep\Command\UnresolvedList;
+use TYPO3\DevCompanion\Upkeep\Command\CatalogCheck;
+use TYPO3\DevCompanion\Upkeep\Command\CatalogPaths;
+use TYPO3\DevCompanion\Upkeep\Command\CheckoutStatus;
+use TYPO3\DevCompanion\Upkeep\Command\CheckoutUpdate;
+use TYPO3\DevCompanion\Upkeep\Command\DecisionCheck;
+use TYPO3\DevCompanion\Upkeep\Command\DecisionIndex;
+use TYPO3\DevCompanion\Upkeep\Command\DecisionList;
+use TYPO3\DevCompanion\Upkeep\Command\DecisionRenumber;
+use TYPO3\DevCompanion\Upkeep\Command\EnvironmentCreate;
+use TYPO3\DevCompanion\Upkeep\Command\EnvironmentStatus;
+use TYPO3\DevCompanion\Upkeep\Command\FeedbackArchive;
+use TYPO3\DevCompanion\Upkeep\Command\FeedbackList;
+use TYPO3\DevCompanion\Upkeep\Command\HintCoverage;
+use TYPO3\DevCompanion\Upkeep\Command\HintProbe;
+use TYPO3\DevCompanion\Upkeep\Command\KnowledgeFormat;
+use TYPO3\DevCompanion\Upkeep\Command\LinkCheck;
+use TYPO3\DevCompanion\Upkeep\Command\ProseCheck;
+use TYPO3\DevCompanion\Upkeep\Command\ProseFormat;
+use TYPO3\DevCompanion\Upkeep\Command\RepositoryCheck;
+use TYPO3\DevCompanion\Upkeep\Command\RequirementCheck;
+use TYPO3\DevCompanion\Upkeep\Command\RequirementIndex;
+use TYPO3\DevCompanion\Upkeep\Command\RequirementList;
+use TYPO3\DevCompanion\Upkeep\Command\ScenarioCheck;
+use TYPO3\DevCompanion\Upkeep\Command\ScenarioContract;
+use TYPO3\DevCompanion\Upkeep\Command\ScenarioRecord;
+use TYPO3\DevCompanion\Upkeep\Command\ScenarioShow;
+use TYPO3\DevCompanion\Upkeep\Command\TodoCheck;
+use TYPO3\DevCompanion\Upkeep\Command\TodoClaim;
+use TYPO3\DevCompanion\Upkeep\Command\TodoList;
+use TYPO3\DevCompanion\Upkeep\Command\TodoNext;
+use TYPO3\DevCompanion\Upkeep\Command\TodoRelease;
+use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
+use TYPO3\DevCompanion\Upkeep\Command\TodoWaiting;
+use TYPO3\DevCompanion\Upkeep\Command\ToolCheck;
+use TYPO3\DevCompanion\Upkeep\Command\ToolIndex;
+use TYPO3\DevCompanion\Upkeep\Command\ToolRecord;
+use TYPO3\DevCompanion\Upkeep\Command\UnresolvedList;
 
 /**
  * Everything this repository is kept in order by, as one console application.
@@ -60,7 +60,7 @@ use Typo3CmsMcp\Upkeep\Command\UnresolvedList;
  * upkeep of this checkout and Composer exports it as no `bin`, so what it needs
  * is not what an installation of this package needs.
  *
- * `bin/typo3-cms-mcp` is deliberately not here. That one is the product — the
+ * `bin/typo3-dev-companion` is deliberately not here. That one is the product — the
  * client launches it, Composer exports it as a `bin`, and it has no business
  * carrying the upkeep of the repository it happens to live in.
  */
@@ -71,7 +71,7 @@ final class Cli
      * name because that is where the console prints it, and there is no second
      * place to say what this command is for.
      */
-    private const ABOUT = 'The upkeep of this repository. bin/typo3-cms-mcp is the server itself.';
+    private const ABOUT = 'The upkeep of this repository. bin/typo3-dev-companion is the server itself.';
 
     private static ?Application $application = null;
 

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Extension;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Installation\Extension;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 
 /**
  * What the extension answer says about the registration files it lists.

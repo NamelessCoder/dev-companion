@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Upkeep\Links;
+use TYPO3\DevCompanion\Upkeep\Links;
 
 /**
  * The paths this repository writes between its own files are the one thing it

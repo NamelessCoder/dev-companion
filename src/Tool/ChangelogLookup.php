@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Installation\Changelog;
-use Typo3CmsMcp\Result\Miss;
-use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unsupported;
-use Typo3CmsMcp\Search\LabelSearch;
+use TYPO3\DevCompanion\Installation\Changelog;
+use TYPO3\DevCompanion\Result\Miss;
+use TYPO3\DevCompanion\Result\Schema;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unsupported;
+use TYPO3\DevCompanion\Search\LabelSearch;
 
 /**
  * What a TYPO3 version changed, from the changelog that installation ships.

@@ -144,8 +144,8 @@ assumed and it holds.
 
 The review order above was read off `feedback/2026-08-01-115716`, and one of the
 four links it names does not hold. Re-run on 2026-08-03 through
-`bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, the checkout it was
-written in: `typo3_changelog_lookup` reaches `13.0/Breaking-101955` from
+`bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`, the checkout it
+was written in: `typo3_changelog_lookup` reaches `13.0/Breaking-101955` from
 `image generation` and from `removed public methods`, which are the words the
 entry is titled in, and from nothing the diff carries. `GifBuilder` reaches four
 entries and not that one, `getTemporaryImageWithText` reaches none, and the

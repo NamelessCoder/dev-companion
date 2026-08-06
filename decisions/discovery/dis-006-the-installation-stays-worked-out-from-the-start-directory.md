@@ -24,9 +24,9 @@ in the specification twelve months before it may be removed at all.
 
 - What it tells implementations to do instead is what this server already does.
   The migration named in the deprecation is "tool parameters, resource URIs, or
-  server configuration", and `TYPO3_MCP_ROOT` is the third of those — a value
-  someone decides, honoured by every entrypoint, which is why `R-DIS-001`
-  restricts the derived answer and not this one.
+  server configuration", and `TYPO3_DEV_COMPANION_ROOT` is the third of those —
+  a value someone decides, honoured by every entrypoint, which is why
+  `R-DIS-001` restricts the derived answer and not this one.
 - The walk-up is out of band and stays that way. A working directory is not a
   protocol concept, so no revision can deprecate it, and nothing in the
   specification speaks against it. What it costs is stated rather than hidden:
@@ -45,4 +45,4 @@ in the specification twelve months before it may be removed at all.
   Also wrong if a client emerges that starts this server somewhere other than
   the session's directory, which would break the walk-up without breaking
   anything the specification promises: `R-DIS-022` is what would fail, and
-  `TYPO3_MCP_ROOT` is what such a setup would have to state.
+  `TYPO3_DEV_COMPANION_ROOT` is what such a setup would have to state.

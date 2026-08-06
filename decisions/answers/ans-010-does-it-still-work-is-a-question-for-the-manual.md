@@ -237,8 +237,8 @@ is in the base at all, and a second copy of an order is what `D-SKL-001` exists
 to prevent. It cost 79 words, 1452 to 1531, and that entry keeps the arithmetic.
 
 The readings were re-run from `/home/benji/projects/ext-guidedtour` through this
-checkout's `bin/typo3-cms-mcp` before the sentence was written, and the two
-shapes still come apart. `Infobox ViewHelper state` at `targetVersion: "14"`
+checkout's `bin/typo3-dev-companion` before the sentence was written, and the
+two shapes still come apart. `Infobox ViewHelper state` at `targetVersion: "14"`
 returns `be.infobox` from the ViewHelper reference first, carrying *Deprecated
 since version 14.0 … use the enum ContextualFeedbackSeverity instead*.
 `addInlineLanguageLabelFile` and `inline language labels` return the label

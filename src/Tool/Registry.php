@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace TYPO3\DevCompanion\Tool;
 
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Installation\Icons;
-use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Server\ExcludedTools;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Installation\Icons;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Server\ExcludedTools;
 
 /**
  * Every tool this server has, and the only place one is switched on.

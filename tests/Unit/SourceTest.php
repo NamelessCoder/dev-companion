@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Tool\Source;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Source;
 
 /**
  * What a tool says it can be answered from, held to what it does.

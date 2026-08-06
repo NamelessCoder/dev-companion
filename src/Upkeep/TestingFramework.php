@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
-use Typo3CmsMcp\Knowledge\Versions;
+use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
  * Which typo3/testing-framework release each covered TYPO3 major is read

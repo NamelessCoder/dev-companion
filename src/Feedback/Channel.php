@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Feedback;
+namespace TYPO3\DevCompanion\Feedback;
 
 use Composer\InstalledVersions;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * Stores improvement feedback left by agents using this server, so gaps in the
@@ -24,7 +24,7 @@ use Typo3CmsMcp\Paths;
  * is the Composer root package, so whoever can reach them owns the checkout
  * they write into. Installed as a dependency the package lives in vendor/,
  * where anything written is lost on the next composer install, and the two
- * tools are not offered at all. TYPO3_MCP_EXCLUDE_TOOLS does not reach them
+ * tools are not offered at all. TYPO3_DEV_COMPANION_EXCLUDE_TOOLS does not reach them
  * either — R-SCO-009.
  *
  * One feedback per file: concurrent agents never touch the same file, so no
@@ -43,7 +43,7 @@ use Typo3CmsMcp\Paths;
  */
 final class Channel
 {
-    public const PACKAGE_NAME = 'typo3/cms-mcp';
+    public const PACKAGE_NAME = 'typo3/dev-companion';
 
     public const CATEGORIES = ['missing-knowledge', 'wrong-answer', 'tool-gap', 'bug', 'idea'];
 

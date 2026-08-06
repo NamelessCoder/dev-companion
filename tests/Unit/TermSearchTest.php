@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Search\TermSearch;
-use Typo3CmsMcp\Search\Text;
+use TYPO3\DevCompanion\Search\TermSearch;
+use TYPO3\DevCompanion\Search\Text;
 
 /**
  * Which words of a query are searched for at all.

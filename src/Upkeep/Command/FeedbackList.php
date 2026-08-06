@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Upkeep\OpenFeedback;
+use TYPO3\DevCompanion\Upkeep\OpenFeedback;
 
 /**
  * The pile as a pile, for whoever wants to read it rather than work it.

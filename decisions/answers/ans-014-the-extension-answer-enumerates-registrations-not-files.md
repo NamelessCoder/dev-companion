@@ -18,11 +18,12 @@ anybody chose.
 
 ## Evidence
 
-- `feedback/2026-07-31-194510`, re-run on 2026-08-02 through `bin/typo3-cms-mcp`
-  from this worktree, standing in `/home/benji/projects/site-new` — the
-  directory it was written in, whose `opencode.json` and `.mcp.json` both name
-  this repository's entrypoint. `typo3_extension_scope` with
-  `printworks_sitepackage` answers from the booted installation.
+- `feedback/2026-07-31-194510`, re-run on 2026-08-02 through
+  `bin/typo3-dev-companion` from this worktree, standing in
+  `/home/benji/projects/site-new` — the directory it was written in, whose
+  `opencode.json` and `.mcp.json` both name this repository's entrypoint.
+  `typo3_extension_scope` with `printworks_sitepackage` answers from the booted
+  installation.
 - The XLF half is in that answer: "Ships: manual none, readme none, tests
   Functional+Unit", then `Resources/Private/Language/backend_fields.xlf`,
   `backend_layouts.xlf` and `messages.xlf`, each with "source-language de, no

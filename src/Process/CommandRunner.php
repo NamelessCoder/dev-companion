@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Process;
+namespace TYPO3\DevCompanion\Process;
 
 /**
  * The one place this server leaves its own process, as a seam a test can take.

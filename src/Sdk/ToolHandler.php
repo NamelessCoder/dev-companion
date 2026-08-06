@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Sdk;
+namespace TYPO3\DevCompanion\Sdk;
 
 use Mcp\Schema\Content\TextContent;
 use Mcp\Schema\Result\CallToolResult;
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ToolHandlerInterface;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
- * Bridges one registered tool to Typo3CmsMcp\Tool\Registry.
+ * Bridges one registered tool to TYPO3\DevCompanion\Tool\Registry.
  *
  * The official SDK passes the raw (validated) argument bag to execute(); it is
  * handed straight to Registry::call(), so every behaviour and every rendering

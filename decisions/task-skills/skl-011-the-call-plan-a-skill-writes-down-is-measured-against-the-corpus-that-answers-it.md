@@ -21,8 +21,8 @@ the ranker moved under it on the day it was followed.
   returning roughly 80% of the first. `scenarios/runs/REVIEW-03.json` records
   both in its `toolTrace`, in that order, so the split was the skill's and not
   the session's invention.
-- The report reproduces. Re-run on 2026-08-03 through `bin/typo3-cms-mcp` from
-  this worktree: `changelog entry` returns `## Breaking Changes`,
+- The report reproduces. Re-run on 2026-08-03 through `bin/typo3-dev-companion`
+  from this worktree: `changelog entry` returns `## Breaking Changes`,
   `## Changelog Files`, `## Core Contribution Guide` and `## Common Commands`;
   `breaking change` returns `## Breaking Changes`, `## Changelog Files`,
   `## Review Readiness` and `## Summary Line`. The first two are the same

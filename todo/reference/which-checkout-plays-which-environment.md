@@ -21,40 +21,47 @@ works in, which is where a patch to review comes from.
   `main` at TYPO3 15.0.0-dev, PHP `^8.5` declared and 8.5 in DDEV, no extensions
   and no sites. The server is not a dependency there, so it is installed from
   this checkout the way `E-EXT` is — done on 2026-08-03, when the published
-  copies were a day behind the skills here. **It is worked in**, which is what
-  it plays: `origin/main..main` carried an unpushed core patch and
-  `.claude/worktrees/` a branch with more when `REVIEW-03` was unblocked on
-  2026-08-03, so that review finds a diff without one being made for it.
-  `git status` there is never empty — the generated `.gitignore` block is
-  uncommitted, `.claude/` and `opencode.json` are untracked — and a run notes
-  that before it starts rather than reading it afterwards as a session that
-  wrote. The DDEV project was paused on 2026-08-02, so a runtime lookup answers
-  unsupported until it is started. A GPT-5 mini session reviewed the GD/SVG
-  placeholder patch here on 2026-08-01 (`feedback/2026-08-01-114526`): it was
-  given a subsystem task rather than the scenario prompt, so it is precedent for
-  the environment and not a run.
-- **`E-SITE`** — `/home/benji/projects/site-new`, site package below
-  `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. The server is a
-  dependency there: refresh the skills with
-  `ddev exec php vendor/bin/typo3-cms-mcp update --agent=claude`. Its tree is
-  clean as of 2026-08-02, at `e7f3f05` — the `.gitignore` modification noted
-  here before was committed in `1523751`. `/var/` is gitignored there, so a run
-  that boots the installation still leaves `git status` empty.
+  copies were a day behind the skills here, and again on 2026-08-06 after the
+  rename of `D-AUD-008`, which is what put the new binary in its `.mcp.json` and
+  replaced the state directory. **It is worked in**, which is what it plays:
+  `origin/main..main` carried an unpushed core patch and `.claude/worktrees/` a
+  branch with more when `REVIEW-03` was unblocked on 2026-08-03, so that review
+  finds a diff without one being made for it. `git status` there is never empty
+  — the generated `.gitignore` block is uncommitted, `.claude/` and
+  `opencode.json` are untracked — and a run notes that before it starts rather
+  than reading it afterwards as a session that wrote. The DDEV project was
+  paused on 2026-08-02, so a runtime lookup answers unsupported until it is
+  started. A GPT-5 mini session reviewed the GD/SVG placeholder patch here on
+  2026-08-01 (`feedback/2026-08-01-114526`): it was given a subsystem task
+  rather than the scenario prompt, so it is precedent for the environment and
+  not a run.
+- **`E-SITE`** — **gone from this machine as of 2026-08-06.**
+  `/home/benji/projects/site-new` does not exist, so the site package
+  `REVIEW-01` reviews has no checkout and that review cannot be run until one is
+  made. What it was: site package below `extensions/printworks_sitepackage`,
+  TYPO3 14.3.5 under DDEV, with the server as a Composer dependency, refreshed
+  by `ddev exec php vendor/bin/typo3-dev-companion update --agent=claude`. A
+  replacement is the one entry here that also has to re-require the package
+  under its new name — `typo3/dev-companion` resolves from nowhere yet, so it is
+  a path repository onto this checkout until the vendor question is answered.
 - **`E-EXT`** — two checkouts play it, and which one a run needs is a property
   of the run. In both the server is **not** a Composer dependency, so it is
   reached from this checkout:
-  `php /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude`
+  `php /home/benji/projects/typo3-cms-mcp/bin/typo3-dev-companion install --agent=claude`
   from the project root publishes the skills and writes the host-php
   `.mcp.json`. Repeat it after any skill change — the published skills are a
   copy and nothing reports it when they are older than the server. The generated
   ignore block in each `.gitignore` and the untracked `.mcp.json` are from that
-  install and stay. What `.mcp.json` names is the checkout the install was run
-  from, so one run from a worktree points the client at that worktree until the
-  install is repeated from here — which is what the run of 2026-08-04 did, and
-  undid afterwards. Repeating it in `/home/benji/projects/syntax` that day took
-  the checkout from five published skills to nine. The ignore block it had still
-  names the five, and the four that arrived carry a `.gitignore` of their own,
-  so the block being short of them leaves nothing untracked.
+  install and stay. **None of them carries an install as of 2026-08-06**: no
+  `.mcp.json`, no published skills and no state directory in either checkout
+  that still exists, so a run in one starts by repeating the command above. What
+  `.mcp.json` names is the checkout the install was run from, so one run from a
+  worktree points the client at that worktree until the install is repeated from
+  here — which is what the run of 2026-08-04 did, and undid afterwards.
+  Repeating it in `/home/benji/projects/syntax` that day took the checkout from
+  five published skills to nine. The ignore block it had still names the five,
+  and the four that arrived carry a `.gitignore` of their own, so the block
+  being short of them leaves nothing untracked.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared
     `^13.4 || ^14.3`. **Static quality infrastructure is incomplete**:
@@ -75,9 +82,12 @@ works in, which is where a patch to review comes from.
     infrastructure, which is what it plays. `REVIEW-02` ran here twice on
     2026-07-31, `partial` at 02:55 and `covered` at 08:15 after the corrections
     that run earned.
-  - `/home/benji/projects/news` — `georgringer/news` 13.0.2 at `3fe278a2`, TYPO3
-    **13.4.33** below `.Build/vendor` (capital B), host PHP 8.3, no DDEV. **A
-    major behind the world**, which is what it plays: it declares `^12.4.37
+  - `/home/benji/projects/news` — **gone from this machine as of 2026-08-06**,
+    so `EXT-01` and `SKILL-09` have no checkout to run in and a clone has to
+    reproduce the properties below rather than take the latest of anything.
+    `georgringer/news` 13.0.2 at `3fe278a2`, TYPO3 **13.4.33** below
+    `.Build/vendor` (capital B), host PHP 8.3, no DDEV. **A major behind the
+    world**, which is what it plays: it declares `^12.4.37
     || ^13.4.15` on PHP `>= 8.1 < 8.5` while 14 is out, so the declared range
     does real work in a run instead of being quoted. It owns
     `Build/Scripts/runTests.sh`, two per-major workflows, 30 test classes and a

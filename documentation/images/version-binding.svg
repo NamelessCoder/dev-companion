@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title description">
   <title id="title">Version-bound knowledge</title>
-  <desc id="description">TYPO3 CMS MCP covers TYPO3 12 through 15. A statement without bounds applies to all covered versions. Since and until bind individual statements to a range, and each boundary is verified on the covered version before and after it.</desc>
+  <desc id="description">TYPO3 Dev Companion covers TYPO3 12 through 15. A statement without bounds applies to all covered versions. Since and until bind individual statements to a range, and each boundary is verified on the covered version before and after it.</desc>
   <defs>
     <style>.eyebrow{font:700 14px system-ui,sans-serif;letter-spacing:1.8px;fill:#ff8700}.title{font:700 34px system-ui,sans-serif;fill:#101828}.subtitle{font:400 17px system-ui,sans-serif;fill:#475467}.major{font:700 22px system-ui,sans-serif;fill:#101828}.label{font:700 18px system-ui,sans-serif;fill:#101828}.copy{font:400 14px system-ui,sans-serif;fill:#475467}.code{font:600 13px ui-monospace,monospace;fill:#344054}.small{font:600 12px system-ui,sans-serif;fill:#667085}.whiteLabel{font:700 18px system-ui,sans-serif;fill:#fff}.whiteCopy{font:400 14px system-ui,sans-serif;fill:#fff4e7}</style>
   </defs>

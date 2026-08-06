@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Contract;
+namespace TYPO3\DevCompanion\Tests\Contract;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * The naming schema every tool follows: typo3_<subject>_<verb>, with the verb

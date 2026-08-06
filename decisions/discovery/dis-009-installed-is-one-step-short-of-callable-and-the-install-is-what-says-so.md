@@ -15,14 +15,14 @@ with a correct entry beside it and found no tool they could call.
 ## Evidence
 
 - Nothing was missing on this server's side. Re-run on 2026-08-02, driving
-  `bin/typo3-cms-mcp` over stdio from this checkout: `tools/list` returned 24
-  tools, every one of the five the feedback names among them —
+  `bin/typo3-dev-companion` over stdio from this checkout: `tools/list` returned
+  24 tools, every one of the five the feedback names among them —
   `typo3_project_scope`, `typo3_extension_scope`, `typo3_task_guide`,
   `typo3_architecture_lookup`, `typo3_changelog_lookup`.
 - The entry in the reported project is correct and was written by this
   installer. `/home/benji/projects/site-new/.mcp.json` names `php` with the
-  absolute path to the binary above, and `typo3-cms-mcp.json` records `claude`,
-  `generic` and `opencode` as the clients set up there.
+  absolute path to the binary above, and `typo3-dev-companion.json` records
+  `claude`, `generic` and `opencode` as the clients set up there.
 - Reported twice, from that same directory, and only one of the two was ever
   read as a report about this server.
   `feedback/archive/2026-07-29-105130-overall-verdict-from-using-this-server-as-the.md`

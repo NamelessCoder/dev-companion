@@ -164,13 +164,14 @@ dated: step 3 landed at 02:15 CEST on 2026-07-31 and the sweep at 16:24. A base
 recited with the sweep in it is a base that carried step 3.
 
 What the step is worth was re-run on 2026-08-02, from `site-new` through
-`bin/typo3-cms-mcp`. `typo3_task_guide` with the audit task, area `extension`,
-version 14 and change type `unknown` answers in 1,937 words. Under "Next
-lookups" it names `typo3_architecture_lookup` and `typo3_changelog_lookup`,
-which are steps 4 and 5 the caller has just read. Its checklist is six items
-about the target branch, the issue context and keeping a patch focused. And it
-names no workflow: `src/Tool/TaskGuide.php` has no skill in it, while step 3
-here says the call returns "the workflow this task belongs to".
+`bin/typo3-dev-companion`. `typo3_task_guide` with the audit task, area
+`extension`, version 14 and change type `unknown` answers in 1,937 words. Under
+"Next lookups" it names `typo3_architecture_lookup` and
+`typo3_changelog_lookup`, which are steps 4 and 5 the caller has just read. Its
+checklist is six items about the target branch, the issue context and keeping a
+patch focused. And it names no workflow: `src/Tool/TaskGuide.php` has no skill
+in it, while step 3 here says the call returns "the workflow this task belongs
+to".
 
 `feedback/2026-07-31-194826` is that same call from another model in the same
 project. It reports that the guide restated the skill's own checklist and the
@@ -224,8 +225,8 @@ another way — the session's step 2 names `base.md`, the file was created by
 Not before" since that commit. There is no version of it that lacked the rule.
 
 The server's half of the run reproduces. From `site-new` on 2026-08-02 through
-`bin/typo3-cms-mcp`, `typo3_project_scope` answers 14.3.5 with the five declared
-commands, and `typo3_changelog_lookup` with
+`bin/typo3-dev-companion`, `typo3_project_scope` answers 14.3.5 with the five
+declared commands, and `typo3_changelog_lookup` with
 `type=deprecation, version=14, limit=30` returns the first 30 of 75 entries —
 the 30 the session reported. Step 3 is the one that would not have paid.
 `typo3_task_guide` called with an audit task, the area and the extension's path
@@ -318,9 +319,9 @@ made for this same task shape. What is left is the route through the server, and
 it ends before the skill.
 
 The entry point was in the text that session was sent. `site-new` runs
-`bin/typo3-cms-mcp` out of the main checkout, and `18a371a` put the sentence
-into the `instructions` at 18:33 CEST on 2026-07-31, six hours before the
-session filed. That sentence says `typo3_task_guide` "gives the workflow the
+`bin/typo3-dev-companion` out of the main checkout, and `18a371a` put the
+sentence into the `instructions` at 18:33 CEST on 2026-07-31, six hours before
+the session filed. That sentence says `typo3_task_guide` "gives the workflow the
 task belongs to, and hands the parts that have their own workflow to the skill
 that owns them".
 

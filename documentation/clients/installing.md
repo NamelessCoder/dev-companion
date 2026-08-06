@@ -18,24 +18,24 @@ composer install
 Then install the entrypoint into the current project's `.mcp.json`:
 
 ```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install
+/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install
 ```
 
 For Codex, install its project configuration and task skills directly:
 
 ```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=codex
+/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install --agent=codex
 ```
 
 Refresh them after updating this package:
 
 ```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update
+/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion update
 ```
 
 `update` takes `--agent=<client>` as well, but rarely needs to: `install`
-records every client it set up in `.typo3-cms-mcp/state.json`, and without an
-agent `update` refreshes all of them. A project is usually worked on by more
+records every client it set up in `.typo3-dev-companion/state.json`, and without
+an agent `update` refreshes all of them. A project is usually worked on by more
 than one, and which ones is knowledge only the project has.
 
 ## Being told that they are due
@@ -68,7 +68,7 @@ Both commands take `--drafts`, which publishes the skills that still declare
 `status: draft` beside the ones this server publishes:
 
 ```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude --drafts
+/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install --agent=claude --drafts
 ```
 
 What it is for is the review step [writing-a-skill.md](writing-a-skill.md) makes
@@ -77,13 +77,13 @@ where it loads, and the questions it exists to raise — is this the order the
 work actually goes in, is the step that decides the outcome in it — are raised
 by using it on a real task.
 
-The drafts are recorded under their own key in `.typo3-cms-mcp/state.json`,
-because what is in a project unreviewed is the question somebody opens that file
-to answer. They are the one thing an `update` does not carry over: a run that
-does not ask for them removes them again and says so. Sticky would be the
-convenient reading and the wrong one — an unreviewed workflow that stays in a
-project because somebody once tried it is what publishing being a deliberate
-edit exists to prevent.
+The drafts are recorded under their own key in
+`.typo3-dev-companion/state.json`, because what is in a project unreviewed is
+the question somebody opens that file to answer. They are the one thing an
+`update` does not carry over: a run that does not ask for them removes them
+again and says so. Sticky would be the convenient reading and the wrong one — an
+unreviewed workflow that stays in a project because somebody once tried it is
+what publishing being a deliberate edit exists to prevent.
 
 Both commands write the client entry, because what belongs in it is a property
 of the project rather than of the run: a project that required this package
@@ -94,10 +94,11 @@ refused instead — the two commands then say so and change nothing.
 
 They own the command in that entry and nothing else. Whatever the caller put
 beside it stays — `env` above all, which is the only place a client
-configuration carries `TYPO3_MCP_EXCLUDE_TOOLS`. In a `.codex/config.toml` or a
-`.grok/config.toml` that means every line of the section this package does not
-write, so a value continued on the next line is refused with the line number
-rather than rewritten around: keeping a line means knowing where it ends.
+configuration carries `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`. In a
+`.codex/config.toml` or a `.grok/config.toml` that means every line of the
+section this package does not write, so a value continued on the next line is
+refused with the line number rather than rewritten around: keeping a line means
+knowing where it ends.
 
 Naming no client at all is a setup of its own, recorded as `generic`: `install`
 then writes the `.mcp.json` entry and publishes the skills to `.agents/skills`,
@@ -106,28 +107,29 @@ refreshed by the same `update` as every named client. `--agent=` does not take
 `generic`, because it is nobody's name.
 
 Neither command touches the project's `.gitignore`. Every directory this package
-writes — each published skill, and `.typo3-cms-mcp/` where the record sits —
-carries a `.gitignore` of its own that says `*`, which covers the directory and
-that file with it: git reports nothing there, and a skill the project wrote
+writes — each published skill, and `.typo3-dev-companion/` where the record sits
+— carries a `.gitignore` of its own that says `*`, which covers the directory
+and that file with it: git reports nothing there, and a skill the project wrote
 itself, in the same skills directory, stays visible. Merged agent or MCP
 configuration such as `.codex/config.toml` or `.mcp.json` is ignored nowhere,
 because the project may share it.
 
-Development builds before this wrote a `typo3-cms-mcp.json` at the project root
-and a block between `# BEGIN typo3-cms-mcp` and `# END typo3-cms-mcp` into the
-project's `.gitignore`. Neither is read or removed by anything here — the
-package is unreleased, so a project that has them was set up by hand and takes
-them out the same way, and the next `install` records the clients again.
+Development builds before this wrote a `typo3-dev-companion.json` at the project
+root and a block between `# BEGIN typo3-dev-companion` and
+`# END typo3-dev-companion` into the project's `.gitignore`. Neither is read or
+removed by anything here — the package is unreleased, so a project that has them
+was set up by hand and takes them out the same way, and the next `install`
+records the clients again.
 
 It writes the following shape with the actual absolute path:
 
 ```json
 {
   "mcpServers": {
-    "typo3-cms-mcp": {
+    "typo3-dev-companion": {
       "type": "stdio",
       "command": "php",
-      "args": ["/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp"]
+      "args": ["/absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion"]
     }
   }
 }
@@ -145,27 +147,27 @@ project's `composer.json`:
 ```json
 {
   "repositories": [
-    { "type": "path", "url": "/absolute/path/to/typo3-cms-mcp" }
+    { "type": "path", "url": "/absolute/path/to/typo3-dev-companion" }
   ]
 }
 ```
 
 ```bash
-composer require typo3/cms-mcp
+composer require typo3/dev-companion
 ```
 
-Composer then exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`.
+Composer then exposes the stdio entrypoint as `vendor/bin/typo3-dev-companion`.
 Install it from the consuming project's root:
 
 ```bash
-vendor/bin/typo3-cms-mcp install
+vendor/bin/typo3-dev-companion install
 ```
 
-Use `vendor/bin/typo3-cms-mcp install --agent=codex` for the corresponding Codex
-setup, and `vendor/bin/typo3-cms-mcp update` to refresh it and every other
-client installed there.
+Use `vendor/bin/typo3-dev-companion install --agent=codex` for the corresponding
+Codex setup, and `vendor/bin/typo3-dev-companion update` to refresh it and every
+other client installed there.
 
-`vendor/bin/typo3-cms-mcp help` lists both commands and every client they
+`vendor/bin/typo3-dev-companion help` lists both commands and every client they
 accept. Passing anything else fails with that same text: without an argument the
 entrypoint is the MCP transport itself and waits on stdin, which at a terminal
 is indistinguishable from a hang.
@@ -222,8 +224,8 @@ unestablished rather than filled in:
 - **Amp** (`.amp/settings.json`) — an approval. "MCP servers in workspace
   settings (`.amp/settings.json`) require explicit approval before they can
   run", and "in the CLI, you'll be prompted to approve workspace servers when
-  they're first detected". `amp mcp approve typo3-cms-mcp` does it without the
-  prompt, and `amp mcp doctor` shows one `awaiting approval`.
+  they're first detected". `amp mcp approve typo3-dev-companion` does it without
+  the prompt, and `amp mcp doctor` shows one `awaiting approval`.
   ([manual](https://ampcode.com/manual))
 - **VS Code** (`.vscode/mcp.json`) — a trust confirmation. "When you add an MCP
   server to your workspace or change its configuration, you need to confirm that
@@ -293,21 +295,21 @@ a server that answers there is not the missing piece.
 Run the installer inside DDEV:
 
 ```bash
-ddev exec vendor/bin/typo3-cms-mcp install --agent=codex
+ddev exec vendor/bin/typo3-dev-companion install --agent=codex
 ```
 
 The project directory is mounted, so the skills are available to the host at
 `.agents/skills`. The generated MCP entry deliberately starts the server with
 the project's container PHP, at the `config.bin-dir` the project declares —
-`.build/bin/typo3-cms-mcp` in the layout most extension repositories use:
+`.build/bin/typo3-dev-companion` in the layout most extension repositories use:
 
 ```json
 {
   "mcpServers": {
-    "typo3-cms-mcp": {
+    "typo3-dev-companion": {
       "type": "stdio",
       "command": "ddev",
-      "args": ["exec", "php", "vendor/bin/typo3-cms-mcp"]
+      "args": ["exec", "php", "vendor/bin/typo3-dev-companion"]
     }
   }
 }
@@ -320,10 +322,10 @@ configuration uses the absolute entrypoint:
 ```json
 {
   "mcpServers": {
-    "typo3-cms-mcp": {
+    "typo3-dev-companion": {
       "type": "stdio",
       "command": "php",
-      "args": ["/absolute/path/to/project/vendor/bin/typo3-cms-mcp"]
+      "args": ["/absolute/path/to/project/vendor/bin/typo3-dev-companion"]
     }
   }
 }
@@ -345,9 +347,9 @@ the repository where the task was meant, and a core patch written from a site
 installation was answered as core work and then sent to a tool the client had
 not been given.
 
-- `TYPO3_MCP_EXCLUDE_TOOLS` removes tools by their comma-separated names, and is
-  the only thing that shortens the list. Three names never shorten it:
-  `typo3_server_scope`, because it is what explains a shorter list, and
+- `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` removes tools by their comma-separated
+  names, and is the only thing that shortens the list. Three names never shorten
+  it: `typo3_server_scope`, because it is what explains a shorter list, and
   `typo3_feedback_record` and `typo3_feedback_list`, because the feedback
   channel is a development tool for building this server rather than part of
   using it — `R-SCO-009`.
@@ -381,16 +383,16 @@ tools:
 printf '%s\n' \
   '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
   '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
-  | php bin/typo3-cms-mcp
+  | php bin/typo3-dev-companion
 ```
 
 Where discovery needs help, two environment variables end the guessing:
-`TYPO3_MCP_ROOT` names the installation and `TYPO3_MCP_CONSOLE` the command that
-reaches its console, for example `ddev exec .build/bin/typo3`.
-`typo3_server_scope` then names the installation it is reading, how it got
-there, and whether the console is reachable.
+`TYPO3_DEV_COMPANION_ROOT` names the installation and
+`TYPO3_DEV_COMPANION_CONSOLE` the command that reaches its console, for example
+`ddev exec .build/bin/typo3`. `typo3_server_scope` then names the installation
+it is reading, how it got there, and whether the console is reachable.
 
-`TYPO3_MCP_ROOT` names what is read and not where the work is. Point it at a
-site installation from a core checkout and the icons and labels come from the
-site while the answers stay the core's; only where nothing can be walked up to
-does it decide that too.
+`TYPO3_DEV_COMPANION_ROOT` names what is read and not where the work is. Point
+it at a site installation from a core checkout and the icons and labels come
+from the site while the answers stay the core's; only where nothing can be
+walked up to does it decide that too.

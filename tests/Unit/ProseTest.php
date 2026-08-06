@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Upkeep\Prose;
-use Typo3CmsMcp\Upkeep\Wrap;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Prose;
+use TYPO3\DevCompanion\Upkeep\Wrap;
 
 /**
  * That the prose rule is measured, and that the one place it is held holds.

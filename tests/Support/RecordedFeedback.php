@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Support;
+namespace TYPO3\DevCompanion\Tests\Support;
 
 use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Paths;
+use TYPO3\DevCompanion\Feedback\Channel;
+use TYPO3\DevCompanion\Paths;
 
 /**
  * A feedback store of the test's own, for the cases that record one.

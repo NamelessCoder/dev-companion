@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Domains;
-use Typo3CmsMcp\Knowledge\Hints;
-use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Knowledge\TaskIntents;
-use Typo3CmsMcp\Knowledge\TestSuiteHints;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Tool\HintLookup;
-use Typo3CmsMcp\Tool\Registry;
-use Typo3CmsMcp\Tool\TaskGuide;
-use Typo3CmsMcp\Upkeep\Scenarios;
+use TYPO3\DevCompanion\Knowledge\Domains;
+use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\Scope;
+use TYPO3\DevCompanion\Knowledge\TaskIntents;
+use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Tool\HintLookup;
+use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Tool\TaskGuide;
+use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class HintsTest extends TestCase
 {

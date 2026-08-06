@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Manual;
+namespace TYPO3\DevCompanion\Manual;
 
-use Typo3CmsMcp\Http\Fetch;
-use Typo3CmsMcp\Search\TermSearch;
-use Typo3CmsMcp\Search\Text;
+use TYPO3\DevCompanion\Http\Fetch;
+use TYPO3\DevCompanion\Search\TermSearch;
+use TYPO3\DevCompanion\Search\Text;
 
 /**
  * Searches and reads the official, versioned TYPO3 manuals.

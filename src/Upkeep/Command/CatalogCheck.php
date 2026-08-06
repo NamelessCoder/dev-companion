@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
-use Typo3CmsMcp\Knowledge\TestSuiteHints;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Tool\TranslationDomainLookup;
-use Typo3CmsMcp\Upkeep\Catalogs;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\TestingFramework;
+use TYPO3\DevCompanion\Knowledge\Catalog\DemoMarkup;
+use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
+use TYPO3\DevCompanion\Upkeep\Catalogs;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\TestingFramework;
 
 /**
  * Verifies the bundled catalogs below knowledge/catalog/ against the TYPO3 core

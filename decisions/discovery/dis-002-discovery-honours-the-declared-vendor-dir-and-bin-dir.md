@@ -57,7 +57,7 @@ missing is that absolute is a spelling of the same directory. One below the root
 is now expressed relative to it, which is the form both DDEV and the host need,
 and `autoloader()` reads an absolute `vendor-dir` the same way. One outside the
 root still has no usable form and is named in the reason with
-`TYPO3_MCP_CONSOLE`. `R-DIS-003` holds both.
+`TYPO3_DEV_COMPANION_CONSOLE`. `R-DIS-003` holds both.
 
 ## Since then
 

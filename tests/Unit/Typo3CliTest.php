@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Process\CommandRunner;
-use Typo3CmsMcp\Result\Unsupported;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tool\Registry;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Result\Unsupported;
+use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * Whether the installation's console can be invoked, and — when it cannot —
@@ -595,7 +595,7 @@ final class Typo3CliTest extends TestCase
     /** @param array<string, mixed> $manifest */
     private function installation(array $manifest = []): string
     {
-        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-cli-' . bin2hex(random_bytes(6)));
+        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-dev-companion-cli-' . bin2hex(random_bytes(6)));
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', json_encode(
             $manifest + ['name' => 'typo3/cms', 'type' => 'typo3-cms-core'],

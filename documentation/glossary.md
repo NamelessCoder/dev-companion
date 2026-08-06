@@ -38,7 +38,7 @@
 - **todo** — one entry in the order of the work.
 - **tool** — one `typo3_<subject>_<verb>` this server offers its callers: the
   MCP primitive of that name, one class in `src/Tool/`, listed in
-  `Typo3CmsMcp\Tools`.
+  `TYPO3\DevCompanion\Tools`.
 - **tool verb** — one of `lookup`, `guide`, `list`, `scope`, `describe`,
   `record`: what tells a caller the shape of the answer.
 - **verdict** — how a recorded run came out: `covered`, `partial`, `gap`.

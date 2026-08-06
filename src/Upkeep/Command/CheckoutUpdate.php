@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Command;
+namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Upkeep\Checkouts;
-use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\TestingFramework;
+use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
+use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\TestingFramework;
 
 /**
  * Keeps one TYPO3 core checkout per covered version below .checkouts/, so that
@@ -25,7 +25,7 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
  * package rather than against a core branch (D-KNW-002), and reading it anywhere
  * else makes the evidence unreproducible for exactly the same reason. Which
  * release line pairs with which major is the core's own require-dev pin, so
- * nothing about it is recorded: see Typo3CmsMcp\Upkeep\TestingFramework.
+ * nothing about it is recorded: see TYPO3\DevCompanion\Upkeep\TestingFramework.
  */
 #[AsCommand(
     name: 'checkouts:update',

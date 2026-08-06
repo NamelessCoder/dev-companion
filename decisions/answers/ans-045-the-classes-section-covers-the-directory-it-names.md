@@ -18,7 +18,7 @@ a caller who trusts the promise never learns there was more to open.
 
 - `feedback/2026-08-03-164651`, re-run on 2026-08-03 from
   `/home/benji/projects/ext-guidedtour` through this worktree's
-  `bin/typo3-cms-mcp`, server 0.3.0. It reproduces exactly:
+  `bin/typo3-dev-companion`, server 0.3.0. It reproduces exactly:
   `classes: [{"kind": "EventListener", "files": 2}]`, while
   `find Classes -name '*.php'` gives three files in two directories.
   `Classes/Utility/` is under no kind and in no line of the answer.

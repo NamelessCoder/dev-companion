@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep;
+namespace TYPO3\DevCompanion\Upkeep;
 
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Process\CommandRunner;
-use Typo3CmsMcp\Process\SystemRunner;
+use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Process\SystemRunner;
 
 /**
  * Where the core checkouts live, and the git this repository reads them with.

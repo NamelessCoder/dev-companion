@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tests\Unit;
+namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Knowledge\ReleaseLines;
+use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 
 /**
  * Which branches take a patch, and what the list is worth on a day nobody read

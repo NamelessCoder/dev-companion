@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
-  <title id="title">TYPO3 CMS MCP repository architecture</title>
+  <title id="title">TYPO3 Dev Companion repository architecture</title>
   <desc id="description">The repository has a runtime lane starting at the stdio entrypoint and an upkeep lane starting at bin cli. Runtime tools compose results from knowledge, installation, manuals and core services. Upkeep commands maintain the repository's knowledge, evidence and work records.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#98a2b3"/></marker>
@@ -14,7 +14,7 @@
   <text x="84" y="210" class="lane" fill="#b54708">RUNTIME — WHAT CLIENTS ASK</text>
   <rect x="60" y="244" width="225" height="82" rx="16" fill="#101828"/>
   <text x="84" y="277" class="whiteLabel">stdio entrypoint</text>
-  <text x="84" y="303" class="whiteCode">bin/typo3-cms-mcp</text>
+  <text x="84" y="303" class="whiteCode">bin/typo3-dev-companion</text>
   <path d="M285 285 H330" class="line"/>
   <rect x="330" y="244" width="225" height="82" rx="16" fill="#ffffff" stroke="#ffb55c"/>
   <text x="354" y="277" class="label">Server/</text>

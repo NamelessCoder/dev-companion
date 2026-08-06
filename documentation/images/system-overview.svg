@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
-  <title id="title">TYPO3 CMS MCP system overview</title>
+  <title id="title">TYPO3 Dev Companion system overview</title>
   <desc id="description">Three TYPO3 audiences ask an MCP-enabled client. The local server routes questions to bundled knowledge, the active installation, official documentation, or core services and returns readable and structured answers.</desc>
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -55,7 +55,7 @@
     <text x="393" y="326" class="whiteLabel">MCP-enabled client</text>
     <text x="393" y="352" class="whiteCopy">starts one local PHP subprocess</text>
     <path d="M393 378 H657" stroke="#344054"/>
-    <text x="393" y="414" class="whiteLabel">TYPO3 CMS MCP</text>
+    <text x="393" y="414" class="whiteLabel">TYPO3 Dev Companion</text>
     <text x="393" y="440" class="whiteCopy">routes by task, version and scope</text>
     <text x="393" y="464" class="whiteCopy">read-only except explicit feedback</text>
   </g>

@@ -211,6 +211,52 @@ final class SiteTest extends TestCase
     }
 
     /**
+     * The index is over the pages as they are served, so a hit is a URL rather
+     * than a path somebody then has to translate.
+     */
+    #[Test]
+    public function theSearchIndexNamesEveryPageByTheUrlItIsServedAt(): void
+    {
+        Site::build($this->target);
+        $index = Site::search();
+
+        $urls = array_column($index, 'url');
+        self::assertContains('index.html', $urls, 'the map page is the site root');
+        self::assertContains('tools/index.html', $urls);
+        self::assertContains('tools/typo3_icon_lookup.html', $urls);
+        foreach ($urls as $url) {
+            self::assertFileExists(
+                $this->target . '/' . substr($url, 0, -5) . '.md',
+                $url . ' is indexed and not published',
+            );
+        }
+    }
+
+    /**
+     * What is left out is the recorded evidence. 582 fenced blocks, most of
+     * them a tool answer in JSON, would bury every prose match under them and
+     * be most of what a reader downloads to find one.
+     */
+    #[Test]
+    public function theSearchIndexHoldsTheProseAndNotTheRecordedAnswers(): void
+    {
+        $index = Site::search();
+
+        $recorded = array_values(array_filter(
+            $index,
+            static fn(array $page): bool => $page['url'] === 'tools/typo3_icon_lookup.html',
+        ));
+
+        self::assertNotSame([], $recorded);
+        self::assertSame('typo3_icon_lookup', $recorded[0]['title']);
+        self::assertNotSame('', $recorded[0]['text']);
+        foreach ($index as $page) {
+            self::assertStringNotContainsString('```', $page['text'], $page['url'] . ' carries a fenced block');
+            self::assertStringNotContainsString('](', $page['text'], $page['url'] . ' carries a link target');
+        }
+    }
+
+    /**
      * Every page of the copy, by the name it carries there.
      *
      * @return array<string, string>

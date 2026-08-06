@@ -37,11 +37,13 @@ jobs:
           composer install --working-dir=build/guides --no-interaction --no-progress
 
       # The first writes the copy that is publishable, the second renders it,
-      # reading guides.xml for where both of those are.
+      # reading guides.xml for where both of those are. The third writes the
+      # search index beside the pages, which is why it runs last.
       - name: Build the site
         run: |
           bin/cli documentation:build
           build/guides/vendor/bin/guides --no-progress
+          bin/cli documentation:search
 
       - uses: actions/upload-pages-artifact@v3
         with:

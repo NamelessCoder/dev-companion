@@ -55,7 +55,11 @@ of what it points at is a directory the site does not carry.
   is published without anything being deployed.
 - The renderer is phpDocumentor Guides, installed from `build/guides/`, which is
   a manifest of its own so that the package's own dependencies are not bent to
-  fit a renderer. The published site is bought at the price of its search.
+  fit a renderer.
+- The search is written here as well, by `documentation:search`, and filtered in
+  the browser. What is indexed is the prose and not the fenced blocks, which
+  holds it to 213 KB and keeps a page that answers a question above the one
+  whose recorded answer happens to carry the word.
 - The theme is this repository's own, and one file: a layout shadowing the
   default one, with the stylesheet inlined and the navigation built from
   `env.allDocuments` rather than from a `toctree` nothing here can write.
@@ -77,8 +81,9 @@ of what it points at is a directory the site does not carry.
 
 - That a reader follows a link into the repository rather than expecting the
   entry on the site. Nothing measures which of the two they take.
-- That a reader of 58 pages finds what they came for by the map and the
-  sidebar. Nothing here replaces the search, and the corpus holds pages of 88 KB.
+- That what a reader looks for is in the prose. A term that this corpus only
+  ever writes inside a fenced block is not indexed, and `runTests.sh` was one
+  keystroke away from being such a term.
 - That the way out stays cheap. `Site` writes plain markdown and a renderer only
   consumes it, so a second renderer costs `guides.xml` and the flags around it —
   which is what the two Python ones were measured at before this one was.
@@ -89,8 +94,8 @@ of what it points at is a directory the site does not carry.
   that nothing here re-reads, so a decision that is renamed breaks it silently.
   `fail-on-error` does not catch it either: the renderer reports an unresolved
   reference as a warning, and one warning stands that will not be removed.
-- Somebody cannot find a page and does not say so, because a corpus this size
-  without search is browsed rather than queried.
+- A search returns the wrong page first, because nothing here ranks beyond the
+  title, the headings and how often a word occurs in the prose.
 - The repository moves and `support.source` still names where it was.
 - A page is added and lands in the sidebar where nobody looks, because the order
   there is alphabetical and the reasoned one is on the map page alone.
@@ -104,3 +109,5 @@ of what it points at is a directory the site does not carry.
 - `SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt`
 - `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 - `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`
+- `SiteTest::theSearchIndexNamesEveryPageByTheUrlItIsServedAt`
+- `SiteTest::theSearchIndexHoldsTheProseAndNotTheRecordedAnswers`

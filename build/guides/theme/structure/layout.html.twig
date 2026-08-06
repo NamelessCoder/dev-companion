@@ -55,6 +55,18 @@
         font-size: 11px; text-transform: uppercase; letter-spacing: .09em;
         color: var(--dim); margin: 1.4rem 0 .4rem; font-weight: 600;
     }
+    nav.side #q {
+        width: 100%; margin: .2rem 0 .4rem; padding: .35rem .5rem;
+        font: inherit; font-size: 13px; color: var(--ink);
+        background: var(--bg); border: 1px solid var(--line); border-radius: 3px;
+    }
+    nav.side #q:focus { outline: 2px solid var(--link); outline-offset: -1px; }
+    nav.side #miss { color: var(--dim); font-size: 13px; padding: .3rem .5rem; }
+    nav.side a.page small {
+        display: block; color: var(--dim); font-size: 11.5px;
+        line-height: 1.4; font-weight: 400; margin-top: .1rem;
+    }
+    nav.side #hits a.page { padding: .35rem .5rem; }
     nav.side ul { list-style: none; margin: 0; padding: 0; }
     nav.side li { margin: 0; }
     nav.side a.page {
@@ -106,8 +118,11 @@
 <div class="wrap">
     <nav class="side">
         <a class="brand" href="{{ up }}index.html">{{ env.projectNode.title ?? 'Documentation' }}</a>
+        <input id="q" type="search" autocomplete="off" placeholder="Search" aria-label="Search the documentation">
+        <ul id="hits" hidden></ul>
+        <p id="miss" hidden>Nothing carries that.</p>
         {% set group = '__none__' %}
-        <ul>
+        <ul id="pages">
         {%- for entry in pages -%}
             {%- set path = entry.filePath|trim('/') -%}
             {%- set dir = path matches '#/#' ? path|split('/')|first : '' -%}
@@ -126,5 +141,90 @@
 <!-- content end -->
     </main>
 </div>
+<script>
+// The index is fetched on the first keystroke and never before: a reader who
+// does not search pays nothing for one that is 213 KB.
+(function () {
+    var box = document.getElementById('q'),
+        hits = document.getElementById('hits'),
+        miss = document.getElementById('miss'),
+        pages = document.getElementById('pages'),
+        up = {{ up|json_encode|raw }},
+        index = null, pending = false;
+
+    function terms(value) {
+        return value.toLowerCase().split(/[^a-z0-9_:.-]+/).filter(function (t) { return t.length > 1; });
+    }
+
+    // A title carries what a page is; a heading what a section is; the prose
+    // only that the word occurs. Scored in that order, so the page named after
+    // the question outranks the one that mentions it.
+    //
+    // The prose is scored by how often, capped: a word nobody put in a heading
+    // is otherwise worth the same on the page about it and on the one that
+    // names it once in passing. The cap keeps a long page from winning on
+    // length alone.
+    function score(page, words) {
+        var title = page.title.toLowerCase(),
+            heads = page.headings.join(' ').toLowerCase(),
+            text = page.text.toLowerCase(),
+            total = 0;
+        for (var i = 0; i < words.length; i++) {
+            var word = words[i], had = 0, times = text.split(word).length - 1;
+            if (title.indexOf(word) !== -1) { total += 10; had = 1; }
+            if (heads.indexOf(word) !== -1) { total += 4; had = 1; }
+            if (times) { total += Math.min(times, 6); had = 1; }
+            if (!had) { return 0; }
+        }
+        return total;
+    }
+
+    function snippet(page, word) {
+        var at = page.text.toLowerCase().indexOf(word);
+        if (at === -1) { return page.headings.slice(0, 2).join(' · '); }
+        var from = Math.max(0, at - 40);
+        return (from ? '…' : '') + page.text.slice(from, from + 130).trim() + '…';
+    }
+
+    function render(value) {
+        var words = terms(value);
+        if (!words.length || !index) {
+            hits.hidden = true; miss.hidden = true; pages.hidden = false;
+            return;
+        }
+        var found = [];
+        for (var i = 0; i < index.length; i++) {
+            var points = score(index[i], words);
+            if (points) { found.push({ page: index[i], points: points }); }
+        }
+        found.sort(function (a, b) { return b.points - a.points; });
+        pages.hidden = true;
+        hits.textContent = '';
+        found.slice(0, 12).forEach(function (found) {
+            var li = document.createElement('li'),
+                a = document.createElement('a'),
+                small = document.createElement('small');
+            a.className = 'page';
+            a.href = up + found.page.url;
+            a.textContent = found.page.title;
+            small.textContent = snippet(found.page, words[0]);
+            a.appendChild(small);
+            li.appendChild(a);
+            hits.appendChild(li);
+        });
+        hits.hidden = found.length === 0;
+        miss.hidden = found.length !== 0;
+    }
+
+    box.addEventListener('input', function () {
+        if (index || pending) { render(box.value); return; }
+        pending = true;
+        fetch(up + 'search.json').then(function (answer) { return answer.json(); }).then(function (loaded) {
+            index = loaded;
+            render(box.value);
+        }).catch(function () { pending = false; });
+    });
+})();
+</script>
 </body>
 </html>

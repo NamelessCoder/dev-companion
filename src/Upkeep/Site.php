@@ -79,6 +79,64 @@ final class Site
     }
 
     /**
+     * What the published site is searched over: one entry per page, each with
+     * the URL it is served at, its title, its headings and its prose.
+     *
+     * The renderer offers no search of any kind, and 47 pages of which several
+     * run past 60 KB are browsed rather than read. This is the index a page
+     * filters in the reader's browser — small enough to fetch once, because
+     * what is left out is the half that would dominate it.
+     *
+     * Fenced blocks are left out. They are 582 of them and most are a recorded
+     * tool answer in JSON, so indexing them buries every prose match under the
+     * evidence and triples what a reader downloads to find it. What a caller
+     * searches an answer by is its tool name, and that is the page title.
+     *
+     * @return list<array{url: string, title: string, headings: list<string>, text: string}>
+     */
+    public static function search(): array
+    {
+        $index = [];
+        $files = Finder::create()->files()->in(Paths::root() . '/' . self::SOURCE)->name('*.md')->sortByName();
+        foreach ($files as $file) {
+            $markdown = (string) file_get_contents($file->getPathname());
+            $published = self::published(str_replace('\\', '/', $file->getRelativePathname()));
+
+            $headings = [];
+            if (preg_match_all('/^#{1,6}\s+(.+?)\s*$/m', self::prose($markdown), $found) !== false) {
+                $headings = array_map(self::plain(...), $found[1]);
+            }
+
+            $index[] = [
+                'url' => substr($published, 0, -3) . '.html',
+                'title' => array_shift($headings) ?? $published,
+                'headings' => $headings,
+                'text' => self::plain((string) preg_replace('/^#{1,6}\s+.+?$/m', '', self::prose($markdown))),
+            ];
+        }
+
+        return $index;
+    }
+
+    /** A page with everything a reader does not read as a sentence taken out. */
+    private static function prose(string $markdown): string
+    {
+        return (string) preg_replace('/^ {0,3}```.*?^ {0,3}```/ms', '', $markdown);
+    }
+
+    /** Markdown reduced to the words in it, on one line. */
+    private static function plain(string $markdown): string
+    {
+        $text = (string) preg_replace('/!?\[([^\]]*)\]\([^)]*\)/', '$1', $markdown);
+        // The underscore stays. It is emphasis in markdown and it is half of
+        // every tool name here, and `typo3_icon_lookup` is what somebody
+        // searching for that page types.
+        $text = (string) preg_replace('/[`*>#|]+/', ' ', $text);
+
+        return trim((string) preg_replace('/\s+/', ' ', $text));
+    }
+
+    /**
      * One page as it is published: every link that stays inside the tree kept
      * as it was written, and every link that leaves it turned into the file on
      * GitHub.

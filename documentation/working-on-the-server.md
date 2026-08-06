@@ -94,6 +94,7 @@ What is generated is a copy of it rather than these files:
 ```bash
 bin/cli documentation:build           # write the copy, below .site/source
 build/guides/vendor/bin/guides        # render it into .site/html
+bin/cli documentation:search          # write the index the site is searched over
 ```
 
 87 of the links here point at a decision, a requirement or a class, and a
@@ -115,8 +116,12 @@ commands on every push to `main` and deploys the result to
 `Settings → Pages → Source: GitHub Actions` on the repository: a deployment from
 a branch serves the root or `/docs`, and this directory is neither.
 
-The site has no search of its own. That is what a renderer written for one
-manual rather than for a corpus leaves out, and 58 pages is where it is felt.
+The search is this repository's too, because the renderer has none. `Site`
+writes one entry per page — its URL, its title, its headings and its prose —
+and the sidebar filters it in the reader's browser, fetched on the first
+keystroke and not before. Fenced blocks are left out: 582 of them, mostly a
+recorded tool answer in JSON, which is what keeps the index at 213 KB rather
+than a megabyte and a prose match above the evidence.
 
 ## Tests
 

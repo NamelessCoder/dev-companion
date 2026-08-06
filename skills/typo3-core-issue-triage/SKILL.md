@@ -35,8 +35,18 @@ early is the valuable one.
 
 **Nothing in that list is a finding.** Age is what makes an issue a candidate
 and says nothing about whether it is right; a report from 2011 can describe
-behaviour the branch still has, and one from last year can be about code that
-no longer exists. What separates them is the rest of this order.
+behaviour the branch still has, and one from last year can be about code that no
+longer exists. What separates them is the rest of this order.
+
+**The list is the first deliverable, and choosing from it is not yours.**
+Triaging a backlog and triaging an issue are two different jobs, and the step
+below is the second one: it takes a number. Hand the backlog over first, one row
+per candidate carrying what it has to be chosen on — the number, the area, the
+subject, how long it has been untouched — and let whoever asked pick. A session
+that picks for itself reports on four issues out of thirty-nine and has silently
+answered a question it was never asked; where the request really was "just find
+me something", say which rows you would take and why, and let that be the
+choice.
 
 ## Establish what the issue claims
 
@@ -96,6 +106,16 @@ can, a failing test is the strongest thing a triage produces: it survives being
 handed to somebody else, and it is the patch's first half already written. Where
 no layer can hold it — backend markup, a build step, shipped JavaScript — say so
 and reproduce by hand instead, writing down the steps and what you saw.
+
+That test is a throwaway until a patch adopts it, and it has three rules of its
+own. It goes where the suite already looks, mirroring the path of the class it
+is about, because a file the runner does not collect proves nothing. **It has to
+be seen failing before it is believed**: a reproduction that is green on its
+first run is testing nothing until you have shown it red, and the first run
+failing for a reason that is not the issue — a field the type does not show, a
+fixture that was never loaded — is a result about your harness and not about the
+report. And it comes out again when the triage ends, unless the work carries
+straight on into the patch that keeps it.
 
 **The core's suites are not the ones a manifest here declares, and they are not
 run the way an extension's are.** They belong to the core's own runner, which no

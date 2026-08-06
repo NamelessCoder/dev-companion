@@ -79,6 +79,12 @@ Guide.
   `origin/main..origin/14.3` carries none at all.
 - A bug fix goes to every maintained line that carries the defect, which is what
   makes it the change type the trailer is worth checking on.
+- What a release branch carries since it was cut is `origin/main..origin/14.3`.
+  A plain log on that branch, or a `--since` window over it, answers about the
+  history shared with `main` and reports every change made before the branch
+  existed as if the branch had taken it: the same count that is 0 one way is 188
+  the other. The two differ by one operator and give opposite answers about
+  whether features reach a release line.
 
 ## Breaking Changes
 

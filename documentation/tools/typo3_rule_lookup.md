@@ -204,6 +204,12 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
   `origin/main..origin/14.3` carries none at all.
 - A bug fix goes to every maintained line that carries the defect, which is what
   makes it the change type the trailer is worth checking on.
+- What a release branch carries since it was cut is `origin/main..origin/14.3`.
+  A plain log on that branch, or a `--since` window over it, answers about the
+  history shared with `main` and reports every change made before the branch
+  existed as if the branch had taken it: the same count that is 0 one way is 188
+  the other. The two differ by one operator and give opposite answers about
+  whether features reach a release line.
 
 ## Review Readiness
 Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) — matches 100% of the query terms
@@ -265,7 +271,7 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Release Targets",
-            "body": "- `Releases:` names branches: `main` and the maintained release lines, comma\n  separated.\n- Which lines those are changes with every LTS release and every support window\n  that closes, so it is a lookup and not a rule to remember.\n  `typo3_commit_message_guide` names them where the trailer is left out, and\n  reports a branch that is out of regular support as an error.\n- A line out of regular support still has releases, and the ELTS partners make\n  them. A patch pushed to Gerrit is not one of them.\n- The branch list in a checkout does not answer this. `git branch -r` reaches\n  back to `TYPO3_3-6`, and counting `Releases:` trailers on recent commits\n  samples what other changes needed rather than what this one does.\n- Which of the maintained lines a change reaches is your reading of where the\n  defect is, and the trailer is the claim you verified it there — by reading the\n  changed file on each branch you name.\n- A feature, a deprecation and a breaking change go to `main`. A backport of one\n  happens and is the release managers' call: `origin/main..origin/13.4` carries\n  three `[FEATURE]` commits against 969 `[BUGFIX]` ones, and\n  `origin/main..origin/14.3` carries none at all.\n- A bug fix goes to every maintained line that carries the defect, which is what\n  makes it the change type the trailer is worth checking on.",
+            "body": "- `Releases:` names branches: `main` and the maintained release lines, comma\n  separated.\n- Which lines those are changes with every LTS release and every support window\n  that closes, so it is a lookup and not a rule to remember.\n  `typo3_commit_message_guide` names them where the trailer is left out, and\n  reports a branch that is out of regular support as an error.\n- A line out of regular support still has releases, and the ELTS partners make\n  them. A patch pushed to Gerrit is not one of them.\n- The branch list in a checkout does not answer this. `git branch -r` reaches\n  back to `TYPO3_3-6`, and counting `Releases:` trailers on recent commits\n  samples what other changes needed rather than what this one does.\n- Which of the maintained lines a change reaches is your reading of where the\n  defect is, and the trailer is the claim you verified it there — by reading the\n  changed file on each branch you name.\n- A feature, a deprecation and a breaking change go to `main`. A backport of one\n  happens and is the release managers' call: `origin/main..origin/13.4` carries\n  three `[FEATURE]` commits against 969 `[BUGFIX]` ones, and\n  `origin/main..origin/14.3` carries none at all.\n- A bug fix goes to every maintained line that carries the defect, which is what\n  makes it the change type the trailer is worth checking on.\n- What a release branch carries since it was cut is `origin/main..origin/14.3`.\n  A plain log on that branch, or a `--since` window over it, answers about the\n  history shared with `main` and reports every change made before the branch\n  existed as if the branch had taken it: the same count that is 0 one way is 188\n  the other. The two differ by one operator and give opposite answers about\n  whether features reach a release line.",
             "versions": "",
             "coverage": 1,
             "score": 24,

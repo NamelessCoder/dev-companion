@@ -78,11 +78,21 @@ server does not offer anywhere, and accepts whatever comes back.
 
 ## Confirmed on 2026-08-05
 
-The reading was done and the assumption held. `https://get.typo3.org/api/v1/major/`
-answers one entry per major with `maintained_until` and `elts_until`, which is
-what `knowledge/release-lines.json` now carries. It knows nothing about the
+The reading was done and the assumption held.
+`https://get.typo3.org/api/v1/major/` answers one entry per major with
+`maintained_until` and `elts_until`, which is what
+`knowledge/release-lines.json` now carries. It knows nothing about the
 development line — there is no entry for 15 — so `main` is stated in that file
 rather than read, and it is the one line whose end date nothing supplies.
+
+Two more properties of that source decide what a re-read finds, and neither is
+visible without hitting it. Its `subtitle` is stale in the direction that
+matters: major 14 still reads "The upcoming LTS release (for new projects)"
+months after its `release_date` of 2026-04-21, while major 13 reads "The stable
+LTS release", so a reader taking the prose for the state gets the current LTS
+backwards — only the two dates are load-bearing. And `/api/v1/release/` carries
+version strings that are not versions, `7-snapshot-20170404` among them, so
+anything that sorts or parses that list filters first.
 
 The checkout confirms the API instead of replacing it. The public branch of a
 line stops receiving commits when regular support ends: `origin/12.4` last moved

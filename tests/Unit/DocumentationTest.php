@@ -544,6 +544,56 @@ final class DocumentationTest extends TestCase
     }
 
     /**
+     * The index is page titles and section paths, and a reporter writes the
+     * identifier the stack trace gave them. A session settled Forge #81619 by
+     * reducing `stdWrap_override` to the property `override` itself, and said
+     * that the step was its own — the feedback of 2026-08-05.
+     *
+     * Every name offered is a substring of what was typed. Splitting humps as
+     * well would answer `getByTag` with "tag", which is a suggestion nothing
+     * supports made in the voice of a reading.
+     */
+    #[Test]
+    public function aMissOnAnIdentifierNamesTheBareNamesInsideIt(): void
+    {
+        Documentation::useReader(static fn(string $url): string => '<html><body></body></html>');
+
+        $answer = Registry::call('typo3_documentation_lookup', [
+            'queries' => ['stdWrap_override', 'ContentObjectRenderer::stdWrap_override', 'tt_content', 'getByTag()'],
+            'targetVersion' => '14.3',
+        ]);
+
+        self::assertSame('empty', $answer->data['status']);
+        self::assertSame(
+            [
+                ['query' => 'stdWrap_override', 'ask' => ['override']],
+                [
+                    'query' => 'ContentObjectRenderer::stdWrap_override',
+                    'ask' => ['stdWrap_override', 'override'],
+                ],
+            ],
+            $answer->data['insteadOf'],
+            'a table name and a method with no property half are not reduced',
+        );
+        self::assertStringContainsString('instead of "stdWrap_override": override', $answer->text);
+    }
+
+    /** A query nothing reads as code gets no advice rather than a guess. */
+    #[Test]
+    public function aMissOnOrdinaryWordsOffersNothingInstead(): void
+    {
+        Documentation::useReader(static fn(string $url): string => '<html><body></body></html>');
+
+        $answer = Registry::call('typo3_documentation_lookup', [
+            'queries' => ['backend layout'],
+            'targetVersion' => '14.3',
+        ]);
+
+        self::assertSame('empty', $answer->data['status']);
+        self::assertArrayNotHasKey('insteadOf', $answer->data);
+    }
+
+    /**
      * The other one, and the reason the field exists: a release outside the
      * covered versions is permanent, and nothing is fetched to find that out.
      */

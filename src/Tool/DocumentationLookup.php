@@ -97,6 +97,12 @@ final class DocumentationLookup extends ReadOnlyTool
             'targetVersion' => Schema::string('The exact documentation release searched.'),
             'source' => Schema::string('The external documentation host.'),
             'queries' => Schema::listOf(Schema::string()),
+            'insteadOf' => Schema::listOf(Schema::object([
+                'query' => Schema::string('The query that reads as a code identifier.'),
+                'ask' => Schema::listOf(Schema::string(), 'The bare names to ask with instead, most specific first.'),
+            ], ['query', 'ask']), 'Present on a miss where a query is shaped like a PHP identifier. This index is '
+                . 'page titles and section paths, so a class or method name has no page to be titled after, while '
+                . 'the property or ViewHelper it belongs to does.'),
             'results' => Schema::listOf(Schema::object([
                 'title' => Schema::string(),
                 'url' => Schema::string('Canonical URL of the matching documentation page.'),
@@ -186,6 +192,15 @@ final class DocumentationLookup extends ReadOnlyTool
             $lines[] = $answer['mode'] === 'page'
                 ? 'The selected page answered without a readable main article.'
                 : 'No matching section was found. The documentation service answered; narrow or rephrase the queries.';
+            $insteadOf = $answer['mode'] === 'page' ? [] : self::insteadOf($answer['queries']);
+            if ($insteadOf !== []) {
+                $answer['insteadOf'] = $insteadOf;
+                $lines[] = 'This index is page titles and section paths, so a class or method name has no page to '
+                    . 'be titled after — the property or ViewHelper it belongs to has one. Ask again with:';
+                foreach ($insteadOf as $instead) {
+                    $lines[] = sprintf('- instead of "%s": %s', $instead['query'], implode(', ', $instead['ask']));
+                }
+            }
         } elseif ($answer['mode'] === 'page') {
             $result = $answer['results'][0];
             $lines[] = '';
@@ -233,5 +248,65 @@ final class DocumentationLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $answer);
+    }
+
+    /**
+     * The bare names behind a query that reads as code, per query that does.
+     *
+     * The manual titles a page after the thing it documents — a TypoScript
+     * property, a ViewHelper — and this index is those titles and the section
+     * paths under them. A reporter writes the identifier instead, because that
+     * is what the stack trace gave them: `stdWrap_override` is where the code
+     * says it, `override` is where the manual does. A session settled Forge
+     * #81619 by making that reduction itself and said so — the feedback of
+     * 2026-08-05.
+     *
+     * Only on a miss. A hit needs no advice, and a query that carries no
+     * identifier gets nothing rather than a guess dressed as one.
+     *
+     * @param array<int, string> $queries
+     * @return array<int, array{query: string, ask: array<int, string>}>
+     */
+    private static function insteadOf(array $queries): array
+    {
+        $insteadOf = [];
+        foreach ($queries as $query) {
+            // One word, and one that a sentence would not contain: a separator
+            // the language uses, or a hump or underscore joining two words.
+            $word = trim($query);
+            if (preg_match('/\s/', $word) === 1) {
+                continue;
+            }
+            $word = (string) preg_replace('/\(\s*\)$/', '', $word);
+            $tail = (string) preg_replace('/^.*[\\\\:>-]/', '', $word);
+            if ($tail === '' || preg_match('/[a-z0-9]_[a-zA-Z]|[a-z0-9][A-Z]|[\\\\:>-]/', $word) !== 1) {
+                continue;
+            }
+
+            // Every candidate is a substring of what the caller typed, never a
+            // word derived from it. Splitting humps as well would turn
+            // `getByTag` into "tag" and a ViewHelper into "decode" — a
+            // suggestion nothing supports, offered in the voice of a reading.
+            // The underscore is the one join that carries a TYPO3 convention:
+            // `stdWrap_override` is the method behind the `override` property,
+            // and the manual titles the property.
+            // The underscore has to join a method-shaped name to mean this:
+            // `stdWrap_override` is one, `tt_content` is a table and its half
+            // is not a property anybody documents.
+            $property = preg_match('/^(.*[a-z0-9][A-Z][^_]*)_([^_]+)$/', $tail, $method) === 1 ? $method[2] : null;
+
+            $ask = [];
+            foreach ([$tail, $property] as $candidate) {
+                $candidate = (string) $candidate;
+                if ($candidate !== '' && $candidate !== $word && !in_array($candidate, $ask, true)) {
+                    $ask[] = $candidate;
+                }
+            }
+            if ($ask !== []) {
+                $insteadOf[] = ['query' => $query, 'ask' => $ask];
+            }
+        }
+
+        return $insteadOf;
     }
 }

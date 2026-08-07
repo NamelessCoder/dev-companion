@@ -142,6 +142,16 @@ verification, and that is the claim a review is least able to support. "The
 tests would presumably still pass" is not a review sentence, and an unnamed
 suite is the same sentence with the words taken out.
 
+**A scratch probe is one of the things it may run.** Add a temporary fixture
+column, a model property or a test of your own, run a targeted suite against it,
+read what it prints, and put the tree back — `git checkout --` on what you
+touched, then `git status` to confirm it is clean. The patch under review is not
+edited, which is the boundary that matters; a probe writes files and restores
+them, and the restoration is verified rather than assumed. This is what turns
+"this would presumably throw" into a pasted error, and dropped-candidate
+findings are where it earns most: what disproves a path is what makes it
+impossible, and a probe is often the only thing that can.
+
 ## Commit shape and target branch
 
 `typo3_commit_message_guide` with `workflow="core"`, the message and the change

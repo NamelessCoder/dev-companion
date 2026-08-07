@@ -139,6 +139,13 @@ answered by the step the base opens with:
   — before reading it as the behaviour being gone. That is the failure mode a
   triage is most exposed to, because "the suite passes" is the evidence it is
   about to write a verdict on.
+- **Once the change is committed, `git stash` measures nothing.** The same
+  failure in a second costume: the stash finds nothing to save on a clean tree,
+  the run that follows is the patched code, and the result reads as a
+  without-patch measurement. Compare against the parent instead — a worktree on
+  `HEAD~1`, or `git revert --no-commit` with a restore after — and confirm the
+  tree actually changed before believing the run. `git stash list` naming
+  nothing new is what should stop you.
 
 An old report frequently names the versions it was seen on. Those are what the
 reporter had, not what it still reproduces on, and the version the suites run

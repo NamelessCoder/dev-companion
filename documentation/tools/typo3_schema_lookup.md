@@ -2,11 +2,16 @@
 
 List the columns TYPO3 derives for a table from its TCA — uid, pid, the
 timestamps, the delete and disable fields, the language and versioning columns,
-and one column per TCA field. Those are exactly the columns an ext_tables.sql
-does not have to declare, so this is what a redundant declaration is checked
-against. The core is asked for them by booting the installation; it says so
-rather than answering empty when it cannot. It describes what TYPO3 would
-create, never what the database currently has. Answers from: installation.
+and one column per TCA field — each with the Doctrine type it gets, whether it
+is NOT NULL, and the default the core gives it. That is the DDL side of a TCA
+configuration: what column this field produces, whether it can hold SQL NULL,
+and what it stores when nothing is written. Those are also exactly the columns
+an ext_tables.sql does not have to declare, so this is what a redundant
+declaration is checked against. It asks the booted installation about a table
+that is in it, so it answers nothing about a table that exists only inside a
+functional test, and nothing about a TCA type in the abstract. It describes what
+TYPO3 would create, never what the database currently has, and it says so rather
+than answering empty when it cannot boot. Answers from: installation.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 

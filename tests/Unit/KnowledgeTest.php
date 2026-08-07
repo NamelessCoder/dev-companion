@@ -740,8 +740,13 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function aCutScriptSectionSaysHowToReadThePageWhole(): void
     {
+        // Not the query the report made. That one used to come back cut and
+        // now reaches `The Pre-Commit Hook` whole, because the answer it went
+        // looking for was written. What is held here is the rule rather than
+        // that call: a section this tool had to cut carries the way to the
+        // rest of the page.
         $result = Registry::call('typo3_script_lookup', [
-            'task' => 'git hooks, commit and coding guidelines check before committing',
+            'task' => 'install dependencies vendor composer autoload',
             'targetVersion' => '15',
         ]);
 
@@ -751,6 +756,34 @@ final class KnowledgeTest extends TestCase
         ), 'the case this covers is a truncated section, and nothing was truncated');
         self::assertStringContainsString('typo3_rule_lookup with documentId', $result->text);
         self::assertStringContainsString('core/testing/scripts', $result->text);
+    }
+
+    /**
+     * The two symptoms `feedback/2026-08-07-125950` and `-130007` reported,
+     * reachable by the words the session arrived with.
+     *
+     * Both are failures whose message names something other than their cause:
+     * a header error printed because a script exited non-zero for an unrelated
+     * reason, and a class-not-found naming a fixture rather than the
+     * autoloader. Verified against `.checkouts/main` before they were written.
+     */
+    #[Test]
+    public function theScriptsGuideCarriesTheTwoUnreadableSymptoms(): void
+    {
+        $hook = Registry::call('typo3_script_lookup', [
+            'task' => 'git hooks, commit and coding guidelines check before committing',
+            'targetVersion' => '15',
+        ]);
+        self::assertContains('The Pre-Commit Hook', array_column($hook->data['matches'], 'heading'));
+
+        $guide = Documents::read('core/testing/scripts');
+        // The hook runs on the host, so the header error it reports is false.
+        self::assertStringContainsString('missing or wrong php file header', $guide);
+        self::assertStringContainsString('platform_check.php', $guide);
+        self::assertStringContainsString('TYPO3_GIT_HOOK_ABORT_ON_ERROR', $guide);
+        // And the stale autoloader, whose fix is not a reinstall.
+        self::assertStringContainsString('autoload_psr4.php', $guide);
+        self::assertStringContainsString('-s composer -- dumpautoload', $guide);
     }
 
     /**

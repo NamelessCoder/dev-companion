@@ -79,6 +79,21 @@ PHP the branch requires; the containerised form is why `runTests.sh` exists.
 Either way this is a precondition and not a step: a checkout that already has
 `vendor/` needs it again only after `composer.json` or `composer.lock` changed.
 
+That last sentence has a symptom of its own, and it is no more readable than the
+first. A `vendor/` that exists but predates a `composer.json` change fails as a
+Symfony dependency-injection `InvalidArgumentException` naming a class that is
+plainly present in its file — "Expected to find class … while importing services
+from resource ../Classes/\*, but it was not found". The generated
+`vendor/composer/autoload_psr4.php` has no mapping for it, because the mapping
+arrived with the fixture and nothing regenerated it. It shows up first on the
+`TYPO3Tests\*` fixture extensions, which `composer.json` declares one PSR-4
+entry each for. The message points at the fixture rather than at the autoloader.
+The fix is not a reinstall:
+
+```bash
+CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload
+```
+
 ### Run PHP Unit Tests
 
 ```bash
@@ -179,6 +194,38 @@ Runs npm commands inside the TYPO3 core test environment.
 
 Useful package scripts for frontend and CSS work include `run build`,
 `run build-css`, `run lint`, and `run watch:build`.
+
+## The Pre-Commit Hook
+
+This is the git hooks side: what runs on `git commit` before the commit is
+created, what it checks, and the one error it reports that is not true.
+`composer gerrit:setup` installs both hooks, the commit-message one that adds
+the Change-Id and this one.
+
+The same two scripts are what the repository's own pre-commit hook runs, and it
+runs them on the host rather than in a container —
+`Build/git-hooks/unix+mac/pre-commit` calls `cglFixMyCommit.sh` and
+`cglFixMyCommitFileHeader.sh` directly, and they resolve `php` off the `PATH`.
+So on a checkout whose declared PHP is newer than the host's, the second script
+dies in `vendor/composer/platform_check.php` and exits non-zero, and the hook
+reports what a non-zero exit means to it:
+
+```text
+>> ERROR: There was a missing or wrong php file header in one or more
+          of your php files.
+   You must fix this and then commit again (git commit --amend)
+```
+
+That message is printed for every failure of that script, whatever the cause, so
+here it is false — the script never got as far as reading a file. The commit is
+created anyway, because the hook only aborts when
+`TYPO3_GIT_HOOK_ABORT_ON_ERROR` is `yes`. Do not amend on the strength of it.
+`-s cglGit` against the commit that was just created is what settles whether
+there is a real finding, and it runs in the container on the PHP the branch asks
+for — from a normal checkout, because from a git worktree that suite reports
+SUCCESS having read no file, and `-s cgl` is the one to use there.
+`composer gerrit:setup:preCommitHook:disable` turns the hook off where the host
+PHP will not match for a while.
 
 ## Script Notes
 

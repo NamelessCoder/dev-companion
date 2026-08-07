@@ -487,12 +487,25 @@ final class Documentation
         }
 
         $blocks = [];
-        foreach ($xpath->query('.//h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt', $article) ?: [] as $node) {
+        // A `dd` this loop has already printed beside its term. Held by the
+        // node itself rather than by a position, because the same element is
+        // reached twice: once from the `dt` it belongs to and once in document
+        // order.
+        /** @var \SplObjectStorage<\DOMElement, null> $paired */
+        $paired = new \SplObjectStorage();
+        $query = './/h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd';
+        foreach ($xpath->query($query, $article) ?: [] as $node) {
             if (!$node instanceof \DOMElement) {
                 continue;
             }
             $nestedList = $xpath->query('ancestor::li', $node);
             if (in_array($node->tagName, ['p', 'li'], true) && $nestedList !== false && $nestedList->length > 0) {
+                continue;
+            }
+            if ($node->tagName === 'dd' && ($paired->contains($node) || !self::isLeaf($xpath, $node))) {
+                // Either the term above already carries it, or it is a wrapper
+                // whose own children this loop reaches on their own — printing
+                // its `textContent` would be every one of them a second time.
                 continue;
             }
 
@@ -512,7 +525,7 @@ final class Documentation
                 $block = match ($node->tagName) {
                     'h1', 'h2', 'h3', 'h4', 'h5', 'h6' => str_repeat('#', (int) substr($node->tagName, 1)) . ' ' . $text,
                     'li' => '- ' . $text,
-                    'dt' => $text === '' ? '' : '**' . $text . '**',
+                    'dt' => $text === '' ? '' : self::term($xpath, $node, $text, $paired),
                     default => $text,
                 };
             }
@@ -522,6 +535,54 @@ final class Documentation
         }
 
         return implode("\n\n", $blocks);
+    }
+
+    /**
+     * A term with its definition, where the definition is one value.
+     *
+     * The TCA reference states the machine-readable half of every property as a
+     * definition list — Type, Default, Path, Scope — and only the terms were
+     * ever emitted, so a caller read `**Default**` with nothing under it and
+     * had no way to tell a property with no documented default from a value
+     * this reader dropped. That is worse than dropping both, and it cost a
+     * review the default of `nullable` per `dbType`
+     * (`feedback/2026-08-07-132457`).
+     *
+     * Only a definition that is one value is pulled up here. A `dd` carrying
+     * paragraphs, a nested list or another definition list stays where it is
+     * and is printed as its own blocks, because a term joined to a page of
+     * prose is not a pair.
+     *
+     * @param \SplObjectStorage<\DOMElement, null> $paired
+     */
+    private static function term(\DOMXPath $xpath, \DOMElement $node, string $text, \SplObjectStorage $paired): string
+    {
+        $term = '**' . $text . '**';
+        $next = $node->nextElementSibling;
+        if (!$next instanceof \DOMElement || $next->tagName !== 'dd' || !self::isLeaf($xpath, $next)) {
+            return $term;
+        }
+
+        $value = self::plain($next->textContent);
+        if ($value === '') {
+            return $term;
+        }
+        $paired->attach($next);
+
+        return $term . ': ' . $value;
+    }
+
+    /**
+     * Whether an element carries text rather than blocks of its own.
+     *
+     * What makes a `dd` a value is that nothing inside it is one of the things
+     * this reader prints separately.
+     */
+    private static function isLeaf(\DOMXPath $xpath, \DOMElement $node): bool
+    {
+        $blocks = $xpath->query('.//h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd', $node);
+
+        return $blocks === false || $blocks->length === 0;
     }
 
     private static function plain(string $text): string

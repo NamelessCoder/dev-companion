@@ -184,12 +184,12 @@ final class TestRunGuide extends ReadOnlyTool
      * for somebody to ask what exists.
      */
     public const SCRIPTS_GUIDE = "## The whole procedure\n"
-        . "This is the suites and how to invoke them. The rest is one call away — typo3_rule_lookup with "
+        . 'This is the suites and how to invoke them. The rest is one call away — typo3_rule_lookup with '
         . "documentId \"core/testing/scripts\", which needs no resource list.\n"
-        . "- Why a suite runs against the `vendor/` and `bin/` of the directory it was started from, and what "
+        . '- Why a suite runs against the `vendor/` and `bin/` of the directory it was started from, and what '
         . "`exec: line 9: bin/phpunit: not found` means — it names phpunit rather than the directory.\n"
-        . "- Why `-s cglGit` reports SUCCESS having read no file from a git worktree, and that `-s cgl` is the "
-        . "one that works from either.";
+        . '- Why `-s cglGit` reports SUCCESS having read no file from a git worktree, and that `-s cgl` is the '
+        . 'one that works from either.';
 
     /**
      * The invocation rules that apply to every suite. Emitted with every answer:

@@ -83,6 +83,54 @@ final class DocumentationTest extends TestCase
         self::assertStringNotContainsString('Not page content', $answer['results'][0]['content']);
     }
 
+    /**
+     * The TCA reference states the machine-readable half of every property as a
+     * definition list, and only the terms were emitted.
+     *
+     * `feedback/2026-08-07-132457` read the `type=datetime` page for the
+     * default of `nullable` per `dbType`, and got `**Type**`, `**Default**`,
+     * `**Path**` and `**Scope**` each named and each empty — which reads as the
+     * property having no documented default rather than as this reader having
+     * dropped it. The value it needed was one of those cells, and it read
+     * `DateTimeFieldType` in the checkout instead.
+     */
+    #[Test]
+    public function itCarriesTheValuesOfAPropertyDefinitionList(): void
+    {
+        $url = 'https://docs.typo3.org/m/typo3/reference-tca/14.3/en-us/ColumnsConfig/Type/Datetime/Index.html';
+        $documentation = new Documentation(static fn(string $requested): ?string => $requested === $url
+            ? <<<'HTML'
+                <html><body><article role="main">
+                <h1>Datetime</h1>
+                <dl>
+                  <dt>nullable</dt>
+                  <dd>
+                    <dl class="field-list">
+                      <dt>Type</dt><dd>bool</dd>
+                      <dt>Default</dt><dd>false</dd>
+                      <dt>Scope</dt><dd>Proc.</dd>
+                    </dl>
+                    <p>If nothing is entered into the field, then it will be saved as NULL.</p>
+                  </dd>
+                </dl>
+                </article></body></html>
+                HTML
+            : null);
+
+        $content = $documentation->page($url, '14.3')['results'][0]['content'];
+
+        self::assertStringContainsString('**Type**: bool', $content);
+        self::assertStringContainsString('**Default**: false', $content);
+        self::assertStringContainsString('**Scope**: Proc.', $content);
+        // The property itself keeps its own line: its definition is the list
+        // and the prose below it, which is not a value to join to a term.
+        self::assertStringContainsString("**nullable**\n", $content);
+        self::assertStringContainsString('saved as NULL', $content);
+        // And the wrapper is not printed a second time as one long run.
+        self::assertSame(1, substr_count($content, 'saved as NULL'));
+        self::assertStringNotContainsString('**nullable**: ', $content);
+    }
+
     #[Test]
     public function itRefusesAPageOutsideTheSelectedManualVersion(): void
     {

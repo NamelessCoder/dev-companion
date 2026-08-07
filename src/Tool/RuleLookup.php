@@ -327,7 +327,7 @@ final class RuleLookup extends ReadOnlyTool
             $documents[(string) $result['id']] = (string) $result['title'];
         }
 
-        return "Each of these is a section. The whole document is one call away — typo3_rule_lookup with "
+        return 'Each of these is a section. The whole document is one call away — typo3_rule_lookup with '
             . "documentId, which needs no resource list:\n"
             . implode("\n", array_map(
                 static fn(string $id): string => '- ' . $id . ' — ' . $documents[$id],

@@ -18,6 +18,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### audience
 
+- [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
 - [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06
 - [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
 - [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
@@ -26,6 +27,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-009]: audience/aud-009-the-entry-point-claims-patch-work-and-a-task-that-ends-before-one-reads-itself-out.md
 [D-AUD-008]: audience/aud-008-the-server-is-called-dev-companion-under-the-tooling-vendor.md
 [D-AUD-005]: audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md
 [D-AUD-006]: audience/aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md
@@ -60,6 +62,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs and does not make it legible · 2026-08-08
 - [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment and outranks the subsystem · 2026-08-07
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
@@ -120,6 +123,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-064]: answers/ans-064-an-issue-answer-holds-what-a-triage-needs-and-does-not-make-it-legible.md
 [D-ANS-060]: answers/ans-060-a-bare-word-in-appliesto-reaches-a-path-segment-and-outranks-the-subsystem.md
 [D-ANS-061]: answers/ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md
 [D-ANS-062]: answers/ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md

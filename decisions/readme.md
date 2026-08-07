@@ -60,6 +60,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment and outranks the subsystem · 2026-08-07
+- [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
+- [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
+- [`D-ANS-063`][D-ANS-063] — What a core session defends is the option list and the check it could not run itself · 2026-08-07
 - [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
@@ -116,6 +120,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-060]: answers/ans-060-a-bare-word-in-appliesto-reaches-a-path-segment-and-outranks-the-subsystem.md
+[D-ANS-061]: answers/ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md
+[D-ANS-062]: answers/ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md
+[D-ANS-063]: answers/ans-063-what-a-core-session-defends-is-the-option-list-and-the-check-it-could-not-run-itself.md
 [D-ANS-054]: answers/ans-054-the-backlog-is-a-third-way-into-the-tracker-and-the-areas-are-read-from-it.md
 [D-ANS-055]: answers/ans-055-a-change-answers-for-an-issue-only-where-its-commit-message-names-it.md
 [D-ANS-056]: answers/ans-056-a-search-hit-is-filled-from-the-issue-it-is.md
@@ -174,6 +182,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### knowledge
 
+- [`D-KNW-063`][D-KNW-063] — What a TCA type stores is a subject this server owns and does not carry · 2026-08-07
 - [`D-KNW-055`][D-KNW-055] — The first check a standalone extension repository gets is a gap this server owns · 2026-08-04
 - [`D-KNW-056`][D-KNW-056] — A file skeleton is shipped as a version-bound document section · 2026-08-04
 - [`D-KNW-057`][D-KNW-057] — A document declares what it is and when to reach for it · 2026-08-04
@@ -230,6 +239,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-063]: knowledge/knw-063-what-a-tca-type-stores-is-a-subject-this-server-owns-and-does-not-carry.md
 [D-KNW-055]: knowledge/knw-055-the-first-check-a-standalone-extension-repository-gets-is-a-gap-this-server-owns.md
 [D-KNW-056]: knowledge/knw-056-a-file-skeleton-is-shipped-as-a-bound-document-section.md
 [D-KNW-057]: knowledge/knw-057-a-document-declares-what-it-is-and-when-to-reach-for-it.md
@@ -366,6 +376,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
 - [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04
@@ -388,6 +399,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-022]: task-skills/skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: task-skills/skl-021-triage-and-fetching-a-patch-are-two-workflows-that-end-before-somebody-elses-act.md
 [D-SKL-014]: task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
 [D-SKL-015]: task-skills/skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md

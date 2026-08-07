@@ -33,6 +33,9 @@ when it is added.
 - [`R-ANS-023`][R-ANS-023] — A review answer names only changes that name the issue · held
 - [`R-ANS-024`][R-ANS-024] — A field that is answered empty is one nothing could fill · held
 - [`R-ANS-025`][R-ANS-025] — An issue answer says what its comments refer to · held
+- [`R-ANS-026`][R-ANS-026] — A path names the subsystem, and a hint from another one does not answer · **open**
+- [`R-ANS-027`][R-ANS-027] — An answer that cannot separate two causes says so in the answer · **open**
+- [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · **open**
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -60,3 +63,6 @@ when it is added.
 [R-ANS-023]: ans-023-a-review-answer-names-only-changes-that-name-the-issue.md
 [R-ANS-024]: ans-024-a-field-that-is-answered-empty-is-one-nothing-could-fill.md
 [R-ANS-025]: ans-025-an-issue-answer-says-what-its-comments-refer-to.md
+[R-ANS-026]: ans-026-a-path-names-the-subsystem-and-a-hint-from-another-one-does-not-answer.md
+[R-ANS-027]: ans-027-an-answer-that-cannot-separate-two-causes-says-so-in-the-answer.md
+[R-ANS-028]: ans-028-an-answer-that-names-a-document-says-how-to-read-it-whole.md

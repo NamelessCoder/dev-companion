@@ -7,6 +7,10 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment and outranks the subsystem · 2026-08-07
+- [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
+- [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
+- [`D-ANS-063`][D-ANS-063] — What a core session defends is the option list and the check it could not run itself · 2026-08-07
 - [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
@@ -63,6 +67,10 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-060]: ans-060-a-bare-word-in-appliesto-reaches-a-path-segment-and-outranks-the-subsystem.md
+[D-ANS-061]: ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md
+[D-ANS-062]: ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md
+[D-ANS-063]: ans-063-what-a-core-session-defends-is-the-option-list-and-the-check-it-could-not-run-itself.md
 [D-ANS-054]: ans-054-the-backlog-is-a-third-way-into-the-tracker-and-the-areas-are-read-from-it.md
 [D-ANS-055]: ans-055-a-change-answers-for-an-issue-only-where-its-commit-message-names-it.md
 [D-ANS-056]: ans-056-a-search-hit-is-filled-from-the-issue-it-is.md

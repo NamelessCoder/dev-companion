@@ -1,0 +1,75 @@
+---
+id: D-ANS-061
+date: 2026-08-07
+status: open
+---
+
+# D-ANS-061 — An answer that names a document hands it over rather than pointing at it
+
+**A `typo3://guides` document is reached by the tool the session already called,
+or it is not reached at all.** Three core sessions finished long tasks holding a
+`uri` field, an `alsoInHints` id and a resource list their client never
+rendered, and read none of the three.
+
+## Evidence
+
+- `feedback/2026-08-07-065313` is a whole session that never called
+  `typo3_server_scope`. Its client listed the tools as deferred schemas and
+  showed no resource list, so no guide was ever seen. The server's own
+  instructions predict exactly this, which is what makes it evidence about the
+  instruction rather than about the session.
+- `feedback/2026-08-07-130058` is the same session correcting itself in the
+  debrief. `typo3_script_lookup` returns `typo3://guides/core/testing/scripts`
+  inline, with its body, as an ordinary match — so the guide was reachable all
+  along. What kept it out of sight is that `typo3_test_run_guide` answered every
+  `runTests.sh` question first, and its description reads as a superset. The
+  finding is overlap, not obscurity.
+- `feedback/2026-08-07-132535` is a different session, a review rather than a
+  patch. `typo3_rule_lookup` returned
+  `uri: typo3://guides/core/contribution/commit-messages` on both of its calls;
+  the session read the matched section twice and never fetched the document. It
+  says why: nothing in the answer presents the `uri` as a next action.
+- The same session names the page it wanted and never found — "what each change
+  type owes" — and it is a section of the document it was holding the uri to.
+  `feedback/2026-08-07-132446` is the failed query for that section, from the
+  same review, and it carried `alsoInHints: documentation-changelog`, which the
+  session saw twice and passed over.
+- Re-run here on 2026-08-07: both of that feedback's queries still return
+  `Release Targets` with the uri and the `alsoInHints` id attached, and never
+  `Changelog Files`, which is a section of the same document.
+
+## Decided
+
+- A `uri` in an answer is not delivery. It is delivery to a client that renders
+  MCP resources, and three sessions in a row had one that does not — which is
+  the failure `bin/cli hints:coverage` was already measuring from the other
+  side.
+- The lever is the tool the session does call, not a tool it should have called.
+  `typo3_server_scope` is correct and was never reached, twice, for the same
+  stated reason: orientation felt complete. An answer reached that moment; a
+  tool nobody invokes did not.
+- So the work is on the answering side of the three tools that already name a
+  document — `typo3_rule_lookup`, `typo3_test_run_guide`, `typo3_script_lookup`
+  — rather than on the resource surface.
+- This is step 2 of the ladder, delivery. Nothing is missing from the corpus:
+  every document the three sessions wanted exists and two of them were named in
+  answers the sessions read.
+
+## Assumed
+
+- The clients that render no resource list are the common case rather than these
+  three. All three reports come from one model in one checkout, which is the
+  weakest part of the evidence — but a client's resource support is a property
+  of the client, and the failure is stated from the client side in all three.
+- Naming a document in the answer is enough. Nothing here shows a session acting
+  on such a name; what is shown is three sessions not acting on a bare uri.
+
+## Wrong if
+
+- A session reports reading a guide because an answer named it, and still
+  reassembles the procedure by hand — which would say the handover has to carry
+  the body rather than the name.
+- A tool that inlines the whole document is reported as too long to read, which
+  would say the section cut is right and only its label was wrong.
+- A later debrief from a resource-rendering client reports the same miss, which
+  would say the client was never the variable.

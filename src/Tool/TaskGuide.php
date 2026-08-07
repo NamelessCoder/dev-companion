@@ -51,9 +51,31 @@ final class TaskGuide extends ReadOnlyTool
      * tool that did not answer.
      */
     public const HINTS_SOURCE = 'The hints below are typo3_hint_lookup\'s, matched for these paths and quoted '
-        . 'whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief '
-        . 'carries the %d strongest per group of paths, which is not everything the lookup holds on them — call '
-        . 'it for the rest, by path, with a larger limit, or by id.';
+        . 'whole. A finding that cites one of these rules is citing that lookup rather than this guide.';
+
+    /**
+     * The second half of `HINTS_SOURCE`, said only where it is true.
+     *
+     * It was printed unconditionally and claimed the lookup holds more
+     * whenever a brief carried hints at all — beside an `omittedHints` that
+     * was empty and said the opposite in the same payload. For the Extbase
+     * persistence paths of `feedback/2026-08-07-065259` the lookup returns
+     * the same three hints at every limit, so the brief carried all of them
+     * and the sentence sent the caller to a call with nothing behind it,
+     * which is the pointer `R-GUI-012` exists to stop being empty.
+     */
+    public const HINTS_TRUNCATED = 'A brief carries the %d strongest per group of paths, which is not '
+        . 'everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.';
+
+    /**
+     * The same half where the brief did carry everything the lookup matched.
+     *
+     * A caller that has to find out by calling has paid a round trip to be
+     * told nothing, and the step the brief stands in for is the one a skill
+     * prescribes next — so the answer says which it was.
+     */
+    public const HINTS_COMPLETE = 'These are everything typo3_hint_lookup matches for these paths, so calling '
+        . 'it again by path adds nothing; a subject it holds under another path or id is still a call away.';
 
     /**
      * Which hints the brief left, said where the count is (R-GUI-012).
@@ -400,9 +422,15 @@ final class TaskGuide extends ReadOnlyTool
             // Said above the blocks rather than under them, because what it
             // corrects is a citation and the citation is written while the
             // block is being read.
-            $lines[] = sprintf(self::HINTS_SOURCE, self::HINTS_PER_GROUP);
+            $lines[] = self::HINTS_SOURCE;
+            // Which of the two follows is what the brief actually did, not a
+            // standing disclaimer: a caller told there is more when there is
+            // not spends the call the pointer promised on nothing.
             if ($omitted !== []) {
+                $lines[] = sprintf(self::HINTS_TRUNCATED, self::HINTS_PER_GROUP);
                 $lines[] = sprintf(self::HINTS_OMITTED, implode(', ', array_column($omitted, 'id')));
+            } else {
+                $lines[] = self::HINTS_COMPLETE;
             }
             $lines[] = '';
             // One block per group, and the heading only where there is more

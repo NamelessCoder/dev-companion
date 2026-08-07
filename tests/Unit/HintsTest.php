@@ -3821,8 +3821,12 @@ final class HintsTest extends TestCase
         ]);
 
         self::assertNotSame([], $brief->data['hints']);
+        self::assertStringContainsString(TaskGuide::HINTS_SOURCE, $brief->text);
+        // These paths are the truncating case, so the brief says it stopped
+        // short. Where it does not, it says the other thing —
+        // aBriefThatCarriedEverythingDoesNotSendTheCallerBackForMore.
         self::assertStringContainsString(
-            sprintf(TaskGuide::HINTS_SOURCE, TaskGuide::HINTS_PER_GROUP),
+            sprintf(TaskGuide::HINTS_TRUNCATED, TaskGuide::HINTS_PER_GROUP),
             $brief->text,
         );
 
@@ -3842,6 +3846,57 @@ final class HintsTest extends TestCase
         // states: the brief stops where the lookup goes on.
         self::assertLessThanOrEqual(TaskGuide::HINTS_PER_GROUP, count($brief->data['hints']));
         self::assertGreaterThan(count($brief->data['hints']), count($lookup->data['hints']));
+    }
+
+    /**
+     * `R-GUI-009`, second half. The sentence is what the brief did, not a
+     * standing disclaimer.
+     *
+     * `feedback/2026-08-07-065259` read a populated `hints` array as the
+     * prescribed per-subsystem call already answered. It was not wrong about
+     * the content: `typo3_hint_lookup` returns the same three hints for those
+     * paths at every limit, so the brief carried all of them and `omittedHints`
+     * was correctly empty. What the payload did was claim otherwise in prose
+     * beside that empty list, sending a caller to a call with nothing behind
+     * it — the failure `R-GUI-012` names from the other direction.
+     */
+    #[Test]
+    public function aBriefThatCarriedEverythingDoesNotSendTheCallerBackForMore(): void
+    {
+        $paths = [
+            'typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php',
+            'typo3/sysext/extbase/Classes/Persistence/Generic/Query.php',
+            'typo3/sysext/extbase/Classes/Persistence/QueryInterface.php',
+        ];
+        $task = 'Verify a bug report claiming an Extbase repository query cannot filter for IS NULL '
+            . 'on a nullable date field';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'audit',
+            'targetVersion' => '15',
+            'paths' => $paths,
+        ]);
+        $lookup = Registry::call('typo3_hint_lookup', [
+            'task' => $task,
+            'targetVersion' => '15',
+            'paths' => $paths,
+            'limit' => 20,
+        ]);
+
+        // The premise: asking the lookup directly adds nothing here.
+        self::assertSame(
+            array_column($lookup->data['hints'], 'id'),
+            array_column($brief->data['hints'], 'id'),
+        );
+        self::assertSame([], $brief->data['omittedHints']);
+
+        self::assertStringContainsString(TaskGuide::HINTS_SOURCE, $brief->text);
+        self::assertStringContainsString(TaskGuide::HINTS_COMPLETE, $brief->text);
+        self::assertStringNotContainsString(
+            sprintf(TaskGuide::HINTS_TRUNCATED, TaskGuide::HINTS_PER_GROUP),
+            $brief->text,
+        );
     }
 
     /**

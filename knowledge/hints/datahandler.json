@@ -7,7 +7,6 @@
     ],
     "appliesTo": [
       "DataHandler",
-      "/Persistence/",
       "persistence",
       "write a record",
       "record changes",

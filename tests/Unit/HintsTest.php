@@ -56,6 +56,61 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * `R-ANS-026`: a path says which subsystem the question is about.
+     *
+     * Two sessions on 2026-08-07 passed the Extbase persistence paths and got
+     * FAL storages back, from `typo3_hint_lookup` and from `typo3_task_guide`.
+     * A bare `appliesTo` word is matched against the paths as a prefix, so
+     * `storage` claimed the `Storage/` segment and `/Persistence/` claimed the
+     * directory above it, and both outranked everything on the keyword tier
+     * while their own words answered nothing — `D-ANS-060`.
+     *
+     * The negative is what this holds. Which hint *should* answer here is a
+     * subject the corpus does not carry yet: `persistence-reading` is the core
+     * QueryBuilder and `PageRepository`, and `extbase-domain-mapping` is the
+     * model and its table, so neither covers the query parser, the column map
+     * or `Backend`.
+     */
+    #[Test]
+    public function anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem(): void
+    {
+        $result = Hints::find(
+            [
+                'typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php',
+                'typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/ColumnMap.php',
+                'typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php',
+            ],
+            'Extbase persistence, query parser, data mapper, column map, writing and reading records',
+            8,
+        );
+
+        $matched = array_column($result['matchedHints'], 'id');
+        self::assertNotContains('fal-storages-drivers', $matched);
+    }
+
+    /**
+     * The other half of the same change: what the pruned patterns were for.
+     *
+     * `datahandler-basics` is reached by the DataHandler path without
+     * `/Persistence/`, and `fal-storages-drivers` by a storage question without
+     * the bare `storage`. Both were measured before the patterns went, and this
+     * is what keeps them measured.
+     */
+    #[Test]
+    public function pruningThePathPatternsLeftBothSubjectsReachable(): void
+    {
+        $dataHandler = Hints::find(
+            ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
+            'write a record with DataHandler',
+            6,
+        );
+        self::assertContains('datahandler-basics', array_column($dataHandler['matchedHints'], 'id'));
+
+        $storages = Hints::find([], 'which storage does this file come from', 6);
+        self::assertContains('fal-storages-drivers', array_column($storages['matchedHints'], 'id'));
+    }
+
     #[Test]
     public function aDistributedExtensionIsNotAnsweredWithTheProjectRepositoryLayout(): void
     {

@@ -29,7 +29,6 @@
       "StorageRepository",
       "DriverInterface",
       "driver",
-      "storage",
       "remote storage",
       "file mount"
     ],

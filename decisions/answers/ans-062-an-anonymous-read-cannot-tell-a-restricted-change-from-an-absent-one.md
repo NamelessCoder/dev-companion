@@ -72,3 +72,19 @@ caller acts on as "no patch exists".**
   signal say "restricted" about something anybody can read.
 - Gerrit is found to answer differently for a private change than for one that
   does not exist, which would mean the two were separable all along.
+
+**Since then**, on 2026-08-07, the first **Assumed** was measured and half of it
+is wrong. Asked of `review.typo3.org` directly, `change:95162`,
+`change:I7701923d80dbd29377213fa71c74ecad88cf7d31` and a change number that
+exists nowhere all answer `200` with `[]`. So the tool is consistent after all:
+all three are `empty`, and the `source-not-answering` the report saw for 95162
+was the review server not answering that once, not a second shape of the same
+permission effect. The feedback inferred a rule from a single reading, which is
+what one reading supports.
+
+What that leaves standing is the first half, and it is confirmed rather than
+weakened: 95162 is a change the user says exists, and an anonymous read of it is
+`[]` — indistinguishable from a change nobody pushed, exactly as this entry
+says. So there is no status split to repair, and the whole of the fix is what
+the answer claims. `R-ANS-027` is held by
+`GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate`.

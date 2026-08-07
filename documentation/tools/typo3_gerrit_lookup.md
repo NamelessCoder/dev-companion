@@ -76,6 +76,11 @@ unavailable:
   # API, which is what a proxy or a captive portal looks like from here.
   cause: string
   reason: string
+# Present where the answer is empty and cannot be read as an absence. This
+# server reads the review server without credentials, so a change that is
+# private or work in progress is invisible to it and looks exactly like one
+# nobody pushed. Null where empty really does mean nothing matched.
+indistinguishable: string or null  # optional
 ```
 
 ## Answered

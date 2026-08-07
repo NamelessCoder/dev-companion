@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Tool\GerritLookup;
 
 /**
  * The review server is somebody else's host, so what is held here is everything
@@ -246,6 +247,33 @@ final class GerritTest extends TestCase
         self::assertSame('empty', $answer['status']);
         self::assertSame([], $answer['changes']);
         self::assertNull($answer['cause']);
+    }
+
+    /**
+     * `R-ANS-027`. An empty answer for a named change is two things at once.
+     *
+     * `feedback/2026-08-07-132416` looked up the Change-Id its own commit
+     * carried, got `{"status":"empty","changes":[]}`, and made "this was never
+     * pushed" the first finding of a review — recommending its author
+     * coordinate with a contributor who was themselves. The change was private,
+     * and this server reads Gerrit without credentials, so nothing in that
+     * answer could have said otherwise.
+     */
+    #[Test]
+    public function anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate(): void
+    {
+        $said = GerritLookup::indistinguishable('empty', 'I7701923d80dbd29377213fa71c74ecad88cf7d31');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('without credentials', $said);
+        self::assertStringContainsString('private', $said);
+
+        // A search over commit messages is a claim about a query, not about a
+        // record the caller is holding, and it has its own sentence.
+        self::assertNull(GerritLookup::indistinguishable('empty', ''));
+        // Nothing to hedge where something came back.
+        self::assertNull(GerritLookup::indistinguishable('answered', '95162'));
+        self::assertNull(GerritLookup::indistinguishable('unavailable', '95162'));
     }
 
     #[Test]

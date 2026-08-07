@@ -1,6 +1,6 @@
 ---
 id: R-ANS-027
-status: open
+status: held
 restsOn: [D-ANS-062]
 ---
 
@@ -22,7 +22,12 @@ anonymous read of a private change. The review made "this was never pushed" its
 first finding and recommended coordinating with an author who did not exist as a
 separate party.
 
+**Measured on 2026-08-07.** Asked of the review server directly, `change:95162`
+— the change the report is about — answers `200` with `[]`, the same as a change
+number that exists nowhere. The two really are one answer, and the
+`source-not-answering` the report saw beside it was that call not being answered
+rather than a second shape of the same cause.
+
 ## Held by
 
-- `not guarded` — no test reaches the review server, and what would hold it is a
-  recorded answer for a change no anonymous reader may see.
+- `GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate`

@@ -162,16 +162,16 @@ final class ForgeTest extends TestCase
     #[Test]
     public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
     {
-        $asked = '';
+        $asked = [];
         $forge = new Forge(function (string $url) use (&$asked): string {
-            $asked = $url;
+            $asked[] = $url;
 
             return (string) json_encode(['issue' => self::ISSUE]);
         });
 
         $attachments = $forge->issue('110348')['issue']['attachments'];
 
-        self::assertStringContainsString('include=journals,relations,attachments', $asked);
+        self::assertStringContainsString('include=journals,relations,attachments', $asked[0]);
         self::assertSame(['ckeditor-3-p-tags.png', 'db_field_value.jpg'], array_column($attachments, 'filename'));
         self::assertSame('image/png', $attachments[0]['contentType']);
         self::assertSame(15472, $attachments[0]['size']);
@@ -200,6 +200,121 @@ final class ForgeTest extends TestCase
         self::assertSame([105403, 105953], array_column($relations, 'issue'));
         self::assertSame(['relates', 'duplicates'], array_column($relations, 'relation'));
     }
+
+    /**
+     * A number and a word cost one issue read to evaluate, so a caller holding
+     * four of them evaluates none — and on 15984 the one that answered what a
+     * fix would cost was among them (`D-ANS-064`). What makes it a fix rather
+     * than a trade is that the whole set is filled in one call.
+     */
+    #[Test]
+    public function aRelationCarriesEnoughOfTheOtherIssueToJudgeWhetherToReadIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return (string) json_encode(str_contains($url, 'issue_id=') ? self::RELATED : ['issue' => self::ISSUE]);
+        });
+
+        $relations = $forge->issue('110348')['issue']['relations'];
+
+        self::assertCount(2, $asked);
+        self::assertStringContainsString('issue_id=105403%2C105953', $asked[1]);
+        // A relation is usually to something closed, and the default of that
+        // endpoint is the open issues.
+        self::assertStringContainsString('status_id=%2A', $asked[1]);
+        self::assertSame('Massive Memory Leak in 4.5.8+ / 4.6', $relations[0]['subject']);
+        self::assertSame('Bug', $relations[0]['tracker']);
+        self::assertSame('Closed', $relations[0]['status']);
+        self::assertSame('https://forge.typo3.org/issues/105953', $relations[1]['url']);
+    }
+
+    /**
+     * An issue that answered is not turned into an outage by a second call that
+     * did not.
+     */
+    #[Test]
+    public function aRelationTheFillCouldNotReachIsStillTheRelationThatWasFiled(): void
+    {
+        $forge = new Forge(fn(string $url): ?string => str_contains($url, 'issue_id=')
+            ? null
+            : (string) json_encode(['issue' => self::ISSUE]));
+
+        $relations = $forge->issue('110348')['issue']['relations'];
+
+        self::assertSame([105403, 105953], array_column($relations, 'issue'));
+        self::assertSame(['', ''], array_column($relations, 'subject'));
+    }
+
+    /**
+     * The journal of 15984, in the wording measured on 2026-08-08: the bot
+     * names both handles, a human names the number alone three months later,
+     * and one comment is a query for a topic rather than a change.
+     */
+    private const REVIEWED = [
+        'id' => 15984,
+        'journals' => [
+            ['user' => ['name' => 'Steffen Kamper'], 'created_on' => '2011-03-17T11:32:20Z', 'notes' => 'https://review.typo3.org/#q,status:open+project:TYPO3v4/Core+topic:3129,n,z'],
+            ['user' => ['name' => 'Mr. Hudson'], 'created_on' => '2011-04-10T12:19:56Z', 'notes' => "Patch set 3 of change I98ea123ccdf1e370f28103546191b0a7234076f4 has been pushed to the review server.\nIt is available at http://review.typo3.org/1186"],
+            ['user' => ['name' => 'Mr. Hudson'], 'created_on' => '2011-06-06T17:17:34Z', 'notes' => "Patch set 1 of change I459aa01a8aba89ce361accd3dd84ea0329c5d1e4 has been pushed to the review server.\nIt is available at http://review.typo3.org/2545"],
+            ['user' => ['name' => 'Markus Klein'], 'created_on' => '2011-10-06T01:13:23Z', 'notes' => "Patch for 4.5 is still pending, but has enough votes!\n\nhttps://review.typo3.org/2545"],
+        ],
+    ];
+
+    /**
+     * A change reference is in the payload already and only inside a sentence,
+     * where it reads as history rather than as a handle: the session that
+     * triaged this issue never loaded `typo3_gerrit_lookup`'s schema.
+     */
+    #[Test]
+    public function aReviewChangeIsLiftedOutOfTheProseThatCarriesIt(): void
+    {
+        $forge = new Forge(fn(): string => (string) json_encode(['issue' => self::REVIEWED]));
+
+        $reviews = $forge->issue('15984')['issue']['reviews'];
+
+        self::assertSame([1186, 2545], array_column($reviews, 'change'));
+        self::assertSame([3, 1], array_column($reviews, 'patchSet'));
+        self::assertSame('I98ea123ccdf1e370f28103546191b0a7234076f4', $reviews[0]['changeId']);
+        self::assertSame('https://review.typo3.org/c/1186', $reviews[0]['url']);
+        // The last note naming it, which is how old the reference is — and the
+        // change id the bot gave it three months earlier is still on it.
+        self::assertSame('2011-10-06T01:13:23Z', $reviews[1]['on']);
+        self::assertSame('I459aa01a8aba89ce361accd3dd84ea0329c5d1e4', $reviews[1]['changeId']);
+    }
+
+    /**
+     * `review.typo3.org/#q,…+topic:3129,n,z` names a topic. Matching digits
+     * anywhere in a review URL would report it as change 3129, which is a
+     * change that exists and is about something else.
+     */
+    #[Test]
+    public function aQueryUrlNamesNoChangeAndIsNotReportedAsOne(): void
+    {
+        $forge = new Forge(fn(): string => (string) json_encode(['issue' => self::REVIEWED]));
+
+        self::assertNotContains(3129, array_column($forge->issue('15984')['issue']['reviews'], 'change'));
+    }
+
+    /** The two relations of the fixture, as `/issues.json` answers a list of ids. */
+    private const RELATED = [
+        'issues' => [
+            [
+                'id' => 105403,
+                'subject' => 'Massive Memory Leak in 4.5.8+ / 4.6',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'Closed'],
+            ],
+            [
+                'id' => 105953,
+                'subject' => 'Rework AdminPanel',
+                'tracker' => ['name' => 'Task'],
+                'status' => ['name' => 'New'],
+            ],
+        ],
+        'total_count' => 2,
+    ];
 
     /**
      * The protection in front of the tracker answers a browser-shaped request

@@ -141,12 +141,46 @@ final class Forge
             return ['status' => 'unavailable', 'url' => $url, 'issue' => null, 'cause' => $answer['cause']];
         }
 
+        $found = self::issueOf($answer['part'], $number);
+        $found['relations'] = $this->related($found['relations']);
+
         return [
             'status' => 'answered',
             'url' => $url,
-            'issue' => self::issueOf($answer['part'], $number),
+            'issue' => $found,
             'cause' => null,
         ];
+    }
+
+    /**
+     * The relations, with what it takes to decide whether to read one.
+     *
+     * A relation came back as a number and a word, which costs one issue read
+     * to evaluate — so a caller holding four of them evaluates none. On 15984
+     * that was four, and the one that answered what a fix would cost was
+     * `#32756`, "Massive Memory Leak in 4.5.8+ / 4.6": the issue the 2012
+     * revert was filed under, found afterwards in a git commit message
+     * (`D-ANS-064`).
+     *
+     * The price is one bulk read per issue answer rather than one per relation,
+     * which is what makes this a fix and not a trade. Where it cannot be
+     * reached the relations stand as they came back.
+     *
+     * @param list<array<string, mixed>> $relations
+     * @return list<array<string, mixed>>
+     */
+    private function related(array $relations): array
+    {
+        $fields = $this->fields(array_column($relations, 'issue'));
+        foreach ($relations as $at => $relation) {
+            $read = $fields[$relation['issue']] ?? null;
+            $relations[$at]['subject'] = $read['subject'] ?? '';
+            $relations[$at]['tracker'] = $read['tracker'] ?? '';
+            $relations[$at]['status'] = $read['status'] ?? '';
+            $relations[$at]['url'] = self::HOST . '/issues/' . $relation['issue'];
+        }
+
+        return $relations;
     }
 
     /**
@@ -203,11 +237,6 @@ final class Forge
      * (`feedback/2026-08-05-033902`), and the search path is where a triage
      * asks about age.
      *
-     * `/issues.json` filtered by an id list answers all four for the page in
-     * one request, which is what makes filling them cheaper than explaining
-     * them. `status_id=*` is what keeps a closed hit in it — a search answers
-     * with closed issues, and the default of that endpoint is open ones.
-     *
      * Where it cannot be reached the hits stand as they came back. A search
      * that answered is not turned into an outage by a second call that did not.
      *
@@ -216,32 +245,9 @@ final class Forge
      */
     private function filled(array $results): array
     {
-        $numbers = [];
-        foreach ($results as $hit) {
-            if (is_int($hit['issue']) && $hit['issue'] > 0) {
-                $numbers[] = $hit['issue'];
-            }
-        }
-        if ($numbers === []) {
+        $fields = $this->fields(array_column($results, 'issue'));
+        if ($fields === []) {
             return $results;
-        }
-
-        $url = self::HOST . '/issues.json?' . http_build_query([
-            'issue_id' => implode(',', $numbers),
-            'status_id' => '*',
-            'limit' => count($numbers),
-        ]);
-        $answer = $this->api($url, 'issues');
-        if ($answer['part'] === null) {
-            return $results;
-        }
-
-        $fields = [];
-        foreach ($answer['part'] as $entry) {
-            if (is_array($entry)) {
-                $read = self::entry($entry);
-                $fields[$read['issue']] = $read;
-            }
         }
 
         foreach ($results as $at => $hit) {
@@ -261,6 +267,55 @@ final class Forge
         }
 
         return $results;
+    }
+
+    /**
+     * The fields of a set of issues, read in one request.
+     *
+     * `/issues.json` filtered by an id list answers subject, tracker, status,
+     * area, assignee and both dates for the whole set at once, which is what
+     * makes filling a search page and an issue's relations cheaper than
+     * explaining why they are bare. `status_id=*` is what keeps a closed one in
+     * it — both callers ask about issues that are usually closed, and the
+     * default of that endpoint is open ones.
+     *
+     * An empty answer is what could not be reached, and every caller here reads
+     * it as "leave what came back alone".
+     *
+     * @param list<mixed> $numbers
+     * @return array<int, array<string, mixed>>
+     */
+    private function fields(array $numbers): array
+    {
+        $wanted = [];
+        foreach ($numbers as $number) {
+            if (is_int($number) && $number > 0) {
+                $wanted[$number] = $number;
+            }
+        }
+        if ($wanted === []) {
+            return [];
+        }
+
+        $url = self::HOST . '/issues.json?' . http_build_query([
+            'issue_id' => implode(',', $wanted),
+            'status_id' => '*',
+            'limit' => count($wanted),
+        ]);
+        $answer = $this->api($url, 'issues');
+        if ($answer['part'] === null) {
+            return [];
+        }
+
+        $fields = [];
+        foreach ($answer['part'] as $entry) {
+            if (is_array($entry)) {
+                $read = self::entry($entry);
+                $fields[$read['issue']] = $read;
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -629,9 +684,105 @@ final class Forge
             'description' => is_string($raw['description'] ?? null) ? trim($raw['description']) : '',
             'relations' => $relations,
             'attachments' => self::attachments($raw),
+            // Read from every note rather than from the ones that come back, so
+            // a patch-set ping older than the bound is still a handle.
+            'reviews' => self::reviews($notes),
             'noteCount' => count($notes),
             'notes' => array_slice($notes, -self::NOTES),
         ];
+    }
+
+    /**
+     * The review changes the journal names, as handles rather than as prose.
+     *
+     * They are in the payload already and only inside a sentence — "Patch set 3
+     * of change I98ea… has been pushed to the review server. It is available at
+     * http://review.typo3.org/1186" — where they read as history already told.
+     * A session triaging 15984 never called `typo3_gerrit_lookup` and never
+     * loaded its schema, and answered the question from `git log --all --grep`
+     * instead (`D-ANS-064`).
+     *
+     * Nothing is claimed about the change's state. The journal says what was
+     * true on the day somebody wrote the note, and what is true now is one
+     * `typo3_gerrit_lookup` call away.
+     *
+     * Two passes, because the two handles arrive in different notes: the bot's
+     * names the change id and the number together, a human's later note is a
+     * bare URL. Which one a note carries is what the second pass resolves.
+     *
+     * @param list<array{author: string, on: string, note: string}> $notes
+     * @return list<array<string, mixed>>
+     */
+    private static function reviews(array $notes): array
+    {
+        $numberOf = [];
+        foreach ($notes as $note) {
+            [$numbers, $changeId] = self::handles($note['note']);
+            if ($changeId !== '' && count($numbers) === 1) {
+                $numberOf[strtolower($changeId)] = $numbers[0];
+            }
+        }
+
+        $reviews = [];
+        foreach ($notes as $note) {
+            [$numbers, $changeId] = self::handles($note['note']);
+            if ($numbers === [] && $changeId !== '') {
+                $numbers = [$numberOf[strtolower($changeId)] ?? 0];
+            }
+            foreach ($numbers as $number) {
+                $key = $number > 0 ? (string) $number : strtolower($changeId);
+                if ($key === '') {
+                    continue;
+                }
+                $review = $reviews[$key] ?? [
+                    'change' => $number,
+                    'changeId' => '',
+                    'patchSet' => 0,
+                    'on' => '',
+                    'url' => $number > 0 ? Gerrit::HOST . '/c/' . $number : Gerrit::HOST,
+                ];
+                // Only where the note names one change. A note naming two
+                // carries a change id belonging to neither of them for certain.
+                if ($changeId !== '' && count($numbers) === 1) {
+                    $review['changeId'] = $changeId;
+                }
+                $review['patchSet'] = max($review['patchSet'], self::patchSet($note['note']));
+                // The journal is in order, so the last note naming a change is
+                // what says how old the reference is.
+                $review['on'] = $note['on'];
+                $reviews[$key] = $review;
+            }
+        }
+
+        return array_values($reviews);
+    }
+
+    /**
+     * The change numbers and the change id one note names.
+     *
+     * A review URL carries the number in two shapes — `review.typo3.org/1186`
+     * from before the move to the current server, and
+     * `review.typo3.org/c/Packages/TYPO3.CMS/+/38419` since. A URL with neither
+     * is a query rather than a change: `review.typo3.org/#q,status:open+…`
+     * names a topic and no number, and matching digits anywhere in the URL
+     * would report it as change 3129.
+     *
+     * @return array{list<int>, string}
+     */
+    private static function handles(string $note): array
+    {
+        preg_match_all('~review\.typo3\.org/(?:c/[^\s]*?\+/)?(\d+)~', $note, $found);
+        $numbers = array_values(array_unique(array_map(intval(...), $found[1])));
+
+        preg_match('~\bI[0-9a-f]{40}\b~i', $note, $id);
+
+        return [$numbers, $id[0] ?? ''];
+    }
+
+    /** Which patch set the note is about, and zero where it does not say. */
+    private static function patchSet(string $note): int
+    {
+        return preg_match('~\bpatch set (\d+)~i', $note, $matched) === 1 ? (int) $matched[1] : 0;
     }
 
     /**

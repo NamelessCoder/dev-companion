@@ -2,20 +2,21 @@
 
 Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass
 issue with a number to read that one: subject, tracker, status, target version,
-the TYPO3 and PHP versions it was reported against, related issues, the files
-hanging off it — which on a report about rendering is where the evidence usually
-is — and the comments, where a maintainer who closed or reassigned it said why,
-which the description never says. Or pass query with words to find out which
-other issues describe the same thing, which the relations of one issue only
-answer for what somebody linked by hand. Or pass open to enumerate the core
-project's unresolved issues without holding a number or a wording — oldest filed
-or longest untouched, narrowed by tracker and by date, which is where a triage
-of the backlog starts; the count of everything that matched comes back with the
-page, so a limited answer says whether it is the whole set. Each entry carries
-its number, subject, tracker, status and URL. A call carries issue, query or
-open, never two of them. An issue that does not exist is answered as such, and
-so is a tracker that could not be reached. Reading only, and no credential:
-commenting, assigning and closing stay yours. Answers from: network.
+the TYPO3 and PHP versions it was reported against, the related issues with
+their subjects, the review changes its comments name, the files hanging off it —
+which on a report about rendering is where the evidence usually is — and the
+comments, where a maintainer who closed or reassigned it said why, which the
+description never says. Or pass query with words to find out which other issues
+describe the same thing, which the relations of one issue only answer for what
+somebody linked by hand. Or pass open to enumerate the core project's unresolved
+issues without holding a number or a wording — oldest filed or longest
+untouched, narrowed by tracker and by date, which is where a triage of the
+backlog starts; the count of everything that matched comes back with the page,
+so a limited answer says whether it is the whole set. Each entry carries its
+number, subject, tracker, status and URL. A call carries issue, query or open,
+never two of them. An issue that does not exist is answered as such, and so is a
+tracker that could not be reached. Reading only, and no credential: commenting,
+assigning and closing stay yours. Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
@@ -134,13 +135,45 @@ issue:
   # The report as it was written, which is what the reporter saw and not what
   # was decided.
   description: string
-  # Issues this one is filed against, which is where a duplicate or a blocker is
-  # named.
+  # Issues this one is filed against, which is where a duplicate, a blocker, and
+  # the issue a revert was filed under are named. Each carries its subject, so
+  # which of them is worth reading is decided from here rather than from one
+  # call each.
   relations:
     - # The other issue.
       issue: integer
       # duplicates, relates, blocked, precedes.
       relation: string
+      # What the other issue is about, so it can be judged without being read.
+      # Empty where the tracker did not answer the one call that fills the whole
+      # set.
+      subject: string
+      # Bug, Feature, Task.
+      tracker: string
+      # Where the other issue stands.
+      status: string
+      # Where a person reads it.
+      url: string
+  # The review changes the journal names, lifted out of the prose that carries
+  # them. Nothing here says what state a change is in: a note says what was true
+  # the day it was written, and typo3_gerrit_lookup answers what is true now.
+  # Empty where no note named one.
+  reviews:
+    - # The change number on review.typo3.org, which is what typo3_gerrit_lookup
+      # takes as change.
+      change: integer
+      # The Change-Id the commit message carries, empty where no note named one.
+      # typo3_gerrit_lookup takes this too, and it is what survives a rebase
+      # onto another branch.
+      changeId: string
+      # The highest patch set a note mentioned, zero where none did. The review
+      # server may be further along.
+      patchSet: integer
+      # When the last note naming this change was written, which is how old the
+      # reference is and not when the change last moved.
+      on: string
+      # Where a person reads the change.
+      url: string
   # The files hanging off the issue. On a report about rendering these are
   # usually screenshots, and they are regularly where the evidence is: a comment
   # that consists of !image.jpg! references reads as an empty comment otherwise.
@@ -206,12 +239,12 @@ unavailable:
 
 ## Answered
 
-Recorded on 2026-08-05 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.0, the core checkout this repository writes below
-.fixtures/, whose console could not be reached: <installation> has no TYPO3
-console — none of vendor/bin/typo3, bin/typo3 exists. Nothing checks what is
-below this heading; everything above it is derived from the class that answers
-the call, and `bin/cli tools:check` holds it.
+Recorded on  by `bin/cli tools:record`. Answered against core-checkout, TYPO3
+15.0.0-dev, the main core checkout below .checkouts/, whose console could not
+be reached: the installation requires PHP 8.5.0 and no interpreter on this
+machine provides it (running 8.4.24). Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and `bin/cli tools:check` holds it.
 
 ### forge: what an issue says and what was decided
 
@@ -234,6 +267,10 @@ Reported against TYPO3 15 — which is what the reporter had, not what it still 
 
 ## Reported
 The "imagesOnPage" feature is older than git. It needs to be revised to be integrated into FAL.
+
+## Changes on review.typo3.org (1)
+Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+- change 95040 · patch set 2 · named 2026-08-01 · https://review.typo3.org/c/95040
 
 ## Comments (3 of 3, oldest first)
 What was decided is here rather than above.
@@ -277,6 +314,15 @@ Data:
         "description": "The \"imagesOnPage\" feature is older than git. It needs to be revised to be integrated into FAL.",
         "relations": [],
         "attachments": [],
+        "reviews": [
+            {
+                "change": 95040,
+                "changeId": "",
+                "patchSet": 2,
+                "on": "2026-08-01T06:13:04Z",
+                "url": "https://review.typo3.org/c/95040"
+            }
+        ],
         "noteCount": 3,
         "notes": [
             {
@@ -315,11 +361,11 @@ Text:
 
 ```
 #88556 One line break in DB field causes 3 rendered p-tags in CKEditor
-Bug · Under Review · priority Should have · https://forge.typo3.org/issues/88556
+Bug · Resolved · priority Should have · https://forge.typo3.org/issues/88556
 Assigned to nobody.
 Target version: Candidate for patchlevel
 Reported against TYPO3 12, PHP 8.2 — which is what the reporter had, not what it still reproduces on.
-Relation: relates #96466
+Relation: relates #96466 — Bug · Rejected · RTE parse func paragraph duplication bug
 
 ## Reported
 <pre><code class="html">
@@ -331,6 +377,12 @@ When writing this into a DB field with enabled RTE it causes 3 additional empty 
 
 Not sure whether this is a CKEditor or TYPO3 related issue.
 
+## Changes on review.typo3.org (3)
+Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+- change 95108 · patch set 1 · named 2026-08-05 · https://review.typo3.org/c/95108
+- change 95131 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95131
+- change 95132 · patch set 1 · named 2026-08-06 · https://review.typo3.org/c/95132
+
 ## Attachments (7)
 On a report about rendering these are usually where the evidence is, and Redmine writes an inline image into a comment as !filename! — so a comment below that is nothing but a filename is referring to one of these. Read the ones the report turns on; this server does not fetch them.
 - ckeditor-3-p-tags.png · image/png · 15 kB · 2019-06-13 · https://forge.typo3.org/attachments/download/34363/ckeditor-3-p-tags.png
@@ -341,7 +393,7 @@ On a report about rendering these are usually where the evidence is, and Redmine
 - fe_output_sourcecode.jpg · image/jpeg · 32 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37901/fe_output_sourcecode.jpg
 - db_field_value_wo_linebreak.jpg · image/jpeg · 15 kB · 2023-08-07 · https://forge.typo3.org/attachments/download/37902/db_field_value_wo_linebreak.jpg
 
-## Comments (12 of 12, oldest first)
+## Comments (15 of 15, oldest first)
 What was decided is here rather than above.
 
 **Benni Mack**, 2019-06-13T13:37:33Z
@@ -585,6 +637,17 @@ There's an additional empty <p>-Tag before and after the codeblock.
 **Gerrit Code Review**, 2026-08-05T03:25:06Z
 Patch set 1 for branch *main* of project *Packages/TYPO3.CMS* has been pushed to the review server.
 It is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95108
+
+**Gerrit Code Review**, 2026-08-06T19:26:43Z
+Patch set 1 for branch *14.3* of project *Packages/TYPO3.CMS* has been pushed to the review server.
+It is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95131
+
+**Gerrit Code Review**, 2026-08-06T19:26:58Z
+Patch set 1 for branch *13.4* of project *Packages/TYPO3.CMS* has been pushed to the review server.
+It is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95132
+
+**Benjamin Kott**, 2026-08-06T20:15:08Z
+Applied in changeset commit:b406a9416431d1945756ce418d9c3726844f5325.
 ```
 
 Data:
@@ -601,7 +664,7 @@ Data:
     "issue": {
         "id": 88556,
         "subject": "One line break in DB field causes 3 rendered p-tags in CKEditor",
-        "status": "Under Review",
+        "status": "Resolved",
         "tracker": "Bug",
         "priority": "Should have",
         "assignedTo": "",
@@ -609,13 +672,17 @@ Data:
         "typo3Version": "12",
         "phpVersion": "8.2",
         "createdOn": "2019-06-13T13:35:40Z",
-        "updatedOn": "2026-08-05T03:25:05Z",
+        "updatedOn": "2026-08-06T20:15:08Z",
         "url": "https://forge.typo3.org/issues/88556",
         "description": "<pre><code class=\"html\">\r\n<p>Hello World\r\n</p><ul><li>foo bar</li></ul>\r\n</code></pre>\r\n\r\nWhen writing this into a DB field with enabled RTE it causes 3 additional empty p-tags in CKEditor. These can be saved too. See attachment for a sample.\r\n\r\nNot sure whether this is a CKEditor or TYPO3 related issue.",
         "relations": [
             {
                 "issue": 96466,
-                "relation": "relates"
+                "relation": "relates",
+                "subject": "RTE parse func paragraph duplication bug",
+                "tracker": "Bug",
+                "status": "Rejected",
+                "url": "https://forge.typo3.org/issues/96466"
             }
         ],
         "attachments": [
@@ -669,7 +736,30 @@ Data:
                 "url": "https://forge.typo3.org/attachments/download/37902/db_field_value_wo_linebreak.jpg"
             }
         ],
-        "noteCount": 12,
+        "reviews": [
+            {
+                "change": 95108,
+                "changeId": "",
+                "patchSet": 1,
+                "on": "2026-08-05T03:25:06Z",
+                "url": "https://review.typo3.org/c/95108"
+            },
+            {
+                "change": 95131,
+                "changeId": "",
+                "patchSet": 1,
+                "on": "2026-08-06T19:26:43Z",
+                "url": "https://review.typo3.org/c/95131"
+            },
+            {
+                "change": 95132,
+                "changeId": "",
+                "patchSet": 1,
+                "on": "2026-08-06T19:26:58Z",
+                "url": "https://review.typo3.org/c/95132"
+            }
+        ],
+        "noteCount": 15,
         "notes": [
             {
                 "author": "Benni Mack",
@@ -730,6 +820,21 @@ Data:
                 "author": "Gerrit Code Review",
                 "on": "2026-08-05T03:25:06Z",
                 "note": "Patch set 1 for branch *main* of project *Packages/TYPO3.CMS* has been pushed to the review server.\nIt is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95108"
+            },
+            {
+                "author": "Gerrit Code Review",
+                "on": "2026-08-06T19:26:43Z",
+                "note": "Patch set 1 for branch *14.3* of project *Packages/TYPO3.CMS* has been pushed to the review server.\nIt is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95131"
+            },
+            {
+                "author": "Gerrit Code Review",
+                "on": "2026-08-06T19:26:58Z",
+                "note": "Patch set 1 for branch *13.4* of project *Packages/TYPO3.CMS* has been pushed to the review server.\nIt is available at https://review.typo3.org/c/Packages/TYPO3.CMS/+/95132"
+            },
+            {
+                "author": "Benjamin Kott",
+                "on": "2026-08-06T20:15:08Z",
+                "note": "Applied in changeset commit:b406a9416431d1945756ce418d9c3726844f5325."
             }
         ]
     },
@@ -897,7 +1002,7 @@ Called with:
 Text:
 
 ```
-TYPO3 issue tracker: 3 of 2484 open issues of the TYPO3 Core project, oldest filed first
+TYPO3 issue tracker: 3 of 2471 open issues of the TYPO3 Core project, oldest filed first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
 
@@ -919,7 +1024,7 @@ Data:
     "source": "https://forge.typo3.org",
     "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3",
     "query": "",
-    "total": 2484,
+    "total": 2471,
     "categories": [
         "AdminPanel",
         "Authentication",
@@ -1034,7 +1139,7 @@ Called with:
 Text:
 
 ```
-TYPO3 issue tracker: 3 of 23 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
+TYPO3 issue tracker: 3 of 22 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
 An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
@@ -1057,7 +1162,7 @@ Data:
     "source": "https://forge.typo3.org",
     "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=updated_on%3Aasc&limit=3&tracker_id=1&category_id=1001",
     "query": "",
-    "total": 23,
+    "total": 22,
     "categories": [
         "AdminPanel",
         "Authentication",

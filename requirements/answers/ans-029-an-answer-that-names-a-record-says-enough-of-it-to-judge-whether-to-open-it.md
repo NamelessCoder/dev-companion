@@ -1,6 +1,6 @@
 ---
 id: R-ANS-029
-status: open
+status: held
 restsOn: [D-ANS-064]
 ---
 
@@ -27,8 +27,20 @@ afterwards out of a git commit message.
 references an issue's journal names are prose inside a note, so
 `typo3_gerrit_lookup` was never called and never even had its schema loaded.
 
+**Built on 2026-08-08.** A relation carries the subject, tracker and status a
+search hit already carries, filled for the whole set in one bulk read of
+`issues.json?issue_id=…&status_id=*`; the change references are parsed out of
+the journal into a `reviews` field naming `typo3_gerrit_lookup`, with the change
+number, the Change-Id and the patch set a note gave them. Nothing is claimed
+about a change's state: a note says what was true the day it was written.
+
 ## Held by
 
-- `not guarded` — what would hold it is an assertion over the fields an answer
-  carries beside an identifier, and which of them a relation gets is the todo's
-  work.
+- `ForgeTest::aRelationCarriesEnoughOfTheOtherIssueToJudgeWhetherToReadIt`
+- `ForgeTest::aRelationTheFillCouldNotReachIsStillTheRelationThatWasFiled`
+- `ForgeTest::aReviewChangeIsLiftedOutOfTheProseThatCarriesIt`
+- `ForgeTest::aQueryUrlNamesNoChangeAndIsNotReportedAsOne`
+
+What no test reaches is the general form — every answer that names a record this
+server can read. The two fields the feedback named are held; a third that
+arrives is held when somebody writes it.

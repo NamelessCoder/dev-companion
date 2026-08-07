@@ -40,7 +40,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -139,7 +139,18 @@ final class ForgeLookup extends ReadOnlyTool
                     'relations' => Schema::listOf(Schema::object([
                         'issue' => Schema::integer('The other issue.'),
                         'relation' => Schema::string('duplicates, relates, blocked, precedes.'),
-                    ], ['issue', 'relation']), 'Issues this one is filed against, which is where a duplicate or a blocker is named.'),
+                        'subject' => Schema::string('What the other issue is about, so it can be judged without being read. Empty where the tracker did not answer the one call that fills the whole set.'),
+                        'tracker' => Schema::string('Bug, Feature, Task.'),
+                        'status' => Schema::string('Where the other issue stands.'),
+                        'url' => Schema::string('Where a person reads it.'),
+                    ], ['issue', 'relation', 'subject', 'tracker', 'status', 'url']), 'Issues this one is filed against, which is where a duplicate, a blocker, and the issue a revert was filed under are named. Each carries its subject, so which of them is worth reading is decided from here rather than from one call each.'),
+                    'reviews' => Schema::listOf(Schema::object([
+                        'change' => Schema::integer('The change number on review.typo3.org, which is what typo3_gerrit_lookup takes as change.'),
+                        'changeId' => Schema::string('The Change-Id the commit message carries, empty where no note named one. typo3_gerrit_lookup takes this too, and it is what survives a rebase onto another branch.'),
+                        'patchSet' => Schema::integer('The highest patch set a note mentioned, zero where none did. The review server may be further along.'),
+                        'on' => Schema::string('When the last note naming this change was written, which is how old the reference is and not when the change last moved.'),
+                        'url' => Schema::string('Where a person reads the change.'),
+                    ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the journal names, lifted out of the prose that carries them. Nothing here says what state a change is in: a note says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where no note named one.'),
                     'attachments' => Schema::listOf(Schema::object([
                         'filename' => Schema::string('The name the file was uploaded under, which is also how a comment refers to it: Redmine writes an inline image as !name.png! and the text around it says nothing else about it.'),
                         'contentType' => Schema::string('image/png, image/jpeg, text/plain.'),
@@ -154,7 +165,7 @@ final class ForgeLookup extends ReadOnlyTool
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'noteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'reviews', 'noteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
@@ -273,11 +284,34 @@ final class ForgeLookup extends ReadOnlyTool
                 . ' — which is what the reporter had, not what it still reproduces on.';
         }
         foreach ($found['relations'] as $relation) {
-            $lines[] = sprintf('Relation: %s #%d', $relation['relation'], $relation['issue']);
+            // The subject, so which relation is worth an issue read is decided
+            // here rather than by reading all of them.
+            $lines[] = rtrim(sprintf(
+                'Relation: %s #%d — %s',
+                $relation['relation'],
+                $relation['issue'],
+                implode(' · ', array_filter([$relation['tracker'], $relation['status'], $relation['subject']])),
+            ), ' —');
         }
         $lines[] = '';
         $lines[] = '## Reported';
         $lines[] = $found['description'];
+        if ($found['reviews'] !== []) {
+            $lines[] = '';
+            $lines[] = sprintf('## Changes on review.typo3.org (%d)', count($found['reviews']));
+            $lines[] = 'Named in the comments below and lifted out of them. What state one is in now is a'
+                . ' typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a'
+                . ' rebase onto another branch. A comment says what was true the day it was written.';
+            foreach ($found['reviews'] as $review) {
+                $lines[] = '- ' . implode(' · ', array_filter([
+                    $review['change'] > 0 ? 'change ' . $review['change'] : '',
+                    $review['patchSet'] > 0 ? 'patch set ' . $review['patchSet'] : '',
+                    $review['changeId'],
+                    $review['on'] !== '' ? 'named ' . substr($review['on'], 0, 10) : '',
+                    $review['url'],
+                ]));
+            }
+        }
         if ($found['attachments'] !== []) {
             $lines[] = '';
             $lines[] = sprintf('## Attachments (%d)', count($found['attachments']));

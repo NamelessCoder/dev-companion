@@ -174,6 +174,11 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
 ## Changelog Files
 Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
+This is the changelog obligation per change type: which change types owe a
+changelog entry, which owe none, and what the entry a review asks for has to be.
+A `BUGFIX` owes none, a `TASK` owes none, and the four types below are the whole
+list.
+
 - Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
   the directory of the minor version the change is released in. A backport goes
   into the `<lts>.x` directory of the oldest branch it reaches, in every branch
@@ -186,7 +191,8 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
   action. `Important` is the last resort, and the only one of the four an LTS
   release may carry.
 - A casual bug fix owes no entry, because its commit message carries the
-  information.
+  information. Demanding one of a `BUGFIX` that removes nothing public is a
+  review defect of its own.
 - `Task` is a commit message keyword and not a changelog type. Those four are
   the whole list, and `checkRst` fails a title opening with anything else.
 - `Documentation/Changelog/Howto.rst` in the core checkout is the authority on
@@ -282,7 +288,7 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Changelog Files",
-            "body": "- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in\n  the directory of the minor version the change is released in. A backport goes\n  into the `<lts>.x` directory of the oldest branch it reaches, in every branch\n  that carries it.\n- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.\n- The type is the first of four that describes the change: `Breaking` where it\n  moves or removes core functionality third-party code may use, `Deprecation`\n  where it marks core functionality for a planned removal, `Feature` where it\n  adds functionality, and `Important` for anything else that may require manual\n  action. `Important` is the last resort, and the only one of the four an LTS\n  release may carry.\n- A casual bug fix owes no entry, because its commit message carries the\n  information.\n- `Task` is a commit message keyword and not a changelog type. Those four are\n  the whole list, and `checkRst` fails a title opening with anything else.\n- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on\n  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the\n  piece a file is missing.\n- The skeleton the file has to have, down to the tags it ends on, is\n  `typo3_hint_lookup` with the id `documentation-changelog`.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
+            "body": "This is the changelog obligation per change type: which change types owe a\nchangelog entry, which owe none, and what the entry a review asks for has to be.\nA `BUGFIX` owes none, a `TASK` owes none, and the four types below are the whole\nlist.\n\n- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in\n  the directory of the minor version the change is released in. A backport goes\n  into the `<lts>.x` directory of the oldest branch it reaches, in every branch\n  that carries it.\n- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.\n- The type is the first of four that describes the change: `Breaking` where it\n  moves or removes core functionality third-party code may use, `Deprecation`\n  where it marks core functionality for a planned removal, `Feature` where it\n  adds functionality, and `Important` for anything else that may require manual\n  action. `Important` is the last resort, and the only one of the four an LTS\n  release may carry.\n- A casual bug fix owes no entry, because its commit message carries the\n  information. Demanding one of a `BUGFIX` that removes nothing public is a\n  review defect of its own.\n- `Task` is a commit message keyword and not a changelog type. Those four are\n  the whole list, and `checkRst` fails a title opening with anything else.\n- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on\n  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the\n  piece a file is missing.\n- The skeleton the file has to have, down to the tags it ends on, is\n  `typo3_hint_lookup` with the id `documentation-changelog`.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
             "versions": "",
             "coverage": 1,
             "score": 24,

@@ -644,8 +644,12 @@ final class KnowledgeTest extends TestCase
         // The offer, as a call rather than as a uri nothing presents.
         self::assertStringContainsString('typo3_rule_lookup with documentId', $search->text);
         self::assertStringContainsString('core/contribution/commit-messages', $search->text);
-        // The query did not reach the section that answers it.
-        self::assertNotContains('Changelog Files', array_column($search->data['matches'], 'heading'));
+        // A section is a cut of the page whether or not it is the right cut.
+        // The ranking half of this report is
+        // aQueryForTheChangelogObligationReachesTheSectionThatStatesIt; what
+        // this holds is that the rest of the page is reachable either way,
+        // because the next question is regularly in it.
+        self::assertNotSame([], $search->data['matches']);
 
         $whole = Registry::call('typo3_rule_lookup', [
             'documentId' => 'core/contribution/commit-messages',
@@ -697,6 +701,33 @@ final class KnowledgeTest extends TestCase
         $guide = Documents::read('core/testing/scripts');
         self::assertStringContainsString('bin/phpunit: not found', $guide);
         self::assertStringContainsString('SUCCESS', $guide);
+    }
+
+    /**
+     * The changelog obligation is reached by the words a patch author holds.
+     *
+     * `feedback/2026-08-07-132446` asked twice and got `Release Targets` both
+     * times, from a section that never uses the word in that sense. The section
+     * that answers is in the same document and was written in the corpus's
+     * words rather than the caller's: `bug fix` where the commit keyword is
+     * `BUGFIX`, and nothing naming the thing being asked for as an obligation.
+     */
+    #[Test]
+    public function aQueryForTheChangelogObligationReachesTheSectionThatStatesIt(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'bugfix changelog entry obligation and review readiness',
+        ]);
+
+        self::assertContains('Changelog Files', array_column($result->data['matches'], 'heading'));
+        // The two it used to answer with instead.
+        self::assertNotContains('Release Targets', array_column($result->data['matches'], 'heading'));
+
+        // What the section has to say, since a review has to answer either way
+        // and demanding an entry where none is owed is a defect of its own.
+        $body = Documents::read('core/contribution/commit-messages');
+        self::assertStringContainsString('A `BUGFIX` owes none', $body);
+        self::assertStringContainsString('`Important` is the last resort', $body);
     }
 
     /**

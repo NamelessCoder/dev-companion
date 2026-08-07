@@ -147,6 +147,11 @@ Guide.
 
 ## Changelog Files
 
+This is the changelog obligation per change type: which change types owe a
+changelog entry, which owe none, and what the entry a review asks for has to be.
+A `BUGFIX` owes none, a `TASK` owes none, and the four types below are the whole
+list.
+
 - Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
   the directory of the minor version the change is released in. A backport goes
   into the `<lts>.x` directory of the oldest branch it reaches, in every branch
@@ -159,7 +164,8 @@ Guide.
   action. `Important` is the last resort, and the only one of the four an LTS
   release may carry.
 - A casual bug fix owes no entry, because its commit message carries the
-  information.
+  information. Demanding one of a `BUGFIX` that removes nothing public is a
+  review defect of its own.
 - `Task` is a commit message keyword and not a changelog type. Those four are
   the whole list, and `checkRst` fails a title opening with anything else.
 - `Documentation/Changelog/Howto.rst` in the core checkout is the authority on

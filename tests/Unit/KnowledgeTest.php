@@ -666,6 +666,40 @@ final class KnowledgeTest extends TestCase
         self::assertSame(Documents::read('core/contribution/commit-messages'), $whole->text);
     }
 
+    /**
+     * `R-ANS-028` over every tool that renders this corpus, not one of them.
+     *
+     * The offer is `Prose::sections()`'s own line, so the rule lookup, the
+     * script lookup and the task guide carry it without being wired for it —
+     * which is also why the brief needs no mapping of its own. Searching the
+     * caller's task text for a document was measured on 2026-08-07 and is not
+     * usable: "add a content element to a sitepackage" reaches the Playwright
+     * guide at 0.60 and "style a backend module with Sass" the core script
+     * notes at 0.56, so no threshold tells a right answer from a plausible one.
+     * The intent's own curated `rulesQuery` already decided.
+     */
+    #[Test]
+    public function everyToolThatRendersASectionOffersThePageAsACall(): void
+    {
+        $answers = [
+            Registry::call('typo3_rule_lookup', ['query' => 'push a patch for review']),
+            Registry::call('typo3_script_lookup', ['task' => 'run the functional tests', 'targetVersion' => '15']),
+            Registry::call('typo3_task_guide', [
+                'task' => 'Write the patch for a core bugfix, cover it and push it to Gerrit',
+                'paths' => ['typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php'],
+                'changeType' => 'bugfix',
+                'targetVersion' => '15',
+            ]),
+        ];
+
+        foreach ($answers as $answer) {
+            self::assertStringContainsString('typo3_rule_lookup with documentId', $answer->text);
+            // Said once. It was two blocks saying the same thing in one answer
+            // while the rule lookup carried its own copy.
+            self::assertSame(1, substr_count($answer->text, 'typo3_rule_lookup with documentId'));
+        }
+    }
+
     #[Test]
     public function anUnknownDocumentIdNamesTheOnesThereAre(): void
     {

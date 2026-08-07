@@ -83,14 +83,6 @@ final class ScriptLookup extends ReadOnlyTool
 
         if ($results !== []) {
             $text = Prose::sections($results);
-            // A section of this document comes back cut, and the cut is where
-            // the caller stops: `feedback/2026-08-07-130058` got exactly one
-            // match here with `truncated: true` and no way to go on that did
-            // not need the client to list resources (`R-ANS-028`).
-            if (array_filter($results, static fn(array $result): bool => $result['truncated']) !== []) {
-                $text .= "\n\nThat is a cut of the page. The whole of it is one call away — typo3_rule_lookup "
-                    . 'with documentId "' . self::DOCUMENT . '", which needs no resource list.';
-            }
             // Where nothing said which repository this is, the commands are
             // offered under their condition rather than stated as the answer.
             if (!Scope::isCoreWork([], $task)) {

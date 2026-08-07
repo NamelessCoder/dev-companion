@@ -135,15 +135,9 @@ final class RuleLookup extends ReadOnlyTool
         $lines[] = $results === []
             ? sprintf('No section that holds outside the core matched "%s".', $query)
             : Prose::sections($results);
-        // The uri has always been in the payload and nothing presented it as
-        // something to do. Three sessions read a matched section and never the
-        // page it was cut from, and the section one of them was looking for was
-        // in that page — `D-ANS-061`. This is the same offer as a call rather
-        // than as a resource, because a client that lists no resources is the
-        // one all three had.
-        if ($results !== []) {
-            $lines[] = "\n" . self::readableWhole($results);
-        }
+        // The offer to read the page whole is `Prose::sections()`'s own line
+        // now, so every tool that renders this corpus carries it — a second
+        // block here said the same thing twice in one answer.
         if ($hints !== []) {
             $lines[] = "\n" . self::alsoInHints($hints);
         }
@@ -307,31 +301,6 @@ final class RuleLookup extends ReadOnlyTool
             . implode("\n", array_map(
                 static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
                 $hints,
-            ));
-    }
-
-    /**
-     * The documents these sections were cut from, offered as a call.
-     *
-     * A section answers the query and the rest of its page answers the next
-     * question, which is where the changelog obligation sat while a review
-     * queried for it twice and got the release branches
-     * (`feedback/2026-08-07-132446`).
-     *
-     * @param array<int, array{id: string, title: string}> $results
-     */
-    private static function readableWhole(array $results): string
-    {
-        $documents = [];
-        foreach ($results as $result) {
-            $documents[(string) $result['id']] = (string) $result['title'];
-        }
-
-        return 'Each of these is a section. The whole document is one call away — typo3_rule_lookup with '
-            . "documentId, which needs no resource list:\n"
-            . implode("\n", array_map(
-                static fn(string $id): string => '- ' . $id . ' — ' . $documents[$id],
-                array_keys($documents),
             ));
     }
 

@@ -198,11 +198,9 @@ Runs functional tests. Use these for changes that touch TYPO3 services,
 persistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`
 to reproduce DBMS-specific behaviour.
 
-(section truncated — read typo3://guides/core/testing/scripts for the rest)
+(section truncated — read core/testing/scripts whole for the rest)
 
-Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Script Help (typo3://guides/core/testing/scripts). A client may render no resource list, so that address is how one is reached.
-
-That is a cut of the page. The whole of it is one call away — typo3_rule_lookup with documentId "core/testing/scripts", which needs no resource list.
+Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list: core/testing/scripts — TYPO3 Core Script Help.
 
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 ````

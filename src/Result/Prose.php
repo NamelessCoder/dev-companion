@@ -58,12 +58,19 @@ final class Prose
     {
         $documents = [];
         foreach ($results as $result) {
-            $documents[$result['id']] = sprintf('%s (%s)', $result['title'], Documents::uri($result['id']));
+            $documents[$result['id']] = sprintf('%s — %s', $result['id'], $result['title']);
         }
 
+        // Named as a call rather than as an address. The uri was here and three
+        // core sessions held one without ever fetching the page, one of them
+        // finishing a full patch review having read no document end to end and
+        // going looking in the checkout for a section the same document
+        // carried. A `typo3://guides` address is delivery to a client that
+        // renders MCP resources; `typo3_rule_lookup` reaches every client
+        // there is — `D-ANS-061`, `R-ANS-028`.
         return 'Each excerpt above is one section of a longer document. Where the task is the whole procedure '
-            . 'rather than the fact you searched for, read the page: ' . implode(', ', $documents)
-            . '. A client may render no resource list, so that address is how one is reached.';
+            . 'rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which '
+            . 'needs no resource list: ' . implode(', ', $documents) . '.';
     }
 
     /**
@@ -84,7 +91,10 @@ final class Prose
 
             $body = $result['body'];
             if ($result['truncated']) {
-                $body .= "\n\n(section truncated — read " . Documents::uri($result['id']) . ' for the rest)';
+                // Named as the call the line below names, rather than as the
+                // uri it used to be: a cut is exactly where a caller stops, and
+                // a client that lists no resources cannot act on an address.
+                $body .= "\n\n(section truncated — read " . $result['id'] . ' whole for the rest)';
             }
 
             return '## ' . $heading . "\n" . $source . "\n\n" . $body;

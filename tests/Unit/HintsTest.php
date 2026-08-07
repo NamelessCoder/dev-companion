@@ -94,6 +94,56 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A hint that answered nothing may not outrank one that did.
+     *
+     * `keywords` used to sort above `score` unconditionally, so a pattern match
+     * was worth more than the hint's own words whatever they said.
+     * `system-extension-boundaries` is what that cost: it claims `typo3/sysext/`
+     * and `sysext`, which every core path in the world carries, and it scored 0
+     * against every query measured on 2026-08-07 — while standing second on a
+     * FAL question, above `fal-basics` and `fal-storages-drivers`. That is the
+     * tier order `D-ANS-060` left open.
+     */
+    #[Test]
+    public function aHintWhoseOwnWordsAnswerNothingRanksBelowOneThatDoes(): void
+    {
+        $result = Hints::find(
+            ['typo3/sysext/core/Classes/Resource/Driver/LocalDriver.php'],
+            'file storage driver',
+            6,
+        );
+
+        $ids = array_column($result['matchedHints'], 'id');
+        self::assertSame('fal-basics', $ids[0]);
+
+        // The premise, so this fails as the ranking case rather than as a
+        // corpus one if that hint ever starts answering.
+        $boundaries = null;
+        foreach ($result['matchedHints'] as $hint) {
+            if ($hint['id'] === 'system-extension-boundaries') {
+                $boundaries = $hint;
+            }
+        }
+        if ($boundaries !== null) {
+            self::assertSame(0, $boundaries['matchedOn']['score'], 'it now answers, so it is no longer this case');
+            self::assertGreaterThan(
+                array_search('fal-basics', $ids, true),
+                array_search('system-extension-boundaries', $ids, true),
+                'a hint scoring nothing is above one that answers',
+            );
+        }
+
+        // Every hint that answers comes before every hint that does not.
+        $answering = array_map(
+            static fn(array $hint): bool => $hint['matchedOn']['score'] > 0,
+            $result['matchedHints'],
+        );
+        $sorted = $answering;
+        rsort($sorted);
+        self::assertSame($sorted, $answering, 'the two halves are interleaved');
+    }
+
+    /**
      * The other half of the same change: what the pruned patterns were for.
      *
      * `datahandler-basics` is reached by the DataHandler path without

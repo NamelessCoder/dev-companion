@@ -426,12 +426,26 @@ final class Hints
             $scored[] = ['hint' => $hint, 'keywords' => $keywords, 'score' => $score];
         }
 
-        // Curation first: where a pattern was written for this phrasing, that
-        // hint outranks one that merely reads well against it, and the longer
-        // pattern is the more specific claim. Everything the matcher answered
-        // before this field layout existed therefore still answers the same.
+        // Answering first, then curation. A pattern says somebody anticipated
+        // this phrasing — or, for a path, only that the caller is standing
+        // somewhere the hint claims — while the score says the hint's own words
+        // are about what was asked. A hint scoring zero has answered nothing,
+        // and it was outranking hints that had.
+        //
+        // `system-extension-boundaries` is what made that visible: it claims
+        // `typo3/sysext/` and `sysext`, so it matched 19 characters' worth on
+        // every core path there is and scored 0 on every query measured,
+        // standing second on a FAL question above `fal-basics` and
+        // `fal-storages-drivers`. The two false positives of `D-ANS-060` are
+        // the same shape and this is the tier order that question left open.
+        //
+        // Within each half the old order stands, so a hint that answers and was
+        // anticipated still comes before one that only answers: the longer
+        // pattern is the more specific claim, and `D-ANS-050` still decides
+        // what a pattern reaches.
         usort($scored, static function (array $a, array $b): int {
-            return $b['keywords'] <=> $a['keywords']
+            return ($b['score'] > 0 ? 1 : 0) <=> ($a['score'] > 0 ? 1 : 0)
+                ?: $b['keywords'] <=> $a['keywords']
                 ?: $b['score'] <=> $a['score']
                 ?: strcmp($a['hint']['title'], $b['hint']['title']);
         });

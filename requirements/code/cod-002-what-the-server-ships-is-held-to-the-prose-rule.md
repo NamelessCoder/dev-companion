@@ -26,9 +26,16 @@ found by reading, not by a report: `bin/cli prose:check` reads `AGENTS.md`,
 `readme.md` and the markdown below seven directories, and reaches no file in
 `src/`.
 
+**Measured since 2026-08-07.** `bin/cli prose:check` reads the payload beside
+the corpus: the `instructions`, every tool description, and every `description`
+in an input or output schema, nested fields included. It reports the weight and
+the sentences over the measure, and reports rather than fails, which is what the
+corpus half already does — a description over the measure can be the right one,
+and a rewrite driven by a counter produces two short sentences saying what one
+said. The count is prose alone and is not the whole connect payload.
+
 ## Held by
 
-- The measure is not guarded. `bin/cli prose:check` reads the markdown corpus
-  and does not reach the tool payload, so no count exists for the half a caller
-  actually pays for, and a description that grows back is caught by whoever
-  rereads it.
+- `ProseTest::theProseAClientIsHandedIsMeasured`, which holds that the reading
+  reaches the instructions and every tool the registry offers, rather than that
+  nothing runs long.

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * The prose this repository writes about itself, measured.
@@ -113,6 +115,107 @@ final class Prose
         }
 
         return $over;
+    }
+
+    /**
+     * The prose a client is handed before it has asked anything.
+     *
+     * `documents()` is what this repository writes about itself and reaches no
+     * file in `src/`, so the half a caller actually pays for was counted by
+     * nobody: on 2026-08-03 the connect payload measured 118202 characters, of
+     * which 14502 were the tool descriptions and 11507 the input schema fields,
+     * and the 1219 taken off that day were found by somebody rereading rather
+     * than by a report (`R-COD-002`).
+     *
+     * Every string here is written by this repository and read by a machine
+     * that cannot skim, which is the argument for holding it to the same
+     * measure — `D-DOC-002`. What it is not is a budget: `R-ANS-013` is what
+     * holds the instructions to a size, and this counts sentences.
+     *
+     * What it counts is the prose alone, so its weight is not the 118202 above
+     * and the two may not be compared. That figure was the whole connect
+     * payload — the schemas with their keys, types and enums, which nobody
+     * writes sentences in. This is the part somebody wrote and can shorten.
+     *
+     * @return list<array{where: string, text: string}>
+     */
+    public static function payload(): array
+    {
+        $prose = [['where' => 'instructions', 'text' => Coverage::instructions()]];
+        foreach (Registry::definitions() as $definition) {
+            $name = (string) $definition['name'];
+            $prose[] = ['where' => $name . ' description', 'text' => (string) $definition['description']];
+            foreach ([['inputSchema', 'input'], ['outputSchema', 'output']] as [$key, $side]) {
+                foreach (self::descriptions(is_array($definition[$key] ?? null) ? $definition[$key] : []) as $field => $text) {
+                    $prose[] = ['where' => $name . ' ' . $side . ' ' . $field, 'text' => $text];
+                }
+            }
+        }
+
+        return $prose;
+    }
+
+    /**
+     * Every `description` in a JSON Schema, by the path that carries it.
+     *
+     * A schema nests — properties inside items inside properties — and a field
+     * three levels down is read by the same client as the one at the top, so
+     * the walk is the whole tree rather than one level of it.
+     *
+     * @param array<string, mixed> $schema
+     * @return array<string, string>
+     */
+    private static function descriptions(array $schema, string $path = ''): array
+    {
+        $found = [];
+        foreach ($schema as $key => $value) {
+            if ($key === 'description' && is_string($value)) {
+                $found[$path === '' ? '(self)' : $path] = $value;
+                continue;
+            }
+            if (!is_array($value)) {
+                continue;
+            }
+            // `properties` and `items` are the schema's own structure and not
+            // part of what a field is called, so they do not go into the path.
+            $step = in_array($key, ['properties', 'items', 'oneOf', 'anyOf', 'allOf'], true)
+                ? $path
+                : trim($path . '.' . $key, '.');
+            $found = [...$found, ...self::descriptions($value, $step)];
+        }
+
+        return $found;
+    }
+
+    /**
+     * The payload's sentences that run past the measure, worst first.
+     *
+     * @return list<array{where: string, words: int, text: string}>
+     */
+    public static function payloadOverTheMeasure(): array
+    {
+        $over = [];
+        foreach (self::payload() as $entry) {
+            foreach (self::sentences($entry['text']) as $sentence) {
+                $words = count(explode(' ', $sentence));
+                if ($words > self::MEASURE) {
+                    $over[] = ['where' => $entry['where'], 'words' => $words, 'text' => $sentence];
+                }
+            }
+        }
+
+        usort($over, static fn(array $a, array $b): int => $b['words'] <=> $a['words']);
+
+        return $over;
+    }
+
+    /** What a client is handed at connect, in characters. */
+    public static function payloadWeight(): int
+    {
+        return array_sum(array_map(
+            static fn(array $entry): int => strlen($entry['text']),
+            self::payload(),
+        ));
     }
 
     /**

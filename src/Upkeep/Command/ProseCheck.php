@@ -58,6 +58,23 @@ final class ProseCheck
             $output->writeln(sprintf('  %3d  %s (longest %d)', count($file['over']), $file['file'], $file['over'][0]['words']));
         }
 
+        // The other half, and the one nothing counted: what a client is handed
+        // at connect. It is reported beside the corpus rather than folded into
+        // it, because the number a reader wants here is the weight — a caller
+        // pays for all of it before it has asked anything — and not which of
+        // 578 markdown files is worst.
+        $payload = Prose::payloadOverTheMeasure();
+        $output->writeln('');
+        $output->writeln(sprintf(
+            'A client is handed %d characters of prose at connect. %d of those sentences run past %d words.',
+            Prose::payloadWeight(),
+            count($payload),
+            Prose::MEASURE,
+        ));
+        foreach (array_slice($payload, 0, self::NAMED) as $entry) {
+            $output->writeln(sprintf('  %3d  %s', $entry['words'], $entry['where']));
+        }
+
         $leads = Prose::leadsOverTheMeasure();
         if ($leads === []) {
             $output->writeln('');

@@ -1,6 +1,6 @@
 # Bound the issue journal without dropping it
 
-**Serves:** feedback/2026-08-07-231213-typo3-forge-lookup-cannot-read-an-issue-without.md
+**Serves:** feedback/2026-08-07-231213-typo3-forge-lookup-cannot-read-an-issue-without.md, feedback/2026-08-07-233524-typo3-forge-lookup-returning-notes-and.md
 **Priority:** normal
 
 `typo3_forge_lookup` reads an issue in one size. Selecting the first real bug
@@ -20,3 +20,13 @@ off 14858 and removes nothing a reader was going to use. The authors seen are
 "Gerrit Code Review" and "Mr. Hudson", which is a list and not a rule — say in
 the answer how many notes were filtered, so a bot nobody named is visible as a
 count that did not move.
+
+**A second session put numbers on the counterweight, and they rule out the
+obvious bound.** On 2026-08-07 a triage of the same backlog reports that the
+decisive note on 14858 was the sixteenth of sixteen and the decisive note on
+15984 the twelfth of sixteen — the first turning a twenty-year-old feature
+request away from being reported as a verified defect, the second carrying the
+2012 revert reason. Neither is near the top. So "the most recent N" is not the
+shape, and neither is sampling: what may be dropped is what a reader was never
+going to use, which is why the bot filter is first and why the count of what was
+filtered is said out loud.

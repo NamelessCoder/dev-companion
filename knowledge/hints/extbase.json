@@ -122,5 +122,32 @@
       "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
       "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it."
     ]
+  },
+  {
+    "id": "extbase-persistence-internals",
+    "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "extbase/Classes/Persistence/",
+      "Persistence/Generic/",
+      "Typo3DbQueryParser",
+      "Typo3DbBackend",
+      "ColumnMap",
+      "ColumnMapFactory",
+      "DataMapper",
+      "DataMapFactory",
+      "query parser",
+      "column map"
+    ],
+    "hints": [
+      "Typo3DbQueryParser turns a Query into a Doctrine QueryBuilder, one operator at a time. It is the layer that decides what a constraint means in SQL, and reading it is faster than reasoning about QueryInterface: the whole translation is one match on the operator constant.",
+      "equals($property, null) is supported and becomes `IS NULL`; so does the explicit OPERATOR_EQUAL_TO_NULL. lessThan, greaterThan and in() bind a typed parameter instead. contains() with null throws BadConstraintException, exception 1484828468, rather than matching anything.",
+      "`IS NULL` only finds rows the column is actually NULL in, which is where a datetime property parts company with its column — tca-datetime-storage is that half.",
+      "ColumnMap is what the parser and the mapper look a property up in: the column name, the relation type, the tables and match fields behind a relation, and dateTimeStorageFormat, which is the TCA dbType carried onto the Extbase side by ColumnMapFactory. A property whose mapping is wrong fails here rather than in the SQL.",
+      "Extbase writes through Typo3DbBackend, which calls ConnectionPool directly — Backend::insertObject() and updateObject() build a row and hand it to addRow() or updateRow(). Nothing goes through DataHandler, so there is no hook, no history entry, no reference index update and no versioning. A test that expects any of those has to write through DataHandler instead.",
+      "insertObject() puts a property into the row only where its value is not null, so a null property is left out of the INSERT and the column default decides what is stored. That is a different outcome from writing NULL, and it is invisible in the object afterwards."
+    ]
   }
 ]

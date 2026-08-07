@@ -209,6 +209,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
 - extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
 - extbase-pagination — Paginating a List (PHP)
+- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
 - extension-manifest — What Makes a Directory an Extension (PHP)
 - extension-schema-sql — Declaring Tables and Columns (PHP)
 - extension-declarative-files — The Files an Extension Is Configured By (PHP)
@@ -242,6 +243,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
 - tca-schema-api — TCA Schema API (PHP)
 - formdata-providers — FormEngine Data Providers (PHP)
+- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
 - core-tests — Writing Core Tests (PHP)
 - project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
 - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
@@ -539,6 +541,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extbase-persistence-internals",
+            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
+            "category": "PHP"
+        },
+        {
             "id": "extension-manifest",
             "title": "What Makes a Directory an Extension",
             "category": "PHP"
@@ -701,6 +708,11 @@ Data:
         {
             "id": "formdata-providers",
             "title": "FormEngine Data Providers",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-datetime-storage",
+            "title": "What a Datetime Column Stores, and When It Is Null",
             "category": "PHP"
         },
         {
@@ -1346,6 +1358,7 @@ Hints that exist in these domains, requestable by id:
 - extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
 - extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
 - extbase-pagination — Paginating a List (PHP)
+- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
 - extension-manifest — What Makes a Directory an Extension (PHP)
 - extension-schema-sql — Declaring Tables and Columns (PHP)
 - extension-declarative-files — The Files an Extension Is Configured By (PHP)
@@ -1380,6 +1393,7 @@ Hints that exist in these domains, requestable by id:
 - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
 - tca-schema-api — TCA Schema API (PHP)
 - formdata-providers — FormEngine Data Providers (PHP)
+- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
 - core-tests — Writing Core Tests (PHP)
 - project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
 - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
@@ -1585,6 +1599,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extbase-persistence-internals",
+            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
+            "category": "PHP"
+        },
+        {
             "id": "extension-manifest",
             "title": "What Makes a Directory an Extension",
             "category": "PHP"
@@ -1752,6 +1771,11 @@ Data:
         {
             "id": "formdata-providers",
             "title": "FormEngine Data Providers",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-datetime-storage",
+            "title": "What a Datetime Column Stores, and When It Is Null",
             "category": "PHP"
         },
         {

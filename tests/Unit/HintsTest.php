@@ -87,6 +87,10 @@ final class HintsTest extends TestCase
 
         $matched = array_column($result['matchedHints'], 'id');
         self::assertNotContains('fal-storages-drivers', $matched);
+        // The positive half, which waited for a hint about this subsystem to
+        // exist at all: the two the report named cover the core QueryBuilder
+        // and the model's table, and neither reaches the query parser.
+        self::assertSame('extbase-persistence-internals', $matched[0]);
     }
 
     /**
@@ -3090,9 +3094,21 @@ final class HintsTest extends TestCase
             // is written with its word in front, "HTTP 404" and "doktype 254"
             // rather than bare, which is what makes them exemptible here without
             // also exempting a count that happens to be three digits long.
+            //
+            // The zero-date literals are the same argument with quotes doing
+            // the work the word does above. `'0000-00-00 00:00:00'` is what a
+            // non-nullable native datetime column stores instead of NULL; it is
+            // a value MySQL has spelled that way for longer than any covered
+            // branch, and it is the string a caller greps for after finding a
+            // row their query could not see. Only these three, and only
+            // quoted — an unquoted run of zeroes is not one of them.
             $text = (string) preg_replace(
-                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i', '/\bexception \d{10}\b/i', '/\bdoktype \d{1,3}\b/i'],
-                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype'],
+                [
+                    '/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i',
+                    '/\bexception \d{10}\b/i', '/\bdoktype \d{1,3}\b/i',
+                    "/'0000-00-00 00:00:00'|'0000-00-00'|'00:00:00'/",
+                ],
+                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype', 'zero-date'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 
@@ -3884,12 +3900,63 @@ final class HintsTest extends TestCase
             'limit' => 20,
         ]);
 
-        // The premise: asking the lookup directly adds nothing here.
-        self::assertSame(
-            array_column($lookup->data['hints'], 'id'),
-            array_column($brief->data['hints'], 'id'),
+        // Which of the two sentences is owed is a property of this call and
+        // not of the corpus, and the corpus moves: these paths were the
+        // complete case until `extbase-persistence-internals` and
+        // `tca-datetime-storage` were written for them, and then they were the
+        // truncating one. So the rule is what is held — the sentence says what
+        // the brief did — rather than which of the two this call happens to be.
+        $carried = array_column($brief->data['hints'], 'id');
+        $held = array_column($lookup->data['hints'], 'id');
+        self::assertSame($held, array_merge($carried, array_column($brief->data['omittedHints'], 'id')));
+
+        self::assertStringContainsString(TaskGuide::HINTS_SOURCE, $brief->text);
+        if ($brief->data['omittedHints'] === []) {
+            self::assertSame($held, $carried);
+            self::assertStringContainsString(TaskGuide::HINTS_COMPLETE, $brief->text);
+            self::assertStringNotContainsString(
+                sprintf(TaskGuide::HINTS_TRUNCATED, TaskGuide::HINTS_PER_GROUP),
+                $brief->text,
+            );
+
+            return;
+        }
+
+        self::assertStringContainsString(
+            sprintf(TaskGuide::HINTS_TRUNCATED, TaskGuide::HINTS_PER_GROUP),
+            $brief->text,
         );
-        self::assertSame([], $brief->data['omittedHints']);
+        self::assertStringNotContainsString(TaskGuide::HINTS_COMPLETE, $brief->text);
+    }
+
+    /**
+     * The complete branch, held on a call that has one hint to carry.
+     *
+     * The case above follows the corpus wherever it goes, so it stops
+     * exercising `HINTS_COMPLETE` the moment a subject grows a second hint.
+     * This one asks for a subject narrow enough that it cannot.
+     */
+    #[Test]
+    public function aBriefWithNothingLeftOverSaysThatInstead(): void
+    {
+        $paths = ['typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php'];
+        $task = 'Extbase query parser translating a comparison into SQL';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'audit',
+            'targetVersion' => '15',
+            'paths' => $paths,
+        ]);
+
+        // Asserted rather than skipped over. A subject that grows past what a
+        // brief carries is a real change to this case, and the next author
+        // picks another call — a skip would report that as green.
+        self::assertSame(
+            [],
+            $brief->data['omittedHints'],
+            'this subject now holds more than a brief carries, so it no longer exercises HINTS_COMPLETE',
+        );
 
         self::assertStringContainsString(TaskGuide::HINTS_SOURCE, $brief->text);
         self::assertStringContainsString(TaskGuide::HINTS_COMPLETE, $brief->text);

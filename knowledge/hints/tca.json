@@ -75,5 +75,52 @@
       "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
       "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
     ]
+  },
+  {
+    "id": "tca-datetime-storage",
+    "title": "What a Datetime Column Stores, and When It Is Null",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "type=datetime",
+      "dbType",
+      "nullable",
+      "DateTimeFactory",
+      "DateTimeFieldType",
+      "transformDateTimeToDatabaseValue",
+      "empty date",
+      "zero date",
+      "0000-00-00",
+      "datetime column",
+      "date column"
+    ],
+    "hints": [
+      {
+        "text": "A TCA type=datetime field that is not nullable never holds SQL NULL. QueryHelper::transformDateTimeToDatabaseValue() writes 0 for an integer column and the empty literal for a native one — '0000-00-00' for dbType=date, '0000-00-00 00:00:00' for datetime, '00:00:00' for time.",
+        "since": 13
+      },
+      {
+        "text": "DateTimeFactory::fromDatabase() maps that same empty value back to null on read. So a mapped property reading null does not mean the column is NULL, and a query for IS NULL does not find the row the object came from. That asymmetry is what a report of a query not finding its own object turns out to be.",
+        "since": 13
+      },
+      {
+        "text": "Which value counts as empty depends on the column: for a non-nullable field it is the native literal where a dbType is set and 0 otherwise. A nullable native column additionally reads the legacy '0000-00-00' literal back as null, because rows written before it was nullable still carry it.",
+        "since": 13
+      },
+      {
+        "text": "nullable defaults to false. DateTimeFieldType::isNullable() overrides that to true where a dbType is set, so a native date, datetime or time column is nullable unless the TCA says otherwise, while an integer column is not.",
+        "since": 14
+      },
+      {
+        "text": "Before that override existed, DateTimeFieldType inherited isNullable() and the default was false for a native column as well.",
+        "since": 13,
+        "until": 13
+      },
+      {
+        "text": "Extbase omits a null property from the INSERT rather than writing NULL — Backend::insertObject() only fills a column where the property value is not null — so the column default decides what a new record stores. Reading it back through the factory then yields null again.",
+        "since": 13
+      }
+    ]
   }
 ]

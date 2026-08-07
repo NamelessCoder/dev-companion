@@ -35,7 +35,7 @@ when it is added.
 - [`R-ANS-025`][R-ANS-025] — An issue answer says what its comments refer to · held
 - [`R-ANS-026`][R-ANS-026] — A path names the subsystem, and a hint from another one does not answer · held
 - [`R-ANS-027`][R-ANS-027] — An answer that cannot separate two causes says so in the answer · **open**
-- [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · **open**
+- [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md

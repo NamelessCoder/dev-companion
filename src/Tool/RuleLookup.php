@@ -32,7 +32,7 @@ final class RuleLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Search the TYPO3 rules and procedures this server carries, by topic. The core contribution process is most of it: the commit message conventions, which branches take a patch today, the changelog entry each change type owes, the Gerrit push and amend workflow with both refspecs, and the notes beside runTests.sh. It answers outside a core checkout too — setting up an extension manual, PHPUnit in an extension, Playwright in a project — and there the core-only documents are withheld and named rather than dropped in silence. What comes back is the sections that matched, each naming the document it was cut from, which is readable whole as its typo3://guides resource.';
+        return 'Search the TYPO3 rules and procedures this server carries, by topic. The core contribution process is most of it: the commit message conventions, which branches take a patch today, the changelog entry each change type owes, the Gerrit push and amend workflow with both refspecs, and the notes beside runTests.sh. It answers outside a core checkout too — setting up an extension manual, PHPUnit in an extension, Playwright in a project — and there the core-only documents are withheld and named rather than dropped in silence. What comes back is the sections that matched, each naming the document it was cut from. Pass that documentId back instead of a query to read the whole document — the section answers what was asked and the rest of the page regularly answers the next thing, and it needs no resource list.';
     }
 
     public static function inputSchema(): array
@@ -40,10 +40,14 @@ final class RuleLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Topic to look up, in English, for example testing, review, deprecation, or code style.'],
-                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold on, for example "13.4" or "14". A section bound to another major is left out. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in; where there is neither, every section comes back with the range it holds for.'],
+                'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Topic to look up, in English, for example testing, review, deprecation, or code style. A call carries query or documentId, never both.'],
+                'documentId' => ['type' => 'string', 'minLength' => 1, 'description' => 'One document to read whole instead of searching, named by the documentId a match carries — for example "core/contribution/commit-messages". Use it when a matched section came out of a document whose other sections may answer what the query did not: the whole page comes back, no search, no version filter. A call carries query or documentId, never both.'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold on, for example "13.4" or "14". A section bound to another major is left out. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in; where there is neither, every section comes back with the range it holds for. Ignored for documentId, which returns the document as written.'],
             ],
-            'required' => ['query'],
+            'oneOf' => [
+                ['required' => ['query']],
+                ['required' => ['documentId']],
+            ],
         ];
     }
 
@@ -68,6 +72,11 @@ final class RuleLookup extends ReadOnlyTool
 
     public static function answer(array $args): ToolResult
     {
+        $documentId = trim((string) ($args['documentId'] ?? ''));
+        if ($documentId !== '') {
+            return self::wholeDocument($documentId);
+        }
+
         $query = (string) ($args['query'] ?? '');
         $targets = Versions::targets(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
@@ -126,6 +135,15 @@ final class RuleLookup extends ReadOnlyTool
         $lines[] = $results === []
             ? sprintf('No section that holds outside the core matched "%s".', $query)
             : Prose::sections($results);
+        // The uri has always been in the payload and nothing presented it as
+        // something to do. Three sessions read a matched section and never the
+        // page it was cut from, and the section one of them was looking for was
+        // in that page — `D-ANS-061`. This is the same offer as a call rather
+        // than as a resource, because a client that lists no resources is the
+        // one all three had.
+        if ($results !== []) {
+            $lines[] = "\n" . self::readableWhole($results);
+        }
         if ($hints !== []) {
             $lines[] = "\n" . self::alsoInHints($hints);
         }
@@ -140,6 +158,88 @@ final class RuleLookup extends ReadOnlyTool
                 static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
                 $hints,
             ),
+        ]);
+    }
+
+    /**
+     * One document, whole, for a caller who cannot read the resource.
+     *
+     * A match carries `uri`, and a `typo3://guides` resource is only reachable
+     * where the client lists resources at all. Three core sessions on
+     * 2026-08-07 held that uri and read none of them: one finished a full patch
+     * review having read no document end to end, and the page it says it wanted
+     * — "what each change type owes" — is a section of the document its own
+     * answer had named twice (`D-ANS-061`, `R-ANS-028`).
+     *
+     * No search and no version filter. The caller named the document, so there
+     * is nothing to guess at, and a section left out for a major it does not
+     * hold on is a hole in a page somebody asked to read whole; the sections say
+     * their own range.
+     */
+    private static function wholeDocument(string $documentId): ToolResult
+    {
+        $known = array_column(Documents::documents(), 'id');
+        if (!in_array($documentId, $known, true)) {
+            return ToolResult::create(
+                sprintf(
+                    "No knowledge document is called \"%s\".\n\nThe ids are:\n%s",
+                    $documentId,
+                    implode("\n", array_map(
+                        static fn(array $document): string => '- ' . $document['id'] . ': ' . $document['title'],
+                        Documents::topics(),
+                    )),
+                ),
+                [
+                    'query' => $documentId,
+                    'matchCount' => 0,
+                    'matches' => [],
+                    'scope' => Scope::Any->value,
+                    'withheldDocuments' => [],
+                    'alsoInHints' => [],
+                    'documents' => Documents::topics(),
+                ],
+            );
+        }
+
+        $title = '';
+        $declared = [];
+        foreach (Documents::documents() as $document) {
+            if ($document['id'] === $documentId) {
+                $title = (string) $document['title'];
+                $declared = $document['hints'];
+            }
+        }
+        $body = Documents::read($documentId);
+        $scope = Documents::scopeOf($documentId);
+
+        // The hints this document declares itself the long form of, which is
+        // the other corpus on the same subject and the one place a reader of
+        // the whole page still has somewhere to go.
+        $alsoInHints = [];
+        foreach ($declared as $hintId) {
+            $hint = Hints::byId((string) $hintId);
+            if ($hint !== null) {
+                $alsoInHints[] = ['id' => $hint['id'], 'title' => $hint['title']];
+            }
+        }
+
+        return ToolResult::create($body, [
+            'query' => $documentId,
+            'matchCount' => 1,
+            'matches' => [[
+                'documentId' => $documentId,
+                'title' => $title,
+                'uri' => Documents::uri($documentId),
+                'heading' => $title,
+                'body' => $body,
+                'versions' => '',
+                'coverage' => 1.0,
+                'score' => 0,
+                'truncated' => false,
+            ]],
+            'scope' => $scope->value,
+            'withheldDocuments' => [],
+            'alsoInHints' => $alsoInHints,
         ]);
     }
 
@@ -207,6 +307,31 @@ final class RuleLookup extends ReadOnlyTool
             . implode("\n", array_map(
                 static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
                 $hints,
+            ));
+    }
+
+    /**
+     * The documents these sections were cut from, offered as a call.
+     *
+     * A section answers the query and the rest of its page answers the next
+     * question, which is where the changelog obligation sat while a review
+     * queried for it twice and got the release branches
+     * (`feedback/2026-08-07-132446`).
+     *
+     * @param array<int, array{id: string, title: string}> $results
+     */
+    private static function readableWhole(array $results): string
+    {
+        $documents = [];
+        foreach ($results as $result) {
+            $documents[(string) $result['id']] = (string) $result['title'];
+        }
+
+        return "Each of these is a section. The whole document is one call away — typo3_rule_lookup with "
+            . "documentId, which needs no resource list:\n"
+            . implode("\n", array_map(
+                static fn(string $id): string => '- ' . $id . ' — ' . $documents[$id],
+                array_keys($documents),
             ));
     }
 

@@ -8,8 +8,9 @@ runTests.sh. It answers outside a core checkout too — setting up an extension
 manual, PHPUnit in an extension, Playwright in a project — and there the
 core-only documents are withheld and named rather than dropped in silence. What
 comes back is the sections that matched, each naming the document it was cut
-from, which is readable whole as its typo3://guides resource. Answers from:
-knowledge.
+from. Pass that documentId back instead of a query to read the whole document —
+the section answers what was asked and the rest of the page regularly answers
+the next thing, and it needs no resource list. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -19,15 +20,24 @@ Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ```yaml
 # Topic to look up, in English, for example testing, review, deprecation, or
-# code style.
-query: string
+# code style. A call carries query or documentId, never both.
+query: string  # optional
+# One document to read whole instead of searching, named by the documentId a
+# match carries — for example "core/contribution/commit-messages". Use it when
+# a matched section came out of a document whose other sections may answer what
+# the query did not: the whole page comes back, no search, no version filter. A
+# call carries query or documentId, never both.
+documentId: string  # optional
 # The TYPO3 version the answer has to hold on, for example "13.4" or "14". A
 # section bound to another major is left out. Defaults to every major this
 # repository declares typo3/cms-core for, or to the installation this server was
 # started in; where there is neither, every section comes back with the range it
-# holds for.
+# holds for. Ignored for documentId, which returns the document as written.
 targetVersion: string  # optional
 ```
+
+The call carries exactly one of these sets of arguments: `query` — or
+`documentId`.
 
 ## Answers with
 
@@ -229,6 +239,10 @@ Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) �
 - Security-sensitive behavior needs extra care and focused tests.
 
 Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages), TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules). A client may render no resource list, so that address is how one is reached.
+
+Each of these is a section. The whole document is one call away — typo3_rule_lookup with documentId, which needs no resource list:
+- core/contribution/commit-messages — TYPO3 Core Commit Message Rules
+- core/contribution/rules — TYPO3 Core Contribution Rules
 
 The hints also cover this — call typo3_hint_lookup with the id:
 - documentation-changelog — Documentation and Changelog

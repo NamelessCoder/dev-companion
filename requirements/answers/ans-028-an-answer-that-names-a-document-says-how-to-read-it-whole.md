@@ -1,6 +1,6 @@
 ---
 id: R-ANS-028
-status: open
+status: held
 restsOn: [D-ANS-061]
 ---
 
@@ -27,8 +27,18 @@ working, because `typo3_test_run_guide` answered first.
 `feedback/2026-08-07-065313` is the same session earlier, reporting that no
 resource list was rendered at any point.
 
+**Built on 2026-08-07.** `typo3_rule_lookup` takes a `documentId` and returns
+the document as written — no search, no version filter — and every answer that
+carries sections names the ids they were cut from as that call.
+`typo3_test_run_guide` names `core/testing/scripts` beside the invocation notes,
+with the two things the guide carries and it does not, because the moment a
+caller is about to run something is the one moment they are certainly reading.
+`typo3_script_lookup` says the same where the section it returned was cut, which
+is the case that produced the report.
+
 ## Held by
 
-- `not guarded` — what would hold it is an answer-shape assertion over the tools
-  that return a document section, and which of the offered shapes is built is
-  the todo's decision.
+- `KnowledgeTest::aDocumentIdReadsTheWholePageWithoutAResourceList`
+- `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre`
+- `KnowledgeTest::theTestRunGuideNamesTheScriptsDocument`
+- `KnowledgeTest::aCutScriptSectionSaysHowToReadThePageWhole`

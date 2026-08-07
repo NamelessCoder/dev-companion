@@ -623,6 +623,106 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * `R-ANS-028`. A section answers the query and the rest of the page answers
+     * the next question, and reaching it may not depend on the client.
+     *
+     * `feedback/2026-08-07-132446` queried twice for what each change type owes
+     * as a changelog entry and got `Release Targets` both times. The section it
+     * wanted, `## Changelog Files`, is in the same document, whose uri the
+     * answer carried and which the session never fetched — it says nothing in
+     * the answer presented the uri as something to do (`D-ANS-061`).
+     */
+    #[Test]
+    public function aDocumentIdReadsTheWholePageWithoutAResourceList(): void
+    {
+        $search = Registry::call('typo3_rule_lookup', [
+            'query' => 'bugfix changelog entry obligation and review readiness',
+        ]);
+
+        $documentIds = array_column($search->data['matches'], 'documentId');
+        self::assertContains('core/contribution/commit-messages', $documentIds);
+        // The offer, as a call rather than as a uri nothing presents.
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $search->text);
+        self::assertStringContainsString('core/contribution/commit-messages', $search->text);
+        // The query did not reach the section that answers it.
+        self::assertNotContains('Changelog Files', array_column($search->data['matches'], 'heading'));
+
+        $whole = Registry::call('typo3_rule_lookup', [
+            'documentId' => 'core/contribution/commit-messages',
+        ]);
+
+        self::assertSame(1, $whole->data['matchCount']);
+        self::assertSame(Scope::Core->value, $whole->data['scope']);
+        self::assertSame(
+            'core/contribution/commit-messages',
+            $whole->data['matches'][0]['documentId'],
+        );
+        // Whole means whole: the section two queries missed is in it.
+        self::assertStringContainsString('## Changelog Files', $whole->text);
+        self::assertSame(Documents::read('core/contribution/commit-messages'), $whole->text);
+    }
+
+    #[Test]
+    public function anUnknownDocumentIdNamesTheOnesThereAre(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', ['documentId' => 'core/contribution/nope']);
+
+        self::assertSame(0, $result->data['matchCount']);
+        self::assertStringContainsString('No knowledge document is called', $result->text);
+        foreach (Documents::documents() as $document) {
+            self::assertStringContainsString($document['id'], $result->text);
+        }
+    }
+
+    /**
+     * The same document, offered where a session is certainly reading.
+     *
+     * `feedback/2026-08-07-130058` had every `runTests.sh` question answered by
+     * this tool, never reached `typo3_script_lookup`, and so never saw the
+     * guide — which carries the two things below and this answer does not.
+     */
+    #[Test]
+    public function theTestRunGuideNamesTheScriptsDocument(): void
+    {
+        $result = Registry::call('typo3_test_run_guide', [
+            'query' => 'functional',
+            'paths' => ['typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php'],
+            'targetVersion' => '15',
+        ]);
+
+        self::assertStringContainsString('core/testing/scripts', $result->text);
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $result->text);
+
+        // What it claims the guide carries, held against the guide.
+        $guide = Documents::read('core/testing/scripts');
+        self::assertStringContainsString('bin/phpunit: not found', $guide);
+        self::assertStringContainsString('SUCCESS', $guide);
+    }
+
+    /**
+     * The third of them, and the one that already returned the guide.
+     *
+     * It returns a cut, and `truncated: true` is the field a caller has no way
+     * to act on where the client lists no resources — the same session, same
+     * call, `feedback/2026-08-07-130058`.
+     */
+    #[Test]
+    public function aCutScriptSectionSaysHowToReadThePageWhole(): void
+    {
+        $result = Registry::call('typo3_script_lookup', [
+            'task' => 'git hooks, commit and coding guidelines check before committing',
+            'targetVersion' => '15',
+        ]);
+
+        self::assertNotSame([], array_filter(
+            $result->data['matches'],
+            static fn(array $match): bool => $match['truncated'],
+        ), 'the case this covers is a truncated section, and nothing was truncated');
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $result->text);
+        self::assertStringContainsString('core/testing/scripts', $result->text);
+    }
+
+    /**
      * The other miss path: outside the core, with a document dropped for the
      * boundary. That is the one case the sentence is true in, and it stays.
      */

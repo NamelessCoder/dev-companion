@@ -156,6 +156,7 @@ final class TestRunGuide extends ReadOnlyTool
         }
 
         $blocks[] = self::invocationBlock();
+        $blocks[] = self::SCRIPTS_GUIDE;
 
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
@@ -166,6 +167,29 @@ final class TestRunGuide extends ReadOnlyTool
             'invocation' => TestSuiteHints::invocation(),
         ]);
     }
+
+    /**
+     * The document this answer is the short form of, named where it is used.
+     *
+     * A session that had every `runTests.sh` question answered here never
+     * reached `typo3_script_lookup`, whose description reads as a subset of
+     * this one, and so never saw the guide either — although it returns it
+     * inline. What the guide carries and this does not is what the two
+     * sentences below name, both of which cost that session real time
+     * (`feedback/2026-08-07-130058`, `feedback/2026-08-07-130007`,
+     * `D-ANS-061`).
+     *
+     * The moment a caller is about to run something is the one moment they are
+     * certainly reading, which is why the pointer sits here rather than waiting
+     * for somebody to ask what exists.
+     */
+    public const SCRIPTS_GUIDE = "## The whole procedure\n"
+        . "This is the suites and how to invoke them. The rest is one call away — typo3_rule_lookup with "
+        . "documentId \"core/testing/scripts\", which needs no resource list.\n"
+        . "- Why a suite runs against the `vendor/` and `bin/` of the directory it was started from, and what "
+        . "`exec: line 9: bin/phpunit: not found` means — it names phpunit rather than the directory.\n"
+        . "- Why `-s cglGit` reports SUCCESS having read no file from a git worktree, and that `-s cgl` is the "
+        . "one that works from either.";
 
     /**
      * The invocation rules that apply to every suite. Emitted with every answer:

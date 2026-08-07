@@ -211,6 +211,8 @@ Useful for type-sensitive PHP changes and API contract changes.
 
 Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page: TYPO3 Core Script Help (typo3://guides/core/testing/scripts). A client may render no resource list, so that address is how one is reached.
 
+That is a cut of the page. The whole of it is one call away — typo3_rule_lookup with documentId "core/testing/scripts", which needs no resource list.
+
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 ````
 

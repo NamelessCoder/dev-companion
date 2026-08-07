@@ -52,6 +52,15 @@ matter too.
    those paths match.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
    One query per subsystem; a single broad query is not subsystem evidence.
+
+   Where step 3 ran with those paths, its answer says whether this step is still
+   owed. A brief that carried everything the lookup matched says so — "these are
+   everything typo3_hint_lookup matches for these paths" — and there the call is
+   made and asking again returns the same hints. One that stopped short says
+   that instead and names the ids it left, and those are what is owed: fetch
+   them by id rather than repeating the query. Read the sentence rather than the
+   populated `hints` key, which is present either way and does not tell the two
+   apart.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
    package declares, bounded by `tag` and with the query omitted. Those three
    are the changelog's own axes, and the extension's vocabulary is not among

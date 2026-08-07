@@ -28,6 +28,16 @@ number that exists nowhere. The two really are one answer, and the
 `source-not-answering` the report saw beside it was that call not being answered
 rather than a second shape of the same cause.
 
+**Since 2026-08-07 one of the two is separable**, on the issue side. Gerrit Code
+Review posts a note on the tracker for every patch set it receives, so an empty
+search plus a review URL there is not two possibilities: the change exists and
+this reader may not see it. The answer says that instead of hedging, and the
+tracker is asked only on the empty path — 0.12 seconds measured. The side the
+report was actually about stays a hedge: searching the tracker for a change
+number costs 2.5 seconds and answers two issues, one unrelated, and searching
+for a Change-Id answers nothing.
+
 ## Held by
 
 - `GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate`
+- `GerritTest::aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer`

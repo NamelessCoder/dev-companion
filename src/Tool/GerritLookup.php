@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
+use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
@@ -144,11 +145,36 @@ final class GerritLookup extends ReadOnlyTool
      * somebody is holding, and its own sentence already carries the caveat.
      *
      * Separated from `answer()` so it can be held without a review server: this
-     * is the whole of the judgement and it is a function of two strings.
+     * is the whole of the judgement, and what it reads is its arguments.
+     *
+     * @param array{author: string, url: string}|null $review what Gerrit posted
+     *     on the issue, where a search for one came back empty and the tracker
+     *     had a note
      */
-    public static function indistinguishable(string $status, string $change): ?string
+    public static function indistinguishable(string $status, string $change, ?array $review = null): ?string
     {
-        if ($status !== 'empty' || trim($change) === '') {
+        if ($status !== 'empty') {
+            return null;
+        }
+
+        // The issue case, where the tracker settled it. Gerrit Code Review
+        // posts a note on the issue for every patch set it receives, so a
+        // review URL there and nothing here is not two possibilities: the
+        // change exists and this reader may not see it. That is the report's
+        // own idea, and it is only buildable on this side —
+        // `feedback/2026-08-07-132416`.
+        if ($review !== null) {
+            return sprintf(
+                'A change for this issue does exist and is not one an anonymous reader may see. %s posted %s on '
+                    . 'the issue, and this server reads %s without credentials, so a private or work-in-progress '
+                    . 'change is invisible to it. Read the change there while signed in.',
+                $review['author'],
+                $review['url'] === '' ? 'a review note' : $review['url'],
+                Gerrit::HOST,
+            );
+        }
+
+        if (trim($change) === '') {
             return null;
         }
 
@@ -156,6 +182,45 @@ final class GerritLookup extends ReadOnlyTool
             . 'progress is invisible to it and answers exactly like one that does not exist, so this is either '
             . '"no such change" or "not one an anonymous reader may see", and nothing here separates them. Where '
             . 'the id came from a commit you have, the second is the more likely of the two.';
+    }
+
+    /**
+     * The newest review URL Gerrit posted on an issue, or null.
+     *
+     * Read from the journal rather than from the description, because that is
+     * where it is: the note is authored by Gerrit itself and names the patch
+     * set and the change. Only asked where a search over commit messages came
+     * back empty, so the second host is reached on the path where the answer
+     * would otherwise be a guess, and not on the ordinary one.
+     *
+     * The same cross-check for a caller that named a change rather than an
+     * issue was measured on 2026-08-07 and is not built: searching the tracker
+     * for `95162` costs 2.5 seconds and answers two issues, one of them
+     * unrelated, and searching for the Change-Id answers nothing at all. That
+     * is a second guess rather than evidence, and it is the case the report was
+     * about.
+     *
+     * @return array{author: string, url: string}|null
+     */
+    private static function reviewPostedOnIssue(string $issue): ?array
+    {
+        $answer = (new Forge())->issue($issue);
+        if ($answer['status'] !== 'answered' || !is_array($answer['issue'])) {
+            return null;
+        }
+
+        $newest = null;
+        foreach ((array) ($answer['issue']['notes'] ?? []) as $note) {
+            if (!is_array($note) || !str_contains(strtolower((string) ($note['author'] ?? '')), 'gerrit')) {
+                continue;
+            }
+            if (preg_match('~https?://\S*review\.typo3\.org/\S+~', (string) ($note['note'] ?? ''), $found) !== 1) {
+                continue;
+            }
+            $newest = ['author' => (string) $note['author'], 'url' => rtrim($found[0], '.,)')];
+        }
+
+        return $newest;
     }
 
     /** @param array<string, mixed> $args */
@@ -170,7 +235,14 @@ final class GerritLookup extends ReadOnlyTool
             ? $gerrit->changesForIssue($issue, $limit)
             : $gerrit->change($change, $limit);
 
-        $indistinguishable = self::indistinguishable($answer['status'], $change);
+        // The tracker is asked only where the review server answered
+        // nothing for an issue, which is the one path where a second host
+        // buys an answer instead of a hedge. It cost 0.12 seconds measured
+        // against forge.typo3.org on 2026-08-07.
+        $review = $issue !== '' && $answer['status'] === 'empty'
+            ? self::reviewPostedOnIssue($issue)
+            : null;
+        $indistinguishable = self::indistinguishable($answer['status'], $change, $review);
 
         $data = [
             'status' => $answer['status'],

@@ -276,6 +276,39 @@ final class GerritTest extends TestCase
         self::assertNull(GerritLookup::indistinguishable('unavailable', '95162'));
     }
 
+    /**
+     * Where the tracker settled it, the answer stops hedging.
+     *
+     * Gerrit Code Review posts a note on the issue for every patch set it
+     * receives, so a review URL there and nothing from the review server is not
+     * two possibilities — the change exists and this reader may not see it.
+     * That is the report's own last idea, and only the issue side of it is
+     * built: searching the tracker for a change number costs 2.5 seconds and
+     * answers two issues, one unrelated, and searching for a Change-Id answers
+     * nothing at all.
+     */
+    #[Test]
+    public function aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer(): void
+    {
+        $said = GerritLookup::indistinguishable('empty', '', [
+            'author' => 'Gerrit Code Review',
+            'url' => 'https://review.typo3.org/c/Packages/TYPO3.CMS/+/95162',
+        ]);
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('does exist', $said);
+        self::assertStringContainsString('95162', $said);
+        // And it is no longer the sentence that says nothing here separates the
+        // two, because something did.
+        self::assertStringNotContainsString('nothing here separates them', $said);
+
+        // Still nothing to say where the review server answered.
+        self::assertNull(GerritLookup::indistinguishable('answered', '', [
+            'author' => 'Gerrit Code Review',
+            'url' => 'https://review.typo3.org/c/Packages/TYPO3.CMS/+/95162',
+        ]));
+    }
+
     #[Test]
     public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNoPatch(): void
     {

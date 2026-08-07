@@ -110,18 +110,18 @@ from a manifest of its own — `build/guides/composer.json` says why it is not i
 this package's `require-dev`. The look is this repository's, in one file:
 `build/guides/theme/structure/layout.html.twig` shadows the layout the renderer
 would otherwise use, carries the stylesheet inline, and builds the sidebar from
-the documents the renderer knows. `.github/workflows/documentation.yml` runs both
-commands on every push to `main` and deploys the result to
+the documents the renderer knows. `.github/workflows/documentation.yml` runs
+both commands on every push to `main` and deploys the result to
 [GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
 `Settings → Pages → Source: GitHub Actions` on the repository: a deployment from
 a branch serves the root or `/docs`, and this directory is neither.
 
 The search is this repository's too, because the renderer has none. `Site`
-writes one entry per page — its URL, its title, its headings and its prose —
-and the sidebar filters it in the reader's browser, fetched on the first
-keystroke and not before. Fenced blocks are left out: 582 of them, mostly a
-recorded tool answer in JSON, which is what keeps the index at 213 KB rather
-than a megabyte and a prose match above the evidence.
+writes one entry per page — its URL, its title, its headings and its prose — and
+the sidebar filters it in the reader's browser, fetched on the first keystroke
+and not before. Fenced blocks are left out: 582 of them, mostly a recorded tool
+answer in JSON, which is what keeps the index at 213 KB rather than a megabyte
+and a prose match above the evidence.
 
 ## Tests
 

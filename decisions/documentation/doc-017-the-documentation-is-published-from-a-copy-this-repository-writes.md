@@ -35,9 +35,9 @@ of what it points at is a directory the site does not carry.
   `answer-sources.md`, the text left standing where the link had been.
 - It cannot go in this package's `require-dev`. Resolving it there drags
   `symfony/string` to 8.1, which needs PHP 8.4.1, and CI runs 8.2 and 8.3.
-- No theme it ships is publishable. The default one writes a bare document —
-  57 files and not one stylesheet — and `guides-theme-bootstrap` is a starter
-  whose navbar is branded "Navbar" and whose menu is empty.
+- No theme it ships is publishable. The default one writes a bare document — 57
+  files and not one stylesheet — and `guides-theme-bootstrap` is a starter whose
+  navbar is branded "Navbar" and whose menu is empty.
 - A menu of its own is not on offer either. Guides builds one from a `toctree`,
   which is a reStructuredText directive that markdown has no form of, so every
   theme's navigation is empty against this corpus.
@@ -63,9 +63,9 @@ of what it points at is a directory the site does not carry.
 - The theme is this repository's own, and one file: a layout shadowing the
   default one, with the stylesheet inlined and the navigation built from
   `env.allDocuments` rather than from a `toctree` nothing here can write.
-- `t3docs/typo3-docs-theme` renders the docs.typo3.org look and was rejected.
-  It carries a dependency graph of its own for a site of 47 pages, and this
-  server is not TYPO3 documentation.
+- `t3docs/typo3-docs-theme` renders the docs.typo3.org look and was rejected. It
+  carries a dependency graph of its own for a site of 47 pages, and this server
+  is not TYPO3 documentation.
 - A link naming a heading in another page loses the heading rather than the
   link. The copy is where that happens, so the sources go on naming the section
   a reader of the checkout jumps to.

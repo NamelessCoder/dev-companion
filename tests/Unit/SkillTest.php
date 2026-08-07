@@ -2048,6 +2048,39 @@ final class SkillTest extends TestCase
     }
 
     /** The one part of a skill that is read before the skill is chosen. */
+    /**
+     * `R-SKL-018`. A crossing between two skills is a step, not a paragraph.
+     *
+     * Both of these named `typo3-core-patch-development` in prose about
+     * ownership, and both were read by a session that then did the successor's
+     * work itself: one wrote a whole patch over forty turns after a triage, the
+     * other edited the patch it was reviewing, ran seven suites and amended the
+     * commit — still under the skill that says it does not change the patch.
+     * Neither session reports a wrong outcome; both reconstructed an order that
+     * was one call away (`D-SKL-022`).
+     */
+    #[Test]
+    public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void
+    {
+        foreach (['typo3-core-issue-triage', 'typo3-core-patch-review'] as $name) {
+            $body = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
+
+            self::assertMatchesRegularExpression(
+                '/invoke `typo3-core-patch-development`/',
+                $body,
+                $name . ' names its successor without telling the session to invoke it',
+            );
+        }
+
+        // And the one that reads as somebody else's patch says where a commit
+        // of your own belongs, because that description is why a session asked
+        // to rebase its own work correctly did not open it.
+        self::assertStringContainsString(
+            'typo3-core-patch-development',
+            self::description('typo3-core-patch-checkout'),
+        );
+    }
+
     private static function description(string $name): string
     {
         $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');

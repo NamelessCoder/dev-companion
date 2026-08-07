@@ -160,6 +160,28 @@ Before pushing, establish where you are pushing to. A core checkout's remote is
 not necessarily the one it fetches from, and the answer is in the checkout's own
 git configuration rather than in what the repository is called.
 
+### Rebase where the branch moved under you
+
+A commit that sat while you verified it is behind `origin/main`, and rebasing it
+is part of pushing rather than a thing of its own. Two parts of that are not
+obvious and both were worked out from scratch by a session that had no skill
+telling it either:
+
+- **Stop a running `runTests.sh` suite first.** The script mounts the working
+  tree and reads it as it goes, so rebasing underneath a run invalidates it
+  without failing it — and the run then reports about a tree that no longer
+  exists. Clear the suite's leftover containers before starting.
+- **Confirm the `Change-Id` survived the rebase.** It is what makes the push a
+  new patch set on the change you already have. Losing it opens a second change
+  instead, which is not undone by pushing again.
+
+Then re-run the checks on the new base. Inspect the commits you rebased over
+where any of them touch the same files: the suite passing before the rebase is
+evidence about the old base.
+
+Fetching somebody else's patch out of review and putting it on a branch is a
+different job and belongs to `typo3-core-patch-checkout`.
+
 Pushing is a step of its own and is taken when it is asked for. Everything above
 is local and reversible; the push is neither.
 

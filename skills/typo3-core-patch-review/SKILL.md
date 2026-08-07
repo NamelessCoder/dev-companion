@@ -180,12 +180,25 @@ Close on the checklist's surfaces with each one marked assessed, unassessed or
 not applicable to this diff. A review that reports only findings cannot be told
 apart from one that looked at less.
 
+## Where the review ends and the rework begins
+
+The reader accepting your findings and asking for the change is the end of this
+skill's work, and it looks like nothing at all from the inside — a sentence in a
+conversation, in the middle of a session that is going well.
+
+**At that sentence, invoke `typo3-core-patch-development` and work from it.**
+That includes the amend and the push. A session that carries on under review
+rules is holding "it does not change the patch" while changing the patch, and
+one did: it edited `ColumnMap.php`, added a fixture column, wrote a functional
+test, ran seven suites and amended the commit, all still inside this skill.
+Nothing broke and the tree stayed clean, which is why nothing marked the
+crossing.
+
+Until that sentence, the rule above stands whole: a review that rewrites what it
+reviews has destroyed the evidence for its own findings. Where the answer is
+that the patch needs work, name it and stop.
+
 This skill owns the review of a core patch and the order its findings are
-reported in. It does not change the patch: a review that rewrites what it
-reviews has destroyed the evidence for its own findings, and the request was for
-a reading. Where the answer is that the patch needs work, name it and stop —
-`typo3-core-patch-development` owns making the change, the changelog entry, the
-tests it needs and the push, and it takes the findings across as its work list.
-Reviewing an extension, a sitepackage or a site project belongs to
+reported in. Reviewing an extension, a sitepackage or a site project belongs to
 `typo3-extension-conformance` and its checklist, which reads different surfaces
 against different rules.

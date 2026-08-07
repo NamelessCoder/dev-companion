@@ -169,12 +169,24 @@ Report what you did not establish beside what you did. A triage whose reading
 stopped at the code path says so, because the next person's work is exactly the
 part that was left.
 
+## Where the triage ends and the patch begins
+
+**When the verdict is that it still happens and you are asked to fix it, invoke
+`typo3-core-patch-development` before making the change.** That is a step, not a
+note about ownership: load the skill by name and work from it. What crosses over
+is the issue number, the verdict, the code path that was established and the
+failing test where there is one.
+
+The reason it is written as a step is that it did not fire as anything else. A
+session read this paragraph, held exactly that handoff, was asked for the patch,
+and wrote it over forty more turns without ever opening the skill — deciding for
+itself the changelog obligation, which suites to run and on which databases, the
+commit trailers and the release branches. Nothing it decided was reported wrong;
+all of it was reconstructed.
+
 This skill owns saying what is still true about an issue: choosing it out of the
 backlog, reading the report against the branch, reproducing it or failing to,
 and the verdict that comes out. It stops at the tracker — nothing here comments,
 assigns, closes or reopens anything, and the verdict is written for the person
-who will. It does not own fixing what it confirmed: where the work is to make
-the change, `typo3-core-patch-development` owns it, and what crosses over is the
-issue number, the verdict, the code path that was established and the failing
-test where there is one. Judging a patch somebody pushed is
-`typo3-core-patch-review`, which reads the diff rather than the report.
+who will. Judging a patch somebody pushed is `typo3-core-patch-review`, which
+reads the diff rather than the report.

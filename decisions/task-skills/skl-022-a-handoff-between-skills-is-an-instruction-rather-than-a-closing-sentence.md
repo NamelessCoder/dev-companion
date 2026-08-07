@@ -77,3 +77,22 @@ it.**
   description apart for a reason.
 - A session with no client-side skill invocation at all reports the same
   crossing, which would say the lever is in the tools rather than in the skills.
+
+**Since then**, on 2026-08-07, it was built and the open question was answered.
+`typo3-core-issue-triage` and `typo3-core-patch-review` each end in a section
+that says to invoke `typo3-core-patch-development` at the point the crossing
+happens, with the moment named — the verdict is "still happens" and a fix is
+asked for; the reader accepts the findings and asks for the change. Both keep
+the ownership paragraph, which is what tells a reader where the boundary is.
+`R-SKL-018` holds it.
+
+The `typo3-core-patch-checkout` question was put to the maintainer with both
+answers priced, and the answer was both with a pointer.
+`typo3-core-patch-development` gains a rebase-before-push step carrying the two
+parts a session worked out for itself — a running `runTests.sh` suite reads the
+mounted tree, so it is stopped and its containers cleared before rebasing, and
+the `Change-Id` is confirmed afterwards because losing it opens a second change.
+`typo3-core-patch-checkout` keeps its subject, a change fetched from review, and
+its description now names where a commit of your own belongs. So the stopping
+rules are written once and the boundary is stated from the side a caller reads
+first.

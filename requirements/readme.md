@@ -177,6 +177,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-015`][R-SKL-015] — A rule quoted at a patch is verified in the checkout · held
 - [`R-SKL-016`][R-SKL-016] — The assessment before a core patch reads the issue and the review server · held
 - [`R-SKL-017`][R-SKL-017] — The commit step is named where a skill's workflow ends in a change · held
+- [`R-SKL-018`][R-SKL-018] — A skill that hands over tells the session to invoke the next one · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -195,6 +196,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-015]: task-skills/skl-015-a-rule-quoted-at-a-patch-is-verified-in-the-checkout.md
 [R-SKL-016]: task-skills/skl-016-the-assessment-before-a-core-patch-reads-the-issue-and-the-review-server.md
 [R-SKL-017]: task-skills/skl-017-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
+[R-SKL-018]: task-skills/skl-018-a-skill-that-hands-over-tells-the-session-to-invoke-the-next-one.md
 
 ### project
 

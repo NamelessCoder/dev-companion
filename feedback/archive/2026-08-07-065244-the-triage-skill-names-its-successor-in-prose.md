@@ -1,7 +1,8 @@
 ---
 date: 2026-08-07T06:52:44+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-07
 model: claude-opus-5[1m]
 tool: typo3-core-issue-triage, typo3-core-patch-development, typo3_task_guide
 directory: /home/benji/projects/typo3-cms

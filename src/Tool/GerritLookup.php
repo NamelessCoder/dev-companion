@@ -100,19 +100,19 @@ final class GerritLookup extends ReadOnlyTool
                 ],
                 'required' => ['cause', 'reason'],
             ],
-            // Not required, unlike `unavailable` beside it, and the difference
-            // is what each one is. A caller branches on `unavailable`, so it is
-            // always there to be read; this is a qualification on an answer
-            // that is otherwise complete, so absent and null say the same
-            // thing and an older recording stays a valid answer.
+            // Required and nullable, the shape `unavailable` beside it has. A
+            // caller that has to branch on whether the key is there cannot
+            // tell an answer with nothing to qualify from a server too old to
+            // qualify anything, and this field exists precisely because that
+            // distinction was being got wrong one level down.
             'indistinguishable' => [
                 'type' => ['string', 'null'],
-                'description' => 'Present where the answer is empty and cannot be read as an absence. This server '
-                    . 'reads the review server without credentials, so a change that is private or work in '
-                    . 'progress is invisible to it and looks exactly like one nobody pushed. Null where empty '
+                'description' => 'Why an empty answer cannot be read as an absence, or null where it can. This '
+                    . 'server reads the review server without credentials, so a change that is private or work in '
+                    . 'progress is invisible to it and looks exactly like one nobody pushed. Null means empty '
                     . 'really does mean nothing matched.',
             ],
-        ], ['status', 'source', 'query', 'changes', 'unavailable']);
+        ], ['status', 'source', 'query', 'changes', 'unavailable', 'indistinguishable']);
     }
 
     /**

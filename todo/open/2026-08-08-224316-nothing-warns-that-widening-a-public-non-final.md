@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-08-224316-nothing-warns-that-widening-a-public-non-final.md, R-KNW-066
 **Priority:** normal
-**Branch:** todo/nothing-warns-that-widening-a-public-non-final
-**Claimed:** 2026-08-08
 
 Judged on 2026-08-09 as step 1a with a step 4 beside it, and queued:
 `R-KNW-066` is what must hold, `D-KNW-065` is the evidence and what was rejected

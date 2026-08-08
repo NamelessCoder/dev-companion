@@ -198,6 +198,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### knowledge
 
+- [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09
 - [`D-KNW-064`][D-KNW-064] — The disabled assertions a core checkout carries are a grep and not a lookup · 2026-08-08
 - [`D-KNW-063`][D-KNW-063] — What a TCA type stores is a subject this server owns and does not carry · 2026-08-07
 - [`D-KNW-055`][D-KNW-055] — The first check a standalone extension repository gets is a gap this server owns · 2026-08-04
@@ -256,6 +257,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-065]: knowledge/knw-065-what-a-public-method-on-a-non-final-core-class-commits-its-author-to-is-a-gap-this-server-owns.md
 [D-KNW-064]: knowledge/knw-064-the-disabled-assertions-a-core-checkout-carries-are-a-grep-and-not-a-lookup.md
 [D-KNW-063]: knowledge/knw-063-what-a-tca-type-stores-is-a-subject-this-server-owns-and-does-not-carry.md
 [D-KNW-055]: knowledge/knw-055-the-first-check-a-standalone-extension-repository-gets-is-a-gap-this-server-owns.md

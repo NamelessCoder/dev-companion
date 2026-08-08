@@ -73,6 +73,7 @@ when it is added.
 - [`R-KNW-063`][R-KNW-063] — A template answer states that the file-name fallback runs once per root path · held
 - [`R-KNW-064`][R-KNW-064] — The Composer keys that install TYPO3 beneath an extension are answered · held
 - [`R-KNW-065`][R-KNW-065] — Booting a declared installation is answered as its own subject · held
+- [`R-KNW-066`][R-KNW-066] — A core PHP change is told what the class's public surface commits it to · **open**
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -139,3 +140,4 @@ when it is added.
 [R-KNW-063]: knw-063-a-template-answer-states-that-the-file-name-fallback-runs-once-per-root-path.md
 [R-KNW-064]: knw-064-the-composer-keys-that-install-typo3-beneath-an-extension-are-answered.md
 [R-KNW-065]: knw-065-booting-a-declared-installation-is-answered-as-its-own-subject.md
+[R-KNW-066]: knw-066-a-core-php-change-is-told-what-the-classs-public-surface-commits-it-to.md

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224429-the-changelog-precedent-that-decided-the-review.md
 **Priority:** normal
+**Branch:** todo/name-the-listing-in-the-precedent-step-of-a-review
+**Claimed:** 2026-08-08
 
 Judged as step 4, wording — `D-SKL-029`, which carries the evidence and the two
 sessions it rests on. Rewrite the precedent bullet of

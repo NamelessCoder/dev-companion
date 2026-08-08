@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224352-a-gerrit-change-lookup-by-a-number-read-out-of.md
 **Priority:** normal
+**Branch:** todo/a-gerrit-change-lookup-by-a-number-read-out-of
+**Claimed:** 2026-08-08
 
 Judged as `D-SKL-028` on 2026-08-09, which carries the re-run and the reasoning.
 Rewrite step 7 of `skills/typo3-core-issue-triage/SKILL.md`, which asks for a

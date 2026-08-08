@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224333-the-triage-skill-says-how-to-list-a-backlog-but.md
 **Priority:** normal
+**Branch:** todo/say-in-the-triage-skill-what-makes-a-candidate-settleable
+**Claimed:** 2026-08-08
 
 Establish what actually separates an old core Bug one session can settle from
 one it cannot — against `.checkouts/`, and against the issues the reporting

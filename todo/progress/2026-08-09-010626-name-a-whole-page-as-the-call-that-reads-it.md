@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224406-the-guides-are-reachable-only-through-project.md
 **Priority:** normal
+**Branch:** todo/name-a-whole-page-as-the-call-that-reads-it
+**Claimed:** 2026-08-08
 
 Judged as wording rather than a gap — `D-ANS-070`. The two steps that tell a
 session to read a procedure once rather than a section at a time hand it a

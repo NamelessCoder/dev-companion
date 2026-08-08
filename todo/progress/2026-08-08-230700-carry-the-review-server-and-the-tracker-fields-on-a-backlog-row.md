@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224333-the-triage-skill-says-how-to-list-a-backlog-but.md
 **Priority:** normal
+**Branch:** todo/carry-the-review-server-and-the-tracker-fields-on-a-backlog-row
+**Claimed:** 2026-08-08
 
 Widen the enumeration row in `Forge::open()` and `Forge::entry()` to the
 `relations` and `attachments` the index already answers when the call asks

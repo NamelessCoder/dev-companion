@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md
 **Priority:** normal
+**Branch:** todo/name-the-worktree-case-in-the-patch-checkout-skill
+**Claimed:** 2026-08-08
 
 Step 4, the wording: the description's step clause names the branch path alone,
 so a request whose word was `worktree` read as some other skill's case

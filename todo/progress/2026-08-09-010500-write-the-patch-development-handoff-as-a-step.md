@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224450-the-triage-handoff-fired-as-a-step-and-the.md
 **Priority:** normal
+**Branch:** todo/write-the-patch-development-handoff-as-a-step
+**Claimed:** 2026-08-08
 
 Ladder step 4, and the rule is already written: `R-SKL-018` says a skill that
 hands over tells the session to invoke the next one, and

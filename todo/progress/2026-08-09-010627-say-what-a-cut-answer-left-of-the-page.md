@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224406-the-guides-are-reachable-only-through-project.md
 **Priority:** normal
+**Branch:** todo/say-what-a-cut-answer-left-of-the-page
+**Claimed:** 2026-08-08
 
 Judged as wording rather than a gap — `D-ANS-070`. `Result\Prose::readWhole()`
 already names the pages the excerpts were cut from and the call that reads one

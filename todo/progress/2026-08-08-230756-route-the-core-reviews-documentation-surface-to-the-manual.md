@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224516-a-skill-driven-session-never-reaches-typo3.md
 **Priority:** normal
+**Branch:** todo/route-the-core-reviews-documentation-surface-to-the-manual
+**Claimed:** 2026-08-08
 
 Establish first what a core patch owes the manual, because
 `knowledge/documents/core/contribution/rules.md` says nothing about it and the

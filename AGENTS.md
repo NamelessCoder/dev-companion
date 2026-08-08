@@ -120,7 +120,9 @@ How `next` decides what is due, and how the work moves between `feedback/`,
 [documentation/feedback/readme.md](documentation/feedback/readme.md).
 
 Several sessions at once is `bin/cli todo:claim <n>`, one worktree and one
-branch each. `main` carries who has what in hand, the branch carries the
+branch each, and `bin/cli todo:home <worktree>` is how one of them comes back.
+Both carry their step out rather than printing it, so neither is a reason to
+read anything first. `main` carries who has what in hand, the branch carries the
 half-finished work, and `todo:next` in a worktree hands over that worktree's
 claim rather than the front of the queue. What that costs and what still
 collides:

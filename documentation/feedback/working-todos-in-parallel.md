@@ -238,6 +238,19 @@ sequences of the same four steps, started whenever their session ends.
 
 **One at a time, rebased onto `main` and fast-forwarded — no merge commits.**
 
+    bin/cli todo:home <worktree>
+
+**That command is the whole of it**, the way `todo:claim` is the whole of the
+setup, and it is here for the reason that one is: the steps below have to happen
+in one order, and an order is the thing prose cannot hold anybody to. Asked with
+no name it reports what is standing and which of those has a tree nobody
+committed. It refuses in a worktree and it refuses off `main`, because a
+fast-forward onto somebody's branch is the failure that looks like success.
+
+Nothing here decides that a session has ended, and nothing can: the names are
+the caller's. What the command carries out for each of them is this, and a
+worktree made or merged some other way has to do the same.
+
     git -C .worktrees/<name> rebase main
     (cd .worktrees/<name> && composer ci)
     git merge --ff-only todo/<name>
@@ -269,7 +282,7 @@ Where one branch fixes something the others are also failing on, that one goes
 first. Otherwise every merge behind it is checked against a suite that was
 already red, which is the one thing this order exists to avoid.
 
-Then, once, on `main`:
+Then, on `main`, which `todo:home` also carries out once the branch is in:
 
     bin/cli requirements:index && bin/cli decisions:index
     bin/cli repository:check
@@ -278,7 +291,9 @@ That is something a per-branch run cannot see. The listing at the foot of a
 group readme is generated from every file in that group, so entries merged from
 two branches leave it short by one — `bin/cli requirements:check` says so and
 names the command, and the index commands above are that command run before it
-has to.
+has to. What the rewrite changed is committed on the spot, exactly those files
+and nothing beside them, because a `main` left dirty by a merge is read as a
+half-finished change by whoever opens it next.
 
 What used to stand here as well was the queue: two sessions that each queued new
 work both read the same last number and both took it. There is no number now, so
@@ -334,6 +349,9 @@ each rather than a choice between them.
 merge does not carry. The session that ended on a question left its claim there
 on purpose — the branch was live and held the half that is done — and deleting
 that branch is what turns the same file into a lock on a todo with nothing
-behind it. `bin/cli todo:release <name>` moves it to `waiting/`, where the
-question is what it is now blocked on, and `bin/cli todo:check` reports a claim
-whose branch is gone so that forgetting costs a line rather than a todo.
+behind it. `todo:home` therefore releases what the merge left standing, on the
+branch it has just deleted — to `waiting/` where the claim carries a question,
+to the queue where it carries none. `bin/cli todo:release <name>` is the same
+move made by hand, for a claim whose branch went some other way, and
+`bin/cli todo:check` reports a claim whose branch is gone so that forgetting
+costs a line rather than a todo.

@@ -340,7 +340,8 @@ final class TodoClaim
             $output->writeln('');
             $output->writeln(sprintf(
                 "Started from %s, one session per worktree, each in its own directory and each\n"
-                . 'sent the same message. How the branches come home: %s.',
+                . "sent the same message. One that reports comes home with `bin/cli todo:home\n"
+                . '<worktree>`, whenever it reports and without waiting for the rest: %s.',
                 self::LAUNCH,
                 Todo::PARALLEL,
             ));
@@ -416,7 +417,8 @@ final class TodoClaim
         $lines[] = '';
         $lines[] = sprintf(
             "What a session started from a command line has to be given: %s.\n"
-            . 'How the branches come home afterwards: %s.',
+            . "One that reports comes home with `bin/cli todo:home <worktree>`, and what\n"
+            . 'that carries out is %s.',
             Todo::LAUNCH,
             Todo::PARALLEL,
         );

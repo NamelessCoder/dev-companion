@@ -37,6 +37,7 @@ use TYPO3\DevCompanion\Upkeep\Command\ScenarioRecord;
 use TYPO3\DevCompanion\Upkeep\Command\ScenarioShow;
 use TYPO3\DevCompanion\Upkeep\Command\TodoCheck;
 use TYPO3\DevCompanion\Upkeep\Command\TodoClaim;
+use TYPO3\DevCompanion\Upkeep\Command\TodoHome;
 use TYPO3\DevCompanion\Upkeep\Command\TodoList;
 use TYPO3\DevCompanion\Upkeep\Command\TodoNext;
 use TYPO3\DevCompanion\Upkeep\Command\TodoRelease;
@@ -110,6 +111,7 @@ final class Cli
         $application->addCommand(new TodoList());
         $application->addCommand(new TodoWaiting());
         $application->addCommand(new TodoClaim());
+        $application->addCommand(new TodoHome());
         $application->addCommand(new TodoRelease());
         $application->addCommand(new TodoCheck());
         $application->addCommand(new TodoSync());

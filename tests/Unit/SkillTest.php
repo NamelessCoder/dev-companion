@@ -1907,6 +1907,34 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The same shape, measured here rather than borrowed. A session asked to
+     * review change 95179 in a git worktree read `typo3-core-patch-checkout`'s
+     * description — every verb of it moving the branch it stands on — as
+     * another skill's case, and fetched and created the worktree by hand with
+     * the review skill's routing line naming this one in front of it
+     * (`feedback/2026-08-08-224413`, `D-SKL-024`). A step clause does not only
+     * summarise the body, it narrows what the description names, and the budget
+     * trim of the same day is what wrote this one back after a sweep had cut it
+     * (`D-SKL-026`). So both halves are held: the word a user types, and the
+     * body that has to answer once it did.
+     */
+    #[Test]
+    public function aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout(): void
+    {
+        $checkout = self::description('typo3-core-patch-checkout');
+        self::assertStringContainsString('git worktree beside it', $checkout);
+        self::assertStringNotContainsString('find the change, fetch the patch set', $checkout);
+
+        $body = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-checkout/SKILL.md',
+        ));
+        self::assertStringContainsString('## Two ways in', $body);
+        // What the worktree path costs and the branch path does not, which is
+        // the half a trigger alone would route a task into a body without.
+        self::assertStringContainsString('no suite runs in it until they are installed there', $body);
+    }
+
+    /**
      * The descriptions are read in one listing and paid for out of one budget:
      * Claude Code allows all of them together the characters in one percent of
      * the context window, and where they do not fit it drops whole descriptions

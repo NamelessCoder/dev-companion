@@ -115,3 +115,9 @@ the sweep and not the trim, and what went out was the half a user's words reach.
 Putting them back is affordable — the twelve cost 3491 characters of the 3600
 the ratchet allows, measured on 2026-08-09, and the clause going out again frees
 more than the trigger needs.
+
+That is what was done the same day. The clause is out, the requests are back,
+and the worktree is named as one of the two ways in; the twelve cost 3562 of the
+3600 afterwards. What the repair says about this entry is that the ratchet holds
+a total and not a wording, so the description a trim leaves behind is read
+against `R-SKL-010` and `D-SKL-024` by whoever writes it and by nothing else.

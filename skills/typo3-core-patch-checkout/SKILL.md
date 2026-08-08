@@ -1,6 +1,6 @@
 ---
 name: typo3-core-patch-checkout
-description: 'Get a patch under review on review.typo3.org into a core checkout and back out again: find the change, fetch the patch set, put it on the branch it targets, rebase it, and restore a clean current branch. Rebasing a commit you wrote yourself is typo3-core-patch-development.'
+description: 'Get a patch under review on review.typo3.org into a core checkout and back out again — onto the branch it targets, or into a git worktree beside it. Trying one out, checking whether it still applies, getting a checkout back onto a clean current branch. Rebasing a commit you wrote yourself is typo3-core-patch-development.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
@@ -38,25 +38,47 @@ has an end, and reaching one is a result.
    `typo3_rule_lookup` with `documentId="core/contribution/gerrit-workflow"`,
    which also stands as `typo3://guides/core/contribution/gerrit-workflow`.
 
+## Two ways in
+
+The patch goes onto the branch it targets in the checkout you are standing in,
+or into a git worktree beside it. The request usually says which. Where it does
+not, what decides is whether the checkout is free: the branch path needs it to
+itself, and a worktree leaves the current branch and everything uncommitted on
+it alone.
+
+A worktree does not save that work, it moves it. It starts without the installed
+dependencies, which are gitignored and so are not something git brings, and no
+suite runs in it until they are installed there. `typo3_test_run_guide` states
+that precondition above its suites, and beside it the one check whose file list
+comes from git, which reports success having read nothing in a worktree. Read
+both before running anything in one.
+
 ## Before the checkout is changed
 
-Establish these three, in this order, and stop at the first that fails.
+Establish these three, in this order, and stop at the first that fails. The
+first and the third are about the working copy the patch is going into, which on
+the worktree path is the worktree.
 
 - **The working tree is clean.** Uncommitted work and a fetched patch set on top
   of each other cannot be told apart afterwards, and what a rebase does to the
   mixture is not recoverable from the checkout alone. Stop and say what is
-  uncommitted; do not stash it as a convenience.
+  uncommitted; do not stash it as a convenience. Where that uncommitted work is
+  what stands in the way, the worktree is the way past it.
 - **The target branch is there and current.** A change targeting a release
   branch rebased onto the wrong one produces conflicts that are an artefact of
   the mistake, and they look exactly like a stale patch.
 - **Where you are is where you will be able to get back to.** Write down the
-  commit the checkout is on before anything moves it.
+  commit the checkout is on before anything moves it. A worktree moves nothing,
+  so what is written down there is where the worktree is: removing it is the
+  whole of the undo.
 
 ## Fetch and apply
 
 Fetch the patch set the server says is current, and put the checkout on it. It
 is somebody else's commit and belongs on no local branch of yours until you have
-decided to carry it on.
+decided to carry it on. The fetch is the same on both paths and only its
+destination differs: the checkout detached onto the commit, or a worktree
+created on it while the branch you were on stays where it is.
 
 Then establish what you are holding before judging anything about it: the
 checkout's commit is the change's current revision, or it is not, and only the
@@ -95,17 +117,20 @@ properly starts from.
 `typo3_test_run_guide` with the paths the change touches names the suites that
 can fail on it and their targeted invocations. Run them through the checkout's
 own runner: a suite run through an installed binary is a result nobody can
-reproduce, and a check that inspected no files is not a green.
+reproduce, and a check that inspected no files is not a green. The second is
+what a worktree does by default, and what has to be installed there before any
+suite runs at all is in the same answer.
 
-Say which branch and which patch set every result is about. A green reported
-without them is unattributable the moment a new patch set is pushed.
+Say which branch and which patch set every result is about, and which working
+copy it ran in where that was a worktree. A green reported without them is
+unattributable the moment a new patch set is pushed.
 
 ## Put the checkout back
 
 A checkout sitting on somebody's patch set is not a state to leave behind, and
 it is not a state to start the next piece of work from either. Restoring it is a
-step of its own, taken whether the patch applied or stopped, and it goes in this
-order because each part makes the next one possible.
+step of its own, taken whether the patch applied or stopped. On the branch path
+it is these five, in this order, because each part makes the next one possible.
 
 1. **End whatever is in progress first.** A rebase that is half applied, or one
    that stopped in a conflict, owns the working tree until it is aborted, and
@@ -130,17 +155,28 @@ order because each part makes the next one possible.
    reason that is not in the diff. This is the step that is skipped and then
    spends an hour being diagnosed as a test failure.
 
+The worktree path ends shorter, and the difference is not a shortcut. Nothing
+moved the branch, so steps 2, 4 and 5 have nothing to put back — they are about
+a checkout that went somewhere. What is left is ending whatever is in progress
+and then removing the worktree, which is refused while anything in it is
+modified or untracked: that refusal is step 3 arriving one layer out, and
+forcing past it throws away the only copy of whatever was resolved in there.
+
 Say the end state in the answer: which branch, which commit, and that the tree
-is clean. "Restored" without those three is the claim rather than the result.
+is clean; on the worktree path, that the worktree is gone, or where it still is
+and why keeping it was deliberate. "Restored" without those is the claim rather
+than the result.
 
 This skill owns getting a change under review into a checkout and back out of
-it: finding it, fetching the patch set, rebasing it where that is what the work
-needs, resolving what the change itself decides, stopping where it does not, and
-restoring the checkout to a clean branch that is current with its remote. It
+it: finding it, fetching the patch set, putting it on the branch it targets or
+into a worktree beside it, rebasing it where that is what the work needs,
+resolving what the change itself decides, stopping where it does not, and
+leaving behind either a clean branch current with its remote or no worktree. It
 owns the undo as much as the do, and the undo is what runs whichever way the
 rest went. It does not own judging the patch — where the request is to say what
 is wrong with it, `typo3-core-patch-review` owns that, and it starts from the
-checkout this leaves behind. It does not own changing the patch either: amending
-a change into a new patch set and pushing it belongs to
-`typo3-core-patch-development`, and carry over the change number, the patch set
-that was fetched and whether it needed a rebase to apply.
+working copy this leaves the patch in, worktree or checkout, before the undo
+runs. It does not own changing the patch either: amending a change into a new
+patch set and pushing it belongs to `typo3-core-patch-development`, and carry
+over the change number, the patch set that was fetched and whether it needed a
+rebase to apply.

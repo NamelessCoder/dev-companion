@@ -1,7 +1,8 @@
 ---
 date: 2026-08-08T22:44:13+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-08
 model: claude-opus-5[1m]
 tool: typo3-core-patch-checkout, typo3-core-patch-review
 directory: /home/benji/projects/typo3-cms

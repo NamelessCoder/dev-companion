@@ -94,7 +94,10 @@ verb after the fetch in this one moves the branch the session is standing on,
 and a worktree review is the opposite operation — so the description read as
 actively not its case, which is a stronger failure than being skimmed.
 
-The clause is still there. `a1b09af` cut it and `4b186b3`, the budget trim of
-the same day, wrote it back in exchange for the requests the description used to
-list. That trade is `D-SKL-026`'s third **Wrong if** rather than this entry's,
-and the repair is queued.
+`a1b09af` cut the clause and `4b186b3`, the budget trim of the same day, wrote
+it back in exchange for the requests the description used to list. That trade is
+`D-SKL-026`'s third **Wrong if** rather than this entry's, and it was undone on
+2026-08-09: the clause is out, the requests and the worktree are back, and the
+body now carries the worktree path the description promises.
+`SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout` holds both halves,
+so the next trim cannot make the same trade unseen.

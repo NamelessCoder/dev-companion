@@ -132,3 +132,10 @@ Nothing was said about which tags exist, deliberately. One call carrying any tag
 returns every tag that version and type carry, so the vocabulary is read off the
 first answer; the step says that instead of listing a vocabulary this repository
 would then have to keep in step with the core.
+
+The wording generalised no further than the step it was written in.
+`feedback/2026-08-08-224429`, a core patch review on 2026-08-08, names the
+query-omitted mode, places it in this step, and says it did not apply it to
+`type: important` because that is where it was taught. So the mode is stated
+once, as a property of the sweep, and a task needing a listing for something
+else reads it as somebody else's step — `D-SKL-029`.

@@ -115,6 +115,21 @@ is what a wrong one costs: a review prompt whose every criterion the conformance
 skill's body would have met did not activate it, and all thirty-five calls of
 that session went through Bash.
 
+What it does not carry is the **workflow the body owns**. A description that
+lists the steps is read where the body has not been loaded yet, and it is then
+the whole of what the session has: obra/superpowers measured a description
+saying "code review between tasks" producing one review where the skill's flow
+specified two. So the description names the task, the sides and where the skill
+stops, and every ordered step stays in the body — a sentence beginning "find the
+change, fetch the patch set, put it on the branch it targets" is the body's
+section headings in one line. Where such a clause carries a word a user would
+type, the word stays as a trigger rather than as a step. What names another
+skill stays whatever it looks like: a boundary is read before the choice and is
+the only thing that can send the task elsewhere.
+[`D-SKL-024`](../../decisions/task-skills/skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md)
+is the sweep that cut six of them, and nothing holds this either — which clause
+is a summary is a reading of the body, not a property of the file.
+
 It names **every side of the domain the skill owns**, and a skill that owns two
 sides of one thing says so in the opening line rather than in the ninth item of
 a list. A domain named by one of its halves — "frontend content elements" for a

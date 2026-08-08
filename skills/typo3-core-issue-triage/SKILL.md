@@ -1,6 +1,6 @@
 ---
 name: typo3-core-issue-triage
-description: Say what is still true about an open issue on forge.typo3.org — find the candidates in the backlog, read what the report actually claims, and establish against the core checkout you are standing in whether it still happens, was fixed in the meantime, or was never a defect. Use for going through old or untouched issues, for asking what is known about one area, for deciding whether a report is worth taking on, and for saying what a maintainer would need before it can move. Writing the patch that fixes it is a different workflow, and so is reviewing one somebody pushed.
+description: Say what is still true about an open issue on forge.typo3.org: whether it still happens against the core checkout you are standing in, was fixed in the meantime, or was never a defect. Use for going through old or untouched issues, for asking what is known about one area, for deciding whether a report is worth taking on, and for saying what a maintainer would need before it can move. Writing the patch that fixes it is a different workflow, and so is reviewing one somebody pushed.
 ---
 
 # TYPO3 Core Issue Triage

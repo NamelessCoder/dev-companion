@@ -1,6 +1,6 @@
 ---
 name: typo3-core-patch-development
-description: Write a TYPO3 core patch and carry it to review — assess the issue, reproduce it against the branch you are fixing, make the change, cover it, write the changelog entry it owes, run the project's checks, and push it to Gerrit. Use for fixing a core bug, implementing a core feature, deprecating or removing core API, taking a Forge issue on, amending a patch after review, and backporting a change to a release branch. Changing an extension, a sitepackage or a site project is a different workflow, and reviewing a patch without writing it belongs to the core patch review skill.
+description: Write a TYPO3 core patch and carry it to review, up to and including the push to Gerrit. Use for fixing a core bug, implementing a core feature, deprecating or removing core API, taking a Forge issue on, writing the changelog entry a core change owes, amending a patch after review, and backporting a change to a release branch. Changing an extension, a sitepackage or a site project is a different workflow, and reviewing a patch without writing it belongs to the core patch review skill.
 ---
 
 # TYPO3 Core Patch Development

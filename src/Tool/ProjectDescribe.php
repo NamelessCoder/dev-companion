@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tool;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Project;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\Unsupported;
@@ -94,8 +95,12 @@ final class ProjectDescribe extends ReadOnlyTool
                 'description' => Schema::string('What the patch is for, where composer.json says.'),
                 'file' => Schema::string('The patch file, relative to the project root.'),
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
+            'guides' => Schema::listOf(Schema::object([
+                'id' => Schema::string('What typo3_rule_lookup takes as documentId to return the whole document.'),
+                'title' => Schema::string(),
+            ], ['id', 'title']), 'The whole procedures this server carries, named here because this is the call every task starts with. They are also served as typo3://guides resources, and a client that lists no resources renders none of them — four sessions in one week finished without learning they exist. Each is one typo3_rule_lookup call by documentId, which needs no resource list; a search over sections answers a question and never hands one of these over whole.'),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-        ], ['root', 'environment', 'extensions', 'sites', 'commands', 'patches', 'answeredBy'], []);
+        ], ['root', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -181,7 +186,45 @@ final class ProjectDescribe extends ReadOnlyTool
             }
         }
 
-        return ToolResult::create(implode("\n", $lines), $project + ['answeredBy' => 'packages']);
+        $guides = self::guides();
+        foreach ($guides['lines'] as $line) {
+            $lines[] = $line;
+        }
+
+        return ToolResult::create(
+            implode("\n", $lines),
+            $project + ['guides' => $guides['records'], 'answeredBy' => 'packages'],
+        );
+    }
+
+    /**
+     * The whole procedures this server carries, named where every task starts.
+     *
+     * Four sessions in one week finished without learning they exist. They are
+     * served as `typo3://guides` resources and a client that lists no resources
+     * renders none of them; `typo3_server_scope` names them and is the call an
+     * agent skips precisely when the task looks legible without orientation.
+     * This tool is the one the instructions open every task with, so the
+     * inventory is here and the detail stays there (`D-ANS-061`,
+     * `feedback/2026-08-07-231203`).
+     *
+     * Last in the answer rather than first. What this tool is called for is the
+     * installation, and an inventory that pushes those facts down has traded one
+     * discovery problem for another.
+     *
+     * @return array{lines: array<int, string>, records: array<int, array{id: string, title: string}>}
+     */
+    private static function guides(): array
+    {
+        $records = [];
+        $lines = ['', 'Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no '
+            . 'resource list needed, and none of them is answered by a search over sections:'];
+        foreach (Documents::documents() as $document) {
+            $records[] = ['id' => $document['id'], 'title' => $document['title']];
+            $lines[] = sprintf('- %s — %s', $document['id'], $document['title']);
+        }
+
+        return ['lines' => $lines, 'records' => $records];
     }
 
     /**

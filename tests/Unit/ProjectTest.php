@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Project;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
@@ -74,6 +75,39 @@ final class ProjectTest extends TestCase
             ['composer t3g:cgl', 'composer t3g:phpstan'],
             array_column($project['commands'], 'command'),
         );
+    }
+
+    /**
+     * The one call every task opens with says which guides exist.
+     *
+     * Four sessions in one week finished without learning they do.
+     * `feedback/2026-08-07-231203` is the fourth: its client surfaced the
+     * resource tools as deferred and rendered no listing, and
+     * `typo3_server_scope` — which names them — was loaded and never called,
+     * because the task looked legible without orientation. So the session
+     * assembled a whole procedure by hand and says it will do it again next
+     * session.
+     *
+     * `D-ANS-061` decided the lever is the tool a session does call. This is
+     * that argument one step earlier: the instructions open every task with
+     * `typo3_project_describe`, and it was the one call this session made.
+     */
+    #[Test]
+    public function theCallEveryTaskOpensWithNamesTheGuidesThereAre(): void
+    {
+        Instance::discoverFrom($this->composerProject('vendor', '14.3.5'));
+
+        $answer = Registry::call('typo3_project_describe', [])->data;
+
+        self::assertSame(
+            array_column(Documents::documents(), 'id'),
+            array_column($answer['guides'] ?? [], 'id'),
+            'the inventory is not the documents there are',
+        );
+        // Last in the answer. What this tool is called for is the installation,
+        // and an inventory above those facts has traded one discovery problem
+        // for another.
+        self::assertSame('guides', array_key_last(array_diff_key($answer, ['answeredBy' => null])));
     }
 
     #[Test]

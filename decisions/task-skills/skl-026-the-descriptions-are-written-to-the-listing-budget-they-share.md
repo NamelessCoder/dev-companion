@@ -99,3 +99,19 @@ spends is taken off the skill that gets listed by its name alone.
 ## Covered by
 
 - `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
+
+## Since then
+
+The third **Wrong if** happened, on `typo3-core-patch-checkout`. It went into
+the trim listing the requests it carries — trying out somebody's patch, checking
+whether one still applies, getting a checkout back onto an up-to-date main — and
+came out carrying the step clause `D-SKL-024` had cut the same day in their
+place. A session asked to review change 95179 in a git worktree then read the
+result as a branch-switching workflow and never activated it
+(`feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md`).
+
+So the trade this entry says it did not make was made once: the sides survived
+the sweep and not the trim, and what went out was the half a user's words reach.
+Putting them back is affordable — the twelve cost 3491 characters of the 3600
+the ratchet allows, measured on 2026-08-09, and the clause going out again frees
+more than the trigger needs.

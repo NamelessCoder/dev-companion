@@ -1,7 +1,7 @@
 ---
 id: D-SKL-024
 date: 2026-08-08
-status: open
+status: confirmed
 ---
 
 # D-SKL-024 — A description names the task and leaves the steps to the body
@@ -76,3 +76,25 @@ workflow itself.
 - A task that names one of the cut steps stops matching its skill — "reproduce
   this core bug against main", "click through the installed site" — which would
   say the clause was carrying the activation rather than summarising the body.
+
+## Confirmed on 2026-08-09
+
+A session asked to review change 95179 in a git worktree read patch checkout's
+description, took it for a branch-switching workflow, and did the fetch and the
+worktree by hand — with the review skill's own routing line naming the checkout
+skill in front of it
+(`feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md`).
+That is the **Assumed** above, measured here for the first time: the steps were
+read as the workflow rather than as a route into it.
+
+What the sighting adds is the mechanism. A step clause does not only summarise
+the body, it **narrows what the description names**, because a list of steps
+describes one way of doing the job and reads as a refusal of every other. Every
+verb after the fetch in this one moves the branch the session is standing on,
+and a worktree review is the opposite operation — so the description read as
+actively not its case, which is a stronger failure than being skimmed.
+
+The clause is still there. `a1b09af` cut it and `4b186b3`, the budget trim of
+the same day, wrote it back in exchange for the requests the description used to
+list. That trade is `D-SKL-026`'s third **Wrong if** rather than this entry's,
+and the repair is queued.

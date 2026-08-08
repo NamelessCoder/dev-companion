@@ -1,7 +1,9 @@
-# the triage skill says how to list a backlog but not which row is cheap to settle
+# typo3-core-patch-checkout stayed shut on a request whose literal word was worktree, because its d...
 
-**Serves:** feedback/2026-08-08-224333-the-triage-skill-says-how-to-list-a-backlog-but.md
+**Serves:** feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md
 **Priority:** low
+**Branch:** todo/typo3-core-patch-checkout-stayed-shut-on-a
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

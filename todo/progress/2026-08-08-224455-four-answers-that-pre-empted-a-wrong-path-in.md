@@ -1,7 +1,9 @@
-# typo3-core-patch-checkout stayed shut on a request whose literal word was worktree, because its d...
+# four answers that pre-empted a wrong path in one review, recorded so they are not refactored away
 
-**Serves:** feedback/2026-08-08-224413-typo3-core-patch-checkout-stayed-shut-on-a.md
+**Serves:** feedback/2026-08-08-224455-four-answers-that-pre-empted-a-wrong-path-in.md
 **Priority:** low
+**Branch:** todo/four-answers-that-pre-empted-a-wrong-path-in
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

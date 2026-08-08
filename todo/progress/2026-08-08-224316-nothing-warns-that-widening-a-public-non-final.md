@@ -1,7 +1,9 @@
-# a gerrit change lookup by a number read out of the forge answer returns nothing new
+# nothing warns that widening a public non-final core method signature breaks subclasses
 
-**Serves:** feedback/2026-08-08-224352-a-gerrit-change-lookup-by-a-number-read-out-of.md
+**Serves:** feedback/2026-08-08-224316-nothing-warns-that-widening-a-public-non-final.md
 **Priority:** low
+**Branch:** todo/nothing-warns-that-widening-a-public-non-final
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

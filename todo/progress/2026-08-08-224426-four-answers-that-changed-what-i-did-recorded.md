@@ -1,7 +1,9 @@
-# the changelog precedent that decided the review was unreachable by words and came from ls in the ...
+# four answers that changed what I did, recorded so they are not refactored away
 
-**Serves:** feedback/2026-08-08-224429-the-changelog-precedent-that-decided-the-review.md
+**Serves:** feedback/2026-08-08-224426-four-answers-that-changed-what-i-did-recorded.md
 **Priority:** low
+**Branch:** todo/four-answers-that-changed-what-i-did-recorded
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

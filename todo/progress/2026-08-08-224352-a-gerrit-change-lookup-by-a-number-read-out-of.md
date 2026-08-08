@@ -1,7 +1,9 @@
-# typo3_gerrit_lookup returns the patch set but not the refspec to fetch it with
+# a gerrit change lookup by a number read out of the forge answer returns nothing new
 
-**Serves:** feedback/2026-08-08-224354-typo3-gerrit-lookup-returns-the-patch-set-but.md
+**Serves:** feedback/2026-08-08-224352-a-gerrit-change-lookup-by-a-number-read-out-of.md
 **Priority:** low
+**Branch:** todo/a-gerrit-change-lookup-by-a-number-read-out-of
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

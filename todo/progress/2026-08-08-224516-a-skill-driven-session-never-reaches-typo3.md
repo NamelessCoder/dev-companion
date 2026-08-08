@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224516-a-skill-driven-session-never-reaches-typo3.md
 **Priority:** low
+**Branch:** todo/a-skill-driven-session-never-reaches-typo3
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

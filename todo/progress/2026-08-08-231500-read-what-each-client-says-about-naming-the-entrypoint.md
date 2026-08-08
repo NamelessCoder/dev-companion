@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-184226-install-writes-a-machine-specific-absolute.md
 **Priority:** high
+**Branch:** todo/read-what-each-client-says-about-naming-the-entrypoint
+**Claimed:** 2026-08-08
 
 The defect stands: a project that has this server as a Composer dependency and
 no DDEV gets the absolute host path in its client entry, with

@@ -1,7 +1,9 @@
-# nothing warns that widening a public non-final core method signature breaks subclasses
+# the changelog precedent that decided the review was unreachable by words and came from ls in the ...
 
-**Serves:** feedback/2026-08-08-224316-nothing-warns-that-widening-a-public-non-final.md
+**Serves:** feedback/2026-08-08-224429-the-changelog-precedent-that-decided-the-review.md
 **Priority:** low
+**Branch:** todo/the-changelog-precedent-that-decided-the-review
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

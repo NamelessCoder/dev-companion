@@ -1,7 +1,9 @@
-# four answers that pre-empted a wrong path in one review, recorded so they are not refactored away
+# the triage skill says how to list a backlog but not which row is cheap to settle
 
-**Serves:** feedback/2026-08-08-224455-four-answers-that-pre-empted-a-wrong-path-in.md
+**Serves:** feedback/2026-08-08-224333-the-triage-skill-says-how-to-list-a-backlog-but.md
 **Priority:** low
+**Branch:** todo/the-triage-skill-says-how-to-list-a-backlog-but
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

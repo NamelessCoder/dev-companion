@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-08-224450-the-triage-handoff-fired-as-a-step-and-the.md
 **Priority:** low
+**Branch:** todo/the-triage-handoff-fired-as-a-step-and-the
+**Claimed:** 2026-08-08
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

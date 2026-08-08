@@ -955,13 +955,15 @@ final class KnowledgeTest extends TestCase
      * the directory. The note carries the symptom for that reason: a session
      * that recognises it from the error does not have to reach the diagnosis.
      *
-     * It sits with the invocation rather than in one suite entry, because it
-     * holds for every suite the script offers and is read before one is chosen.
+     * It sits under `preconditions` rather than in one suite entry, because it
+     * holds for every suite the script offers and is read before one is chosen
+     * — which is also where `typo3_test_run_guide` prints it, above the suites
+     * rather than below them (`D-AUD-009`).
      */
     #[Test]
     public function theInvocationNotesNameTheInstallAFreshCheckoutOwes(): void
     {
-        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+        $notes = implode("\n", TestSuiteHints::invocation()['preconditions']);
 
         self::assertStringContainsString('vendor/', $notes, 'the notes do not say what a suite runs against');
         self::assertStringContainsString('composerInstall', $notes, 'the notes name no command that puts one there');
@@ -970,6 +972,10 @@ final class KnowledgeTest extends TestCase
             $notes,
             'the notes carry the precondition without the symptom it is recognised by',
         );
+        // The other half of the precondition, and the one the session that
+        // reached for `command -v` was actually missing: the suite runs inside
+        // a container, so the shell's PHP is not the interpreter.
+        self::assertStringContainsString('container', $notes, 'the preconditions do not say what runs the suite');
 
         foreach (Versions::majors() as $major) {
             self::assertContains(

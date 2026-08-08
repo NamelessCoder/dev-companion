@@ -29,7 +29,7 @@ final class TestRunGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. Which suites the script offers changes between majors, so a suite that branch does not have is left out rather than handed over as a command. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.';
+        return 'Say what this core checkout needs before a test can run at all, and which Build/Scripts/runTests.sh commands to run once it can. Ask it before checking for vendor/bin/phpunit by hand: the suites run in containers, so the shell\'s PHP is not the interpreter they run under and a missing vendor directory means considerably less than it looks like. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. Which suites the script offers changes between majors, so a suite that branch does not have is left out rather than handed over as a command. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.';
     }
 
     public static function inputSchema(): array
@@ -53,6 +53,7 @@ final class TestRunGuide extends ReadOnlyTool
             'domains' => Schema::listOf(Schema::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
             'suites' => Schema::listOf(Schema::testSuiteRecord()),
             'invocation' => Schema::object([
+                'preconditions' => Schema::listOf(Schema::string(), 'What has to be true before any suite runs: the container the script starts, and the vendor/ and bin/ the checkout may not have. This is the question a caller holds at the moment it starts checking for vendor/bin/phpunit by hand, and the shell\'s PHP is not the interpreter the answer is about.'),
                 'notes' => Schema::listOf(Schema::string()),
                 'options' => Schema::listOf(Schema::object([
                     'option' => Schema::string(),
@@ -62,7 +63,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'purpose' => Schema::string(),
                     'command' => Schema::string(),
                 ], ['purpose', 'command'])),
-            ], ['notes', 'options', 'examples']),
+            ], ['preconditions', 'notes', 'options', 'examples']),
         ], ['scopes', 'suites', 'invocation']);
     }
 
@@ -105,7 +106,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'scopes' => $scopes,
                     'domains' => $domains,
                     'suites' => [],
-                    'invocation' => ['notes' => [], 'options' => [], 'examples' => []],
+                    'invocation' => ['preconditions' => [], 'notes' => [], 'options' => [], 'examples' => []],
                 ],
             );
         }
@@ -129,6 +130,10 @@ final class TestRunGuide extends ReadOnlyTool
         if (Scope::pathsOf($scopes, Scope::Uncertain) !== []) {
             $blocks[] = Scope::UNCERTAIN_NOTICE;
         }
+        // Before the suites rather than after them, because a caller reaching
+        // for `ls` and `command -v` has not got as far as choosing one
+        // (`D-AUD-009`).
+        $blocks[] = self::preconditionBlock();
         if ($domains !== []) {
             $blocks[] = sprintf(
                 'Narrowed to the %s domain(s) the given paths touch. Suites outside them cannot fail on this change; '
@@ -196,6 +201,25 @@ final class TestRunGuide extends ReadOnlyTool
      * without CI=true and the passthrough form, a suite command alone is rarely
      * what a patch actually needs.
      */
+    /**
+     * What has to be true before any of the suites below can run.
+     *
+     * A session establishing whether a bug reproduced reached for `ls` and
+     * `command -v`, found no `vendor/bin/phpunit`, and reported the functional
+     * suite as not executed — with this tool in its list and its schema never
+     * loaded. Both facts it needed were in this answer and both were below
+     * every suite block (`D-AUD-009`).
+     */
+    private static function preconditionBlock(): string
+    {
+        $lines = ['## Before a suite can run'];
+        foreach (TestSuiteHints::invocation()['preconditions'] as $note) {
+            $lines[] = '- ' . $note;
+        }
+
+        return implode("\n", $lines);
+    }
+
     private static function invocationBlock(): string
     {
         $invocation = TestSuiteHints::invocation();

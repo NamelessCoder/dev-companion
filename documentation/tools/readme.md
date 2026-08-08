@@ -43,8 +43,9 @@ a page here says what one tool is for, what goes in and what shape comes back.
   scripts and commands.
 - [`typo3_task_guide`](typo3_task_guide.md) — Build a task checklist enriched
   with matching hints and relevant core checks.
-- [`typo3_test_run_guide`](typo3_test_run_guide.md) — Recommend
-  Build/Scripts/runTests.sh commands by topic.
+- [`typo3_test_run_guide`](typo3_test_run_guide.md) — Say what this core
+  checkout needs before a test can run at all, and which
+  Build/Scripts/runTests.sh commands to run once it can.
 - [`typo3_hint_lookup`](typo3_hint_lookup.md) — Return hints for TYPO3 core
   paths or task topics, grouped by section.
 - [`typo3_documentation_lookup`](typo3_documentation_lookup.md) — Search or read

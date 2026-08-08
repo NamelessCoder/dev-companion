@@ -68,3 +68,30 @@ task ended one step before a patch.
 - Naming three more task shapes in the instructions is reported as making them
   longer without making them clearer, which `R-ANS-013` already holds a budget
   for.
+
+## Covered by
+
+- `ScopeTest::theEntryPointClaimsTheWorkThatEndsBeforeAPatch`
+- `KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`
+
+## Since then
+
+**2026-08-08.** The sentence is gone and what replaced it names the three: "Not
+every task ends in a patch: triaging the backlog, whether a report still
+reproduces, and what a fix would cost are answered here." It displaced rather
+than added, which `R-ANS-013` requires — the worst case measured 2004 of 2048
+characters before it and the replacement cost 34 of the 44 that were left.
+
+`typo3_test_run_guide` claims the earlier question in its first sentence, and
+the answer was reordered to match: what a checkout needs before any suite runs
+is `preconditions` in the corpus now and the block the answer opens with, where
+it was two of seven notes below every suite. Both facts the reporting session
+needed were already in that answer and both were at the bottom of it.
+
+`typo3_task_guide`'s description names the three change types that get a brief
+of their own, which is the second half of the same claim: `triage` did not exist
+when this entry was written and is `D-GUI-011`.
+
+`typo3_server_scope` is untouched. `D-ANS-061` decided the lever is the tool a
+session does call, and `todo/open/2026-08-08-090300` is where the inventory
+question stands.

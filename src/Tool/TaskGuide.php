@@ -218,7 +218,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", and bringing an installation up is "operations" — all three get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array

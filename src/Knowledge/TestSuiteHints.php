@@ -21,7 +21,7 @@ final class TestSuiteHints
 
     /**
      * @return array{
-     *     invocation: array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
+     *     invocation: array{preconditions: array<int, string>, notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
      *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}>
      * }
      */
@@ -36,6 +36,12 @@ final class TestSuiteHints
 
         return [
             'invocation' => [
+                // What has to be true before any suite runs, apart from what
+                // one of them takes: the container the script starts, and the
+                // `vendor/` the checkout may not have. A session poking at
+                // `runTests.sh` with `ls` and `command -v` was holding exactly
+                // these two questions (`D-AUD-009`).
+                'preconditions' => array_map('strval', $invocation['preconditions'] ?? []),
                 'notes' => array_map('strval', $invocation['notes'] ?? []),
                 'options' => array_map(static fn(array $o): array => [
                     'option' => (string) $o['option'],
@@ -147,7 +153,7 @@ final class TestSuiteHints
     /**
      * The invocation guidance that applies regardless of the chosen suite.
      *
-     * @return array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>}
+     * @return array{preconditions: array<int, string>, notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>}
      */
     public static function invocation(): array
     {

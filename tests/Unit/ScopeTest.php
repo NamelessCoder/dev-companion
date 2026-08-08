@@ -260,6 +260,30 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('Before adding or rewording a label', Coverage::instructions());
     }
 
+    /**
+     * The entry point claims the work that ends before a patch.
+     *
+     * It used to say "The coding agent writes the patch; this server supplies
+     * the task knowledge and workflows around it", immediately after the
+     * sentence routing a task to `typo3_task_guide`. A session asked whether a
+     * 2006 bug still reproduces read that as addressed to work it was
+     * deliberately not doing — the user's words were "before I touch it" — and
+     * skipped the guide, saying it would make the same call again from the same
+     * wording (`D-AUD-009`). Triage, reproduction and pricing a fix are three
+     * task shapes `scenarios/` holds cases for.
+     */
+    #[Test]
+    public function theEntryPointClaimsTheWorkThatEndsBeforeAPatch(): void
+    {
+        $instructions = Coverage::instructions();
+
+        self::assertStringContainsString('Not every task ends in a patch', $instructions);
+        self::assertStringNotContainsString('The coding agent writes the patch', $instructions);
+        // What it says instead of who writes the patch, in the place where it
+        // is about reading rather than about the subject.
+        self::assertStringContainsString('yours to read in the checkout', $instructions);
+    }
+
     #[Test]
     public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
     {

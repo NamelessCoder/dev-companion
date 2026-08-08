@@ -2,8 +2,6 @@
 
 **Serves:** R-DIS-013
 **Priority:** low
-**Branch:** todo/price-shipping-the-skills-as-an-optional-claude-code-plugin
-**Claimed:** 2026-08-08
 **Waiting on:** which of the three shapes below to build, or whether to build
     one at all. The blocker this card opened with is gone and all three work;
     what separates them is what this package is willing to own, and nothing here

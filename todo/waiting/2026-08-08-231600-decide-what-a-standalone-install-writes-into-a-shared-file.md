@@ -7,9 +7,9 @@
     touches outside the project directory, which is not a reading — it is a
     decision about the posture. Judged 2026-08-08 as `D-DIS-015`.
 
-Where the server is a dependency the entry is nameable relatively and that is a
-defect being fixed —
-`todo/open/2026-08-08-231500-name-the-installed-entrypoint-relatively-wherever-it-exists.md`.
+Where the server is a dependency the entry could name it without the host path,
+and what shape that takes is being read per client —
+`todo/open/2026-08-08-231500-read-what-each-client-says-about-naming-the-entrypoint.md`.
 This card is the rest: a checkout elsewhere, where the absolute host path is the
 only path that exists, written into a file the client documents as the shared,
 committed, team-level one. That is how this repository installs into `E-CORE`

@@ -1,7 +1,8 @@
 ---
 id: D-DIS-015
 date: 2026-08-08
-status: open
+status: revoked
+revokedBy: D-DIS-016
 ---
 
 # D-DIS-015 — The installed entrypoint is named relatively wherever it exists
@@ -72,3 +73,34 @@ document as shared and committed.
   — a project deliberately pointing at a checkout it is developing against. Then
   the entry needs a choice rather than a rule, which is the `--scope` argument
   the feedback proposes.
+
+## Revoked on 2026-08-08
+
+The second half of the first **Wrong if** fired before anything was built, out
+of the clients' own documentation rather than out of a session. A relative
+`args` entry resolves against the working directory the client spawns the
+process in, and that is not a property this decision may assume: the MCP
+specification defines the stdio transport as "the client launches the MCP server
+as a subprocess" and says nothing whatever about a working directory.
+
+Four of the eleven targets were read on 2026-08-08 and they give three different
+answers. VS Code documents a `cwd` field that "defaults to the workspace folder
+when run in a workspace", so a relative path is safe there and stated. opencode
+has a `cwd` option whose relative paths "resolve from the workspace". Cursor
+does not document the working directory at all but resolves `${workspaceFolder}`
+in `command` and `args`. **Claude Code documents no working directory and warns
+against the assumption outright** — it sets `CLAUDE_PROJECT_DIR` in the spawned
+server's environment "so your server can resolve project-relative paths without
+depending on the working directory", and `${CLAUDE_PROJECT_DIR}` in a
+project-scoped `.mcp.json` needs a `:-.` default, which is the working directory
+again.
+
+That also explains why the DDEV branch this decision wanted to generalise is
+correct: `ddev exec` runs in the container's project root, so DDEV supplies the
+working directory the client does not. Taking the relative path out of that
+branch removes the very thing that made it right.
+
+What replaces this is `D-DIS-016`, which states the question as the per-client
+one it is. What does not change is the finding underneath: a project that has
+this server as a dependency and no DDEV gets a host path with `vendor/bin`
+sitting there, and that is still wrong.

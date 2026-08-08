@@ -8,7 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
-- [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08
+- [`D-DIS-016`][D-DIS-016] — How an entrypoint may be named is a per-client question · 2026-08-08
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
@@ -21,7 +21,7 @@ one is added.
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
 [D-DIS-014]: dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md
-[D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
+[D-DIS-016]: dis-016-how-an-entrypoint-may-be-named-is-a-per-client-question.md
 [D-DIS-013]: dis-013-the-record-holds-a-digest-of-what-was-published.md
 [D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-012]: dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md
@@ -35,10 +35,12 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 → D-DIS-012
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
 - [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
 
+[D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
 [D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
 [D-DIS-002]: dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
 [D-DIS-003]: dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md

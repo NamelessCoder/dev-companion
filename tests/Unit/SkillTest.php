@@ -1173,6 +1173,15 @@ final class SkillTest extends TestCase
         // And the boundary, because the step sits directly above the handoff
         // and a skill that starts designing here has taken the next one's work.
         self::assertStringContainsString('It is not a design and not a patch', $skill);
+        // What the attempt is reached by. A second lookup of a change the issue
+        // answer already carried returns its state a second time and never the
+        // diff the step says it is after, so the step routes to the page the
+        // fetch is on instead (`D-SKL-028`).
+        self::assertGreaterThan(
+            strpos($skill, 'What a previous attempt cost'),
+            strpos($skill, 'typo3://guides/core/contribution/gerrit-workflow'),
+            'the step does not route to the page the fetch is on',
+        );
         self::assertLessThan(
             strpos($skill, 'Where the triage ends and the patch begins'),
             strpos($skill, 'What a previous attempt cost'),

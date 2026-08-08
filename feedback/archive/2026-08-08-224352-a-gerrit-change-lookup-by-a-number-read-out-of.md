@@ -1,7 +1,8 @@
 ---
 date: 2026-08-08T22:43:52+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-08
 model: claude-opus-5[1m]
 tool: typo3_gerrit_lookup, typo3_forge_lookup
 directory: /home/benji/projects/typo3-cms

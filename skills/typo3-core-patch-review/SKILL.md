@@ -92,6 +92,18 @@ Ask the owner of each obligation rather than recalling it:
   change is the strongest argument a review can make, and it is also the one
   that settles disagreement without an appeal to taste.
 
+  **List the kind before you search for words: `type` and `version`, and no
+  query at all.** What makes an earlier change a precedent is its shape, and a
+  shape has no vocabulary — the entry that settles a finding regularly shares no
+  noun with the diff, and two reviews have lost theirs to a query and found it
+  by hand afterwards. `type` is the obligation the finding is about; `version`
+  is the line the precedent would sit on, which is a released one the change is
+  backported to or a major before that. A released line publishes few entries
+  per type, so the listing is the whole of what the core did of that kind and
+  its titles are what a precedent is picked out of. A major still collecting
+  entries holds more of a type than one answer carries, so bound that one by
+  `tag` as well.
+
   **Ask it in the words the entry is titled in, not in the identifier the diff
   removes.** What the enumeration above leaves you holding is a class and a
   method name, while a removal is titled after what was removed *about* — the
@@ -99,9 +111,18 @@ Ask the owner of each obligation rather than recalling it:
   file. So a query naming one of them and coming back empty has established
   nothing, and neither has one narrowed to the branch this patch targets: a
   precedent is filed under the version it landed in, which is an earlier one by
-  definition. Where the subject words miss as well, the precedent is still there
-  and the checkout is what holds it — `Documentation/Changelog`, which this
-  server does not read and you do. Say which of the two answered.
+  definition. Where the listing and the words both miss, the precedent is still
+  there and the checkout is what holds it — `Documentation/Changelog`, which
+  this server does not read and you do. Say which of the two answered.
+
+  **What kind of change an entry came out of is two readings rather than one.**
+  `typo3_forge_lookup` with its issue number says what the issue was filed as,
+  and the argument a review makes is about the commit keyword instead — that an
+  earlier bugfix of this kind owed an entry. The two disagree in both
+  directions, so the keyword is read where it is written:
+  `git log --diff-filter=A` over the entry's own file names the commit that
+  added it. The issue behind a security entry is not public, and an unavailable
+  answer there is not an outage.
 - **Sweep the checkout for the call sites before proposing an alternative.** A
   recommendation to a core reviewer needs precedent rather than taste, and
   whether an idiom is established in the core is precedent this server does not

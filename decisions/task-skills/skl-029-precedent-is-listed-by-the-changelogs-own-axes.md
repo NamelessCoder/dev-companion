@@ -21,15 +21,17 @@ query at all.
   stdWrap's `override` apply the value `0`, and its question was whether such a
   change owes an Important entry on an LTS line.
   `typo3_changelog_lookup(query: "stdWrap override")` came back empty, and the
-  session settled it with `ls Documentation/Changelog/13.4.x/ | grep -i
-  important`, a read of the file, and `git log --all --grep 106401`.
+  session settled it with
+  `ls Documentation/Changelog/13.4.x/ | grep -i important`, a read of the file,
+  and `git log --all --grep 106401`.
 - Re-run on 2026-08-09 from `/home/benji/projects/typo3-cms` through
   `bin/typo3-dev-companion`. The query answers the same: no entry carries both
   words, "stdwrap" reaches 43 entries and "override" 22.
 - The same call with `type: important`, `version: 13.4` and no query returns 20
-  entries in one call, `13.4.x Important: Treat 0 as a defined value for
-  nullable datetime fields (#106401)` eighth among them. It carries the stated
-  title and the index tags, which the session's `ls` did not print.
+  entries in one call,
+  `13.4.x Important: Treat 0 as a defined value for nullable datetime fields (#106401)`
+  eighth among them. It carries the stated title and the index tags, which the
+  session's `ls` did not print.
 - The session names that call itself. It did not make it because the
   query-omitted mode is taught in `skills/base.md` step 5, which is the
   deprecation sweep, framed on `type: deprecation` throughout — and that step is
@@ -39,8 +41,8 @@ query at all.
   `feedback/2026-08-01-115112` reported the lookup missing the precedent of a
   public-method removal and the grep finding it. The bullet was written for that
   report on 2026-08-03 and is held by
-  `SkillTest::aPrecedentIsAskedForInTheWordsAnEntryIsTitledIn`; it names the
-  title-word query and the checkout, and no listing.
+  `SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords`; it
+  names the title-word query and the checkout, and no listing.
 - The commit keyword the feedback asks to index by is not in what the tool
   reads. `Changelog::directory()` reads the core package's own
   `Documentation/Changelog`, which ships no git history, and the entries above
@@ -48,8 +50,8 @@ query at all.
   commit at all.
 - The change kind is one existing call away per candidate.
   `typo3_forge_lookup("106401")` answers `Bug`, and the commit in
-  `/home/benji/projects/typo3-cms` is `[BUGFIX] Treat 0 as a defined value for
-  nullable datetime fields`.
+  `/home/benji/projects/typo3-cms` is
+  `[BUGFIX] Treat 0 as a defined value for nullable datetime fields`.
 - What a listing costs depends on the line. On 13.4 the four types hold 0
   breaking, 7 deprecations, 1 feature and 20 important entries; on 14 the same
   two types hold 36 and 99, against a `limit` that defaults to 20 and caps at
@@ -97,3 +99,37 @@ query at all.
 - The tracker turns out not to state what the commit keyword says. Then the
   change kind is a reading of the commit, the checkout is what holds it, and the
   step routes there for that half.
+
+## Since then
+
+The wording landed on 2026-08-09, in the precedent bullet of
+`skills/typo3-core-patch-review`, and the assertion that held the old one is
+`SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords`. The
+step now names three sources in order — the listing by `type` and `version`, the
+title words, the checkout — and says which line to list: a released one the
+change is backported to, or a major before that, which is the same sentence as
+the old bullet's refusal of a filter set to the branch under review. The `tag`
+is owed on a major still collecting entries; the counts were read again in
+`.checkouts/14.3` on the day, where 14.0 through 14.3.x hold 99 breaking and 34
+important entries against a `limit` that caps at 50.
+
+The assumption above does not hold, and the third **Wrong if** is what the step
+says instead. It was measured over 128 changelog entries of all four types,
+sampled from `13.4.x` and from 14.0 through 14.3, each read twice: the Forge
+tracker of its issue through `/issues.json`, and the keyword of the commit that
+added its file, from `git log --all --diff-filter=A` in the checkout the entry
+ships in. The two agree on 101 of the 128 — 20 of 26 important, 20 of 25
+breaking, 15 of 19 deprecation, 46 of 58 feature — and the disagreement runs in
+both directions. Issues #103140 and #105007 are filed as features and were added
+by `[BUGFIX]` commits, which is the shape of the review's own question, and the
+other way round is #105653, filed as a bug and added by a `[TASK]`. So the
+tracker answers what the issue was filed as, the commit answers what the change
+was, and a review arguing that an earlier bugfix of this kind owed an entry
+reads the second.
+
+The security entries are the case that has no tracker answer at all. #108604 and
+#109585 are important entries of security releases, and forge.typo3.org answers
+401 for both. `typo3_forge_lookup` reports that as `unavailable` with cause
+`source-not-answering`, which reads as an outage and is a permanent property of
+those issues, so a reviewer meeting it would either retry or drop the entry. The
+step says so in one sentence.

@@ -931,7 +931,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function aPrecedentIsAskedForInTheWordsAnEntryIsTitledIn(): void
+    public function aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords(): void
     {
         // `feedback/2026-08-01-115716` credits `typo3_changelog_lookup` with the
         // decisive finding of that review, and `feedback/2026-08-01-115112`,
@@ -949,6 +949,25 @@ final class SkillTest extends TestCase
             Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
         ));
 
+        // The words are the second step and not the first, because both reviews
+        // that followed this bullet lost the entry their finding turned on to
+        // them and found it by hand: `feedback/2026-08-08-224429` asked
+        // `stdWrap override` and settled the review with `ls` over
+        // `Documentation/Changelog/13.4.x`, where `type: important` and
+        // `version: 13.4` with no query at all returns the same 20 entries in
+        // one call, titles included (`D-SKL-029`).
+        self::assertStringContainsString(
+            '**List the kind before you search for words: `type` and `version`, and no query at all.**',
+            $skill,
+        );
+        // Which line to list, since a filter set to the branch under review is
+        // the one the paragraph below forbids.
+        self::assertStringContainsString('the line the precedent would sit on', $skill);
+        // And the second bound, without which a major still collecting entries
+        // answers with a page of its own cap. Read in `.checkouts/14.3` on
+        // 2026-08-09: 14.0 through 14.3.x hold 99 breaking and 34 important
+        // entries against a `limit` that caps at 50.
+        self::assertStringContainsString('holds more of a type than one answer carries', $skill);
         self::assertStringContainsString(
             '**Ask it in the words the entry is titled in, not in the identifier the diff removes.**',
             $skill,
@@ -967,6 +986,25 @@ final class SkillTest extends TestCase
         // cannot reach itself.
         self::assertStringContainsString('`Documentation/Changelog`, which this server does not read', $skill);
         self::assertStringContainsString('Say which of the two answered', $skill);
+        // What a listed entry was is the reading a precedent argument is made
+        // of, and the tracker does not answer it. Measured on 2026-08-09 over
+        // 128 entries of all four types from `13.4.x` and `14.0`–`14.3`: the
+        // Forge tracker and the keyword of the commit that added the entry
+        // agree on 101 of them, and on 20 of the 26 important ones. It misses in
+        // both directions — #103140 is filed as a Feature and was added by
+        // `[BUGFIX] Allow to configure RateLimiters in message consumer`,
+        // #105653 as a Bug and was added by a `[TASK]` — so `D-SKL-029`'s
+        // assumption does not hold and its third **Wrong if** is what the step
+        // now says.
+        self::assertStringContainsString(
+            '**What kind of change an entry came out of is two readings rather than one.**',
+            $skill,
+        );
+        self::assertStringContainsString('The two disagree in both directions', $skill);
+        self::assertStringContainsString('`git log --diff-filter=A` over the entry\'s own file', $skill);
+        // #108604 and #109585 are important entries of a security release, and
+        // the tracker answers 401 for both.
+        self::assertStringContainsString('The issue behind a security entry is not public', $skill);
     }
 
     #[Test]

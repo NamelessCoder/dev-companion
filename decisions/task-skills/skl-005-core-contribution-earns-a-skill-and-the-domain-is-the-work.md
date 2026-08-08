@@ -195,9 +195,9 @@ checkout's `Documentation/Changelog` where neither reaches it, with the review
 saying which of the two answered. Written so it stays right when the two cards
 serving `feedback/2026-08-01-115112` land: what it forbids is reading an empty
 answer as "no precedent exists", which is the mistake either way.
-`SkillTest::aPrecedentIsAskedForInTheWordsAnEntryIsTitledIn` holds it, and the
-three calls above were reproduced from `/home/benji/projects/typo3-cms` once
-more before the line was written.
+`SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords` holds
+it, and the three calls above were reproduced from
+`/home/benji/projects/typo3-cms` once more before the line was written.
 
 That closes the card this entry left for the review cluster, and
 `feedback/2026-08-01-115716` with it. Both skills are published; what is left of

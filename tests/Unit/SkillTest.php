@@ -931,6 +931,38 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A triage looks for the test the core already wrote and switched off.
+     *
+     * `D-KNW-064` priced the tool this could have been and did not build it: a
+     * core checkout carries nine such assertions, in four files of one
+     * subsystem, which is one grep rather than an index. What the skill owes
+     * instead is the step and the pattern — and the warning that
+     * `markTestSkipped` is mostly the machine, since fifty of those against two
+     * about a defect is a ratio that sends a session reading the wrong fifty.
+     */
+    #[Test]
+    public function aTriageLooksForTheAssertionTheSuiteAlreadyCarries(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            'look for the one the core already wrote and switched off',
+            $skill,
+        );
+        self::assertStringContainsString('grep -rn "@todo" <sysext>/Tests', $skill);
+        self::assertStringContainsString('`markTestSkipped` is a different thing', $skill);
+        // Before the test-writing it replaces, or it is advice arriving after
+        // the work it would have saved.
+        self::assertLessThan(
+            strpos($skill, 'That test is a throwaway until a patch adopts it'),
+            strpos($skill, 'look for the one the core already wrote'),
+            'the search stands after the test it exists to avoid',
+        );
+    }
+
+    /**
      * The triage skill's description promises "deciding whether a report is
      * worth taking on, and for saying what a maintainer would need before it
      * can move", and its body stopped at the verdict.

@@ -100,6 +100,21 @@ whether the behaviour it describes is still written there. That is what
 separates "still happens" from "cannot happen any more, the method is gone", and
 the second is a verdict that needs no reproduction at all.
 
+**Before writing a test, look for the one the core already wrote and switched
+off.** Where a defect was known and nobody fixed it, the suite regularly carries
+it as a commented-out data-provider row with the reason beside it, over a
+fixture that already models the constellation. `grep -rn "@todo" <sysext>/Tests`
+narrowed to the subsystem the report is about is the whole of the search, and
+the reason text is what says whether a hit is this report — "Fails, not expanded
+to sub-pages" is one, and "wrong assertion" is a note to whoever wrote the test.
+There are few of them and they are worth the one grep: removing a comment is a
+reproduction with no fixture to build and no harness to prove.
+
+`markTestSkipped` is a different thing and rarely this one. Most of them are
+about the machine — no APCu, no Redis, no ImageMagick, a case-sensitive
+filesystem — and a test skipped for the environment says nothing about the
+report.
+
 `typo3_test_run_guide` with the paths you have just read says which suites can
 fail on them, and whether the behaviour can be pinned by a test at all. Where it
 can, a failing test is the strongest thing a triage produces: it survives being

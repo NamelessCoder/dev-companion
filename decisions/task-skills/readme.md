@@ -12,7 +12,7 @@ one is added.
 - [`D-SKL-025`][D-SKL-025] — A routed tool is called and held to what the skill sends the session to read · 2026-08-08
 - [`D-SKL-026`][D-SKL-026] — The descriptions are written to the listing budget they share · 2026-08-08
 - [`D-SKL-027`][D-SKL-027] — A draft declares itself under this server's own metadata key · 2026-08-08
-- [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07
+- [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07 · confirmed
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
 - [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04

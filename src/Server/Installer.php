@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Server;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Paths;
 
@@ -15,6 +17,16 @@ final class Installer
     private const BASE = 'references/base.md';
     /** What a skill declares while it is not to be published. */
     private const DRAFT = 'draft';
+    /**
+     * Where it declares it. `metadata` is the one field the standard leaves to
+     * a client — "a map from string keys to string values" for "additional
+     * properties not defined by the Agent Skills spec" — and the six it does
+     * define are a closed set the reference validator refuses anything outside
+     * of. The key is this server's own name because that same paragraph asks
+     * for one unique enough not to collide, and a draft published under
+     * `--drafts` sits in a project where other tools write the same map.
+     */
+    private const DRAFT_KEY = self::SERVER . '-status';
     private const STATE_DIRECTORY = '.typo3-dev-companion';
     private const STATE = self::STATE_DIRECTORY . '/state.json';
     /**
@@ -179,11 +191,11 @@ final class Installer
      * It is the directory minus the drafts rather than a list beside it. A list
      * is a second place the same fact lives, and the two disagree in the
      * direction nobody notices: a draft that was reviewed and added here while
-     * its file still says `status: draft` is published and reads as unfinished,
+     * its file still declares itself one is published and reads as unfinished,
      * and one taken out of the list while its file says nothing reads as ready
-     * and is loadable by nobody. Now publishing is one edit — the line comes out
-     * of the front matter — and the file in somebody else's project is the same
-     * file that decided it would go there.
+     * and is loadable by nobody. Now publishing is one edit — the declaration
+     * comes out of the front matter — and the file in somebody else's project
+     * is the same file that decided it would go there.
      *
      * Sorted, because it is written into `.typo3-dev-companion/state.json` and
      * compared against what the last run left; a listing whose order moved
@@ -369,9 +381,14 @@ final class Installer
     }
 
     /**
-     * Whether a skill says it is not to be published, read out of the front
-     * matter block alone so that a line of the body opening with the same word
-     * is not the declaration.
+     * Whether a skill says it is not to be published.
+     *
+     * Read with a YAML parser rather than matched with a pattern, so that what
+     * this sees and what a client reading the same file sees are one reading. A
+     * pattern agrees with the parser on the line it was written for and parts
+     * from it on the rest of YAML: a quoted value, a mapping written inline, a
+     * key that repeats. Front matter no parser can read is not a declaration
+     * either, which is why that is false rather than an exception.
      */
     public static function draft(string $body): bool
     {
@@ -379,7 +396,15 @@ final class Installer
             return false;
         }
 
-        return preg_match('/^status:[ \t]*' . self::DRAFT . '[ \t]*$/m', $block[1]) === 1;
+        try {
+            $matter = Yaml::parse($block[1]);
+        } catch (ParseException) {
+            return false;
+        }
+
+        return is_array($matter)
+            && is_array($matter['metadata'] ?? null)
+            && ($matter['metadata'][self::DRAFT_KEY] ?? null) === self::DRAFT;
     }
 
     /**

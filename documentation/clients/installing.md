@@ -104,7 +104,7 @@ happens on every `composer update` rather than when somebody typed the command.
 ## Trying a draft where it is loaded
 
 Both commands take `--drafts`, which publishes the skills that still declare
-`status: draft` beside the ones this server publishes:
+themselves drafts beside the ones this server publishes:
 
 ```bash
 /absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install --agent=claude --drafts

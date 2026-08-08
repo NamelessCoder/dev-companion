@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -1607,8 +1608,54 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The front matter carries the standard's fields and nothing else.
+     *
+     * `ALLOWED_FIELDS` in the reference validator is exactly `name`,
+     * `description`, `license`, `compatibility`, `metadata` and
+     * `allowed-tools`, and a key outside them is an error rather than a
+     * warning: "Unexpected fields in frontmatter" — read on 2026-08-08. So a
+     * key invented here is not a field a client ignores, it is a file a client
+     * refuses, in somebody else's project where no release of this server
+     * corrects it.
+     *
+     * The set is closed rather than checked one field at a time because the
+     * failure is the key nobody thought about. `status` was the one that got
+     * in, and it got in beside a test that read one field out of the block and
+     * let every other one through.
+     */
+    #[Test]
+    public function everyFrontMatterFieldIsOneTheStandardDefines(): void
+    {
+        $defined = ['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools'];
+
+        foreach (self::skills() as $name => $skill) {
+            $matter = self::frontMatter($name, $skill);
+            self::assertSame(
+                [],
+                array_diff(array_keys($matter), $defined),
+                $name . ' carries a field the standard does not define',
+            );
+
+            // The one field the standard leaves open is a map of strings, so a
+            // client that reads it gets what this server wrote there.
+            $metadata = $matter['metadata'] ?? [];
+            self::assertIsArray($metadata, $name . ' has a metadata field that is not a mapping');
+            foreach ($metadata as $key => $value) {
+                self::assertIsString($key, $name . ' has a metadata key that is not a string');
+                self::assertIsString($value, $name . ' has a metadata value that is not a string');
+            }
+        }
+    }
+
+    /**
      * A draft is a skill nobody may load yet, and its own front matter is what
-     * says so: `status: draft`, above the name.
+     * says so: `metadata` carrying this server's status key at `draft`.
+     *
+     * It sits under `metadata` because the standard defines six fields and the
+     * reference validator refuses a frontmatter key outside them, so a top-level
+     * `status:` made the one file that must not be published the one file that
+     * does not validate. `metadata` is what the standard leaves to a client, and
+     * the key is namespaced because it asks for that.
      *
      * That line is the decider rather than a label beside one. `Installer` used
      * to carry a list of the published names, which is a second place one fact
@@ -1627,12 +1674,9 @@ final class SkillTest extends TestCase
         self::assertNotSame([], $published, 'nothing at all is published');
 
         foreach (self::skills() as $name => $skill) {
-            self::assertSame(
-                1,
-                preg_match('/\A---\R(.*?)\R---\R/s', $skill, $block),
-                $name . ' has no front matter',
-            );
-            $declared = preg_match('/^status:[ \t]*draft[ \t]*$/m', $block[1]) === 1;
+            $metadata = self::frontMatter($name, $skill)['metadata'] ?? [];
+            $declared = is_array($metadata)
+                && ($metadata['typo3-dev-companion-status'] ?? null) === 'draft';
             self::assertSame($declared, Installer::draft($skill), $name . ' is read as a draft two ways');
             self::assertSame(
                 !$declared,
@@ -1655,6 +1699,48 @@ final class SkillTest extends TestCase
         $both = [...$published, ...Installer::drafts()];
         sort($both);
         self::assertSame(array_keys(self::skills()), $both);
+    }
+
+    /**
+     * What the declaration is, on a body rather than on the directory.
+     *
+     * The test above holds the derivation and can only see the shapes the
+     * directory happens to contain, which today is no draft at all — so the
+     * reader itself is held here, on the shapes a file can take. Three of them
+     * are the parser's gain over the pattern this used to be: a quoted value
+     * and an inline mapping are the same declaration to every client and were
+     * not to a regex, and front matter no parser can read is not a declaration
+     * at all.
+     */
+    #[Test]
+    #[DataProvider('theShapesAFrontMatterCanTake')]
+    public function aDraftIsWhatDeclaresItselfOneUnderThisServersKey(bool $draft, string $body): void
+    {
+        self::assertSame($draft, Installer::draft($body));
+    }
+
+    /** @return array<string, array{0: bool, 1: string}> */
+    public static function theShapesAFrontMatterCanTake(): array
+    {
+        $matter = static fn(string $lines): string => "---\nname: x\ndescription: y\n" . $lines . "---\n\nThe body.\n";
+
+        return [
+            'the declaration' => [true, $matter("metadata:\n  typo3-dev-companion-status: draft\n")],
+            'its value quoted' => [true, $matter("metadata:\n  typo3-dev-companion-status: \"draft\"\n")],
+            'the mapping written inline' => [true, $matter("metadata: {typo3-dev-companion-status: draft}\n")],
+            'the key at another value' => [false, $matter("metadata:\n  typo3-dev-companion-status: published\n")],
+            // The two spellings that came before this one. Neither may hold a
+            // skill back now, because neither is a field a client reads.
+            'the top-level status this replaced' => [false, $matter("status: draft\n")],
+            'the generic key under metadata' => [false, $matter("metadata:\n  status: draft\n")],
+            'no metadata at all' => [false, $matter('')],
+            'the declaration in the body' => [
+                false,
+                "---\nname: x\n---\n\nmetadata:\n  typo3-dev-companion-status: draft\n",
+            ],
+            'front matter no parser reads' => [false, "---\nname: x\ndescription: a: b\n---\n\nThe body.\n"],
+            'no front matter' => [false, "# A skill\n\nThe body.\n"],
+        ];
     }
 
     /**

@@ -71,11 +71,24 @@ review. What comes back is worked in before the skill is published, because the
 copy in somebody else's project is not corrected by the next release of this
 server.
 
-Until then the draft says so in its own front matter: `status: draft`, above the
-name. That line is what holds it back rather than a label beside something else
+Until then the draft says so in its own front matter:
+
+```yaml
+metadata:
+  typo3-dev-companion-status: draft
+```
+
+That declaration is what holds it back rather than a label beside something else
 that does — `Installer::skills()` is the directory minus what declares it — so a
 session that opens the workflow can see that it is reading something nobody has
-reviewed, and publishing is the one edit that takes the line out.
+reviewed, and publishing is the one edit that takes it out.
+
+It sits under `metadata` because the standard defines six fields and nothing
+else, and the reference validator refuses a file over a key outside them. A
+top-level `status:` therefore made the one skill that must not be published the
+one skill that does not validate. `metadata` is what the standard leaves to a
+client, and the key carries this server's name because the same paragraph asks
+for one unique enough not to collide with another tool writing the same map.
 
 ## The rules, and what holds each one
 
@@ -83,6 +96,8 @@ reviewed, and publishing is the one edit that takes the line out.
   route on — `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself`
 - It says which server it needs, in the field the standard has for it —
   `SkillTest::everySkillSaysWhichServerItNeeds`
+- Its front matter carries the standard's fields and nothing else —
+  `SkillTest::everyFrontMatterFieldIsOneTheStandardDefines`
 - Every description is written to the budget all of them share —
   `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
 - A draft says so in its own front matter until it is published —
@@ -235,9 +250,10 @@ the sides a description names.
 
 ## Publishing it
 
-Publishing is deleting the `status: draft` line, and `Installer::skills()` is
-the directory minus what still carries it. There is no list to add the name to:
-one existed, and a list beside the file is a second place the same fact lives.
+Publishing is deleting the `metadata` declaration above, and
+`Installer::skills()` is the directory minus what still carries it. There is no
+list to add the name to: one existed, and a list beside the file is a second
+place the same fact lives.
 
 What that one edit turns on: the skill is copied into every client's own skills
 directory by `bin/typo3-dev-companion install`, it is served as a

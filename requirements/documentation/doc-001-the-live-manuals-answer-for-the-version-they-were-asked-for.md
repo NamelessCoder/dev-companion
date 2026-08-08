@@ -17,11 +17,11 @@ are the ones a question can be about, TCA among them, and the index is searched
 the way the rest of this server searches: a term is worth what it separates one
 page from the others, and a compound name is taken apart on both sides — a table
 of contents holds page titles, so `AssetCollector` and `FunctionalTestCase`
-appear in it nowhere and the pages that answer them are called "Assets" and
-"Functional tests". A canonical result URL can be passed back with the same
-target version to read the page as text with its headings and code examples; a
-caller need not reconstruct the API from installed sources after the right
-manual page was already found.
+appear in it nowhere and the pages that answer them are titled after their
+subject, which is assets and functional testing. A canonical result URL can be
+passed back with the same target version to read the page as text with its
+headings and code examples; a caller need not reconstruct the API from installed
+sources after the right manual page was already found.
 
 ## From
 

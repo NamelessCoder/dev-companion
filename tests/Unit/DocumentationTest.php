@@ -22,15 +22,14 @@ final class DocumentationTest extends TestCase
     public function itSearchesTheRequestedVersionAndKeepsProvenanceOnEveryResult(): void
     {
         $requested = [];
-        $documentation = new Documentation(static function (string $url) use (&$requested): string {
+        $index = $this->inventory([
+            'ApiOverview/Seo/PageTitleApi.html' => 'Page title API',
+            'ApiOverview/Events/Index.html' => 'Events and hooks',
+        ]);
+        $documentation = new Documentation(static function (string $url) use (&$requested, $index): string {
             $requested[] = $url;
-            if (str_ends_with($url, '/en-us/')) {
-                return <<<'HTML'
-                    <html><body>
-                    <a href="ApiOverview/Seo/PageTitleApi.html">Page title API</a>
-                    <a href="ApiOverview/Events/Index.html">Events and hooks</a>
-                    </body></html>
-                    HTML;
+            if (str_ends_with($url, 'objects.inv')) {
+                return $index;
             }
             if (str_ends_with($url, 'PageTitleApi.html')) {
                 return '<html><article role="main"><p>Page title providers implement the provider interface.</p></article></html>';
@@ -301,16 +300,16 @@ final class DocumentationTest extends TestCase
     public function anApiIdentifierReachesThePageThatIsNotNamedAfterIt(): void
     {
         // Nothing in a table of contents is called AssetCollector or
-        // FunctionalTestCase; the pages that answer them are called "Assets"
-        // and "Functional tests".
+        // FunctionalTestCase; the pages that answer them are titled after their
+        // subject, which is assets and functional testing.
         $documentation = new Documentation($this->manuals());
 
         self::assertContains(
-            'Assets',
+            'Assets (CSS, JavaScript, Media)',
             array_column($documentation->lookup(['Fluid AssetCollector css javascript ViewHelper'], '14.3', 3)['results'], 'title'),
         );
         self::assertContains(
-            'Functional tests',
+            'Functional testing with the TYPO3 testing framework',
             array_column($documentation->lookup(['FunctionalTestCase executeFrontendSubRequest CSV fixture TYPO3 14'], '14.3', 3)['results'], 'title'),
         );
     }
@@ -323,16 +322,17 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function aResultNamesTheWordsOfTheQueryItWasMatchedOn(): void
     {
-        $documentation = new Documentation(static function (string $url): ?string {
+        $index = $this->inventory([
+            'ExtensionArchitecture/HowTo/Localization/Fluid.html' => 'Multi-language Fluid templates',
+            'ApiOverview/Database/DatabaseRecords/RecordObjects.html' => 'Record objects',
+        ]);
+        $documentation = new Documentation(static function (string $url) use ($index): ?string {
             if (!str_contains($url, 'typo3/reference-coreapi')) {
                 return null;
             }
 
-            return str_ends_with($url, '/en-us/')
-                ? '<html><body>'
-                    . '<a href="ExtensionArchitecture/HowTo/Localization/Fluid.html">Multi-language Fluid templates</a>'
-                    . '<a href="ApiOverview/Database/DatabaseRecords/RecordObjects.html">Record objects</a>'
-                    . '</body></html>'
+            return str_ends_with($url, 'objects.inv')
+                ? $index
                 : '<html><article role="main"><p>What this page says.</p></article></html>';
         });
 
@@ -467,8 +467,9 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function anAnsweredIndexWithNoMatchIsNotAnUnavailableService(): void
     {
-        $documentation = new Documentation(static fn(string $url): ?string => str_ends_with($url, '/en-us/')
-            ? '<html><body><a href="Introduction.html">Introduction</a></body></html>'
+        $index = $this->inventory(['Introduction.html' => 'Introduction']);
+        $documentation = new Documentation(static fn(string $url): ?string => str_ends_with($url, 'objects.inv')
+            ? $index
             : null);
 
         $answer = $documentation->lookup(['quantum pineapple'], '13.4');
@@ -490,10 +491,10 @@ final class DocumentationTest extends TestCase
                 'ApiOverview/Events/Events/Backend/ModifyInlineElementControlsEvent.html' => 'ModifyInlineElementControlsEvent',
                 'ApiOverview/Events/Events/Backend/AfterPageColumnsSelectedForLocalizationEvent.html' => 'AfterPageColumnsSelectedForLocalizationEvent',
                 'ApiOverview/Events/Events/Frontend/AfterStdWrapFunctionsExecutedEvent.html' => 'AfterStdWrapFunctionsExecutedEvent',
-                'ApiOverview/Assets/Index.html' => 'Assets',
+                'ApiOverview/Assets/Index.html' => 'Assets (CSS, JavaScript, Media)',
                 'ApiOverview/Fluid/DevelopCustomViewhelper.html' => 'Developing a custom ViewHelper',
                 'ApiOverview/ContentElements/AddingYourOwnContentElements.html' => 'Create a custom content element type (CType)',
-                'Testing/FunctionalTesting/Index.html' => 'Functional tests',
+                'Testing/FunctionalTesting/Index.html' => 'Functional testing with the TYPO3 testing framework',
             ],
             'typo3/reference-typoscript' => [
                 'ContentObjects/Case/Index.html' => 'CASE',
@@ -508,35 +509,117 @@ final class DocumentationTest extends TestCase
                 'ColumnsConfig/Type/Inline/Index.html' => 'IRRE / inline',
                 'ColumnsConfig/CommonProperties/FieldInformation/TcaDescription.html' => 'tcaDescription',
             ],
-            // Titled as that book titles them: the tag name, lower case and
-            // bare, rather than the "… ViewHelper <f:…>" heading of the page.
             'typo3/view-helper-reference' => [
-                'Global/If.html' => 'if',
-                'Global/Then.html' => 'then',
-                'Global/Else.html' => 'else',
-                'Global/Translate.html' => 'translate',
+                'Global/If.html' => 'If ViewHelper <f:if>',
+                'Global/Then.html' => 'Then ViewHelper <f:then>',
+                'Global/Else.html' => 'Else ViewHelper <f:else>',
+                'Global/Translate.html' => 'Translate ViewHelper <f:translate>',
             ],
         ];
 
-        return static function (string $url) use ($manuals): ?string {
+        $inventory = $this->inventory(...);
+
+        return static function (string $url) use ($manuals, $inventory): ?string {
             foreach ($manuals as $manual => $pages) {
                 if (!str_contains($url, $manual)) {
                     continue;
                 }
-                if (!str_ends_with($url, '/en-us/')) {
-                    return '<html><article role="main"><p>What this page says.</p></article></html>';
-                }
 
-                $links = '';
-                foreach ($pages as $path => $title) {
-                    $links .= sprintf('<a href="%s">%s</a>', $path, $title);
-                }
-
-                return '<html><body>' . $links . '</body></html>';
+                return str_ends_with($url, 'objects.inv')
+                    ? $inventory($pages)
+                    : '<html><article role="main"><p>What this page says.</p></article></html>';
             }
 
             return null;
         };
+    }
+
+    /**
+     * A Sphinx inventory carrying those pages, in the form docs.typo3.org
+     * publishes one: four comment lines and the objects behind them, compressed
+     * with zlib.
+     *
+     * @param array<string, string> $pages the path of each page, and its title
+     */
+    private function inventory(array $pages): string
+    {
+        $objects = '';
+        foreach ($pages as $path => $title) {
+            $objects .= sprintf("%s std:doc -1 %s %s\n", substr($path, 0, -strlen('.html')), $path, $title);
+        }
+
+        return "# Sphinx inventory version 2\n"
+            . "# Project: TYPO3\n"
+            . "# Version: 14.3\n"
+            . "# The remainder of this file is compressed using zlib.\n"
+            . (string) zlib_encode($objects, ZLIB_ENCODING_DEFLATE);
+    }
+
+    /**
+     * The index is the inventory, and the title it carries is the one the
+     * manual states rather than the one its navigation abbreviated to. Read
+     * from the rendered root, this page was "Assets" and no question naming CSS
+     * or JavaScript reached it (`D-ANS-065`).
+     */
+    #[Test]
+    public function aPageIsIndexedUnderTheTitleTheInventoryStates(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['css javascript media'], '14.3', 1);
+
+        self::assertSame('Assets (CSS, JavaScript, Media)', $answer['results'][0]['title']);
+    }
+
+    /**
+     * What the inventory lists and the manual has no page for. Sphinx renders
+     * the "content was removed" template as a document of its own, so it is in
+     * every inventory and in no navigation tree, and its two words are ordinary
+     * enough to be searched for.
+     */
+    #[Test]
+    public function theNotFoundPageIsNotOneOfTheAnswers(): void
+    {
+        $documentation = new Documentation($this->inventoryOf([
+            'ApiOverview/Assets/Index.html' => 'Assets (CSS, JavaScript, Media)',
+            '404.html' => 'Content was removed',
+        ]));
+
+        $answer = $documentation->lookup(['removed content'], '14.3', 3);
+
+        self::assertSame([], array_filter(
+            $answer['results'],
+            static fn(array $result): bool => str_ends_with($result['url'], '404.html'),
+        ));
+    }
+
+    /**
+     * A page where the inventory was asked for is a host that did not answer,
+     * not an index. That is what bot protection and a captive portal put a 200
+     * in front of (`D-ANS-034`), and the whole corpus would otherwise be one
+     * unparsed body away from an empty search that reads like a real one.
+     */
+    #[Test]
+    public function aBodyThatIsNotAnInventoryIsNotAnIndex(): void
+    {
+        $documentation = new Documentation(static fn(string $url): string => '<html><body>Just a moment…</body></html>');
+
+        $answer = $documentation->lookup(['assets'], '14.3');
+
+        self::assertSame('unavailable', $answer['status']);
+        self::assertSame('source-not-answering', $answer['unavailable']['cause']);
+    }
+
+    /**
+     * A transport that answers every manual with those pages.
+     *
+     * @param array<string, string> $pages the path of each page, and its title
+     */
+    private function inventoryOf(array $pages): \Closure
+    {
+        $index = $this->inventory($pages);
+
+        return static fn(string $url): string => str_ends_with($url, 'objects.inv')
+            ? $index
+            : '<html><article role="main"><p>What this page says.</p></article></html>';
     }
 
     #[Test]
@@ -604,7 +687,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function aMissOnAnIdentifierNamesTheBareNamesInsideIt(): void
     {
-        Documentation::useReader(static fn(string $url): string => '<html><body></body></html>');
+        Documentation::useReader(fn(string $url): string => $this->inventory([]));
 
         $answer = Registry::call('typo3_documentation_lookup', [
             'queries' => ['stdWrap_override', 'ContentObjectRenderer::stdWrap_override', 'tt_content', 'getByTag()'],
@@ -630,7 +713,7 @@ final class DocumentationTest extends TestCase
     #[Test]
     public function aMissOnOrdinaryWordsOffersNothingInstead(): void
     {
-        Documentation::useReader(static fn(string $url): string => '<html><body></body></html>');
+        Documentation::useReader(fn(string $url): string => $this->inventory([]));
 
         $answer = Registry::call('typo3_documentation_lookup', [
             'queries' => ['backend layout'],

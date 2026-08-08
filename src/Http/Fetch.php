@@ -24,6 +24,12 @@ use TYPO3\DevCompanion\Server\Factory;
  * who is calling, which is what a host operator needs to see; and where bot
  * protection sits in front of one, it is the browser-shaped agents that get the
  * challenge page — a plain client agent is what gets through.
+ *
+ * Compression is asked for on every read. docs.typo3.org answers
+ * `Vary: Accept-Encoding` and `Content-Encoding: gzip` on everything tried, and
+ * the TYPO3 Explained root is 169 kB plain against 19.9 kB compressed — so the
+ * option that was missing cost this server 8.5 times the payload and the host
+ * 8.5 times the egress, on every manual lookup.
  */
 final class Fetch
 {
@@ -130,22 +136,28 @@ final class Fetch
      * untestable is the mapping of one status onto one answer, and the source
      * that does the mapping says so.
      *
+     * The entity tag comes back beside them, because it is the whole of what a
+     * caller needs to ask the same question again for nothing: docs.typo3.org
+     * serves every artefact under `Cache-Control: public, no-cache` with an
+     * `ETag`, and answers `If-None-Match` with a 304 and no body at all.
+     *
      * @param array<int, string> $headers extra request headers, in `Name: value` form
-     * @return array{status: int, body: ?string}
+     * @return array{status: int, body: ?string, etag: ?string}
      */
     public function read(string $url, array $headers = [], ?string $agent = null): array
     {
         if ($this->transport !== null) {
             $body = ($this->transport)($url);
 
-            return ['status' => $body === null ? 0 : 200, 'body' => $body];
+            return ['status' => $body === null ? 0 : 200, 'body' => $body, 'etag' => null];
         }
 
         $handle = curl_init($url);
         if ($handle === false) {
-            return ['status' => 0, 'body' => null];
+            return ['status' => 0, 'body' => null, 'etag' => null];
         }
 
+        $etag = null;
         curl_setopt_array($handle, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
@@ -154,6 +166,16 @@ final class Fetch
             CURLOPT_TIMEOUT => self::TIMEOUT,
             CURLOPT_USERAGENT => $agent ?? 'typo3-dev-companion/' . Factory::SERVER_VERSION,
             CURLOPT_HTTPHEADER => $headers,
+            // The empty string is every encoding this build of curl can undo,
+            // and curl undoes it before the body is returned.
+            CURLOPT_ENCODING => '',
+            CURLOPT_HEADERFUNCTION => static function ($handle, string $line) use (&$etag): int {
+                if (stripos($line, 'etag:') === 0) {
+                    $etag = trim(substr($line, strlen('etag:')));
+                }
+
+                return strlen($line);
+            },
         ]);
         $body = curl_exec($handle);
         $status = (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
@@ -161,6 +183,7 @@ final class Fetch
         return [
             'status' => $status,
             'body' => is_string($body) && $status >= 200 && $status < 300 ? $body : null,
+            'etag' => $etag,
         ];
     }
 }

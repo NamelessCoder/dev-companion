@@ -11,15 +11,36 @@ use TYPO3\DevCompanion\Search\Text;
 /**
  * Searches and reads the official, versioned TYPO3 manuals.
  *
- * docs.typo3.org publishes one complete table of contents at each manual root.
- * That is the public index used here; /search/ is deliberately not called
- * because robots.txt excludes it. The selected result pages are then read for a
- * short excerpt. A canonical result URL can then be handed back to read that
- * page as text, without re-deriving its API from an installed source tree.
+ * docs.typo3.org publishes the Sphinx inventory of every manual beside it. That
+ * is the public index used here; /search/ is deliberately not called because
+ * robots.txt excludes it, and there is no search index to read instead. The
+ * selected result pages are then read for a short excerpt. A canonical result
+ * URL can then be handed back to read that page as text, without re-deriving
+ * its API from an installed source tree.
  */
 final class Documentation
 {
     private const HOST = 'https://docs.typo3.org';
+
+    /**
+     * The table of contents of one manual, in the form its own builder writes.
+     *
+     * The rendered root was read for it until 2026-08-08, and what it gave was
+     * the link text of a navigation tree: the page the manual titles "Assets
+     * (CSS, JavaScript, Media)" was indexed as "Assets", and the ViewHelper
+     * reference indexed `Global/If.html` as "if" where the page is called "If
+     * ViewHelper <f:if>". Of the 1416 pages both index at 14.3, 505 carried a
+     * different title. The inventory carries the stated one, is a documented
+     * artefact rather than a theme's markup, and lists the pages the navigation
+     * omits — `D-ANS-065`.
+     */
+    private const INVENTORY = 'objects.inv';
+
+    /**
+     * The page of a manual that is not one, and the one page an inventory lists
+     * that a caller must never be sent to.
+     */
+    private const NOT_A_PAGE = '404.html';
 
     /**
      * The manuals searched, each with the collection it is published in.
@@ -60,18 +81,24 @@ final class Documentation
 
     /**
      * The ordinary field of this corpus, which is what a longer one is measured
-     * against. Over the 1419 pages the four manuals index at 14.3 a title is
-     * 2.66 words on the mean and 2 on the median, and a manual is 2 or 3; a
-     * path is 7.16, so a path is diluted against a title by design.
+     * against. Over the 1431 pages the four manuals index at 14.3 a title is
+     * 4.02 words on the mean and 4 on the median, and a manual is 2 or 3; a
+     * path is 7.12, so a path is diluted against a title by design.
      *
-     * It was 12, which is the longest title in the whole corpus — so no title
-     * was ever diluted and the field length did nothing. A page titled after
-     * its subject and a page whose title is a long event class name were worth
-     * the same for the one word they share, and the class name wins every tie
-     * it is in because it carries more words to be found by. Not below 3
+     * It was 12, longer than any title the rendered navigation carried — so no
+     * title was ever diluted and the field length did nothing. A page titled
+     * after its subject and a page whose title is a long event class name were
+     * worth the same for the one word they share, and the class name wins every
+     * tie it is in because it carries more words to be found by. Not below 3
      * either: `Fluid ViewHelper Reference` is three words and the other three
      * books are two, so a smaller reference weighs the books by the length of
      * their names.
+     *
+     * It is the same 3 against the stated titles, which are longer, and that is
+     * what settles the tie the link text left open: `f:if` reached
+     * `Global/If.html` and `Global/Security/IfAuthenticated.html` at the same
+     * score while both were titled in two words, and the stated titles separate
+     * them by their length — `D-ANS-065`.
      */
     private const UNDILUTED_WORDS = 3;
 
@@ -89,6 +116,13 @@ final class Documentation
      */
     private static ?\Closure $transport = null;
 
+    /**
+     * The index of each manual as it was last read, under the URL it came from.
+     *
+     * @var array<string, array{etag: string, pages: list<array{title: string, path: string, url: string}>}>
+     */
+    private static array $index = [];
+
     /** @param (\Closure(string): ?string)|null $fetch */
     public function __construct(?\Closure $fetch = null)
     {
@@ -99,11 +133,15 @@ final class Documentation
      * What a test hands in, so nothing it drives reaches docs.typo3.org. Null
      * puts the host back.
      *
+     * What is held goes with it: another reader is another host, and an index
+     * kept across the two would answer for a manual that was never read.
+     *
      * @param (\Closure(string): ?string)|null $reader
      */
     public static function useReader(?\Closure $reader): void
     {
         self::$transport = $reader;
+        self::$index = [];
     }
 
     /**
@@ -137,24 +175,24 @@ final class Documentation
 
         foreach (self::DOCUMENTS as $document => $manual) {
             $base = self::base($document, $targetVersion);
-            $html = $this->get($base);
-            if ($html === null) {
+            $index = $this->index($base);
+            if ($index === null) {
                 continue;
             }
             $indexed[$document] = true;
 
-            foreach ($this->links($html, $base) as $link) {
-                $pages[$document . '|' . $link['url']] = [
+            foreach ($index as $page) {
+                $pages[$document . '|' . $page['url']] = [
                     'score' => 0,
                     'coverage' => 0.0,
                     'matched' => [],
-                    'title' => $link['title'],
-                    'url' => $link['url'],
+                    'title' => $page['title'],
+                    'url' => $page['url'],
                     'document' => $document,
                     'documentTitle' => $manual['title'],
                     'searchable' => [
-                        'title' => self::split($link['title']),
-                        'path' => self::split($link['path']),
+                        'title' => self::split($page['title']),
+                        'path' => self::split($page['path']),
                         'manual' => $manual['title'],
                     ],
                 ];
@@ -322,47 +360,98 @@ final class Documentation
     }
 
     /**
-     * @return list<array{title: string, path: string, url: string}>
+     * The pages of one manual, held until the host says they changed.
+     *
+     * Every artefact on this host carries an `ETag` and answers `If-None-Match`
+     * with a 304 and a zero-byte body, so the second lookup of a session pays
+     * one round trip and no payload for an index that is still current. That is
+     * what makes the inventory affordable at all: it is 308 kB for TYPO3
+     * Explained against 19.9 kB for the compressed root, so a session that
+     * fetched it again every time would cost the host more than the navigation
+     * tree it replaced.
+     *
+     * It is not held in `Http\Recent`, which holds an answer for a chosen while
+     * because its source cannot say whether it is still current. This one can,
+     * so there is no while to choose: a 304 is the host saying that what is held
+     * is still its answer.
+     *
+     * A read that failed answers the same way a 304 does, with what is held. The
+     * pages are what this host published; a caller reaching one of them while
+     * the host is down gets an empty excerpt, which is a better answer than the
+     * book disappearing from the search.
+     *
+     * @return list<array{title: string, path: string, url: string}>|null
      */
-    private function links(string $html, string $base): array
+    private function index(string $base): ?array
     {
-        $document = new \DOMDocument();
-        if (!@$document->loadHTML($html, LIBXML_NONET | LIBXML_NOWARNING | LIBXML_NOERROR)) {
-            return [];
+        $url = $base . self::INVENTORY;
+        $held = self::$index[$url] ?? null;
+        $response = $this->reader->read($url, $held === null ? [] : ['If-None-Match: ' . $held['etag']]);
+        if ($response['body'] === null) {
+            return $held['pages'] ?? null;
         }
 
-        $links = [];
-        $seen = [];
-        foreach ((new \DOMXPath($document))->query('//a[@href]') ?: [] as $anchor) {
-            if (!$anchor instanceof \DOMElement) {
-                continue;
-            }
-            $href = trim($anchor->getAttribute('href'));
-            $title = trim((string) preg_replace('/\s+/u', ' ', $anchor->textContent));
-            if ($title === '' || !$this->isDocumentPage($href)) {
-                continue;
-            }
+        $pages = self::pages($response['body'], $base);
+        if ($pages === null) {
+            return $held['pages'] ?? null;
+        }
+        if ($response['etag'] !== null) {
+            self::$index[$url] = ['etag' => $response['etag'], 'pages' => $pages];
+        }
 
-            $path = explode('#', $href, 2)[0];
-            $url = str_starts_with($path, 'https://') ? $path : $base . ltrim($path, '/');
-            if (isset($seen[$url])) {
+        return $pages;
+    }
+
+    /**
+     * The pages a Sphinx inventory lists, each with the title it was published
+     * under.
+     *
+     * The format is four comment lines and then everything else compressed with
+     * zlib, one object per line: the name, its `domain:role`, a priority, the
+     * URI it resolves to and the name it is displayed under. A `-` stands for a
+     * display name equal to the object's own, which is the one abbreviation the
+     * writer applies to a document — the `$` for a URI ending in its own name
+     * belongs to the anchored roles, and occurs on no `std:doc` line of the
+     * sixteen inventories the four manuals publish for the covered versions.
+     *
+     * Only `std:doc` is read. The other roles are the addressable objects inside
+     * the pages — 748 TCA properties at 14.3, and every label and section title
+     * — and what this searches is a table of contents (`R-DOC-001`).
+     *
+     * Null is a body that is not an inventory, which is what bot protection and
+     * a portal answer with a 200 in front of it (`D-ANS-034`). A manual with no
+     * pages in it is an empty list and a book that answered.
+     *
+     * @return list<array{title: string, path: string, url: string}>|null
+     */
+    private static function pages(string $inventory, string $base): ?array
+    {
+        $compressed = explode("\n", $inventory, 5)[4] ?? '';
+        $listing = @zlib_decode($compressed);
+        if (!is_string($listing)) {
+            return null;
+        }
+
+        $pages = [];
+        $seen = [];
+        foreach (explode("\n", $listing) as $line) {
+            if (preg_match('/^(.+?) +std:doc +-?\d+ +(\S+) +(.*)$/', $line, $object) !== 1) {
+                continue;
+            }
+            [, $name, $path, $title] = $object;
+            // `<Unknown>` is what the writer puts where a page has no title of
+            // its own — three pages of the ViewHelper reference at 14.3 — and
+            // the document name is what the navigation showed for them.
+            $title = $title === '-' || $title === '<Unknown>' ? $name : $title;
+            $url = $base . ltrim($path, '/');
+            if ($path === self::NOT_A_PAGE || $title === '' || isset($seen[$url])) {
                 continue;
             }
             $seen[$url] = true;
-            $links[] = ['title' => $title, 'path' => $path, 'url' => $url];
+            $pages[] = ['title' => $title, 'path' => $path, 'url' => $url];
         }
 
-        return $links;
-    }
-
-    private function isDocumentPage(string $href): bool
-    {
-        return $href !== ''
-            && !str_starts_with($href, '#')
-            && !str_starts_with($href, '../')
-            && !str_starts_with($href, '_')
-            && !str_starts_with($href, 'https://')
-            && str_ends_with(explode('#', $href, 2)[0], '.html');
+        return $pages;
     }
 
     /**

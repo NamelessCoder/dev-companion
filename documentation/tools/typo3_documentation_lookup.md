@@ -93,7 +93,7 @@ unavailable:
 
 ## Answered
 
-Recorded on 2026-08-04 by `bin/cli tools:record`. Answered against
+Recorded on 2026-08-08 by `bin/cli tools:record`. Answered against
 core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -127,15 +127,15 @@ typo3/reference-coreapi · 14.3 · https://docs.typo3.org/m/typo3/reference-core
 Matched on: page (title), title (title) — covers 86% of the query.
 In order to keep setting the page titles in control, you can use the page title API. The API uses page title providers to define the page title based on page record and the content on the page. Based on the priority of the providers, the \TYPO3\CMS\Core\PageTitle\PageTitleProviderManager will check the providers if a title is given by the provider. Besides the providers shipped by the Core, you can add own providers. An integrator can define the priority of the providers for his project. New in version 14.0
 
-## page.title
-typo3/view-helper-reference · 14.3 · https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/Page/Title.html
-Matched on: page (title), title (title) — covers 86% of the query.
-New in version 14.0 The ViewHelper allows setting the page title directly from Fluid templates. This is especially useful for Extbase plugins that need to set a page title in their detail views without having to implement their own custom page title provider. The ViewHelper can also be used with static content: Go to the source code of this ViewHelper: Page\TitleViewHelper.php (GitHub). The ViewHelper integrates seamlessly with TYPO3's existing page title provider system and respects the configured provider priorities.
-
 ## ModuleProvider
 typo3/reference-coreapi · 14.3 · https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Backend/BackendModules/ModuleProviderAPI.html
-Matched on: provid (title) — covers 37% of the query.
+Matched on: provid (title) — covers 36% of the query.
 The ModuleProvider API allows extension authors to work with the registered modules. This API is the central point to retrieve modules, since it automatically performs necessary access checks and prepares specific structures, for example for the use in menus. This is the central point to retrieve modules from the ModuleRegistry, while performing the necessary access checks, which ModuleRegistry does not deal with. Simple wrapper for the registry, which just checks if a module is registered. Does NOT perform any access checks.
+
+## Page.title ViewHelper <f:page.title>
+typo3/view-helper-reference · 14.3 · https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/Page/Title.html
+Matched on: page (title), title (title) — covers 47% of the query.
+New in version 14.0 The ViewHelper allows setting the page title directly from Fluid templates. This is especially useful for Extbase plugins that need to set a page title in their detail views without having to implement their own custom page title provider. The ViewHelper can also be used with static content: Go to the source code of this ViewHelper: Page\TitleViewHelper.php (GitHub). The ViewHelper integrates seamlessly with TYPO3's existing page title provider system and respects the configured provider priorities.
 ```
 
 Data:
@@ -173,27 +173,6 @@ Data:
             ]
         },
         {
-            "title": "page.title",
-            "url": "https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/Page/Title.html",
-            "document": "typo3/view-helper-reference",
-            "documentTitle": "Fluid ViewHelper Reference",
-            "documentVersion": "14.3",
-            "section": "page.title",
-            "excerpt": "New in version 14.0 The ViewHelper allows setting the page title directly from Fluid templates. This is especially useful for Extbase plugins that need to set a page title in their detail views without having to implement their own custom page title provider. The ViewHelper can also be used with static content: Go to the source code of this ViewHelper: Page\\TitleViewHelper.php (GitHub). The ViewHelper integrates seamlessly with TYPO3's existing page title provider system and respects the configured provider priorities.",
-            "content": "",
-            "coverage": 0.861,
-            "matched": [
-                {
-                    "term": "page",
-                    "field": "title"
-                },
-                {
-                    "term": "title",
-                    "field": "title"
-                }
-            ]
-        },
-        {
             "title": "ModuleProvider",
             "url": "https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Backend/BackendModules/ModuleProviderAPI.html",
             "document": "typo3/reference-coreapi",
@@ -202,10 +181,31 @@ Data:
             "section": "ModuleProvider",
             "excerpt": "The ModuleProvider API allows extension authors to work with the registered modules. This API is the central point to retrieve modules, since it automatically performs necessary access checks and prepares specific structures, for example for the use in menus. This is the central point to retrieve modules from the ModuleRegistry, while performing the necessary access checks, which ModuleRegistry does not deal with. Simple wrapper for the registry, which just checks if a module is registered. Does NOT perform any access checks.",
             "content": "",
-            "coverage": 0.367,
+            "coverage": 0.361,
             "matched": [
                 {
                     "term": "provid",
+                    "field": "title"
+                }
+            ]
+        },
+        {
+            "title": "Page.title ViewHelper <f:page.title>",
+            "url": "https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/Page/Title.html",
+            "document": "typo3/view-helper-reference",
+            "documentTitle": "Fluid ViewHelper Reference",
+            "documentVersion": "14.3",
+            "section": "Page.title ViewHelper <f:page.title>",
+            "excerpt": "New in version 14.0 The ViewHelper allows setting the page title directly from Fluid templates. This is especially useful for Extbase plugins that need to set a page title in their detail views without having to implement their own custom page title provider. The ViewHelper can also be used with static content: Go to the source code of this ViewHelper: Page\\TitleViewHelper.php (GitHub). The ViewHelper integrates seamlessly with TYPO3's existing page title provider system and respects the configured provider priorities.",
+            "content": "",
+            "coverage": 0.466,
+            "matched": [
+                {
+                    "term": "page",
+                    "field": "title"
+                },
+                {
+                    "term": "title",
                     "field": "title"
                 }
             ]

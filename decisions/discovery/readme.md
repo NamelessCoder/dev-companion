@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
+- [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
@@ -20,6 +21,7 @@ one is added.
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
 [D-DIS-014]: dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md
+[D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
 [D-DIS-013]: dis-013-the-record-holds-a-digest-of-what-was-published.md
 [D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-012]: dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md

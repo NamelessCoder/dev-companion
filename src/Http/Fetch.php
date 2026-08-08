@@ -30,6 +30,11 @@ use TYPO3\DevCompanion\Server\Factory;
  * the TYPO3 Explained root is 169 kB plain against 19.9 kB compressed — so the
  * option that was missing cost this server 8.5 times the payload and the host
  * 8.5 times the egress, on every manual lookup.
+ *
+ * One handle serves every read of one instance, so the connection under it is
+ * reused instead of being built again per read. A manual search makes ten reads
+ * of one host, and each one paid for a TCP connection and a TLS handshake:
+ * 90.9 ms against 27.6 ms per read, measured through this class — `D-ANS-066`.
  */
 final class Fetch
 {
@@ -54,6 +59,13 @@ final class Fetch
      * @var (\Closure(string): ?string)|null
      */
     private readonly ?\Closure $transport;
+
+    /**
+     * The handle every read of this instance goes through, once there has been
+     * one. It is what holds the connection open between them; a caller that
+     * wants a fresh connection takes a fresh `Fetch`.
+     */
+    private ?\CurlHandle $handle = null;
 
     /** @param (\Closure(string): ?string)|null $transport */
     public function __construct(?\Closure $transport = null)
@@ -152,13 +164,22 @@ final class Fetch
             return ['status' => $body === null ? 0 : 200, 'body' => $body, 'etag' => null];
         }
 
-        $handle = curl_init($url);
-        if ($handle === false) {
-            return ['status' => 0, 'body' => null, 'etag' => null];
+        if ($this->handle === null) {
+            $handle = curl_init();
+            if ($handle === false) {
+                return ['status' => 0, 'body' => null, 'etag' => null];
+            }
+            $this->handle = $handle;
         }
+        $handle = $this->handle;
 
         $etag = null;
+        // Every option a read varies is set on every read, so nothing a
+        // previous one asked for survives into the next. `If-None-Match` is
+        // the one that would be silent about it: left behind, it turns the
+        // next read of the same URL into a 304 with no body.
         curl_setopt_array($handle, [
+            CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => self::MAX_REDIRECTS,

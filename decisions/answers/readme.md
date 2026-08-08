@@ -9,6 +9,7 @@ one is added.
 
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs and does not make it legible · 2026-08-08
 - [`D-ANS-065`][D-ANS-065] — The manual index is the inventory each manual publishes · 2026-08-08
+- [`D-ANS-066`][D-ANS-066] — One handle serves every read of one Fetch · 2026-08-08
 - [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment and outranks the subsystem · 2026-08-07
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
@@ -71,6 +72,7 @@ one is added.
 
 [D-ANS-064]: ans-064-an-issue-answer-holds-what-a-triage-needs-and-does-not-make-it-legible.md
 [D-ANS-065]: ans-065-the-manual-index-is-the-inventory-each-manual-publishes.md
+[D-ANS-066]: ans-066-one-handle-serves-every-read-of-one-fetch.md
 [D-ANS-060]: ans-060-a-bare-word-in-appliesto-reaches-a-path-segment-and-outranks-the-subsystem.md
 [D-ANS-061]: ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md
 [D-ANS-062]: ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md

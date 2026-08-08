@@ -1986,6 +1986,33 @@ final class SkillTest extends TestCase
         }
     }
 
+    /**
+     * An address is delivery to a client that renders a resource list and to no
+     * other, so a step that tells a session to read a page whole hands it the
+     * call instead: `typo3_rule_lookup` with that `documentId`. `D-ANS-070` is
+     * the session this was read off — it held the guide ids, read the
+     * `documentId` parameter description, and searched anyway. The uri may
+     * stand beside the call, which is why this asserts the call is there rather
+     * than that the address is gone.
+     */
+    #[Test]
+    public function everyGuideASkillNamesIsHandedOverByTheCallThatReadsIt(): void
+    {
+        foreach (self::skills() as $name => $skill) {
+            foreach (self::published($name, $skill) as $file => $text) {
+                preg_match_all('#typo3://guides/([a-zA-Z0-9/_-]+)#', $text, $matches);
+                foreach (array_unique($matches[1]) as $id) {
+                    self::assertStringContainsString(
+                        'documentId="' . $id . '"',
+                        $text,
+                        $name . '/' . $file . ' names ' . $id . ' as an address a client that lists no '
+                        . 'resources cannot act on; name the call, typo3_rule_lookup with documentId="' . $id . '"',
+                    );
+                }
+            }
+        }
+    }
+
     #[Test]
     public function noSkillKeepsASecondCopyOfWhatAToolOwns(): void
     {

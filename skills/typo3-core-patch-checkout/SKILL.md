@@ -33,9 +33,10 @@ has an end, and reaching one is a result.
 3. `typo3_rule_lookup` for the Gerrit workflow. It carries the ref a patch set
    is fetched by, and the one thing about fetching a core change that is not
    guessable: which remote the ref is on, which is not the one the checkout
-   fetches from. Those are two sections of one page,
-   `typo3://guides/core/contribution/gerrit-workflow`, and a lookup returns the
-   one your words matched — read the page whole where the fetch is the task.
+   fetches from. Those are two sections of one page and a search returns the one
+   your words matched, so where the fetch is the task read it whole:
+   `typo3_rule_lookup` with `documentId="core/contribution/gerrit-workflow"`,
+   which also stands as `typo3://guides/core/contribution/gerrit-workflow`.
 
 ## Before the checkout is changed
 

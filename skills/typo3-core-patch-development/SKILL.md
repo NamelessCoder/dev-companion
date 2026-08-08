@@ -173,14 +173,16 @@ change type reports what is still wrong with it before the hook does. State the
 workflow: its default is a repository of your own, which demands neither the
 Forge issue nor the `Releases:` trailer a patch here owes. What the rules behind
 it say — the subject, the trailers, the release targets and the changelog entry
-the change type owes — is one page,
-`typo3://guides/core/contribution/commit-messages`, and reading it once here is
-cheaper than learning it from checks one call at a time. Then
-`typo3_rule_lookup` for the Gerrit workflow: what the push actually is, how a
-change is amended into a new patch set rather than a second commit, and what
-must not be edited between patch sets. That procedure exists whole as one page,
+the change type owes — is one page: `typo3_rule_lookup` with
+`documentId="core/contribution/commit-messages"`, which also stands as
+`typo3://guides/core/contribution/commit-messages`. Reading it once here is
+cheaper than learning it from checks one call at a time. Then the Gerrit
+workflow: what the push actually is, how a change is amended into a new patch
+set rather than a second commit, and what must not be edited between patch sets.
+That procedure exists whole as `typo3_rule_lookup` with
+`documentId="core/contribution/gerrit-workflow"`, which also stands as
 `typo3://guides/core/contribution/gerrit-workflow`. Read it before the first
-push rather than a section at a time: a lookup returns the part your words
+push rather than a section at a time: a search returns the part your words
 matched, and everything below here is a different part of the same page.
 
 Before pushing, establish where you are pushing to. A core checkout's remote is

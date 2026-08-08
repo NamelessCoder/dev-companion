@@ -115,15 +115,17 @@ for one unique enough not to collide with another tool writing the same map.
 - It says what it owns — `SkillTest::everySkillStatesWhatItOwns`
 - Every `typo3://` resource it names is one this server serves —
   `SkillTest::everyResourceASkillNamesIsOneTheServerServes`
+- Every guide it names is handed over by the call that reads it —
+  `SkillTest::everyGuideASkillNamesIsHandedOverByTheCallThatReadsIt`
 - What it sends the session to read out of an answer is a key that answer
   carries —
   `SkillTest::everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead`
 
-All of them but the last two run over the skills directory rather than over a
-list, so a skill added later is held to them without anybody registering it
-anywhere — which is the point, because the list is the thing a new skill is
-written without ever seeing. The routing rule reads its list from
-`ROUTING_SKILLS`, and the one under it makes the calls the base fixes.
+Most of them run over the skills directory rather than over a list, so a skill
+added later is held to them without anybody registering it anywhere — which is
+the point, because the list is the thing a new skill is written without ever
+seeing. Three do not: the routing rule and the checklist rule read their list
+from `ROUTING_SKILLS`, and the last one makes the calls the base fixes.
 `SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt` holds this
 table and that set to each other in both directions: a rule here with no test
 behind it, or a directory-wide assertion nobody wrote down, fails.
@@ -212,15 +214,19 @@ the order it needs them, recorded in the `ROUTING_SKILLS` map of `SkillTest`.
 The four calls the base already fixes are deliberately absent from that list.
 
 **The page a step expects read whole.** Where a step describes a whole procedure
-and routes to a search for it, name the `typo3://guides` resource the procedure
-exists whole as, at that step. A lookup answers the section the query matched,
-so a session that only searches reads a procedure in pieces without learning it
-is one — which is what a core session did with the Gerrit push page
+and routes to a search for it, name the call that reads the page at that step:
+`typo3_rule_lookup` with the `documentId` the procedure exists whole as. A
+search answers the section the query matched, so a session that only searches
+reads a procedure in pieces without learning it is one — which is what a core
+session did with the Gerrit push page
 ([`D-AUD-007`](../../decisions/audience/aud-007-the-prose-documents-are-named-where-a-session-already-looks.md)).
-Name it once, where it is needed, and not at every mention: a client may render
-no resource list, so the address in the skill is the only one the session gets.
-This is not a licence to restate the page — the uri is the routing, and what is
-behind it stays there.
+The `typo3://guides` address may stand beside the call and is not the handover:
+it is delivery to a client that renders a resource list, and the session this
+was last read off had none, held the ids anyway and searched
+([`D-ANS-070`](../../decisions/answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md)).
+Name it once, where it is needed, and not at every mention. This is not a
+licence to restate the page — the call is the routing, and what is behind it
+stays there.
 
 **References.** Anything a task reads once — a checklist, a rubric, one layer's
 implementation guide — is a file below `references/`, named in `SKILL.md`

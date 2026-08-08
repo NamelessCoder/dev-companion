@@ -49,6 +49,37 @@ answered a question it was never asked; where the request really was "just find
 me something", say which rows you would take and why, and let that be the
 choice.
 
+**Where you do pick, pick on where the symptom is visible and on how much the
+checkout already models it.** Age is not it, and neither is the subject matter.
+Read in this order and stop at the first that decides:
+
+- **What has already happened to it.** A change on the review server is the
+  cheapest description of what a fix looks like, and one that was abandoned is a
+  verdict somebody wrote down. A relation to an epic, or to a parent somebody
+  accepted, says the report is one strand of a larger piece whose decision is
+  not a session's to take.
+- **The category, against the branch you are standing on.** One naming a
+  subsystem the branch no longer ships settles the issue before the report is
+  read. The tracker keeps a category long after the code goes, and most of an
+  old backlog still names subsystems that are there.
+- **Where the symptom appears.** A rendered fragment, a stored row, a resolved
+  value — anything a process produces — is reachable in the layers that need
+  neither an installation nor a browser. One that appears only after an
+  interaction in the backend needs both standing up first, and that is most of
+  the session.
+- **How far the mechanism reaches.** A report naming one class and the behaviour
+  in it is the settleable shape. One naming several and the order between them
+  has already said it is an interaction, and a reporter who worked that out is
+  usually right.
+- **What the suite already models.** Look for a test over the class the report
+  is about, at the level the symptom appears at: a case added to a file that
+  exists is a reproduction with no fixture to build. The level is the whole of
+  it — a component tested on its own cannot see an order between components —
+  and the core models more constellations than a category suggests.
+
+Say which of those decided, and say of the rows you passed over that you passed
+over them. Skipping is not triaging, and the list is still what was asked for.
+
 ## Establish what the issue claims
 
 3. `typo3_forge_lookup` with the number, and read what comes back as a report

@@ -397,7 +397,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### task-skills
 
 - [`D-SKL-023`][D-SKL-023] — A published skill no intent names is one the brief cannot route to · 2026-08-08
-- [`D-SKL-024`][D-SKL-024] — A description names the task and leaves the steps to the body · 2026-08-08
+- [`D-SKL-024`][D-SKL-024] — A description names the task and leaves the steps to the body · 2026-08-08 · confirmed
 - [`D-SKL-025`][D-SKL-025] — A routed tool is called and held to what the skill sends the session to read · 2026-08-08
 - [`D-SKL-026`][D-SKL-026] — The descriptions are written to the listing budget they share · 2026-08-08
 - [`D-SKL-027`][D-SKL-027] — A draft declares itself under this server's own metadata key · 2026-08-08

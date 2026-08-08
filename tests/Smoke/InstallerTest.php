@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tests\Smoke;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
@@ -239,11 +240,11 @@ final class InstallerTest extends TestCase
 
     /**
      * The entry names this checkout, and every file it goes into is the one its
-     * client documents as shared and committed. A relative path is not
-     * available — the MCP specification defines no working directory for a
-     * stdio server and only one of the eleven clients documents the workspace
-     * as its default (`D-DIS-016`) — so the install says it instead, where the
-     * person who can act on it is looking.
+     * client documents as shared and committed. Nothing else can be written
+     * for this one: Claude Code names no way to reach the project root that
+     * does not end at the working directory the MCP specification leaves
+     * undefined (`D-DIS-016`). So the install says it instead, where the person
+     * who can act on it is looking.
      */
     #[Test]
     public function anEntryTrueOnThisMachineAloneSaysSo(): void
@@ -288,6 +289,163 @@ final class InstallerTest extends TestCase
             $said = (string) preg_replace('/\s+/', ' ', $stdout);
             self::assertStringNotContainsString('valid on this machine only', $said);
             self::assertStringContainsString('reset-project-choices', $said, 'the client half is unchanged');
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * The third shape `D-DIS-016` names: a client that resolves a variable to
+     * the project root gets an entry that is true in every checkout of it.
+     *
+     * Two of the eleven document one, and both spell it `${workspaceFolder}`.
+     * It is the variable rather than a plain relative path because the working
+     * directory a client spawns the server in is not something the MCP
+     * specification defines — which is what `D-DIS-015` was revoked over.
+     *
+     * @param string $key the object the client keeps its servers under
+     */
+    #[Test]
+    #[DataProvider('clientsThatResolveTheProjectRoot')]
+    public function aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout(
+        string $agent,
+        string $configuration,
+        string $key,
+    ): void {
+        $directory = $this->directory();
+        $this->installEntrypoint($directory, 'vendor/bin');
+
+        try {
+            $stderr = '';
+            $stdout = '';
+            self::assertSame(
+                0,
+                $this->execute($directory, ['install', '--agent=' . $agent], $stderr, $stdout),
+                $stderr,
+            );
+
+            $entry = json_decode(
+                (string) file_get_contents($directory . '/' . $configuration),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )[$key]['typo3-dev-companion'];
+            self::assertSame([
+                'type' => 'stdio',
+                'command' => 'php',
+                'args' => ['${workspaceFolder}/vendor/bin/typo3-dev-companion'],
+            ], $entry);
+            // Nothing is machine-specific about it, so the sentence about the
+            // project's .gitignore would be false here.
+            self::assertStringNotContainsString(
+                'valid on this machine only',
+                (string) preg_replace('/\s+/', ' ', $stdout),
+            );
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /** @return array<string, array{string, string, string}> */
+    public static function clientsThatResolveTheProjectRoot(): array
+    {
+        return [
+            'VS Code' => ['copilot', '.vscode/mcp.json', 'servers'],
+            'Cursor' => ['cursor', '.cursor/mcp.json', 'mcpServers'],
+        ];
+    }
+
+    /**
+     * The variable names a path inside the project, so it is written only where
+     * the project has one to name.
+     *
+     * A standalone checkout is the case the whole reading is about: the server
+     * runs from somewhere else, and `${workspaceFolder}/vendor/bin/…` there
+     * would be an entry that starts a server for nobody — worse than the host
+     * path, because it is wrong on the machine that wrote it too.
+     */
+    #[Test]
+    public function aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot(): void
+    {
+        $directory = $this->directory();
+
+        try {
+            $stderr = '';
+            $stdout = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=copilot'], $stderr, $stdout), $stderr);
+
+            $entry = json_decode(
+                (string) file_get_contents($directory . '/.vscode/mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['servers']['typo3-dev-companion'];
+            self::assertSame([Paths::root() . '/bin/typo3-dev-companion'], $entry['args']);
+            self::assertStringContainsString(
+                'valid on this machine only',
+                (string) preg_replace('/\s+/', ' ', $stdout),
+            );
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * DDEV comes before the variable, because it decides more than the path:
+     * the entry has to start the container's PHP, and that container sees the
+     * project directory rather than the host.
+     */
+    #[Test]
+    public function aDdevProjectStartsTheContainerPhpEvenWhereTheClientResolvesTheRoot(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.ddev'));
+        file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+        $this->installEntrypoint($directory, 'vendor/bin');
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=cursor'], $stderr), $stderr);
+
+            self::assertSame([
+                'type' => 'stdio',
+                'command' => 'ddev',
+                'args' => ['exec', 'php', 'vendor/bin/typo3-dev-companion'],
+            ], json_decode(
+                (string) file_get_contents($directory . '/.cursor/mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['mcpServers']['typo3-dev-companion']);
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * The defect the feedback reported, where it still stands: a client whose
+     * documentation names no way to reach the project root gets the host path
+     * even though `vendor/bin/typo3-dev-companion` is sitting there, and is
+     * told so.
+     */
+    #[Test]
+    public function aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing(): void
+    {
+        $directory = $this->directory();
+        $this->installEntrypoint($directory, 'vendor/bin');
+
+        try {
+            $stderr = '';
+            $stdout = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stderr, $stdout), $stderr);
+
+            $entry = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['mcpServers']['typo3-dev-companion'];
+            self::assertSame([Paths::root() . '/bin/typo3-dev-companion'], $entry['args']);
+            self::assertStringContainsString(
+                'valid on this machine only',
+                (string) preg_replace('/\s+/', ' ', $stdout),
+            );
         } finally {
             Directory::remove($directory);
         }

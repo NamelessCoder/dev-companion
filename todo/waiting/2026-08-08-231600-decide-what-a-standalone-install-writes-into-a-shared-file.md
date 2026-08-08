@@ -7,9 +7,11 @@
     touches outside the project directory, which is not a reading — it is a
     decision about the posture. Judged 2026-08-08 as `D-DIS-015`.
 
-Where the server is a dependency the entry could name it without the host path,
-and what shape that takes is being read per client —
-`todo/open/2026-08-08-231500-read-what-each-client-says-about-naming-the-entrypoint.md`.
+The other half is done. Where the server is a dependency of the project, the
+entry names a path inside it wherever a client documents one — `ddev exec`, or
+`${workspaceFolder}` for the two clients of eleven that resolve the project root
+— and `D-DIS-016` is the per-client reading behind it.
+
 This card is the rest: a checkout elsewhere, where the absolute host path is the
 only path that exists, written into a file the client documents as the shared,
 committed, team-level one. That is how this repository installs into `E-CORE`
@@ -17,11 +19,11 @@ and both `E-EXT` checkouts.
 
 The reporting session priced three answers, and they are not exclusive:
 
-1. **Say it.** A `REMAINING` line naming the file, that its command is valid on
-   this machine only, and that it is therefore a candidate for the project's
-   `.gitignore`. `REMAINING` is already where per-client "what is left" is said,
-   so this needs no new mechanism and moves no boundary. It is the floor: it is
-   right whatever else is decided.
+1. **Say it.** Done on 2026-08-09, for both halves at once: `install` says under
+   the entry that its command is valid on this machine only and that the file is
+   a candidate for the project's `.gitignore`, wherever the entry names this
+   checkout. It was the floor and it is in place, so what is still open below is
+   what to do beyond it.
 2. **Write it where the client keeps private per-project configuration.** Claude
    Code is the only one of the eleven that documents such a scope — local scope
    in `~/.claude.json` under the project path, what
@@ -39,7 +41,7 @@ from readings of 2026-08-08. What it did not establish, and nobody here can, is
 whether writing into a user's home directory is something this package is
 willing to do.
 
-Nothing is broken while this waits once the dependency case is fixed: what is
-left is the setup this repository uses for its own environments, where the entry
-is correct on the machine it was written on and the `.gitignore` block the
-install already writes covers the other artefacts.
+Nothing is broken while this waits, now that the dependency case is fixed: what
+is left is the setup this repository uses for its own environments, where the
+entry is correct on the machine it was written on, the install says so, and the
+`.gitignore` each directory this package writes carries covers the rest.

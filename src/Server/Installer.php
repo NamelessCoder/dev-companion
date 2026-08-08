@@ -58,7 +58,26 @@ final class Installer
         'skills' => '.agents/skills',
         'mcp' => ['format' => 'json', 'path' => '.mcp.json', 'key' => 'mcpServers'],
     ];
-    /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}> */
+    /**
+     * What a client resolves to the project root in `command` and `args`, where
+     * its own documentation says it resolves anything there at all.
+     *
+     * Two of the eleven do, and both spell it this way — `D-DIS-016`, with the
+     * table in `documentation/clients/installing.md`. It is the whole of what
+     * makes a shareable entry possible: a plain relative path would resolve
+     * against the working directory the client spawns the process in, which the
+     * MCP specification does not define and only one of the eleven documents.
+     * The variable is named instead of that directory being depended on, which
+     * is also the advice the client this server is used with most gives.
+     *
+     * `.mcp.json` carries no such value even though Claude Code expands one:
+     * `${CLAUDE_PROJECT_DIR}` is set in the spawned server's environment rather
+     * than in the client's own, so an entry referring to it needs a
+     * `${CLAUDE_PROJECT_DIR:-.}` default — and the default is the working
+     * directory again. The file is read by more than one client besides.
+     */
+    private const WORKSPACE = '${workspaceFolder}';
+    /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string, root?: string}}> */
     private const AGENTS = [
         'amp' => [
             'skills' => '.agents/skills',
@@ -70,7 +89,12 @@ final class Installer
         ],
         'cursor' => [
             'skills' => '.cursor/skills',
-            'mcp' => ['format' => 'json', 'path' => '.cursor/mcp.json', 'key' => 'mcpServers'],
+            'mcp' => [
+                'format' => 'json',
+                'path' => '.cursor/mcp.json',
+                'key' => 'mcpServers',
+                'root' => self::WORKSPACE,
+            ],
         ],
         'claude' => [
             'skills' => '.claude/skills',
@@ -82,7 +106,12 @@ final class Installer
         ],
         'copilot' => [
             'skills' => '.github/skills',
-            'mcp' => ['format' => 'json', 'path' => '.vscode/mcp.json', 'key' => 'servers'],
+            'mcp' => [
+                'format' => 'json',
+                'path' => '.vscode/mcp.json',
+                'key' => 'servers',
+                'root' => self::WORKSPACE,
+            ],
         ],
         'factory' => [
             'skills' => '.factory/skills',
@@ -539,14 +568,14 @@ final class Installer
      * What to write for a name the project recorded, which is a client's or the
      * one the generic setup goes by.
      *
-     * @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}
+     * @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string, root?: string}}
      */
     private static function definition(string $name): array
     {
         return $name === self::GENERIC ? self::GENERIC_DEFINITION : self::agent($name);
     }
 
-    /** @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}} */
+    /** @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string, root?: string}} */
     private static function agent(string $agent): array
     {
         if (!isset(self::AGENTS[$agent])) {
@@ -558,30 +587,31 @@ final class Installer
         return self::AGENTS[$agent];
     }
 
-    /** @param array{format: string, path: string, key: string, shape?: string} $mcp */
+    /** @param array{format: string, path: string, key: string, shape?: string, root?: string} $mcp */
     private function installAgentConfiguration(string $agent, array $mcp): string
     {
         $written = $mcp['format'] === 'toml'
             ? $this->installTomlConfiguration($mcp['path'], $mcp['key'])
-            : $this->installJsonConfiguration($mcp['path'], $mcp['key'], $mcp['shape'] ?? null, $agent);
+            : $this->installJsonConfiguration($agent, $mcp);
 
-        return $written . $this->remaining($agent);
+        return $written . $this->remaining($agent, $mcp['root'] ?? null);
     }
 
     /**
      * That the entry just written is true on this machine and nowhere else.
      *
      * Every file it goes into is documented by its own client as the shared,
-     * committed one, and the command in it is an absolute host path. Naming a
-     * path relative to the project instead is not available: the MCP
-     * specification defines no working directory for a stdio server, and of the
-     * eleven clients only one documents the workspace as its default —
-     * `D-DIS-016`, with the table in `documentation/clients/installing.md`.
+     * committed one, and the command in this entry is an absolute host path. So
+     * it is said rather than fixed, and said where the person who can act on it
+     * is looking.
      *
-     * So it is said rather than fixed, and said where the person who can act on
-     * it is looking. A DDEV project is the exception the sentence is withheld
-     * for: `ddev exec` supplies the working directory, so that entry names the
-     * path relative to the project root and shares as it stands.
+     * Two things spare a client the sentence, and both replace the host path
+     * with one the project can share: `ddev exec`, which runs in the container's
+     * project root, and a client that resolves `self::WORKSPACE`. Where neither
+     * is available nothing else can be written — a plain relative path resolves
+     * against the working directory the client spawns the process in, and the
+     * MCP specification defines none — so this is the answer rather than the
+     * fallback. `D-DIS-016` is the reading, per client.
      */
     private const HOST_SPECIFIC = 'The command in this entry is this checkout\'s absolute path, valid on '
         . 'this machine only, while the file it is in is the one that client documents as shared and '
@@ -597,9 +627,9 @@ final class Installer
      * session, and neither is changed by this command having found the entry
      * already correct.
      */
-    private function remaining(string $agent): string
+    private function remaining(string $agent, ?string $root): string
     {
-        $lines = array_filter([self::REMAINING[$agent] ?? '', $this->hostSpecific() ? self::HOST_SPECIFIC : '']);
+        $lines = array_filter([self::REMAINING[$agent] ?? '', $this->hostSpecific($root) ? self::HOST_SPECIFIC : '']);
 
         return implode('', array_map(
             static fn(string $line): string => "\n  " . wordwrap($line, 74, "\n  "),
@@ -607,18 +637,24 @@ final class Installer
         ));
     }
 
-    /** Whether the entry names this checkout rather than a path inside the project. */
-    private function hostSpecific(): bool
+    /**
+     * Whether the entry names this checkout rather than a path inside the
+     * project.
+     *
+     * Asked of what was written rather than of the conditions that decided it,
+     * so the sentence and the entry cannot come apart: a client that gains a
+     * shareable shape stops being told to ignore the file in the same edit.
+     */
+    private function hostSpecific(?string $root): bool
     {
-        return $this->installedEntrypoint() === null || !is_file($this->project . '/.ddev/config.yaml');
+        return $this->startedBy($root)['args'] === [$this->entrypoint];
     }
 
-    private function installJsonConfiguration(
-        string $relativePath,
-        string $key,
-        ?string $shape = null,
-        ?string $agent = null,
-    ): string {
+    /** @param array{format: string, path: string, key: string, shape?: string, root?: string} $mcp */
+    private function installJsonConfiguration(string $agent, array $mcp): string
+    {
+        $relativePath = $mcp['path'];
+        $key = $mcp['key'];
         $path = $this->project . '/' . $relativePath;
         $configuration = $agent === 'opencode' ? ['$schema' => 'https://opencode.ai/config.json'] : [];
         if (is_file($path)) {
@@ -648,7 +684,8 @@ final class Installer
                 $relativePath . ' already has a different typo3-dev-companion server; refusing to replace it',
             );
         }
-        $target[self::SERVER] = $this->jsonServer($shape) + $this->carriedOver($existing);
+        $target[self::SERVER] = $this->jsonServer($mcp['shape'] ?? null, $mcp['root'] ?? null)
+            + $this->carriedOver($existing);
 
         return $this->message($this->writeJson($path, $configuration), $path);
     }
@@ -723,20 +760,48 @@ final class Installer
      * @return array{type: string, command: string, args: list<string>}
      *     |array{type: string, enabled: bool, command: list<string>}
      */
-    private function jsonServer(?string $shape = null): array
+    private function jsonServer(?string $shape = null, ?string $root = null): array
     {
-        $command = 'php';
-        $args = [$this->entrypoint];
-        $installed = $this->installedEntrypoint();
-        if ($installed !== null && is_file($this->project . '/.ddev/config.yaml')) {
-            $command = 'ddev';
-            $args = ['exec', 'php', $installed];
-        }
+        ['command' => $command, 'args' => $args] = $this->startedBy($root);
         if ($shape === 'opencode') {
             return ['type' => 'local', 'enabled' => true, 'command' => [$command, ...$args]];
         }
 
         return ['type' => 'stdio', 'command' => $command, 'args' => $args];
+    }
+
+    /**
+     * What starts this server for one client, and the only place the path in an
+     * entry is decided.
+     *
+     * Three shapes, in the order they are available. A project that does not
+     * have this server as a dependency has none of the first two: no path
+     * inside it names a checkout somewhere else, so the host path is the only
+     * one that exists there.
+     *
+     * DDEV comes before the variable because it is not only a way of naming the
+     * path: the entry has to start the container's PHP, which sees the project
+     * directory rather than the host, and a `${...}` expanded to a host path
+     * would name a directory that container has never had.
+     *
+     * @param ?string $root what this client resolves to the project root, null
+     *     where its documentation says it resolves nothing there
+     * @return array{command: string, args: list<string>}
+     */
+    private function startedBy(?string $root): array
+    {
+        $installed = $this->installedEntrypoint();
+        if ($installed === null) {
+            return ['command' => 'php', 'args' => [$this->entrypoint]];
+        }
+        if (is_file($this->project . '/.ddev/config.yaml')) {
+            return ['command' => 'ddev', 'args' => ['exec', 'php', $installed]];
+        }
+        if ($root !== null) {
+            return ['command' => 'php', 'args' => [$root . '/' . $installed]];
+        }
+
+        return ['command' => 'php', 'args' => [$this->entrypoint]];
     }
 
     /**

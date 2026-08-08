@@ -1,7 +1,7 @@
 ---
 id: D-DIS-016
 date: 2026-08-08
-status: open
+status: confirmed
 ---
 
 # D-DIS-016 — How an entrypoint may be named is a per-client question
@@ -73,3 +73,40 @@ rule it proposed.
   read, and the split cost more than a single rule would have.
 - Naming the machine-specific path stays the answer everywhere, and the reading
   bought a sentence that `install` could have printed without it.
+
+## Covered by
+
+- `InstallerTest::aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout`
+- `InstallerTest::aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot`
+- `InstallerTest::aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing`
+
+## Confirmed on 2026-08-09
+
+The remaining seven were read and the split held. Amp, Junie, Codex, Droid,
+Kiro, Zed and Grok document no working directory for a stdio server, and none of
+them documents a variable that reaches the project root in `command` or `args` —
+Droid says outright that expansion "does not apply to `command`, `args`, or
+`url`". The eleven-client table is in
+[installing.md](../../documentation/clients/installing.md), and the seven added
+no shape the four had not already shown.
+
+So two of the three shapes are in use and the second **Wrong if** did not fire:
+a client that resolves the project root gets `${workspaceFolder}` before the
+entrypoint inside the project, and a DDEV project keeps `ddev exec`, which
+decides more than the path. That leaves two clients of the eleven, which is a
+narrow return for reading all of them and is still the return: without it the
+third **Wrong if** would have fired instead, and the reading would have bought
+nothing but a sentence.
+
+The plain relative path — the first of the three shapes, and the only one VS
+Code's documented default working directory would allow — is written for nobody.
+Naming the variable says the same thing without resting on where the client
+started the process, and one shape covering both clients is one branch rather
+than two.
+
+One assumption is added here rather than removed: that `${workspaceFolder}` is
+the directory `install` was run in. It is where the client puts the file — the
+entry lands in `.vscode/mcp.json` or `.cursor/mcp.json` at the project root — so
+the two agree in the ordinary case and part in a multi-root workspace, where
+neither client documents which folder the variable takes. This would show as an
+entry naming a `vendor/bin` that is one directory up or down from the real one.

@@ -235,7 +235,9 @@ it already covers `.github/skills` and `.claude/skills` per workspace.
 `github.copilot.chat.skillTool.enabled` is a different, experimental switch and
 not the one that makes them visible.
 
-That writes the same `.mcp.json` shape with an absolute path.
+Its MCP entry goes to `.vscode/mcp.json`, in one of the two shapes
+[the section below](#how-the-entry-names-this-server-per-client) sets out: VS
+Code is one of the two clients that resolve `${workspaceFolder}`.
 
 ### A written entry is not a registered server
 
@@ -329,12 +331,16 @@ finish. Where a session has the entry and still offers no `typo3_` tool,
 [checking that it came up](#checking-that-it-came-up) separates the two halves:
 a server that answers there is not the missing piece.
 
-### The entry names an absolute path, and why it cannot name a relative one
+### How the entry names this server, per client
 
-The command in every entry is this server's absolute path on the machine the
-install ran on. That is a value one machine is right about, written into files
-their own clients document as the shared, committed one — and the alternative is
-worse rather than better, which is what the reading below established.
+Three shapes, and which one a client gets is a property of that client. Where
+the project has this server as a Composer dependency, the entry names the path
+inside the project — through `ddev exec` where there is a DDEV configuration,
+and through `${workspaceFolder}` in VS Code and Cursor. Everywhere else it is
+this server's absolute path on the machine the install ran on, which is a value
+one machine is right about, written into a file its own client documents as the
+shared, committed one. There the install says so; the reading below is why there
+is nothing better to write.
 
 A relative path would have to resolve against the working directory the client
 launches the process in. The MCP specification does not define one: the stdio
@@ -364,12 +370,30 @@ resolve project-relative paths **without depending on the working directory**",
 and the same variable in a project-scoped `.mcp.json` "requires a default such
 as `${CLAUDE_PROJECT_DIR:-.}`" — which is the working directory again.
 
-So a relative entry would be wrong on the machine that wrote it for most of
-them, where an absolute one is at least right there. What the install does
-instead is say it, per client and at the terminal, beside the line reporting the
-entry — `D-DIS-016`. A DDEV project is the one case that already escapes this:
-`ddev exec` runs in the container's project root, so the entry names the path
-relative to it and shares cleanly.
+The variable is what the two who have one get, rather than the plain relative
+path VS Code's default working directory would also carry. It says the same
+thing without resting on where the process was started, which is the property
+the client this server is used with most asks for by name:
+
+```json
+{
+  "servers": {
+    "typo3-dev-companion": {
+      "type": "stdio",
+      "command": "php",
+      "args": ["${workspaceFolder}/vendor/bin/typo3-dev-companion"]
+    }
+  }
+}
+```
+
+For the other nine a relative entry would be wrong on the machine that wrote it
+too, where an absolute one is at least right there. So the install says it, per
+client and at the terminal, beside the line reporting the entry — `D-DIS-016`.
+
+None of this reaches a standalone checkout. `${workspaceFolder}` names a path
+inside the project, and a server running from somewhere else has none: there the
+absolute path is the only one that exists, whatever the client resolves.
 
 The sources are the same as the section above, plus
 [the MCP transports specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports),
@@ -403,7 +427,8 @@ the project's container PHP, at the `config.bin-dir` the project declares —
 
 Outside DDEV — and in a DDEV project that never required the package, where the
 container would not see the checkout the server runs from — the generated
-configuration uses the absolute entrypoint:
+configuration uses the absolute entrypoint, unless the client is one of the two
+that resolve `${workspaceFolder}`:
 
 ```json
 {

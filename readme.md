@@ -111,7 +111,9 @@ deployed or configured.
 The record also carries what was published and not only its names, so a server
 started in that project says before the first call where the skills down there
 are no longer the ones it publishes — on stderr for whoever can run `update`,
-and in one sentence of the instructions for the agent about to load one.
+and in one sentence of the instructions for the agent about to load one. A
+project can have Composer run that refresh after every `composer update`, in one
+line of its own `composer.json` that nothing here writes for it.
 
 `--drafts`, on either command, also publishes the task skills nobody has
 reviewed yet, so a draft can be tried where it is actually loaded rather than

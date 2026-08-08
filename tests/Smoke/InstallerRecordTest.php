@@ -121,6 +121,12 @@ final class InstallerRecordTest extends TestCase
         }
     }
 
+    /**
+     * Said, and not a failure: this is the command a project wires into
+     * Composer's `post-update-cmd`, where a non-zero exit fails the run, and
+     * the record ignores itself — so a colleague who never installed would have
+     * their `composer update` fail over a dev tool they do not use.
+     */
     #[Test]
     public function updateSaysSoWhereNothingIsInstalledAtAll(): void
     {
@@ -129,9 +135,9 @@ final class InstallerRecordTest extends TestCase
         try {
             $stdout = '';
             $stderr = '';
-            self::assertSame(1, $this->execute($directory, ['update'], $stdout, $stderr));
-            self::assertStringContainsString('nothing is installed here', $stderr);
-            self::assertStringContainsString('install --agent=', $stderr);
+            self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
+            self::assertStringContainsString('Nothing is installed here', $stdout);
+            self::assertStringContainsString('install --agent=', $stdout);
             self::assertFileDoesNotExist($directory . '/.typo3-dev-companion/state.json');
         } finally {
             Directory::remove($directory);

@@ -416,14 +416,20 @@ final class Installer
      * convenient reading and the wrong one: an unreviewed workflow that stays
      * in a project because somebody once tried it is exactly what publishing is
      * a deliberate edit to prevent.
+     *
+     * A project with nothing installed is told so and is not a failure. This is
+     * the command a project wires into Composer's `post-update-cmd`, a script
+     * that exits non-zero fails the whole Composer run, and the record ignores
+     * itself (`R-DIS-024`) — so every colleague who never ran `install` would
+     * have their `composer update` fail over a dev tool they do not use.
+     * `D-DIS-014` is what that was priced against.
      */
     public function update(?string $agent, bool $drafts = false): string
     {
         $update = $agent !== null ? [$agent] : self::readState($this->project)['agents'];
         if ($update === []) {
-            throw new \RuntimeException(
-                'nothing is installed here; run install, or install --agent=<client> for a client of its own',
-            );
+            return 'Nothing is installed here, so there is nothing to update. Run install, or '
+                . 'install --agent=<client> for a client of its own.';
         }
 
         return $this->setUp($update, $drafts);

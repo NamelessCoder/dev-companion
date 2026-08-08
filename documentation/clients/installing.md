@@ -62,6 +62,45 @@ Where the record carries drafts, the line says `update --drafts`: a run that
 does not ask for them removes them, and somebody acting on the line wants the
 project they have.
 
+## Refreshing it when the package moves
+
+The copy goes stale the moment this package moves, so a project can have the
+thing that moved it run the refresh. Composer fires `post-update-cmd` after
+`composer update`, and the project's own `composer.json` is where that is wired:
+
+```json
+{
+    "scripts": {
+        "post-update-cmd": [
+            "typo3-dev-companion update"
+        ]
+    }
+}
+```
+
+Nothing here writes that line. `install` and `update` write client
+configuration, the skills and the record, and a file that decides what the
+project consists of is not among them.
+
+The command needs no path: Composer pushes the project's declared `bin-dir` onto
+`PATH` before running a script, so the bare name resolves whether the project
+puts its binaries in `vendor/bin` or in `.build/bin`. It runs in the project
+root, which is where the record is.
+
+A project where nothing is installed is told so and the run succeeds. That is
+the ordinary case for everybody but the person who set it up: the record sits
+below a directory that ignores itself, so it is in no checkout but theirs, and a
+script that exits non-zero fails the whole Composer run.
+
+What the hook does not cover is the fresh clone: `post-update-cmd` fires on
+`composer update` and on an `install` with no lock file, so a colleague
+installing from the lock runs nothing. There the notice at the next server start
+is what says the copies are behind.
+
+Add `--drafts` to that line where the project has drafts published in it. A run
+that does not ask for them takes them out, and with the hook in place that
+happens on every `composer update` rather than when somebody typed the command.
+
 ## Trying a draft where it is loaded
 
 Both commands take `--drafts`, which publishes the skills that still declare

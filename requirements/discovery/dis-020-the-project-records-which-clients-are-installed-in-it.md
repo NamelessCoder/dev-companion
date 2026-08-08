@@ -1,6 +1,7 @@
 ---
 id: R-DIS-020
 status: held
+restsOn: [D-DIS-014]
 ---
 
 # R-DIS-020 — The project records which clients are installed in it
@@ -18,7 +19,10 @@ entry and the skills at `.agents/skills`, the two locations a client finds
 without being configured for it. It is recorded and refreshed like any named
 client and needs no case of its own; `--agent=` does not take it, because it is
 nobody's name. An update in a project where nothing is installed says so rather
-than reporting work it did not do.
+than reporting work it did not do, and succeeds: it is the command a project
+wires into Composer's `post-update-cmd`, where a non-zero exit fails the whole
+run, and the record is not in anybody's checkout —
+[`D-DIS-014`](../../decisions/discovery/dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md).
 
 What the record is read for is the refresh: a skill this package has stopped
 shipping is taken out of every client it reached, whichever of them the run was

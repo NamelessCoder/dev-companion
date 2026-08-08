@@ -187,7 +187,11 @@ grouped by where an answer comes from.
   says so and what it leaves out.
 - **The official documentation.** `typo3_documentation_lookup` searches the
   public tables of contents on `docs.typo3.org` for an explicitly requested
-  covered release, and reads a result it returned as text.
+  covered release, and reads a result it returned as text. The same host answers
+  the half of `typo3_changelog_lookup` no installation can: a package ships
+  every changelog down to 7.0 and nothing above its own major, which is exactly
+  the versions an upgrade is about. Each entry says which of the two it came
+  from.
 - **The core's own services.** `typo3_forge_lookup` reads an issue and its
   comments before a patch is written for it, and answers the backlog it came out
   of — what stands open, oldest or longest untouched, in one area named in your

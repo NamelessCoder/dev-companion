@@ -140,7 +140,21 @@ final class Changelog
      */
     public static function read(array $entry): array
     {
-        $contents = (string) file_get_contents($entry['file']);
+        return self::parse((string) file_get_contents($entry['file']), $entry);
+    }
+
+    /**
+     * The same three fields out of an entry's RST, whatever delivered it.
+     *
+     * The host publishes the source of every entry byte for byte under
+     * `_sources`, so what the manual answers with is the file this parses on
+     * disk and there is one parser rather than two — `D-ANS-067`.
+     *
+     * @param array{version: string, type: string} $entry
+     * @return array{title: string, tags: array<int, string>, removal: string}
+     */
+    public static function parse(string $contents, array $entry): array
+    {
         $title = '';
         $tags = [];
         foreach (preg_split('/\R/', $contents) ?: [] as $line) {
@@ -178,7 +192,13 @@ final class Changelog
      */
     public static function identifiers(array $entry): array
     {
-        preg_match_all('/``[^`]+``|`[^`]+`/', (string) file_get_contents($entry['file']), $literals);
+        return self::named((string) file_get_contents($entry['file']));
+    }
+
+    /** @return array<int, string> */
+    public static function named(string $contents): array
+    {
+        preg_match_all('/``[^`]+``|`[^`]+`/', $contents, $literals);
         $names = [];
         foreach ($literals[0] as $literal) {
             preg_match_all('/[A-Za-z_][A-Za-z0-9_]{2,}/', $literal, $words);
@@ -238,7 +258,7 @@ final class Changelog
     }
 
     /** "ExperimentalBackendViewHelpers" as the words it is made of. */
-    private static function words(string $camelCase): string
+    public static function words(string $camelCase): string
     {
         $spaced = preg_replace('/(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/', ' ', $camelCase);
 

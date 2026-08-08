@@ -42,7 +42,14 @@ final class ToolContractTest extends TestCase
             // answer is bundled or read from the installation, and a caller
             // reads that difference off this flag before it calls.
             self::assertSame(
-                in_array($name, ['typo3_documentation_lookup', 'typo3_forge_lookup', 'typo3_gerrit_lookup'], true),
+                in_array($name, [
+                    'typo3_documentation_lookup',
+                    'typo3_forge_lookup',
+                    'typo3_gerrit_lookup',
+                    // The versions above the installed major, which the
+                    // installation cannot ship — `D-ANS-067`.
+                    'typo3_changelog_lookup',
+                ], true),
                 $definition['annotations']['openWorldHint'],
                 $name . ' has the wrong open-world annotation',
             );

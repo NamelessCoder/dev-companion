@@ -1,22 +1,25 @@
 # `typo3_changelog_lookup`
 
-Search the TYPO3 changelog of the installation you are working in: one entry per
-breaking change, deprecation, feature and important note, in the version it was
-released in. Answers "what did this version deprecate", "what changed about X",
-"which release introduced Y". This is the first stop when building on a major
-you have not built on recently: what separates a current answer from a
-two-major-old one is written down here and almost nowhere else. A deprecation
-carries the version it stops working in where the entry states one, and the rule
-that answers the rest beside it. Read from the core package on disk, so it
-covers exactly the versions that installation ships and grows with a Composer
-update. Every word of the query has to be carried by an entry; narrow further
-with type and version. A method or class you found in the code is a query of its
-own: an identifier reaches the entries naming it, whether or not the change was
-titled after it. Answers from: packages.
+Search the TYPO3 changelog: one entry per breaking change, deprecation, feature
+and important note, in the version it was released in. Answers "what did this
+version deprecate", "what changed about X", "which release introduced Y". This
+is the first stop when building on a major you have not built on recently: what
+separates a current answer from a two-major-old one is written down here and
+almost nowhere else. A deprecation carries the version it stops working in where
+the entry states one, and the rule that answers the rest beside it. The versions
+the installation ships are read from the core package on disk; the ones above
+its own major are read from docs.typo3.org, which is what an upgrade to a
+version you have not installed is asking for. Every word of the query has to be
+carried by an entry; narrow further with type and version. A method or class you
+found in the code is a query of its own: an identifier reaches the entries
+naming it, whether or not the change was titled after it — inside the installed
+versions, which are the ones whose text is on disk. Answers from: packages,
+network.
 
-`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
-Answers from [`packages`](answer-sources.md#packages).
+Answers from [`packages`](answer-sources.md#packages),
+[`network`](answer-sources.md#network).
 
 ## Takes
 
@@ -81,8 +84,16 @@ entries:  # optional
     # Index tags. FullyScanned or PartiallyScanned means the extension scanner
     # has a matcher for it.
     tags: [string]
-    # EXT: reference of the entry, to read the description and the migration.
+    # Where to read the description and the migration: an EXT: reference where
+    # the installation ships the entry, and a docs.typo3.org URL where it does
+    # not.
     file: string
+    # Which side the entry came from. "installation" is the core package on
+    # disk, which is the version that installation runs. "manual" is
+    # docs.typo3.org, which is every version above the installed major — what
+    # an upgrade reads, and a moving target for a major that is not released
+    # yet.
+    publishedIn: string
 # What each word of the query reaches on its own, inside the version and the
 # type that were asked for. A word at 0 is the one that emptied the answer —
 # it is misspelled, or nothing here is named after it. Returned on a miss that
@@ -115,8 +126,11 @@ termSubsets:  # optional
 # where the answer carries a deprecation.
 removalRule: string  # optional
 # The versions this installation ships changelog entries for, newest first.
-# Anything outside them is not in this answer.
 versions: [string]  # optional
+# The versions above those, read from docs.typo3.org, newest first. Absent where
+# the host did not answer, which is the one case a version is missing from this
+# answer rather than from the changelog.
+versionsFromTheManual: [string]  # optional
 # One of: packages. packages: read from the files the installed packages ship,
 # because the console could not be asked — overrides applied at runtime are
 # not reflected.
@@ -154,7 +168,7 @@ The answer carries exactly one of these sets of fields: `query`, `matchCount`,
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
+Recorded on 2026-08-08 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -210,7 +224,8 @@ Data:
                 "NotScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109438-ExtTablesPhpInExtensions.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109438-ExtTablesPhpInExtensions.rst",
+            "publishedIn": "installation"
         }
     ],
     "versions": [
@@ -270,6 +285,9 @@ Data:
         "7.0"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0"
+    ],
     "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
 }
 ```
@@ -280,6 +298,7 @@ Text:
 
 ```
 1 changelog entry carrying "ext_tables.php":
+Every one of these is in ext:acme_events, which the query did not name. A changelog records change events, so an area nobody has reworked has no entry at all — an answer that comes from one system extension is usually the place that happens to spell the word rather than the subject. Ask again in the words the changelog writes that subject in, which are not always the ones the code uses.
 - 14.3 Deprecation: ext_tables.php in the fixture extension (#900001) — removed in v15.0
   EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst — PHP-API, FullyScanned, ext:acme_events
 
@@ -307,13 +326,70 @@ Data:
                 "FullyScanned",
                 "ext:acme_events"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst",
+            "publishedIn": "installation"
         }
     ],
     "versions": [
         "14.3"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0",
+        "14.3.x",
+        "14.2",
+        "14.1",
+        "14.0",
+        "13.4",
+        "13.4.x",
+        "13.3",
+        "13.2",
+        "13.1",
+        "13.0",
+        "12.4",
+        "12.4.x",
+        "12.3",
+        "12.2",
+        "12.1",
+        "12.0",
+        "11.5",
+        "11.5.x",
+        "11.4",
+        "11.3",
+        "11.2",
+        "11.1",
+        "11.0",
+        "10.4",
+        "10.4.x",
+        "10.3",
+        "10.2",
+        "10.1",
+        "10.0",
+        "9.5",
+        "9.5.x",
+        "9.4",
+        "9.3",
+        "9.2",
+        "9.1",
+        "9.0",
+        "8.7",
+        "8.7.x",
+        "8.6",
+        "8.5",
+        "8.4",
+        "8.3",
+        "8.2",
+        "8.1",
+        "8.0",
+        "7.6",
+        "7.6.x",
+        "7.5",
+        "7.4",
+        "7.3",
+        "7.2",
+        "7.1",
+        "7.0"
+    ],
     "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
 }
 ```
@@ -334,7 +410,15 @@ Called with:
 Text:
 
 ```
-384 of the 964 entries narrowed by version and type are tagged "FullyScanned" — showing the first 20:
+388 of the 969 entries narrowed by version and type are tagged "FullyScanned" — showing the first 20:
+- 15.0 Deprecation: Experimental backend ViewHelpers (#110148) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html — Fluid, FullyScanned, ext:fluid
+- 15.0 Deprecation: StringUtility::multibyteStringPad() method (#110202) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html — PHP-API, FullyScanned, ext:core
+- 15.0 Deprecation: DataHandler->setCorrelationId() (#110285) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html — PHP-API, FullyScanned, ext:core
+- 15.0 Deprecation: AbstractXmlSitemapDataProvider (#110334) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html — PHP-API, FullyScanned, ext:seo
 - 14.3 Deprecation: Lowlevel DatabaseIntegrityCheck class (#107931) — removed in v15.0
   EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst — PHP-API, FullyScanned, ext:lowlevel
 - 14.3 Deprecation: BackendUtility item list label methods (#109519) — removed in v15.0
@@ -367,16 +451,9 @@ Text:
   EXT:core/Documentation/Changelog/14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst — Fluid, LocalConfiguration, FullyScanned, ext:fluid
 - 14.1 Deprecation: Deprecate CommandNameAlreadyInUseException (#108667)
   EXT:core/Documentation/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst — PHP-API, FullyScanned, ext:core
-- 14.0 Deprecation: Various methods in BackendUtility (#106393)
-  EXT:core/Documentation/Changelog/14.0/Deprecation-106393-VariousMethodsInBackendUtility.rst — TCA, FullyScanned, ext:core
-- 14.0 Deprecation: GeneralUtility::resolveBackPath (#106618) — removed in v15.0
-  EXT:core/Documentation/Changelog/14.0/Deprecation-106618-GeneralUtilityresolveBackPath.rst — Backend, Frontend, JavaScript, TypoScript, FullyScanned, ext:core
-- 14.0 Deprecation: Move upgrade wizard related interfaces and attribute to `EXT:core` (#106947)
-  EXT:core/Documentation/Changelog/14.0/Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst — PHP-API, FullyScanned, ext:install
-- 14.0 Deprecation: ExtensionManagementUtility::addPiFlexFormValue() (#107047) — removed in v15.0
-  EXT:core/Documentation/Changelog/14.0/Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst — Backend, FlexForm, TCA, FullyScanned, ext:core
 
 Read the file for the description and the migration. A Deprecation or Breaking entry tagged FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can find the call sites for you.
+Entries above 14.3 come from docs.typo3.org rather than from this installation: they are what the host publishes today, they are linked by URL instead of by EXT: path, and for a major that is not released yet they are still being written. An identifier search does not reach them — their text is not on disk, so they are searched by name and by the title the manual states.
 A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned.
 ```
 
@@ -385,7 +462,7 @@ Data:
 ```json
 {
     "query": "",
-    "matchCount": 384,
+    "matchCount": 388,
     "matchedIn": "name",
     "tags": [
         "Backend",
@@ -438,6 +515,7 @@ Data:
         "ext:rte_ckeditor",
         "ext:saltedpasswords",
         "ext:scheduler",
+        "ext:seo",
         "ext:setup",
         "ext:t3editor",
         "ext:taskcenter",
@@ -445,6 +523,62 @@ Data:
         "ext:workspaces"
     ],
     "entries": [
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110148",
+            "title": "Experimental backend ViewHelpers",
+            "removal": "16.0",
+            "tags": [
+                "Fluid",
+                "FullyScanned",
+                "ext:fluid"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110202",
+            "title": "StringUtility::multibyteStringPad() method",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110285",
+            "title": "DataHandler->setCorrelationId()",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110334",
+            "title": "AbstractXmlSitemapDataProvider",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:seo"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html",
+            "publishedIn": "manual"
+        },
         {
             "type": "Deprecation",
             "version": "14.3",
@@ -456,7 +590,8 @@ Data:
                 "FullyScanned",
                 "ext:lowlevel"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -469,7 +604,8 @@ Data:
                 "FullyScanned",
                 "ext:backend"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109519-BackendUtilityItemListLabelMethods.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109519-BackendUtilityItemListLabelMethods.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -482,7 +618,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109523-GeneralUtilityIsOnCurrentHostWithoutRequest.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109523-GeneralUtilityIsOnCurrentHostWithoutRequest.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -495,7 +632,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109544-GeneralUtilitySanitizeLocalUrlWithoutRequest.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109544-GeneralUtilitySanitizeLocalUrlWithoutRequest.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -508,7 +646,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109548-GeneralUtilityLocationHeaderUrlWithoutRequest.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109548-GeneralUtilityLocationHeaderUrlWithoutRequest.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -521,7 +660,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109551-GeneralUtilityGetIndpEnv.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109551-GeneralUtilityGetIndpEnv.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -534,7 +674,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -547,7 +688,8 @@ Data:
                 "FullyScanned",
                 "ext:backend"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108761-BackendUtilityTSconfigMethods.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108761-BackendUtilityTSconfigMethods.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -560,7 +702,8 @@ Data:
                 "FullyScanned",
                 "ext:backend"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108810-BackendUtilityLocalizationMethods.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108810-BackendUtilityLocalizationMethods.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -573,7 +716,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -587,7 +731,8 @@ Data:
                 "FullyScanned",
                 "ext:backend"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108963-DeprecatePageRenderer-addInlineLanguageDomain.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-108963-DeprecatePageRenderer-addInlineLanguageDomain.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -601,7 +746,8 @@ Data:
                 "FullyScanned",
                 "ext:install"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -614,7 +760,8 @@ Data:
                 "FullyScanned",
                 "ext:backend"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109230-FormResultCompiler.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109230-FormResultCompiler.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -629,7 +776,8 @@ Data:
                 "FullyScanned",
                 "ext:form"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109412-FormYamlConfigurationRegistration.rst"
+            "file": "EXT:core/Documentation/Changelog/14.2/Deprecation-109412-FormYamlConfigurationRegistration.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -643,7 +791,8 @@ Data:
                 "FullyScanned",
                 "ext:fluid"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst"
+            "file": "EXT:core/Documentation/Changelog/14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst",
+            "publishedIn": "installation"
         },
         {
             "type": "Deprecation",
@@ -656,64 +805,8 @@ Data:
                 "FullyScanned",
                 "ext:core"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst"
-        },
-        {
-            "type": "Deprecation",
-            "version": "14.0",
-            "issue": "106393",
-            "title": "Various methods in BackendUtility",
-            "removal": "",
-            "tags": [
-                "TCA",
-                "FullyScanned",
-                "ext:core"
-            ],
-            "file": "EXT:core/Documentation/Changelog/14.0/Deprecation-106393-VariousMethodsInBackendUtility.rst"
-        },
-        {
-            "type": "Deprecation",
-            "version": "14.0",
-            "issue": "106618",
-            "title": "GeneralUtility::resolveBackPath",
-            "removal": "15.0",
-            "tags": [
-                "Backend",
-                "Frontend",
-                "JavaScript",
-                "TypoScript",
-                "FullyScanned",
-                "ext:core"
-            ],
-            "file": "EXT:core/Documentation/Changelog/14.0/Deprecation-106618-GeneralUtilityresolveBackPath.rst"
-        },
-        {
-            "type": "Deprecation",
-            "version": "14.0",
-            "issue": "106947",
-            "title": "Move upgrade wizard related interfaces and attribute to `EXT:core`",
-            "removal": "",
-            "tags": [
-                "PHP-API",
-                "FullyScanned",
-                "ext:install"
-            ],
-            "file": "EXT:core/Documentation/Changelog/14.0/Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst"
-        },
-        {
-            "type": "Deprecation",
-            "version": "14.0",
-            "issue": "107047",
-            "title": "ExtensionManagementUtility::addPiFlexFormValue()",
-            "removal": "15.0",
-            "tags": [
-                "Backend",
-                "FlexForm",
-                "TCA",
-                "FullyScanned",
-                "ext:core"
-            ],
-            "file": "EXT:core/Documentation/Changelog/14.0/Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst"
+            "file": "EXT:core/Documentation/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst",
+            "publishedIn": "installation"
         }
     ],
     "versions": [
@@ -773,6 +866,9 @@ Data:
         "7.0"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0"
+    ],
     "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
 }
 ```
@@ -782,11 +878,50 @@ Data:
 Text:
 
 ```
-1 of the 2 entries narrowed by version and type are tagged "FullyScanned":
+383 of the 960 entries narrowed by version and type are tagged "FullyScanned" — showing the first 20:
+- 15.0 Deprecation: Experimental backend ViewHelpers (#110148) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html — Fluid, FullyScanned, ext:fluid
+- 15.0 Deprecation: StringUtility::multibyteStringPad() method (#110202) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html — PHP-API, FullyScanned, ext:core
+- 15.0 Deprecation: DataHandler->setCorrelationId() (#110285) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html — PHP-API, FullyScanned, ext:core
+- 15.0 Deprecation: AbstractXmlSitemapDataProvider (#110334) — removed in v16.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html — PHP-API, FullyScanned, ext:seo
 - 14.3 Deprecation: ext_tables.php in the fixture extension (#900001) — removed in v15.0
   EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst — PHP-API, FullyScanned, ext:acme_events
+- 14.2 Deprecation: BackendUserAuthentication::recordEditAccessInternals() and $errorMsg (#108568)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.html — PHP-API, FullyScanned, ext:core
+- 14.2 Deprecation: BackendUtility TSconfig-related methods (#108761) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108761-BackendUtilityTSconfigMethods.html — PHP-API, FullyScanned, ext:backend
+- 14.2 Deprecation: BackendUtility localization-related methods (#108810) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108810-BackendUtilityLocalizationMethods.html — PHP-API, FullyScanned, ext:backend
+- 14.2 Deprecation: ExtensionManagementUtility::addFieldsToUserSettings (#108843) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.html — PHP-API, FullyScanned, ext:core
+- 14.2 Deprecation: Deprecate `PageRenderer->addInlineLanguageDomain()` (#108963)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108963-DeprecatePageRenderer-addInlineLanguageDomain.html — Backend, JavaScript, FullyScanned, ext:backend
+- 14.2 Deprecation: Move `language:update` command and events to `EXT:core` (#109027) — removed in v15
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.html — CLI, PHP-API, FullyScanned, ext:install
+- 14.2 Deprecation: FormResultCompiler (#109230) — removed in v15
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109230-FormResultCompiler.html — Backend, FullyScanned, ext:backend
+- 14.2 Deprecation: TypoScript-based form YAML registration (#109412) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109412-FormYamlConfigurationRegistration.html — YAML, Frontend, Backend, FullyScanned, ext:form
+- 14.1 Deprecation: Fluid namespaces in TYPO3_CONF_VARS (#108524)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.html — Fluid, LocalConfiguration, FullyScanned, ext:fluid
+- 14.1 Deprecation: Deprecate CommandNameAlreadyInUseException (#108667)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.html — PHP-API, FullyScanned, ext:core
+- 14.0 Deprecation: Various methods in BackendUtility (#106393)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106393-VariousMethodsInBackendUtility.html — TCA, FullyScanned, ext:core
+- 14.0 Deprecation: GeneralUtility::resolveBackPath (#106618) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106618-GeneralUtilityresolveBackPath.html — Backend, Frontend, JavaScript, TypoScript, FullyScanned, ext:core
+- 14.0 Deprecation: Move upgrade wizard related interfaces and attribute to `EXT:core` (#106947)
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.html — PHP-API, FullyScanned, ext:install
+- 14.0 Deprecation: ExtensionManagementUtility::addPiFlexFormValue() (#107047) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.html — Backend, FlexForm, TCA, FullyScanned, ext:core
+- 14.0 Deprecation: Deprecate :php:`Annotation` namespace of Extbase attributes (#107229) — removed in v15.0
+  https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107229-DeprecatePhpAnnotationNamespaceOfExtbaseAttributes.html — PHP-API, FullyScanned, ext:extbase
 
 Read the file for the description and the migration. A Deprecation or Breaking entry tagged FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can find the call sites for you.
+Entries above 14.3 come from docs.typo3.org rather than from this installation: they are what the host publishes today, they are linked by URL instead of by EXT: path, and for a major that is not released yet they are still being written. An identifier search does not reach them — their text is not on disk, so they are searched by name and by the title the manual states.
 A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned.
 ```
 
@@ -795,15 +930,124 @@ Data:
 ```json
 {
     "query": "",
-    "matchCount": 1,
+    "matchCount": 383,
     "matchedIn": "name",
     "tags": [
+        "Backend",
+        "CLI",
+        "Database",
+        "FAL",
+        "FileList",
+        "FlexForm",
+        "Fluid",
+        "Frontend",
         "FullyScanned",
+        "JavaScript",
+        "LocalConfiguration",
         "NotScanned",
         "PHP-API",
-        "ext:acme_events"
+        "PartiallyScanned",
+        "RTE",
+        "Scheduler",
+        "TCA",
+        "TSConfig",
+        "TypoScript",
+        "YAML",
+        "ext:acme_events",
+        "ext:adminpanel",
+        "ext:backend",
+        "ext:core",
+        "ext:css_styled_content",
+        "ext:dashboard",
+        "ext:dbal",
+        "ext:extbase",
+        "ext:extensionmanager",
+        "ext:feedit",
+        "ext:felogin",
+        "ext:filelist",
+        "ext:fluid",
+        "ext:fluid_styled_content",
+        "ext:form",
+        "ext:frontend",
+        "ext:impexp",
+        "ext:indexed_search",
+        "ext:info",
+        "ext:install",
+        "ext:lang",
+        "ext:linkvalidator",
+        "ext:lowlevel",
+        "ext:recordlist",
+        "ext:recycler",
+        "ext:redirects",
+        "ext:reports",
+        "ext:rsaauth",
+        "ext:rte_ckeditor",
+        "ext:saltedpasswords",
+        "ext:scheduler",
+        "ext:seo",
+        "ext:setup",
+        "ext:t3editor",
+        "ext:taskcenter",
+        "ext:tstemplate",
+        "ext:workspaces"
     ],
     "entries": [
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110148",
+            "title": "Experimental backend ViewHelpers",
+            "removal": "16.0",
+            "tags": [
+                "Fluid",
+                "FullyScanned",
+                "ext:fluid"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110202",
+            "title": "StringUtility::multibyteStringPad() method",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110285",
+            "title": "DataHandler->setCorrelationId()",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "15.0",
+            "issue": "110334",
+            "title": "AbstractXmlSitemapDataProvider",
+            "removal": "16.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:seo"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html",
+            "publishedIn": "manual"
+        },
         {
             "type": "Deprecation",
             "version": "14.3",
@@ -815,13 +1059,286 @@ Data:
                 "FullyScanned",
                 "ext:acme_events"
             ],
-            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst"
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst",
+            "publishedIn": "installation"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "108568",
+            "title": "BackendUserAuthentication::recordEditAccessInternals() and $errorMsg",
+            "removal": "",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "108761",
+            "title": "BackendUtility TSconfig-related methods",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:backend"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108761-BackendUtilityTSconfigMethods.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "108810",
+            "title": "BackendUtility localization-related methods",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:backend"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108810-BackendUtilityLocalizationMethods.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "108843",
+            "title": "ExtensionManagementUtility::addFieldsToUserSettings",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "108963",
+            "title": "Deprecate `PageRenderer->addInlineLanguageDomain()`",
+            "removal": "",
+            "tags": [
+                "Backend",
+                "JavaScript",
+                "FullyScanned",
+                "ext:backend"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-108963-DeprecatePageRenderer-addInlineLanguageDomain.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "109027",
+            "title": "Move `language:update` command and events to `EXT:core`",
+            "removal": "15",
+            "tags": [
+                "CLI",
+                "PHP-API",
+                "FullyScanned",
+                "ext:install"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "109230",
+            "title": "FormResultCompiler",
+            "removal": "15",
+            "tags": [
+                "Backend",
+                "FullyScanned",
+                "ext:backend"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109230-FormResultCompiler.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.2",
+            "issue": "109412",
+            "title": "TypoScript-based form YAML registration",
+            "removal": "15.0",
+            "tags": [
+                "YAML",
+                "Frontend",
+                "Backend",
+                "FullyScanned",
+                "ext:form"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.2/Deprecation-109412-FormYamlConfigurationRegistration.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.1",
+            "issue": "108524",
+            "title": "Fluid namespaces in TYPO3_CONF_VARS",
+            "removal": "",
+            "tags": [
+                "Fluid",
+                "LocalConfiguration",
+                "FullyScanned",
+                "ext:fluid"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.1",
+            "issue": "108667",
+            "title": "Deprecate CommandNameAlreadyInUseException",
+            "removal": "",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.0",
+            "issue": "106393",
+            "title": "Various methods in BackendUtility",
+            "removal": "",
+            "tags": [
+                "TCA",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106393-VariousMethodsInBackendUtility.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.0",
+            "issue": "106618",
+            "title": "GeneralUtility::resolveBackPath",
+            "removal": "15.0",
+            "tags": [
+                "Backend",
+                "Frontend",
+                "JavaScript",
+                "TypoScript",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106618-GeneralUtilityresolveBackPath.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.0",
+            "issue": "106947",
+            "title": "Move upgrade wizard related interfaces and attribute to `EXT:core`",
+            "removal": "",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:install"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.0",
+            "issue": "107047",
+            "title": "ExtensionManagementUtility::addPiFlexFormValue()",
+            "removal": "15.0",
+            "tags": [
+                "Backend",
+                "FlexForm",
+                "TCA",
+                "FullyScanned",
+                "ext:core"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.html",
+            "publishedIn": "manual"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.0",
+            "issue": "107229",
+            "title": "Deprecate :php:`Annotation` namespace of Extbase attributes",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:extbase"
+            ],
+            "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107229-DeprecatePhpAnnotationNamespaceOfExtbaseAttributes.html",
+            "publishedIn": "manual"
         }
     ],
     "versions": [
         "14.3"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0",
+        "14.2",
+        "14.1",
+        "14.0",
+        "13.4",
+        "13.3",
+        "13.2",
+        "13.1",
+        "13.0",
+        "12.4",
+        "12.4.x",
+        "12.3",
+        "12.2",
+        "12.1",
+        "12.0",
+        "11.5",
+        "11.5.x",
+        "11.4",
+        "11.3",
+        "11.2",
+        "11.1",
+        "11.0",
+        "10.4",
+        "10.3",
+        "10.2",
+        "10.1",
+        "10.0",
+        "9.5",
+        "9.5.x",
+        "9.4",
+        "9.3",
+        "9.2",
+        "9.1",
+        "9.0",
+        "8.7",
+        "8.7.x",
+        "8.6",
+        "8.5",
+        "8.4",
+        "8.3",
+        "8.2",
+        "8.1",
+        "8.0",
+        "7.6",
+        "7.5",
+        "7.4",
+        "7.3",
+        "7.2",
+        "7.1",
+        "7.0"
+    ],
     "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
 }
 ```
@@ -842,7 +1359,7 @@ Text:
 
 ```
 No changelog entry in this installation carries all of "quantumflux".
-The changelog here covers 14.3, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x, 13.3 and older. A version this installation does not ship is not in it — read that one in the core repository or at https://docs.typo3.org.
+This installation ships 14.3, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x, 13.3 and older. Above that, 15.0 is read from docs.typo3.org — what the host publishes today, which for a major that is not released yet is still being written.
 ```
 
 Data:
@@ -910,6 +1427,9 @@ Data:
         "7.0"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0"
+    ],
     "termCounts": [
         {
             "term": "quantumflux",
@@ -925,7 +1445,7 @@ Text:
 
 ```
 No changelog entry in this installation carries all of "quantumflux".
-The changelog here covers 14.3 and older. A version this installation does not ship is not in it — read that one in the core repository or at https://docs.typo3.org.
+This installation ships 14.3 and older. Above that, 15.0, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x, 13.3, 13.2, 13.1, 13.0, 12.4, 12.4.x, 12.3, 12.2, 12.1, 12.0, 11.5, 11.5.x, 11.4, 11.3, 11.2, 11.1, 11.0, 10.4, 10.4.x, 10.3, 10.2, 10.1, 10.0, 9.5, 9.5.x, 9.4, 9.3, 9.2, 9.1, 9.0, 8.7, 8.7.x, 8.6, 8.5, 8.4, 8.3, 8.2, 8.1, 8.0, 7.6, 7.6.x, 7.5, 7.4, 7.3, 7.2, 7.1, 7.0 are read from docs.typo3.org — what the host publishes today, which for a major that is not released yet is still being written.
 ```
 
 Data:
@@ -940,6 +1460,62 @@ Data:
         "14.3"
     ],
     "answeredBy": "packages",
+    "versionsFromTheManual": [
+        "15.0",
+        "14.3.x",
+        "14.2",
+        "14.1",
+        "14.0",
+        "13.4",
+        "13.4.x",
+        "13.3",
+        "13.2",
+        "13.1",
+        "13.0",
+        "12.4",
+        "12.4.x",
+        "12.3",
+        "12.2",
+        "12.1",
+        "12.0",
+        "11.5",
+        "11.5.x",
+        "11.4",
+        "11.3",
+        "11.2",
+        "11.1",
+        "11.0",
+        "10.4",
+        "10.4.x",
+        "10.3",
+        "10.2",
+        "10.1",
+        "10.0",
+        "9.5",
+        "9.5.x",
+        "9.4",
+        "9.3",
+        "9.2",
+        "9.1",
+        "9.0",
+        "8.7",
+        "8.7.x",
+        "8.6",
+        "8.5",
+        "8.4",
+        "8.3",
+        "8.2",
+        "8.1",
+        "8.0",
+        "7.6",
+        "7.6.x",
+        "7.5",
+        "7.4",
+        "7.3",
+        "7.2",
+        "7.1",
+        "7.0"
+    ],
     "termCounts": [
         {
             "term": "quantumflux",

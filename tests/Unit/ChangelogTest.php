@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Manual\CoreChangelog;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -33,9 +35,21 @@ final class ChangelogTest extends TestCase
     /** One whose stated title carries words its file name spells nowhere. */
     private const FEATURE_2 = ['13.0', 'Feature-2-ImagingRework', 'Feature: #2 - Rework of the graphical functions'];
 
+    /**
+     * Nothing here reaches docs.typo3.org. The changelog lookup reads the
+     * versions above the installed major from the manual, and a unit test that
+     * let it would be measuring the host — `R-COD-003`.
+     */
+    #[Before]
+    public function sealTheManual(): void
+    {
+        CoreChangelog::useReader(static fn(string $url): ?string => null);
+    }
+
     #[After]
     public function forgetTheInstance(): void
     {
+        CoreChangelog::useReader(null);
         putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
     }

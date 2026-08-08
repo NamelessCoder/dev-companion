@@ -81,7 +81,7 @@ a page here says what one tool is for, what goes in and what shape comes back.
   identifier in the TYPO3 backend icon registry of the installation you are
   working in.
 - [`typo3_changelog_lookup`](typo3_changelog_lookup.md) — Search the TYPO3
-  changelog of the installation you are working in.
+  changelog.
 - [`typo3_project_describe`](typo3_project_describe.md) — Describe the project
   around the TYPO3 installation this server was started in.
 - [`typo3_extension_describe`](typo3_extension_describe.md) — Describe what one

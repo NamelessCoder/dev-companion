@@ -24,7 +24,7 @@ src/Installation/Instance.php  # finds the TYPO3 installation the agent is worki
 src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV where there is one
 src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
 src/Installation/probe.php  # what runs over there; never included here
-src/Manual/        # the third source: the public index and pages of the versioned TYPO3 manuals
+src/Manual/        # the third source: the public index and pages of the versioned TYPO3 manuals, and the core changelog above what an installation ships
 src/Contribution/  # the fourth source: the services the core's own process runs through, read over their APIs
 src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
 src/Search/        # the lexical matching every prose and label lookup goes through

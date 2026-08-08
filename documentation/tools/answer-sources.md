@@ -64,7 +64,8 @@ answered as empty.
 
 [`typo3_documentation_lookup`](typo3_documentation_lookup.md),
 [`typo3_forge_lookup`](typo3_forge_lookup.md),
-[`typo3_gerrit_lookup`](typo3_gerrit_lookup.md).
+[`typo3_gerrit_lookup`](typo3_gerrit_lookup.md),
+[`typo3_changelog_lookup`](typo3_changelog_lookup.md).
 
 ## checkout
 

@@ -226,11 +226,11 @@
     },
     {
       "topic": "What a TYPO3 version broke, deprecated, added or noted",
-      "depth": "The changelog the installed core ships, one entry per change, searched by words, type and version. It covers exactly the versions that installation has — a newer one is not in it.",
+      "depth": "One entry per change, searched by words, type and version. The versions the installation ships come from the core package on disk; the versions above its own major come from the changelog docs.typo3.org publishes, which is what an upgrade to a version nobody has installed is asking for. Each entry says which of the two it came from, because a version that is not released yet is still being written.",
       "tools": [
         "typo3_changelog_lookup"
       ],
-      "source": "the discovered installation — read from the installation being worked in, not from a bundled snapshot.",
+      "source": "the discovered installation for what it ships, and docs.typo3.org for the versions above its own major. Not a bundled snapshot either way.",
       "scope": "any"
     }
   ],
@@ -393,7 +393,7 @@
       "call": "typo3_project_describe"
     },
     {
-      "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed",
+      "when": "Starting work on a TYPO3 major you have not built on recently, or planning an upgrade to one this installation does not have — before asking what a version changed",
       "call": "typo3_changelog_lookup"
     },
     {

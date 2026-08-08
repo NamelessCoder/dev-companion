@@ -85,8 +85,8 @@ indistinguishable: string or null
 
 ## Answered
 
-Recorded on 2026-08-07 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
+Recorded on 2026-08-08 by `bin/cli tools:record`. Answered against
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,

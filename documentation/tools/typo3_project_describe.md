@@ -190,18 +190,18 @@ The answer carries exactly one of these sets of fields: `root`, `environment`,
 
 ## Answered
 
-Recorded on  by `bin/cli tools:record`. Of two working directories, because
-what this server answers depends on which one a client is standing in, and
-neither fills the whole surface. Answered against core-checkout, TYPO3
-15.0.0-dev, the main core checkout below .checkouts/, whose console could not
-be reached: the installation requires PHP 8.5.0 and no interpreter on this
-machine provides it (running 8.4.24). Answered against composer-project, TYPO3
-14.3.0, the installation this repository writes below .fixtures/, whose console
-answers. The tools that declare `answeredBy` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-`bin/cli tools:check` holds it.
+Recorded on 2026-08-08 by `bin/cli tools:record`. Of two working directories,
+because what this server answers depends on which one a client is standing in,
+and neither fills the whole surface. Answered against core-checkout, TYPO3
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare `answeredBy` carry an answer from each, under a heading
+naming which; every other answer is from the first alone, because nothing in it
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
 ### project
 
@@ -211,12 +211,12 @@ Called with:
 {}
 ```
 
-#### From the main core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
 ```
-<installation> — core-checkout, TYPO3 15.0.0-dev, PHP ^8.5, and the installed core requires ^8.5 — the lowest a package here may declare
+<installation> — core-checkout, TYPO3 14.3.6-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
 Extensions: none beyond TYPO3's own.
 
@@ -230,6 +230,7 @@ Nothing in this repository configures an environment of its own — .ddev/config
 - composer gerrit:setup:preCommitHook:disable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::disablePreCommitHook
 
 Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+- any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
 - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
 - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
 - core/contribution/rules — TYPO3 Core Contribution Rules
@@ -246,10 +247,10 @@ Data:
 {
     "root": "<installation>",
     "kind": "core-checkout",
-    "typo3Version": "15.0.0-dev",
-    "phpConstraint": "^8.5",
+    "typo3Version": "14.3.6-dev",
+    "phpConstraint": "^8.2",
     "coreConstraint": null,
-    "corePhpConstraint": "^8.5",
+    "corePhpConstraint": "^8.2",
     "environment": null,
     "extensions": [],
     "sites": [],
@@ -281,6 +282,10 @@ Data:
     ],
     "patches": [],
     "guides": [
+        {
+            "id": "any/security/reporting-a-vulnerability",
+            "title": "Reporting a TYPO3 Vulnerability"
+        },
         {
             "id": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules"
@@ -338,6 +343,7 @@ Nothing in this repository configures an environment of its own — .ddev/config
 - composer test (composer.json) — unknown: phpunit -c Build/phpunit.xml
 
 Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+- any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
 - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
 - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
 - core/contribution/rules — TYPO3 Core Contribution Rules
@@ -402,6 +408,10 @@ Data:
     ],
     "patches": [],
     "guides": [
+        {
+            "id": "any/security/reporting-a-vulnerability",
+            "title": "Reporting a TYPO3 Vulnerability"
+        },
         {
             "id": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules"

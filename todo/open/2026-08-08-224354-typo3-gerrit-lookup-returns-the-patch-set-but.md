@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-08-224354-typo3-gerrit-lookup-returns-the-patch-set-but.md
 **Priority:** normal
-**Branch:** todo/typo3-gerrit-lookup-returns-the-patch-set-but
-**Claimed:** 2026-08-08
 
 Judged on 2026-08-09 as `D-ANS-068`: step 2, delivery. The ref form is in
 `knowledge/documents/core/contribution/gerrit-workflow.md`, it reached neither

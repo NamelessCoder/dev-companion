@@ -398,6 +398,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-023`][D-SKL-023] — A published skill no intent names is one the brief cannot route to · 2026-08-08
 - [`D-SKL-024`][D-SKL-024] — A description names the task and leaves the steps to the body · 2026-08-08 · confirmed
 - [`D-SKL-025`][D-SKL-025] — A routed tool is called and held to what the skill sends the session to read · 2026-08-08
@@ -426,6 +427,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-028]: task-skills/skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
 [D-SKL-023]: task-skills/skl-023-a-published-skill-no-intent-names-is-one-the-brief-cannot-route-to.md
 [D-SKL-024]: task-skills/skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md
 [D-SKL-025]: task-skills/skl-025-a-routed-tool-is-called-and-held-to-what-the-skill-sends-the-session-to-read.md

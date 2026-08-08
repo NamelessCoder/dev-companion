@@ -7,6 +7,7 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-GUI-011`][D-GUI-011] — Reviewing a report against code is a change type of its own · 2026-08-08
 - [`D-GUI-009`][D-GUI-009] — A stated change type keeps the skeleton and the words keep their surface · 2026-08-04
 - [`D-GUI-010`][D-GUI-010] — The commit workflow defaults to the repository most callers are in · 2026-08-04
 - [`D-GUI-003`][D-GUI-003] — The wrapping conflict is resolved in the answer rather than in silence · 2026-08-03
@@ -17,6 +18,7 @@ one is added.
 - [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
+[D-GUI-011]: gui-011-reviewing-a-report-against-code-is-a-change-type-of-its-own.md
 [D-GUI-009]: gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md
 [D-GUI-010]: gui-010-the-commit-workflow-defaults-to-the-repository-most-callers-are-in.md
 [D-GUI-003]: gui-003-the-wrapping-conflict-is-resolved-in-the-answer-rather-than-in-silence.md

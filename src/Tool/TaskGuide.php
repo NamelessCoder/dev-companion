@@ -119,6 +119,23 @@ final class TaskGuide extends ReadOnlyTool
     private const OPERATIONS = 'operations';
     private const OPERATIONS_INTENT = 'installation-operations';
 
+    /**
+     * The third change type that writes no file, and the intent it is the id of.
+     *
+     * It exists because a session triaging a core report picked `audit` — "the
+     * closest of the available values", since it is the one documented as
+     * writing no file — and was answered with what a review of a diff owes: the
+     * removals to enumerate, the extension scanner matcher, `checkRst` over a
+     * core diff. It used none of them, because a triage produces no diff
+     * (`D-GUI-011`).
+     *
+     * So `audit` keeps its meaning, which is reviewing a body of code, and the
+     * work of reviewing a report against code has a value of its own. What
+     * withholds the diff items is that neither intent matches the other's
+     * words, rather than a rule about which items apply.
+     */
+    private const TRIAGE = 'triage';
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -145,6 +162,10 @@ final class TaskGuide extends ReadOnlyTool
         // which this value reaches through the matcher, and what it does not owe
         // is the skeleton a review is composed into — see answer().
         self::OPERATIONS => [],
+        // The third, and the same arrangement: the triage intent carries what a
+        // triage owes, and this value is how a caller reaches it by classifying
+        // rather than by describing.
+        self::TRIAGE => [],
         'unknown' => [],
     ];
 
@@ -165,6 +186,7 @@ final class TaskGuide extends ReadOnlyTool
         // brief to buildCss, lintScss and the component lookup, which is what
         // writes backend markup rather than what boots an installation.
         self::OPERATIONS => '',
+        self::TRIAGE => '',
         'unknown' => '',
     ];
 
@@ -207,7 +229,7 @@ final class TaskGuide extends ReadOnlyTool
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task, in English.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. An extension key counts as a path. A subsystem no path can be named for belongs in task, because every entry here is answered as a file.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
-                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::OPERATIONS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Two of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what a review needs, and operations for what running an installation needs — booting the environment a repository declares, importing its data, building its assets. A task that describes either gets that shape without stating the type.'],
+                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::TRIAGE, self::OPERATIONS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Three of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what reviewing a body of code needs, triage for what deciding an open bug report needs — whether it still happens, what a previous attempt cost, what a maintainer would need before it can move — and operations for what running an installation needs, booting the environment a repository declares, importing its data, building its assets. Reviewing a report against code and reviewing a diff are not the same brief. A task that describes any of the three gets that shape without stating the type.'],
             ],
             'required' => ['task'],
         ];
@@ -300,12 +322,17 @@ final class TaskGuide extends ReadOnlyTool
         // states the type of the patch under review rather than of their own
         // work — and appending is what costs neither of them a step
         // (`D-GUI-009`).
-        $stated = !in_array($changeType, [self::AUDIT, self::OPERATIONS, 'unknown'], true);
+        $stated = !in_array($changeType, [self::AUDIT, self::TRIAGE, self::OPERATIONS, 'unknown'], true);
         $confirmed = TaskIntents::confirmed($intents);
         $confirmedIds = array_column($confirmed, 'id');
-        $reviews = !$stated && in_array(self::AUDIT, $confirmedIds, true);
+        $triages = !$stated && in_array(self::TRIAGE, $confirmedIds, true);
+        // A triage is checked before a review, because a task that reads as
+        // both is the one this was written from: "review this old bug report"
+        // reviews a report and not a diff, and the review arm is the answer
+        // that was wrong.
+        $reviews = !$stated && !$triages && in_array(self::AUDIT, $confirmedIds, true);
         $operates = !$stated && in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
-        $changesNothing = $reviews || $operates;
+        $changesNothing = $reviews || $triages || $operates;
         $conditional = array_values(array_filter(
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
@@ -537,7 +564,16 @@ final class TaskGuide extends ReadOnlyTool
         // review is the case it was written from: a session that never asks
         // what the change does to the editor and the visitor reads a report as
         // an API question and answers the wrong one.
-        if ($reviews) {
+        if ($triages) {
+            $checklist = [
+                self::PRODUCT_PREMISE,
+                'Inspect nearby code, tests, and established subsystem conventions. What the report describes is '
+                    . 'usually reachable from the test the subsystem already has, and a defect the suite carries '
+                    . 'switched off is the cheapest reproduction there is.',
+                'Report what the triage did not reach — a version it was not tried on, a configuration the report '
+                    . 'names and nothing here could build. Silence there reads as a verdict.',
+            ];
+        } elseif ($reviews) {
             $checklist = [
                 self::PRODUCT_PREMISE,
                 'Establish what this repository is before reading a file: the TYPO3 and PHP versions it supports, '

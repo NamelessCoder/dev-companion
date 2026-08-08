@@ -87,6 +87,12 @@ enum Scope: string
         // `typo3_project_describe` had just called `core-checkout` was answered
         // with the extension side of every intent it matched (`D-SKL-023`).
         'core issue', 'core bug', 'core checkout', 'core backlog', 'core tracker',
+        // The tracker as people name it: "Forge 15984", not the host. The
+        // trailing space is what keeps "forget" and "forgetting" out, which are
+        // the only other forms of the word this repository's own corpus
+        // carries — measured on 2026-08-08 across knowledge/, skills/,
+        // scenarios/ and src/.
+        'forge ',
     ];
 
     /**

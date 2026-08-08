@@ -3553,6 +3553,51 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A triage is answered as a triage, not as a review of a diff.
+     *
+     * `D-GUI-011`. The reporting session picked `audit` because it is the value
+     * documented as writing no file — "the closest of the available values" —
+     * and was handed the removals to enumerate, the extension scanner matcher
+     * and `checkRst` over a core diff, for work that produces no diff. It used
+     * none of them and says so.
+     */
+    #[Test]
+    public function aTriageIsAnsweredWithWhatDecidingAReportNeeds(): void
+    {
+        self::assertContains('triage', TaskGuide::inputSchema()['properties']['changeType']['enum']);
+
+        $described = Registry::call('typo3_task_guide', [
+            'task' => 'Triage an old open core bug report: establish whether it still reproduces against this checkout',
+        ]);
+        $stated = Registry::call('typo3_task_guide', [
+            'task' => 'Say whether Forge 15984 is still a thing on this checkout',
+            'changeType' => 'triage',
+        ]);
+
+        foreach ([$described, $stated] as $brief) {
+            self::assertSame('strong', array_column($brief->data['intents'], 'confidence', 'id')['triage'] ?? null);
+            self::assertContains('typo3-core-issue-triage', $brief->data['skills']);
+
+            $checklist = implode("\n", $brief->data['checklist']);
+            // A triage writes no patch, so none of what one owes.
+            self::assertStringNotContainsString('Keep the patch focused', $checklist);
+            self::assertStringNotContainsString('test coverage', $checklist);
+            self::assertStringNotContainsString('typo3_commit_message_guide', $checklist);
+            // Nor what a review of a diff owes, which is the half that was
+            // reported: a triage removes nothing and renames nothing.
+            self::assertStringNotContainsString('enumerate what it removes or renames', $checklist);
+            self::assertStringNotContainsString('ExtensionScanner', $checklist);
+            self::assertStringNotContainsString('Report what the review did not reach', $checklist);
+
+            // What it owes instead: the report read against the branch it is
+            // being judged on, and a verdict that says what would change it.
+            self::assertStringContainsString('Read the comments before the description', $checklist);
+            self::assertStringContainsString('A verdict names what would change it', $checklist);
+            self::assertStringContainsString('Report what the triage did not reach', $checklist);
+        }
+    }
+
+    /**
      * Work that operates an installation is answered as a boot, not as a patch
      * and not as a review.
      *

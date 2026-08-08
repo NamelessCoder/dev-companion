@@ -31,12 +31,15 @@ paths: [string]  # optional
 # there is no declaration.
 targetVersion: string  # optional
 # One of: bugfix, feature, cleanup, test, documentation, deprecation, audit,
-# operations, unknown. What kind of change the task is. Two of them write no
-# file and get a brief of their own instead of the steps a patch owes: audit
-# asks for what a review needs, and operations for what running an installation
-# needs — booting the environment a repository declares, importing its data,
-# building its assets. A task that describes either gets that shape without
-# stating the type.
+# triage, operations, unknown. What kind of change the task is. Three of them
+# write no file and get a brief of their own instead of the steps a patch owes:
+# audit asks for what reviewing a body of code needs, triage for what deciding
+# an open bug report needs — whether it still happens, what a previous attempt
+# cost, what a maintainer would need before it can move — and operations for
+# what running an installation needs, booting the environment a repository
+# declares, importing its data, building its assets. Reviewing a report against
+# code and reviewing a diff are not the same brief. A task that describes any of
+# the three gets that shape without stating the type.
 changeType: string  # optional
 ```
 

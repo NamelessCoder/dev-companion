@@ -1,15 +1,21 @@
-# typo3_gerrit_lookup returns the patch set but not the refspec to fetch it with
+# Give the gerrit answer the ref that fetches the patch set it names
 
 **Serves:** feedback/2026-08-08-224354-typo3-gerrit-lookup-returns-the-patch-set-but.md
-**Priority:** low
+**Priority:** normal
 **Branch:** todo/typo3-gerrit-lookup-returns-the-patch-set-but
 **Claimed:** 2026-08-08
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/feedback/judging.md` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+Judged on 2026-08-09 as `D-ANS-068`: step 2, delivery. The ref form is in
+`knowledge/documents/core/contribution/gerrit-workflow.md`, it reached neither
+session that needed it, and every input to it is already in the answer.
+
+Next: `GerritLookup` gains a field per change entry carrying
+`refs/changes/<last two digits>/<number>/<patch set>` and the review server URL
+it is fetchable over, null where `patchSet` is `0`. The `outputSchema()` gains
+it, `tests/Contract/` holds it on a hit and on a miss, and `bin/cli tools:index`
+is rerun where the description moves. Two things are unmeasured and belong to
+the step: what a change numbered below ten shards to, and whether the sharding
+is Gerrit's documented rule rather than a property of this instance.
+
+`feedback/2026-08-08-224352` reports the same shape from a triage. This card
+serves only the feedback named above.

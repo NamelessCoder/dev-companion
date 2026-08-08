@@ -98,6 +98,65 @@ final class ChangelogLookupTest extends TestCase
      * that entry writes: the `:php:` role of 13.0, the single backticks of 7.1,
      * and a feature that only mentions the class in passing.
      */
+    /**
+     * The only entry that carries the word is in a system extension the query
+     * never mentioned, and the answer says so.
+     *
+     * `extendToSubpages` is the TCA column and the natural word for inherited
+     * frontend access restriction, and the changelog answers it with one 12.0
+     * Breaking removing an Indexed Search option that happens to spell it. The
+     * answer is arguably correct — that area was never reworked, and a
+     * changelog records change events — but returned flat beside nothing it
+     * reads as evidence about the area (`feedback/2026-08-07-233553`).
+     */
+    #[Test]
+    public function anAnswerThatComesWholeFromOneSystemExtensionSaysSo(): void
+    {
+        Instance::discoverFrom($this->installationWithTheIndexedSearchEntry());
+
+        $answered = Registry::call('typo3_changelog_lookup', ['query' => 'extendToSubpages']);
+
+        self::assertSame(1, $answered->data['matchCount']);
+        self::assertStringContainsString('Every one of these is in ext:indexed_search', $answered->text);
+        self::assertStringContainsString('the place that happens to spell the word', $answered->text);
+
+        // Not where the caller asked about that extension. Word by word,
+        // because nobody types the key with its underscore.
+        $asked = Registry::call('typo3_changelog_lookup', ['query' => 'indexed search']);
+        self::assertSame(1, $asked->data['matchCount']);
+        self::assertStringNotContainsString('Every one of these is in', $asked->text);
+    }
+
+    /**
+     * And never for `ext:core`, which most of what the changelog records is in:
+     * "every one of these is in ext:core" is a statement about the corpus
+     * rather than about the query.
+     */
+    #[Test]
+    public function theCoresOwnTagIsNotSomebodyElsesSubject(): void
+    {
+        Instance::discoverFrom($this->installationWithTheImageGenerationEntries());
+
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'getTemporaryImageWithText']);
+
+        self::assertStringNotContainsString('Every one of these is in', $result->text);
+    }
+
+    private function installationWithTheIndexedSearchEntry(): string
+    {
+        $root = $this->composerProject();
+        $changelog = $root . '/vendor/typo3/cms-core/Documentation/Changelog/12.0';
+        mkdir($changelog, 0o777, true);
+        file_put_contents(
+            $changelog . '/Breaking-97530-IndexedSearchOptionSearchSkipExtendToSubpagesCheckingRemoved.rst',
+            "Breaking: #97530 - Indexed Search option searchSkipExtendToSubpagesChecking removed\n\n"
+            . "Description\n===========\n\nThe option has been removed.\n\n"
+            . ".. index:: TypoScript, NotScanned, ext:indexed_search\n",
+        );
+
+        return $root;
+    }
+
     private function installationWithTheImageGenerationEntries(): string
     {
         $root = $this->composerProject();

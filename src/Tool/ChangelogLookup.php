@@ -98,6 +98,64 @@ final class ChangelogLookup extends ReadOnlyTool
         ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy'], ['query']);
     }
 
+    /**
+     * The one system extension every match sits in, where the query never
+     * named it.
+     *
+     * `extendToSubpages` is the TCA column and the natural word for inherited
+     * frontend access restriction, and the changelog answers it with a single
+     * 12.0 Breaking removing an Indexed Search option that happens to spell it.
+     * The answer is arguably correct — that area was never reworked, and a
+     * changelog records change events — but a session that started from the
+     * column name and stopped there reads one hit as evidence about the area
+     * (`feedback/2026-08-07-233553`).
+     *
+     * Only where the query does not name it, because a caller asking about
+     * indexed search is answered by `ext:indexed_search` entries and told
+     * nothing by being reminded of it — matched a word at a time, since nobody
+     * types the key with its underscore.
+     *
+     * `ext:core` is never it. Most of what the changelog records is in there,
+     * so "every one of these is in ext:core" is a statement about the corpus
+     * rather than about the query.
+     *
+     * @param array<int, array<string, mixed>> $entries
+     */
+    private static function oneSystemExtension(array $entries, string $query): ?string
+    {
+        if ($entries === []) {
+            return null;
+        }
+
+        $only = null;
+        foreach ($entries as $entry) {
+            $tags = array_values(array_filter(
+                array_map('strval', $entry['tags'] ?? []),
+                static fn(string $tag): bool => str_starts_with($tag, 'ext:'),
+            ));
+            // An entry in two of them is a change across system extensions and
+            // says nothing about the query being answered by the wrong one.
+            if (count($tags) !== 1 || ($only !== null && $only !== $tags[0])) {
+                return null;
+            }
+            $only = $tags[0];
+        }
+
+        $key = mb_strtolower(substr((string) $only, 4));
+        if ($key === '' || $key === 'core') {
+            return null;
+        }
+
+        $asked = mb_strtolower($query);
+        foreach (explode('_', $key) as $word) {
+            if (!str_contains($asked, $word)) {
+                return $only;
+            }
+        }
+
+        return null;
+    }
+
     public static function answer(array $args): ToolResult
     {
         $query = trim((string) ($args['query'] ?? ''));
@@ -321,6 +379,16 @@ final class ChangelogLookup extends ReadOnlyTool
             $lines[] = 'No entry is named after that, so these are the ones carrying it inside the file — in the '
                 . 'title as it is stated, or as an identifier their text writes. Naming it is not the same as '
                 . 'being about it: the title says what each one changed.';
+        }
+        $only = self::oneSystemExtension($entries, $query);
+        if ($only !== null) {
+            $lines[] = sprintf(
+                'Every one of these is in %s, which the query did not name. A changelog records change events, so an '
+                . 'area nobody has reworked has no entry at all — an answer that comes from one system extension is '
+                . 'usually the place that happens to spell the word rather than the subject. Ask again in the words '
+                . 'the changelog writes that subject in, which are not always the ones the code uses.',
+                $only,
+            );
         }
         if ($tag !== '') {
             $lines[0] = sprintf(

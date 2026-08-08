@@ -183,6 +183,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-017`][R-SKL-017] — The commit step is named where a skill's workflow ends in a change · held
 - [`R-SKL-018`][R-SKL-018] — A skill that hands over tells the session to invoke the next one · held
 - [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · held
+- [`R-SKL-020`][R-SKL-020] — A workflow that ends in public stops when the finding is a vulnerability · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -203,6 +204,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-017]: task-skills/skl-017-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
 [R-SKL-018]: task-skills/skl-018-a-skill-that-hands-over-tells-the-session-to-invoke-the-next-one.md
 [R-SKL-019]: task-skills/skl-019-every-published-skill-is-named-by-an-intent-the-brief-can-reach.md
+[R-SKL-020]: task-skills/skl-020-a-workflow-that-ends-in-public-stops-when-the-finding-is-a-vulnerability.md
 
 ### project
 

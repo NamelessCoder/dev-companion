@@ -169,6 +169,41 @@ Report what you did not establish beside what you did. A triage whose reading
 stopped at the code path says so, because the next person's work is exactly the
 part that was left.
 
+## What a previous attempt cost
+
+Where the issue was fixed once and the fix taken back out, the verdict is not
+the answer somebody is waiting for. "Still happens" and "was tried and reverted"
+are the same verdict and opposite propositions, and what separates them is why
+it was reverted and whether that reason still holds.
+
+The trigger is in the issue answer rather than in the reading. A relation marked
+`precedes` or `duplicates` carries its subject, and `reviews` names every change
+the journal mentions — so an issue whose history is a merged-then-reverted fix
+says so before the checkout is opened.
+
+6. Read the related issue the revert was filed under. The reason lives there and
+   nowhere else: the reverting commit says what was reverted, and the issue says
+   what it cost.
+7. `typo3_gerrit_lookup` with the change numbers `reviews` carries. Abandoned is
+   a verdict somebody wrote down, and the most recent attempt is the cheapest
+   description of what a fix looks like against a modern core.
+8. Find every production caller of the method the reverted patch touched, in the
+   checkout. A fix that scopes to one call site is a different proposition from
+   one that changes a path everything else goes through.
+9. Establish whether the path named in the revert still routes through that
+   method. A subsystem rebuilt since is what turns the old objection into
+   history.
+
+**A reverted core fix becomes re-attemptable when the shared consumer that made
+it expensive has been rebuilt, or when the caller set has shrunk to the one site
+the fix needs.** That is the form that transfers; neither half is readable off
+the issue, and both are one grep and one file in the checkout.
+
+What comes out of this is what a maintainer would need before the issue can
+move, which is what the answer owes. It is not a design and not a patch: naming
+the constraint the last attempt broke is the deliverable, and proposing the code
+that respects it is the next workflow's.
+
 ## Where the triage ends and the patch begins
 
 **When the verdict is that it still happens and you are asked to fix it, invoke

@@ -931,6 +931,49 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The triage skill's description promises "deciding whether a report is
+     * worth taking on, and for saying what a maintainer would need before it
+     * can move", and its body stopped at the verdict.
+     *
+     * The session that reported it had worked the procedure out and would work
+     * it out again: read the revert reason out of the related issue, grep for
+     * production callers of the method the reverted patch touched, and
+     * establish whether the path named in the revert still routes through it.
+     * On Forge 15984 that was one caller outside its own class, and the path
+     * that blew up in 2012 no longer touches the method at all.
+     *
+     * What makes it a step rather than a note is that the trigger is in the
+     * answer now: a relation carries its subject and `reviews` names the
+     * changes the journal mentions, so a merged-then-reverted history is
+     * visible before the checkout is opened (`R-ANS-029`).
+     */
+    #[Test]
+    public function aTriageSaysWhatThePreviousAttemptCostBeforeItHandsOver(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+
+        // The general form, which is the part that transfers off this issue.
+        self::assertStringContainsString(
+            'A reverted core fix becomes re-attemptable when the shared consumer that made it expensive has been '
+                . 'rebuilt, or when the caller set has shrunk to the one site the fix needs',
+            $skill,
+        );
+        // The trigger, read off the answer rather than out of the reading.
+        self::assertStringContainsString('A relation marked `precedes` or `duplicates` carries its subject', $skill);
+        self::assertStringContainsString('`reviews` names every change the journal mentions', $skill);
+        // And the boundary, because the step sits directly above the handoff
+        // and a skill that starts designing here has taken the next one's work.
+        self::assertStringContainsString('It is not a design and not a patch', $skill);
+        self::assertLessThan(
+            strpos($skill, 'Where the triage ends and the patch begins'),
+            strpos($skill, 'What a previous attempt cost'),
+            'the step stands after the handoff it feeds',
+        );
+    }
+
+    /**
      * The mirror of the one above, on the skill that writes the patch instead
      * of judging it. `D-SKL-008` put both calls into the review and recorded, as
      * its own evidence, that development routed to neither — and the session

@@ -21,9 +21,13 @@ works in, which is where a patch to review comes from.
   `main` at TYPO3 15.0.0-dev, PHP `^8.5` declared and 8.5 in DDEV, no extensions
   and no sites. The server is not a dependency there, so it is installed from
   this checkout the way `E-EXT` is — done on 2026-08-03, when the published
-  copies were a day behind the skills here, and again on 2026-08-06 after the
-  rename of `D-AUD-008`, which is what put the new binary in its `.mcp.json` and
-  replaced the state directory. **It is worked in**, which is what it plays:
+  copies were a day behind the skills here, again on 2026-08-06 after the rename
+  of `D-AUD-008`, which is what put the new binary in its `.mcp.json` and
+  replaced the state directory, and again on 2026-08-08. That last one took the
+  dead `typo3-cms-mcp` entry out of `.mcp.json` and the orphaned
+  `typo3-extension-release` out of `.claude/skills/`; neither the rename nor an
+  `update` had removed them, because the rename replaced the state directory the
+  removal reads from. **It is worked in**, which is what it plays:
   `origin/main..main` carried an unpushed core patch and `.claude/worktrees/` a
   branch with more when `REVIEW-03` was unblocked on 2026-08-03, so that review
   finds a diff without one being made for it. `git status` there is never empty
@@ -52,16 +56,25 @@ works in, which is where a patch to review comes from.
   `.mcp.json`. Repeat it after any skill change — the published skills are a
   copy and nothing reports it when they are older than the server. The generated
   ignore block in each `.gitignore` and the untracked `.mcp.json` are from that
-  install and stay. **None of them carries an install as of 2026-08-06**: no
-  `.mcp.json`, no published skills and no state directory in either checkout
-  that still exists, so a run in one starts by repeating the command above. What
-  `.mcp.json` names is the checkout the install was run from, so one run from a
-  worktree points the client at that worktree until the install is repeated from
-  here — which is what the run of 2026-08-04 did, and undid afterwards.
-  Repeating it in `/home/benji/projects/syntax` that day took the checkout from
-  five published skills to nine. The ignore block it had still names the five,
-  and the four that arrived carry a `.gitignore` of their own, so the block
-  being short of them leaves nothing untracked.
+  install and stay. **Both carry a current install as of 2026-08-08**, twelve
+  published skills each. What `.mcp.json` names is the checkout the install was
+  run from, so one run from a worktree points the client at that worktree until
+  the install is repeated from here — which is what the run of 2026-08-04 did,
+  and undid afterwards. Repeating it in `/home/benji/projects/syntax` that day
+  took the checkout from five published skills to nine. The ignore block it had
+  still names the five, and the ones that arrived carry a `.gitignore` of their
+  own, so the block being short of them leaves nothing untracked.
+
+    What 2026-08-08 had to repair in both is the same thing, and it is what an
+    `update` after a rename does not reach: the state directory is
+    `.typo3-dev-companion` now, so `update` read no state, reported nothing
+    installed and removed nothing, while the pre-rename artefacts stayed —
+    `syntax` still had `.typo3-cms-mcp/state.json`, both had a dead
+    `typo3-cms-mcp` entry naming the removed binary, and `syntax` still
+    published `typo3-extension-release`, a skill this server no longer has.
+    `install --agent=<client>` per client is what put each right;
+    `bootstrap_package` takes three of them — the generic one into
+    `.agents/skills`, `claude`, and `opencode`.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared
     `^13.4 || ^14.3`. **Static quality infrastructure is incomplete**:

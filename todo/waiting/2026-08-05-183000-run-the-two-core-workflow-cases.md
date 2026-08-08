@@ -47,18 +47,17 @@ conflicted and three still applied clean.
 
     curl -s "https://review.typo3.org/changes/?q=status:open+project:Packages/TYPO3.CMS+branch:main+before:2025-06-01&n=40&o=CURRENT_REVISION"
 
-`E-CORE` is `/home/benji/projects/typo3-cms`, and two things there are not
-ready. Its `.mcp.json` still names `typo3-cms-mcp` at `bin/typo3-cms-mcp`, a
-binary the rename of `D-AUD-008` removed, so a session opens on a server that
-cannot start — delete that entry, leaving the `typo3-dev-companion` one beside
-it, which is correct. And its tree is not clean: `.gitignore` carries the
-maintainer's own uncommitted core patch, the one begun there on 2026-08-08 that
-ignores the AI tools' directories. That is exactly what the workflow's first
-gate stops on, so a subject session would report it and end, and the conflict
-judgement would never be reached. Commit or shelve it first, or run in another
-core checkout that has its dependencies installed. What is ready is the rest:
-the published skills under `.claude/skills/` are byte-identical to `skills/`
-here, `typo3-core-patch-checkout` included.
+`E-CORE` is `/home/benji/projects/typo3-cms`, and one thing there is not ready.
+Its tree is not clean: `.gitignore` carries the maintainer's own uncommitted
+core patch, the one begun there on 2026-08-08 that ignores the AI tools'
+directories. That is exactly what the workflow's first gate stops on, so a
+subject session would report it and end, and the conflict judgement would never
+be reached. Commit or shelve it first, or run in another core checkout that has
+its dependencies installed. What is ready is the rest: the install was repeated
+from this checkout on 2026-08-08, so `.mcp.json` names `typo3-dev-companion`
+alone — the dead `typo3-cms-mcp` entry pointing at the binary `D-AUD-008`
+removed is gone — and the twelve published skills under `.claude/skills/` are
+byte-identical to `skills/` here, `typo3-core-patch-checkout` included.
 
 `bin/cli scenarios:contract SKILL-13` prints the prompt. It is pasted with the
 change named and nothing else:

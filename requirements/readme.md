@@ -184,6 +184,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-018`][R-SKL-018] — A skill that hands over tells the session to invoke the next one · held
 - [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · held
 - [`R-SKL-020`][R-SKL-020] — A workflow that ends in public stops when the finding is a vulnerability · held
+- [`R-SKL-021`][R-SKL-021] — Every description is written to the budget they share · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -205,6 +206,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-018]: task-skills/skl-018-a-skill-that-hands-over-tells-the-session-to-invoke-the-next-one.md
 [R-SKL-019]: task-skills/skl-019-every-published-skill-is-named-by-an-intent-the-brief-can-reach.md
 [R-SKL-020]: task-skills/skl-020-a-workflow-that-ends-in-public-stops-when-the-finding-is-a-vulnerability.md
+[R-SKL-021]: task-skills/skl-021-every-description-is-written-to-the-budget-they-share.md
 
 ### project
 

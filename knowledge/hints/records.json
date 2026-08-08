@@ -2,6 +2,7 @@
   {
     "id": "frontend-records",
     "title": "Records in the Frontend Without Extbase",
+    "scope": "extension",
     "domains": [
       "typoscript",
       "fluid",

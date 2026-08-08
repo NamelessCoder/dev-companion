@@ -61,6 +61,7 @@
   {
     "id": "page-variables-and-processors",
     "title": "What a Page Template Is Handed",
+    "scope": "extension",
     "domains": [
       "fluid"
     ],

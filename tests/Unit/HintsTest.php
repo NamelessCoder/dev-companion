@@ -618,6 +618,45 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A core path answered with a sitepackage hint is told whose work it is.
+     *
+     * Three core frontend `Classes/` paths drew `frontend-records` and
+     * `page-variables-and-processors` — TCA files of your own, `dataProcessing`
+     * on `PAGEVIEW`, menu processor options — and the answer said nothing about
+     * either being somebody else's obligation, so the session read them as
+     * material for a core patch and reported one partial hit in four.
+     *
+     * What is asserted here is the notice and not the rank. Measured on
+     * 2026-08-08, both sit below the two hints that answer the query, so
+     * neither is outranking anything; the corpus gap `frontend-access-restriction`
+     * fills was the finding, and the notice is what the answer still owed
+     * (`D-ANS-060`).
+     */
+    #[Test]
+    public function aHintBindingOutsideTheCoreSaysSoOnACorePath(): void
+    {
+        $result = Registry::call('typo3_hint_lookup', [
+            'task' => 'frontend link building and access restriction for menus',
+            'targetVersion' => '15',
+            'paths' => [
+                'typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php',
+                'typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php',
+                'typo3/sysext/core/Classes/Domain/Access/RecordAccessVoter.php',
+            ],
+        ]);
+
+        $ids = array_column($result->data['hints'], 'id');
+        // The hint that answers the question leads, which is what the corpus
+        // gap cost the reporting session.
+        self::assertSame('frontend-access-restriction', $ids[0]);
+
+        $scopes = array_column($result->data['hints'], 'scope', 'id');
+        self::assertSame('extension', $scopes['frontend-records'] ?? null);
+        self::assertSame('extension', $scopes['page-variables-and-processors'] ?? null);
+        self::assertStringContainsString('Binding for work outside the TYPO3 core', $result->text);
+    }
+
+    /**
      * Inherited frontend access restriction is asked for in three vocabularies
      * and none of them is the others.
      *

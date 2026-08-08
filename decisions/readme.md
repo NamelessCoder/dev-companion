@@ -38,6 +38,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### discovery
 
+- [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
@@ -49,6 +50,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-014]: discovery/dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md
 [D-DIS-013]: discovery/dis-013-the-record-holds-a-digest-of-what-was-published.md
 [D-DIS-011]: discovery/dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-012]: discovery/dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md

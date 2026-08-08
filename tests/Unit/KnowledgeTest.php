@@ -807,6 +807,42 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The two wrong moves this document exists to stop, held as sentences.
+     *
+     * `feedback/2026-08-08-224426` asked for one query and got both sections
+     * back, and reports each of them stopping an action already in flight: it
+     * would have written an `Important-58705-*.rst` "to be safe", which the
+     * changelog section names as a review defect, and it had run `git branch -r`
+     * one turn earlier and was about to read the release targets off it. Three
+     * more reports credit the changelog half — `2026-08-05-033954` and
+     * `2026-08-05-033924` in the archive, and `D-ANS-058`'s own evidence.
+     *
+     * The obligation itself is held twice over, by the ranking test above and by
+     * the section lead it asserts. What rested on nobody rewriting the file is
+     * the half that says what a reviewer may not demand, and the half that says
+     * the checkout does not answer the branch question — the sentences a
+     * summarising rewrite drops first, because both stop an action rather than
+     * enabling one.
+     */
+    #[Test]
+    public function theMovesTheCommitRulesStopAreStillStatedAsWellAsTheRules(): void
+    {
+        $body = Documents::read('core/contribution/commit-messages');
+
+        self::assertStringContainsString(
+            'Demanding one of a `BUGFIX` that removes nothing public is a',
+            $body,
+            'the changelog section states the obligation without the demand it refuses',
+        );
+        self::assertStringContainsString(
+            '`git branch -r` reaches',
+            $body,
+            'the release targets section does not say the checkout answers this wrongly',
+        );
+        self::assertStringContainsString('TYPO3_3-6', $body, 'the branch list is refused without what makes it wrong');
+    }
+
+    /**
      * The third of them, and the one that already returned the guide.
      *
      * It returns a cut, and `truncated: true` is the field a caller has no way

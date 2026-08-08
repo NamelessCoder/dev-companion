@@ -1181,6 +1181,41 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The three rules that decide whether a measurement measured anything, and
+     * the sentence that sends a reproduction to be shown red first.
+     *
+     * Five reports credit them and none of them rested on anything:
+     * `2026-08-08-224426`, which reported every suite result with what it
+     * inspected rather than with the SUCCESS banner and wrote its functional
+     * test red before touching `GifBuilder.php`, and `2026-08-05-033954`,
+     * `2026-08-07-065401`, `2026-08-07-130037` and `2026-08-07-233418` in the
+     * archive. The third bullet is itself the answer to the last of those, and
+     * a rewrite could have taken all four out without a failure.
+     *
+     * The block is one point in three costumes — an operation that silently did
+     * nothing, followed by a result that reads as evidence — so it is held as
+     * one test. `2026-08-08-224426` credits `references/base.md` for two of
+     * them; the installed copy is byte-identical to `skills/base.md` and
+     * carries neither, which is why they are looked for here.
+     */
+    #[Test]
+    public function aTriageIsHeldToWhatItsMeasurementsActuallyMeasured(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+
+        self::assertStringContainsString('It has to be seen failing before it is believed', $skill);
+        self::assertStringContainsString('A green that ran over no files is not a green.', $skill);
+        self::assertStringContainsString(
+            'confirm it inspected something — the count of tests or files it names',
+            $skill,
+            'the green is refused without what makes one real',
+        );
+        self::assertStringContainsString('Once the change is committed, `git stash` measures nothing.', $skill);
+    }
+
+    /**
      * `R-SKL-020`. Both core workflows end in public — one at a tracker entry,
      * the other at a pushed change — and neither carried a branch for the case
      * where the finding is a security defect. A workflow that does not name that

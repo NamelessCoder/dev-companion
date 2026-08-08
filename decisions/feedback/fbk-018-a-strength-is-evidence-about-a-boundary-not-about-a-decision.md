@@ -98,6 +98,12 @@ other side: what is the strength evidence of?
 - The text is not where an absence has to be said, because the clients that
   matter render the data. `R-ANS-002` assumes the opposite client, and no
   recorded run here shows which of the two a session is.
+- A keep-request answered with a quoting test refuses the rewrite that improves
+  a sentence as readily as the one that drops it. The helper those tests read a
+  skill through takes the line breaks out of the comparison and nothing takes
+  the wording out, so from then on the test is what an author has to argue with
+  rather than the file. That is the cost of the only form a keep has here, and
+  it is paid per sentence.
 
 ## Since then
 
@@ -790,3 +796,76 @@ answers, the guarded sentences were already in `knowledge/`, and what was added
 is that they stay. The feedback is closed by this commit and nothing is queued.
 The third **Wrong if** is what it bears on: what a closed strength leaves behind
 here is four assertions rather than a commit message.
+
+## Confirmed on 2026-08-09
+
+`feedback/2026-08-08-224426` is a keep-request for four answers, from a triage
+and fix of Forge #58705 in `/home/benji/projects/typo3-cms`. The first **Wrong
+if** did not fire. It names no workaround and no fact established elsewhere, and
+the one command it reports running — `git branch -r`, one turn before the answer
+arrived — is an action an answer stopped rather than one the session had to
+perform.
+
+The quotations are checked before the boundary is, re-run on 2026-08-09 through
+`bin/typo3-dev-companion` from that directory:
+
+- `typo3_test_run_guide` with the two `GifBuilder` paths at `targetVersion 15`
+  opens on **Before a suite can run**, above the suites rather than below them,
+  with both preconditions verbatim: the container, and the `vendor/` and `bin/`
+  of the directory the script is started from. Every command it then prints
+  carries `CI=true`.
+- `typo3_rule_lookup` with the feedback's own compound query returns
+  `Changelog Files` at 85% of the query terms and `Release Targets` at 51%, both
+  whole. The changelog sentence and the `git branch -r` one come back word for
+  word.
+- `typo3_forge_lookup` on 82228 answers `## Changes on review.typo3.org (1)`,
+  naming change 53819 at patch set 3, above three comments that are all Gerrit
+  pings. The description ends at the reporter's scenario, so it is the `reviews`
+  field that rules the issue out, which is what the report credits it with.
+
+**The credit for the fourth is misplaced, and this is the first time that could
+be settled against the file itself.** Both sentences the session attributes to
+`references/base.md` are in `skills/typo3-core-issue-triage/SKILL.md`. The copy
+installed in that checkout is byte-identical to `skills/base.md` and carries
+neither, and neither does the `references/checklist.md` beside it. The opening
+section of this entry could not say which `base.md` a session had read, because
+both installed copies had been rewritten after the report; here the published
+copy is unchanged and the comparison is exact. That is the fifth corpus in which
+a strength misplaces its credit, and none of the five was wrong about what it
+received.
+
+The boundary is **what a test can reach by name against what it can only reach
+by quoting**. The four split on that line exactly. The preconditions are a block
+of `knowledge/test-suite-hints.json` and `reviews` is a key
+`ForgeLookup::outputSchema()` requires, so both were held already —
+`KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`,
+`HintsTest::theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable`
+and `ForgeTest` on the extraction. The other two are sentences inside a document
+and a skill, reachable only as strings, and both rested on nobody rewriting the
+file.
+
+Two guards were written, which is the keep-request in the only form this
+repository has for one.
+`KnowledgeTest::theMovesTheCommitRulesStopAreStillStatedAsWellAsTheRules` holds
+the clause refusing the demand and the one refusing the branch list; the
+obligation beside them was held twice over already, and it is the refusing half
+that a summarising rewrite drops.
+`SkillTest::aTriageIsHeldToWhatItsMeasurementsActuallyMeasured` holds the
+triage's three measurement rules and the sentence that sends a reproduction to
+be shown red. Five reports credit that block — this one and `2026-08-05-033954`,
+`2026-08-07-065401`, `2026-08-07-130037` and `2026-08-07-233418` in the archive
+— and its third bullet is itself the answer to the last of those, so a rewrite
+could have taken out four sentences the corpus asks for without a failure. What
+that costs is now the fifth **Wrong if** above.
+
+Two of these sentences are asked for twice in one debrief.
+`feedback/2026-08-08-224455` reviewed Gerrit 95179 in a worktree of the same
+checkout and names the preconditions block and the `Changelog Files` section
+again, from a task that is not this one. It is in hand elsewhere; the guards
+here cover the sentences both name, and its own halves — the `cglGit` worktree
+note, the `core-tests` hint paragraph, the Forge issue that produced a finding —
+belong to its judgement.
+
+The feedback is closed by this commit and nothing is queued. No statement about
+TYPO3 was established here: the re-runs read this server's answers, and the
+attribution was settled by comparing two files on this machine.

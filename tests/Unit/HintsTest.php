@@ -618,6 +618,43 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * Inherited frontend access restriction is asked for in three vocabularies
+     * and none of them is the others.
+     *
+     * The changelog writes the subject as "access restricted pages", the error
+     * a visitor gets says "subsection", and the TCA column is
+     * `extendToSubpages`. A caller arriving with any of the three is holding
+     * the same question, and until 2026-08-08 the corpus answered none of them:
+     * of every hint it held, one carried `fe_group` and none carried
+     * `extendToSubpages`, `groupAccessGranted` or
+     * `accessGrantedForPageInRootLine`.
+     */
+    #[Test]
+    #[DataProvider('accessRestrictionQueries')]
+    public function everyWordingOfInheritedAccessRestrictionReachesTheSameHint(string $task): void
+    {
+        $result = Registry::call('typo3_hint_lookup', ['task' => $task, 'targetVersion' => '14']);
+
+        self::assertContains('frontend-access-restriction', array_column($result->data['hints'], 'id'), $task);
+        // The statement the whole subject turns on: one method walks the
+        // rootline and the other does not, and which one a caller reaches
+        // decides whether a restriction is inherited.
+        self::assertStringContainsString('accessGrantedForPageInRootLine()', $result->text);
+        self::assertStringContainsString('Subsection was found and not accessible', $result->text);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function accessRestrictionQueries(): array
+    {
+        return [
+            'the TCA column' => ['extendToSubpages does not work for links'],
+            'the changelog wording' => ['access restricted pages are linked but not served'],
+            'the error the visitor gets' => ['Subsection was found and not accessible'],
+            'the field a site builder set' => ['fe_group on a parent page is not inherited by subpages'],
+        ];
+    }
+
+    /**
      * The two sinks arrive as different words — one caller asks about output
      * escaping, the other about a query — and what they need is the same
      * reading. A hint reachable only through the phrasing it was written for

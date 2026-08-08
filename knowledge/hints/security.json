@@ -36,5 +36,36 @@
       "Database: the QueryBuilder quotes identifiers, not values. expr()->eq('field', $value) quotes the field name and puts $value into the statement exactly as it was handed over — createNamedParameter() is what makes it a bound parameter, and a LIKE value needs escapeLikeWildcards() before that or its wildcards are the caller's. The sink is the executed statement, so what decides the finding is how the value arrived there rather than which builder method was called.",
       "The cheapest evidence is the path executed rather than read: a functional test that renders the template or runs the query and asserts what came out answers the question in one run, and leaves the answer behind for the next reader. Where a value reaches a sink and no test covers that path, the missing coverage is a finding in its own right."
     ]
+  },
+  {
+    "id": "frontend-access-restriction",
+    "title": "Access Restricted Pages and extendToSubpages in the Frontend",
+    "domains": [
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "fe_group",
+      "extendToSubpages",
+      "extend to subpages",
+      "access restricted pages",
+      "access restriction",
+      "restricted page",
+      "showAccessRestrictedPages",
+      "typolinkLinkAccessRestrictedPages",
+      "RecordAccessVoter",
+      "groupAccessGranted",
+      "accessGrantedForPageInRootLine",
+      "subsection was found and not accessible",
+      "frontend user group",
+      "login page"
+    ],
+    "hints": [
+      "Two questions, two methods, and only one of them walks the rootline. `RecordAccessVoter::groupAccessGranted()` reads the record's own `fe_group` and returns true where it is empty, so a page restricted only because a parent carries `extendToSubpages` passes it. `RecordAccessVoter::accessGrantedForPageInRootLine()` is the inherited form: it grants access where `extendToSubpages` is 0 and otherwise runs the full enable-field check on that page.",
+      "Which of the two a caller uses is what decides whether a restriction is inherited. `PageInformationFactory` and `PageRepository::getDescendantPageIdsRecursive()` take the rootline-aware one, so serving a page and enumerating subpages honour `extendToSubpages`. `PageLinkBuilder::shouldModifyUrlForAccessRestrictedPage()` takes the other, so a link to a page restricted only through a parent is not recognised as restricted: TYPO3 emits an ordinary link and then refuses to serve it with `Subsection was found and not accessible`, which is `PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED`. That is an open core report rather than a misconfiguration, so check it before spending time on the site.",
+      "`config.typolinkLinkAccessRestrictedPages = <pid>` sends a link to a restricted page to that page instead — a login page — and `typolinkLinkAccessRestrictedPages_addParams` carries `###RETURN_URL###` and `###PAGE_ID###` into its query string. `linkAccessRestrictedPages = 1` on a single typolink is the per-link override that links straight to the restricted page. Both run through the check above, so both miss a page restricted only by inheritance.",
+      "A menu's `showAccessRestrictedPages = <pid>` is the same setting one layer up: `AbstractMenuContentObject::makeMenu()` sets `disableGroupAccessCheck` for the duration of the menu and copies the value into `typolinkLinkAccessRestrictedPages` for the links it builds, so the restricted pages appear in the menu and point at the login page. `showAccessRestrictedPages.addParams` and `.ATagParams` are the two sub-keys.",
+      "The core's own functional suite already models the constellation. `typo3/sysext/frontend/Tests/Functional/SiteHandling/SlugLinkGeneratorTest.php` carries data-provider rows commented out with `@todo Fails, not expanded to sub-pages`, over a fixture in `Fixtures/SlugScenario.yaml` that has a restricted page with a subpage under it. Reproducing the inheritance case there needs no new test and no new fixture."
+    ]
   }
 ]

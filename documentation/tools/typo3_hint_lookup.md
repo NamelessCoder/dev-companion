@@ -240,6 +240,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - record-page-title — The Title of a Record Detail Page (PHP)
 - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
 - security-sinks — Following a Value to Its Sink (PHP)
+- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
 - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
 - tca-schema-api — TCA Schema API (PHP)
 - formdata-providers — FormEngine Data Providers (PHP)
@@ -693,6 +694,11 @@ Data:
         {
             "id": "security-sinks",
             "title": "Following a Value to Its Sink",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-access-restriction",
+            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
             "category": "PHP"
         },
         {
@@ -1390,6 +1396,7 @@ Hints that exist in these domains, requestable by id:
 - record-page-title — The Title of a Record Detail Page (PHP)
 - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
 - security-sinks — Following a Value to Its Sink (PHP)
+- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
 - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
 - tca-schema-api — TCA Schema API (PHP)
 - formdata-providers — FormEngine Data Providers (PHP)
@@ -1756,6 +1763,11 @@ Data:
         {
             "id": "security-sinks",
             "title": "Following a Value to Its Sink",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-access-restriction",
+            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
             "category": "PHP"
         },
         {

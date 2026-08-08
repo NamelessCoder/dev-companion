@@ -87,3 +87,23 @@ session's client rendered no list either. What it adds is that the name is one
 step short of the handover, and where the imperative to read a page whole is
 written — two skills — it is still an address. That is
 [`D-ANS-070`](ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md).
+
+## Since then
+
+A third session reported `typo3_server_scope` unreached, on 2026-08-08, and it
+cost something the two above did not. Its review of Gerrit change 95179 states
+that a stdWrap property's documentation lives outside the core repository, as
+the reason no documentation change was owed (`feedback/2026-08-08-224516`).
+Re-run on 2026-08-09, `typo3_documentation_lookup` answers that query with the
+page the patch makes wrong, so the claim shipped and it was false.
+
+The **Decided** above is what that confirms, from the side it could not be
+argued from before. This session asked for the same fix the other two did — put
+the orientation tool into `skills/base.md` — and its own account names why that
+is not where the moment is: the question arose while a review surface was being
+disposed of, long after the order had moved on. So the lever is again the skill
+that owns the moment rather than a tool nobody invokes, and the base is
+unchanged.
+[`D-SKL-030`](../task-skills/skl-030-a-review-surface-names-the-lookup-that-can-answer-it.md)
+is that judgement. What is untouched here is this entry's own **Assumed**:
+nothing yet shows a session acting on a document named in an answer.

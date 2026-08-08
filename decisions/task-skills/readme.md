@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SKL-023`][D-SKL-023] — A published skill no intent names is one the brief cannot route to · 2026-08-08
+- [`D-SKL-024`][D-SKL-024] — A description names the task and leaves the steps to the body · 2026-08-08
 - [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
@@ -32,6 +33,7 @@ one is added.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-023]: skl-023-a-published-skill-no-intent-names-is-one-the-brief-cannot-route-to.md
+[D-SKL-024]: skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md
 [D-SKL-022]: skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: skl-021-triage-and-fetching-a-patch-are-two-workflows-that-end-before-somebody-elses-act.md
 [D-SKL-014]: skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md

@@ -2,8 +2,6 @@
 
 **Serves:** SKILL-13
 **Priority:** normal
-**Branch:** todo/run-the-two-core-workflow-cases
-**Claimed:** 2026-08-08
 **Waiting on:** somebody starting the subject session by hand, in a current
     client, who has not read this case. Nothing here can drive one. The two
     `claude` binaries a session on this machine can reach are 1.0.65 and 1.0.48,

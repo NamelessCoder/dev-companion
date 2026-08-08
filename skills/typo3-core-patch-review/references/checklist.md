@@ -32,7 +32,12 @@ word is unassessed.
   guide returned nobody started.
 - **Documentation and changelog.** What the diff obliges — the entry, its
   directory, its file name, its cross-references — and equally, whether an entry
-  is owed at all. Demanding one where the rules do not is a review defect.
+  is owed at all. Demanding one where the rules do not is a review defect. The
+  manual is the surface's other half and it sits in two places: a system
+  extension's own `Documentation/` is in this checkout and changes in the patch,
+  and the books `typo3_documentation_lookup` searches are outside the
+  repository. A page the diff makes false is a finding wherever it lives —
+  outside is where the follow-up goes, not a reason none is owed.
 - **Commit shape.** Subject, body, issue reference, target branch line, and the
   markers the change type requires.
 - **Review readiness.** Whether the patch can be understood from the issue and

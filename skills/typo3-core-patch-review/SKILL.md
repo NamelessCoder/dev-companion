@@ -123,6 +123,15 @@ Ask the owner of each obligation rather than recalling it:
   `git log --diff-filter=A` over the entry's own file names the commit that
   added it. The issue behind a security entry is not public, and an unavailable
   answer there is not an outage.
+- `typo3_documentation_lookup` where the diff changes behaviour a manual states.
+  The books it searches are published outside the core repository, so what is
+  owed there is a follow-up rather than part of this patch — which is the
+  finding rather than the reason to skip it. A review said the wording lived
+  elsewhere and concluded that no documentation change was owed, for a patch
+  that makes the documented sentence about `stdWrap.override` false. Whether the
+  patch owes a manual anything at all is `typo3_rule_lookup` asked for
+  `documentation`, and a system extension's own `Documentation/` is in the
+  checkout, where it changes in the patch itself.
 - **Sweep the checkout for the call sites before proposing an alternative.** A
   recommendation to a core reviewer needs precedent rather than taste, and
   whether an idiom is established in the core is precedent this server does not

@@ -38,6 +38,30 @@ documentation when rules depend on a specific branch or current policy.
   replaced the former acceptance suites.
 - Document tests that could not be executed and why.
 
+## Documentation
+
+- A patch changes documentation in two repositories, and only one of them is the
+  core. The core carries the changelog and the manuals of the system extensions,
+  below `typo3/sysext/<extension>/Documentation/`, and a change to what one of
+  those extensions does carries its manual pages in the same patch.
+- The manuals that document the framework itself — TYPO3 Explained, TypoScript
+  Explained, the TCA Reference and the Fluid ViewHelper Reference — are not in
+  the core repository. They are maintained in the TYPO3-Documentation GitHub
+  organisation and changed by a pull request there, never by the patch.
+- What the patch owes those manuals is the changelog entry.
+  `Documentation/Changelog/Howto.rst` names informing the documentation team as
+  one of the reasons the changelog exists, and points at the workflow that
+  carries the entries over. A change nobody wrote an entry for reaches them
+  through nothing.
+- A page living outside the core repository is therefore not a reason no
+  documentation change is owed. It is the reason the change is a follow-up
+  somewhere else, and a review that finds the page the patch makes false names
+  it so somebody can make that change.
+- A bug fix that makes a documented sentence false is not the casual one that
+  owes no entry. The casual bug fix is the one nothing outside the code has to
+  learn about, and `Important` is the type that carries the rest on a release
+  line the other three may not reach.
+
 ## Review Readiness
 
 - The change should be reproducible from the issue or task description.

@@ -65,6 +65,7 @@ final class SkillTest extends TestCase
             'typo3_gerrit_lookup',
             'typo3_rule_lookup',
             'typo3_changelog_lookup',
+            'typo3_documentation_lookup',
             'typo3_test_run_guide',
             'typo3_script_lookup',
             'typo3_commit_message_guide',
@@ -1421,6 +1422,43 @@ final class SkillTest extends TestCase
             'It names what was read, for the same reason a finding names what it collides with',
             $checklist,
         );
+    }
+
+    #[Test]
+    public function aReviewSurfaceNamesTheLookupThatCanAnswerIt(): void
+    {
+        // The surface was named for two things and listed one: every item under
+        // **Documentation and changelog** was the changelog's, so a session
+        // disposing of it found no manual in it and no lookup holding one. It
+        // shipped the claim that a stdWrap property's page lives outside the
+        // repository as the reason nothing was owed, and the page is one call
+        // away (`D-SKL-030`).
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString('typo3_documentation_lookup', $checklist);
+        // The half that is in the checkout and the half that is not, because the
+        // two are disposed of differently and the surface names one word.
+        self::assertStringContainsString(
+            'a system extension\'s own `Documentation/` is in this checkout and changes in the patch',
+            $checklist,
+        );
+        // What the shipped claim got wrong, in the words that answer it.
+        self::assertStringContainsString(
+            'outside is where the follow-up goes, not a reason none is owed',
+            $checklist,
+        );
+        self::assertStringContainsString(
+            'A review said the wording lived elsewhere and concluded that no documentation change was owed',
+            $skill,
+        );
+        // The obligation itself stays with the document that owns it, so the
+        // skill routes to it instead of restating what a patch owes a manual.
+        self::assertStringContainsString('`typo3_rule_lookup` asked for `documentation`', $skill);
     }
 
     #[Test]

@@ -246,7 +246,7 @@ Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) �
 
 Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
 - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 5 of its 9 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships.
-- core/contribution/rules — TYPO3 Core Contribution Rules: 3 of its 4 headings are not above — Contribution Flow, Code Style, Testing.
+- core/contribution/rules — TYPO3 Core Contribution Rules: 4 of its 5 headings are not above — Contribution Flow, Code Style, Testing, Documentation.
 
 The hints also cover this — call typo3_hint_lookup with the id:
 - documentation-changelog — Documentation and Changelog
@@ -267,7 +267,7 @@ Data:
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
             "coverage": 1,
-            "score": 99,
+            "score": 100,
             "truncated": false
         },
         {
@@ -345,7 +345,7 @@ This knowledge base covers:
 - Reporting a TYPO3 Vulnerability: Who Receives a Report, What the Report Carries, What Is Not Done With It, A Finding That Is Already Public
 - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Breaking Changes, Deprecations, Changelog Files
 - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
-- TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Review Readiness
+- TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
 - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
 - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, The Pre-Commit Hook, Script Notes
 - Setting Up an Extension Manual: Documentation/guides.xml, Documentation/Index.rst, The two conventional files, Rendering it before it is published
@@ -413,6 +413,7 @@ Data:
                 "Contribution Flow",
                 "Code Style",
                 "Testing",
+                "Documentation",
                 "Review Readiness"
             ]
         },

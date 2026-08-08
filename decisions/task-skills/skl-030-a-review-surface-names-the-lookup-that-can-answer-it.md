@@ -94,3 +94,18 @@ page is one call away, and the patch makes its wording false.
 - A fourth session reports `typo3_server_scope` unreached for a question no
   skill's surface owns. Then the moment is not the surface, and the base is back
   on the table.
+
+## Since then
+
+The second question this entry left open — whether what a patch owes the manual
+is written down anywhere — was answered on 2026-08-09 and the answer is a rule,
+now `## Documentation` in `knowledge/documents/core/contribution/rules.md`. The
+core repository carries the changelog and the manuals of the system extensions,
+and a patch changes both itself; the four books this lookup searches are
+maintained in the TYPO3-Documentation organisation and changed by a pull request
+there. What the patch owes them is the changelog entry, which
+`Documentation/Changelog/Howto.rst` names as the channel that informs the
+documentation team, identically on 12.4, 13.4, 14.3 and `main`. So the claim the
+review shipped was half right and drew the wrong conclusion from it: outside the
+repository is where the follow-up goes rather than a reason none is owed. The
+routing is `R-SKL-022`.

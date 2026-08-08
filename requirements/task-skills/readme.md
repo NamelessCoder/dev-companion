@@ -25,7 +25,7 @@ when it is added.
 - [`R-SKL-016`][R-SKL-016] — The assessment before a core patch reads the issue and the review server · held
 - [`R-SKL-017`][R-SKL-017] — The commit step is named where a skill's workflow ends in a change · held
 - [`R-SKL-018`][R-SKL-018] — A skill that hands over tells the session to invoke the next one · held
-- [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · **open**
+- [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · held
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md

@@ -9,8 +9,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class SkillTest extends TestCase
@@ -1337,6 +1339,70 @@ final class SkillTest extends TestCase
                 $intent . ' routes to ' . $skill . ', which this server does not publish',
             );
         }
+    }
+
+    /**
+     * The call the hole was found on, with the session's own arguments.
+     *
+     * Two things had to be true for it to answer `typo3-extension-conformance`.
+     * No intent named `typo3-core-issue-triage`, so nothing could match the
+     * work; and "Triage an old open core bug report" carried none of the
+     * markers that say core, so every intent that did match answered with its
+     * extension side — in a checkout `typo3_project_describe` had reported one
+     * call earlier as `core-checkout` (`D-SKL-023`). The task names the core as
+     * a tracker rather than as a patch, which is what the work ending before a
+     * patch does.
+     */
+    #[Test]
+    public function aCoreTriageReachesTheSkillThatOwnsItWithoutNamingAPath(): void
+    {
+        $answer = Registry::call('typo3_task_guide', [
+            'task' => 'Triage an old open core bug report: establish whether it still reproduces against this checkout',
+            'changeType' => 'audit',
+            'targetVersion' => '15',
+            'paths' => [],
+        ])->data;
+
+        self::assertSame('core', $answer['scope']);
+        self::assertContains('typo3-core-issue-triage', $answer['skills']);
+        self::assertNotContains('typo3-extension-conformance', $answer['skills']);
+    }
+
+    /**
+     * The other direction, which is the one that fails without saying so.
+     *
+     * A client selects a skill on its description and `typo3_task_guide`
+     * selects one on the intents, so a skill in the first and absent from the
+     * second is reachable only by a caller who already knew it existed. What
+     * the guide answers such a task with is the nearest intent that did match —
+     * a different workflow, confidently named. A core triage was answered
+     * `skills: ["typo3-extension-conformance"]` that way, with a patch-review
+     * checklist, inside a checkout reported as `core-checkout` (`D-SKL-023`).
+     *
+     * A draft is not in this set. `Installer::skills()` is what the server
+     * publishes, and a draft reachable by routing is one nobody chose — which
+     * is the exemption this check has and the only one.
+     */
+    #[Test]
+    public function everyPublishedSkillIsNamedByAnIntent(): void
+    {
+        $named = [];
+        foreach (TaskIntents::load() as $intent) {
+            foreach ([$intent['skill'], $intent['skillCore']] as $skill) {
+                if ($skill !== '') {
+                    $named[$skill] = true;
+                }
+            }
+        }
+
+        // All of them, because one at a time names the skill somebody added
+        // last and the list says how far the routing has fallen behind the
+        // directory.
+        self::assertSame(
+            [],
+            array_values(array_diff(Installer::skills(), array_keys($named))),
+            'published and named by no intent, so typo3_task_guide cannot route a task to it',
+        );
     }
 
     #[Test]

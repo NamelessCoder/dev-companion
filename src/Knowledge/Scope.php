@@ -81,6 +81,12 @@ enum Scope: string
     private const CORE_WORK = [
         'typo3/sysext/', 'gerrit', 'change-id', 'review.typo3.org', 'forge.typo3.org',
         'typo3 core', 'core patch', 'core contribution',
+        // The work that ends before a patch names the core as a tracker and a
+        // checkout rather than as a patch. "Triage an old open core bug report"
+        // carried none of the three above, so a triage in a checkout
+        // `typo3_project_describe` had just called `core-checkout` was answered
+        // with the extension side of every intent it matched (`D-SKL-023`).
+        'core issue', 'core bug', 'core checkout', 'core backlog', 'core tracker',
     ];
 
     /**

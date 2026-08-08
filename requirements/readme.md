@@ -117,7 +117,8 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-026`][R-ANS-026] — A path names the subsystem, and a hint from another one does not answer · held
 - [`R-ANS-027`][R-ANS-027] — An answer that cannot separate two causes says so in the answer · held
 - [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · held
-- [`R-ANS-029`][R-ANS-029] — An answer that names a record says enough of it to judge whether to open it · **open**
+- [`R-ANS-029`][R-ANS-029] — An answer that names a record says enough of it to judge whether to open it · held
+- [`R-ANS-030`][R-ANS-030] — A bound on an answer is asked for and never applied by default · held
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -149,6 +150,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-027]: answers/ans-027-an-answer-that-cannot-separate-two-causes-says-so-in-the-answer.md
 [R-ANS-028]: answers/ans-028-an-answer-that-names-a-document-says-how-to-read-it-whole.md
 [R-ANS-029]: answers/ans-029-an-answer-that-names-a-record-says-enough-of-it-to-judge-whether-to-open-it.md
+[R-ANS-030]: answers/ans-030-a-bound-on-an-answer-is-asked-for-and-never-applied-by-default.md
 
 ### documentation
 
@@ -180,7 +182,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-016`][R-SKL-016] — The assessment before a core patch reads the issue and the review server · held
 - [`R-SKL-017`][R-SKL-017] — The commit step is named where a skill's workflow ends in a change · held
 - [`R-SKL-018`][R-SKL-018] — A skill that hands over tells the session to invoke the next one · held
-- [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · **open**
+- [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md

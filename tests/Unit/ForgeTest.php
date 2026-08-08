@@ -285,6 +285,44 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * The journal is the most valuable thing in the payload and it is also why
+     * a second issue cannot be afforded, and neither half is wrong
+     * (`D-ANS-064`). So the bound is asked for: a caller reading one issue
+     * keeps exactly what it had.
+     */
+    #[Test]
+    public function theJournalComesBackWholeUnlessACallerAsksForLessOfIt(): void
+    {
+        $forge = new Forge(fn(): string => (string) json_encode(['issue' => self::REVIEWED]));
+
+        $issue = $forge->issue('15984')['issue'];
+
+        self::assertCount(4, $issue['notes']);
+        self::assertSame(4, $issue['noteCount']);
+        self::assertSame(2, $issue['botNoteCount']);
+    }
+
+    /**
+     * The patch-set pings are half the volume of 14858 and carry nothing a
+     * reader was going to use — the change numbers in them are a field of their
+     * own by the time they are dropped.
+     */
+    #[Test]
+    public function thePingsAreWhatALimitedReaderDropsAndTheChangesSurviveThem(): void
+    {
+        $forge = new Forge(fn(): string => (string) json_encode(['issue' => self::REVIEWED]));
+
+        $issue = $forge->issue('15984', 'people')['issue'];
+
+        self::assertSame(['Steffen Kamper', 'Markus Klein'], array_column($issue['notes'], 'author'));
+        // The total is what the issue carries and not what came back, so the
+        // two counts together say what was dropped.
+        self::assertSame(4, $issue['noteCount']);
+        self::assertSame(2, $issue['botNoteCount']);
+        self::assertSame([1186, 2545], array_column($issue['reviews'], 'change'));
+    }
+
+    /**
      * `review.typo3.org/#q,…+topic:3129,n,z` names a topic. Matching digits
      * anywhere in a review URL would report it as change 3129, which is a
      * change that exists and is about something else.

@@ -26,8 +26,8 @@ Answers from [`network`](answer-sources.md#network).
 
 ```yaml
 # Forge issue number, with or without the leading #, for example "110348". Reads
-# that one issue whole, comments included. A call carries issue, query or open,
-# never two of them.
+# that one issue whole, comments included — narrow those with notes when
+# reading many. A call carries issue, query or open, never two of them.
 issue: string  # optional
 # Words to search the tracker for, for example "image cache busting". Answers
 # the issues whose text matches them — which is how a duplicate nobody has
@@ -47,6 +47,17 @@ query: string  # optional
 # Postponed are all in it. Narrow with tracker, createdBefore and updatedBefore.
 # A call carries issue, query or open, never two of them.
 open: string  # optional
+# One of: all, people. Which comments come back with an issue. "all" is every
+# one of them and is what you want when reading a single issue — the comments
+# are where the decision is, and on a report worth reading the one that settles
+# it is regularly the last of sixteen. "people" drops the patch-set pings a
+# review bot wrote, which on some issues is half the volume and carries nothing
+# a reader was going to use; the change numbers in them are lifted into reviews
+# either way, so nothing is lost by it. Ask for it when sweeping candidates,
+# where the cost of reading ten issues is what decides whether the comments get
+# read at all. How many were dropped is answered whichever you ask for. Narrows
+# issue and is ignored by query and open.
+notes: string  # optional
 # One of: Bug, Feature, Major Feature, Support, Task, Story, Suggestion,
 # Impediment, Epic, Work Package, Topic. Only issues filed under this tracker,
 # for example "Bug". Worth setting before reading a set: an old Bug and an old
@@ -194,6 +205,11 @@ issue:
       url: string
   # How many comments the issue carries in total.
   noteCount: integer
+  # How many of those a review bot wrote, which notes: "people" is what drops.
+  # Answered whichever way notes was asked, so a journal full of patch-set pings
+  # answering zero here is the list of bot names gone stale rather than an issue
+  # nobody pushed a patch for.
+  botNoteCount: integer
   # The most recent comments, oldest first. A closure, a reassignment and a "we
   # will not do this" are here rather than in the description.
   notes:
@@ -324,6 +340,7 @@ Data:
             }
         ],
         "noteCount": 3,
+        "botNoteCount": 2,
         "notes": [
             {
                 "author": "Gerrit Code Review",
@@ -760,6 +777,7 @@ Data:
             }
         ],
         "noteCount": 15,
+        "botNoteCount": 3,
         "notes": [
             {
                 "author": "Benni Mack",
@@ -835,6 +853,200 @@ Data:
                 "author": "Benjamin Kott",
                 "on": "2026-08-06T20:15:08Z",
                 "note": "Applied in changeset commit:b406a9416431d1945756ce418d9c3726844f5325."
+            }
+        ]
+    },
+    "results": [],
+    "unavailable": null
+}
+```
+
+### forge: an issue without the patch-set pings
+
+Called with:
+
+```json
+{
+    "issue": "14858",
+    "notes": "people"
+}
+```
+
+Text:
+
+```
+#14858 extended clipboard: setCopyMode can`t be set to copy by default
+Bug · New · priority Should have · https://forge.typo3.org/issues/14858
+Assigned to nobody.
+Target version: Candidate for patchlevel
+Reported against TYPO3 8, PHP 7.2 — which is what the reporter had, not what it still reproduces on.
+Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features
+Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements"
+
+## Reported
+Hi,
+
+I couldn`t find any TCAdefaults or other TSconfig option to switch the copy mode of the extended clipboard to copy by default.
+
+At the moment the default is "move" which can be very annoying.
+
+Please add the possibility to choose the default behaviour of the "setCopyMode" button.
+
+Thanks,
+Sacha
+
+
+
+
+(issue imported from #M1277)
+
+## Changes on review.typo3.org (2)
+Named in the comments below and lifted out of them. What state one is in now is a typo3_gerrit_lookup call — pass the number as change, or the Change-Id, which is what survives a rebase onto another branch. A comment says what was true the day it was written.
+- change 38419 · patch set 3 · named 2015-04-01 · https://review.typo3.org/c/38419
+- change 70962 · patch set 5 · named 2023-01-14 · https://review.typo3.org/c/70962
+
+## Comments (8 of 16, oldest first)
+What was decided is here rather than above.
+8 of them a review bot wrote and they were dropped. The changes they named are above. Ask for notes "all" to read them; a count of 0 on an issue with patch-set pings means this filter does not know the bot that wrote them.
+
+**Sebastian Kurfuerst**, 2005-10-22T19:07:47Z
+This issue is more complicated than it seems, because there setting for "move" is empty - and there is no easy condition to find out whether the default should apply or not. I will have a deeper look into it.
+Greets, Sebastian
+
+**Sebastian Kurfuerst**, 2005-10-23T20:16:15Z
+this issue is not so easy to fix and I don't see a nice solution at the moment. A patch is welcome, but currently I cannot have a deeper look into it.
+Greets, Sebastian
+
+**Oliver Hader**, 2011-09-19T12:55:23Z
+Should be a UserTS configuration and maybe an additional setting in the user preferences.
+
+**Gabriel Kaufmann TYPOworx GmbH | NewMedia**, 2013-04-11T09:11:03Z
+Is there anything new for the TYPO3 4.6 oder 4.7 Tree?
+
+**Tilo Baller**, 2015-10-21T15:28:17Z
+What was the reason for abandoning the patch in review and what is the current progress of this feature?
+
+I got several requests from customers for adjusting the default behaviour to 'copy' instead of 'move'.
+
+**Daxboeck no-lastname-given**, 2018-06-19T14:18:23Z
+I did now ask my developers to create a patch as the default of "move" when someone selects the 2nd or 3rd clipboard is very annoying.
+It is against a thought of safety, it is against common sense.
+I just had too many cases where by accident stuff has been moved instead of copied.
+"copy" must be the default, there should be no doubt about it.
+
+**Sybille Peters**, 2023-01-14T19:27:42Z
+Patch https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962 was abandoned.
+
+**Benni Mack**, 2026-01-23T08:30:36Z
+Summarizing the current state:
+
+- Currently, the option is set to "move" hardcoded without any possibility to change this.
+- Right now, this is debateble is the setCopyMode should be "copy" or "move"
+- If this should be configurable, then we need a new option, making this not a bug, but actually a feature
+```
+
+Data:
+
+```json
+{
+    "status": "answered",
+    "source": "https://forge.typo3.org",
+    "url": "https://forge.typo3.org/issues/14858.json?include=journals,relations,attachments",
+    "query": "",
+    "total": 0,
+    "categories": [],
+    "categoriesUsed": [],
+    "issue": {
+        "id": 14858,
+        "subject": "extended clipboard: setCopyMode can`t be set to copy by default",
+        "status": "New",
+        "tracker": "Bug",
+        "priority": "Should have",
+        "assignedTo": "",
+        "targetVersion": "Candidate for patchlevel",
+        "typo3Version": "8",
+        "phpVersion": "7.2",
+        "createdOn": "2005-07-11T23:31:03Z",
+        "updatedOn": "2026-01-23T08:30:36Z",
+        "url": "https://forge.typo3.org/issues/14858",
+        "description": "Hi,\r\n\r\nI couldn`t find any TCAdefaults or other TSconfig option to switch the copy mode of the extended clipboard to copy by default.\r\n\r\nAt the moment the default is \"move\" which can be very annoying.\r\n\r\nPlease add the possibility to choose the default behaviour of the \"setCopyMode\" button.\r\n\r\nThanks,\r\nSacha\r\n\r\n\r\n\r\n\r\n(issue imported from #M1277)",
+        "relations": [
+            {
+                "issue": 90676,
+                "relation": "relates",
+                "subject": "Clipboard related bugs and features",
+                "tracker": "Epic",
+                "status": "Accepted",
+                "url": "https://forge.typo3.org/issues/90676"
+            },
+            {
+                "issue": 70759,
+                "relation": "duplicates",
+                "subject": "Changing the default clipboard option from  \"move elements\"  to \"copy elements\"",
+                "tracker": "Feature",
+                "status": "Closed",
+                "url": "https://forge.typo3.org/issues/70759"
+            }
+        ],
+        "attachments": [],
+        "reviews": [
+            {
+                "change": 38419,
+                "changeId": "",
+                "patchSet": 3,
+                "on": "2015-04-01T20:54:18Z",
+                "url": "https://review.typo3.org/c/38419"
+            },
+            {
+                "change": 70962,
+                "changeId": "",
+                "patchSet": 5,
+                "on": "2023-01-14T19:27:42Z",
+                "url": "https://review.typo3.org/c/70962"
+            }
+        ],
+        "noteCount": 16,
+        "botNoteCount": 8,
+        "notes": [
+            {
+                "author": "Sebastian Kurfuerst",
+                "on": "2005-10-22T19:07:47Z",
+                "note": "This issue is more complicated than it seems, because there setting for \"move\" is empty - and there is no easy condition to find out whether the default should apply or not. I will have a deeper look into it.\r\nGreets, Sebastian"
+            },
+            {
+                "author": "Sebastian Kurfuerst",
+                "on": "2005-10-23T20:16:15Z",
+                "note": "this issue is not so easy to fix and I don't see a nice solution at the moment. A patch is welcome, but currently I cannot have a deeper look into it.\r\nGreets, Sebastian"
+            },
+            {
+                "author": "Oliver Hader",
+                "on": "2011-09-19T12:55:23Z",
+                "note": "Should be a UserTS configuration and maybe an additional setting in the user preferences."
+            },
+            {
+                "author": "Gabriel Kaufmann TYPOworx GmbH | NewMedia",
+                "on": "2013-04-11T09:11:03Z",
+                "note": "Is there anything new for the TYPO3 4.6 oder 4.7 Tree?"
+            },
+            {
+                "author": "Tilo Baller",
+                "on": "2015-10-21T15:28:17Z",
+                "note": "What was the reason for abandoning the patch in review and what is the current progress of this feature?\r\n\r\nI got several requests from customers for adjusting the default behaviour to 'copy' instead of 'move'."
+            },
+            {
+                "author": "Daxboeck no-lastname-given",
+                "on": "2018-06-19T14:18:23Z",
+                "note": "I did now ask my developers to create a patch as the default of \"move\" when someone selects the 2nd or 3rd clipboard is very annoying.\r\nIt is against a thought of safety, it is against common sense.\r\nI just had too many cases where by accident stuff has been moved instead of copied.\r\n\"copy\" must be the default, there should be no doubt about it."
+            },
+            {
+                "author": "Sybille Peters",
+                "on": "2023-01-14T19:27:42Z",
+                "note": "Patch https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962 was abandoned."
+            },
+            {
+                "author": "Benni Mack",
+                "on": "2026-01-23T08:30:36Z",
+                "note": "Summarizing the current state:\r\n\r\n- Currently, the option is set to \"move\" hardcoded without any possibility to change this.\r\n- Right now, this is debateble is the setCopyMode should be \"copy\" or \"move\"\r\n- If this should be configurable, then we need a new option, making this not a bug, but actually a feature"
             }
         ]
     },

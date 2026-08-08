@@ -76,6 +76,17 @@ final class Forge
     private const NOTES = 15;
 
     /**
+     * The authors whose notes are a review server pinging the tracker.
+     *
+     * A list and not a rule: these are the two the core project has seen, and a
+     * bot nobody has named here passes the filter. Which is why the count comes
+     * back whether or not it was asked for — a journal full of patch-set pings
+     * answering zero filtered is this list gone stale, visible without reading
+     * the journal to find out.
+     */
+    private const BOTS = ['Gerrit Code Review', 'Mr. Hudson'];
+
+    /**
      * The most hits a search answers with. The order is the tracker's own and
      * nothing here ranks, so a caller who reaches the end of one asks again in
      * other words rather than deeper — which is the answer to a set that looks
@@ -125,7 +136,7 @@ final class Forge
      *
      * @return array{status: 'answered'|'empty'|'unavailable', url: string, issue: ?array<string, mixed>, cause: ?string}
      */
-    public function issue(string $issue): array
+    public function issue(string $issue, string $notes = 'all'): array
     {
         $number = ltrim(trim($issue), '#');
         $url = self::HOST . '/issues/' . rawurlencode($number) . '.json?include=journals,relations,attachments';
@@ -141,7 +152,7 @@ final class Forge
             return ['status' => 'unavailable', 'url' => $url, 'issue' => null, 'cause' => $answer['cause']];
         }
 
-        $found = self::issueOf($answer['part'], $number);
+        $found = self::issueOf($answer['part'], $number, $notes);
         $found['relations'] = $this->related($found['relations']);
 
         return [
@@ -626,10 +637,11 @@ final class Forge
      * @param array<string, mixed> $raw
      * @return array<string, mixed>
      */
-    private static function issueOf(array $raw, string $number): array
+    private static function issueOf(array $raw, string $number, string $wanted = 'all'): array
     {
         $journals = is_array($raw['journals'] ?? null) ? $raw['journals'] : [];
         $notes = [];
+        $written = [];
         foreach ($journals as $journal) {
             if (!is_array($journal)) {
                 continue;
@@ -640,12 +652,21 @@ final class Forge
                 // below already report in their current state.
                 continue;
             }
-            $notes[] = [
-                'author' => self::name($journal['user'] ?? null),
+            $author = self::name($journal['user'] ?? null);
+            $entry = [
+                'author' => $author,
                 'on' => is_string($journal['created_on'] ?? null) ? $journal['created_on'] : '',
                 'note' => $note,
             ];
+            $notes[] = $entry;
+            if (!in_array($author, self::BOTS, true)) {
+                $written[] = $entry;
+            }
         }
+        // Filtered before the slice, so dropping the pings is what lets more of
+        // what a person wrote fit inside the bound rather than only shortening
+        // the answer.
+        $shown = $wanted === 'people' ? $written : $notes;
 
         // A relation names both sides, and which of the two is the other issue
         // depends on who filed it. Taking one field blindly reports an issue as
@@ -688,7 +709,8 @@ final class Forge
             // a patch-set ping older than the bound is still a handle.
             'reviews' => self::reviews($notes),
             'noteCount' => count($notes),
-            'notes' => array_slice($notes, -self::NOTES),
+            'botNoteCount' => count($notes) - count($written),
+            'notes' => array_slice($shown, -self::NOTES),
         ];
     }
 

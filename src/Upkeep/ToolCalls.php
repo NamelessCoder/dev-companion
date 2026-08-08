@@ -144,6 +144,12 @@ final class ToolCalls
             'forge: an issue whose evidence hangs off it' => ['typo3_forge_lookup', [
                 'issue' => '88556',
             ]],
+            // Half of this journal is a review bot pinging the tracker, which
+            // is what a session sweeping candidates is paying for.
+            'forge: an issue without the patch-set pings' => ['typo3_forge_lookup', [
+                'issue' => '14858',
+                'notes' => 'people',
+            ]],
             'forge: no such issue' => ['typo3_forge_lookup', [
                 'issue' => '99999999',
             ]],

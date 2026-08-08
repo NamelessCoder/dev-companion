@@ -61,7 +61,7 @@ final class ForgeLookup extends ReadOnlyTool
                 'issue' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Forge issue number, with or without the leading #, for example "110348". Reads that one issue whole, comments included. A call carries issue, query or open, never two of them.',
+                    'description' => 'Forge issue number, with or without the leading #, for example "110348". Reads that one issue whole, comments included — narrow those with notes when reading many. A call carries issue, query or open, never two of them.',
                 ],
                 'query' => [
                     'type' => 'string',
@@ -72,6 +72,12 @@ final class ForgeLookup extends ReadOnlyTool
                     'type' => 'string',
                     'enum' => ['oldest', 'stale'],
                     'description' => 'Enumerate the core project\'s unresolved issues instead of reading one or matching words: "oldest" orders them by when they were filed, "stale" by how long nobody has touched them. The two answer different questions about one backlog — filed long ago is about the report, untouched for years is about the attention it got — and an issue that is both is the candidate a triage is looking for. Unresolved is the tracker\'s own set of open statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and Postponed are all in it. Narrow with tracker, createdBefore and updatedBefore. A call carries issue, query or open, never two of them.',
+                ],
+                'notes' => [
+                    'type' => 'string',
+                    'enum' => ['all', 'people'],
+                    'default' => 'all',
+                    'description' => 'Which comments come back with an issue. "all" is every one of them and is what you want when reading a single issue — the comments are where the decision is, and on a report worth reading the one that settles it is regularly the last of sixteen. "people" drops the patch-set pings a review bot wrote, which on some issues is half the volume and carries nothing a reader was going to use; the change numbers in them are lifted into reviews either way, so nothing is lost by it. Ask for it when sweeping candidates, where the cost of reading ten issues is what decides whether the comments get read at all. How many were dropped is answered whichever you ask for. Narrows issue and is ignored by query and open.',
                 ],
                 'tracker' => [
                     'type' => 'string',
@@ -159,13 +165,14 @@ final class ForgeLookup extends ReadOnlyTool
                         'url' => Schema::string('Where the file itself is. It answers without a credential, and reading it is the caller\'s: nothing here fetches or transcribes one.'),
                     ], ['filename', 'contentType', 'size', 'on', 'url']), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
+                    'botNoteCount' => Schema::integer('How many of those a review bot wrote, which notes: "people" is what drops. Answered whichever way notes was asked, so a journal full of patch-set pings answering zero here is the list of bot names gone stale rather than an issue nobody pushed a patch for.'),
                     'notes' => Schema::listOf(Schema::object([
                         'author' => Schema::string(),
                         'on' => Schema::string(),
                         'note' => Schema::string(),
                     ], ['author', 'on', 'note']), 'The most recent comments, oldest first. A closure, a reassignment and a "we will not do this" are here rather than in the description.'),
                 ],
-                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'reviews', 'noteCount', 'notes'],
+                'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'assignedTo', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'attachments', 'reviews', 'noteCount', 'botNoteCount', 'notes'],
             ],
             'results' => Schema::listOf(Schema::object([
                 'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
@@ -205,7 +212,7 @@ final class ForgeLookup extends ReadOnlyTool
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 15;
 
         if ($issue !== '') {
-            return self::read($issue);
+            return self::read($issue, is_string($args['notes'] ?? null) ? trim($args['notes']) : 'all');
         }
         if ($open !== '') {
             return self::enumerated(
@@ -243,9 +250,9 @@ final class ForgeLookup extends ReadOnlyTool
     }
 
     /** One issue, whole, which is what a number is asked for. */
-    private static function read(string $issue): ToolResult
+    private static function read(string $issue, string $notes): ToolResult
     {
-        $answer = (new Forge())->issue($issue);
+        $answer = (new Forge())->issue($issue, $notes);
 
         $data = [
             'status' => $answer['status'],
@@ -335,6 +342,14 @@ final class ForgeLookup extends ReadOnlyTool
             $lines[] = '';
             $lines[] = sprintf('## Comments (%d of %d, oldest first)', count($found['notes']), $found['noteCount']);
             $lines[] = 'What was decided is here rather than above.';
+            if ($notes === 'people') {
+                $lines[] = sprintf(
+                    '%d of them a review bot wrote and they were dropped. The changes they named are above. Ask for'
+                        . ' notes "all" to read them; a count of 0 on an issue with patch-set pings means this filter'
+                        . ' does not know the bot that wrote them.',
+                    $found['botNoteCount'],
+                );
+            }
             foreach ($found['notes'] as $note) {
                 $lines[] = '';
                 $lines[] = sprintf('**%s**, %s', $note['author'], $note['on']);

@@ -81,6 +81,8 @@ reviewed, and publishing is the one edit that takes the line out.
 
 - It is filed under the name it calls itself, with a description a client can
   route on — `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself`
+- It says which server it needs, in the field the standard has for it —
+  `SkillTest::everySkillSaysWhichServerItNeeds`
 - A draft says so in its own front matter until it is published —
   `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
 - It starts from the base before it reaches for anything of its own —
@@ -156,6 +158,21 @@ and no answer built on it ever says where it came from. The same holds for a
 package name: it is one word in a published file that no release of this server
 can correct, so it is written where a task reads it once — a reference — rather
 than where every task carries it.
+
+**Which server it needs.** `skills/` is also read by whoever copies it, and a
+copied skill has no server. `references/base.md` is written at publication, so
+the first instruction of that copy is a link to nothing and every lookup under
+it is a tool the session does not have. The guard in the base does not reach it:
+that one is written for a session whose tools do not answer, not for one whose
+base never arrived. So the skill says it in `compatibility`, the field the
+standard keeps for an environment requirement — one line, and the same line in
+every skill, because it is a fact about this package rather than about a
+workflow. That is also the one package name a skill may carry: the paragraph
+above is about what a *task* reaches for, and this is what the reader has to
+install before any of it works. No version goes in it. The front matter it sits
+in is written so a reader of the standard can parse it, which an unquoted `: `
+in a description does not — three of them broke the whole block for everything
+but this repository's own patterns.
 
 **Routing, in order.** What a skill adds to the base is a short list of tools in
 the order it needs them, recorded in the `ROUTING_SKILLS` map of `SkillTest`.

@@ -1,6 +1,7 @@
 ---
 name: typo3-development-installation
 description: Bring the local development installation of a TYPO3 extension, sitepackage or project package into existence, or boot and repair the one the repository already declares. Use when a repository has no runnable installation at all, when a fresh clone has to be started for the first time, when the container the repository declares has to be set up, started or fixed — DDEV where it declares one — when the install sequence has to run unattended, when demo content has to be seeded, when the site does not come up after an install, or when work touches the Composer root package, the local environment configuration, the install and seeding commands, or what the installation writes into the repository.
+compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
 # TYPO3 Development Installation

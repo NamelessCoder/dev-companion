@@ -1,6 +1,7 @@
 ---
 name: typo3-core-patch-review
-description: Review a TYPO3 core patch and say what is wrong, missing, or not ready for review, in priority order — your own change before you push it, or somebody else's patch set. Use for the current changes in a core checkout, a commit, a branch against the branch it targets, or a change fetched from Gerrit, and for its surfaces: removed or renamed API, tests, the changelog entry, the commit message, the issue reference, the target branch, and the project's own checks. Reviewing an extension, a sitepackage or a site project is a different workflow and belongs to the conformance skill.
+description: 'Review a TYPO3 core patch and say what is wrong, missing, or not ready for review, in priority order — your own change before you push it, or somebody else''s patch set. Use for the current changes in a core checkout, a commit, a branch against the branch it targets, or a change fetched from Gerrit, and for its surfaces: removed or renamed API, tests, the changelog entry, the commit message, the issue reference, the target branch, and the project''s own checks. Reviewing an extension, a sitepackage or a site project is a different workflow and belongs to the conformance skill.'
+compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
 # TYPO3 Core Patch Review

@@ -7,6 +7,8 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
@@ -1307,6 +1309,55 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A skill copied out of this repository arrives without the server it
+     * routes to. `references/base.md` is written at publication rather than
+     * kept here, so the first instruction of a copied skill is a link to
+     * nothing and every lookup under it is a tool the session does not have.
+     * The guard in the base is written for a session whose tools do not answer;
+     * this is a session whose base was never delivered, and nothing in the file
+     * it holds says so.
+     *
+     * `compatibility` is where the standard has a skill state an environment
+     * requirement — optional, one to 500 characters, read on agentskills.io on
+     * 2026-08-08. One line, and the same line in every skill, because what it
+     * states is a fact about this package rather than about a workflow.
+     *
+     * It is read out of parsed front matter rather than matched in the file,
+     * because a field a reader cannot parse is stated to nobody: three
+     * descriptions carried an unquoted `: ` and broke the whole block for
+     * every reader but this repository's own patterns.
+     */
+    #[Test]
+    public function everySkillSaysWhichServerItNeeds(): void
+    {
+        $stated = [];
+        foreach (self::skills() as $name => $skill) {
+            $compatibility = self::frontMatter($name, $skill)['compatibility'] ?? null;
+            self::assertIsString($compatibility, $name . ' does not say which server it needs');
+            $stated[$name] = $compatibility;
+        }
+        self::assertNotSame([], $stated);
+
+        $one = (string) reset($stated);
+        foreach ($stated as $name => $compatibility) {
+            self::assertSame($one, $compatibility, $name . ' says it in words of its own');
+            // The standard's own bound, and a reader refuses the file over it
+            // rather than truncating the line.
+            self::assertLessThanOrEqual(500, strlen($compatibility), $name . ' says more than the field holds');
+            self::assertStringContainsString(
+                'typo3-dev-companion install',
+                $compatibility,
+                $name . ' names the server without saying how it is installed',
+            );
+            self::assertStringContainsString(
+                'references/base.md',
+                $compatibility,
+                $name . ' leaves out the file a copied tree does not carry',
+            );
+        }
+    }
+
+    /**
      * A draft is a skill nobody may load yet, and its own front matter is what
      * says so: `status: draft`, above the name.
      *
@@ -2239,6 +2290,31 @@ final class SkillTest extends TestCase
             'typo3-core-patch-development',
             self::description('typo3-core-patch-checkout'),
         );
+    }
+
+    /**
+     * One skill's front matter, as a reader of the standard gets it rather than
+     * as a pattern here finds it.
+     *
+     * @return array<string, mixed>
+     */
+    private static function frontMatter(string $name, string $skill): array
+    {
+        self::assertSame(
+            1,
+            preg_match('/\A---\R(.*?)\R---\R/s', $skill, $block),
+            $name . ' has no front matter',
+        );
+
+        try {
+            $matter = Yaml::parse($block[1]);
+        } catch (ParseException $exception) {
+            self::fail($name . ' has front matter no reader of the standard can parse: ' . $exception->getMessage());
+        }
+        self::assertIsArray($matter, $name . ' has front matter that is not a mapping');
+
+        /** @var array<string, mixed> $matter */
+        return $matter;
     }
 
     private static function description(string $name): string

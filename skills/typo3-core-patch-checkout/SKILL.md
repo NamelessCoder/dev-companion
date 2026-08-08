@@ -1,6 +1,7 @@
 ---
 name: typo3-core-patch-checkout
 description: Get a patch that is under review on review.typo3.org into a core checkout and back out again. Use for trying out somebody's patch, for reading a change against the code it applies to, for checking whether a patch still applies at all, for picking one up to carry on with, for rebasing it onto the branch it targets, and for getting a checkout that is sitting on a fetched patch back onto an up-to-date main. This is about a change fetched from review; rebasing a commit you wrote yourself and have not pushed belongs to typo3-core-patch-development, which owns everything up to the push.
+compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
 # TYPO3 Core Patch Checkout

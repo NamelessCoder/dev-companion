@@ -98,11 +98,15 @@ reviewed, and publishing is the one edit that takes the line out.
 - It says what it owns — `SkillTest::everySkillStatesWhatItOwns`
 - Every `typo3://` resource it names is one this server serves —
   `SkillTest::everyResourceASkillNamesIsOneTheServerServes`
+- What it sends the session to read out of an answer is a key that answer
+  carries —
+  `SkillTest::everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead`
 
-All of them but the routing rule run over the skills directory rather than over
-a list, so a skill added later is held to them without anybody registering it
+All of them but the last two run over the skills directory rather than over a
+list, so a skill added later is held to them without anybody registering it
 anywhere — which is the point, because the list is the thing a new skill is
-written without ever seeing.
+written without ever seeing. The routing rule reads its list from
+`ROUTING_SKILLS`, and the one under it makes the calls the base fixes.
 `SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt` holds this
 table and that set to each other in both directions: a rule here with no test
 behind it, or a directory-wide assertion nobody wrote down, fails.
@@ -128,7 +132,7 @@ section headings in one line. Where such a clause carries a word a user would
 type, the word stays as a trigger rather than as a step. What names another
 skill stays whatever it looks like: a boundary is read before the choice and is
 the only thing that can send the task elsewhere.
-[`D-SKL-024`](../../decisions/task-skills/skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md)
+[`D-SKL-025`](../../decisions/task-skills/skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md)
 is the sweep that cut six of them, and nothing holds this either — which clause
 is a summary is a reading of the body, not a property of the file.
 
@@ -245,9 +249,14 @@ written from the documentation, and it is wrong in places no assertion knows to
 look. They are written down because that is all that can be done for them, and
 because the author who skips them is usually the one who has not read this page.
 
-And that a session **does** what a skill says. Every rule in the table is read
-off the file, which makes it a proxy: the wording is present and a
-reorganisation can leave it present while the behaviour goes.
+And that a session **does** what a skill says. Most of the table is read off the
+file, which makes it a proxy: the wording is present and a reorganisation can
+leave it present while the behaviour goes. One gap narrower than behaviour is
+checkable and is checked — a skill does not only name a tool, it says what to
+read out of the answer, and for the four calls the base fixes those keys are
+asserted on the answer the tool really returns
+([`D-SKL-025`](../../decisions/task-skills/skl-025-a-routed-tool-is-called-and-held-to-what-the-skill-sends-the-session-to-read.md)).
+What that leaves is prose going stale against a tool that kept every key.
 [`D-EVI-002`](../../decisions/evidence/evi-002-a-skill-crossing-is-read-rather-than-run.md)
 accepts that proxy for the skill crossing and says why no forward run will
 replace it. Everywhere else, what measures the behaviour is a case in

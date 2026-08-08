@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\DevCompanion\Installation\Icons;
+use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Fixture;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class SkillTest extends TestCase
@@ -218,6 +224,171 @@ final class SkillTest extends TestCase
         // One hop, like every other reference: the base is read, not followed
         // onward.
         self::assertStringNotContainsString('(references/', $base);
+    }
+
+    /**
+     * Every call the base fixes, held to what it sends the session to read out
+     * of the answer.
+     *
+     * The rest of the authoring contract is read off the file, which makes it a
+     * proxy: the wording stays where it is while the answer behind it moves.
+     * And a skill does not only name a tool — the base has a session read
+     * whether a declared command is a check, a change or unknown, the test
+     * layers and the source language each XLF declares, and the sentence that
+     * says whether the hint step is still owed. A tool that stopped reporting
+     * one of those fails nothing: the skill still names it,
+     * `everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder` still passes, and
+     * the session is sent to a key that is not there.
+     *
+     * So the four are called, in the order the base fixes them and threaded the
+     * way a session reads them — the extension key comes out of step 1, the
+     * hint id comes out of step 3. The two that need an installation are asked
+     * of the one this repository writes, which is what makes this answerable on
+     * any machine rather than on the author's (`D-SKL-025`).
+     */
+    #[Test]
+    public function everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead(): void
+    {
+        $base = self::flat((string) file_get_contents(Paths::root() . '/skills/base.md'));
+
+        Instance::discoverFrom(Fixture::write());
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
+        Icons::forget();
+
+        // Step 1: the installation, its two versions, the extensions that are
+        // the project's own, its sites, and the commands it declares.
+        $project = Registry::call('typo3_project_describe', [])->data;
+        self::assertArrayNotHasKey('unsupported', $project, 'the written installation could not be described');
+        foreach (['typo3Version', 'phpConstraint', 'extensions', 'sites', 'commands', 'guides'] as $key) {
+            self::assertArrayHasKey($key, $project, 'step 1 sends the session to read ' . $key);
+        }
+
+        // The marking a task told not to change files reads before it runs
+        // anything. The three words are the base's own, so what is held is that
+        // every command carries one of them: a fourth marking, or one renamed,
+        // makes that sentence false in every published copy of the base.
+        self::assertStringContainsString(
+            'marks each command it lists **check**, **change** or **unknown**',
+            $base,
+        );
+        self::assertNotSame([], $project['commands'], 'the installation declares no command to be marked');
+        foreach ($project['commands'] as $command) {
+            self::assertContains(
+                $command['runs'],
+                ['check', 'change', 'unknown'],
+                $command['command'] . ' is marked nothing the base names',
+            );
+        }
+
+        // What step 1 ends with, and what the base says each entry is worth:
+        // one typo3_rule_lookup by documentId, which is the only route to a
+        // whole procedure where the client renders no resource list. An id
+        // that stopped resolving there names a procedure this server carries
+        // and cannot hand over.
+        self::assertNotSame([], $project['guides'], 'step 1 ends without the procedures it says it ends with');
+        foreach ($project['guides'] as $guide) {
+            $document = Registry::call('typo3_rule_lookup', ['documentId' => $guide['id']])->data;
+            self::assertSame(
+                [$guide['id']],
+                array_column($document['matches'], 'documentId'),
+                $guide['id'] . ' is named as a whole procedure and is no documentId',
+            );
+        }
+
+        // Step 2: what the extension registers, and what it ships beside that.
+        $own = array_values(array_filter(
+            $project['extensions'],
+            static fn(array $extension): bool => $extension['origin'] === 'project',
+        ));
+        self::assertNotSame([], $own, 'step 1 reports no extension of the project\'s own for step 2 to describe');
+
+        $extension = Registry::call('typo3_extension_describe', ['extension' => $own[0]['key']])->data;
+        self::assertArrayNotHasKey('unsupported', $extension, $own[0]['key'] . ' could not be described');
+        // All four, present or absent: this installation ships no manual, no
+        // README and no test layer, so the keys being there on it is the half
+        // the base means by what an extension does *not* ship being answered
+        // too — the half no file listing gives you.
+        foreach (['manual', 'readme', 'tests', 'languageFiles'] as $artifact) {
+            self::assertArrayHasKey(
+                $artifact,
+                $extension['artifacts'],
+                'step 2 sends the session to read ' . $artifact,
+            );
+        }
+        self::assertNotSame([], $extension['artifacts']['languageFiles'], 'the installation ships no XLF to read');
+        foreach ($extension['artifacts']['languageFiles'] as $file) {
+            self::assertArrayHasKey(
+                'sourceLanguage',
+                $file,
+                $file['path'] . ' is reported without the source language the base has the session read off it',
+            );
+        }
+
+        // Step 3: the brief, and the sentence step 4 is owed or not on the
+        // strength of. This one stopped short of what the lookup matched.
+        $paths = ['typo3/sysext/backend/Classes/Controller/PageLayoutController.php'];
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => 'Add a backend module with icons and labels',
+            'paths' => $paths,
+            'changeType' => 'feature',
+        ]);
+        foreach (['skills', 'checks', 'checklist', 'hints', 'omittedHints'] as $key) {
+            self::assertArrayHasKey($key, $brief->data, 'step 3 sends the session to read ' . $key);
+        }
+        self::assertNotSame([], $brief->data['hints'], 'the paths this is measured on match no hint');
+        self::assertNotSame(
+            [],
+            $brief->data['omittedHints'],
+            'the paths this is measured on stopped truncating the brief',
+        );
+        // Named rather than counted, because naming them is what the base sends
+        // the session to fetch by id instead of repeating the query.
+        foreach ($brief->data['omittedHints'] as $omitted) {
+            self::assertStringContainsString(
+                $omitted['id'],
+                $brief->text,
+                $omitted['id'] . ' was left out of the brief and is named nowhere in it',
+            );
+        }
+
+        // The other branch of the same sentence, quoted off the base rather
+        // than off the class that prints it: the two have to be one sentence,
+        // or the base sends the session to read something it cannot find.
+        $carried = Registry::call('typo3_task_guide', [
+            'task' => 'Fix a bug in the data handler',
+            'paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
+            'changeType' => 'bugfix',
+        ]);
+        self::assertSame([], $carried->data['omittedHints'], 'the paths this is measured on stopped carrying them all');
+        $sentence = 'everything typo3_hint_lookup matches for these paths';
+        self::assertStringContainsString($sentence, $base, 'the base quotes no sentence for a brief that carried them all');
+        self::assertStringContainsString($sentence, $carried->text, 'a brief that carried them all does not say so');
+        self::assertStringNotContainsString($sentence, $brief->text, 'a brief that stopped short says it carried them all');
+
+        // Step 4: one query per subsystem with its concrete paths, and the id
+        // route step 3 sends the session down where the brief already spent the
+        // query.
+        $hints = Registry::call('typo3_hint_lookup', ['paths' => $paths])->data;
+        self::assertNotSame([], $hints['hints'], 'the subsystem step 4 is measured on matches no hint');
+
+        $left = $brief->data['omittedHints'][0]['id'];
+        $one = Registry::call('typo3_hint_lookup', ['id' => $left])->data;
+        self::assertSame(
+            [$left],
+            array_column($one['hints'], 'id'),
+            $left . ' is named as left behind and cannot be fetched by id',
+        );
+    }
+
+    /** Nothing after this reads the written installation, and nothing before it did. */
+    #[After]
+    public function forgetTheInstallation(): void
+    {
+        Instance::discoverFrom(null);
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
+        Icons::forget();
     }
 
     #[Test]

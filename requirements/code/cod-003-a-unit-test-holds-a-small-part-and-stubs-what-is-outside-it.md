@@ -17,7 +17,11 @@ rather than the test:
 
 - **Nothing is started.** No unit test runs a process, opens a socket, or waits
   on something being up. `tests/Smoke/` is where a subprocess is the subject,
-  and what it starts is this repository's own CLI.
+  and what it starts is this repository's own CLI. The one exception is the
+  installation `Upkeep\Fixture` writes: what starts there is `php` over files
+  this repository produced, so an answer only an installation can give is held
+  on every machine rather than on the author's. It takes nothing off the `PATH`,
+  which is what keeps the sentence above true of everything else.
 - **Nothing is arranged for on the machine either.** Writing an executable into
   a temporary directory and putting it on the `PATH` is still a dependency on
   that directory being writable, on `chmod`, and on a `/tmp` nobody mounted

@@ -569,6 +569,25 @@ final class Installer
     }
 
     /**
+     * That the entry just written is true on this machine and nowhere else.
+     *
+     * Every file it goes into is documented by its own client as the shared,
+     * committed one, and the command in it is an absolute host path. Naming a
+     * path relative to the project instead is not available: the MCP
+     * specification defines no working directory for a stdio server, and of the
+     * eleven clients only one documents the workspace as its default —
+     * `D-DIS-016`, with the table in `documentation/clients/installing.md`.
+     *
+     * So it is said rather than fixed, and said where the person who can act on
+     * it is looking. A DDEV project is the exception the sentence is withheld
+     * for: `ddev exec` supplies the working directory, so that entry names the
+     * path relative to the project root and shares as it stands.
+     */
+    private const HOST_SPECIFIC = 'The command in this entry is this checkout\'s absolute path, valid on '
+        . 'this machine only, while the file it is in is the one that client documents as shared and '
+        . 'committed. Add it to the project\'s .gitignore, or let each person run this install.';
+
+    /**
      * The step left, indented under the entry it belongs to.
      *
      * Under, rather than as a line of its own, because the run writes an entry
@@ -580,9 +599,18 @@ final class Installer
      */
     private function remaining(string $agent): string
     {
-        $remaining = self::REMAINING[$agent] ?? '';
+        $lines = array_filter([self::REMAINING[$agent] ?? '', $this->hostSpecific() ? self::HOST_SPECIFIC : '']);
 
-        return $remaining === '' ? '' : "\n  " . wordwrap($remaining, 74, "\n  ");
+        return implode('', array_map(
+            static fn(string $line): string => "\n  " . wordwrap($line, 74, "\n  "),
+            $lines,
+        ));
+    }
+
+    /** Whether the entry names this checkout rather than a path inside the project. */
+    private function hostSpecific(): bool
+    {
+        return $this->installedEntrypoint() === null || !is_file($this->project . '/.ddev/config.yaml');
     }
 
     private function installJsonConfiguration(

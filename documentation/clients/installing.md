@@ -329,6 +329,53 @@ finish. Where a session has the entry and still offers no `typo3_` tool,
 [checking that it came up](#checking-that-it-came-up) separates the two halves:
 a server that answers there is not the missing piece.
 
+### The entry names an absolute path, and why it cannot name a relative one
+
+The command in every entry is this server's absolute path on the machine the
+install ran on. That is a value one machine is right about, written into files
+their own clients document as the shared, committed one — and the alternative is
+worse rather than better, which is what the reading below established.
+
+A relative path would have to resolve against the working directory the client
+launches the process in. The MCP specification does not define one: the stdio
+transport is "the client launches the MCP server as a subprocess" and nothing
+about a directory. So it is each client's property, read on 2026-08-09 from the
+same pages as the section above.
+
+| Client     | Working directory                                     | Project root in `command`/`args`         |
+| ---------- | ----------------------------------------------------- | ---------------------------------------- |
+| VS Code    | `cwd`, "defaults to the workspace folder"             | `${workspaceFolder}`                     |
+| opencode   | `cwd`, relative paths "resolve from the workspace"    | none documented                          |
+| Codex      | `cwd`, "working directory to start the server from"   | not documented                           |
+| Cursor     | not documented                                        | `${workspaceFolder}`, in both fields     |
+| Claude Code| not documented, and advised against                   | needs `${CLAUDE_PROJECT_DIR:-.}`         |
+| Grok       | not documented                                        | `${VAR}` expands, no root variable       |
+| Amp        | not documented                                        | `${VAR}` for environment values only     |
+| Kiro       | not documented                                        | `${VAR}` shown for `env` only            |
+| Junie      | not documented                                        | not documented                           |
+| Zed        | not documented                                        | not documented                           |
+| Droid      | not documented                                        | expansion "does not apply to `command`, `args`, or `url`" |
+
+One client documents the workspace as the default, three offer a `cwd` to set,
+two resolve a variable that names the project root, and one refuses expansion in
+those fields outright. Claude Code is the sharpest of them: it sets
+`CLAUDE_PROJECT_DIR` in the spawned server's environment "so your server can
+resolve project-relative paths **without depending on the working directory**",
+and the same variable in a project-scoped `.mcp.json` "requires a default such
+as `${CLAUDE_PROJECT_DIR:-.}`" — which is the working directory again.
+
+So a relative entry would be wrong on the machine that wrote it for most of
+them, where an absolute one is at least right there. What the install does
+instead is say it, per client and at the terminal, beside the line reporting the
+entry — `D-DIS-016`. A DDEV project is the one case that already escapes this:
+`ddev exec` runs in the container's project root, so the entry names the path
+relative to it and shares cleanly.
+
+The sources are the same as the section above, plus
+[the MCP transports specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports),
+[VS Code's configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration)
+and [Cursor's MCP page](https://cursor.com/docs/context/mcp).
+
 ## In a DDEV project
 
 Run the installer inside DDEV:

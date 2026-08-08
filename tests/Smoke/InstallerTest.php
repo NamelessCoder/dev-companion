@@ -237,6 +237,62 @@ final class InstallerTest extends TestCase
         }
     }
 
+    /**
+     * The entry names this checkout, and every file it goes into is the one its
+     * client documents as shared and committed. A relative path is not
+     * available — the MCP specification defines no working directory for a
+     * stdio server and only one of the eleven clients documents the workspace
+     * as its default (`D-DIS-016`) — so the install says it instead, where the
+     * person who can act on it is looking.
+     */
+    #[Test]
+    public function anEntryTrueOnThisMachineAloneSaysSo(): void
+    {
+        $directory = $this->directory();
+
+        try {
+            $stderr = '';
+            $stdout = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stderr, $stdout), $stderr);
+
+            // Wrapped to the terminal before it is printed, so what is asserted
+            // is the sentence rather than where its line breaks fell.
+            $said = (string) preg_replace('/\s+/', ' ', $stdout);
+            self::assertStringContainsString('valid on this machine only', $said);
+            self::assertStringContainsString('.gitignore', $said);
+            // Beside what the client still needs rather than instead of it.
+            self::assertStringContainsString('reset-project-choices', $said);
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * A DDEV project is the one case that escapes it: `ddev exec` runs in the
+     * container's project root, so the entry names the path relative to it and
+     * is true wherever the repository is checked out.
+     */
+    #[Test]
+    public function aDdevEntryNamingTheProjectSaysNothingAboutThisMachine(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.ddev'));
+        file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+        $this->installEntrypoint($directory, 'vendor/bin');
+
+        try {
+            $stderr = '';
+            $stdout = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stderr, $stdout), $stderr);
+
+            $said = (string) preg_replace('/\s+/', ' ', $stdout);
+            self::assertStringNotContainsString('valid on this machine only', $said);
+            self::assertStringContainsString('reset-project-choices', $said, 'the client half is unchanged');
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
     #[Test]
     public function ddevProjectNamesTheEntrypointAtTheBinDirectoryItDeclares(): void
     {
@@ -638,7 +694,7 @@ final class InstallerTest extends TestCase
     }
 
     /** @param list<string> $arguments */
-    private function execute(string $directory, array $arguments, string &$stderr): int
+    private function execute(string $directory, array $arguments, string &$stderr, string &$stdout = ''): int
     {
         $process = proc_open(
             [PHP_BINARY, Paths::root() . '/bin/typo3-dev-companion', ...$arguments],
@@ -648,7 +704,7 @@ final class InstallerTest extends TestCase
         );
         self::assertIsResource($process);
         fclose($pipes[0]);
-        stream_get_contents($pipes[1]);
+        $stdout = (string) stream_get_contents($pipes[1]);
         $stderr = (string) stream_get_contents($pipes[2]);
         fclose($pipes[1]);
         fclose($pipes[2]);

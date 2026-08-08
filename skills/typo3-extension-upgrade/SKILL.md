@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-upgrade
-description: Carry a TYPO3 extension, sitepackage, or project package from the TYPO3 versions it supports today to another set — adding support for a new TYPO3 major without dropping the old one, dropping one that is no longer maintained, or replacing what a major deprecated or removed. Use when the request is to make a package run on a newer TYPO3 or PHP version, to find and fix what breaks in it, to widen or narrow its supported version range, to resolve version conflicts that block an update, or to prove that a package still works on every version it claims.
+description: 'Carry a TYPO3 extension, sitepackage or project package from the TYPO3 and PHP versions it supports today to another set: adding a new major, dropping one that is no longer maintained, replacing what a major deprecated or removed, and proving every version it claims.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 

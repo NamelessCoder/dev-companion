@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-documentation
-description: Create, update, or review documentation for a TYPO3 project or extension, including Documentation/ manuals, README content, configuration and integration guides, examples, changelog-facing migration notes, screenshots, and user-facing XLF labels. Use when documenting extension installation, configuration, editors' workflows, APIs, content elements, plugins, backend modules, site sets, TypoScript, upgrades, or ensuring docs match the active TYPO3 version and implementation.
+description: 'Create, update or review documentation for a TYPO3 project or extension: Documentation/ manuals, README, configuration and integration guides, examples, migration notes, screenshots and user-facing XLF labels.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-cleanup
-description: 'Put a TYPO3 project, sitepackage, or extension right — fix, clean up, improve, modernize or tidy a repository and work off what a review found. Use for a request to change a repository as a whole rather than one subsystem: "look over my repository and put it right", "improve the code quality of my sitepackage", "clean up my extension and fix what is wrong", bringing a package back into line after an audit, and carrying a list of findings through to committed changes.'
+description: 'Put a TYPO3 project, sitepackage or extension right: fix, clean up, improve, modernize or tidy a repository as a whole — "look over my repository and put it right" — and carry the findings of a review through to committed changes.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 

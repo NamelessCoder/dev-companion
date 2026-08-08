@@ -1701,6 +1701,36 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The descriptions are read in one listing and paid for out of one budget:
+     * Claude Code allows all of them together the characters in one percent of
+     * the context window, and where they do not fit it drops whole descriptions
+     * rather than shortening them, least-used first — which is every skill this
+     * server publishes on a fresh install (`D-SKL-026`). So what is held is
+     * their total, in the client's own arithmetic: `- <name>: <description>`,
+     * one newline between entries.
+     */
+    #[Test]
+    public function everyDescriptionIsWrittenToTheBudgetTheyShare(): void
+    {
+        // What the trim of 2026-08-08 left, with room for a rename. It is a
+        // ratchet rather than a limit read off a client: how much of the budget
+        // is left over is decided by the client's own bundled skills, which
+        // took 5997 characters of the 6000 a 200k session had that day.
+        $ceiling = 3600;
+
+        $listing = count(self::skills()) - 1;
+        foreach (array_keys(self::skills()) as $name) {
+            $listing += mb_strlen($name) + 4 + mb_strlen(self::description($name));
+        }
+
+        self::assertLessThanOrEqual(
+            $ceiling,
+            $listing,
+            'the listing costs ' . $listing . ' characters, and a client that runs out drops whole descriptions',
+        );
+    }
+
+    /**
      * A skill exists for its readers once it is published, so a skill this
      * server names in an answer is one the caller can actually load
      * (`D-SKL-013`). The draft in `skills/` is not that: it is shown to

@@ -83,6 +83,8 @@ reviewed, and publishing is the one edit that takes the line out.
   route on — `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself`
 - It says which server it needs, in the field the standard has for it —
   `SkillTest::everySkillSaysWhichServerItNeeds`
+- Every description is written to the budget all of them share —
+  `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
 - A draft says so in its own front matter until it is published —
   `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
 - It starts from the base before it reaches for anything of its own —
@@ -148,6 +150,18 @@ so nothing holds this over the directory: it is a question the author answers
 against `This skill owns …` and the crossings in the body, and a crossing that
 names one side while the description names both is the file disagreeing with
 itself in somebody else's project.
+
+**The budget every description shares.** A client reads all of the descriptions
+in one listing against one character budget — in Claude Code, one percent of the
+context window converted at three or four bytes to the token, so 6000 characters
+on a 200k session and 30000 on a 1M one. Over that it drops whole descriptions
+rather than shortening them, least-used first, which is every skill of this
+server's on a fresh install; the dropped skill is listed by its name alone and
+nothing tells the session it happened. So a description is paid for by the other
+skills and not by its own, and a thirteenth skill costs the twelve.
+[`D-SKL-026`](../../decisions/task-skills/skl-026-the-descriptions-are-written-to-the-listing-budget-they-share.md)
+is where that arithmetic was read off the client, what the twelve cost after it,
+and what the client's own bundled skills leave over.
 
 **Starting from the base.** The skill links `references/base.md` and then states
 what it *adds* to it. It never restates a step the base already fixes: five

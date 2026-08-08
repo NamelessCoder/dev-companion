@@ -67,6 +67,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set it names · 2026-08-09
+- [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it and by what the answer left of it · 2026-08-09
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs and does not make it legible · 2026-08-08
 - [`D-ANS-065`][D-ANS-065] — The manual index is the inventory each manual publishes · 2026-08-08
 - [`D-ANS-066`][D-ANS-066] — One handle serves every read of one Fetch · 2026-08-08
@@ -133,6 +134,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-068]: answers/ans-068-a-change-answer-carries-the-ref-that-fetches-the-patch-set-it-names.md
+[D-ANS-070]: answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md
 [D-ANS-064]: answers/ans-064-an-issue-answer-holds-what-a-triage-needs-and-does-not-make-it-legible.md
 [D-ANS-065]: answers/ans-065-the-manual-index-is-the-inventory-each-manual-publishes.md
 [D-ANS-066]: answers/ans-066-one-handle-serves-every-read-of-one-fetch.md

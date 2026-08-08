@@ -153,6 +153,15 @@ final class SkillTest extends TestCase
             'the base sends the session into the checkout before its own calls',
         );
 
+        // Step 1 says what its answer ends with, because a session that follows
+        // the order literally reads the step before it reads the payload — and
+        // four sessions in a week finished without learning the guides exist
+        // (`feedback/2026-08-07-233512`).
+        self::assertStringContainsString(
+            'the whole procedures this server carries, as ids',
+            self::flat($base),
+        );
+
         // The near miss, not the omission: a runtime lookup answers what is
         // registered, never whether it is right.
         self::assertStringContainsString(
@@ -445,6 +454,16 @@ final class SkillTest extends TestCase
         // reading the condition off the task it was described as.
         self::assertStringContainsString(
             'read off the files it touches and never off the task it started as',
+            self::flat($base),
+        );
+
+        // The other side of the same step, and the one a read-only task falls
+        // outside of: it matches neither "touches API" nor the three examples,
+        // so a session following the order faithfully would have run the sweep
+        // across seven tags on a triage of one issue (`D-AUD-009`,
+        // `feedback/2026-08-07-233512`).
+        self::assertStringContainsString(
+            'A task that produces no change does not reach this step at all',
             self::flat($base),
         );
     }

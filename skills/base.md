@@ -28,7 +28,10 @@ matter too.
    the extensions that are the project's own, its sites, and the commands this
    repository actually declares. Every later answer is filtered by that version,
    and a check the repository does not declare is a wrong answer however
-   sensible it sounds.
+   sensible it sounds. It ends with the whole procedures this server carries, as
+   ids: that list is the only place they are named to a client that renders no
+   resource list, and each one is a `typo3_rule_lookup` with that `documentId`
+   rather than a search.
 2. **`typo3_extension_describe`** for each extension in scope — what it
    registers, and what it ships beside that: its manual, its README, its test
    layers, its XLF files with the source language each one declares. What it
@@ -104,6 +107,12 @@ matter too.
    writing it however the change was titled, and then to the class below. Where
    the manual has no page for a surface either, that is a result and not an
    answer. Undocumented is not unsupported.
+
+   A task that produces no change does not reach this step at all — a triage, a
+   reproduction, a review of a report. The sweep asks what a package will have
+   to stop calling, and a task that writes nothing is not going to call
+   anything. Followed literally in a triage of one issue it costs one call per
+   declared major per tag and none of them bears on the report.
 
    Skip the sweep only where the change touches no TYPO3 API — a code style
    fixer, a CI file, an `.editorconfig`. A deprecation is a statement about API

@@ -173,6 +173,31 @@ which of the three it is: the behaviour is gone, the steps were insufficient, or
 the report never contained enough to try. They lead to opposite outcomes and
 they look identical in a session that only writes down "could not reproduce".
 
+## Where the finding is a vulnerability
+
+**Ask it of every finding before the verdict is written, rather than when one
+happens to look alarming.** A triage produces what a vulnerability report is
+made of — a step-by-step reproduction against a branch people are running — and
+it produces it for the tracker. Nothing else in this order asks the question, so
+the finding would be disclosed by the step that was meant to report it.
+
+The stopping point is the verified reproduction. It stands, and the public step
+is not taken: nothing about the finding goes into the issue, onto the review
+server or into a chat — not the reproduction, not the failing test, not the
+verdict.
+
+Where it goes instead is `typo3_rule_lookup` with
+`documentId="any/security/reporting-a-vulnerability"`, which is the whole
+procedure and also stands as
+`typo3://guides/any/security/reporting-a-vulnerability`. The address is read
+there and never from here: a contact route is the fact that moves, and this file
+is a copy no release of this server corrects.
+
+Hand over what that report needs — the branch, the code path, the reproduction
+and the version it ran on — and say that the ordinary verdict is being withheld
+and why. Filing it is the user's act: this workflow supplies what the report
+rests on and takes no step of its own.
+
 ## Say what the triage found
 
 [references/checklist.md](references/checklist.md) carries the verdicts, what

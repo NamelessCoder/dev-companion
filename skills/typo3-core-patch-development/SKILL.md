@@ -101,6 +101,32 @@ subject and the entry. Discovered incrementally it arrives after the change has
 been characterised, and then it is the characterisation that has to be taken
 back.
 
+## Where the finding is a vulnerability
+
+**Ask it once the reproduction stands and before any code is written, rather
+than when a defect happens to look alarming.** This workflow ends in a push, and
+a push is publication: it puts the diff, the test that proves the defect and a
+message explaining both in front of everyone who can read the project. Nothing
+else in this order asks the question, so the fix would disclose the defect it
+fixes.
+
+The stopping point is the verified reproduction. It stands, and nothing after it
+here is done: no patch, no test pushed, no entry written, no comment on the
+issue.
+
+Where it goes instead is `typo3_rule_lookup` with
+`documentId="any/security/reporting-a-vulnerability"`, which is the whole
+procedure and also stands as
+`typo3://guides/any/security/reporting-a-vulnerability`. The address is read
+there and never from here: a contact route is the fact that moves, and this file
+is a copy no release of this server corrects.
+
+Ask it again wherever the work turns into one, because the issue rarely says so:
+a fix whose real effect is that a restriction now holds is this case under
+another name. And where something is already up for review, amending it takes
+nothing back — every patch set stays fetchable — so what has been published is
+named in the report rather than repaired.
+
 ## Make the change
 
 Ask `typo3_hint_lookup` with the concrete paths for the conventions of each

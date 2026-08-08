@@ -74,6 +74,7 @@ final class SkillTest extends TestCase
             'typo3_changelog_lookup',
             'typo3_test_run_guide',
             'typo3_script_lookup',
+            'typo3_rule_lookup',
         ],
         'typo3-core-patch-checkout' => [
             'typo3_gerrit_lookup',
@@ -1176,6 +1177,83 @@ final class SkillTest extends TestCase
             strpos($skill, 'What a previous attempt cost'),
             'the step stands after the handoff it feeds',
         );
+    }
+
+    /**
+     * `R-SKL-020`. Both core workflows end in public — one at a tracker entry,
+     * the other at a pushed change — and neither carried a branch for the case
+     * where the finding is a security defect. A workflow that does not name that
+     * case is one whose ordinary path runs through it: the failure is not that
+     * the session judges wrong, it is that nothing asks the question, so the
+     * finding is disclosed by the step that was meant to report it.
+     *
+     * What the process actually asks for is read rather than recalled, and it is
+     * in the corpus rather than in either file: `SECURITY.md` is identical on
+     * 12.4, 13.4, 14.3 and `main` apart from its supported-version matrix, and
+     * it names one address for a core defect and an extension defect alike. That
+     * address is what a published skill may not carry — a contact route is the
+     * fact that moves, and a copy in somebody else's project is corrected by no
+     * release of this server.
+     */
+    #[Test]
+    public function aWorkflowThatEndsInPublicationStopsAtAVulnerability(): void
+    {
+        foreach (['typo3-core-issue-triage', 'typo3-core-patch-development'] as $name) {
+            $skill = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
+
+            // Asked of every finding, because a rule that fires on how alarming
+            // something looks fires on the findings that were never the danger.
+            self::assertStringContainsString(
+                '## Where the finding is a vulnerability',
+                $skill,
+                $name . ' names no stopping point for a finding that is a vulnerability',
+            );
+            self::assertStringContainsString(
+                'happens to look alarming',
+                $skill,
+                $name . ' leaves the question to whether a finding looks alarming',
+            );
+            // The crossing in the sense `R-SKL-003` fixes: the verified stopping
+            // point named, and the public step not taken.
+            self::assertStringContainsString(
+                'The stopping point is the verified reproduction',
+                $skill,
+                $name . ' stops without saying what has been established',
+            );
+            // And where it goes instead, as a call rather than as a fact.
+            self::assertStringContainsString(
+                '`documentId="any/security/reporting-a-vulnerability"`',
+                $skill,
+                $name . ' names no procedure for the report it hands over to',
+            );
+            self::assertStringNotContainsString(
+                'security@',
+                $skill,
+                $name . ' carries the contact route the lookup owns',
+            );
+        }
+
+        self::assertContains(
+            'any/security/reporting-a-vulnerability',
+            array_column(Documents::documents(), 'id'),
+            'both skills route to a procedure this server does not carry',
+        );
+
+        // The triage judges, so the question is one of its verdicts rather than
+        // a paragraph beside them — and it is the one asked first, because it
+        // decides where the answer goes rather than what it says.
+        $checklist = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/references/checklist.md',
+        ));
+        self::assertStringContainsString('## A security defect', $checklist);
+        self::assertStringContainsString('The seventh is asked before the other six', $checklist);
+        self::assertStringContainsString(
+            'decides where the answer goes rather than what it says',
+            $checklist,
+        );
+        // The trap this verdict has and the six others do not: waiting until the
+        // finding is certain is itself the disclosure.
+        self::assertStringContainsString('A finding that might be exploitable is one the team rates', $checklist);
     }
 
     /**

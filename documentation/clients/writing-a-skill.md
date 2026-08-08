@@ -208,6 +208,17 @@ verified stopping point, stop before editing the other owner's files, activate
 that owner, carry across only the scope and verified behaviour it needs
 ([`R-SKL-003`](../../requirements/task-skills/skl-003-crossing-into-another-skills-work-is-an-explicit-transition.md)).
 
+**A workflow that ends in public stops once more before it gets there.** Where
+the last step publishes — a tracker entry, a pushed change, a release — the
+skill asks before that step whether what it found is a security defect, and
+stops there when it is: the finding stands, the publishing step is not taken,
+and where the report goes instead is a lookup rather than a line in the file
+([`R-SKL-020`](../../requirements/task-skills/skl-020-a-workflow-that-ends-in-public-stops-when-the-finding-is-a-vulnerability.md),
+held by `SkillTest::aWorkflowThatEndsInPublicationStopsAtAVulnerability`). It is
+asked of every finding rather than of the ones that read as alarming, and which
+skills end in public is not readable off a file — so this is the author's, like
+the sides a description names.
+
 ## Publishing it
 
 Publishing is deleting the `status: draft` line, and `Installer::skills()` is

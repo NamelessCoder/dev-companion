@@ -4,6 +4,10 @@ One issue gets one verdict. They are not degrees of confidence in a single
 finding: each names a different thing that is true, and each is owed different
 evidence. Pick the verdict first and the missing evidence names itself.
 
+The seventh is asked before the other six, of every finding rather than of the
+ones that look alarming, because it decides where the answer goes rather than
+what it says: is what was established a security defect?
+
 ## Still happens
 
 The behaviour the report describes is what the branch does today.
@@ -75,6 +79,26 @@ stopped.
 
 Legitimate and underused. It is the honest end of a triage whose reading ran out
 before the evidence did.
+
+## A security defect
+
+What the report describes, or what the reading turned up beside it, is something
+an attacker can use: access to a record the user may not read, a value that
+reaches a sink unescaped, a check that can be walked around.
+
+Owes: nothing to the tracker. This verdict is about where the answer goes, so
+what it owes is the report the security team receives, and the skill's own step
+says what that is and which lookup carries the address.
+
+Whichever of the six is also true stays true and is written for that report
+rather than for the issue. A defect that still happens and is exploitable is not
+a "still happens" with a note attached: the note is the whole difference in who
+may read the answer.
+
+The trap: waiting to be sure. A finding that might be exploitable is one the
+team rates, and the cost of asking them is an email, while the cost of deciding
+it here and being wrong is a public exploit against installations with no fix
+available.
 
 # Before writing any of them
 

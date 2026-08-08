@@ -90,6 +90,15 @@
       "scope": "project"
     },
     {
+      "topic": "Reporting a security defect in TYPO3: who receives it, what the report carries, and what is not done with it in the meantime",
+      "depth": "TYPO3's own published policy, as the core repository's SECURITY.md and the security team's pages state it. It holds for a defect in the core and for one in an extension alike. It carries no judgement of how bad a finding is: rating one is the team's work, and this says where it goes.",
+      "tools": [
+        "typo3_rule_lookup"
+      ],
+      "source": "typo3://guides/any/security/reporting-a-vulnerability",
+      "scope": "any"
+    },
+    {
       "topic": "Where the upstream contribution documentation is",
       "depth": "The official contribution workflow guide is not bundled: this names its entry points, so a question past what the local documents answer is sent to the source rather than guessed at. The local policy that sits beside it is this repository's own.",
       "tools": [

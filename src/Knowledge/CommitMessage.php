@@ -648,10 +648,12 @@ final class CommitMessage
                 'code' => 'breaking-not-assessed',
                 'message' => 'The subject carries no [!!!] and the call passed no isBreaking, so the '
                     . 'classification was assumed rather than checked. It is a property of the diff, which this '
-                    . 'tool never sees: a removed or narrowed public or protected member makes the change '
-                    . 'breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension '
-                    . 'scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and '
-                    . 'call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.',
+                    . 'tool never sees: a removed, narrowed or widened public or protected member makes the '
+                    . 'change breaking, and a parameter added to a method widens it whether or not the '
+                    . 'parameter is optional. A breaking change owes [!!!], a Breaking changelog entry and an '
+                    . 'extension scanner matcher. isDeprecation is assumed the same way. Confirm both against '
+                    . 'the diff and call again with what you found; typo3_rule_lookup(query "breaking change") '
+                    . 'has the rules.',
             ];
         }
 

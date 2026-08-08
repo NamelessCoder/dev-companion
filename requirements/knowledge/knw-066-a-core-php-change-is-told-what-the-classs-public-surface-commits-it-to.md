@@ -1,6 +1,6 @@
 ---
 id: R-KNW-066
-status: open
+status: held
 restsOn: [D-KNW-065]
 ---
 
@@ -17,18 +17,15 @@ all green on the breaking draft.
 
 The answer owes the consequence in the direction the session meets it. What is
 gained by the widening is one call site; what it costs is `[!!!]`, a Breaking
-changelog entry, an extension scanner matcher entry and the release managers'
-decision about the target branch — and a fix owed to two maintained release
-lines cannot carry the signature change at all. The additive setter and making
-the class or the method final first are the two shapes that avoid it, and which
-of them the project prefers is part of what the answer has to establish.
+changelog entry and the release managers' decision about the target branch — and
+a fix owed to two maintained release lines cannot carry the signature change at
+all. The additive shape and making the class or the method final first are the
+two moves that avoid it, and the second is itself a breaking change.
 
-The two places that state the rule today state it for what a change removes and
-narrows: the `breaking-not-assessed` check of `typo3_commit_message_guide`, and
-`## Breaking Changes` of the commit message rules that
-`typo3_rule_lookup(query "breaking change")` returns. Both are read as not
-covering an added optional parameter, and both are reached after the diff is
-written.
+Where the answer is reached is two places, because the path cannot carry it. A
+session that asks reaches `public-api-surface`; a session that does not is asked
+by the development skill, where establishing the blast radius already stands
+before the change is written.
 
 ## From
 
@@ -44,6 +41,4 @@ run.
 
 ## Held by
 
-Nothing. The statement is not written: `bin/cli hints:probe` reaches no hint on
-the rule, and `non-final`, `override point` and `optional parameter` occur
-nowhere below `knowledge/` or `skills/`.
+- `HintsTest::wideningAPublicSignatureIsAnsweredAsTheBreakingMoveItIs`

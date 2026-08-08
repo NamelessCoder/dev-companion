@@ -890,7 +890,9 @@ final class KnowledgeTest extends TestCase
         $headings = Documents::headings('core/contribution/commit-messages');
         $returned = array_column($result->data['matches'], 'heading');
         $left = array_values(array_diff($headings, $returned));
-        self::assertCount(2, array_intersect($headings, $returned), 'the case this covers is a part of a page');
+        $covered = array_intersect($headings, $returned);
+        self::assertNotEmpty($covered, 'the case this covers is a part of a page');
+        self::assertLessThan(count($headings), count($covered), 'the case this covers is a part of a page');
 
         self::assertStringContainsString(
             sprintf(

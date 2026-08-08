@@ -1,0 +1,45 @@
+[
+  {
+    "id": "public-api-surface",
+    "title": "Changing a Public Method Signature",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "public method signature",
+      "method signature",
+      "signature change",
+      "non-final",
+      "optional parameter",
+      "add a parameter",
+      "overriding a method",
+      "is this breaking",
+      "backport"
+    ],
+    "hints": [
+      "A public or protected method on a class that is not final is an override point: something outside the package may already override it, and PHP compares the two declarations when that subclass is loaded.",
+      "Adding a parameter to such a method is a signature change, an optional one included. The subclass that declares the old signature fatals as it is autoloaded — \"Declaration of Sub::start() must be compatible with Base::start()\" — and nothing in the class being edited names it.",
+      {
+        "text": "Nothing in a core checkout reports it. No core class has to override the method, so the unit, functional, coding-guidelines and static-analysis runs are all green on the change.",
+        "scope": "core"
+      },
+      {
+        "text": "The core files such a change as breaking on the possibility of an override rather than on a demonstrated one. Its changelog entries name the affected installations as the extensions extending the method, and one that calls that set very unlikely files it as breaking anyway.",
+        "scope": "core"
+      },
+      {
+        "text": "The exception is a member the core has taken out of its public API with @internal, which takes an Important entry instead of a Breaking one. An entry is still owed; only its type changes, and that is what lets such a change reach a release line.",
+        "scope": "core"
+      },
+      {
+        "text": "So the target branch is decided here rather than at commit-message time. A maintained release line carries no breaking change, no deprecation and no feature, which leaves Important the only one of the four it takes — a fix owed to one cannot carry the signature change at all.",
+        "scope": "core"
+      },
+      "Add rather than widen where the change has to reach a release line: a method of its own, or the state handed over on something the callee already receives — the core puts the calling ContentObjectRenderer on the request as the currentContentObject attribute instead of into a signature. Declaring the class or the method final first is no cheaper, because that is itself a breaking change with an entry of its own.",
+      {
+        "text": "Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query \"breaking change\").",
+        "scope": "core"
+      }
+    ]
+  }
+]

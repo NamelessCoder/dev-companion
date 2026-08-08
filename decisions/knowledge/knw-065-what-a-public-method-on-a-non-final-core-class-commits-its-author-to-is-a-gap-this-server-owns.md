@@ -1,7 +1,7 @@
 ---
 id: D-KNW-065
 date: 2026-08-09
-status: open
+status: confirmed
 ---
 
 # D-KNW-065 — What a public method on a non-final core class commits its author to is a gap this server owns
@@ -33,13 +33,13 @@ the diff, the tests and the changelog entry are written.
   that is the call the feedback made. The "Establish the blast radius" step
   above it asks how much of the pinned behaviour moves, which is about the
   suites and not about who overrides the class.
-- The review route names the surface and enumerates it from the half that
-  cannot carry this. `skills/typo3-core-patch-review/references/checklist.md`
-  opens on "Public API. What the diff removes, renames, or changes the signature
-  of", and then narrows it: "enumerated from the diff's deletions rather than
-  from its additions". An added optional parameter is an addition, which is also
-  why this session's functional, unit, cgl and phpstan runs were green on the
-  breaking draft.
+- The review route names the surface and enumerates it from the half that cannot
+  carry this. `skills/typo3-core-patch-review/references/checklist.md` opens on
+  "Public API. What the diff removes, renames, or changes the signature of", and
+  then narrows it: "enumerated from the diff's deletions rather than from its
+  additions". An added optional parameter is an addition, which is also why this
+  session's functional, unit, cgl and phpstan runs were green on the breaking
+  draft.
 - The two places that do state the rule name two of the three moves.
   `breaking-not-assessed` in `src/Knowledge/CommitMessage.php` says "a removed
   or narrowed public or protected member makes the change breaking", and
@@ -51,8 +51,8 @@ the diff, the tests and the changelog entry are written.
 - That the core calls a signature change breaking because of the subclasses
   holds, read in `.checkouts/main` at `c71b2bdb2f`.
   `Changelog/14.0/Breaking-106869-RemoveStaticFunctionParameterInAuthenticationService.rst`
-  is a parameter change whose affected installations are the services
-  "extending or overriding" the method, and
+  is a parameter change whose affected installations are the services "extending
+  or overriding" the method, and
   `Changelog/14.0/Breaking-107777-UseStrictTypesInExtbaseArgument.rst` migrates
   by "Ensure all subclasses … declarations for overridden properties, method
   parameters, and return types". Both narrow. Whether the core files an *added*
@@ -122,3 +122,44 @@ the diff, the tests and the changelog entry are written.
 - The same surface is reported again from a review rather than from writing a
   patch. The checklist's "from its deletions" is then the placement that has to
   move, and one card carries both.
+
+## Confirmed on 2026-08-09
+
+The reading the todo owed came out one way, and the placement came out the
+other. Read in `.checkouts/main` at `c71b2bdb2f`, with `Important-107342`
+verified on `.checkouts/13.4` and `.checkouts/14.3` as well.
+
+The core files a signature change on a public or protected member as breaking on
+the possibility of an override rather than on a demonstrated one, so this is a
+rule and not a consideration. `Breaking-101133` files a changed parameter of
+`IconFactory->getIcon()` against "custom extensions extending the method", and
+`Breaking-110218` declares `LogRecord` final while calling the affected
+installations "very unlikely" — and files it as breaking anyway. `Howto.rst`
+puts an "interface / API change" beside a removal as what the type is for. The
+first **Wrong if** does not hold: nothing in the changelog files an added
+optional parameter on a public member as a plain change. The one exception is a
+member taken out of the public API with `@internal`, and that is an `Important`
+rather than nothing — `Important-107342` added two optional arguments to
+`FormPersistenceManagerInterface::listForms()` and reached `13.4.x` on that
+ground, which is also the only way such a change reaches a release line at all.
+
+That the parameter is optional changes nothing is PHP's rule rather than the
+project's, verified on 8.3: a subclass declaring the old signature fatals with
+"must be compatible with" as it is autoloaded, while a subclass adding an
+optional parameter of its own loads. No matcher is owed either way, because the
+matchers are keyed on where a member is called — `MethodCallMatcher.php` opens
+on "Removed methods" and the engine compares an argument count — and an override
+is not a call.
+
+The second **Wrong if** held, and it decided the placement. Keyed on `Classes/`
+and `typo3/sysext/` the hint reached the reporting session's own query in second
+place, and it also took first place on `file storage driver` above `fal-basics`
+and displaced that hint out of the brief `D-GUI-007` pinned. A path claim of 21
+characters is generic, and the matcher reads a longer pattern as the more
+specific one. So the path patterns came off: `public-api-surface` is reached by
+the vocabulary of the move, and what reaches a session that never says
+"signature" is the development skill's blast radius step, which already stands
+before the change is written and now asks who may be extending the member. Which
+of the two shapes replaces the widening stays the reviewers' — the entry states
+only that declaring the class final first is no cheaper, because that is itself
+a breaking change.

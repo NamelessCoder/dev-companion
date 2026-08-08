@@ -235,6 +235,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
 - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
 - project-configuration-files — What the Installation Is Configured By (PHP)
+- public-api-surface — Changing a Public Method Signature (PHP)
 - frontend-records — Records in the Frontend Without Extbase (TypoScript)
 - record-routing — Routing a Record Detail View (PHP)
 - record-page-title — The Title of a Record Detail Page (PHP)
@@ -669,6 +670,11 @@ Data:
         {
             "id": "project-configuration-files",
             "title": "What the Installation Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "public-api-surface",
+            "title": "Changing a Public Method Signature",
             "category": "PHP"
         },
         {
@@ -1391,6 +1397,7 @@ Hints that exist in these domains, requestable by id:
 - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
 - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
 - project-configuration-files — What the Installation Is Configured By (PHP)
+- public-api-surface — Changing a Public Method Signature (PHP)
 - frontend-records — Records in the Frontend Without Extbase (TypoScript)
 - record-routing — Routing a Record Detail View (PHP)
 - record-page-title — The Title of a Record Detail Page (PHP)
@@ -1738,6 +1745,11 @@ Data:
         {
             "id": "project-configuration-files",
             "title": "What the Installation Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "public-api-surface",
+            "title": "Changing a Public Method Signature",
             "category": "PHP"
         },
         {

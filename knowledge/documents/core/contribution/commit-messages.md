@@ -130,6 +130,35 @@ Guide.
   direction. A missing entry surfaces when somebody audits the matcher files
   against the changelog.
 
+## Changed Signatures
+
+A signature change is the third breaking move beside removing and narrowing, and
+adding a parameter is one — an optional parameter included. A public or
+protected method on a class that is not final is an override point, and every
+subclass declaring the old signature fatals as it loads.
+
+- The obligation follows from the member being overridable rather than from an
+  override anybody found. `Breaking-101133` files a changed parameter of
+  `IconFactory->getIcon()` against "custom extensions extending the method", and
+  `Breaking-110218` declares `LogRecord` final while calling the affected
+  installations very unlikely.
+- A member marked `@internal` takes an `Important` instead. `Important-107342`
+  extended `FormPersistenceManagerInterface::listForms()` by two optional
+  arguments and reached `13.4.x` on that ground. An entry is still owed; only
+  its type changes, and that is what lets such a change reach a release line.
+- Neither owes a matcher, and both are `NotScanned`. A matcher is keyed on where
+  a member is called, an override is not a call, and an added optional parameter
+  leaves every existing call site valid.
+- So it decides the target branch before anything else. A maintained release
+  line takes no breaking change, so a fix owed to one cannot carry the signature
+  change at all, and the shape that reaches it is the additive one: a method of
+  its own, or the state handed over on something the callee already receives.
+  Declaring the class or the method final first is no cheaper, because that is
+  itself a breaking change.
+- Nothing in a core checkout reports any of this. No core class has to override
+  the method, so the unit, functional, coding-guidelines and static-analysis
+  runs are all green on the change.
+
 ## Deprecations
 
 - Deprecations must not use `[!!!]`.

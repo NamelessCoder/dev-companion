@@ -258,6 +258,17 @@ Hints:
 - What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one. Where there is none, the removal is an ordinary [TASK] with no marker, no changelog entry and no matcher.
 - An absent annotation is not a statement that something is public API. Read the changelog for the subsystem and the extension scanner matchers before concluding either way.
 
+## Changing a Public Method Signature
+Hints:
+- A public or protected method on a class that is not final is an override point: something outside the package may already override it, and PHP compares the two declarations when that subclass is loaded.
+- Adding a parameter to such a method is a signature change, an optional one included. The subclass that declares the old signature fatals as it is autoloaded — "Declaration of Sub::start() must be compatible with Base::start()" — and nothing in the class being edited names it.
+- Nothing in a core checkout reports it. No core class has to override the method, so the unit, functional, coding-guidelines and static-analysis runs are all green on the change.
+- The core files such a change as breaking on the possibility of an override rather than on a demonstrated one. Its changelog entries name the affected installations as the extensions extending the method, and one that calls that set very unlikely files it as breaking anyway.
+- The exception is a member the core has taken out of its public API with @internal, which takes an Important entry instead of a Breaking one. An entry is still owed; only its type changes, and that is what lets such a change reach a release line.
+- So the target branch is decided here rather than at commit-message time. A maintained release line carries no breaking change, no deprecation and no feature, which leaves Important the only one of the four it takes — a fix owed to one cannot carry the signature change at all.
+- Add rather than widen where the change has to reach a release line: a method of its own, or the state handed over on something the callee already receives — the core puts the calling ContentObjectRenderer on the request as the currentContentObject attribute instead of into a signature. Declaring the class or the method final first is no cheaper, because that is itself a breaking change with an entry of its own.
+- Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query "breaking change").
+
 ## Events and Extension Points
 Hints:
 - A listener is registered with the #[AsEventListener] attribute from TYPO3\CMS\Core\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way. [TYPO3 v13 and newer]
@@ -324,7 +335,7 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
   against the changelog.
 
 Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-- core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 7 of its 9 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Changelog Files.
+- core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 8 of its 10 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Changed Signatures, Changelog Files.
 
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
@@ -552,6 +563,70 @@ Data:
             ]
         },
         {
+            "id": "public-api-surface",
+            "title": "Changing a Public Method Signature",
+            "category": "PHP",
+            "scope": null,
+            "hints": [
+                {
+                    "text": "A public or protected method on a class that is not final is an override point: something outside the package may already override it, and PHP compares the two declarations when that subclass is loaded.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "Adding a parameter to such a method is a signature change, an optional one included. The subclass that declares the old signature fatals as it is autoloaded — \"Declaration of Sub::start() must be compatible with Base::start()\" — and nothing in the class being edited names it.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "Nothing in a core checkout reports it. No core class has to override the method, so the unit, functional, coding-guidelines and static-analysis runs are all green on the change.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": "core"
+                },
+                {
+                    "text": "The core files such a change as breaking on the possibility of an override rather than on a demonstrated one. Its changelog entries name the affected installations as the extensions extending the method, and one that calls that set very unlikely files it as breaking anyway.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": "core"
+                },
+                {
+                    "text": "The exception is a member the core has taken out of its public API with @internal, which takes an Important entry instead of a Breaking one. An entry is still owed; only its type changes, and that is what lets such a change reach a release line.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": "core"
+                },
+                {
+                    "text": "So the target branch is decided here rather than at commit-message time. A maintained release line carries no breaking change, no deprecation and no feature, which leaves Important the only one of the four it takes — a fix owed to one cannot carry the signature change at all.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": "core"
+                },
+                {
+                    "text": "Add rather than widen where the change has to reach a release line: a method of its own, or the state handed over on something the callee already receives — the core puts the calling ContentObjectRenderer on the request as the currentContentObject attribute instead of into a signature. Declaring the class or the method final first is no cheaper, because that is itself a breaking change with an entry of its own.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query \"breaking change\").",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": "core"
+                }
+            ]
+        },
+        {
             "id": "events-extension-points",
             "title": "Events and Extension Points",
             "category": "PHP",
@@ -605,7 +680,7 @@ Data:
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
             "coverage": 1,
-            "score": 67,
+            "score": 69,
             "truncated": false
         },
         {
@@ -616,7 +691,7 @@ Data:
             "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.\n  How the removed member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "versions": "",
             "coverage": 1,
-            "score": 21,
+            "score": 22,
             "truncated": false
         }
     ],

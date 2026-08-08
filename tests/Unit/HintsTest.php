@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Knowledge\CommitMessage;
+use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Domains;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\Scope;
@@ -1405,6 +1407,67 @@ final class HintsTest extends TestCase
         // installation answers, which is where the changelog is read from.
         self::assertStringNotContainsString('does not know your branch', $written);
         self::assertStringContainsString('typo3_project_describe', $written);
+    }
+
+    /**
+     * R-KNW-066. The third breaking move, which the corpus stated for neither
+     * of the two it names.
+     *
+     * A core patch drafted an optional third parameter onto the public
+     * `GifBuilder::start()` of a class that is not final, and every check the
+     * project has was green on it: no core class overrides the method, so
+     * 3613 functional tests, 235 unit tests, cgl over 6300 files and phpstan
+     * over 6265 said nothing. What raised it was the `breaking-not-assessed`
+     * line of `typo3_commit_message_guide`, after the diff and the entry were
+     * written, and its wording named removing and narrowing
+     * (`feedback/2026-08-08-224316`).
+     *
+     * The path is not what carries it. Keyed on core `Classes/` the hint
+     * outranked `fal-basics` on a FAL question and displaced it out of a
+     * brief, so the reachable-by-construction half is the development skill's
+     * blast radius step and this is the half a session that asks gets.
+     */
+    #[Test]
+    public function wideningAPublicSignatureIsAnsweredAsTheBreakingMoveItIs(): void
+    {
+        foreach ([
+            'can I add an optional parameter to this public method',
+            'is adding a parameter breaking',
+            'does changing a method signature break subclasses',
+        ] as $task) {
+            $reached = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('public-api-surface', $reached, $task);
+        }
+
+        $written = json_encode(Hints::byId('public-api-surface'), JSON_THROW_ON_ERROR);
+        self::assertStringContainsString('an optional one included', $written);
+        self::assertStringContainsString('override point', $written);
+        // The half that decides the target branch, which is why it cannot wait
+        // for commit-message time.
+        self::assertStringContainsString('cannot carry the signature change at all', $written);
+        // And the two shapes that avoid it, one of which is not the cheap way
+        // out it looks like.
+        self::assertStringContainsString('Add rather than widen', $written);
+        self::assertStringContainsString('final first is no cheaper', $written);
+
+        // The rules behind it, which carry the entries the hint may not date.
+        $bodies = implode("\n", array_column(Documents::search('breaking change'), 'body'));
+        self::assertStringContainsString('adding a parameter is one', $bodies);
+        self::assertStringContainsString('Important-107342', $bodies);
+        self::assertStringContainsString('FullyScanned', $bodies, 'the section it stands beside was cut to fit it');
+
+        // And the check that reached the reporting session last, now naming
+        // the move it was silent about.
+        $check = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Do a thing',
+            'issue' => '1',
+            'releases' => ['main'],
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ])['checks'];
+        $message = implode("\n", array_column($check, 'message'));
+        self::assertStringContainsString('removed, narrowed or widened', $message);
+        self::assertStringContainsString('whether or not the parameter is optional', $message);
     }
 
     #[Test]

@@ -101,6 +101,14 @@ subject and the entry. Discovered incrementally it arrives after the change has
 been characterised, and then it is the characterisation that has to be taken
 back.
 
+Its other half is who may already be extending what you are about to edit, and
+no suite in the checkout answers it: a green run says no core class overrides
+the method, never that no extension does. Where the shape you have in mind
+touches the declaration of a public or protected member — a parameter, a type, a
+visibility, a `final` — settle what that commits the patch to before writing it,
+with `typo3_hint_lookup` for the id `public-api-surface`. It decides the target
+branch, so a fix owed to a maintained release line has to know it first.
+
 ## Where the finding is a vulnerability
 
 **Ask it once the reproduction stands and before any code is written, rather

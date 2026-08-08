@@ -18,7 +18,11 @@ word is unassessed.
 - **Public API.** What the diff removes, renames, or changes the signature of,
   and what the contribution rules require for each of those. This is the surface
   a reading of the new code does not show, so it is enumerated from the diff's
-  deletions rather than from its additions.
+  deletions — and from every signature line its additions touch, because a
+  parameter added to a public or protected method on a class that is not final
+  fatals every subclass overriding it and reads in the diff as an addition. No
+  suite in the checkout can fail on that, so the surface is answered from the
+  declaration rather than from a green run.
 - **Behaviour.** What the patch changes for code that calls it, including the
   paths it does not touch: a guard that was unreachable before and is live
   after, a value that used to be written and now is not, a shape of output other

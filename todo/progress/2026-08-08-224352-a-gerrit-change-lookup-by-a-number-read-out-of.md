@@ -1,15 +1,18 @@
-# a gerrit change lookup by a number read out of the forge answer returns nothing new
+# Route the triage's previous-attempt step to the patch
 
 **Serves:** feedback/2026-08-08-224352-a-gerrit-change-lookup-by-a-number-read-out-of.md
-**Priority:** low
+**Priority:** normal
 **Branch:** todo/a-gerrit-change-lookup-by-a-number-read-out-of
 **Claimed:** 2026-08-08
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/feedback/judging.md` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+Judged as `D-SKL-028` on 2026-08-09, which carries the re-run and the reasoning.
+Rewrite step 7 of `skills/typo3-core-issue-triage/SKILL.md`, which asks for a
+`typo3_gerrit_lookup` call step 4 has already made: name the change form for a
+`reviews` entry the step 4 answer did not carry, and route to
+`typo3://guides/core/contribution/gerrit-workflow` for the fetch that gets the
+attempt's diff, without writing a ref form into the skill. `typo3_rule_lookup`
+is already in that skill's `ROUTING_SKILLS` order in `SkillTest` and first
+occurs above step 7, so naming it there moves nothing. The refspec half of the
+feedback is reported whole by `feedback/2026-08-08-224354`; this todo does not
+build it, and whether the feedback closes depends on that half, which was not
+read here.

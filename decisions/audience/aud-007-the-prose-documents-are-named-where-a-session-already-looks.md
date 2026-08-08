@@ -116,3 +116,13 @@ What that does not settle is the first **Wrong if**, which asked whether naming
 the documents is enough. It was answered for the two skills that route to a
 procedure and for every corpus answer; whether a session now opens the page is
 the next run's evidence and not this change's.
+
+**Since then**, on 2026-08-09, that evidence arrived and the answer is no.
+`feedback/2026-08-08-224406` is a core patch session that read the guide ids in
+`typo3_project_describe`, got the corpus answer's closing line, and opened no
+page. The naming reached it on both surfaces this entry asked for, so what is
+missing is beside them rather than instead of them: the two skills name a
+`typo3://guides` address where the session needs the call, and a cut answer says
+it cut a page without saying how much of it it left. That is
+[`D-ANS-070`](../answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md),
+and the enumeration this entry decided against is still not what follows.

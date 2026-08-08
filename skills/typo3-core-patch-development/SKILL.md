@@ -222,6 +222,22 @@ neither the publication nor the notification is quietly undone.
 change wants is the user's decision and never a default read off what the
 session did last.
 
+## Where the patch is finished and the review begins
+
+**When the checks pass and the commit is written, invoke
+`typo3-core-patch-review` on the diff, before the patch is pushed or handed
+over.** That is a step, not a note about ownership: load the skill by name and
+work from it. What crosses over is the diff, the branch it targets, the change
+type and what the checks reported — and what comes back is the work list the
+paragraph below already says to take it as.
+
+The reason it is written as a step is that the ownership sentence did not fire
+as one. A session finished a push-ready patch here — three files, two functional
+tests, a commit message — ran the project's checks and reported it without ever
+opening the review, twenty turns after invoking this skill out of a triage whose
+crossing is written as an act. The act fired and the boundary did not, in one
+session on one task.
+
 ## Amending after review
 
 A patch that came back is the same change, not a new one. Fetch the patch set

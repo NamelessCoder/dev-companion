@@ -2685,28 +2685,36 @@ final class SkillTest extends TestCase
         }
     }
 
-    /** The one part of a skill that is read before the skill is chosen. */
     /**
      * `R-SKL-018`. A crossing between two skills is a step, not a paragraph.
      *
-     * Both of these named `typo3-core-patch-development` in prose about
-     * ownership, and both were read by a session that then did the successor's
-     * work itself: one wrote a whole patch over forty turns after a triage, the
-     * other edited the patch it was reviewing, ran seven suites and amended the
-     * commit — still under the skill that says it does not change the patch.
-     * Neither session reports a wrong outcome; both reconstructed an order that
-     * was one call away (`D-SKL-022`).
+     * Each of these named its successor in prose about ownership, and each was
+     * read by a session that then did the successor's work itself: one wrote a
+     * whole patch over forty turns after a triage, one edited the patch it was
+     * reviewing, ran seven suites and amended the commit, and one finished a
+     * push-ready patch and handed it over unreviewed. No session reports a
+     * wrong outcome; all three reconstructed an order that was one call away
+     * (`D-SKL-022`).
+     *
+     * The last of them crosses the other way, out of the skill the first two
+     * cross into.
      */
     #[Test]
     public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void
     {
-        foreach (['typo3-core-issue-triage', 'typo3-core-patch-review'] as $name) {
+        $crossings = [
+            'typo3-core-issue-triage' => 'typo3-core-patch-development',
+            'typo3-core-patch-review' => 'typo3-core-patch-development',
+            'typo3-core-patch-development' => 'typo3-core-patch-review',
+        ];
+
+        foreach ($crossings as $name => $successor) {
             $body = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
 
-            self::assertMatchesRegularExpression(
-                '/invoke `typo3-core-patch-development`/',
+            self::assertStringContainsString(
+                'invoke `' . $successor . '`',
                 $body,
-                $name . ' names its successor without telling the session to invoke it',
+                $name . ' names ' . $successor . ' without telling the session to invoke it',
             );
         }
 

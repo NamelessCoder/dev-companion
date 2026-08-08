@@ -123,6 +123,14 @@ one skill and one name in
 `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`, and the todo serving
 that feedback carries it.
 
+**Since then**, that crossing is written as a step too.
+`typo3-core-patch-development` ends in a section that says to invoke
+`typo3-core-patch-review` on the diff once the checks pass and the commit is
+written, before the patch is pushed or handed over, and it keeps the ownership
+paragraph beneath it. `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`
+reads a successor per skill rather than one name for all of them, which is what
+a crossing running the other way needs.
+
 It also narrows the proxy `D-EVI-002` accepts as the only one available. That a
 successor is named is not what holds a crossing: this one was named, in a
 paragraph the session was holding, and nothing fired. What an assertion has to

@@ -88,6 +88,64 @@ final class Gerrit
     }
 
     /**
+     * How many issues one batched query names.
+     *
+     * Measured against review.typo3.org on 2026-08-08: 36 issue numbers asked
+     * twelve to a query answered 36 changes in 3 calls. What bounds it is the
+     * URL rather than a documented limit, so a page is asked in batches rather
+     * than in one query — `D-ANS-069`.
+     */
+    private const BATCHED = 12;
+
+    /**
+     * Which of these issues the review server holds a change for.
+     *
+     * The question a backlog row asks is the one `changesForIssue()` answers
+     * for a single issue, and asking it per row is a call per row. `message:`
+     * takes an alternation, so a page is a handful of calls: the changes come
+     * back for the whole batch and are sorted onto the issues their commit
+     * messages actually name.
+     *
+     * That last part is why the batch is not cheaper than it looks. The index
+     * behind `message:` matches a change's own number as well, so a query for
+     * twelve issues answers changes belonging to none of them — the same false
+     * positive `changesForIssue()` drops, and dropped here by the same rule.
+     *
+     * @param list<int> $issues
+     * @return array<int, list<array<string, mixed>>>
+     */
+    public function changesForIssues(array $issues): array
+    {
+        $wanted = [];
+        foreach ($issues as $issue) {
+            if ($issue > 0) {
+                $wanted[$issue] = (string) $issue;
+            }
+        }
+
+        $found = [];
+        foreach (array_chunk(array_values($wanted), self::BATCHED) as $batch) {
+            $query = implode(' OR ', array_map(static fn(string $number): string => 'message:' . $number, $batch));
+            foreach ($this->search($query, self::MOST, true)['changes'] as $change) {
+                // What a row carries is the number, so a change without one is
+                // no handle and is nothing to report a row as having.
+                if (($change['number'] ?? 0) < 1) {
+                    continue;
+                }
+                $named = array_filter($batch, static fn(string $number): bool => self::names($change, $number));
+                // After the message was read against every number in the batch,
+                // and not inside that loop: it is what the rule reads.
+                unset($change['message']);
+                foreach ($named as $number) {
+                    $found[(int) $number][] = $change;
+                }
+            }
+        }
+
+        return $found;
+    }
+
+    /**
      * Whether this change's commit message really names the issue.
      *
      * Two places carry the number without meaning it. The `Reviewed-on:`
@@ -152,11 +210,19 @@ final class Gerrit
     private const CURRENT_COMMIT = '&o=CURRENT_COMMIT';
 
     /**
+     * The most changes one query answers with. A batched query asks for all of
+     * them: twelve issues answered twelve changes when it was measured, so the
+     * headroom is what an issue with several patches costs rather than a bound
+     * anybody has met.
+     */
+    private const MOST = 25;
+
+    /**
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     private function search(string $query, int $limit, bool $withMessage = false): array
     {
-        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(25, $limit))
+        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(self::MOST, $limit))
             . self::CURRENT_REVISION . ($withMessage ? self::CURRENT_COMMIT : '');
         $held = Recent::held($url, self::HELD_FOR);
         if (is_array($held)) {

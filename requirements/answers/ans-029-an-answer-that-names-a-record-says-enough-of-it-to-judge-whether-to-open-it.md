@@ -1,7 +1,7 @@
 ---
 id: R-ANS-029
 status: held
-restsOn: [D-ANS-064]
+restsOn: [D-ANS-064, D-ANS-069]
 ---
 
 # R-ANS-029 — An answer that names a record says enough of it to judge whether to open it
@@ -34,13 +34,22 @@ the journal into a `reviews` field naming `typo3_gerrit_lookup`, with the change
 number, the Change-Id and the patch set a note gave them. Nothing is claimed
 about a change's state: a note says what was true the day it was written.
 
+**Widened on 2026-08-09** to the enumeration, where the same two records are
+what a backlog row is chosen on. A row carries its relations filled by the one
+bulk read the issue answer already made, and the changes on the review server
+whose commit message names it — asked of Gerrit in one query per twelve rows,
+because the journal that carries a change reference is not in the index answer
+at all (`D-ANS-069`).
+
 ## Held by
 
 - `ForgeTest::aRelationCarriesEnoughOfTheOtherIssueToJudgeWhetherToReadIt`
 - `ForgeTest::aRelationTheFillCouldNotReachIsStillTheRelationThatWasFiled`
 - `ForgeTest::aReviewChangeIsLiftedOutOfTheProseThatCarriesIt`
 - `ForgeTest::aQueryUrlNamesNoChangeAndIsNotReportedAsOne`
+- `ForgeTest::theRelationsOfAWholePageAreFilledInOneCall`
+- `ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt`
 
 What no test reaches is the general form — every answer that names a record this
-server can read. The two fields the feedback named are held; a third that
+server can read. The fields the feedback named are held; a further one that
 arrives is held when somebody writes it.

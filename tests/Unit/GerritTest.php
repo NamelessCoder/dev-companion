@@ -113,6 +113,55 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * A page of issues is one question, and each change is sorted onto the
+     * issue its commit message names.
+     *
+     * The alternative is a call per row, which is what keeps a backlog answer
+     * from carrying the one signal a triage stops on (`D-ANS-069`). The filter
+     * carries over unchanged: a change is the answer to the issue its message
+     * names and to no other number in the batch.
+     */
+    #[Test]
+    public function aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::BOTH;
+        });
+
+        $found = $gerrit->changesForIssues([88556, 106318]);
+
+        self::assertCount(1, $asked);
+        self::assertStringContainsString('q=message%3A88556%20OR%20message%3A106318', $asked[0]);
+        self::assertStringContainsString('o=CURRENT_COMMIT', $asked[0]);
+        self::assertSame([95108], array_column($found[88556], 'number'));
+        // And the merged change is the answer to the issue it resolves rather
+        // than to the one whose number it carries as its own.
+        self::assertSame([88556], array_column($found[106318], 'number'));
+        self::assertArrayNotHasKey('message', $found[88556][0]);
+    }
+
+    /**
+     * What bounds a query is the URL rather than a documented limit, so a page
+     * wider than one batch is more than one call — `D-ANS-069`.
+     */
+    #[Test]
+    public function aPageWiderThanOneQueryIsAskedInBatches(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return ")]}'\n[]";
+        });
+
+        self::assertSame([], $gerrit->changesForIssues(range(80001, 80015)));
+        self::assertCount(2, $asked);
+    }
+
+    /**
      * The commit message is what the filter reads, so it is asked for — and
      * only where there is something to hold against it. A caller naming a
      * change has named it.

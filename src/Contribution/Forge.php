@@ -125,10 +125,18 @@ final class Forge
 
     private readonly Fetch $fetch;
 
+    /**
+     * The review server, asked one question: whether a change names a row of
+     * an enumeration. The tracker cannot answer it — the journal that carries a
+     * change reference is not in the index answer at all (`D-ANS-069`).
+     */
+    private readonly Gerrit $review;
+
     /** @param (\Closure(string): ?string)|null $transport */
     public function __construct(?\Closure $transport = null)
     {
         $this->fetch = new Fetch($transport);
+        $this->review = new Gerrit($transport);
     }
 
     /**
@@ -152,8 +160,7 @@ final class Forge
             return ['status' => 'unavailable', 'url' => $url, 'issue' => null, 'cause' => $answer['cause']];
         }
 
-        $found = self::issueOf($answer['part'], $number, $notes);
-        $found['relations'] = $this->related($found['relations']);
+        $found = $this->related([self::issueOf($answer['part'], $number, $notes)])[0];
 
         return [
             'status' => 'answered',
@@ -164,7 +171,8 @@ final class Forge
     }
 
     /**
-     * The relations, with what it takes to decide whether to read one.
+     * The relations of these records, with what it takes to decide whether to
+     * read one.
      *
      * A relation came back as a number and a word, which costs one issue read
      * to evaluate — so a caller holding four of them evaluates none. On 15984
@@ -173,25 +181,68 @@ final class Forge
      * revert was filed under, found afterwards in a git commit message
      * (`D-ANS-064`).
      *
-     * The price is one bulk read per issue answer rather than one per relation,
-     * which is what makes this a fix and not a trade. Where it cannot be
-     * reached the relations stand as they came back.
+     * The price is one bulk read for everything handed in rather than one per
+     * relation, which is what makes this a fix and not a trade — and it is why
+     * a whole page goes through here at once rather than a record at a time.
+     * Where it cannot be reached the relations stand as they came back.
      *
-     * @param list<array<string, mixed>> $relations
+     * @param list<array<string, mixed>> $records
      * @return list<array<string, mixed>>
      */
-    private function related(array $relations): array
+    private function related(array $records): array
     {
-        $fields = $this->fields(array_column($relations, 'issue'));
-        foreach ($relations as $at => $relation) {
-            $read = $fields[$relation['issue']] ?? null;
-            $relations[$at]['subject'] = $read['subject'] ?? '';
-            $relations[$at]['tracker'] = $read['tracker'] ?? '';
-            $relations[$at]['status'] = $read['status'] ?? '';
-            $relations[$at]['url'] = self::HOST . '/issues/' . $relation['issue'];
+        $numbers = [];
+        foreach ($records as $record) {
+            $numbers = [...$numbers, ...array_column($record['relations'], 'issue')];
         }
 
-        return $relations;
+        $fields = $this->fields($numbers);
+        foreach ($records as $at => $record) {
+            foreach ($record['relations'] as $index => $relation) {
+                $read = $fields[$relation['issue']] ?? null;
+                $records[$at]['relations'][$index]['subject'] = $read['subject'] ?? '';
+                $records[$at]['relations'][$index]['tracker'] = $read['tracker'] ?? '';
+                $records[$at]['relations'][$index]['status'] = $read['status'] ?? '';
+            }
+        }
+
+        return $records;
+    }
+
+    /**
+     * The changes the review server holds for these rows, one query per twelve
+     * of them.
+     *
+     * The signal a triage stops on and the one no row carried: whether somebody
+     * has already pushed a patch. It is not in the index answer and not
+     * reachable from it — the change reference lives in the journal, which
+     * `/issues.json` does not serve at all, so the enumeration would be one
+     * issue read per row to find out (`D-ANS-069`).
+     *
+     * What is carried is the handle and not the state. A change is named here
+     * so `typo3_gerrit_lookup` can be asked what it is now; a row that says
+     * merged or abandoned is a verdict, and this list is read to choose what to
+     * read.
+     *
+     * Where the review server cannot be reached the rows stand as they came
+     * back, which is the same trade the relation fill makes.
+     *
+     * @param list<array<string, mixed>> $results
+     * @return list<array<string, mixed>>
+     */
+    private function reviewed(array $results): array
+    {
+        $changes = $this->review->changesForIssues(array_column($results, 'issue'));
+        foreach ($results as $at => $entry) {
+            foreach ($changes[$entry['issue']] ?? [] as $change) {
+                $results[$at]['reviews'][] = [
+                    'change' => $change['number'],
+                    'url' => $change['url'],
+                ];
+            }
+        }
+
+        return $results;
     }
 
     /**
@@ -360,6 +411,10 @@ final class Forge
             'status_id' => 'open',
             'sort' => $order === 'stale' ? 'updated_on:asc' : 'created_on:asc',
             'limit' => (string) max(1, min(self::LISTED, $limit)),
+            // What the index answers for nothing where it is asked for. The
+            // journal is the one thing it will not serve however it is asked,
+            // which is why the review server is a call of its own below.
+            'include' => 'relations,attachments',
         ];
         if (isset(self::TRACKERS[$tracker])) {
             $filters['tracker_id'] = (string) self::TRACKERS[$tracker];
@@ -410,7 +465,7 @@ final class Forge
             'total' => $answer['total'],
             'categories' => $known,
             'categoriesUsed' => $used,
-            'results' => $results,
+            'results' => $this->reviewed($this->related($results)),
             'cause' => null,
         ];
     }
@@ -601,6 +656,12 @@ final class Forge
             'createdOn' => '',
             'updatedOn' => '',
             'url' => $url !== '' ? $url : self::HOST . '/issues/' . $issue,
+            // Nothing asks the tracker or the review server about these for a
+            // search: a search answers which issues mention a wording, and the
+            // three are what a backlog row is chosen on.
+            'relations' => [],
+            'attachments' => [],
+            'reviews' => [],
         ];
     }
 
@@ -612,6 +673,12 @@ final class Forge
      * title — which is what makes the two dates answerable at all. They are the
      * two a triage sorts on and they say different things: filed long ago is
      * about the report, untouched for years is about the attention it got.
+     *
+     * The relations and the files come back with the page where the call asked
+     * for them, and cost nothing beyond it. What they decide is which row is
+     * worth reading: over the 36 issues `D-ANS-069` measured, 19 carried a
+     * relation and 6 carried a file, and a report whose evidence is a
+     * screenshot is a different candidate to one whose report is prose.
      *
      * @param array<string, mixed> $raw
      * @return array<string, mixed>
@@ -630,6 +697,11 @@ final class Forge
             'createdOn' => is_string($raw['created_on'] ?? null) ? $raw['created_on'] : '',
             'updatedOn' => is_string($raw['updated_on'] ?? null) ? $raw['updated_on'] : '',
             'url' => self::HOST . '/issues/' . $issue,
+            'relations' => self::relationsOf($raw, $issue),
+            'attachments' => self::attachments($raw),
+            // Filled by `reviewed()`, which is one call for the page rather
+            // than a field of the row.
+            'reviews' => [],
         ];
     }
 
@@ -668,26 +740,7 @@ final class Forge
         // the answer.
         $shown = $wanted === 'people' ? $written : $notes;
 
-        // A relation names both sides, and which of the two is the other issue
-        // depends on who filed it. Taking one field blindly reports an issue as
-        // related to itself, which is what the first live call did.
         $own = (int) ($raw['id'] ?? $number);
-        $relations = [];
-        foreach (is_array($raw['relations'] ?? null) ? $raw['relations'] : [] as $relation) {
-            if (!is_array($relation)) {
-                continue;
-            }
-            $from = (int) ($relation['issue_id'] ?? 0);
-            $to = (int) ($relation['issue_to_id'] ?? 0);
-            $other = $from === $own ? $to : $from;
-            if ($other === 0 || $other === $own) {
-                continue;
-            }
-            $relations[] = [
-                'issue' => $other,
-                'relation' => is_string($relation['relation_type'] ?? null) ? $relation['relation_type'] : '',
-            ];
-        }
 
         return [
             'id' => (int) ($raw['id'] ?? $number),
@@ -703,7 +756,7 @@ final class Forge
             'updatedOn' => is_string($raw['updated_on'] ?? null) ? $raw['updated_on'] : '',
             'url' => self::HOST . '/issues/' . (int) ($raw['id'] ?? $number),
             'description' => is_string($raw['description'] ?? null) ? trim($raw['description']) : '',
-            'relations' => $relations,
+            'relations' => self::relationsOf($raw, $own),
             'attachments' => self::attachments($raw),
             // Read from every note rather than from the ones that come back, so
             // a patch-set ping older than the bound is still a handle.
@@ -712,6 +765,39 @@ final class Forge
             'botNoteCount' => count($notes) - count($written),
             'notes' => array_slice($shown, -self::NOTES),
         ];
+    }
+
+    /**
+     * The issues a record is filed against, each named once.
+     *
+     * A relation names both sides, and which of the two is the other issue
+     * depends on who filed it. Taking one field blindly reports an issue as
+     * related to itself, which is what the first live call did.
+     *
+     * @param array<string, mixed> $raw
+     * @return list<array<string, mixed>>
+     */
+    private static function relationsOf(array $raw, int $own): array
+    {
+        $relations = [];
+        foreach (is_array($raw['relations'] ?? null) ? $raw['relations'] : [] as $relation) {
+            if (!is_array($relation)) {
+                continue;
+            }
+            $from = (int) ($relation['issue_id'] ?? 0);
+            $to = (int) ($relation['issue_to_id'] ?? 0);
+            $other = $from === $own ? $to : $from;
+            if ($other === 0 || $other === $own) {
+                continue;
+            }
+            $relations[] = [
+                'issue' => $other,
+                'relation' => is_string($relation['relation_type'] ?? null) ? $relation['relation_type'] : '',
+                'url' => self::HOST . '/issues/' . $other,
+            ];
+        }
+
+        return $relations;
     }
 
     /**

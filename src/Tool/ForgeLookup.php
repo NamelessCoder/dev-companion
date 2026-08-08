@@ -40,7 +40,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker and by date, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -142,14 +142,7 @@ final class ForgeLookup extends ReadOnlyTool
                     'updatedOn' => Schema::string(),
                     'url' => Schema::string('Where a person reads it.'),
                     'description' => Schema::string('The report as it was written, which is what the reporter saw and not what was decided.'),
-                    'relations' => Schema::listOf(Schema::object([
-                        'issue' => Schema::integer('The other issue.'),
-                        'relation' => Schema::string('duplicates, relates, blocked, precedes.'),
-                        'subject' => Schema::string('What the other issue is about, so it can be judged without being read. Empty where the tracker did not answer the one call that fills the whole set.'),
-                        'tracker' => Schema::string('Bug, Feature, Task.'),
-                        'status' => Schema::string('Where the other issue stands.'),
-                        'url' => Schema::string('Where a person reads it.'),
-                    ], ['issue', 'relation', 'subject', 'tracker', 'status', 'url']), 'Issues this one is filed against, which is where a duplicate, a blocker, and the issue a revert was filed under are named. Each carries its subject, so which of them is worth reading is decided from here rather than from one call each.'),
+                    'relations' => Schema::listOf(self::relation(), 'Issues this one is filed against, which is where a duplicate, a blocker, and the issue a revert was filed under are named. Each carries its subject, so which of them is worth reading is decided from here rather than from one call each.'),
                     'reviews' => Schema::listOf(Schema::object([
                         'change' => Schema::integer('The change number on review.typo3.org, which is what typo3_gerrit_lookup takes as change.'),
                         'changeId' => Schema::string('The Change-Id the commit message carries, empty where no note named one. typo3_gerrit_lookup takes this too, and it is what survives a rebase onto another branch.'),
@@ -157,13 +150,7 @@ final class ForgeLookup extends ReadOnlyTool
                         'on' => Schema::string('When the last note naming this change was written, which is how old the reference is and not when the change last moved.'),
                         'url' => Schema::string('Where a person reads the change.'),
                     ], ['change', 'changeId', 'patchSet', 'on', 'url']), 'The review changes the journal names, lifted out of the prose that carries them. Nothing here says what state a change is in: a note says what was true the day it was written, and typo3_gerrit_lookup answers what is true now. Empty where no note named one.'),
-                    'attachments' => Schema::listOf(Schema::object([
-                        'filename' => Schema::string('The name the file was uploaded under, which is also how a comment refers to it: Redmine writes an inline image as !name.png! and the text around it says nothing else about it.'),
-                        'contentType' => Schema::string('image/png, image/jpeg, text/plain.'),
-                        'size' => Schema::integer('Bytes.'),
-                        'on' => Schema::string('When it was uploaded, which is what says which comment it belongs to.'),
-                        'url' => Schema::string('Where the file itself is. It answers without a credential, and reading it is the caller\'s: nothing here fetches or transcribes one.'),
-                    ], ['filename', 'contentType', 'size', 'on', 'url']), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
+                    'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue. On a report about rendering these are usually screenshots, and they are regularly where the evidence is: a comment that consists of !image.jpg! references reads as an empty comment otherwise. Empty where the issue carries none.'),
                     'noteCount' => Schema::integer('How many comments the issue carries in total.'),
                     'botNoteCount' => Schema::integer('How many of those a review bot wrote, which notes: "people" is what drops. Answered whichever way notes was asked, so a journal full of patch-set pings answering zero here is the list of bot names gone stale rather than an issue nobody pushed a patch for.'),
                     'notes' => Schema::listOf(Schema::object([
@@ -184,7 +171,13 @@ final class ForgeLookup extends ReadOnlyTool
                 'createdOn' => Schema::string('When it was filed.'),
                 'updatedOn' => Schema::string('When anything last moved on it, which is the measure of neglect rather than of age.'),
                 'url' => Schema::string('Where a person reads it.'),
-            ], ['issue', 'subject', 'tracker', 'status', 'category', 'assignedTo', 'createdOn', 'updatedOn', 'url']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
+                'relations' => Schema::listOf(self::relation(), 'The issues this one is filed against, each with its subject, so a row that duplicates something already decided is seen without being read. Answered on an enumeration and empty on a search hit, where nothing asked for them.'),
+                'attachments' => Schema::listOf(self::attachment(), 'The files hanging off the issue, which on a report about rendering are usually where the evidence is — and a report whose evidence is a screenshot is a different candidate to one whose evidence is prose. Answered on an enumeration and empty on a search hit, where nothing asked for them.'),
+                'reviews' => Schema::listOf(Schema::object([
+                    'change' => Schema::integer('The change number on review.typo3.org, which is what typo3_gerrit_lookup takes as change.'),
+                    'url' => Schema::string('Where a person reads the change.'),
+                ], ['change', 'url']), 'The changes whose commit message names this issue, asked of the review server in one query for the whole page. A handle and not a verdict: whether a change is merged, open or abandoned is a typo3_gerrit_lookup call, and a change named here is what makes that call worth one. Empty where nothing on the review server names the issue and where the review server did not answer, which this does not separate — and empty on a search hit, where it is not asked.'),
+            ], ['issue', 'subject', 'tracker', 'status', 'category', 'assignedTo', 'createdOn', 'updatedOn', 'url', 'relations', 'attachments', 'reviews']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
@@ -201,6 +194,42 @@ final class ForgeLookup extends ReadOnlyTool
                 'required' => ['cause', 'reason'],
             ],
         ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'issue', 'results', 'unavailable']);
+    }
+
+    /**
+     * One related issue, in the one shape both answers carry it in.
+     *
+     * A row of an enumeration and an issue read whole name the same thing, and
+     * a caller that reads two shapes for it reads the second one wrong.
+     *
+     * @return array<string, mixed>
+     */
+    private static function relation(): array
+    {
+        return Schema::object([
+            'issue' => Schema::integer('The other issue.'),
+            'relation' => Schema::string('duplicates, relates, blocked, precedes.'),
+            'subject' => Schema::string('What the other issue is about, so it can be judged without being read. Empty where the tracker did not answer the one call that fills the whole set.'),
+            'tracker' => Schema::string('Bug, Feature, Task.'),
+            'status' => Schema::string('Where the other issue stands.'),
+            'url' => Schema::string('Where a person reads it.'),
+        ], ['issue', 'relation', 'subject', 'tracker', 'status', 'url']);
+    }
+
+    /**
+     * One file hanging off an issue, in the one shape both answers carry it in.
+     *
+     * @return array<string, mixed>
+     */
+    private static function attachment(): array
+    {
+        return Schema::object([
+            'filename' => Schema::string('The name the file was uploaded under, which is also how a comment refers to it: Redmine writes an inline image as !name.png! and the text around it says nothing else about it.'),
+            'contentType' => Schema::string('image/png, image/jpeg, text/plain.'),
+            'size' => Schema::integer('Bytes.'),
+            'on' => Schema::string('When it was uploaded, which is what says which comment it belongs to.'),
+            'url' => Schema::string('Where the file itself is. It answers without a credential, and reading it is the caller\'s: nothing here fetches or transcribes one.'),
+        ], ['filename', 'contentType', 'size', 'on', 'url']);
     }
 
     /** @param array<string, mixed> $args */
@@ -291,14 +320,7 @@ final class ForgeLookup extends ReadOnlyTool
                 . ' — which is what the reporter had, not what it still reproduces on.';
         }
         foreach ($found['relations'] as $relation) {
-            // The subject, so which relation is worth an issue read is decided
-            // here rather than by reading all of them.
-            $lines[] = rtrim(sprintf(
-                'Relation: %s #%d — %s',
-                $relation['relation'],
-                $relation['issue'],
-                implode(' · ', array_filter([$relation['tracker'], $relation['status'], $relation['subject']])),
-            ), ' —');
+            $lines[] = self::relationLine($relation);
         }
         $lines[] = '';
         $lines[] = '## Reported';
@@ -358,6 +380,23 @@ final class ForgeLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * One relation, with the subject that decides whether to read it — so which
+     * of them is worth an issue read is settled here rather than by reading all
+     * of them.
+     *
+     * @param array<string, mixed> $relation
+     */
+    private static function relationLine(array $relation): string
+    {
+        return rtrim(sprintf(
+            'Relation: %s #%d — %s',
+            $relation['relation'],
+            $relation['issue'],
+            implode(' · ', array_filter([$relation['tracker'], $relation['status'], $relation['subject']])),
+        ), ' —');
     }
 
     /**
@@ -508,6 +547,10 @@ final class ForgeLookup extends ReadOnlyTool
             : 'That is the whole set on these filters.';
         $lines[] = 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
             . ' still claims is established in the checkout rather than off this list.';
+        $lines[] = 'A row carries what the page came back with: the issues it is filed against, the files hanging off'
+            . ' it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle'
+            . ' for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing'
+            . ' there names — or one the review server did not answer for, which this list does not separate.';
         if ($answer['categoriesUsed'] !== []) {
             // Where the reporter filed it, which is not everything about the
             // subject: three of the RTE reports a session went looking for on
@@ -529,6 +572,21 @@ final class ForgeLookup extends ReadOnlyTool
                 $entry['updatedOn'] !== '' ? 'last touched ' . substr($entry['updatedOn'], 0, 10) : '',
                 $entry['url'],
             ]));
+            foreach ($entry['relations'] as $relation) {
+                $lines[] = self::relationLine($relation);
+            }
+            if ($entry['attachments'] !== []) {
+                // Named and not linked: the files are read after the issue is,
+                // and a page of thirty rows is read to choose which one that is.
+                $lines[] = sprintf(
+                    'Files (%d): %s',
+                    count($entry['attachments']),
+                    implode(', ', array_column($entry['attachments'], 'filename')),
+                );
+            }
+            foreach ($entry['reviews'] as $review) {
+                $lines[] = sprintf('Review: change %d · %s', $review['change'], $review['url']);
+            }
         }
 
         return ToolResult::create(implode("\n", $lines), $data);

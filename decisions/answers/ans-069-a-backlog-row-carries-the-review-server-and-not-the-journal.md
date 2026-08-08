@@ -84,3 +84,24 @@ enumeration answer has no journal in it.
   it, which would say the filter does not survive the alternation.
 - Sessions keep reading candidates whole once the rows carry the signals, which
   would say the reading was never about what the rows were missing.
+
+## Covered by
+
+- `ForgeTest::aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt`
+- `ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt`
+- `GerritTest::aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames`
+
+## Since then
+
+**Built on 2026-08-09**, and the relations cost a call after all. A relation
+carried as a number and a word is what `R-ANS-029` forbids, so the rows go
+through the bulk read that already fills an issue's relations — one
+`issues.json?issue_id=…` for the whole page, whatever the rows carry between
+them, which is the trade `D-ANS-064` made and this entry endorsed for the review
+query. So the page is the index call, that fill where any row has a relation,
+and one review query per twelve rows.
+
+Recorded live against forge.typo3.org and review.typo3.org the same day, in
+`documentation/tools/typo3_forge_lookup.md`: the three oldest open issues came
+back with 8 relations, one file and 6 changes between them, `#15984` among them
+with the four relations and the three changes `D-ANS-064` was written from.

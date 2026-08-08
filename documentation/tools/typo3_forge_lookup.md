@@ -13,10 +13,14 @@ issues without holding a number or a wording — oldest filed or longest
 untouched, narrowed by tracker and by date, which is where a triage of the
 backlog starts; the count of everything that matched comes back with the page,
 so a limited answer says whether it is the whole set. Each entry carries its
-number, subject, tracker, status and URL. A call carries issue, query or open,
-never two of them. An issue that does not exist is answered as such, and so is a
-tracker that could not be reached. Reading only, and no credential: commenting,
-assigning and closing stay yours. Answers from: network.
+number, subject, tracker, status and URL, and an enumerated one also carries the
+issues it is filed against with their subjects, the files hanging off it, and
+the changes on review.typo3.org whose commit message names it — the three that
+say a row was answered elsewhere or already attempted, without reading it whole.
+A call carries issue, query or open, never two of them. An issue that does not
+exist is answered as such, and so is a tracker that could not be reached.
+Reading only, and no credential: commenting, assigning and closing stay yours.
+Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
@@ -243,6 +247,56 @@ results:
     updatedOn: string
     # Where a person reads it.
     url: string
+    # The issues this one is filed against, each with its subject, so a row that
+    # duplicates something already decided is seen without being read. Answered
+    # on an enumeration and empty on a search hit, where nothing asked for them.
+    relations:
+      - # The other issue.
+        issue: integer
+        # duplicates, relates, blocked, precedes.
+        relation: string
+        # What the other issue is about, so it can be judged without being read.
+        # Empty where the tracker did not answer the one call that fills the
+        # whole set.
+        subject: string
+        # Bug, Feature, Task.
+        tracker: string
+        # Where the other issue stands.
+        status: string
+        # Where a person reads it.
+        url: string
+    # The files hanging off the issue, which on a report about rendering are
+    # usually where the evidence is — and a report whose evidence is a
+    # screenshot is a different candidate to one whose evidence is prose.
+    # Answered on an enumeration and empty on a search hit, where nothing asked
+    # for them.
+    attachments:
+      - # The name the file was uploaded under, which is also how a comment
+        # refers to it: Redmine writes an inline image as !name.png! and the
+        # text around it says nothing else about it.
+        filename: string
+        # image/png, image/jpeg, text/plain.
+        contentType: string
+        # Bytes.
+        size: integer
+        # When it was uploaded, which is what says which comment it belongs to.
+        on: string
+        # Where the file itself is. It answers without a credential, and reading
+        # it is the caller's: nothing here fetches or transcribes one.
+        url: string
+    # The changes whose commit message names this issue, asked of the review
+    # server in one query for the whole page. A handle and not a verdict:
+    # whether a change is merged, open or abandoned is a typo3_gerrit_lookup
+    # call, and a change named here is what makes that call worth one. Empty
+    # where nothing on the review server names the issue and where the review
+    # server did not answer, which this does not separate — and empty on a
+    # search hit, where it is not asked.
+    reviews:
+      - # The change number on review.typo3.org, which is what
+        # typo3_gerrit_lookup takes as change.
+        change: integer
+        # Where a person reads the change.
+        url: string
 # Why nothing was answered, where status says unavailable. Null otherwise.
 unavailable:
   # One of: source-not-answering, source-not-parseable. source-not-answering:
@@ -255,7 +309,7 @@ unavailable:
 
 ## Answered
 
-Recorded on 2026-08-08 by `bin/cli tools:record`. Answered against
+Recorded on 2026-08-09 by `bin/cli tools:record`. Answered against
 core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -696,10 +750,10 @@ Data:
             {
                 "issue": 96466,
                 "relation": "relates",
+                "url": "https://forge.typo3.org/issues/96466",
                 "subject": "RTE parse func paragraph duplication bug",
                 "tracker": "Bug",
-                "status": "Rejected",
-                "url": "https://forge.typo3.org/issues/96466"
+                "status": "Rejected"
             }
         ],
         "attachments": [
@@ -974,18 +1028,18 @@ Data:
             {
                 "issue": 90676,
                 "relation": "relates",
+                "url": "https://forge.typo3.org/issues/90676",
                 "subject": "Clipboard related bugs and features",
                 "tracker": "Epic",
-                "status": "Accepted",
-                "url": "https://forge.typo3.org/issues/90676"
+                "status": "Accepted"
             },
             {
                 "issue": 70759,
                 "relation": "duplicates",
+                "url": "https://forge.typo3.org/issues/70759",
                 "subject": "Changing the default clipboard option from  \"move elements\"  to \"copy elements\"",
                 "tracker": "Feature",
-                "status": "Closed",
-                "url": "https://forge.typo3.org/issues/70759"
+                "status": "Closed"
             }
         ],
         "attachments": [],
@@ -1137,7 +1191,10 @@ Data:
             "assignedTo": "",
             "createdOn": "2025-10-29T11:00:18Z",
             "updatedOn": "2025-12-02T12:04:43Z",
-            "url": "https://forge.typo3.org/issues/107904"
+            "url": "https://forge.typo3.org/issues/107904",
+            "relations": [],
+            "attachments": [],
+            "reviews": []
         },
         {
             "issue": 107869,
@@ -1148,7 +1205,10 @@ Data:
             "assignedTo": "",
             "createdOn": "2025-10-27T19:48:27Z",
             "updatedOn": "2025-12-02T12:04:41Z",
-            "url": "https://forge.typo3.org/issues/107869"
+            "url": "https://forge.typo3.org/issues/107869",
+            "relations": [],
+            "attachments": [],
+            "reviews": []
         },
         {
             "issue": 105953,
@@ -1159,7 +1219,10 @@ Data:
             "assignedTo": "",
             "createdOn": "2025-01-16T20:23:02Z",
             "updatedOn": "2025-08-12T14:36:32Z",
-            "url": "https://forge.typo3.org/issues/105953"
+            "url": "https://forge.typo3.org/issues/105953",
+            "relations": [],
+            "attachments": [],
+            "reviews": []
         }
     ],
     "unavailable": null
@@ -1214,18 +1277,34 @@ Called with:
 Text:
 
 ```
-TYPO3 issue tracker: 3 of 2475 open issues of the TYPO3 Core project, oldest filed first
+TYPO3 issue tracker: 3 of 2474 open issues of the TYPO3 Core project, oldest filed first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
+A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
 ## #14277 Start/Stop time for pages is ignored in standard menu objects
 Feature · Accepted · Frontend · unassigned · filed 2004-08-20 · last touched 2025-04-04 · https://forge.typo3.org/issues/14277
+Relation: relates #16815 — Bug · Closed · Sitemap ignoring "Start" and "End" flags
+Relation: relates #98964 — Bug · Closed · Menu object caching creates too many records resulting in huge cache_hash table
+Review: change 61395 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395
 
 ## #14858 extended clipboard: setCopyMode can`t be set to copy by default
 Bug · New · Backend User Interface · unassigned · filed 2005-07-11 · last touched 2026-01-23 · https://forge.typo3.org/issues/14858
+Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features
+Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements"
+Review: change 70962 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962
+Review: change 38419 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419
 
 ## #15984 menu.showAccessRestrictedPages doesn't replace link for  "include subpages"
 Bug · Accepted · Frontend · unassigned · filed 2006-04-05 · last touched 2026-04-15 · https://forge.typo3.org/issues/15984
+Relation: relates #22860 — Bug · Closed · typolinkLinkAccessRestrictedPages_addParams doesn't work on restricted subpages
+Relation: relates #26484 — Bug · Closed · extend to subpages in page properties in access tab does not work correctly
+Relation: relates #78825 — Bug · Closed · Wrong pid determination when opening a nested access restriced page
+Relation: precedes #32756 — Bug · Closed · Massive Memory Leak in 4.5.8+ / 4.6
+Files (1): 3129.diff
+Review: change 2545 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545
+Review: change 2544 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
+Review: change 1186 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186
 ```
 
 Data:
@@ -1234,9 +1313,9 @@ Data:
 {
     "status": "answered",
     "source": "https://forge.typo3.org",
-    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3",
+    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments",
     "query": "",
-    "total": 2475,
+    "total": 2474,
     "categories": [
         "AdminPanel",
         "Authentication",
@@ -1306,7 +1385,32 @@ Data:
             "assignedTo": "",
             "createdOn": "2004-08-20T08:45:13Z",
             "updatedOn": "2025-04-04T06:59:33Z",
-            "url": "https://forge.typo3.org/issues/14277"
+            "url": "https://forge.typo3.org/issues/14277",
+            "relations": [
+                {
+                    "issue": 16815,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/16815",
+                    "subject": "Sitemap ignoring \"Start\" and \"End\" flags",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 98964,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/98964",
+                    "subject": "Menu object caching creates too many records resulting in huge cache_hash table",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                }
+            ],
+            "attachments": [],
+            "reviews": [
+                {
+                    "change": 61395,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395"
+                }
+            ]
         },
         {
             "issue": 14858,
@@ -1317,7 +1421,36 @@ Data:
             "assignedTo": "",
             "createdOn": "2005-07-11T23:31:03Z",
             "updatedOn": "2026-01-23T08:30:36Z",
-            "url": "https://forge.typo3.org/issues/14858"
+            "url": "https://forge.typo3.org/issues/14858",
+            "relations": [
+                {
+                    "issue": 90676,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/90676",
+                    "subject": "Clipboard related bugs and features",
+                    "tracker": "Epic",
+                    "status": "Accepted"
+                },
+                {
+                    "issue": 70759,
+                    "relation": "duplicates",
+                    "url": "https://forge.typo3.org/issues/70759",
+                    "subject": "Changing the default clipboard option from  \"move elements\"  to \"copy elements\"",
+                    "tracker": "Feature",
+                    "status": "Closed"
+                }
+            ],
+            "attachments": [],
+            "reviews": [
+                {
+                    "change": 70962,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962"
+                },
+                {
+                    "change": 38419,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419"
+                }
+            ]
         },
         {
             "issue": 15984,
@@ -1328,7 +1461,64 @@ Data:
             "assignedTo": "",
             "createdOn": "2006-04-05T03:07:50Z",
             "updatedOn": "2026-04-15T09:44:14Z",
-            "url": "https://forge.typo3.org/issues/15984"
+            "url": "https://forge.typo3.org/issues/15984",
+            "relations": [
+                {
+                    "issue": 22860,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/22860",
+                    "subject": "typolinkLinkAccessRestrictedPages_addParams doesn't work on restricted subpages",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 26484,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/26484",
+                    "subject": "extend to subpages in page properties in access tab does not work correctly",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 78825,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/78825",
+                    "subject": "Wrong pid determination when opening a nested access restriced page",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 32756,
+                    "relation": "precedes",
+                    "url": "https://forge.typo3.org/issues/32756",
+                    "subject": "Massive Memory Leak in 4.5.8+ / 4.6",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                }
+            ],
+            "attachments": [
+                {
+                    "filename": "3129.diff",
+                    "contentType": "application/octet-stream",
+                    "size": 905,
+                    "on": "2010-06-10T22:46:58Z",
+                    "url": "https://forge.typo3.org/attachments/download/6964/3129.diff"
+                }
+            ],
+            "reviews": [
+                {
+                    "change": 2545,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545"
+                },
+                {
+                    "change": 2544,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544"
+                },
+                {
+                    "change": 1186,
+                    "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186"
+                }
+            ]
         }
     ],
     "unavailable": null
@@ -1354,16 +1544,25 @@ Text:
 TYPO3 issue tracker: 3 of 22 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
 This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
 Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
+A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
 
 ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
 Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400
+Relation: relates #87314 — Feature · New · allowedAttribs / allowAttributes usage in config
+Relation: relates #92943 — Bug · Closed · RTE ckeditor does not respect YAML configuration
+Files (1): RTE Bug.mov
 
 ## #97817 RTE removes line with empty, allowed tags when saving
 Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2022-06-28 · last touched 2022-06-28 · https://forge.typo3.org/issues/97817
 
 ## #88690 Translated content elements are not available in linkbrowser of the ckeditor in free mode
 Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2019-07-05 · last touched 2023-03-05 · https://forge.typo3.org/issues/88690
+Relation: relates #89701 — Bug · Closed · Link wizard lists only content elements of the default language
+Relation: relates #90138 — Feature · Closed · Language and mode (free or connected) should be handled in the links module when creating an anchor to content
+Relation: relates #91160 — Bug · Closed · Links to content element (anchor) in link wizard not possible when not in default language
+Relation: relates #88382 — Bug · Closed · Link wizard lists all content elements of a page regardless of source language
+Relation: relates #92809 — Bug · Accepted · Anchor Links in Link Wizard not translated correctly
 ```
 
 Data:
@@ -1372,7 +1571,7 @@ Data:
 {
     "status": "answered",
     "source": "https://forge.typo3.org",
-    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=updated_on%3Aasc&limit=3&tracker_id=1&category_id=1001",
+    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=updated_on%3Aasc&limit=3&include=relations%2Cattachments&tracker_id=1&category_id=1001",
     "query": "",
     "total": 22,
     "categories": [
@@ -1446,7 +1645,35 @@ Data:
             "assignedTo": "",
             "createdOn": "2019-01-11T11:07:13Z",
             "updatedOn": "2019-01-11T11:07:13Z",
-            "url": "https://forge.typo3.org/issues/87400"
+            "url": "https://forge.typo3.org/issues/87400",
+            "relations": [
+                {
+                    "issue": 87314,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/87314",
+                    "subject": "allowedAttribs / allowAttributes usage in config",
+                    "tracker": "Feature",
+                    "status": "New"
+                },
+                {
+                    "issue": 92943,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/92943",
+                    "subject": "RTE ckeditor does not respect YAML configuration",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                }
+            ],
+            "attachments": [
+                {
+                    "filename": "RTE Bug.mov",
+                    "contentType": "video/quicktime",
+                    "size": 3779702,
+                    "on": "2019-01-11T11:01:30Z",
+                    "url": "https://forge.typo3.org/attachments/download/34053/RTE%20Bug.mov"
+                }
+            ],
+            "reviews": []
         },
         {
             "issue": 97817,
@@ -1457,7 +1684,10 @@ Data:
             "assignedTo": "",
             "createdOn": "2022-06-28T07:46:04Z",
             "updatedOn": "2022-06-28T07:46:04Z",
-            "url": "https://forge.typo3.org/issues/97817"
+            "url": "https://forge.typo3.org/issues/97817",
+            "relations": [],
+            "attachments": [],
+            "reviews": []
         },
         {
             "issue": 88690,
@@ -1468,7 +1698,51 @@ Data:
             "assignedTo": "",
             "createdOn": "2019-07-05T11:01:00Z",
             "updatedOn": "2023-03-05T17:47:02Z",
-            "url": "https://forge.typo3.org/issues/88690"
+            "url": "https://forge.typo3.org/issues/88690",
+            "relations": [
+                {
+                    "issue": 89701,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/89701",
+                    "subject": "Link wizard lists only content elements of the default language",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 90138,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/90138",
+                    "subject": "Language and mode (free or connected) should be handled in the links module when creating an anchor to content",
+                    "tracker": "Feature",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 91160,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/91160",
+                    "subject": "Links to content element (anchor) in link wizard not possible when not in default language",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 88382,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/88382",
+                    "subject": "Link wizard lists all content elements of a page regardless of source language",
+                    "tracker": "Bug",
+                    "status": "Closed"
+                },
+                {
+                    "issue": 92809,
+                    "relation": "relates",
+                    "url": "https://forge.typo3.org/issues/92809",
+                    "subject": "Anchor Links in Link Wizard not translated correctly",
+                    "tracker": "Bug",
+                    "status": "Accepted"
+                }
+            ],
+            "attachments": [],
+            "reviews": []
         }
     ],
     "unavailable": null
@@ -1499,7 +1773,7 @@ Data:
 {
     "status": "empty",
     "source": "https://forge.typo3.org",
-    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=15",
+    "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=15&include=relations%2Cattachments",
     "query": "",
     "total": 0,
     "categories": [

@@ -568,8 +568,10 @@ final class ForgeTest extends TestCase
     }
 
     /**
-     * The two calls an enumeration makes, answered by the URL that was asked
-     * for: the project carries the areas, the issues carry the page.
+     * The four calls an enumeration makes, answered by the URL that was asked
+     * for: the project carries the areas, the issues carry the page, the id
+     * list fills the relations of the whole page, and the review server says
+     * which rows have a change.
      *
      * @param list<string> $asked
      * @return \Closure(string): string
@@ -578,10 +580,43 @@ final class ForgeTest extends TestCase
     {
         return function (string $url) use (&$asked): string {
             $asked[] = $url;
+            if (str_contains($url, 'review.typo3.org')) {
+                return self::CHANGES;
+            }
+            if (str_contains($url, 'issue_id=')) {
+                return (string) json_encode(self::RELATED_ROWS);
+            }
 
             return (string) json_encode(str_contains($url, '/issues.json') ? self::PAGE : self::PROJECT);
         };
     }
+
+    /** The issue the first row of the page is filed against. */
+    private const RELATED_ROWS = [
+        'issues' => [
+            [
+                'id' => 90676,
+                'subject' => 'Clipboard related bugs and features',
+                'tracker' => ['name' => 'Epic'],
+                'status' => ['name' => 'Accepted'],
+            ],
+        ],
+        'total_count' => 1,
+    ];
+
+    /**
+     * What one batched query answers, in the shape review.typo3.org sends: the
+     * change that names the first row, and the change whose own number is the
+     * second row's — which is the false positive the `message:` index answers
+     * with whatever it was asked.
+     */
+    private const CHANGES = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[FEATURE] Make the copy mode configurable",'
+        . '"status":"NEW","_number":38419,"current_revision_number":3,"current_revision":"a1","revisions":{'
+        . '"a1":{"commit":{"message":"[FEATURE] Make the copy mode configurable\n\nResolves: #14858\nChange-Id: I1\n"}}}},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Something else entirely",'
+        . '"status":"MERGED","_number":23633,"current_revision_number":9,"current_revision":"b2","revisions":{'
+        . '"b2":{"commit":{"message":"[BUGFIX] Something else entirely\n\nResolves: #106318\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/23633\n"}}}}]';
 
     private const PROJECT = [
         'project' => [
@@ -611,6 +646,21 @@ final class ForgeTest extends TestCase
                 'assigned_to' => ['name' => 'Sacha Vorbeck'],
                 'created_on' => '2005-07-11T10:22:33Z',
                 'updated_on' => '2026-01-23T08:11:00Z',
+                // What `include=relations,attachments` adds to a row, which the
+                // index answers for nothing where the call asks for it.
+                'relations' => [
+                    ['issue_id' => 14858, 'issue_to_id' => 90676, 'relation_type' => 'relates'],
+                ],
+                'attachments' => [
+                    [
+                        'id' => 1277,
+                        'filename' => 'clipboard.png',
+                        'filesize' => 2048,
+                        'content_type' => 'image/png',
+                        'created_on' => '2005-07-11T10:22:33Z',
+                        'content_url' => 'https://forge.typo3.org/attachments/download/1277/clipboard.png',
+                    ],
+                ],
             ],
             [
                 'id' => 23633,
@@ -658,6 +708,107 @@ final class ForgeTest extends TestCase
         self::assertSame('', $answer['results'][1]['assignedTo']);
         self::assertSame('2005-07-11T10:22:33Z', $answer['results'][0]['createdOn']);
         self::assertSame('2026-01-23T08:11:00Z', $answer['results'][0]['updatedOn']);
+    }
+
+    /**
+     * The relations and the files come back with the page, and cost nothing
+     * beyond the call already made.
+     *
+     * A triage narrows a page of thirty to the few worth reading whole, and
+     * `D-ANS-069` measured what it was narrowing on: over 36 stale Bugs, 19
+     * carried a relation and 6 carried a file, and the answer dropped all of
+     * them.
+     */
+    #[Test]
+    public function aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $results = $forge->open('stale', '', '', '', '', 2)['results'];
+
+        self::assertStringContainsString('include=relations%2Cattachments', $asked[1]);
+        self::assertSame([90676], array_column($results[0]['relations'], 'issue'));
+        self::assertSame(['clipboard.png'], array_column($results[0]['attachments'], 'filename'));
+        self::assertSame('image/png', $results[0]['attachments'][0]['contentType']);
+        // A row the tracker answered nothing for carries neither, which is the
+        // issue having none rather than the call not asking.
+        self::assertSame([], $results[1]['relations']);
+        self::assertSame([], $results[1]['attachments']);
+    }
+
+    /**
+     * A relation on a row is judged the way a relation on an issue is, and by
+     * the same bulk read — `R-ANS-029`. One call for the whole page, whatever
+     * the rows carry between them.
+     */
+    #[Test]
+    public function theRelationsOfAWholePageAreFilledInOneCall(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $relation = $forge->open('stale', '', '', '', '', 2)['results'][0]['relations'][0];
+
+        $filling = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'issue_id=')));
+        self::assertCount(1, $filling);
+        self::assertStringContainsString('issue_id=90676', $filling[0]);
+        self::assertSame('Clipboard related bugs and features', $relation['subject']);
+        self::assertSame('Epic', $relation['tracker']);
+        self::assertSame('Accepted', $relation['status']);
+        self::assertSame('https://forge.typo3.org/issues/90676', $relation['url']);
+    }
+
+    /**
+     * Whether somebody has already pushed a patch is the signal a triage stops
+     * on, and no row carried it: the change reference lives in the journal, and
+     * the index answers no journal however it is asked (`D-ANS-069`).
+     *
+     * One query for the page and not one per row, and the false positive the
+     * `message:` index answers with — a change whose own number was asked for —
+     * is dropped by the rule a single-issue lookup already applies.
+     */
+    #[Test]
+    public function aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $results = $forge->open('stale', '', '', '', '', 2)['results'];
+
+        $review = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'review.typo3.org')));
+        self::assertCount(1, $review);
+        self::assertStringContainsString('q=message%3A14858%20OR%20message%3A23633', $review[0]);
+        // The commit message is what the answer is held against, so it is asked
+        // for here as it is for a single issue.
+        self::assertStringContainsString('o=CURRENT_COMMIT', $review[0]);
+
+        self::assertSame([38419], array_column($results[0]['reviews'], 'change'));
+        self::assertSame('https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419', $results[0]['reviews'][0]['url']);
+        // Change 23633 is the second row's own number wearing a change's shape,
+        // and its message names another issue entirely.
+        self::assertSame([], $results[1]['reviews']);
+    }
+
+    /**
+     * A page that answered is not turned into an outage by a second host that
+     * did not, which is what the two fills above already promise of the
+     * tracker's own.
+     */
+    #[Test]
+    public function aReviewServerThatDidNotAnswerLeavesTheRowsAsTheyCameBack(): void
+    {
+        $asked = [];
+        $tracker = self::tracker($asked);
+        $forge = new Forge(static fn(string $url): ?string => str_contains($url, 'review.typo3.org')
+            ? null
+            : $tracker($url));
+
+        $answer = $forge->open('stale', '', '', '', '', 2);
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame([14858, 23633], array_column($answer['results'], 'issue'));
+        self::assertSame([], $answer['results'][0]['reviews']);
     }
 
     /**
@@ -730,7 +881,7 @@ final class ForgeTest extends TestCase
 
         $answer = $forge->open('oldest', '', 'backend', '', '', 2);
 
-        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
         self::assertCount(1, $issues);
         self::assertStringContainsString('category_id=971%7C972', $issues[0]);
         self::assertSame(['Backend API', 'Backend User Interface'], $answer['categoriesUsed']);

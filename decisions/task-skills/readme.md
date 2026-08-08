@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
+- [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
 - [`D-SKL-023`][D-SKL-023] — A published skill no intent names is one the brief cannot route to · 2026-08-08
 - [`D-SKL-024`][D-SKL-024] — A description names the task and leaves the steps to the body · 2026-08-08 · confirmed
 - [`D-SKL-025`][D-SKL-025] — A routed tool is called and held to what the skill sends the session to read · 2026-08-08
@@ -37,6 +38,7 @@ one is added.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-028]: skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
+[D-SKL-029]: skl-029-precedent-is-listed-by-the-changelogs-own-axes.md
 [D-SKL-023]: skl-023-a-published-skill-no-intent-names-is-one-the-brief-cannot-route-to.md
 [D-SKL-024]: skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md
 [D-SKL-025]: skl-025-a-routed-tool-is-called-and-held-to-what-the-skill-sends-the-session-to-read.md

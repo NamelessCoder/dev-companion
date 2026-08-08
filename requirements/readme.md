@@ -185,6 +185,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-019`][R-SKL-019] — Every published skill is named by an intent the brief can reach · held
 - [`R-SKL-020`][R-SKL-020] — A workflow that ends in public stops when the finding is a vulnerability · held
 - [`R-SKL-021`][R-SKL-021] — Every description is written to the budget they share · held
+- [`R-SKL-022`][R-SKL-022] — A review surface names the lookup that can answer it · held
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -207,6 +208,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-019]: task-skills/skl-019-every-published-skill-is-named-by-an-intent-the-brief-can-reach.md
 [R-SKL-020]: task-skills/skl-020-a-workflow-that-ends-in-public-stops-when-the-finding-is-a-vulnerability.md
 [R-SKL-021]: task-skills/skl-021-every-description-is-written-to-the-budget-they-share.md
+[R-SKL-022]: task-skills/skl-022-a-review-surface-names-the-lookup-that-can-answer-it.md
 
 ### project
 

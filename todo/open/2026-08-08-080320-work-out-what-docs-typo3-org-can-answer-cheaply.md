@@ -2,8 +2,6 @@
 
 **Serves:** R-DOC-001
 **Priority:** normal
-**Branch:** todo/work-out-what-docs-typo3-org-can-answer-cheaply
-**Claimed:** 2026-08-08
 
 Reuse the connection across the reads one lookup makes. `Http\Fetch` opens a
 handle per call and closes it, and one search fetches four indexes and up to six

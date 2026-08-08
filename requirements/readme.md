@@ -385,7 +385,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-KNW-063`][R-KNW-063] — A template answer states that the file-name fallback runs once per root path · held
 - [`R-KNW-064`][R-KNW-064] — The Composer keys that install TYPO3 beneath an extension are answered · held
 - [`R-KNW-065`][R-KNW-065] — Booting a declared installation is answered as its own subject · held
-- [`R-KNW-066`][R-KNW-066] — A core PHP change is told what the class's public surface commits it to · **open**
+- [`R-KNW-066`][R-KNW-066] — A core PHP change is told what the class's public surface commits it to · held
 
 [R-KNW-001]: knowledge/knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knowledge/knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md

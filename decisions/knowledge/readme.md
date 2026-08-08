@@ -7,7 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09
+- [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09 · confirmed
 - [`D-KNW-064`][D-KNW-064] — The disabled assertions a core checkout carries are a grep and not a lookup · 2026-08-08
 - [`D-KNW-063`][D-KNW-063] — What a TCA type stores is a subject this server owns and does not carry · 2026-08-07
 - [`D-KNW-055`][D-KNW-055] — The first check a standalone extension repository gets is a gap this server owns · 2026-08-04

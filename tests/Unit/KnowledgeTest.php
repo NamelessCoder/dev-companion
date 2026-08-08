@@ -759,9 +759,51 @@ final class KnowledgeTest extends TestCase
 
         // What the section has to say, since a review has to answer either way
         // and demanding an entry where none is owed is a defect of its own.
-        $body = Documents::read('core/contribution/commit-messages');
+        // The last two are what `feedback/2026-08-08-224455` and `-224426`
+        // report as the sentences that stopped the entry being written to be
+        // safe: an answer cut to `A BUGFIX owes none` settles the common case
+        // and leaves a review with nothing to say about the exception. Matched
+        // against the corpus unwrapped, since both cross a line break.
+        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
         self::assertStringContainsString('A `BUGFIX` owes none', $body);
-        self::assertStringContainsString('`Important` is the last resort', $body);
+        self::assertStringContainsString(
+            '`Important` is the last resort, and the only one of the four an LTS release may carry',
+            $body,
+        );
+        self::assertStringContainsString(
+            'Demanding one of a `BUGFIX` that removes nothing public is a review defect of its own',
+            $body,
+        );
+    }
+
+    /**
+     * The release-targets answer refuses the source a caller would otherwise
+     * read the branches off, and says what naming an unsupported one is.
+     *
+     * Two sessions report the refusal as what stopped them:
+     * `feedback/2026-08-08-224426` had run `git branch -r` one turn earlier,
+     * and `-224455` left 12.4 out of a review as correctly excluded ELTS
+     * instead of asking for it. Both sentences are the part a section
+     * summarised down to "`Releases:` names the maintained lines" would lose,
+     * and the reading it leaves behind is wrong in a way no check reports:
+     * `git branch -r` answers, and what it answers reaches back to `TYPO3_3-6`.
+     */
+    #[Test]
+    public function theReleaseTargetsAnswerRefusesTheBranchListInTheCheckout(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'which release branches does a bugfix target',
+        ]);
+
+        self::assertContains('Release Targets', array_column($result->data['matches'], 'heading'));
+
+        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
+        self::assertStringContainsString('The branch list in a checkout does not answer this', $body);
+        self::assertStringContainsString('`git branch -r` reaches back to `TYPO3_3-6`', $body);
+        // The other half: a line out of regular support is an error rather
+        // than a line one may name and leave to the release managers.
+        self::assertStringContainsString('reports a branch that is out of regular support as an error', $body);
+        self::assertStringContainsString('A patch pushed to Gerrit is not one of them', $body);
     }
 
     /**
@@ -976,6 +1018,11 @@ final class KnowledgeTest extends TestCase
         // reached for `command -v` was actually missing: the suite runs inside
         // a container, so the shell's PHP is not the interpreter.
         self::assertStringContainsString('container', $notes, 'the preconditions do not say what runs the suite');
+        // The checkout the docblock above is about. A fresh clone is the
+        // obvious case and a worktree is the one that surprises — the session
+        // in `feedback/2026-08-08-224455` had just made one, and the copy it
+        // was made from has both directories.
+        self::assertStringContainsString('worktree', $notes, 'the preconditions name only the checkout nobody is surprised by');
 
         foreach (Versions::majors() as $major) {
             self::assertContains(

@@ -704,3 +704,89 @@ The feedback is trimmed to the wording half and stays open behind the card that
 carries it. No statement about TYPO3 was established here: the re-runs read this
 server's answers, and the covered set was read in
 `Extension::deprecatedFiles()`.
+
+## Confirmed on 2026-08-09
+
+The reading held a sixth time, on the first strength whose keep-request names
+sentences a second session asked to keep as well. `feedback/2026-08-08-224455`
+reviewed Gerrit change 95179 in a git worktree of a core checkout,
+`/home/benji/projects/typo3-cms`, and credits four answers plus a fifth it calls
+worth keeping. Its suggestion is *nothing to change*, and it names the
+load-bearing sentences so a later rewrite can recognise what it is dropping.
+
+The quotations are checked before the boundary is. Re-run on 2026-08-09 through
+`bin/typo3-dev-companion` from that directory, with the feedback's own
+arguments, and all five reproduce:
+
+- `typo3_test_run_guide` prints the preconditions above the suites, with both
+  worktree sentences and the literal
+  `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`.
+  Its `cglGit` entry carries the caveat: git fails, the list is empty, and the
+  suite reports SUCCESS having read nothing.
+- `typo3_rule_lookup` with the session's compound query returns
+  `Changelog Files` at 80% and `Release Targets` at 66%. All three sides of the
+  changelog answer are in the first — `A BUGFIX owes none`, `Important` as the
+  last resort and the only one of the four an LTS release may carry, and
+  demanding an entry of a `BUGFIX` that removes nothing public as a review
+  defect of its own.
+- The second section refuses the branch list in the checkout, says
+  `git branch -r` reaches back to `TYPO3_3-6`, and calls a branch out of regular
+  support an error.
+- `typo3_forge_lookup` on 81619 answers the 2017 report whole, the sentence the
+  finding turned on included: the override is needed *if a result of TypoScript
+  condition should be overriden*.
+- `typo3_hint_lookup` on the two changed paths returns `core-tests` with the
+  paragraph on where output expectations hide.
+
+The first **Wrong if** did not fire. Every counterfactual in the file is an
+action the answer pre-empted — `composerInstall` run first, `cgl -n` instead of
+`cglGit`, 12.4 left out as correctly excluded ELTS — and the only thing it did
+besides calling a tool is probing the TypoScript-condition path to confirm a
+finding. `2026-07-31-194823` is where a corroboration was established not to be
+the *did instead* the ladder is walked from.
+
+The keep-request is answered against the file as it is now, and two of the five
+answers rested on nobody rewriting them. The preconditions were held for the
+symptom string, the container and `composerInstall`, and not for the worktree
+that is the checkout nobody expects to be missing `vendor/`. `Changelog Files`
+was held for the obligation and the last resort, and not for the exception the
+session says stopped it writing an `Important` entry to be safe.
+`Release Targets` was held by nothing at all: the ELTS error exists as
+behaviour, with `unmaintained-release-line` under test, while the sentence that
+refuses `git branch -r` was in no assertion. The other two were guarded already
+— `KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold` for the
+`cglGit` caveat, and `HintsTest` for the expectations paragraph.
+
+Three assertions and one test now name them:
+`KnowledgeTest::theReleaseTargetsAnswerRefusesTheBranchListInTheCheckout`, and
+the sentences added to `theInvocationNotesNameTheInstallAFreshCheckoutOwes` and
+`aQueryForTheChangelogObligationReachesTheSectionThatStatesIt`. The second
+session is `feedback/2026-08-08-224426`, from a triage rather than a review,
+which names the same two sentences and had run `git branch -r` one turn before
+the answer arrived. Its card is in hand elsewhere and this run neither closes it
+nor takes it over; what the guards cover is the request both make.
+
+The boundary is **a rule against an instance, and what an instance is keyed
+by**. Everything this strength credits is a rule: a precondition of the
+environment, an obligation with the counter-rule beside it, a release-target
+reading with the source it refuses. Each is reached from the domain the task is
+already in — the changed paths, the words of the question — and arrives whole
+without being asked for precisely. The fourth is an instance and arrives whole
+too, because the caller held its number. The cost side is from the same debrief:
+`2026-08-08-224429` wanted an instance it could only describe by shape, a
+`BUGFIX` that changed 0-is-empty semantics and got an `Important` entry on an
+LTS branch. `typo3_changelog_lookup` answered `matchCount 0` for
+`stdWrap override`, and `ls` over `13.4.x` produced the entry. So an instance is
+reachable by an identifier the caller holds or by the words written in it, and a
+caller holding neither has nothing to ask with.
+
+What would show that reading wrong is where the changelog card lands: a scoring
+defect in the matcher rather than a key nobody can supply. That card is in hand
+elsewhere, and naming its answer from here is the copy-down judging.md warns
+about.
+
+No statement about TYPO3 was established. The re-runs read this server's own
+answers, the guarded sentences were already in `knowledge/`, and what was added
+is that they stay. The feedback is closed by this commit and nothing is queued.
+The third **Wrong if** is what it bears on: what a closed strength leaves behind
+here is four assertions rather than a commit message.

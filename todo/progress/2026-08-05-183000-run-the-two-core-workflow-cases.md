@@ -2,6 +2,8 @@
 
 **Serves:** SKILL-13
 **Priority:** normal
+**Branch:** todo/run-the-two-core-workflow-cases
+**Claimed:** 2026-08-08
 
 `SKILL-12` was run on 2026-08-07 in `E-CORE` and five of its six surfaces hold;
 what it found is written into the case itself. `SKILL-13` is what is left, and

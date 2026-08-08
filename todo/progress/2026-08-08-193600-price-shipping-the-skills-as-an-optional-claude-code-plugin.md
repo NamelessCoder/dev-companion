@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-013
 **Priority:** low
+**Branch:** todo/price-shipping-the-skills-as-an-optional-claude-code-plugin
+**Claimed:** 2026-08-08
 
 A Claude Code plugin is a directory with a `.claude-plugin/plugin.json` manifest
 — `name` the only required field — that bundles skills, subagents, hooks,

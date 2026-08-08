@@ -2,6 +2,8 @@
 
 **Serves:** R-SKL-010
 **Priority:** high
+**Branch:** todo/measure-the-listing-budget-the-twelve-descriptions-share
+**Claimed:** 2026-08-08
 
 The twelve published descriptions total **7153 characters**, measured on
 2026-08-08 over `skills/*/SKILL.md`. The client does not read them one at a

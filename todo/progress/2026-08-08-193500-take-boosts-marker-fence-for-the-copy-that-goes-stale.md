@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-025
 **Priority:** normal
+**Branch:** todo/take-boosts-marker-fence-for-the-copy-that-goes-stale
+**Claimed:** 2026-08-08
 
 `R-DIS-025` holds that a publication which went stale says so before the first
 call, and the digest is what makes that readable. What the digest cannot do is

@@ -2,6 +2,8 @@
 
 **Serves:** R-DOC-001
 **Priority:** normal
+**Branch:** todo/work-out-what-docs-typo3-org-can-answer-cheaply
+**Claimed:** 2026-08-08
 
 Take the one change that is measured and carries no open question: teach
 `Http\Fetch` to ask for compression, and rebuild the index

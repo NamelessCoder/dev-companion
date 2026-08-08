@@ -2,6 +2,8 @@
 
 **Serves:** R-SKL-010
 **Priority:** normal
+**Branch:** todo/check-the-twelve-descriptions-for-workflow-the-body-owns
+**Claimed:** 2026-08-08
 
 A description is the only part of a skill read before it is chosen, and this
 repository already says what it is for: the words a user brings — the request,

@@ -2,6 +2,8 @@
 
 **Serves:** R-SKL-008
 **Priority:** high
+**Branch:** todo/say-in-each-skill-which-server-it-needs
+**Claimed:** 2026-08-08
 
 All twelve `SKILL.md` files link `references/base.md`, and no skill directory in
 this repository contains that file — `Installer::BASE` writes it at publication,

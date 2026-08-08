@@ -2,6 +2,8 @@
 
 **Serves:** requirements/task-skills/
 **Priority:** normal
+**Branch:** todo/assert-that-a-routed-tool-returns-what-the-skill-says-to-read
+**Claimed:** 2026-08-08
 
 Every rule the authoring contract holds is read off the file, and
 [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) says so

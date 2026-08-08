@@ -323,7 +323,8 @@ Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit
   direction. A missing entry surfaces when somebody audits the matcher files
   against the changelog.
 
-Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list: core/contribution/commit-messages — TYPO3 Core Commit Message Rules.
+Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
+- core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 7 of its 9 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Changelog Files.
 
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
@@ -793,7 +794,8 @@ Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) �
   replaced the former acceptance suites.
 - Document tests that could not be executed and why.
 
-Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list: core/contribution/rules — TYPO3 Core Contribution Rules.
+Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
+- core/contribution/rules — TYPO3 Core Contribution Rules: 3 of its 4 headings are not above — Contribution Flow, Code Style, Review Readiness.
 
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`

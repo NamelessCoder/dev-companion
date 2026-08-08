@@ -871,6 +871,66 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The call `feedback/2026-08-08-224406` made, which had the offer above and
+     * searched no further — `D-ANS-070`.
+     *
+     * What it gets now is the share and the headings it did not see, because
+     * the next query is picked out of those. The share is stated in headings
+     * rather than in `##` lines, which is the only count of a page two sections
+     * under one heading do not make ambiguous.
+     */
+    #[Test]
+    public function aCutAnswerNamesTheHeadingsOfThePageItLeft(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'bugfix changelog entry obligation and target branches',
+            'targetVersion' => '15',
+        ]);
+
+        $headings = Documents::headings('core/contribution/commit-messages');
+        $returned = array_column($result->data['matches'], 'heading');
+        $left = array_values(array_diff($headings, $returned));
+        self::assertCount(2, array_intersect($headings, $returned), 'the case this covers is a part of a page');
+
+        self::assertStringContainsString(
+            sprintf(
+                '- core/contribution/commit-messages — TYPO3 Core Commit Message Rules: '
+                    . '%d of its %d headings are not above — %s.',
+                count($left),
+                count($headings),
+                implode(', ', $left),
+            ),
+            $result->text,
+        );
+    }
+
+    /** A page every section of which is above says that, rather than naming none. */
+    #[Test]
+    public function anAnswerCarryingEveryHeadingOfAPageSaysThatToo(): void
+    {
+        $headings = Documents::headings('core/contribution/sources');
+        $rendered = Prose::sections(array_map(static fn(string $heading): array => [
+            'id' => 'core/contribution/sources',
+            'title' => 'TYPO3 Contribution Sources',
+            'heading' => $heading,
+            'body' => 'The section as it was matched.',
+            'since' => null,
+            'until' => null,
+            'score' => 10,
+            'coverage' => 1.0,
+            'truncated' => false,
+        ], $headings));
+
+        self::assertStringContainsString(
+            sprintf(
+                'core/contribution/sources — TYPO3 Contribution Sources: all %d of its headings are above.',
+                count($headings),
+            ),
+            $rendered,
+        );
+    }
+
+    /**
      * The two symptoms `feedback/2026-08-07-125950` and `-130007` reported,
      * reachable by the words the session arrived with.
      *

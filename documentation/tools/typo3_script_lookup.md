@@ -200,7 +200,8 @@ to reproduce DBMS-specific behaviour.
 
 (section truncated — read core/testing/scripts whole for the rest)
 
-Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list: core/testing/scripts — TYPO3 Core Script Help.
+Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
+- core/testing/scripts — TYPO3 Core Script Help: 2 of its 4 headings are not above — The Pre-Commit Hook, Script Notes.
 
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 ````

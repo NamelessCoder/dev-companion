@@ -84,3 +84,31 @@ named the document, the session read the name, and it searched anyway.
 - The share turns out unstateable — a document whose sections a query
   legitimately covers most of, answered as *2 of 9* and read as a reproach. Then
   what was missing is the headings and not a number.
+
+## Covered by
+
+- `KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft`
+- `KnowledgeTest::anAnswerCarryingEveryHeadingOfAPageSaysThatToo`
+
+## Since then
+
+The answer half is built, and what it says is both: the share and the headings
+the search did not return, one line per page under the offer to read it. The
+feedback's own call now closes with *core/contribution/commit-messages — TYPO3
+Core Commit Message Rules: 7 of its 9 headings are not above — Who Reads It,
+Summary Line, Work in Progress, Body, Relationships, Breaking Changes,
+Deprecations*. The headings are what the todo asked for first, because a session
+picks its next query out of them; the number costs the four words around them
+and is what separates a page that was covered from one that was sampled.
+
+The count is of **headings** rather than of `##` lines, which is what
+[`D-ANS-008`](ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
+asks of it. Two sections under one heading are one subject bound to two ranges,
+and `knowledge/documents/project/testing/playwright.md` has ten `##` lines under
+nine headings: a reader checking *9* against the page counts headings and
+agrees, and the same reader checking a *10* the search can never return two of
+would not. The list beside the number is the second way to check it — the
+headings not above, named, plus the excerpts above.
+
+`Documents::headings()` is the reader that came out of it, and `topics()` was
+the same three lines inline.

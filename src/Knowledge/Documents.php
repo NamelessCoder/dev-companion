@@ -232,6 +232,25 @@ final class Documents
     }
 
     /**
+     * The `##` headings of one document, in the order the page carries them.
+     *
+     * Deduplicated, because one subject bound to two ranges is two sections
+     * under one heading, and this is what the page is made of rather than how
+     * many variants of it there are. It is also what a count of it can be
+     * checked against — a reader counting the headings of `playwright.md` gets
+     * nine, and counting its `##` lines ten (`D-ANS-008`).
+     *
+     * @return array<int, string>
+     */
+    public static function headings(string $id): array
+    {
+        return array_values(array_unique(array_filter(array_map(
+            static fn(array $section): string => $section['heading'],
+            self::sections(self::read($id)),
+        ))));
+    }
+
+    /**
      * The topics each document covers, for orientation and for no-match answers.
      *
      * @return array<int, array{id: string, title: string, topics: array<int, string>}>
@@ -241,16 +260,7 @@ final class Documents
         return array_map(static fn(array $document): array => [
             'id' => $document['id'],
             'title' => $document['title'],
-            // Deduplicated, because one subject bound to two ranges is two
-            // sections under one heading, and this list is what the corpus
-            // covers rather than how many variants of it there are.
-            'topics' => array_values(array_unique(array_map(
-                static fn(array $section): string => $section['heading'],
-                array_values(array_filter(
-                    self::sections((string) file_get_contents($document['path'])),
-                    static fn(array $section): bool => $section['heading'] !== ''
-                ))
-            ))),
+            'topics' => self::headings($document['id']),
         ], self::documents());
     }
 

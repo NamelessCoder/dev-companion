@@ -244,7 +244,9 @@ Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) �
 - Breaking changes, migrations, and deprecations need clear notes.
 - Security-sensitive behavior needs extra care and focused tests.
 
-Each excerpt above is one section of a longer document. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list: core/contribution/commit-messages — TYPO3 Core Commit Message Rules, core/contribution/rules — TYPO3 Core Contribution Rules.
+Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
+- core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 5 of its 9 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships.
+- core/contribution/rules — TYPO3 Core Contribution Rules: 3 of its 4 headings are not above — Contribution Flow, Code Style, Testing.
 
 The hints also cover this — call typo3_hint_lookup with the id:
 - documentation-changelog — Documentation and Changelog

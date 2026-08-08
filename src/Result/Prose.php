@@ -52,13 +52,41 @@ final class Prose
      * `Source:` line above each excerpt carries the same uri and was read as
      * attribution, which is what this says out loud instead.
      *
+     * Each page says what the search left of it, because naming the page did
+     * not take on its own: the session in `feedback/2026-08-08-224406` had this
+     * line, read two of nine headings of one document and searched no further —
+     * the same sentence stands under an answer that matched most of a page and
+     * under one that matched a ninth of it (`D-ANS-070`). The headings rather
+     * than the share alone, because the next query is picked out of them.
+     *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
     private static function readWhole(array $results): string
     {
-        $documents = [];
+        $titles = [];
+        $returned = [];
         foreach ($results as $result) {
-            $documents[$result['id']] = sprintf('%s — %s', $result['id'], $result['title']);
+            $titles[$result['id']] = $result['title'];
+            $returned[$result['id']][] = $result['heading'];
+        }
+
+        $pages = [];
+        foreach ($titles as $id => $title) {
+            $headings = Documents::headings($id);
+            $left = array_values(array_diff($headings, $returned[$id]));
+            $pages[] = sprintf(
+                '- %s — %s: %s',
+                $id,
+                $title,
+                $left === []
+                    ? sprintf('all %d of its headings are above.', count($headings))
+                    : sprintf(
+                        '%d of its %d headings are not above — %s.',
+                        count($left),
+                        count($headings),
+                        implode(', ', $left),
+                    ),
+            );
         }
 
         // Named as a call rather than as an address. The uri was here and three
@@ -68,9 +96,10 @@ final class Prose
         // carried. A `typo3://guides` address is delivery to a client that
         // renders MCP resources; `typo3_rule_lookup` reaches every client
         // there is — `D-ANS-061`, `R-ANS-028`.
-        return 'Each excerpt above is one section of a longer document. Where the task is the whole procedure '
-            . 'rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which '
-            . 'needs no resource list: ' . implode(', ', $documents) . '.';
+        return 'Each excerpt above is one section of a longer document, and each page below carries the `##` '
+            . 'headings that are not above. Where the task is the whole procedure rather than the fact you '
+            . 'searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:'
+            . "\n" . implode("\n", $pages);
     }
 
     /**

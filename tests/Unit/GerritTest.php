@@ -217,9 +217,39 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * The other half of that: naming the patch set and not how to get it was
+     * two sessions holding a description of a change they could not fetch, both
+     * of which wrote the ref themselves out of Gerrit trivia this answer never
+     * stated — `D-ANS-068`. The remote is in it because a core clone fetches
+     * from the GitHub mirror, where the ref does not exist.
+     *
+     * The second case is the padding. Gerrit shards by the change number modulo
+     * 100 written as two digits, so 95108 is filed under `08` and a ref built
+     * by hand from the last digit alone resolves to nothing.
+     */
+    #[Test]
+    public function theAnswerCarriesTheRefThatFetchesThePatchSetItNames(): void
+    {
+        $change = (new Gerrit(static fn(): string => self::RESPONSE))->change('95040')['changes'][0];
+
+        self::assertSame([
+            'ref' => 'refs/changes/40/95040/3',
+            'remote' => 'https://review.typo3.org/Packages/TYPO3.CMS',
+        ], $change['fetch']);
+
+        $sharded = (new Gerrit(static fn(): string => self::BOTH))->changesForIssue('88556')['changes'][0];
+
+        self::assertSame('refs/changes/08/95108/1', $sharded['fetch']['ref']);
+    }
+
+    /**
      * The option is the server's to honour. A response without the revision
      * fields is still an answer about the change, so the patch set is absent
      * rather than guessed — and zero is what the schema calls named none.
+     *
+     * There is no ref either, because a ref names a patch set: null rather than
+     * a string carrying a zero, which would fetch nothing and read like a
+     * command to run.
      */
     #[Test]
     public function aChangeWithoutARevisionSaysSoRatherThanInventingOne(): void
@@ -230,6 +260,7 @@ final class GerritTest extends TestCase
 
         self::assertSame(0, $change['patchSet']);
         self::assertSame('', $change['commit']);
+        self::assertNull($change['fetch']);
     }
 
     /**

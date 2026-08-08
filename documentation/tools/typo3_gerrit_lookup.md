@@ -7,9 +7,11 @@ messages of every change for it — the question "has somebody already fixed thi
 review URL ends with, to read the one it names. Answers with the change number,
 subject, status, target branch, review URL, and the patch set that is current on
 the server with the commit it is — which is what says whether a checkout is the
-revision under review. A call carries issue or change, never both. This reaches
-the network, and it reads: reviewing, voting and uploading stay yours. Answers
-from: network.
+revision under review. Each change also carries the ref that patch set is
+fetchable by and the review server to fetch it over, so getting it into a
+checkout takes no second lookup. A call carries issue or change, never both.
+This reaches the network, and it reads: reviewing, voting and uploading stay
+yours. Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
@@ -68,6 +70,16 @@ changes:
     updated: string  # optional
     # Where a person reads the review.
     url: string  # optional
+    # How to get this patch set into a checkout. Null where the server named no
+    # patch set, since a ref names one.
+    fetch:  # optional
+      # The static ref this patch set is filed under. Every patch set keeps its
+      # own, so an earlier one stays fetchable after a newer is pushed.
+      ref: string
+      # What to fetch that ref from. It is the review server rather than origin:
+      # a core clone fetches from the GitHub mirror, and refs/changes is not
+      # there.
+      remote: string
 # Why nothing was answered, where status says unavailable. Null otherwise.
 unavailable:
   # One of: source-not-answering, source-not-parseable. source-not-answering:

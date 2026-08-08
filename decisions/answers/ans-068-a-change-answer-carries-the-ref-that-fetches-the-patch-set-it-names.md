@@ -85,3 +85,32 @@ states.
   would say it belongs on a change lookup alone.
 - A session reads the ref and fetches over `origin` anyway, which would say
   naming the remote in the same answer was not enough.
+
+## Covered by
+
+- `GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames`
+- `GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne`
+
+## Since then
+
+Built on 2026-08-09 as a `fetch` field on each change entry, carrying `ref` and
+`remote` and null where the server named no patch set. The text half prints
+`Fetch: git fetch <remote> <ref>` under the patch set line, and says once per
+answer that the fetch goes to the review server rather than to `origin`.
+
+Both assumptions the entry rested on are settled, and neither moved anything.
+The sharding is Gerrit's own rule: its access control reference states
+`refs/changes/<last two digits of change number>/<change number>/<patch set number>`
+under *Special references*, and `RefNames.shard()` is the `%02d` that writes
+those two digits. A change numbered under ten is therefore
+`refs/changes/04/4/1`, and that case cannot arise here — change numbers 1 to 10,
+50, 200, 500 and 1000 answer nothing on review.typo3.org, and 2000 is the lowest
+of the probed ones that answers. The padding is reached by every change whose
+number ends below ten anyway: `refs/changes/00/2000/2` resolves there and
+`refs/changes/0/2000/2` does not.
+
+The first **Wrong if** was measured rather than waited for. On 2026-08-09
+`git ls-remote https://review.typo3.org/Packages/TYPO3.CMS` resolved the three
+refs this answer now derives — `refs/changes/79/95179/1`,
+`refs/changes/40/95040/3` and `refs/changes/11/89011/4` — to the commits the
+same answers carry.

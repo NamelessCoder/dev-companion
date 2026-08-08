@@ -32,7 +32,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
     public static function annotations(): array
@@ -85,6 +85,16 @@ final class GerritLookup extends ReadOnlyTool
                 'project' => Schema::string('The Gerrit project it was pushed to.'),
                 'updated' => Schema::string('When the change last moved.'),
                 'url' => Schema::string('Where a person reads the review.'),
+                'fetch' => [
+                    'type' => ['object', 'null'],
+                    'description' => 'How to get this patch set into a checkout. Null where the server named no '
+                        . 'patch set, since a ref names one.',
+                    'properties' => [
+                        'ref' => Schema::string('The static ref this patch set is filed under. Every patch set keeps its own, so an earlier one stays fetchable after a newer is pushed.'),
+                        'remote' => Schema::string('What to fetch that ref from. It is the review server rather than origin: a core clone fetches from the GitHub mirror, and refs/changes is not there.'),
+                    ],
+                    'required' => ['ref', 'remote'],
+                ],
             ]), 'The changes that matched, newest activity first.'),
             'unavailable' => [
                 'type' => ['object', 'null'],
@@ -273,6 +283,7 @@ final class GerritLookup extends ReadOnlyTool
             }
         } else {
             $named = false;
+            $fetchable = false;
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
                 $lines[] = sprintf('## %s (%s)', $entry['subject'], $entry['status']);
@@ -282,6 +293,10 @@ final class GerritLookup extends ReadOnlyTool
                     $lines[] = $entry['commit'] === ''
                         ? sprintf('Patch set %d', $entry['patchSet'])
                         : sprintf('Patch set %d · %s', $entry['patchSet'], $entry['commit']);
+                }
+                if ($entry['fetch'] !== null) {
+                    $fetchable = true;
+                    $lines[] = sprintf('Fetch: git fetch %s %s', $entry['fetch']['remote'], $entry['fetch']['ref']);
                 }
                 if ($entry['updated'] !== '') {
                     $lines[] = 'Last moved: ' . $entry['updated'];
@@ -296,6 +311,15 @@ final class GerritLookup extends ReadOnlyTool
                 $lines[] = 'Hold the commit against `git rev-parse HEAD` in the checkout. Where the two '
                     . 'differ, the checkout is not the revision under review, and a review says which of '
                     . 'the two it read.';
+            }
+            // The remote is spelled out because `origin` is the wrong one, and
+            // wrong in the way that reads as the change not existing —
+            // `D-SKL-021` measured the fetch coming back empty over the mirror.
+            if ($fetchable) {
+                $lines[] = '';
+                $lines[] = 'The fetch goes to the review server rather than to `origin`: a core clone fetches '
+                    . 'from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach '
+                    . 'FETCH_HEAD` is what puts the checkout on the patch set afterwards.';
             }
             if ($answer['dropped'] > 0) {
                 $lines[] = '';

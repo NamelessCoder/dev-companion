@@ -227,6 +227,7 @@ final class Gerrit
         $revisions = is_array($entry['revisions'] ?? null) ? $entry['revisions'] : [];
         $commit = is_array($revisions[$revision] ?? null) ? $revisions[$revision] : [];
         $commit = is_array($commit['commit'] ?? null) ? $commit['commit'] : [];
+        $project = is_string($entry['project'] ?? null) ? $entry['project'] : '';
 
         return [
             'number' => $number,
@@ -239,9 +240,33 @@ final class Gerrit
             'branch' => is_string($entry['branch'] ?? null) ? $entry['branch'] : '',
             'patchSet' => $patchSet,
             'commit' => is_string($entry['current_revision'] ?? null) ? $entry['current_revision'] : '',
-            'project' => is_string($entry['project'] ?? null) ? $entry['project'] : '',
+            'project' => $project,
             'updated' => is_string($entry['updated'] ?? null) ? $entry['updated'] : '',
-            'url' => $number > 0 ? self::HOST . '/c/' . ($entry['project'] ?? '') . '/+/' . $number : self::HOST,
+            'url' => $number > 0 ? self::HOST . '/c/' . $project . '/+/' . $number : self::HOST,
+            // Null where the server named no patch set: a ref names one, and
+            // there is nothing to fetch by a zero.
+            'fetch' => $patchSet > 0 && $number > 0 ? [
+                'ref' => self::ref($number, $patchSet),
+                'remote' => self::HOST . '/' . $project,
+            ] : null,
         ];
+    }
+
+    /**
+     * The ref one patch set is fetchable by — the join between which patch set
+     * is current and having it on disk.
+     *
+     * Gerrit files every patch set under the change number modulo 100, written
+     * as two digits: `refs/changes/79/95179/1`, and `refs/changes/04/4/1` for a
+     * change numbered under ten. That is Gerrit's own rule rather than this
+     * instance's configuration — its access control reference states the format
+     * under *Special references*, and `RefNames.shard()` is the padding.
+     * Measured against review.typo3.org on 2026-08-09: `refs/changes/00/2000/2`
+     * resolves and `refs/changes/0/2000/2` does not, and no change there is
+     * numbered under ten at all.
+     */
+    private static function ref(int $number, int $patchSet): string
+    {
+        return sprintf('refs/changes/%02d/%d/%d', $number % 100, $number, $patchSet);
     }
 }

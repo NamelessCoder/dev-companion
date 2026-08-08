@@ -18,9 +18,9 @@ it is made, is made from numbers rather than from a wish.
 
 ## What was measured, 2026-08-08
 
-All of it against `docs.typo3.org` from one machine, with the plain
-`curl/8.5.0` agent `Http\Fetch::PLAIN_AGENT` already uses for its retry. Sizes
-are what went over the wire.
+All of it against `docs.typo3.org` from one machine, with the plain `curl/8.5.0`
+agent `Http\Fetch::PLAIN_AGENT` already uses for its retry. Sizes are what went
+over the wire.
 
 ### What the host already publishes
 
@@ -34,8 +34,8 @@ are what went over the wire.
 | `singlehtml/`                | 3.3 MB gz | The whole manual, 33.5 MB unpacked         |
 
 `objects.inv` is there for every manual and every version tried:
-`reference-coreapi` at main 290 kB and at 13.4 264 kB, `reference-typoscript`
-92 kB, `reference-tca` 43 kB, `typo3fluid/fluid` 12 kB.
+`reference-coreapi` at main 290 kB and at 13.4 264 kB, `reference-typoscript` 92
+kB, `reference-tca` 43 kB, `typo3fluid/fluid` 12 kB.
 
 `_sources` gives back the file the page was rendered from, byte for byte. For
 `Changelog/15.0/Breaking-109998-RemovedJQuery` that is the RST this repository
@@ -48,12 +48,12 @@ unchanged. It is not HTML being scraped, which is what the first **Wrong if** of
 
 - `objects.inv` for `cms-core` at main: **224 ms** to fetch, **18 ms** to
   `zlib_decode` and parse in PHP. It yields **3800 changelog entries over 55
-  version directories up to 15.0**, each with its file name and its stated
-  title — the two fields `Changelog::entries()` searches on disk.
+  version directories up to 15.0**, each with its file name and its stated title
+  — the two fields `Changelog::entries()` searches on disk.
 - **The connection dominates everything else.** Twenty RST sources over twenty
-  connections is 1.96 s; the same twenty over one keep-alive connection is
-  **415 ms**. 98 ms per entry against 21 ms. `Http\Fetch` opens a handle per
-  call and reuses nothing.
+  connections is 1.96 s; the same twenty over one keep-alive connection is **415
+  ms**. 98 ms per entry against 21 ms. `Http\Fetch` opens a handle per call and
+  reuses nothing.
 - Compression is offered and not asked for. `Vary: Accept-Encoding` and
   `Content-Encoding: gzip` on every artefact tried; the TYPO3 Explained root is
   169 kB plain and **19.9 kB** compressed. `Http\Fetch` sends no
@@ -107,8 +107,8 @@ that nobody has written down which paths those are.
 
 Four things, none of which needs anybody outside to agree:
 
-1. `CURLOPT_ENCODING` in `Http\Fetch`. One line, 8.5× less payload on the
-   manual lookup, and less egress for the host.
+1. `CURLOPT_ENCODING` in `Http\Fetch`. One line, 8.5× less payload on the manual
+   lookup, and less egress for the host.
 2. `objects.inv` as the index `Manual\Documentation` searches, instead of the
    links parsed out of the rendered root. Same corpus, documented format, plus
    the stated title of every page.
@@ -137,8 +137,9 @@ Ordered by what it costs them, cheapest first. Nobody has been asked yet.
    is the one that would remove load rather than shift it.
 4. **Long-lived cache headers on what cannot change.** A published changelog
    entry is immutable; `public, no-cache` forces a revalidation round trip on
-   every read of it. `immutable` with a long `max-age` on `Changelog/<released>/`
-   would cost the host nothing and save it the round trips.
+   every read of it. `immutable` with a long `max-age` on
+   `Changelog/<released>/` would cost the host nothing and save it the round
+   trips.
 5. **A per-major changelog index as JSON**, if anything beyond the above is
    wanted. Lowest priority: `objects.inv` already answers it, and asking for a
    new endpoint before using the existing one is the wrong order.
@@ -148,11 +149,11 @@ Ordered by what it costs them, cheapest first. Nobody has been asked yet.
 - Whether the title `objects.inv` carries is as good as the link text
   `Documentation::links()` reads today. Step one of the paragraph above is what
   measures it, and `R-DOC-002` is what the answer has to keep true.
-- Whether keep-alive survives PHP's curl the way it survived `curl(1)`. The
-  415 ms was measured with the binary, not through `Http\Fetch`.
-- What any of this costs at 14.4 and other majors. `robots.txt` names only
-  13.4, 12.4, 11.5, 10.4 and main in its Allow list; for `User-agent: *` that
-  list is irrelevant, but it says something about which versions the host
-  expects to be read.
+- Whether keep-alive survives PHP's curl the way it survived `curl(1)`. The 415
+  ms was measured with the binary, not through `Http\Fetch`.
+- What any of this costs at 14.4 and other majors. `robots.txt` names only 13.4,
+  12.4, 11.5, 10.4 and main in its Allow list; for `User-agent: *` that list is
+  irrelevant, but it says something about which versions the host expects to be
+  read.
 - Whether the documentation team wants any of it. The asks above are written
   from measurements and from nothing else.

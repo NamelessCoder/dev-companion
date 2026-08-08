@@ -13,10 +13,10 @@ work that writes no file picked it and got a review of a diff.
 ## Evidence
 
 - `feedback/2026-08-07-233443`. A core triage passed `changeType: "audit"` and
-  says why: it "is documented as writing no file and getting what a review
-  needs — which is the closest of the available values". What came back was the
-  audit intent's checklist, which is a review of a diff: "enumerate what it
-  removes or renames before judging it", a matcher below
+  says why: it "is documented as writing no file and getting what a review needs
+  — which is the closest of the available values". What came back was the audit
+  intent's checklist, which is a review of a diff: "enumerate what it removes or
+  renames before judging it", a matcher below
   `typo3/sysext/install/Configuration/ExtensionScanner/Php/`, the `[!!!]`
   prefix, `checkRst` and `checkExtensionScannerRst` over a core diff. The
   session used none of them and says so.
@@ -39,13 +39,12 @@ work that writes no file picked it and got a review of a diff.
   kinds of work, not one kind under a condition.
 - **The word is `triage`**, and it is the id of the intent as well, the way
   `audit` is. It has to be safe in the matcher because the change type is fed to
-  `TaskIntents::detect()`: measured against every needle in the corpus,
-  `triage` matches the triage intent and nothing else.
-- **What withholds the diff items is that the two vocabularies do not
-  overlap**, rather than a rule about which items a task with no diff may see.
-  A caller stating `triage` reaches no needle of `audit`, so the removal, the
-  matcher and the `checkRst` items are not returned at all — no mechanism, one
-  fewer branch.
+  `TaskIntents::detect()`: measured against every needle in the corpus, `triage`
+  matches the triage intent and nothing else.
+- **What withholds the diff items is that the two vocabularies do not overlap**,
+  rather than a rule about which items a task with no diff may see. A caller
+  stating `triage` reaches no needle of `audit`, so the removal, the matcher and
+  the `checkRst` items are not returned at all — no mechanism, one fewer branch.
 - **A triage wins the skeleton where both are confirmed.** "Review this old bug
   report" is the call this was written from, and the review arm is the answer
   that was wrong.

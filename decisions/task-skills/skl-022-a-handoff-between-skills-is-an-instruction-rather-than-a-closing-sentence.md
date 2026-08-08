@@ -1,7 +1,7 @@
 ---
 id: D-SKL-022
 date: 2026-08-07
-status: open
+status: confirmed
 ---
 
 # D-SKL-022 — A handoff between skills is an instruction rather than a closing sentence
@@ -96,3 +96,35 @@ the `Change-Id` is confirmed afterwards because losing it opens a second change.
 its description now names where a commit of your own belongs. So the stopping
 rules are written once and the boundary is stated from the side a caller reads
 first.
+
+## Confirmed on 2026-08-09
+
+One session held both forms of the crossing, twenty turns apart, and each
+behaved as this entry predicted. `feedback/2026-08-08-224450` reports invoking
+`typo3-core-patch-development` at the moment the triage verdict turned into a
+patch — the step written above — and names what came out of it, including the
+`breaking-not-assessed` line that caught a breaking API change in its draft. The
+same session then finished a push-ready patch, ran the project's checks and
+handed it over without ever invoking `typo3-core-patch-review`, whose crossing
+is the one still written as ownership: "it does not own judging its own". That
+settles the second **Assumed**, which said an explicit instruction fires where
+prose did not and that it was untested for a crossing between two skills. The
+two forms were distinguishable in one session, in one model, on one task.
+
+The crossing it did not fire on is the one `R-SKL-018` was never applied to.
+Both skills that hand over *to* `typo3-core-patch-development` say to invoke it;
+that skill's own handoff, back to the review, is a sentence about who owns what.
+Read across `skills/` on 2026-08-09 it is the only one: every other crossing is
+already an act — `Activate typo3-extension-documentation`,
+`Activate typo3-extension-conformance`, hand the worked list back — or a routing
+boundary a session reads before it starts rather than a step it owes mid-work,
+which is what `typo3-core-patch-checkout`'s closing paragraph is. So the work is
+one skill and one name in
+`SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`, and the todo serving
+that feedback carries it.
+
+It also narrows the proxy `D-EVI-002` accepts as the only one available. That a
+successor is named is not what holds a crossing: this one was named, in a
+paragraph the session was holding, and nothing fired. What an assertion has to
+read is the imperative, which is what the two crossings that fired carry and
+what that test already matches on.

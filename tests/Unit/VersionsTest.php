@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\Scope;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
@@ -46,6 +47,27 @@ final class VersionsTest extends TestCase
         self::assertSame($sorted, Versions::majors());
         foreach ($covered as $version) {
             self::assertNotSame('', $version['branch'], 'a covered version names the branch it is verified against');
+        }
+    }
+
+    /**
+     * Whether this server knows the TYPO3 somebody runs is what decides
+     * whether they install it, and the readme is where that is read — on
+     * GitHub and as the front page of the site. So the sentence naming the
+     * lines is held to the declaration rather than to what was covered on the
+     * day it was written.
+     */
+    #[Test]
+    public function theReadmeNamesEveryCoveredLine(): void
+    {
+        $readme = (string) file_get_contents(Paths::root() . '/readme.md');
+
+        foreach (Versions::covered() as $version) {
+            self::assertStringContainsString(
+                '**' . $version['branch'] . '**',
+                $readme,
+                $version['branch'] . ' is covered and the readme does not name it',
+            );
         }
     }
 

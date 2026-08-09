@@ -103,7 +103,7 @@ final class Links
     /**
      * The same links, each put through a function saying what it becomes.
      *
-     * `documentation:build` publishes a copy of a tree whose links were written
+     * `documentation:render` publishes a copy of a tree whose links were written
      * for a checkout: some have to be rewritten and the rest left exactly as
      * they stand. Which link is which is this class's question already, and a
      * second reading of what a link is would answer it differently the first

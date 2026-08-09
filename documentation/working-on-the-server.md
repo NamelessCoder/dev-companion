@@ -88,40 +88,86 @@ from when you ask for them, and the reasoning is `D-EVI-004`.
 
 ## The published documentation
 
-This directory is published as a site, and nothing else in the repository is.
-What is generated is a copy of it rather than these files:
+This directory is published as a site, and the root `readme.md` with it, as the
+page the site opens on — a visitor is a user before they are a contributor, and
+this map is a page below that one. Nothing else in the repository is published.
+What is generated is a copy rather than these files:
 
 ```bash
-bin/cli documentation:build           # write the copy, below .site/source
-build/guides/vendor/bin/guides        # render it into .site/html
-bin/cli documentation:search          # write the index the site is searched over
+bin/cli documentation:render          # the whole site, into .site/html
+php -S localhost:8000 -t .site/html   # read it at http://localhost:8000/
 ```
+
+The render is one command because its steps have one order and no choice in it:
+the renderer and the theme's packages installed where the checkout has none, the
+stylesheet and the script built before the layout reads their hashed names, the
+copy written, rendered, and the assets and the search index put beside the
+rendered pages — which is where they have to be written, because the renderer
+copies an image a page names and nothing else. Each step is printed as the
+command a person could have typed, and a failure quotes it in full.
+
+The site is read over a server rather than by opening `.site/html/index.html`:
+the search fetches its index as a file beside the pages, and a browser refuses
+that fetch over `file://`. Everything else on the page survives it, so a site
+opened from disk looks whole and has no search. `documentation:render` ends by
+printing that line.
 
 87 of the links here point at a decision, a requirement or a class, and a
 visitor of the site has none of those. The copy turns each of them into the file
 on GitHub and leaves the rest as written, so these pages keep the paths a reader
 of the checkout follows. It also publishes every `readme.md` as the `index.md` a
-generator serves as the directory itself, and drops the heading a link names in
-another page, which this renderer answers by discarding the link. What that
-costs is `D-DOC-017`.
+generator serves as the directory itself — this one as
+`how-the-work-is-done.md`, since the front page is the readme — and drops the
+heading a link names in another page, which this renderer answers by discarding
+the link. What that costs is `D-DOC-017`, and what the site opens on is
+`D-DOC-018`.
 
 The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
 from a manifest of its own — `build/guides/composer.json` says why it is not in
 this package's `require-dev`. The look is this repository's, in one file:
 `build/guides/theme/structure/layout.html.twig` shadows the layout the renderer
-would otherwise use, carries the stylesheet inline, and builds the sidebar from
-the documents the renderer knows. `.github/workflows/documentation.yml` runs
-both commands on every push to `main` and deploys the result to
+would otherwise use, links the two built files by the names it reads from their
+manifest, and builds the sidebar from the documents the renderer knows: a bar
+across the top with the name and what opens the search, then the front page,
+then the pages belonging to no subject, then each subject as a fold that is shut
+unless the page being read is inside it.
+
+The stylesheet and the script are `theme/assets/site.css` and
+`theme/assets/site.js`, built by `theme/assets/build.mjs` into two files every
+page links. Inlined into each page they had grown to a third of everything the
+site serves — `D-DOC-019`, which also has why the name carries a hash.
+
+Three things the renderer does not do come from that script. It colours a fenced
+block in `json`, `yaml` and `bash` — the three this corpus writes — using
+highlight.js with those languages registered and no other, on this theme's own
+palette rather than a stylesheet of its own. It writes the button that copies a
+block, since half of what is written here is a command to run. And it carries
+the button that puts the page in light or in dark, or back to what the machine
+says. Both that and the copy button come from the script rather than the markup,
+so a browser without a clipboard carries no button that does nothing, and one
+without the script keeps every block as it was written.
+
+The colours are one set of `light-dark()` pairs and `color-scheme` is what picks
+between them — the same declaration a browser needs to stop drawing the
+scrollbars and the search field light on a dark page. So what the button writes
+is one attribute on `<html>`, and the head reads the stored one before the page
+paints, since a deferred script would show the other theme for a frame.
+`.github/workflows/documentation.yml` runs all of it on every push to `main` and
+deploys the result to
 [GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
 `Settings → Pages → Source: GitHub Actions` on the repository: a deployment from
 a branch serves the root or `/docs`, and this directory is neither.
 
 The search is this repository's too, because the renderer has none. `Site`
 writes one entry per page — its URL, its title, its headings and its prose — and
-the sidebar filters it in the reader's browser, fetched on the first keystroke
-and not before. Fenced blocks are left out: 582 of them, mostly a recorded tool
-answer in JSON, which is what keeps the index at 213 KB rather than a megabyte
-and a prose match above the evidence.
+the script filters it in the reader's browser, fetched when the search is first
+opened and not before. Fenced blocks are left out: 582 of them, mostly a
+recorded tool answer in JSON, which is what keeps the index at 213 KB rather
+than a megabyte and a prose match above the evidence.
+
+What the reader sees is a dialog, opened with the button in the bar or with
+Ctrl-K, and the arrows and the return key move through the hits and open one —
+`D-DOC-021`.
 
 ## Tests
 

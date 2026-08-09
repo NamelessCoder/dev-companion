@@ -30,20 +30,24 @@ jobs:
           php-version: '8.2'
           coverage: none
 
-      # Two manifests, and build/guides/composer.json says why it is its own.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: build/guides/package-lock.json
+
+      # Three manifests: this package, the renderer, and what the browser runs.
+      # build/guides/composer.json and package.json each say why they are their
+      # own. The last two are installed here rather than left to the render, so
+      # the node_modules cache above is used and a failure names the install.
       - name: Install dependencies
         run: |
           composer install --no-interaction --no-progress
           composer install --working-dir=build/guides --no-interaction --no-progress
+          npm --prefix build/guides ci
 
-      # The first writes the copy that is publishable, the second renders it,
-      # reading guides.xml for where both of those are. The third writes the
-      # search index beside the pages, which is why it runs last.
       - name: Build the site
-        run: |
-          bin/cli documentation:build
-          build/guides/vendor/bin/guides --no-progress
-          bin/cli documentation:search
+        run: bin/cli documentation:render
 
       - uses: actions/upload-pages-artifact@v3
         with:

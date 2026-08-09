@@ -111,3 +111,26 @@ of what it points at is a directory the site does not carry.
 - `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`
 - `SiteTest::theSearchIndexNamesEveryPageByTheUrlItIsServedAt`
 - `SiteTest::theSearchIndexHoldsTheProseAndNotTheRecordedAnswers`
+
+## Since then
+
+The stylesheet is no longer inlined, and the theme no longer writes everything
+itself. What was weighed here at 4 KB reached 16 KB on every page, and
+[`D-DOC-019`](doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md)
+is what was decided on the measurement — including the cache buster this entry
+counted as a moving part, which Twig's `source()` makes two lines.
+
+Two of the bullets under **Decided** no longer describe the site. `readme.md` is
+published as well, as the page it opens on, and the map of `documentation/` is
+served below it — a visitor arriving is deciding whether this server is for
+them, and the map answers a different question.
+[`D-DOC-018`](doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md)
+is what settled that, and what remains true here is everything about how the
+copy is written and rendered.
+
+The three commands this entry names are one. `documentation:build`,
+`documentation:assets` and `documentation:search` were a sequence a person had
+to keep in the right order and could not, and
+[`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md)
+folded them into `bin/cli documentation:render`. What is published, and that it
+is a copy, is unchanged.

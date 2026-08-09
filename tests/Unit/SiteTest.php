@@ -33,6 +33,7 @@ final class SiteTest extends TestCase
     protected function tearDown(): void
     {
         Directory::remove($this->target);
+        Site::useBuilt(null);
     }
 
     /**
@@ -107,7 +108,7 @@ final class SiteTest extends TestCase
     public function aLinkOutOfTheTreeBecomesTheFileInTheRepository(): void
     {
         $published = Site::page(
-            'knowledge/versions.md',
+            'documentation/knowledge/versions.md',
             'The rule is in [AGENTS.md](../../AGENTS.md), and the runs are in [scenarios/runs/](../../scenarios/runs/).',
         );
 
@@ -122,7 +123,7 @@ final class SiteTest extends TestCase
     {
         self::assertStringEndsWith(
             '/blob/main/AGENTS.md#prose)',
-            Site::page('glossary.md', 'It is in [AGENTS.md](../AGENTS.md#prose)'),
+            Site::page('documentation/glossary.md', 'It is in [AGENTS.md](../AGENTS.md#prose)'),
         );
     }
 
@@ -152,7 +153,7 @@ final class SiteTest extends TestCase
         self::assertSame([], $carrying);
         self::assertStringEndsWith(
             '](answer-sources.md)',
-            Site::page('tools/typo3_icon_lookup.md', 'Answers from [`packages`](answer-sources.md#packages)'),
+            Site::page('documentation/tools/typo3_icon_lookup.md', 'Answers from [`packages`](answer-sources.md#packages)'),
         );
     }
 
@@ -166,14 +167,92 @@ final class SiteTest extends TestCase
     {
         Site::build($this->target);
 
-        self::assertFileExists($this->target . '/index.md');
         self::assertFileExists($this->target . '/tools/index.md');
         self::assertFileDoesNotExist($this->target . '/readme.md');
         self::assertFileDoesNotExist($this->target . '/tools/readme.md');
         self::assertStringContainsString(
             '](feedback/index.md)',
-            (string) file_get_contents($this->target . '/index.md'),
+            (string) file_get_contents($this->target . '/how-the-work-is-done.md'),
         );
+    }
+
+    /**
+     * `D-DOC-018`: what the site opens on is the readme a visitor of the
+     * repository lands on too, and the map of `documentation/` is a page below
+     * it rather than the front one.
+     */
+    #[Test]
+    public function theSiteOpensOnTheReadmeAndNotOnTheMap(): void
+    {
+        Site::build($this->target);
+
+        $front = (string) file_get_contents($this->target . '/index.md');
+        self::assertStringStartsWith('# TYPO3 Dev Companion', $front);
+        self::assertFileExists($this->target . '/how-the-work-is-done.md');
+    }
+
+    /**
+     * The front page sits a directory above the tree the rest of the site is,
+     * so a link it wrote against the checkout names one segment the site does
+     * not serve.
+     */
+    #[Test]
+    public function aLinkOnTheFrontPageDropsTheDirectoryTheSiteServesAtItsRoot(): void
+    {
+        $published = Site::page(
+            Site::FRONT,
+            'Installing is [here](documentation/clients/installing.md), and the map is'
+            . ' [there](documentation/readme.md).',
+        );
+
+        self::assertStringContainsString('](clients/installing.md)', $published);
+        self::assertStringContainsString('](how-the-work-is-done.md)', $published);
+    }
+
+    /** And a page below it reaches the front page by climbing out of its own directory. */
+    #[Test]
+    public function aPageBelowTheFrontOneReachesItAsTheIndex(): void
+    {
+        self::assertStringContainsString(
+            '](../index.md)',
+            Site::page('documentation/feedback/readme.md', 'What it is: [readme](../../readme.md).'),
+        );
+    }
+
+    /**
+     * `D-DOC-019`: the two built files are copied beside the pages, and the
+     * manifest that named them to the layout stays behind.
+     */
+    #[Test]
+    public function theBuiltAssetsAreCopiedBesideThePagesAndTheManifestIsNot(): void
+    {
+        $built = $this->target . '-built';
+        mkdir($built, 0777, true);
+        file_put_contents($built . '/site.1234abcd.css', 'body{}');
+        file_put_contents($built . '/site.5678ef90.js', '(function(){})();');
+        file_put_contents($built . '/manifest.txt', "site.1234abcd.css\nsite.5678ef90.js\n");
+        Site::useBuilt($built);
+
+        try {
+            $published = Site::publishAssets($this->target);
+
+            self::assertSame(['site.1234abcd.css', 'site.5678ef90.js'], $published);
+            self::assertFileExists($this->target . '/' . Site::ASSETS . '/site.1234abcd.css');
+            self::assertFileExists($this->target . '/' . Site::ASSETS . '/site.5678ef90.js');
+            // It says what the two are called and no page asks for it.
+            self::assertFileDoesNotExist($this->target . '/' . Site::ASSETS . '/manifest.txt');
+        } finally {
+            Directory::remove($built);
+        }
+    }
+
+    /** Nothing built is a site served unstyled, so it is a failure and not an empty copy. */
+    #[Test]
+    public function nothingBuiltIsReportedRatherThanCopied(): void
+    {
+        Site::useBuilt($this->target . '-absent');
+
+        self::assertSame([], Site::publishAssets($this->target));
     }
 
     /** An external link is nobody's to rewrite. */
@@ -182,7 +261,7 @@ final class SiteTest extends TestCase
     {
         $written = 'See [the manual](https://docs.typo3.org/) and [below](#what-it-is).';
 
-        self::assertSame($written, Site::page('glossary.md', $written));
+        self::assertSame($written, Site::page('documentation/glossary.md', $written));
     }
 
     /** The images the pages carry are copied, since a page without them says less. */
@@ -221,7 +300,8 @@ final class SiteTest extends TestCase
         $index = Site::search();
 
         $urls = array_column($index, 'url');
-        self::assertContains('index.html', $urls, 'the map page is the site root');
+        self::assertContains('index.html', $urls, 'the readme is the site root');
+        self::assertContains('how-the-work-is-done.html', $urls);
         self::assertContains('tools/index.html', $urls);
         self::assertContains('tools/typo3_icon_lookup.html', $urls);
         foreach ($urls as $url) {

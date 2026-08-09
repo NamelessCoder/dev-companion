@@ -1,0 +1,258 @@
+:root {
+    /* The scrollbars, the search field and the caret are the browser's to
+       draw, and it draws them light until it is told which of the two this
+       page is. It is also what `light-dark()` reads, so this line is what
+       picks the second colour of every pair below. */
+    color-scheme: light dark;
+    /* Matte throughout: nothing is pure white or pure black, and no hue is
+       taken further than it has to be to be told apart from its neighbour. */
+    --ink: light-dark(#1c2422, #dbe2df);
+    --dim: light-dark(#5f6b67, #8e9995);
+    --line: light-dark(#dde3e0, #2d3532);
+    --bg: light-dark(#fbfcfb, #171a19);
+    --soft: light-dark(#f0f3f1, #1e2321);
+    /* Orange is the mark: the page being read, the word that was searched for,
+       the block that was copied. Burnt rather than the brand's own, because a
+       colour that carries a background under it has to be readable on it —
+       4.8:1 on the light surface, 7.1:1 on the dark. A link is not that mark:
+       blue keeps the thing a reader clicks apart from the thing a reader is
+       being shown. */
+    --link: light-dark(#1c6296, #86b4dc);
+    --mark: light-dark(#9e5a18, #e0a06a);
+    /* A fenced block needs its four apart from each other, so the two above
+       are joined by mint and violet rather than by two more of themselves. */
+    --key: light-dark(#1c6296, #86b4dc);
+    --str: light-dark(#2c7561, #7fc4ac);
+    --num: light-dark(#7a5aa8, #b5a3dd);
+    --atom: light-dark(#9e5a18, #e0a06a);
+}
+/* What the reader chose, if they chose. Held by one attribute, because
+   `light-dark()` reads the scheme rather than a second set of colours: the
+   palette above is stated once and this says which half of it stands. */
+:root[data-theme="light"] { color-scheme: only light; }
+:root[data-theme="dark"] { color-scheme: only dark; }
+* { box-sizing: border-box; }
+body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--link); }
+
+/* The bar across the top: what the site is, and the way into it. Both stay
+   where they are while a page scrolls, which is the whole reason it is a
+   bar and not the first thing on the page. */
+header.top {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+}
+/* The same width and the same inset as the page below it, so the name of
+   the site stands over the sidebar and the search over the text. */
+header.top .bar {
+    display: flex; align-items: center; gap: 1rem;
+    height: 3.5rem; max-width: 1180px; margin: 0 auto; padding: 0 .9rem;
+}
+header.top .brand {
+    font-weight: 600; font-size: 15.5px; letter-spacing: -.01em;
+    color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+header.top .brand:hover { color: var(--mark); }
+/* What opens the search reads as the field it replaced, because that is what
+   somebody looks for. It says its own shortcut, so the key is discoverable to
+   a reader who never learnt it elsewhere. */
+header.top .find {
+    display: flex; align-items: center; gap: .8rem;
+    margin-left: auto; width: min(20rem, 42vw); padding: .38rem .45rem .38rem .6rem;
+    font: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
+    color: var(--dim); background: var(--soft);
+    border: 1px solid var(--line); border-radius: 6px;
+}
+header.top .find span { flex: 1 1 auto; }
+/* Drawn rather than fetched: one path is smaller than the request for it. */
+.icon {
+    flex: 0 0 auto; width: 1em; height: 1em;
+    fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;
+}
+/* Light, dark, or whatever the machine says — one button through the three,
+   showing the one that is on. */
+#theme {
+    display: flex; align-items: center; padding: .4rem; cursor: pointer;
+    font-size: 17px; color: var(--dim); background: none;
+    border: 1px solid transparent; border-radius: 6px;
+}
+#theme:hover { color: var(--ink); border-color: var(--line); }
+#theme .icon { display: none; }
+html:not([data-theme]) #theme .auto,
+html[data-theme="light"] #theme .sun,
+html[data-theme="dark"] #theme .moon { display: block; }
+header.top .find:hover { color: var(--ink); border-color: var(--dim); }
+header.top .find:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+kbd {
+    font: inherit; font-size: 11px; line-height: 1.5; white-space: nowrap;
+    color: var(--dim); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 4px; padding: 0 .35em;
+}
+
+/* The search itself. A panel near the top of the window rather than in the
+   middle of it: the list grows downward, and a box that grows from its centre
+   moves the first hit while somebody is typing. */
+dialog#search {
+    width: min(40rem, calc(100vw - 1.6rem));
+    max-height: min(32rem, calc(100vh - 7rem));
+    margin: 4.5rem auto auto; padding: 0; overflow: hidden;
+    color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: 0 1rem 2.5rem rgb(0 0 0 / .16);
+}
+dialog#search[open] { display: flex; flex-direction: column; }
+dialog#search::backdrop { background: rgb(18 24 22 / .38); }
+dialog#search[open] { animation: lift .12s ease-out; }
+@keyframes lift { from { opacity: 0; transform: translateY(-.5rem); } }
+@media (prefers-reduced-motion: reduce) { dialog#search[open] { animation: none; } }
+dialog#search .field {
+    flex: 0 0 auto; display: flex; align-items: center; gap: .7rem;
+    padding: 0 1.1rem; color: var(--dim); border-bottom: 1px solid var(--line);
+}
+dialog#search .icon { width: 1.05rem; height: 1.05rem; }
+dialog#search #q {
+    flex: 1 1 auto; min-width: 0; padding: .95rem 0;
+    font: inherit; font-size: 16px; color: var(--ink);
+    background: none; border: 0;
+}
+dialog#search #q:focus { outline: 0; }
+dialog#search ul { flex: 1 1 auto; overflow-y: auto; list-style: none; margin: 0; padding: .4rem; }
+dialog#search a.page {
+    display: block; padding: .45rem .7rem; border-radius: 6px;
+    color: var(--ink); text-decoration: none; overflow-wrap: anywhere;
+}
+dialog#search a.page small {
+    display: block; color: var(--dim); font-size: 12px; line-height: 1.45; margin-top: .1rem;
+}
+dialog#search a.page.chosen { background: var(--soft); box-shadow: inset 2px 0 0 var(--mark); }
+dialog#search mark { background: none; color: var(--mark); font-weight: 600; }
+dialog#search #miss, dialog#search #rest {
+    margin: 0; padding: .9rem 1.1rem; color: var(--dim); font-size: 13px;
+}
+dialog#search footer {
+    display: flex; align-items: center; gap: .35rem;
+    padding: .5rem 1.1rem; color: var(--dim); font-size: 11.5px;
+    background: var(--soft); border-top: 1px solid var(--line);
+}
+dialog#search footer kbd { background: var(--bg); }
+#menu {
+    display: none; font: inherit; font-size: 20px; line-height: 1;
+    padding: .2rem .5rem; cursor: pointer;
+    color: var(--ink); background: none; border: 0;
+}
+
+.wrap { display: flex; align-items: flex-start; max-width: 1180px; margin: 0 auto; }
+nav.side {
+    flex: 0 0 16.5rem; position: sticky; top: 3.5rem; align-self: flex-start;
+    max-height: calc(100vh - 3.5rem); overflow-y: auto;
+    padding: 1.4rem .9rem 3rem; border-right: 1px solid var(--line); font-size: 14px;
+}
+nav.side ul { list-style: none; margin: 0; padding: 0; }
+nav.side li { margin: 0; }
+nav.side a.page {
+    display: block; padding: .25rem .55rem; border-radius: 4px;
+    color: var(--ink); text-decoration: none; overflow-wrap: anywhere;
+}
+nav.side a.page:hover { background: var(--soft); }
+nav.side a.page.current {
+    background: var(--soft); color: var(--mark); font-weight: 600;
+    box-shadow: inset 2px 0 0 var(--mark);
+}
+/* A subject is folded shut unless the page being read is in it. The tool
+   reference alone is 26 entries, and open they are most of the list. */
+nav.side details.group { margin-top: .2rem; }
+nav.side details.group > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: .4rem;
+    padding: .35rem .55rem; border-radius: 4px;
+    font-size: 12.5px; font-weight: 600; letter-spacing: .02em; color: var(--dim);
+}
+nav.side details.group > summary::-webkit-details-marker { display: none; }
+nav.side details.group > summary::before {
+    content: ''; flex: 0 0 auto;
+    border: 4px solid transparent; border-left-color: currentColor;
+    transform: translateX(1px);
+}
+nav.side details.group[open] > summary::before {
+    border-left-color: transparent; border-top-color: currentColor;
+    transform: translateY(2px);
+}
+nav.side details.group > summary:hover { background: var(--soft); color: var(--ink); }
+nav.side details.group > ul { margin: .1rem 0 .5rem .55rem; border-left: 1px solid var(--line); }
+nav.side details.group > ul a.page { border-radius: 0 4px 4px 0; }
+nav.side ul.loose { margin-bottom: .9rem; }
+main { flex: 1 1 auto; min-width: 0; padding: 2.4rem 2.4rem 6rem; }
+main > .section > h1:first-child { margin-top: 0; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 2.2rem 0 .8rem; }
+h1 { font-size: 1.9rem; letter-spacing: -.01em; }
+h2 { font-size: 1.35rem; padding-top: .6rem; border-top: 1px solid var(--line); }
+h3 { font-size: 1.1rem; }
+p, li { max-width: 44rem; }
+code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .87em; background: var(--soft); padding: .1em .35em; border-radius: 3px;
+}
+pre {
+    background: var(--soft); border: 1px solid var(--line); border-radius: 4px;
+    padding: .9rem 1rem; overflow-x: auto;
+}
+pre code { background: none; padding: 0; font-size: .85em; line-height: 1.5; }
+/* highlight.js writes the classes and this says what they look like, so the
+   colouring is on the same palette as the rest of the page. Its own themes
+   carry a background and a foreground of their own, which would be a second
+   set of colours to keep against the first.
+
+   Restrained on purpose: what a reader picks out of a recorded answer is the
+   key and the value, not eight colours. */
+.hljs { background: none; color: inherit; }
+.hljs-comment, .hljs-quote { color: var(--dim); font-style: italic; }
+.hljs-attr, .hljs-attribute, .hljs-title, .hljs-section { color: var(--key); }
+.hljs-string, .hljs-symbol, .hljs-bullet, .hljs-meta { color: var(--str); }
+.hljs-number { color: var(--num); }
+.hljs-variable, .hljs-template-variable, .hljs-subst { color: var(--num); }
+.hljs-literal, .hljs-keyword, .hljs-built_in, .hljs-type, .hljs-selector-tag { color: var(--atom); }
+/* The wrapper is written by the script, so a reader without it keeps the
+   block and gets no button that cannot copy anything. */
+.snippet { position: relative; }
+.snippet button.copy {
+    position: absolute; top: .45rem; right: .45rem;
+    font: inherit; font-size: 12px; line-height: 1; cursor: pointer;
+    color: var(--dim); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 3px; padding: .3rem .5rem;
+    opacity: 0; transition: opacity .12s;
+}
+.snippet:hover button.copy, .snippet button.copy:focus { opacity: 1; }
+.snippet button.copy.done { opacity: 1; color: var(--mark); border-color: var(--mark); }
+/* Nothing hovers on a touch screen, and an invisible button is no button. */
+@media (hover: none) { .snippet button.copy { opacity: 1; } }
+table { border-collapse: collapse; display: block; overflow-x: auto; max-width: 100%; }
+th, td { border: 1px solid var(--line); padding: .4rem .7rem; text-align: left; vertical-align: top; }
+th { background: var(--soft); }
+img, svg { max-width: 100%; height: auto; }
+blockquote {
+    margin: 1rem 0; padding: .2rem 0 .2rem 1rem;
+    border-left: 3px solid var(--line); color: var(--dim);
+}
+@media (max-width: 860px) {
+    header.top { padding: 0 .8rem; gap: .6rem; }
+    .wrap { display: block; }
+    nav.side {
+        position: static; max-height: none; width: auto;
+        border-right: 0; border-bottom: 1px solid var(--line);
+    }
+    /* Nearly fifty entries above the page somebody came for. The button is
+       what folds them away, so it exists only where a script can open
+       them again. */
+    html.js #menu { display: block; }
+    html.js nav.side { display: none; }
+    html.js nav.side.open { display: block; }
+    main { padding: 1.6rem 1.1rem 4rem; }
+    /* No keyboard, so neither the shortcut nor the line explaining the arrows
+       is a thing anybody there can use. */
+    header.top .find { width: auto; }
+    header.top .find kbd, dialog#search footer { display: none; }
+    dialog#search { margin-top: 1.2rem; max-height: calc(100vh - 2.4rem); }
+}

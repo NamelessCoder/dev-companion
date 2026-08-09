@@ -88,6 +88,10 @@ stopped DDEV project is reported with the command that would fix it.
 Requirements: **PHP 8.2+** and Composer. The package works both ways — as a
 standalone checkout and as a Composer dependency of another project.
 
+It answers for TYPO3 **12.4**, **13.4**, **14.3** and **main**. A statement that
+does not hold on all of them names the ones it does, so an LTS is never handed a
+convention that only the development line has.
+
 ```bash
 # standalone: clone, install once, then point a project at it
 composer install
@@ -124,9 +128,9 @@ flag for it.
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,
 and the two environment variables that end a failed discovery:
-[documentation/clients/installing.md](documentation/clients/installing.md).
-Changing this repository rather than using it:
-[documentation/working-on-the-server.md](documentation/working-on-the-server.md).
+[Installing the server](documentation/clients/installing.md). Changing this
+repository rather than using it:
+[Working on the server](documentation/working-on-the-server.md).
 All of it reads as a site at
 [benjaminkott.github.io/typo3-dev-companion](https://benjaminkott.github.io/typo3-dev-companion/).
 
@@ -155,10 +159,10 @@ whether a question can be asked at all in the state the machine is in —
 statement read as a page.
 
 What one is for, what it takes and the fields it answers with is written out per
-tool in [documentation/tools/](documentation/tools/readme.md) — one page per
-tool, rendered from the classes rather than kept beside them, and each carrying
-what that tool answered when it was last recorded. Below is the same surface
-grouped by where an answer comes from.
+tool in [the tool surface](documentation/tools/readme.md) — one page per tool,
+rendered from the classes rather than kept beside them, and each carrying what
+that tool answered when it was last recorded. Below is the same surface grouped
+by where an answer comes from.
 
 ![A task starts by reading the project and identifying its workflow, then uses a specialist tool and returns the source, version, scope and limits with the answer.](documentation/images/answer-flow.svg)
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
     The published documentation. What is rendered is not `documentation/` itself
-    but the copy `bin/cli documentation:build` writes, because only that copy has
-    the links a reader without the checkout can follow.
+    but the copy `bin/cli documentation:render` writes, because only that copy
+    has the links a reader without the checkout can follow. That command runs
+    this renderer as one of its steps, so it is what a person types:
 
-        bin/cli documentation:build && build/guides/vendor/bin/guides
+        bin/cli documentation:render
 
     An error fails the build and a warning does not, because one warning stands
     that this repository will not remove: `typo3_icon_lookup` describes itself

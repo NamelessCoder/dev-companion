@@ -1,0 +1,15 @@
+{
+    "name": "typo3-dev-companion-site",
+    "private": true,
+    "description": "The theme's stylesheet and script, built into the two files every page links. Its own manifest beside composer.json, because the renderer is PHP and this is what the browser runs.",
+    "scripts": {
+        "build": "node theme/assets/build.mjs"
+    },
+    "devDependencies": {
+        "esbuild": "^0.25.0",
+        "highlight.js": "^11.11.0"
+    },
+    "engines": {
+        "node": ">=24"
+    }
+}

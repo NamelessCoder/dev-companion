@@ -12,3 +12,5 @@ vendor/
 /.session-command
 /.site
 /build/guides/vendor
+/build/guides/node_modules
+/build/guides/theme/assets/dist

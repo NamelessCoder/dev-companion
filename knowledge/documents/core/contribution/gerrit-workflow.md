@@ -230,6 +230,11 @@ the normal case the patch targets `main` and the merging core team member takes
 care of the backport. The `Releases:` line in the commit message names the
 branches the change is meant for.
 
+How far back that goes is not "everywhere the defect is". A bug fix and a task
+are released on `main` and on the one line back from it; an older maintained
+line takes priority bug fixes and grave or security-relevant defects, so naming
+one is a claim about the severity and not only about where the defect is.
+
 A backport is a cherry-pick of the merged commit onto the release branch,
 usually started from Gerrit's "Cherry pick" action. The `Change-Id` of the
 original change is kept unchanged — that is what lets Gerrit link the backport

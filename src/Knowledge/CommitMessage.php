@@ -437,13 +437,40 @@ final class CommitMessage
      * a date this already carries, and a line that opens is a branch created
      * after the list was read.
      *
+     * A maintained line further back than the ordinary reach is the third case
+     * and is neither of those: it is legitimate exactly where the severity
+     * earns it, so the check names what the trailer is then claiming rather
+     * than refusing it — `D-ANS-073`.
+     *
      * @return array{level: string, code: string, message: string}|null
      */
-    private static function releaseLineCheck(string $release): ?array
+    private static function releaseLineCheck(string $release, string $changeType): ?array
     {
         $state = ReleaseLines::state($release);
-        if ($state === ReleaseLines::DEVELOPMENT || $state === ReleaseLines::MAINTAINED) {
+        if ($state === ReleaseLines::DEVELOPMENT) {
             return null;
+        }
+        if ($state === ReleaseLines::MAINTAINED) {
+            $ordinary = ReleaseLines::ordinary();
+            if (
+                in_array($release, $ordinary, true)
+                || !in_array($changeType, ['BUGFIX', 'TASK'], true)
+            ) {
+                return null;
+            }
+
+            return [
+                'level' => 'warning',
+                'code' => 'older-release-line',
+                'message' => sprintf(
+                    '%s is maintained, and a %s is released on %s. An older line takes a priority bug fix and a '
+                        . 'grave or security-relevant defect, so naming it claims the severity earns it — say so in '
+                        . 'the body, or leave the line out.',
+                    $release,
+                    $changeType,
+                    implode(', ', $ordinary),
+                ),
+            ];
         }
 
         if ($state === ReleaseLines::UNKNOWN) {
@@ -531,16 +558,19 @@ final class CommitMessage
                 'code' => 'missing-releases',
                 'message' => sprintf(
                     'The draft carries "Releases: %s". Replace it with the branches this change is released on. '
-                        . 'The lines taking a patch today are %s; which of them the change reaches is your reading '
-                        . 'of where the defect is, and the trailer claims you verified it there.',
+                        . 'The lines that can take a patch at all are %s, which is not the list this change belongs '
+                        . 'on: a bug fix and a task go to %s, and an older line is named only where the severity '
+                        . 'earns it — a priority bug fix, a grave or security-relevant defect. Which lines carry the '
+                        . 'defect is the other half and is your reading, verified on each branch you name.',
                     self::RELEASE_PLACEHOLDER,
                     implode(', ', ReleaseLines::releasable()),
+                    implode(', ', ReleaseLines::ordinary()),
                 ),
             ];
         }
 
         foreach ($isCore ? $releases : [] as $release) {
-            $releaseCheck = self::releaseLineCheck($release);
+            $releaseCheck = self::releaseLineCheck($release, $changeType);
             if ($releaseCheck !== null) {
                 $checks[] = $releaseCheck;
             }

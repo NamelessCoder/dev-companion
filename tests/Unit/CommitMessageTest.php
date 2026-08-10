@@ -643,6 +643,45 @@ final class CommitMessageTest extends TestCase
     }
 
     /**
+     * `D-ANS-073`. A maintained line further back than the ordinary reach is
+     * neither an error nor nothing: a bug fix and a task go to the development
+     * line and the one back from it, and an older one is earned by the severity
+     * of the defect rather than by the defect being present there.
+     */
+    #[Test]
+    public function aMaintainedLineFurtherBackThanTheOrdinaryReachSaysWhatItClaims(): void
+    {
+        $older = ReleaseLines::releasable()[2] ?? null;
+        self::assertNotNull($older, 'the list carries no line beyond the ordinary reach to hold this against');
+
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Keep the line breaks',
+            'issue' => '88556',
+            'releases' => [...ReleaseLines::ordinary(), $older],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $checks = $this->checksWithCode($result['checks'], 'older-release-line');
+        self::assertCount(1, $checks, 'the lines within the ordinary reach are not held against the trailer');
+        self::assertSame('warning', $checks[0]['level']);
+        self::assertStringContainsString($older, $checks[0]['message']);
+        self::assertStringContainsString('priority bug fix', $checks[0]['message']);
+
+        // A feature is the release managers' call and never this warning.
+        $feature = CommitMessage::create([
+            'changeType' => 'FEATURE',
+            'summary' => 'Keep the line breaks',
+            'issue' => '88556',
+            'releases' => [$older],
+            'isBreaking' => false,
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+        self::assertSame([], $this->checksWithCode($feature['checks'], 'older-release-line'));
+    }
+
+    /**
      * A check that only refuses arrives too late: the session that filed this
      * had already counted the trailers on 40 commits by then.
      */

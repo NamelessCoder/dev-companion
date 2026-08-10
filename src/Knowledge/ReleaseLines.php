@@ -94,6 +94,24 @@ final class ReleaseLines
     }
 
     /**
+     * The branches an ordinary change is released on: the development line and
+     * the one release line back from it.
+     *
+     * Not the same question as `releasable()`, and reading the two as one is
+     * what `D-ANS-073` corrects. A `[BUGFIX]` and a `[TASK]` go this far; an
+     * older maintained line takes priority bug fixes and grave or
+     * security-relevant defects, so it is earned by the severity rather than by
+     * the defect being present there. A trailer naming it anyway asks a merger
+     * to cherry-pick onto a line the change was never meant for.
+     *
+     * @return array<int, string>
+     */
+    public static function ordinary(?\DateTimeImmutable $on = null): array
+    {
+        return array_slice(self::releasable($on), 0, 2);
+    }
+
+    /**
      * What is the case with one branch, as a sentence a check can carry.
      *
      * The dates are in it because the trailer is the author's claim and this is

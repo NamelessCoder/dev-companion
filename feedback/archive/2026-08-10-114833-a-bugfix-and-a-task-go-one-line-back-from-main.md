@@ -1,7 +1,8 @@
 ---
 date: 2026-08-10T11:48:33+00:00
 category: wrong-answer
-status: open
+status: closed
+closed: 2026-08-10
 model: claude-opus-5[1m]
 tool: typo3_commit_message_guide, typo3_rule_lookup, typo3-core-patch-review, typo3-core-patch-development
 ---

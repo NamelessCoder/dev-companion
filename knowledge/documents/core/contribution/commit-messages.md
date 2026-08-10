@@ -85,8 +85,15 @@ Guide.
   happens and is the release managers' call: `origin/main..origin/13.4` carries
   three `[FEATURE]` commits against 969 `[BUGFIX]` ones, and
   `origin/main..origin/14.3` carries none at all.
-- A bug fix goes to every maintained line that carries the defect, which is what
-  makes it the change type the trailer is worth checking on.
+- A bug fix and a task go to `main` and to the one release line back from it.
+  That the defect is present on an older maintained line does not put that line
+  in the trailer: the older lines take priority bug fixes and grave or
+  security-relevant defects, and naming one for an ordinary fix asks a merger to
+  cherry-pick onto a line the change was never meant for.
+- So the trailer is two readings rather than one. Where the defect is, on each
+  line, is the first; whether its severity earns an older line is the second,
+  and it is a judgement you state rather than something that follows from the
+  first.
 - What a release branch carries since it was cut is `origin/main..origin/14.3`.
   A plain log on that branch, or a `--since` window over it, answers about the
   history shared with `main` and reports every change made before the branch

@@ -11,13 +11,17 @@
    shape this page are: one accent, no shadows, mono for anything the machine
    names, and hover changes colour and border and never position or size. */
 
-@import "@typo3/soul-design-system/tokens/colors.css";
-@import "@typo3/soul-design-system/tokens/fonts.css";
-@import "@typo3/soul-design-system/tokens/typography.css";
-@import "@typo3/soul-design-system/tokens/spacing.css";
-@import "@typo3/soul-design-system/tokens/radius.css";
-@import "@typo3/soul-design-system/tokens/motion.css";
-@import "@typo3/soul-design-system/tokens/controls.css";
+@import "@typo3/soul-design-system/src/tokens/colors.css";
+@import "@typo3/soul-design-system/src/tokens/fonts.css";
+@import "@typo3/soul-design-system/src/tokens/typography.css";
+@import "@typo3/soul-design-system/src/tokens/spacing.css";
+@import "@typo3/soul-design-system/src/tokens/radius.css";
+@import "@typo3/soul-design-system/src/tokens/motion.css";
+@import "@typo3/soul-design-system/src/tokens/controls.css";
+/* The class layer. `.sds-code` and `.sds-table` below used to be written
+   out here as `.snippet` and bare element rules — the same decisions, kept
+   in step by hand. */
+@import "@typo3/soul-design-system/src/styles/components.css";
 
 * { box-sizing: border-box; }
 
@@ -49,17 +53,6 @@ kbd {
     border: var(--border-hairline) solid var(--border-subtle);
     border-radius: var(--radius-control);
     padding: 1px .4em;
-}
-
-/* Icons follow the text colour they sit in, which is why every one of them is
-   inlined rather than linked. 16px is the floor and the sizes go 16, 20, 24.
-   They are addressed by where they stand, because what `source()` inlines is
-   the design system's file unchanged — down to carrying no class. */
-.bar svg, dialog#search .field svg, .copy svg, nav.side summary svg {
-    display: block;
-    flex: none;
-    width: 16px;
-    height: 16px;
 }
 
 /* --------------------------------------------------------------- header -- */
@@ -281,60 +274,12 @@ code {
 
 /* -------------------------------------------------------------- code, § -- */
 
-/* A code block is machine output: sunken, and a control-scale object rather
-   than a container, so it takes the control radius. The head carries what the
-   block is and the button that copies it. */
-.snippet {
-    border: var(--border-hairline) solid var(--border-subtle);
-    background: var(--surface-sunken);
-    border-radius: var(--radius-control);
-    overflow: hidden;
-    margin: var(--space-5) 0;
-}
-.snippet__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--control-gap);
-    padding: var(--space-2) var(--space-3);
-    border-bottom: var(--border-hairline) solid var(--border-subtle);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-label);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-.copy {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    cursor: pointer;
-    color: var(--text-muted);
-    background: none;
-    border: 0;
-    padding: 0;
-    transition: color var(--duration-fast) var(--ease-out);
-}
-.copy:hover { color: var(--text-primary); }
-/* The check is the second icon in the button and stands in for the first once
-   the block has been copied — a glyph rather than a word changing colour. */
-.copy svg + svg, .copy.done svg:first-of-type { display: none; }
-.copy.done svg + svg { display: block; }
-.copy.done { color: var(--status-ok); }
+/* A code block is `sds-code`, rendered by `theme/body/code.html.twig`. What
+   is left here is what the system does not own: the spacing between a block
+   and the prose around it, the copy button, and the map from highlight.js to
+   the system's three syntax colours. */
+.sds-code { margin: var(--space-5) 0; }
 
-pre {
-    margin: 0;
-    padding: var(--space-4);
-    overflow-x: auto;
-}
-pre code {
-    font-size: var(--font-size-code);
-    line-height: var(--leading-code);
-    color: var(--text-secondary);
-}
 
 /* The system names three syntax colours, and this maps highlight.js onto
    exactly those three: anything else would be a fourth colour nobody declared.
@@ -345,33 +290,14 @@ pre code {
 .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-meta { color: var(--syntax-string); }
 .hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-subst, .hljs-type { color: var(--text-primary); }
 
+/* A table is `sds-table sds-table--scroll`, set by
+   `theme/body/table/table-classes.html.twig`. The scrolling is the modifier's,
+   not this file's — it was three declarations here until the system grew the
+   modifier for it. What is left is placement in the flow, which is the page's. */
+.sds-table { margin: var(--space-5) 0; }
+
 /* ------------------------------------------------------------- the rest -- */
 
-table {
-    border-collapse: collapse;
-    display: block;
-    overflow-x: auto;
-    max-width: 100%;
-    font-size: var(--row-font-medium);
-    margin: var(--space-5) 0;
-}
-th {
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: var(--table-head-size);
-    letter-spacing: var(--table-head-tracking);
-    text-transform: uppercase;
-    font-weight: var(--weight-regular);
-    color: var(--text-muted);
-    padding: 0 var(--space-3) var(--row-pad-medium) 0;
-    border-bottom: var(--border-hairline) solid var(--border-strong);
-}
-td {
-    padding: var(--row-pad-medium) var(--space-3) var(--row-pad-medium) 0;
-    border-bottom: var(--border-hairline) solid var(--border-subtle);
-    vertical-align: top;
-    color: var(--text-secondary);
-}
 /* Never zebra stripes: a background that changes means something. */
 tbody tr:hover { background: var(--surface-raised); }
 
@@ -442,7 +368,6 @@ dialog#zoom .zoom__close {
     border: 0;
 }
 dialog#zoom .zoom__close:hover { color: var(--text-primary); }
-dialog#zoom .zoom__close svg { display: block; flex: none; width: 16px; height: 16px; }
 /* At the size it was drawn at, and scrolled where that does not fit. Fitting it
    to the panel is what the page already did. */
 dialog#zoom .zoom__body { flex: 1 1 auto; overflow: auto; padding: var(--space-4); }

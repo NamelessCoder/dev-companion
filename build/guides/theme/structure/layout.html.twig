@@ -11,9 +11,10 @@
     written into the markup, and no way to copy one. All three come from
     `assets/site.js`, which is where each says what it costs.
 
-    Every icon is inlined with `source()` rather than linked, because an `<img>`
-    cannot inherit `currentColor` and the design system's icons follow the text
-    colour they sit in.
+    Every icon in the chrome is `<sds-icon>`. The element says where its sprite
+    is and what a glyph is called, and nothing here draws one — the signet is
+    the exception, inlined because it is this site's own drawing and carries two
+    colours the page sets rather than one it inherits.
 
     The stylesheet and the script are two files rather than two blocks in every
     page: at 16 KB they had grown to a third of everything this site serves.
@@ -77,7 +78,7 @@
             that a reader without JavaScript keeps the list rather than a button
             that cannot open it.
         #}
-        <button id="menu" type="button" aria-expanded="false" aria-controls="side" aria-label="Pages" hidden>{{ source('assets/icons/actions-list.svg')|raw }}</button>
+        <button id="menu" type="button" aria-expanded="false" aria-controls="side" aria-label="Pages" hidden><sds-icon name="actions-list"></sds-icon></button>
         <a class="lockup" href="{{ up }}index.html">
             <span class="signet">{{ source('assets/icons/signet-m.svg')|raw }}</span>
             <span class="wordmark">
@@ -90,7 +91,7 @@
             because a field that searches nothing is worse than no field.
         #}
         <button id="find" class="find" type="button" aria-keyshortcuts="Control+K" hidden>
-            {{ source('assets/icons/actions-search.svg')|raw }}
+            <sds-icon name="actions-search"></sds-icon>
             <span>Search</span><kbd id="key">Ctrl K</kbd>
         </button>
         {#
@@ -114,7 +115,7 @@
 #}
 <dialog id="search" aria-label="Search the documentation">
     <div class="field">
-        {{ source('assets/icons/actions-search.svg')|raw }}
+        <sds-icon name="actions-search"></sds-icon>
         <input id="q" type="search" autocomplete="off" placeholder="Search the documentation" aria-label="Search the documentation" aria-controls="hits">
     </div>
     <ul id="hits"></ul>
@@ -133,25 +134,11 @@
 <dialog id="zoom">
     <div class="zoom__head">
         <p id="zoom-said"></p>
-        <button type="button" class="zoom__close" aria-label="Close">{{ source('assets/icons/actions-close.svg')|raw }}</button>
+        <button type="button" class="zoom__close" aria-label="Close"><sds-icon name="actions-close"></sds-icon></button>
     </div>
     {# Filled with the drawing being read, which the script has already inlined. #}
     <div class="zoom__body"></div>
 </dialog>
-{#
-    What the script wraps a fenced block in. It is written here rather than in
-    the script so the two icons come from `assets/icons/` like every other one.
-#}
-<template id="head">
-    <div class="snippet__head">
-        <span class="lang"></span>
-        <button class="copy" type="button">
-            {{ source('assets/icons/actions-duplicate.svg')|raw }}
-            {{ source('assets/icons/actions-check.svg')|raw }}
-            <span>copy</span>
-        </button>
-    </div>
-</template>
 <div class="wrap">
     <nav class="side" id="side">
         {#
@@ -173,7 +160,7 @@
                 {%- if group != '' %}</ul></details>{% endif -%}
                 {%- set group = dir -%}
                 <details class="group"{{ here|split('/')|first == dir ? ' open' : '' }}>
-                    <summary>{{ source('assets/icons/actions-chevron-down.svg')|raw }}{{ dir|replace({'-': ' '}) }}</summary>
+                    <summary><sds-icon name="actions-chevron-down"></sds-icon>{{ dir|replace({'-': ' '}) }}</summary>
                     <ul>
             {%- endif -%}
             <li><a class="page{{ path == here ? ' current' : '' }}" href="{{ up }}{{ path }}.html">{{ entry.title ? entry.title.toString : path }}</a></li>

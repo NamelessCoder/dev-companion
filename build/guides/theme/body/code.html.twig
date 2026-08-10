@@ -1,0 +1,23 @@
+{#
+    A fenced block is the design system's code element.
+
+    The element frames it, writes the `<code class="language-…">` a highlighter
+    looks for from its own `lang`, and owns the copy button. Naming the
+    language here and again on a `<code>` would let the head and the
+    highlighting disagree unnoticed.
+
+    Without JavaScript the block is unframed but readable — the element renders
+    light DOM and its frame arrives on upgrade. This page already needs a script
+    for highlighting and for search.
+#}
+{% if node.raw %}
+    {# The RawDirective passes markup through; framing it would be wrong. #}
+    {{ node.value|raw }}
+{%- else -%}
+    {% if node.caption %}
+        <div class="code-block-caption">
+            <span class="caption-text">{{ renderNode(node.caption) }}</span>
+        </div>
+    {%- endif -%}
+    <sds-code lang="{{ node.language }}" copy>{% include "body/code/highlighted-code.html.twig" %}</sds-code>
+{%~ endif -%}

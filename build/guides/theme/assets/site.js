@@ -2,6 +2,15 @@
 // search, the copy button and the colouring of a fenced block. Bundled by
 // `assets/build.mjs` and served as one file, so 48 pages share one download
 // instead of carrying it each — `D-DOC-019`.
+// The design system's custom elements. They frame a fenced block, write the
+// `<code class="language-…">` that gets highlighted below, and carry the copy
+// button — all of which this file used to do by hand.
+//
+// The built drop-in, not the source: `src/` reaches a generated file that a
+// git install does not carry, and the drop-in brings its own Lit, so nothing
+// here has to depend on a version of it.
+import { setIconSprite } from '@typo3/soul-design-system/dist/soul.js';
+
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
@@ -12,6 +21,12 @@ import yaml from 'highlight.js/lib/languages/yaml';
 // inline script, because an inline script is the one thing an external file
 // was supposed to remove.
 var up = document.documentElement.getAttribute('data-up') || '';
+
+// Where the icons resolve. An element left to itself looks beside its own
+// module, and this one has been bundled into a file that sits somewhere else
+// — every glyph would come back blank. Published flat with the rest by
+// `assets/build.mjs`, so the depth of the page being read is the whole path.
+setIconSprite(up + 'assets/actions.svg');
 
 // Light or dark, as two segments with the chosen one filled — the design
 // system's mode switch, which is the same treatment as an active navigation
@@ -311,58 +326,23 @@ hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('yaml', yaml);
 
-Array.prototype.forEach.call(document.querySelectorAll('main pre > code'), function (block) {
-    // The recorded answers run to tens of thousands of characters, and one of
-    // them is not worth a visible pause on a page nobody reads for the colour.
-    if (/(?:^|\s)language-(?:bash|json|yaml)(?:\s|$)/.test(block.className || '') && block.textContent.length < 40000) {
-        hljs.highlightElement(block);
-    }
-});
-
-// A code block is machine output, and the design system gives it a head that
-// says what it is and carries the button that copies it. Half of what this
-// documentation says is a command to run, and reading one out of a page is
-// where a flag gets dropped.
-(function () {
-    var template = document.getElementById('head');
-
-    Array.prototype.forEach.call(document.querySelectorAll('main pre'), function (block) {
-        var code = block.querySelector('code'),
-            named = (code && code.className.match(/language-([\w-]+)/)),
-            language = named ? named[1] : '',
-            said = null;
-
-        // A head with neither a language nor a button is an empty bar.
-        if (!language && !navigator.clipboard) { return; }
-
-        var snippet = document.createElement('div'),
-            head = template.content.cloneNode(true),
-            copy = head.querySelector('.copy'),
-            label = copy.querySelector('span');
-
-        head.querySelector('.lang').textContent = language;
-        // A browser without the clipboard would otherwise carry a button that
-        // does nothing.
-        if (!navigator.clipboard) {
-            copy.remove();
-        }
-
-        snippet.className = 'snippet';
-        block.parentNode.insertBefore(snippet, block);
-        snippet.appendChild(head);
-        snippet.appendChild(block);
-
-        if (!navigator.clipboard) { return; }
-        copy.addEventListener('click', function () {
-            navigator.clipboard.writeText(block.textContent.replace(/\n+$/, '')).then(function () {
-                clearTimeout(said);
-                copy.className = 'copy done';
-                label.textContent = 'copied';
-                said = setTimeout(function () {
-                    copy.className = 'copy';
-                    label.textContent = 'copy';
-                }, 1600);
-            });
+// After the elements upgrade, not before: `<sds-code>` writes the `<code>`
+// carrying the language class, so a pass over the document at load time finds
+// nothing to colour.
+customElements.whenDefined('sds-code')
+    .then(function () {
+        return Promise.all(Array.prototype.map.call(
+            document.querySelectorAll('sds-code'),
+            function (el) { return el.updateComplete; },
+        ));
+    })
+    .then(function () {
+        Array.prototype.forEach.call(document.querySelectorAll('main pre > code'), function (block) {
+            // The recorded answers run to tens of thousands of characters, and
+            // one is not worth a visible pause on a page nobody reads for the
+            // colour.
+            if (/(?:^|\s)language-(?:bash|json|yaml)(?:\s|$)/.test(block.className || '') && block.textContent.length < 40000) {
+                hljs.highlightElement(block);
+            }
         });
     });
-})();

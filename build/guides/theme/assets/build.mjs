@@ -83,12 +83,22 @@ for (const [name, from] of font.files) {
     await writeFile(join(dist, name), await readFile(from));
 }
 
-// The favicon is the only icon a page links rather than inlines, because a
+// The favicon is the only drawing a page links rather than inlines, because a
 // browser tab is not a place `currentColor` reaches.
 await writeFile(join(dist, 'signet-s.svg'), await readFile(join(here, 'icons', 'signet-s.svg')));
 
-// The tokens are @imported by site.css and inlined here, so the vendored
-// design-system files stay separate on disk and arrive as one request.
+// What every `<sds-icon>` on this site resolves against — the ones the layout
+// writes and the ones the components render inside themselves. Copied whole
+// rather than subset, because which glyph a component reaches for is its
+// business and not this build's: a subset goes blank the day one changes. It
+// is 51 KB over the wire, fetched once and held for all 48 pages.
+await writeFile(
+    join(dist, 'actions.svg'),
+    await readFile(join(packages, '@typo3', 'soul-design-system', 'dist', 'assets', 'icons', 'sprites', 'actions.svg')),
+);
+
+// The tokens are @imported by site.css and inlined here, so they arrive as one
+// request with the rest.
 const styles = await build({
     entryPoints: [join(here, 'site.css')],
     bundle: true,

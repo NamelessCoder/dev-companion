@@ -205,6 +205,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
 - [`D-KNW-068`][D-KNW-068] — Looking at a backend change is a suite the core already carries · 2026-08-10
+- [`D-KNW-069`][D-KNW-069] — A browser in a container reaches a DDEV site on the router's own network · 2026-08-10
 - [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09 · confirmed
 - [`D-KNW-064`][D-KNW-064] — The disabled assertions a core checkout carries are a grep and not a lookup · 2026-08-08
 - [`D-KNW-063`][D-KNW-063] — What a TCA type stores is a subject this server owns and does not carry · 2026-08-07
@@ -267,6 +268,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-066]: knowledge/knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knowledge/knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md
 [D-KNW-068]: knowledge/knw-068-looking-at-a-backend-change-is-a-suite-the-core-already-carries.md
+[D-KNW-069]: knowledge/knw-069-a-browser-in-a-container-reaches-a-ddev-site-on-the-routers-own-network.md
 [D-KNW-065]: knowledge/knw-065-what-a-public-method-on-a-non-final-core-class-commits-its-author-to-is-a-gap-this-server-owns.md
 [D-KNW-064]: knowledge/knw-064-the-disabled-assertions-a-core-checkout-carries-are-a-grep-and-not-a-lookup.md
 [D-KNW-063]: knowledge/knw-063-what-a-tca-type-stores-is-a-subject-this-server-owns-and-does-not-carry.md

@@ -233,7 +233,14 @@
       "page module",
       "backend module",
       "selector",
-      "locator"
+      "locator",
+      "visual check",
+      "visually",
+      "screenshot",
+      "look at the change",
+      "render correctly",
+      "reproduce in the backend",
+      "in a real browser"
     ],
     "hints": [
       "Playwright is where a browser is involved, and the core is the worked example: Build/playwright.config.ts declares the projects and their dependencies, Build/tests/playwright/ holds the suite.",

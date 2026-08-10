@@ -50,10 +50,11 @@ corrections before the developer asked whether it had actually looked.
   changes somebody has to look at, and verifying in one engine is what
   [`D-KNW-066`](knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md)
   cost a session on the same day.
-- What stays open is the other half of the report: pointing a browser at the
-  developer's own installation, where the data that shows the defect actually
-  is. The prepared instance is a styleguide with one language and no scrolling,
-  so it could not have shown this bug either.
+- The other half of the report — pointing a browser at the developer's own
+  installation, where the data that shows the defect actually is — is
+  [`D-KNW-069`](knw-069-a-browser-in-a-container-reaches-a-ddev-site-on-the-routers-own-network.md).
+  The prepared instance is a styleguide with one language and no scrolling, so
+  it could not have shown this bug either.
 
 ## Assumed
 

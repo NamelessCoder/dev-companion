@@ -1,18 +1,23 @@
-/* The published documentation, built to the TYPO3 Support App design system.
+/* The published documentation, built to the Soul Design System.
 
-   The tokens are vendored below `tokens/` and imported here; no value in this
-   file is a colour, a radius or a duration written out. What the system says
-   about each surface is in its build rules, and the four that shape this page
-   are: one accent, no shadows, mono for anything the machine names, and hover
-   changes colour and border and never position or size. */
+   The tokens come from the package, not from a copy. They used to be vendored
+   under `tokens/`, which is how this site went on shipping `--text-muted` at
+   `#8A8378` for months after the system had raised it to `#726C63` to reach
+   WCAG AA. A copy that nothing re-pulls is a copy that is wrong and says
+   nothing about it.
 
-@import "tokens/colors.css";
-@import "tokens/fonts.css";
-@import "tokens/typography.css";
-@import "tokens/spacing.css";
-@import "tokens/radius.css";
-@import "tokens/motion.css";
-@import "tokens/controls.css";
+   No value in this file is a colour, a radius or a duration written out. What
+   the system says about each surface is in its build rules, and the four that
+   shape this page are: one accent, no shadows, mono for anything the machine
+   names, and hover changes colour and border and never position or size. */
+
+@import "@typo3/soul-design-system/tokens/colors.css";
+@import "@typo3/soul-design-system/tokens/fonts.css";
+@import "@typo3/soul-design-system/tokens/typography.css";
+@import "@typo3/soul-design-system/tokens/spacing.css";
+@import "@typo3/soul-design-system/tokens/radius.css";
+@import "@typo3/soul-design-system/tokens/motion.css";
+@import "@typo3/soul-design-system/tokens/controls.css";
 
 * { box-sizing: border-box; }
 

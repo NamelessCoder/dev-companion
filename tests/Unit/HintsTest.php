@@ -3408,7 +3408,12 @@ final class HintsTest extends TestCase
         // listed under both names it has across the covered range, each with
         // its own range beside it. What the case is about is the narrowing: a
         // Sass path, and no PHP or TypeScript suite in the answer.
-        self::assertSame(['build', 'build-css', 'buildCss', 'lintScss'], $suites);
+        //
+        // e2e-prepare is in it because a Sass change is one of the changes
+        // somebody has to look at — it installs the backend the components are
+        // demoed in and leaves it up, which is what the browser target costs a
+        // session that verifies in one engine (`D-KNW-066`, `D-KNW-068`).
+        self::assertSame(['build', 'build-css', 'buildCss', 'e2e-prepare', 'lintScss'], $suites);
     }
 
     #[Test]

@@ -266,6 +266,20 @@ Command from the TYPO3 core root:
 End-to-end tests driving a real backend with Playwright.
 Use for editor or administrator workflows that only break in the assembled backend.
 
+## e2e-prepare
+Command from the TYPO3 core root:
+`CI=true ./Build/Scripts/runTests.sh -s e2e-prepare`
+
+Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.
+Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.
+
+## e2e-browser
+Command from the TYPO3 core root:
+`CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
+
+The e2e suite in Playwright's own UI, served from the container.
+Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.
+
 ## composerInstall
 Command from the TYPO3 core root:
 `CI=true ./Build/Scripts/runTests.sh -s composerInstall`
@@ -293,6 +307,7 @@ Use for composer dumpautoload, require, info, and dependency tasks.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
 - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
+- `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
 
 Options:
 - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -585,6 +600,34 @@ Data:
             "versions": "TYPO3 v13 and newer"
         },
         {
+            "suite": "e2e-prepare",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
+            "targeted": null,
+            "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
+            "whenToUse": "Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.",
+            "domains": [
+                "php",
+                "typescript",
+                "fluid",
+                "css"
+            ],
+            "versions": "TYPO3 v13 and newer"
+        },
+        {
+            "suite": "e2e-browser",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
+            "targeted": null,
+            "description": "The e2e suite in Playwright's own UI, served from the container.",
+            "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.",
+            "domains": [
+                "php",
+                "typescript",
+                "fluid",
+                "css"
+            ],
+            "versions": "TYPO3 v14 and newer"
+        },
+        {
             "suite": "composerInstall",
             "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
             "targeted": null,
@@ -631,7 +674,8 @@ Data:
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
             "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
-            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
+            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
+            "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
         ],
         "options": [
             {
@@ -735,6 +779,7 @@ Use for type-sensitive PHP changes and API contract changes.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
 - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
+- `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
 
 Options:
 - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -800,7 +845,8 @@ Data:
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
             "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
-            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
+            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
+            "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
         ],
         "options": [
             {
@@ -899,6 +945,7 @@ No runTests.sh suite matched "quantumflux". Try "unit", "functional", "phpstan",
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
 - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
+- `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
 
 Options:
 - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -952,7 +999,8 @@ Data:
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
             "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
-            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
+            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
+            "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
         ],
         "options": [
             {
@@ -1055,6 +1103,20 @@ Command from the TYPO3 core root:
 Focused CSS build from Build/package.json.
 Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css.
 
+## e2e-browser
+Command from the TYPO3 core root:
+`CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
+
+The e2e suite in Playwright's own UI, served from the container.
+Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.
+
+## e2e-prepare
+Command from the TYPO3 core root:
+`CI=true ./Build/Scripts/runTests.sh -s e2e-prepare`
+
+Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.
+Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.
+
 ## lintScss
 Command from the TYPO3 core root:
 `CI=true ./Build/Scripts/runTests.sh -s lintScss`
@@ -1068,6 +1130,7 @@ Use when Sass or CSS sources change. Internally this runs grunt stylelint in the
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
 - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
+- `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
 
 Options:
 - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -1132,6 +1195,34 @@ Data:
             "versions": ""
         },
         {
+            "suite": "e2e-browser",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
+            "targeted": null,
+            "description": "The e2e suite in Playwright's own UI, served from the container.",
+            "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.",
+            "domains": [
+                "php",
+                "typescript",
+                "fluid",
+                "css"
+            ],
+            "versions": "TYPO3 v14 and newer"
+        },
+        {
+            "suite": "e2e-prepare",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
+            "targeted": null,
+            "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
+            "whenToUse": "Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.",
+            "domains": [
+                "php",
+                "typescript",
+                "fluid",
+                "css"
+            ],
+            "versions": "TYPO3 v13 and newer"
+        },
+        {
             "suite": "lintScss",
             "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
             "targeted": null,
@@ -1153,7 +1244,8 @@ Data:
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
             "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
-            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
+            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
+            "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
         ],
         "options": [
             {

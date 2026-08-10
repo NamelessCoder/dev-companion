@@ -1,7 +1,7 @@
 ---
 id: R-ANS-016
 status: held
-restsOn: [D-ANS-027, D-ANS-039]
+restsOn: [D-ANS-039]
 ---
 
 # R-ANS-016 — A content-element task is offered the Extbase fork

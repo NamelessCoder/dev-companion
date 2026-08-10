@@ -1,7 +1,7 @@
 ---
 id: R-SKL-017
 status: held
-restsOn: [D-GUI-002, D-SKL-014]
+restsOn: [D-GUI-010, D-SKL-014]
 ---
 
 # R-SKL-017 — The commit step is named where a skill's workflow ends in a change
@@ -10,11 +10,12 @@ restsOn: [D-GUI-002, D-SKL-014]
 core names `typo3_commit_message_guide` with `workflow="project"`, at the point
 its own workflow ends.**
 
-The argument is what the skill adds. `typo3_commit_message_guide` answers for
-the core by default — the Forge issue, the release branches, the trailers that
-go with them — and a session committing in an extension has none of those. Which
-repository the commit lands in is the one thing the message itself cannot say,
-so it is the skill that is standing in that repository which says it.
+The argument is what the skill adds. Which repository the commit lands in is the
+one thing the message itself cannot say, and the core's half of the answer — the
+Forge issue, the release branches, the trailers that go with them — is not one a
+session committing in an extension can use. So the skill standing in that
+repository is what says which it is, stated rather than left to the default
+`D-GUI-010` set: a call site that means project says so.
 
 Six skills carry the step, read off each body: backend modules, content
 elements, the development installation, documentation, testing and the upgrade

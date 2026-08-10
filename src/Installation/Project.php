@@ -67,6 +67,17 @@ final class Project
     private const DDEV_SIGNATURE = '#ddev-generated';
 
     /**
+     * The top-level domain a project's URLs are built from where no file names
+     * one — the default of `ddev config --project-tld`.
+     *
+     * A machine whose global DDEV configuration sets another one is not read
+     * here: this answer is the project's own files (`R-PRJ-001`), and the
+     * hostnames it states say what the configuration declares rather than what
+     * a running router answers on.
+     */
+    private const DDEV_TLD = 'ddev.site';
+
+    /**
      * @return array{
      *     root: string,
      *     kind: string,
@@ -74,7 +85,7 @@ final class Project
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
      *     corePhpConstraint: ?string,
-     *     environment: array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
+     *     environment: array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
      *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
@@ -131,7 +142,7 @@ final class Project
      * reading that file by hand, beside an answer that had opened it for one
      * PHP version (`feedback/2026-08-03-154501`).
      *
-     * @return array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
+     * @return array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
      */
     private static function environment(string $root): ?array
     {
@@ -142,6 +153,8 @@ final class Project
                 'via' => Typo3Cli::VIA_DDEV,
                 'php' => $ddev['php'],
                 'source' => $ddev['source'],
+                'project' => $ddev['project'],
+                'hostnames' => $ddev['hostnames'],
                 // DDEV sets this inside the web container, and there the shell
                 // the caller has is the environment. Telling it to put `ddev`
                 // in front of a command would name a binary that is not there.
@@ -164,6 +177,9 @@ final class Project
                 'via' => Typo3Cli::VIA_OVERRIDE,
                 'php' => null,
                 'source' => Typo3Cli::CONSOLE_VARIABLE,
+                // A command line names no project and no site.
+                'project' => null,
+                'hostnames' => [],
                 'entered' => false,
                 // A command line names a way in and no files, so there is
                 // nothing here to read a lifecycle out of.
@@ -208,7 +224,13 @@ final class Project
      * DDEV that is installed, which is not in these files and is not the same
      * number from one release to the next.
      *
-     * @return array{php: ?string, source: string, hooks: array<int, array{stage: string, command: string, service: ?string}>}
+     * The name and the hostnames come from the same files, and they are what a
+     * caller needs to reach the site at all: a session that had the environment
+     * reported and nothing else spent four shell round trips finding the
+     * project name and one wrong attempt in between
+     * (`feedback/2026-08-10-101723`).
+     *
+     * @return array{php: ?string, source: string, project: ?string, hostnames: array<int, string>, hooks: array<int, array{stage: string, command: string, service: ?string}>}
      */
     private static function ddev(string $root): array
     {
@@ -221,6 +243,13 @@ final class Project
         $php = null;
         $source = '.ddev/config.yaml';
         $stages = [];
+        // What DDEV falls back to when no file names one: `ddev config
+        // --project-name` is "normally the same as the last part of directory
+        // name", and `--project-tld` defaults to ddev.site.
+        $project = basename($root);
+        $tld = '';
+        $hostnames = [];
+        $fqdns = [];
         foreach ($files as $file) {
             $configuration = self::yaml($root . '/' . $file);
             $version = self::phpVersion($configuration['php_version'] ?? null);
@@ -228,6 +257,15 @@ final class Project
                 $php = $version;
                 $source = $file;
             }
+
+            $project = is_string($configuration['name'] ?? null) && $configuration['name'] !== ''
+                ? $configuration['name']
+                : $project;
+            $tld = is_string($configuration['project_tld'] ?? null) && $configuration['project_tld'] !== ''
+                ? $configuration['project_tld']
+                : $tld;
+            $hostnames = [...$hostnames, ...self::names($configuration['additional_hostnames'] ?? null)];
+            $fqdns = [...$fqdns, ...self::names($configuration['additional_fqdns'] ?? null)];
 
             $replaces = ($configuration['override_config'] ?? null) === true;
             foreach (is_array($configuration['hooks'] ?? null) ? $configuration['hooks'] : [] as $stage => $tasks) {
@@ -247,7 +285,37 @@ final class Project
             }
         }
 
-        return ['php' => $php, 'source' => $source, 'hooks' => $hooks];
+        $tld = $tld === '' ? self::DDEV_TLD : $tld;
+        $sites = [$project . '.' . $tld];
+        foreach ($hostnames as $hostname) {
+            $sites[] = $hostname . '.' . $tld;
+        }
+
+        return [
+            'php' => $php,
+            'source' => $source,
+            'project' => $project,
+            // A fully qualified name is the caller's own and takes no tld.
+            'hostnames' => array_values(array_unique([...$sites, ...$fqdns])),
+            'hooks' => $hooks,
+        ];
+    }
+
+    /**
+     * The non-empty strings of a list a configuration file states, or none.
+     *
+     * @return array<int, string>
+     */
+    private static function names(mixed $stated): array
+    {
+        if (!is_array($stated)) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            $stated,
+            static fn(mixed $name): bool => is_string($name) && $name !== '',
+        ));
     }
 
     /**

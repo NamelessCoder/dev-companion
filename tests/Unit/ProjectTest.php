@@ -139,6 +139,8 @@ final class ProjectTest extends TestCase
             'via' => Typo3Cli::VIA_DDEV,
             'php' => '8.4',
             'source' => '.ddev/config.local.yaml',
+            'project' => 'site-new',
+            'hostnames' => ['site-new.ddev.site'],
             'entered' => false,
             'hooks' => [],
             'providers' => [],
@@ -150,6 +152,41 @@ final class ProjectTest extends TestCase
         // it said the shell it has is not where these run.
         self::assertStringContainsString('not in the shell you have', $text);
         self::assertStringContainsString('ddev composer', $text);
+    }
+
+    #[Test]
+    public function theDdevProjectNamesTheSiteItsFilesDeclare(): void
+    {
+        // A session that had this answer and nothing else spent four shell
+        // round trips finding the name and the hostname, and one wrong attempt
+        // in between (feedback/2026-08-10-101723). All of it is in the files.
+        //
+        // The rules are DDEV's own, from `ddev config --help` and the comments
+        // its config.yaml carries: --project-name defaults to the last part of
+        // the directory name, --project-tld to ddev.site, an
+        // additional_hostnames entry gets that same tld, and an
+        // additional_fqdns entry is served as written.
+        $root = $this->composerProject();
+        $this->declare($root . '/.ddev/config.yaml', <<<'YAML'
+            type: typo3
+            project_tld: ddev.local
+            additional_hostnames:
+                - editors
+            additional_fqdns:
+                - example.com
+            YAML);
+        Instance::discoverFrom($root);
+
+        $environment = Project::describe()['environment'];
+
+        self::assertSame(basename($root), $environment['project'], 'the directory is the name DDEV falls back to');
+        self::assertSame(
+            [basename($root) . '.ddev.local', 'editors.ddev.local', 'example.com'],
+            $environment['hostnames'],
+        );
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('ddev describe -j', $text, 'nothing says where the running ports come from');
     }
 
     #[Test]
@@ -404,6 +441,8 @@ final class ProjectTest extends TestCase
             'via' => Typo3Cli::VIA_OVERRIDE,
             'php' => null,
             'source' => Typo3Cli::CONSOLE_VARIABLE,
+            'project' => null,
+            'hostnames' => [],
             'entered' => false,
             'hooks' => [],
             'providers' => [],

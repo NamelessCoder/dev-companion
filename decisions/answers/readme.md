@@ -7,6 +7,7 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set it names · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it and by what the answer left of it · 2026-08-09
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs and does not make it legible · 2026-08-08
@@ -74,6 +75,7 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-071]: ans-071-the-environment-answer-names-the-project-and-what-its-files-serve.md
 [D-ANS-068]: ans-068-a-change-answer-carries-the-ref-that-fetches-the-patch-set-it-names.md
 [D-ANS-070]: ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md
 [D-ANS-064]: ans-064-an-issue-answer-holds-what-a-triage-needs-and-does-not-make-it-legible.md

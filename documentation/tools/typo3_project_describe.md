@@ -65,6 +65,18 @@ environment:  # optional
   # Where this was read: the .ddev config file that states the version last, or
   # TYPO3_DEV_COMPANION_CONSOLE.
   source: string
+  # The DDEV project name, which is what every ddev command takes and what the
+  # containers are named after: ddev-<project>-web and ddev-<project>-db. Where
+  # no file states it, DDEV uses the directory name and so does this. Null where
+  # the environment is not DDEV.
+  project: string or null
+  # The hostnames those files declare the site is served under:
+  # <project>.ddev.site, every additional_hostnames entry with the same
+  # top-level domain, and every additional_fqdns entry as written. What the
+  # configuration declares, not what is running — the ports the router binds
+  # and its address on the container network are not in these files, and `ddev
+  # describe -j` is what carries them. Empty where the environment is not DDEV.
+  hostnames: [string]
   # True when this server is already running inside that environment, so its
   # shell is that environment and a declared command needs nothing in front of
   # it.

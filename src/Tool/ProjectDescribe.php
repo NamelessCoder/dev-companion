@@ -58,6 +58,8 @@ final class ProjectDescribe extends ReadOnlyTool
                     'via' => ['type' => 'string', 'enum' => ['ddev', 'override'], 'description' => 'ddev: the repository carries a .ddev/config.yaml. override: nothing in the files says so, and TYPO3_DEV_COMPANION_CONSOLE names a command that reaches this installation somewhere other than the caller\'s own shell.'],
                     'php' => Schema::nullableString('The PHP that environment runs, where its files state it. Null is not "none": a DDEV project that states no php_version gets the default of the installed DDEV, and an environment named by TYPO3_DEV_COMPANION_CONSOLE states its version nowhere this server can read. typo3_server_scope reports the version the console actually answers on.'),
                     'source' => Schema::string('Where this was read: the .ddev config file that states the version last, or TYPO3_DEV_COMPANION_CONSOLE.'),
+                    'project' => Schema::nullableString('The DDEV project name, which is what every ddev command takes and what the containers are named after: ddev-<project>-web and ddev-<project>-db. Where no file states it, DDEV uses the directory name and so does this. Null where the environment is not DDEV.'),
+                    'hostnames' => Schema::listOf(Schema::string(), 'The hostnames those files declare the site is served under: <project>.ddev.site, every additional_hostnames entry with the same top-level domain, and every additional_fqdns entry as written. What the configuration declares, not what is running — the ports the router binds and its address on the container network are not in these files, and `ddev describe -j` is what carries them. Empty where the environment is not DDEV.'),
                     'entered' => ['type' => 'boolean', 'description' => 'True when this server is already running inside that environment, so its shell is that environment and a declared command needs nothing in front of it.'],
                     'hooks' => Schema::listOf(Schema::object([
                         'stage' => Schema::string('The DDEV stage it fires at: post-start, post-import-db, pre-pull and the rest.'),
@@ -70,7 +72,7 @@ final class ProjectDescribe extends ReadOnlyTool
                         'operations' => Schema::listOf(Schema::string(), 'pull, push, or both — which of the two the recipe declares commands for. A recipe with no push commands is one you cannot push upstream with.'),
                     ], ['name', 'source', 'operations']), 'The pull and push recipes below .ddev/providers/ that this repository wrote, which is where its database and files come from. DDEV writes its own recipes into every project and marks them #ddev-generated; those are left out, because they say what DDEV puts everywhere rather than what this project decided.'),
                 ],
-                'required' => ['via', 'php', 'source', 'entered', 'hooks', 'providers'],
+                'required' => ['via', 'php', 'source', 'project', 'hostnames', 'entered', 'hooks', 'providers'],
             ],
             'extensions' => Schema::listOf(Schema::object([
                 'key' => Schema::string(),
@@ -172,6 +174,12 @@ final class ProjectDescribe extends ReadOnlyTool
             $lines[] = $line;
         }
 
+        $site = self::site($project['environment']);
+        if ($site !== '') {
+            $lines[] = '';
+            $lines[] = $site;
+        }
+
         if ($project['patches'] !== []) {
             $lines[] = '';
             $lines[] = 'Patched dependencies — these packages do not behave as their version says, and the next '
@@ -254,7 +262,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * machines. Empty where there is one machine, so the line an ordinary
      * project answers with does not change.
      *
-     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function runtime(?array $environment): string
     {
@@ -312,7 +320,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * is built for — which is the finding `feedback/2026-07-31-193611` reported
      * as a version mismatch that blocked nothing.
      *
-     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function whereTheyRun(?array $environment): string
     {
@@ -344,6 +352,35 @@ final class ProjectDescribe extends ReadOnlyTool
     }
 
     /**
+     * What the environment serves, which is not the same question as where the
+     * commands run and is answered whether the repository declares any.
+     *
+     * A session that had this answer in hand spent four shell round trips
+     * finding the project name and the hostname, and one wrong attempt in
+     * between (`feedback/2026-08-10-101723`). The running half is named rather
+     * than guessed at: bound ports and a container address are not in these
+     * files, and `R-DIS-006` is why nothing here starts anything to find out.
+     *
+     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     */
+    private static function site(?array $environment): string
+    {
+        if ($environment === null || $environment['via'] !== Typo3Cli::VIA_DDEV) {
+            return '';
+        }
+
+        return sprintf(
+            'That project is named %s, so its containers are ddev-%s-web and ddev-%s-db, and its files serve it at '
+                . '%s. What they do not carry is what a browser needs beyond the name: the ports the router binds '
+                . 'and its address on the container network come from "ddev describe -j" and "docker inspect".',
+            (string) $environment['project'],
+            (string) $environment['project'],
+            (string) $environment['project'],
+            implode(', ', $environment['hostnames']),
+        );
+    }
+
+    /**
      * What the environment runs by itself, which the commands above never
      * covered: those are what a caller may run, these run without being asked.
      *
@@ -354,7 +391,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * an answer that names no hook reads as "there is none" whether this looked
      * or not.
      *
-     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      * @return array<int, string>
      */
     private static function lifecycle(?array $environment): array

@@ -67,6 +67,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
+- [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes, and which belong next door · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set it names · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it and by what the answer left of it · 2026-08-09
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs and does not make it legible · 2026-08-08
@@ -135,6 +136,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-071]: answers/ans-071-the-environment-answer-names-the-project-and-what-its-files-serve.md
+[D-ANS-072]: answers/ans-072-a-tool-description-says-which-questions-it-takes-and-which-belong-next-door.md
 [D-ANS-068]: answers/ans-068-a-change-answer-carries-the-ref-that-fetches-the-patch-set-it-names.md
 [D-ANS-070]: answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md
 [D-ANS-064]: answers/ans-064-an-issue-answer-holds-what-a-triage-needs-and-does-not-make-it-legible.md

@@ -1,9 +1,14 @@
 # `typo3_script_lookup`
 
-Find notes for TYPO3 core scripts and commands. They are the core checkout's
-own: a query that reads as a project or third-party extension is answered with
-the boundary instead of with commands that do not exist there. Answers from:
-knowledge.
+Find notes for TYPO3 core scripts and commands: how Build/Scripts/runTests.sh is
+started and what it needs first, what an argument after -- reaches and which
+options one run takes, the commands per subject, and what the pre-commit hook
+does to a commit. They are the core checkout's own: a query that reads as a
+project or third-party extension is answered with the boundary instead of with
+commands that do not exist there. Which suite a change actually needs, and what
+one of them does when it runs — what it provisions, what it passes through,
+which environment variables change it — is typo3_test_run_guide, which filters
+the suites by version. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 

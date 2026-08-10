@@ -74,18 +74,31 @@
       "native css",
       "popover api",
       "popover",
-      "javascript workaround"
+      "javascript workaround",
+      "anchor positioning",
+      "anchor-name",
+      "position-anchor",
+      "browserslist",
+      "chrome",
+      "firefox",
+      "safari",
+      "blink",
+      "gecko",
+      "webkit"
     ],
     "hints": [
-      "TYPO3 backend CSS targets evergreen browsers as they exist on the day of the corresponding TYPO3 LTS release.",
-      "Modern CSS features are acceptable when they fit the active LTS evergreen browser target and the build pipeline accepts them.",
-      "CSS features may be adopted before the LTS release when they are expected to be part of the evergreen browser baseline at LTS release time.",
-      "Early adoption must be intentional, reviewable, and limited to features with a clear path into the LTS browser baseline.",
-      "When CSS changes are backported to older TYPO3 versions, the CSS must fully match the evergreen browser baseline of that target release year.",
-      "Do not backport CSS features that only match a newer release baseline unless the target branch already supports them.",
-      "Avoid compatibility workarounds for obsolete browsers outside the active LTS browser target.",
-      "Prefer native CSS capabilities over JavaScript workarounds when the feature is supported by the LTS target.",
-      "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the target baseline supports it."
+      "TYPO3 backend CSS targets the evergreen browsers as they were current on the day the release it ships in appeared.",
+      "Each release line therefore carries the baseline of its own release day, and a change backported to an older line has to match that line's day rather than today's browsers.",
+      "Modern CSS features are acceptable when they fit that baseline and the build pipeline accepts them.",
+      "CSS features may be adopted before a release when they are expected to be part of the evergreen baseline by the day it appears.",
+      "Early adoption must be intentional, reviewable, and limited to features with a clear path into that baseline.",
+      "A feature is inside the baseline only where every engine ships it — Blink, Gecko and WebKit. Gecko is usually the last of the three, so it is the one that decides.",
+      "Existing core usage of a modern CSS feature is not evidence that the feature is inside the baseline. A call site can have been adopted early, or written against the one engine that implements it and never re-checked.",
+      "Verify a native CSS feature in a Gecko-based browser before building on it. A headless Chrome test run and a Chromium-driven backend both pass on features Gecko does not implement, so neither is evidence of support.",
+      "Build/.browserslistrc is what the CSS build's autoprefixer reads. It decides which prefixes are emitted and never rejects a feature, so it is not a gate on what the CSS may use.",
+      "Avoid compatibility workarounds for obsolete browsers outside the target.",
+      "Prefer native CSS capabilities over JavaScript workarounds when the feature is inside the baseline.",
+      "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the baseline has it."
     ]
   },
   {

@@ -1,7 +1,7 @@
-// What the theme adds to a rendered page: the search, the folds, the copy
-// button and the colouring of a fenced block. Bundled by `assets/build.mjs`
-// and served as one file, so 48 pages share one download instead of carrying
-// it each — `D-DOC-019`.
+// What the theme adds to a rendered page: the colour mode, the folds, the
+// search, the copy button and the colouring of a fenced block. Bundled by
+// `assets/build.mjs` and served as one file, so 48 pages share one download
+// instead of carrying it each — `D-DOC-019`.
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
@@ -13,39 +13,34 @@ import yaml from 'highlight.js/lib/languages/yaml';
 // was supposed to remove.
 var up = document.documentElement.getAttribute('data-up') || '';
 
-// Which of the two the page is drawn in. The colours themselves are the
-// stylesheet's `light-dark()` pairs, so all this writes is the attribute that
-// says which half stands — and the head has already read the stored one, or
-// the page would paint in the other for a frame.
+// Light or dark, as two segments with the chosen one filled — the design
+// system's mode switch, which is the same treatment as an active navigation
+// item because it is one. A reader who has pressed neither follows their
+// machine, and the head has already read the stored choice, or the page would
+// paint in the other mode for a frame.
 (function () {
-    var button = document.getElementById('theme'),
-        root = document.documentElement,
-        // The empty one is the machine's own setting, which is where a reader
-        // who has never pressed this starts and where pressing it twice more
-        // puts them back.
-        order = ['', 'light', 'dark'];
+    var modes = document.getElementById('modes'),
+        root = document.documentElement;
 
-    function next() {
-        return order[(order.indexOf(root.dataset.theme || '') + 1) % order.length] || 'system';
+    var machine = matchMedia('(prefers-color-scheme: dark)');
+
+    function show() {
+        Array.prototype.forEach.call(modes.querySelectorAll('button'), function (button) {
+            button.setAttribute('aria-pressed', root.dataset.theme === button.dataset.mode ? 'true' : 'false');
+        });
+        // What else follows the mode says so itself.
+        document.dispatchEvent(new Event('mode'));
     }
 
-    function say() {
-        button.setAttribute('aria-label', 'Colours: ' + (root.dataset.theme || 'system') + '. Switch to ' + next() + '.');
-        button.title = button.getAttribute('aria-label');
-    }
-
-    button.hidden = false;
-    say();
-    button.addEventListener('click', function () {
-        var chosen = next();
-        if (chosen === 'system') {
-            delete root.dataset.theme;
-            localStorage.removeItem('theme');
-        } else {
-            root.dataset.theme = chosen;
-            localStorage.setItem('theme', chosen);
-        }
-        say();
+    modes.hidden = false;
+    show();
+    machine.addEventListener('change', show);
+    modes.addEventListener('click', function (event) {
+        var button = event.target.closest('button');
+        if (!button) { return; }
+        root.dataset.theme = button.dataset.mode;
+        localStorage.setItem('theme', button.dataset.mode);
+        show();
     });
 })();
 
@@ -224,15 +219,94 @@ var up = document.documentElement.getAttribute('data-up') || '';
     });
 })();
 
+// The drawings: inlined, in the mode being read, and openable.
+//
+// Inlined rather than linked, because an `<img>` is a document of its own and
+// cannot see this page's `@font-face` rules — the type inside it would be
+// whatever sans the reader's machine happens to have, which is not the one the
+// columns were placed against. The markup keeps the `<img>` until this runs,
+// so a browser without a script still gets the drawing.
+//
+// Each ships twice, the dark file a straight token swap of the light one, and
+// which one is right depends on a mode this page can hold against the machine
+// — more than `<picture>` can be told, since a media query reads the machine
+// and nothing else.
+(function () {
+    var dialog = document.getElementById('zoom'),
+        body = dialog.querySelector('.zoom__body'),
+        said = document.getElementById('zoom-said'),
+        root = document.documentElement,
+        machine = matchMedia('(prefers-color-scheme: dark)'),
+        drawings = [];
+
+    function dark() {
+        return root.dataset.theme ? root.dataset.theme === 'dark' : machine.matches;
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('main img[src*="images/"]'), function (image) {
+        var drawing = {
+            base: image.getAttribute('src').replace(/(-dark)?\.svg$/, ''),
+            said: image.alt,
+            shown: image,
+        };
+
+        // A button rather than a listener on the drawing: nothing here is
+        // reachable by pointer only, and this is what carries the focus ring.
+        var open = document.createElement('button');
+        open.type = 'button';
+        open.className = 'zoom';
+        open.setAttribute('aria-label', 'Enlarge the drawing');
+        image.parentNode.insertBefore(open, image);
+        open.appendChild(image);
+
+        open.addEventListener('click', function () {
+            body.textContent = '';
+            body.appendChild(drawing.shown.cloneNode(true));
+            said.textContent = drawing.said;
+            dialog.showModal();
+        });
+
+        drawings.push(drawing);
+    });
+
+    function draw() {
+        drawings.forEach(function (drawing) {
+            fetch(drawing.base + (dark() ? '-dark' : '') + '.svg').then(function (answer) {
+                return answer.ok ? answer.text() : null;
+            }).then(function (file) {
+                if (!file) { return; }
+                var holder = document.createElement('div');
+                holder.innerHTML = file;
+                var svg = holder.querySelector('svg');
+                if (!svg) { return; }
+                svg.setAttribute('role', 'img');
+                svg.setAttribute('aria-label', drawing.said);
+                drawing.shown.parentNode.replaceChild(svg, drawing.shown);
+                drawing.shown = svg;
+            }).catch(function () {});
+        });
+    }
+
+    draw();
+    document.addEventListener('mode', draw);
+
+    dialog.querySelector('.zoom__close').addEventListener('click', function () { dialog.close(); });
+    // The panel does not fill its own backdrop, so a click beside it arrives on
+    // the dialog itself.
+    dialog.addEventListener('click', function (event) {
+        if (event.target === dialog) { dialog.close(); }
+    });
+})();
+
 // The renderer names a fenced block's language and colours nothing, and a
 // recorded tool answer is 200 lines of JSON in one grey. highlight.js does the
 // colouring, with the three languages this corpus fences in registered and
 // nothing else: json, yaml and bash are 137, 50 and 20 of its blocks, and the
 // full build carries forty more languages nobody here writes.
 //
-// The palette stays this theme's. A stylesheet of its own would be a second
-// set of colours to keep against the first, so `site.css` maps its classes onto
-// the variables the rest of the page already uses.
+// The palette stays the design system's. Its three syntax tokens are what
+// `site.css` maps these classes onto, rather than a fourth colour nobody
+// declared.
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('yaml', yaml);
@@ -245,38 +319,50 @@ Array.prototype.forEach.call(document.querySelectorAll('main pre > code'), funct
     }
 });
 
-// Half of what this documentation says is a command to run, and reading one out
-// of a page is where a flag gets dropped. The button is written here rather
-// than into the markup, because a browser without the clipboard would otherwise
-// carry one that does nothing.
+// A code block is machine output, and the design system gives it a head that
+// says what it is and carries the button that copies it. Half of what this
+// documentation says is a command to run, and reading one out of a page is
+// where a flag gets dropped.
 (function () {
-    if (!navigator.clipboard) {
-        return;
-    }
+    var template = document.getElementById('head');
 
     Array.prototype.forEach.call(document.querySelectorAll('main pre'), function (block) {
-        var snippet = document.createElement('div'),
-            copy = document.createElement('button'),
+        var code = block.querySelector('code'),
+            named = (code && code.className.match(/language-([\w-]+)/)),
+            language = named ? named[1] : '',
             said = null;
+
+        // A head with neither a language nor a button is an empty bar.
+        if (!language && !navigator.clipboard) { return; }
+
+        var snippet = document.createElement('div'),
+            head = template.content.cloneNode(true),
+            copy = head.querySelector('.copy'),
+            label = copy.querySelector('span');
+
+        head.querySelector('.lang').textContent = language;
+        // A browser without the clipboard would otherwise carry a button that
+        // does nothing.
+        if (!navigator.clipboard) {
+            copy.remove();
+        }
 
         snippet.className = 'snippet';
         block.parentNode.insertBefore(snippet, block);
+        snippet.appendChild(head);
         snippet.appendChild(block);
 
-        copy.type = 'button';
-        copy.className = 'copy';
-        copy.textContent = 'Copy';
+        if (!navigator.clipboard) { return; }
         copy.addEventListener('click', function () {
             navigator.clipboard.writeText(block.textContent.replace(/\n+$/, '')).then(function () {
                 clearTimeout(said);
-                copy.textContent = 'Copied';
                 copy.className = 'copy done';
+                label.textContent = 'copied';
                 said = setTimeout(function () {
-                    copy.textContent = 'Copy';
                     copy.className = 'copy';
+                    label.textContent = 'copy';
                 }, 1600);
             });
         });
-        snippet.appendChild(copy);
     });
 })();

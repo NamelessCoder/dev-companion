@@ -541,6 +541,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
+- [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
 - [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked like the fields above it · 2026-08-04
@@ -564,6 +565,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-020]: documentation/doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-021]: documentation/doc-021-the-site-is-searched-in-a-dialog-opened-with-ctrl-k.md
 [D-DOC-022]: documentation/doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
+[D-DOC-023]: documentation/doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md
 [D-DOC-017]: documentation/doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
 [D-DOC-016]: documentation/doc-016-an-answer-that-reads-no-installation-is-derived-and-checked.md

@@ -106,6 +106,12 @@ rendered pages — which is where they have to be written, because the renderer
 copies an image a page names and nothing else. Each step is printed as the
 command a person could have typed, and a failure quotes it in full.
 
+One thing the local preview cannot show is the type. The faces are
+`font-display: optional`, so a browser uses one only where it is already cached
+— which is what stops the wordmark being re-laid out on every navigation, and
+what makes `php -S` render the whole site in the fallback, since it serves no
+cache header. What is deployed does.
+
 The site is read over a server rather than by opening `.site/html/index.html`:
 the search fetches its index as a file beside the pages, and a browser refuses
 that fetch over `file://`. Everything else on the page survives it, so a site
@@ -137,21 +143,38 @@ The stylesheet and the script are `theme/assets/site.css` and
 page links. Inlined into each page they had grown to a third of everything the
 site serves — `D-DOC-019`, which also has why the name carries a hash.
 
+**What the page looks like is not this repository's to invent.** It is built to
+the TYPO3 Support App design system, whose tokens are vendored unchanged below
+`theme/assets/tokens/` and whose icons and signet are copied into
+`theme/assets/icons/` — no colour, radius or duration is written out in
+`site.css`, and no icon here is drawn. The two families the system allows are
+built out of their `@fontsource` packages by `build.mjs`, so the faces are
+published beside the pages rather than fetched from a font host. What that
+adopts, and the three places this site does something the system does not
+describe, is `D-DOC-023`.
+
+A drawing on the page is 800px of a 1200px file, so it also carries the button
+that opens it at the size it was drawn at. The panel scrolls rather than fitting
+the drawing to itself, since fitting it is what the page already did — which is
+what makes it readable on a phone at all. It is the same `<dialog>` the search
+uses, for the same reason: `showModal()` carries the focus, the backdrop and the
+escape key.
+
 Three things the renderer does not do come from that script. It colours a fenced
 block in `json`, `yaml` and `bash` — the three this corpus writes — using
-highlight.js with those languages registered and no other, on this theme's own
-palette rather than a stylesheet of its own. It writes the button that copies a
-block, since half of what is written here is a command to run. And it carries
-the button that puts the page in light or in dark, or back to what the machine
-says. Both that and the copy button come from the script rather than the markup,
-so a browser without a clipboard carries no button that does nothing, and one
-without the script keeps every block as it was written.
+highlight.js with those languages registered and no other, mapped onto the three
+syntax tokens the system declares. It writes the head a code block carries, with
+what the block is and the button that copies it, since half of what is written
+here is a command to run. And it carries the mode switch. All of it comes from
+the script rather than the markup, so a browser without a clipboard carries no
+button that does nothing, and one without the script keeps every block as it was
+written.
 
-The colours are one set of `light-dark()` pairs and `color-scheme` is what picks
-between them — the same declaration a browser needs to stop drawing the
-scrollbars and the search field light on a dark page. So what the button writes
+The colours are the system's `light-dark()` pairs and `color-scheme` is what
+picks between them — the same declaration a browser needs to stop drawing the
+scrollbars and the search field light on a dark page. So what the switch writes
 is one attribute on `<html>`, and the head reads the stored one before the page
-paints, since a deferred script would show the other theme for a frame.
+paints, since a deferred script would show the other mode for a frame.
 `.github/workflows/documentation.yml` runs all of it on every push to `main` and
 deploys the result to
 [GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
@@ -168,6 +191,25 @@ than a megabyte and a prose match above the evidence.
 What the reader sees is a dialog, opened with the button in the bar or with
 Ctrl-K, and the arrows and the return key move through the hits and open one —
 `D-DOC-021`.
+
+The drawings ship twice, as the system asks: `name.svg` and `name-dark.svg`, the
+second a straight token swap of the first. Which one a page shows is the
+script's, not `<picture>`'s — a `media` query reads the machine, and this page
+can be held in the other mode against it. The renderer copies an image a page
+names and nothing else, so `Site::publishDrawings()` puts the twin nobody named
+beside the one that was.
+
+**A drawing is inlined rather than linked**, and that is what makes its type the
+page's. An `<img>` is a document of its own: it never sees the `@font-face`
+rules here, so what a reader got was whatever sans their machine had — a
+different width per machine, under columns placed against yet another one. The
+script replaces the `<img>` the renderer wrote, and a browser without a script
+keeps it.
+
+The second half of that is the size. The system's type floor is 13px **at drawn
+size**, so a drawing has to be drawn at the width it is shown at — 800, which is
+what this column gives it. `feedback-loop.svg` is the first drawn that way; the
+others are still 1200 wide and shown at 0.67.
 
 ## Tests
 

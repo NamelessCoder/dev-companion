@@ -57,6 +57,8 @@ src/Upkeep/Site.php  # the readme and documentation/ as the source a generator p
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there; published as a site, below the readme
 build/guides/      # the renderer that publishes the readme and documentation/, and the theme they are published in; its composer.json and package.json each say why they are separate
+build/guides/theme/assets/tokens/  # the design system's own token files, vendored unchanged and never edited here — D-DOC-023
+build/guides/theme/assets/icons/   # its icons and signet, copied rather than drawn; inlined by the layout so each follows the text colour
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

@@ -9,7 +9,7 @@ The rules stay in [AGENTS.md](../../AGENTS.md); what a change assumed is in
 [decisions/discovery/](../../decisions/discovery/readme.md). This is the
 procedure.
 
-![An installation lookup uses a TYPO3 console command where one exists, boots the runtime where none does, and falls back to package files with the reason and limitations stated.](../images/installation-fallback.svg)
+![One square per entry the registry could return: the console path and the booted runtime return all of them, while the package-file fallback returns every declared entry and none of the dynamically registered ones, and the answer states that.](../images/installation-fallback.svg)
 
 ## The order
 

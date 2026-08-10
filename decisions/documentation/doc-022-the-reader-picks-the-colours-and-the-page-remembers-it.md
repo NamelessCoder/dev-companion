@@ -60,3 +60,15 @@ desktop who wanted the page light had to change the desktop.
   with one half taken from the other palette.
 - The choice does not follow to the next page, or a reader who chose nothing
   stops following their machine.
+
+## Since then
+
+The three-state button is gone. The site is built to the TYPO3 Support App
+design system, whose mode switch is two segments with the active one filled by
+the accent, and a specimen is copied rather than varied —
+[`D-DOC-023`](doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md).
+What that costs is the way back: a reader who has pressed a segment follows
+their own choice from then on, and clearing it means clearing the site's
+storage. Everything else this entry settled stands, including the two lines in
+the head — the switch writes the same attribute, and the system reads it with
+`color-scheme` the same way.

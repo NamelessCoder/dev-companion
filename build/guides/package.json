@@ -6,6 +6,8 @@
         "build": "node theme/assets/build.mjs"
     },
     "devDependencies": {
+        "@fontsource/source-code-pro": "^5.3.0",
+        "@fontsource/source-sans-3": "^5.3.0",
         "esbuild": "^0.25.0",
         "highlight.js": "^11.11.0"
     },

@@ -72,6 +72,12 @@ final class Site
     /** What the layout fetches to search over, from the site root. */
     public const SEARCH = 'search.json';
 
+    /** Where the drawings sit, in the checkout and in the published site alike. */
+    public const DRAWINGS = 'images';
+
+    /** What the dark half of a drawing is called, beside the light one. */
+    public const DARK = '-dark.svg';
+
     /**
      * The two steps of a render that are not this process, as the commands a
      * person could have typed.
@@ -171,6 +177,37 @@ final class Site
         foreach (Finder::create()->files()->in($built)->notName(self::MANIFEST)->sortByName() as $file) {
             copy($file->getPathname(), $target . '/' . $file->getFilename());
             $written[] = $file->getFilename();
+        }
+
+        return $written;
+    }
+
+    /**
+     * The dark twin of every drawing the render published.
+     *
+     * A drawing ships as two files — the dark one a straight token swap of the
+     * light one — and the renderer copies an image a page names and nothing
+     * else. No page names the twin: the script asks for it when the reader is
+     * in dark, so it has to be put beside the one that was named.
+     *
+     * @return list<string> the names written
+     */
+    public static function publishDrawings(string $site): array
+    {
+        $target = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::DRAWINGS;
+        if (!is_dir($target)) {
+            return [];
+        }
+
+        $written = [];
+        foreach (Finder::create()->files()->in($target)->name('*.svg')->notName('*' . self::DARK)->sortByName() as $drawing) {
+            $twin = Paths::root() . '/' . self::SOURCE . '/' . self::DRAWINGS . '/'
+                . str_replace('.svg', self::DARK, $drawing->getFilename());
+            if (!is_file($twin)) {
+                continue;
+            }
+            copy($twin, $target . '/' . basename($twin));
+            $written[] = basename($twin);
         }
 
         return $written;

@@ -1,258 +1,553 @@
-:root {
-    /* The scrollbars, the search field and the caret are the browser's to
-       draw, and it draws them light until it is told which of the two this
-       page is. It is also what `light-dark()` reads, so this line is what
-       picks the second colour of every pair below. */
-    color-scheme: light dark;
-    /* Matte throughout: nothing is pure white or pure black, and no hue is
-       taken further than it has to be to be told apart from its neighbour. */
-    --ink: light-dark(#1c2422, #dbe2df);
-    --dim: light-dark(#5f6b67, #8e9995);
-    --line: light-dark(#dde3e0, #2d3532);
-    --bg: light-dark(#fbfcfb, #171a19);
-    --soft: light-dark(#f0f3f1, #1e2321);
-    /* Orange is the mark: the page being read, the word that was searched for,
-       the block that was copied. Burnt rather than the brand's own, because a
-       colour that carries a background under it has to be readable on it —
-       4.8:1 on the light surface, 7.1:1 on the dark. A link is not that mark:
-       blue keeps the thing a reader clicks apart from the thing a reader is
-       being shown. */
-    --link: light-dark(#1c6296, #86b4dc);
-    --mark: light-dark(#9e5a18, #e0a06a);
-    /* A fenced block needs its four apart from each other, so the two above
-       are joined by mint and violet rather than by two more of themselves. */
-    --key: light-dark(#1c6296, #86b4dc);
-    --str: light-dark(#2c7561, #7fc4ac);
-    --num: light-dark(#7a5aa8, #b5a3dd);
-    --atom: light-dark(#9e5a18, #e0a06a);
-}
-/* What the reader chose, if they chose. Held by one attribute, because
-   `light-dark()` reads the scheme rather than a second set of colours: the
-   palette above is stated once and this says which half of it stands. */
-:root[data-theme="light"] { color-scheme: only light; }
-:root[data-theme="dark"] { color-scheme: only dark; }
+/* The published documentation, built to the TYPO3 Support App design system.
+
+   The tokens are vendored below `tokens/` and imported here; no value in this
+   file is a colour, a radius or a duration written out. What the system says
+   about each surface is in its build rules, and the four that shape this page
+   are: one accent, no shadows, mono for anything the machine names, and hover
+   changes colour and border and never position or size. */
+
+@import "tokens/colors.css";
+@import "tokens/fonts.css";
+@import "tokens/typography.css";
+@import "tokens/spacing.css";
+@import "tokens/radius.css";
+@import "tokens/motion.css";
+@import "tokens/controls.css";
+
 * { box-sizing: border-box; }
+
 body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    background: var(--surface-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-body);
+    line-height: var(--leading-body);
 }
-a { color: var(--link); }
 
-/* The bar across the top: what the site is, and the way into it. Both stay
-   where they are while a page scrolls, which is the whole reason it is a
-   bar and not the first thing on the page. */
-header.top {
-    position: sticky; top: 0; z-index: 2;
-    background: var(--bg); border-bottom: 1px solid var(--line);
+/* One ring, everywhere, and the only box-shadow the system allows. */
+:focus-visible {
+    outline: var(--border-emphasis) solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--accent-ring);
+    border-radius: var(--radius-control);
 }
-/* The same width and the same inset as the page below it, so the name of
-   the site stands over the sidebar and the search over the text. */
-header.top .bar {
-    display: flex; align-items: center; gap: 1rem;
-    height: 3.5rem; max-width: 1180px; margin: 0 auto; padding: 0 .9rem;
-}
-header.top .brand {
-    font-weight: 600; font-size: 15.5px; letter-spacing: -.01em;
-    color: var(--ink); text-decoration: none; white-space: nowrap;
-}
-header.top .brand:hover { color: var(--mark); }
-/* What opens the search reads as the field it replaced, because that is what
-   somebody looks for. It says its own shortcut, so the key is discoverable to
-   a reader who never learnt it elsewhere. */
-header.top .find {
-    display: flex; align-items: center; gap: .8rem;
-    margin-left: auto; width: min(20rem, 42vw); padding: .38rem .45rem .38rem .6rem;
-    font: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
-    color: var(--dim); background: var(--soft);
-    border: 1px solid var(--line); border-radius: 6px;
-}
-header.top .find span { flex: 1 1 auto; }
-/* Drawn rather than fetched: one path is smaller than the request for it. */
-.icon {
-    flex: 0 0 auto; width: 1em; height: 1em;
-    fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;
-}
-/* Light, dark, or whatever the machine says — one button through the three,
-   showing the one that is on. */
-#theme {
-    display: flex; align-items: center; padding: .4rem; cursor: pointer;
-    font-size: 17px; color: var(--dim); background: none;
-    border: 1px solid transparent; border-radius: 6px;
-}
-#theme:hover { color: var(--ink); border-color: var(--line); }
-#theme .icon { display: none; }
-html:not([data-theme]) #theme .auto,
-html[data-theme="light"] #theme .sun,
-html[data-theme="dark"] #theme .moon { display: block; }
-header.top .find:hover { color: var(--ink); border-color: var(--dim); }
-header.top .find:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--text-link-hover); text-decoration: underline; }
+
 kbd {
-    font: inherit; font-size: 11px; line-height: 1.5; white-space: nowrap;
-    color: var(--dim); background: var(--bg);
-    border: 1px solid var(--line); border-radius: 4px; padding: 0 .35em;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-label);
+    color: var(--text-muted);
+    background: var(--surface-raised);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-control);
+    padding: 1px .4em;
 }
 
-/* The search itself. A panel near the top of the window rather than in the
-   middle of it: the list grows downward, and a box that grows from its centre
-   moves the first hit while somebody is typing. */
-dialog#search {
-    width: min(40rem, calc(100vw - 1.6rem));
-    max-height: min(32rem, calc(100vh - 7rem));
-    margin: 4.5rem auto auto; padding: 0; overflow: hidden;
-    color: var(--ink); background: var(--bg);
-    border: 1px solid var(--line); border-radius: 10px;
-    box-shadow: 0 1rem 2.5rem rgb(0 0 0 / .16);
+/* Icons follow the text colour they sit in, which is why every one of them is
+   inlined rather than linked. 16px is the floor and the sizes go 16, 20, 24.
+   They are addressed by where they stand, because what `source()` inlines is
+   the design system's file unchanged — down to carrying no class. */
+.bar svg, dialog#search .field svg, .copy svg, nav.side summary svg {
+    display: block;
+    flex: none;
+    width: 16px;
+    height: 16px;
 }
-dialog#search[open] { display: flex; flex-direction: column; }
-dialog#search::backdrop { background: rgb(18 24 22 / .38); }
-dialog#search[open] { animation: lift .12s ease-out; }
-@keyframes lift { from { opacity: 0; transform: translateY(-.5rem); } }
-@media (prefers-reduced-motion: reduce) { dialog#search[open] { animation: none; } }
-dialog#search .field {
-    flex: 0 0 auto; display: flex; align-items: center; gap: .7rem;
-    padding: 0 1.1rem; color: var(--dim); border-bottom: 1px solid var(--line);
+
+/* --------------------------------------------------------------- header -- */
+
+/* The one translucent, blurred, sticky thing in the system. It never wraps:
+   it sheds, widest first, because a header on two lines breaks the offset
+   everything below is measured against. */
+header.top {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: color-mix(in srgb, var(--surface-canvas) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: var(--border-hairline) solid var(--border-subtle);
 }
-dialog#search .icon { width: 1.05rem; height: 1.05rem; }
-dialog#search #q {
-    flex: 1 1 auto; min-width: 0; padding: .95rem 0;
-    font: inherit; font-size: 16px; color: var(--ink);
-    background: none; border: 0;
+header.top .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    height: var(--height-header);
+    max-width: var(--width-content);
+    margin: 0 auto;
+    padding: 0 var(--space-4);
 }
-dialog#search #q:focus { outline: 0; }
-dialog#search ul { flex: 1 1 auto; overflow-y: auto; list-style: none; margin: 0; padding: .4rem; }
-dialog#search a.page {
-    display: block; padding: .45rem .7rem; border-radius: 6px;
-    color: var(--ink); text-decoration: none; overflow-wrap: anywhere;
+
+/* Signet, wordmark, one orange pipe — the pipe is separator and caret at once
+   and the only colour in the mark. */
+/* Neither half shrinks: on the narrowest screen the signet was squeezed out of
+   the row rather than shed with the product word, and the system's floor for
+   it is 16px. */
+.lockup { display: inline-flex; flex: none; align-items: center; gap: 10px; text-decoration: none; }
+.lockup .signet { flex: none; }
+.lockup:hover { text-decoration: none; }
+/* The signet is redrawn per optical size rather than scaled, and this is the
+   one drawn for 20–31px. Its frame and its quiet line are the page's ink; the
+   marker and the answer line carry their own orange. */
+.bar .lockup svg { width: 20px; height: 20px; }
+.lockup .ink { stroke: var(--text-primary); }
+.lockup .inkf { fill: var(--text-primary); }
+.wordmark {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 7px;
+    font-size: var(--font-size-ui);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-heading);
+    color: var(--text-primary);
+    white-space: nowrap;
 }
-dialog#search a.page small {
-    display: block; color: var(--dim); font-size: 12px; line-height: 1.45; margin-top: .1rem;
+.wordmark__pipe { display: inline-block; width: 2px; background: var(--accent); }
+.wordmark__product { font-weight: var(--weight-light); color: var(--text-secondary); }
+
+/* A field is sunken, not outlined on the canvas, and the accent appears on
+   focus alone. This one opens the dialog rather than taking the typing, so it
+   carries the shortcut that does the same. */
+.find {
+    display: flex;
+    align-items: center;
+    gap: var(--control-gap);
+    margin-left: auto;
+    width: min(22rem, 42vw);
+    padding: 7px 11px;
+    font-family: inherit;
+    font-size: var(--control-font-size);
+    text-align: left;
+    cursor: pointer;
+    color: var(--text-muted);
+    background: var(--surface-sunken);
+    border: var(--border-hairline) solid var(--border-strong);
+    border-radius: var(--radius-control);
+    transition: border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
 }
-dialog#search a.page.chosen { background: var(--soft); box-shadow: inset 2px 0 0 var(--mark); }
-dialog#search mark { background: none; color: var(--mark); font-weight: 600; }
-dialog#search #miss, dialog#search #rest {
-    margin: 0; padding: .9rem 1.1rem; color: var(--dim); font-size: 13px;
+.find span { flex: 1 1 auto; }
+.find:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+
+/* Two segments, the active one filled with the accent — the same treatment as
+   an active navigation item, because it is one. */
+.modes {
+    display: flex;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--tab-font-size);
+    padding: 2px;
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-control);
 }
-dialog#search footer {
-    display: flex; align-items: center; gap: .35rem;
-    padding: .5rem 1.1rem; color: var(--dim); font-size: 11.5px;
-    background: var(--soft); border-top: 1px solid var(--line);
+.modes button {
+    font: inherit;
+    padding: 3px 9px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    background: none;
+    border: 0;
+    border-radius: 2px;
+    transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
 }
-dialog#search footer kbd { background: var(--bg); }
+.modes button:hover { color: var(--text-primary); }
+.modes button[aria-pressed="true"] { background: var(--accent); color: var(--text-on-accent); }
+
 #menu {
-    display: none; font: inherit; font-size: 20px; line-height: 1;
-    padding: .2rem .5rem; cursor: pointer;
-    color: var(--ink); background: none; border: 0;
+    display: none;
+    padding: var(--control-pad-y-sm);
+    width: var(--control-icon-box);
+    height: var(--control-icon-box);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    background: none;
+    border: 0;
+}
+#menu:hover { color: var(--text-primary); }
+
+/* ----------------------------------------------------------------- page -- */
+
+.wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    max-width: var(--width-content);
+    margin: 0 auto;
+    padding: 0 var(--space-4);
 }
 
-.wrap { display: flex; align-items: flex-start; max-width: 1180px; margin: 0 auto; }
+/* The tool rail: mono, because every entry in it is a page named after
+   something the machine names. */
 nav.side {
-    flex: 0 0 16.5rem; position: sticky; top: 3.5rem; align-self: flex-start;
-    max-height: calc(100vh - 3.5rem); overflow-y: auto;
-    padding: 1.4rem .9rem 3rem; border-right: 1px solid var(--line); font-size: 14px;
+    flex: 0 0 var(--width-sidebar);
+    position: sticky;
+    top: var(--height-header);
+    align-self: flex-start;
+    max-height: calc(100vh - var(--height-header));
+    overflow-y: auto;
+    padding: var(--space-6) 0 var(--space-12);
+    font-family: var(--font-mono);
+    font-size: var(--nav-font-size);
 }
-nav.side ul { list-style: none; margin: 0; padding: 0; }
-nav.side li { margin: 0; }
+nav.side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
 nav.side a.page {
-    display: block; padding: .25rem .55rem; border-radius: 4px;
-    color: var(--ink); text-decoration: none; overflow-wrap: anywhere;
+    display: block;
+    padding: 5px 9px;
+    border-radius: var(--radius-control);
+    color: var(--text-secondary);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
 }
-nav.side a.page:hover { background: var(--soft); }
-nav.side a.page.current {
-    background: var(--soft); color: var(--mark); font-weight: 600;
-    box-shadow: inset 2px 0 0 var(--mark);
-}
-/* A subject is folded shut unless the page being read is in it. The tool
+nav.side a.page:hover { color: var(--text-primary); text-decoration: none; }
+/* Active is a filled block, not a tint. */
+nav.side a.page.current { background: var(--accent); color: var(--text-on-accent); }
+
+/* A subject is folded shut unless the page being read is in it: the tool
    reference alone is 26 entries, and open they are most of the list. */
-nav.side details.group { margin-top: .2rem; }
+nav.side details.group { margin-top: var(--space-2); }
 nav.side details.group > summary {
-    list-style: none; cursor: pointer; user-select: none;
-    display: flex; align-items: center; gap: .4rem;
-    padding: .35rem .55rem; border-radius: 4px;
-    font-size: 12.5px; font-weight: 600; letter-spacing: .02em; color: var(--dim);
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 5px 9px;
+    font-size: var(--font-size-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
 }
 nav.side details.group > summary::-webkit-details-marker { display: none; }
-nav.side details.group > summary::before {
-    content: ''; flex: 0 0 auto;
-    border: 4px solid transparent; border-left-color: currentColor;
-    transform: translateX(1px);
+nav.side details.group > summary:hover { color: var(--text-secondary); }
+nav.side details.group > summary svg {
+    transform: rotate(-90deg);
+    transition: transform var(--duration-fast) var(--ease-out);
 }
-nav.side details.group[open] > summary::before {
-    border-left-color: transparent; border-top-color: currentColor;
-    transform: translateY(2px);
-}
-nav.side details.group > summary:hover { background: var(--soft); color: var(--ink); }
-nav.side details.group > ul { margin: .1rem 0 .5rem .55rem; border-left: 1px solid var(--line); }
-nav.side details.group > ul a.page { border-radius: 0 4px 4px 0; }
-nav.side ul.loose { margin-bottom: .9rem; }
-main { flex: 1 1 auto; min-width: 0; padding: 2.4rem 2.4rem 6rem; }
-main > .section > h1:first-child { margin-top: 0; }
-h1, h2, h3, h4 { line-height: 1.25; margin: 2.2rem 0 .8rem; }
-h1 { font-size: 1.9rem; letter-spacing: -.01em; }
-h2 { font-size: 1.35rem; padding-top: .6rem; border-top: 1px solid var(--line); }
-h3 { font-size: 1.1rem; }
-p, li { max-width: 44rem; }
-code {
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-    font-size: .87em; background: var(--soft); padding: .1em .35em; border-radius: 3px;
-}
-pre {
-    background: var(--soft); border: 1px solid var(--line); border-radius: 4px;
-    padding: .9rem 1rem; overflow-x: auto;
-}
-pre code { background: none; padding: 0; font-size: .85em; line-height: 1.5; }
-/* highlight.js writes the classes and this says what they look like, so the
-   colouring is on the same palette as the rest of the page. Its own themes
-   carry a background and a foreground of their own, which would be a second
-   set of colours to keep against the first.
+nav.side details.group[open] > summary svg { transform: none; }
+nav.side details.group > ul { margin: var(--space-1) 0 var(--space-4) var(--space-2); }
+nav.side ul.loose { margin-bottom: var(--space-4); }
 
-   Restrained on purpose: what a reader picks out of a recorded answer is the
-   key and the value, not eight colours. */
+main {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--space-10) 0 var(--space-19);
+    color: var(--text-secondary);
+}
+main > .section > h1:first-child { margin-top: 0; }
+
+h1, h2, h3, h4 {
+    color: var(--text-primary);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    margin: var(--space-10) 0 var(--space-4);
+}
+h1 { font-size: var(--font-size-h1); }
+h2 {
+    font-size: var(--font-size-h2);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline) solid var(--border-subtle);
+}
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-ui); }
+p, li { max-width: var(--measure-prose); }
+/* A drawing is not prose and the measure is not its. The renderer wraps a
+   standing image in a paragraph, which held a 1200px drawing to 66ch — 556px,
+   or 0.46 of the size it was drawn at, so its 13px floor arrived as 6px. Both
+   states are named: the `<img>` the renderer wrote, and what the script puts
+   in its place. */
+main p:has(img), main p:has(button.zoom) { max-width: none; }
+main ul, main ol { padding-left: var(--space-5); }
+
+/* Mono is semantic: an inline span is a thing the machine reads, writes or
+   names, so it is set in the machine's font at every size — and never given a
+   fill, which would make a sentence about six tools read as six buttons. */
+code {
+    font-family: var(--font-mono);
+    font-size: 0.94em;
+    color: var(--text-primary);
+}
+
+/* -------------------------------------------------------------- code, § -- */
+
+/* A code block is machine output: sunken, and a control-scale object rather
+   than a container, so it takes the control radius. The head carries what the
+   block is and the button that copies it. */
+.snippet {
+    border: var(--border-hairline) solid var(--border-subtle);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-control);
+    overflow: hidden;
+    margin: var(--space-5) 0;
+}
+.snippet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--control-gap);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--border-hairline) solid var(--border-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+.copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+    color: var(--text-muted);
+    background: none;
+    border: 0;
+    padding: 0;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+.copy:hover { color: var(--text-primary); }
+/* The check is the second icon in the button and stands in for the first once
+   the block has been copied — a glyph rather than a word changing colour. */
+.copy svg + svg, .copy.done svg:first-of-type { display: none; }
+.copy.done svg + svg { display: block; }
+.copy.done { color: var(--status-ok); }
+
+pre {
+    margin: 0;
+    padding: var(--space-4);
+    overflow-x: auto;
+}
+pre code {
+    font-size: var(--font-size-code);
+    line-height: var(--leading-code);
+    color: var(--text-secondary);
+}
+
+/* The system names three syntax colours, and this maps highlight.js onto
+   exactly those three: anything else would be a fourth colour nobody declared.
+   What a reader picks out of a recorded answer is the key and the value. */
 .hljs { background: none; color: inherit; }
-.hljs-comment, .hljs-quote { color: var(--dim); font-style: italic; }
-.hljs-attr, .hljs-attribute, .hljs-title, .hljs-section { color: var(--key); }
-.hljs-string, .hljs-symbol, .hljs-bullet, .hljs-meta { color: var(--str); }
-.hljs-number { color: var(--num); }
-.hljs-variable, .hljs-template-variable, .hljs-subst { color: var(--num); }
-.hljs-literal, .hljs-keyword, .hljs-built_in, .hljs-type, .hljs-selector-tag { color: var(--atom); }
-/* The wrapper is written by the script, so a reader without it keeps the
-   block and gets no button that cannot copy anything. */
-.snippet { position: relative; }
-.snippet button.copy {
-    position: absolute; top: .45rem; right: .45rem;
-    font: inherit; font-size: 12px; line-height: 1; cursor: pointer;
-    color: var(--dim); background: var(--bg);
-    border: 1px solid var(--line); border-radius: 3px; padding: .3rem .5rem;
-    opacity: 0; transition: opacity .12s;
+.hljs-comment, .hljs-quote { color: var(--syntax-comment); font-style: italic; }
+.hljs-attr, .hljs-attribute, .hljs-title, .hljs-section, .hljs-keyword, .hljs-built_in, .hljs-selector-tag { color: var(--syntax-key); }
+.hljs-string, .hljs-symbol, .hljs-bullet, .hljs-meta { color: var(--syntax-string); }
+.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-subst, .hljs-type { color: var(--text-primary); }
+
+/* ------------------------------------------------------------- the rest -- */
+
+table {
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    font-size: var(--row-font-medium);
+    margin: var(--space-5) 0;
 }
-.snippet:hover button.copy, .snippet button.copy:focus { opacity: 1; }
-.snippet button.copy.done { opacity: 1; color: var(--mark); border-color: var(--mark); }
-/* Nothing hovers on a touch screen, and an invisible button is no button. */
-@media (hover: none) { .snippet button.copy { opacity: 1; } }
-table { border-collapse: collapse; display: block; overflow-x: auto; max-width: 100%; }
-th, td { border: 1px solid var(--line); padding: .4rem .7rem; text-align: left; vertical-align: top; }
-th { background: var(--soft); }
+th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--table-head-size);
+    letter-spacing: var(--table-head-tracking);
+    text-transform: uppercase;
+    font-weight: var(--weight-regular);
+    color: var(--text-muted);
+    padding: 0 var(--space-3) var(--row-pad-medium) 0;
+    border-bottom: var(--border-hairline) solid var(--border-strong);
+}
+td {
+    padding: var(--row-pad-medium) var(--space-3) var(--row-pad-medium) 0;
+    border-bottom: var(--border-hairline) solid var(--border-subtle);
+    vertical-align: top;
+    color: var(--text-secondary);
+}
+/* Never zebra stripes: a background that changes means something. */
+tbody tr:hover { background: var(--surface-raised); }
+
 img, svg { max-width: 100%; height: auto; }
-blockquote {
-    margin: 1rem 0; padding: .2rem 0 .2rem 1rem;
-    border-left: 3px solid var(--line); color: var(--dim);
+
+/* --------------------------------------------------------------- zoom -- */
+
+/* What a drawing sits in on the page. It carries no chrome of its own — the
+   hairline belongs to the drawing's own canvas — and hover changes the border
+   rather than the size, because nothing in this system lifts or scales. */
+button.zoom {
+    display: block;
+    width: 100%;
+    margin: var(--space-5) 0;
+    padding: 0;
+    cursor: zoom-in;
+    background: none;
+    border: var(--border-hairline) solid transparent;
+    border-radius: var(--radius-card);
+    overflow: hidden;
 }
-@media (max-width: 860px) {
-    header.top { padding: 0 .8rem; gap: .6rem; }
-    .wrap { display: block; }
+button.zoom:hover { border-color: var(--border-strong); }
+button.zoom img, button.zoom svg { display: block; margin: 0 auto; }
+
+dialog#zoom {
+    /* Wide enough that a drawing at its own 1200px needs no scrolling, and
+       never wider than that: the panel is for the drawing, not for the room
+       around it. */
+    width: min(96vw, calc(1200px + 2 * var(--space-4) + 2px));
+    max-width: none;
+    max-height: 92vh;
+    padding: 0;
+    color: var(--text-primary);
+    background: var(--surface-raised);
+    border: var(--border-hairline) solid var(--border-strong);
+    border-radius: var(--radius-card);
+}
+dialog#zoom[open] { display: flex; flex-direction: column; }
+dialog#zoom::backdrop { background: var(--surface-overlay); }
+dialog#zoom .zoom__head {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-hairline) solid var(--border-subtle);
+}
+/* The alt text, which is the drawing's own description and the only place a
+   reader who cannot see it gets the claim. */
+dialog#zoom p {
+    margin: 0;
+    max-width: var(--note-measure);
+    font-size: var(--note-body-size);
+    line-height: var(--note-body-leading);
+    color: var(--text-secondary);
+}
+dialog#zoom .zoom__close {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-icon-box);
+    height: var(--control-icon-box);
+    cursor: pointer;
+    color: var(--text-muted);
+    background: none;
+    border: 0;
+}
+dialog#zoom .zoom__close:hover { color: var(--text-primary); }
+dialog#zoom .zoom__close svg { display: block; flex: none; width: 16px; height: 16px; }
+/* At the size it was drawn at, and scrolled where that does not fit. Fitting it
+   to the panel is what the page already did. */
+dialog#zoom .zoom__body { flex: 1 1 auto; overflow: auto; padding: var(--space-4); }
+dialog#zoom .zoom__body svg { display: block; max-width: none; margin: 0 auto; }
+
+blockquote {
+    margin: var(--space-4) 0;
+    padding: var(--space-1) 0 var(--space-1) var(--space-4);
+    border-left: var(--rule-accent) solid var(--border-subtle);
+    color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------- search -- */
+
+/* No shadow: the panel is a hairline and the backdrop is a wash. */
+dialog#search {
+    width: min(40rem, calc(100vw - var(--space-4)));
+    max-height: min(32rem, calc(100vh - 7rem));
+    margin: var(--space-19) auto auto;
+    padding: 0;
+    overflow: hidden;
+    color: var(--text-primary);
+    background: var(--surface-raised);
+    border: var(--border-hairline) solid var(--border-strong);
+    border-radius: var(--radius-card);
+}
+dialog#search[open] { display: flex; flex-direction: column; animation: appear var(--duration-fast) var(--ease-out); }
+dialog#search::backdrop { background: var(--surface-overlay); }
+@keyframes appear { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { dialog#search[open] { animation: none; } }
+
+dialog#search .field {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--control-gap);
+    padding: 0 var(--space-4);
+    color: var(--text-muted);
+    border-bottom: var(--border-hairline) solid var(--border-subtle);
+}
+dialog#search #q {
+    all: unset;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--space-3) 0;
+    font-family: inherit;
+    font-size: var(--font-size-ui);
+    color: var(--text-primary);
+}
+dialog#search ul { flex: 1 1 auto; overflow-y: auto; list-style: none; margin: 0; padding: var(--space-1); }
+dialog#search a.page {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+dialog#search a.page small {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--note-body-size);
+    line-height: var(--note-body-leading);
+    margin-top: 2px;
+}
+/* Selection is the quiet accent surface, not the accent itself: the accent
+   marks the page a reader is on, and nothing else on this page. */
+dialog#search a.page.chosen { background: var(--surface-accent-quiet); }
+dialog#search mark { background: none; color: var(--text-accent-quiet); font-weight: var(--weight-semibold); }
+dialog#search #miss, dialog#search #rest {
+    margin: 0;
+    padding: var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--note-body-size);
+}
+dialog#search footer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: var(--space-2) var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--font-size-label);
+    border-top: var(--border-hairline) solid var(--border-subtle);
+}
+
+/* --------------------------------------------------------------- sheds -- */
+
+/* The header sheds in a fixed order rather than wrapping: the product half of
+   the wordmark first, then the page list into a button. */
+@media (max-width: 620px) {
+    .wordmark__pipe, .wordmark__product { display: none; }
+}
+@media (max-width: 820px) {
+    .wrap { display: block; padding: 0 var(--space-4); }
     nav.side {
-        position: static; max-height: none; width: auto;
-        border-right: 0; border-bottom: 1px solid var(--line);
+        position: static;
+        max-height: none;
+        width: auto;
+        padding: var(--space-4) 0;
+        border-bottom: var(--border-hairline) solid var(--border-subtle);
     }
     /* Nearly fifty entries above the page somebody came for. The button is
-       what folds them away, so it exists only where a script can open
-       them again. */
-    html.js #menu { display: block; }
+       what folds them away, so it exists only where a script can open them
+       again. */
+    html.js #menu { display: flex; }
     html.js nav.side { display: none; }
     html.js nav.side.open { display: block; }
-    main { padding: 1.6rem 1.1rem 4rem; }
-    /* No keyboard, so neither the shortcut nor the line explaining the arrows
-       is a thing anybody there can use. */
-    header.top .find { width: auto; }
-    header.top .find kbd, dialog#search footer { display: none; }
-    dialog#search { margin-top: 1.2rem; max-height: calc(100vh - 2.4rem); }
+    main { padding: var(--space-6) 0 var(--space-12); }
+    h1 { font-size: var(--font-size-h2); }
+    h2 { font-size: var(--font-size-h3); }
+    dialog#search { margin-top: var(--space-4); max-height: calc(100vh - var(--space-8)); }
+    dialog#search footer { display: none; }
+    .find kbd { display: none; }
 }

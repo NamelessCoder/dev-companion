@@ -86,6 +86,15 @@ things being hand-written had grown from a stylesheet to a highlighter.
 
 ## Since then
 
+The build publishes a third kind of file. Building the site to the design system
+means the two families it allows, vendored rather than fetched from a font host,
+so `build.mjs` writes twelve woff2 files beside the two hashed ones — 245 KB
+published, about 84 KB fetched by a reader of this corpus, the rest sitting
+behind a `unicode-range` no page here has a character for. They are not hashed:
+a weight of a subset of a family is what its name already says. What the whole
+adoption rests on is
+[`D-DOC-023`](doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md).
+
 `documentation:assets` and `documentation:search` are no longer commands of
 their own. Both are steps of `bin/cli documentation:render`, which also builds
 the assets before the render reads their names —

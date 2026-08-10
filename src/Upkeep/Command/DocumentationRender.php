@@ -66,12 +66,14 @@ final class DocumentationRender
             return 1;
         }
 
+        $drawings = Site::publishDrawings($into . '/html');
         $search = Site::publishSearch($into . '/html');
         $output->writeln(sprintf(
-            '%s — %d pages, %d assets, %d KB searched over',
+            '%s — %d pages, %d assets, %d dark drawings, %d KB searched over',
             $into . '/html',
             $search['pages'],
             count($assets),
+            count($drawings),
             intdiv($search['bytes'], 1024),
         ));
         // Over a server rather than by opening the file: the search fetches its

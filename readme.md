@@ -18,7 +18,7 @@ TYPO3's subsystems are used, the core's own contribution process, and a catalog
 of backend UI components: context otherwise spread across project files, core
 conventions and the official documentation.
 
-![The three TYPO3 audiences ask a local MCP server, which routes each question to bundled knowledge, the active project and installation, or an official live source.](documentation/images/system-overview.svg)
+![Everything that answers a question already sits on the developer's machine: an MCP client starts the server as a local subprocess, which reads bundled knowledge and the project's own packages and installation. Exactly one read-only path crosses the boundary, to official documentation and core services.](documentation/images/system-overview.svg)
 
 **It answers from three sources.** Almost everything comes from the bundled
 `knowledge/` files, which are bound to versions: a statement that does not hold

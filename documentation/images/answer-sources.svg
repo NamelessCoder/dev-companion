@@ -1,57 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title description">
-  <title id="title">Five answer sources</title>
-  <desc id="description">TYPO3 Dev Companion tools declare whether they can answer from the active installation, installed package files, bundled knowledge, official network services, or this server's own checkout.</desc>
-  <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="7" stdDeviation="11" flood-color="#101828" flood-opacity="0.09"/></filter>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#98a2b3"/></marker>
-    <style>.eyebrow{font:700 14px system-ui,sans-serif;letter-spacing:1.8px;fill:#ff8700}.title{font:700 34px system-ui,sans-serif;fill:#101828}.subtitle{font:400 17px system-ui,sans-serif;fill:#475467}.label{font:700 18px system-ui,sans-serif;fill:#101828}.copy{font:400 14px system-ui,sans-serif;fill:#475467}.code{font:600 13px ui-monospace,monospace;fill:#344054}.whiteLabel{font:700 20px system-ui,sans-serif;fill:#fff}.whiteCopy{font:400 14px system-ui,sans-serif;fill:#fff4e7}.line{fill:none;stroke:#98a2b3;stroke-width:2.5;marker-end:url(#arrow)}</style>
-  </defs>
-  <rect width="1200" height="700" rx="28" fill="#f8fafc"/>
-  <text x="60" y="62" class="eyebrow">SOURCE DECLARATION = AVAILABILITY</text>
-  <text x="60" y="106" class="title">Five places can answer a tool</text>
-  <text x="60" y="138" class="subtitle">The source says whether a question is worth asking in the machine's current state.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="d-title d-desc">
+<title id="d-title">Every source has a precondition</title>
+<desc id="d-desc">The five sources a TYPO3 Dev Companion tool can answer from, plotted against how much of the machine has to be running. Bundled knowledge and the server's own checkout answer with nothing running; installed packages need files on disk; the installation source needs a booted installation; network sources need outbound reach.</desc>
+<rect width="1200" height="750" fill="#FBFAF7"></rect>
+<text x="60" y="60" fill="#FF8700" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13" font-weight="600" letter-spacing="1.6">SOURCE DECLARATION = AVAILABILITY</text>
+<text x="60" y="108" fill="#1C1A17" font-family="'Source Sans 3',system-ui,sans-serif" font-size="36" font-weight="700" letter-spacing="-0.5">Every source has a precondition</text>
+<text x="60" y="140" fill="#4A453D" font-family="'Source Sans 3',system-ui,sans-serif" font-size="17">A tool declares its sources, so the answer is known to be reachable before the question is asked.</text>
+<line x1="60" y1="176" x2="1140" y2="176" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="60" y="248" fill="#4A453D" font-family="'Source Sans 3',system-ui,sans-serif" font-size="14" font-weight="600">Required machine state</text>
+<path d="M228 243 H262" stroke="#8A8378" stroke-width="1.5" fill="none"></path>
+<path d="M257 239 265 243 257 247Z" fill="#8A8378"></path>
+<line x1="300" y1="264" x2="300" y2="598" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="312" y="248" fill="#8A8378" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13">nothing running</text>
+<line x1="510" y1="264" x2="510" y2="598" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="522" y="248" fill="#8A8378" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13">files on disk</text>
+<line x1="720" y1="264" x2="720" y2="598" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="732" y="248" fill="#8A8378" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13">a booted installation</text>
+<line x1="930" y1="264" x2="930" y2="598" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="942" y="248" fill="#8A8378" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13">network reach</text>
+<line x1="1140" y1="264" x2="1140" y2="598" stroke="#E3DFD6" stroke-width="1"></line>
+<text x="60" y="315" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="16" font-weight="600">knowledge</text>
+<text x="60" y="334" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Bundled and version-bound.</text>
+<rect x="300" y="302" width="840" height="32" rx="4" fill="#FF8700"></rect>
+<text x="60" y="377" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="16" font-weight="600">checkout</text>
+<text x="60" y="396" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">This server's own repository.</text>
+<rect x="300" y="364" width="840" height="32" rx="4" fill="#1C1A17"></rect>
+<text x="60" y="439" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="16" font-weight="600">packages</text>
+<text x="60" y="458" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Files read, never executed.</text>
+<rect x="300" y="426" width="210" height="32" rx="4" fill="none" stroke="#8A8378" stroke-width="1" stroke-dasharray="3 3.5"></rect>
+<rect x="510" y="426" width="630" height="32" rx="4" fill="#1C1A17"></rect>
+<text x="60" y="501" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="16" font-weight="600">installation</text>
+<text x="60" y="520" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Assembled runtime state.</text>
+<rect x="300" y="488" width="420" height="32" rx="4" fill="none" stroke="#8A8378" stroke-width="1" stroke-dasharray="3 3.5"></rect>
+<rect x="720" y="488" width="420" height="32" rx="4" fill="#1C1A17"></rect>
+<text x="60" y="563" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="16" font-weight="600">network</text>
+<text x="60" y="582" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Official live services.</text>
+<rect x="300" y="550" width="630" height="32" rx="4" fill="none" stroke="#8A8378" stroke-width="1" stroke-dasharray="3 3.5"></rect>
+<rect x="930" y="550" width="210" height="32" rx="4" fill="#1C1A17"></rect>
 
-  <rect x="440" y="300" width="320" height="140" rx="24" fill="#101828" filter="url(#shadow)"/>
-  <text x="468" y="346" class="whiteLabel">TYPO3 Dev Companion tool</text>
-  <text x="468" y="377" class="whiteCopy">declares every source it can use</text>
-  <text x="468" y="405" class="whiteCopy">returns answeredBy where paths vary</text>
-
-  <path d="M350 244 H390 V340 H428" class="line"/>
-  <path d="M350 492 H390 V400 H428" class="line"/>
-  <path d="M850 244 H810 V340 H772" class="line"/>
-  <path d="M850 492 H810 V400 H772" class="line"/>
-  <path d="M600 278 V288" class="line"/>
-
-  <rect x="60" y="190" width="290" height="108" rx="18" fill="#ffffff" stroke="#a4bcfd"/>
-  <rect x="60" y="190" width="8" height="108" rx="4" fill="#6172f3"/>
-  <text x="90" y="226" class="label">installation</text>
-  <text x="90" y="252" class="copy">Assembled runtime state.</text>
-  <text x="90" y="274" class="copy">Requires a reachable installation.</text>
-
-  <rect x="60" y="438" width="290" height="108" rx="18" fill="#ffffff" stroke="#84caff"/>
-  <rect x="60" y="438" width="8" height="108" rx="4" fill="#0ba5ec"/>
-  <text x="90" y="474" class="label">packages</text>
-  <text x="90" y="500" class="copy">Files read without executing them.</text>
-  <text x="90" y="522" class="copy">Available on a fresh clone.</text>
-
-  <rect x="455" y="170" width="290" height="108" rx="18" fill="#fff4e7" stroke="#ffb55c"/>
-  <rect x="455" y="170" width="8" height="108" rx="4" fill="#ff8700"/>
-  <text x="485" y="206" class="label">knowledge</text>
-  <text x="485" y="232" class="copy">Bundled and version-bound.</text>
-  <text x="485" y="254" class="copy">Works with nothing running.</text>
-
-  <rect x="850" y="190" width="290" height="108" rx="18" fill="#ffffff" stroke="#75e0a7"/>
-  <rect x="850" y="190" width="8" height="108" rx="4" fill="#12b76a"/>
-  <text x="880" y="226" class="label">network</text>
-  <text x="880" y="252" class="copy">Official live services.</text>
-  <text x="880" y="274" class="copy">Unavailable is not an empty result.</text>
-
-  <rect x="850" y="438" width="290" height="108" rx="18" fill="#ffffff" stroke="#d0d5dd"/>
-  <rect x="850" y="438" width="8" height="108" rx="4" fill="#667085"/>
-  <text x="880" y="474" class="label">checkout</text>
-  <text x="880" y="500" class="copy">This server's own repository.</text>
-  <text x="880" y="522" class="copy">Feedback tools; standalone only.</text>
-
-  <rect x="230" y="594" width="740" height="64" rx="18" fill="#ecfdf3" stroke="#75e0a7"/>
-  <text x="258" y="633" class="label">Every answer keeps its source visible; every fallback states what it leaves out.</text>
+<rect x="60" y="618" width="15" height="15" rx="2" fill="#1C1A17"></rect>
+<text x="86" y="631" fill="#4A453D" font-family="'Source Sans 3',system-ui,sans-serif" font-size="14">available</text>
+<rect x="196" y="618" width="15" height="15" rx="2" fill="none" stroke="#8A8378" stroke-width="1" stroke-dasharray="3 3.5"></rect>
+<text x="222" y="631" fill="#4A453D" font-family="'Source Sans 3',system-ui,sans-serif" font-size="14">the state this source still needs</text>
+<line x1="60" y1="664" x2="1140" y2="664" stroke="#C9C3B7" stroke-width="1"></line>
+<text x="60" y="698" fill="#1C1A17" font-family="'Source Sans 3',system-ui,sans-serif" font-size="16" font-weight="600">Bundled knowledge is the only source that spans the whole axis.</text>
+<text x="60" y="724" fill="#4A453D" font-family="'Source Sans 3',system-ui,sans-serif" font-size="14">The answer carries <tspan font-family="'Source Code Pro',ui-monospace,monospace" font-size="13" font-weight="600">answeredBy</tspan> where the path varies; an unreachable source is a stated boundary, not an empty result.</text>
 </svg>

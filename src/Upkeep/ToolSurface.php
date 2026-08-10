@@ -255,8 +255,9 @@ final class ToolSurface
             ),
             '',
             self::wrap(
-                '![A tool may answer from the installation, installed packages, bundled knowledge, an official '
-                . 'network service or this server\'s own checkout, and keeps the source visible in its answer.]'
+                '![The five sources plotted against how much of the machine has to be running: bundled knowledge '
+                . 'and this server\'s own checkout answer with nothing running, packages need files on disk, the '
+                . 'installation source needs a booted installation, and network sources need outbound reach.]'
                 . '(../images/answer-sources.svg)',
             ),
             '',

@@ -337,6 +337,107 @@ final class SiteTest extends TestCase
     }
 
     /**
+     * `D-DOC-023`: a drawing ships light and dark, and the twin is published.
+     *
+     * The renderer copies an image a page names and nothing else, and no page
+     * names the twin — the script asks for it once the reader is in dark. A
+     * drawing without one is a light canvas on a dark page, which is the
+     * defect the two files exist to prevent.
+     */
+    #[Test]
+    public function everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt(): void
+    {
+        $drawings = Paths::root() . '/' . Site::SOURCE . '/' . Site::DRAWINGS;
+        $light = [];
+        foreach (Finder::create()->files()->in($drawings)->name('*.svg')->notName('*' . Site::DARK)->sortByName() as $drawing) {
+            $name = $drawing->getFilename();
+            self::assertFileExists(
+                $drawings . '/' . str_replace('.svg', Site::DARK, $name),
+                $name . ' has no dark twin',
+            );
+            $light[] = $name;
+        }
+        self::assertNotSame([], $light);
+
+        // What a render would have put there: one named drawing, and the twin
+        // nobody named beside it.
+        mkdir($this->target . '/' . Site::DRAWINGS, 0777, true);
+        copy($drawings . '/' . $light[0], $this->target . '/' . Site::DRAWINGS . '/' . $light[0]);
+
+        self::assertSame([str_replace('.svg', Site::DARK, $light[0])], Site::publishDrawings($this->target));
+    }
+
+    /**
+     * `D-DOC-023`: the theme states no colour of its own.
+     *
+     * The design system's first rule is that a token value is never
+     * redeclared locally, and the way that breaks is one hex written into a
+     * rule at half past five. The vendored files below `tokens/` are where a
+     * value is allowed to stand; everything the site adds names one.
+     *
+     * `color-mix()` is not one of them: the system mixes tokens itself, and
+     * what the header needs — the canvas, translucent — has no token of its
+     * own.
+     */
+    #[Test]
+    public function theThemeWritesNoColourOfItsOwn(): void
+    {
+        $theme = Paths::root() . '/build/guides/theme/assets/site.css';
+        $found = preg_match_all('/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/', (string) file_get_contents($theme), $matches);
+
+        self::assertSame(0, $found, 'site.css states ' . implode(', ', $matches[0]) . ' rather than a token');
+    }
+
+    /**
+     * `D-DOC-023`: no drawing sets type below the floor.
+     *
+     * 13px at drawn size is the system's, and a drawing is shown at two
+     * thirds of that size in the column it sits in. Two of them carried 12px
+     * labels, which nothing but a measurement would have caught.
+     */
+    #[Test]
+    public function noDrawingSetsTypeBelowTheFloor(): void
+    {
+        $drawings = Paths::root() . '/' . Site::SOURCE . '/' . Site::DRAWINGS;
+        $small = [];
+        foreach (Finder::create()->files()->in($drawings)->name('*.svg')->sortByName() as $drawing) {
+            preg_match_all('/font-size="([\d.]+)"/', (string) file_get_contents($drawing->getPathname()), $sizes);
+            foreach ($sizes[1] as $size) {
+                if ((float) $size < 13) {
+                    $small[] = $drawing->getFilename() . ' sets ' . $size . 'px';
+                }
+            }
+        }
+
+        self::assertSame([], array_values(array_unique($small)));
+    }
+
+    /**
+     * `D-DOC-023`: every token the theme names is one the system declares.
+     *
+     * The vendored files were trimmed once — `controls.css` arrived here
+     * eight tokens short — and nothing said so, because a `var()` naming a
+     * token nobody declared is not an error anywhere: the property is simply
+     * dropped and the element renders unstyled.
+     */
+    #[Test]
+    public function everyTokenTheThemeNamesIsDeclared(): void
+    {
+        $assets = Paths::root() . '/build/guides/theme/assets';
+
+        $declared = [];
+        foreach (Finder::create()->files()->in($assets . '/tokens')->name('*.css') as $file) {
+            preg_match_all('/^\s*(--[a-z0-9-]+)\s*:/m', (string) file_get_contents($file->getPathname()), $found);
+            $declared = [...$declared, ...$found[1]];
+        }
+        self::assertNotSame([], $declared);
+
+        preg_match_all('/var\((--[a-z0-9-]+)/', (string) file_get_contents($assets . '/site.css'), $named);
+
+        self::assertSame([], array_values(array_unique(array_diff($named[1], $declared))));
+    }
+
+    /**
      * Every page of the copy, by the name it carries there.
      *
      * @return array<string, string>

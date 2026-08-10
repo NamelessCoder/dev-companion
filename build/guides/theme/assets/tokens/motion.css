@@ -1,0 +1,10 @@
+/* Vendored from the TYPO3 Support App design system, `tokens/motion.css`.
+   Not edited here. */
+
+:root {
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 200ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}

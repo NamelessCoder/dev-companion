@@ -309,7 +309,7 @@
       ],
       "base": true,
       "description": "JavaScript unit tests for the built backend modules.",
-      "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output."
+      "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output. `typo3_hint_lookup` for `javascript-unit-tests` says where the file goes, what discovers it and what it imports."
     },
     {
       "suite": "e2e",

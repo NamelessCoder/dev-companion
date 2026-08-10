@@ -257,7 +257,7 @@ Command from the TYPO3 core root:
 `CI=true ./Build/Scripts/runTests.sh -s unitJavascript`
 
 JavaScript unit tests for the built backend modules.
-Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output.
+Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output. `typo3_hint_lookup` for `javascript-unit-tests` says where the file goes, what discovers it and what it imports.
 
 ## e2e
 Command from the TYPO3 core root:
@@ -565,7 +565,7 @@ Data:
             "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
             "targeted": null,
             "description": "JavaScript unit tests for the built backend modules.",
-            "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output.",
+            "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output. `typo3_hint_lookup` for `javascript-unit-tests` says where the file goes, what discovers it and what it imports.",
             "domains": [
                 "typescript"
             ],

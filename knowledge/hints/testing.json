@@ -172,6 +172,46 @@
     ]
   },
   {
+    "id": "javascript-unit-tests",
+    "title": "JavaScript Unit Tests in the Core",
+    "domains": [
+      "typescript"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "javascript unit test",
+      "javascript test",
+      "typescript test",
+      "unit test",
+      "web-test-runner",
+      "web test runner",
+      "wtr",
+      "unitJavascript",
+      "open-wc",
+      "mocha",
+      "chai",
+      "sinon",
+      "Build/Sources/TypeScript",
+      "web component",
+      "custom element",
+      "lit",
+      "test a module",
+      "cover the module"
+    ],
+    "hints": [
+      "The core's JavaScript unit tests live at Build/Sources/TypeScript/<package>/tests/, mirroring the module path below that package, one file per module named with a -test.ts suffix.",
+      "Build/web-test-runner.config.mjs makes one group per package under Build/Sources/TypeScript that has a tests/ directory, over tests/**/*.ts. A package without that directory is discovered as nothing, so the first test in one is invisible until the directory exists.",
+      "The runner is @web/test-runner, and runTests.sh -s unitJavascript runs it in a container as npm run test inside Build/. That target passes no arguments through, so a targeted or watching run means calling the runner in Build/ directly; npm run watch:test is the same runner with --watch.",
+      "The import map in that config points @typo3/core/, @typo3/backend/ and every other package prefix at typo3/sysext/<ext>/Resources/Public/JavaScript/. A test therefore exercises the built output, not the TypeScript source, and a source change is invisible to it until the branch is built.",
+      {
+        "text": "The config serves ~labels/ from a middleware returning { get: key => key }, so a module that reads labels needs no fixture and asserts the key it asked for.",
+        "since": 14
+      },
+      "Assertions come from @open-wc/testing, the suite and case functions are mocha's, declared with import type { } from 'mocha'. sinon, axe-core and @web/test-runner-commands are in the same import map.",
+      "This layer sees a module's own state transitions and nothing around them. A defect that only exists inside the real backend — position, stacking, the ancestor chain a component is mounted in — cannot appear in it; browser-tests is the layer that has one."
+    ]
+  },
+  {
     "id": "browser-tests",
     "title": "Browser Tests with Playwright",
     "domains": [

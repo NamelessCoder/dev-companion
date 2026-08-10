@@ -51,10 +51,22 @@ layer out of the checkout itself.
   covers a positional defect.
 - No skill and no document. What was missing is a set of statements about one
   layer, which is what a hint is; the order of the work was never in question.
-- The domain half stays open, with a todo on it. Dropping the PHP domain
-  whenever the paths are TypeScript would change the ranking of every query
-  carrying a testing word, which is `src/` and is reviewed rather than
-  improvised.
+- The domain half is a carve-out in `Domains::detect()`, of the shape the
+  `ADMINISTERED_FROM_THE_BACKEND` one already has: the seven testing phrasings
+  do not add PHP where the paths carry a domain and PHP is not among them. Only
+  those seven, and only against paths — every other PHP keyword names a PHP
+  thing rather than a kind of work, and free text cannot narrow anything because
+  a negated mention reads like a positive one. The feedback's own call now
+  answers `javascript-unit-tests` first with no PHPUnit hint in it, and
+  `bin/cli hints:coverage` reports the same prompts and the same hints as
+  before.
+- The second call the feedback reports is worth what it says it is. For a
+  TypeScript task `typo3_test_run_guide.suites` comes back identical to
+  `typo3_task_guide.testSuites`, and `invocation` is the whole of what it adds —
+  which `nextTools` already named. The block stays duplicated, because the tool
+  is also a first call for a session that never asked for a brief; what changes
+  is that `nextTools` now says the suite list is the one above, so the round
+  trip is a decision rather than a discovery.
 
 ## Assumed
 
@@ -67,5 +79,6 @@ layer out of the checkout itself.
 - A session reads this hint and still writes the test against the TypeScript
   source rather than the built output. Then build-before-test is not carried by
   a sentence in a list and belongs where the suite is run.
-- The PHPUnit hints go on being acted on for a TypeScript task. Then the
-  domain change is the fix and the hint was only the half of it that was cheap.
+- A task that really does touch both layers loses its PHPUnit hints. The
+  carve-out reads the paths, so naming one PHP path keeps them; a session that
+  names neither is what would show the condition is the wrong one.

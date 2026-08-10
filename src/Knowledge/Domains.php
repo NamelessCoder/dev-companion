@@ -154,6 +154,27 @@ final class Domains
     private const ADMINISTERED_FROM_THE_BACKEND = ['sitepackage', 'site package', 'content element'];
 
     /**
+     * The PHP testing phrasings a path in another domain takes back.
+     *
+     * They are in the PHP list deliberately: that is how somebody with no suite
+     * yet asks, and the domain was missing exactly those callers (`D-KNW-009`).
+     * What they cannot survive is a path that says which layer is meant — the
+     * core's JavaScript tests are `.ts` under Build/Sources/TypeScript, and a
+     * query about one was answered with UnitTestCase, CSV fixtures and
+     * createStub as the larger half (`D-KNW-067`).
+     *
+     * Only these seven, and only against paths. Every other PHP keyword names a
+     * PHP thing rather than a kind of work, so a `.ts` path beside the word
+     * `datahandler` is a task that really does touch both.
+     *
+     * @var array<int, string>
+     */
+    private const TESTING_PHRASINGS = [
+        'unit test', 'functional test', 'test coverage', 'test suite',
+        'automated test', 'set up tests', 'write tests',
+    ];
+
+    /**
      * Words that place a task in the website output rather than in the backend.
      *
      * @var array<int, string>
@@ -214,8 +235,19 @@ final class Domains
         // Format/ScssViewHelper.php is PHP, and every word in it is a PHP
         // identifier, not a topic.
         $description = mb_strtolower($text);
+        // The paths alone, because a negated mention in the description reads
+        // exactly like a positive one — fromPaths().
+        $pathDomains = self::fromPaths($paths);
+        $testedElsewhere = $pathDomains !== [] && !in_array(self::PHP, $pathDomains, true);
         foreach (self::KEYWORDS as $domain => $keywords) {
             foreach ($keywords as $keyword) {
+                // Asking for a test while every path is TypeScript or Sass is
+                // asking for that layer's tests, and the PHPUnit hints are then
+                // the larger half of an answer none of it applies to.
+                if ($testedElsewhere && $domain === self::PHP && in_array($keyword, self::TESTING_PHRASINGS, true)) {
+                    continue;
+                }
+
                 // A task that named only the backend named one of these for the
                 // thing it is about, so the website half it belongs to is not
                 // what was asked for. Explicit frontend terms below still add

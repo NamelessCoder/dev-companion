@@ -59,6 +59,50 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The other direction, and `D-KNW-067`: the PHP domain carries the
+     * phrasings of somebody asking for a test, so a query about a JavaScript
+     * one was answered with UnitTestCase, CSV fixtures and createStub as the
+     * larger half of it. The path says which layer is meant.
+     */
+    #[Test]
+    public function aTypeScriptTestPathIsNotAnsweredWithPhpunit(): void
+    {
+        $result = Hints::find(
+            ['Build/Sources/TypeScript/backend/tests/layout-module/sticky-language-header-test.ts'],
+            'JavaScript unit tests for a backend TypeScript module with state transitions',
+            6,
+        );
+
+        self::assertNotContains(Domains::PHP, $result['domains']);
+        $matched = array_column($result['matchedHints'], 'id');
+        self::assertSame('javascript-unit-tests', $matched[0]);
+        self::assertNotContains('unit-test-doubles', $matched);
+        self::assertNotContains('core-tests', $matched);
+        self::assertNotContains('project-extension-tests', $matched);
+    }
+
+    /**
+     * The carve-out above reaches the paths and no further: a task naming both
+     * layers is asking for both, and the PHPUnit half of it is the answer to
+     * the PHP path.
+     */
+    #[Test]
+    public function aTaskCoveringBothLayersKeepsThePhpTestHints(): void
+    {
+        $result = Hints::find(
+            [
+                'Build/Sources/TypeScript/backend/tests/layout-module/sticky-language-header-test.ts',
+                'typo3/sysext/backend/Tests/Unit/View/BackendLayoutViewTest.php',
+            ],
+            'unit tests for the module and the view it renders',
+            8,
+        );
+
+        self::assertContains(Domains::PHP, $result['domains']);
+        self::assertContains(Domains::TYPESCRIPT, $result['domains']);
+    }
+
+    /**
      * `R-ANS-026`: a path says which subsystem the question is about.
      *
      * Two sessions on 2026-08-07 passed the Extbase persistence paths and got

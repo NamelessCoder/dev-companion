@@ -817,7 +817,10 @@ final class TaskGuide extends ReadOnlyTool
                 $target
             );
         $candidates[] = 'typo3_hint_lookup with the concrete file paths, once they are known';
-        $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
+        // What the round trip buys, and nothing more: the suite list it returns
+        // is the `testSuites` above it again, so a caller that only needs which
+        // suites to run has them already (`D-KNW-067`).
+        $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation — the suites it lists are the testSuites above';
         // The one step this brief describes and never pointed at. A caller who
         // read the routing table at the start of a session is committing hours
         // later, from this list — and outside the core it is the follow-up call

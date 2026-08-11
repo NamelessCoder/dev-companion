@@ -7,8 +7,6 @@
     is accepted. Nothing here decides it: both levers that entry built were in
     the session and neither took, so what is left is what a further attempt is
     worth, which is a judgement rather than a reading.
-**Branch:** todo/two-searches-landed-in-the-same-document-and
-**Claimed:** 2026-08-11
 
 Judged on 2026-08-11 as **step 5**: the feedback satisfies the first **Wrong
 if** of

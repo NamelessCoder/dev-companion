@@ -261,8 +261,13 @@ final class CatalogTest extends TestCase
         self::assertSame([], Components::find('content element preview heading text'));
 
         // What the query names is still the answer, however the rest of the
-        // sentence reads — the coverage rule is for what nobody named.
-        self::assertSame('badge', Components::find('add a badge to the module header')[0]['name']);
+        // sentence reads — the coverage rule is for what nobody named. Which of
+        // the two leads is not asserted: the module chrome was catalogued after
+        // this case was written (D-CAT-004), so the sentence now names two
+        // components and covers the chrome by two words out of three.
+        $named = array_column(Components::find('add a badge to the module header'), 'name');
+        self::assertContains('badge', $named);
+        self::assertContains('module', $named);
         // And a class is a way in of its own: it is what the miss suggests.
         self::assertNotSame([], Components::find('input-group'));
     }

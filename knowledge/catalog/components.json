@@ -759,6 +759,72 @@
     "since": 14
   },
   {
+    "name": "module",
+    "title": "Backend Module Chrome",
+    "summary": "The chrome ModuleTemplate renders around every backend module: a docheader navigation bar, a docheader button bar, and the module body. A module does not author it — it renders into the Module layout's Content section and fills the docheader through getDocHeaderComponent(). These classes and custom properties are what a restyling of that chrome, or a module layout of an extension's own as EXT:install and EXT:info ship, is written against. module-layout-wide is the default; the narrow one is set by ModuleTemplate::setLayout(), which is @internal.",
+    "rootClass": "module",
+    "variants": [],
+    "modifiers": [
+      "module-layout-wide",
+      "module-layout-normal"
+    ],
+    "subComponents": [
+      "module-loading-indicator",
+      "module-docheader",
+      "module-docheader-navigation",
+      "module-docheader-buttons",
+      "module-docheader-column",
+      "module-docheader-column-grow",
+      "module-docheader-column-breadcrumb",
+      "module-body",
+      "module-body-container"
+    ],
+    "customProperties": [
+      "--module-color",
+      "--module-bg",
+      "--module-width",
+      "--module-layout-wide-width",
+      "--module-layout-normal-width",
+      "--module-docheader-zindex",
+      "--module-docheader-padding-y",
+      "--module-docheader-padding-x",
+      "--module-docheader-padding",
+      "--module-docheader-spacing-y",
+      "--module-docheader-spacing-x",
+      "--module-docheader-spacing",
+      "--module-docheader-bg",
+      "--module-docheader-border-color",
+      "--module-docheader-border-width",
+      "--module-docheader-column-height",
+      "--module-docheader-bar-height",
+      "--module-docheader-scroll-offset",
+      "--module-docheader-height",
+      "--module-docheader-box-shadow",
+      "--module-body-padding-y",
+      "--module-body-padding-x",
+      "--module-body-padding"
+    ],
+    "markup": "<!-- ModuleTemplate renders this from EXT:backend Layouts/Module.fluid.html and Partials/DocHeader.fluid.html; a module renders into it rather than writing it: -->\n<div class=\"module module-layout-wide\" data-module-id=\"{moduleId}\" data-module-name=\"{moduleName}\">\n  <div class=\"module-loading-indicator\"></div>\n  <div class=\"module-docheader module-docheader-navigation t3js-module-docheader-navigation\">\n    <div class=\"module-docheader-column module-docheader-column-breadcrumb\"></div>\n  </div>\n  <div class=\"module-docheader module-docheader-buttons t3js-module-docheader-buttons\">\n    <div class=\"module-docheader-column module-docheader-column-grow\">\n      <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"\"></div>\n    </div>\n  </div>\n  <div class=\"module-body t3js-module-body\">\n    <div class=\"module-body-container t3js-module-body-container\"></div>\n  </div>\n</div>",
+    "examples": [
+      "<html xmlns:f=\"http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers\" data-namespace-typo3-fluid=\"true\">\n<f:layout name=\"Module\" />\n<f:section name=\"Content\">\n  <h1>Module title</h1>\n</f:section>\n</html>"
+    ],
+    "sassPaths": [
+      "Build/Sources/Sass/component/_module.scss"
+    ],
+    "demoPath": null,
+    "keywords": [
+      "module",
+      "module chrome",
+      "docheader",
+      "module docheader",
+      "module body",
+      "moduletemplate",
+      "module layout",
+      "backend module"
+    ],
+    "since": 14
+  },
+  {
     "name": "nav",
     "title": "Navs / Tabs",
     "summary": "Navigation list, with .nav-tabs and .nav-pills variants. The tab pattern adds role=\"tablist\"/role=\"tab\", aria-selected, and data-typo3-tab wiring.",

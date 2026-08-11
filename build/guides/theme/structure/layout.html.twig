@@ -16,6 +16,12 @@
     the exception, inlined because it is this site's own drawing and carries two
     colours the page sets rather than one it inherits.
 
+    Each says `size="16"`. An icon is as big as the text it sits in by default,
+    which is right for a glyph inside a label and wrong for these: a fold
+    marker beside an 11px section label is an affordance, not a word, and at
+    11px it is a smudge. 16 is the floor the system sets for a glyph standing
+    on its own, and every one of these stands on its own.
+
     The stylesheet and the script are two files rather than two blocks in every
     page: at 16 KB they had grown to a third of everything this site serves.
     What that costs is `D-DOC-019`.
@@ -78,7 +84,7 @@
             that a reader without JavaScript keeps the list rather than a button
             that cannot open it.
         #}
-        <button id="menu" type="button" aria-expanded="false" aria-controls="side" aria-label="Pages" hidden><sds-icon name="actions-list"></sds-icon></button>
+        <button id="menu" type="button" aria-expanded="false" aria-controls="side" aria-label="Pages" hidden><sds-icon name="actions-list" size="16"></sds-icon></button>
         <a class="lockup" href="{{ up }}index.html">
             <span class="signet">{{ source('assets/icons/signet-m.svg')|raw }}</span>
             <span class="wordmark">
@@ -91,7 +97,7 @@
             because a field that searches nothing is worse than no field.
         #}
         <button id="find" class="find" type="button" aria-keyshortcuts="Control+K" hidden>
-            <sds-icon name="actions-search"></sds-icon>
+            <sds-icon name="actions-search" size="16"></sds-icon>
             <span>Search</span><kbd id="key">Ctrl K</kbd>
         </button>
         {#
@@ -115,7 +121,7 @@
 #}
 <dialog id="search" aria-label="Search the documentation">
     <div class="field">
-        <sds-icon name="actions-search"></sds-icon>
+        <sds-icon name="actions-search" size="16"></sds-icon>
         <input id="q" type="search" autocomplete="off" placeholder="Search the documentation" aria-label="Search the documentation" aria-controls="hits">
     </div>
     <ul id="hits"></ul>
@@ -134,7 +140,7 @@
 <dialog id="zoom">
     <div class="zoom__head">
         <p id="zoom-said"></p>
-        <button type="button" class="zoom__close" aria-label="Close"><sds-icon name="actions-close"></sds-icon></button>
+        <button type="button" class="zoom__close" aria-label="Close"><sds-icon name="actions-close" size="16"></sds-icon></button>
     </div>
     {# Filled with the drawing being read, which the script has already inlined. #}
     <div class="zoom__body"></div>
@@ -160,7 +166,7 @@
                 {%- if group != '' %}</ul></details>{% endif -%}
                 {%- set group = dir -%}
                 <details class="group"{{ here|split('/')|first == dir ? ' open' : '' }}>
-                    <summary><sds-icon name="actions-chevron-down"></sds-icon>{{ dir|replace({'-': ' '}) }}</summary>
+                    <summary><sds-icon name="actions-chevron-down" size="16"></sds-icon>{{ dir|replace({'-': ' '}) }}</summary>
                     <ul>
             {%- endif -%}
             <li><a class="page{{ path == here ? ' current' : '' }}" href="{{ up }}{{ path }}.html">{{ entry.title ? entry.title.toString : path }}</a></li>

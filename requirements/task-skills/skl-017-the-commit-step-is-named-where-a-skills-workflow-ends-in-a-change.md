@@ -56,4 +56,4 @@ close.
 
 - `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
-- `SkillTest::theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill`
+- `SkillTest::theWorkflowStepRunsInEverySession`

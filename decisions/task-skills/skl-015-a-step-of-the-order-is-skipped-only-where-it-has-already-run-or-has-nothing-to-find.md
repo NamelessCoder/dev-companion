@@ -1,7 +1,8 @@
 ---
 id: D-SKL-015
 date: 2026-08-04
-status: open
+status: revoked
+revokedBy: D-SKL-034
 ---
 
 # D-SKL-015 — A step of the order is skipped only where it has already run or has nothing to find
@@ -102,7 +103,7 @@ wanted, and the maintainer answered it on 2026-08-04.
 
 ## Covered by
 
-- `SkillTest::theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill`
+- `SkillTest::theWorkflowStepRunsInEverySession`
 - `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
 
 ## Since then
@@ -150,3 +151,27 @@ taking the condition off step 3 again. What that costs is stated here and
 unchanged — a session the guide named would be asked for an answer it already
 holds — and the reading that weighs the two is queued rather than made, because
 the base is installed in somebody else's project.
+
+## Revoked on 2026-08-11
+
+The reading was made and the condition came off step 3. Half of the statement
+above is therefore not what `skills/base.md` says any more, and an entry a
+reader may build on has to be one whose statement is true when they read it.
+
+What the two sightings turned out to show is not the third **Wrong if**'s
+wording problem. Neither session cited the condition, weighed it or reported a
+skip: the 2026-08-10 transcript names `typo3_task_guide` twice in its whole
+length — once inside the `ToolSearch select:` batch that loaded its schema
+beside `typo3_project_describe`, `typo3_hint_lookup`, `typo3_forge_lookup` and
+`typo3_gerrit_lookup`, and once in the closing debrief — and no turn before the
+review was written mentions `base.md`, the order or its steps. What failed is
+the first **Assumed**, which said that nothing measures whether a session reads
+its own activation route off its history. Two sessions have now been measured
+and neither did.
+
+The step-5 half stands and moves with the reasoning that separates the two, so
+the entry that holds from here is
+[`D-SKL-034`](skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md).
+Its **Wrong if** is a different list: what can go wrong now is a step that is
+skipped with no condition to reach for, which would put the answer outside this
+file altogether.

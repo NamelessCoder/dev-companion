@@ -46,13 +46,13 @@ matter too.
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
 
-   Skip it only where this skill's own name came out of that call. The guide
-   routed the task here, so its answer is already in the session and the step is
-   asking for it a second time. A skill reached from its own `description`
-   arrived without that answer, and there the step stays: the brief is built
+   Run it in every session, this skill's own tasks included. The brief is built
    from the paths as well as the task text, and no skill knows which paths the
-   caller is holding. Skipping it there costs the hints and the core checks
-   those paths match.
+   caller is holding: a skill that covers the task is not that brief, and
+   skipping the step costs the hints and the core checks those paths match.
+   Where the guide's own answer is what named this skill, this is one call for
+   an answer already in the session. That is the price of a step there is
+   nothing to decide about.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
    One query per subsystem; a single broad query is not subsystem evidence.
 

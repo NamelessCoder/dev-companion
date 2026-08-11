@@ -418,6 +418,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
@@ -451,6 +452,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-033]: task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
 [D-SKL-032]: task-skills/skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md
 [D-SKL-028]: task-skills/skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
 [D-SKL-029]: task-skills/skl-029-precedent-is-listed-by-the-changelogs-own-axes.md

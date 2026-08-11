@@ -1,20 +1,17 @@
 // What the theme adds to a rendered page: the colour mode, the folds, the
-// search, the copy button and the colouring of a fenced block. Bundled by
-// `assets/build.mjs` and served as one file, so 48 pages share one download
-// instead of carrying it each — `D-DOC-019`.
-// The design system's custom elements. They frame a fenced block, write the
-// `<code class="language-…">` that gets highlighted below, and carry the copy
-// button — all of which this file used to do by hand.
+// search, and the drawings. Bundled by `assets/build.mjs` and served as one
+// file, so 48 pages share one download instead of carrying it each —
+// `D-DOC-019`.
+//
+// The design system's custom elements. They frame a fenced block, colour it,
+// and carry the copy button — all of which this file used to do by hand, with
+// a highlighter of its own and a stylesheet mapping its classes onto the
+// system's three syntax colours.
 //
 // The built drop-in, not the source: `src/` reaches a generated file that a
 // git install does not carry, and the drop-in brings its own Lit, so nothing
 // here has to depend on a version of it.
 import { setIconSprite } from '@typo3/soul-design-system/dist/soul.js';
-
-import hljs from 'highlight.js/lib/core';
-import bash from 'highlight.js/lib/languages/bash';
-import json from 'highlight.js/lib/languages/json';
-import yaml from 'highlight.js/lib/languages/yaml';
 
 // How deep the page being read sits, which is what every path this script
 // writes is relative to. It comes off the document rather than out of an
@@ -312,37 +309,3 @@ setIconSprite(up + 'assets/actions.svg');
         if (event.target === dialog) { dialog.close(); }
     });
 })();
-
-// The renderer names a fenced block's language and colours nothing, and a
-// recorded tool answer is 200 lines of JSON in one grey. highlight.js does the
-// colouring, with the three languages this corpus fences in registered and
-// nothing else: json, yaml and bash are 137, 50 and 20 of its blocks, and the
-// full build carries forty more languages nobody here writes.
-//
-// The palette stays the design system's. Its three syntax tokens are what
-// `site.css` maps these classes onto, rather than a fourth colour nobody
-// declared.
-hljs.registerLanguage('bash', bash);
-hljs.registerLanguage('json', json);
-hljs.registerLanguage('yaml', yaml);
-
-// After the elements upgrade, not before: `<sds-code>` writes the `<code>`
-// carrying the language class, so a pass over the document at load time finds
-// nothing to colour.
-customElements.whenDefined('sds-code')
-    .then(function () {
-        return Promise.all(Array.prototype.map.call(
-            document.querySelectorAll('sds-code'),
-            function (el) { return el.updateComplete; },
-        ));
-    })
-    .then(function () {
-        Array.prototype.forEach.call(document.querySelectorAll('main pre > code'), function (block) {
-            // The recorded answers run to tens of thousands of characters, and
-            // one is not worth a visible pause on a page nobody reads for the
-            // colour.
-            if (/(?:^|\s)language-(?:bash|json|yaml)(?:\s|$)/.test(block.className || '') && block.textContent.length < 40000) {
-                hljs.highlightElement(block);
-            }
-        });
-    });

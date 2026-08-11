@@ -281,15 +281,6 @@ code {
 .sds-code { margin: var(--space-5) 0; }
 
 
-/* The system names three syntax colours, and this maps highlight.js onto
-   exactly those three: anything else would be a fourth colour nobody declared.
-   What a reader picks out of a recorded answer is the key and the value. */
-.hljs { background: none; color: inherit; }
-.hljs-comment, .hljs-quote { color: var(--syntax-comment); font-style: italic; }
-.hljs-attr, .hljs-attribute, .hljs-title, .hljs-section, .hljs-keyword, .hljs-built_in, .hljs-selector-tag { color: var(--syntax-key); }
-.hljs-string, .hljs-symbol, .hljs-bullet, .hljs-meta { color: var(--syntax-string); }
-.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-subst, .hljs-type { color: var(--text-primary); }
-
 /* A table is `sds-table sds-table--scroll`, set by
    `theme/body/table/table-classes.html.twig`. The scrolling is the modifier's,
    not this file's — it was three declarations here until the system grew the

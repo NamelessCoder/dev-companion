@@ -112,3 +112,32 @@ headings not above, named, plus the excerpts above.
 
 `Documents::headings()` is the reader that came out of it, and `topics()` was
 the same three lines inline.
+
+The first **Wrong if** is satisfied.
+[`feedback/2026-08-10-182523`](../../feedback/2026-08-10-182523-two-searches-landed-in-the-same-document-and.md)
+is a core patch session that searched `core/contribution/commit-messages` twice
+within minutes, matched one section each time, and read the page neither time.
+
+Both halves were in that session. Its client launches the main checkout's
+`bin/typo3-dev-companion`. The answer line landed there on 2026-08-09 in
+`63fb7f57` and the skill sentence the same night in `2c83383e`, and both are
+ancestors of the commit that carries the feedback. The session quotes the skill
+sentence back in its own report.
+
+Re-run on 2026-08-11 with that feedback's own arguments. The first call answers
+`Changelog Files` and closes with *9 of its 10 headings are not above — …
+Release Targets …*, which names the section the second search then went looking
+for.
+
+What the feedback adds is where the line failed rather than that it failed. Its
+suggestion is the line it had already received, written up as something missing:
+*"This is 1 of 6 sections in core/contribution/commit-messages: …" would have
+made the second search obviously redundant before I made it*. A session that
+read the line and found it useless would not ask for it.
+
+So it is the assumption that fell rather than the statement. This server does
+both things the entry decided, and a session told what an answer left of a page
+still did not read the page. What follows — a third attempt at the answer, a
+search that hands over the document where its matches concentrate in one, or a
+cost to accept — is with whoever maintains this repository, on the todo serving
+that feedback.

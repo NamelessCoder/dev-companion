@@ -9,6 +9,7 @@ one is added.
 
 - [`D-ANS-074`][D-ANS-074] — A path-narrowed suite list names the domains it withheld and when to ask again · 2026-08-11
 - [`D-ANS-075`][D-ANS-075] — The hint index is ordered by the rank the matcher already computed · 2026-08-11
+- [`D-ANS-076`][D-ANS-076] — A search whose matches are all in one page answers with the page · 2026-08-11
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
 - [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes, and which belong next door · 2026-08-10
 - [`D-ANS-073`][D-ANS-073] — Which lines can take a patch is not which lines this patch belongs on · 2026-08-10
@@ -81,6 +82,7 @@ one is added.
 
 [D-ANS-074]: ans-074-a-path-narrowed-suite-list-names-the-domains-it-withheld-and-when-to-ask-again.md
 [D-ANS-075]: ans-075-the-hint-index-is-ordered-by-the-rank-the-matcher-already-computed.md
+[D-ANS-076]: ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md
 [D-ANS-071]: ans-071-the-environment-answer-names-the-project-and-what-its-files-serve.md
 [D-ANS-072]: ans-072-a-tool-description-says-which-questions-it-takes-and-which-belong-next-door.md
 [D-ANS-073]: ans-073-which-lines-can-take-a-patch-is-not-which-lines-this-patch-belongs-on.md

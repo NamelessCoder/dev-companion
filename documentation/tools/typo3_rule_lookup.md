@@ -8,9 +8,10 @@ runTests.sh. It answers outside a core checkout too — setting up an extension
 manual, PHPUnit in an extension, Playwright in a project — and there the
 core-only documents are withheld and named rather than dropped in silence. What
 comes back is the sections that matched, each naming the document it was cut
-from. Pass that documentId back instead of a query to read the whole document —
-the section answers what was asked and the rest of the page regularly answers
-the next thing, and it needs no resource list. Answers from: knowledge.
+from — or, where every match is in one document, that document whole, because
+the rest of the page regularly answers the next thing. Pass a documentId back
+instead of a query to read any page whole; it needs no resource list. Answers
+from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -85,6 +86,10 @@ alsoInHints:  # optional
 # third-party one; or uncertain, which means nothing in the call placed the work
 # and what came back is the core's own.
 scope: string
+# The headings the query matched, where every match was in one document and the
+# answer is that document whole rather than the excerpts. Empty on every other
+# answer, whose matches carry their own heading each.
+matchedHeadings: [string]
 # Documents that matched and were left out because they answer for the core
 # repository alone. Empty inside the core. Each is still readable in full as its
 # typo3://guides resource, which is the way to get one deliberately rather than
@@ -322,6 +327,7 @@ Data:
             "truncated": false
         }
     ],
+    "matchedHeadings": [],
     "scope": "core",
     "withheldDocuments": [],
     "alsoInHints": [
@@ -370,6 +376,7 @@ Data:
     "query": "quantum entanglement pineapple",
     "matchCount": 0,
     "matches": [],
+    "matchedHeadings": [],
     "scope": "core",
     "withheldDocuments": [],
     "alsoInHints": [],

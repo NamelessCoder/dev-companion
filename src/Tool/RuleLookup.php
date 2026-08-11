@@ -32,7 +32,7 @@ final class RuleLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Search the TYPO3 rules and procedures this server carries, by topic. The core contribution process is most of it: the commit message conventions, which branches take a patch today, the changelog entry each change type owes, the Gerrit push and amend workflow with both refspecs, and the notes beside runTests.sh. It answers outside a core checkout too — setting up an extension manual, PHPUnit in an extension, Playwright in a project — and there the core-only documents are withheld and named rather than dropped in silence. What comes back is the sections that matched, each naming the document it was cut from. Pass that documentId back instead of a query to read the whole document — the section answers what was asked and the rest of the page regularly answers the next thing, and it needs no resource list.';
+        return 'Search the TYPO3 rules and procedures this server carries, by topic. The core contribution process is most of it: the commit message conventions, which branches take a patch today, the changelog entry each change type owes, the Gerrit push and amend workflow with both refspecs, and the notes beside runTests.sh. It answers outside a core checkout too — setting up an extension manual, PHPUnit in an extension, Playwright in a project — and there the core-only documents are withheld and named rather than dropped in silence. What comes back is the sections that matched, each naming the document it was cut from — or, where every match is in one document, that document whole, because the rest of the page regularly answers the next thing. Pass a documentId back instead of a query to read any page whole; it needs no resource list.';
     }
 
     public static function inputSchema(): array
@@ -59,6 +59,9 @@ final class RuleLookup extends ReadOnlyTool
     {
         $schema = Schema::knowledgeLookup();
         $schema['properties']['scope'] = Schema::scope();
+        $schema['properties']['matchedHeadings'] = Schema::listOf(Schema::string(), 'The headings the query '
+            . 'matched, where every match was in one document and the answer is that document whole rather than '
+            . 'the excerpts. Empty on every other answer, whose matches carry their own heading each.');
         $schema['properties']['withheldDocuments'] = Schema::listOf(Schema::object([
             'id' => Schema::string(),
             'title' => Schema::string(),
@@ -66,8 +69,21 @@ final class RuleLookup extends ReadOnlyTool
             . 'alone. Empty inside the core. Each is still readable in full as its typo3://guides resource, which is '
             . 'the way to get one deliberately rather than by accident.');
         $schema['required'][] = 'scope';
+        $schema['required'][] = 'matchedHeadings';
 
         return $schema;
+    }
+
+    /**
+     * The one document every match came out of, or null where they are spread.
+     *
+     * @param array<int, array<string, mixed>> $results
+     */
+    private static function oneDocument(array $results): ?string
+    {
+        $ids = array_unique(array_column($results, 'id'));
+
+        return count($ids) === 1 ? (string) reset($ids) : null;
     }
 
     public static function answer(array $args): ToolResult
@@ -132,9 +148,15 @@ final class RuleLookup extends ReadOnlyTool
                 . 'typo3_commit_message_guide with workflow="project" and by typo3_hint_lookup.';
             $lines[] = '';
         }
-        $lines[] = $results === []
-            ? sprintf('No section that holds outside the core matched "%s".', $query)
-            : Prose::sections($results);
+        // Where every match is in one page, the page is the answer. The cut is
+        // what a caller pays a second call to undo, and two sessions have now
+        // paid it into the same document — `D-ANS-076`.
+        $concentrated = self::oneDocument($results);
+        $lines[] = match (true) {
+            $results === [] => sprintf('No section that holds outside the core matched "%s".', $query),
+            $concentrated !== null => Prose::wholePage($concentrated, $results),
+            default => Prose::sections($results),
+        };
         // The offer to read the page whole is `Prose::sections()`'s own line
         // now, so every tool that renders this corpus carries it — a second
         // block here said the same thing twice in one answer.
@@ -144,8 +166,13 @@ final class RuleLookup extends ReadOnlyTool
 
         return ToolResult::create(implode("\n", $lines), [
             'query' => $query,
-            'matchCount' => count($results),
-            'matches' => Prose::records($results),
+            'matchCount' => $concentrated === null ? count($results) : 1,
+            'matches' => $concentrated === null
+                ? Prose::records($results)
+                : Prose::pageRecords($concentrated, $results[0]['title']),
+            'matchedHeadings' => $concentrated === null
+                ? []
+                : array_values(array_unique(array_column($results, 'heading'))),
             'scope' => $scope->value,
             'withheldDocuments' => $withheld,
             'alsoInHints' => array_map(
@@ -187,6 +214,7 @@ final class RuleLookup extends ReadOnlyTool
                     'query' => $documentId,
                     'matchCount' => 0,
                     'matches' => [],
+                    'matchedHeadings' => [],
                     'scope' => Scope::Any->value,
                     'withheldDocuments' => [],
                     'alsoInHints' => [],
@@ -220,17 +248,8 @@ final class RuleLookup extends ReadOnlyTool
         return ToolResult::create($body, [
             'query' => $documentId,
             'matchCount' => 1,
-            'matches' => [[
-                'documentId' => $documentId,
-                'title' => $title,
-                'uri' => Documents::uri($documentId),
-                'heading' => $title,
-                'body' => $body,
-                'versions' => '',
-                'coverage' => 1.0,
-                'score' => 0,
-                'truncated' => false,
-            ]],
+            'matches' => Prose::pageRecords($documentId, $title),
+            'matchedHeadings' => [],
             'scope' => $scope->value,
             'withheldDocuments' => [],
             'alsoInHints' => $alsoInHints,
@@ -280,6 +299,7 @@ final class RuleLookup extends ReadOnlyTool
             'query' => $query,
             'matchCount' => 0,
             'matches' => [],
+            'matchedHeadings' => [],
             'scope' => $scope->value,
             'withheldDocuments' => [],
             'alsoInHints' => array_map(

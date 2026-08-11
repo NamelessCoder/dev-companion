@@ -43,6 +43,65 @@ final class Prose
     }
 
     /**
+     * The page every match came out of, instead of the matches.
+     *
+     * A search whose hits all sit in one document has established which page
+     * answers the task, and cutting it there buys nothing: the second search is
+     * the expensive part, not the text. `feedback/2026-08-10-182523` searched
+     * `core/contribution/commit-messages` twice within minutes for two of its
+     * ten headings — 2940 and 3346 bytes over two calls, against 11742 for the
+     * page in one — and had been told at the foot of the first answer which
+     * heading the second search then went looking for (`D-ANS-076`).
+     *
+     * The page is handed over as written, which is what `documentId` does and
+     * for the same reason: a section left out for a major it does not hold on
+     * is a hole in a page, and every bound section carries its own range under
+     * its heading.
+     *
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
+     */
+    public static function wholePage(string $documentId, array $results): string
+    {
+        $matched = array_values(array_unique(array_column($results, 'heading')));
+        $headings = Documents::headings($documentId);
+
+        return self::BOUND_ELSEWHERE . "\n\n"
+            . sprintf(
+                'Every section this query matched is in one document, so this is the page rather than the '
+                    . 'excerpts — %s (%s), %d headings, of which the query matched %s. It is the page as written, so '
+                    . "a section that holds on other majors than yours is in it and says so under its heading.\n\n",
+                $results[0]['title'],
+                Documents::uri($documentId),
+                count($headings),
+                implode(', ', $matched),
+            )
+            . Documents::read($documentId);
+    }
+
+    /**
+     * One whole document as the single match it is, for the two answers that
+     * hand a page over rather than excerpts from it.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public static function pageRecords(string $documentId, string $title): array
+    {
+        $body = Documents::read($documentId);
+
+        return [[
+            'documentId' => $documentId,
+            'title' => $title,
+            'uri' => Documents::uri($documentId),
+            'heading' => $title,
+            'body' => $body,
+            'versions' => '',
+            'coverage' => 1.0,
+            'score' => 0,
+            'truncated' => false,
+        ]];
+    }
+
+    /**
      * The pages the excerpts were cut out of, as the resources they are readable
      * whole as.
      *

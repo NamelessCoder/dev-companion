@@ -114,7 +114,7 @@ headings not above, named, plus the excerpts above.
 the same three lines inline.
 
 The first **Wrong if** is satisfied.
-[`feedback/2026-08-10-182523`](../../feedback/2026-08-10-182523-two-searches-landed-in-the-same-document-and.md)
+[`feedback/2026-08-10-182523`](../../feedback/archive/2026-08-10-182523-two-searches-landed-in-the-same-document-and.md)
 is a core patch session that searched `core/contribution/commit-messages` twice
 within minutes, matched one section each time, and read the page neither time.
 
@@ -141,3 +141,15 @@ still did not read the page. What follows — a third attempt at the answer, a
 search that hands over the document where its matches concentrate in one, or a
 cost to accept — is with whoever maintains this repository, on the todo serving
 that feedback.
+
+**Since then**, on 2026-08-11, that answer came back: the second of the three,
+recorded as
+[`D-ANS-076`](ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md).
+A third wording was priced against it and refused, because it would have rested
+on one session's own phrasing of a line two sessions had already been handed.
+
+What this entry decided is untouched where it still applies, which is the two
+thirds of queries that reach more than one page: those are cut, and the cut says
+what it left. What the successor removes is the case this entry could only ever
+describe better — a search that has already established which page answers, and
+charges a second call for the rest of it.

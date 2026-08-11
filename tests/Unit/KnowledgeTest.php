@@ -682,7 +682,11 @@ final class KnowledgeTest extends TestCase
     public function everyToolThatRendersASectionOffersThePageAsACall(): void
     {
         $answers = [
-            Registry::call('typo3_rule_lookup', ['query' => 'push a patch for review']),
+            // Spread over three documents on purpose: a query whose matches sit
+            // in one page is answered with the page and has nothing left to
+            // offer (`D-ANS-076`), and "push a patch for review" became one of
+            // those.
+            Registry::call('typo3_rule_lookup', ['query' => 'review readiness for a typo3/sysext/core patch']),
             Registry::call('typo3_script_lookup', ['task' => 'run the functional tests', 'targetVersion' => '15']),
             Registry::call('typo3_task_guide', [
                 'task' => 'Write the patch for a core bugfix, cover it and push it to Gerrit',
@@ -911,12 +915,16 @@ final class KnowledgeTest extends TestCase
      * the next query is picked out of those. The share is stated in headings
      * rather than in `##` lines, which is the only count of a page two sections
      * under one heading do not make ambiguous.
+     *
+     * The query is that report's with a word more, because its own reaches one
+     * document and is answered with the page instead (`D-ANS-076`). What is
+     * held here is the answer that really is a cut: two pages, part of each.
      */
     #[Test]
     public function aCutAnswerNamesTheHeadingsOfThePageItLeft(): void
     {
         $result = Registry::call('typo3_rule_lookup', [
-            'query' => 'bugfix changelog entry obligation and target branches',
+            'query' => 'which release branches does a bugfix target',
             'targetVersion' => '15',
         ]);
 
@@ -937,6 +945,41 @@ final class KnowledgeTest extends TestCase
             ),
             $result->text,
         );
+    }
+
+    /**
+     * The two calls `feedback/2026-08-10-182523` made, minutes apart, into one
+     * page it never opened — `D-ANS-076`.
+     *
+     * Each matched one heading of `core/contribution/commit-messages`, and the
+     * first answer already named the heading the second went looking for. So
+     * the first call answers with the page: the second search is what the cut
+     * costs, and the text it saves is nearly free beside a round trip.
+     */
+    #[Test]
+    public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
+    {
+        $first = Registry::call('typo3_rule_lookup', [
+            'query' => 'release branches taking patches changelog entry required for TASK',
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame(['Changelog Files'], $first->data['matchedHeadings']);
+        self::assertSame(1, $first->data['matchCount']);
+        self::assertSame('core/contribution/commit-messages', $first->data['matches'][0]['documentId']);
+        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $first->text);
+
+        // What the second call went for is in the answer to the first.
+        $second = Registry::call('typo3_rule_lookup', [
+            'query' => 'Releases trailer which branches take a patch today maintained versions',
+            'targetVersion' => '15.0',
+        ]);
+        self::assertSame(['Release Targets'], $second->data['matchedHeadings']);
+        self::assertStringContainsString('## Release Targets', $first->text);
+
+        // The offer to read the page is what a cut answer owes, and there is
+        // no cut here to owe it.
+        self::assertStringNotContainsString('typo3_rule_lookup with documentId', $first->text);
     }
 
     /** A page every section of which is above says that, rather than naming none. */

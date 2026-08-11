@@ -121,3 +121,18 @@ and the worktree is named as one of the two ways in; the twelve cost 3562 of the
 3600 afterwards. What the repair says about this entry is that the ratchet holds
 a total and not a wording, so the description a trim leaves behind is read
 against `R-SKL-010` and `D-SKL-024` by whoever writes it and by nothing else.
+
+The first **Wrong if** fired on 2026-08-10, and it is a transcript rather than a
+recorded run. A session was asked "bitte review mir den patch [TASK] Keep the
+docheader navigation row sticky", received a `skill_listing` of 9500 characters
+with every entry described — `typo3-core-patch-review`'s byte-identical to this
+checkout's, opening on the request's own two words — and worked from the
+checkout for thirteen calls until the user asked why. So the budget was not the
+obstacle for that task, and the wording this entry hands the suspicion to is not
+one either. `D-SKL-033` is the judgement and says what was left untried.
+
+What the same reading does to the arithmetic above is smaller and worth the
+line. 9500 characters arrived in a `claude-opus-5` session, where this entry
+computes 6000 for a 200k one on that generation. Either the window was larger or
+a default has moved since 2026-08-08; nothing was established, and the
+measurement stands as one client on one day the way the original does.

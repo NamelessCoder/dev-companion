@@ -135,3 +135,18 @@ changes with that: what the fourth **Wrong if** turned on is that the base is
 copied into every skill, review-only ones included, so the commit step is a
 body's and not this file's. The condition on step 3 is untouched, and the cost
 it names is the path-specific brief, which no skill carries.
+
+The third **Wrong if** has been read since, and it fired: a session that
+activated `typo3-core-patch-review` from its own `description` on 2026-08-10
+read `references/base.md` whole at its next call, loaded `typo3_task_guide`'s
+schema in the same `ToolSearch` batch as the four tools it went on to use, and
+never called it — in 143 calls, without saying it had passed the step over. That
+is the shape `feedback/2026-08-04-055715` reported of itself, arriving a second
+time from a second task and after the condition was published rather than before
+it, and the transcript is named in `D-SKL-033`.
+
+So the narrow wording did not survive publication, which this entry says leaves
+taking the condition off step 3 again. What that costs is stated here and
+unchanged — a session the guide named would be asked for an answer it already
+holds — and the reading that weighs the two is queued rather than made, because
+the base is installed in somebody else's project.

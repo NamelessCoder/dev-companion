@@ -320,8 +320,8 @@ final class Hints
                 // an id is often the first id a caller learned, and the ones
                 // next to it are the rest of the subject it belongs to.
                 'availableHints' => $hint === null
-                    ? self::index(null)
-                    : self::index($hint['domains'], [$id]),
+                    ? self::index(null, [], $target)
+                    : self::index($hint['domains'], [$id], $target),
             ];
         }
 
@@ -563,14 +563,20 @@ final class Hints
      * This is the id path, where nothing was matched and there is no rank to
      * order by. A query is answered from what it scored instead — available().
      *
+     * The target is what the caller is on, so the index is what that caller can
+     * ask for. Read without one it named ids `byId()` then refuses, and the
+     * answer offered `record-routing` on 12 in the same breath as saying there
+     * is no such hint.
+     *
      * @param array<int, string>|null $domains
      * @param array<int, string> $except
+     * @param int|array<int, int>|null $target
      * @return array<int, array{id: string, title: string, category: string}>
      */
-    public static function index(?array $domains, array $except = []): array
+    private static function index(?array $domains, array $except = [], int|array|null $target = null): array
     {
         $index = [];
-        foreach (self::load() as $hint) {
+        foreach (self::load($target) as $hint) {
             if ($domains !== null && array_intersect($hint['domains'], $domains) === []) {
                 continue;
             }

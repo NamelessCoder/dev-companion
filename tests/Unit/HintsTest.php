@@ -1354,6 +1354,25 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * The ids an answer offers are the ids that caller can ask for.
+     *
+     * `record-routing` holds from 14, so on 12 it is refused — and the index
+     * was read without the target, so the same answer said there is no such
+     * hint and then listed it. Seven hints are in that position on 12 and three
+     * on 13, and none on the two majors above them, which is why it turned
+     * quietly.
+     */
+    #[Test]
+    public function theIdsOfferedAreTheOnesThatMajorHas(): void
+    {
+        $result = Hints::find([], '', 6, 'record-routing', [12]);
+
+        self::assertSame([], $result['matchedHints']);
+        self::assertNotContains('record-routing', array_column($result['availableHints'], 'id'));
+        self::assertContains('record-routing', array_column(Hints::find([], '', 6, 'record-routing', [14])['matchedHints'], 'id'));
+    }
+
     #[Test]
     public function anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo(): void
     {

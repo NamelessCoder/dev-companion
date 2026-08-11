@@ -99,6 +99,7 @@ just ranked it seventh.
 ## Covered by
 
 - `HintsTest::theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused`
+- `HintsTest::theIdsOfferedAreTheOnesThatMajorHas`
 - `HintsTest::theIndexIsNotOfferingWhatTheSameAnswerWithheld`
 - `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`
 - `HintsTest::anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn`

@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/take-the-condition-off-step-3-of-the-order-or-say-what-else-makes-the-call
+**Claimed:** 2026-08-11
 
 `D-SKL-015`'s third **Wrong if** has fired twice — a session that reached a
 skill from its `description` skipped `typo3_task_guide` in

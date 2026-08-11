@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-10-182417-the-browser-check-guide-stayed-unread-through-a.md
 **Priority:** normal
+**Branch:** todo/name-the-browser-check-page-where-the-e2e-suites-are
+**Claimed:** 2026-08-11
 
 `typo3_test_run_guide` returns `e2e-prepare` and `e2e-browser` for a backend CSS
 change and names no page saying what to do with them or what to do when that

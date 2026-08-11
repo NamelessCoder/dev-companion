@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-10-182435-a-path-scoped-suite-list-goes-stale-when-the.md
 **Priority:** normal
+**Branch:** todo/say-what-a-path-narrowed-suite-list-left-out
+**Claimed:** 2026-08-11
 
 In `src/Tool/TestRunGuide.php`, the block that reads "Narrowed to the css and
 fluid domain(s) the given paths touch" gains the other half: the domains no

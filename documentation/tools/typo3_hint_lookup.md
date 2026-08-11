@@ -106,10 +106,11 @@ hints:
         # ordinary case, means it holds wherever TYPO3 is written: an API that
         # throws throws in a sitepackage too.
         scope: string or null
-# The hints that exist in the searched domains, minus the ones returned above.
-# Carried on every answer rather than on an empty one: a query that matched
-# three hints about something else is where naming an id is worth most. An id
-# lookup lists what stands beside the hint it returned.
+# The hints that exist in the searched domains, minus the ones returned above,
+# closest first: what the limit cut stands before what matched too little to
+# return. Carried on every answer rather than on an empty one: a query that
+# matched three hints about something else is where naming an id is worth most.
+# An id lookup lists what stands beside the hint it returned.
 availableHints:
   - # Ask for this hint outright by passing it as id.
     id: string
@@ -176,91 +177,91 @@ Hints:
 - Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.
 - DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share. It lives in typo3/sysext/core/Tests/Functional/DataScenarios/, which is the core's own test tree — an extension writes an ordinary FunctionalTestCase and primes its records with CSV fixtures.
 
-What matched above is a guess at your words. The rest of these domains, requestable by id:
-- public-assets — Public Assets and the Publish Step (PHP)
-- extension-asset-build — Building Assets in a Project Extension (PHP)
+What matched above is a guess at your words. The rest of these domains, closest first, requestable by id:
+- environment-placeholders — %env() in a YAML Configuration (PHP)
+- di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
+- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
+- extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
 - authentication-permissions — Authentication and Permissions (PHP)
 - backend-modules — Backend Module and Route Registration (PHP)
-- caching — Caches (PHP)
-- configuration-reach — Configuration Belongs to Its Reach (PHP)
-- environment-variables — What TYPO3 Reads From the Environment (PHP)
-- environment-placeholders — %env() in a YAML Configuration (PHP)
-- environment-runtime-readers — What Reads the Environment While It Runs (PHP)
-- installation-setup — What typo3 setup Takes and What It Refuses (PHP)
-- console-commands — Console Commands (PHP)
-- content-elements — Registering a Content Element (PHP)
-- content-element-shape — What a Content Element Owns (PHP)
-- content-element-preview — The Backend Preview of a Content Element (Fluid)
-- datahandler-writing — Writing Records with a Datamap (PHP)
-- datahandler-relations — What a Datamap Does to a Relation Field (PHP)
-- datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
-- datahandler-seeding — Seeding Records with a Script (PHP)
-- frontend-dataprocessors — Frontend DataProcessors (PHP)
-- dependency-injection — Wiring a Service (PHP)
-- di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
-- sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
-- initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
-- initial-content-references — What Survives the Import, and What Points at a Stranger (PHP)
-- impexp-artifact — Writing the Export a Distribution Ships (PHP)
-- extension-documentation — Documenting a Project Extension (Documentation)
-- events-extension-points — Events and Extension Points (PHP)
-- extbase — What Extbase Is For, and When It Is Not Needed (PHP)
-- extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
-- extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
-- extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
-- extbase-pagination — Paginating a List (PHP)
-- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
-- extension-manifest — What Makes a Directory an Extension (PHP)
-- extension-schema-sql — Declaring Tables and Columns (PHP)
-- extension-declarative-files — The Files an Extension Is Configured By (PHP)
-- extension-boot-files — What Still Runs at Boot, and What No Longer Does (PHP)
-- content-rendering-templates — contentRenderingTemplates and Where Plugin TypoScript Lands (PHP)
-- extension-repository-layout — How a Distributed Extension Repository Is Laid Out (PHP)
-- extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
-- extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
-- extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
-- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
-- fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
-- fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
-- fal-reading — Getting a File Object, and Its Metadata (PHP)
-- fal-writing — Putting a File Into a Storage (PHP)
-- fal-testing — Covering FAL Behaviour (PHP)
-- fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
-- form-framework — EXT:form Configuration and Runtime (PHP)
-- icon-usage — Rendering and Registering Icons (PHP)
-- site-label-language — Core Labels on a Non-English Site (Labels)
-- page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
-- persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
 - installation-boot — Booting the Installation a Project Repository Declares (PHP)
-- project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
-- project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
-- project-configuration-files — What the Installation Is Configured By (PHP)
-- public-api-surface — Changing a Public Method Signature (PHP)
-- frontend-records — Records in the Frontend Without Extbase (TypoScript)
-- record-routing — Routing a Record Detail View (PHP)
-- record-page-title — The Title of a Record Detail Page (PHP)
-- routing-request-handling — Routing, Middleware, and Request Handling (PHP)
-- security-sinks — Following a Value to Its Sink (PHP)
-- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
-- tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
-- tca-schema-api — TCA Schema API (PHP)
-- formdata-providers — FormEngine Data Providers (PHP)
-- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
-- core-tests — Writing Core Tests (PHP)
-- project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
-- extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
-- extension-test-site — Writing a Site Configuration in a Test (PHP)
-- extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
 - browser-tests — Browser Tests with Playwright (PHP)
+- project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
+- extension-asset-build — Building Assets in a Project Extension (PHP)
+- caching — Caches (PHP)
+- public-api-surface — Changing a Public Method Signature (PHP)
 - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
-- browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
+- configuration-reach — Configuration Belongs to Its Reach (PHP)
+- console-commands — Console Commands (PHP)
+- site-label-language — Core Labels on a Non-English Site (Labels)
+- fal-testing — Covering FAL Behaviour (PHP)
+- extension-schema-sql — Declaring Tables and Columns (PHP)
+- deprecated-apis — Deprecated APIs (PHP)
+- extension-documentation — Documenting a Project Extension (Documentation)
+- form-framework — EXT:form Configuration and Runtime (PHP)
+- events-extension-points — Events and Extension Points (PHP)
+- fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
+- security-sinks — Following a Value to Its Sink (PHP)
+- formdata-providers — FormEngine Data Providers (PHP)
+- frontend-dataprocessors — Frontend DataProcessors (PHP)
+- fal-reading — Getting a File Object, and Its Metadata (PHP)
+- extension-repository-layout — How a Distributed Extension Repository Is Laid Out (PHP)
+- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
+- project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
+- extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
+- extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
+- extbase-pagination — Paginating a List (PHP)
+- public-assets — Public Assets and the Publish Step (PHP)
+- fal-writing — Putting a File Into a Storage (PHP)
+- persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
+- frontend-records — Records in the Frontend Without Extbase (TypoScript)
+- content-elements — Registering a Content Element (PHP)
+- icon-usage — Rendering and Registering Icons (PHP)
+- record-routing — Routing a Record Detail View (PHP)
+- routing-request-handling — Routing, Middleware, and Request Handling (PHP)
+- datahandler-seeding — Seeding Records with a Script (PHP)
 - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
 - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
+- project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
+- sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
+- fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
+- tca-schema-api — TCA Schema API (PHP)
+- tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
+- content-element-preview — The Backend Preview of a Content Element (Fluid)
+- extension-declarative-files — The Files an Extension Is Configured By (PHP)
+- extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
+- browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
+- record-page-title — The Title of a Record Detail Page (PHP)
+- extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
 - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
-- installation-upgrade — Upgrading an Installation (PHP)
-- upgrade-own-code — What No Wizard Touches (PHP)
-- deprecated-apis — Deprecated APIs (PHP)
 - upgrade-wizards — Upgrade Wizards (PHP)
+- installation-upgrade — Upgrading an Installation (PHP)
+- extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
+- extbase — What Extbase Is For, and When It Is Not Needed (PHP)
+- extension-manifest — What Makes a Directory an Extension (PHP)
+- upgrade-own-code — What No Wizard Touches (PHP)
+- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
+- environment-runtime-readers — What Reads the Environment While It Runs (PHP)
+- extension-boot-files — What Still Runs at Boot, and What No Longer Does (PHP)
+- extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
+- initial-content-references — What Survives the Import, and What Points at a Stranger (PHP)
+- environment-variables — What TYPO3 Reads From the Environment (PHP)
+- content-element-shape — What a Content Element Owns (PHP)
+- datahandler-relations — What a Datamap Does to a Relation Field (PHP)
+- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+- project-configuration-files — What the Installation Is Configured By (PHP)
+- installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+- page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
+- extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
+- datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
+- fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+- initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
+- dependency-injection — Wiring a Service (PHP)
+- core-tests — Writing Core Tests (PHP)
+- datahandler-writing — Writing Records with a Datamap (PHP)
+- extension-test-site — Writing a Site Configuration in a Test (PHP)
+- impexp-artifact — Writing the Export a Distribution Ships (PHP)
+- content-rendering-templates — contentRenderingTemplates and Where Plugin TypoScript Lands (PHP)
 ```
 
 Data:
@@ -383,13 +384,23 @@ Data:
     ],
     "availableHints": [
         {
-            "id": "public-assets",
-            "title": "Public Assets and the Publish Step",
+            "id": "environment-placeholders",
+            "title": "%env() in a YAML Configuration",
             "category": "PHP"
         },
         {
-            "id": "extension-asset-build",
-            "title": "Building Assets in a Project Extension",
+            "id": "di-service-not-found",
+            "title": "A Service the Container Cannot Find at Runtime",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-access-restriction",
+            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-test-frontend-request",
+            "title": "Asserting a Frontend Response in a Test",
             "category": "PHP"
         },
         {
@@ -403,353 +414,8 @@ Data:
             "category": "PHP"
         },
         {
-            "id": "caching",
-            "title": "Caches",
-            "category": "PHP"
-        },
-        {
-            "id": "configuration-reach",
-            "title": "Configuration Belongs to Its Reach",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-variables",
-            "title": "What TYPO3 Reads From the Environment",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-placeholders",
-            "title": "%env() in a YAML Configuration",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-runtime-readers",
-            "title": "What Reads the Environment While It Runs",
-            "category": "PHP"
-        },
-        {
-            "id": "installation-setup",
-            "title": "What typo3 setup Takes and What It Refuses",
-            "category": "PHP"
-        },
-        {
-            "id": "console-commands",
-            "title": "Console Commands",
-            "category": "PHP"
-        },
-        {
-            "id": "content-elements",
-            "title": "Registering a Content Element",
-            "category": "PHP"
-        },
-        {
-            "id": "content-element-shape",
-            "title": "What a Content Element Owns",
-            "category": "PHP"
-        },
-        {
-            "id": "content-element-preview",
-            "title": "The Backend Preview of a Content Element",
-            "category": "Fluid"
-        },
-        {
-            "id": "datahandler-writing",
-            "title": "Writing Records with a Datamap",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-relations",
-            "title": "What a Datamap Does to a Relation Field",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-placement",
-            "title": "Which Page May Hold a New Record, and Where It Lands on It",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-seeding",
-            "title": "Seeding Records with a Script",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-dataprocessors",
-            "title": "Frontend DataProcessors",
-            "category": "PHP"
-        },
-        {
-            "id": "dependency-injection",
-            "title": "Wiring a Service",
-            "category": "PHP"
-        },
-        {
-            "id": "di-service-not-found",
-            "title": "A Service the Container Cannot Find at Runtime",
-            "category": "PHP"
-        },
-        {
-            "id": "sitepackage-initial-content",
-            "title": "Shipping Initial Content with an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "initial-content-import-once",
-            "title": "Why a Changed Data File Does Not Arrive",
-            "category": "PHP"
-        },
-        {
-            "id": "initial-content-references",
-            "title": "What Survives the Import, and What Points at a Stranger",
-            "category": "PHP"
-        },
-        {
-            "id": "impexp-artifact",
-            "title": "Writing the Export a Distribution Ships",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-documentation",
-            "title": "Documenting a Project Extension",
-            "category": "Documentation"
-        },
-        {
-            "id": "events-extension-points",
-            "title": "Events and Extension Points",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase",
-            "title": "What Extbase Is For, and When It Is Not Needed",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-plugin-registration",
-            "title": "The Two Calls That Register a Plugin",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-domain-mapping",
-            "title": "Models, Repositories and the Table Behind Them",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-arguments",
-            "title": "What Arrives From a Request, and What Silently Does Not",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-pagination",
-            "title": "Paginating a List",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-persistence-internals",
-            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-manifest",
-            "title": "What Makes a Directory an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-schema-sql",
-            "title": "Declaring Tables and Columns",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-declarative-files",
-            "title": "The Files an Extension Is Configured By",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-boot-files",
-            "title": "What Still Runs at Boot, and What No Longer Does",
-            "category": "PHP"
-        },
-        {
-            "id": "content-rendering-templates",
-            "title": "contentRenderingTemplates and Where Plugin TypoScript Lands",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-layout",
-            "title": "How a Distributed Extension Repository Is Laid Out",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-dependencies",
-            "title": "What Such a Repository Commits, and What It Vendors",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-tests",
-            "title": "The Instance an Extension Suite Builds Itself",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-installation",
-            "title": "Installing TYPO3 Beneath the Extension Repository",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-ter-release",
-            "title": "What Publishing to the TER Requires of an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-basics",
-            "title": "Files Are Addressed Through FAL, Not by Path",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-storages-drivers",
-            "title": "Storages and the Drivers Behind Them",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-reading",
-            "title": "Getting a File Object, and Its Metadata",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-writing",
-            "title": "Putting a File Into a Storage",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-testing",
-            "title": "Covering FAL Behaviour",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-processing",
-            "title": "Which Processor Claims a File, and What Runs Below It",
-            "category": "PHP"
-        },
-        {
-            "id": "form-framework",
-            "title": "EXT:form Configuration and Runtime",
-            "category": "PHP"
-        },
-        {
-            "id": "icon-usage",
-            "title": "Rendering and Registering Icons",
-            "category": "PHP"
-        },
-        {
-            "id": "site-label-language",
-            "title": "Core Labels on a Non-English Site",
-            "category": "Labels"
-        },
-        {
-            "id": "page-cache-flushing",
-            "title": "Which Caches a Change Invalidates, and What Clears the Rest",
-            "category": "Fluid"
-        },
-        {
-            "id": "persistence-reading",
-            "title": "Reading Records, and What Is Hidden From the Query",
-            "category": "PHP"
-        },
-        {
             "id": "installation-boot",
             "title": "Booting the Installation a Project Repository Declares",
-            "category": "PHP"
-        },
-        {
-            "id": "project-repository-layout",
-            "title": "How a TYPO3 Project Repository Is Laid Out",
-            "category": "PHP"
-        },
-        {
-            "id": "project-build-and-scripts",
-            "title": "Build/, the Scripts, and What Is Not Deployed",
-            "category": "PHP"
-        },
-        {
-            "id": "project-configuration-files",
-            "title": "What the Installation Is Configured By",
-            "category": "PHP"
-        },
-        {
-            "id": "public-api-surface",
-            "title": "Changing a Public Method Signature",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-records",
-            "title": "Records in the Frontend Without Extbase",
-            "category": "TypoScript"
-        },
-        {
-            "id": "record-routing",
-            "title": "Routing a Record Detail View",
-            "category": "PHP"
-        },
-        {
-            "id": "record-page-title",
-            "title": "The Title of a Record Detail Page",
-            "category": "PHP"
-        },
-        {
-            "id": "routing-request-handling",
-            "title": "Routing, Middleware, and Request Handling",
-            "category": "PHP"
-        },
-        {
-            "id": "security-sinks",
-            "title": "Following a Value to Its Sink",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-access-restriction",
-            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-formengine",
-            "title": "TCA, FormEngine, and Backend Forms",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-schema-api",
-            "title": "TCA Schema API",
-            "category": "PHP"
-        },
-        {
-            "id": "formdata-providers",
-            "title": "FormEngine Data Providers",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-datetime-storage",
-            "title": "What a Datetime Column Stores, and When It Is Null",
-            "category": "PHP"
-        },
-        {
-            "id": "core-tests",
-            "title": "Writing Core Tests",
-            "category": "PHP"
-        },
-        {
-            "id": "project-extension-tests",
-            "title": "Setting a Test Suite Up in an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-extensions",
-            "title": "Which Extensions a Functional Test Loads",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-site",
-            "title": "Writing a Site Configuration in a Test",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-frontend-request",
-            "title": "Asserting a Frontend Response in a Test",
             "category": "PHP"
         },
         {
@@ -758,13 +424,173 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "project-build-and-scripts",
+            "title": "Build/, the Scripts, and What Is Not Deployed",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-asset-build",
+            "title": "Building Assets in a Project Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "caching",
+            "title": "Caches",
+            "category": "PHP"
+        },
+        {
+            "id": "public-api-surface",
+            "title": "Changing a Public Method Signature",
+            "category": "PHP"
+        },
+        {
             "id": "browser-test-accessibility",
             "title": "Checking Accessibility and Contrast From the Same Spec",
             "category": "PHP"
         },
         {
-            "id": "browser-tests-outside-core",
-            "title": "The Site a Project Suite Runs Against",
+            "id": "configuration-reach",
+            "title": "Configuration Belongs to Its Reach",
+            "category": "PHP"
+        },
+        {
+            "id": "console-commands",
+            "title": "Console Commands",
+            "category": "PHP"
+        },
+        {
+            "id": "site-label-language",
+            "title": "Core Labels on a Non-English Site",
+            "category": "Labels"
+        },
+        {
+            "id": "fal-testing",
+            "title": "Covering FAL Behaviour",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-schema-sql",
+            "title": "Declaring Tables and Columns",
+            "category": "PHP"
+        },
+        {
+            "id": "deprecated-apis",
+            "title": "Deprecated APIs",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-documentation",
+            "title": "Documenting a Project Extension",
+            "category": "Documentation"
+        },
+        {
+            "id": "form-framework",
+            "title": "EXT:form Configuration and Runtime",
+            "category": "PHP"
+        },
+        {
+            "id": "events-extension-points",
+            "title": "Events and Extension Points",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-basics",
+            "title": "Files Are Addressed Through FAL, Not by Path",
+            "category": "PHP"
+        },
+        {
+            "id": "security-sinks",
+            "title": "Following a Value to Its Sink",
+            "category": "PHP"
+        },
+        {
+            "id": "formdata-providers",
+            "title": "FormEngine Data Providers",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-dataprocessors",
+            "title": "Frontend DataProcessors",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-reading",
+            "title": "Getting a File Object, and Its Metadata",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-layout",
+            "title": "How a Distributed Extension Repository Is Laid Out",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-persistence-internals",
+            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
+            "category": "PHP"
+        },
+        {
+            "id": "project-repository-layout",
+            "title": "How a TYPO3 Project Repository Is Laid Out",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-installation",
+            "title": "Installing TYPO3 Beneath the Extension Repository",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-domain-mapping",
+            "title": "Models, Repositories and the Table Behind Them",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-pagination",
+            "title": "Paginating a List",
+            "category": "PHP"
+        },
+        {
+            "id": "public-assets",
+            "title": "Public Assets and the Publish Step",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-writing",
+            "title": "Putting a File Into a Storage",
+            "category": "PHP"
+        },
+        {
+            "id": "persistence-reading",
+            "title": "Reading Records, and What Is Hidden From the Query",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-records",
+            "title": "Records in the Frontend Without Extbase",
+            "category": "TypoScript"
+        },
+        {
+            "id": "content-elements",
+            "title": "Registering a Content Element",
+            "category": "PHP"
+        },
+        {
+            "id": "icon-usage",
+            "title": "Rendering and Registering Icons",
+            "category": "PHP"
+        },
+        {
+            "id": "record-routing",
+            "title": "Routing a Record Detail View",
+            "category": "PHP"
+        },
+        {
+            "id": "routing-request-handling",
+            "title": "Routing, Middleware, and Request Handling",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-seeding",
+            "title": "Seeding Records with a Script",
             "category": "PHP"
         },
         {
@@ -778,8 +604,68 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "project-extension-tests",
+            "title": "Setting a Test Suite Up in an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "sitepackage-initial-content",
+            "title": "Shipping Initial Content with an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-storages-drivers",
+            "title": "Storages and the Drivers Behind Them",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-schema-api",
+            "title": "TCA Schema API",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-formengine",
+            "title": "TCA, FormEngine, and Backend Forms",
+            "category": "PHP"
+        },
+        {
+            "id": "content-element-preview",
+            "title": "The Backend Preview of a Content Element",
+            "category": "Fluid"
+        },
+        {
+            "id": "extension-declarative-files",
+            "title": "The Files an Extension Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-tests",
+            "title": "The Instance an Extension Suite Builds Itself",
+            "category": "PHP"
+        },
+        {
+            "id": "browser-tests-outside-core",
+            "title": "The Site a Project Suite Runs Against",
+            "category": "PHP"
+        },
+        {
+            "id": "record-page-title",
+            "title": "The Title of a Record Detail Page",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-plugin-registration",
+            "title": "The Two Calls That Register a Plugin",
+            "category": "PHP"
+        },
+        {
             "id": "unit-test-doubles",
             "title": "Unit Tests, Test Doubles and Data Providers in PHPUnit",
+            "category": "PHP"
+        },
+        {
+            "id": "upgrade-wizards",
+            "title": "Upgrade Wizards",
             "category": "PHP"
         },
         {
@@ -788,18 +674,133 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extbase-arguments",
+            "title": "What Arrives From a Request, and What Silently Does Not",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase",
+            "title": "What Extbase Is For, and When It Is Not Needed",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-manifest",
+            "title": "What Makes a Directory an Extension",
+            "category": "PHP"
+        },
+        {
             "id": "upgrade-own-code",
             "title": "What No Wizard Touches",
             "category": "PHP"
         },
         {
-            "id": "deprecated-apis",
-            "title": "Deprecated APIs",
+            "id": "extension-ter-release",
+            "title": "What Publishing to the TER Requires of an Extension",
             "category": "PHP"
         },
         {
-            "id": "upgrade-wizards",
-            "title": "Upgrade Wizards",
+            "id": "environment-runtime-readers",
+            "title": "What Reads the Environment While It Runs",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-boot-files",
+            "title": "What Still Runs at Boot, and What No Longer Does",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-dependencies",
+            "title": "What Such a Repository Commits, and What It Vendors",
+            "category": "PHP"
+        },
+        {
+            "id": "initial-content-references",
+            "title": "What Survives the Import, and What Points at a Stranger",
+            "category": "PHP"
+        },
+        {
+            "id": "environment-variables",
+            "title": "What TYPO3 Reads From the Environment",
+            "category": "PHP"
+        },
+        {
+            "id": "content-element-shape",
+            "title": "What a Content Element Owns",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-relations",
+            "title": "What a Datamap Does to a Relation Field",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-datetime-storage",
+            "title": "What a Datetime Column Stores, and When It Is Null",
+            "category": "PHP"
+        },
+        {
+            "id": "project-configuration-files",
+            "title": "What the Installation Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "installation-setup",
+            "title": "What typo3 setup Takes and What It Refuses",
+            "category": "PHP"
+        },
+        {
+            "id": "page-cache-flushing",
+            "title": "Which Caches a Change Invalidates, and What Clears the Rest",
+            "category": "Fluid"
+        },
+        {
+            "id": "extension-test-extensions",
+            "title": "Which Extensions a Functional Test Loads",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-placement",
+            "title": "Which Page May Hold a New Record, and Where It Lands on It",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-processing",
+            "title": "Which Processor Claims a File, and What Runs Below It",
+            "category": "PHP"
+        },
+        {
+            "id": "initial-content-import-once",
+            "title": "Why a Changed Data File Does Not Arrive",
+            "category": "PHP"
+        },
+        {
+            "id": "dependency-injection",
+            "title": "Wiring a Service",
+            "category": "PHP"
+        },
+        {
+            "id": "core-tests",
+            "title": "Writing Core Tests",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-writing",
+            "title": "Writing Records with a Datamap",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-test-site",
+            "title": "Writing a Site Configuration in a Test",
+            "category": "PHP"
+        },
+        {
+            "id": "impexp-artifact",
+            "title": "Writing the Export a Distribution Ships",
+            "category": "PHP"
+        },
+        {
+            "id": "content-rendering-templates",
+            "title": "contentRenderingTemplates and Where Plugin TypoScript Lands",
             "category": "PHP"
         }
     ],
@@ -886,23 +887,23 @@ Hints:
 - Avoid a generic name that can collide globally. There is one stylesheet and no scoping, so a .header or a .content in a component partial is a name taken from everybody.
 - Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors.
 
-What matched above is a guess at your words. The rest of these domains, requestable by id:
-- public-assets — Public Assets and the Publish Step (PHP)
+What matched above is a guess at your words. The rest of these domains, closest first, requestable by id:
+- browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
 - css-browser-target — CSS Browser Target (Backend CSS)
-- css-minimal-reusable-components — Minimal CSS and Reusable Components (Backend CSS)
-- css-tokens-specificity — CSS Tokens and Specificity (Backend CSS)
-- css-state-attributes — State Attributes and Semantic Selectors (Backend CSS)
-- css-color-surface-tokens — Color and Surface Tokens (Backend CSS)
-- css-shadow-layering — Shadow Tokens and Layering (Backend CSS)
-- css-z-index-layering — Z-Index and Overlay Layering (Backend CSS)
-- css-motion-transitions — Motion and Transitions (Backend CSS)
-- css-container-queries — Container Queries and Responsive Components (Backend CSS)
-- css-light-dark-mode — Light and Dark Mode CSS (Backend CSS)
-- css-rtl-logical-properties — RTL and Logical CSS Properties (Backend CSS)
+- public-assets — Public Assets and the Publish Step (PHP)
 - css-bootstrap-transition — Bootstrap Transition in Backend CSS (Backend CSS)
 - css-accessibility-states — CSS Accessibility, Contrast, and States (Backend CSS)
+- css-tokens-specificity — CSS Tokens and Specificity (Backend CSS)
+- css-color-surface-tokens — Color and Surface Tokens (Backend CSS)
+- css-container-queries — Container Queries and Responsive Components (Backend CSS)
 - css-icon-text-layout-stability — Icons, Text, and Layout Stability (Backend CSS)
-- browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
+- css-light-dark-mode — Light and Dark Mode CSS (Backend CSS)
+- css-minimal-reusable-components — Minimal CSS and Reusable Components (Backend CSS)
+- css-motion-transitions — Motion and Transitions (Backend CSS)
+- css-rtl-logical-properties — RTL and Logical CSS Properties (Backend CSS)
+- css-shadow-layering — Shadow Tokens and Layering (Backend CSS)
+- css-state-attributes — State Attributes and Semantic Selectors (Backend CSS)
+- css-z-index-layering — Z-Index and Overlay Layering (Backend CSS)
 ```
 
 Data:
@@ -1231,8 +1232,8 @@ Data:
     ],
     "availableHints": [
         {
-            "id": "public-assets",
-            "title": "Public Assets and the Publish Step",
+            "id": "browser-test-accessibility",
+            "title": "Checking Accessibility and Contrast From the Same Spec",
             "category": "PHP"
         },
         {
@@ -1241,54 +1242,9 @@ Data:
             "category": "Backend CSS"
         },
         {
-            "id": "css-minimal-reusable-components",
-            "title": "Minimal CSS and Reusable Components",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-tokens-specificity",
-            "title": "CSS Tokens and Specificity",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-state-attributes",
-            "title": "State Attributes and Semantic Selectors",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-color-surface-tokens",
-            "title": "Color and Surface Tokens",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-shadow-layering",
-            "title": "Shadow Tokens and Layering",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-z-index-layering",
-            "title": "Z-Index and Overlay Layering",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-motion-transitions",
-            "title": "Motion and Transitions",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-container-queries",
-            "title": "Container Queries and Responsive Components",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-light-dark-mode",
-            "title": "Light and Dark Mode CSS",
-            "category": "Backend CSS"
-        },
-        {
-            "id": "css-rtl-logical-properties",
-            "title": "RTL and Logical CSS Properties",
-            "category": "Backend CSS"
+            "id": "public-assets",
+            "title": "Public Assets and the Publish Step",
+            "category": "PHP"
         },
         {
             "id": "css-bootstrap-transition",
@@ -1301,14 +1257,59 @@ Data:
             "category": "Backend CSS"
         },
         {
+            "id": "css-tokens-specificity",
+            "title": "CSS Tokens and Specificity",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-color-surface-tokens",
+            "title": "Color and Surface Tokens",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-container-queries",
+            "title": "Container Queries and Responsive Components",
+            "category": "Backend CSS"
+        },
+        {
             "id": "css-icon-text-layout-stability",
             "title": "Icons, Text, and Layout Stability",
             "category": "Backend CSS"
         },
         {
-            "id": "browser-test-accessibility",
-            "title": "Checking Accessibility and Contrast From the Same Spec",
-            "category": "PHP"
+            "id": "css-light-dark-mode",
+            "title": "Light and Dark Mode CSS",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-minimal-reusable-components",
+            "title": "Minimal CSS and Reusable Components",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-motion-transitions",
+            "title": "Motion and Transitions",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-rtl-logical-properties",
+            "title": "RTL and Logical CSS Properties",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-shadow-layering",
+            "title": "Shadow Tokens and Layering",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-state-attributes",
+            "title": "State Attributes and Semantic Selectors",
+            "category": "Backend CSS"
+        },
+        {
+            "id": "css-z-index-layering",
+            "title": "Z-Index and Overlay Layering",
+            "category": "Backend CSS"
         }
     ],
     "documents": []
@@ -1335,94 +1336,94 @@ Domains: php (hints outside these domains are not shown)
 Hints:
 No hint matched. Name a path or a more specific topic, or ask for one of the ids below.
 
-Hints that exist in these domains, requestable by id:
-- public-assets — Public Assets and the Publish Step (PHP)
-- extension-asset-build — Building Assets in a Project Extension (PHP)
+Hints that exist in these domains, closest first, requestable by id:
+- environment-placeholders — %env() in a YAML Configuration (PHP)
+- di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
+- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
+- extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
 - authentication-permissions — Authentication and Permissions (PHP)
 - backend-modules — Backend Module and Route Registration (PHP)
-- caching — Caches (PHP)
-- configuration-reach — Configuration Belongs to Its Reach (PHP)
-- environment-variables — What TYPO3 Reads From the Environment (PHP)
-- environment-placeholders — %env() in a YAML Configuration (PHP)
-- environment-runtime-readers — What Reads the Environment While It Runs (PHP)
-- installation-setup — What typo3 setup Takes and What It Refuses (PHP)
-- console-commands — Console Commands (PHP)
-- content-elements — Registering a Content Element (PHP)
-- content-element-shape — What a Content Element Owns (PHP)
-- content-element-preview — The Backend Preview of a Content Element (Fluid)
-- datahandler-basics — DataHandler Is the Write Path for Records (PHP)
-- datahandler-writing — Writing Records with a Datamap (PHP)
-- datahandler-relations — What a Datamap Does to a Relation Field (PHP)
-- datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
-- datahandler-seeding — Seeding Records with a Script (PHP)
-- datahandler-testing — Testing DataHandler Behaviour (PHP)
-- frontend-dataprocessors — Frontend DataProcessors (PHP)
-- dependency-injection — Wiring a Service (PHP)
-- di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
-- sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
-- initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
-- initial-content-references — What Survives the Import, and What Points at a Stranger (PHP)
-- impexp-artifact — Writing the Export a Distribution Ships (PHP)
-- extension-documentation — Documenting a Project Extension (Documentation)
-- events-extension-points — Events and Extension Points (PHP)
-- extbase — What Extbase Is For, and When It Is Not Needed (PHP)
-- extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
-- extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
-- extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
-- extbase-pagination — Paginating a List (PHP)
-- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
-- extension-manifest — What Makes a Directory an Extension (PHP)
-- extension-schema-sql — Declaring Tables and Columns (PHP)
-- extension-declarative-files — The Files an Extension Is Configured By (PHP)
-- extension-boot-files — What Still Runs at Boot, and What No Longer Does (PHP)
-- content-rendering-templates — contentRenderingTemplates and Where Plugin TypoScript Lands (PHP)
-- extension-repository-layout — How a Distributed Extension Repository Is Laid Out (PHP)
-- extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
-- extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
-- extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
-- system-extension-boundaries — System Extension Boundaries (PHP)
-- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
-- fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
-- fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
-- fal-reading — Getting a File Object, and Its Metadata (PHP)
-- fal-writing — Putting a File Into a Storage (PHP)
-- fal-testing — Covering FAL Behaviour (PHP)
-- fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
-- form-framework — EXT:form Configuration and Runtime (PHP)
-- icon-usage — Rendering and Registering Icons (PHP)
-- site-label-language — Core Labels on a Non-English Site (Labels)
-- page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
-- persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
 - installation-boot — Booting the Installation a Project Repository Declares (PHP)
-- project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
-- project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
-- project-configuration-files — What the Installation Is Configured By (PHP)
-- public-api-surface — Changing a Public Method Signature (PHP)
-- frontend-records — Records in the Frontend Without Extbase (TypoScript)
-- record-routing — Routing a Record Detail View (PHP)
-- record-page-title — The Title of a Record Detail Page (PHP)
-- routing-request-handling — Routing, Middleware, and Request Handling (PHP)
-- security-sinks — Following a Value to Its Sink (PHP)
-- frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
-- tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
-- tca-schema-api — TCA Schema API (PHP)
-- formdata-providers — FormEngine Data Providers (PHP)
-- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
-- core-tests — Writing Core Tests (PHP)
-- project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
-- extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
-- extension-test-site — Writing a Site Configuration in a Test (PHP)
-- extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
 - browser-tests — Browser Tests with Playwright (PHP)
+- project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
+- extension-asset-build — Building Assets in a Project Extension (PHP)
+- caching — Caches (PHP)
+- public-api-surface — Changing a Public Method Signature (PHP)
 - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
-- browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
+- configuration-reach — Configuration Belongs to Its Reach (PHP)
+- console-commands — Console Commands (PHP)
+- site-label-language — Core Labels on a Non-English Site (Labels)
+- fal-testing — Covering FAL Behaviour (PHP)
+- datahandler-basics — DataHandler Is the Write Path for Records (PHP)
+- extension-schema-sql — Declaring Tables and Columns (PHP)
+- deprecated-apis — Deprecated APIs (PHP)
+- extension-documentation — Documenting a Project Extension (Documentation)
+- form-framework — EXT:form Configuration and Runtime (PHP)
+- events-extension-points — Events and Extension Points (PHP)
+- fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
+- security-sinks — Following a Value to Its Sink (PHP)
+- formdata-providers — FormEngine Data Providers (PHP)
+- frontend-dataprocessors — Frontend DataProcessors (PHP)
+- fal-reading — Getting a File Object, and Its Metadata (PHP)
+- extension-repository-layout — How a Distributed Extension Repository Is Laid Out (PHP)
+- extbase-persistence-internals — How a Query Becomes SQL, and How Extbase Writes a Row (PHP)
+- project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
+- extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
+- extbase-domain-mapping — Models, Repositories and the Table Behind Them (PHP)
+- extbase-pagination — Paginating a List (PHP)
+- public-assets — Public Assets and the Publish Step (PHP)
+- fal-writing — Putting a File Into a Storage (PHP)
+- persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
+- frontend-records — Records in the Frontend Without Extbase (TypoScript)
+- content-elements — Registering a Content Element (PHP)
+- icon-usage — Rendering and Registering Icons (PHP)
+- record-routing — Routing a Record Detail View (PHP)
+- routing-request-handling — Routing, Middleware, and Request Handling (PHP)
+- datahandler-seeding — Seeding Records with a Script (PHP)
 - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
 - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
+- project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
+- sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
+- fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
+- system-extension-boundaries — System Extension Boundaries (PHP)
+- tca-schema-api — TCA Schema API (PHP)
+- tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
+- datahandler-testing — Testing DataHandler Behaviour (PHP)
+- content-element-preview — The Backend Preview of a Content Element (Fluid)
+- extension-declarative-files — The Files an Extension Is Configured By (PHP)
+- extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
+- browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
+- record-page-title — The Title of a Record Detail Page (PHP)
+- extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
 - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
-- installation-upgrade — Upgrading an Installation (PHP)
-- upgrade-own-code — What No Wizard Touches (PHP)
-- deprecated-apis — Deprecated APIs (PHP)
 - upgrade-wizards — Upgrade Wizards (PHP)
+- installation-upgrade — Upgrading an Installation (PHP)
+- extbase-arguments — What Arrives From a Request, and What Silently Does Not (PHP)
+- extbase — What Extbase Is For, and When It Is Not Needed (PHP)
+- extension-manifest — What Makes a Directory an Extension (PHP)
+- upgrade-own-code — What No Wizard Touches (PHP)
+- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
+- environment-runtime-readers — What Reads the Environment While It Runs (PHP)
+- extension-boot-files — What Still Runs at Boot, and What No Longer Does (PHP)
+- extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
+- initial-content-references — What Survives the Import, and What Points at a Stranger (PHP)
+- environment-variables — What TYPO3 Reads From the Environment (PHP)
+- content-element-shape — What a Content Element Owns (PHP)
+- datahandler-relations — What a Datamap Does to a Relation Field (PHP)
+- tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+- project-configuration-files — What the Installation Is Configured By (PHP)
+- installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+- page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
+- extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
+- datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
+- fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+- initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
+- dependency-injection — Wiring a Service (PHP)
+- core-tests — Writing Core Tests (PHP)
+- datahandler-writing — Writing Records with a Datamap (PHP)
+- extension-test-site — Writing a Site Configuration in a Test (PHP)
+- impexp-artifact — Writing the Export a Distribution Ships (PHP)
+- content-rendering-templates — contentRenderingTemplates and Where Plugin TypoScript Lands (PHP)
 ```
 
 Data:
@@ -1443,13 +1444,23 @@ Data:
     "hints": [],
     "availableHints": [
         {
-            "id": "public-assets",
-            "title": "Public Assets and the Publish Step",
+            "id": "environment-placeholders",
+            "title": "%env() in a YAML Configuration",
             "category": "PHP"
         },
         {
-            "id": "extension-asset-build",
-            "title": "Building Assets in a Project Extension",
+            "id": "di-service-not-found",
+            "title": "A Service the Container Cannot Find at Runtime",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-access-restriction",
+            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-test-frontend-request",
+            "title": "Asserting a Frontend Response in a Test",
             "category": "PHP"
         },
         {
@@ -1463,368 +1474,8 @@ Data:
             "category": "PHP"
         },
         {
-            "id": "caching",
-            "title": "Caches",
-            "category": "PHP"
-        },
-        {
-            "id": "configuration-reach",
-            "title": "Configuration Belongs to Its Reach",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-variables",
-            "title": "What TYPO3 Reads From the Environment",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-placeholders",
-            "title": "%env() in a YAML Configuration",
-            "category": "PHP"
-        },
-        {
-            "id": "environment-runtime-readers",
-            "title": "What Reads the Environment While It Runs",
-            "category": "PHP"
-        },
-        {
-            "id": "installation-setup",
-            "title": "What typo3 setup Takes and What It Refuses",
-            "category": "PHP"
-        },
-        {
-            "id": "console-commands",
-            "title": "Console Commands",
-            "category": "PHP"
-        },
-        {
-            "id": "content-elements",
-            "title": "Registering a Content Element",
-            "category": "PHP"
-        },
-        {
-            "id": "content-element-shape",
-            "title": "What a Content Element Owns",
-            "category": "PHP"
-        },
-        {
-            "id": "content-element-preview",
-            "title": "The Backend Preview of a Content Element",
-            "category": "Fluid"
-        },
-        {
-            "id": "datahandler-basics",
-            "title": "DataHandler Is the Write Path for Records",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-writing",
-            "title": "Writing Records with a Datamap",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-relations",
-            "title": "What a Datamap Does to a Relation Field",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-placement",
-            "title": "Which Page May Hold a New Record, and Where It Lands on It",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-seeding",
-            "title": "Seeding Records with a Script",
-            "category": "PHP"
-        },
-        {
-            "id": "datahandler-testing",
-            "title": "Testing DataHandler Behaviour",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-dataprocessors",
-            "title": "Frontend DataProcessors",
-            "category": "PHP"
-        },
-        {
-            "id": "dependency-injection",
-            "title": "Wiring a Service",
-            "category": "PHP"
-        },
-        {
-            "id": "di-service-not-found",
-            "title": "A Service the Container Cannot Find at Runtime",
-            "category": "PHP"
-        },
-        {
-            "id": "sitepackage-initial-content",
-            "title": "Shipping Initial Content with an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "initial-content-import-once",
-            "title": "Why a Changed Data File Does Not Arrive",
-            "category": "PHP"
-        },
-        {
-            "id": "initial-content-references",
-            "title": "What Survives the Import, and What Points at a Stranger",
-            "category": "PHP"
-        },
-        {
-            "id": "impexp-artifact",
-            "title": "Writing the Export a Distribution Ships",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-documentation",
-            "title": "Documenting a Project Extension",
-            "category": "Documentation"
-        },
-        {
-            "id": "events-extension-points",
-            "title": "Events and Extension Points",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase",
-            "title": "What Extbase Is For, and When It Is Not Needed",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-plugin-registration",
-            "title": "The Two Calls That Register a Plugin",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-domain-mapping",
-            "title": "Models, Repositories and the Table Behind Them",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-arguments",
-            "title": "What Arrives From a Request, and What Silently Does Not",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-pagination",
-            "title": "Paginating a List",
-            "category": "PHP"
-        },
-        {
-            "id": "extbase-persistence-internals",
-            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-manifest",
-            "title": "What Makes a Directory an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-schema-sql",
-            "title": "Declaring Tables and Columns",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-declarative-files",
-            "title": "The Files an Extension Is Configured By",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-boot-files",
-            "title": "What Still Runs at Boot, and What No Longer Does",
-            "category": "PHP"
-        },
-        {
-            "id": "content-rendering-templates",
-            "title": "contentRenderingTemplates and Where Plugin TypoScript Lands",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-layout",
-            "title": "How a Distributed Extension Repository Is Laid Out",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-dependencies",
-            "title": "What Such a Repository Commits, and What It Vendors",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-tests",
-            "title": "The Instance an Extension Suite Builds Itself",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-repository-installation",
-            "title": "Installing TYPO3 Beneath the Extension Repository",
-            "category": "PHP"
-        },
-        {
-            "id": "system-extension-boundaries",
-            "title": "System Extension Boundaries",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-ter-release",
-            "title": "What Publishing to the TER Requires of an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-basics",
-            "title": "Files Are Addressed Through FAL, Not by Path",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-storages-drivers",
-            "title": "Storages and the Drivers Behind Them",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-reading",
-            "title": "Getting a File Object, and Its Metadata",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-writing",
-            "title": "Putting a File Into a Storage",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-testing",
-            "title": "Covering FAL Behaviour",
-            "category": "PHP"
-        },
-        {
-            "id": "fal-processing",
-            "title": "Which Processor Claims a File, and What Runs Below It",
-            "category": "PHP"
-        },
-        {
-            "id": "form-framework",
-            "title": "EXT:form Configuration and Runtime",
-            "category": "PHP"
-        },
-        {
-            "id": "icon-usage",
-            "title": "Rendering and Registering Icons",
-            "category": "PHP"
-        },
-        {
-            "id": "site-label-language",
-            "title": "Core Labels on a Non-English Site",
-            "category": "Labels"
-        },
-        {
-            "id": "page-cache-flushing",
-            "title": "Which Caches a Change Invalidates, and What Clears the Rest",
-            "category": "Fluid"
-        },
-        {
-            "id": "persistence-reading",
-            "title": "Reading Records, and What Is Hidden From the Query",
-            "category": "PHP"
-        },
-        {
             "id": "installation-boot",
             "title": "Booting the Installation a Project Repository Declares",
-            "category": "PHP"
-        },
-        {
-            "id": "project-repository-layout",
-            "title": "How a TYPO3 Project Repository Is Laid Out",
-            "category": "PHP"
-        },
-        {
-            "id": "project-build-and-scripts",
-            "title": "Build/, the Scripts, and What Is Not Deployed",
-            "category": "PHP"
-        },
-        {
-            "id": "project-configuration-files",
-            "title": "What the Installation Is Configured By",
-            "category": "PHP"
-        },
-        {
-            "id": "public-api-surface",
-            "title": "Changing a Public Method Signature",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-records",
-            "title": "Records in the Frontend Without Extbase",
-            "category": "TypoScript"
-        },
-        {
-            "id": "record-routing",
-            "title": "Routing a Record Detail View",
-            "category": "PHP"
-        },
-        {
-            "id": "record-page-title",
-            "title": "The Title of a Record Detail Page",
-            "category": "PHP"
-        },
-        {
-            "id": "routing-request-handling",
-            "title": "Routing, Middleware, and Request Handling",
-            "category": "PHP"
-        },
-        {
-            "id": "security-sinks",
-            "title": "Following a Value to Its Sink",
-            "category": "PHP"
-        },
-        {
-            "id": "frontend-access-restriction",
-            "title": "Access Restricted Pages and extendToSubpages in the Frontend",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-formengine",
-            "title": "TCA, FormEngine, and Backend Forms",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-schema-api",
-            "title": "TCA Schema API",
-            "category": "PHP"
-        },
-        {
-            "id": "formdata-providers",
-            "title": "FormEngine Data Providers",
-            "category": "PHP"
-        },
-        {
-            "id": "tca-datetime-storage",
-            "title": "What a Datetime Column Stores, and When It Is Null",
-            "category": "PHP"
-        },
-        {
-            "id": "core-tests",
-            "title": "Writing Core Tests",
-            "category": "PHP"
-        },
-        {
-            "id": "project-extension-tests",
-            "title": "Setting a Test Suite Up in an Extension",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-extensions",
-            "title": "Which Extensions a Functional Test Loads",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-site",
-            "title": "Writing a Site Configuration in a Test",
-            "category": "PHP"
-        },
-        {
-            "id": "extension-test-frontend-request",
-            "title": "Asserting a Frontend Response in a Test",
             "category": "PHP"
         },
         {
@@ -1833,13 +1484,178 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "project-build-and-scripts",
+            "title": "Build/, the Scripts, and What Is Not Deployed",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-asset-build",
+            "title": "Building Assets in a Project Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "caching",
+            "title": "Caches",
+            "category": "PHP"
+        },
+        {
+            "id": "public-api-surface",
+            "title": "Changing a Public Method Signature",
+            "category": "PHP"
+        },
+        {
             "id": "browser-test-accessibility",
             "title": "Checking Accessibility and Contrast From the Same Spec",
             "category": "PHP"
         },
         {
-            "id": "browser-tests-outside-core",
-            "title": "The Site a Project Suite Runs Against",
+            "id": "configuration-reach",
+            "title": "Configuration Belongs to Its Reach",
+            "category": "PHP"
+        },
+        {
+            "id": "console-commands",
+            "title": "Console Commands",
+            "category": "PHP"
+        },
+        {
+            "id": "site-label-language",
+            "title": "Core Labels on a Non-English Site",
+            "category": "Labels"
+        },
+        {
+            "id": "fal-testing",
+            "title": "Covering FAL Behaviour",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-basics",
+            "title": "DataHandler Is the Write Path for Records",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-schema-sql",
+            "title": "Declaring Tables and Columns",
+            "category": "PHP"
+        },
+        {
+            "id": "deprecated-apis",
+            "title": "Deprecated APIs",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-documentation",
+            "title": "Documenting a Project Extension",
+            "category": "Documentation"
+        },
+        {
+            "id": "form-framework",
+            "title": "EXT:form Configuration and Runtime",
+            "category": "PHP"
+        },
+        {
+            "id": "events-extension-points",
+            "title": "Events and Extension Points",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-basics",
+            "title": "Files Are Addressed Through FAL, Not by Path",
+            "category": "PHP"
+        },
+        {
+            "id": "security-sinks",
+            "title": "Following a Value to Its Sink",
+            "category": "PHP"
+        },
+        {
+            "id": "formdata-providers",
+            "title": "FormEngine Data Providers",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-dataprocessors",
+            "title": "Frontend DataProcessors",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-reading",
+            "title": "Getting a File Object, and Its Metadata",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-layout",
+            "title": "How a Distributed Extension Repository Is Laid Out",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-persistence-internals",
+            "title": "How a Query Becomes SQL, and How Extbase Writes a Row",
+            "category": "PHP"
+        },
+        {
+            "id": "project-repository-layout",
+            "title": "How a TYPO3 Project Repository Is Laid Out",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-installation",
+            "title": "Installing TYPO3 Beneath the Extension Repository",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-domain-mapping",
+            "title": "Models, Repositories and the Table Behind Them",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-pagination",
+            "title": "Paginating a List",
+            "category": "PHP"
+        },
+        {
+            "id": "public-assets",
+            "title": "Public Assets and the Publish Step",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-writing",
+            "title": "Putting a File Into a Storage",
+            "category": "PHP"
+        },
+        {
+            "id": "persistence-reading",
+            "title": "Reading Records, and What Is Hidden From the Query",
+            "category": "PHP"
+        },
+        {
+            "id": "frontend-records",
+            "title": "Records in the Frontend Without Extbase",
+            "category": "TypoScript"
+        },
+        {
+            "id": "content-elements",
+            "title": "Registering a Content Element",
+            "category": "PHP"
+        },
+        {
+            "id": "icon-usage",
+            "title": "Rendering and Registering Icons",
+            "category": "PHP"
+        },
+        {
+            "id": "record-routing",
+            "title": "Routing a Record Detail View",
+            "category": "PHP"
+        },
+        {
+            "id": "routing-request-handling",
+            "title": "Routing, Middleware, and Request Handling",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-seeding",
+            "title": "Seeding Records with a Script",
             "category": "PHP"
         },
         {
@@ -1853,8 +1669,78 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "project-extension-tests",
+            "title": "Setting a Test Suite Up in an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "sitepackage-initial-content",
+            "title": "Shipping Initial Content with an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-storages-drivers",
+            "title": "Storages and the Drivers Behind Them",
+            "category": "PHP"
+        },
+        {
+            "id": "system-extension-boundaries",
+            "title": "System Extension Boundaries",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-schema-api",
+            "title": "TCA Schema API",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-formengine",
+            "title": "TCA, FormEngine, and Backend Forms",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-testing",
+            "title": "Testing DataHandler Behaviour",
+            "category": "PHP"
+        },
+        {
+            "id": "content-element-preview",
+            "title": "The Backend Preview of a Content Element",
+            "category": "Fluid"
+        },
+        {
+            "id": "extension-declarative-files",
+            "title": "The Files an Extension Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-tests",
+            "title": "The Instance an Extension Suite Builds Itself",
+            "category": "PHP"
+        },
+        {
+            "id": "browser-tests-outside-core",
+            "title": "The Site a Project Suite Runs Against",
+            "category": "PHP"
+        },
+        {
+            "id": "record-page-title",
+            "title": "The Title of a Record Detail Page",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase-plugin-registration",
+            "title": "The Two Calls That Register a Plugin",
+            "category": "PHP"
+        },
+        {
             "id": "unit-test-doubles",
             "title": "Unit Tests, Test Doubles and Data Providers in PHPUnit",
+            "category": "PHP"
+        },
+        {
+            "id": "upgrade-wizards",
+            "title": "Upgrade Wizards",
             "category": "PHP"
         },
         {
@@ -1863,18 +1749,133 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extbase-arguments",
+            "title": "What Arrives From a Request, and What Silently Does Not",
+            "category": "PHP"
+        },
+        {
+            "id": "extbase",
+            "title": "What Extbase Is For, and When It Is Not Needed",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-manifest",
+            "title": "What Makes a Directory an Extension",
+            "category": "PHP"
+        },
+        {
             "id": "upgrade-own-code",
             "title": "What No Wizard Touches",
             "category": "PHP"
         },
         {
-            "id": "deprecated-apis",
-            "title": "Deprecated APIs",
+            "id": "extension-ter-release",
+            "title": "What Publishing to the TER Requires of an Extension",
             "category": "PHP"
         },
         {
-            "id": "upgrade-wizards",
-            "title": "Upgrade Wizards",
+            "id": "environment-runtime-readers",
+            "title": "What Reads the Environment While It Runs",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-boot-files",
+            "title": "What Still Runs at Boot, and What No Longer Does",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-repository-dependencies",
+            "title": "What Such a Repository Commits, and What It Vendors",
+            "category": "PHP"
+        },
+        {
+            "id": "initial-content-references",
+            "title": "What Survives the Import, and What Points at a Stranger",
+            "category": "PHP"
+        },
+        {
+            "id": "environment-variables",
+            "title": "What TYPO3 Reads From the Environment",
+            "category": "PHP"
+        },
+        {
+            "id": "content-element-shape",
+            "title": "What a Content Element Owns",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-relations",
+            "title": "What a Datamap Does to a Relation Field",
+            "category": "PHP"
+        },
+        {
+            "id": "tca-datetime-storage",
+            "title": "What a Datetime Column Stores, and When It Is Null",
+            "category": "PHP"
+        },
+        {
+            "id": "project-configuration-files",
+            "title": "What the Installation Is Configured By",
+            "category": "PHP"
+        },
+        {
+            "id": "installation-setup",
+            "title": "What typo3 setup Takes and What It Refuses",
+            "category": "PHP"
+        },
+        {
+            "id": "page-cache-flushing",
+            "title": "Which Caches a Change Invalidates, and What Clears the Rest",
+            "category": "Fluid"
+        },
+        {
+            "id": "extension-test-extensions",
+            "title": "Which Extensions a Functional Test Loads",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-placement",
+            "title": "Which Page May Hold a New Record, and Where It Lands on It",
+            "category": "PHP"
+        },
+        {
+            "id": "fal-processing",
+            "title": "Which Processor Claims a File, and What Runs Below It",
+            "category": "PHP"
+        },
+        {
+            "id": "initial-content-import-once",
+            "title": "Why a Changed Data File Does Not Arrive",
+            "category": "PHP"
+        },
+        {
+            "id": "dependency-injection",
+            "title": "Wiring a Service",
+            "category": "PHP"
+        },
+        {
+            "id": "core-tests",
+            "title": "Writing Core Tests",
+            "category": "PHP"
+        },
+        {
+            "id": "datahandler-writing",
+            "title": "Writing Records with a Datamap",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-test-site",
+            "title": "Writing a Site Configuration in a Test",
+            "category": "PHP"
+        },
+        {
+            "id": "impexp-artifact",
+            "title": "Writing the Export a Distribution Ships",
+            "category": "PHP"
+        },
+        {
+            "id": "content-rendering-templates",
+            "title": "contentRenderingTemplates and Where Plugin TypoScript Lands",
             "category": "PHP"
         }
     ],

@@ -31,11 +31,15 @@ just ranked it seventh.
   seven were admitted and cut by the limit, and 39 were refused by the coverage
   floor. The first seven carry a rank the matcher stands behind; the rest carry
   a score it has already judged too low to answer on.
-- **The second id of the same report is not this question.**
-  `css-tokens-specificity` is 16th of the 39 refused, tied at 47 with
+- **The second id of the same report is not this question, and not a gap
+  either.** `css-tokens-specificity` is 16th of the 39 refused, tied at 47 with
   `css-light-dark-mode` and `css-rtl-logical-properties`, and stood at position
-  5 by file order. Its position was a coincidence and no ordering raises it —
-  the query's words do not reach it.
+  5 by file order — a coincidence rather than an answer. The query never asked
+  for it, and a query that does gets it: `bin/cli hints:probe` on 2026-08-11
+  returns it first and on the curated vocabulary for "css custom property token
+  specificity", for "derive a css variable from another instead of hardcoding a
+  value", and for the session's own dilemma, "should this fade distance get its
+  own custom property or borrow --typo3-spacing".
 - **The index offers what the same answer refuses.** A frontend query
   withholding `Backend CSS` as inverted advice was measured on 2026-08-11: the
   answer says the category is withheld and then lists 19 of its hints by id,
@@ -63,6 +67,11 @@ just ranked it seventh.
 - **`index()` is what the id path uses, and nothing else.** It answers where no
   query was matched and no rank exists, which is the one case a corpus read is
   the right source for.
+- **The report's own suggestion is not taken.** It asks for the ids whose
+  category matches an established domain to be split out from the rest, and
+  every entry of this index already matches one — the split would be the whole
+  list. What separates them is how far each got, which is what the order now
+  says.
 
 ## Assumed
 

@@ -400,6 +400,10 @@ final class Hints
         $askedFor = array_sum($weights);
 
         $scored = [];
+        // What the floor turns away, kept where it was scored rather than
+        // dropped: it is the second half of the index, and the score is the
+        // only thing that orders it — `D-ANS-075`.
+        $refused = [];
         foreach ($candidates as $index => $hint) {
             $keywords = self::scoreKeywords($hint, $taskText, $pathsText);
             [$score, $covered, $matchedTerms] = TermSearch::score(
@@ -416,6 +420,7 @@ final class Hints
             // hint is about what was asked whether or not anybody anticipated
             // it.
             if ($keywords === 0 && !self::coversEveryTerm($matchedTerms, $weights) && $coverage < self::MIN_COVERAGE) {
+                $refused[] = ['hint' => $hint, 'score' => $score];
                 continue;
             }
 
@@ -473,7 +478,7 @@ final class Hints
             // either way — and the answer that matched three hints about
             // something else leaves it in exactly that position, without even
             // an empty result to read as an absence (`D-KNW-055`).
-            'availableHints' => self::index($selected, array_column($matchedHints, 'id')),
+            'availableHints' => self::available($scored, $refused, $limit),
         ];
     }
 
@@ -520,8 +525,43 @@ final class Hints
     }
 
     /**
+     * The candidates this query left over, closest first.
+     *
+     * The rank is the matcher's own and exists at the moment the index is
+     * built, so nothing here computes an order: what the limit cut keeps the
+     * order it was cut in, and what the floor turned away follows by score. The
+     * index used to be a second read of the corpus in file order, which left
+     * the hint the matcher had ranked seventh three places from the bottom of
+     * 46 — `D-ANS-075`.
+     *
+     * The two tiers are not merged into one sort, because a refused hint can
+     * outscore an admitted one: admission is the floor's judgement and a score
+     * is not, and the seven the limit cut are the ones the matcher stands
+     * behind.
+     *
+     * @param array<int, array{hint: array<string, mixed>, keywords: int, score: int}> $scored
+     * @param array<int, array{hint: array<string, mixed>, score: int}> $refused
+     * @return array<int, array{id: string, title: string, category: string}>
+     */
+    private static function available(array $scored, array $refused, int $limit): array
+    {
+        usort($refused, static function (array $a, array $b): int {
+            return $b['score'] <=> $a['score']
+                ?: strcmp($a['hint']['title'], $b['hint']['title']);
+        });
+
+        return array_map(
+            static fn(array $entry): array => self::reference($entry['hint']),
+            array_merge(array_slice($scored, $limit), $refused),
+        );
+    }
+
+    /**
      * Every hint there is, by id and title, optionally narrowed to domains and
      * without the ones an answer already carries in full.
+     *
+     * This is the id path, where nothing was matched and there is no rank to
+     * order by. A query is answered from what it scored instead — available().
      *
      * @param array<int, string>|null $domains
      * @param array<int, string> $except
@@ -537,10 +577,26 @@ final class Hints
             if (in_array($hint['id'], $except, true)) {
                 continue;
             }
-            $index[] = ['id' => $hint['id'], 'title' => $hint['title'], 'category' => $hint['category']];
+            $index[] = self::reference($hint);
         }
 
         return $index;
+    }
+
+    /**
+     * What an entry of the index is: enough to ask for the hint by name, and
+     * the category so a caller can tell whose subject it is.
+     *
+     * @param array<string, mixed> $hint
+     * @return array{id: string, title: string, category: string}
+     */
+    private static function reference(array $hint): array
+    {
+        return [
+            'id' => (string) $hint['id'],
+            'title' => (string) $hint['title'],
+            'category' => (string) $hint['category'],
+        ];
     }
 
     /**

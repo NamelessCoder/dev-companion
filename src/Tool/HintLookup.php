@@ -68,7 +68,7 @@ final class HintLookup extends ReadOnlyTool
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
-            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
+            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above, closest first: what the limit cut stands before what matched too little to return. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
             'documents' => Schema::listOf(Schema::object([
                 'uri' => Schema::string(),
                 'hint' => Schema::string('The returned hint this document is the long form of.'),
@@ -207,13 +207,17 @@ final class HintLookup extends ReadOnlyTool
         // as well, because a match is a guess at the caller's words: three
         // hints about something else read as a subject nobody wrote down, and
         // that answer has not even an empty result to be read as one.
+        //
+        // The order is the matcher's, so the first entry is the one the limit
+        // cut, and the copy says so: a list read as a catalogue is a list
+        // nobody reads past (`D-ANS-075`).
         if ($result['availableHints'] !== []) {
             $lines[] = '';
             $lines[] = match (true) {
                 $result['matchedHints'] === [] && $id !== '' => 'The ids there are:',
-                $result['matchedHints'] === [] => 'Hints that exist in these domains, requestable by id:',
+                $result['matchedHints'] === [] => 'Hints that exist in these domains, closest first, requestable by id:',
                 $id !== '' => 'The hints alongside it, requestable by id:',
-                default => 'What matched above is a guess at your words. The rest of these domains, requestable by id:',
+                default => 'What matched above is a guess at your words. The rest of these domains, closest first, requestable by id:',
             };
             foreach ($result['availableHints'] as $entry) {
                 $lines[] = '- ' . $entry['id'] . ' — ' . $entry['title'] . ' (' . $entry['category'] . ')';

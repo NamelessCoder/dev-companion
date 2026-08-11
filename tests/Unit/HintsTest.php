@@ -1427,6 +1427,72 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The index the near-miss answer carries is only worth its lines if the
+     * near miss is at the top of it.
+     *
+     * `feedback/2026-08-10-182451` is what the file order cost: the session was
+     * shown `javascript-unit-tests` at position 43 of 46 while the matcher had
+     * just ranked it seventh of the 13 it admitted and `limit=6` had cut it by
+     * one place. It spent six calls rebuilding that hint's subject out of the
+     * filesystem instead. What the limit cut is what the query came closest to
+     * and did not get, so it is what the index opens with — `D-ANS-075`.
+     */
+    #[Test]
+    public function theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused(): void
+    {
+        $paths = [
+            'Build/Sources/Sass/component/_module.scss',
+            'typo3/sysext/backend/Resources/Private/Partials/DocHeader.fluid.html',
+            'typo3/sysext/backend/Resources/Public/Css/backend.css',
+            'Build/Sources/TypeScript/viewpage/main.ts',
+        ];
+        $task = 'backend docheader sticky CSS, Sass build artifacts, Fluid partial markup';
+
+        $cut = array_slice(array_column(Hints::find($paths, $task, 100, null, [15])['matchedHints'], 'id'), 6);
+        $available = array_column(Hints::find($paths, $task, 6, null, [15])['availableHints'], 'id');
+
+        self::assertSame('javascript-unit-tests', $available[0], 'the hint the limit cut by one place');
+        self::assertSame(
+            $cut,
+            array_slice($available, 0, count($cut)),
+            'everything the matcher admitted and the limit cut, in the order it ranked them',
+        );
+
+        // The other id the same report names is the other case, and separating
+        // them is most of the finding: the floor refused this one, so it stands
+        // among the rest and no ordering would have raised it.
+        self::assertGreaterThan(
+            0,
+            (int) array_search('css-tokens-specificity', $available, true),
+        );
+    }
+
+    /**
+     * An answer that says a category is inverted advice for this task used to
+     * list 19 of its hints by id underneath the sentence.
+     *
+     * The index was a read of the domains while the matcher had already
+     * refused those candidates, so the two halves of one answer disagreed.
+     * Built from the candidates, the index cannot offer what the same call
+     * withheld.
+     */
+    #[Test]
+    public function theIndexIsNotOfferingWhatTheSameAnswerWithheld(): void
+    {
+        $result = Hints::find(
+            ['packages/sitepackage/Resources/Private/Templates/Page/Default.html'],
+            'style the website frontend theme with our own CSS',
+            6,
+        );
+
+        self::assertSame([Hints::CATEGORY_CSS], $result['withheldCategories']);
+        self::assertNotContains(
+            Hints::CATEGORY_CSS,
+            array_column($result['availableHints'], 'category'),
+        );
+    }
+
+    /**
      * Whether a removal is breaking is a question the corpus answers, and it
      * answers that the annotation does not settle it.
      *

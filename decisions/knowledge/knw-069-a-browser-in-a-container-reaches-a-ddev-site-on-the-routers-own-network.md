@@ -108,3 +108,11 @@ hint the question reaches rather than in the domains. A review surface in
 session did call `typo3_test_run_guide` and took `e2e-prepare` out of that
 answer each time, so the answer it already read is the cheaper place to name the
 page.
+
+**Built on 2026-08-11.** `TestRunGuide` names the page under its suite blocks
+wherever one of them is an e2e suite, in the form `R-ANS-028` asks for: a
+`typo3_rule_lookup` call by `documentId`, with the styleguide instance's missing
+content and the screenshot path as what the page carries and the answer does
+not. `KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
+runs the CSS path the report was written from, and the functional case beside it
+holds the block to the suites it is about.

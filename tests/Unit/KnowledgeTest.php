@@ -735,6 +735,39 @@ final class KnowledgeTest extends TestCase
         $guide = Documents::read('core/testing/scripts');
         self::assertStringContainsString('bin/phpunit: not found', $guide);
         self::assertStringContainsString('SUCCESS', $guide);
+
+        // The other page is about the e2e suites, which this answer has none
+        // of.
+        self::assertStringNotContainsString('any/testing/browser-check', $result->text);
+    }
+
+    /**
+     * The e2e suites hand over the page saying what to do with the browser.
+     *
+     * `feedback/2026-08-10-182417` reviewed a backend CSS patch, took
+     * `-s e2e-prepare` out of this answer each time, and told its reader five
+     * times that it could not judge the change visually — with
+     * `any/testing/browser-check` sitting unopened in the first answer it
+     * received. The paths below are that session's own (`D-KNW-069`).
+     */
+    #[Test]
+    public function theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites(): void
+    {
+        $result = Registry::call('typo3_test_run_guide', [
+            'query' => 'backend CSS sticky positioning',
+            'paths' => ['Build/Sources/Sass/component/module.scss'],
+            'targetVersion' => '15',
+        ]);
+
+        self::assertContains('e2e-prepare', array_column($result->data['suites'], 'suite'));
+        self::assertStringContainsString('any/testing/browser-check', $result->text);
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $result->text);
+
+        // What it claims the page carries, held against the page.
+        $guide = Documents::read('any/testing/browser-check');
+        self::assertStringContainsString('styleguide', $guide);
+        self::assertStringContainsString('ddev_default', $guide);
+        self::assertStringContainsString('Build/typo3temp/', $guide);
     }
 
     /**

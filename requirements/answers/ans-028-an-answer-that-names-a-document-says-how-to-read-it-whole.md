@@ -41,4 +41,5 @@ is the case that produced the report.
 - `KnowledgeTest::aDocumentIdReadsTheWholePageWithoutAResourceList`
 - `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre`
 - `KnowledgeTest::theTestRunGuideNamesTheScriptsDocument`
+- `KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
 - `KnowledgeTest::aCutScriptSectionSaysHowToReadThePageWhole`

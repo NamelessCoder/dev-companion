@@ -158,6 +158,15 @@ final class TestRunGuide extends ReadOnlyTool
                 $block[] = $hint['whenToUse'];
                 $blocks[] = implode("\n", $block);
             }
+
+            // An e2e suite puts a browser in front of the change and stops
+            // there. What to do with it, and what to do when that styleguide
+            // instance has not got the content the defect needs, is the page
+            // named below (`D-KNW-069`).
+            $browser = array_filter($hints, static fn(array $hint): bool => str_starts_with($hint['suite'], 'e2e'));
+            if ($browser !== []) {
+                $blocks[] = self::BROWSER_CHECK_GUIDE;
+            }
         }
 
         $blocks[] = self::invocationBlock();
@@ -195,6 +204,27 @@ final class TestRunGuide extends ReadOnlyTool
         . "`exec: line 9: bin/phpunit: not found` means — it names phpunit rather than the directory.\n"
         . '- Why `-s cglGit` reports SUCCESS having read no file from a git worktree, and that `-s cgl` is the '
         . 'one that works from either.';
+
+    /**
+     * The page the e2e suites hand the caller over to, named where they are.
+     *
+     * A session reviewing a backend CSS patch held `any/testing/browser-check`
+     * from `typo3_project_describe`, never opened it, and told its reader five
+     * times it could not judge the change visually — improvising
+     * `-s e2e-prepare` out of this answer each time
+     * (`feedback/2026-08-10-182417`, `D-KNW-069`). The suite was already in
+     * front of it; the page saying what to do with a styleguide instance that
+     * has not got the content was not.
+     */
+    public const BROWSER_CHECK_GUIDE = "## Looking at it rather than asserting it\n"
+        . 'The suites above start a browser and stop there. The rest is one call away — typo3_rule_lookup with '
+        . "documentId \"any/testing/browser-check\", which needs no resource list.\n"
+        . '- The instance `-s e2e-prepare` installs is a styleguide and carries no content beyond the components '
+        . 'it demonstrates. Where the defect needs content, the installation that has it is the one to look at, '
+        . 'and a browser in a container reaches a running DDEV site over `ddev_default` rather than over '
+        . "`host.docker.internal`.\n"
+        . '- Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there '
+        . 'lands in the next commit.';
 
     /**
      * The invocation rules that apply to every suite. Emitted with every answer:

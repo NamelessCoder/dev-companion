@@ -301,6 +301,11 @@ Command from the TYPO3 core root:
 Dispatcher for composer commands inside the TYPO3 core build environment.
 Use for composer dumpautoload, require, info, and dependency tasks.
 
+## Looking at it rather than asserting it
+The suites above start a browser and stop there. The rest is one call away — typo3_rule_lookup with documentId "any/testing/browser-check", which needs no resource list.
+- The instance `-s e2e-prepare` installs is a styleguide and carries no content beyond the components it demonstrates. Where the defect needs content, the installation that has it is the one to look at, and a browser in a container reaches a running DDEV site over `ddev_default` rather than over `host.docker.internal`.
+- Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there lands in the next commit.
+
 ## Invoking runTests.sh
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
 - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
@@ -1123,6 +1128,11 @@ Command from the TYPO3 core root:
 
 SCSS linting with TYPO3's stylelint setup.
 Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory.
+
+## Looking at it rather than asserting it
+The suites above start a browser and stop there. The rest is one call away — typo3_rule_lookup with documentId "any/testing/browser-check", which needs no resource list.
+- The instance `-s e2e-prepare` installs is a styleguide and carries no content beyond the components it demonstrates. Where the defect needs content, the installation that has it is the one to look at, and a browser in a container reaches a running DDEV site over `ddev_default` rather than over `host.docker.internal`.
+- Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there lands in the next commit.
 
 ## Invoking runTests.sh
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.

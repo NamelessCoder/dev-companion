@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-10-182511-component-lookup-was-passed-over-while.md
 **Priority:** normal
+**Branch:** todo/catalog-the-backend-module-chrome-as-a-component
+**Claimed:** 2026-08-11
 
 Add a `module` entry to `knowledge/catalog/components.json` for the chrome
 around every backend module, read off

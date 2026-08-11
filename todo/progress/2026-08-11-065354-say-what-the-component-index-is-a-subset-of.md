@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-10-182511-component-lookup-was-passed-over-while.md
 **Priority:** normal
+**Branch:** todo/say-what-the-component-index-is-a-subset-of
+**Claimed:** 2026-08-11
 
 Say in `ComponentLookup::description()` that the index is a curated subset of
 what the core files as a component — the partials under

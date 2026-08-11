@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-10-182543-the-css-browser-target-hint-stopped-a-blink.md
 **Priority:** low
+**Branch:** todo/the-css-browser-target-hint-stopped-a-blink
+**Claimed:** 2026-08-11
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

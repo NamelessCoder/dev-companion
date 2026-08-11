@@ -419,6 +419,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### task-skills
 
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
+- [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
@@ -432,7 +433,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07 · confirmed
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
-- [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04
 - [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04
 - [`D-SKL-017`][D-SKL-017] — A named check is established against the package it lands on · 2026-08-04
 - [`D-SKL-018`][D-SKL-018] — The guide of the chosen layer arrives with the brief · 2026-08-04
@@ -453,6 +453,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-033]: task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
+[D-SKL-034]: task-skills/skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md
 [D-SKL-032]: task-skills/skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md
 [D-SKL-028]: task-skills/skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
 [D-SKL-029]: task-skills/skl-029-precedent-is-listed-by-the-changelogs-own-axes.md
@@ -466,7 +467,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-022]: task-skills/skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: task-skills/skl-021-triage-and-fetching-a-patch-are-two-workflows-that-end-before-somebody-elses-act.md
 [D-SKL-014]: task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
-[D-SKL-015]: task-skills/skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
 [D-SKL-016]: task-skills/skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-SKL-017]: task-skills/skl-017-a-named-check-is-established-against-the-package-it-lands-on.md
 [D-SKL-018]: task-skills/skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
@@ -619,6 +619,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### Revoked, and kept as the record
 
 - [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
+- [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04 → D-SKL-034
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03 → D-KNW-044
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
@@ -645,6 +646,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-DIS-015]: discovery/dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
+[D-SKL-015]: task-skills/skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-ANS-023]: answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md

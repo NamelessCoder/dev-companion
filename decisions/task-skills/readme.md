@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
+- [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
@@ -21,7 +22,6 @@ one is added.
 - [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07 · confirmed
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows that end before somebody else's act · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a skill's workflow ends in a change · 2026-08-04
-- [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04
 - [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04
 - [`D-SKL-017`][D-SKL-017] — A named check is established against the package it lands on · 2026-08-04
 - [`D-SKL-018`][D-SKL-018] — The guide of the chosen layer arrives with the brief · 2026-08-04
@@ -42,6 +42,7 @@ one is added.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-033]: skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
+[D-SKL-034]: skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md
 [D-SKL-032]: skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md
 [D-SKL-028]: skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
 [D-SKL-029]: skl-029-precedent-is-listed-by-the-changelogs-own-axes.md
@@ -55,7 +56,6 @@ one is added.
 [D-SKL-022]: skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: skl-021-triage-and-fetching-a-patch-are-two-workflows-that-end-before-somebody-elses-act.md
 [D-SKL-014]: skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md
-[D-SKL-015]: skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
 [D-SKL-016]: skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-SKL-017]: skl-017-a-named-check-is-established-against-the-package-it-lands-on.md
 [D-SKL-018]: skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
@@ -74,3 +74,9 @@ one is added.
 [D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
 [D-SKL-004]: skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md
 [D-SKL-001]: skl-001-the-order-a-task-starts-in-is-one-file.md
+
+### Revoked, and kept as the record
+
+- [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04 → D-SKL-034
+
+[D-SKL-015]: skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md

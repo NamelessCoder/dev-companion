@@ -347,7 +347,7 @@
       "call": "typo3_reference_list"
     },
     {
-      "when": "About to write backend markup or invent a CSS class name",
+      "when": "About to write backend markup or invent a CSS class name, the module chrome and other layout classes included. The index is a curated subset of what the core itself files as a component, so a miss means uncurated rather than outside the subject.",
       "call": "typo3_component_lookup"
     },
     {

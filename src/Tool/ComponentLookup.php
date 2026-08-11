@@ -30,7 +30,7 @@ final class ComponentLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Look up TYPO3 backend UI components by name or topic. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used.';
+        return 'Look up TYPO3 backend UI components by name or topic. The searchable index is a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss therefore means uncurated rather than outside the subject — the module chrome and other layout classes are candidates as much as badges and cards. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used.';
     }
 
     public static function inputSchema(): array

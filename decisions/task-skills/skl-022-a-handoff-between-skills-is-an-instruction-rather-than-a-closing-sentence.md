@@ -136,3 +136,37 @@ successor is named is not what holds a crossing: this one was named, in a
 paragraph the session was holding, and nothing fired. What an assertion has to
 read is the imperative, which is what the two crossings that fired carry and
 what that test already matches on.
+
+## Since then
+
+On 2026-08-11 the review crossing fired on a sentence that commissioned nothing.
+`feedback/2026-08-11-055317`: the session had reported that the patch changes
+covered behaviour and adds no test, the reader answered "I think the tests
+should prove it", and it invoked `typo3-core-patch-development`. The reader had
+meant that the missing test was reason enough to reject the patch, since a test
+file for that class already exists. The session backed out, stayed in the review
+and re-ranked the finding, so the cost was one turn under the wrong skill's
+rules.
+
+That is the price of this entry rather than a case against it, and the same
+session reports the imperative working everywhere else in the skill. What it
+shows is which half of a crossing the imperative leaves undecided: the review
+crossing described its trigger as "a sentence in a conversation" and warned that
+the transition is invisible, which primed the switch and named nothing that
+distinguishes the two sentences. The triage crossing, written in the same
+commit, names the instruction instead — "you are asked to fix it" — and no
+session has reported it firing early.
+
+So the crossing names the instruction that fires it and the remark that does
+not, where the trigger is something the reader says. A review reaffirming a
+finding and a reader commissioning work arrive in one register, and where the
+sentence could be either the session asks rather than switches: switching costs
+a turn under the wrong rules and asking costs one sentence. `R-SKL-018` carries
+that half; nothing holds it, because which sentences a trigger has to exclude is
+a reading of the workflow rather than a property of the file.
+
+The **Wrong if** this would satisfy has not been written until now, and it is
+this: a session reports switching on a sentence that reaffirmed a finding after
+the counter-case is in the skill, which would say the boundary cannot be drawn
+in prose at all and that the crossing has to be a question the session asks
+rather than a trigger it recognises.

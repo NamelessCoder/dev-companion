@@ -14,6 +14,11 @@ with everything else in the window, and a session holding exactly the handoff it
 describes reads it and carries on. What fires is an instruction at the moment
 the trigger occurs.
 
+Where that moment is something the reader says, the crossing names the sentence
+that fires it and the sentence that does not. An instruction to change the work
+and a remark about what the work owes arrive in one register, and a trigger
+described only as invisible fires on both.
+
 ## From
 
 Three sessions in one core checkout on 2026-08-07. `feedback/2026-08-07-065244`:
@@ -29,6 +34,14 @@ change the patch". `feedback/2026-08-07-130022` is the description side —
 change fetched from review, and a session asked to rebase its own commit
 correctly did not open it.
 
+`feedback/2026-08-11-055317` is the second half, from the other direction. The
+review crossing fired on "I think the tests should prove it", a reader
+reaffirming the session's own finding that the patch adds no test, and the
+session invoked `typo3-core-patch-development` before backing out — `D-SKL-022`.
+
 ## Held by
 
-- `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`
+- `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`, which reads the
+  imperative. That the crossing also names what does not fire it is not guarded:
+  which sentences a trigger has to exclude is a reading of the workflow rather
+  than a property of the file.

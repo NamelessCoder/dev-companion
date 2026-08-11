@@ -213,21 +213,29 @@ apart from one that looked at less.
 
 ## Where the review ends and the rework begins
 
-The reader accepting your findings and asking for the change is the end of this
-skill's work, and it looks like nothing at all from the inside — a sentence in a
-conversation, in the middle of a session that is going well.
+**When you are asked to make the change, invoke `typo3-core-patch-development`
+and work from it.** That includes the amend and the push. What asks for it is an
+instruction to change the patch — "finish it", "fix it", "amend it", "write the
+test" — and it looks like nothing at all from the inside, a sentence in a
+conversation in the middle of a session that is going well. A session that
+carries on under review rules is holding "it does not change the patch" while
+changing the patch, and one did: it edited `ColumnMap.php`, added a fixture
+column, wrote a functional test, ran seven suites and amended the commit, all
+still inside this skill. Nothing broke and the tree stayed clean, which is why
+nothing marked the crossing.
 
-**At that sentence, invoke `typo3-core-patch-development` and work from it.**
-That includes the amend and the push. A session that carries on under review
-rules is holding "it does not change the patch" while changing the patch, and
-one did: it edited `ColumnMap.php`, added a fixture column, wrote a functional
-test, ran seven suites and amended the commit, all still inside this skill.
-Nothing broke and the tree stayed clean, which is why nothing marked the
-crossing.
+**A remark about a finding's weight is not that instruction.** "That is a reason
+to reject it", "I think the tests should show that", "that one blocks it" — each
+reaffirms a finding and commissions nothing, so what it asks for is the finding
+re-ranked and the review carried on. One session read "I think the tests should
+prove it" as the handover and invoked the patch skill, where the reader had
+meant that the missing test was reason enough to reject the patch. Where the
+sentence could be either, ask which was meant: switching costs a turn under the
+wrong skill's rules, and asking costs one sentence.
 
-Until that sentence, the rule above stands whole: a review that rewrites what it
-reviews has destroyed the evidence for its own findings. Where the answer is
-that the patch needs work, name it and stop.
+Until you are asked for the change, the rule above stands whole: a review that
+rewrites what it reviews has destroyed the evidence for its own findings. Where
+the answer is that the patch needs work, name it and stop.
 
 This skill owns the review of a core patch and the order its findings are
 reported in. Reviewing an extension, a sitepackage or a site project belongs to

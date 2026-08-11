@@ -640,6 +640,52 @@ final class HintsTest extends TestCase
         self::assertContains(Hints::CATEGORY_CSS, array_column($result['matchedHints'], 'category'));
     }
 
+    /**
+     * The three sentences `D-KNW-066` put into `css-browser-target` are what
+     * two sessions report as having stopped them, and they rested on nobody
+     * rewriting the hint. Each anticipates one bad argument rather than stating
+     * the policy: the checkout as precedent, and `.browserslistrc` as a gate.
+     * A rewrite that keeps the policy and drops the two refusals leaves a hint
+     * that reads complete and stops neither session.
+     */
+    #[Test]
+    public function theBrowserTargetKeepsTheArgumentsItRefusesAsWellAsThePolicy(): void
+    {
+        $text = self::statementsOf('css-browser-target');
+
+        self::assertStringContainsString('every engine ships it — Blink, Gecko and WebKit', $text);
+        self::assertStringContainsString(
+            'Existing core usage of a modern CSS feature is not evidence that the feature is inside the baseline',
+            $text,
+        );
+        self::assertStringContainsString('never rejects a feature, so it is not a gate', $text);
+    }
+
+    /**
+     * The moment the browser target is needed is the moment a feature is about
+     * to be written down, and at that moment the query names the feature rather
+     * than the policy. Both features below were the candidate of a reported
+     * session, and neither reached the hint until its own words were in
+     * `appliesTo` — `feedback/2026-08-10-182543`, judged into `D-KNW-066`.
+     *
+     * `css-container-queries` is asserted beside it because it used to carry a
+     * second, coarser copy of the policy, which is the one such a query reached.
+     */
+    #[Test]
+    public function aQueryNamingAModernCssFeatureReachesTheBrowserTargetAndNotASecondPolicy(): void
+    {
+        foreach ([
+            'container query for a stuck element',
+            'scroll-driven animation in backend Sass',
+        ] as $query) {
+            $ids = array_column(Hints::find([], $query, 6)['matchedHints'], 'id');
+
+            self::assertContains('css-browser-target', $ids, $query . ' reaches ' . implode(', ', $ids));
+        }
+
+        self::assertStringNotContainsString('LTS browser baseline', self::statementsOf('css-container-queries'));
+    }
+
     #[Test]
     public function aPhpClassNameThatCarriesTheWordScssIsStillPhp(): void
     {

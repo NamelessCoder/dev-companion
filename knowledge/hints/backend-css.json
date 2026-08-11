@@ -78,6 +78,16 @@
       "anchor positioning",
       "anchor-name",
       "position-anchor",
+      "container query",
+      "@container",
+      "scroll-driven animation",
+      "animation-timeline",
+      "scroll-state",
+      "@starting-style",
+      "starting-style",
+      "light-dark",
+      "view transition",
+      "browser support",
       "browserslist",
       "chrome",
       "firefox",
@@ -434,7 +444,7 @@
     "hints": [
       "Prefer component-local responsiveness over viewport-only breakpoints when a component can appear in different backend containers.",
       "Use container-type: inline-size and container queries for reusable components when layout depends on available container width.",
-      "Container queries are an example of a modern CSS feature that may be introduced before an LTS release when they are expected to be part of the LTS browser baseline.",
+      "Whether a branch may use a container query — or any other modern CSS feature — is decided by css-browser-target rather than here.",
       "Keep container query rules scoped to the owning component, and check it where the containers actually differ: a narrow module column, a sidebar, a dialog, and full-width content.",
       "Do not add global breakpoints for a component-specific layout problem unless the behavior is truly tied to the viewport or scaffold."
     ]

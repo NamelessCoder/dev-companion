@@ -3416,6 +3416,62 @@ final class HintsTest extends TestCase
         self::assertSame(['build', 'build-css', 'buildCss', 'e2e-prepare', 'lintScss'], $suites);
     }
 
+    /**
+     * The other half of that narrowing, on the call `D-ANS-074` was decided
+     * from: paths in css and fluid, and five domains none of them reached.
+     *
+     * `lintTypescript` and `unitJavascript` are among the withheld ones — the
+     * two the session in `feedback/2026-08-10-182435` left this server for
+     * `runTests.sh -h` and a grep to find, holding an answer that named only
+     * what it had kept.
+     *
+     * The count is asserted against the suites that branch actually offers
+     * rather than against a number written here, because a suite added to
+     * knowledge/test-suite-hints.json moves it.
+     */
+    #[Test]
+    public function aNarrowedSuiteListNamesTheDomainsItWithheldAndCountsThem(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => [
+                'Build/Sources/Sass/component/_card.scss',
+                'typo3/sysext/backend/Resources/Private/Templates/DocHeader.fluid.html',
+                'typo3/sysext/backend/Resources/Public/Css/backend.css',
+            ],
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame([Domains::CSS, Domains::FLUID], $answer->data['domains']);
+        self::assertSame(
+            [Domains::PHP, Domains::TYPOSCRIPT, Domains::XLIFF, Domains::DOCS, Domains::TYPESCRIPT],
+            $answer->data['withheld']['domains'],
+        );
+        self::assertSame(
+            count(TestSuiteHints::availableOn(15)) - count($answer->data['suites']),
+            $answer->data['withheld']['suites'],
+        );
+        self::assertStringContainsString(
+            'No given path reached php, typoscript, xliff, docs and typescript, which leaves '
+            . $answer->data['withheld']['suites'] . ' suites out. A path landing in one of those domains means '
+            . 'calling again.',
+            $answer->text,
+        );
+    }
+
+    /**
+     * Nothing was narrowed, so nothing was withheld. The line belongs where a
+     * path set actually left something out, and reads as noise anywhere else
+     * (`D-ANS-074`).
+     */
+    #[Test]
+    public function aCallThatNarrowedNothingWithholdsNothing(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', ['targetVersion' => '15.0']);
+
+        self::assertSame(['domains' => [], 'suites' => 0], $answer->data['withheld']);
+        self::assertStringNotContainsString('No given path reached', $answer->text);
+    }
+
     #[Test]
     public function aNegatedDomainInTheQueryIsNotReadAsASignal(): void
     {

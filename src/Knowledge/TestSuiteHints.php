@@ -151,6 +151,39 @@ final class TestSuiteHints
     }
 
     /**
+     * The other half of a narrowing: the domains no given path reached, and how
+     * many suites they hold on the target version.
+     *
+     * Counted rather than listed, because the list is what the narrowing exists
+     * to avoid — `D-ANS-074`. Nothing narrowed means nothing withheld, so a call
+     * that gave no path gets an empty answer here rather than every suite it
+     * already has.
+     *
+     * @param array<int, string> $domains The domains the answer was narrowed to.
+     * @return array{domains: array<int, string>, suites: int}
+     */
+    public static function withheld(array $domains, ?int $target): array
+    {
+        if ($domains === []) {
+            return ['domains' => [], 'suites' => 0];
+        }
+
+        $withheld = [];
+        $count = 0;
+        foreach (self::load($target) as $suite) {
+            if (array_intersect($suite['domains'], $domains) !== []) {
+                continue;
+            }
+            ++$count;
+            foreach ($suite['domains'] as $domain) {
+                $withheld[$domain] = true;
+            }
+        }
+
+        return ['domains' => array_keys($withheld), 'suites' => $count];
+    }
+
+    /**
      * The invocation guidance that applies regardless of the chosen suite.
      *
      * @return array{preconditions: array<int, string>, notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>}

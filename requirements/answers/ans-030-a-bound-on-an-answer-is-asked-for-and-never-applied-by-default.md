@@ -37,6 +37,8 @@ costs no handle.
 
 - `ForgeTest::theJournalComesBackWholeUnlessACallerAsksForLessOfIt`
 - `ForgeTest::thePingsAreWhatALimitedReaderDropsAndTheChangesSurviveThem`
+- `HintsTest::aNarrowedSuiteListNamesTheDomainsItWithheldAndCountsThem`, on the
+  other payload that takes a bound: the `paths` a suite list is narrowed by.
 
 The count of what was dropped is what says the bot list has gone stale, and no
 test can hold that: an author nobody has named passes the filter, and the answer

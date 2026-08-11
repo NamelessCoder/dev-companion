@@ -51,6 +51,10 @@ final class TestRunGuide extends ReadOnlyTool
             'paths' => Schema::listOf(Schema::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
             'scopes' => Schema::scopes('Which kind of work each path is. Only core paths can run a suite: runTests.sh is not in a project or an extension repository, so the others are named in the answer and narrow nothing.'),
             'domains' => Schema::listOf(Schema::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
+            'withheld' => Schema::object([
+                'domains' => Schema::listOf(Schema::string(), 'Domains no given path reached. A path landing in one of them means calling again, because this answer holds for the path set it was given.'),
+                'suites' => Schema::integer('How many suites those domains hold on the target version. Counted rather than listed: the list is what the narrowing exists to avoid.'),
+            ], ['domains', 'suites'], 'What the narrowing left out. Both empty where nothing was narrowed.'),
             'suites' => Schema::listOf(Schema::testSuiteRecord()),
             'invocation' => Schema::object([
                 'preconditions' => Schema::listOf(Schema::string(), 'What has to be true before any suite runs: the container the script starts, and the vendor/ and bin/ the checkout may not have. This is the question a caller holds at the moment it starts checking for vendor/bin/phpunit by hand, and the shell\'s PHP is not the interpreter the answer is about.'),
@@ -64,7 +68,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'command' => Schema::string(),
                 ], ['purpose', 'command'])),
             ], ['preconditions', 'notes', 'options', 'examples']),
-        ], ['scopes', 'suites', 'invocation']);
+        ], ['scopes', 'withheld', 'suites', 'invocation']);
     }
 
     public static function answer(array $args): ToolResult
@@ -105,6 +109,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'paths' => $paths,
                     'scopes' => $scopes,
                     'domains' => $domains,
+                    'withheld' => TestSuiteHints::withheld($domains, $target),
                     'suites' => [],
                     'invocation' => ['preconditions' => [], 'notes' => [], 'options' => [], 'examples' => []],
                 ],
@@ -134,12 +139,26 @@ final class TestRunGuide extends ReadOnlyTool
         // for `ls` and `command -v` has not got as far as choosing one
         // (`D-AUD-009`).
         $blocks[] = self::preconditionBlock();
+        $withheld = TestSuiteHints::withheld($domains, $target);
         if ($domains !== []) {
-            $blocks[] = sprintf(
+            $narrowing = sprintf(
                 'Narrowed to the %s domain(s) the given paths touch. Suites outside them cannot fail on this change; '
                 . 'call again without paths to see all of them.',
-                implode(' and ', $domains)
+                self::named($domains)
             );
+            // The half a session holding this answer through a rework needs: a
+            // path set grows, and an answer that names only what it kept reads
+            // as the suites for the change rather than for the paths given
+            // (`D-ANS-074`).
+            if ($withheld['domains'] !== []) {
+                $narrowing .= sprintf(
+                    ' No given path reached %s, which leaves %s out. A path landing in one of those domains means '
+                    . 'calling again.',
+                    self::named($withheld['domains']),
+                    $withheld['suites'] === 1 ? 'one suite' : $withheld['suites'] . ' suites',
+                );
+            }
+            $blocks[] = $narrowing;
         }
         if ($hints === []) {
             $blocks[] = sprintf(
@@ -177,9 +196,27 @@ final class TestRunGuide extends ReadOnlyTool
             'paths' => $paths,
             'scopes' => $scopes,
             'domains' => $domains,
+            'withheld' => $withheld,
             'suites' => TestSuiteHints::records($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);
+    }
+
+    /**
+     * A list of domains as a sentence reads it: commas, and "and" before the
+     * last. The withheld line names five of them on an ordinary call.
+     *
+     * @param array<int, string> $words
+     */
+    private static function named(array $words): string
+    {
+        if (count($words) < 3) {
+            return implode(' and ', $words);
+        }
+
+        $last = array_pop($words);
+
+        return implode(', ', $words) . ' and ' . $last;
     }
 
     /**

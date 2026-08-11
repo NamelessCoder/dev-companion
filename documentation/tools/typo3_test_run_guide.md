@@ -53,6 +53,14 @@ scopes:
     scope: string
 # Domains those paths touch. Empty means nothing was narrowed.
 domains: [string]  # optional
+# What the narrowing left out. Both empty where nothing was narrowed.
+withheld:
+  # Domains no given path reached. A path landing in one of them means calling
+  # again, because this answer holds for the path set it was given.
+  domains: [string]
+  # How many suites those domains hold on the target version. Counted rather
+  # than listed: the list is what the narrowing exists to avoid.
+  suites: integer
 suites:
   - suite: string
     # Full command, run from the core root.
@@ -355,6 +363,10 @@ Data:
     "paths": [],
     "scopes": [],
     "domains": [],
+    "withheld": {
+        "domains": [],
+        "suites": 0
+    },
     "suites": [
         {
             "suite": "unit",
@@ -827,6 +839,10 @@ Data:
     "paths": [],
     "scopes": [],
     "domains": [],
+    "withheld": {
+        "domains": [],
+        "suites": 0
+    },
     "suites": [
         {
             "suite": "phpstan",
@@ -993,6 +1009,10 @@ Data:
     "paths": [],
     "scopes": [],
     "domains": [],
+    "withheld": {
+        "domains": [],
+        "suites": 0
+    },
     "suites": [],
     "invocation": {
         "preconditions": [
@@ -1099,7 +1119,7 @@ Text:
 - Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.
 - A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
 
-Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them.
+Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 21 suites out. A path landing in one of those domains means calling again.
 
 ## build-css
 Command from the TYPO3 core root:
@@ -1192,6 +1212,17 @@ Data:
     "domains": [
         "css"
     ],
+    "withheld": {
+        "domains": [
+            "php",
+            "fluid",
+            "typoscript",
+            "xliff",
+            "docs",
+            "typescript"
+        ],
+        "suites": 21
+    },
     "suites": [
         {
             "suite": "build-css",

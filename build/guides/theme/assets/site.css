@@ -88,8 +88,15 @@ header.top .bar {
 .lockup:hover { text-decoration: none; }
 /* The signet is redrawn per optical size rather than scaled, and this is the
    one drawn for 20–31px. Its frame and its quiet line are the page's ink; the
-   marker and the answer line carry their own orange. */
-.bar .lockup svg { width: 20px; height: 20px; }
+   marker and the answer line carry their own orange.
+
+   `display: block` and not merely a size: an inline SVG sits on the text
+   baseline and reserves the descender space under it, which drops the signet
+   a couple of pixels below the wordmark it is locked up with. It used to get
+   this from a rule that sized every icon in the bar by where it stood; the
+   icons are `sds-icon` now and bring their own, and the signet is this site's
+   own drawing and brings its own here. */
+.bar .lockup svg { display: block; flex: none; width: 20px; height: 20px; }
 .lockup .ink { stroke: var(--text-primary); }
 .lockup .inkf { fill: var(--text-primary); }
 .wordmark {

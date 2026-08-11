@@ -136,3 +136,34 @@ forbidden:
 
 - `SiteTest::theThemeWritesNoColourOfItsOwn`
 - `SiteTest::everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt`
+
+## Since then
+
+The first **Wrong if** happened. `c2bef123` found `--text-muted` at `#8A8378`
+and `--status-warn` at `#A56A00` in the vendored copy, months after the system
+had raised both to reach WCAG AA — so the published documentation was below it
+in both modes for as long as the copy stood. The third **Assumed** is what it
+cost: nothing re-read the system, and a copy nobody re-pulls is wrong without
+saying so.
+
+`site.css` imports the tokens and the component layer from
+`@typo3/soul-design-system`, pinned to a commit, and `theme/assets/tokens/` is
+gone. **The statement's token clause therefore no longer describes this site**,
+and whether this entry is revoked with a successor written for what holds
+instead is a question for the maintainer rather than something to decide in
+passing: the icons under `icons/` are still copies with the same defect in
+smaller form, `c2bef123` says they come next, and an entry rewritten before that
+move would be rewritten twice.
+
+On 2026-08-11 the two assertions above were put back on the theme that exists.
+`SiteTest::everyTokenTheThemeNamesIsDeclared` read the vendored directory and
+had been throwing since it went; the check now runs in `build.mjs` over the
+bundled stylesheet, where the imports are resolved — the tokens arrive with
+`npm ci`, which `composer ci` does not run, and no test here may skip itself
+(`StructureTest::noTestSkipsItselfInsteadOfHolding`). It reads wider than the
+assertion did, since the component layer is in scope, and it ignores a `var()`
+carrying a fallback: `--sds-pad` is declared nowhere and the padding beside it
+is the value. `theThemeWritesNoColourOfItsOwn` now strips comments before the
+scan, because `51e70499` explained this rule in the header of `site.css` by
+naming the two values it was broken with, and the scan read the explanation as
+the breach.

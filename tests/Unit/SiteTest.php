@@ -372,18 +372,27 @@ final class SiteTest extends TestCase
      *
      * The design system's first rule is that a token value is never
      * redeclared locally, and the way that breaks is one hex written into a
-     * rule at half past five. The vendored files below `tokens/` are where a
-     * value is allowed to stand; everything the site adds names one.
+     * rule at half past five. The package `site.css` imports is where a value
+     * is allowed to stand; everything the site adds names one.
      *
      * `color-mix()` is not one of them: the system mixes tokens itself, and
      * what the header needs — the canvas, translucent — has no token of its
      * own.
+     *
+     * The scan reads the rules and not the prose above them. The header
+     * explains this rule by naming the two values it was broken with, and a
+     * comment declares nothing — which is how `51e70499` turned an
+     * explanation of the rule into a breach of it.
      */
     #[Test]
     public function theThemeWritesNoColourOfItsOwn(): void
     {
-        $theme = Paths::root() . '/build/guides/theme/assets/site.css';
-        $found = preg_match_all('/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/', (string) file_get_contents($theme), $matches);
+        $theme = (string) file_get_contents(Paths::root() . '/build/guides/theme/assets/site.css');
+        $found = preg_match_all(
+            '/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/',
+            (string) preg_replace('#/\*.*?\*/#s', '', $theme),
+            $matches,
+        );
 
         self::assertSame(0, $found, 'site.css states ' . implode(', ', $matches[0]) . ' rather than a token');
     }
@@ -410,31 +419,6 @@ final class SiteTest extends TestCase
         }
 
         self::assertSame([], array_values(array_unique($small)));
-    }
-
-    /**
-     * `D-DOC-023`: every token the theme names is one the system declares.
-     *
-     * The vendored files were trimmed once — `controls.css` arrived here
-     * eight tokens short — and nothing said so, because a `var()` naming a
-     * token nobody declared is not an error anywhere: the property is simply
-     * dropped and the element renders unstyled.
-     */
-    #[Test]
-    public function everyTokenTheThemeNamesIsDeclared(): void
-    {
-        $assets = Paths::root() . '/build/guides/theme/assets';
-
-        $declared = [];
-        foreach (Finder::create()->files()->in($assets . '/tokens')->name('*.css') as $file) {
-            preg_match_all('/^\s*(--[a-z0-9-]+)\s*:/m', (string) file_get_contents($file->getPathname()), $found);
-            $declared = [...$declared, ...$found[1]];
-        }
-        self::assertNotSame([], $declared);
-
-        preg_match_all('/var\((--[a-z0-9-]+)/', (string) file_get_contents($assets . '/site.css'), $named);
-
-        self::assertSame([], array_values(array_unique(array_diff($named[1], $declared))));
     }
 
     /**

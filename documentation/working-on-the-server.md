@@ -144,10 +144,12 @@ page links. Inlined into each page they had grown to a third of everything the
 site serves — `D-DOC-019`, which also has why the name carries a hash.
 
 **What the page looks like is not this repository's to invent.** It is built to
-the TYPO3 Support App design system, whose tokens are vendored unchanged below
-`theme/assets/tokens/` and whose icons and signet are copied into
+the TYPO3 Support App design system, whose tokens and component layer `site.css`
+imports from the package and whose icons and signet are copied into
 `theme/assets/icons/` — no colour, radius or duration is written out in
-`site.css`, and no icon here is drawn. The two families the system allows are
+`site.css`, and no icon here is drawn. `build.mjs` stops the build where the
+stylesheet names a token nothing declares, because the tokens arrive with
+`npm ci` and `composer ci` never installs them. The two families the system allows are
 built out of their `@fontsource` packages by `build.mjs`, so the faces are
 published beside the pages rather than fetched from a font host. What that
 adopts, and the three places this site does something the system does not

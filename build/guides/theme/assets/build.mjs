@@ -108,6 +108,28 @@ const styles = await build({
     write: false,
 });
 
+// Every token the stylesheet names is one the bundle declares. A `var()`
+// naming a token nobody declared is not an error anywhere: the property is
+// dropped and the element renders unstyled, which is how `controls.css` once
+// arrived eight tokens short with nothing saying so.
+//
+// The check ran in the PHP suite while the tokens were a copy in this
+// directory. They come from the package now, which `npm ci` installs and
+// `composer ci` does not, so the check reads the bundle — where the imports
+// are resolved and the component layer is in scope too.
+//
+// A `var()` carrying a fallback is not one of them. That is CSS's own way of
+// saying the token may be absent, and the component layer uses it:
+// `--sds-pad` is named nowhere else and the padding beside it is the value.
+const bundled = Buffer.from(styles.outputFiles[0].contents).toString();
+const declared = new Set([...bundled.matchAll(/(--[a-z0-9-]+)\s*:/g)].map(([, token]) => token));
+const undeclared = [...new Set([...bundled.matchAll(/var\((--[a-z0-9-]+)\s*\)/g)].map(([, token]) => token))]
+    .filter((token) => !declared.has(token));
+
+if (undeclared.length > 0) {
+    throw new Error(`The stylesheet names ${undeclared.join(', ')}, which nothing declares.`);
+}
+
 const script = await build({
     entryPoints: [join(here, 'site.js')],
     bundle: true,

@@ -68,7 +68,7 @@ setIconSprite(document.documentElement.getAttribute('data-sprite') || up + 'asse
     // The tool reference is 26 entries, so the page being read can sit below
     // the fold of a sidebar that has already scrolled past it. Only the
     // sidebar moves: scrollIntoView would take the page with it.
-    var current = document.querySelector('nav.side a.page.current');
+    var current = document.querySelector('nav.side .sds-rail__item.is-active');
     if (current && current.offsetTop > side.clientHeight) {
         side.scrollTop = current.offsetTop - side.clientHeight / 2;
     }

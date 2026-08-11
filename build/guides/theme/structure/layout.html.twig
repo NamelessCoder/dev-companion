@@ -148,32 +148,35 @@
     <div class="zoom__body"></div>
 </dialog>
 <div class="wrap">
-    <nav class="side" id="side">
+    <nav class="side sds-rail" id="side">
         {#
+            The system's rail, written as its classes rather than as
+            `<sds-rail>`: this is the navigation of the page, and it has to be
+            there before a script is. The element and the classes emit the same
+            markup — that is the contract — so this is the same rail, rendered
+            by the renderer that has the list of pages.
+
             The front page and the pages belonging to no subject stand open;
             every subject is a fold, and the one being read is the one that
             starts open.
         #}
-        <ul class="loose">
         {%- for entry in pages|filter(entry => (entry.filePath|trim('/') matches '#/#') == false) -%}
             {%- set path = entry.filePath|trim('/') -%}
-            <li><a class="page{{ path == here ? ' current' : '' }}" href="{{ up }}{{ path }}.html">{{ path == 'index' ? 'Overview' : (entry.title ? entry.title.toString : path) }}</a></li>
+            <a class="sds-rail__item{{ path == here ? ' is-active' : '' }}" href="{{ up }}{{ path }}.html"{{ path == here ? ' aria-current="page"' : '' }}>{{ path == 'index' ? 'Overview' : (entry.title ? entry.title.toString : path) }}</a>
         {%- endfor -%}
-        </ul>
         {%- set group = '' -%}
         {%- for entry in pages|filter(entry => entry.filePath|trim('/') matches '#/#') -%}
             {%- set path = entry.filePath|trim('/') -%}
             {%- set dir = path|split('/')|first -%}
             {%- if dir != group -%}
-                {%- if group != '' %}</ul></details>{% endif -%}
+                {%- if group != '' %}</details>{% endif -%}
                 {%- set group = dir -%}
-                <details class="group"{{ here|split('/')|first == dir ? ' open' : '' }}>
+                <details class="sds-rail__group"{{ here|split('/')|first == dir ? ' open' : '' }}>
                     <summary><sds-icon name="actions-chevron-down" size="16"></sds-icon>{{ dir|replace({'-': ' '}) }}</summary>
-                    <ul>
             {%- endif -%}
-            <li><a class="page{{ path == here ? ' current' : '' }}" href="{{ up }}{{ path }}.html">{{ entry.title ? entry.title.toString : path }}</a></li>
+            <a class="sds-rail__item{{ path == here ? ' is-active' : '' }}" href="{{ up }}{{ path }}.html"{{ path == here ? ' aria-current="page"' : '' }}>{{ entry.title ? entry.title.toString : path }}</a>
         {%- endfor -%}
-        {%- if group != '' %}</ul></details>{% endif -%}
+        {%- if group != '' %}</details>{% endif -%}
     </nav>
     <main>
 <!-- content start -->

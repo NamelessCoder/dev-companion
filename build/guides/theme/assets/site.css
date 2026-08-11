@@ -184,8 +184,10 @@ header.top .bar {
     padding: 0 var(--space-4);
 }
 
-/* The tool rail: mono, because every entry in it is a page named after
-   something the machine names. */
+/* Where the rail sits, and nothing about what it looks like: it is
+   `sds-rail`, and the fold, the label register, the chevron and the active
+   block are the system's. This used to be forty lines of the same decisions
+   kept in step by hand. */
 nav.side {
     flex: 0 0 var(--width-sidebar);
     position: sticky;
@@ -194,49 +196,10 @@ nav.side {
     max-height: calc(100vh - var(--height-header));
     overflow-y: auto;
     padding: var(--space-6) 0 var(--space-12);
-    font-family: var(--font-mono);
-    font-size: var(--nav-font-size);
 }
-nav.side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
-nav.side a.page {
-    display: block;
-    padding: 5px 9px;
-    border-radius: var(--radius-control);
-    color: var(--text-secondary);
-    text-decoration: none;
-    overflow-wrap: anywhere;
-    transition: color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
-}
-nav.side a.page:hover { color: var(--text-primary); text-decoration: none; }
-/* Active is a filled block, not a tint. */
-nav.side a.page.current { background: var(--accent); color: var(--text-on-accent); }
-
-/* A subject is folded shut unless the page being read is in it: the tool
-   reference alone is 26 entries, and open they are most of the list. */
-nav.side details.group { margin-top: var(--space-2); }
-nav.side details.group > summary {
-    list-style: none;
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: 5px 9px;
-    font-size: var(--font-size-label);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--text-muted);
-    transition: color var(--duration-fast) var(--ease-out);
-}
-nav.side details.group > summary::-webkit-details-marker { display: none; }
-nav.side details.group > summary:hover { color: var(--text-secondary); }
-nav.side details.group > summary svg {
-    transform: rotate(-90deg);
-    transition: transform var(--duration-fast) var(--ease-out);
-}
-nav.side details.group[open] > summary svg { transform: none; }
-nav.side details.group > ul { margin: var(--space-1) 0 var(--space-4) var(--space-2); }
-nav.side ul.loose { margin-bottom: var(--space-4); }
+/* A page title wraps where a tool name does not, and a rail item is one line
+   by default. */
+nav.side .sds-rail__item { overflow-wrap: anywhere; }
 
 main {
     flex: 1 1 auto;

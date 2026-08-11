@@ -21,9 +21,12 @@ var up = document.documentElement.getAttribute('data-up') || '';
 
 // Where the icons resolve. An element left to itself looks beside its own
 // module, and this one has been bundled into a file that sits somewhere else
-// — every glyph would come back blank. Published flat with the rest by
-// `assets/build.mjs`, so the depth of the page being read is the whole path.
-setIconSprite(up + 'assets/actions.svg');
+// — every glyph would come back blank.
+//
+// The name comes off the document because it carries a hash of the sprite's
+// contents, which only the build knows. That hash is what lets a browser hold
+// the file instead of asking about it again for every page.
+setIconSprite(document.documentElement.getAttribute('data-sprite') || up + 'assets/icons.svg');
 
 // Light or dark, as two segments with the chosen one filled — the design
 // system's mode switch, which is the same treatment as an active navigation

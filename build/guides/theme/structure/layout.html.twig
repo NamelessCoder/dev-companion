@@ -42,14 +42,16 @@
     ((b.filePath|trim('/') == 'index' ? '0' : (b.filePath matches '#/#' ? '2' : '1')) ~ b.filePath|trim('/'))
 ) %}
 {#
-    What the two built assets are called this build, read out of the
-    manifest `assets/build.mjs` writes. The name carries a hash of the
-    file, so a changed asset is a changed URL.
+    What the three built assets are called this build, read out of the
+    manifest `assets/build.mjs` writes, in the order it writes them:
+    stylesheet, script, icon sprite. Each name carries a hash of the file, so a
+    changed asset is a changed URL and an unchanged one is never asked about
+    again.
 #}
 {% set assets = source('assets/dist/manifest.txt')|trim|split('\n') %}
 {% set mark = (env.projectNode.title ?? 'Documentation')|split(' ', 2) %}
 <!DOCTYPE html>
-<html lang="en" data-up="{{ up }}">
+<html lang="en" data-up="{{ up }}" data-sprite="{{ up }}assets/{{ assets[2] }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

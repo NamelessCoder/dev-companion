@@ -90,12 +90,14 @@ await writeFile(join(dist, 'signet-s.svg'), await readFile(join(here, 'icons', '
 // What every `<sds-icon>` on this site resolves against — the ones the layout
 // writes and the ones the components render inside themselves. Copied whole
 // rather than subset, because which glyph a component reaches for is its
-// business and not this build's: a subset goes blank the day one changes. It
-// is 51 KB over the wire, fetched once and held for all 48 pages.
-await writeFile(
-    join(dist, 'actions.svg'),
-    await readFile(join(packages, '@typo3', 'soul-design-system', 'dist', 'assets', 'icons', 'sprites', 'actions.svg')),
-);
+// business and not this build's: a subset goes blank the day one changes.
+//
+// Hashed with the other two, and that is not housekeeping. Unhashed it was
+// `actions.svg`, a name that can mean something different tomorrow, so a
+// browser has to ask about it again for every document — and a `<use>` into an
+// external file is resolved per document. 199 KB, on every navigation. Named
+// by its contents it is fetched once and never asked about again.
+const sprite = await readFile(join(packages, '@typo3', 'soul-design-system', 'dist', 'assets', 'icons', 'sprites', 'actions.svg'));
 
 // The tokens are @imported by site.css and inlined here, so they arrive as one
 // request with the rest.
@@ -124,6 +126,7 @@ const written = [];
 for (const [name, contents] of [
     ['site.css', Buffer.from(css.code)],
     ['site.js', Buffer.from(script.outputFiles[0].contents)],
+    ['icons.svg', sprite],
 ]) {
     const hashed = named(name, contents);
     await writeFile(join(dist, hashed), contents);

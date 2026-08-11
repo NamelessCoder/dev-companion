@@ -156,9 +156,10 @@ smaller form, `c2bef123` says they come next, and an entry rewritten before that
 move would be rewritten twice.
 
 On 2026-08-11 the two assertions above were put back on the theme that exists.
-`SiteTest::everyTokenTheThemeNamesIsDeclared` read the vendored directory and
-had been throwing since it went; the check now runs in `build.mjs` over the
-bundled stylesheet, where the imports are resolved — the tokens arrive with
+The one that held every token the theme names to what the system declares read
+the vendored directory and had been throwing since it went; that check runs in
+`build.mjs` over the bundled stylesheet now, where the imports are resolved —
+the tokens arrive with
 `npm ci`, which `composer ci` does not run, and no test here may skip itself
 (`StructureTest::noTestSkipsItselfInsteadOfHolding`). It reads wider than the
 assertion did, since the component layer is in scope, and it ignores a `var()`

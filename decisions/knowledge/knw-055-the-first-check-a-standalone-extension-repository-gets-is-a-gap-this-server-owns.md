@@ -236,3 +236,41 @@ no correction for it. What does need one is a build directory or document root
 that is neither hidden nor one of those names, and the match is case-sensitive,
 so `Vendor/` is not excluded. Measured against a fixture tree with the installed
 package, and the hint states the reading rather than the account.
+
+**Since then**, on 2026-08-11, the fourth **Wrong if** fired. The measurement
+disproves the remedy it names rather than confirming it.
+
+`feedback/2026-08-10-182451` is a session that stopped reading the index. It
+names two ids it was shown and never asked for, and counts six calls spent
+reconstructing one of them from the filesystem. Its own call re-run here selects
+`css`, `fluid` and `typescript`, scores 52 candidates and returns six.
+`availableHints` carries the other 46 — 47 of the answer's 126 lines, and 3545
+of its 13080 bytes.
+
+So the premise holds and the conclusion does not. `javascript-unit-tests`, the
+hint those six calls went around, ranks **seventh of 52**: the matcher admitted
+it and `limit=6` cut it by one place. In `availableHints` it stands at position
+43 of 46, because `Hints::index()` re-reads the corpus and orders it by file
+while the rank `find()` has just computed is discarded. Nothing in the index
+separates a hint the matcher ranked seventh from one that answered nothing.
+Withdrawing the index to the empty case — what this entry said the firing would
+mean — would have removed the only place that id was named at all.
+
+The second id is a different case and separating the two is most of the finding.
+`css-tokens-specificity` is sixteenth of the 39 the coverage floor rejected,
+tied at a score of 47 with `css-light-dark-mode` and
+`css-rtl-logical-properties`. Nothing in the query's words reaches it, so no
+ordering of the index would have raised it. That half is the matcher's
+vocabulary rather than the index's order, and the feedback's own suggestion —
+rank what matched the domains but not the words — would not have surfaced it.
+
+The third **Assumed** is now measured, on one call: the index is a little over a
+quarter of the answer and says nothing about what was asked. The count was never
+the cost. One thing was read beside it and is recorded because it turns
+silently: `Hints::index()` calls `load()` with no target while `byId()` honours
+one, so the index is not filtered by version and can name an id the tool would
+then refuse. Nothing is wrong today, all 134 hints holding on 15.
+
+What goes up is which of the two the index becomes — ordered by the rank the
+matcher already has, or withdrawn to the miss it was built for. Both change
+`src/` and what every answer of this tool carries, so neither is made here.

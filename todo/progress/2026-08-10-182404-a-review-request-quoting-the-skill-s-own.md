@@ -1,7 +1,9 @@
-# a path-scoped suite list goes stale when the patch grows a file in a new domain, and nothing says...
+# a review request quoting the skill's own trigger words did not activate the skill
 
-**Serves:** feedback/2026-08-10-182435-a-path-scoped-suite-list-goes-stale-when-the.md
+**Serves:** feedback/2026-08-10-182404-a-review-request-quoting-the-skill-s-own.md
 **Priority:** low
+**Branch:** todo/a-review-request-quoting-the-skill-s-own
+**Claimed:** 2026-08-11
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

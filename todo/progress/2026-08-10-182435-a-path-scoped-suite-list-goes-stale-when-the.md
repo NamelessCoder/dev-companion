@@ -1,7 +1,9 @@
-# the browser-check guide stayed unread through a session that deferred browser verification five t...
+# a path-scoped suite list goes stale when the patch grows a file in a new domain, and nothing says...
 
-**Serves:** feedback/2026-08-10-182417-the-browser-check-guide-stayed-unread-through-a.md
+**Serves:** feedback/2026-08-10-182435-a-path-scoped-suite-list-goes-stale-when-the.md
 **Priority:** low
+**Branch:** todo/a-path-scoped-suite-list-goes-stale-when-the
+**Claimed:** 2026-08-11
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# a review request quoting the skill's own trigger words did not activate the skill
+# the browser-check guide stayed unread through a session that deferred browser verification five t...
 
-**Serves:** feedback/2026-08-10-182404-a-review-request-quoting-the-skill-s-own.md
+**Serves:** feedback/2026-08-10-182417-the-browser-check-guide-stayed-unread-through-a.md
 **Priority:** low
+**Branch:** todo/the-browser-check-guide-stayed-unread-through-a
+**Claimed:** 2026-08-11
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

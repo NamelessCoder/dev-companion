@@ -20,9 +20,9 @@ Measured against the DDEV project running on this machine, which is the same
 installation the report was written in.
 
 - `docker port ddev-router` publishes 80 and 443 on `127.0.0.1` alone. A
-  container started with `--add-host host.docker.internal:host-gateway` therefore
-  reaches the host's gateway address and nothing answers: curl exits 7, which is
-  the connection refused the session reported.
+  container started with `--add-host host.docker.internal:host-gateway`
+  therefore reaches the host's gateway address and nothing answers: curl exits
+  7, which is the connection refused the session reported.
 - `--network ddev_default` alone answers 200 over HTTP for the project's own
   hostname, with no `--add-host` at all. The router's aliases on that network
   are its container name and every project hostname it serves, which is what
@@ -74,3 +74,37 @@ installation the report was written in.
 - Somebody reaches for this document to write a committed browser suite. That is
   `project/testing/playwright`, and a `whenToUse` that lets the two be confused
   is the thing to fix.
+
+## Since then
+
+`feedback/2026-08-10-182417` was judged against this entry on 2026-08-11. It is
+the session six hours after this document was written: a backend CSS patch on a
+core checkout, which held the page's id from `typo3_project_describe` and never
+opened it, and told its reader five times that it could not judge the change
+visually.
+
+The hints chosen above were re-run from that session's own paths.
+`typo3_test_run_guide` returns `e2e-prepare` and `e2e-browser` for them and
+names no page beside the two suites — it names `core/testing/scripts` under
+`R-ANS-028` and stops there. `typo3_hint_lookup` with those paths selects the
+`css` domain, where `browser-tests` is neither returned nor listed in
+`availableHints`, so the `documents` block that carries this page comes back
+empty. The page is named where the query already says what it is looking for:
+"look at the change in a real browser" returns `browser-tests` with both
+documents under it.
+
+So `browser-tests` and `browser-tests-outside-core` deliver this page to a
+caller who has decided that a browser is involved, and the reviewer of a visual
+patch is the caller who has not. The page is here and did not reach the session,
+which is the judging ladder's second step rather than its first, and it is
+queued as
+`todo/open/2026-08-11-081914-name-the-browser-check-page-where-the-e2e-suites-are.md`.
+
+Two other placements were measured and not taken. Putting `css` on this hint's
+domains makes it listable by a CSS task and still not returned, so the
+`documents` block stays empty — which is why `D-KNW-017` put its crossing in the
+hint the question reaches rather than in the domains. A review surface in
+`typo3-core-patch-review` is the second, and it is the weaker first step: the
+session did call `typo3_test_run_guide` and took `e2e-prepare` out of that
+answer each time, so the answer it already read is the cheaper place to name the
+page.

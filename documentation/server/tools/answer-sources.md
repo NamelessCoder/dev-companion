@@ -7,7 +7,7 @@ tools under knowledge and packages are the ones still worth calling. Which
 source answered one call is `answeredBy` in that answer, where the tool has two.
 This page is written by `bin/cli tools:index` from the Source enum.
 
-![The five sources plotted against how much of the machine has to be running: bundled knowledge and this server's own checkout answer with nothing running, packages need files on disk, the installation source needs a booted installation, and network sources need outbound reach.](../images/answer-sources.svg)
+![The five sources plotted against how much of the machine has to be running: bundled knowledge and this server's own checkout answer with nothing running, packages need files on disk, the installation source needs a booted installation, and network sources need outbound reach.](../../images/answer-sources.svg)
 
 ## installation
 

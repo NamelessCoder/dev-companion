@@ -27,9 +27,10 @@ what they were shown was the map of how this repository works on itself.
 - The readme's own links are eight, and every one of them is either external, a
   page the site serves, or `AGENTS.md`, which the copy already rewrites to
   GitHub.
-- The readme named three of its links by their path — `documentation/tools/` as
-  the text of a link to `documentation/tools/readme.md`. On the site those paths
-  do not exist, because `documentation/` is served at the root.
+- The readme named three of its links by their path —
+  `documentation/server/tools/` as the text of a link to
+  `documentation/server/tools/readme.md`. On the site those paths do not exist,
+  because `documentation/` is served at the root.
 - Which TYPO3 lines the server answers for was in no sentence of the readme, and
   it is the first thing a user checks. It is declared in
   `knowledge/versions.json`, so a test can hold the sentence to it.

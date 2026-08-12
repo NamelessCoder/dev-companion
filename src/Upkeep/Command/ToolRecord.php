@@ -53,7 +53,7 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  */
 #[AsCommand(
     name: 'tools:record',
-    description: 'call every tool against a checkout and write what came back to documentation/clients/',
+    description: 'call every tool against a checkout and write what came back to documentation/usage/',
 )]
 final class ToolRecord
 {

@@ -128,9 +128,9 @@ flag for it.
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,
 and the two environment variables that end a failed discovery:
-[Installing the server](documentation/clients/installing.md). Changing this
+[Installing the server](documentation/usage/installing.md). Changing this
 repository rather than using it:
-[Working on the server](documentation/working-on-the-server.md).
+[Working on the server](documentation/contributing/working-on-the-server.md).
 All of it reads as a site at
 [benjaminkott.github.io/typo3-dev-companion](https://benjaminkott.github.io/typo3-dev-companion/).
 
@@ -155,14 +155,14 @@ its own description: the installation, the files its packages ship, the bundled
 knowledge, a service over the network, or this checkout. That is what says
 whether a question can be asked at all in the state the machine is in —
 `typo3_server_scope` groups the tools by it, and
-[Where an answer comes from](documentation/tools/answer-sources.md) is the same
-statement read as a page.
+[Where an answer comes from](documentation/server/tools/answer-sources.md) is
+the same statement read as a page.
 
 What one is for, what it takes and the fields it answers with is written out per
-tool in [the tool surface](documentation/tools/readme.md) — one page per tool,
-rendered from the classes rather than kept beside them, and each carrying what
-that tool answered when it was last recorded. Below is the same surface grouped
-by where an answer comes from.
+tool in [the tool surface](documentation/server/tools/readme.md) — one page per
+tool, rendered from the classes rather than kept beside them, and each carrying
+what that tool answered when it was last recorded. Below is the same surface
+grouped by where an answer comes from.
 
 ![A task starts by reading the project and identifying its workflow, then uses a specialist tool and returns the source, version, scope and limits with the answer.](documentation/images/answer-flow.svg)
 

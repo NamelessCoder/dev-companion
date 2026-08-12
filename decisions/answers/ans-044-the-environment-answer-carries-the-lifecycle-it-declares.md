@@ -60,7 +60,7 @@ it was read from. The rest of that file is how the project boots.
 
 - Queued rather than closed on the spot. It changes `Project::describe()` and
   the declared `outputSchema` of `typo3_project_scope`, and
-  [judging.md](../../documentation/feedback/judging.md) puts a schema beyond a
+  [judging.md](../../documentation/records/judging.md) puts a schema beyond a
   run that has read only this repository.
 - The rung is 1b in kind and neither of the two instances that page names. Not
   1a, because nothing about TYPO3 is missing and the file is the caller's own;

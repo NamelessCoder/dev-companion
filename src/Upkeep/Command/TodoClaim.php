@@ -275,7 +275,7 @@ final class TodoClaim
      * and the claims sat untouched while three worktrees stood there.
      *
      * What the client is called is not this repository's business, and
-     * `documentation/driving-a-session.md` says so: clients differ in what the
+     * `documentation/contributing/driving-a-session.md` says so: clients differ in what the
      * flags are named, not in what has to be true. So the command line is the
      * machine's, in an ignored file, and the three things a person gets wrong
      * are this command's — the working directory, the message, and a session id

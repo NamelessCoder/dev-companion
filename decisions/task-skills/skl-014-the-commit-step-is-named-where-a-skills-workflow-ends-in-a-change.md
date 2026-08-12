@@ -59,7 +59,7 @@ that came from those habits is not something this server may be credited with.
 ## Decided
 
 - **Placement, not a new capability.** Step 2 of the ladder in
-  [judging.md](../../documentation/feedback/judging.md): the answer exists and
+  [judging.md](../../documentation/records/judging.md): the answer exists and
   the route to it does not pass where this task passed. No tool and no
   `knowledge/` entry is built.
 - **In the skill body, not in `skills/base.md`.** That file is the order every

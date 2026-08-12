@@ -51,7 +51,7 @@ line beside four files nothing is wrong with, and says nothing about either.
 - Queued rather than closed on the spot. The lever is `typo3_extension_scope`,
   so the change touches `src/` and a declared `outputSchema`, and establishing
   the predicates needed the checkouts — both of the two things
-  `documentation/feedback/judging.md` puts on the far side of that line.
+  `documentation/records/judging.md` puts on the far side of that line.
 - Step 2 for the `ext_emconf.php` half: the rule is here, complete and bound,
   and the answer naming the file does not carry it. Step 1a then step 2 for the
   `ext_tables.php` half, since the statement it would deliver does not exist.

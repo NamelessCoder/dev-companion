@@ -107,7 +107,7 @@ final class SiteTest extends TestCase
     public function aLinkOutOfTheTreeBecomesTheFileInTheRepository(): void
     {
         $published = Site::page(
-            'documentation/knowledge/versions.md',
+            'documentation/server/versions.md',
             'The rule is in [AGENTS.md](../../AGENTS.md), and the runs are in [scenarios/runs/](../../scenarios/runs/).',
         );
 
@@ -122,7 +122,7 @@ final class SiteTest extends TestCase
     {
         self::assertStringEndsWith(
             '/blob/main/AGENTS.md#prose)',
-            Site::page('documentation/glossary.md', 'It is in [AGENTS.md](../AGENTS.md#prose)'),
+            Site::page('documentation/contributing/glossary.md', 'It is in [AGENTS.md](../../AGENTS.md#prose)'),
         );
     }
 
@@ -152,7 +152,7 @@ final class SiteTest extends TestCase
         self::assertSame([], $carrying);
         self::assertStringEndsWith(
             '](answer-sources.md)',
-            Site::page('documentation/tools/typo3_icon_lookup.md', 'Answers from [`packages`](answer-sources.md#packages)'),
+            Site::page('documentation/server/tools/typo3_icon_lookup.md', 'Answers from [`packages`](answer-sources.md#packages)'),
         );
     }
 
@@ -166,11 +166,11 @@ final class SiteTest extends TestCase
     {
         Site::build($this->target);
 
-        self::assertFileExists($this->target . '/tools/index.md');
+        self::assertFileExists($this->target . '/server/tools/index.md');
         self::assertFileDoesNotExist($this->target . '/readme.md');
-        self::assertFileDoesNotExist($this->target . '/tools/readme.md');
+        self::assertFileDoesNotExist($this->target . '/server/tools/readme.md');
         self::assertStringContainsString(
-            '](feedback/index.md)',
+            '](records/index.md)',
             (string) file_get_contents($this->target . '/how-the-work-is-done.md'),
         );
     }
@@ -200,11 +200,11 @@ final class SiteTest extends TestCase
     {
         $published = Site::page(
             Site::FRONT,
-            'Installing is [here](documentation/clients/installing.md), and the map is'
+            'Installing is [here](documentation/usage/installing.md), and the map is'
             . ' [there](documentation/readme.md).',
         );
 
-        self::assertStringContainsString('](clients/installing.md)', $published);
+        self::assertStringContainsString('](usage/installing.md)', $published);
         self::assertStringContainsString('](how-the-work-is-done.md)', $published);
     }
 
@@ -214,7 +214,7 @@ final class SiteTest extends TestCase
     {
         self::assertStringContainsString(
             '](../index.md)',
-            Site::page('documentation/feedback/readme.md', 'What it is: [readme](../../readme.md).'),
+            Site::page('documentation/records/readme.md', 'What it is: [readme](../../readme.md).'),
         );
     }
 
@@ -224,7 +224,7 @@ final class SiteTest extends TestCase
     {
         $written = 'See [the manual](https://docs.typo3.org/) and [below](#what-it-is).';
 
-        self::assertSame($written, Site::page('documentation/glossary.md', $written));
+        self::assertSame($written, Site::page('documentation/contributing/glossary.md', $written));
     }
 
     /** The images the pages carry are copied, since a page without them says less. */

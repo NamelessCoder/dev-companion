@@ -72,6 +72,6 @@ does when the patch stops deciding for it, and a session that has read them
 measures its own ability to satisfy them instead. That is why the session
 working this repository cannot be the subject, and it is what
 `scenarios/readme.md` opens with. Ask for the debrief afterwards — the prompt is
-in `documentation/feedback/readme.md`, pasted verbatim and without saying the
+in `documentation/records/readme.md`, pasted verbatim and without saying the
 session was a case. What comes out is written into the case the way `SKILL-12`'s
 run is.

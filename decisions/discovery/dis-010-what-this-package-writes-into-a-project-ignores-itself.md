@@ -31,15 +31,15 @@ belongs to somebody else, on every run.
   `?? .claude/skills/my-own-skill.md` and nothing else — the file ignores itself
   along with everything beside it, and the skill the project wrote is untouched
   by it. `git check-ignore -v` names that file as the rule for both.
-- `documentation/clients/installing.md` already drew the line this entry
-  extends: merged agent or MCP configuration "is not ignored, because the
-  project may share it". A `.gitignore` is shared more than any of those files,
-  and it was the one this package wrote into.
+- `documentation/usage/installing.md` already drew the line this entry extends:
+  merged agent or MCP configuration "is not ignored, because the project may
+  share it". A `.gitignore` is shared more than any of those files, and it was
+  the one this package wrote into.
 - The record was the one artefact with no other option.
   `typo3-dev-companion.json` sat at the project root, and a file cannot ignore
   itself.
 - The package is not published on Packagist and is required from a local
-  checkout, which `documentation/clients/installing.md` says outright. Every
+  checkout, which `documentation/usage/installing.md` says outright. Every
   project that has the old layout was set up by hand from a checkout somebody
   owns.
 

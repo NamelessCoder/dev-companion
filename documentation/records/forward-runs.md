@@ -13,7 +13,7 @@ one is carried out.
    need not be a person typing: a client driven non-interactively is the same
    evidence, as long as it is given the prompt and nothing else. What such a
    launch has to get right — the session id the grading later needs among it —
-   is [driving-a-session.md](../driving-a-session.md).
+   is [driving-a-session.md](../contributing/driving-a-session.md).
    [todo/reference/](../../todo/reference/) says which checkout plays which
    environment on this machine, and how the client is reached there. A recorded
    review runs in one of those and not in the `E-SITE` this repository makes for
@@ -113,9 +113,9 @@ Both of those are written by whoever judged the run, from the transcript. When
 the run happened in an agent whose transcript is not readable here, the session
 is the only thing that can report it, and it is asked for its own debrief after
 the work is finished — the generic prompt for that is in
-[the feedback pages](../feedback/readme.md). What comes back is weaker evidence
-than a transcript and the run says so: it is what the session claims about
-itself, and the answer it gave is still judged the usual way.
+[the feedback pages](readme.md). What comes back is weaker evidence than a
+transcript and the run says so: it is what the session claims about itself, and
+the answer it gave is still judged the usual way.
 
 A defect the same session fixes is the exception: that is a requirement and the
 commit that closed it, not a feedback that would be archived on creation.

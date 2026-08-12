@@ -129,9 +129,9 @@ already, and which tool is on which page is what an index of tools says by
 existing.
 
 The surface then moved up a level. `documentation/clients/tools.md` and the
-directory beside it are `documentation/tools/`, whose `readme.md` is the index —
-the pages describe the tools rather than the clients being set up, and a subject
-of its own is where the map already sends a reader looking for one. The root
-readme stopped restating them: it names the tools grouped by where an answer
-comes from, in a paragraph each, and links here for what one takes and answers
-with.
+directory beside it are `documentation/server/tools/`, whose `readme.md` is the
+index — the pages describe the tools rather than the clients being set up, and a
+subject of its own is where the map already sends a reader looking for one. The
+root readme stopped restating them: it names the tools grouped by where an
+answer comes from, in a paragraph each, and links here for what one takes and
+answers with.

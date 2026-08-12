@@ -71,7 +71,7 @@ here; read on the route the reporting session was on, it points the other way.
 
 - Step 1a, and queued rather than closed on the spot. What lands is a statement
   about TYPO3 across four checkouts, which
-  [`judging.md`](../../documentation/feedback/judging.md) puts on the other side
+  [`judging.md`](../../documentation/records/judging.md) puts on the other side
   of the line from a wording fix.
 - `normal` rather than the `low` the card arrived at. The corpus is not silent
   here — it carries two sentences a session on this route reads as covering it,

@@ -40,7 +40,7 @@ with a correct entry beside it and found no tool they could call.
   success. Nothing in the output distinguishes the file being on disk from the
   client having read it.
 - This repository already knows the failure shape, for one client and one
-  artefact. `documentation/clients/installing.md` carries "VS Code reads the
+  artefact. `documentation/usage/installing.md` carries "VS Code reads the
   skills only once it is told to": `chat.useAgentSkills` is off by default, so
   "nothing reports that six skills are sitting in the repository unread; a
   session there answers from the checkout as if none had been installed"
@@ -125,5 +125,5 @@ The other three branches still need a session that nobody has had yet: whether a
 third report arrives after the line lands, and whether the line gets read as a
 failed install, are both things only a reader can show.
 [`R-DIS-023`](../../requirements/discovery/dis-023-an-install-says-what-is-left-before-a-tool-can-be-called.md)
-is held from here on, and `documentation/clients/installing.md` carries the
+is held from here on, and `documentation/usage/installing.md` carries the
 per-client sources.

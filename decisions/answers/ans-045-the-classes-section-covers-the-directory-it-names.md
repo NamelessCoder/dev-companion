@@ -30,7 +30,7 @@ a caller who trusts the promise never learns there was more to open.
   those directories and 106 of those files are on the list. `extbase` reports 27
   of 284, `frontend` 53 of 144, `install` 48 of 158.
 - One instance is in this repository already.
-  `documentation/tools/typo3_extension_scope.md` records
+  `documentation/server/tools/typo3_extension_scope.md` records
   `Classes: Command (8), Controller (90), … ViewHelpers (15)` for `backend`.
   Those counts sum to 343, against 671 PHP files below that extension's
   `Classes/`.
@@ -64,8 +64,8 @@ a caller who trusts the promise never learns there was more to open.
   they are weighed against each other.
 - **Queued rather than closed on the spot.** Both halves touch `src/` and the
   declared `outputSchema`, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the reviewed
-  side of that line.
+  [judging.md](../../documentation/records/judging.md) puts on the reviewed side
+  of that line.
 - The priority is `high` for the classes half, and this is what set it. The
   filter is silent, it holds for every extension this server answers for, and
   `skills/typo3-extension-conformance` routes an audit at exactly this section.

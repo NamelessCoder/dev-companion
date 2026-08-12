@@ -25,7 +25,7 @@ subject the earlier notes were about.
 - `bin/cli hints:probe` on its `Query` matches nothing and returns 22 hints as
   the index. That is not step 1a. The subject is what one session could see of
   itself, which is neither TYPO3 nor anything `knowledge/` would hold.
-- [`documentation/feedback/judging.md`](../../documentation/feedback/judging.md)
+- [`documentation/records/judging.md`](../../documentation/records/judging.md)
   does not assess whether a self-criticism is accurate, so a withdrawal can only
   move a judgement that took the claim as evidence rather than as the report it
   came in. Three siblings, three answers.
@@ -52,7 +52,7 @@ subject the earlier notes were about.
   no longer evidence. If the skill was active, its Playwright half is a rule
   that was delivered and did not take, which is rung 4 rather than rung 3.
 - The lever is this repository's own debrief prompt, in
-  [readme.md](../../documentation/feedback/readme.md). It asks for exactly the
+  [readme.md](../../documentation/records/readme.md). It asks for exactly the
   fact the session could not see — "Report the session you just had from your
   own transcript" — and offers the skill question two answers: name it, or "If
   none activated, say so — that is a result". An agent whose context begins at a

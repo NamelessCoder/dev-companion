@@ -48,7 +48,7 @@ other side: what is the strength evidence of?
   [`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md)
   makes "nothing to do" the close answer rather than a special case.
 - A strength does not confirm a decision. It is a session's account of its own
-  run, which is what [judging.md](../../documentation/feedback/judging.md)
+  run, which is what [judging.md](../../documentation/records/judging.md)
   already refuses to assess in the other direction — the session was there and
   the reader was not. `D-SKL-001` is confirmed by recorded runs with timings in
   them, and a self-report cannot be read against its **Wrong if** the same way.

@@ -50,7 +50,7 @@ correct answer is "still supported".
 - The routing half is **closed on the spot**. The false clause is out of the
   changelog entry and an entry for the shape now names
   `typo3_documentation_lookup` with `targetVersion`.
-  [judging.md](../../documentation/feedback/judging.md) puts that on the
+  [judging.md](../../documentation/records/judging.md) puts that on the
   autonomous side: it touches no `src/`, no declared schema and no skill
   contract, and it writes no statement about TYPO3.
 - The skill half is **queued**, because the routing block reaches a session only

@@ -63,7 +63,7 @@ method name.
   rather than the wording.
 - **Queued rather than closed on the spot.** Both halves are `src/`, and the
   `query` description is a declared schema, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the far side of
+  [judging.md](../../documentation/records/judging.md) puts on the far side of
   the autonomous line.
 - **The suggestion is taken on its subject and rejected on its diagnosis.** The
   report asks for the `:php:` names and the Removed-lists to be indexed because

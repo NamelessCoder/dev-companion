@@ -35,7 +35,7 @@ final class ToolCalls
      *
      * It is data rather than a paragraph in this file because two readers need
      * it and neither of them opens this class. `ToolSurface` states the absence
-     * at the tool somebody is standing at in `documentation/tools/`,
+     * at the tool somebody is standing at in `documentation/server/tools/`,
      * where a missing link otherwise renders as nothing at all, and
      * `ToolAnswers` says the same on the map of the recording. `ToolAnswersTest`
      * holds this list against the table, so the next tool to drop out has to

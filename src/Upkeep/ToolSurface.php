@@ -36,12 +36,12 @@ final class ToolSurface
 
     public static function index(): string
     {
-        return Paths::root() . '/documentation/tools/readme.md';
+        return Paths::root() . '/documentation/server/tools/readme.md';
     }
 
     public static function directory(): string
     {
-        return Paths::root() . '/documentation/tools';
+        return Paths::root() . '/documentation/server/tools';
     }
 
     public static function file(string $tool): string
@@ -258,7 +258,7 @@ final class ToolSurface
                 '![The five sources plotted against how much of the machine has to be running: bundled knowledge '
                 . 'and this server\'s own checkout answer with nothing running, packages need files on disk, the '
                 . 'installation source needs a booted installation, and network sources need outbound reach.]'
-                . '(../images/answer-sources.svg)',
+                . '(../../images/answer-sources.svg)',
             ),
             '',
         ];

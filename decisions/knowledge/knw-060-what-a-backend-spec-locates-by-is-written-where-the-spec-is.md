@@ -35,8 +35,8 @@ says so.
   markup to write. The session read that description and passed the tool over,
   which is the finding it reported as an unverified assumption. The assumption
   held.
-- [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) keeps
-  backend markup out of a published skill, so
+- [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  keeps backend markup out of a published skill, so
   `skills/typo3-extension-testing/references/playwright.md` cannot carry it
   either.
 

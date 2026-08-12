@@ -5,9 +5,9 @@ listing below and the one at the foot of each group's own `readme.md` are
 written by `bin/cli decisions:index`.
 
 What a decision is and what its states mean:
-[documentation/decisions/readme.md](../documentation/decisions/readme.md).
+[documentation/records/decisions.md](../documentation/records/decisions.md).
 Where an entry goes, how one is written and what a later session adds to it:
-[documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md),
+[documentation/records/writing-a-decision.md](../documentation/records/writing-a-decision.md),
 which `bin/cli decisions:check` holds every file to.
 
 ## Every decision, by group
@@ -563,6 +563,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### documentation
 
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
+- [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
@@ -585,6 +586,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-024]: documentation/doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
+[D-DOC-025]: documentation/doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-020]: documentation/doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-022]: documentation/doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md

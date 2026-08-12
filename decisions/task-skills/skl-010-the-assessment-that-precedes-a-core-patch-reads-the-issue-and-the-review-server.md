@@ -80,8 +80,8 @@ the checkout the feedback was written in.
   one line it already has.
 - Not decided: whether the rungs are sentences in the existing section or a
   reference file beside it. That is writing, and
-  [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) is what
-  it waits for.
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md) is
+  what it waits for.
 
 ## Assumed
 

@@ -77,8 +77,8 @@ Where the answer is:
   that may no longer exist, and reading one instead of running it is how a fixed
   problem gets fixed twice.
 - **about the practice a skill describes** — that research is already written
-  down, in [writing-a-skill.md](../clients/writing-a-skill.md), and it is the
-  same shape.
+  down, in [writing-a-skill.md](../contributing/writing-a-skill.md), and it is
+  the same shape.
 
 Answering from recall is the failure this is written against; leaving a question
 open is not. Where it cannot be settled here — it needs an installation, a run

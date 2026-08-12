@@ -29,7 +29,7 @@ somewhere else.
   One session opened `src/Installation/Extension.php` sixteen times, another
   `src/Tool/ExtensionScope.php` nine.
 - Failures were not the cost: 77 errors in 82 sessions, 1.4% of the calls.
-- Every one of the 82 opened `documentation/feedback/working-a-todo.md`; 13
+- Every one of the 82 opened `documentation/records/working-a-todo.md`; 13
   opened `AGENTS.md`.
 
 ## Decided

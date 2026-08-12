@@ -22,7 +22,7 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  */
 #[AsCommand(
     name: 'tools:index',
-    description: 'rewrite the tool reference under documentation/tools/ from the registry',
+    description: 'rewrite the tool reference under documentation/server/tools/ from the registry',
 )]
 final class ToolIndex
 {

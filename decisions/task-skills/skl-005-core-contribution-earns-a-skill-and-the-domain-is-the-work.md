@@ -41,7 +41,7 @@ since 2026-08-01, unjudged.
 - One of them asks for it outright. `feedback/2026-08-01-115220`, GPT-5 mini:
   "Proposal: Add a dedicated MCP skill `typo3-patch-review` to support automated
   patch reviews." That is the third signal in
-  [judging.md](../../documentation/feedback/judging.md) — a domain reached
+  [judging.md](../../documentation/records/judging.md) — a domain reached
   independently by more than one session — and it sat in the queue while
   `REVIEW-03` reported the same gap again.
 - The content is here and the order is not.
@@ -68,9 +68,9 @@ since 2026-08-01, unjudged.
   is not settled and is not guessable from this repository.
 - Not decided here: the names, the order each holds, and what each states. That
   is the reading
-  [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) demands
-  before a line is written, and it is the todo this entry leaves. A name has to
-  say core — `extension-conformance` for a site project is the mistake
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  demands before a line is written, and it is the todo this entry leaves. A name
+  has to say core — `extension-conformance` for a site project is the mistake
   `D-AUD-003` spent four runs on.
 
 ## Assumed

@@ -55,7 +55,7 @@ nothing and the silence reads as a clean bill for the next major.
   have changed the call.
 - **Queued rather than closed on the spot.** `skills/base.md` is a skill
   contract installed into somebody else's project, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the far side of
+  [judging.md](../../documentation/records/judging.md) puts on the far side of
   the autonomous line. The change also has to move `R-SKL-005` and the assertion
   above, which currently hold the wording that is wrong.
 - **The feedback's suggestion is rejected, on the evidence above.** Architecture

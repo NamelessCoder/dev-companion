@@ -46,7 +46,7 @@ the numbers and stops there.
   rather than a next call, so the session spent three calls arriving at one it
   could have been handed.
 - **Queued rather than closed on the spot.** Both halves are `src/`, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the far side of
+  [judging.md](../../documentation/records/judging.md) puts on the far side of
   the autonomous line, and the second half is a computation rather than a
   rewrite.
 - **The suggestion is rejected as written and taken on what it is after.** The

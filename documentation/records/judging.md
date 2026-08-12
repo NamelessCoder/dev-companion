@@ -116,9 +116,9 @@ lookup — a missing verb.
 feedback carries it: a session that invented the right order itself; a session
 that went in an order that cost it the task; and the same sequence arrived at
 independently by two sessions. That last one is the evidence
-[writing-a-skill.md](../clients/writing-a-skill.md) says nothing can read off a
-file — *that a domain earned a skill at all*. Its bar still has to be cleared;
-the feedback shows it has been reached, not that it can be skipped.
+[writing-a-skill.md](../contributing/writing-a-skill.md) says nothing can read
+off a file — *that a domain earned a skill at all*. Its bar still has to be
+cleared; the feedback shows it has been reached, not that it can be skipped.
 
 Both are *taken on* rather than closed on the spot, and the building waits for
 the reading because a tool and a skill are contracts — a skill lands in somebody

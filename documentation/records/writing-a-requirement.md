@@ -1,7 +1,8 @@
 # Writing a requirement
 
 What a requirement is, what it stands on and what its states mean is
-[readme.md](readme.md). This page is where an entry goes and how it is written.
+[readme.md](requirements.md). This page is where an entry goes and how it is
+written.
 
 ## Where an entry lives
 
@@ -15,7 +16,7 @@ quietly share a number.
 | [audience/](../../requirements/audience/readme.md)           | Who the answer has to be right for                  |
 | [discovery/](../../requirements/discovery/readme.md)         | Which installation is read, and how                 |
 | [answers/](../../requirements/answers/readme.md)             | What a caller may conclude from one                 |
-| [documentation/](../../requirements/documentation/readme.md) | What the live manuals answer                        |
+| [requirements/documentation/readme.md](../../requirements/documentation/readme.md) | What the live manuals answer                        |
 | [task-skills/](../../requirements/task-skills/readme.md)     | What an installed workflow owes the task            |
 | [project/](../../requirements/project/readme.md)             | The repository the caller is standing in            |
 | [scope/](../../requirements/scope/readme.md)                 | Core conventions where they apply, and nowhere else |

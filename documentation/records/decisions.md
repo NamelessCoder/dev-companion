@@ -12,8 +12,8 @@ change it describes is in the code.
 An entry backs what stands on it. What must be true from now on is a
 requirement, and it names the decisions it rests on in its own `restsOn:`, so a
 revoked one is readable from the requirement written on top of it —
-[what a requirement is](../requirements/readme.md). Where an entry goes and how
-it is written is
+[what a requirement is](requirements.md). Where an entry goes and how it is
+written is
 [writing-a-decision.md](writing-a-decision.md).
 
 A feedback is one occasion on which a decision gets made. It is not what this
@@ -32,7 +32,7 @@ What a reader relies on is the latest.
 The status is not a workflow. `open` does not mean unbuilt — it means nobody has
 been back to the **Wrong if** yet. Most decisions are open and stay that way,
 which is what makes the state easy to stop seeing, and
-[`bin/cli unresolved:list`](../feedback/readme.md) is what reads them out.
+[`bin/cli unresolved:list`](readme.md) is what reads them out.
 
 `revokedBy` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

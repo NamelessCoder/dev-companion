@@ -69,8 +69,8 @@ the rule that would cover the rest has an exception inside the same corpus.
 - **Queued rather than closed on the spot.** The lever is
   `ChangelogLookup::answer()` and probably its declared `outputSchema`, and
   establishing what the changelog states about removal needed `.checkouts/`.
-  Both are what [judging.md](../../documentation/feedback/judging.md) puts
-  beyond a run that has read only this repository.
+  Both are what [judging.md](../../documentation/records/judging.md) puts beyond
+  a run that has read only this repository.
 - **The feedback's suggestion is right about the fact and understates the
   shape.** It asks for the removal version "for deprecation entries", which
   reads as a field parsed per entry; that field is empty for 31 of 75 entries of

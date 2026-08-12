@@ -61,7 +61,7 @@ answers the task with a core patch checklist.
   force. A session went in an order that cost it the task: four debugging
   cycles, one feedback each. And the domain was reached independently from a
   second project, which is the signal
-  [judging.md](../../documentation/feedback/judging.md) calls the strongest and
+  [judging.md](../../documentation/records/judging.md) calls the strongest and
   which `D-SKL-005` was decided on.
 - **The boundary has been read once already.** `doesNotCover` excludes "Running
   an installation: server and container setup, deployment, backups, the
@@ -107,11 +107,11 @@ answers the task with a core patch checklist.
 ## Assumed
 
 - **That the bar is cleared without a recorded run.**
-  [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) settles a
-  domain with a scenario case or a run in `scenarios/runs/`, and this cluster
-  has seven accounts plus the one re-run made here. `D-SKL-005` had `REVIEW-03`
-  and this has nothing of that kind, so the accounts are doing work a transcript
-  would otherwise do.
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  settles a domain with a scenario case or a run in `scenarios/runs/`, and this
+  cluster has seven accounts plus the one re-run made here. `D-SKL-005` had
+  `REVIEW-03` and this has nothing of that kind, so the accounts are doing work
+  a transcript would otherwise do.
 - **That the `site-demo-typo3-org` pair is this domain rather than one beside
   it.** Booting a declared environment and creating one share the install
   sequence and the DDEV file, and differ in the first step. Read as two domains,

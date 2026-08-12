@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
+- [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
@@ -31,6 +32,7 @@ earns one.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-024]: doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
+[D-DOC-025]: doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-018]: doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md

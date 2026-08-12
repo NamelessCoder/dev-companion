@@ -80,7 +80,7 @@ time.
 - Not `high`. Nothing is blocked on it, and one session reported it, five times
   in nine minutes, rather than several sessions reporting it once.
 - Not the suggestion's own wording. Its author was guessing about this
-  repository, as [`judging.md`](../../documentation/feedback/judging.md) says
+  repository, as [`judging.md`](../../documentation/records/judging.md) says
   every suggestion is, and a third of what it asks for is already here.
 - The shape question is left where it was asked. Whether the local environment
   earns a skill is step 1b and belongs to the umbrella card, so this entry

@@ -1,116 +1,33 @@
 # How the work is done
 
-One page per procedure that is long enough to get wrong from memory. Three
-things are no procedure. `tools/` is the tool surface, rendered from the classes
-that declare it and written by nobody, each page carrying what that tool
-answered once. `resources/` is the other surface a client is offered, and one
-page rather than a tree, because a resource is picked out of a list instead of
-called. `interface-contract/` is what somebody else's draft would mean for this
-server, and it sits here because every other tree a check reads holds entries of
-a fixed shape.
+Four sections, and which one a page belongs to is decided by who reads it.
 
-`requirements/` and `decisions/` are working directories, and the whole of what
-one of their entries is — what it states, where it goes, how it is written — is
-here. Each of those two holds a listing a command writes and a line pointing
-back at this directory. The others still say what a thing **is** on their own
-and link here for how it is carried out.
+- **[Usage](usage/readme.md)** — having this server answering in your own
+  project: what the install writes into a client, and what you are agreeing to
+  when it does.
+- **[Server](server/readme.md)** — what it can be asked and where each answer
+  comes from: every tool one page each, the resources beside them, the five
+  sources, the version binding, and what an installation is asked directly.
+- **[Contributing](contributing/readme.md)** — working on the server itself: the
+  commands this repository is kept in order by, what has to be true of a session
+  doing the work, and the rules a task skill is written under.
+- **[Records](records/readme.md)** — what is written down and where: how a
+  feedback becomes a todo, what a requirement and a decision each hold, and how
+  a forward run is measured.
 
-The split is deliberate. A readme that also holds the workflow is read by
-someone looking for one paragraph and finding six; a workflow with no home ends
-up in an agent's private memory, where nobody else can read it and no checkout
-carries it. Both happened here before this directory existed.
+One page per procedure that is long enough to get wrong from memory. The split
+between a page here and the entry it describes is deliberate: a readme that also
+holds the workflow is read by somebody looking for one paragraph and finding
+six, and a workflow with no home ends up in an agent's private memory, where
+nobody else can read it and no checkout carries it. Both happened here before
+this directory existed.
 
-Pages are grouped by the subject they belong to, because a subject outgrows one
-page and then has nowhere to put the second. Four sit at the top because they
-belong to no subject: this map, the words, the commands everything is kept in
-order by, and the launch two of the subjects below share.
+Part of two sections is written by nobody. `server/tools/` is rendered from the
+classes that declare each tool, down to the heading its recorded answer sits
+under, by `bin/cli tools:index`; `records/` describes four working directories
+whose entries are the things themselves.
 
-- [glossary.md](glossary.md) — what everything here is called, one line each.
-- [working-on-the-server.md](working-on-the-server.md) — the commands this
-  repository is kept in order by, the core checkouts, the test suite.
-- [driving-a-session.md](driving-a-session.md) — what has to be true of an agent
-  session started from a command line, whether it is carrying a forward run or
-  working a todo in a worktree.
-
-## [feedback/](feedback/readme.md) — how this repository works on itself
-
-- [readme.md](feedback/readme.md) — how the work moves between `feedback/`,
-  `requirements/`, `decisions/` and `todo/`, and the debrief that gets feedback
-  out of a session this repository cannot read.
-- [judging.md](feedback/judging.md) — what is asked of one open feedback, in
-  which order and on what evidence, and which answers may be given without
-  asking first.
-- [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
-  `bin/cli todo:next` handed over is changed, where a question the step turns on
-  is settled rather than recalled, and what the queue says afterwards.
-- [working-todos-in-parallel.md](feedback/working-todos-in-parallel.md) — how
-  several sessions get different todos, where each of them writes, and how what
-  they wrote comes back.
-
-## [requirements/](requirements/readme.md) — what has to keep holding
-
-- [readme.md](requirements/readme.md) — what one states, what it stands on, and
-  what `open`, `not guarded` and `held` mean.
-- [writing-a-requirement.md](requirements/writing-a-requirement.md) — where an
-  entry goes, the sections it is written in, and what **Held by** owes a reader.
-
-## [decisions/](decisions/readme.md) — what a change rested on
-
-- [readme.md](decisions/readme.md) — what one carries that a commit message
-  cannot, and what `open`, `confirmed` and `revoked` promise a reader.
-- [writing-a-decision.md](decisions/writing-a-decision.md) — where an entry
-  goes, the sections it is written in, and what a later session adds to the foot
-  of one.
-
-## [knowledge/](knowledge/readme.md) — what the server answers, and from where
-
-- [versions.md](knowledge/versions.md) — writing a statement that holds for some
-  TYPO3 versions and not others.
-- [asking-the-installation.md](knowledge/asking-the-installation.md) — the order
-  an installation's own answers are looked up in, and what a fallback owes the
-  caller.
-
-## [clients/](clients/readme.md) — what goes into somebody else's project
-
-- [installing.md](clients/installing.md) — every client and layout the installer
-  supports, and the configuration each one gets.
-- [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
-  to show before it exists, the rules it is written under, and what holds each
-  one.
-
-## [tools/](tools/readme.md) — the surface a client is offered
-
-- [readme.md](tools/readme.md) — every tool, and the page saying what it is for,
-  what it takes and which fields it answers with. Written from the registry by
-  `bin/cli tools:index`, down to each page's `## Answered` heading. Below that
-  heading is what the tool answered on one day, recorded by
-  `bin/cli tools:record` against a core checkout and, for the tools whose answer
-  the installation decides, against one this repository writes — evidence rather
-  than a derivation, so nothing checks it. The two tools that are not recorded
-  say why in its place.
-
-## [resources/](resources/readme.md) — the surface that is picked rather than called
-
-- [readme.md](resources/readme.md) — what a `typo3://` resource is, the two
-  families and who each serves, what `description`, `priority` and `size` carry,
-  which two fields of the spec are left empty and why, and why this page is
-  written rather than generated.
-
-## [evidence/](evidence/readme.md) — how the server is measured
-
-- [forward-runs.md](evidence/forward-runs.md) — running a forward review,
-  judging it, and what to do when one stops without an error.
-
-## [interface-contract/](interface-contract/readme.md) — what somebody else's draft would mean here
-
-- [the-draft-rfc-on-an-mcp-interface-contract.md](interface-contract/the-draft-rfc-on-an-mcp-interface-contract.md)
-  — a community proposal for an MCP interface contract for TYPO3, read as a
-  reference and nothing more: what it says, the scheme it leaves unnamed and
-  this server already serves under, and what would change here if it were ever
-  adopted. What was judged on it is
-  [`D-SCO-010`](../decisions/scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md).
-
-What does **not** belong here are the entries themselves: what must hold is
+What does **not** belong here are those entries: what must hold is
 [requirements/](../requirements/readme.md), what a change assumed is
 [decisions/](../decisions/readme.md), and the order of the work is
 [todo/](../todo/readme.md), which is also where this machine's checkouts are

@@ -55,6 +55,17 @@
         <favicon href="images/signet-l.svg" sizes="32x32"/>
         <brand>TYPO3</brand>
         <product>Dev Companion</product>
+        <!--
+            The four sections, and only those. The bar is where a reader goes
+            from anywhere; the rail below it is the section they are in, and a
+            manual with every page in the bar has said nothing.
+        -->
+        <navigation>
+            <link href="/usage/index" label="Usage"/>
+            <link href="/server/index" label="Server"/>
+            <link href="/contributing/index" label="Contributing"/>
+            <link href="/records/index" label="Records"/>
+        </navigation>
         <footer>
             <social href="https://github.com/benjaminkott/typo3-cms-mcp" label="GitHub"/>
             <note>Not an official TYPO3 project.</note>

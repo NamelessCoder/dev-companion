@@ -65,8 +65,8 @@ without the matcher. The corpus does state the matcher. It states it under
   answered out of the section its query matched.
 - Queued rather than closed on the spot. What the `## Breaking Changes` section
   should say about a matcher is a statement about TYPO3, and
-  [judging.md](../../documentation/feedback/judging.md) keeps a run that has
-  read only this repository out of writing one.
+  [judging.md](../../documentation/records/judging.md) keeps a run that has read
+  only this repository out of writing one.
 - The feedback's second suggestion is declined on the measurement. A single-term
   query reaches the matcher sentence today; the sentence sits under the wrong
   heading, which no retrieval change repairs.

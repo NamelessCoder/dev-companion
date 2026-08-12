@@ -54,7 +54,7 @@ workflow itself.
   patch development keeps the changelog entry and the push to Gerrit, and patch
   review keeps its surfaces as nouns.
 - The rule goes into
-  [documentation/clients/writing-a-skill.md](../../documentation/clients/writing-a-skill.md)
+  [documentation/contributing/writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
   beside the two that already govern a description, and not into a requirement
   of its own: which clause is a summary is not readable off the file, so a
   requirement would be `not guarded` and would repeat the page it points at.

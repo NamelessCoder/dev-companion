@@ -33,7 +33,7 @@ read the other way round, one heading per source with the tools it answers. What
 it settles is not what a tool is about but whether it can be asked at all in the
 state the machine is in.
 
-The [readme](../../readme.md) groups the tools by where their answers come from;
+The [readme](../../../readme.md) groups the tools by where their answers come from;
 a page here says what one tool is for, what goes in and what shape comes back.
 
 - [`typo3_server_scope`](typo3_server_scope.md) — Orientation for this server.

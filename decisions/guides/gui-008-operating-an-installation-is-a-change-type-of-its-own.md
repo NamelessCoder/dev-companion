@@ -79,7 +79,7 @@ message — for work that writes no file.
   change rather than a second card.
 - **Queued rather than closed on the spot.** It adds a value to a declared
   `inputSchema` enum and forks a skeleton in `src/`, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the far side of
+  [judging.md](../../documentation/records/judging.md) puts on the far side of
   the autonomous line.
 - **`normal`, and the corpus is what set it.** One session reported the shape,
   and five reported the task: work that runs an installation reached this server

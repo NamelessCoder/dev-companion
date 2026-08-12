@@ -102,6 +102,6 @@ query. So the page is the index call, that fill where any row has a relation,
 and one review query per twelve rows.
 
 Recorded live against forge.typo3.org and review.typo3.org the same day, in
-`documentation/tools/typo3_forge_lookup.md`: the three oldest open issues came
-back with 8 relations, one file and 6 changes between them, `#15984` among them
-with the four relations and the three changes `D-ANS-064` was written from.
+`documentation/server/tools/typo3_forge_lookup.md`: the three oldest open issues
+came back with 8 relations, one file and 6 changes between them, `#15984` among
+them with the four relations and the three changes `D-ANS-064` was written from.

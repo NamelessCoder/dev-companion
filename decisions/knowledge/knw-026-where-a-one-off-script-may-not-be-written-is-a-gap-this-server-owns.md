@@ -67,7 +67,7 @@ place it does not name, and any way of reaching it from the moment it is needed.
   therefore one card rather than two.
 - Queued rather than closed on the spot. The sentence rests on where a Composer
   installation's document root is, and on what DDEV mounts at `/var/www/html`.
-  That is a lookup, and [judging.md](../../documentation/feedback/judging.md)
+  That is a lookup, and [judging.md](../../documentation/records/judging.md)
   keeps a lookup out of a run that has read only this repository.
 - Not step 1b. A runtime tool for this was refused in `D-ANS-003`, on the
   evidence of this very session.

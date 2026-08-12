@@ -83,7 +83,7 @@ final class InstallerAgentSupportTest extends TestCase
      * open — belongs to the client rather than to this package. So what can be
      * held here is that something is said, per client, on both commands and
      * beside the entry it is about; whether it is true of that client is what
-     * `documentation/clients/installing.md` sources, and no test reaches it.
+     * `documentation/usage/installing.md` sources, and no test reaches it.
      */
     #[Test]
     public function everyClientWithAnEntryIsToldWhatIsLeftBeforeAToolCanBeCalled(): void

@@ -43,10 +43,10 @@ so the schema promised a fallback that was never going to arrive.
 - `typo3_server_scope` groups the offered tools by source rather than listing a
   source per tool: the question it is asked is about the state of the machine,
   and a tool with two sources belongs under both.
-- `documentation/tools/answer-sources.md` is written by `tools:index` from the
-  enum, and every tool page links its sources into it. The names alone do not
-  carry the difference that matters, and a reader meeting `packages` for the
-  first time has one place to go.
+- `documentation/server/tools/answer-sources.md` is written by `tools:index`
+  from the enum, and every tool page links its sources into it. The names alone
+  do not carry the difference that matters, and a reader meeting `packages` for
+  the first time has one place to go.
 
 ## Assumed
 

@@ -27,10 +27,10 @@ tool list and finished without learning whether there was anything to read.
 - The `instructions` in `knowledge/server-scope.json` — the one thing every
   client receives before any call — open with `typo3_project_describe` and
   `typo3_task_guide` and name no document.
-- [the resource surface](../../documentation/resources/readme.md): a resource is
-  chosen by the host application or by the user rather than by the model
-  mid-task. So a client that renders no list leaves the session nothing to find,
-  and that is the half this side is blindest to.
+- [the resource surface](../../documentation/server/resources/readme.md): a
+  resource is chosen by the host application or by the user rather than by the
+  model mid-task. So a client that renders no list leaves the session nothing to
+  find, and that is the half this side is blindest to.
 - [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point.md) is the same
   shape one surface over: a session whose every criterion the conformance
   skill's body would have met never loaded it, and all thirty-five of its calls

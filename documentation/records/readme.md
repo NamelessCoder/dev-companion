@@ -4,6 +4,24 @@ Four files hold four different kinds of thing, and keeping them apart is what
 keeps any of them readable. [AGENTS.md](../../AGENTS.md) has the rules; this is
 what each one is for and how the work moves between them.
 
+The pages that carry one of those steps out:
+
+- [judging.md](judging.md) — what is asked of one open feedback, in which order
+  and on what evidence.
+- [working-a-todo.md](working-a-todo.md) — what is read before the todo
+  `bin/cli todo:next` handed over is changed, and what the queue says
+  afterwards.
+- [working-todos-in-parallel.md](working-todos-in-parallel.md) — how several
+  sessions get different todos, where each writes, and how it comes back.
+- [requirements.md](requirements.md) and
+  [writing-a-requirement.md](writing-a-requirement.md) — what one states, and
+  the sections it is written in.
+- [decisions.md](decisions.md) and
+  [writing-a-decision.md](writing-a-decision.md) — what one carries that a
+  commit message cannot, and what a later session adds to its foot.
+- [forward-runs.md](forward-runs.md) — running a forward review, judging it, and
+  reading one that stopped without an error.
+
 ## Where a session starts
 
     bin/cli todo:next
@@ -124,8 +142,8 @@ The documents are asked about on their own because the model never picks one. A
 resource is chosen by the host application or by the user rather than mid-task,
 so a client that lists none leaves the session nothing to find. What that
 surface is and what a picker chooses by:
-[the resource surface](../resources/readme.md). It is the half this side is
-blindest to — the server sees the calls that were made, and a list nobody
+[the resource surface](../server/resources/readme.md). It is the half this side
+is blindest to — the server sees the calls that were made, and a list nobody
 rendered makes no call at all.
 
 ```text
@@ -237,8 +255,8 @@ message records the answer. What outlives both goes to four places, and only
 `todo/` is this workflow's: `requirements/`, `decisions/` and the documents are
 the record this repository keeps whether or not a feedback was what produced an
 entry. How each one is written has a page of its own —
-[writing-a-requirement.md](../requirements/writing-a-requirement.md) and
-[writing-a-decision.md](../decisions/writing-a-decision.md).
+[writing-a-requirement.md](writing-a-requirement.md) and
+[writing-a-decision.md](writing-a-decision.md).
 
 - `requirements/` — what must be true from now on. A feedback is a question; the
   requirement it established has to keep holding while everything around it

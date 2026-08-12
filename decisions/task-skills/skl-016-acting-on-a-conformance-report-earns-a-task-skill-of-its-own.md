@@ -84,10 +84,10 @@ removing it left the work with no owner at all.
 
 - **That the wording arrives at all.** No filed session has brought it, which is
   why the card is `normal`, and
-  [writing-a-skill.md](../../documentation/clients/writing-a-skill.md) settles a
-  domain with a scenario case or a recorded run rather than with a shape.
-  Standing in for one is a hole this repository's own decision made: the change
-  half of a route it removed.
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  settles a domain with a scenario case or a recorded run rather than with a
+  shape. Standing in for one is a hole this repository's own decision made: the
+  change half of a route it removed.
 - **That the conformance report carries enough to derive a list from.** Nothing
   measures whether what the audit returns is ordered or specific enough to
   become items somebody works off.

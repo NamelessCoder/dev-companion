@@ -22,7 +22,8 @@ be true of the launch.
 - **Debug output on stderr.** The only place a stalled tool call is visible. A
   client waiting on a call that will never return looks exactly like a client
   thinking hard, and *When a run stops without an error* in
-  [evidence/forward-runs.md](evidence/forward-runs.md) is read off that stream.
+  [evidence/forward-runs.md](../records/forward-runs.md) is read off that
+  stream.
 
 **Where the sessions work a claim each, that launch is declared once rather than
 typed each time.** `.session-command` at the root of the checkout holds the
@@ -45,7 +46,7 @@ called are read from there rather than from what the session says about itself.
 
 What a session is **told** is a separate question, and it is answered where the
 work is:
-[feedback/working-todos-in-parallel.md](feedback/working-todos-in-parallel.md)
+[feedback/working-todos-in-parallel.md](../records/working-todos-in-parallel.md)
 carries the prompt a worktree session is started with, and
-[evidence/forward-runs.md](evidence/forward-runs.md) says that a forward run is
-given its scenario prompt verbatim and nothing besides.
+[evidence/forward-runs.md](../records/forward-runs.md) says that a forward run
+is given its scenario prompt verbatim and nothing besides.

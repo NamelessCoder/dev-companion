@@ -1,12 +1,12 @@
 # The resource surface
 
 What this server offers to be picked, and what a picker chooses by.
-[`Factory::resources()`](../../src/Server/Factory.php) declares the list and
+[`Factory::resources()`](../../../src/Server/Factory.php) declares the list and
 `Factory::skillReferences()` the one template behind it;
-[`Sdk\ResourceHandler`](../../src/Sdk/ResourceHandler.php) and
-[`Sdk\SkillReferenceHandler`](../../src/Sdk/SkillReferenceHandler.php) answer a
-read. Everything offered is a file this package ships, so reading one reaches no
-installation and no network.
+[`Sdk\ResourceHandler`](../../../src/Sdk/ResourceHandler.php) and
+[`Sdk\SkillReferenceHandler`](../../../src/Sdk/SkillReferenceHandler.php) answer
+a read. Everything offered is a file this package ships, so reading one reaches
+no installation and no network.
 
 The [tool surface](../tools/readme.md) is the other thing a client is offered,
 and it has a page per tool because a tool has a schema and a recorded answer.
@@ -22,7 +22,7 @@ distinction, and it decides everything else about this surface.
 A tool explains itself in the answer it returns. A resource has its list entry
 and nothing else, so `description`, `annotations.priority` and `size` are what
 the choice is made on rather than decoration —
-[`R-ANS-022`](../../requirements/answers/ans-022-a-resource-is-picked-out-of-a-list.md).
+[`R-ANS-022`](../../../requirements/answers/ans-022-a-resource-is-picked-out-of-a-list.md).
 
 The model's route into the same prose while it works is a tool:
 `typo3_rule_lookup` searches the documents, and `typo3_task_guide` names the
@@ -51,7 +51,7 @@ workflow that owns the task it recognized.
 Two families rather than one, because the documents alone serve one audience.
 Most of that corpus is the core's own process, and most of the workflows are the
 work outside it, so offering both is what leaves each of the three audiences of
-[`R-AUD-001`](../../requirements/audience/aud-001-three-audiences-not-one.md)
+[`R-AUD-001`](../../../requirements/audience/aud-001-three-audiences-not-one.md)
 something to pick.
 
 Which of them an entry holds for is read off `knowledge/server-scope.json` and
@@ -79,9 +79,9 @@ resolve one segment higher, onto URIs nothing serves, and the body would still
 read complete — the first reader to follow one is how anybody finds out.
 
 `references/base.md` is a file in no skill in this checkout.
-[`skills/base.md`](../../skills/base.md) is the single copy, written into each
-published directory by `Installer` and served here from that same file
-([`D-SKL-001`](../../decisions/task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md)).
+[`skills/base.md`](../../../skills/base.md) is the single copy, written into
+each published directory by `Installer` and served here from that same file
+([`D-SKL-001`](../../../decisions/task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md)).
 So the resource is the file a client would have had if it had run the install.
 
 ## What a picker reads

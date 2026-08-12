@@ -17,7 +17,7 @@ queueing work at once cannot pick the same one.
 
 - `bin/cli todo:check` carried a collision report for two files claiming one
   number, and
-  [`working-todos-in-parallel.md`](../../documentation/feedback/working-todos-in-parallel.md)
+  [`working-todos-in-parallel.md`](../../documentation/records/working-todos-in-parallel.md)
   named renumbering as the fix in the paragraph about bringing branches home.
   Both existed because both sessions read the same last number and both took it
   — a rank has to be unique, and nothing could make it so across two branches.

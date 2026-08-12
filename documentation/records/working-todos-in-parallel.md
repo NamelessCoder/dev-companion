@@ -103,17 +103,19 @@ One session per worktree, started in that worktree, and all three get the same
 message — the one `todo:claim` printed. It is not on this page, because a copy
 here and a copy in the command are two things to keep in step and one of them
 would be sent. How the session is launched at all — which build, from where,
-with what switched on — is [driving-a-session.md](../driving-a-session.md), and
-it is the same launch a forward run uses.
+with what switched on — is
+[driving-a-session.md](../contributing/driving-a-session.md), and it is the same
+launch a forward run uses.
 
 **Better: let the claim start them.** Put the command line that starts a session
 on this machine into `.session-command` at the root of the checkout, and
 `todo:claim` runs it once per worktree — that worktree as the working directory,
 the message on standard input, `TODO_SESSION_ID` in the environment. The file is
 gitignored, because how a session is launched is a property of the machine and
-not of the repository, and [driving-a-session.md](../driving-a-session.md) is
-where what the launch has to get right is written down. Each session reports
-into `.worktrees/.sessions/<name>.log`.
+not of the repository, and
+[driving-a-session.md](../contributing/driving-a-session.md) is where what the
+launch has to get right is written down. Each session reports into
+`.worktrees/.sessions/<name>.log`.
 
 That is the fourth step joining the other three, and it is here for the same
 reason they are. A step left over for somebody to carry out by reading is the

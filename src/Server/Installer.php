@@ -63,7 +63,7 @@ final class Installer
      * its own documentation says it resolves anything there at all.
      *
      * Two of the eleven do, and both spell it this way — `D-DIS-016`, with the
-     * table in `documentation/clients/installing.md`. It is the whole of what
+     * table in `documentation/usage/installing.md`. It is the whole of what
      * makes a shareable entry possible: a plain relative path would resolve
      * against the working directory the client spawns the process in, which the
      * MCP specification does not define and only one of the eleven documents.
@@ -156,7 +156,7 @@ final class Installer
      *
      * Each line is what that client's own documentation says, read on
      * 2026-08-02 and sourced per client in
-     * `documentation/clients/installing.md`. A client whose documentation does
+     * `documentation/usage/installing.md`. A client whose documentation does
      * not answer says that rather than the likely answer: the sentence is acted
      * on by somebody who cannot check it, and there a guess is indistinguishable
      * from a fact. The two clients that need nothing say that too — "nothing is
@@ -243,7 +243,7 @@ final class Installer
      * They are published to nobody by default and to a project that asks for
      * them by name, because a draft has one reader before it is finished: the
      * person who has to say whether the workflow is the one they actually run.
-     * `documentation/clients/writing-a-skill.md` makes that a step, and a step
+     * `documentation/contributing/writing-a-skill.md` makes that a step, and a step
      * nobody can carry out is one that gets skipped — reading a skill in the
      * repository is not reading it where it loads, and the questions it exists
      * to raise are raised by using it.

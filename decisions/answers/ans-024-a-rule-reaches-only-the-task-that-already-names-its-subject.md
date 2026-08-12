@@ -55,7 +55,7 @@ it was filed, so what it reports is not that the answer is missing.
 - Queued rather than closed on the spot. The placement is the answer text of
   `typo3_label_lookup`, or the `content-elements` hint, or the words the
   `labels` intent matches on — and the first is `src/`, which
-  [judging.md](../../documentation/feedback/judging.md) keeps out of a run that
+  [judging.md](../../documentation/records/judging.md) keeps out of a run that
   has read only this repository.
 - Which of the three carries it is not settled here. Each is a different claim
   about who a rule belongs to, and a judgement ends at the diagnosis.

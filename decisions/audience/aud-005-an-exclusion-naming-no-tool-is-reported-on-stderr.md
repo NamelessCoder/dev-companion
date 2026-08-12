@@ -27,8 +27,8 @@ so nowhere.
   started server has, and it is where
   [`src/bootstrap.php`](../../src/bootstrap.php) already puts the one startup
   failure this binary has, and where
-  [driving-a-session.md](../../documentation/driving-a-session.md) reads a
-  stalled session off.
+  [driving-a-session.md](../../documentation/contributing/driving-a-session.md)
+  reads a stalled session off.
 - An MCP log notification is not a channel here. There is no session until the
   client has sent `initialize`, the list is read before that, and a client that
   never sets a logging level is sent nothing.

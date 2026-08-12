@@ -83,7 +83,7 @@ went to its vendor tree for the answer.
   threshold, say so rather than return the best six collisions.
 - **Queued rather than closed on the spot.** The floor changes what
   `typo3_documentation_lookup` returns and the miss changes its answer shape,
-  which [judging.md](../../documentation/feedback/judging.md) puts on the
+  which [judging.md](../../documentation/records/judging.md) puts on the
   reviewed side of the autonomous line.
 - **`normal`, and the corpus is what set it.** Four reports from three checkouts
   describe this tool answering confidently with unrelated pages, and one of them

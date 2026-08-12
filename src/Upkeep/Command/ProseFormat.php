@@ -127,7 +127,7 @@ final class ProseFormat
      */
     private static function isWrittenByHand(string $file): bool
     {
-        if (str_starts_with($file, 'documentation/tools/')) {
+        if (str_starts_with($file, 'documentation/server/tools/')) {
             return false;
         }
 

@@ -55,7 +55,11 @@ todo/waiting/      # what nothing here can start, carrying the question it is bl
 src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
 src/Upkeep/Site.php  # the readme and documentation/ as the source a generator publishes: the links that leave them, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there; published as a site, below the readme
+documentation/     # how a procedure is carried out; the rules stay here, the steps live there; published as a site, below the readme
+documentation/usage/   # having this server answer in somebody's own project
+documentation/server/  # what it can be asked and where each answer comes from; tools/ and resources/ sit in here because they are the server
+documentation/contributing/  # working on the server itself: the commands, the session, the skills, the words
+documentation/records/ # what is written down and where: feedback into todo, requirements, decisions, forward runs
 documentation/images/  # the drawings a page names, and the mark at its three optical sizes
 build/guides/      # the renderer that publishes the readme and documentation/, installed with the theme it renders them in; its composer.json says why it is separate
 guides.xml         # what that render is: the copy it reads, the theme it selects, and everything the bar, the tab and the footer say — D-DOC-024
@@ -116,10 +120,10 @@ over correctly, whatever else it did.
 
 What is read before the first change, how a question is settled, what is asked
 and what the file says afterwards:
-[documentation/feedback/working-a-todo.md](documentation/feedback/working-a-todo.md).
+[documentation/records/working-a-todo.md](documentation/records/working-a-todo.md).
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo/`:
-[documentation/feedback/readme.md](documentation/feedback/readme.md).
+[documentation/records/readme.md](documentation/records/readme.md).
 
 Several sessions at once is `bin/cli todo:claim <n>`, one worktree and one
 branch each, and `bin/cli todo:home <worktree>` is how one of them comes back.
@@ -128,7 +132,7 @@ read anything first. `main` carries who has what in hand, the branch carries the
 half-finished work, and `todo:next` in a worktree hands over that worktree's
 claim rather than the front of the queue. What that costs and what still
 collides:
-[documentation/feedback/working-todos-in-parallel.md](documentation/feedback/working-todos-in-parallel.md).
+[documentation/records/working-todos-in-parallel.md](documentation/records/working-todos-in-parallel.md).
 
 ## How a session reads
 
@@ -167,12 +171,12 @@ lands in `Commands/` and is referred to as a command all the way down. The
 directories outside `src/` keep the names their callers know them by.
 
 What arrives through `typo3_feedback_record` is **a feedback**, countable, and
-[documentation/glossary.md](documentation/glossary.md) is where that and the
-words around it are defined. Two of them go wrong reliably: **record** is the
-verb it arrives by and never a noun, because in TYPO3 a record is a row in the
-database and this server explains that meaning to its callers; and **verdict**
-belongs to `scenarios/`, where it is how a run came out, while what becomes of a
-feedback is its **answer**.
+[documentation/contributing/glossary.md](documentation/contributing/glossary.md)
+is where that and the words around it are defined. Two of them go wrong
+reliably: **record** is the verb it arrives by and never a noun, because in
+TYPO3 a record is a row in the database and this server explains that meaning to
+its callers; and **verdict** belongs to `scenarios/`, where it is how a run came
+out, while what becomes of a feedback is its **answer**.
 
 ## Less is more
 
@@ -397,7 +401,7 @@ bin/cli knowledge:format <path>   # only that part of it
 
 `bin/cli checkouts:update` creates the core checkouts a knowledge change is
 verified against:
-[documentation/working-on-the-server.md](documentation/working-on-the-server.md).
+[documentation/contributing/working-on-the-server.md](documentation/contributing/working-on-the-server.md).
 `bin/cli environment:create E-SITE` makes the other kind — a DDEV project with
 TYPO3 installed in it, below `.environments/` and gitignored the same way, for
 the half of this server that needs an installation to answer from. It is the
@@ -451,19 +455,19 @@ without taking a case with it.
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli unresolved:list` reports:
-[documentation/feedback/readme.md](documentation/feedback/readme.md). What a
+[documentation/records/readme.md](documentation/records/readme.md). What a
 requirement is and what its three states mean:
-[documentation/requirements/readme.md](documentation/requirements/readme.md),
+[documentation/records/requirements.md](documentation/records/requirements.md),
 and the sections one is written in:
-[documentation/requirements/writing-a-requirement.md](documentation/requirements/writing-a-requirement.md).
+[documentation/records/writing-a-requirement.md](documentation/records/writing-a-requirement.md).
 What a decision carries that a commit message cannot, and what `open`,
 `confirmed` and `revoked` promise a reader:
-[documentation/decisions/readme.md](documentation/decisions/readme.md),
+[documentation/records/decisions.md](documentation/records/decisions.md),
 and the sections one is written in, with what a later session adds to the foot:
-[documentation/decisions/writing-a-decision.md](documentation/decisions/writing-a-decision.md).
+[documentation/records/writing-a-decision.md](documentation/records/writing-a-decision.md).
 Running a forward review, judging it, and reading one that stopped without an
 error:
-[documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
+[documentation/records/forward-runs.md](documentation/records/forward-runs.md).
 What each kind of scenario is for: [scenarios/readme.md](scenarios/readme.md).
 
 ## What describes this server to someone else
@@ -492,7 +496,7 @@ catch a name going stale, not a sentence going false. Prose is on you.
 That property is also why a skill is written under rules of its own — what it is
 named and routed by, what it may state, what it leaves to the tool that owns it,
 and what has to be shown before a domain becomes one at all:
-[documentation/clients/writing-a-skill.md](documentation/clients/writing-a-skill.md),
+[documentation/contributing/writing-a-skill.md](documentation/contributing/writing-a-skill.md),
 where every rule names the test that holds it.
 
 Before committing, reread the paragraphs your change touches rather than
@@ -574,7 +578,7 @@ machine-readable uses.
   the installation only when the answer genuinely depends on which packages and
   TYPO3 version are active. The order those three are asked in, how the probe is
   delivered, and what a fallback owes the caller:
-  [documentation/knowledge/asking-the-installation.md](documentation/knowledge/asking-the-installation.md).
+  [documentation/server/asking-the-installation.md](documentation/server/asking-the-installation.md).
 - The installation is never derived from `getcwd()` on its own. `Instance` walks
   up from a directory it was handed, keeps it private and null until then, and
   `Server\Entrypoint` is the only thing that hands one in — a request-serving
@@ -623,4 +627,4 @@ a `main` answer changes code that then fails at runtime, and the failure is
 silent. What follows from it — where the binding sits, what belongs in `hints`
 rather than `checks`, `binding: "core"`, and why the catalogs withhold an entry
 instead of qualifying it — is in
-[documentation/knowledge/versions.md](documentation/knowledge/versions.md).
+[documentation/server/versions.md](documentation/server/versions.md).

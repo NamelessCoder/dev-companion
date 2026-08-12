@@ -156,11 +156,11 @@ final class ProseTest extends TestCase
     {
         $wrapped = Wrap::document(
             'A sentence long enough to be wrapped somewhere near its end, and then '
-            . '`bin/cli hints:probe` plus [the writing rules](documentation/glossary.md) at the end of it.',
+            . '`bin/cli hints:probe` plus [the writing rules](documentation/contributing/glossary.md) at the end of it.',
         );
 
         self::assertStringContainsString('`bin/cli hints:probe`', $wrapped);
-        self::assertStringContainsString('[the writing rules](documentation/glossary.md)', $wrapped);
+        self::assertStringContainsString('[the writing rules](documentation/contributing/glossary.md)', $wrapped);
     }
 
     /**

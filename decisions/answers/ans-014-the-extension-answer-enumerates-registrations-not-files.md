@@ -34,7 +34,7 @@ anybody chose.
   same directory, by a different model, reporting that section as the thing that
   let it tell "missing" from "not yet read". The two are the same property read
   from both sides, which is the pairing
-  [judging.md](../../documentation/feedback/judging.md) names, and
+  [judging.md](../../documentation/records/judging.md) names, and
   [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
   is why the strength is read as the boundary rather than as a confirmation.
 - The file-listing half is somebody else's step, stated.
@@ -90,8 +90,8 @@ anybody chose.
 - What each of the three actually is in TYPO3 is left to that todo. Only
   `route-enhancers.yaml` was read in core here; the form-set mechanism and the
   general shape of a FlexForm binding were not, and naming a fix from this
-  position is the copy-down
-  [judging.md](../../documentation/feedback/judging.md) warns about.
+  position is the copy-down [judging.md](../../documentation/records/judging.md)
+  warns about.
 
 ## Assumed
 

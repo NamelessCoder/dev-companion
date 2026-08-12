@@ -29,8 +29,8 @@ behind the paragraph explaining why the order is what it is.
   `**Waiting on:**`, so no session was blocked on something the one todo
   withheld. Read from the session transcripts rather than from what the sessions
   reported about themselves, which is what the caller-chosen session id in
-  [driving-a-session.md](../../documentation/driving-a-session.md) is for. Two
-  things it does not settle: all three were handed a message naming
+  [driving-a-session.md](../../documentation/contributing/driving-a-session.md)
+  is for. Two things it does not settle: all three were handed a message naming
   `todo:next --worktree` as where the work is, so they were steered to the
   command rather than choosing it, and a worktree session is not the plain
   `bin/cli todo:next` case this entry was written for. The third **Wrong if**

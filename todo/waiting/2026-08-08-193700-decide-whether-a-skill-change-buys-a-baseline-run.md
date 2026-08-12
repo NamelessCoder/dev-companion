@@ -11,8 +11,8 @@
 Three of the authoring steps are the author's word and nothing reads them off a
 file: that a domain earned a skill at all, that the practice was researched
 before it was written, and that the draft was shown and asked about.
-[writing-a-skill.md](../../documentation/clients/writing-a-skill.md) says they
-are written down because that is all that can be done for them.
+[writing-a-skill.md](../../documentation/contributing/writing-a-skill.md) says
+they are written down because that is all that can be done for them.
 
 The reading of 2026-08-08 found that is not quite all. obra/superpowers holds
 the first of the three with a rule they state as an Iron Law — no skill without

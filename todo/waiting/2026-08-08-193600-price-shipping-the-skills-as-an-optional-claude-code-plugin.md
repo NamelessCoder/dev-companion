@@ -69,7 +69,7 @@ written down:
 
 Both server-carrying shapes share one limit: a manifest is static JSON, and
 which entry a project needs is a property of the project.
-`documentation/clients/installing.md` is where the installer's two forms are —
+`documentation/usage/installing.md` is where the installer's two forms are —
 `ddev exec php vendor/bin/typo3-dev-companion` in a DDEV project that required
 the package, the absolute path otherwise — and a plugin always writes the second
 and always calls the host's `php`. A host whose PHP lives only inside DDEV gets

@@ -1,8 +1,8 @@
 # Writing a decision, and going back to one
 
 What a decision is, what rests on it and what its states mean is
-[readme.md](readme.md). This page is where an entry goes, how it is written, and
-what a later session adds to one.
+[readme.md](decisions.md). This page is where an entry goes, how it is written,
+and what a later session adds to one.
 
 ## Where an entry lives
 
@@ -23,7 +23,7 @@ decides its path and two entries cannot quietly share a number.
 | [evidence/](../../decisions/evidence/readme.md)           | How this server is measured                             |
 | [task-skills/](../../decisions/task-skills/readme.md)     | What an installed workflow owes the task                |
 | [feedback/](../../decisions/feedback/readme.md)           | What the feedback channel has to stay usable for        |
-| [documentation/](../../decisions/documentation/readme.md) | How what is written here is written                     |
+| [decisions/documentation/readme.md](../../decisions/documentation/readme.md) | How what is written here is written                     |
 | [code/](../../decisions/code/readme.md)                   | How the source is laid out                              |
 
 The number is three digits wide, in the file name and in the id alike, because

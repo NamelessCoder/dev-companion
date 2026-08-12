@@ -3,15 +3,18 @@
 TYPO3 Dev Companion
 ===================
 
-A local MCP server (plain PHP) that helps coding agents implement, review and
-verify TYPO3 work for the three audiences that do it: the core contributor, the
-extension author and the site developer. It establishes the project and
-installation the agent is working in, supplies current, version-bound TYPO3
-knowledge, and hands task-specific workflows to the skills that own them.
+.. hero:: images/dev-companion-robot-server-hero.png
 
-It answers for TYPO3 **12.4**, **13.4**, **14.3** and **main**. A statement that
-does not hold on all of them names the ones it does, so an LTS is never handed a
-convention that only the development line has.
+    A local MCP server (plain PHP) that helps coding agents implement, review
+    and verify TYPO3 work for the three audiences that do it: the core
+    contributor, the extension author and the site developer. It establishes
+    the project and installation the agent is working in, supplies current,
+    version-bound TYPO3 knowledge, and hands task-specific workflows to the
+    skills that own them.
+
+    It answers for TYPO3 **12.4**, **13.4**, **14.3** and **main**. A statement
+    that does not hold on all of them names the ones it does, so an LTS is never
+    handed a convention that only the development line has.
 
 .. warning::
 

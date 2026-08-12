@@ -75,8 +75,8 @@ registrations.
   Nothing was added to `D-SKL-001` or `D-SKL-002`.
 - The two registration costs are queued, one todo each, and the feedback is
   trimmed to them. Both touch `src/` and both need something about TYPO3 looked
-  up, which is what [judging.md](../../documentation/records/judging.rst) puts on
-  the far side of closing on the spot.
+  up, which is what [judging.md](../../documentation/records/judging.rst) puts
+  on the far side of closing on the spot.
 - The feedback's own suggestion is not taken. "Which TypoScript files are
   missing for registered CTypes" is the question that produced finding #3, and
   the catalogue case is what shows it malformed: the CType was registered, the

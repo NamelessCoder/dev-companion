@@ -64,8 +64,8 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
   tool is missing, nothing is misrouted, and the reference says the truth.
 - The feedback is **queued whole**, not trimmed and not closed on the spot. It
   makes one claim, the claim is about a declared schema, and
-  [judging.md](../../documentation/records/judging.rst) puts a tool's contract on
-  the reviewed side of that line.
+  [judging.md](../../documentation/records/judging.rst) puts a tool's contract
+  on the reviewed side of that line.
 - Its own suggestion is rejected as a diagnosis: the value is not dropped during
   serialization and `tool` collides with no internal variable. What it got right
   is the parameter and the symptom, which is what a report from outside can see.

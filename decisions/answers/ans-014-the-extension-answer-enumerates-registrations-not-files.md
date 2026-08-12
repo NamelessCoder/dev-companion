@@ -90,8 +90,8 @@ anybody chose.
 - What each of the three actually is in TYPO3 is left to that todo. Only
   `route-enhancers.yaml` was read in core here; the form-set mechanism and the
   general shape of a FlexForm binding were not, and naming a fix from this
-  position is the copy-down [judging.md](../../documentation/records/judging.rst)
-  warns about.
+  position is the copy-down
+  [judging.md](../../documentation/records/judging.rst) warns about.
 
 ## Assumed
 

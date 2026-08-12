@@ -87,8 +87,8 @@ Kiro, Zed and Grok document no working directory for a stdio server, and none of
 them documents a variable that reaches the project root in `command` or `args` —
 Droid says outright that expansion "does not apply to `command`, `args`, or
 `url`". The eleven-client table is in
-[installing.md](../../documentation/usage/installing.rst), and the seven added no
-shape the four had not already shown.
+[installing.md](../../documentation/usage/installing.rst), and the seven added
+no shape the four had not already shown.
 
 So two of the three shapes are in use and the second **Wrong if** did not fire:
 a client that resolves the project root gets `${workspaceFolder}` before the

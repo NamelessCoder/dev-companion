@@ -64,8 +64,8 @@ a caller who trusts the promise never learns there was more to open.
   they are weighed against each other.
 - **Queued rather than closed on the spot.** Both halves touch `src/` and the
   declared `outputSchema`, which
-  [judging.md](../../documentation/records/judging.rst) puts on the reviewed side
-  of that line.
+  [judging.md](../../documentation/records/judging.rst) puts on the reviewed
+  side of that line.
 - The priority is `high` for the classes half, and this is what set it. The
   filter is silent, it holds for every extension this server answers for, and
   `skills/typo3-extension-conformance` routes an audit at exactly this section.

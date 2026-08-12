@@ -10,9 +10,9 @@ status: open
 sends the session to read are asserted on the answer that comes back.**
 
 Every other rule of the authoring contract is read off the file, which
-[writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst) states
-itself: the wording is present, and a reorganisation can leave it present while
-the behaviour goes.
+[writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst)
+states itself: the wording is present, and a reorganisation can leave it present
+while the behaviour goes.
 
 ## Evidence
 

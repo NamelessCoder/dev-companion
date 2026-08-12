@@ -61,8 +61,8 @@ different property and neither stating the rule.
   placeholder page URL — describes a server that never existed.
 - The rest is **queued**, not closed on the spot. Both candidates touch the
   declared schema, the argument descriptions or the reference generator, and
-  [judging.md](../../documentation/records/judging.rst) puts a tool's contract on
-  the reviewed side of that line.
+  [judging.md](../../documentation/records/judging.rst) puts a tool's contract
+  on the reviewed side of that line.
 - The two candidates are named and neither is chosen here: render the input
   `oneOf` in the reference and put the rule in the two descriptions, or drop the
   root `oneOf` so the tool's own message answers instead of the validator's. The

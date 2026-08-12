@@ -123,5 +123,5 @@ something a reader sees rather than something the suite says.
 
 The dark drawings are gone as well. No page named one, so no rendered page ever
 referenced one, and eleven files were kept against a mechanism that does not
-exist. What this entry left open about them is unchanged and is now open
-without the files: a reader in dark reads a light drawing.
+exist. What this entry left open about them is unchanged and is now open without
+the files: a reader in dark reads a light drawing.

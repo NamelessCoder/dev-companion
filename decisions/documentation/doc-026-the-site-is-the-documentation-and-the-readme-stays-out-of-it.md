@@ -25,9 +25,9 @@ published that file rather than writing the manual it was missing.
 - Most of what the readme carried was already written a second time below
   `documentation/`. The resource list is `server/resources/readme.md`, the tool
   list grouped by source is the generated `server/tools/answer-sources.md`, and
-  the feedback workflow is `records/readme.md`. Those copies did drift: the grouped
-  tool list went stale by five tools, and the test added to watch it is what
-  `D-SCO-011` and `D-KNW-035` named until this change.
+  the feedback workflow is `records/readme.md`. Those copies did drift: the
+  grouped tool list went stale by five tools, and the test added to watch it is
+  what `D-SCO-011` and `D-KNW-035` named until this change.
 - The config a renderer reads is `guides.xml`, and its own convention in TYPO3
   is that it sits beside the corpus as `Documentation/guides.xml`. That was
   unavailable while the corpus was a directory plus one file above it.
@@ -46,18 +46,19 @@ published that file rather than writing the manual it was missing.
   the first thing that becomes false when a capability changes.
 - `readme.md` at the root keeps the title, the experimental note, the covered
   lines, the quickstart and the way into the manual. That is what somebody
-  arriving at the repository needs before they decide to read further, and it
-  is the whole of the deliberate overlap.
+  arriving at the repository needs before they decide to read further, and it is
+  the whole of the deliberate overlap.
 - A link from the manual to the readme leaves the tree and is rewritten to the
   file on GitHub, like any other link out of it. Nothing about `Site::page()`
   changes for it.
 - The covered lines are named in both places, because both are somewhere
-  somebody arrives, and `VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine`
-  holds both to `knowledge/versions.json`.
+  somebody arrives, and
+  `VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine` holds both to
+  `knowledge/versions.json`.
 - The grouped tool list is not moved. `answer-sources.md` is the same statement
   generated from the `Source` enum, so the test that watched the hand-written
-  one is deleted rather than retargeted, and `ToolSurfaceTest` is what holds
-  the surface to the registry now.
+  one is deleted rather than retargeted, and `ToolSurfaceTest` is what holds the
+  surface to the registry now.
 
 ## Assumed
 
@@ -77,9 +78,9 @@ published that file rather than writing the manual it was missing.
 - Somebody arriving on GitHub cannot tell what the server does. The landing page
   is now four paragraphs and a link, and what it leaves out is everything the
   site opens with.
-- The front page reads as the map it replaced. It has to answer "is this for
-  me" above "how is the work done here", and the four sections come last for
-  that reason.
+- The front page reads as the map it replaced. It has to answer "is this for me"
+  above "how is the work done here", and the four sections come last for that
+  reason.
 
 ## Covered by
 

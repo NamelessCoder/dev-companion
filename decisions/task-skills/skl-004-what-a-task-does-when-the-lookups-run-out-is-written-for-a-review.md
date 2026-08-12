@@ -68,8 +68,8 @@ order. Nothing here states that boundary.
   nothing about TYPO3 that is missing. Not 3: the routing that kept the query
   from the entry landed with `D-KNW-024`.
 - **Queued, not closed on the spot.** `skills/base.md` is a skill contract, and
-  [judging.md](../../documentation/records/judging.rst) puts that on the reviewed
-  side. `D-ANS-010` queued its own skill half for the same reason.
+  [judging.md](../../documentation/records/judging.rst) puts that on the
+  reviewed side. `D-ANS-010` queued its own skill half for the same reason.
 - The feedback is **trimmed**. Its example is answered by the archived sibling
   and stays out of the card; what the card carries is the step after the
   lookups, which is the half no entry states.

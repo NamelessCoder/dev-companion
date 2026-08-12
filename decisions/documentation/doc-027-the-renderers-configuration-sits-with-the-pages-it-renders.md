@@ -17,8 +17,9 @@ the corpus was a directory plus one file above it. Neither is true since
 ## Evidence
 
 - `Documentation/guides.xml` is where a TYPO3 extension keeps this file, and
-  this repository's own knowledge says so in `knowledge/hints/documentation.json`.
-  A reader who knows TYPO3 looks in the documentation directory first.
+  this repository's own knowledge says so in
+  `knowledge/hints/documentation.json`. A reader who knows TYPO3 looks in the
+  documentation directory first.
 - The renderer's binary resolves the file in three places: beside its own
   `vendor/`, then under `--working-dir`, then under `-c`, which defaults to the
   working directory. Only the last one was in use.
@@ -35,9 +36,9 @@ the corpus was a directory plus one file above it. Neither is true since
 - `Site::sources()` skips it by name. The copy is the pages published, and a
   renderer's configuration is not one — published it would sit in the input
   directory it declares.
-- The working directory stays the root of the checkout. Everything the two
-  steps name is relative to it, and the configuration is now the only thing
-  that is not.
+- The working directory stays the root of the checkout. Everything the two steps
+  name is relative to it, and the configuration is now the only thing that is
+  not.
 
 ## Assumed
 

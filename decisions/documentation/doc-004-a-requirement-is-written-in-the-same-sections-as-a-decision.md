@@ -68,8 +68,8 @@ in one entry. That reason does not exist here, and a different one does.
 - `RequirementsTest::everyRequirementNamesWhatHoldsIt`
 
 **Since then** the page named above moved out of the feedback group, to
-`documentation/records/writing-a-requirement.rst`, and the decision page with it.
-Neither directory is a feedback's residue: a requirement is what must hold and a
-decision is what backs it, whatever route the demand arrived by. The shape this
-entry settled is unaffected — both are still written in the same sections, which
-is what made one page per kind worth splitting off at all.
+`documentation/records/writing-a-requirement.rst`, and the decision page with
+it. Neither directory is a feedback's residue: a requirement is what must hold
+and a decision is what backs it, whatever route the demand arrived by. The shape
+this entry settled is unaffected — both are still written in the same sections,
+which is what made one page per kind worth splitting off at all.

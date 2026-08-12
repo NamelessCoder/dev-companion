@@ -30,8 +30,8 @@ vendor directory and four steps of a command.
   reach the copy like every other file.
 - Resolved into this package's own `require-dev` the renderer would add 34
   packages to every `composer install` — 84 in the root, 56 in the renderer, 118
-  together, and no conflict. A directory outside the checkout costs none of
-  that and needs no manifest here to say so.
+  together, and no conflict. A directory outside the checkout costs none of that
+  and needs no manifest here to say so.
 
 ## Decided
 

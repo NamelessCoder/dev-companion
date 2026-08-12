@@ -7,6 +7,7 @@ because it looks exactly like an installation that has nothing to say.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-DIS-017`][D-DIS-017] — The skills reach a project through the installer · 2026-08-12
 - [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
 - [`D-DIS-016`][D-DIS-016] — How an entrypoint may be named is a per-client question · 2026-08-08 · confirmed
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
@@ -20,6 +21,7 @@ one is added.
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-017]: dis-017-the-skills-reach-a-project-through-the-installer.md
 [D-DIS-014]: dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md
 [D-DIS-016]: dis-016-how-an-entrypoint-may-be-named-is-a-per-client-question.md
 [D-DIS-013]: dis-013-the-record-holds-a-digest-of-what-was-published.md

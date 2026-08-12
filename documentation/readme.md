@@ -62,7 +62,7 @@ order by, and the launch two of the subjects below share.
   goes, the sections it is written in, and what a later session adds to the foot
   of one.
 
-## [knowledge/](knowledge/versions.md) — what the server answers, and from where
+## [knowledge/](knowledge/readme.md) — what the server answers, and from where
 
 - [versions.md](knowledge/versions.md) — writing a statement that holds for some
   TYPO3 versions and not others.
@@ -70,7 +70,7 @@ order by, and the launch two of the subjects below share.
   an installation's own answers are looked up in, and what a fallback owes the
   caller.
 
-## [clients/](clients/installing.md) — what goes into somebody else's project
+## [clients/](clients/readme.md) — what goes into somebody else's project
 
 - [installing.md](clients/installing.md) — every client and layout the installer
   supports, and the configuration each one gets.
@@ -96,12 +96,12 @@ order by, and the launch two of the subjects below share.
   which two fields of the spec are left empty and why, and why this page is
   written rather than generated.
 
-## [evidence/](evidence/forward-runs.md) — how the server is measured
+## [evidence/](evidence/readme.md) — how the server is measured
 
 - [forward-runs.md](evidence/forward-runs.md) — running a forward review,
   judging it, and what to do when one stops without an error.
 
-## [interface-contract/](interface-contract/the-draft-rfc-on-an-mcp-interface-contract.md) — what somebody else's draft would mean here
+## [interface-contract/](interface-contract/readme.md) — what somebody else's draft would mean here
 
 - [the-draft-rfc-on-an-mcp-interface-contract.md](interface-contract/the-draft-rfc-on-an-mcp-interface-contract.md)
   — a community proposal for an MCP interface contract for TYPO3, read as a

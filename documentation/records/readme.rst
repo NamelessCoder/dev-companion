@@ -7,21 +7,18 @@ is what each one is for and how the work moves between them.
 
 The pages that carry one of those steps out:
 
-* :doc:`judging.md <judging>` — what is asked of one open feedback, in which
-  order and on what evidence.
-* :doc:`working-a-todo.md <working-a-todo>` — what is read before the todo
-  ``bin/cli todo:next`` handed over is changed, and what the queue says
-  afterwards.
-* :doc:`working-todos-in-parallel.md <working-todos-in-parallel>` — how several
-  sessions get different todos, where each writes, and how it comes back.
-* :doc:`requirements.md <requirements>` and
-  :doc:`writing-a-requirement.md <writing-a-requirement>` — what one states, and
+* :doc:`judging` — what is asked of one open feedback, in which order and on
+  what evidence.
+* :doc:`working-a-todo` — what is read before the todo ``bin/cli todo:next``
+  handed over is changed, and what the queue says afterwards.
+* :doc:`working-todos-in-parallel` — how several sessions get different todos,
+  where each writes, and how it comes back.
+* :doc:`requirements` and :doc:`writing-a-requirement` — what one states, and
   the sections it is written in.
-* :doc:`decisions.md <decisions>` and
-  :doc:`writing-a-decision.md <writing-a-decision>` — what one carries that a
+* :doc:`decisions` and :doc:`writing-a-decision` — what one carries that a
   commit message cannot, and what a later session adds to its foot.
-* :doc:`forward-runs.md <forward-runs>` — running a forward review, judging it,
-  and reading one that stopped without an error.
+* :doc:`forward-runs` — running a forward review, judging it, and reading one
+  that stopped without an error.
 
 Where a session starts
 ----------------------
@@ -73,8 +70,8 @@ is done. One query can be re-run in a session that also has work of its own;
 sixty-seven cannot, and a session handed all of them closes whatever is easiest.
 The portion was five until 2026-08-02, cut for a reader who could then only find
 the judgements in the commit that made them. What carries that instead is
-``decisions/``, which is where a judgement is written now — see
-:doc:`judging.md <judging>` and
+``decisions/``, which is where a judgement is written now — see :doc:`judging`
+and
 `D-FBK-012 <../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md>`_.
 ``bin/cli feedback:list`` is still the whole of it, for whoever wants the
 overview.
@@ -98,8 +95,8 @@ Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
 where a question the work turns on is settled instead of recalled, and what is
 asked because nothing here can answer it, is one page of its own:
-:doc:`working-a-todo.md <working-a-todo>`, which ``bin/cli todo:next`` names
-with every todo it hands over.
+:doc:`working-a-todo`, which ``bin/cli todo:next`` names with every todo it
+hands over.
 
 Keeping the queue current
 -------------------------
@@ -110,8 +107,8 @@ Keeping the queue current
   it serves nothing yet, it is an idea and belongs in the feedback that had it.
 
 What the commit that finishes, trims or puts back a todo leaves behind is the
-last section of :doc:`working-a-todo.md <working-a-todo>`; how a todo is written
-is `todo/readme.md <../../todo/readme.md>`_ itself.
+last section of :doc:`working-a-todo`; how a todo is written is
+`todo/readme.md <../../todo/readme.md>`_ itself.
 
 Asking a session to file its own feedback
 -----------------------------------------
@@ -294,8 +291,7 @@ message records the answer. What outlives both goes to four places, and only
 ``todo/`` is this workflow's: ``requirements/``, ``decisions/`` and the
 documents are the record this repository keeps whether or not a feedback was
 what produced an entry. How each one is written has a page of its own —
-:doc:`writing-a-requirement.md <writing-a-requirement>` and
-:doc:`writing-a-decision.md <writing-a-decision>`.
+:doc:`writing-a-requirement` and :doc:`writing-a-decision`.
 
 * ``requirements/`` — what must be true from now on. A feedback is a question;
   the requirement it established has to keep holding while everything around it
@@ -326,7 +322,7 @@ what produced an entry. How each one is written has a page of its own —
   document in the corpus, which is what this server hands out; what a session
   working here was missing is a page under ``documentation/``. Which of the two,
   and which of them a judging run may write rather than queue, is
-  :doc:`judging.md <judging>`.
+  :doc:`judging`.
 
 What nothing fails on
 ---------------------

@@ -2,8 +2,8 @@ Writing a decision, and going back to one
 =========================================
 
 What a decision is, what rests on it and what its states mean is
-:doc:`readme.md <decisions>`. This page is where an entry goes, how it is
-written, and what a later session adds to one.
+:doc:`decisions`. This page is where an entry goes, how it is written, and what
+a later session adds to one.
 
 Where an entry lives
 --------------------

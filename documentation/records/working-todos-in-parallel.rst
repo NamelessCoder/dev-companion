@@ -1,11 +1,10 @@
 Working several todos at once
 =============================
 
-One session works one todo, and everything about that is
-:doc:`working-a-todo.md <working-a-todo>` — unchanged here. This page is the
-part around it: how several sessions get different work, where each of them
-writes, and how what they wrote comes back. Nothing on it replaces the reading,
-the research or the question a todo is owed.
+One session works one todo, and everything about that is :doc:`working-a-todo` —
+unchanged here. This page is the part around it: how several sessions get
+different work, where each of them writes, and how what they wrote comes back.
+Nothing on it replaces the reading, the research or the question a todo is owed.
 
 It is worth doing where the queue holds work that does not overlap, which is
 most of what accumulates here: entries that name a decision each and are read
@@ -112,9 +111,8 @@ One session per worktree, started in that worktree, and all three get the same
 message — the one ``todo:claim`` printed. It is not on this page, because a copy
 here and a copy in the command are two things to keep in step and one of them
 would be sent. How the session is launched at all — which build, from where,
-with what switched on — is
-:doc:`driving-a-session.md <../contributing/driving-a-session>`, and it is the
-same launch a forward run uses.
+with what switched on — is :doc:`../contributing/driving-a-session`, and it is
+the same launch a forward run uses.
 
 **Better: let the claim start them.** Put the command line that starts a session
 on this machine into ``.session-command`` at the root of the checkout, and
@@ -122,8 +120,8 @@ on this machine into ``.session-command`` at the root of the checkout, and
 directory, the message on standard input, ``TODO_SESSION_ID`` in the
 environment. The file is gitignored, because how a session is launched is a
 property of the machine and not of the repository, and
-:doc:`driving-a-session.md <../contributing/driving-a-session>` is where what
-the launch has to get right is written down. Each session reports into
+:doc:`../contributing/driving-a-session` is where what the launch has to get
+right is written down. Each session reports into
 ``.worktrees/.sessions/<name>.log``.
 
 That is the fourth step joining the other three, and it is here for the same
@@ -168,8 +166,8 @@ What the session does with it
 -----------------------------
 
 Nothing about it is special. It reads what the todo serves, settles what the
-step turns on, and leaves the file true — all of
-:doc:`working-a-todo.md <working-a-todo>`, which the command names as usual.
+step turns on, and leaves the file true — all of :doc:`working-a-todo`, which
+the command names as usual.
 
 Four things are different, and all of them are consequences of ``main`` being
 elsewhere. The claim is handed over with them attached; this is why they are

@@ -12,7 +12,7 @@ it: the change is finished, the demand is not.
 This is the base. What a change rested on and what would show it wrong is a
 decision, and a requirement names the ones it stands on in its own ``restsOn:``
 — :doc:`what a decision is <decisions>`. Where an entry goes and how it is
-written is :doc:`writing-a-requirement.md <writing-a-requirement>`.
+written is :doc:`writing-a-requirement`.
 
 A feedback is one route a demand arrives by, and the most common one. It is not
 what this directory is for: an entry is read long after the question that

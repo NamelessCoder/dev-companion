@@ -23,7 +23,7 @@ network, no database. What is read from an installation instead, and why, is
 All of it is read fresh on every request, so editing a file takes effect
 immediately — no restart and no rebuild. Which TYPO3 lines a statement holds for
 is data on the statement rather than a version number in its sentence:
-:doc:`versions.md <versions>`.
+:doc:`versions`.
 
 Two upstream sources this corpus is written against, for a reader who wants the
 original:

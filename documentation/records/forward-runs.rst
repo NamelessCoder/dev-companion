@@ -19,7 +19,7 @@ Running one
    need not be a person typing: a client driven non-interactively is the same
    evidence, as long as it is given the prompt and nothing else. What such a
    launch has to get right — the session id the grading later needs among it —
-   is :doc:`driving-a-session.md <../contributing/driving-a-session>`.
+   is :doc:`../contributing/driving-a-session`.
    `todo/reference/ <../../todo/reference/>`_ says which checkout plays which
    environment on this machine, and how the client is reached there. A recorded
    review runs in one of those and not in the ``E-SITE`` this repository makes

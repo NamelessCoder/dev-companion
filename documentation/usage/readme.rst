@@ -4,7 +4,7 @@ Using the server
 What it takes to have this server answering in your own project, and what you
 are agreeing to when it does.
 
-* :doc:`installing.md <installing>` — every client and layout
+* :doc:`installing` — every client and layout
   ``bin/typo3-dev-companion install`` supports, and the configuration each one
   gets.
 

@@ -3,8 +3,8 @@ Working a todo
 
 ``bin/cli todo:next`` hands over one todo, and what happens between reading it
 and the commit is the work. This page is that part alone. What is due, what
-recurs, and what a finished todo leaves behind is in
-:doc:`feedback/readme.md <index>`; nothing here repeats it.
+recurs, and what a finished todo leaves behind is in :doc:`index`; nothing here
+repeats it.
 
 The todo is not the instruction it looks like. Its paragraph is one session's
 belief about where to start, written before the work it describes was done, by a
@@ -81,8 +81,7 @@ Where the answer is:
   that may no longer exist, and reading one instead of running it is how a fixed
   problem gets fixed twice.
 * **about the practice a skill describes** — that research is already written
-  down, in :doc:`writing-a-skill.md <../contributing/writing-a-skill>`, and it
-  is the same shape.
+  down, in :doc:`../contributing/writing-a-skill`, and it is the same shape.
 
 Answering from recall is the failure this is written against; leaving a question
 open is not. Where it cannot be settled here — it needs an installation, a run

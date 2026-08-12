@@ -127,12 +127,11 @@ themselves drafts beside the ones this server publishes:
     /absolute/path/to/typo3-dev-companion/bin/typo3-dev-companion install --agent=claude --drafts
 
 
-What it is for is the review step
-:doc:`writing-a-skill.md <../contributing/writing-a-skill>` makes a condition of
-publishing. Reading a draft in this repository is not reading it where it loads,
-and the questions it exists to raise — is this the order the work actually goes
-in, is the step that decides the outcome in it — are raised by using it on a
-real task.
+What it is for is the review step :doc:`../contributing/writing-a-skill` makes a
+condition of publishing. Reading a draft in this repository is not reading it
+where it loads, and the questions it exists to raise — is this the order the
+work actually goes in, is the step that decides the outcome in it — are raised
+by using it on a real task.
 
 The drafts are recorded under their own key in
 ``.typo3-dev-companion/state.json``, because what is in a project unreviewed is

@@ -14,7 +14,7 @@ An entry backs what stands on it. What must be true from now on is a
 requirement, and it names the decisions it rests on in its own ``restsOn:``, so
 a revoked one is readable from the requirement written on top of it —
 :doc:`what a requirement is <requirements>`. Where an entry goes and how it is
-written is :doc:`writing-a-decision.md <writing-a-decision>`.
+written is :doc:`writing-a-decision`.
 
 A feedback is one occasion on which a decision gets made. It is not what this
 directory is for: the entry is read long after that question was answered, and

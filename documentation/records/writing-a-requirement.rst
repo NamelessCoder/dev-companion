@@ -2,8 +2,7 @@ Writing a requirement
 =====================
 
 What a requirement is, what it stands on and what its states mean is
-:doc:`readme.md <requirements>`. This page is where an entry goes and how it is
-written.
+:doc:`requirements`. This page is where an entry goes and how it is written.
 
 Where an entry lives
 --------------------

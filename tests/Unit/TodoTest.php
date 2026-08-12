@@ -543,11 +543,11 @@ final class TodoTest extends TestCase
         $page = Paths::root() . '/' . Todo::PROCEDURE;
 
         self::assertFileExists($page, Todo::PROCEDURE . ' is handed over with every todo and does not exist');
-        // Listed on the page of the section it sits in, by the bare filename a
+        // Listed on the page of the section it sits in, as the reference a
         // reader standing there would follow. The map above those sections
         // names the four and not the pages inside them.
         self::assertStringContainsString(
-            '<' . basename(Todo::PROCEDURE, '.rst') . '>`',
+            ':doc:`' . basename(Todo::PROCEDURE, '.rst') . '`',
             (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PROCEDURE) . '/readme.rst'),
             Todo::PROCEDURE . ' is not listed with the other procedures',
         );
@@ -573,7 +573,7 @@ final class TodoTest extends TestCase
             Todo::PARALLEL . ' is handed over with every claim and does not exist',
         );
         self::assertStringContainsString(
-            '<' . basename(Todo::PARALLEL, '.rst') . '>`',
+            ':doc:`' . basename(Todo::PARALLEL, '.rst') . '`',
             (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PARALLEL) . '/readme.rst'),
             Todo::PARALLEL . ' is not listed with the other procedures',
         );

@@ -16,8 +16,8 @@ here — a run, a transcript, several sessions saying the same thing — the
 judgement decides, and what waits is only what nobody in this repository can
 establish.
 
-:doc:`readme.md <index>` says where a feedback lives and what happens to it once
-it is worked off. This is the step between the two.
+:doc:`index` says where a feedback lives and what happens to it once it is
+worked off. This is the step between the two.
 
 The one question
 ----------------
@@ -126,9 +126,9 @@ broken lookup — a missing verb.
 feedback carries it: a session that invented the right order itself; a session
 that went in an order that cost it the task; and the same sequence arrived at
 independently by two sessions. That last one is the evidence
-:doc:`writing-a-skill.md <../contributing/writing-a-skill>` says nothing can
-read off a file — *that a domain earned a skill at all*. Its bar still has to be
-cleared; the feedback shows it has been reached, not that it can be skipped.
+:doc:`../contributing/writing-a-skill` says nothing can read off a file — *that
+a domain earned a skill at all*. Its bar still has to be cleared; the feedback
+shows it has been reached, not that it can be skipped.
 
 Both are *taken on* rather than closed on the spot, and the building waits for
 the reading because a tool and a skill are contracts — a skill lands in somebody

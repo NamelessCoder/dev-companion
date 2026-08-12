@@ -25,6 +25,13 @@ in `scenarios/ <../../scenarios/readme.md>`_ or a run in
 `scenarios/runs/ <../../scenarios/runs/>`_ where the existing workflow was
 reached for and came up short.
 
+A new skill also buys a **baseline run**: the case prompt run in an environment
+the skills are not installed into, recorded beside the run it is compared
+against. That is what turns "the skill helped" into a measurement, and it is
+bought for a new skill alone — an edit stays on the author's word, because the
+charge falls on every change and what it would catch has not been seen here
+(`D-SKL-035 <../../decisions/task-skills/skl-035-a-new-skill-is-measured-against-a-run-without-it.md>`_).
+
 What such a run shows is almost always smaller than the domain: an order nobody
 keeps, a step that only runs when a finding happens to walk into it, a boundary
 two skills both believe they own. The skill is written around that and around

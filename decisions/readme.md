@@ -426,6 +426,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
@@ -460,6 +461,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-035]: task-skills/skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-033]: task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
 [D-SKL-034]: task-skills/skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md
 [D-SKL-032]: task-skills/skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md

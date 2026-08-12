@@ -28,4 +28,6 @@ Not called. What I ran instead, in the checkout: `for f in $(ls typo3/sysext/*/C
 
 ## Suggestion
 
-Two things. First, make the description open with what it enumerates, not what it validates: if it can answer "which modules are registered, with parent, path, routes beyond _default, access, and the navigation component *as resolved after inheritance*", say that in the first sentence — the resolved navigation component is the value no file listing gives and the one a reader will otherwise get wrong. Second, if it cannot answer that today, that is the tool gap: an installation-read enumeration of modules with their registered routes and effective navigationComponent. It is the answer a `php -r` over Modules.php cannot produce, both because inheritance is resolved at runtime and because EXT:backend's own Modules.php references enum constants and cannot be included standalone.
+The tool gap: an installation-read enumeration of modules with their registered routes and effective navigationComponent. It is the answer a `php -r` over Modules.php cannot produce, both because inheritance is resolved at runtime and because EXT:backend's own Modules.php references enum constants and cannot be included standalone.
+
+The description half is answered — D-ANS-077, 2026-08-12. It has opened with "List the backend modules registered in the TYPO3 installation you are working in" since 2026-08-01, ten days before this report, and the name keeps `lookup` because that is the verb an enumeration answering an optional query carries here.

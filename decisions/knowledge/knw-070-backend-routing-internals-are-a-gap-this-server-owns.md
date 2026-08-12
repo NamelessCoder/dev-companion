@@ -80,3 +80,12 @@ itself is handed the registration conventions, which do not bear on the diff.
   that asks it, and it is judged on its own card.
 - The reading finds each fact bound to a different major, so the hint is a table
   of versions rather than four sentences a reviewer can hold.
+
+## Since then
+
+The second **Wrong if** was read on 2026-08-12 and does not hold.
+`typo3_backend_module_lookup` answers the six CSV columns of
+`debug:backend:modules`, which carry neither the declared nor the resolved
+`navigationComponent`, so the inheritance stays a statement and the hint stays
+the answer to it. What the tool should carry instead — the resolved component
+and the routes, for the installation in front of the caller — is `D-ANS-077`.

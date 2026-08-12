@@ -131,10 +131,11 @@ generator serves as the directory itself, and drops the heading a link names in
 another page, which this renderer answers by discarding the link. What that
 costs is `D-DOC-017`.
 
-The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
-from a manifest of its own — `build/guides/composer.json` says why it is not in
-this package's `require-dev`. That manifest requires one package,
-`typo3/soul-guides-theme`, and the renderer comes with it.
+The renderer is phpDocumentor Guides, configured in `guides.xml`. Nothing here
+requires it: one package is asked for, `typo3/soul-guides-theme`, and the
+renderer comes with it. Resolved into this package's own `require-dev` it would
+add 34 packages to every `composer install`, so it is fetched into a directory
+of its own instead — `D-DOC-028`.
 
 That configuration sits beside the pages, as `documentation/guides.xml`, which
 is where a TYPO3 extension keeps its own and where `-c documentation` names it

@@ -73,6 +73,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
+- [`D-ANS-078`][D-ANS-078] — The icon lookup validates a list of identifiers in one call · 2026-08-12
 - [`D-ANS-074`][D-ANS-074] — A path-narrowed suite list names the domains it withheld and when to ask again · 2026-08-11
 - [`D-ANS-075`][D-ANS-075] — The hint index is ordered by the rank the matcher already computed · 2026-08-11
 - [`D-ANS-076`][D-ANS-076] — A search whose matches are all in one page answers with the page · 2026-08-11
@@ -147,6 +148,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-077]: answers/ans-077-the-module-answer-carries-the-resolved-navigation-component-and-each-modules-routes.md
+[D-ANS-078]: answers/ans-078-the-icon-lookup-validates-a-list-of-identifiers-in-one-call.md
 [D-ANS-074]: answers/ans-074-a-path-narrowed-suite-list-names-the-domains-it-withheld-and-when-to-ask-again.md
 [D-ANS-075]: answers/ans-075-the-hint-index-is-ordered-by-the-rank-the-matcher-already-computed.md
 [D-ANS-076]: answers/ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md

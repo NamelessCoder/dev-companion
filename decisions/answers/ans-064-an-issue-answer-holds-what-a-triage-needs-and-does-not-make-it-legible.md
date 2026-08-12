@@ -78,3 +78,26 @@ candidates.
   never the reason.
 - A structured change reference is reported as noise on issues where the patch
   is ancient and irrelevant, which would say it belongs behind a parameter too.
+
+## Since then
+
+### 2026-08-12 — a filled relation was followed and reframed a review
+
+The second **Wrong if** watched for relations coming back filled and being
+skipped anyway. `feedback/2026-08-11-055157` is the other outcome. Reviewing
+change 94686, the session read issue 110123, followed the one relation the
+answer carried — #108072, *Module action is not kept in breadcrumb*, Closed — to
+the change that fixed it and to that commit in its own checkout, and the review
+changed shape: the patch under review partially reverts that earlier fix, which
+decided the severity of two findings and produced a `Related:` recommendation.
+The session states that neither the diff nor the commit message says so.
+
+The subject is what made the hop worth taking, and it is the field this entry
+added. `feedback/2026-08-12-092654` reports the same field deciding a different
+review, where an issue titled about table captions was fixed in a figcaption and
+the mismatch was the review point.
+
+Re-run on 2026-08-12: issue 110123 answers the relation with subject, tracker
+and status filled, so the fill this entry decided is what those sessions read.
+Neither report confirms the entry — `D-FBK-018` — and what they carry is that
+the cost was the reason, which is what the **Wrong if** was written to find out.

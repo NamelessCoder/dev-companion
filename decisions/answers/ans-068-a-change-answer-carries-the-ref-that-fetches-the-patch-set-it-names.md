@@ -114,3 +114,26 @@ The first **Wrong if** was measured rather than waited for. On 2026-08-09
 refs this answer now derives — `refs/changes/79/95179/1`,
 `refs/changes/40/95040/3` and `refs/changes/11/89011/4` — to the commits the
 same answers carry.
+
+### 2026-08-12 — two review sessions fetched what the answer named
+
+`feedback/2026-08-11-055157` reviewed change 94686 from a core checkout. The
+session read `patchSet`, `commit` and the ref out of one answer, saw that the
+checkout's `HEAD` was a different commit, and fetched `refs/changes/86/94686/3`
+before reading a line of the diff — its own account is that it would otherwise
+have reviewed `main` and reported nothing. `feedback/2026-08-12-092654` is
+another task shape a day later and the same use: change 95169 fetched at
+`refs/changes/69/95169/2` in one command, first try.
+
+Neither confirms this entry. A strength is a session's account of its own run,
+which `D-FBK-018` declines to read as a measurement. What the two do bear on is
+the third **Wrong if**, and from the other side: both fetched over the remote
+this answer names rather than over `origin`, which is the failure `D-SKL-021`
+measured before the field existed.
+
+Re-run on 2026-08-12: `change: "94686"` answers patch set 5 at
+`cac873e95dc59bc48bea0bc5dd396bf57a84d638`, with `fetch.ref`
+`refs/changes/86/94686/5` and the review server as `fetch.remote`. The change
+has merged since that review, so the ref follows the current patch set exactly
+as this entry says it does — and a session holding the old one has to read the
+number beside it.

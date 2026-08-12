@@ -49,5 +49,41 @@
       "The module's persisted per-user state arrives on the request as the moduleData attribute, built from the moduleData key of the registration. set() changes the object alone: what writes it back for the next request is $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray()), and a module that never calls it looks like one whose state is not persisted at all.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ]
+  },
+  {
+    "id": "backend-routing-internals",
+    "title": "Backend Route Options, Sub-Route Identifiers, and Navigation Inheritance",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Routing/",
+      "Classes/Module/",
+      "Classes/Breadcrumb/",
+      "route identifier",
+      "sub-route",
+      "subroute",
+      "module option",
+      "getOption",
+      "ModuleRegistry",
+      "ModuleProvider",
+      "ModuleResolver",
+      "ExtbaseModule",
+      "navigationComponent",
+      "page tree navigation",
+      "breadcrumb",
+      "which module a request is in"
+    ],
+    "hints": [
+      "A route a module registers carries the module object in its module option; a route declared in Configuration/Backend/Routes.php or AjaxRoutes.php does not. Module::getDefaultRouteOptions() puts it on every route of the module, so that option is what says whether a route belongs to a module at all.",
+      {
+        "text": "ModuleResolver is what answers which module a request is in, and it reads three sources in order: the module option of the routed route, the module request attribute, then the module query parameter.",
+        "since": 14
+      },
+      "The module's _default route is registered under the module identifier itself. Every other route of the module is registered as <module identifier>.<route name>, because ModuleRegistry adds the collection under the module identifier and a dot.",
+      "An Extbase module generates one route per controller action rather than taking a routes map, named <ControllerAlias>_<action>, so its sub-route identifiers read <module identifier>.<ControllerAlias>_<action>. Every one of them gets the module's own route options; there is no per-action entry to configure.",
+      "navigationComponent is inherited from the parent module unless the registration turns it off with inheritNavigationComponentFromMainModule, so a module's own Modules.php does not say whether it is page-tree navigated. Reading the registration files alone gives the wrong answer for every module that inherits.",
+      "TYPO3\\CMS\\Backend\\Routing\\Route takes a path and an options array; TYPO3\\CMS\\Core\\Routing\\Route takes a path, defaults, requirements and then options. Passing backend route options to the core class puts them where defaults belong, getOption() returns null with no error, and a test built that way asserts nothing."
+    ]
   }
 ]

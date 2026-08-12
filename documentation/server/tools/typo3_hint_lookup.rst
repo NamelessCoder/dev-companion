@@ -192,6 +192,7 @@ Text:
     - extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
     - authentication-permissions — Authentication and Permissions (PHP)
     - backend-modules — Backend Module and Route Registration (PHP)
+    - backend-routing-internals — Backend Route Options, Sub-Route Identifiers, and Navigation Inheritance (PHP)
     - installation-boot — Booting the Installation a Project Repository Declares (PHP)
     - browser-tests — Browser Tests with Playwright (PHP)
     - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
@@ -419,6 +420,11 @@ Data:
             {
                 "id": "backend-modules",
                 "title": "Backend Module and Route Registration",
+                "category": "PHP"
+            },
+            {
+                "id": "backend-routing-internals",
+                "title": "Backend Route Options, Sub-Route Identifiers, and Navigation Inheritance",
                 "category": "PHP"
             },
             {
@@ -1353,6 +1359,7 @@ Text:
     - extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
     - authentication-permissions — Authentication and Permissions (PHP)
     - backend-modules — Backend Module and Route Registration (PHP)
+    - backend-routing-internals — Backend Route Options, Sub-Route Identifiers, and Navigation Inheritance (PHP)
     - installation-boot — Booting the Installation a Project Repository Declares (PHP)
     - browser-tests — Browser Tests with Playwright (PHP)
     - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
@@ -1481,6 +1488,11 @@ Data:
             {
                 "id": "backend-modules",
                 "title": "Backend Module and Route Registration",
+                "category": "PHP"
+            },
+            {
+                "id": "backend-routing-internals",
+                "title": "Backend Route Options, Sub-Route Identifiers, and Navigation Inheritance",
                 "category": "PHP"
             },
             {

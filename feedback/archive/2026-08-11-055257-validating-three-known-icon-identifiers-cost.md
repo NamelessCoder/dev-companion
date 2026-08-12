@@ -1,7 +1,8 @@
 ---
 date: 2026-08-11T05:52:57+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-12
 model: claude-opus-5
 tool: typo3_icon_lookup
 directory: /home/benji/projects/typo3-cms

@@ -175,14 +175,24 @@ final class Icons
 
     public static function has(string $identifier): bool
     {
+        return self::find($identifier) !== null;
+    }
+
+    /**
+     * The registered icon of that identifier, or null where none is.
+     *
+     * @return array{identifier: string, category: string, aliasOf: ?string, source: string}|null
+     */
+    public static function find(string $identifier): ?array
+    {
         $identifier = strtolower(trim($identifier));
         foreach (self::all() as $icon) {
             if ($icon['identifier'] === $identifier) {
-                return true;
+                return $icon;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

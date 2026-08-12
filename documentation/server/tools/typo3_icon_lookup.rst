@@ -3,17 +3,20 @@
 ``typo3_icon_lookup``
 =====================
 
-Validate or find an icon identifier in the TYPO3 backend icon registry of the
-installation you are working in. It is read from the running installation, so
-what a package registers in a loop or from ext_localconf.php is in the answer as
-well as what its Configuration/Icons.php declares; where the installation cannot
-be booted — no console, or a checkout with no configuration yet — the T3Icons
-set, the package registration files and the flag images are read instead,
-answeredBy says 'packages', and the answer states what that leaves out.
-Identifiers spell shapes rather than intents, so concept words are mapped:
-"warning" finds actions-exclamation-triangle. Backend only: the identifiers are
-resolved by IconFactory and rendered by <core:icon>, and a frontend template can
-use neither. Answers from: installation, packages.
+Validate or find icon identifiers in the TYPO3 backend icon registry of the
+installation you are working in. Pass identifiers to confirm several at once —
+each comes back registered or not, in one call, which is what to use when you
+already read them out of a template; pass query to search for one by name or by
+what it means. It is read from the running installation, so what a package
+registers in a loop or from ext_localconf.php is in the answer as well as what
+its Configuration/Icons.php declares; where the installation cannot be booted —
+no console, or a checkout with no configuration yet — the T3Icons set, the
+package registration files and the flag images are read instead, answeredBy says
+'packages', and the answer states what that leaves out. Identifiers spell shapes
+rather than intents, so concept words are mapped: "warning" finds
+actions-exclamation-triangle. Backend only: the identifiers are resolved by
+IconFactory and rendered by <core:icon>, and a frontend template can use
+neither. Answers from: installation, packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -28,6 +31,12 @@ Takes
     # Identifier, identifier fragment, or concept, for example "actions-open",
     # "delete", or "warning". Omit to list the categories and concept words.
     query: string  # optional
+    # Complete identifiers to check in one call, for example ["actions-open",
+    # "actions-cog"]. Each is answered registered or not on its own, with no ranking
+    # behind the ones that are — that is what to pass when you already read the
+    # identifiers out of a template and only need them confirmed. A miss still
+    # carries suggestions.
+    identifiers: [string]  # optional
     # Maximum number of identifiers to return.
     limit: integer  # optional
 
@@ -64,6 +73,22 @@ Answers with
         matched: integer  # optional
         score: integer  # optional
         why: [string]  # optional
+    # One entry per identifier passed in, in that order. Returned when identifiers
+    # were given.
+    validated:  # optional
+      - # As it was passed.
+        identifier: string
+        # Whether this exact identifier is registered. False is the answer, not an
+        # empty result.
+        registered: boolean
+        category: string
+        # The identifier this one is an alias of.
+        aliasOf: string or null
+        # Where it is registered. Empty where it is not.
+        source: string
+        # Related identifiers, for a miss only. A registered identifier carries
+        # none, because its neighbours are not an answer to it.
+        suggestions: [string]
     # Returned when no query was given.
     categories: [string]  # optional
     # Concept words that map to a shape. Returned when no query was given.
@@ -515,6 +540,134 @@ Data:
                 "why": [
                     "name part \"open\""
                 ]
+            }
+        ],
+        "scope": "These identifiers address the backend icon registry. They are resolved by IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, and needs its own inline SVG or asset file.",
+        "answeredBy": "installation"
+    }
+
+icons: several validated at once
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "identifiers": [
+            "actions-open",
+            "actions-cog",
+            "acme-events-teaser"
+        ]
+    }
+
+From the 14.3 core checkout below .checkouts/, whose console could not be reached
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Text:
+
+.. code-block:: text
+
+    These identifiers address the backend icon registry. They are resolved by IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, and needs its own inline SVG or asset file. This list is read from the package files rather than from the booted installation — <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Identifiers a package builds in a loop or registers from ext_localconf.php, and the ones TYPO3 derives from TCA, are not in it.
+
+    2 of 3 identifier(s) are registered in <installation>:
+    - actions-open: registered
+    - actions-cog: registered
+    - acme-events-teaser: NOT registered
+      did you mean: content-text-teaser
+
+Data:
+
+.. code-block:: json
+
+    {
+        "query": "",
+        "matchCount": 2,
+        "suggestionCount": 1,
+        "exactMatch": false,
+        "icons": [],
+        "validated": [
+            {
+                "identifier": "actions-open",
+                "registered": true,
+                "category": "actions",
+                "aliasOf": null,
+                "source": "t3icons",
+                "suggestions": []
+            },
+            {
+                "identifier": "actions-cog",
+                "registered": true,
+                "category": "actions",
+                "aliasOf": null,
+                "source": "t3icons",
+                "suggestions": []
+            },
+            {
+                "identifier": "acme-events-teaser",
+                "registered": false,
+                "category": "",
+                "aliasOf": null,
+                "source": "",
+                "suggestions": [
+                    "content-text-teaser"
+                ]
+            }
+        ],
+        "scope": "These identifiers address the backend icon registry. They are resolved by IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, and needs its own inline SVG or asset file. This list is read from the package files rather than from the booted installation — <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Identifiers a package builds in a loop or registers from ext_localconf.php, and the ones TYPO3 derives from TCA, are not in it.",
+        "answeredBy": "packages"
+    }
+
+From the installation this repository writes below .fixtures/, whose console answers
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Text:
+
+.. code-block:: text
+
+    These identifiers address the backend icon registry. They are resolved by IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, and needs its own inline SVG or asset file.
+
+    2 of 3 identifier(s) are registered in <installation>:
+    - actions-open: registered
+      registered in EXT:backend/Configuration/Icons.php
+    - actions-cog: NOT registered
+    - acme-events-teaser: registered
+      registered in EXT:acme_events/Configuration/Icons.php
+
+Data:
+
+.. code-block:: json
+
+    {
+        "query": "",
+        "matchCount": 2,
+        "suggestionCount": 0,
+        "exactMatch": false,
+        "icons": [],
+        "validated": [
+            {
+                "identifier": "actions-open",
+                "registered": true,
+                "category": "actions",
+                "aliasOf": null,
+                "source": "EXT:backend/Configuration/Icons.php",
+                "suggestions": []
+            },
+            {
+                "identifier": "actions-cog",
+                "registered": false,
+                "category": "",
+                "aliasOf": null,
+                "source": "",
+                "suggestions": []
+            },
+            {
+                "identifier": "acme-events-teaser",
+                "registered": true,
+                "category": "acme",
+                "aliasOf": null,
+                "source": "EXT:acme_events/Configuration/Icons.php",
+                "suggestions": []
             }
         ],
         "scope": "These identifiers address the backend icon registry. They are resolved by IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, and needs its own inline SVG or asset file.",

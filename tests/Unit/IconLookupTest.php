@@ -97,6 +97,54 @@ final class IconLookupTest extends TestCase
         self::assertSame(1, $exact->data['matchCount']);
     }
 
+    /**
+     * Several identifiers are one call, and each keeps its own verdict.
+     *
+     * The cost this answers is ours: the initialize instructions say to
+     * validate every identifier before emitting it, so three icons in one
+     * template were three round trips — `D-ANS-078`.
+     */
+    #[Test]
+    public function severalIdentifiersAreAnsweredOneByOneInOneCall(): void
+    {
+        Instance::discoverFrom($this->installationWithItsOwnIcon());
+
+        $result = Registry::call('typo3_icon_lookup', [
+            'identifiers' => ['actions-open', 'actions-open-definitely-does-not-exist', 'acme-product'],
+        ]);
+
+        self::assertSame(
+            ['actions-open', 'actions-open-definitely-does-not-exist', 'acme-product'],
+            array_column($result->data['validated'], 'identifier'),
+            'in the order they were passed',
+        );
+        self::assertSame([true, false, true], array_column($result->data['validated'], 'registered'));
+        self::assertSame(2, $result->data['matchCount']);
+        self::assertFalse($result->data['exactMatch'], 'one that is not registered makes the answer no');
+        self::assertSame([], $result->data['icons'], 'a validation is not a list of matches');
+    }
+
+    #[Test]
+    public function onlyTheIdentifierThatMissedIsOfferedNeighbours(): void
+    {
+        // Neighbours of a correct identifier are noise; neighbours of a wrong
+        // one are the next step. One reported answer carried 22 of them behind
+        // a name that was already right.
+        Instance::discoverFrom($this->installationWithItsOwnIcon());
+
+        $validated = Registry::call('typo3_icon_lookup', [
+            'identifiers' => ['actions-open', 'actions-open-definitely-does-not-exist'],
+        ])->data['validated'];
+
+        self::assertSame([], $validated[0]['suggestions']);
+        self::assertNotSame([], $validated[1]['suggestions']);
+        self::assertNotContains(
+            'actions-open-definitely-does-not-exist',
+            $validated[1]['suggestions'],
+            'what is missing is never its own suggestion',
+        );
+    }
+
     #[Test]
     public function aRegistryReadFromTheFilesSaysThatInTheAnswerItself(): void
     {

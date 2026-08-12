@@ -31,6 +31,14 @@ final class IconLookup extends ReadOnlyTool
      * frontend template reaches neither — so an answer without this sentence is
      * usable in a place where it is wrong.
      */
+    /**
+     * How many neighbours a missing identifier is offered.
+     *
+     * Few, because a validation of several names is one answer: the reported
+     * case was three identifiers, and one of them alone had come back with 22.
+     */
+    private const SUGGESTIONS_PER_MISS = 5;
+
     private const SCOPE = 'These identifiers address the backend icon registry. They are resolved by '
         . 'IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, '
         . 'and needs its own inline SVG or asset file.';
@@ -48,7 +56,7 @@ final class IconLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Validate or find an icon identifier in the TYPO3 backend icon registry of the installation you are working in. It is read from the running installation, so what a package registers in a loop or from ext_localconf.php is in the answer as well as what its Configuration/Icons.php declares; where the installation cannot be booted — no console, or a checkout with no configuration yet — the T3Icons set, the package registration files and the flag images are read instead, answeredBy says \'packages\', and the answer states what that leaves out. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.';
+        return 'Validate or find icon identifiers in the TYPO3 backend icon registry of the installation you are working in. Pass identifiers to confirm several at once — each comes back registered or not, in one call, which is what to use when you already read them out of a template; pass query to search for one by name or by what it means. It is read from the running installation, so what a package registers in a loop or from ext_localconf.php is in the answer as well as what its Configuration/Icons.php declares; where the installation cannot be booted — no console, or a checkout with no configuration yet — the T3Icons set, the package registration files and the flag images are read instead, answeredBy says \'packages\', and the answer states what that leaves out. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.';
     }
 
     public static function inputSchema(): array
@@ -57,6 +65,7 @@ final class IconLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'query' => ['type' => 'string', 'description' => 'Identifier, identifier fragment, or concept, for example "actions-open", "delete", or "warning". Omit to list the categories and concept words.'],
+                'identifiers' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'Complete identifiers to check in one call, for example ["actions-open", "actions-cog"]. Each is answered registered or not on its own, with no ranking behind the ones that are — that is what to pass when you already read the identifiers out of a template and only need them confirmed. A miss still carries suggestions.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 40, 'description' => 'Maximum number of identifiers to return.'],
             ],
         ];
@@ -79,6 +88,14 @@ final class IconLookup extends ReadOnlyTool
                 'score' => Schema::integer(),
                 'why' => Schema::listOf(Schema::string()),
             ], ['identifier', 'category', 'aliasOf', 'source'])),
+            'validated' => Schema::listOf(Schema::object([
+                'identifier' => Schema::string('As it was passed.'),
+                'registered' => ['type' => 'boolean', 'description' => 'Whether this exact identifier is registered. False is the answer, not an empty result.'],
+                'category' => Schema::string(),
+                'aliasOf' => Schema::nullableString('The identifier this one is an alias of.'),
+                'source' => Schema::string('Where it is registered. Empty where it is not.'),
+                'suggestions' => Schema::listOf(Schema::string(), 'Related identifiers, for a miss only. A registered identifier carries none, because its neighbours are not an answer to it.'),
+            ], ['identifier', 'registered', 'category', 'aliasOf', 'source', 'suggestions']), 'One entry per identifier passed in, in that order. Returned when identifiers were given.'),
             'categories' => Schema::listOf(Schema::string(), 'Returned when no query was given.'),
             'concepts' => Schema::listOf(Schema::string(), 'Concept words that map to a shape. Returned when no query was given.'),
             'scope' => Schema::string('Where these identifiers may be used: the backend registry, not frontend rendering. Carried by every answered lookup.'),
@@ -107,6 +124,52 @@ final class IconLookup extends ReadOnlyTool
         }
 
         $concepts = Icons::concepts();
+
+        // The validation mode. It comes before everything below because the
+        // question is a different one: "do these exist" is answered per name,
+        // and the ranking that serves "what icon means X" is noise behind a
+        // name that was already correct — `D-ANS-078`.
+        $validated = self::validate($args['identifiers'] ?? null, $concepts);
+        if ($validated !== []) {
+            $registered = array_filter($validated, static fn(array $entry): bool => $entry['registered']);
+
+            $lines = [$scope, ''];
+            $lines[] = sprintf(
+                '%d of %d identifier(s) are registered in %s:',
+                count($registered),
+                count($validated),
+                Instance::root() ?? 'the installation',
+            );
+            foreach ($validated as $entry) {
+                $lines[] = '- ' . $entry['identifier'] . ($entry['registered'] ? ': registered' : ': NOT registered');
+                if ($entry['registered'] && $entry['aliasOf'] !== null) {
+                    $lines[] = '  alias of ' . $entry['aliasOf'];
+                }
+                if ($entry['registered'] && $entry['source'] !== Icons::SOURCE_T3ICONS) {
+                    $lines[] = '  registered in ' . $entry['source'];
+                }
+                if ($entry['suggestions'] !== []) {
+                    $lines[] = '  did you mean: ' . implode(', ', $entry['suggestions']);
+                }
+            }
+
+            return ToolResult::create(implode("\n", $lines), [
+                'query' => $query,
+                'matchCount' => count($registered),
+                'suggestionCount' => array_sum(array_map(
+                    static fn(array $entry): int => count($entry['suggestions']),
+                    $validated,
+                )),
+                // One name that is not registered makes the answer no, which is
+                // what a caller about to emit all of them has to act on.
+                'exactMatch' => count($registered) === count($validated),
+                'icons' => [],
+                'validated' => $validated,
+                'scope' => $scope,
+                'answeredBy' => Icons::answeredBy(),
+            ]);
+        }
+
         if ($query === '') {
             $lines = [$scope, ''];
             $lines[] = 'Icon categories in this installation: ' . implode(', ', Icons::categories()) . '.';
@@ -211,6 +274,43 @@ final class IconLookup extends ReadOnlyTool
             'scope' => $scope,
             'answeredBy' => Icons::answeredBy(),
         ]);
+    }
+
+    /**
+     * One verdict per identifier passed in, in the order they were passed.
+     *
+     * A miss keeps suggestions and a hit gets none: neighbours of a correct
+     * identifier are noise, and neighbours of a wrong one are the next step —
+     * `D-ANS-016`. Empty where nothing was passed, which is what puts the call
+     * back into the ranked mode.
+     *
+     * @param array<string, array<int, string>> $concepts
+     * @return array<int, array{identifier: string, registered: bool, category: string, aliasOf: ?string, source: string, suggestions: array<int, string>}>
+     */
+    private static function validate(mixed $identifiers, array $concepts): array
+    {
+        $validated = [];
+        foreach (is_array($identifiers) ? $identifiers : [] as $identifier) {
+            if (!is_string($identifier) || trim($identifier) === '') {
+                continue;
+            }
+            $identifier = trim($identifier);
+            $icon = Icons::find($identifier);
+            $validated[] = [
+                'identifier' => $identifier,
+                'registered' => $icon !== null,
+                'category' => $icon['category'] ?? '',
+                'aliasOf' => $icon['aliasOf'] ?? null,
+                'source' => $icon['source'] ?? '',
+                'suggestions' => $icon !== null ? [] : array_slice(
+                    array_column(self::rank($identifier, $concepts), 'identifier'),
+                    0,
+                    self::SUGGESTIONS_PER_MISS,
+                ),
+            ];
+        }
+
+        return $validated;
     }
 
     /**

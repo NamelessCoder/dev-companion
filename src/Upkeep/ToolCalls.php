@@ -215,6 +215,9 @@ final class ToolCalls
             'labels: hit' => ['typo3_label_lookup', ['query' => 'save']],
             'labels: miss' => ['typo3_label_lookup', ['query' => 'quantumflux']],
             'icons: hit' => ['typo3_icon_lookup', ['query' => 'actions-open']],
+            'icons: several validated at once' => ['typo3_icon_lookup', [
+                'identifiers' => ['actions-open', 'actions-cog', 'acme-events-teaser'],
+            ]],
             'icons: everything' => ['typo3_icon_lookup', []],
             'modules' => ['typo3_backend_module_lookup', []],
             'namespaces' => ['typo3_fluid_namespace_list', []],

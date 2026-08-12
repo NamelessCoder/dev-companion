@@ -92,8 +92,8 @@ state the machine is in.
   the extension that declares each one, its place in the module tree, its
   labels, its access level, the route each one answers on and every sub-route it
   registers.
-* :doc:`typo3_icon_lookup <typo3_icon_lookup>` — Validate or find an icon
-  identifier in the TYPO3 backend icon registry of the installation you are
+* :doc:`typo3_icon_lookup <typo3_icon_lookup>` — Validate or find icon
+  identifiers in the TYPO3 backend icon registry of the installation you are
   working in.
 * :doc:`typo3_changelog_lookup <typo3_changelog_lookup>` — Search the TYPO3
   changelog.

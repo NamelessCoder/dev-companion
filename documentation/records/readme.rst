@@ -23,6 +23,8 @@ The pages that carry one of those steps out:
 Where a session starts
 ----------------------
 
+.. code-block:: bash
+
     bin/cli todo:next
 
 One todo, not the queue and not everything nothing has answered for. Context is
@@ -247,6 +249,8 @@ read-only and neither tool appears in ``tools/list``.
 
 Working a feedback off
 ----------------------
+
+.. code-block:: bash
 
     bin/cli feedback:archive feedback/2026-07-31-…-the-lookup-found-nothing.md
 

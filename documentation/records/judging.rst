@@ -39,6 +39,8 @@ session was there and the reader was not. Only the lever is assessed.
 Read the corpus before the card
 -------------------------------
 
+.. code-block:: bash
+
     bin/cli feedback:list
 
 One call, grouped by the checkout each feedback was written in and marked where

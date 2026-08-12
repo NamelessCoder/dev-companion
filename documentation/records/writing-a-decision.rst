@@ -61,6 +61,8 @@ wrong is the one most worth reading, and it is revoked in place.
 Moving one to another number
 ----------------------------
 
+.. code-block:: bash
+
     bin/cli decisions:renumber <decision> [<number>]
 
 Two sessions reading one ``main`` write one id, and the second one to come home

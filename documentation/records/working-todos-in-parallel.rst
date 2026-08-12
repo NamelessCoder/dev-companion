@@ -34,6 +34,8 @@ what makes this possible at all. Each session touches its own file and no other.
 Taking them on
 --------------
 
+.. code-block:: bash
+
     bin/cli todo:claim 3
 
 **That command is the whole setup.** Three todos come out of the queue into
@@ -152,6 +154,8 @@ to doubt: a worktree on a branch the claim never named — or one cut from a
 make and then reads the queue, where it finds real work belonging to somebody
 else. So it is read out of the checkout instead:
 
+.. code-block:: bash
+
     bin/cli todo:next --worktree
 
 The same command every session in this repository starts with, and the flag is
@@ -222,6 +226,8 @@ own. Most of the time it does — the session settled one half of its todo and t
 question is about the other — and then the branch merges like any other and the
 trimmed claim comes with it. Where it does not, only the claim comes back:
 
+.. code-block:: bash
+
     git checkout <branch> -- todo/progress/<name>.md
 
 That keeps ``main`` free of a half-finished change while still saying, in one
@@ -250,6 +256,8 @@ sequences of the same four steps, started whenever their session ends.
 
 **One at a time, rebased onto ``main`` and fast-forwarded — no merge commits.**
 
+.. code-block:: bash
+
     bin/cli todo:home <worktree>
 
 **That command is the whole of it**, the way ``todo:claim`` is the whole of the
@@ -263,9 +271,12 @@ Nothing here decides that a session has ended, and nothing can: the names are
 the caller's. What the command carries out for each of them is this, and a
 worktree made or merged some other way has to do the same.
 
-    git -C .worktrees/<name> rebase main (cd .worktrees/<name> && composer ci)
-    git merge --ff-only todo/<name> git worktree remove .worktrees/<name> && git
-    branch -d todo/<name>
+.. code-block:: bash
+
+    git -C .worktrees/<name> rebase main
+    (cd .worktrees/<name> && composer ci)
+    git merge --ff-only todo/<name>
+    git worktree remove .worktrees/<name> && git branch -d todo/<name>
 
 ``main`` moves while the sessions run, so a branch cut hours ago is behind it
 and cannot be fast-forwarded as it stands. The rebase is what makes the merge a
@@ -295,8 +306,10 @@ already red, which is the one thing this order exists to avoid.
 
 Then, on ``main``, which ``todo:home`` also carries out once the branch is in:
 
-    bin/cli requirements:index && bin/cli decisions:index bin/cli
-    repository:check
+.. code-block:: bash
+
+    bin/cli requirements:index && bin/cli decisions:index
+    bin/cli repository:check
 
 That is something a per-branch run cannot see. The listing at the foot of a
 group readme is generated from every file in that group, so entries merged from
@@ -329,6 +342,8 @@ named the ``D-ANS-016`` that stayed while a requirement and a todo named the one
 that became ``D-ANS-019``. A search and replace over the id is wrong in exactly
 those cases, it is silent, and no check fails afterwards — the entry it now
 points at is real.
+
+.. code-block:: bash
 
     bin/cli decisions:renumber <decision>
 

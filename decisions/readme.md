@@ -564,7 +564,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
-- [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09
+- [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
@@ -587,7 +587,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-DOC-024]: documentation/doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
 [D-DOC-025]: documentation/doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
-[D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
+[D-DOC-026]: documentation/doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md
 [D-DOC-020]: documentation/doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-022]: documentation/doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: documentation/doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
@@ -622,6 +622,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### Revoked, and kept as the record
 
+- [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files, and what is solved is taken from a package · 2026-08-09 → D-DOC-024
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09 → D-DOC-024
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
@@ -652,6 +653,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
+[D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-019]: documentation/doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md
 [D-DOC-021]: documentation/doc-021-the-site-is-searched-in-a-dialog-opened-with-ctrl-k.md
 [D-DOC-023]: documentation/doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md

@@ -51,23 +51,25 @@ final class VersionsTest extends TestCase
     }
 
     /**
-     * Whether this server knows the TYPO3 somebody runs is what decides
-     * whether they install it, and the readme is where that is read — on
-     * GitHub and as the front page of the site. So the sentence naming the
-     * lines is held to the declaration rather than to what was covered on the
-     * day it was written.
+     * Whether this server knows the TYPO3 somebody runs is what decides whether
+     * they install it, and it is read in the two places somebody arrives at:
+     * the readme on GitHub and the front page of the site. So the sentence
+     * naming the lines is held to the declaration rather than to what was
+     * covered on the day it was written.
      */
     #[Test]
-    public function theReadmeNamesEveryCoveredLine(): void
+    public function whatSomebodyArrivesAtNamesEveryCoveredLine(): void
     {
-        $readme = (string) file_get_contents(Paths::root() . '/readme.md');
+        foreach (['readme.md', 'documentation/readme.md'] as $page) {
+            $landing = (string) file_get_contents(Paths::root() . '/' . $page);
 
-        foreach (Versions::covered() as $version) {
-            self::assertStringContainsString(
-                '**' . $version['branch'] . '**',
-                $readme,
-                $version['branch'] . ' is covered and the readme does not name it',
-            );
+            foreach (Versions::covered() as $version) {
+                self::assertStringContainsString(
+                    '**' . $version['branch'] . '**',
+                    $landing,
+                    $version['branch'] . ' is covered and ' . $page . ' does not name it',
+                );
+            }
         }
     }
 

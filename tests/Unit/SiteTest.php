@@ -171,41 +171,26 @@ final class SiteTest extends TestCase
         self::assertFileDoesNotExist($this->target . '/server/tools/readme.md');
         self::assertStringContainsString(
             '](records/index.md)',
-            (string) file_get_contents($this->target . '/how-the-work-is-done.md'),
+            (string) file_get_contents($this->target . '/index.md'),
         );
     }
 
     /**
-     * `D-DOC-018`: what the site opens on is the readme a visitor of the
-     * repository lands on too, and the map of `documentation/` is a page below
-     * it rather than the front one.
+     * `D-DOC-026`: the site is `documentation/` and nothing besides, so it opens
+     * on that directory's own page and the checkout's readme is a file the site
+     * does not carry.
      */
     #[Test]
-    public function theSiteOpensOnTheReadmeAndNotOnTheMap(): void
+    public function theSiteOpensOnTheDocumentationsOwnPage(): void
     {
         Site::build($this->target);
 
-        $front = (string) file_get_contents($this->target . '/index.md');
-        self::assertStringStartsWith('# TYPO3 Dev Companion', $front);
-        self::assertFileExists($this->target . '/how-the-work-is-done.md');
-    }
-
-    /**
-     * The front page sits a directory above the tree the rest of the site is,
-     * so a link it wrote against the checkout names one segment the site does
-     * not serve.
-     */
-    #[Test]
-    public function aLinkOnTheFrontPageDropsTheDirectoryTheSiteServesAtItsRoot(): void
-    {
-        $published = Site::page(
-            Site::FRONT,
-            'Installing is [here](documentation/usage/installing.md), and the map is'
-            . ' [there](documentation/readme.md).',
+        self::assertStringStartsWith('# TYPO3 Dev Companion', (string) file_get_contents($this->target . '/index.md'));
+        self::assertFileDoesNotExist($this->target . '/how-the-work-is-done.md');
+        self::assertStringContainsString(
+            Site::repository() . '/blob/main/readme.md',
+            Site::page('documentation/usage/installing.md', 'The [readme](../../readme.md) has the short version.'),
         );
-
-        self::assertStringContainsString('](usage/installing.md)', $published);
-        self::assertStringContainsString('](how-the-work-is-done.md)', $published);
     }
 
     /** And a page below it reaches the front page by climbing out of its own directory. */
@@ -214,7 +199,7 @@ final class SiteTest extends TestCase
     {
         self::assertStringContainsString(
             '](../index.md)',
-            Site::page('documentation/records/readme.md', 'What it is: [readme](../../readme.md).'),
+            Site::page('documentation/records/readme.md', 'What it is: [the manual](../readme.md).'),
         );
     }
 

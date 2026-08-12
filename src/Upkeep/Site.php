@@ -12,11 +12,11 @@ use TYPO3\DevCompanion\Process\SystemRunner;
 /**
  * The pages published, written out as the source a site generator publishes.
  *
- * Two things are published: the repository's own `readme.md`, which is what
- * somebody deciding whether this server is for them reads, and `documentation/`,
- * which is how the work here is carried out. The readme is the front page,
- * because a visitor arriving at the site is a user before they are a
- * contributor — `D-DOC-018`.
+ * What is published is `documentation/` and nothing besides, so the front page
+ * is that directory's own page — `D-DOC-026`. The repository's `readme.md` is
+ * the landing page of the checkout and stays out of the site, because one file
+ * serving both places is what put the promise paragraphs where no section of
+ * the manual could hold them.
  *
  * `documentation/` was written for a reader who has the whole checkout: 87 of
  * its 246 relative links point at a decision, a requirement, a todo or a class
@@ -40,9 +40,6 @@ final class Site
     /** The directory published, relative to the root. */
     public const SOURCE = 'documentation';
 
-    /** The page the site opens on, relative to the root. */
-    public const FRONT = 'readme.md';
-
     /**
      * Where the site is built, and what `guides.xml` names as its `input` and
      * its `output`. Gitignored, because a build product that is committed is
@@ -55,13 +52,6 @@ final class Site
     /** What a directory's own page is called here, and what it is published as. */
     private const OWN_PAGE = 'readme.md';
     private const PUBLISHED_PAGE = 'index.md';
-
-    /**
-     * What the map of `documentation/` is published as, since the front page is
-     * the repository's own readme. Its own title, so the sidebar names it the
-     * way the page does.
-     */
-    private const MAP_PAGE = 'how-the-work-is-done.md';
 
     /** The branch a link leaving the published tree points into. */
     private const BRANCH = 'main';
@@ -173,7 +163,7 @@ final class Site
      */
     private static function sources(): array
     {
-        $sources = [self::FRONT];
+        $sources = [];
         foreach (Finder::create()->files()->in(Paths::root() . '/' . self::SOURCE)->sortByName() as $file) {
             $sources[] = self::SOURCE . '/' . str_replace('\\', '/', $file->getRelativePathname());
         }
@@ -225,7 +215,7 @@ final class Site
     /** Whether a path in this repository is one the site serves. */
     public static function isPublished(string $path): bool
     {
-        return $path === self::FRONT || $path === self::SOURCE || str_starts_with($path, self::SOURCE . '/');
+        return $path === self::SOURCE || str_starts_with($path, self::SOURCE . '/');
     }
 
     /**
@@ -238,11 +228,8 @@ final class Site
      */
     public static function published(string $path): string
     {
-        if ($path === self::FRONT) {
+        if ($path === self::SOURCE) {
             return self::PUBLISHED_PAGE;
-        }
-        if ($path === self::SOURCE || $path === self::SOURCE . '/' . self::OWN_PAGE) {
-            return self::MAP_PAGE;
         }
 
         return (string) preg_replace(

@@ -111,15 +111,17 @@ that fetch over `file://`. Everything else on the page survives it, so a site
 opened from disk looks whole and has no search. `documentation:render` ends by
 printing that line.
 
+What is published is `documentation/` and nothing besides, so the site opens on
+[the manual's own page](../readme.md) and the repository's `readme.md` is a file
+the site does not carry — `D-DOC-026`.
+
 87 of the links here point at a decision, a requirement or a class, and a
 visitor of the site has none of those. The copy turns each of them into the file
 on GitHub and leaves the rest as written, so these pages keep the paths a reader
 of the checkout follows. It also publishes every `readme.md` as the `index.md` a
-generator serves as the directory itself — this one as
-`how-the-work-is-done.md`, since the front page is the readme — and drops the
-heading a link names in another page, which this renderer answers by discarding
-the link. What that costs is `D-DOC-017`, and what the site opens on is
-`D-DOC-018`.
+generator serves as the directory itself, and drops the heading a link names in
+another page, which this renderer answers by discarding the link. What that
+costs is `D-DOC-017`.
 
 The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
 from a manifest of its own — `build/guides/composer.json` says why it is not in

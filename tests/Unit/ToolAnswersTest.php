@@ -45,23 +45,25 @@ final class ToolAnswersTest extends TestCase
     }
 
     /**
-     * Half of these answers are markdown themselves, fenced blocks included,
-     * and an answer's own closing fence ends the block it was written into. The
-     * rest of the section then renders as prose and the JSON above reads as the
-     * end of it — which looks like a recording and is not one.
+     * Every call on a page carries its arguments and each answer it got.
      *
-     * What says it happened is what is left around the blocks: a leaked fence
-     * swallows the headings that follow it, so the call keeps its `### ` line
-     * and loses the `Data:` under it. Counting blocks does not say it — the
-     * leaked pair reopens and the total comes out right — which is how the one
-     * page this replaced carried four of them unnoticed.
+     * What this used to guard is gone with the markdown — `D-DOC-029`. Half of
+     * these answers are documents themselves, code blocks included, and in a
+     * fenced corpus an answer's own closing fence ended the block it had been
+     * written into: the rest of the section then rendered as prose and the JSON
+     * above it read as the end of one. A directive has no closing marker for an
+     * answer to imitate, so a block ends where the indentation does and nothing
+     * an answer can contain reaches out of it.
+     *
+     * The counting stays, because it is what says a page holds what it claims
+     * to: one set of arguments per call, and a text and a data answer for each.
      */
     #[Test]
-    public function noAnswerEndsTheBlockItWasWrittenInto(): void
+    public function everyCallOnAPageCarriesItsArgumentsAndItsAnswers(): void
     {
         foreach (self::recorded() as $name => $section) {
             $outside = self::outsideBlocks($section);
-            $calls = preg_match_all('/^### /m', $outside);
+            $calls = preg_match_all('/^~{2,}$/m', $outside);
             $answers = preg_match_all('/^Data:$/m', $outside);
 
             self::assertGreaterThanOrEqual($calls, $answers, $name . ': answers per call');
@@ -90,13 +92,13 @@ final class ToolAnswersTest extends TestCase
         foreach (self::recorded() as $name => $section) {
             $outside = self::outsideBlocks($section);
             $answers = preg_match_all('/^Data:$/m', $outside);
-            if ($answers === preg_match_all('/^### /m', $outside)) {
+            if ($answers === preg_match_all('/^~{2,}$/m', $outside)) {
                 continue;
             }
 
             self::assertSame(
                 $answers,
-                preg_match_all('/^#### From /m', $outside),
+                preg_match_all('/^From .+\n"{2,}$/m', $outside),
                 $name . ': answers, and this many saying which recording they are of',
             );
         }
@@ -193,13 +195,17 @@ final class ToolAnswersTest extends TestCase
         $from = '';
         $index = 0;
 
-        foreach (explode("\n", self::outsideBlocks($section)) as $line) {
-            if (str_starts_with($line, '### ')) {
-                $state = substr($line, 4);
+        // A heading is a line and the rule under it, so what says which of the
+        // two this is stands below rather than in front — `D-DOC-029`.
+        $lines = explode("\n", self::outsideBlocks($section));
+        foreach ($lines as $at => $line) {
+            $under = $lines[$at + 1] ?? '';
+            if (preg_match('/^~{2,}$/', $under) === 1) {
+                $state = $line;
                 $from = '';
             }
-            if (str_starts_with($line, '#### From ')) {
-                $from = ', ' . substr($line, 10);
+            if (preg_match('/^"{2,}$/', $under) === 1 && str_starts_with($line, 'From ')) {
+                $from = ', ' . substr($line, 5);
             }
             if ($line === 'Called with:') {
                 ++$index;
@@ -258,35 +264,19 @@ final class ToolAnswersTest extends TestCase
     }
 
     /**
-     * The fenced blocks of a section, by the rule a renderer reads them with: a
-     * block runs to the first fence at least as long as the one that opened it
-     * and carrying no language of its own.
+     * The code blocks of a section, by the rule a renderer reads them with: a
+     * directive owns every line indented past it, and a line standing at its
+     * own column or left of it is where it ends.
      *
      * @return list<array{0: string, 1: string}>
      */
     private static function blocks(string $page): array
     {
         $blocks = [];
-        $open = null;
-        $language = '';
-        $content = [];
-
-        foreach (explode("\n", $page) as $line) {
-            $fence = preg_match('/^ {0,3}(`{3,})(.*)$/', $line, $matched) === 1;
-            if ($open === null) {
-                if ($fence) {
-                    $open = strlen($matched[1]);
-                    $language = trim($matched[2]);
-                    $content = [];
-                }
-                continue;
-            }
-            if ($fence && strlen($matched[1]) >= $open && trim($matched[2]) === '') {
+        foreach (self::split($page) as [$language, $content]) {
+            if ($language !== null) {
                 $blocks[] = [$language, implode("\n", $content)];
-                $open = null;
-                continue;
             }
-            $content[] = $line;
         }
 
         return $blocks;
@@ -296,19 +286,63 @@ final class ToolAnswersTest extends TestCase
     private static function outsideBlocks(string $page): string
     {
         $outside = [];
-        $open = null;
-
-        foreach (explode("\n", $page) as $line) {
-            $fence = preg_match('/^ {0,3}(`{3,})(.*)$/', $line, $matched) === 1;
-            if ($open === null) {
-                $fence ? $open = strlen($matched[1]) : $outside[] = $line;
-                continue;
-            }
-            if ($fence && strlen($matched[1]) >= $open && trim($matched[2]) === '') {
-                $open = null;
+        foreach (self::split($page) as [$language, $content]) {
+            if ($language === null) {
+                $outside = [...$outside, ...$content];
             }
         }
 
         return implode("\n", $outside);
+    }
+
+    /**
+     * The page as its blocks and the text between them, in order.
+     *
+     * Both readers above want the same split and disagreed about it when they
+     * each did their own — the markdown these replaced had two copies of one
+     * fence rule.
+     *
+     * @return list<array{0: string|null, 1: list<string>}>
+     */
+    private static function split(string $page): array
+    {
+        $parts = [];
+        $language = null;
+        $at = 0;
+        $content = [];
+
+        foreach (explode("\n", $page) as $line) {
+            $indent = strlen($line) - strlen(ltrim($line));
+
+            if ($language !== null) {
+                if (trim($line) === '' || $indent > $at) {
+                    $content[] = trim($line) === '' ? '' : substr($line, $at + 4);
+
+                    continue;
+                }
+                // A block keeps no blank line it ended on.
+                while ($content !== [] && end($content) === '') {
+                    array_pop($content);
+                }
+                $parts[] = [$language, $content];
+                $language = null;
+                $content = [];
+            }
+
+            if (preg_match('/^(\s*)\.\. code-block::\s*(\S*)\s*$/', $line, $matched) === 1) {
+                $parts[] = [null, $content];
+                $language = $matched[2];
+                $at = strlen($matched[1]);
+                $content = [];
+
+                continue;
+            }
+
+            $content[] = $line;
+        }
+
+        $parts[] = [$language, $content];
+
+        return $parts;
     }
 }

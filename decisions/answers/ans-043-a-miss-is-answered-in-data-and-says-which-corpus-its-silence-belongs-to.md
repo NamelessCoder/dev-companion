@@ -59,7 +59,7 @@ had already computed returns the one entry its review turned on.
   take it."
 - **Queued rather than closed on the spot.** A field is added to a declared
   `outputSchema` and the answer is `src/`, which
-  [judging.md](../../documentation/records/judging.md) puts on the far side of
+  [judging.md](../../documentation/records/judging.rst) puts on the far side of
   the autonomous line.
 - **`normal`, and what set it is the corpus rather than this report.** The same
   ending — an empty lookup, then grep — is in `feedback/2026-08-01-115112`, in

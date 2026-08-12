@@ -7,41 +7,38 @@
 
         bin/cli documentation:preview
 
-    An error fails the build and a warning does not, because one warning stands
-    that this repository will not remove: `typo3_icon_lookup` describes itself
-    with the Fluid tag `<core:icon>`, which CommonMark reads as an autolink and
-    the renderer then cannot resolve. That sentence is the tool's `description`,
-    which is what a client reads, and it is not rewritten to suit a renderer.
-
-    What the warning would otherwise have guarded is held in the suite instead,
-    by `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`.
+    An error fails the build. What used to stand here was the one warning this
+    repository would not remove — `typo3_icon_lookup` describes itself with the
+    Fluid tag `<core:icon>`, which CommonMark read as an autolink and the
+    renderer then could not resolve. reStructuredText reads no such thing, so
+    the tool's `description` renders as written and the exception is gone with
+    the parser that needed it — `D-DOC-029`.
 -->
 <guides
     xmlns="https://www.phpdoc.org/guides"
     input=".site/source"
     output=".site/html"
-    input-format="md"
+    input-format="rst"
     theme="soul"
     fail-on-error="true"
     links-are-relative="true"
 >
     <project title="TYPO3 Dev Companion"/>
     <!--
-        The rail and the trail, out of the directories this corpus already has.
-        A menu is otherwise a toctree, which is a reStructuredText directive
-        this corpus cannot write: with this on, a page belongs to the `index.md`
-        of the directory it sits in, and the Markdown parser stops marking every
-        document an orphan.
+        The rail and the trail are the `toctree` each `index.rst` carries, which
+        is what the corpus writes now that it can. `automatic-menu` stood here
+        instead and derived the same thing from the directories, because the
+        Markdown parser had no directive to say it with and marked every page an
+        orphan without it. An explicit tree says the order as well, which a
+        directory listing cannot.
     -->
-    <automatic-menu>true</automatic-menu>
     <!--
-        Both are load-bearing, and `input-format` above does not imply either.
-        Without the first, the parser recognizes no document at all and every
-        page fails as "input format was not recognized". Without the second, the
-        render dies in the theme's own `body/code.html.twig`, which colours a
-        code block with a `highlight` filter only that extension registers.
+        Load-bearing, and `input-format` above does not imply it: the render
+        dies in the theme's own `body/code.html.twig`, which colours a code
+        block with a `highlight` filter only this extension registers. The
+        Markdown parser was declared beside it and is gone with the format —
+        the reStructuredText one is registered by the CLI itself.
     -->
-    <extension class="phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension"/>
     <extension class="phpDocumentor\Guides\Code\DependencyInjection\CodeExtension"/>
     <!--
         The theme `theme="soul"` selects: this element is what makes it exist,

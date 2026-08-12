@@ -88,6 +88,6 @@ took a sweep by modification time to place the seven writes in the cache. That
 is the right way round for a **Wrong if** about writes outside the cache — but a
 clean tree is evidence about the checkout, not about the boot. What watches this
 from now on is step 5 of a forward run rather than a test here, in
-[forward-runs.md](../../documentation/records/forward-runs.md): this repository
+[forward-runs.md](../../documentation/records/forward-runs.rst): this repository
 has no installation to boot, and a test that mocked one would be measuring the
 mock.

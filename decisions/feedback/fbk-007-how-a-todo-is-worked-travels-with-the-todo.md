@@ -40,7 +40,7 @@ on. Going last stays what a merely unasked question earns. See
 ## Decided
 
 - One page,
-  [documentation/records/working-a-todo.md](../../documentation/records/working-a-todo.md),
+  [documentation/records/working-a-todo.rst](../../documentation/records/working-a-todo.rst),
   covering what is read first, that the step is judged rather than executed,
   that a question the work turns on is settled from a source or recorded as
   open, that what has no source here is asked before the change, and what the

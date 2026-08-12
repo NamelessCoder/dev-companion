@@ -69,7 +69,7 @@ of what it points at is a directory the site does not carry.
 - A link naming a heading in another page loses the heading rather than the
   link. The copy is where that happens, so the sources go on naming the section
   a reader of the checkout jumps to.
-- The navigation is the file tree. `documentation/readme.md` stays the one
+- The navigation is the file tree. `documentation/readme.rst` stays the one
   curated map, and a second one in `guides.xml` would be a list of 58 entries
   that drifts from it silently.
 - Where the sources are is `composer.json`'s `support.source`, which already
@@ -108,7 +108,7 @@ of what it points at is a directory the site does not carry.
 - `SiteTest::noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry`
 - `SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt`
 - `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
-- `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`
+- `SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel`
 
 ## Since then
 

@@ -61,7 +61,7 @@ answers the task with a core patch checklist.
   force. A session went in an order that cost it the task: four debugging
   cycles, one feedback each. And the domain was reached independently from a
   second project, which is the signal
-  [judging.md](../../documentation/records/judging.md) calls the strongest and
+  [judging.md](../../documentation/records/judging.rst) calls the strongest and
   which `D-SKL-005` was decided on.
 - **The boundary has been read once already.** `doesNotCover` excludes "Running
   an installation: server and container setup, deployment, backups, the
@@ -107,7 +107,7 @@ answers the task with a core patch checklist.
 ## Assumed
 
 - **That the bar is cleared without a recorded run.**
-  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst)
   settles a domain with a scenario case or a run in `scenarios/runs/`, and this
   cluster has seven accounts plus the one re-run made here. `D-SKL-005` had
   `REVIEW-03` and this has nothing of that kind, so the accounts are doing work

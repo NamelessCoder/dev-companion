@@ -40,8 +40,8 @@ final class DocumentationPrepareTest extends TestCase
         $output = new BufferedOutput();
 
         self::assertSame(0, (new DocumentationPrepare())($output, $this->into));
-        self::assertFileExists($this->into . '/source/index.md');
-        self::assertFileExists($this->into . '/source/server/tools/index.md');
+        self::assertFileExists($this->into . '/source/index.rst');
+        self::assertFileExists($this->into . '/source/server/tools/index.rst');
         self::assertStringContainsString($this->into . '/source — ', $output->fetch());
     }
 
@@ -50,12 +50,12 @@ final class DocumentationPrepareTest extends TestCase
     public function whatTheDocumentationNoLongerHasIsReported(): void
     {
         (new DocumentationPrepare())(new BufferedOutput(), $this->into);
-        file_put_contents($this->into . '/source/gone.md', "# Gone\n");
+        file_put_contents($this->into . '/source/gone.rst', "Gone\n====\n");
 
         $output = new BufferedOutput();
         (new DocumentationPrepare())($output, $this->into);
 
-        self::assertStringContainsString('removed gone.md', $output->fetch());
-        self::assertFileDoesNotExist($this->into . '/source/gone.md');
+        self::assertStringContainsString('removed gone.rst', $output->fetch());
+        self::assertFileDoesNotExist($this->into . '/source/gone.rst');
     }
 }

@@ -77,7 +77,9 @@ final class ToolAnswers
             return '';
         }
 
-        return preg_match('/^## Answered\n.*/ms', (string) file_get_contents($file), $matched) === 1
+        // The heading and the underline that makes it one, which is what tells
+        // it from the word standing in a sentence.
+        return preg_match('/^Answered\n-+\n.*/ms', (string) file_get_contents($file), $matched) === 1
             ? rtrim($matched[0]) . "\n"
             : '';
     }
@@ -224,7 +226,7 @@ final class ToolAnswers
         return 'Of two working directories, because what this server answers depends on which one a client is '
             . 'standing in, and neither fills the whole surface. '
             . implode(' ', array_column($recordings, 'against'))
-            . ' The tools that declare `answeredBy` carry an answer from each, under a heading naming which; '
+            . ' The tools that declare ``answeredBy`` carry an answer from each, under a heading naming which; '
             . 'every other answer is from the first alone, because nothing in it would differ.';
     }
 
@@ -248,8 +250,8 @@ final class ToolAnswers
         $of = array_values(array_filter($recordings, static fn(array $r): bool => isset($r['answers'][$name])));
 
         return self::answered($name, sprintf(
-            'Recorded on %s by `bin/cli tools:record`. %s Nothing checks what is below this heading; everything '
-            . 'above it is derived from the class that answers the call, and `bin/cli tools:check` holds it.',
+            'Recorded on %s by ``bin/cli tools:record``. %s Nothing checks what is below this heading; everything '
+            . 'above it is derived from the class that answers the call, and ``bin/cli tools:check`` holds it.',
             $today,
             self::of($of),
         ), $of);
@@ -267,34 +269,29 @@ final class ToolAnswers
      */
     private static function answered(string $name, string $opening, array $of): string
     {
-        $lines = ['## Answered', '', ...self::wrapped($opening), ''];
+        $lines = [...Rst::heading('Answered', 1), ...self::wrapped($opening), ''];
 
         foreach (ToolCalls::all() as $label => [$tool, $arguments]) {
             if ($tool !== $name) {
                 continue;
             }
-            $lines[] = '### ' . $label;
-            $lines[] = '';
+            array_push($lines, ...Rst::heading($label, 2));
             $lines[] = 'Called with:';
             $lines[] = '';
-            $lines = [...$lines, ...self::fenced('json', self::json($arguments === [] ? new \stdClass() : $arguments))];
-            $lines[] = '';
+            array_push($lines, ...self::fenced('json', self::json($arguments === [] ? new \stdClass() : $arguments)));
 
             foreach ($of as $recording) {
                 // The heading only where there is something to tell apart.
                 if (count($of) > 1) {
-                    $lines[] = '#### From ' . $recording['shortly'];
-                    $lines[] = '';
+                    array_push($lines, ...Rst::heading('From ' . $recording['shortly'], 3));
                 }
                 [$text, $data] = $recording['answers'][$name][$label];
                 $lines[] = 'Text:';
                 $lines[] = '';
-                $lines = [...$lines, ...self::fenced('', $text)];
-                $lines[] = '';
+                array_push($lines, ...self::fenced('', $text));
                 $lines[] = 'Data:';
                 $lines[] = '';
-                $lines = [...$lines, ...self::fenced('json', $data)];
-                $lines[] = '';
+                array_push($lines, ...self::fenced('json', $data));
             }
         }
 
@@ -327,7 +324,7 @@ final class ToolAnswers
         self::pointAt(CoreFixture::write());
 
         $opening = sprintf(
-            'Derived by `bin/cli tools:index`, and `bin/cli tools:check` holds it — the same as everything above '
+            'Derived by ``bin/cli tools:index``, and ``bin/cli tools:check`` holds it — the same as everything above '
             . 'this heading. This tool reads nothing an installation contains: what reaches its answer is the '
             . 'bundled knowledge and which TYPO3 major the caller is on, so what comes back is written down rather '
             . 'than recorded from one machine\'s checkout. Answered against %s, declaring TYPO3 %s.',
@@ -484,11 +481,12 @@ final class ToolAnswers
      */
     private static function fenced(string $language, string $content): array
     {
-        preg_match_all('/^ {0,3}(`{3,})/m', $content, $inside);
-        $runs = array_map(strlen(...), $inside[1]);
-        $fence = str_repeat('`', $runs === [] ? 3 : max($runs) + 1);
-
-        return [$fence . $language, $content, $fence];
+        // A recorded answer carries whatever the tool said, fences and
+        // directives included, and none of it can end the block: the content of
+        // a directive is what is indented under it, so there is no closing
+        // marker for the content to imitate. Counting backtick runs to outrun
+        // the longest was what the markdown this replaced needed — `D-DOC-029`.
+        return Rst::code($language === '' ? 'text' : $language, $content);
     }
 
     /**

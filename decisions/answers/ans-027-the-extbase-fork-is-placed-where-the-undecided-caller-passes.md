@@ -81,7 +81,7 @@ before it was filed.
   skill's own architecture section — three different claims about who a fork
   belongs to, and the last is a file installed into somebody else's project.
 - It also needs TYPO3 read before it is worded, which is the other thing
-  [judging.md](../../documentation/records/judging.md) keeps out of a judging
+  [judging.md](../../documentation/records/judging.rst) keeps out of a judging
   run. A plugin is a `CType` like any other since v14, so on the covered
   versions "a content element or an Extbase plugin" is not the two categories it
   was, and what the fork actually asks has to be established in `.checkouts/`

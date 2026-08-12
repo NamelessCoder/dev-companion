@@ -5,9 +5,9 @@ listing below and the one at the foot of each group's own `readme.md` are
 written by `bin/cli decisions:index`.
 
 What a decision is and what its states mean:
-[documentation/records/decisions.md](../documentation/records/decisions.md).
+[documentation/records/decisions.rst](../documentation/records/decisions.rst).
 Where an entry goes, how one is written and what a later session adds to it:
-[documentation/records/writing-a-decision.md](../documentation/records/writing-a-decision.md),
+[documentation/records/writing-a-decision.rst](../documentation/records/writing-a-decision.rst),
 which `bin/cli decisions:check` holds every file to.
 
 ## Every decision, by group

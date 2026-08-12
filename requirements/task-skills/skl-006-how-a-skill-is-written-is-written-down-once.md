@@ -42,6 +42,6 @@ was the `typo3-extension-upgrade` skill, queued directly behind this.
 ## Held by
 
 - `SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt`, which holds
-  [documentation/contributing/writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  [documentation/contributing/writing-a-skill.rst](../../documentation/contributing/writing-a-skill.rst)
   and the seven directory-wide assertions to each other; that a skill's author
   read the page before writing one is not guarded and cannot be.

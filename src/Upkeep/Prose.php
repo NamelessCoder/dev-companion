@@ -61,7 +61,10 @@ final class Prose
             is_dir(...),
         ));
         if ($directories !== []) {
-            foreach (Finder::create()->files()->in($directories)->name('*.md') as $file) {
+            // Two markups, because `documentation/` is reStructuredText and the
+            // working directories around it are markdown — `D-DOC-029`. What
+            // reads this corpus asks the file which it is.
+            foreach (Finder::create()->files()->in($directories)->name('/\.(md|rst)$/') as $file) {
                 $files[] = substr($file->getPathname(), strlen(Paths::root()) + 1);
             }
         }

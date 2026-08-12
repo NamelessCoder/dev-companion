@@ -17,7 +17,7 @@ skill naming eleven tools beside an entry that is entirely correct, and no tool
 in the session.
 
 What the step is belongs to the client rather than to this package, so it is
-named per client — the same way `documentation/usage/installing.md` already
+named per client — the same way `documentation/usage/installing.rst` already
 names `chat.useAgentSkills` for VS Code, and in the command's output rather than
 only in a manual, because the person who can finish the install is looking at a
 terminal at that moment.
@@ -37,6 +37,6 @@ What the output has to say is a property of each client rather than of this
 package, so that test holds that something is said — per client, on both
 commands, and on the line under the entry it is about — and not that it is true.
 What each line claims is sourced per client in
-[installing.md](../../documentation/usage/installing.md), from that client's own
+[installing.md](../../documentation/usage/installing.rst), from that client's own
 documentation, and a client whose documentation does not answer says so rather
 than being filled in.

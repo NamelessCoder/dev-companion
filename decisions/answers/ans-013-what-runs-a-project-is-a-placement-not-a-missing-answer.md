@@ -55,7 +55,7 @@ for. This is the entry it said the card would produce.
   it is the one being called.
 - Queued rather than closed on the spot. It changes `Project::describe()` and
   the declared output schema of `typo3_project_scope`, and
-  [judging.md](../../documentation/records/judging.md) puts a schema beyond a
+  [judging.md](../../documentation/records/judging.rst) puts a schema beyond a
   run that has read only this repository.
 - The runtime is to be read from `.ddev/config.yaml` rather than from
   `ddev describe`, so `R-PRJ-001` stands. The project answers from its files, on

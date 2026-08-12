@@ -39,7 +39,7 @@ in one entry. That reason does not exist here, and a different one does.
   `RequirementState::written()` is that list.
 - How a requirement is written moved to
   `documentation/feedback/writing-a-requirement.md`, which is what
-  `documentation/readme.md` already says the split is. `requirements/readme.md`
+  `documentation/readme.rst` already says the split is. `requirements/readme.md`
   went from 107 lines to 62.
 
 ## Assumed
@@ -68,7 +68,7 @@ in one entry. That reason does not exist here, and a different one does.
 - `RequirementsTest::everyRequirementNamesWhatHoldsIt`
 
 **Since then** the page named above moved out of the feedback group, to
-`documentation/records/writing-a-requirement.md`, and the decision page with it.
+`documentation/records/writing-a-requirement.rst`, and the decision page with it.
 Neither directory is a feedback's residue: a requirement is what must hold and a
 decision is what backs it, whatever route the demand arrived by. The shape this
 entry settled is unaffected — both are still written in the same sections, which

@@ -40,7 +40,7 @@ the priority does what the group boundary did.
   of the report is in the card. Two copies of a report drift, and the one in
   `todo/` would be the one nobody corrects.
 - The step is the same on every card because it is the same step: judge it, and
-  `documentation/records/judging.md` is where that is written. What the six
+  `documentation/records/judging.rst` is where that is written. What the six
   answers are does not belong in 67 files.
 - More than one card for one feedback is legitimate. A single report can need
   more than one change, and the relation was always many-to-one.

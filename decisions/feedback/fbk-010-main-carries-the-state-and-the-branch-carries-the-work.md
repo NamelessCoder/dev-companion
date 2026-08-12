@@ -60,7 +60,7 @@ working directory, the message, and a session id apiece.
 - That this repository owns the moving of files and the naming of branches, and
   names the rest. The worktree, the merge and what a question that arrives
   mid-work leaves behind are on one page,
-  [documentation/records/working-todos-in-parallel.md](../../documentation/records/working-todos-in-parallel.md),
+  [documentation/records/working-todos-in-parallel.rst](../../documentation/records/working-todos-in-parallel.rst),
   handed over with every claim — the same line `todo:next` draws when it names a
   `Run:` command it does not own instead of running it.
 - That a question a session cannot settle is recorded rather than asked. One

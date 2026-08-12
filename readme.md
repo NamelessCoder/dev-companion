@@ -43,15 +43,15 @@ client actually reads them instead.
 
 The manual reads as a site at
 [benjaminkott.github.io/typo3-dev-companion](https://benjaminkott.github.io/typo3-dev-companion/),
-and as files in [documentation/](documentation/readme.md):
+and as files in [documentation/](documentation/readme.rst):
 
-- [Usage](documentation/usage/readme.md) — every client and layout the install
+- [Usage](documentation/usage/readme.rst) — every client and layout the install
   supports, and what you are agreeing to when it runs.
-- [Server](documentation/server/readme.md) — what it can be asked, one page per
+- [Server](documentation/server/readme.rst) — what it can be asked, one page per
   tool, and where each answer comes from.
-- [Contributing](documentation/contributing/readme.md) — working on this
+- [Contributing](documentation/contributing/readme.rst) — working on this
   repository rather than using it.
-- [Records](documentation/records/readme.md) — how feedback from a real session
+- [Records](documentation/records/readme.rst) — how feedback from a real session
   becomes an improvement.
 
 The conventions every session here works under are [AGENTS.md](AGENTS.md).

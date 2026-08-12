@@ -31,6 +31,37 @@ final class Links
     private const PATTERN = '/(?:\]\(\s*([^)\s#][^)\s]*)\s*\)|^\[[^\]]+\]:\s*(\S+))/m';
 
     /**
+     * The same thing in reStructuredText, which `documentation/` is written in
+     * and the rest of this corpus is not — `D-DOC-029`.
+     *
+     * Three forms carry a path. An embedded URI is what a link leaving the
+     * published tree is written as, and it is the only one `Site` rewrites. A
+     * `:doc:` names another page of the corpus and carries no extension. A
+     * directive takes its path as its argument, which is how every drawing is
+     * referenced.
+     *
+     * `:ref:` is deliberately not here: it names a label rather than a path, so
+     * nothing on disk answers it and `deadLabels()` is what reads it.
+     */
+    private const RST_PATTERN = '/(?:`[^`<]*<\s*([^>\s]+)\s*>`__?|:doc:`(?:[^`<]*<\s*([^>\s]+)\s*>|([^`<>]+))`|^\.\.\s+(?:image|figure|include|literalinclude)::\s*(\S+))/m';
+
+    /**
+     * The one form that can point outside this corpus, and so the one form
+     * `rewritten()` is allowed to touch.
+     */
+    private const RST_EMBEDDED = '/`[^`<]*<\s*([^>\s]+)\s*>`__?/';
+
+    /** Where a `:ref:` points, and where a label answering one is written. */
+    private const RST_REFERENCE = '/:ref:`(?:[^`<]*<\s*([^>\s]+)\s*>|([^`<>]+))`/';
+    private const RST_LABEL = '/^\.\.\s+_([^:]+):\s*$/m';
+
+    /** Which of the two this repository writes a given file in. */
+    private static function isRst(string $file): bool
+    {
+        return str_ends_with($file, '.rst');
+    }
+
+    /**
      * Every dead link in the prose this repository writes about itself.
      *
      * The corpus is `Prose`'s, for the same reason it excludes `feedback/`: a
@@ -73,7 +104,8 @@ final class Links
         $directory = dirname($absolute);
 
         $dead = [];
-        foreach (self::targets($contents) as $target => $offset) {
+        $targets = self::isRst($file) ? self::rstTargets($contents) : self::targets($contents);
+        foreach ($targets as $target => $offset) {
             $target = (string) $target;
             // A link to a heading in the same file names no path, and a
             // reference definition may be written that way too.
@@ -86,7 +118,14 @@ final class Links
                 continue;
             }
 
-            if (file_exists($directory . '/' . $path) || file_exists(self::publishedFrom($directory . '/' . $path))) {
+            // A path written from the root of the published tree rather than
+            // from the page, which is what a drawing shared by two directories
+            // is written as.
+            $against = str_starts_with($path, '/')
+                ? Paths::root() . '/' . Site::SOURCE . $path
+                : $directory . '/' . $path;
+
+            if (file_exists($against) || file_exists(self::publishedFrom($against))) {
                 continue;
             }
 
@@ -94,6 +133,57 @@ final class Links
                 'file' => $relative,
                 'link' => $target,
                 'line' => substr_count(substr($contents, 0, $offset), "\n") + 1,
+            ];
+        }
+
+        return $dead;
+    }
+
+    /**
+     * Every `:ref:` in the corpus that no label answers.
+     *
+     * A label is reachable from anywhere, so this is the one check here that
+     * cannot be made a file at a time: the answer to a reference in one page is
+     * a line in another. That is also what the reference buys over the markdown
+     * it replaces, which could only ever point at a file and hope the heading
+     * was still in it.
+     *
+     * @return list<array{file: string, link: string, line: int}>
+     */
+    public static function deadLabels(): array
+    {
+        $labels = [];
+        $referenced = [];
+        foreach (Prose::documents() as $document) {
+            if (!self::isRst($document)) {
+                continue;
+            }
+            $contents = (string) file_get_contents(Paths::root() . '/' . $document);
+
+            preg_match_all(self::RST_LABEL, $contents, $matches);
+            foreach ($matches[1] as $label) {
+                $labels[trim($label)] = true;
+            }
+
+            preg_match_all(self::RST_REFERENCE, $contents, $matches, PREG_OFFSET_CAPTURE);
+            foreach ([1, 2] as $group) {
+                foreach ($matches[$group] as $match) {
+                    if ($match[0] !== '') {
+                        $referenced[] = [$document, trim($match[0]), $match[1], $contents];
+                    }
+                }
+            }
+        }
+
+        $dead = [];
+        foreach ($referenced as [$document, $label, $offset, $contents]) {
+            if (isset($labels[$label])) {
+                continue;
+            }
+            $dead[] = [
+                'file' => $document,
+                'link' => ':ref:`' . $label . '`',
+                'line' => substr_count(substr($contents, 0, (int) $offset), "\n") + 1,
             ];
         }
 
@@ -113,26 +203,56 @@ final class Links
      * bare heading are no paths this repository keeps, and what rewrites paths
      * has no business seeing them.
      *
+     * Only the embedded-URI form is offered, because it is the only one that
+     * can leave the tree. A `:doc:` and a `:ref:` name a page and a label of
+     * this corpus, which the renderer resolves itself and which a rewrite here
+     * could only break — that is what the corpus gained by moving to
+     * reStructuredText, and `Site` shrank by exactly that much.
+     *
      * @param callable(string): string $rewrite
      */
     public static function rewritten(string $contents, callable $rewrite): string
     {
         return (string) preg_replace_callback(
-            self::PATTERN,
+            self::RST_EMBEDDED,
             static function (array $match) use ($rewrite): string {
-                // The inline form where it matched, the reference definition
-                // where it did not — and the offsets are what puts the new
-                // target back exactly where the old one stood.
-                $target = $match[1][0] !== '' ? $match[1] : $match[2];
+                $target = $match[1];
                 if (str_starts_with($target[0], '#') || self::isExternal($target[0])) {
                     return $match[0][0];
                 }
 
+                // The offsets are what puts the new target back exactly where
+                // the old one stood, whatever the text in front of it was.
                 return substr_replace($match[0][0], $rewrite($target[0]), $target[1] - $match[0][1], strlen($target[0]));
             },
             $contents,
             flags: PREG_OFFSET_CAPTURE,
         );
+    }
+
+    /**
+     * The link targets in a reStructuredText document, each with where it
+     * stands. A `:doc:` is answered by a file, so it is reported as the file it
+     * names rather than as the reference that named it.
+     *
+     * @return array<string, int>
+     */
+    private static function rstTargets(string $contents): array
+    {
+        if (preg_match_all(self::RST_PATTERN, $contents, $matches, PREG_OFFSET_CAPTURE) === false) {
+            return [];
+        }
+
+        $targets = [];
+        foreach ([1 => '', 2 => '.rst', 3 => '.rst', 4 => ''] as $group => $extension) {
+            foreach ($matches[$group] as $match) {
+                if ($match[0] !== '') {
+                    $targets[$match[0] . $extension] = $match[1];
+                }
+            }
+        }
+
+        return $targets;
     }
 
     /**
@@ -174,9 +294,14 @@ final class Links
      */
     private static function publishedFrom(string $path): string
     {
-        return preg_match('#/skills/[^/]+/references/base\.md$#', $path) === 1
-            ? Paths::root() . '/skills/base.md'
-            : $path;
+        if (preg_match('#/skills/[^/]+/references/base\.md$#', $path) === 1) {
+            return Paths::root() . '/skills/base.md';
+        }
+
+        // A `:doc:` is written against the published copy, where a directory's
+        // own page is `index`. In the checkout that same file is `readme`, and
+        // `Site` is what renames it on the way over.
+        return (string) preg_replace('#(^|/)index\.rst$#', '$1readme.rst', $path);
     }
 
     /**

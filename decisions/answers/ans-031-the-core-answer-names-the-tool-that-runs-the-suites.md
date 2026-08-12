@@ -92,7 +92,7 @@ not there. It did not say where they were.
   answer that names a step is the same shape.
 - Queued rather than closed on the spot. It changes `ProjectScope::text()` and
   the assertion in `ProjectTest::theAnswerNamesTheCommandsThatExistHere`, and
-  [judging.md](../../documentation/records/judging.md) puts `src/` beyond a run
+  [judging.md](../../documentation/records/judging.rst) puts `src/` beyond a run
   that has read only this repository.
 - The feedback's own **Suggestion** is not judged here. `processingTaskTypes`
   and `SYS.fal.processors` are `TYPO3_CONF_VARS` paths — both are in

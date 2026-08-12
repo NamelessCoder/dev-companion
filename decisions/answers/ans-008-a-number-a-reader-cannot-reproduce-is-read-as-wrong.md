@@ -36,7 +36,7 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
   feedback from a session that had done nothing careless.
 - It is **queued rather than closed on the spot**, because the fix touches
   `src/` and a declared `outputSchema`, which
-  [judging.md](../../documentation/records/judging.md) puts on the reviewed side
+  [judging.md](../../documentation/records/judging.rst) puts on the reviewed side
   of that line.
 - The judgement names the gap and not the fix. Whether the count should become
   the shallow one, so that `ls` reproduces it, or stay deep and say so, is a

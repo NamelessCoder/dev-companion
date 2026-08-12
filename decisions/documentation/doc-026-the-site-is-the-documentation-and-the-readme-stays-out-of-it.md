@@ -7,7 +7,7 @@ status: open
 # D-DOC-026 — The site is the documentation, and the readme stays out of it
 
 **The published site is `documentation/` and nothing besides, so its front page
-is `documentation/readme.md`, and the repository's `readme.md` is the landing
+is `documentation/readme.rst`, and the repository's `readme.md` is the landing
 page of the checkout alone.**
 
 What the site owed a visitor arriving at it was in one file that also had to
@@ -39,7 +39,7 @@ published that file rather than writing the manual it was missing.
 ## Decided
 
 - `Site::FRONT` and `Site::MAP_PAGE` are gone. Every page the site serves is a
-  file below `documentation/`, and `documentation/readme.md` is published as
+  file below `documentation/`, and `documentation/readme.rst` is published as
   `index.md` by the rule every other directory's page already followed.
 - The front page carries what the readme's opening paragraphs carried, and the
   four sections below it. It is the page `AGENTS.md` now names as the promise —
@@ -84,6 +84,6 @@ published that file rather than writing the manual it was missing.
 ## Covered by
 
 - `SiteTest::theSiteOpensOnTheDocumentationsOwnPage`
-- `SiteTest::aPageBelowTheFrontOneReachesItAsTheIndex`
+- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 - `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 - `VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine`

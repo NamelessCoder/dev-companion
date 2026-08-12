@@ -23,6 +23,6 @@ began at an anchored summary — `D-FBK-023`.
 ## Held by
 
 - The prompt and what comes back are both not guarded. It is prose in
-  [documentation/records/readme.md](../../documentation/records/readme.md),
+  [documentation/records/readme.rst](../../documentation/records/readme.rst),
   pasted by hand into a session this repository cannot read, and nothing here
   runs over either half.

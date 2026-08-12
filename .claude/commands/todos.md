@@ -12,7 +12,7 @@ none of them needs its own source read to find out what it does.
 
 - **One todo, here:** `bin/cli todo:next` prints the one todo that is due,
   whole, with its own `Run:` command already run. Work it as
-  [documentation/records/working-a-todo.md](../../documentation/records/working-a-todo.md)
+  [documentation/records/working-a-todo.rst](../../documentation/records/working-a-todo.rst)
   says: read what it serves, settle what the step turns on rather than recalling
   it, `composer ci` before the commit.
 - **Several at once:** `bin/cli todo:claim <n>` is the whole setup — the claims
@@ -28,5 +28,5 @@ none of them needs its own source read to find out what it does.
 Where a command refuses, that refusal is the thing to read and report — it names
 what is not what the procedure assumes. The pages behind the commands
 ([todo/readme.md](../../todo/readme.md),
-[working-todos-in-parallel.md](../../documentation/records/working-todos-in-parallel.md))
+[working-todos-in-parallel.md](../../documentation/records/working-todos-in-parallel.rst))
 are for that case and for changing the procedure, not for running it.

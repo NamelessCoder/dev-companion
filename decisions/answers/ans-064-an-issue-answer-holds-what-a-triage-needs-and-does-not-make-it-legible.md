@@ -47,7 +47,7 @@ candidates.
 - The answer is made legible rather than smaller. Both halves come from one
   session and neither is wrong: the journal is the most valuable thing in the
   payload and it is the reason a second issue cannot be afforded. That is the
-  shape [judging.md](../../documentation/records/judging.md) names for step 5,
+  shape [judging.md](../../documentation/records/judging.rst) names for step 5,
   arriving here from one reader rather than two.
 - So bounding it is a parameter and never a default. A caller reading one issue
   keeps what it has; a caller sweeping candidates asks for less. Dropping the

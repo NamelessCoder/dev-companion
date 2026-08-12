@@ -88,7 +88,7 @@ draft ever became a contract.
   skill's own links resolve against.
 - What the draft says, what it would collide with here and what would have to
   change if it were adopted is written down rather than argued with:
-  [documentation/server/interface-contract.md](../../documentation/server/interface-contract.md).
+  [documentation/server/interface-contract.rst](../../documentation/server/interface-contract.rst).
   Nothing is filed anywhere, and nothing in this repository waits on the draft.
 - Whether this package may publish as `typo3/dev-companion` is **unresolved**.
   The vendor belongs to the TYPO3 Association and Packagist would refuse the

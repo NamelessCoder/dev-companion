@@ -75,7 +75,7 @@ answer has.
   the manual lookup exists to avoid.
 - **Queued rather than closed on the spot.** Both candidates below touch the
   declared schema or the answer shape of `typo3_documentation_lookup`, which
-  [judging.md](../../documentation/records/judging.md) puts on the reviewed side
+  [judging.md](../../documentation/records/judging.rst) puts on the reviewed side
   of the autonomous line.
 - **Two candidates, and neither is chosen here.** Say it where the call is
   composed — the descriptions state that page titles and section paths are what

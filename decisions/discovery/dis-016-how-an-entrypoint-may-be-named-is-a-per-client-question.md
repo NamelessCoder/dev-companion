@@ -46,7 +46,7 @@ rule it proposed.
 
 - No blanket rule. The shape of a shareable entry is a property of each client,
   the way `D-DIS-009` found the restart-and-approval answer to be, and
-  `documentation/usage/installing.md` is where a per-client reading lands.
+  `documentation/usage/installing.rst` is where a per-client reading lands.
 - Three shapes are available and which one applies is what the reading decides:
   a plain relative path where the client documents the workspace as the default
   working directory; a variable the client resolves to the project root; or the
@@ -87,7 +87,7 @@ Kiro, Zed and Grok document no working directory for a stdio server, and none of
 them documents a variable that reaches the project root in `command` or `args` —
 Droid says outright that expansion "does not apply to `command`, `args`, or
 `url`". The eleven-client table is in
-[installing.md](../../documentation/usage/installing.md), and the seven added no
+[installing.md](../../documentation/usage/installing.rst), and the seven added no
 shape the four had not already shown.
 
 So two of the three shapes are in use and the second **Wrong if** did not fire:

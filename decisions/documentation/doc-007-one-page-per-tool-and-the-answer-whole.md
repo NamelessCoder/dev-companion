@@ -62,7 +62,7 @@ others nor `… 14 more` where the entries were is what they came for.
 
 ## Covered by
 
-- `ToolAnswersTest::noAnswerEndsTheBlockItWasWrittenInto`
+- `ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers`
 - `ToolAnswersTest::everyRecordedAnswerIsJson`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
 - `ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy`
@@ -135,3 +135,11 @@ subject of its own is where the map already sends a reader looking for one. The
 root readme stopped restating them: it names the tools grouped by where an
 answer comes from, in a paragraph each, and links here for what one takes and
 answers with.
+
+**The fencing rule is gone with the markdown** — `D-DOC-029`. "A block is fenced
+with more backticks than anything inside it, computed per block rather than
+fixed" was the answer to a problem reStructuredText does not have: a directive's
+content is what is indented under it, so there is no closing marker for a
+recorded answer to imitate and nothing to outrun. `ToolAnswers::fenced()` counts
+nothing now, and the test that caught the four leaked blocks was renamed to what
+it still holds — that every call carries its arguments and each answer it got.

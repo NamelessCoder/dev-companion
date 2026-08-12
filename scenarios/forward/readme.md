@@ -37,4 +37,4 @@ what its run establishes is a failing check rather than a sentence nobody
 rereads.
 
 How one is run, judged, and read when it stops without an error:
-[documentation/records/forward-runs.md](../../documentation/records/forward-runs.md).
+[documentation/records/forward-runs.rst](../../documentation/records/forward-runs.rst).

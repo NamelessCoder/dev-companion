@@ -27,7 +27,7 @@ tool list and finished without learning whether there was anything to read.
 - The `instructions` in `knowledge/server-scope.json` — the one thing every
   client receives before any call — open with `typo3_project_describe` and
   `typo3_task_guide` and name no document.
-- [the resource surface](../../documentation/server/resources/readme.md): a
+- [the resource surface](../../documentation/server/resources/readme.rst): a
   resource is chosen by the host application or by the user rather than by the
   model mid-task. So a client that renders no list leaves the session nothing to
   find, and that is the half this side is blindest to.

@@ -50,7 +50,7 @@ named the document, the session read the name, and it searched anyway.
   places the session read.
 - Both halves are **queued rather than closed on the spot**: one touches
   `src/Result/Prose.php`, the other two published skills, which
-  [judging.md](../../documentation/records/judging.md) puts on the reviewed side
+  [judging.md](../../documentation/records/judging.rst) puts on the reviewed side
   of that line.
 - The skill half is the stronger lever on this evidence, because it is the only
   place that says to read a page whole — an imperative that hands over an

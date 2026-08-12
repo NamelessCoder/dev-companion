@@ -51,7 +51,7 @@ suite name this server holds.
   case being answered, so the answer is what has to carry it.
 - Queued rather than closed on the spot. The block is built in
   `src/Tool/TestRunGuide.php` and the counterpart in `outputSchema()` is a
-  contract, which [judging.md](../../documentation/records/judging.md) puts on
+  contract, which [judging.md](../../documentation/records/judging.rst) puts on
   the reviewed side of the line.
 - Priority `normal`, set here: one session and one report, against a change that
   needs nothing established first because `R-ANS-030` already carries the rule.

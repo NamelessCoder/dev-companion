@@ -83,6 +83,6 @@ session that reads three of them to find where to start is reading instead of
 working.
 
 That is the form. What is due and in which order:
-[documentation/records/readme.md](../documentation/records/readme.md). What a
+[documentation/records/readme.rst](../documentation/records/readme.rst). What a
 finished, a half done or a put back todo leaves here:
-[documentation/records/working-a-todo.md](../documentation/records/working-a-todo.md).
+[documentation/records/working-a-todo.rst](../documentation/records/working-a-todo.rst).

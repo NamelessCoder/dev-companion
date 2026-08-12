@@ -86,7 +86,7 @@ foundation. This one did, twice, as an argument for what could not be changed.
   the corpus states no falsehood — it stops early.
 - Not the suggestion's own wording. Its author read four core classes for one
   task and was guessing about this repository, as
-  [`judging.md`](../../documentation/records/judging.md) says every suggestion
+  [`judging.md`](../../documentation/records/judging.rst) says every suggestion
   is.
 - Where the statement goes is the todo's. `fal-processing` is the candidate it
   starts from, and whether the entry points beside FAL belong there or in a hint

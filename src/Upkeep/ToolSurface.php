@@ -28,15 +28,19 @@ use TYPO3\DevCompanion\Tool\Source;
  */
 final class ToolSurface
 {
-    /** The page every tool page links its sources into, relative to a tool page. */
-    public const SOURCES_PAGE = 'answer-sources.md';
+    /**
+     * The page every tool page links its sources into, named without the
+     * extension because that is how a reference addresses a document and the
+     * file is the one place that has to add it back.
+     */
+    public const SOURCES_PAGE = 'answer-sources';
 
     /** Where the generated listing begins, so the head above it survives a regeneration. */
-    private const LISTING_STARTS = '/^- \[`typo3_.*$/ms';
+    private const LISTING_STARTS = '/^\* :doc:`typo3_.*$/ms';
 
     public static function index(): string
     {
-        return Paths::root() . '/documentation/server/tools/readme.md';
+        return Paths::root() . '/documentation/server/tools/readme.rst';
     }
 
     public static function directory(): string
@@ -46,13 +50,13 @@ final class ToolSurface
 
     public static function file(string $tool): string
     {
-        return self::directory() . '/' . $tool . '.md';
+        return self::directory() . '/' . $tool . '.rst';
     }
 
     /** What is on disk, so a page for a tool that is gone can go with it. */
     public static function written(): Finder
     {
-        return Finder::create()->files()->in(self::directory())->name('*.md')->sortByName();
+        return Finder::create()->files()->in(self::directory())->name('*.rst')->sortByName();
     }
 
     /**
@@ -99,7 +103,7 @@ final class ToolSurface
     {
         return [
             self::index() => self::indexPage(),
-            self::directory() . '/' . self::SOURCES_PAGE => self::sourcesPage(),
+            self::directory() . '/' . self::SOURCES_PAGE . '.rst' => self::sourcesPage(),
         ];
     }
 
@@ -141,14 +145,26 @@ final class ToolSurface
         $lines = [];
         foreach (Registry::definitions() as $definition) {
             $lines[] = self::wrap(sprintf(
-                '- [`%s`](%s.md) — %s',
-                $definition['name'],
-                $definition['name'],
+                '* %s — %s',
+                Rst::doc($definition['name'], $definition['name']),
                 self::opening($definition['description']),
             ), '  ');
         }
 
-        return implode("\n", $lines) . "\n";
+        // The rail of this section is the listing rather than a second list
+        // beside it, so a tool that is added reaches the menu by being in the
+        // registry and by nothing else. The sources page is in the tree because
+        // every tool page points at it and a document in none is a warning.
+        $pages = array_map(
+            static fn(array $definition): string => $definition['name'],
+            Registry::definitions(),
+        );
+
+        return implode("\n", $lines) . "\n\n.. toctree::\n" . Rst::INDENT . ":hidden:\n\n"
+            . implode('', array_map(
+                static fn(string $page): string => Rst::INDENT . $page . "\n",
+                [...$pages, self::SOURCES_PAGE],
+            ));
     }
 
     /**
@@ -170,19 +186,19 @@ final class ToolSurface
     private static function head(array $definition): string
     {
         $lines = [
-            '# `' . $definition['name'] . '`',
-            '',
+            // The label is what every other page reaches this tool by, and it
+            // is the tool's own name: a reference nobody has to look up.
+            ...Rst::label($definition['name']),
+            ...Rst::heading(Rst::literal($definition['name'])),
             self::wrap($definition['description']),
             '',
             self::annotations($definition['annotations']),
             '',
             self::wrap(self::answerSources($definition['answersFrom'])),
             '',
-            '## Takes',
-            '',
+            ...Rst::heading('Takes', 1),
             ...self::schema($definition['inputSchema'], 'The call carries exactly one of these sets of arguments'),
-            '## Answers with',
-            '',
+            ...Rst::heading('Answers with', 1),
             ...self::schema($definition['outputSchema'] ?? [], 'The answer carries exactly one of these sets of fields'),
             ...self::unrecorded($definition['name']),
         ];
@@ -197,7 +213,7 @@ final class ToolSurface
     private static function schema(array $schema, string $opening): array
     {
         $fields = self::fields($schema, '');
-        $lines = $fields === [] ? ['Nothing.', ''] : ['```yaml', ...$fields, '```', ''];
+        $lines = $fields === [] ? ['Nothing.', ''] : Rst::code('yaml', implode("\n", $fields));
 
         return [...$lines, ...self::alternatives($schema, $opening)];
     }
@@ -218,7 +234,11 @@ final class ToolSurface
             return [];
         }
 
-        return ['## Not answered', '', self::wrap('And deliberately: ' . ToolCalls::undriven()[$name]), ''];
+        return [
+            ...Rst::heading('Not answered', 1),
+            self::wrap('And deliberately: ' . ToolCalls::undriven()[$name]),
+            '',
+        ];
     }
 
     /**
@@ -235,50 +255,63 @@ final class ToolSurface
     private static function answerSources(array $sources): string
     {
         return 'Answers from ' . implode(', ', array_map(
-            static fn(string $source): string => sprintf('[`%s`](%s#%s)', $source, self::SOURCES_PAGE, $source),
+            static fn(string $source): string => Rst::ref($source, self::sourceLabel($source)),
             $sources,
         )) . '.';
+    }
+
+    /**
+     * The label one source's section carries, written once for the page that
+     * defines it and the pages that point at it.
+     *
+     * A reference is global in reStructuredText, so the name has to say which
+     * page it belongs to: `knowledge` alone would collide with the first
+     * heading anywhere else that calls itself that.
+     */
+    public static function sourceLabel(string $source): string
+    {
+        return self::SOURCES_PAGE . '-' . $source;
     }
 
     /** The page the sources on every tool page link into. */
     public static function sourcesPage(): string
     {
         $lines = [
-            '# Where an answer comes from',
-            '',
+            ...Rst::label('answer-sources'),
+            ...Rst::heading('Where an answer comes from'),
             self::wrap(
                 'Every tool declares which sources can answer it, and says so at the foot of its own description '
                 . 'and on its page here. What that answers is not what a tool is about but whether it can be '
                 . 'asked at all right now: with nothing running, the tools under knowledge and packages are the '
-                . 'ones still worth calling. Which source answered one call is `answeredBy` in that answer, '
-                . 'where the tool has two. This page is written by `bin/cli tools:index` from the Source enum.',
+                . 'ones still worth calling. Which source answered one call is ' . Rst::literal('answeredBy')
+                . ' in that answer, where the tool has two. This page is written by '
+                . Rst::literal('bin/cli tools:index') . ' from the Source enum.',
             ),
             '',
-            self::wrap(
-                '![The five sources plotted against how much of the machine has to be running: bundled knowledge '
+            ...Rst::image(
+                '../../images/answer-sources.svg',
+                'The five sources plotted against how much of the machine has to be running: bundled knowledge '
                 . 'and this server\'s own checkout answer with nothing running, packages need files on disk, the '
-                . 'installation source needs a booted installation, and network sources need outbound reach.]'
-                . '(../../images/answer-sources.svg)',
+                . 'installation source needs a booted installation, and network sources need outbound reach.',
             ),
-            '',
         ];
 
         foreach (Source::cases() as $source) {
             $tools = [];
             foreach (Registry::definitions() as $definition) {
                 if (in_array($source->value, $definition['answersFrom'], true)) {
-                    $tools[] = sprintf('[`%s`](%s.md)', $definition['name'], $definition['name']);
+                    $tools[] = Rst::doc($definition['name'], $definition['name']);
                 }
             }
-            array_push(
-                $lines,
-                '## ' . $source->value,
-                '',
+            $lines = [
+                ...$lines,
+                ...Rst::label(self::sourceLabel($source->value)),
+                ...Rst::heading($source->value, 1),
                 self::wrap($source->meaning()),
                 '',
                 self::wrap($tools === [] ? 'No tool answers from it.' : implode(', ', $tools) . '.'),
                 '',
-            );
+            ];
         }
 
         return implode("\n", $lines);
@@ -293,7 +326,7 @@ final class ToolSurface
     {
         $stated = [];
         foreach ($annotations as $hint => $value) {
-            $stated[] = sprintf('`%s: %s`', $hint, $value ? 'true' : 'false');
+            $stated[] = Rst::literal($hint . ': ' . ($value ? 'true' : 'false'));
         }
 
         return implode(' · ', $stated);
@@ -422,7 +455,7 @@ final class ToolSurface
 
         $sets = array_map(
             static fn(array $branch): string => implode(', ', array_map(
-                static fn(string $field): string => '`' . $field . '`',
+                Rst::literal(...),
                 (array) ($branch['required'] ?? []),
             )),
             (array) $schema['oneOf'],

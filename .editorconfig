@@ -17,3 +17,9 @@ indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
+
+# A directive's content is what the indentation means here, so it is wider than
+# the default to keep a nested one legible. `Rst::INDENT` is what writes it.
+[*.rst]
+indent_size = 4
+trim_trailing_whitespace = false

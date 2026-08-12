@@ -32,7 +32,7 @@ use TYPO3\DevCompanion\Upkeep\Wrap;
  */
 #[AsCommand(
     name: 'prose:format',
-    description: 'rewrap the markdown this repository writes at column ' . Wrap::COLUMN . ', and say which files that changed',
+    description: 'rewrap the prose this repository writes at column ' . Wrap::COLUMN . ', and say which files that changed',
 )]
 final class ProseFormat
 {
@@ -47,7 +47,7 @@ final class ProseFormat
         $files = self::targets($paths);
         if ($files === []) {
             Cli::errors($output)->writeln(sprintf(
-                'No markdown file this repository writes about itself matches %s.',
+                'No prose file this repository writes about itself matches %s.',
                 implode(', ', $paths),
             ));
 
@@ -57,7 +57,10 @@ final class ProseFormat
         $rewritten = [];
         foreach ($files as $file) {
             $contents = (string) file_get_contents(Paths::root() . '/' . $file);
-            $wrapped = Wrap::document($contents);
+            // Which markup it is, asked of the file rather than of the
+            // directory: `documentation/` is reStructuredText and every
+            // other working directory is markdown — `D-DOC-029`.
+            $wrapped = str_ends_with($file, '.rst') ? Wrap::rst($contents) : Wrap::document($contents);
             if ($wrapped !== $contents) {
                 file_put_contents(Paths::root() . '/' . $file, $wrapped);
                 $rewritten[] = $file;

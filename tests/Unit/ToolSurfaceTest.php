@@ -51,7 +51,7 @@ final class ToolSurfaceTest extends TestCase
 
         foreach (array_column(Registry::definitions(), 'name') as $name) {
             self::assertArrayHasKey(ToolSurface::file($name), $pages, $name . ' is offered and rendered nowhere');
-            self::assertStringContainsString('(' . $name . '.md)', $index, $name . ' is on no line of the index');
+            self::assertStringContainsString('<' . $name . '>`', $index, $name . ' is on no line of the index');
         }
 
         foreach (ToolSurface::written() as $written) {

@@ -547,8 +547,8 @@ final class TodoTest extends TestCase
         // reader standing there would follow. The map above those sections
         // names the four and not the pages inside them.
         self::assertStringContainsString(
-            '(' . basename(Todo::PROCEDURE) . ')',
-            (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PROCEDURE) . '/readme.md'),
+            '<' . basename(Todo::PROCEDURE, '.rst') . '>`',
+            (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PROCEDURE) . '/readme.rst'),
             Todo::PROCEDURE . ' is not listed with the other procedures',
         );
         self::assertStringContainsString(
@@ -573,8 +573,8 @@ final class TodoTest extends TestCase
             Todo::PARALLEL . ' is handed over with every claim and does not exist',
         );
         self::assertStringContainsString(
-            '(' . basename(Todo::PARALLEL) . ')',
-            (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PARALLEL) . '/readme.md'),
+            '<' . basename(Todo::PARALLEL, '.rst') . '>`',
+            (string) file_get_contents(Paths::root() . '/' . dirname(Todo::PARALLEL) . '/readme.rst'),
             Todo::PARALLEL . ' is not listed with the other procedures',
         );
         self::assertStringContainsString(

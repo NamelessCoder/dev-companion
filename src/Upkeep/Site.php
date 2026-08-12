@@ -24,12 +24,12 @@ use TYPO3\DevCompanion\Paths;
  * of the checkout follows — which is also what `links:check` goes on reading.
  *
  * The copy is what carries the changes a generator needs, rather than the
- * sources. `readme.md` is what this repository calls a directory's own page and
- * `index.md` is what a generator publishes as the directory itself, and a
+ * sources. `readme.rst` is what this repository calls a directory's own page
+ * and `index.rst` is what a generator publishes as the directory itself, and a
  * rename in place would leave every convention here saying "readme" about a
  * file called something else.
  *
- * A link inside a fenced block is rewritten like any other, because `Links` is
+ * A link inside a literal block is rewritten like any other, because `Links` is
  * where this repository says what a link is and it reads them the same way. The
  * recorded tool answers hold none today.
  */
@@ -55,8 +55,8 @@ final class Site
     public const HTML = self::ROOT . '/html';
 
     /** What a directory's own page is called here, and what it is published as. */
-    private const OWN_PAGE = 'readme.md';
-    private const PUBLISHED_PAGE = 'index.md';
+    private const OWN_PAGE = 'readme.rst';
+    private const PUBLISHED_PAGE = 'index.rst';
 
     /** The branch a link leaving the published tree points into. */
     private const BRANCH = 'main';
@@ -85,7 +85,7 @@ final class Site
             $contents = (string) file_get_contents(Paths::root() . '/' . $source);
             self::write(
                 $target . '/' . $published,
-                str_ends_with($source, '.md') ? self::page($source, $contents) : $contents,
+                str_ends_with($source, '.rst') ? self::page($source, $contents) : $contents,
             );
             $written[$published] = true;
         }
@@ -110,32 +110,31 @@ final class Site
     }
 
     /**
-     * One page as it is published: every link that stays inside the tree kept
-     * as it was written, and every link that leaves it turned into the file on
-     * GitHub.
+     * One page as it is published: every link that leaves the tree turned into
+     * the file on GitHub, and everything else left exactly as it stands.
+     *
+     * There is only the one case now. A link inside the corpus is a `:doc:` or
+     * a `:ref:`, which the renderer resolves against the document tree itself,
+     * so nothing here has to know what a page is called on the site or how many
+     * directories up it sits. What is left is the links that name something
+     * this site does not serve — a decision, a todo, a class — and every one of
+     * those is somewhere on GitHub.
+     *
+     * That the two cannot be confused is the convention `SiteTest` holds: an
+     * embedded link naming a published page would be rewritten to GitHub here
+     * and send the reader out of the site they were reading.
      */
-    public static function page(string $file, string $markdown): string
+    public static function page(string $file, string $rst): string
     {
         $directory = dirname($file);
-        $here = dirname(self::published($file));
-        $here = $here === '.' ? '' : $here;
 
-        return Links::rewritten($markdown, static function (string $target) use ($directory, $here): string {
+        return Links::rewritten($rst, static function (string $target) use ($directory): string {
             $path = strtok($target, '#');
             if ($path === false) {
                 return $target;
             }
             $fragment = substr($target, strlen($path));
-
             $resolved = self::resolve($directory, $path);
-            if (self::isPublished($resolved)) {
-                // The heading is dropped rather than carried. The generator
-                // resolves one inside the page it is on and none in another
-                // page, and what it does with `answer-sources.md#packages` is
-                // discard the whole reference — text, link and all. Landing the
-                // reader on the page is the half of it that survives.
-                return self::relative($here, self::published($resolved));
-            }
 
             // A directory and a file are two paths on GitHub, and half the
             // entries this documentation points at are directories.
@@ -175,19 +174,6 @@ final class Site
             '$1' . self::PUBLISHED_PAGE,
             substr($path, strlen(self::SOURCE) + 1),
         );
-    }
-
-    /** Where one published page points at another, from the directory it is served in. */
-    private static function relative(string $from, string $to): string
-    {
-        $up = $from === '' ? [] : explode('/', $from);
-        $down = explode('/', $to);
-        while ($up !== [] && count($down) > 1 && $up[0] === $down[0]) {
-            array_shift($up);
-            array_shift($down);
-        }
-
-        return str_repeat('../', count($up)) . implode('/', $down);
     }
 
     /**

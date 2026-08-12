@@ -5,9 +5,9 @@ listing below and the one at the foot of each group's own `readme.md` are
 written by `bin/cli requirements:index`.
 
 What a requirement is and what its states mean:
-[documentation/records/requirements.md](../documentation/records/requirements.md).
+[documentation/records/requirements.rst](../documentation/records/requirements.rst).
 Where an entry goes and how one is written:
-[documentation/records/writing-a-requirement.md](../documentation/records/writing-a-requirement.md),
+[documentation/records/writing-a-requirement.rst](../documentation/records/writing-a-requirement.rst),
 which `bin/cli requirements:check` holds every file to.
 
 ## Every requirement, by group

@@ -80,7 +80,7 @@ final class ProseTest extends TestCase
         $documents = Prose::documents();
 
         self::assertContains('AGENTS.md', $documents);
-        self::assertContains('documentation/readme.md', $documents);
+        self::assertContains('documentation/readme.rst', $documents);
         self::assertNotEmpty(array_filter($documents, static fn(string $file): bool => str_starts_with($file, 'requirements/')));
         self::assertSame([], array_filter($documents, static fn(string $file): bool => str_starts_with($file, 'feedback/')));
     }
@@ -125,7 +125,7 @@ final class ProseTest extends TestCase
 
             self::assertSame(
                 self::words($contents),
-                self::words(Wrap::document($contents)),
+                self::words(self::rewrapped($document, $contents)),
                 $document . ' comes back out of the formatter saying something else',
             );
         }
@@ -139,10 +139,60 @@ final class ProseTest extends TestCase
     public function rewrappingASecondTimeChangesNothing(): void
     {
         foreach (Prose::documents() as $document) {
-            $once = Wrap::document((string) file_get_contents(Paths::root() . '/' . $document));
+            $once = self::rewrapped($document, (string) file_get_contents(Paths::root() . '/' . $document));
 
-            self::assertSame($once, Wrap::document($once), $document . ' does not settle');
+            self::assertSame($once, self::rewrapped($document, $once), $document . ' does not settle');
         }
+    }
+
+    /**
+     * Which formatter a file gets, asked the way `prose:format` asks it.
+     *
+     * The corpus is two markups since `D-DOC-029`, and running the markdown
+     * reader over reStructuredText passes both tests above while holding
+     * nothing: it preserves the words and settles, and it does that by wrapping
+     * a heading whose rule is then the wrong length.
+     */
+    private static function rewrapped(string $document, string $contents): string
+    {
+        return str_ends_with($document, '.rst') ? Wrap::rst($contents) : Wrap::document($contents);
+    }
+
+    /**
+     * What carries its meaning in a line break or a column, in the other
+     * markup: a heading and the rule under it, a directive and its indent, a
+     * drawn table, a label.
+     */
+    #[Test]
+    public function whatIsNotProseInReStructuredTextComesBackUnchanged(): void
+    {
+        $document = ".. _a-label:\n\nA heading that is long enough to be wrapped if anything wrapped a heading at all\n"
+            . "===============================================================================\n\n"
+            . ".. code-block:: php\n\n    \$a = 'one very long line of code that no formatter here is allowed to touch';\n\n"
+            . ".. image:: ../images/answer-sources.svg\n    :alt: A sentence standing under the directive that owns it.\n\n"
+            . "=========  ==============================================================\n"
+            . "Source     What it means\n"
+            . "=========  ==============================================================\n"
+            . "knowledge  Bundled, and it answers with nothing at all running on the box.\n"
+            . "=========  ==============================================================\n";
+
+        self::assertSame($document, Wrap::rst($document));
+    }
+
+    /**
+     * A literal and a role are spans a line break would break, and both are
+     * written with the backticks the markdown reader treats as one span.
+     */
+    #[Test]
+    public function aLiteralAndARoleAreNeverBrokenAcrossLines(): void
+    {
+        $wrapped = Wrap::rst(
+            'A sentence long enough to be wrapped somewhere near its end, and then '
+            . '``bin/cli hints:probe`` plus :doc:`the writing rules <../contributing/glossary>` at the end of it.',
+        );
+
+        self::assertStringContainsString('``bin/cli hints:probe``', $wrapped);
+        self::assertStringContainsString(':doc:`the writing rules <../contributing/glossary>`', $wrapped);
     }
 
     /**
@@ -156,11 +206,11 @@ final class ProseTest extends TestCase
     {
         $wrapped = Wrap::document(
             'A sentence long enough to be wrapped somewhere near its end, and then '
-            . '`bin/cli hints:probe` plus [the writing rules](documentation/contributing/glossary.md) at the end of it.',
+            . '`bin/cli hints:probe` plus [the writing rules](documentation/contributing/glossary.rst) at the end of it.',
         );
 
         self::assertStringContainsString('`bin/cli hints:probe`', $wrapped);
-        self::assertStringContainsString('[the writing rules](documentation/contributing/glossary.md)', $wrapped);
+        self::assertStringContainsString('[the writing rules](documentation/contributing/glossary.rst)', $wrapped);
     }
 
     /**

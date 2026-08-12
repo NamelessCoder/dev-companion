@@ -52,7 +52,7 @@ named FAL hints returned for Extbase persistence paths.
   `persistence-reading` and `extbase-domain-mapping` are still not returned.
 - So the repair is the matcher rather than the data, and it is queued instead of
   made here. It touches `src/`, which is the line
-  [judging.md](../../documentation/records/judging.md) draws around what a
+  [judging.md](../../documentation/records/judging.rst) draws around what a
   judging run may improvise.
 - What is decided is that this is a defect and not a phrasing accident. Two
   sessions, two tools, one corpus reading; the caller named the subsystem in the

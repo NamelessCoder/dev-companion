@@ -56,7 +56,7 @@ involved, and that caller lands on `content-elements` instead.
   `feedback/2026-08-01-003736` corrects three siblings, this one among them: the
   "never activated" claim was made from a transcript that begins at an anchored
   summary, and the user reports having seen the skill activated. So the trigger
-  is not the lever here, and `documentation/records/judging.md` would not have
+  is not the lever here, and `documentation/records/judging.rst` would not have
   assessed the self-criticism in any case.
 - Nothing about TYPO3 was established here. Every probe above is a query against
   this repository as it stands on 2026-08-02.

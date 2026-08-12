@@ -84,7 +84,7 @@ removing it left the work with no owner at all.
 
 - **That the wording arrives at all.** No filed session has brought it, which is
   why the card is `normal`, and
-  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md)
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst)
   settles a domain with a scenario case or a recorded run rather than with a
   shape. Standing in for one is a hole this repository's own decision made: the
   change half of a route it removed.

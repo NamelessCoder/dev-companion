@@ -47,8 +47,8 @@ final class SiteTest extends TestCase
         Site::build($this->target);
 
         $leaving = [];
-        foreach ($this->published() as $file => $markdown) {
-            Links::rewritten($markdown, static function (string $target) use ($file, &$leaving): string {
+        foreach ($this->published() as $file => $rst) {
+            Links::rewritten($rst, static function (string $target) use ($file, &$leaving): string {
                 if (self::escapes(dirname($file), (string) strtok($target, '#'))) {
                     $leaving[] = $file . ' still points at ' . $target;
                 }
@@ -107,8 +107,8 @@ final class SiteTest extends TestCase
     public function aLinkOutOfTheTreeBecomesTheFileInTheRepository(): void
     {
         $published = Site::page(
-            'documentation/server/versions.md',
-            'The rule is in [AGENTS.md](../../AGENTS.md), and the runs are in [scenarios/runs/](../../scenarios/runs/).',
+            'documentation/server/versions.rst',
+            'The rule is in `AGENTS.md <../../AGENTS.md>`_, and the runs are in `the runs <../../scenarios/runs/>`_.',
         );
 
         self::assertStringContainsString(Site::repository() . '/blob/main/AGENTS.md', $published);
@@ -121,57 +121,65 @@ final class SiteTest extends TestCase
     public function aHeadingNamedOnALinkThatLeftIsKept(): void
     {
         self::assertStringEndsWith(
-            '/blob/main/AGENTS.md#prose)',
-            Site::page('documentation/contributing/glossary.md', 'It is in [AGENTS.md](../../AGENTS.md#prose)'),
+            '/blob/main/AGENTS.md#prose>`_',
+            Site::page('documentation/contributing/glossary.rst', 'It is in `AGENTS.md <../../AGENTS.md#prose>`_'),
         );
     }
 
     /**
-     * And the heading named on a link that stayed is dropped, because the
-     * generator resolves one inside the page it is on and none in another page.
-     * What it did with the 33 links into `answer-sources.md` was discard each
-     * one whole — the text stayed and the link was gone, on pages nothing here
-     * re-reads. Landing the reader on the page is what is kept instead.
+     * A reference into another page of the corpus resolves, which is what the
+     * move to reStructuredText bought — `D-DOC-029`.
+     *
+     * Markdown could not do this. A link naming a heading in another page was
+     * discarded whole by the generator, text and all, so `Site` dropped the
+     * fragment and landed the reader at the top of the page instead. What
+     * replaces that is a label the renderer resolves and fails loudly on, and
+     * what fails loudly in a checkout with no renderer is this.
      */
     #[Test]
-    public function noPublishedLinkNamesAHeadingInAnotherPage(): void
+    public function everyReferenceIntoAnotherPageIsAnsweredByALabel(): void
     {
-        Site::build($this->target);
-
-        $carrying = [];
-        foreach ($this->published() as $file => $markdown) {
-            Links::rewritten($markdown, static function (string $target) use ($file, &$carrying): string {
-                if (!str_starts_with($target, 'http') && str_contains($target, '#')) {
-                    $carrying[] = $file . ' names a heading in ' . $target;
-                }
-
-                return $target;
-            });
+        $dead = [];
+        foreach (Links::deadLabels() as $link) {
+            $dead[] = $link['file'] . ':' . $link['line'] . ' → ' . $link['link'];
         }
 
-        self::assertSame([], $carrying);
-        self::assertStringEndsWith(
-            '](answer-sources.md)',
-            Site::page('documentation/server/tools/typo3_icon_lookup.md', 'Answers from [`packages`](answer-sources.md#packages)'),
+        self::assertSame([], $dead);
+    }
+
+    /**
+     * And a reference is left exactly as written, because the renderer is what
+     * resolves it. `Site` rewrites the links that leave the tree and nothing
+     * else, which is the whole of what it does to a page now.
+     */
+    #[Test]
+    public function aReferenceInsideTheCorpusIsNotRewritten(): void
+    {
+        $written = 'Answers from :ref:`packages <answer-sources-packages>` and :doc:`versions <../versions>`.';
+
+        self::assertSame(
+            $written,
+            Site::page('documentation/server/tools/typo3_icon_lookup.rst', $written),
         );
     }
 
     /**
-     * A directory's own page is `readme.md` here and `index.md` there, in the
-     * file name and in every link naming it, because a generator publishes the
-     * second as the directory itself.
+     * A directory's own page is `readme.rst` here and `index.rst` there,
+     * because a generator publishes the second as the directory itself. The
+     * links naming it already say `index`, since that is the name the renderer
+     * resolves a `:doc:` against.
      */
     #[Test]
     public function aDirectorysOwnPageIsPublishedAsItsIndex(): void
     {
         Site::build($this->target);
 
-        self::assertFileExists($this->target . '/server/tools/index.md');
-        self::assertFileDoesNotExist($this->target . '/readme.md');
-        self::assertFileDoesNotExist($this->target . '/server/tools/readme.md');
+        self::assertFileExists($this->target . '/server/tools/index.rst');
+        self::assertFileDoesNotExist($this->target . '/readme.rst');
+        self::assertFileDoesNotExist($this->target . '/server/tools/readme.rst');
         self::assertStringContainsString(
-            '](records/index.md)',
-            (string) file_get_contents($this->target . '/index.md'),
+            ':doc:`Records <records/index>`',
+            (string) file_get_contents($this->target . '/index.rst'),
         );
     }
 
@@ -185,21 +193,14 @@ final class SiteTest extends TestCase
     {
         Site::build($this->target);
 
-        self::assertStringStartsWith('# TYPO3 Dev Companion', (string) file_get_contents($this->target . '/index.md'));
-        self::assertFileDoesNotExist($this->target . '/how-the-work-is-done.md');
+        self::assertStringStartsWith(
+            "TYPO3 Dev Companion\n===================",
+            (string) file_get_contents($this->target . '/index.rst'),
+        );
+        self::assertFileDoesNotExist($this->target . '/how-the-work-is-done.rst');
         self::assertStringContainsString(
             Site::repository() . '/blob/main/readme.md',
-            Site::page('documentation/usage/installing.md', 'The [readme](../../readme.md) has the short version.'),
-        );
-    }
-
-    /** And a page below it reaches the front page by climbing out of its own directory. */
-    #[Test]
-    public function aPageBelowTheFrontOneReachesItAsTheIndex(): void
-    {
-        self::assertStringContainsString(
-            '](../index.md)',
-            Site::page('documentation/records/readme.md', 'What it is: [the manual](../readme.md).'),
+            Site::page('documentation/usage/installing.rst', 'The `readme <../../readme.md>`_ has the short version.'),
         );
     }
 
@@ -221,14 +222,14 @@ final class SiteTest extends TestCase
     #[Test]
     public function anExternalLinkIsLeftAsItWasWritten(): void
     {
-        $written = 'See [the manual](https://docs.typo3.org/) and [below](#what-it-is).';
+        $written = 'See `the manual <https://docs.typo3.org/>`_ and :ref:`below <glossary-what-it-is>`.';
 
-        self::assertSame($written, Site::page('documentation/contributing/glossary.md', $written));
+        self::assertSame($written, Site::page('documentation/contributing/glossary.rst', $written));
     }
 
     /** The images the pages carry are copied, since a page without them says less. */
     #[Test]
-    public function whatIsNotMarkdownIsCarriedOverUnchanged(): void
+    public function whatIsNotAPageIsCarriedOverUnchanged(): void
     {
         Site::build($this->target);
 
@@ -243,11 +244,11 @@ final class SiteTest extends TestCase
     {
         Site::build($this->target);
         mkdir($this->target . '/gone');
-        file_put_contents($this->target . '/gone/page.md', "# Gone\n");
+        file_put_contents($this->target . '/gone/page.rst', "Gone\n====\n");
 
         $built = Site::build($this->target);
 
-        self::assertSame(['gone/page.md'], $built['removed']);
+        self::assertSame(['gone/page.rst'], $built['removed']);
         self::assertDirectoryDoesNotExist($this->target . '/gone');
     }
 
@@ -255,7 +256,7 @@ final class SiteTest extends TestCase
      * `D-DOC-024`: every directory the site serves has a page of its own.
      *
      * The rail and the trail are built from the directories, and a page whose
-     * directory has no `readme.md` is attached to nothing: the renderer says so
+     * directory has no `readme.rst` is attached to nothing: the renderer says so
      * as a warning nobody reads and the page is then in no menu at all. Six of
      * them were unreachable that way.
      */
@@ -265,10 +266,10 @@ final class SiteTest extends TestCase
         $source = Paths::root() . '/' . Site::SOURCE;
         $without = [];
         foreach (Finder::create()->directories()->in($source)->sortByName() as $directory) {
-            if (!Finder::create()->files()->in($directory->getPathname())->name('*.md')->hasResults()) {
+            if (!Finder::create()->files()->in($directory->getPathname())->name('*.rst')->hasResults()) {
                 continue;
             }
-            if (!is_file($directory->getPathname() . '/readme.md')) {
+            if (!is_file($directory->getPathname() . '/readme.rst')) {
                 $without[] = $directory->getRelativePathname();
             }
         }
@@ -308,7 +309,7 @@ final class SiteTest extends TestCase
     private function published(): array
     {
         $pages = [];
-        foreach (Finder::create()->files()->in($this->target)->name('*.md')->sortByName() as $file) {
+        foreach (Finder::create()->files()->in($this->target)->name('*.rst')->sortByName() as $file) {
             $pages[str_replace('\\', '/', $file->getRelativePathname())] = (string) file_get_contents($file->getPathname());
         }
 

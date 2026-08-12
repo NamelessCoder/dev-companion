@@ -109,7 +109,7 @@ final class Todo
      * invisible afterwards — the diff is identical — so the pointer travels
      * with the todo instead of waiting on the page for whoever thinks to look.
      */
-    public const PROCEDURE = 'documentation/records/working-a-todo.md';
+    public const PROCEDURE = 'documentation/records/working-a-todo.rst';
 
     /**
      * How several todos are worked at once, handed over with every claim.
@@ -120,14 +120,14 @@ final class Todo
      * settle, and who merges — is not something a command can carry out, and a
      * claim taken without it is a lock nobody knows how to release.
      */
-    public const PARALLEL = 'documentation/records/working-todos-in-parallel.md';
+    public const PARALLEL = 'documentation/records/working-todos-in-parallel.rst';
 
     /**
      * What a session started from a command line has to be given, handed over
      * with the message that starts one. It is the same launch a forward run
      * uses, which is why it is not on the page about claims.
      */
-    public const LAUNCH = 'documentation/contributing/driving-a-session.md';
+    public const LAUNCH = 'documentation/contributing/driving-a-session.rst';
 
     /**
      * What one of several sessions is started with, and the whole of it.

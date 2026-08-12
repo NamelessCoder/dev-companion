@@ -59,7 +59,7 @@ two disagree.
 - The runtime half is named and not filled here. What PHP the container actually
   runs is what `feedback/2026-07-31-193611` asks for, it has a card of its own,
   and answering it from this run would be the copy-down
-  [judging.md](../../documentation/records/judging.md) warns produces a guess
+  [judging.md](../../documentation/records/judging.rst) warns produces a guess
   with a reading's authority.
 
 ## Assumed
@@ -70,7 +70,7 @@ two disagree.
 - That one session wrote it. The report credits the server with the PHP finding
   and reports the same finding as read from a file, which is one account rather
   than two runs — and which of the two happened is what
-  [judging.md](../../documentation/records/judging.md) declines to assess.
+  [judging.md](../../documentation/records/judging.rst) declines to assess.
 
 ## Wrong if
 

@@ -132,7 +132,7 @@ analyser and nothing else in that layer.
   description is accurate about today's behaviour, and rewording it would
   document the dead end rather than remove it. It touches `src/` and what every
   answer of a tool carries, which is the line
-  [judging.md](../../documentation/records/judging.md) draws around the spot.
+  [judging.md](../../documentation/records/judging.rst) draws around the spot.
 - **Step 1b for the PHP floor.** The answer is available here — one file at a
   path `Instance` already resolves — and there is no way to get it in the form
   the task needed. What it prevents is silent: a package declaring the

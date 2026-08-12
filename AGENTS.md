@@ -53,9 +53,10 @@ todo/open/         # the queue, read by the priority in each head and then by th
 todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
 src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
+src/Upkeep/Rst.php   # the reStructuredText the generators write: the underline per level, the directive, the literal, the two roles
 src/Upkeep/Site.php  # documentation/ as the source a generator publishes: the links that leave it, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # what the server is and how a procedure is carried out; the rules stay here, the steps live there; published whole as the site
+documentation/     # what the server is and how a procedure is carried out; the rules stay here, the steps live there; published whole as the site; reStructuredText, where everything around it is markdown — D-DOC-029
 documentation/usage/   # having this server answer in somebody's own project
 documentation/server/  # what it can be asked and where each answer comes from; tools/ and resources/ sit in here because they are the server
 documentation/contributing/  # working on the server itself: the commands, the session, the skills, the words
@@ -119,10 +120,10 @@ over correctly, whatever else it did.
 
 What is read before the first change, how a question is settled, what is asked
 and what the file says afterwards:
-[documentation/records/working-a-todo.md](documentation/records/working-a-todo.md).
+[documentation/records/working-a-todo.rst](documentation/records/working-a-todo.rst).
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo/`:
-[documentation/records/readme.md](documentation/records/readme.md).
+[documentation/records/readme.rst](documentation/records/readme.rst).
 
 Several sessions at once is `bin/cli todo:claim <n>`, one worktree and one
 branch each, and `bin/cli todo:home <worktree>` is how one of them comes back.
@@ -131,7 +132,7 @@ read anything first. `main` carries who has what in hand, the branch carries the
 half-finished work, and `todo:next` in a worktree hands over that worktree's
 claim rather than the front of the queue. What that costs and what still
 collides:
-[documentation/records/working-todos-in-parallel.md](documentation/records/working-todos-in-parallel.md).
+[documentation/records/working-todos-in-parallel.rst](documentation/records/working-todos-in-parallel.rst).
 
 ## How a session reads
 
@@ -170,7 +171,7 @@ lands in `Commands/` and is referred to as a command all the way down. The
 directories outside `src/` keep the names their callers know them by.
 
 What arrives through `typo3_feedback_record` is **a feedback**, countable, and
-[documentation/contributing/glossary.md](documentation/contributing/glossary.md)
+[documentation/contributing/glossary.rst](documentation/contributing/glossary.rst)
 is where that and the words around it are defined. Two of them go wrong
 reliably: **record** is the verb it arrives by and never a noun, because in
 TYPO3 a record is a row in the database and this server explains that meaning to
@@ -210,6 +211,13 @@ is the main one and which is being proposed; do not decide it for brevity.
 Short and precise, everywhere: `knowledge/`, the tool descriptions, this file,
 `documentation/`, a commit message. Every reader pays per token, and half of
 them are machines.
+
+The rules below hold whatever the markup. `documentation/` is reStructuredText
+because it is published as the site and a reference into another page has to
+resolve; everything else here is markdown — `D-DOC-029`. Inside `documentation/`
+a name is a double-backtick literal, another page is `:doc:`, a place in one is
+`:ref:` and a label above the heading it names, and a path leaving the tree is
+an embedded link `Site` rewrites to GitHub.
 
 - One point per sentence. A sentence that restates the previous one in other
   words is deleted, not shortened.
@@ -252,14 +260,16 @@ one and a rewrite driven by a counter produces two short sentences saying what
 one said.
 
 `bin/cli prose:format <path>` is the other half and rewrites rather than
-reports: the markdown this repository writes about itself, rewrapped at the
-column it is already written at. What it is for is the paragraph a rename left
-ragged — a word swept out of a hundred files leaves a hundred short lines behind
-it. It moves the line breaks and nothing else, which `ProseTest` asserts over
-the whole corpus rather than trusts, and it leaves alone everything a break
-means something in: the front matter, a fence, a table, a code span, a link.
-Named no path it rewraps the corpus, which is a diff to look at before it is a
-diff to make.
+reports: the prose this repository writes about itself, rewrapped at the column
+it is already written at. What it is for is the paragraph a rename left ragged —
+a word swept out of a hundred files leaves a hundred short lines behind it. It
+moves the line breaks and nothing else, which `ProseTest` asserts over the whole
+corpus rather than trusts, and it leaves alone everything a break means
+something in. Which those are is what the two markups disagree about, so the
+file is asked which it is — the front matter, a fence, a code span and a link in
+markdown; a heading and the rule under it, a directive and its indent, a drawn
+table, a literal and a role in reStructuredText. Named no path it rewraps the
+corpus, which is a diff to look at before it is a diff to make.
 
 ## Tool names
 
@@ -400,7 +410,7 @@ bin/cli knowledge:format <path>   # only that part of it
 
 `bin/cli checkouts:update` creates the core checkouts a knowledge change is
 verified against:
-[documentation/contributing/working-on-the-server.md](documentation/contributing/working-on-the-server.md).
+[documentation/contributing/working-on-the-server.rst](documentation/contributing/working-on-the-server.rst).
 `bin/cli environment:create E-SITE` makes the other kind — a DDEV project with
 TYPO3 installed in it, below `.environments/` and gitignored the same way, for
 the half of this server that needs an installation to answer from. It is the
@@ -454,19 +464,19 @@ without taking a case with it.
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli unresolved:list` reports:
-[documentation/records/readme.md](documentation/records/readme.md). What a
+[documentation/records/readme.rst](documentation/records/readme.rst). What a
 requirement is and what its three states mean:
-[documentation/records/requirements.md](documentation/records/requirements.md),
+[documentation/records/requirements.rst](documentation/records/requirements.rst),
 and the sections one is written in:
-[documentation/records/writing-a-requirement.md](documentation/records/writing-a-requirement.md).
+[documentation/records/writing-a-requirement.rst](documentation/records/writing-a-requirement.rst).
 What a decision carries that a commit message cannot, and what `open`,
 `confirmed` and `revoked` promise a reader:
-[documentation/records/decisions.md](documentation/records/decisions.md),
+[documentation/records/decisions.rst](documentation/records/decisions.rst),
 and the sections one is written in, with what a later session adds to the foot:
-[documentation/records/writing-a-decision.md](documentation/records/writing-a-decision.md).
+[documentation/records/writing-a-decision.rst](documentation/records/writing-a-decision.rst).
 Running a forward review, judging it, and reading one that stopped without an
 error:
-[documentation/records/forward-runs.md](documentation/records/forward-runs.md).
+[documentation/records/forward-runs.rst](documentation/records/forward-runs.rst).
 What each kind of scenario is for: [scenarios/readme.md](scenarios/readme.md).
 
 ## What describes this server to someone else
@@ -475,7 +485,7 @@ Four things describe this server outward, and they ship with the code. A change
 that leaves any of them wrong is not finished: a stale one is not a
 documentation debt, it is a lie the server tells its callers.
 
-- `documentation/readme.md` — what the server is and what it will not do, and
+- `documentation/readme.rst` — what the server is and what it will not do, and
   the page the site opens on. Its paragraphs are a promise; when a capability
   changes what the server may touch, that promise is the first thing that
   becomes false. `readme.md` at the root is the landing page for somebody
@@ -498,7 +508,7 @@ catch a name going stale, not a sentence going false. Prose is on you.
 That property is also why a skill is written under rules of its own — what it is
 named and routed by, what it may state, what it leaves to the tool that owns it,
 and what has to be shown before a domain becomes one at all:
-[documentation/contributing/writing-a-skill.md](documentation/contributing/writing-a-skill.md),
+[documentation/contributing/writing-a-skill.rst](documentation/contributing/writing-a-skill.rst),
 where every rule names the test that holds it.
 
 Before committing, reread the paragraphs your change touches rather than
@@ -580,7 +590,7 @@ machine-readable uses.
   the installation only when the answer genuinely depends on which packages and
   TYPO3 version are active. The order those three are asked in, how the probe is
   delivered, and what a fallback owes the caller:
-  [documentation/server/asking-the-installation.md](documentation/server/asking-the-installation.md).
+  [documentation/server/asking-the-installation.rst](documentation/server/asking-the-installation.rst).
 - The installation is never derived from `getcwd()` on its own. `Instance` walks
   up from a directory it was handed, keeps it private and null until then, and
   `Server\Entrypoint` is the only thing that hands one in — a request-serving
@@ -629,4 +639,4 @@ a `main` answer changes code that then fails at runtime, and the failure is
 silent. What follows from it — where the binding sits, what belongs in `hints`
 rather than `checks`, `binding: "core"`, and why the catalogs withhold an entry
 instead of qualifying it — is in
-[documentation/server/versions.md](documentation/server/versions.md).
+[documentation/server/versions.rst](documentation/server/versions.rst).

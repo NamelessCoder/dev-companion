@@ -60,7 +60,7 @@ final class VersionsTest extends TestCase
     #[Test]
     public function whatSomebodyArrivesAtNamesEveryCoveredLine(): void
     {
-        foreach (['readme.md', 'documentation/readme.md'] as $page) {
+        foreach (['readme.md', 'documentation/readme.rst'] as $page) {
             $landing = (string) file_get_contents(Paths::root() . '/' . $page);
 
             foreach (Versions::covered() as $version) {

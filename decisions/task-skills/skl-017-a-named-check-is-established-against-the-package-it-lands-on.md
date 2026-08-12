@@ -39,7 +39,7 @@ own source.
   whose every cell runs only version-independent steps proves that the files
   parse and nothing more — say so". A linter reporting nothing on the only file
   it guards is the same claim about a different check.
-- [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md) is
+- [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst) is
   why the three measurements do not become sentences in the page: no dependency
   constraint and no API signature stands in a published skill, because no
   release of this server corrects the copy in somebody else's project.

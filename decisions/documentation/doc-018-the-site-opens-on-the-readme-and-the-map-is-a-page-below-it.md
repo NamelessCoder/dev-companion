@@ -8,7 +8,7 @@ revokedBy: D-DOC-026
 # D-DOC-018 — The site opens on the readme and the map is a page below it
 
 **The published site's front page is the repository's own `readme.md`, and
-`documentation/readme.md` is served below it as `how-the-work-is-done.md`.**
+`documentation/readme.rst` is served below it as `how-the-work-is-done.md`.**
 
 Somebody arriving at the site is deciding whether this server is for them, and
 what they were shown was the map of how this repository works on itself.
@@ -16,7 +16,7 @@ what they were shown was the map of how this repository works on itself.
 ## Evidence
 
 - The site published `documentation/` alone, so its front page was
-  `documentation/readme.md`, whose first sentence is "One page per procedure
+  `documentation/readme.rst`, whose first sentence is "One page per procedure
   that is long enough to get wrong from memory". Nothing on it says what the
   server is, what it answers or how it is installed.
 - All of that is written, in `readme.md` at the root: what the server does, the
@@ -30,7 +30,7 @@ what they were shown was the map of how this repository works on itself.
   GitHub.
 - The readme named three of its links by their path —
   `documentation/server/tools/` as the text of a link to
-  `documentation/server/tools/readme.md`. On the site those paths do not exist,
+  `documentation/server/tools/readme.rst`. On the site those paths do not exist,
   because `documentation/` is served at the root.
 - Which TYPO3 lines the server answers for was in no sentence of the readme, and
   it is the first thing a user checks. It is declared in
@@ -60,14 +60,14 @@ what they were shown was the map of how this repository works on itself.
 - That a visitor of the site is a user first. Nothing measures who arrives
   there; what is known is that the readme is written for them and the map is
   not.
-- That nobody has a deep link into the site. `documentation/readme.md` was
+- That nobody has a deep link into the site. `documentation/readme.rst` was
   served as `index.html` and is now `how-the-work-is-done.html`, and this is a
   0.x package whose surface has moved before.
 
 ## Wrong if
 
 - A reader of the checkout stops finding the map, because it is now named in
-  prose as a published page rather than as `documentation/readme.md`.
+  prose as a published page rather than as `documentation/readme.rst`.
 - The front page grows the sections a site wants and the readme stops being
   readable as a GitHub landing page — one file serving two places is what makes
   that possible and what would make it a compromise.
@@ -77,7 +77,7 @@ what they were shown was the map of how this repository works on itself.
 
 ## Covered by
 
-- `SiteTest::aPageBelowTheFrontOneReachesItAsTheIndex`
+- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 
 ## Revoked on 2026-08-12
 
@@ -89,7 +89,7 @@ page written for GitHub, and the manual had no page saying what the server is.
 The ground it stood on was that a second entry page would duplicate the promise
 paragraphs. It would have — as a copy. Moving them costs nothing twice, and
 [`D-DOC-026`](doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md)
-is that move: the front page is `documentation/readme.md` again, carrying what
+is that move: the front page is `documentation/readme.rst` again, carrying what
 this entry was right that it lacked.
 
 What outlives it is everything it found missing on the map, and the reading that

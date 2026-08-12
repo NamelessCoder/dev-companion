@@ -74,7 +74,7 @@ this entry.
   the second half of publishing it and is written into that card.
 - **Publication is public and is what a name is held to.** A skill exists for
   its readers once it is published —
-  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.md) —
+  [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst) —
   and `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name in
   `knowledge/` to it. It was the `Installer::SKILLS` list when this was decided
   and is `Installer::skills()` since 2026-08-04, which is the same statement

@@ -289,6 +289,11 @@
       "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
       "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+    },
+    {
+      "topic": "The content itself: a record read or written — a page, a content element, a file reference, a workspace",
+      "why": "The content model is answered here and the content is not. typo3_schema_lookup returns a table as the installation's container assembles it, and no tool touches a row of one. The reason is the trust model: your client launches this server as a stdio subprocess, so the process boundary is the whole of its security, and reading a record would put the shell user's database access where a backend user's permissions belong.",
+      "instead": "Work the records where the permissions apply — the backend, or the installation's own console at vendor/bin/typo3. For what a table holds, its columns and their types, ask typo3_schema_lookup, and for what the DataHandler expects of code you write, typo3_hint_lookup."
     }
   ],
   "checkoutDiscovery": [

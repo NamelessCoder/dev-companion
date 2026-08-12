@@ -143,6 +143,66 @@ final class Links
     }
 
     /**
+     * Every link a reStructuredText page writes in markdown.
+     *
+     * It resolves on disk, so `dead()` never sees it: the file is there and the
+     * path is right. What is wrong is the syntax, and the reader is the check —
+     * `[answers/](../../decisions/answers/readme.md)` renders as exactly those
+     * characters, and the group listing on two of these pages had stood that
+     * way since the corpus was converted.
+     *
+     * A code block is left alone. What the tool pages record is the answer a
+     * tool gave, which is markdown and is shown as itself.
+     *
+     * @return list<array{file: string, link: string, line: int}>
+     */
+    public static function unrendered(): array
+    {
+        $unrendered = [];
+        foreach (Prose::documents() as $document) {
+            if (self::isRst($document)) {
+                $unrendered = array_merge($unrendered, self::unrenderedIn($document));
+            }
+        }
+
+        return $unrendered;
+    }
+
+    /**
+     * The same for one file, which is where the code block is told apart from
+     * the prose around it: a directive opens one, and it holds for as long as
+     * the lines under it are blank or indented past it.
+     *
+     * @return list<array{file: string, link: string, line: int}>
+     */
+    public static function unrenderedIn(string $file): array
+    {
+        $absolute = str_starts_with($file, '/') ? $file : Paths::root() . '/' . $file;
+        $contents = file_get_contents($absolute);
+        if ($contents === false) {
+            return [];
+        }
+
+        $unrendered = [];
+        $literal = null;
+        foreach (explode("\n", $contents) as $number => $line) {
+            if ($literal !== null && (trim($line) === '' || strlen($line) - strlen(ltrim($line)) > $literal)) {
+                continue;
+            }
+
+            $literal = preg_match('/^(\s*)\.\.\s+(?:code-block|literalinclude)::/', $line, $match) === 1
+                ? strlen($match[1])
+                : null;
+
+            if ($literal === null && preg_match(self::PATTERN, $line, $match) === 1) {
+                $unrendered[] = ['file' => $file, 'link' => trim($match[0]), 'line' => $number + 1];
+            }
+        }
+
+        return $unrendered;
+    }
+
+    /**
      * Every `:ref:` in the corpus that no label answers.
      *
      * A label is reachable from anywhere, so this is the one check here that

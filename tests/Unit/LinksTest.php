@@ -61,6 +61,57 @@ final class LinksTest extends TestCase
     }
 
     /**
+     * A link in the wrong markup resolves, so the check above passes on it and
+     * the reader is what finds it. Two pages carried a group listing written
+     * that way from the conversion until 2026-08-12.
+     */
+    #[Test]
+    public function noReStructuredTextPageWritesALinkInMarkdown(): void
+    {
+        $unrendered = Links::unrendered();
+
+        self::assertSame(
+            [],
+            $unrendered,
+            'written in markdown: ' . implode(', ', array_map(
+                static fn(array $link): string => $link['file'] . ':' . $link['line'] . ' → ' . $link['link'],
+                $unrendered,
+            )),
+        );
+    }
+
+    /**
+     * What that reads, and what it may not read: the answer a tool page records
+     * is markdown shown as itself, and every link in it is right where it
+     * stands.
+     */
+    #[Test]
+    public function aMarkdownLinkIsFoundInProseAndLeftAloneInACodeBlock(): void
+    {
+        $directory = sys_get_temp_dir() . '/links-' . bin2hex(random_bytes(6));
+        mkdir($directory);
+        file_put_contents($directory . '/reader.rst', implode("\n", [
+            'A page',
+            '======',
+            '',
+            '[a group](../../decisions/answers/readme.md)',
+            '',
+            '.. code-block:: markdown',
+            '',
+            '    [what the tool answered](knowledge/documents/core.md)',
+            '',
+            '`the right shape <../../decisions/readme.md>`__',
+        ]));
+
+        $unrendered = Links::unrenderedIn($directory . '/reader.rst');
+
+        self::assertSame([4], array_column($unrendered, 'line'));
+
+        unlink($directory . '/reader.rst');
+        rmdir($directory);
+    }
+
+    /**
      * The same for the other markup, where a path is written in five shapes.
      *
      * Two of them are options rather than link syntax — a card and a teaser say

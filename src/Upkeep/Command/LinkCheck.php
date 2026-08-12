@@ -24,7 +24,8 @@ final class LinkCheck
     public function __invoke(OutputInterface $output): int
     {
         $dead = Links::dead();
-        if ($dead === []) {
+        $unrendered = Links::unrendered();
+        if ($dead === [] && $unrendered === []) {
             $output->writeln('Every link resolves.');
 
             return 0;
@@ -34,8 +35,12 @@ final class LinkCheck
             $output->writeln(sprintf('%s:%d links to %s, which is not there', $link['file'], $link['line'], $link['link']));
         }
 
+        foreach ($unrendered as $link) {
+            $output->writeln(sprintf('%s:%d writes %s in markdown, which this page renders as itself', $link['file'], $link['line'], $link['link']));
+        }
+
         $output->writeln('');
-        $output->writeln(sprintf('%d dead links.', count($dead)));
+        $output->writeln(sprintf('%d dead links, %d written in the wrong markup.', count($dead), count($unrendered)));
 
         return 1;
     }

@@ -12,24 +12,30 @@ One decision is one file, named after its id, in the group its id names. The
 group is what the decision is about, and the prefix carries it, so a file's id
 decides its path and two entries cannot quietly share a number.
 
-============================================================================  =======================================================
-Group                                                                         What it is about
-============================================================================  =======================================================
-[audience/](../../decisions/audience/readme.md)                               Who the server answers for, and how it says so
-[discovery/](../../decisions/discovery/readme.md)                             Which installation is read, and how
-[answers/](../../decisions/answers/readme.md)                                 What a lookup returns, and what decides it
-[knowledge/](../../decisions/knowledge/readme.md)                             What the corpus holds and how it is written
-[versions/](../../decisions/versions/readme.md)                               What a statement holds on
-[catalog/](../../decisions/catalog/readme.md)                                 The curated indexes and where their contract comes from
-[scope/](../../decisions/scope/readme.md)                                     Core conventions where they apply, and nowhere else
-[guides/](../../decisions/guides/readme.md)                                   What a returned draft is worth
-[evidence/](../../decisions/evidence/readme.md)                               How this server is measured
-[task-skills/](../../decisions/task-skills/readme.md)                         What an installed workflow owes the task
-[feedback/](../../decisions/feedback/readme.md)                               What the feedback channel has to stay usable for
-[decisions/documentation/readme.md](../../decisions/documentation/readme.md)  How what is written here is written
-[code/](../../decisions/code/readme.md)                                       How the source is laid out
-============================================================================  =======================================================
-
+* `audience/ <../../decisions/audience/readme.md>`__ — Who the server answers
+  for, and how it says so
+* `discovery/ <../../decisions/discovery/readme.md>`__ — Which installation is
+  read, and how
+* `answers/ <../../decisions/answers/readme.md>`__ — What a lookup returns, and
+  what decides it
+* `knowledge/ <../../decisions/knowledge/readme.md>`__ — What the corpus holds
+  and how it is written
+* `versions/ <../../decisions/versions/readme.md>`__ — What a statement holds on
+* `catalog/ <../../decisions/catalog/readme.md>`__ — The curated indexes and
+  where their contract comes from
+* `scope/ <../../decisions/scope/readme.md>`__ — Core conventions where they
+  apply, and nowhere else
+* `guides/ <../../decisions/guides/readme.md>`__ — What a returned draft is
+  worth
+* `evidence/ <../../decisions/evidence/readme.md>`__ — How this server is
+  measured
+* `task-skills/ <../../decisions/task-skills/readme.md>`__ — What an installed
+  workflow owes the task
+* `feedback/ <../../decisions/feedback/readme.md>`__ — What the feedback channel
+  has to stay usable for
+* `documentation/ <../../decisions/documentation/readme.md>`__ — How what is
+  written here is written
+* `code/ <../../decisions/code/readme.md>`__ — How the source is laid out
 
 The number is three digits wide, in the file name and in the id alike, because
 that is what lists a group in the order it was written: unpadded, ``dis-10``

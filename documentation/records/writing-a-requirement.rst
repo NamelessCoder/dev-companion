@@ -12,22 +12,28 @@ group is not a filing preference: it is what the requirement is about, and the
 prefix carries it, so a file's id decides its path and two entries cannot
 quietly share a number.
 
-==================================================================================  ===================================================
-Group                                                                               What it is about
-==================================================================================  ===================================================
-[audience/](../../requirements/audience/readme.md)                                  Who the answer has to be right for
-[discovery/](../../requirements/discovery/readme.md)                                Which installation is read, and how
-[answers/](../../requirements/answers/readme.md)                                    What a caller may conclude from one
-[requirements/documentation/readme.md](../../requirements/documentation/readme.md)  What the live manuals answer
-[task-skills/](../../requirements/task-skills/readme.md)                            What an installed workflow owes the task
-[project/](../../requirements/project/readme.md)                                    The repository the caller is standing in
-[scope/](../../requirements/scope/readme.md)                                        Core conventions where they apply, and nowhere else
-[guides/](../../requirements/guides/readme.md)                                      What a returned draft is worth
-[feedback/](../../requirements/feedback/readme.md)                                  What the feedback channel has to stay usable for
-[knowledge/](../../requirements/knowledge/readme.md)                                What the knowledge base has to cover
-[code/](../../requirements/code/readme.md)                                          What must hold of the source itself
-==================================================================================  ===================================================
-
+* `audience/ <../../requirements/audience/readme.md>`__ — Who the answer has to
+  be right for
+* `discovery/ <../../requirements/discovery/readme.md>`__ — Which installation
+  is read, and how
+* `answers/ <../../requirements/answers/readme.md>`__ — What a caller may
+  conclude from one
+* `documentation/ <../../requirements/documentation/readme.md>`__ — What the
+  live manuals answer
+* `task-skills/ <../../requirements/task-skills/readme.md>`__ — What an
+  installed workflow owes the task
+* `project/ <../../requirements/project/readme.md>`__ — The repository the
+  caller is standing in
+* `scope/ <../../requirements/scope/readme.md>`__ — Core conventions where they
+  apply, and nowhere else
+* `guides/ <../../requirements/guides/readme.md>`__ — What a returned draft is
+  worth
+* `feedback/ <../../requirements/feedback/readme.md>`__ — What the feedback
+  channel has to stay usable for
+* `knowledge/ <../../requirements/knowledge/readme.md>`__ — What the knowledge
+  base has to cover
+* `code/ <../../requirements/code/readme.md>`__ — What must hold of the source
+  itself
 
 The number is three digits wide, in the file name and in the id alike, because
 that is what lists a group in the order it was written: unpadded, ``dis-10``

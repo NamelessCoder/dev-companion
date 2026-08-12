@@ -21,7 +21,7 @@ convention that only the development line has.
     in can move the same way. Pin a commit where you depend on it.
 
 .. card-grid::
-    :columns: 2
+    :columns: 3
 
     .. card:: :doc:`Install it <usage/installing>`
         :label: Usage
@@ -38,6 +38,14 @@ convention that only the development line has.
 
         What it can be asked, what each tool takes, and what one call to it came
         back with.
+
+    .. card:: :doc:`Work on it <contributing/index>`
+        :label: Contributing
+        :icon: actions-code-merge
+        :action: The rules a session works under
+
+        The commands this repository is kept in order by, what has to be true of
+        a session doing the work, and the rules a task skill is written under.
 
 .. band:: What a session stops searching for
     :quiet:

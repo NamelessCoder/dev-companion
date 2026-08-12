@@ -1,3 +1,5 @@
+:navigation-title: Usage
+
 Using the server
 ================
 

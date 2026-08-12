@@ -283,6 +283,41 @@ final class SiteTest extends TestCase
     }
 
     /**
+     * `D-DOC-031`: what the rail, the trail and the footer show for a page is a
+     * label, and four words is where one stops being that.
+     *
+     * The heading is left free to be a sentence, so the two are counted apart:
+     * a page whose heading is longer says the short name in a
+     * `:navigation-title:` above it.
+     */
+    #[Test]
+    public function everyPageIsRailedUnderALabelRatherThanItsHeading(): void
+    {
+        $source = Paths::root() . '/' . Site::SOURCE;
+        $sentences = [];
+        foreach (Finder::create()->files()->in($source)->name('*.rst')->sortByName() as $page) {
+            $label = self::label((string) file_get_contents($page->getPathname()));
+            if (count(preg_split('/\s+/', $label) ?: []) > 4) {
+                $sentences[] = $page->getRelativePathname() . ' is railed under ' . $label;
+            }
+        }
+
+        self::assertSame([], $sentences);
+    }
+
+    /** What a page is shown as in a menu: its navigation title, or its heading. */
+    private static function label(string $rst): string
+    {
+        if (preg_match('/^:navigation-title:\s*(.+)$/m', $rst, $navigation) === 1) {
+            return trim($navigation[1]);
+        }
+
+        preg_match('/^(.+)\n=+\n/m', $rst, $heading);
+
+        return trim(str_replace('`', '', $heading[1] ?? ''));
+    }
+
+    /**
      * `D-DOC-023`: no drawing sets type below the floor.
      *
      * 13px at drawn size is the system's, and a drawing is shown at two

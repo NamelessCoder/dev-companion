@@ -1,3 +1,5 @@
+:navigation-title: Resources
+
 The resource surface
 ====================
 

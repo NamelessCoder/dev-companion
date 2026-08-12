@@ -1,3 +1,5 @@
+:navigation-title: Records
+
 What is written down, and where
 ===============================
 

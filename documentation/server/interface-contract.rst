@@ -1,3 +1,5 @@
+:navigation-title: Interface contract
+
 The draft RFC on an MCP interface contract for TYPO3
 ====================================================
 

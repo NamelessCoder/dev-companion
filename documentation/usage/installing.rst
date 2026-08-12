@@ -1,3 +1,5 @@
+:navigation-title: Installing
+
 Installing the server
 =====================
 

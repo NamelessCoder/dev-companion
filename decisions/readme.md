@@ -569,6 +569,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-028`][D-DOC-028] — The renderer is a build tool, and this repository carries none of it · 2026-08-12
 - [`D-DOC-029`][D-DOC-029] — The documentation is reStructuredText, and the rest of the corpus is not · 2026-08-12
 - [`D-DOC-030`][D-DOC-030] — The front page is a landing page, in the theme's marketing layout · 2026-08-12
+- [`D-DOC-031`][D-DOC-031] — A page is railed under a label and headed by a sentence · 2026-08-12
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
@@ -595,6 +596,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-028]: documentation/doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md
 [D-DOC-029]: documentation/doc-029-the-documentation-is-reStructuredText-and-the-rest-of-the-corpus-is-not.md
 [D-DOC-030]: documentation/doc-030-the-front-page-is-a-landing-page-in-the-themes-marketing-layout.md
+[D-DOC-031]: documentation/doc-031-a-page-is-railed-under-a-label-and-headed-by-a-sentence.md
 [D-DOC-022]: documentation/doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: documentation/doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md

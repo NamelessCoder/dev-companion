@@ -1,3 +1,5 @@
+:navigation-title: Version binding
+
 Which versions an answer holds for
 ==================================
 

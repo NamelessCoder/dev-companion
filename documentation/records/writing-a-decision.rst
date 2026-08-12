@@ -1,3 +1,5 @@
+:navigation-title: Writing a decision
+
 Writing a decision, and going back to one
 =========================================
 

@@ -1,3 +1,5 @@
+:navigation-title: Writing a skill
+
 Writing a task skill
 ====================
 

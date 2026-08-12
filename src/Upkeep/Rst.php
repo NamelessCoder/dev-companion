@@ -111,6 +111,18 @@ final class Rst
     }
 
     /**
+     * What a menu shows the page as, where its heading is a sentence —
+     * `D-DOC-031`. It stands above everything else, because the parser takes a
+     * field list as metadata only before the title.
+     *
+     * @return list<string>
+     */
+    public static function navigationTitle(string $label): array
+    {
+        return [':navigation-title: ' . $label, ''];
+    }
+
+    /**
      * The anchor a `:ref:` reaches, written above the heading it names.
      *
      * @return list<string>

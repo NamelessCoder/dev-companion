@@ -1,3 +1,5 @@
+:navigation-title: Answer sources
+
 .. _answer-sources:
 
 Where an answer comes from

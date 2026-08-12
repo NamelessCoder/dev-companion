@@ -1,3 +1,5 @@
+:navigation-title: Working on the server
+
 Working on the server itself
 ============================
 

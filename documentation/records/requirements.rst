@@ -1,3 +1,5 @@
+:navigation-title: Requirements
+
 What a requirement is
 =====================
 

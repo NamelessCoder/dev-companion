@@ -1,3 +1,5 @@
+:navigation-title: Tools
+
 The tool surface
 ================
 

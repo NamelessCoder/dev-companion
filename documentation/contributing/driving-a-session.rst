@@ -1,3 +1,5 @@
+:navigation-title: Driving a session
+
 Driving a session nobody types in
 =================================
 

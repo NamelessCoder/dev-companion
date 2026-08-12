@@ -277,6 +277,7 @@ final class ToolSurface
     public static function sourcesPage(): string
     {
         $lines = [
+            ...Rst::navigationTitle('Answer sources'),
             ...Rst::label('answer-sources'),
             ...Rst::heading('Where an answer comes from'),
             self::wrap(

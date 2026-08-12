@@ -1,3 +1,5 @@
+:navigation-title: Todos in parallel
+
 Working several todos at once
 =============================
 

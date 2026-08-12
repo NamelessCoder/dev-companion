@@ -1,3 +1,5 @@
+:navigation-title: Knowledge base
+
 The bundled knowledge
 =====================
 

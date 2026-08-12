@@ -1,3 +1,5 @@
+:navigation-title: Server
+
 The server
 ==========
 
@@ -33,9 +35,9 @@ every answer names its source, its version binding and what it left out.
 .. toctree::
     :hidden:
 
-    interface-contract
-    knowledge-base
-    asking-the-installation
-    versions
     tools/index
     resources/index
+    knowledge-base
+    versions
+    asking-the-installation
+    interface-contract

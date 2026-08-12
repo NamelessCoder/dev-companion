@@ -39,6 +39,10 @@ and publishes the task skills to `.agents/skills` — the two locations a client
 finds without being configured for it. `--agent=<id>` writes them where that
 client actually reads them instead.
 
+It is also the only supported way to get the skills: a copy of `skills/` taken
+out of this repository by hand is missing the `references/base.md` the installer
+writes into each of them, and every skill opens on that file.
+
 ## Documentation
 
 The manual reads as a site at

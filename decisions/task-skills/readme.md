@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
+- [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
@@ -43,6 +44,7 @@ one is added.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-035]: skl-035-a-new-skill-is-measured-against-a-run-without-it.md
+[D-SKL-036]: skl-036-a-skill-runs-where-the-installer-put-it.md
 [D-SKL-033]: skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
 [D-SKL-034]: skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md
 [D-SKL-032]: skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md

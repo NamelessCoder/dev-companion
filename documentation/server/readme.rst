@@ -20,6 +20,11 @@ What it can be asked, and where each answer comes from.
   for TYPO3, read as a reference: what it says and what would change here if it
   were ever adopted.
 
+.. image:: ../images/answer-flow.svg
+    :alt: A task starts by reading the project and identifying its workflow,
+          then uses a specialist tool and returns the source, version, scope and
+          limits with the answer.
+
 The tools are the server. Everything else on this page is either the other
 surface beside them or an account of where their answers come from — which is
 the one thing a caller cannot see from a tool's own description, and the reason

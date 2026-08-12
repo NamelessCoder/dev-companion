@@ -13,6 +13,8 @@ earns one.
 - [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
 - [`D-DOC-027`][D-DOC-027] — The renderer's configuration sits with the pages it renders · 2026-08-12
 - [`D-DOC-028`][D-DOC-028] — The renderer is a build tool, and this repository carries none of it · 2026-08-12
+- [`D-DOC-029`][D-DOC-029] — The documentation is reStructuredText, and the rest of the corpus is not · 2026-08-12
+- [`D-DOC-030`][D-DOC-030] — The front page is a landing page, in the theme's marketing layout · 2026-08-12
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
@@ -37,6 +39,8 @@ earns one.
 [D-DOC-026]: doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md
 [D-DOC-027]: doc-027-the-renderers-configuration-sits-with-the-pages-it-renders.md
 [D-DOC-028]: doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md
+[D-DOC-029]: doc-029-the-documentation-is-reStructuredText-and-the-rest-of-the-corpus-is-not.md
+[D-DOC-030]: doc-030-the-front-page-is-a-landing-page-in-the-themes-marketing-layout.md
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md

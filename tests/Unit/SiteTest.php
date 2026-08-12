@@ -187,6 +187,11 @@ final class SiteTest extends TestCase
      * `D-DOC-026`: the site is `documentation/` and nothing besides, so it opens
      * on that directory's own page and the checkout's readme is a file the site
      * does not carry.
+     *
+     * `D-DOC-030`: and that page is the landing page, which the theme reads
+     * from a field list the parser only takes as metadata above the title. A
+     * field written below it is rendered as a definition list in the body, so
+     * the order is what makes the shape and not decoration.
      */
     #[Test]
     public function theSiteOpensOnTheDocumentationsOwnPage(): void
@@ -194,7 +199,7 @@ final class SiteTest extends TestCase
         Site::build($this->target);
 
         self::assertStringStartsWith(
-            "TYPO3 Dev Companion\n===================",
+            ":layout: marketing\n\nTYPO3 Dev Companion\n===================",
             (string) file_get_contents($this->target . '/index.rst'),
         );
         self::assertFileDoesNotExist($this->target . '/how-the-work-is-done.rst');

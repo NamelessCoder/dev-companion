@@ -168,6 +168,14 @@ footer say is configured in it rather than by copying a template. ``D-DOC-024``
 is the move; ``D-DOC-023``, which vendored the same system by hand, is revoked
 with it.
 
+The front page is the one page set in that theme's ``marketing`` layout —
+``D-DOC-030``. ``:layout: marketing`` stands above the title, because the parser
+takes a field list as metadata only while no title has been found, and what
+follows is a run of ``band`` directives with the page's claims in them. What a
+band, a grid, a teaser and a card take is
+`the theme's own manual <https://benjaminkott.github.io/typo3-soul-design-system/guides-theme/directives.html>`_;
+nothing here renders any of them.
+
 Two things in ``guides.xml`` are load-bearing. ``theme="soul"`` selects a theme
 that has to exist first, and the extension element below it is what makes it
 exist. ``automatic-menu`` is the other: the rail and the trail are a ``toctree``

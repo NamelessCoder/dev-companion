@@ -702,21 +702,35 @@ final class CatalogCheck
     }
 
     /**
-     * The suites one `runTests.sh` offers, read out of the `-s` block of its own
-     * usage text — the one place the list is written down, and in the same shape
-     * from 12.4 to main. Only that block: the databases below it are written the
-     * same way and are not suites.
+     * The suites one `runTests.sh` offers: what its `-s` usage block lists, and
+     * what its own `case` over the suite name accepts.
+     *
+     * The usage block alone was the reading until 2026-08-12, and it is the
+     * documentation rather than the dispatch. 13.4 accepts `-s e2e-prepare` and
+     * mentions it only inside the `e2e` line — "use e2e-prepare for manual
+     * execution" — so a suite that runs there was read as absent, and the hint
+     * saying it arrives with v13 was reported as the error. The same holds for
+     * `accessibility-prepare`.
+     *
+     * A label carrying a `*` is left out: `build*` and `accessibility*` name no
+     * suite that can be enumerated, and no hint runs a command they are the only
+     * route to.
+     *
+     * Public because it is the one reading in this command a test can hold
+     * without a checkout on disk.
      *
      * @return array<int, string>
      */
-    private static function suitesIn(string $script): array
+    public static function suitesIn(string $script): array
     {
-        if (preg_match('/Specifies the test suite to run\n(.*?)\n {4}-\S/s', $script, $block) !== 1) {
-            return [];
+        $names = [];
+        if (preg_match('/Specifies the test suite to run\n(.*?)\n {4}-\S/s', $script, $block) === 1) {
+            preg_match_all('/^\s+- ([A-Za-z][A-Za-z0-9_-]*)(?: \(default\))?:/m', $block[1], $listed);
+            $names = $listed[1];
         }
-        preg_match_all('/^\s+- ([A-Za-z][A-Za-z0-9_-]*)(?: \(default\))?:/m', $block[1], $names);
+        preg_match_all('/^ {4}([A-Za-z][A-Za-z0-9_-]*)\)$/m', $script, $dispatched);
 
-        return array_values(array_unique($names[1]));
+        return array_values(array_unique(array_merge($names, $dispatched[1])));
     }
 
     /** What a hint's command asks the script for, falling back to what the entry calls itself. */

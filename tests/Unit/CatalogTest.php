@@ -20,6 +20,7 @@ use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Catalogs;
+use TYPO3\DevCompanion\Upkeep\Command\CatalogCheck;
 
 final class CatalogTest extends TestCase
 {
@@ -753,5 +754,46 @@ final class CatalogTest extends TestCase
 
         self::assertStringContainsString(Meta::read()['source']['version'], $line);
         self::assertStringContainsString('not in this snapshot', $line);
+    }
+
+    /**
+     * A suite the script runs but does not advertise is offered.
+     *
+     * 13.4 accepts `-s e2e-prepare` and names it only inside the `e2e` line of
+     * its usage text, so reading the usage block alone reported the hint that
+     * says the suite arrives with v13 as the thing that was wrong.
+     */
+    #[Test]
+    public function aSuiteTheScriptDispatchesWithoutListingItIsOffered(): void
+    {
+        $script = <<<'SCRIPT'
+                Specifies the test suite to run
+                    - functional: PHP functional tests
+                    - e2e: end to end tests (use e2e-prepare for manual execution)
+                    - unit (default): PHP unit tests
+
+                -b <docker|podman>
+            SCRIPT;
+        $script .= "\n" . implode("\n", [
+            '    e2e)',
+            '        runPlaywright',
+            '        ;;',
+            '    e2e-prepare)',
+            '        runPlaywright',
+            '        ;;',
+            '    build*)',
+            '        ;;',
+            '    *)',
+            '        ;;',
+        ]);
+
+        $offered = CatalogCheck::suitesIn($script);
+
+        self::assertContains('e2e-prepare', $offered, 'a dispatched suite the usage text does not list is read as absent');
+        self::assertContains('e2e', $offered);
+        self::assertContains('functional', $offered, 'the usage block is still read');
+        self::assertContains('unit', $offered, 'the default marker still yields the suite name');
+        self::assertNotContains('build*', $offered, 'a glob label names no suite');
+        self::assertNotContains('*', $offered);
     }
 }

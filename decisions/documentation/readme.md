@@ -11,6 +11,7 @@ earns one.
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
+- [`D-DOC-027`][D-DOC-027] — The renderer's configuration sits with the pages it renders · 2026-08-12
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
@@ -34,6 +35,7 @@ earns one.
 [D-DOC-024]: doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
 [D-DOC-025]: doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-026]: doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md
+[D-DOC-027]: doc-027-the-renderers-configuration-sits-with-the-pages-it-renders.md
 [D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md

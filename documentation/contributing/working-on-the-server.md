@@ -128,6 +128,13 @@ from a manifest of its own — `build/guides/composer.json` says why it is not i
 this package's `require-dev`. That manifest requires one package,
 `typo3/soul-guides-theme`, and the renderer comes with it.
 
+That configuration sits beside the pages, as `documentation/guides.xml`, which
+is where a TYPO3 extension keeps its own and where `-c documentation` names it
+on the render step. Everything else stays relative to the working directory —
+the `input` and `output` it declares, the renderer, the finish step — which is
+why both commands are run at the root. It is the one file below
+`documentation/` that is not published: `D-DOC-027`.
+
 **What the page looks like is not this repository's to invent, and no longer
 this repository's to carry either.** The design system publishes itself as a
 theme for this renderer: the layout, the stylesheet, the script, the two

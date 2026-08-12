@@ -203,6 +203,20 @@ final class SiteTest extends TestCase
         );
     }
 
+    /**
+     * `D-DOC-027`: the renderer's own configuration sits with the pages and is
+     * not one of them. Published, it would land in the input directory it
+     * declares.
+     */
+    #[Test]
+    public function theRenderersConfigurationIsNotPublished(): void
+    {
+        Site::build($this->target);
+
+        self::assertFileExists(Paths::root() . '/' . Site::SOURCE . '/guides.xml');
+        self::assertFileDoesNotExist($this->target . '/guides.xml');
+    }
+
     /** An external link is nobody's to rewrite. */
     #[Test]
     public function anExternalLinkIsLeftAsItWasWritten(): void

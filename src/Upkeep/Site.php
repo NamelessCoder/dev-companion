@@ -41,6 +41,13 @@ final class Site
     public const SOURCE = 'documentation';
 
     /**
+     * The renderer's own configuration, which sits with the corpus it
+     * configures and is the one file in there that is not a page —
+     * `D-DOC-027`.
+     */
+    private const CONFIG = 'guides.xml';
+
+    /**
      * Where the site is built, and what `guides.xml` names as its `input` and
      * its `output`. Gitignored, because a build product that is committed is
      * one somebody edits.
@@ -66,11 +73,13 @@ final class Site
      * The two steps of a render that are not this process, as the commands a
      * person could have typed.
      *
-     * The renderer reads `guides.xml` from the working directory, and the
-     * finish step is named from it too, so both are run at the root of this
-     * checkout rather than wherever the caller stands.
+     * `-c` names the directory the renderer reads `guides.xml` from, and every
+     * other path stays relative to the working directory — the `input` and
+     * `output` that file declares, the renderer itself, and the finish step. So
+     * both are run at the root of this checkout rather than wherever the caller
+     * stands.
      */
-    public const RENDER = ['build/guides/vendor/bin/guides', '--no-progress'];
+    public const RENDER = ['build/guides/vendor/bin/guides', '--no-progress', '-c', self::SOURCE];
     private const FINISH = 'build/guides/vendor/typo3/soul-guides-theme/resources/dist/soul-finish.js';
 
     private static ?string $repository = null;
@@ -164,7 +173,8 @@ final class Site
     private static function sources(): array
     {
         $sources = [];
-        foreach (Finder::create()->files()->in(Paths::root() . '/' . self::SOURCE)->sortByName() as $file) {
+        $files = Finder::create()->files()->in(Paths::root() . '/' . self::SOURCE)->notName(self::CONFIG)->sortByName();
+        foreach ($files as $file) {
             $sources[] = self::SOURCE . '/' . str_replace('\\', '/', $file->getRelativePathname());
         }
 

@@ -15,10 +15,9 @@ use TYPO3\DevCompanion\Upkeep\Site;
  *
  * This was six commands and two of them were installs nobody had run, so the
  * first render on a machine failed on a missing binary — `D-DOC-020`. They are
- * one command because their order is not a choice: the assets carry a hash the
- * layout reads while it renders, the renderer publishes the copy rather than
- * the sources, and the last two write beside the rendered pages because the
- * renderer copies an image a page names and nothing else.
+ * one command because their order is not a choice: the renderer publishes the
+ * copy rather than the sources, and the theme's finish step reads the pages the
+ * renderer has just written.
  *
  * Every step that leaves this process is a command a person could have typed,
  * printed before it runs and quoted in full when it fails. The first one on a
@@ -43,10 +42,6 @@ final class DocumentationRender
             }
         }
 
-        if (!$this->step($output, Site::BUILD_ASSETS)) {
-            return 1;
-        }
-
         $built = Site::build($into . '/source');
         foreach ($built['removed'] as $removed) {
             $output->writeln(sprintf('removed %s, which documentation/ no longer has', $removed));
@@ -57,25 +52,15 @@ final class DocumentationRender
             return 1;
         }
 
-        $assets = Site::publishAssets($into . '/html');
-        if ($assets === []) {
-            Cli::errors($output)->writeln(
-                'Nothing is built, so every page would be served unstyled: ' . implode(' ', Site::BUILD_ASSETS) . ' wrote no assets.',
-            );
-
+        // The theme's own step, and the one that makes the pages a site. What
+        // it carried and what it indexed is its own report, printed as it wrote
+        // it rather than counted a second time here.
+        if (!$this->step($output, Site::finish($into . '/html'))) {
             return 1;
         }
 
         $drawings = Site::publishDrawings($into . '/html');
-        $search = Site::publishSearch($into . '/html');
-        $output->writeln(sprintf(
-            '%s — %d pages, %d assets, %d dark drawings, %d KB searched over',
-            $into . '/html',
-            $search['pages'],
-            count($assets),
-            count($drawings),
-            intdiv($search['bytes'], 1024),
-        ));
+        $output->writeln(sprintf('%s — %d dark drawings', $into . '/html', count($drawings)));
         // Over a server rather than by opening the file: the search fetches its
         // index beside the pages, which a browser refuses over `file://`.
         $output->writeln(sprintf('read it: php -S localhost:8000 -t %s', $into . '/html'));
@@ -83,7 +68,16 @@ final class DocumentationRender
         return 0;
     }
 
-    /** @param list<string> $command */
+    /**
+     * One step, with whatever it said either way.
+     *
+     * A step that succeeded is not silent: the renderer's warnings and the
+     * finish step's tally are what a person reads to see the render was the one
+     * they meant, and swallowing them left the command printing only the
+     * commands it had run.
+     *
+     * @param list<string> $command
+     */
     private function step(OutputInterface $output, array $command): bool
     {
         $output->writeln(implode(' ', $command));
@@ -92,6 +86,10 @@ final class DocumentationRender
             Cli::errors($output)->writeln(sprintf("%s failed:\n%s", implode(' ', $command), trim($result)));
 
             return false;
+        }
+
+        if (trim($result) !== '') {
+            $output->writeln(trim($result));
         }
 
         return true;

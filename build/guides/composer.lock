@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35052d60dc92767ce70f0c357e7bee91",
+    "content-hash": "82ca1ba65f73e54803f6baf08660ea1a",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1457,6 +1457,47 @@
             "time": "2026-01-22T08:17:47+00:00"
         },
         {
+            "name": "phpdocumentor/guides-code",
+            "version": "1.9.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/guides-code.git",
+                "reference": "83ea1942ec8c882e3762e6637670f78c352c9665"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-code/zipball/83ea1942ec8c882e3762e6637670f78c352c9665",
+                "reference": "83ea1942ec8c882e3762e6637670f78c352c9665",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "scrivo/highlight.php": "^9.18.1.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library to provide code-related functionality to phpDocumentor's Guides",
+            "homepage": "https://www.phpdoc.org",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/guides-code/issues",
+                "source": "https://github.com/phpDocumentor/guides-code/tree/1.9.6"
+            },
+            "time": "2026-02-23T19:56:40+00:00"
+        },
+        {
             "name": "phpdocumentor/guides-markdown",
             "version": "1.10.2",
             "source": {
@@ -1850,6 +1891,84 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "scrivo/highlight.php",
+            "version": "v9.18.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scrivo/highlight.php.git",
+                "reference": "850f4b44697a2552e892ffe71490ba2733c2fc6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/850f4b44697a2552e892ffe71490ba2733c2fc6e",
+                "reference": "850f4b44697a2552e892ffe71490ba2733c2fc6e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.7",
+                "sabberworm/php-css-parser": "^8.3",
+                "symfony/finder": "^2.8|^3.4|^5.4",
+                "symfony/var-dumper": "^2.8|^3.4|^5.4"
+            },
+            "suggest": {
+                "ext-mbstring": "Allows highlighting code with unicode characters and supports language with unicode keywords"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "HighlightUtilities/functions.php"
+                ],
+                "psr-0": {
+                    "Highlight\\": "",
+                    "HighlightUtilities\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Geert Bergman",
+                    "homepage": "http://www.scrivo.org/",
+                    "role": "Project Author"
+                },
+                {
+                    "name": "Vladimir Jimenez",
+                    "homepage": "https://allejo.io",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Martin Folkers",
+                    "homepage": "https://twobrain.io",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "Server side syntax highlighter that supports 185 languages. It's a PHP port of highlight.js",
+            "keywords": [
+                "code",
+                "highlight",
+                "highlight.js",
+                "highlight.php",
+                "syntax"
+            ],
+            "support": {
+                "issues": "https://github.com/scrivo/highlight.php/issues",
+                "source": "https://github.com/scrivo/highlight.php"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/allejo",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-12-17T21:53:22+00:00"
         },
         {
             "name": "symfony/clock",
@@ -3830,6 +3949,60 @@
             "time": "2026-07-03T20:44:34+00:00"
         },
         {
+            "name": "typo3/soul-guides-theme",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/benjaminkott/typo3-soul-guides-theme.git",
+                "reference": "292784774d991d4ac3d860f9d97ae0baae52179c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/benjaminkott/typo3-soul-guides-theme/zipball/292784774d991d4ac3d860f9d97ae0baae52179c",
+                "reference": "292784774d991d4ac3d860f9d97ae0baae52179c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "phpdocumentor/guides-cli": "^1.9",
+                "phpdocumentor/guides-code": "^1.9",
+                "phpdocumentor/guides-markdown": "^1.10"
+            },
+            "require-dev": {
+                "typo3/coding-standards": "^0.9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\Soul\\GuidesTheme\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Kott",
+                    "email": "benjamin.kott@outlook.com"
+                }
+            ],
+            "description": "The Soul design system as a theme for phpDocumentor Guides — templates that emit the sds- vocabulary, four directives the renderer does not have, and the drop-in a page links.",
+            "keywords": [
+                "design-system",
+                "documentation",
+                "guides",
+                "phpdocumentor",
+                "theme",
+                "typo3"
+            ],
+            "support": {
+                "issues": "https://github.com/benjaminkott/typo3-soul-design-system/issues",
+                "source": "https://github.com/benjaminkott/typo3-soul-design-system"
+            },
+            "time": "2026-08-12T07:28:59+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.12.1",
             "source": {
@@ -3891,7 +4064,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "typo3/soul-guides-theme": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

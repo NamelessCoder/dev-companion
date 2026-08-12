@@ -17,12 +17,11 @@ use TYPO3\DevCompanion\Upkeep\Site;
  * this holds.
  *
  * The steps were six commands a person ran by hand and each of them is correct
- * on its own: the assets carry a hash the layout reads while it renders, so
- * built after the render they are the previous build's names; the two files
- * that go beside the pages are written into a directory the renderer creates,
- * so written before it they are swept with everything else. `D-DOC-020` is why
- * they are one command, and this is what keeps them in the one order that
- * works.
+ * on its own: the renderer publishes the copy rather than the sources, so a
+ * render before the copy is written renders the previous one; the theme's
+ * finish step reads the pages the renderer has just written, so run before it
+ * there is nothing to finish. `D-DOC-020` is why they are one command, and this
+ * is what keeps them in the one order that works.
  *
  * Nothing here runs a renderer or an install. `Site::useRunner()` is the seam
  * (`R-COD-003`), and what the cases assert on is the sequence the stub was
@@ -39,22 +38,11 @@ final class DocumentationRenderTest extends TestCase
     /** Which command the stub answers with a failure, or none. */
     private ?string $fails = null;
 
-    /** What the theme's build would have written, since nothing here runs it. */
-    private string $built = '';
-
     protected function setUp(): void
     {
         $this->into = sys_get_temp_dir() . '/dev-companion-render-' . getmypid();
         $this->ran = [];
         $this->fails = null;
-
-        // The stub runs no build, so what the build would have written is
-        // handed in instead — a machine that has never built the theme is
-        // otherwise a machine where these cases fail for the wrong reason.
-        $this->built = $this->into . '-built';
-        mkdir($this->built, 0777, true);
-        file_put_contents($this->built . '/site.1234abcd.css', 'body{}');
-        Site::useBuilt($this->built);
 
         $runner = self::createStub(CommandRunner::class);
         $runner->method('run')->willReturnCallback(function (array $command): array {
@@ -69,33 +57,31 @@ final class DocumentationRenderTest extends TestCase
     protected function tearDown(): void
     {
         Site::useRunner(null);
-        Site::useBuilt(null);
         Directory::remove($this->into);
-        Directory::remove($this->built);
     }
 
     /**
-     * The whole of it in one call, and the two hashed files are built before
-     * the render reads their names.
+     * The whole of it in one call, and the theme's finish step runs over pages
+     * the renderer has already written.
      */
     #[Test]
-    public function oneCallInstallsWhatIsMissingThenBuildsThenRenders(): void
+    public function oneCallInstallsWhatIsMissingThenBuildsThenRendersThenFinishes(): void
     {
         $output = new BufferedOutput();
 
         self::assertSame(0, (new DocumentationRender())($output, $this->into));
 
         $ran = array_map(static fn(array $command): string => implode(' ', $command), $this->ran);
-        $assets = array_search(implode(' ', Site::BUILD_ASSETS), $ran, true);
         $render = array_search(implode(' ', Site::RENDER), $ran, true);
-        self::assertIsInt($assets);
+        $finish = array_search(implode(' ', Site::finish($this->into . '/html')), $ran, true);
         self::assertIsInt($render);
-        self::assertLessThan($render, $assets);
+        self::assertIsInt($finish);
+        self::assertLessThan($finish, $render);
         // Whatever the machine is missing is installed before either of them.
-        self::assertSame(count(Site::installs()), $assets);
+        self::assertSame(count(Site::installs()), $render);
     }
 
-    /** The copy, the assets and the index all land where the site is built. */
+    /** The copy and the pages are built where the caller said, not in this checkout. */
     #[Test]
     public function everythingTheSiteIsMadeOfIsWrittenInOnePlace(): void
     {
@@ -104,9 +90,9 @@ final class DocumentationRenderTest extends TestCase
         self::assertSame(0, (new DocumentationRender())($output, $this->into));
 
         self::assertFileExists($this->into . '/source/index.md');
-        self::assertFileExists($this->into . '/html/' . Site::SEARCH);
-        self::assertDirectoryExists($this->into . '/html/' . Site::ASSETS);
-        self::assertStringContainsString('php -S localhost:8000 -t ' . $this->into . '/html', $output->fetch());
+        $written = $output->fetch();
+        self::assertStringContainsString($this->into . '/html', $written);
+        self::assertStringContainsString('php -S localhost:8000 -t ' . $this->into . '/html', $written);
     }
 
     /**
@@ -125,19 +111,26 @@ final class DocumentationRenderTest extends TestCase
         $written = $output->fetch();
         self::assertStringContainsString(implode(' ', Site::RENDER) . ' failed', $written);
         self::assertStringContainsString('what went wrong', $written);
-        // The render stopped there: what goes beside the pages was never written.
-        self::assertFileDoesNotExist($this->into . '/html/' . Site::SEARCH);
+        // The render stopped there: the finish step was never asked for.
+        $ran = array_map(static fn(array $command): string => implode(' ', $command), $this->ran);
+        self::assertNotContains(implode(' ', Site::finish($this->into . '/html')), $ran);
     }
 
-    /** Nothing built is a site served unstyled, so it is a failure and not a site. */
+    /**
+     * The finish step is where the stylesheet, the script and the search index
+     * come from, so a failure there is a site nothing would style and is not a
+     * render that succeeded.
+     */
     #[Test]
-    public function aSiteThatWouldBeServedUnstyledIsAFailure(): void
+    public function aSiteThatWasNeverFinishedIsAFailure(): void
     {
-        Site::useBuilt($this->into . '-absent');
+        $this->fails = 'soul-finish.js';
         $output = new BufferedOutput();
 
         self::assertSame(1, (new DocumentationRender())($output, $this->into));
-        self::assertStringContainsString('served unstyled', $output->fetch());
-        self::assertFileDoesNotExist($this->into . '/html/' . Site::SEARCH);
+        self::assertStringContainsString(
+            implode(' ', Site::finish($this->into . '/html')) . ' failed',
+            $output->fetch(),
+        );
     }
 }

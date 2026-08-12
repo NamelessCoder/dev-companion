@@ -20,12 +20,13 @@ layer out of the checkout itself.
   framework the task could not use, and the one call the session made carried
   nothing about where a `.ts` test goes.
 - The layer is uniform across the covered branches, so it is one unbound hint.
-  `Build/web-test-runner.config.mjs` exists on `main`, `14.3`, `13.4` and `12.4`,
-  each building one group per package under `Build/Sources/TypeScript` that has
-  a `tests/` directory, over `tests/**/*.ts`, each with the same import map onto
-  `Resources/Public/JavaScript/` and the same `"test": "wtr"` script. Only the
-  `~labels/` middleware is younger — absent on `13.4` and `12.4`, where no
-  TypeScript source names `~labels` at all — so that statement alone is bound.
+  `Build/web-test-runner.config.mjs` exists on `main`, `14.3`, `13.4` and
+  `12.4`, each building one group per package under `Build/Sources/TypeScript`
+  that has a `tests/` directory, over `tests/**/*.ts`, each with the same import
+  map onto `Resources/Public/JavaScript/` and the same `"test": "wtr"` script.
+  Only the `~labels/` middleware is younger — absent on `13.4` and `12.4`, where
+  no TypeScript source names `~labels` at all — so that statement alone is
+  bound.
 - `runTests.sh -s unitJavascript` runs `npm run test` in `Build/` and passes no
   arguments through on any of the four, which is why the hint says a targeted
   run means calling the runner directly rather than offering a flag.
@@ -44,9 +45,9 @@ layer out of the checkout itself.
 - The suite entry for `unitJavascript` names it. `typo3_test_run_guide` answers
   how a suite is run and this hint answers how one of its tests is written; the
   session that has the first has no reason to guess that the second exists.
-- The hint says what the layer cannot see, and names `browser-tests` for it.
-  The same session's other report — no procedure for looking at a backend change
-  in a real browser, `feedback/2026-08-10-101714` — is the layer above this one,
+- The hint says what the layer cannot see, and names `browser-tests` for it. The
+  same session's other report — no procedure for looking at a backend change in
+  a real browser, `feedback/2026-08-10-101714` — is the layer above this one,
   and a session that reads this hint should not conclude a passing wtr run
   covers a positional defect.
 - No skill and no document. What was missing is a set of statements about one

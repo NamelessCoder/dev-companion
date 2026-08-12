@@ -21,16 +21,43 @@
     input=".site/source"
     output=".site/html"
     input-format="md"
+    theme="soul"
     fail-on-error="true"
     links-are-relative="true"
 >
     <project title="TYPO3 Dev Companion"/>
     <!--
-        Twice, and not by accident: the option is an array, and Symfony's XML
-        reader makes one only out of a repeated element. A single occurrence
-        arrives as a string and the build stops on the type.
+        The rail and the trail, out of the directories this corpus already has.
+        A menu is otherwise a toctree, which is a reStructuredText directive
+        this corpus cannot write: with this on, a page belongs to the `index.md`
+        of the directory it sits in, and the Markdown parser stops marking every
+        document an orphan.
     -->
-    <base-template-paths>build/guides/theme</base-template-paths>
-    <base-template-paths>build/guides/theme</base-template-paths>
+    <automatic-menu>true</automatic-menu>
     <extension class="phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension"/>
+    <!-- The highlighter the theme's code block colours on the server with. -->
+    <extension class="phpDocumentor\Guides\Code\DependencyInjection\CodeExtension"/>
+    <!--
+        The theme `theme="soul"` selects: this element is what makes it exist,
+        and everything the bar, the tab and the footer say that is not the
+        project title is set here rather than in a template copied into this
+        checkout.
+    -->
+    <extension class="TYPO3\Soul\GuidesTheme\DependencyInjection\SoulExtension">
+        <signet>images/signet-m.svg</signet>
+        <!--
+            The mark is redrawn per optical size rather than scaled, and a
+            browser picks between the files by the slot it needs — which a
+            media query inside one file cannot do, since it only ever sees its
+            own viewport.
+        -->
+        <favicon href="images/signet-s.svg" sizes="16x16"/>
+        <favicon href="images/signet-l.svg" sizes="32x32"/>
+        <brand>TYPO3</brand>
+        <product>Dev Companion</product>
+        <footer>
+            <social href="https://github.com/benjaminkott/typo3-cms-mcp" label="GitHub"/>
+            <note>Not an official TYPO3 project.</note>
+        </footer>
+    </extension>
 </guides>

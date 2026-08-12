@@ -99,18 +99,11 @@ php -S localhost:8000 -t .site/html   # read it at http://localhost:8000/
 ```
 
 The render is one command because its steps have one order and no choice in it:
-the renderer and the theme's packages installed where the checkout has none, the
-stylesheet and the script built before the layout reads their hashed names, the
-copy written, rendered, and the assets and the search index put beside the
-rendered pages — which is where they have to be written, because the renderer
-copies an image a page names and nothing else. Each step is printed as the
-command a person could have typed, and a failure quotes it in full.
-
-One thing the local preview cannot show is the type. The faces are
-`font-display: optional`, so a browser uses one only where it is already cached
-— which is what stops the wordmark being re-laid out on every navigation, and
-what makes `php -S` render the whole site in the fallback, since it serves no
-cache header. What is deployed does.
+the renderer installed where the checkout has none, the copy written, rendered,
+and the theme's own finish step run over the pages that came out — which is what
+copies the stylesheet, the script and the faces beside them and writes the index
+the search bar fetches. Each step is printed as the command a person could have
+typed, and a failure quotes it in full.
 
 The site is read over a server rather than by opening `.site/html/index.html`:
 the search fetches its index as a file beside the pages, and a browser refuses
@@ -130,88 +123,58 @@ the link. What that costs is `D-DOC-017`, and what the site opens on is
 
 The renderer is phpDocumentor Guides, configured in `guides.xml` and installed
 from a manifest of its own — `build/guides/composer.json` says why it is not in
-this package's `require-dev`. The look is this repository's, in one file:
-`build/guides/theme/structure/layout.html.twig` shadows the layout the renderer
-would otherwise use, links the two built files by the names it reads from their
-manifest, and builds the sidebar from the documents the renderer knows: a bar
-across the top with the name and what opens the search, then the front page,
-then the pages belonging to no subject, then each subject as a fold that is shut
-unless the page being read is inside it.
+this package's `require-dev`. That manifest requires one package,
+`typo3/soul-guides-theme`, and the renderer comes with it.
 
-The stylesheet and the script are `theme/assets/site.css` and
-`theme/assets/site.js`, built by `theme/assets/build.mjs` into two files every
-page links. Inlined into each page they had grown to a third of everything the
-site serves — `D-DOC-019`, which also has why the name carries a hash.
+**What the page looks like is not this repository's to invent, and no longer
+this repository's to carry either.** The design system publishes itself as a
+theme for this renderer: the layout, the stylesheet, the script, the two
+families, the icons and the search all ship inside that package, and what stood
+here — a layout, a stylesheet, a script and an asset build of its own — is gone.
+What is left here is `guides.xml`, and everything the bar, the tab and the
+footer say is configured in it rather than by copying a template. `D-DOC-024` is
+the move; `D-DOC-023`, which vendored the same system by hand, is revoked with
+it.
 
-**What the page looks like is not this repository's to invent.** It is built to
-the TYPO3 Support App design system, whose tokens and component layer `site.css`
-imports from the package and whose icons and signet are copied into
-`theme/assets/icons/` — no colour, radius or duration is written out in
-`site.css`, and no icon here is drawn. `build.mjs` stops the build where the
-stylesheet names a token nothing declares, because the tokens arrive with
-`npm ci` and `composer ci` never installs them. The two families the system allows are
-built out of their `@fontsource` packages by `build.mjs`, so the faces are
-published beside the pages rather than fetched from a font host. What that
-adopts, and the three places this site does something the system does not
-describe, is `D-DOC-023`.
+Two things in `guides.xml` are load-bearing. `theme="soul"` selects a theme that
+has to exist first, and the extension element below it is what makes it exist.
+`automatic-menu` is the other: the rail and the trail are a `toctree` in this
+renderer, which is a reStructuredText directive this markdown corpus cannot
+write, and with it on the same tree is built out of the directories instead. So
+**every directory of this documentation needs its own `readme.md`** — a page
+whose directory has none is attached to nothing and lands in no menu at all,
+which `SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage` is what stops.
 
-A drawing on the page is 800px of a 1200px file, so it also carries the button
-that opens it at the size it was drawn at. The panel scrolls rather than fitting
-the drawing to itself, since fitting it is what the page already did — which is
-what makes it readable on a phone at all. It is the same `<dialog>` the search
-uses, for the same reason: `showModal()` carries the focus, the backdrop and the
-escape key.
+The mark is this repository's own drawing and lives with the pages, as
+`images/signet-s.svg`, `-m` and `-l`: a signet is redrawn per optical size
+rather than scaled, and a browser picks between them by the slot it needs. Each
+is written the way the system asks artwork to be written — one `var()` with a
+hex fallback per shape, and the whole drawing under one `id` — so a mark
+referenced into the page carries the page's own ink and the file still renders
+on its own.
 
-Three things the renderer does not do come from that script. It colours a fenced
-block in `json`, `yaml` and `bash` — the three this corpus writes — using
-highlight.js with those languages registered and no other, mapped onto the three
-syntax tokens the system declares. It writes the head a code block carries, with
-what the block is and the button that copies it, since half of what is written
-here is a command to run. And it carries the mode switch. All of it comes from
-the script rather than the markup, so a browser without a clipboard carries no
-button that does nothing, and one without the script keeps every block as it was
-written.
+One thing the local preview cannot show is the type. The faces are
+`font-display: optional`, so a browser uses one only where it is already cached
+— which is what stops the wordmark being re-laid out on every navigation, and
+what makes `php -S` render the whole site in the fallback, since it serves no
+cache header. What is deployed does.
 
-The colours are the system's `light-dark()` pairs and `color-scheme` is what
-picks between them — the same declaration a browser needs to stop drawing the
-scrollbars and the search field light on a dark page. So what the switch writes
-is one attribute on `<html>`, and the head reads the stored one before the page
-paints, since a deferred script would show the other mode for a frame.
 `.github/workflows/documentation.yml` runs all of it on every push to `main` and
 deploys the result to
 [GitHub Pages](https://benjaminkott.github.io/typo3-dev-companion/). It needs
 `Settings → Pages → Source: GitHub Actions` on the repository: a deployment from
-a branch serves the root or `/docs`, and this directory is neither.
+a branch serves the root or `/docs`, and this directory is neither. Node is
+there for the finish step alone, which is one bundled file and installs nothing.
 
-The search is this repository's too, because the renderer has none. `Site`
-writes one entry per page — its URL, its title, its headings and its prose — and
-the script filters it in the reader's browser, fetched when the search is first
-opened and not before. Fenced blocks are left out: 582 of them, mostly a
-recorded tool answer in JSON, which is what keeps the index at 213 KB rather
-than a megabyte and a prose match above the evidence.
-
-What the reader sees is a dialog, opened with the button in the bar or with
-Ctrl-K, and the arrows and the return key move through the hits and open one —
-`D-DOC-021`.
-
-The drawings ship twice, as the system asks: `name.svg` and `name-dark.svg`, the
-second a straight token swap of the first. Which one a page shows is the
-script's, not `<picture>`'s — a `media` query reads the machine, and this page
-can be held in the other mode against it. The renderer copies an image a page
-names and nothing else, so `Site::publishDrawings()` puts the twin nobody named
-beside the one that was.
-
-**A drawing is inlined rather than linked**, and that is what makes its type the
-page's. An `<img>` is a document of its own: it never sees the `@font-face`
-rules here, so what a reader got was whatever sans their machine had — a
-different width per machine, under columns placed against yet another one. The
-script replaces the `<img>` the renderer wrote, and a browser without a script
-keeps it.
-
-The second half of that is the size. The system's type floor is 13px **at drawn
-size**, so a drawing has to be drawn at the width it is shown at — 800, which is
-what this column gives it. `feedback-loop.svg` is the first drawn that way; the
-others are still 1200 wide and shown at 0.67.
+The drawings are the open half. They ship twice, as the system asks — `name.svg`
+and `name-dark.svg`, the second a straight token swap of the first — and
+`Site::publishDrawings()` still puts the twin nobody named beside the one a page
+did. Nothing asks for it: a markdown image is an inline node, the theme renders
+a figure for the reStructuredText directive alone, and a plain `<img>` is a
+document of its own that cannot be told which mode the page is in. So a reader
+in dark reads a light drawing, and a drawing is read at the width of the column
+rather than at the size it was drawn at. Both were the script's doing and the
+script is gone. What each would need is in `D-DOC-024`.
 
 ## Tests
 

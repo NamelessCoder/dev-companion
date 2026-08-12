@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="art" viewBox="0 0 32 32" role="img" aria-label="TYPO3 Dev Companion">
+  <title>TYPO3 Dev Companion</title>
+  <!-- Every colour sits on its own shape, as a var() with a hex fallback: a
+       page that declares the tokens gets its own ink, and this file still
+       renders on its own. Nothing colours it from a <style> or from the root,
+       and no comment in here may carry a double dash, which is what makes an
+       SVG malformed and a reference to it draw nothing. -->
+  <!-- L - drawn at 32, where one unit is one pixel. Stroke 2, rounding 1,
+       gap 2. The full statement: three lines, and the marker the frame opens
+       for. -->
+  <path stroke="var(--text-primary, #8A8378)" d="M31 20V24A3 3 0 0 1 28 27H4A3 3 0 0 1 1 24V8A3 3 0 0 1 4 5H19" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+  <rect fill="var(--text-primary, #8A8378)" x="6" y="10" width="14" height="2" rx="1"></rect>
+  <rect fill="var(--text-primary, #8A8378)" x="6" y="15" width="9" height="2" rx="1" opacity="0.55"></rect>
+  <rect fill="var(--accent, #FF8700)" x="6" y="20" width="16" height="2" rx="1"></rect>
+  <path d="M23 5H28A3 3 0 0 1 31 8V16Z" fill="var(--accent, #FF8700)" stroke="var(--accent, #FF8700)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+</svg>

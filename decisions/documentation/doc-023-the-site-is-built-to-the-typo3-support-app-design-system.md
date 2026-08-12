@@ -1,7 +1,8 @@
 ---
 id: D-DOC-023
 date: 2026-08-09
-status: open
+status: revoked
+revokedBy: D-DOC-024
 ---
 
 # D-DOC-023 — The site is built to the TYPO3 Support App design system
@@ -39,8 +40,9 @@ is the product's own.
 
 - The token files are copied unchanged and are not edited here. A value that
   differs from the system's is the one thing that directory exists to prevent,
-  and `SiteTest::theThemeWritesNoColourOfItsOwn` holds `site.css` to naming
-  them.
+  and `theThemeWritesNoColourOfItsOwn` holds `site.css` to naming them. That
+  check went with the file it read; the **Revoked on** section below says what
+  stands in its place.
 - The icons are copied, not drawn. The system contributes a missing icon
   upstream rather than inventing one locally, and the identifiers are the core's
   own — the same strings `typo3_icon_lookup` returns.
@@ -134,7 +136,6 @@ forbidden:
 
 ## Covered by
 
-- `SiteTest::theThemeWritesNoColourOfItsOwn`
 - `SiteTest::everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt`
 
 ## Since then
@@ -159,12 +160,33 @@ On 2026-08-11 the two assertions above were put back on the theme that exists.
 The one that held every token the theme names to what the system declares read
 the vendored directory and had been throwing since it went; that check runs in
 `build.mjs` over the bundled stylesheet now, where the imports are resolved —
-the tokens arrive with
-`npm ci`, which `composer ci` does not run, and no test here may skip itself
-(`StructureTest::noTestSkipsItselfInsteadOfHolding`). It reads wider than the
-assertion did, since the component layer is in scope, and it ignores a `var()`
-carrying a fallback: `--sds-pad` is declared nowhere and the padding beside it
-is the value. `theThemeWritesNoColourOfItsOwn` now strips comments before the
-scan, because `51e70499` explained this rule in the header of `site.css` by
-naming the two values it was broken with, and the scan read the explanation as
-the breach.
+the tokens arrive with `npm ci`, which `composer ci` does not run, and no test
+here may skip itself (`StructureTest::noTestSkipsItselfInsteadOfHolding`). It
+reads wider than the assertion did, since the component layer is in scope, and
+it ignores a `var()` carrying a fallback: `--sds-pad` is declared nowhere and
+the padding beside it is the value. `theThemeWritesNoColourOfItsOwn` now strips
+comments before the scan, because `51e70499` explained this rule in the header
+of `site.css` by naming the two values it was broken with, and the scan read the
+explanation as the breach.
+
+## Revoked on 2026-08-12
+
+By its own third **Assumed**, and then by the move it made necessary. Nothing
+below `theme/` is left to vendor: the design system publishes itself as a
+renderer theme, and this site installs it —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+Neither `theme/assets/tokens/` nor `icons/` nor `site.css` exists, so no part of
+the statement describes this site.
+
+The two tests it named are gone with the files they read. What holds in their
+place is the package: a token cannot be redeclared here because there is no
+stylesheet here, and an icon cannot be a stale copy because the sprite ships
+with the theme.
+
+Three of its readings outlive it and are what
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+carries forward as open: a drawing has to be read at the size it was drawn at,
+which is what the lightbox was for; a truncated identifier is not the
+identifier, and the rail truncates one again; and a drawing that cannot be told
+which mode the page is in reads in the wrong ink, which is what the dark twin
+was drawn for and what nothing swaps today.

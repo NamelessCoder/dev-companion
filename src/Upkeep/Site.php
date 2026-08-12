@@ -66,12 +66,6 @@ final class Site
     /** The branch a link leaving the published tree points into. */
     private const BRANCH = 'main';
 
-    /** Where every page links the stylesheet and the script, from the site root. */
-    public const ASSETS = 'assets';
-
-    /** What the layout fetches to search over, from the site root. */
-    public const SEARCH = 'search.json';
-
     /** Where the drawings sit, in the checkout and in the published site alike. */
     public const DRAWINGS = 'images';
 
@@ -82,31 +76,67 @@ final class Site
      * The two steps of a render that are not this process, as the commands a
      * person could have typed.
      *
-     * The renderer reads `guides.xml` from the working directory, and both npm
-     * invocations name their prefix from it, so every one of them is run at the
-     * root of this checkout rather than wherever the caller stands.
+     * The renderer reads `guides.xml` from the working directory, and the
+     * finish step is named from it too, so both are run at the root of this
+     * checkout rather than wherever the caller stands.
      */
-    public const BUILD_ASSETS = ['npm', '--prefix', 'build/guides', 'run', 'build'];
     public const RENDER = ['build/guides/vendor/bin/guides', '--no-progress'];
-
-    /** Where `npm run build` writes them, and what the layout reads their names from. */
-    private const BUILT = 'build/guides/theme/assets/dist';
-    private const MANIFEST = 'manifest.txt';
+    private const FINISH = 'build/guides/vendor/typo3/soul-guides-theme/resources/dist/soul-finish.js';
 
     private static ?string $repository = null;
 
     /**
-     * Where the built assets are read from, for a caller that has none.
+     * The second half of a render, over the pages the first half wrote.
      *
-     * `npm run build` writes them and the suite does not run it, so a test
-     * holding what is copied hands in a directory of its own rather than
-     * skipping itself on a machine where nobody has built anything.
+     * The theme ships it as one bundled file: it copies the stylesheet, the
+     * script and the faces to the site root, draws every element on every page
+     * ahead of the browser so a reader with no script still reads them, and
+     * writes the index the search bar fetches. All three used to be this
+     * repository's, and `D-DOC-024` is what handing them over rests on.
+     *
+     * @return list<string>
      */
-    private static ?string $built = null;
-
-    public static function useBuilt(?string $directory): void
+    public static function finish(string $site): array
     {
-        self::$built = $directory;
+        return ['node', self::FINISH, $site];
+    }
+
+    /**
+     * The dark twin of every drawing the render published.
+     *
+     * A drawing ships as two files — the dark one a straight token swap of the
+     * light one — and the renderer copies an image a page names and nothing
+     * else. No page names the twin, so it has to be put beside the one that was
+     * named.
+     *
+     * Nothing on the published page asks for it today: the script that swapped
+     * the two was this repository's, and the theme renders a Markdown image as
+     * a plain `<img>`, which is a document of its own and cannot be told which
+     * mode the page is in. The twin is published anyway, because it is the dark
+     * half of the drawing and the file that would otherwise have to be drawn
+     * again — `D-DOC-024` is what is open about it.
+     *
+     * @return list<string> the names written
+     */
+    public static function publishDrawings(string $site): array
+    {
+        $target = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::DRAWINGS;
+        if (!is_dir($target)) {
+            return [];
+        }
+
+        $written = [];
+        foreach (Finder::create()->files()->in($target)->name('*.svg')->notName('*' . self::DARK)->sortByName() as $drawing) {
+            $twin = Paths::root() . '/' . self::SOURCE . '/' . self::DRAWINGS . '/'
+                . str_replace('.svg', self::DARK, $drawing->getFilename());
+            if (!is_file($twin)) {
+                continue;
+            }
+            copy($twin, $target . '/' . basename($twin));
+            $written[] = basename($twin);
+        }
+
+        return $written;
     }
 
     /**
@@ -149,142 +179,6 @@ final class Site
         }
 
         return $sources;
-    }
-
-    /**
-     * The built stylesheet and script, copied beside the pages that link them.
-     *
-     * The manifest stays behind: it is how the layout learns the two names at
-     * render time, and no page asks for it. Nothing is swept here, because the
-     * names carry a hash and yesterday's file is what a reader mid-deploy is
-     * still asking for.
-     *
-     * @return list<string> the names written, empty where nothing is built
-     */
-    public static function publishAssets(string $site): array
-    {
-        $built = self::$built ?? Paths::root() . '/' . self::BUILT;
-        if (!is_dir($built)) {
-            return [];
-        }
-
-        $target = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::ASSETS;
-        if (!is_dir($target)) {
-            mkdir($target, 0777, true);
-        }
-
-        $written = [];
-        foreach (Finder::create()->files()->in($built)->notName(self::MANIFEST)->sortByName() as $file) {
-            copy($file->getPathname(), $target . '/' . $file->getFilename());
-            $written[] = $file->getFilename();
-        }
-
-        return $written;
-    }
-
-    /**
-     * The dark twin of every drawing the render published.
-     *
-     * A drawing ships as two files — the dark one a straight token swap of the
-     * light one — and the renderer copies an image a page names and nothing
-     * else. No page names the twin: the script asks for it when the reader is
-     * in dark, so it has to be put beside the one that was named.
-     *
-     * @return list<string> the names written
-     */
-    public static function publishDrawings(string $site): array
-    {
-        $target = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::DRAWINGS;
-        if (!is_dir($target)) {
-            return [];
-        }
-
-        $written = [];
-        foreach (Finder::create()->files()->in($target)->name('*.svg')->notName('*' . self::DARK)->sortByName() as $drawing) {
-            $twin = Paths::root() . '/' . self::SOURCE . '/' . self::DRAWINGS . '/'
-                . str_replace('.svg', self::DARK, $drawing->getFilename());
-            if (!is_file($twin)) {
-                continue;
-            }
-            copy($twin, $target . '/' . basename($twin));
-            $written[] = basename($twin);
-        }
-
-        return $written;
-    }
-
-    /**
-     * The index the site is searched over, written beside the pages it filters.
-     *
-     * @return array{file: string, pages: int, bytes: int}
-     */
-    public static function publishSearch(string $site): array
-    {
-        $index = self::search();
-        $file = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::SEARCH;
-        file_put_contents($file, json_encode($index, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
-
-        return ['file' => $site . '/' . self::SEARCH, 'pages' => count($index), 'bytes' => (int) filesize($file)];
-    }
-
-    /**
-     * What the published site is searched over: one entry per page, each with
-     * the URL it is served at, its title, its headings and its prose.
-     *
-     * The renderer offers no search of any kind, and 47 pages of which several
-     * run past 60 KB are browsed rather than read. This is the index a page
-     * filters in the reader's browser — small enough to fetch once, because
-     * what is left out is the half that would dominate it.
-     *
-     * Fenced blocks are left out. They are 582 of them and most are a recorded
-     * tool answer in JSON, so indexing them buries every prose match under the
-     * evidence and triples what a reader downloads to find it. What a caller
-     * searches an answer by is its tool name, and that is the page title.
-     *
-     * @return list<array{url: string, title: string, headings: list<string>, text: string}>
-     */
-    public static function search(): array
-    {
-        $index = [];
-        foreach (self::sources() as $source) {
-            if (!str_ends_with($source, '.md')) {
-                continue;
-            }
-            $markdown = (string) file_get_contents(Paths::root() . '/' . $source);
-            $published = self::published($source);
-
-            $headings = [];
-            if (preg_match_all('/^#{1,6}\s+(.+?)\s*$/m', self::prose($markdown), $found) !== false) {
-                $headings = array_map(self::plain(...), $found[1]);
-            }
-
-            $index[] = [
-                'url' => substr($published, 0, -3) . '.html',
-                'title' => array_shift($headings) ?? $published,
-                'headings' => $headings,
-                'text' => self::plain((string) preg_replace('/^#{1,6}\s+.+?$/m', '', self::prose($markdown))),
-            ];
-        }
-
-        return $index;
-    }
-
-    /** A page with everything a reader does not read as a sentence taken out. */
-    private static function prose(string $markdown): string
-    {
-        return (string) preg_replace('/^ {0,3}```.*?^ {0,3}```/ms', '', $markdown);
-    }
-
-    /** Markdown reduced to the words in it, on one line. */
-    private static function plain(string $markdown): string
-    {
-        $text = (string) preg_replace('/!?\[([^\]]*)\]\([^)]*\)/', '$1', $markdown);
-        // The underscore stays. It is emphasis in markdown and it is half of
-        // every tool name here, and `typo3_icon_lookup` is what somebody
-        // searching for that page types.
-        $text = (string) preg_replace('/[`*>#|]+/', ' ', $text);
-
-        return trim((string) preg_replace('/\s+/', ' ', $text));
     }
 
     /**
@@ -373,26 +267,21 @@ final class Site
 
     /**
      * What a render needs below `build/guides/` and this repository does not
-     * commit, as the command that installs each — only where it is missing.
+     * commit, as the command that installs it — only where it is missing.
      *
-     * Both are gitignored build inputs rather than dependencies of this
-     * package, so a fresh checkout has neither and nothing else would say so:
-     * the renderer is absent as a missing file and the theme's packages as an
-     * npm error nobody reads as an install step.
+     * A gitignored build input rather than a dependency of this package, so a
+     * fresh checkout has none of it and nothing else would say so: the renderer
+     * and the theme it brings with it are absent as a missing file.
      *
      * @return array<string, list<string>> the command, by what it installs
      */
     public static function installs(): array
     {
-        $installs = [];
-        if (!is_file(Paths::root() . '/' . self::RENDER[0])) {
-            $installs['the renderer'] = ['composer', 'install', '--working-dir=build/guides', '--no-interaction'];
-        }
-        if (!is_dir(Paths::root() . '/build/guides/node_modules')) {
-            $installs["the theme's packages"] = ['npm', '--prefix', 'build/guides', 'ci'];
+        if (is_file(Paths::root() . '/' . self::RENDER[0])) {
+            return [];
         }
 
-        return $installs;
+        return ['the renderer and its theme' => ['composer', 'install', '--working-dir=build/guides', '--no-interaction']];
     }
 
     /**

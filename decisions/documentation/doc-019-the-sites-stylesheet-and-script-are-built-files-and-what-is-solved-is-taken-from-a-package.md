@@ -1,7 +1,8 @@
 ---
 id: D-DOC-019
 date: 2026-08-09
-status: open
+status: revoked
+revokedBy: D-DOC-024
 ---
 
 # D-DOC-019 — The site's stylesheet and script are built files, and what is solved is taken from a package
@@ -79,11 +80,6 @@ things being hand-written had grown from a stylesheet to a highlighter.
 - A block is coloured wrongly enough to change what somebody types. The text is
   held; the colouring is not.
 
-## Covered by
-
-- `SiteTest::theBuiltAssetsAreCopiedBesideThePagesAndTheManifestIsNot`
-- `SiteTest::nothingBuiltIsReportedRatherThanCopied`
-
 ## Since then
 
 The build publishes a third kind of file. Building the site to the design system
@@ -101,3 +97,18 @@ the assets before the render reads their names —
 [`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md).
 The failure this entry gave `documentation:assets` is now the render's: nothing
 built stops it rather than publishing a site served unstyled.
+
+## Revoked on 2026-08-12
+
+There is no build here to write those two files. The theme is a package now —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+— and it ships its own stylesheet, script and faces as files a page links, so
+the statement above describes a build that no longer exists. The two tests this
+entry named went with it.
+
+What it decided that still holds is where it holds: an asset is a file rather
+than a block in every page, and the highlighting is a library rather than a
+regular expression written here — the theme colours a fenced block on the server
+with the same one. What is given up is the search. The index is the theme's, so
+the 582 fenced blocks this entry counted are in it, and the one hand-written
+piece that knew something a package could not is the piece that went.

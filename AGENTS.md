@@ -56,9 +56,9 @@ src/Upkeep/Links.php # every path this repository writes between its own files, 
 src/Upkeep/Site.php  # the readme and documentation/ as the source a generator publishes: the links that leave them, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there; published as a site, below the readme
-build/guides/      # the renderer that publishes the readme and documentation/, and the theme they are published in; its composer.json and package.json each say why they are separate
-build/guides/theme/assets/site.css # what the site adds to the design system, which it imports from the package rather than copying — D-DOC-023
-build/guides/theme/assets/icons/   # its icons and signet, copied rather than drawn; inlined by the layout so each follows the text colour
+documentation/images/  # the drawings a page names, and the mark at its three optical sizes
+build/guides/      # the renderer that publishes the readme and documentation/, installed with the theme it renders them in; its composer.json says why it is separate
+guides.xml         # what that render is: the copy it reads, the theme it selects, and everything the bar, the tab and the footer say — D-DOC-024
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

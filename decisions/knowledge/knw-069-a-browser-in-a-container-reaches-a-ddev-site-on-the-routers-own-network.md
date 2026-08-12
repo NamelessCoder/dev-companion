@@ -113,6 +113,7 @@ page.
 wherever one of them is an e2e suite, in the form `R-ANS-028` asks for: a
 `typo3_rule_lookup` call by `documentId`, with the styleguide instance's missing
 content and the screenshot path as what the page carries and the answer does
-not. `KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
+not.
+`KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
 runs the CSS path the report was written from, and the functional case beside it
 holds the block to the suites it is about.

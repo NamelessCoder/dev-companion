@@ -30,8 +30,8 @@ corrections before the developer asked whether it had actually looked.
   `e2e-browser`, which serves Playwright's own UI at the port the help text
   names, is on `main` and `14.3` only. `PLAYWRIGHT_USE_EXISTING_INSTANCE`
   appears on the same three branches as `e2e-prepare` and skips the composer
-  install of the test instance, which is the session's own measurement of what
-  a rerun costs.
+  install of the test instance, which is the session's own measurement of what a
+  rerun costs.
 - `knowledge/test-suite-hints.json` carried `e2e` alone. So
   `typo3_test_run_guide` answered a positional backend change with a headless
   suite and nothing to look at, which is the answer the session acted on.
@@ -43,9 +43,9 @@ corrections before the developer asked whether it had actually looked.
   makes them findable is the second sentence: a suite the caller reads as "run
   the tests" is not what it reaches for when it wants to see something.
 - `browser-tests` gains one bound statement pointing at them, because the
-  session asking how to look at a change asks a hint lookup, not a run guide.
-  It says what the suite is for and leaves what it prints to the guide that
-  owns it.
+  session asking how to look at a change asks a hint lookup, not a run guide. It
+  says what the suite is for and leaves what it prints to the guide that owns
+  it.
 - `e2e-prepare` carries the CSS domain as well. A Sass change is one of the
   changes somebody has to look at, and verifying in one engine is what
   [`D-KNW-066`](knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md)

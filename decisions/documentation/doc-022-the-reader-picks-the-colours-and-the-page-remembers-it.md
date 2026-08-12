@@ -72,3 +72,17 @@ their own choice from then on, and clearing it means clearing the site's
 storage. Everything else this entry settled stands, including the two lines in
 the head — the switch writes the same attribute, and the system reads it with
 `color-scheme` the same way.
+
+## Since then
+
+The switch is the theme's `sds-theme`, two segments rather than one button —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md),
+after `D-DOC-023` had already replaced the three-state button with the design
+system's own. What this entry decided is what still happens: the reader picks,
+and the choice is written before the first paint on the next page, so nobody
+sees the other mode for a frame.
+
+One thing it promised has stopped holding, and it is the drawings. They are
+plain `<img>` now, which is a document of its own that no page can reach into,
+so a reader in dark reads a light drawing. What was drawn for it is still in the
+checkout and still published.

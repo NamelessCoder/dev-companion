@@ -109,8 +109,6 @@ of what it points at is a directory the site does not carry.
 - `SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt`
 - `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 - `SiteTest::noPublishedLinkNamesAHeadingInAnotherPage`
-- `SiteTest::theSearchIndexNamesEveryPageByTheUrlItIsServedAt`
-- `SiteTest::theSearchIndexHoldsTheProseAndNotTheRecordedAnswers`
 
 ## Since then
 
@@ -134,3 +132,9 @@ to keep in the right order and could not, and
 [`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md)
 folded them into `bin/cli documentation:render`. What is published, and that it
 is a copy, is unchanged.
+
+The two cases this entry named over the search index went with the index. It is
+the theme's now, written from the rendered pages rather than from the copy —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+— so what a hit is named by is no longer this repository's to hold. The four
+cases over the copy itself are untouched, which is what this entry is about.

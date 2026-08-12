@@ -1,13 +1,18 @@
 {
     "description": "The renderer that turns the built documentation into the published site. Its own manifest, because phpDocumentor Guides pulls a dependency graph this package does not have and must not carry.",
     "require": {
-        "phpdocumentor/guides-cli": "^1.9",
-        "phpdocumentor/guides-markdown": "^1.9"
+        "typo3/soul-guides-theme": "dev-main"
     },
     "config": {
         "platform": {
             "php": "8.2"
         },
         "sort-packages": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/benjaminkott/typo3-soul-guides-theme"
+        }
+    ]
 }

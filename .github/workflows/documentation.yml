@@ -30,21 +30,20 @@ jobs:
           php-version: '8.2'
           coverage: none
 
+      # The theme's finish step is one bundled file and installs nothing, so
+      # node is here for that alone.
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: npm
-          cache-dependency-path: build/guides/package-lock.json
 
-      # Three manifests: this package, the renderer, and what the browser runs.
-      # build/guides/composer.json and package.json each say why they are their
-      # own. The last two are installed here rather than left to the render, so
-      # the node_modules cache above is used and a failure names the install.
+      # Two manifests: this package and the renderer.
+      # build/guides/composer.json says why it is its own. The second is
+      # installed here rather than left to the render, so a failure names the
+      # install.
       - name: Install dependencies
         run: |
           composer install --no-interaction --no-progress
           composer install --working-dir=build/guides --no-interaction --no-progress
-          npm --prefix build/guides ci
 
       - name: Build the site
         run: bin/cli documentation:render

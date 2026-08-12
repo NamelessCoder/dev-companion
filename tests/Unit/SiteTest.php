@@ -33,7 +33,6 @@ final class SiteTest extends TestCase
     protected function tearDown(): void
     {
         Directory::remove($this->target);
-        Site::useBuilt(null);
     }
 
     /**
@@ -219,42 +218,6 @@ final class SiteTest extends TestCase
         );
     }
 
-    /**
-     * `D-DOC-019`: the two built files are copied beside the pages, and the
-     * manifest that named them to the layout stays behind.
-     */
-    #[Test]
-    public function theBuiltAssetsAreCopiedBesideThePagesAndTheManifestIsNot(): void
-    {
-        $built = $this->target . '-built';
-        mkdir($built, 0777, true);
-        file_put_contents($built . '/site.1234abcd.css', 'body{}');
-        file_put_contents($built . '/site.5678ef90.js', '(function(){})();');
-        file_put_contents($built . '/manifest.txt', "site.1234abcd.css\nsite.5678ef90.js\n");
-        Site::useBuilt($built);
-
-        try {
-            $published = Site::publishAssets($this->target);
-
-            self::assertSame(['site.1234abcd.css', 'site.5678ef90.js'], $published);
-            self::assertFileExists($this->target . '/' . Site::ASSETS . '/site.1234abcd.css');
-            self::assertFileExists($this->target . '/' . Site::ASSETS . '/site.5678ef90.js');
-            // It says what the two are called and no page asks for it.
-            self::assertFileDoesNotExist($this->target . '/' . Site::ASSETS . '/manifest.txt');
-        } finally {
-            Directory::remove($built);
-        }
-    }
-
-    /** Nothing built is a site served unstyled, so it is a failure and not an empty copy. */
-    #[Test]
-    public function nothingBuiltIsReportedRatherThanCopied(): void
-    {
-        Site::useBuilt($this->target . '-absent');
-
-        self::assertSame([], Site::publishAssets($this->target));
-    }
-
     /** An external link is nobody's to rewrite. */
     #[Test]
     public function anExternalLinkIsLeftAsItWasWritten(): void
@@ -290,59 +253,12 @@ final class SiteTest extends TestCase
     }
 
     /**
-     * The index is over the pages as they are served, so a hit is a URL rather
-     * than a path somebody then has to translate.
-     */
-    #[Test]
-    public function theSearchIndexNamesEveryPageByTheUrlItIsServedAt(): void
-    {
-        Site::build($this->target);
-        $index = Site::search();
-
-        $urls = array_column($index, 'url');
-        self::assertContains('index.html', $urls, 'the readme is the site root');
-        self::assertContains('how-the-work-is-done.html', $urls);
-        self::assertContains('tools/index.html', $urls);
-        self::assertContains('tools/typo3_icon_lookup.html', $urls);
-        foreach ($urls as $url) {
-            self::assertFileExists(
-                $this->target . '/' . substr($url, 0, -5) . '.md',
-                $url . ' is indexed and not published',
-            );
-        }
-    }
-
-    /**
-     * What is left out is the recorded evidence. 582 fenced blocks, most of
-     * them a tool answer in JSON, would bury every prose match under them and
-     * be most of what a reader downloads to find one.
-     */
-    #[Test]
-    public function theSearchIndexHoldsTheProseAndNotTheRecordedAnswers(): void
-    {
-        $index = Site::search();
-
-        $recorded = array_values(array_filter(
-            $index,
-            static fn(array $page): bool => $page['url'] === 'tools/typo3_icon_lookup.html',
-        ));
-
-        self::assertNotSame([], $recorded);
-        self::assertSame('typo3_icon_lookup', $recorded[0]['title']);
-        self::assertNotSame('', $recorded[0]['text']);
-        foreach ($index as $page) {
-            self::assertStringNotContainsString('```', $page['text'], $page['url'] . ' carries a fenced block');
-            self::assertStringNotContainsString('](', $page['text'], $page['url'] . ' carries a link target');
-        }
-    }
-
-    /**
      * `D-DOC-023`: a drawing ships light and dark, and the twin is published.
      *
      * The renderer copies an image a page names and nothing else, and no page
-     * names the twin — the script asks for it once the reader is in dark. A
-     * drawing without one is a light canvas on a dark page, which is the
-     * defect the two files exist to prevent.
+     * names the twin. Nothing on the page asks for it since the theme became a
+     * package — `D-DOC-024` — and it is still the dark half of the drawing,
+     * which is why it is kept and put beside the one that was named.
      */
     #[Test]
     public function everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt(): void
@@ -351,6 +267,11 @@ final class SiteTest extends TestCase
         $light = [];
         foreach (Finder::create()->files()->in($drawings)->name('*.svg')->notName('*' . Site::DARK)->sortByName() as $drawing) {
             $name = $drawing->getFilename();
+            // The mark is not a drawing: it ships once per optical size and
+            // carries the page's own ink through a token rather than a twin.
+            if (str_starts_with($name, 'signet-')) {
+                continue;
+            }
             self::assertFileExists(
                 $drawings . '/' . str_replace('.svg', Site::DARK, $name),
                 $name . ' has no dark twin',
@@ -368,33 +289,28 @@ final class SiteTest extends TestCase
     }
 
     /**
-     * `D-DOC-023`: the theme states no colour of its own.
+     * `D-DOC-024`: every directory the site serves has a page of its own.
      *
-     * The design system's first rule is that a token value is never
-     * redeclared locally, and the way that breaks is one hex written into a
-     * rule at half past five. The package `site.css` imports is where a value
-     * is allowed to stand; everything the site adds names one.
-     *
-     * `color-mix()` is not one of them: the system mixes tokens itself, and
-     * what the header needs — the canvas, translucent — has no token of its
-     * own.
-     *
-     * The scan reads the rules and not the prose above them. The header
-     * explains this rule by naming the two values it was broken with, and a
-     * comment declares nothing — which is how `51e70499` turned an
-     * explanation of the rule into a breach of it.
+     * The rail and the trail are built from the directories, and a page whose
+     * directory has no `readme.md` is attached to nothing: the renderer says so
+     * as a warning nobody reads and the page is then in no menu at all. Six of
+     * them were unreachable that way.
      */
     #[Test]
-    public function theThemeWritesNoColourOfItsOwn(): void
+    public function everyDirectoryOfTheDocumentationHasItsOwnPage(): void
     {
-        $theme = (string) file_get_contents(Paths::root() . '/build/guides/theme/assets/site.css');
-        $found = preg_match_all(
-            '/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/',
-            (string) preg_replace('#/\*.*?\*/#s', '', $theme),
-            $matches,
-        );
+        $source = Paths::root() . '/' . Site::SOURCE;
+        $without = [];
+        foreach (Finder::create()->directories()->in($source)->sortByName() as $directory) {
+            if (!Finder::create()->files()->in($directory->getPathname())->name('*.md')->hasResults()) {
+                continue;
+            }
+            if (!is_file($directory->getPathname() . '/readme.md')) {
+                $without[] = $directory->getRelativePathname();
+            }
+        }
 
-        self::assertSame(0, $found, 'site.css states ' . implode(', ', $matches[0]) . ' rather than a token');
+        self::assertSame([], $without);
     }
 
     /**

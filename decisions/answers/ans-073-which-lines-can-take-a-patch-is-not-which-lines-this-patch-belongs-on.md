@@ -54,10 +54,10 @@ together writes all three into the trailer and believes it was told to.
 
 ## Assumed
 
-- That the reach is always two lines. It is what "one line back from main"
-  means while one release line is current; nothing here derives it from the
-  release calendar, and a period with two current lines would need the rule
-  restated rather than the arithmetic changed.
+- That the reach is always two lines. It is what "one line back from main" means
+  while one release line is current; nothing here derives it from the release
+  calendar, and a period with two current lines would need the rule restated
+  rather than the arithmetic changed.
 
 ## Wrong if
 

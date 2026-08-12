@@ -1,7 +1,8 @@
 ---
 id: D-DOC-021
 date: 2026-08-09
-status: open
+status: revoked
+revokedBy: D-DOC-024
 ---
 
 # D-DOC-021 — The site is searched in a dialog opened with Ctrl-K
@@ -67,3 +68,16 @@ the hits landed where nobody could see them.
 - The dialog opens over a page that keeps scrolling under it, or the return key
   opens a hit that is not the one marked.
 - The assets grow past what one fetch for the whole site is worth.
+
+## Revoked on 2026-08-12
+
+The search is the theme's, and the theme's has no Ctrl-K —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+`sds-search` sits in the bar and is opened by pressing it, so the half of the
+statement about the shortcut is not true of this site any more.
+
+What the entry found is why the element is in the bar rather than in the rail,
+and that reading stands: a hit written into the sidebar is written where a
+reader on a narrow screen cannot see it. A shortcut that opens the field belongs
+in the element, which every site using this theme gets at once, rather than in a
+script kept here.

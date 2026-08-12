@@ -72,7 +72,16 @@ keep them, which is a sequence rather than a set of choices.
 
 ## Covered by
 
-- `DocumentationRenderTest::oneCallInstallsWhatIsMissingThenBuildsThenRenders`
+- `DocumentationRenderTest::oneCallInstallsWhatIsMissingThenBuildsThenRendersThenFinishes`
 - `DocumentationRenderTest::everythingTheSiteIsMadeOfIsWrittenInOnePlace`
 - `DocumentationRenderTest::aFailedStepStopsTheRenderAndQuotesTheCommand`
-- `DocumentationRenderTest::aSiteThatWouldBeServedUnstyledIsAFailure`
+- `DocumentationRenderTest::aSiteThatWasNeverFinishedIsAFailure`
+
+## Since then
+
+The steps are four rather than six. The asset build is gone with the theme it
+built for, and what follows the render is the theme's own finish step —
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+So the command installs what is missing, writes the copy, renders it, finishes
+it and puts the dark twins beside the pages. What this entry decided is
+untouched: the order is not a choice, and one command is what keeps it.

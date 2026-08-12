@@ -60,8 +60,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,
@@ -78,7 +78,6 @@ Called with:
         "path": "EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf"
     }
 
-
 Text:
 
 .. code-block:: text
@@ -88,9 +87,8 @@ Text:
       backend.alt_doc
 
     Reference a label in it as "backend.alt_doc:<trans-unit id>" — in TCA, in LanguageService::sL(), and in f:translate as separate domain and key attributes.
-    Composed for the installation here, TYPO3 14.3.6-dev. State targetVersion where the label is being written for another branch.
+    Composed for the installation here, TYPO3 14.3.7-dev. State targetVersion where the label is being written for another branch.
     Which trans-units the file actually holds is a property of your checkout: read the file, and remember that an installation can override it through LANG/resourceOverrides.
-
 
 Data:
 
@@ -103,7 +101,6 @@ Data:
         "domainOnNewerVersions": null
     }
 
-
 domain: checkout path
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -115,7 +112,6 @@ Called with:
         "path": "typo3/sysext/core/Resources/Private/Language/locallang.xlf"
     }
 
-
 Text:
 
 .. code-block:: text
@@ -125,9 +121,8 @@ Text:
       core.messages
 
     Reference a label in it as "core.messages:<trans-unit id>" — in TCA, in LanguageService::sL(), and in f:translate as separate domain and key attributes.
-    Composed for the installation here, TYPO3 14.3.6-dev. State targetVersion where the label is being written for another branch.
+    Composed for the installation here, TYPO3 14.3.7-dev. State targetVersion where the label is being written for another branch.
     Which trans-units the file actually holds is a property of your checkout: read the file, and remember that an installation can override it through LANG/resourceOverrides.
-
 
 Data:
 
@@ -139,7 +134,6 @@ Data:
         "domain": "core.messages",
         "domainOnNewerVersions": null
     }
-
 
 domain: on an older target
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +147,6 @@ Called with:
         "targetVersion": "13.4"
     }
 
-
 Text:
 
 .. code-block:: text
@@ -163,7 +156,6 @@ Text:
       LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:<trans-unit id>
 
     For the record, the domain this path would resolve to on a version that has them is "backend.alt_doc". Writing it into a label there renders nothing, and fails at runtime rather than at build time.
-
 
 Data:
 
@@ -176,7 +168,6 @@ Data:
         "domainOnNewerVersions": "backend.alt_doc"
     }
 
-
 domain: miss
 ~~~~~~~~~~~~
 
@@ -188,14 +179,12 @@ Called with:
         "path": "somewhere/else.xlf"
     }
 
-
 Text:
 
 .. code-block:: text
 
     "somewhere/else.xlf" names no extension, so no translation domain follows from it.
     Pass either an EXT: reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") or a checkout path ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").
-
 
 Data:
 

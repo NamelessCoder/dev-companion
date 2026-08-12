@@ -90,18 +90,18 @@ The answer carries exactly one of these sets of fields: ``path``, ``found``,
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
 installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a heading
-naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks what is below this heading; everything above it is
-derived from the class that answers the call, and ``bin/cli tools:check`` holds
-it.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 configuration
 ~~~~~~~~~~~~~
@@ -114,7 +114,6 @@ Called with:
         "path": "SYS/fluid"
     }
 
-
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -124,7 +123,6 @@ Text:
 
     This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
     typo3_server_scope reports the installation and its console.
-
 
 Data:
 
@@ -146,7 +144,6 @@ Data:
             }
         }
     }
-
 
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -170,7 +167,6 @@ Text:
     ```
 
     This is the assembled runtime value, not the default the core ships.
-
 
 Data:
 

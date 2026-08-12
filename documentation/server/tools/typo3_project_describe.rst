@@ -208,18 +208,18 @@ The answer carries exactly one of these sets of fields: ``root``,
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
 installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a heading
-naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks what is below this heading; everything above it is
-derived from the class that answers the call, and ``bin/cli tools:check`` holds
-it.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 project
 ~~~~~~~
@@ -230,7 +230,6 @@ Called with:
 
     {}
 
-
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -238,7 +237,7 @@ Text:
 
 .. code-block:: text
 
-    <installation> — core-checkout, TYPO3 14.3.6-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
+    <installation> — core-checkout, TYPO3 14.3.7-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
     Extensions: none beyond TYPO3's own.
 
@@ -253,6 +252,7 @@ Text:
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
+    - any/testing/browser-check — Looking at a Change in a Real Browser
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
@@ -262,7 +262,6 @@ Text:
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
     - project/testing/playwright — Setting Up Playwright in a TYPO3 Project
 
-
 Data:
 
 .. code-block:: json
@@ -270,7 +269,7 @@ Data:
     {
         "root": "<installation>",
         "kind": "core-checkout",
-        "typo3Version": "14.3.6-dev",
+        "typo3Version": "14.3.7-dev",
         "phpConstraint": "^8.2",
         "coreConstraint": null,
         "corePhpConstraint": "^8.2",
@@ -310,6 +309,10 @@ Data:
                 "title": "Reporting a TYPO3 Vulnerability"
             },
             {
+                "id": "any/testing/browser-check",
+                "title": "Looking at a Change in a Real Browser"
+            },
+            {
                 "id": "core/contribution/commit-messages",
                 "title": "TYPO3 Core Commit Message Rules"
             },
@@ -345,7 +348,6 @@ Data:
         "answeredBy": "packages"
     }
 
-
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -369,6 +371,7 @@ Text:
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
+    - any/testing/browser-check — Looking at a Change in a Real Browser
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
@@ -377,7 +380,6 @@ Text:
     - extension/documentation/manual — Setting Up an Extension Manual
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
     - project/testing/playwright — Setting Up Playwright in a TYPO3 Project
-
 
 Data:
 
@@ -437,6 +439,10 @@ Data:
             {
                 "id": "any/security/reporting-a-vulnerability",
                 "title": "Reporting a TYPO3 Vulnerability"
+            },
+            {
+                "id": "any/testing/browser-check",
+                "title": "Looking at a Change in a Real Browser"
             },
             {
                 "id": "core/contribution/commit-messages",

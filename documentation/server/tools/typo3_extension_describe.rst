@@ -275,18 +275,18 @@ The answer carries exactly one of these sets of fields: ``key``, ``path``,
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
 installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a heading
-naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks what is below this heading; everything above it is
-derived from the class that answers the call, and ``bin/cli tools:check`` holds
-it.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 extension
 ~~~~~~~~~
@@ -298,7 +298,6 @@ Called with:
     {
         "extension": "backend"
     }
-
 
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -323,7 +322,7 @@ Text:
     Fluid root directories it ships: Resources/Private/Templates/, Resources/Private/Partials/, Resources/Private/Layouts/
     Each is a directory that is there rather than a root something declared. An Extbase controller of this extension falls back to these three; every other view is pointed at a root by TypoScript or by a call while the request runs, and neither of those is in this list.
 
-    Classes: Attribute (3), Authentication (4), Backend (22), Breadcrumb (6), Clipboard (2), CodeEditor (6), Command (8), Configuration (5), Context (2), ContextMenu (7), Controller (90), Date (3), DependencyInjection (3), Domain (5), Dto (9), ElementBrowser (6), Event (1), EventListener (4), Exception (8), Form (201), History (4), Hooks (2), Http (3), LinkHandler (9), Localization (11), LoginProvider (4), Middleware (12), Module (17), Preview (5), RecordList (10), Resource (2), Routing (15), Search (22), Security (18), Service (2), Sidebar (7), Template (41), Toolbar (4), Tree (21), Upgrades (3), User (1), UserFunctions (1), Utility (1), View (36), ViewHelpers (15), Wizard (8), 2 directly in Classes/ — 671 PHP files in total.
+    Classes: Attribute (3), Authentication (4), Backend (22), Breadcrumb (6), Clipboard (2), CodeEditor (6), Command (8), Configuration (5), Context (2), ContextMenu (7), Controller (90), Date (3), DependencyInjection (3), Domain (5), Dto (9), ElementBrowser (6), Event (1), EventListener (4), Exception (8), Form (203), History (4), Hooks (2), Http (4), LinkHandler (9), Localization (11), LoginProvider (4), Middleware (12), Module (17), Preview (5), RecordList (10), Resource (2), Routing (15), Search (22), Security (18), Service (2), Sidebar (7), Template (41), Toolbar (4), Tree (21), Upgrades (3), User (1), UserFunctions (1), Utility (1), View (36), ViewHelpers (15), Wizard (8), 2 directly in Classes/ — 674 PHP files in total.
     Every directory below Classes/ is named here, and each count is every PHP file below that directory, its own subdirectories included. The total is what `find Classes -name '*.php' | wc -l` gives.
 
     Requires: ext-intl *, ext-libxml *, psr/event-dispatcher ^1.0, typo3/cms-core 14.3.*@dev
@@ -382,7 +381,6 @@ Text:
 
     Read from the files, so this is what the extension declares — not what it does at runtime. A table or an icon list built in a loop, and anything a hook or an event listener changes, are not in this list; the files that could hold them are named above. The installation itself was not asked: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
     ext_localconf.php is named above and read by nothing here. Each registers by running, so a hook, an RTE preset or a global Fluid namespace it sets is in none of the lists above. The booted installation answers the tables, content elements and icons it adds, and none of the rest.
-
 
 Data:
 
@@ -671,7 +669,7 @@ Data:
                 },
                 {
                     "name": "Form",
-                    "files": 201
+                    "files": 203
                 },
                 {
                     "name": "History",
@@ -683,7 +681,7 @@ Data:
                 },
                 {
                     "name": "Http",
-                    "files": 3
+                    "files": 4
                 },
                 {
                     "name": "LinkHandler",
@@ -779,7 +777,7 @@ Data:
                 }
             ],
             "looseFiles": 2,
-            "total": 671
+            "total": 674
         },
         "files": [
             "ext_localconf.php",
@@ -1050,7 +1048,6 @@ Data:
         "answeredBy": "packages"
     }
 
-
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -1079,7 +1076,6 @@ Text:
     The source language is what each file declares, not what it should declare — typo3_hint_lookup owns that rule.
 
     The tables, content elements and icons are what the booted installation has, attributed to this extension by the EXT: reference each entry carries; everything else is read from its files. What a hook or an event listener changes at request time is in neither.
-
 
 Data:
 

@@ -100,18 +100,18 @@ The answer carries exactly one of these sets of fields: ``query``, ``resource``,
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
 installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a heading
-naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks what is below this heading; everything above it is
-derived from the class that answers the call, and ``bin/cli tools:check`` holds
-it.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 labels: hit
 ~~~~~~~~~~~
@@ -123,7 +123,6 @@ Called with:
     {
         "query": "save"
     }
-
 
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -216,7 +215,6 @@ Text:
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 
     Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
-
 
 Data:
 
@@ -412,7 +410,6 @@ Data:
         "answeredBy": "packages"
     }
 
-
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -436,7 +433,6 @@ Text:
     A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
 
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
-
 
 Data:
 
@@ -478,7 +474,6 @@ Data:
         "answeredBy": "installation"
     }
 
-
 labels: miss
 ~~~~~~~~~~~~
 
@@ -489,7 +484,6 @@ Called with:
     {
         "query": "quantumflux"
     }
-
 
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -505,7 +499,6 @@ Text:
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 
     Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
-
 
 Data:
 
@@ -525,7 +518,6 @@ Data:
         "answeredBy": "packages"
     }
 
-
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -538,7 +530,6 @@ Text:
     A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
 
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
-
 
 Data:
 

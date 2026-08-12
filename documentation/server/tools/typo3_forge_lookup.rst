@@ -315,8 +315,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-09 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,
@@ -332,7 +332,6 @@ Called with:
     {
         "issue": "110348"
     }
-
 
 Text:
 
@@ -364,7 +363,6 @@ Text:
 
     **Benni Mack**, 2026-08-02T20:45:10Z
     Applied in changeset commit:e82b930e6e0587842427496c5ce01f625b27fb66.
-
 
 Data:
 
@@ -427,7 +425,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: an issue whose evidence hangs off it
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -439,13 +436,12 @@ Called with:
         "issue": "88556"
     }
 
-
 Text:
 
 .. code-block:: text
 
     #88556 One line break in DB field causes 3 rendered p-tags in CKEditor
-    Bug · Resolved · priority Should have · https://forge.typo3.org/issues/88556
+    Bug · Closed · priority Should have · https://forge.typo3.org/issues/88556
     Assigned to nobody.
     Target version: Candidate for patchlevel
     Reported against TYPO3 12, PHP 8.2 — which is what the reporter had, not what it still reproduces on.
@@ -733,7 +729,6 @@ Text:
     **Benjamin Kott**, 2026-08-06T20:15:08Z
     Applied in changeset commit:b406a9416431d1945756ce418d9c3726844f5325.
 
-
 Data:
 
 .. code-block:: json
@@ -749,7 +744,7 @@ Data:
         "issue": {
             "id": 88556,
             "subject": "One line break in DB field causes 3 rendered p-tags in CKEditor",
-            "status": "Resolved",
+            "status": "Closed",
             "tracker": "Bug",
             "priority": "Should have",
             "assignedTo": "",
@@ -757,7 +752,7 @@ Data:
             "typo3Version": "12",
             "phpVersion": "8.2",
             "createdOn": "2019-06-13T13:35:40Z",
-            "updatedOn": "2026-08-06T20:15:08Z",
+            "updatedOn": "2026-08-11T08:46:35Z",
             "url": "https://forge.typo3.org/issues/88556",
             "description": "<pre><code class=\"html\">\r\n<p>Hello World\r\n</p><ul><li>foo bar</li></ul>\r\n</code></pre>\r\n\r\nWhen writing this into a DB field with enabled RTE it causes 3 additional empty p-tags in CKEditor. These can be saved too. See attachment for a sample.\r\n\r\nNot sure whether this is a CKEditor or TYPO3 related issue.",
             "relations": [
@@ -928,7 +923,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: an issue without the patch-set pings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -940,7 +934,6 @@ Called with:
         "issue": "14858",
         "notes": "people"
     }
-
 
 Text:
 
@@ -1014,7 +1007,6 @@ Text:
     - Currently, the option is set to "move" hardcoded without any possibility to change this.
     - Right now, this is debateble is the setCopyMode should be "copy" or "move"
     - If this should be configurable, then we need a new option, making this not a bug, but actually a feature
-
 
 Data:
 
@@ -1126,7 +1118,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: no such issue
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -1138,13 +1129,11 @@ Called with:
         "issue": "99999999"
     }
 
-
 Text:
 
 .. code-block:: text
 
     TYPO3 issue tracker: no issue 99999999 at https://forge.typo3.org.
-
 
 Data:
 
@@ -1163,7 +1152,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: which other issues describe this
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1175,7 +1163,6 @@ Called with:
         "query": "cache busting",
         "limit": 3
     }
-
 
 Text:
 
@@ -1192,7 +1179,6 @@ Text:
 
     ## #105953 f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled
     Bug · Closed · Fluid · filed 2025-01-16 · last touched 2025-08-12 · https://forge.typo3.org/issues/105953
-
 
 Data:
 
@@ -1254,7 +1240,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: nothing matches these words
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1266,14 +1251,12 @@ Called with:
         "query": "quantumflux transponder"
     }
 
-
 Text:
 
 .. code-block:: text
 
     TYPO3 issue tracker: no issue matches "quantumflux transponder" at https://forge.typo3.org.
     These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a word search. Ask again in the words a reporter would have used.
-
 
 Data:
 
@@ -1292,7 +1275,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: the oldest issues nobody has resolved
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1305,12 +1287,11 @@ Called with:
         "limit": 3
     }
 
-
 Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2474 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2487 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1339,7 +1320,6 @@ Text:
     Review: change 2544 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
     Review: change 1186 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186
 
-
 Data:
 
 .. code-block:: json
@@ -1349,7 +1329,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments",
         "query": "",
-        "total": 2474,
+        "total": 2487,
         "categories": [
             "AdminPanel",
             "Authentication",
@@ -1360,7 +1340,7 @@ Data:
             "Categorization API",
             "CLI",
             "Code Cleanup",
-            "composer",
+            "composer / dependencies / third-party",
             "Content Rendering",
             "Content Security Policy",
             "Dashboard",
@@ -1558,7 +1538,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: what is known about one area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1572,7 +1551,6 @@ Called with:
         "tracker": "Bug",
         "limit": 3
     }
-
 
 Text:
 
@@ -1601,7 +1579,6 @@ Text:
     Relation: relates #88382 — Bug · Closed · Link wizard lists all content elements of a page regardless of source language
     Relation: relates #92809 — Bug · Accepted · Anchor Links in Link Wizard not translated correctly
 
-
 Data:
 
 .. code-block:: json
@@ -1622,7 +1599,7 @@ Data:
             "Categorization API",
             "CLI",
             "Code Cleanup",
-            "composer",
+            "composer / dependencies / third-party",
             "Content Rendering",
             "Content Security Policy",
             "Dashboard",
@@ -1786,7 +1763,6 @@ Data:
         "unavailable": null
     }
 
-
 forge: a word that names no area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1799,14 +1775,12 @@ Called with:
         "category": "quantumflux"
     }
 
-
 Text:
 
 .. code-block:: text
 
     TYPO3 issue tracker: "quantumflux" names no area the core files issues under, so nothing was read. That is about the word and not about the backlog.
-    The areas are: AdminPanel, Authentication, Backend API, Backend JavaScript, Backend User Interface, Caching, Categorization API, CLI, Code Cleanup, composer, Content Rendering, Content Security Policy, Dashboard, Database API (Doctrine DBAL), DataHandler aka TCEmain, Documentation, Extbase, Extbase + l10n, Extension Manager, felogin, File Abstraction Layer (FAL), Fluid, Fluid Styled Content, Form Framework, FormEngine aka TCEforms, Frontend, Image Cropping, Image Generation / GIFBUILDER, Import/Export (T3D), Indexed Search, Install Tool, Language Manager (backend), Link Handling & Redirect Handling, Linkvalidator, Localization, Locking / Session Handling, Logging, Mailer API, Miscellaneous, Pagetree, Performance, Recycler, Reports, RTE (rtehtmlarea + ckeditor), scheduler, Security, SEO, Site Handling, Site Sets & Routing, System/Bootstrap/Configuration, t3editor, Tests, Themes, TypoScript, WebHooks - Incoming = Reactions + Outgoing, Workspaces
-
+    The areas are: AdminPanel, Authentication, Backend API, Backend JavaScript, Backend User Interface, Caching, Categorization API, CLI, Code Cleanup, composer / dependencies / third-party, Content Rendering, Content Security Policy, Dashboard, Database API (Doctrine DBAL), DataHandler aka TCEmain, Documentation, Extbase, Extbase + l10n, Extension Manager, felogin, File Abstraction Layer (FAL), Fluid, Fluid Styled Content, Form Framework, FormEngine aka TCEforms, Frontend, Image Cropping, Image Generation / GIFBUILDER, Import/Export (T3D), Indexed Search, Install Tool, Language Manager (backend), Link Handling & Redirect Handling, Linkvalidator, Localization, Locking / Session Handling, Logging, Mailer API, Miscellaneous, Pagetree, Performance, Recycler, Reports, RTE (rtehtmlarea + ckeditor), scheduler, Security, SEO, Site Handling, Site Sets & Routing, System/Bootstrap/Configuration, t3editor, Tests, Themes, TypoScript, WebHooks - Incoming = Reactions + Outgoing, Workspaces
 
 Data:
 
@@ -1828,7 +1802,7 @@ Data:
             "Categorization API",
             "CLI",
             "Code Cleanup",
-            "composer",
+            "composer / dependencies / third-party",
             "Content Rendering",
             "Content Security Policy",
             "Dashboard",

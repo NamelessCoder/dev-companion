@@ -125,8 +125,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,
@@ -140,7 +140,6 @@ Called with:
 .. code-block:: json
 
     {}
-
 
 Text:
 
@@ -185,6 +184,10 @@ Text:
     The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.
     Tools: typo3_rule_lookup, typo3_hint_lookup
     Source: typo3://guides/project/testing/playwright (project)
+    ## Looking at a change in a real browser, against the installation that has the content
+    Which installation can show the case at all, how a browser running in a container reaches a DDEV site — the router's network and its hostname aliases, the certificate it does not carry, the wildcard hostname it cannot answer — and where a harness and its screenshots go so neither reaches a commit. It runs nothing and starts no installation.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/any/testing/browser-check (any)
     ## Reporting a security defect in TYPO3: who receives it, what the report carries, and what is not done with it in the meantime
     TYPO3's own published policy, as the core repository's SECURITY.md and the security team's pages state it. It holds for a defect in the core and for one in an extension alike. It carries no judgement of how bad a finding is: rating one is the team's work, and this says where it goes.
     Tools: typo3_rule_lookup
@@ -234,7 +237,7 @@ Text:
     Tools: typo3_catalog_scope
     Source: knowledge/catalog/meta.json (any)
     ## What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration, the columns TYPO3 derives for a table
-    Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.
+    Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.
     Tools: typo3_component_lookup, typo3_label_lookup, typo3_icon_lookup, typo3_backend_module_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_schema_lookup
     Source: the discovered TYPO3 installation — read from the installation being worked in, not from a bundled snapshot. (any)
     ## The project around the installation: its extensions, its sites and their sets, its own commands, the environment it declares and what that environment runs by itself, and what one of those extensions registers
@@ -242,9 +245,9 @@ Text:
     Tools: typo3_project_describe, typo3_extension_describe
     Source: the discovered project — read from the installation being worked in, not from a bundled snapshot. (any)
     ## What a TYPO3 version broke, deprecated, added or noted
-    The changelog the installed core ships, one entry per change, searched by words, type and version. It covers exactly the versions that installation has — a newer one is not in it.
+    One entry per change, searched by words, type and version. The versions the installation ships come from the core package on disk; the versions above its own major come from the changelog docs.typo3.org publishes, which is what an upgrade to a version nobody has installed is asking for. Each entry says which of the two it came from, because a version that is not released yet is still being written.
     Tools: typo3_changelog_lookup
-    Source: the discovered installation — read from the installation being worked in, not from a bundled snapshot. (any)
+    Source: the discovered installation for what it ships, and docs.typo3.org for the versions above its own major. Not a bundled snapshot either way. (any)
 
     Query this server in English, whatever language you are speaking with the user. Its knowledge is written in English and its matching is lexical, so a query in another language reaches only the words the two happen to share and otherwise comes back empty.
 
@@ -283,6 +286,9 @@ Text:
     ## Running an installation: server and container setup, deployment, backups, the editorial use of the backend
     The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.
     Instead: Use the TYPO3 documentation at https://docs.typo3.org/.
+    ## The content itself: a record read or written — a page, a content element, a file reference, a workspace
+    The content model is answered here and the content is not. typo3_schema_lookup returns a table as the installation's container assembles it, and no tool touches a row of one. The reason is the trust model: your client launches this server as a stdio subprocess, so the process boundary is the whole of its security, and reading a record would put the shell user's database access where a backend user's permissions belong.
+    Instead: Work the records where the permissions apply — the backend, or the installation's own console at vendor/bin/typo3. For what a table holds, its columns and their types, ask typo3_schema_lookup, and for what the DataHandler expects of code you write, typo3_hint_lookup.
 
     Which tool to call when:
     - Asked to review, audit or assess a project, a site package or an extension — before opening the first file, because what a finding is worth depends on the version and the commands this repository has → typo3_project_describe, then typo3_task_guide for the workflow and typo3_extension_describe for each extension in scope
@@ -292,7 +298,7 @@ Text:
     - Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review → typo3_task_guide with the paths you are changing, then typo3_hint_lookup with the same ones, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow
     - Starting a core task and looking for the applicable conventions and checks → typo3_task_guide
     - About to invent a layout, a directory structure or a test harness — the core has probably worked one out already → typo3_reference_list
-    - About to write backend markup or invent a CSS class name → typo3_component_lookup
+    - About to write backend markup or invent a CSS class name, the module chrome and other layout classes included. The index is a curated subset of what the core itself files as a component, so a miss means uncurated rather than outside the subject. → typo3_component_lookup
     - About to run tests or any other core check → typo3_test_run_guide
     - Working in a concrete file and unsure about the subsystem's conventions → typo3_hint_lookup
     - Needing the official API, reference or tutorial documentation for a covered TYPO3 version → typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result
@@ -303,10 +309,10 @@ Text:
     - About to write user-facing text or invent a label key → typo3_label_lookup with words from the wording and the XLF resource used at the consuming code
     - About to reference an icon identifier in the backend — TCA, a module, a content element wizard, a backend template. The registry is the backend's; frontend rendering has no access to it. → typo3_icon_lookup
     - Needing a configuration value as it really is at runtime, not as the core ships it → typo3_configuration_lookup with the TYPO3_CONF_VARS path
-    - Working on a backend module and needing its registration → typo3_backend_module_lookup
+    - Working on a backend module and needing its registration, its sub-routes, or whether the page tree navigates it → typo3_backend_module_lookup
     - Unsure which Fluid namespace prefixes a template may use undeclared → typo3_fluid_namespace_list
     - About to recommend a command, or asking what this project consists of → typo3_project_describe
-    - Starting work on a TYPO3 major you have not built on recently — before asking what a version changed → typo3_changelog_lookup
+    - Starting work on a TYPO3 major you have not built on recently, or planning an upgrade to one this installation does not have — before asking what a version changed → typo3_changelog_lookup
     - Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer → typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it
     - Upgrading or maintaining an installation, and needing the order of operations → typo3_task_guide, then typo3_project_describe and typo3_changelog_lookup for what this one is and what the target version changed
     - Working in one extension and needing what it registers → typo3_extension_describe with its key
@@ -335,7 +341,6 @@ Text:
     ## Answers from checkout
     This server's own checkout, which is why the tool offering it exists only in a standalone one.
     Tools: typo3_feedback_record, typo3_feedback_list
-
 
 Data:
 
@@ -431,6 +436,16 @@ Data:
                 ],
                 "source": "typo3://guides/project/testing/playwright",
                 "scope": "project"
+            },
+            {
+                "topic": "Looking at a change in a real browser, against the installation that has the content",
+                "depth": "Which installation can show the case at all, how a browser running in a container reaches a DDEV site — the router's network and its hostname aliases, the certificate it does not carry, the wildcard hostname it cannot answer — and where a harness and its screenshots go so neither reaches a commit. It runs nothing and starts no installation.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/any/testing/browser-check",
+                "scope": "any"
             },
             {
                 "topic": "Reporting a security defect in TYPO3: who receives it, what the report carries, and what is not done with it in the meantime",
@@ -544,7 +559,7 @@ Data:
             },
             {
                 "topic": "What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration, the columns TYPO3 derives for a table",
-                "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.",
+                "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.",
                 "tools": [
                     "typo3_component_lookup",
                     "typo3_label_lookup",
@@ -569,11 +584,11 @@ Data:
             },
             {
                 "topic": "What a TYPO3 version broke, deprecated, added or noted",
-                "depth": "The changelog the installed core ships, one entry per change, searched by words, type and version. It covers exactly the versions that installation has — a newer one is not in it.",
+                "depth": "One entry per change, searched by words, type and version. The versions the installation ships come from the core package on disk; the versions above its own major come from the changelog docs.typo3.org publishes, which is what an upgrade to a version nobody has installed is asking for. Each entry says which of the two it came from, because a version that is not released yet is still being written.",
                 "tools": [
                     "typo3_changelog_lookup"
                 ],
-                "source": "the discovered installation — read from the installation being worked in, not from a bundled snapshot.",
+                "source": "the discovered installation for what it ships, and docs.typo3.org for the versions above its own major. Not a bundled snapshot either way.",
                 "scope": "any"
             }
         ],
@@ -622,6 +637,11 @@ Data:
                 "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
                 "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
                 "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+            },
+            {
+                "topic": "The content itself: a record read or written — a page, a content element, a file reference, a workspace",
+                "why": "The content model is answered here and the content is not. typo3_schema_lookup returns a table as the installation's container assembles it, and no tool touches a row of one. The reason is the trust model: your client launches this server as a stdio subprocess, so the process boundary is the whole of its security, and reading a record would put the shell user's database access where a backend user's permissions belong.",
+                "instead": "Work the records where the permissions apply — the backend, or the installation's own console at vendor/bin/typo3. For what a table holds, its columns and their types, ask typo3_schema_lookup, and for what the DataHandler expects of code you write, typo3_hint_lookup."
             }
         ],
         "checkoutDiscovery": [
@@ -680,7 +700,7 @@ Data:
                 "call": "typo3_reference_list"
             },
             {
-                "when": "About to write backend markup or invent a CSS class name",
+                "when": "About to write backend markup or invent a CSS class name, the module chrome and other layout classes included. The index is a curated subset of what the core itself files as a component, so a miss means uncurated rather than outside the subject.",
                 "call": "typo3_component_lookup"
             },
             {
@@ -724,7 +744,7 @@ Data:
                 "call": "typo3_configuration_lookup with the TYPO3_CONF_VARS path"
             },
             {
-                "when": "Working on a backend module and needing its registration",
+                "when": "Working on a backend module and needing its registration, its sub-routes, or whether the page tree navigates it",
                 "call": "typo3_backend_module_lookup"
             },
             {
@@ -736,7 +756,7 @@ Data:
                 "call": "typo3_project_describe"
             },
             {
-                "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed",
+                "when": "Starting work on a TYPO3 major you have not built on recently, or planning an upgrade to one this installation does not have — before asking what a version changed",
                 "call": "typo3_changelog_lookup"
             },
             {

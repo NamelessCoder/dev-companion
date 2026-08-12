@@ -104,8 +104,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,
@@ -123,7 +123,6 @@ Called with:
         "limit": 3
     }
 
-
 Text:
 
 .. code-block:: text
@@ -134,10 +133,12 @@ Text:
     ## [TASK] Deprecate AssetCollector media handling (MERGED)
     Change 95040 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040
     Patch set 3 · e82b930e6e0587842427496c5ce01f625b27fb66
+    Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/40/95040/3
     Last moved: 2026-08-02 20:40:50.000000000
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
+    The fetch goes to the review server rather than to `origin`: a core clone fetches from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach FETCH_HEAD` is what puts the checkout on the patch set afterwards.
 
 Data:
 
@@ -157,13 +158,16 @@ Data:
                 "commit": "e82b930e6e0587842427496c5ce01f625b27fb66",
                 "project": "Packages/TYPO3.CMS",
                 "updated": "2026-08-02 20:40:50.000000000",
-                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040"
+                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040",
+                "fetch": {
+                    "ref": "refs/changes/40/95040/3",
+                    "remote": "https://review.typo3.org/Packages/TYPO3.CMS"
+                }
             }
         ],
         "indistinguishable": null,
         "unavailable": null
     }
-
 
 gerrit: one change by number
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -176,7 +180,6 @@ Called with:
         "change": "89011"
     }
 
-
 Text:
 
 .. code-block:: text
@@ -187,10 +190,12 @@ Text:
     ## [TASK] Raise --dev phpunit/phpunit:^11.5.17 (MERGED)
     Change 89011 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011
     Patch set 4 · fabe19d4150feb4b80317bba217d289115c6d00d
+    Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/11/89011/4
     Last moved: 2025-04-09 19:01:42.000000000
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
+    The fetch goes to the review server rather than to `origin`: a core clone fetches from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach FETCH_HEAD` is what puts the checkout on the patch set afterwards.
 
 Data:
 
@@ -210,7 +215,11 @@ Data:
                 "commit": "fabe19d4150feb4b80317bba217d289115c6d00d",
                 "project": "Packages/TYPO3.CMS",
                 "updated": "2025-04-09 19:01:42.000000000",
-                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011"
+                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011",
+                "fetch": {
+                    "ref": "refs/changes/11/89011/4",
+                    "remote": "https://review.typo3.org/Packages/TYPO3.CMS"
+                }
             }
         ],
         "indistinguishable": null,

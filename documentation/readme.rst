@@ -180,10 +180,29 @@ solves the task on its own — and that is the half worth something, because the
 agent now holds an answer the knowledge base did not have. So the session ends
 by handing it back, and a gap found that way arrives with its answer attached.
 
+.. image:: images/feedback-loop.svg
+    :alt: A real task exposes a gap, records one feedback, moves it through the
+          queue into a guarded improvement and verifies it in another real task.
+
+**Handing it back is one call.** ``typo3_feedback_record`` writes one markdown
+file per subject into this server's own checkout, never into the project the
+session ran in, and it carries the query that exposed the gap, so a later
+version can be asked the same question rather than read about it. What that
+becomes is judged against everything else that arrived: one report is a report,
+and thirty of them out of one kind of checkout is a domain that has been asking
+for something since the first.
+
+**What outlives the session is written down.** A requirement states what must be
+true from now on and names the test that holds it there, a decision states what
+the change rested on and what would show it wrong, and the queue carries the
+order of the work. The change is then met again by a session that was never told
+about it, which is what a :doc:`forward review <records/forward-runs>` is, and
+the commit that closed a feedback is what the agent who filed it reads back.
+
 That is also what decides what gets built next. What this server does not answer
 yet is mostly what no session has handed back yet, and a boundary is the other
-thing and is stated as one in ``typo3_server_scope``. What becomes of one that
-was handed back is :doc:`records/ <records/index>`.
+thing and is stated as one in ``typo3_server_scope``. Every step above is a page
+in :doc:`records/ <records/index>`.
 
 .. band:: The manual
 

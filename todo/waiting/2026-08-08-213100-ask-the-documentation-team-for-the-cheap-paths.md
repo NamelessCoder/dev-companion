@@ -8,6 +8,10 @@
     what nothing in this checkout decides is whether this server's maintainer
     approaches the documentation team, and under whose name.
 
+    Put again on 2026-08-12 — send all five, send the three cheapest, ask
+    nothing, or wait — and the answer was that it waits. Still nobody asked, and
+    the five are unchanged since they were measured.
+
 Ordered by what it costs them, cheapest first.
 
 1. **Name the cheap paths in `llms.txt`** — `objects.inv`, `objects.inv.json`,

@@ -2,7 +2,7 @@
 
 **Serves:** todo/
 **Every:** 7 days
-**Checked:** 2026-08-04
+**Checked:** 2026-08-12
 **Run:** bin/cli todo:waiting
 
 Take each question the listing prints and ask it — of the person who maintains

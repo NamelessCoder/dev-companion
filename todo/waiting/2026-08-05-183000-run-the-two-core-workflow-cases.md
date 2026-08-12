@@ -9,6 +9,11 @@
     maintainer runs is on no `PATH` a session here has. That is why the run
     below is written as a sheet to paste rather than as a step to carry out.
 
+    Asked on 2026-08-12 whether the run would be made: *bitte suche selbst einen
+    case*. So which change the session is pointed at is settled here and is not
+    a question to put again — it is re-measured below rather than assumed, and
+    what is left waiting is the run itself.
+
 `SKILL-12` was run on 2026-08-07 in `E-CORE` and five of its six surfaces hold;
 what it found is written into the case itself. `SKILL-13` is what is left, and
 its stopping rules in `typo3-core-patch-checkout/references/checklist.md` are
@@ -18,10 +23,12 @@ measures the arrangement.
 
 **Change 84998 still is that change.**
 `[BUGFIX] Properly evaluate preview requirements for rootline`, re-measured on
-2026-08-08 against `E-CORE` `main` at `b2c824886af`, which is level with
-`origin/main`. It is still `NEW`, still targets `main`, and patch set 5 is still
+2026-08-12 against `E-CORE` `main` at `fffa6b2a475`, with `origin/main` at
+`3a9f0b5e3cb`. It is still `NEW`, still targets `main`, and patch set 5 is still
 the current one, at `refs/changes/98/84998/5` and commit `efa352f9b56`,
-untouched on review since 2025-05-19. It conflicts in the one file it touches,
+untouched on review since 2025-05-19. `git merge-tree` reports one file changed
+in both and three conflict hunks in it, which is what it reported on 2026-08-08.
+It conflicts in the one file it touches,
 `typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php`, in three hunks:
 the constructor, where the branch takes `PageRepository` and the patch takes
 `RecordAccessVoter`; the body of `checkIfRootlineRequiresPreview()`, which the
@@ -47,17 +54,19 @@ conflicted and three still applied clean.
 
     curl -s "https://review.typo3.org/changes/?q=status:open+project:Packages/TYPO3.CMS+branch:main+before:2025-06-01&n=40&o=CURRENT_REVISION"
 
-`E-CORE` is `/home/benji/projects/typo3-cms`, and one thing there is not ready.
-Its tree is not clean: `.gitignore` carries the maintainer's own uncommitted
-core patch, the one begun there on 2026-08-08 that ignores the AI tools'
-directories. That is exactly what the workflow's first gate stops on, so a
-subject session would report it and end, and the conflict judgement would never
-be reached. Commit or shelve it first, or run in another core checkout that has
-its dependencies installed. What is ready is the rest: the install was repeated
-from this checkout on 2026-08-08, so `.mcp.json` names `typo3-dev-companion`
-alone — the dead `typo3-cms-mcp` entry pointing at the binary `D-AUD-008`
-removed is gone — and the twelve published skills under `.claude/skills/` are
-byte-identical to `skills/` here, `typo3-core-patch-checkout` included.
+`E-CORE` is `/home/benji/projects/typo3-cms`, and it is ready. The uncommitted
+`.gitignore` patch that would have stopped the workflow's first gate is gone —
+the tree is clean at `fffa6b2a475`, read on 2026-08-12 — so a subject session
+reaches the conflict judgement the case exists for.
+
+The publication there had gone stale and was repeated on 2026-08-12. Every one
+of the twelve `references/base.md` was the copy of 2026-08-08, so a run would
+have measured the order as it stood before `9fef495a` and `5489cd02`, and
+`typo3-core-patch-checkout` itself differed too. `typo3-dev-companion update`,
+run in that checkout, republished all twelve, and each `SKILL.md` and each base
+is now byte-identical to `skills/` here. Do it again before the run if anything
+under `skills/` has moved since: nothing reports that a published copy is older
+than the server.
 
 `bin/cli scenarios:contract SKILL-13` prints the prompt. It is pasted with the
 change named and nothing else:

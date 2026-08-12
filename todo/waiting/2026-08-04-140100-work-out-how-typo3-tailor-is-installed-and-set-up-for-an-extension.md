@@ -12,6 +12,11 @@
     caller reaches. What would move it is a filed session bringing the wording,
     or somebody wanting the release run driven end to end.
 
+    Put again on 2026-08-12, with delete, measure-the-run-first and wait priced
+    against each other: the answer was that it waits. So neither half moved —
+    the card is not deleted and no run is bought for it — and the next ask
+    starts here.
+
     The question as it stands: the card was written to produce a skill ordering
     Tailor setup, and the setup that was measured does not carry one — it is
     four facts, two of which other tooling already enforces, and the choice

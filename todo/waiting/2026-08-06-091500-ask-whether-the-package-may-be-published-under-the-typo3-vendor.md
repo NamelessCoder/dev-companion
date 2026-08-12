@@ -6,6 +6,11 @@
     this package may be published there. Nothing in this checkout can answer it,
     and no reading of the code would make the answer more likely to be yes.
 
+    Put again on 2026-08-12 and it waits: nobody has been asked yet, and no
+    answer has come back either way. Nothing has been published in the
+    meantime — `typo3/dev-companion` is 404 on packagist, read the same day — so
+    the argument below is still an ask rather than a rename.
+
 `D-AUD-008` renamed the package to `typo3/dev-companion` and the rename is
 carried through: the binary, the namespace, the environment variables and the
 state directory all moved on 2026-08-06. The name half of that is settled by

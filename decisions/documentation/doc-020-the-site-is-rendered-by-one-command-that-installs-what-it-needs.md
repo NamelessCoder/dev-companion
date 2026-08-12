@@ -1,7 +1,8 @@
 ---
 id: D-DOC-020
 date: 2026-08-09
-status: open
+status: revoked
+revokedBy: D-DOC-028
 ---
 
 # D-DOC-020 — The site is rendered by one command that installs what it needs
@@ -70,13 +71,6 @@ keep them, which is a sequence rather than a set of choices.
 - An install runs on a machine where the checkout already had both, which would
   make every render minutes instead of seconds.
 
-## Covered by
-
-- `DocumentationRenderTest::oneCallInstallsWhatIsMissingThenBuildsThenRendersThenFinishes`
-- `DocumentationRenderTest::everythingTheSiteIsMadeOfIsWrittenInOnePlace`
-- `DocumentationRenderTest::aFailedStepStopsTheRenderAndQuotesTheCommand`
-- `DocumentationRenderTest::aSiteThatWasNeverFinishedIsAFailure`
-
 ## Since then
 
 The steps are four rather than six. The asset build is gone with the theme it
@@ -85,3 +79,21 @@ built for, and what follows the render is the theme's own finish step —
 So the command installs what is missing, writes the copy, renders it, finishes
 it and puts the dark twins beside the pages. What this entry decided is
 untouched: the order is not a choice, and one command is what keeps it.
+
+## Revoked on 2026-08-12
+
+Its statement no longer describes this repository: there is no
+`documentation:render`, and nothing here installs a renderer. What replaced it
+is `documentation:prepare`, which writes the copy and stops —
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md).
+
+What it was right about survives as `documentation:preview`: the order is not a
+choice, and a recipe that leaves out the install fails on a missing binary. So a
+local render is still one command that fetches what it needs. What it lost is
+the second copy — the workflow spells the same steps out, which is exactly what
+this entry deleted, and the cost of the split.
+
+What changed underneath it is that three of its six steps stopped being this
+repository's. The asset build went with the theme (`D-DOC-024`), the dark twins
+turned out to be referenced by nothing, and the renderer is a build tool
+required where the site is built rather than a directory kept here.

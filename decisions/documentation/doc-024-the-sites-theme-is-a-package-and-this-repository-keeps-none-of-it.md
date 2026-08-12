@@ -53,7 +53,7 @@ caught by once.
 
 - The theme is required as `dev-main`, because the repository carries no tag.
   What pins it is `build/guides/composer.lock`, which names the commit and is
-  committed.
+  committed. That half no longer holds — see **Since then**.
 - Everything the bar, the tab and the footer say is configured in `guides.xml`,
   under the extension element that registers the theme. Nothing here copies a
   template to change a name.
@@ -104,7 +104,24 @@ caught by once.
 
 ## Covered by
 
-- `DocumentationRenderTest::oneCallInstallsWhatIsMissingThenBuildsThenRendersThenFinishes`
-- `DocumentationRenderTest::aSiteThatWasNeverFinishedIsAFailure`
 - `SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage`
-- `SiteTest::everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt`
+
+## Since then
+
+`build/guides/` is gone, manifest and lock with it. The renderer and the theme
+are required into a directory outside the checkout by whoever renders, and what
+a render takes is the theme as it stands —
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md).
+This entry's statement is untouched and is more true than it was: the theme is a
+package, and this repository now keeps none of it at all. Its first **Wrong if**
+became impossible with the lock: nothing here can render an older theme for
+months, because nothing here records which one it rendered.
+
+The two cases this entry named on the render command are gone with it, and the
+second **Wrong if** is unguarded because of it: a page served unstyled is now
+something a reader sees rather than something the suite says.
+
+The dark drawings are gone as well. No page named one, so no rendered page ever
+referenced one, and eleven files were kept against a mechanism that does not
+exist. What this entry left open about them is unchanged and is now open
+without the files: a reader in dark reads a light drawing.

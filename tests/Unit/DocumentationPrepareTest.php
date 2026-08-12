@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TYPO3\DevCompanion\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\BufferedOutput;
+use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Upkeep\Command\DocumentationPrepare;
+
+/**
+ * `bin/cli documentation:prepare` writes the copy and reaches nothing else.
+ *
+ * That is the whole of what this repository does to a render — `D-DOC-028` —
+ * so the case that matters is that one call needs no renderer, no theme and no
+ * network to leave a source tree behind.
+ *
+ * The directory is an argument for the same reason it always was: the suite
+ * drives the command without writing into the `.site` of this checkout.
+ */
+final class DocumentationPrepareTest extends TestCase
+{
+    private string $into = '';
+
+    protected function setUp(): void
+    {
+        $this->into = sys_get_temp_dir() . '/dev-companion-prepare-' . getmypid();
+    }
+
+    protected function tearDown(): void
+    {
+        Directory::remove($this->into);
+    }
+
+    #[Test]
+    public function oneCallWritesTheCopyAndSaysWhereItWent(): void
+    {
+        $output = new BufferedOutput();
+
+        self::assertSame(0, (new DocumentationPrepare())($output, $this->into));
+        self::assertFileExists($this->into . '/source/index.md');
+        self::assertFileExists($this->into . '/source/server/tools/index.md');
+        self::assertStringContainsString($this->into . '/source — ', $output->fetch());
+    }
+
+    /** A page the documentation no longer has stops being in the copy. */
+    #[Test]
+    public function whatTheDocumentationNoLongerHasIsReported(): void
+    {
+        (new DocumentationPrepare())(new BufferedOutput(), $this->into);
+        file_put_contents($this->into . '/source/gone.md', "# Gone\n");
+
+        $output = new BufferedOutput();
+        (new DocumentationPrepare())($output, $this->into);
+
+        self::assertStringContainsString('removed gone.md', $output->fetch());
+        self::assertFileDoesNotExist($this->into . '/source/gone.md');
+    }
+}

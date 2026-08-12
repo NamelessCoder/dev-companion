@@ -62,7 +62,6 @@ documentation/contributing/  # working on the server itself: the commands, the s
 documentation/records/ # what is written down and where: feedback into todo, requirements, decisions, forward runs
 documentation/images/  # the drawings a page names, and the mark at its three optical sizes
 documentation/guides.xml  # what the render is: the copy it reads, the theme it selects, and everything the bar, the tab and the footer say — D-DOC-024
-build/guides/      # the renderer that publishes documentation/, installed with the theme it renders it in; its composer.json says why it is separate
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

@@ -27,9 +27,7 @@ jobs:
 
       # The newest line composer.json supports. This job builds the site rather
       # than testing what the package runs on, which is ci.yml's matrix, so the
-      # lowest supported version buys nothing here. What the renderer resolves
-      # against stays 8.2: build/guides/composer.json pins the platform, so its
-      # committed lock installs for somebody on the minimum too.
+      # lowest supported version buys nothing here.
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
@@ -41,17 +39,29 @@ jobs:
         with:
           node-version: '24'
 
-      # Two manifests: this package and the renderer.
-      # build/guides/composer.json says why it is its own. The second is
-      # installed here rather than left to the render, so a failure names the
-      # install.
       - name: Install dependencies
-        run: |
-          composer install --no-interaction --no-progress
-          composer install --working-dir=build/guides --no-interaction --no-progress
+        run: composer install --no-interaction --no-progress
 
-      - name: Build the site
-        run: bin/cli documentation:render
+      # What this repository does to a render: the copy, with every link that
+      # leaves the tree rewritten to the file on GitHub.
+      - name: Prepare the source
+        run: bin/cli documentation:prepare
+
+      # The renderer is a build tool and this repository carries none of it —
+      # D-DOC-028. It is required into a directory of its own, outside the
+      # checkout, so nothing about it reaches this package's own dependencies.
+      # The theme brings phpDocumentor Guides with it, and the finish step is
+      # the one bundled file it ships.
+      - name: Render the site
+        env:
+          RENDERER: ${{ runner.temp }}/renderer
+        run: |
+          mkdir -p "$RENDERER"
+          composer init --working-dir="$RENDERER" --no-interaction --name=typo3/dev-companion-render
+          composer config --working-dir="$RENDERER" repositories.soul vcs https://github.com/benjaminkott/typo3-soul-guides-theme
+          composer require --working-dir="$RENDERER" --no-interaction --no-progress typo3/soul-guides-theme:dev-main
+          "$RENDERER"/vendor/bin/guides --no-progress -c documentation
+          node "$RENDERER"/vendor/typo3/soul-guides-theme/resources/dist/soul-finish.js .site/html
 
       - uses: actions/upload-pages-artifact@v3
         with:

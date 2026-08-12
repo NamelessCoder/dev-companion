@@ -88,32 +88,40 @@ from when you ask for them, and the reasoning is `D-EVI-004`.
 
 ## The published documentation
 
-This directory is published as a site, and the root `readme.md` with it, as the
-page the site opens on — a visitor is a user before they are a contributor, and
-this map is a page below that one. Nothing else in the repository is published.
-What is generated is a copy rather than these files:
+This directory is published as a site, and nothing else in the repository is:
+the site opens on [the manual's own page](../readme.md) and the checkout's
+`readme.md` is a file it does not carry — `D-DOC-026`. What is generated is a
+copy rather than these files.
+
+**This repository writes the copy and stops there** — `D-DOC-028`. The renderer
+is a build tool and none of it is committed here, so a deployment prepares the
+copy and installs a renderer of its own. Locally that is one command, which
+fetches the renderer into `.site/renderer` the first time and reuses it after:
 
 ```bash
-bin/cli documentation:render          # the whole site, into .site/html
+bin/cli documentation:preview         # the whole site, into .site/html
 php -S localhost:8000 -t .site/html   # read it at http://localhost:8000/
 ```
 
-The render is one command because its steps have one order and no choice in it:
-the renderer installed where the checkout has none, the copy written, rendered,
-and the theme's own finish step run over the pages that came out — which is what
-copies the stylesheet, the script and the faces beside them and writes the index
-the search bar fetches. Each step is printed as the command a person could have
-typed, and a failure quotes it in full.
+`bin/cli documentation:prepare` is the first of its steps on its own — the copy,
+into `.site/source`, with no renderer, no theme and no network. That is what
+`.github/workflows/documentation.yml` runs before installing a renderer into the
+runner's own temporary directory.
+
+The order is not a choice. The renderer publishes the copy rather than these
+sources, so a render before a prepare renders the previous one; the theme's
+finish step reads the pages the renderer has just written, and it is what copies
+the stylesheet, the script and the faces beside them and writes the index the
+search bar fetches. The workflow spells the same three steps out, which is the
+one thing here written down twice.
+
+Delete `.site/` to render against the theme as it stands. The preview keeps the
+renderer it fetched, and a deployment resolves it fresh on every run.
 
 The site is read over a server rather than by opening `.site/html/index.html`:
 the search fetches its index as a file beside the pages, and a browser refuses
 that fetch over `file://`. Everything else on the page survives it, so a site
-opened from disk looks whole and has no search. `documentation:render` ends by
-printing that line.
-
-What is published is `documentation/` and nothing besides, so the site opens on
-[the manual's own page](../readme.md) and the repository's `readme.md` is a file
-the site does not carry — `D-DOC-026`.
+opened from disk looks whole and has no search.
 
 87 of the links here point at a decision, a requirement or a class, and a
 visitor of the site has none of those. The copy turns each of them into the file
@@ -175,15 +183,12 @@ deploys the result to
 a branch serves the root or `/docs`, and this directory is neither. Node is
 there for the finish step alone, which is one bundled file and installs nothing.
 
-The drawings are the open half. They ship twice, as the system asks — `name.svg`
-and `name-dark.svg`, the second a straight token swap of the first — and
-`Site::publishDrawings()` still puts the twin nobody named beside the one a page
-did. Nothing asks for it: a markdown image is an inline node, the theme renders
-a figure for the reStructuredText directive alone, and a plain `<img>` is a
-document of its own that cannot be told which mode the page is in. So a reader
-in dark reads a light drawing, and a drawing is read at the width of the column
-rather than at the size it was drawn at. Both were the script's doing and the
-script is gone. What each would need is in `D-DOC-024`.
+The drawings are the open half. A markdown image is an inline node, the theme
+renders a figure for the reStructuredText directive alone, and a plain `<img>`
+is a document of its own that cannot be told which mode the page is in. So a
+reader in dark reads a light drawing, and a drawing is read at the width of the
+column rather than at the size it was drawn at. What each would need is in
+`D-DOC-024`.
 
 ## Tests
 

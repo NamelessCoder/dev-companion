@@ -17,8 +17,8 @@ use TYPO3\DevCompanion\Upkeep\Site;
  *
  * The corpus is the real one, because the defect this guards is a property of
  * these pages: they were written against a tree the site does not carry, and a
- * fixture of two invented files would say nothing about the 87 links that
- * actually leave it.
+ * fixture of two invented files would say nothing about the hundred-odd links
+ * that actually leave it.
  */
 final class SiteTest extends TestCase
 {
@@ -249,42 +249,6 @@ final class SiteTest extends TestCase
 
         self::assertSame(['gone/page.md'], $built['removed']);
         self::assertDirectoryDoesNotExist($this->target . '/gone');
-    }
-
-    /**
-     * `D-DOC-023`: a drawing ships light and dark, and the twin is published.
-     *
-     * The renderer copies an image a page names and nothing else, and no page
-     * names the twin. Nothing on the page asks for it since the theme became a
-     * package — `D-DOC-024` — and it is still the dark half of the drawing,
-     * which is why it is kept and put beside the one that was named.
-     */
-    #[Test]
-    public function everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt(): void
-    {
-        $drawings = Paths::root() . '/' . Site::SOURCE . '/' . Site::DRAWINGS;
-        $light = [];
-        foreach (Finder::create()->files()->in($drawings)->name('*.svg')->notName('*' . Site::DARK)->sortByName() as $drawing) {
-            $name = $drawing->getFilename();
-            // The mark is not a drawing: it ships once per optical size and
-            // carries the page's own ink through a token rather than a twin.
-            if (str_starts_with($name, 'signet-')) {
-                continue;
-            }
-            self::assertFileExists(
-                $drawings . '/' . str_replace('.svg', Site::DARK, $name),
-                $name . ' has no dark twin',
-            );
-            $light[] = $name;
-        }
-        self::assertNotSame([], $light);
-
-        // What a render would have put there: one named drawing, and the twin
-        // nobody named beside it.
-        mkdir($this->target . '/' . Site::DRAWINGS, 0777, true);
-        copy($drawings . '/' . $light[0], $this->target . '/' . Site::DRAWINGS . '/' . $light[0]);
-
-        self::assertSame([str_replace('.svg', Site::DARK, $light[0])], Site::publishDrawings($this->target));
     }
 
     /**

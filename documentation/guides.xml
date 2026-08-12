@@ -34,8 +34,14 @@
         document an orphan.
     -->
     <automatic-menu>true</automatic-menu>
+    <!--
+        Both are load-bearing, and `input-format` above does not imply either.
+        Without the first, the parser recognizes no document at all and every
+        page fails as "input format was not recognized". Without the second, the
+        render dies in the theme's own `body/code.html.twig`, which colours a
+        code block with a `highlight` filter only that extension registers.
+    -->
     <extension class="phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension"/>
-    <!-- The highlighter the theme's code block colours on the server with. -->
     <extension class="phpDocumentor\Guides\Code\DependencyInjection\CodeExtension"/>
     <!--
         The theme `theme="soul"` selects: this element is what makes it exist,

@@ -136,7 +136,6 @@ forbidden:
 
 ## Covered by
 
-- `SiteTest::everyDrawingShipsItsDarkTwinAndThePublishedOneCarriesIt`
 
 ## Since then
 

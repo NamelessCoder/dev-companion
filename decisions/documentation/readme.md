@@ -12,7 +12,7 @@ earns one.
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
 - [`D-DOC-027`][D-DOC-027] — The renderer's configuration sits with the pages it renders · 2026-08-12
-- [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09
+- [`D-DOC-028`][D-DOC-028] — The renderer is a build tool, and this repository carries none of it · 2026-08-12
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
@@ -36,7 +36,7 @@ earns one.
 [D-DOC-025]: doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-026]: doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md
 [D-DOC-027]: doc-027-the-renderers-configuration-sits-with-the-pages-it-renders.md
-[D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
+[D-DOC-028]: doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
@@ -60,10 +60,12 @@ earns one.
 
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files, and what is solved is taken from a package · 2026-08-09 → D-DOC-024
+- [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09 → D-DOC-028
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09 → D-DOC-024
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 
 [D-DOC-018]: doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-019]: doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md
+[D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-021]: doc-021-the-site-is-searched-in-a-dialog-opened-with-ctrl-k.md
 [D-DOC-023]: doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md

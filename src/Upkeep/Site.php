@@ -6,8 +6,6 @@ namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
-use TYPO3\DevCompanion\Process\CommandRunner;
-use TYPO3\DevCompanion\Process\SystemRunner;
 
 /**
  * The pages published, written out as the source a site generator publishes.
@@ -18,10 +16,10 @@ use TYPO3\DevCompanion\Process\SystemRunner;
  * serving both places is what put the promise paragraphs where no section of
  * the manual could hold them.
  *
- * `documentation/` was written for a reader who has the whole checkout: 87 of
- * its 246 relative links point at a decision, a requirement, a todo or a class
- * that no visitor of the site has. Published as they stand, a third of the
- * cross-references go nowhere. So every link leaving the published pages is
+ * `documentation/` was written for a reader who has the whole checkout, and
+ * something over a third of its relative links point at a decision, a
+ * requirement, a todo or a class that no visitor of the site has. Published as
+ * they stand, every one of those goes nowhere. So every link leaving the published pages is
  * rewritten here to the file on GitHub, and the sources keep the paths a reader
  * of the checkout follows — which is also what `links:check` goes on reading.
  *
@@ -66,77 +64,7 @@ final class Site
     /** Where the drawings sit, in the checkout and in the published site alike. */
     public const DRAWINGS = 'images';
 
-    /** What the dark half of a drawing is called, beside the light one. */
-    public const DARK = '-dark.svg';
-
-    /**
-     * The two steps of a render that are not this process, as the commands a
-     * person could have typed.
-     *
-     * `-c` names the directory the renderer reads `guides.xml` from, and every
-     * other path stays relative to the working directory — the `input` and
-     * `output` that file declares, the renderer itself, and the finish step. So
-     * both are run at the root of this checkout rather than wherever the caller
-     * stands.
-     */
-    public const RENDER = ['build/guides/vendor/bin/guides', '--no-progress', '-c', self::SOURCE];
-    private const FINISH = 'build/guides/vendor/typo3/soul-guides-theme/resources/dist/soul-finish.js';
-
     private static ?string $repository = null;
-
-    /**
-     * The second half of a render, over the pages the first half wrote.
-     *
-     * The theme ships it as one bundled file: it copies the stylesheet, the
-     * script and the faces to the site root, draws every element on every page
-     * ahead of the browser so a reader with no script still reads them, and
-     * writes the index the search bar fetches. All three used to be this
-     * repository's, and `D-DOC-024` is what handing them over rests on.
-     *
-     * @return list<string>
-     */
-    public static function finish(string $site): array
-    {
-        return ['node', self::FINISH, $site];
-    }
-
-    /**
-     * The dark twin of every drawing the render published.
-     *
-     * A drawing ships as two files — the dark one a straight token swap of the
-     * light one — and the renderer copies an image a page names and nothing
-     * else. No page names the twin, so it has to be put beside the one that was
-     * named.
-     *
-     * Nothing on the published page asks for it today: the script that swapped
-     * the two was this repository's, and the theme renders a Markdown image as
-     * a plain `<img>`, which is a document of its own and cannot be told which
-     * mode the page is in. The twin is published anyway, because it is the dark
-     * half of the drawing and the file that would otherwise have to be drawn
-     * again — `D-DOC-024` is what is open about it.
-     *
-     * @return list<string> the names written
-     */
-    public static function publishDrawings(string $site): array
-    {
-        $target = (str_starts_with($site, '/') ? $site : Paths::root() . '/' . $site) . '/' . self::DRAWINGS;
-        if (!is_dir($target)) {
-            return [];
-        }
-
-        $written = [];
-        foreach (Finder::create()->files()->in($target)->name('*.svg')->notName('*' . self::DARK)->sortByName() as $drawing) {
-            $twin = Paths::root() . '/' . self::SOURCE . '/' . self::DRAWINGS . '/'
-                . str_replace('.svg', self::DARK, $drawing->getFilename());
-            if (!is_file($twin)) {
-                continue;
-            }
-            copy($twin, $target . '/' . basename($twin));
-            $written[] = basename($twin);
-        }
-
-        return $written;
-    }
 
     /**
      * Writes the copy, and takes back out of it whatever this no longer writes.
@@ -260,57 +188,6 @@ final class Site
         }
 
         return str_repeat('../', count($up)) . implode('/', $down);
-    }
-
-    /**
-     * What a render needs below `build/guides/` and this repository does not
-     * commit, as the command that installs it — only where it is missing.
-     *
-     * A gitignored build input rather than a dependency of this package, so a
-     * fresh checkout has none of it and nothing else would say so: the renderer
-     * and the theme it brings with it are absent as a missing file.
-     *
-     * @return array<string, list<string>> the command, by what it installs
-     */
-    public static function installs(): array
-    {
-        if (is_file(Paths::root() . '/' . self::RENDER[0])) {
-            return [];
-        }
-
-        return ['the renderer and its theme' => ['composer', 'install', '--working-dir=build/guides', '--no-interaction']];
-    }
-
-    /**
-     * What a test hands in, so nothing it drives has to exist on the machine.
-     *
-     * `R-COD-003`: the suite runs neither the renderer nor a package manager,
-     * and a case that holds the order the steps go in mocks them rather than
-     * waiting minutes for a real install.
-     */
-    private static ?CommandRunner $runner = null;
-
-    public static function useRunner(?CommandRunner $runner): void
-    {
-        self::$runner = $runner;
-    }
-
-    /**
-     * One step of a render, with both its streams as one string.
-     *
-     * No timeout: the first render on a machine is a `composer install` and an
-     * `npm ci`, and a number that would not cut one of those short on a cold
-     * cache is not one anybody can name.
-     *
-     * @param list<string> $command
-     *
-     * @return array{0: int, 1: string}
-     */
-    public static function run(array $command): array
-    {
-        $result = (self::$runner ?? new SystemRunner())->run($command, Paths::root());
-
-        return [$result['exitCode'], $result['output'] . $result['error']];
     }
 
     /**

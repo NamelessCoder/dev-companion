@@ -70,7 +70,7 @@
             <link href="/records/index" label="Records"/>
         </navigation>
         <footer>
-            <social href="https://github.com/benjaminkott/typo3-cms-mcp" label="GitHub"/>
+            <social href="https://github.com/benjaminkott/typo3-dev-companion" label="GitHub"/>
             <note>Not an official TYPO3 project.</note>
         </footer>
     </extension>

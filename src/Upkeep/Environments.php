@@ -334,16 +334,11 @@ final class Environments
      * building a project on each and reading it back: host `db`, database `db`,
      * user `db`, password `db`, on 3306 for mariadb and 5432 for postgres.
      *
-     * MySQL and MariaDB cannot be built on `main`, `14.3` or `13.4` today, and
-     * the reason is not this table. Forge #110258 put
-     * `introspectDatabaseNames()` into `SetupDatabaseService::getDatabaseList()`
-     * on all three, and `MySQLMetadataProvider::__construct` reads
-     * `SELECT DATABASE()` on a connection whose database is unset on purpose
-     * and throws `DatabaseRequired` before anything is written. Postgres is
-     * untouched by it — `PostgreSQLMetadataProvider::__construct` has an empty
-     * body, read in `doctrine/dbal` 4.4.3 on 2026-08-04 — so it is the one
-     * service driver an installation of every covered line can be made on while
-     * that stands. `D-EVI-006` carries the report and where it is waiting.
+     * Every driver here can be installed on every covered line again. Forge
+     * #110258 put `introspectDatabaseNames()` into
+     * `SetupDatabaseService::getDatabaseList()` and broke the two MySQL-family
+     * drivers on `main`, `14.3` and `13.4`; #110381 fixed it on 2026-08-06 and
+     * v14.3.6 and v13.4.34 carry it. `D-EVI-006` carries that reading.
      *
      * @var array<string, array{setup: string, ddev: ?string, port: ?int}>
      */

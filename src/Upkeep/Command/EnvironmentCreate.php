@@ -222,16 +222,6 @@ final class EnvironmentCreate
                     implode(' ', Environments::discard($project)),
                     $path,
                 ));
-                if ($driver !== Environments::DEFAULT_DRIVER) {
-                    // The one failure this repository already knows the reason
-                    // for, and it is not the recipe. `D-EVI-006` carries the
-                    // report and what is waiting on it.
-                    Cli::errors($output)->writeln('');
-                    Cli::errors($output)->writeln('A setup that died asking for the database list on mariadb or mysql is');
-                    Cli::errors($output)->writeln('Forge #110258, which is on main, 14.3 and 13.4 and unfixed. postgres is');
-                    Cli::errors($output)->writeln('the service database every covered line can be built on while it stands.');
-                }
-
                 return 1;
             }
         }

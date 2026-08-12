@@ -16,6 +16,11 @@ TYPO3 Dev Companion
     that does not hold on all of them names the ones it does, so an LTS is never
     handed a convention that only the development line has.
 
+    The whole of it is `benjaminkott/typo3-dev-companion
+    <https://github.com/benjaminkott/typo3-dev-companion>`_ on GitHub: the
+    server, the knowledge it answers from, and the skills it publishes into a
+    client.
+
 .. warning::
 
     **Experimental.** This is a 0.x package and its surface is not settled. The

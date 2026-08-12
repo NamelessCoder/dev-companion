@@ -73,14 +73,20 @@ caught by once.
   one. Nothing asks for it today, and it is the dark half of a drawing rather
   than a build product: deleting it would mean drawing eleven files again the
   moment they can follow the page.
+- What the light files would become is a straight substitution, measured on
+  `answer-sources.svg`, so it is written down here rather than measured again:
+  `#1C1A17` is `--text-primary`, `#4A453D` `--text-secondary`, `#8A8378`
+  `--text-muted`, `#E3DFD6` `--border-subtle`, `#C9C3B7` `--border-strong`,
+  `#FBFAF7` `--surface-canvas`, `#FFFFFF` `--surface-raised`, `#986200`
+  `--status-warn` and `#FF8700` `--accent` — each as a `var()` with the light
+  value as its fallback. The three signets are already written that way.
 
 ## Assumed
 
-- That `dev-main` and a lock file are a pin. Nothing tags the theme repository
-  yet, and it is generated — pushed whole on every release of the monorepo it is
-  written in.
-- That the theme repository stays where it is. It is named as a VCS repository
-  in `build/guides/composer.json` and is on Packagist under no name.
+- That `dev-main` and a lock file are a pin. The package carries no tag to ask
+  for instead, so what names the commit this checkout renders with is the lock
+  file and nothing else.
+- That the package stays reachable where `build/guides/composer.json` names it.
 - That a reader searching this site is not buried by the recorded answers. This
   is what `D-DOC-019` decided the other way with 582 fenced blocks counted.
 

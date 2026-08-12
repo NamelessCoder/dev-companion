@@ -59,4 +59,55 @@ final class LinksTest extends TestCase
         unlink($directory . '/there.md');
         rmdir($directory);
     }
+
+    /**
+     * The same for the other markup, where a path is written in five shapes.
+     *
+     * Two of them are options rather than link syntax — a card and a teaser say
+     * where they go with `:href:` and what they show with `:src:` — and they
+     * reached no check until the front page had six of them.
+     */
+    #[Test]
+    public function aReStructuredTextPathIsFoundInEveryShapeThatCarriesOne(): void
+    {
+        $directory = sys_get_temp_dir() . '/links-' . bin2hex(random_bytes(6));
+        mkdir($directory);
+        file_put_contents($directory . '/there.rst', "There\n=====\n");
+        file_put_contents($directory . '/drawing.svg', '<svg/>');
+        file_put_contents($directory . '/reader.rst', implode("\n", [
+            '`a file that is here <there.rst>`_',
+            ':doc:`a page that is here <there>`',
+            ':doc:`there`',
+            '`somebody else <https://docs.typo3.org/>`_',
+            ':ref:`a label, which no path answers <a-label>`',
+            '',
+            '.. image:: drawing.svg',
+            '',
+            '.. teaser:: One that goes somewhere',
+            '    :href: there',
+            '',
+            '.. card:: One that shows something',
+            '    :src: drawing.svg',
+            '',
+            '`a file that is not <gone.rst>`_',
+            ':doc:`a page that is not <also-gone>`',
+            '',
+            '.. image:: missing.svg',
+            '',
+            '.. teaser:: One that goes nowhere',
+            '    :href: no-page',
+        ]));
+
+        $dead = Links::deadIn($directory . '/reader.rst');
+
+        self::assertSame(
+            ['gone.rst', 'also-gone.rst', 'missing.svg', 'no-page.rst'],
+            array_column($dead, 'link'),
+        );
+
+        unlink($directory . '/reader.rst');
+        unlink($directory . '/drawing.svg');
+        unlink($directory . '/there.rst');
+        rmdir($directory);
+    }
 }

@@ -34,16 +34,19 @@ final class Links
      * The same thing in reStructuredText, which `documentation/` is written in
      * and the rest of this corpus is not — `D-DOC-029`.
      *
-     * Three forms carry a path. An embedded URI is what a link leaving the
+     * Five forms carry a path. An embedded URI is what a link leaving the
      * published tree is written as, and it is the only one `Site` rewrites. A
      * `:doc:` names another page of the corpus and carries no extension. A
      * directive takes its path as its argument, which is how every drawing is
-     * referenced.
+     * referenced. And a card, a teaser or a hero says where it goes with
+     * `:href:` and what it shows with `:src:`, which are options rather than
+     * arguments and were reaching no check at all — six of them stand on the
+     * front page.
      *
      * `:ref:` is deliberately not here: it names a label rather than a path, so
      * nothing on disk answers it and `deadLabels()` is what reads it.
      */
-    private const RST_PATTERN = '/(?:`[^`<]*<\s*([^>\s]+)\s*>`__?|:doc:`(?:[^`<]*<\s*([^>\s]+)\s*>|([^`<>]+))`|^\.\.\s+(?:image|figure|include|literalinclude)::\s*(\S+))/m';
+    private const RST_PATTERN = '/(?:`[^`<]*<\s*([^>\s]+)\s*>`__?|:doc:`(?:[^`<]*<\s*([^>\s]+)\s*>|([^`<>]+))`|^\s*\.\.\s+(?:image|figure|hero|include|literalinclude)::\s*(\S+)|^\s*:href:\s*(\S+)|^\s*:src:\s*(\S+))/m';
 
     /**
      * The one form that can point outside this corpus, and so the one form
@@ -243,8 +246,10 @@ final class Links
             return [];
         }
 
+        // What each form is answered by: a file as written, or a page the
+        // reference names without its extension.
         $targets = [];
-        foreach ([1 => '', 2 => '.rst', 3 => '.rst', 4 => ''] as $group => $extension) {
+        foreach ([1 => '', 2 => '.rst', 3 => '.rst', 4 => '', 5 => '.rst', 6 => ''] as $group => $extension) {
             foreach ($matches[$group] as $match) {
                 if ($match[0] !== '') {
                     $targets[$match[0] . $extension] = $match[1];

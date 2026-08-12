@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
-use TYPO3\DevCompanion\Installation\Typo3Cli;
+use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\Unsupported;
@@ -12,8 +12,10 @@ use TYPO3\DevCompanion\Result\Unsupported;
 /**
  * The backend modules the installation has registered.
  *
- * The console has no JSON mode here, but it has a CSV one, which is a format
- * rather than a rendering — so nothing is recovered from a drawn table.
+ * Read from the booted container rather than from `debug:backend:modules`,
+ * whose CSV carries neither the navigation component a module resolves to nor
+ * any route beyond the module's own path — and which the two maintained LTS
+ * lines do not have at all, the command being TYPO3 v14 and up. `D-ANS-077`.
  */
 final class BackendModuleLookup extends ReadOnlyTool
 {
@@ -30,7 +32,7 @@ final class BackendModuleLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'List the backend modules registered in the TYPO3 installation you are working in, with the extension that declares each one, its place in the module tree, its labels and its route. A project extension\'s modules are in it, because the installation is asked rather than a snapshot.';
+        return 'List the backend modules registered in the TYPO3 installation you are working in, with the extension that declares each one, its place in the module tree, its labels, its access level, the route each one answers on and every sub-route it registers. It carries the navigation component as the module tree resolves it, which is the value a Configuration/Backend/Modules.php cannot give you: it is inherited from the parent module, so reading the registration files says a module is not page-tree navigated when it is. A project extension\'s modules are in it, because the installation is booted and asked rather than a snapshot read.';
     }
 
     public static function inputSchema(): array
@@ -38,7 +40,7 @@ final class BackendModuleLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'query' => ['type' => 'string', 'description' => 'Module identifier, label, route, or extension name to filter by. Omit to list every module.'],
+                'query' => ['type' => 'string', 'description' => 'Module identifier, label, route, navigation component, or extension name to filter by. Omit to list every module.'],
             ],
         ];
     }
@@ -56,7 +58,15 @@ final class BackendModuleLookup extends ReadOnlyTool
                 'labels' => Schema::string('Its label, with the translation domain reference behind it.'),
                 'path' => Schema::string('The backend route it answers on.'),
                 'position' => Schema::string('Its declared before/after position, if any.'),
-            ], ['identifier', 'parents', 'extension', 'path'])),
+                'navigationComponent' => Schema::string('The navigation component as resolved, inheritance included — "@typo3/backend/tree/page-tree-element" is the page tree. Empty where the module has none. The value differs between TYPO3 versions, which is why it is read from the installation.'),
+                'access' => Schema::string('Who may call it: "user", "admin", "systemMaintainer".'),
+                'routes' => Schema::listOf(Schema::object([
+                    'name' => Schema::string('The name the registration gives it; "_default" is what the module opens with.'),
+                    'identifier' => Schema::string('The route identifier it is registered under: the module identifier for "_default", "<module>.<name>" for every other one.'),
+                    'path' => Schema::string(),
+                    'target' => Schema::string('Controller::method it dispatches to.'),
+                ], ['name', 'identifier', 'path', 'target']), 'Every route the module registers. Empty for a first-level module that is not standalone, which registers none.'),
+            ], ['identifier', 'parents', 'extension', 'path', 'navigationComponent', 'routes'])),
         ], ['query', 'matchCount', 'answeredBy', 'modules'], ['query']);
     }
 
@@ -64,42 +74,37 @@ final class BackendModuleLookup extends ReadOnlyTool
     {
         $query = mb_strtolower(trim((string) ($args['query'] ?? '')));
 
-        $result = Typo3Cli::run(['debug:backend:modules', '--csv-export']);
-        if (!$result['ok']) {
-            return Unsupported::because(
-                $result['error'] !== '' ? $result['error'] : trim($result['output']),
-                ['query' => $query],
-            );
+        $topic = Typo3Runtime::topic('modules');
+        if (!is_array($topic) || !is_array($topic['modules'] ?? null)) {
+            $reason = Typo3Runtime::reason();
+            if ($reason === '') {
+                // The boot came up and this one topic did not, which the probe
+                // says why of. Every other topic of the same reading answered.
+                $reason = is_array($topic) && is_string($topic['unavailable'] ?? null)
+                    ? 'the installation booted and its module registry could not be read: ' . $topic['unavailable']
+                    : 'the installation booted and answered nothing about its backend modules';
+            }
+
+            return Unsupported::because($reason, ['query' => $query]);
         }
 
         $modules = [];
-        foreach (self::csvRows($result['output']) as $row) {
-            // The three level columns are one path through the module tree, so
-            // the deepest filled one is the module and the rest are above it.
-            $levels = array_values(array_filter([
-                $row['Main level'] ?? '',
-                $row['Second level'] ?? '',
-                $row['Third level'] ?? '',
-            ], static fn(string $level): bool => trim($level) !== ''));
-            if ($levels === []) {
+        foreach ($topic['modules'] as $module) {
+            if (!is_array($module)) {
                 continue;
             }
-
-            $module = [
-                'identifier' => (string) array_pop($levels),
-                'parents' => $levels,
-                'extension' => (string) ($row['Pkg'] ?? ''),
-                'labels' => (string) ($row['Labels'] ?? ''),
-                'path' => (string) ($row['Path'] ?? ''),
-                'position' => (string) ($row['Position'] ?? ''),
-            ];
-
-            $haystack = mb_strtolower(implode(' ', array_merge($module['parents'], [
-                $module['identifier'],
-                $module['extension'],
-                $module['labels'],
-                $module['path'],
-            ])));
+            $module = self::shape($module);
+            $haystack = mb_strtolower(implode(' ', array_merge(
+                $module['parents'],
+                array_column($module['routes'], 'identifier'),
+                [
+                    $module['identifier'],
+                    $module['extension'],
+                    $module['labels'],
+                    $module['path'],
+                    $module['navigationComponent'],
+                ],
+            )));
             if ($query !== '' && !str_contains($haystack, $query)) {
                 continue;
             }
@@ -120,10 +125,20 @@ final class BackendModuleLookup extends ReadOnlyTool
             if ($module['labels'] !== '') {
                 $lines[] = '  ' . $module['labels'];
             }
+            if ($module['navigationComponent'] !== '') {
+                $lines[] = '  navigation: ' . $module['navigationComponent'];
+            }
+            foreach ($module['routes'] as $route) {
+                if ($route['name'] === '_default') {
+                    continue;
+                }
+                $lines[] = '  route ' . $route['identifier'] . '  ' . $route['path'];
+            }
         }
         $lines[] = '';
         $lines[] = 'A module is declared in its extension\'s Configuration/Backend/Modules.php; the label in '
-            . 'brackets is a translation domain reference.';
+            . 'brackets is a translation domain reference. The navigation component is the resolved one: a module '
+            . 'inherits its parent\'s, so the registration file of a page-tree navigated module often names none.';
 
         return ToolResult::create(implode("\n", $lines), [
             'query' => $query,
@@ -134,28 +149,39 @@ final class BackendModuleLookup extends ReadOnlyTool
     }
 
     /**
-     * @return array<int, array<string, string>>
+     * One module of the topic, in the shape the schema declares.
+     *
+     * @param array<mixed> $module
+     * @return array{identifier: string, parents: array<int, string>, extension: string, labels: string, path: string, position: string, navigationComponent: string, access: string, routes: array<int, array{name: string, identifier: string, path: string, target: string}>}
      */
-    private static function csvRows(string $output): array
+    private static function shape(array $module): array
     {
-        $lines = preg_split('/\R/', trim($output)) ?: [];
-        $headers = null;
-        $rows = [];
-        foreach ($lines as $line) {
-            if (trim($line) === '') {
+        $routes = [];
+        foreach (is_array($module['routes'] ?? null) ? $module['routes'] : [] as $route) {
+            if (!is_array($route)) {
                 continue;
             }
-            $fields = str_getcsv($line, ';', '"', '\\');
-            if ($headers === null) {
-                $headers = array_map('strval', $fields);
-                continue;
-            }
-            if (count($fields) !== count($headers)) {
-                continue;
-            }
-            $rows[] = array_map(static fn($v): string => (string) $v, array_combine($headers, $fields));
+            $routes[] = [
+                'name' => (string) ($route['name'] ?? ''),
+                'identifier' => (string) ($route['identifier'] ?? ''),
+                'path' => (string) ($route['path'] ?? ''),
+                'target' => (string) ($route['target'] ?? ''),
+            ];
         }
 
-        return $rows;
+        return [
+            'identifier' => (string) ($module['identifier'] ?? ''),
+            'parents' => array_values(array_map(
+                'strval',
+                is_array($module['parents'] ?? null) ? $module['parents'] : [],
+            )),
+            'extension' => (string) ($module['extension'] ?? ''),
+            'labels' => (string) ($module['labels'] ?? ''),
+            'path' => (string) ($module['path'] ?? ''),
+            'position' => (string) ($module['position'] ?? ''),
+            'navigationComponent' => (string) ($module['navigationComponent'] ?? ''),
+            'access' => (string) ($module['access'] ?? ''),
+            'routes' => $routes,
+        ];
     }
 }

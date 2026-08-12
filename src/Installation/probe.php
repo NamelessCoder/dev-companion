@@ -194,6 +194,87 @@ try {
             'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
         ];
     }
+    // The module tree as the registry resolved it. Two of the values exist
+    // nowhere else: `navigationComponent` is inherited from the parent module,
+    // so a Modules.php says nothing about whether a module is page-tree
+    // navigated, and the routes beyond the module's own path are assembled per
+    // module rather than declared. Reading the files instead is not a weaker
+    // answer here, it is a wrong one — and EXT:backend's own Modules.php
+    // references enum constants and cannot be included outside a booted core.
+    //
+    // The package and the labels are not on the registry's API, so the raw
+    // configuration is read beside it. That is the same low-level access the
+    // core's own debug:backend:modules takes, for the reason it states there.
+    //
+    // In a try of its own, for the reason the enrichment above has one.
+    try {
+        $registry = $container->get(TYPO3\CMS\Backend\Module\ModuleRegistry::class);
+        $declared = $container->get('backend.modules')->getArrayCopy();
+        $language = $GLOBALS['LANG'] = $container->get(
+            TYPO3\CMS\Core\Localization\LanguageServiceFactory::class,
+        )->create('en');
+
+        $modules = [];
+        foreach ($registry->getModules() as $module) {
+            $identifier = $module->getIdentifier();
+            $configuration = is_array($declared[$identifier] ?? null) ? $declared[$identifier] : [];
+
+            $parents = [];
+            for ($above = $module->getParentModule(); $above !== null; $above = $above->getParentModule()) {
+                array_unshift($parents, $above->getIdentifier());
+            }
+
+            // What ModuleRegistry::registerRoutesForModules() registers for
+            // this module, worked out its way: a first-level module that is not
+            // standalone gets none, `_default` goes under the module identifier
+            // and every other route under `<module>.<name>` below the module's
+            // path. A module with no routable default throws rather than
+            // answering, and that is a module with no routes.
+            $routes = [];
+            if ($module->hasParentModule() || $module->isStandalone()) {
+                try {
+                    $declaredRoutes = $module->getDefaultRouteOptions();
+                } catch (Throwable $unroutable) {
+                    $declaredRoutes = [];
+                }
+                foreach ($declaredRoutes as $name => $options) {
+                    $name = (string) $name;
+                    $below = (string) (($options['path'] ?? false) ?: ('/' . $name));
+                    $routes[] = [
+                        'name' => $name,
+                        'identifier' => $name === '_default' ? $identifier : $identifier . '.' . $name,
+                        'path' => $name === '_default' ? $module->getPath() : $module->getPath() . $below,
+                        // The options carry the module object itself, so the
+                        // fields are named rather than handed over whole.
+                        'target' => is_string($options['target'] ?? null) ? $options['target'] : '',
+                    ];
+                }
+            }
+
+            $labels = $configuration['labels'] ?? '';
+            if (is_array($labels)) {
+                $labels = (string) ($labels['title'] ?? '');
+            }
+            $position = $module->getPosition();
+
+            $modules[] = [
+                'identifier' => $identifier,
+                'parents' => $parents,
+                'extension' => (string) ($configuration['packageName'] ?? ''),
+                'labels' => trim($language->sL($module->getTitle()) . ' [' . $labels . ']'),
+                'path' => $module->getPath(),
+                'position' => $position === [] ? '' : (string) json_encode($position),
+                'navigationComponent' => $module->getNavigationComponent(),
+                'access' => $module->getAccess(),
+                'routes' => $routes,
+            ];
+        }
+        $answer['topics']['modules'] = ['modules' => $modules];
+    } catch (Throwable $failure) {
+        $answer['topics']['modules'] = [
+            'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
+        ];
+    }
 } catch (Throwable $failure) {
     if ($answer['reason'] === '') {
         $answer['state'] = 'unreachable';

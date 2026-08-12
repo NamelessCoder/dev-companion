@@ -79,14 +79,20 @@ final class Fixture
         foreach (self::files() as $path => $contents) {
             self::put($root . '/' . $path, $contents);
         }
-        self::bootsInto($root, self::ICONS, self::TABLES, self::CONTENT_ELEMENTS);
+        self::bootsInto(
+            $root,
+            self::ICONS,
+            self::TABLES,
+            self::CONTENT_ELEMENTS,
+            modules: self::MODULES,
+            labels: self::LABELS,
+        );
 
         return $root;
     }
 
     /**
-     * Writes an autoloader that boots into a container answering the four
-     * topics.
+     * Writes an autoloader that boots into a container answering every topic.
      *
      * The probe is the real one and this is what it lands in, so everything it
      * reads has to be here in the shape it reads it in: a registry whose icons
@@ -103,6 +109,8 @@ final class Fixture
      * @param array<string, string> $tables table => ctrl title
      * @param array<string, array{0: string, 1: string}> $contentElements CType => [label, icon]
      * @param array<string, array<string, array<string, array<int, string>>>> $formDataGroups group => provider => depends/before
+     * @param array<string, array<string, mixed>> $modules identifier => registration, in the shape the registry hands one back
+     * @param array<string, string> $labels reference => what the installation's language service resolves it to
      */
     public static function bootsInto(
         string $root,
@@ -111,6 +119,8 @@ final class Fixture
         array $contentElements = [],
         bool $failsafe = false,
         array $formDataGroups = [],
+        array $modules = [],
+        array $labels = [],
     ): void {
         $items = [];
         foreach ($contentElements as $value => [$label, $icon]) {
@@ -123,6 +133,8 @@ final class Fixture
             'items' => $items,
             'failsafe' => $failsafe,
             'formDataGroups' => $formDataGroups,
+            'modules' => $modules,
+            'labels' => $labels,
         ], true);
 
         self::put($root . '/vendor/autoload.php', <<<PHP
@@ -236,9 +248,74 @@ final class Fixture
                     }
                 }
             }
+            namespace TYPO3\\CMS\\Core\\Localization {
+                class LanguageService {
+                    public function sL(string \$reference): string {
+                        return \$GLOBALS['FAKE']['labels'][\$reference] ?? \$reference;
+                    }
+                }
+                class LanguageServiceFactory {
+                    public function create(string \$locale): LanguageService { return new LanguageService(); }
+                }
+            }
+            namespace TYPO3\\CMS\\Backend\\Module {
+                class Module {
+                    public ?Module \$parentModule = null;
+                    public function __construct(private string \$identifier, private array \$configuration) {}
+                    public function getIdentifier(): string { return \$this->identifier; }
+                    public function getParentModule(): ?Module { return \$this->parentModule; }
+                    public function hasParentModule(): bool { return \$this->parentModule !== null; }
+                    public function isStandalone(): bool { return (bool)(\$this->configuration['standalone'] ?? false); }
+                    public function getPath(): string { return (string)(\$this->configuration['path'] ?? ''); }
+                    public function getTitle(): string { return (string)(\$this->configuration['title'] ?? ''); }
+                    public function getAccess(): string { return (string)(\$this->configuration['access'] ?? ''); }
+                    public function getPosition(): array { return (array)(\$this->configuration['position'] ?? []); }
+                    // Inherited from the parent, the way the core resolves it.
+                    // What the probe is held to is reporting that value: a
+                    // module declaring none is page-tree navigated here, and an
+                    // inheritance written into the probe could not be told from
+                    // one that reads the registry.
+                    public function getNavigationComponent(): string {
+                        \$own = (string)(\$this->configuration['navigationComponent'] ?? '');
+                        if ((\$this->configuration['inherit'] ?? true) && \$this->parentModule !== null) {
+                            return \$this->parentModule->getNavigationComponent() ?: \$own;
+                        }
+                        return \$own;
+                    }
+                    public function getDefaultRouteOptions(): array {
+                        \$routes = (array)(\$this->configuration['routes'] ?? []);
+                        if (\$routes === []) {
+                            throw new \\RuntimeException('No default route for ' . \$this->identifier, 1674063354);
+                        }
+                        return \$routes;
+                    }
+                }
+                class ModuleRegistry {
+                    public function getModules(): array {
+                        \$modules = [];
+                        foreach (\$GLOBALS['FAKE']['modules'] as \$identifier => \$configuration) {
+                            \$modules[\$identifier] = new Module(\$identifier, \$configuration);
+                        }
+                        foreach (\$GLOBALS['FAKE']['modules'] as \$identifier => \$configuration) {
+                            \$parent = \$configuration['parent'] ?? '';
+                            if (\$parent !== '' && isset(\$modules[\$parent])) {
+                                \$modules[\$identifier]->parentModule = \$modules[\$parent];
+                            }
+                        }
+                        return \$modules;
+                    }
+                }
+            }
             namespace Fake {
                 class Container {
-                    public function get(string \$id) { return new \$id(); }
+                    public function get(string \$id) {
+                        // The raw configuration every module was built from,
+                        // which is where the package and the labels live.
+                        if (\$id === 'backend.modules') {
+                            return new \\ArrayObject(\$GLOBALS['FAKE']['modules']);
+                        }
+                        return new \$id();
+                    }
                 }
             }
             namespace {
@@ -397,6 +474,68 @@ final class Fixture
     ];
 
     /**
+     * The module tree the registry answers with.
+     *
+     * `web` is what a first-level module looks like: it declares the navigation
+     * component and registers no route of its own. `web_list` declares neither
+     * and inherits the page tree, which is the value no registration file
+     * carries and the one this fixture exists to show. `acme_events` is the
+     * project extension's, with a sub-route beside its default.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    private const MODULES = [
+        'web' => [
+            'packageName' => 'backend',
+            'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.web',
+            'path' => '/module/web',
+            'navigationComponent' => '@typo3/backend/tree/page-tree-element',
+        ],
+        'web_list' => [
+            'parent' => 'web',
+            'packageName' => 'backend',
+            'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.web_list',
+            'path' => '/module/web/list',
+            'position' => ['after' => 'web_layout'],
+            'access' => 'user',
+            'routes' => ['_default' => ['target' => 'TYPO3\\CMS\\Backend\\Controller\\RecordListController::mainAction']],
+        ],
+        'acme_events' => [
+            'parent' => 'web',
+            'packageName' => 'acme_events',
+            'labels' => 'LLL:EXT:acme_events/Resources/Private/Language/locallang.xlf',
+            'title' => 'LLL:EXT:acme_events/Resources/Private/Language/locallang.xlf:module.events',
+            'path' => '/module/web/acme-events',
+            'position' => ['after' => 'web_list'],
+            'access' => 'user',
+            'routes' => [
+                '_default' => ['target' => 'TYPO3\\CMS\\Backend\\Controller\\FixtureModuleController::listAction'],
+                'detail' => ['target' => 'TYPO3\\CMS\\Backend\\Controller\\FixtureModuleController::detailAction'],
+            ],
+        ],
+        'site' => [
+            'packageName' => 'backend',
+            'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.site',
+            'path' => '/module/site',
+        ],
+    ];
+
+    /**
+     * What the installation's language service resolves a reference to.
+     *
+     * @var array<string, string>
+     */
+    private const LABELS = [
+        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.web' => 'Web',
+        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.web_list' => 'Records',
+        'LLL:EXT:acme_events/Resources/Private/Language/locallang.xlf:module.events' => 'Events',
+        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.site' => 'Site Management',
+    ];
+
+    /**
      * The changelog the installed core ships.
      *
      * Three entries, and each is one of the states `ToolCalls` asks for: the
@@ -549,17 +688,6 @@ final class Fixture
                     exit(1);
                 }
                 fwrite(STDOUT, json_encode(\$known[\$path], JSON_UNESCAPED_SLASHES));
-                exit(0);
-            }
-
-            if (\$command === 'debug:backend:modules') {
-                fwrite(STDOUT, implode("\\n", [
-                    'Main level;Second level;Third level;Pkg;Labels;Path;Position',
-                    'web;;;backend;Web;/module/web;',
-                    'web;web_list;;backend;Records;/module/web/list;after:web_layout',
-                    'web;acme_events;;acme_events;Events;/module/web/acme-events;after:web_list',
-                    'site;;;backend;Site Management;/module/site;',
-                ]) . "\\n");
                 exit(0);
             }
 

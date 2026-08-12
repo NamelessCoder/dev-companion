@@ -168,6 +168,41 @@ final class Typo3RuntimeTest extends TestCase
         );
     }
 
+    /**
+     * The navigation component a module resolves to is inherited from its
+     * parent, and the registry is what resolves it. What is held here is that
+     * the probe reports that value: `web_list` declares none and comes back
+     * page-tree navigated, which is the answer no reading of a
+     * `Configuration/Backend/Modules.php` gives — `D-ANS-077`.
+     */
+    #[Test]
+    public function aModuleComesBackWithTheNavigationComponentTheRegistryResolved(): void
+    {
+        $root = $this->installationWithAConsole();
+        Fixture::bootsInto($root, modules: [
+            'web' => ['path' => '/module/web', 'navigationComponent' => '@typo3/backend/tree/page-tree-element'],
+            'web_list' => ['parent' => 'web', 'path' => '/module/web/list', 'routes' => [
+                '_default' => ['target' => 'Acme\\Records::main'],
+                'detail' => ['target' => 'Acme\\Records::detail'],
+            ]],
+            'site_configuration' => ['parent' => 'site', 'path' => '/module/site/configuration', 'inherit' => false],
+        ]);
+        $this->discover($root);
+
+        $topic = Typo3Runtime::topic('modules');
+
+        self::assertIsArray($topic);
+        self::assertArrayNotHasKey('unavailable', $topic);
+        $components = array_column($topic['modules'], 'navigationComponent', 'identifier');
+        self::assertSame('@typo3/backend/tree/page-tree-element', $components['web_list']);
+        self::assertSame('', $components['site_configuration']);
+
+        $routes = $topic['modules'][1]['routes'];
+        self::assertSame(['web_list', 'web_list.detail'], array_column($routes, 'identifier'));
+        self::assertSame(['/module/web/list', '/module/web/list/detail'], array_column($routes, 'path'));
+        self::assertSame([], $topic['modules'][0]['routes'], 'a first-level module registers none');
+    }
+
     #[Test]
     public function aFailsafeContainerIsAReasonRatherThanAResult(): void
     {

@@ -5,8 +5,13 @@
 
 List the backend modules registered in the TYPO3 installation you are working
 in, with the extension that declares each one, its place in the module tree, its
-labels and its route. A project extension's modules are in it, because the
-installation is asked rather than a snapshot. Answers from: installation.
+labels, its access level, the route each one answers on and every sub-route it
+registers. It carries the navigation component as the module tree resolves it,
+which is the value a Configuration/Backend/Modules.php cannot give you: it is
+inherited from the parent module, so reading the registration files says a
+module is not page-tree navigated when it is. A project extension's modules are
+in it, because the installation is booted and asked rather than a snapshot read.
+Answers from: installation.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -17,8 +22,8 @@ Takes
 
 .. code-block:: yaml
 
-    # Module identifier, label, route, or extension name to filter by. Omit to list
-    # every module.
+    # Module identifier, label, route, navigation component, or extension name to
+    # filter by. Omit to list every module.
     query: string  # optional
 
 Answers with
@@ -42,6 +47,25 @@ Answers with
         path: string
         # Its declared before/after position, if any.
         position: string  # optional
+        # The navigation component as resolved, inheritance included —
+        # "@typo3/backend/tree/page-tree-element" is the page tree. Empty where the
+        # module has none. The value differs between TYPO3 versions, which is why it
+        # is read from the installation.
+        navigationComponent: string
+        # Who may call it: "user", "admin", "systemMaintainer".
+        access: string  # optional
+        # Every route the module registers. Empty for a first-level module that is
+        # not standalone, which registers none.
+        routes:
+          - # The name the registration gives it; "_default" is what the module
+            # opens with.
+            name: string
+            # The route identifier it is registered under: the module identifier for
+            # "_default", "<module>.<name>" for every other one.
+            identifier: string
+            path: string
+            # Controller::method it dispatches to.
+            target: string
     unsupported:  # optional
       # One of: no-installation, misconfigured, installation-not-answering.
       # no-installation: nothing to ask from here, and searched says where it
@@ -75,18 +99,18 @@ The answer carries exactly one of these sets of fields: ``query``,
 Answered
 --------
 
-Recorded on 2026-08-08 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
 installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a heading
-naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks what is below this heading; everything above it is
-derived from the class that answers the call, and ``bin/cli tools:check`` holds
-it.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 modules
 ~~~~~~~
@@ -97,7 +121,6 @@ Called with:
 
     {}
 
-
 From the 14.3 core checkout below .checkouts/, whose console could not be reached
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -107,7 +130,6 @@ Text:
 
     This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
     typo3_server_scope reports the installation and its console.
-
 
 Data:
 
@@ -130,7 +152,6 @@ Data:
         }
     }
 
-
 From the installation this repository writes below .fixtures/, whose console answers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -141,19 +162,22 @@ Text:
     4 backend module(s):
     - web
       /module/web  (backend)
-      Web
+      Web [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]
+      navigation: @typo3/backend/tree/page-tree-element
     - web > web_list
       /module/web/list  (backend)
-      Records
+      Records [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]
+      navigation: @typo3/backend/tree/page-tree-element
     - web > acme_events
       /module/web/acme-events  (acme_events)
-      Events
+      Events [LLL:EXT:acme_events/Resources/Private/Language/locallang.xlf]
+      navigation: @typo3/backend/tree/page-tree-element
+      route acme_events.detail  /module/web/acme-events/detail
     - site
       /module/site  (backend)
-      Site Management
+      Site Management [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]
 
-    A module is declared in its extension's Configuration/Backend/Modules.php; the label in brackets is a translation domain reference.
-
+    A module is declared in its extension's Configuration/Backend/Modules.php; the label in brackets is a translation domain reference. The navigation component is the resolved one: a module inherits its parent's, so the registration file of a page-tree navigated module often names none.
 
 Data:
 
@@ -167,9 +191,12 @@ Data:
                 "identifier": "web",
                 "parents": [],
                 "extension": "backend",
-                "labels": "Web",
+                "labels": "Web [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]",
                 "path": "/module/web",
-                "position": ""
+                "position": "",
+                "navigationComponent": "@typo3/backend/tree/page-tree-element",
+                "access": "",
+                "routes": []
             },
             {
                 "identifier": "web_list",
@@ -177,9 +204,19 @@ Data:
                     "web"
                 ],
                 "extension": "backend",
-                "labels": "Records",
+                "labels": "Records [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]",
                 "path": "/module/web/list",
-                "position": "after:web_layout"
+                "position": "{\"after\":\"web_layout\"}",
+                "navigationComponent": "@typo3/backend/tree/page-tree-element",
+                "access": "user",
+                "routes": [
+                    {
+                        "name": "_default",
+                        "identifier": "web_list",
+                        "path": "/module/web/list",
+                        "target": "TYPO3\\CMS\\Backend\\Controller\\RecordListController::mainAction"
+                    }
+                ]
             },
             {
                 "identifier": "acme_events",
@@ -187,17 +224,36 @@ Data:
                     "web"
                 ],
                 "extension": "acme_events",
-                "labels": "Events",
+                "labels": "Events [LLL:EXT:acme_events/Resources/Private/Language/locallang.xlf]",
                 "path": "/module/web/acme-events",
-                "position": "after:web_list"
+                "position": "{\"after\":\"web_list\"}",
+                "navigationComponent": "@typo3/backend/tree/page-tree-element",
+                "access": "user",
+                "routes": [
+                    {
+                        "name": "_default",
+                        "identifier": "acme_events",
+                        "path": "/module/web/acme-events",
+                        "target": "TYPO3\\CMS\\Backend\\Controller\\FixtureModuleController::listAction"
+                    },
+                    {
+                        "name": "detail",
+                        "identifier": "acme_events.detail",
+                        "path": "/module/web/acme-events/detail",
+                        "target": "TYPO3\\CMS\\Backend\\Controller\\FixtureModuleController::detailAction"
+                    }
+                ]
             },
             {
                 "identifier": "site",
                 "parents": [],
                 "extension": "backend",
-                "labels": "Site Management",
+                "labels": "Site Management [LLL:EXT:backend/Resources/Private/Language/locallang.xlf]",
                 "path": "/module/site",
-                "position": ""
+                "position": "",
+                "navigationComponent": "",
+                "access": "",
+                "routes": []
             }
         ],
         "answeredBy": "installation"

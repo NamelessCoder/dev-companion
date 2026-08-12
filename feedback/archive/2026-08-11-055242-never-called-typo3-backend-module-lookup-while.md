@@ -1,7 +1,8 @@
 ---
 date: 2026-08-11T05:52:42+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-12
 model: claude-opus-5
 tool: typo3_backend_module_lookup
 directory: /home/benji/projects/typo3-cms

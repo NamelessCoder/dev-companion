@@ -10,10 +10,10 @@ status: open
 resolves to and the routes it registers, from a source that answers on every
 covered line.**
 
-The tool hands back what one console command exports, and a session that
-needed which modules are page-tree navigated and which have routes beyond
-`_default` got neither. It read both out of the checkout instead, and its first
-reading was wrong.
+The tool hands back what one console command exports, and a session that needed
+which modules are page-tree navigated and which have routes beyond `_default`
+got neither. It read both out of the checkout instead, and its first reading was
+wrong.
 
 ## Evidence
 
@@ -80,3 +80,18 @@ reading was wrong.
   which would say the answer was the wrong half of the question.
 - `debug:backend:modules` gains the columns upstream, which would make the
   console the whole source and the probe unnecessary.
+
+## Since then
+
+The reading was done on 2026-08-12 and the console is not needed beside the
+container after all. `ModuleRegistry`, `backend.modules` and
+`LanguageServiceFactory` all answer a booted CLI container on 12.4 and on main,
+which was tried in the two E-SITE installations rather than reasoned from the
+service definitions — `ModuleProvider` is the one that does not, being private
+since 14.3. So the package and the translated labels come from the same reading
+as the rest, and the tool has one source instead of two.
+
+The navigation component turned out to be a value rather than a constant:
+`@typo3/backend/page-tree/page-tree-element` on 12.4 and
+`@typo3/backend/tree/page-tree-element` on main. A hint could not have carried
+it, which is the sharpest form of the boundary this entry draws.

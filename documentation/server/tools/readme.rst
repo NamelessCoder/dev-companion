@@ -89,8 +89,9 @@ state the machine is in.
   derives for a table from its TCA.
 * :doc:`typo3_backend_module_lookup <typo3_backend_module_lookup>` — List the
   backend modules registered in the TYPO3 installation you are working in, with
-  the extension that declares each one, its place in the module tree, its labels
-  and its route.
+  the extension that declares each one, its place in the module tree, its
+  labels, its access level, the route each one answers on and every sub-route it
+  registers.
 * :doc:`typo3_icon_lookup <typo3_icon_lookup>` — Validate or find an icon
   identifier in the TYPO3 backend icon registry of the installation you are
   working in.

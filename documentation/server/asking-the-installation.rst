@@ -22,10 +22,14 @@ The order
 1. **The console, where a command exists.** ``Typo3Cli::run()`` invokes the
    installation's own ``bin/typo3`` — through DDEV where the project runs there
    — for the registries TYPO3 exposes a command for: ``language:domain:search``,
-   ``fluid:namespaces``, ``configuration:show``, ``debug:backend:modules``.
-2. **The container, where none does.** ``Typo3Runtime::ask()`` boots the
-   installation in a subprocess and reads the registry itself. This is the only
-   source that knows what a package registers dynamically.
+   ``fluid:namespaces``, ``configuration:show``.
+2. **The container, where none does, or where the command answers less than the
+   registry.** ``Typo3Runtime::ask()`` boots the installation in a subprocess
+   and reads the registry itself. This is the only source that knows what a
+   package registers dynamically. The backend modules are the second case:
+   ``debug:backend:modules`` exports neither the navigation component a module
+   resolves to nor its routes, and it is TYPO3 v14 and up while this server
+   answers for two lines below that — ``D-ANS-077``.
 3. **The files, where neither can be reached.** The registration files the
    packages ship, parsed and never included. Exact for everything declared,
    silent about everything else — and an answer that came from here says so.

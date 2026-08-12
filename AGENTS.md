@@ -55,7 +55,7 @@ todo/waiting/      # what nothing here can start, carrying the question it is bl
 src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
 src/Upkeep/Site.php  # the readme and documentation/ as the source a generator publishes: the links that leave them, rewritten
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # how a procedure is carried out; the rules stay here, the steps live there; published as a site, below the readme
+documentation/     # what the server is and how a procedure is carried out; the rules stay here, the steps live there; published whole as the site
 documentation/usage/   # having this server answer in somebody's own project
 documentation/server/  # what it can be asked and where each answer comes from; tools/ and resources/ sit in here because they are the server
 documentation/contributing/  # working on the server itself: the commands, the session, the skills, the words
@@ -476,9 +476,12 @@ Four things describe this server outward, and they ship with the code. A change
 that leaves any of them wrong is not finished: a stale one is not a
 documentation debt, it is a lie the server tells its callers.
 
-- `readme.md` — what the server is and what it will not do. Its opening
-  paragraphs are a promise; when a capability changes what the server may touch,
-  that promise is the first thing that becomes false.
+- `documentation/readme.md` — what the server is and what it will not do, and
+  the page the site opens on. Its paragraphs are a promise; when a capability
+  changes what the server may touch, that promise is the first thing that
+  becomes false. `readme.md` at the root is the landing page for somebody
+  arriving at the repository, and repeats only the title, the experimental note
+  and the covered lines.
 - `knowledge/server-scope.json` — `covers`, `doesNotCover`, `routing`, and the
   `instructions` clients receive at initialize time. A new tool belongs in
   `covers` and in `routing`; a boundary that moved belongs in `doesNotCover`.

@@ -212,6 +212,31 @@ The one qualification it carries is
 The prompt is where the transcript is asked for, so it is where a session whose
 transcript begins at a summary is asked to say so.
 
+## What a feedback carries
+
+Each one names the working directory the session that left it ran in, as
+`directory:` in its front matter, so a gap can be checked against the project it
+was found in rather than against whatever is at hand. It is the same directory
+the stdio entrypoint hands to instance discovery; a feedback left over an
+endpoint that has none carries none. That directory is also why the feedback is
+reported back as an absolute path: it is written into this server's checkout and
+not into the project the session is in, and a relative path sent to a caller
+standing somewhere else reads as a write that failed.
+
+It also carries `model:` — the model that left it, as it named itself. Much of
+what arrives is about what a session did rather than about what an answer said,
+and that is one model's behaviour: unattributed, two models' habits are one
+undifferentiated report and neither can be worked off. The write never fails on
+it, and a model that does not know its own identifier is asked to send `unknown`
+rather than an invented one, so a feedback nobody can attribute says so.
+
+Both feedback tools exist **only in a standalone checkout**. Installed as a
+Composer dependency the package lives in `vendor/`, where anything written would
+be lost on the next `composer install`; there the server stays strictly
+read-only and neither tool appears in `tools/list`.
+
+![A real task exposes a gap, records one feedback, moves it through the queue into a guarded improvement and verifies it in another real task.](../images/feedback-loop.svg)
+
 ## Working a feedback off
 
     bin/cli feedback:archive feedback/2026-07-31-…-the-lookup-found-nothing.md

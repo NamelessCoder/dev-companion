@@ -91,4 +91,4 @@ also the two carrying the verb wrongly, so one rename settles both.
 - `ToolNamingTest::everyToolIsNamedSubjectThenVerb`
 - `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
 - `ToolNamingTest::everyToolNameAnAnswerNamesIsRegistered`
-- `ToolNamingTest::everyToolIsDescribedInTheReadme`
+- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`

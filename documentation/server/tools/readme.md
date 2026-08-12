@@ -4,6 +4,20 @@ Every tool this server offers, one page each. A page says what the tool is
 called, what it takes, the fields it answers with and what a call to it comes
 back with, and this is the list of them.
 
+Every tool answers twice: the readable text, and the same answer as
+`structuredContent` matching the `outputSchema` the tool declares — matches with
+their source, coverage and score, checks as command strings, components, icons
+and labels as typed records, commit diagnostics as `level`/`code`/`message`. So
+composing several tools does not mean parsing headings and code fences back out
+of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
+writes anything, and then only a new file.
+
+Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
+`lookup` finds and may find nothing, `guide` composes an answer for a task,
+`list` enumerates, `scope` states what a source covers, `describe` states what
+one thing you name is, `record` writes. So the name already says what shape the
+answer has.
+
 The half of a page above its `## Answered` heading is written by `bin/cli
 tools:index` from the classes that answer the calls, and `bin/cli tools:check`
 fails where it has gone stale — a surface written out a second time by hand
@@ -32,9 +46,6 @@ at the foot of its description, and links them into
 read the other way round, one heading per source with the tools it answers. What
 it settles is not what a tool is about but whether it can be asked at all in the
 state the machine is in.
-
-The [readme](../../../readme.md) groups the tools by where their answers come from;
-a page here says what one tool is for, what goes in and what shape comes back.
 
 - [`typo3_server_scope`](typo3_server_scope.md) — Orientation for this server.
 - [`typo3_rule_lookup`](typo3_rule_lookup.md) — Search the TYPO3 rules and

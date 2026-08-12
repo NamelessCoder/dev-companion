@@ -63,5 +63,5 @@ place in the repository still using the word for it.
 ## Covered by
 
 - `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
-- `ToolNamingTest::everyToolIsDescribedInTheReadme`
+- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`

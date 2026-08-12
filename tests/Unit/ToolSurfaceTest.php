@@ -16,10 +16,10 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  * The tool reference against the registry it is rendered from.
  *
  * A generated page nothing reads back is a hand-written one that was generated
- * once. `ToolNamingTest` holds the readme to the tool names, which catches a
- * tool nobody described; this catches the half no prose ever carried — the
- * description that was rewritten in the class, and the schema field that was
- * added to it.
+ * once. This is also where a tool that is offered and described nowhere outward
+ * is caught, since the index below is the list: `readme.md` carried a
+ * hand-written one until five tools had been added since anybody checked, and
+ * what replaced it is generated rather than watched.
  */
 final class ToolSurfaceTest extends TestCase
 {

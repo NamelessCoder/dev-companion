@@ -8,6 +8,8 @@ What it can be asked, and where each answer comes from.
   one that is picked out of a list rather than called mid-task.
 - [answer-sources.md](tools/answer-sources.md) — the five sources an answer can
   come from, and what each one needs to be running before it can.
+- [knowledge-base.md](knowledge-base.md) — what ships in `knowledge/`, which is
+  where almost every answer is read from.
 - [versions.md](versions.md) — how a statement that holds for some TYPO3
   versions and not others says so, and why a catalog withholds an entry instead
   of qualifying it.

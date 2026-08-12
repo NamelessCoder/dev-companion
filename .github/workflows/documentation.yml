@@ -25,9 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The newest line composer.json supports. This job builds the site rather
+      # than testing what the package runs on, which is ci.yml's matrix, so the
+      # lowest supported version buys nothing here. What the renderer resolves
+      # against stays 8.2: build/guides/composer.json pins the platform, so its
+      # committed lock installs for somebody on the minimum too.
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           coverage: none
 
       # The theme's finish step is one bundled file and installs nothing, so

@@ -1,7 +1,9 @@
-# what carried this review: the label lookup settled a Playwright selector in one call and the gerr...
+# what I never asked this server, and the two review surfaces I answered from the checkout without ...
 
-**Serves:** feedback/2026-08-13-214838-what-carried-this-review-the-label-lookup.md
+**Serves:** feedback/2026-08-13-214927-what-i-never-asked-this-server-and-the-two.md
 **Priority:** low
+**Branch:** todo/what-i-never-asked-this-server-and-the-two
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

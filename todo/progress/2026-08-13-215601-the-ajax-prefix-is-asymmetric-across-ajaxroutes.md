@@ -1,7 +1,9 @@
-# what I never asked this server, and the two review surfaces I answered from the checkout without ...
+# the ajax_ prefix is asymmetric across AjaxRoutes.php, buildUriFromRoute and TYPO3.settings.ajaxUr...
 
-**Serves:** feedback/2026-08-13-214927-what-i-never-asked-this-server-and-the-two.md
+**Serves:** feedback/2026-08-13-215601-the-ajax-prefix-is-asymmetric-across-ajaxroutes.md
 **Priority:** low
+**Branch:** todo/the-ajax-prefix-is-asymmetric-across-ajaxroutes
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

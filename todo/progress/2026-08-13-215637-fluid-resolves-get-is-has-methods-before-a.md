@@ -1,7 +1,9 @@
-# the ajax_ prefix is asymmetric across AjaxRoutes.php, buildUriFromRoute and TYPO3.settings.ajaxUr...
+# Fluid resolves get/is/has methods before a public property, so a hasItems() helper shadows the it...
 
-**Serves:** feedback/2026-08-13-215601-the-ajax-prefix-is-asymmetric-across-ajaxroutes.md
+**Serves:** feedback/2026-08-13-215637-fluid-resolves-get-is-has-methods-before-a.md
 **Priority:** low
+**Branch:** todo/fluid-resolves-get-is-has-methods-before-a
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

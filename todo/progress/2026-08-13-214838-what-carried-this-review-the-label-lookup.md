@@ -1,7 +1,9 @@
-# Fluid resolves get/is/has methods before a public property, so a hasItems() helper shadows the it...
+# what carried this review: the label lookup settled a Playwright selector in one call and the gerr...
 
-**Serves:** feedback/2026-08-13-215637-fluid-resolves-get-is-has-methods-before-a.md
+**Serves:** feedback/2026-08-13-214838-what-carried-this-review-the-label-lookup.md
 **Priority:** low
+**Branch:** todo/what-carried-this-review-the-label-lookup
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# the checkout skill prescribes a detached HEAD for a fetched patch set and has no answer for a che...
+# the Record API moves enable fields into _system and unsets them from the properties, so $row['hid...
 
-**Serves:** feedback/2026-08-13-214754-the-checkout-skill-prescribes-a-detached-head.md
+**Serves:** feedback/2026-08-13-215619-the-record-api-moves-enable-fields-into-system.md
 **Priority:** low
+**Branch:** todo/the-record-api-moves-enable-fields-into-system
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# the Record API moves enable fields into _system and unsets them from the properties, so $row['hid...
+# the review skill specifies the order of findings but not that the report is a file, so a long rev...
 
-**Serves:** feedback/2026-08-13-215619-the-record-api-moves-enable-fields-into-system.md
+**Serves:** feedback/2026-08-13-214811-the-review-skill-specifies-the-order-of.md
 **Priority:** low
+**Branch:** todo/the-review-skill-specifies-the-order-of
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

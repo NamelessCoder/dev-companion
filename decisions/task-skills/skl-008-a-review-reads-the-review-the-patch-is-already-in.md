@@ -95,3 +95,13 @@ checkout and cannot be derived from it.
 ## Covered by
 
 - `SkillTest::aReviewReadsTheReviewThePatchIsAlreadyIn`
+
+## Since then
+
+The second assumption was measured on 2026-08-14 and the round trip is not what
+it cost. A review of change 93319 asked the lookup for the unanswered comment
+this entry put on the checklist, and the answer carries no comment, no vote and
+no label — so the surface was routed to a tool that has never been able to
+answer it. The session fetched the NoteDB meta ref and read it as git history
+instead, which took it two calls it worked out for itself. `D-ANS-079` is the
+judgement and the change answer is what grows.

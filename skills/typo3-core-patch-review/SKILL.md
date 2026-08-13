@@ -77,14 +77,15 @@ Ask the owner of each obligation rather than recalling it:
 - `typo3_rule_lookup` for the contribution rules the diff makes relevant — what
   a breaking change owes, what a deprecation owes, what belongs in a changelog
   entry, and what review readiness means. The sections are named by subject, so
-  ask in the words of a subject rather than in a sentence about the patch.
-  **Obligations that share a document are one call.**
+  ask in the words of a subject rather than in a sentence about the patch. **Two
+  subjects at most in one call, and a third is a call of its own.**
   `breaking change changelog entry` returns both sections whole, and asking the
-  two separately returns the same pair twice. Length is the limit rather than
-  the count. Coverage is measured against the query's own words, so a query
-  naming four obligations dropped the deprecation section that one subject alone
-  returns. A genuinely different subject — testing, code style, the Gerrit
-  workflow — is a call of its own.
+  two separately returns the same pair twice. A section is kept only where it
+  carries half of what the query asks for, so every subject added takes coverage
+  off the sections the others reach: `changelog entry testing review readiness`
+  returns nothing at all, while `changelog entry` and `review readiness` each
+  answer whole. Two subjects were measured never to empty a query and a third
+  regularly does, whether or not the subjects share a document.
 - Enumerate what the diff **removes or renames** before asking. A public class,
   method, property, constant, TCA field, TypoScript path or Fluid ViewHelper
   argument that disappears is the finding class this review exists for, and it

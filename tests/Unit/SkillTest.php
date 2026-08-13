@@ -1094,22 +1094,19 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function obligationsThatShareADocumentAreOneRuleQuery(): void
+    public function aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn(): void
     {
-        // The skill told a reviewer to ask per obligation because "a query that
-        // names two reaches neither", and the REVIEW-03 run of 2026-08-03
-        // followed it: `changelog entry` then `breaking change`, both returning
-        // `## Breaking Changes` and `## Changelog Files` whole. Re-run the same
-        // day, `breaking change changelog entry` returns both at 100% plus the
-        // three sections the two calls added between them, while four subjects
-        // in one query drop `## Deprecations` below `Documents::MIN_COVERAGE`.
-        // So the count was never the axis and the length is (`D-SKL-011`).
+        // The bound is the count, measured over every combination of headings
+        // the prose corpus carries: two subjects emptied none of 234 queries, a
+        // third emptied 123 of 516 and a fourth 377 of 830. "Length is the
+        // limit rather than the count" was read as permission by a review that
+        // asked four subjects at once and got nothing — `D-SKL-043`.
         $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
             Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
         ));
 
         self::assertStringContainsString(
-            '**Obligations that share a document are one call.**',
+            '**Two subjects at most in one call, and a third is a call of its own.**',
             $skill,
         );
         // The pair it was measured on, so the rule is checkable rather than
@@ -1118,14 +1115,14 @@ final class SkillTest extends TestCase
             '`breaking change changelog entry` returns both sections whole',
             $skill,
         );
-        // And the bound, which is what the withdrawn sentence was reaching for.
-        self::assertStringContainsString('Length is the limit rather than the count', $skill);
+        // And the query that emptied, which is what the bound is against.
         self::assertStringContainsString(
-            'a query naming four obligations dropped the deprecation section',
+            '`changelog entry testing review readiness` returns nothing at all',
             $skill,
         );
-        // The claim about the ranker that moved under the skill is gone.
+        // The two claims about the ranker that were read as permission are gone.
         self::assertStringNotContainsString('a query that names two reaches neither', $skill);
+        self::assertStringNotContainsString('Length is the limit rather than the count', $skill);
     }
 
     #[Test]

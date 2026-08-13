@@ -1,7 +1,8 @@
 ---
 id: D-SKL-011
 date: 2026-08-03
-status: open
+status: revoked
+revokedBy: D-SKL-043
 ---
 
 # D-SKL-011 — The call plan a skill writes down is measured against the corpus that answers it
@@ -104,4 +105,24 @@ the ranker moved under it on the day it was followed.
 
 ## Covered by
 
-- `SkillTest::obligationsThatShareADocumentAreOneRuleQuery`
+- `SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn`
+
+## Revoked on 2026-08-14
+
+By its own second **Wrong if**. A review of Gerrit change 93319 followed the
+rewrite on 2026-08-13, asked `changelog entry testing review readiness` in one
+call and got nothing back — *length is the limit rather than the count* read as
+permission, which is the sentence this entry put in place of a count.
+
+The statement above is what is revoked, and the clause is the second one:
+*obligations that share a document are one call* is unbounded, and a sweep of
+every triple of headings inside one document empties 34 of 351. The first clause
+holds and is carried into the successor, which states a count of two and what it
+was measured over —
+[`D-SKL-043`](skl-043-a-rule-query-carries-two-subjects-and-a-third-is-a-call-of-its-own.md).
+
+The evidence above stays. The pair it was measured on still answers in one call,
+the round trip it removed was real, and the two proposals it rejected — a
+session-level suppression and naming the sibling sections in the answer — were
+not what this feedback asked for either.
+

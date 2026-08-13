@@ -1,0 +1,133 @@
+---
+id: D-SKL-043
+date: 2026-08-14
+status: open
+---
+
+# D-SKL-043 — A rule query carries two subjects, and a third is a call of its own
+
+**A skill that tells a caller how many subjects one rule query carries states a
+count the corpus was measured to bear, and that count is two.**
+
+[`D-SKL-011`](skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md)
+replaced a count with *length is the limit rather than the count*, and its
+second **Wrong if** described what would follow: a review asking four
+obligations in one query and reporting what came back missing. That happened on
+2026-08-13, and nothing came back at all.
+
+## Evidence
+
+- `feedback/2026-08-13-214857` reports a review of Gerrit change 93319 asking
+  `typo3_rule_lookup` for `changelog entry testing review readiness` at
+  `targetVersion "15.0"` and getting `matchCount: 0`. It names the skill's
+  bundling sentence as what it followed, and reading
+  `documentId="core/contribution/rules"` as what it recovered with.
+- The miss reproduces whole, re-run on 2026-08-14 from this worktree through
+  `Tool\RuleLookup::answer()` with the feedback's own arguments: *No knowledge
+  section matched "changelog entry testing review readiness"*, then *No section
+  carries more than 3 of the 5 words: "changelog entry review" reaches 3
+  sections, "changelog review readiness" reaches 3 sections — ask again with the
+  one that narrows best*, then the `documentation-changelog` hint and the topic
+  list.
+- Every part of it answers on its own. `testing` returns `## Testing` of the
+  contribution rules at coverage 1.0 and score 107; `review readiness` returns
+  `## Review Readiness` at 1.0 and 148; `changelog entry` returns
+  `## Breaking Changes`, `## Changed Signatures` and `## Changelog Files` at
+  1.0. Four of the five words still answer — `changelog entry review readiness`
+  returns six sections, `## Review Readiness` first at 0.691. The fifth word is
+  what empties it.
+- The count is where the cliff is, measured over the 62 `##` headings the prose
+  corpus carries, asked in the corpus's own words. All 1891 pairs: one empty. Of
+  37,820 triples, 379 taken at a fixed stride: 102 empty, 27%. Of 557,845
+  quadruples, 140 at the same stride: 80 empty, 57%.
+- Sharing a document does not save a third subject, which is what the sentence
+  being replaced promised. Exhaustively within one document: 351 triples of its
+  own headings return nothing 34 times and return all three 31 times; 500
+  quadruples return nothing 84 times and all four twice.
+  `documentation testing review readiness` — three headings of
+  `core/contribution/rules`, the document the feedback's session went on to read
+  whole — returns `## Testing` alone at coverage 0.532.
+- The pair holds where the sentence claimed it.
+  `breaking change changelog entry`, the query `D-SKL-011` measured, still
+  returns `## Breaking Changes`, `## Changed Signatures` and
+  `## Changelog Files` at 1.0. The one pair of 1891 that empties is
+  `removing the probe the pre-commit hook`.
+- The tool already offers the one-call recovery.
+  `Documents::largestReachingSubsets()` named two three-word subsets that return
+  sections, which is
+  [`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)'s
+  computation on this corpus. The report names only the topic listing as what
+  the miss did right, and nothing records whether the subsets line was read.
+- The tool's own schema asks for one. `RuleLookup::inputSchema()` describes
+  `query` as *Topic to look up, in English, for example testing, review,
+  deprecation, or code style* — singular, and four single-word examples. The
+  skill is what told the caller otherwise.
+
+## Decided
+
+- **Step 4, wording, closed on the spot.** The rule was delivered, was followed
+  and was wrong about the corpus — the same diagnosis `D-SKL-011` made of the
+  sentence it replaced. The skill's contract is untouched: its `description` and
+  the ownership boundary it closes on are unchanged, and nothing about TYPO3 was
+  looked up.
+- The bound is stated as a count, because the count is what a caller can check
+  before the call. *Length is the limit* named the mechanism accurately and
+  asked the caller to estimate a coverage share against a corpus they cannot
+  see.
+- Sharing a document is demoted from the rule to the reason a pair is worth
+  asking together, which is what the measurement supports.
+- The exception list goes. *A genuinely different subject — testing, code style,
+  the Gerrit workflow — is a call of its own* is what a bound of two already
+  says, and it was the half the reporting session read as exhaustive.
+- **The per-term fallback the feedback asks for is not built.** `D-ANS-037`'s
+  **Since then** measured it over 490 queries: admitting every section a query
+  term reaches returns the nearest unrelated section to 87 queries that reach
+  nothing today, 40 of the 41 scenario prompts among them. The subsets in the
+  miss are that fallback in the form the floor survives — the union is offered
+  as a query to ask rather than returned as an answer.
+- **The tool description is not changed either.** The feedback asks it to state
+  a conjunction, and there is none: a section is kept at half the query's weight
+  rather than at all of it, which is why four words answer where five do not.
+  Writing a share into a description a client caches is the mistake this entry
+  is about, one file further out.
+- `D-SKL-011` is revoked rather than amended. Its statement carries *obligations
+  that share a document are one call* unbounded, which is what the sweep above
+  disproves at three, and a reader of the listing sees the headline and the
+  status alone.
+
+## Assumed
+
+- That the stride sample stands for the population at three and four subjects.
+  It walks the lexicographic order of the combinations rather than a random
+  draw, so a run of headings that share a word is sampled as its share of that
+  order.
+- That a caller writes what the sweep asked. Every query in it is the corpus's
+  own heading text, and a reviewer writes the subject in their own words, which
+  reaches fewer sections rather than more.
+- That a reviewer reads a count as a bound where they read *length is the limit*
+  as permission. Nothing measures what the next recorded review run asks for.
+- That no other file states a count for this tool. `one call` reaches four
+  skills and none of them is about `typo3_rule_lookup`; `base.md` routes it by
+  `documentId`. `knowledge/server-scope.json` still routes a review to
+  *`typo3_rule_lookup` per obligation the diff raises*, which is inside the
+  bound and left where `D-SKL-011` left it.
+
+## Wrong if
+
+- A review asks two subjects in one call and reports the second one missing.
+  Then two is over the bound as well, and what holds is the measured pair rather
+  than a count at all.
+- A later feedback reports a three-subject query answering whole and the split
+  as the cost. Then the corpus grew into the combination, and the count is
+  measured again rather than raised on one report.
+- A review reads the bound as a ceiling on words and splits
+  `breaking change changelog entry` back into two calls. Then *subject* is
+  carrying more than it can and the sentence needs the pair spelled out.
+- The next skill sentence stating a retrieval behaviour is found stale the same
+  way. `D-SKL-011`'s fourth **Wrong if** said this twice over: two entries have
+  now corrected one paragraph about the ranker, and the lesson would be that a
+  skill states the subject to ask in and no property of the search at all.
+
+## Covered by
+
+- `SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn`

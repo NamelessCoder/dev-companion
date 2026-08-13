@@ -175,16 +175,52 @@ final class Gerrit
     }
 
     /**
-     * One change by its number, the form a review URL carries.
+     * One change by its number or its Change-Id, and the changes sharing that
+     * id.
      *
      * Nothing is filtered here. A caller naming a change has named it, and the
      * answer is that change whatever its commit message says.
+     *
+     * What the handle decided until `D-ANS-080` is whether the backport is in
+     * the answer at all: `change:<id>` answers every branch the patch was
+     * pushed to, `change:<number>` answers one. The id is in the number-form
+     * response already, so the second query is what makes the two handles
+     * answer the same set — and it is asked whether there is a sibling or not,
+     * because only the answer says.
      *
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     public function change(string $change, int $limit = 1): array
     {
-        return $this->search('change:' . trim($change), $limit);
+        $handle = trim($change);
+        $answer = $this->search('change:' . $handle, $limit);
+
+        $named = $answer['changes'][0] ?? null;
+        $id = is_string($named['changeId'] ?? null) ? $named['changeId'] : '';
+        if (count($answer['changes']) !== 1 || $id === '' || strcasecmp($id, $handle) === 0) {
+            return $answer;
+        }
+
+        $siblings = $this->search('change:' . $id, $limit);
+        // A query that did not answer is not an absence of siblings, so the
+        // change that was named stands rather than being replaced by nothing.
+        if ($siblings['status'] !== 'answered') {
+            return $answer;
+        }
+
+        // The named change first, and `n` applied after it. Gerrit orders by
+        // last activity, so `change:<id>&n=1` answers the sibling that moved
+        // most recently — measured on 2026-08-14, where change 95169 asked for
+        // by number came back as 93202.
+        $changes = $answer['changes'];
+        foreach ($siblings['changes'] as $sibling) {
+            if (($sibling['number'] ?? null) !== ($named['number'] ?? null)) {
+                $changes[] = $sibling;
+            }
+        }
+        $siblings['changes'] = array_slice($changes, 0, max(1, $limit));
+
+        return $siblings;
     }
 
     /**
@@ -272,12 +308,16 @@ final class Gerrit
     /**
      * One change, in the fields a caller asked this question for: whether it
      * exists, what it is called, which branch it targets, whether it is still
-     * open, and which patch set the answer is about.
+     * open, which patch set the answer is about, and the Change-Id it carries.
      *
-     * The last of those is the one a review turns on. A change is a series of
-     * patch sets and the checkout in front of the reviewer is one commit, so
-     * the number alone says nothing about whether the two are the same thing;
-     * the commit is what settles it against a local `HEAD`.
+     * The patch set is the one a review turns on. A change is a series of patch
+     * sets and the checkout in front of the reviewer is one commit, so the
+     * number alone says nothing about whether the two are the same thing; the
+     * commit is what settles it against a local `HEAD`.
+     *
+     * The Change-Id is what a backport keeps, and Gerrit relates the two
+     * changes by nothing else — no `cherry_pick_of_change` and no topic, on the
+     * pair measured for `D-ANS-080`.
      *
      * @param array<string, mixed> $entry
      * @return array<string, mixed>
@@ -297,6 +337,7 @@ final class Gerrit
 
         return [
             'number' => $number,
+            'changeId' => is_string($entry['change_id'] ?? null) ? $entry['change_id'] : '',
             // What `o=CURRENT_COMMIT` adds, where it was asked for. Read to
             // decide whether the change is about the issue, and dropped before
             // the answer is handed over.

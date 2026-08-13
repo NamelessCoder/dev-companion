@@ -8,13 +8,15 @@ review.typo3.org. Pass issue with a Forge issue number to search the commit
 messages of every change for it — the question "has somebody already fixed this"
 — or change with the Change-Id from a commit message, or the change number a
 review URL ends with, to read the one it names. Answers with the change number,
-subject, status, target branch, review URL, and the patch set that is current on
-the server with the commit it is — which is what says whether a checkout is the
-revision under review. Each change also carries the ref that patch set is
-fetchable by and the review server to fetch it over, so getting it into a
-checkout takes no second lookup. A call carries issue or change, never both.
-This reaches the network, and it reads: reviewing, voting and uploading stay
-yours. Answers from: network.
+subject, status, target branch, review URL, the Change-Id, and the patch set
+that is current on the server with the commit it is — which is what says whether
+a checkout is the revision under review. A change is answered together with the
+changes sharing its Change-Id, whichever handle named it — that is how a
+backport on a release branch is reached. Each change also carries the ref that
+patch set is fetchable by and the review server to fetch it over, so getting it
+into a checkout takes no second lookup. A call carries issue or change, never
+both. This reaches the network, and it reads: reviewing, voting and uploading
+stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -58,6 +60,11 @@ Answers with
     changes:
       - # Change number, the digits its review URL ends with.
         number: integer  # optional
+        # The Change-Id its commit message carries, empty where the server named
+        # none. A backport keeps it unchanged, so changes sharing one are the same
+        # patch on more than one branch — pass it back as change to read all of
+        # them.
+        changeId: string  # optional
         # The commit subject.
         subject: string  # optional
         # NEW while it is open, MERGED once it landed, ABANDONED when it was given
@@ -104,12 +111,11 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-14 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and ``bin/cli tools:check`` holds it.
+whose console answers. Nothing checks what is below this heading; everything
+above it is derived from the class that answers the call, and ``bin/cli
+tools:check`` holds it.
 
 gerrit: has this issue a patch already
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,6 +138,7 @@ Text:
 
     ## [TASK] Deprecate AssetCollector media handling (MERGED)
     Change 95040 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040
+    Change-Id: Ib755fc396e94a1ee4273338163804782768dc707
     Patch set 3 · e82b930e6e0587842427496c5ce01f625b27fb66
     Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/40/95040/3
     Last moved: 2026-08-02 20:40:50.000000000
@@ -151,6 +158,7 @@ Data:
         "changes": [
             {
                 "number": 95040,
+                "changeId": "Ib755fc396e94a1ee4273338163804782768dc707",
                 "subject": "[TASK] Deprecate AssetCollector media handling",
                 "status": "MERGED",
                 "branch": "main",
@@ -185,13 +193,23 @@ Text:
 .. code-block:: text
 
     TYPO3 core review server: https://review.typo3.org
-    Query: change:89011
+    Query: change:If7a109358c5432f55cc2947a1f6d0f437b830183
 
     ## [TASK] Raise --dev phpunit/phpunit:^11.5.17 (MERGED)
     Change 89011 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011
+    Change-Id: If7a109358c5432f55cc2947a1f6d0f437b830183
     Patch set 4 · fabe19d4150feb4b80317bba217d289115c6d00d
     Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/11/89011/4
     Last moved: 2025-04-09 19:01:42.000000000
+
+    ## [TASK] Raise --dev phpunit/phpunit:^11.5.17 (MERGED)
+    Change 89012 · 13.4 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/89012
+    Change-Id: If7a109358c5432f55cc2947a1f6d0f437b830183
+    Patch set 2 · fc13415b1744d6cefea5241449d61d4a06a09980
+    Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/12/89012/2
+    Last moved: 2025-04-09 19:01:53.000000000
+
+    More than one change above carries the same Change-Id. That is what a backport keeps, so they are one patch on the branches each of them names. Gerrit relates them by nothing else, and the state of one says nothing about the state of the other.
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
@@ -204,10 +222,11 @@ Data:
     {
         "status": "answered",
         "source": "https://review.typo3.org",
-        "query": "change:89011",
+        "query": "change:If7a109358c5432f55cc2947a1f6d0f437b830183",
         "changes": [
             {
                 "number": 89011,
+                "changeId": "If7a109358c5432f55cc2947a1f6d0f437b830183",
                 "subject": "[TASK] Raise --dev phpunit/phpunit:^11.5.17",
                 "status": "MERGED",
                 "branch": "main",
@@ -218,6 +237,22 @@ Data:
                 "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011",
                 "fetch": {
                     "ref": "refs/changes/11/89011/4",
+                    "remote": "https://review.typo3.org/Packages/TYPO3.CMS"
+                }
+            },
+            {
+                "number": 89012,
+                "changeId": "If7a109358c5432f55cc2947a1f6d0f437b830183",
+                "subject": "[TASK] Raise --dev phpunit/phpunit:^11.5.17",
+                "status": "MERGED",
+                "branch": "13.4",
+                "patchSet": 2,
+                "commit": "fc13415b1744d6cefea5241449d61d4a06a09980",
+                "project": "Packages/TYPO3.CMS",
+                "updated": "2025-04-09 19:01:53.000000000",
+                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/89012",
+                "fetch": {
+                    "ref": "refs/changes/12/89012/2",
                     "remote": "https://review.typo3.org/Packages/TYPO3.CMS"
                 }
             }

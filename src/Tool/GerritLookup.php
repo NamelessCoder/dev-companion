@@ -32,7 +32,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, the Change-Id, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
     public static function annotations(): array
@@ -77,6 +77,7 @@ final class GerritLookup extends ReadOnlyTool
             'query' => Schema::string('The Gerrit query this was answered with, so the same question can be asked again by hand.'),
             'changes' => Schema::listOf(Schema::object([
                 'number' => Schema::integer('Change number, the digits its review URL ends with.'),
+                'changeId' => Schema::string('The Change-Id its commit message carries, empty where the server named none. A backport keeps it unchanged, so changes sharing one are the same patch on more than one branch — pass it back as change to read all of them.'),
                 'subject' => Schema::string('The commit subject.'),
                 'status' => Schema::string('NEW while it is open, MERGED once it landed, ABANDONED when it was given up.'),
                 'branch' => Schema::string('The branch the change targets.'),
@@ -314,10 +315,15 @@ final class GerritLookup extends ReadOnlyTool
         } else {
             $named = false;
             $fetchable = false;
+            $ids = [];
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
                 $lines[] = sprintf('## %s (%s)', $entry['subject'], $entry['status']);
                 $lines[] = sprintf('Change %d · %s · %s', $entry['number'], $entry['branch'], $entry['url']);
+                if ($entry['changeId'] !== '') {
+                    $ids[] = strtolower($entry['changeId']);
+                    $lines[] = 'Change-Id: ' . $entry['changeId'];
+                }
                 if ($entry['patchSet'] > 0) {
                     $named = $named || $entry['commit'] !== '';
                     $lines[] = $entry['commit'] === ''
@@ -331,6 +337,14 @@ final class GerritLookup extends ReadOnlyTool
                 if ($entry['updated'] !== '') {
                     $lines[] = 'Last moved: ' . $entry['updated'];
                 }
+            }
+            // What the pair is, said where a reader would otherwise read two
+            // changes with one subject as a duplicate — `D-ANS-080`.
+            if (count($ids) !== count(array_unique($ids))) {
+                $lines[] = '';
+                $lines[] = 'More than one change above carries the same Change-Id. That is what a backport keeps, '
+                    . 'so they are one patch on the branches each of them names. Gerrit relates them by nothing '
+                    . 'else, and the state of one says nothing about the state of the other.';
             }
             // The one thing this answer knows and the checkout does not: which
             // revision the review is of. Nothing here can read a local `HEAD`,

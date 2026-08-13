@@ -37,6 +37,32 @@ final class GerritTest extends TestCase
         . '"current_revision":"e82b930e6e0587842427496c5ce01f625b27fb66"}]';
 
     /**
+     * One change of a backport pair, as `change:95169` answered it on
+     * 2026-08-14: the id both changes carry is in the number-form response, and
+     * nothing in it names the other change.
+     */
+    private const NUMBERED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Add link parsing in RTE figcaption",'
+        . '"status":"NEW","updated":"2026-08-07 17:50:27.000000000","_number":95169,'
+        . '"change_id":"I4b0290760f14296feec6ab30ad49595899ca08f4","current_revision_number":2,'
+        . '"current_revision":"65aa3ece11944bf20f6baeb52c13b39a2009150f"}]';
+
+    /**
+     * The same pair as `change:I4b02…` answered it the same day — both changes,
+     * the backport first, because Gerrit orders by last activity and the 13.4
+     * change moved an hour after the one on `main`.
+     */
+    private const SHARED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"13.4","subject":"[BUGFIX] Add link parsing in RTE figcaption",'
+        . '"status":"NEW","updated":"2026-08-07 18:54:00.000000000","_number":93202,'
+        . '"change_id":"I4b0290760f14296feec6ab30ad49595899ca08f4","current_revision_number":2,'
+        . '"current_revision":"a50286ef4ccb170282ed88eee5768d63f81597c5"},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Add link parsing in RTE figcaption",'
+        . '"status":"NEW","updated":"2026-08-07 17:50:27.000000000","_number":95169,'
+        . '"change_id":"I4b0290760f14296feec6ab30ad49595899ca08f4","current_revision_number":2,'
+        . '"current_revision":"65aa3ece11944bf20f6baeb52c13b39a2009150f"}]';
+
+    /**
      * What `message:<number>` really answers, measured against
      * review.typo3.org on 2026-08-05: the change the issue is resolved by, and
      * the change whose own number happens to be that of the issue.
@@ -289,6 +315,105 @@ final class GerritTest extends TestCase
         $sharded = (new Gerrit(static fn(): string => self::BOTH))->changesForIssue('88556')['changes'][0];
 
         self::assertSame('refs/changes/08/95108/1', $sharded['fetch']['ref']);
+    }
+
+    /**
+     * A backport is a change of its own on the release branch, linked to the
+     * original by the Change-Id and by nothing else — `D-ANS-080`. Which handle
+     * the caller holds decided until now whether it is in the answer at all:
+     * `feedback/2026-08-12-092654` reviewed 95169 and learned of its 13.4
+     * sibling from the tracker.
+     */
+    #[Test]
+    public function aChangeNamedByItsNumberIsAnsweredWithTheSiblingsSharingItsChangeId(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return count($asked) === 1 ? self::NUMBERED : self::SHARED;
+        });
+
+        $answer = $gerrit->change('95169', 10);
+
+        self::assertStringContainsString('q=change%3A95169', $asked[0]);
+        // The id the first response carried, asked for as a query of its own.
+        self::assertStringContainsString('q=change%3AI4b0290760f14296feec6ab30ad49595899ca08f4', $asked[1]);
+        self::assertCount(2, $asked);
+        self::assertSame([95169, 93202], array_column($answer['changes'], 'number'));
+        self::assertSame(['main', '13.4'], array_column($answer['changes'], 'branch'));
+        self::assertSame(
+            'I4b0290760f14296feec6ab30ad49595899ca08f4',
+            $answer['changes'][0]['changeId'],
+        );
+        // The query that answers this set by hand is the second one.
+        self::assertSame('change:I4b0290760f14296feec6ab30ad49595899ca08f4', $answer['query']);
+    }
+
+    /**
+     * The other handle asks the whole question in one query, so nothing is
+     * asked twice — including where that query answers one change, which is a
+     * patch nobody has backported yet.
+     */
+    #[Test]
+    public function aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed(): void
+    {
+        $asked = 0;
+        $shared = new Gerrit(function () use (&$asked): string {
+            $asked++;
+
+            return self::SHARED;
+        });
+        $alone = new Gerrit(function () use (&$asked): string {
+            $asked++;
+
+            return self::NUMBERED;
+        });
+
+        $pair = $shared->change('I4b0290760f14296feec6ab30ad49595899ca08f4', 10);
+        // Lower case, because a commit message is copied by hand and Gerrit
+        // matches the id either way.
+        $one = $alone->change('i4b0290760f14296feec6ab30ad49595899ca08f4', 10);
+
+        self::assertSame(2, $asked);
+        self::assertSame([93202, 95169], array_column($pair['changes'], 'number'));
+        self::assertSame([95169], array_column($one['changes'], 'number'));
+    }
+
+    /**
+     * `n` is applied after the change that was named, not to the query that
+     * finds its siblings. Gerrit orders by last activity, so
+     * `change:I4b02…&n=1` answers the backport — a caller asking for one change
+     * by number would otherwise be handed the other one.
+     */
+    #[Test]
+    public function theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => str_contains($url, 'q=change%3A95169')
+            ? self::NUMBERED
+            : self::SHARED);
+
+        $answer = $gerrit->change('95169', 1);
+
+        self::assertSame([95169], array_column($answer['changes'], 'number'));
+    }
+
+    /**
+     * A second query that did not answer is not an absence of siblings, so the
+     * change the caller named stands rather than being replaced by nothing.
+     */
+    #[Test]
+    public function aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding(): void
+    {
+        $answers = [self::NUMBERED, null];
+        $gerrit = new Gerrit(static function () use (&$answers): ?string {
+            return array_shift($answers);
+        });
+
+        $answer = $gerrit->change('95169', 10);
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame([95169], array_column($answer['changes'], 'number'));
     }
 
     /**

@@ -71,3 +71,30 @@ corrections before the developer asked whether it had actually looked.
   told to install an instance it did not need. Neither is `base`, so they are
   listed only where the query matched them; a report of the opposite would say
   the matching is too loose.
+
+## Since then
+
+2026-08-14. Two feedback from one session reviewing a Playwright-only change
+land on this entry's `whenToUse` rather than on the suite it added.
+`feedback/2026-08-13-214708` read the clause "which is how a single spec or
+project is selected" as the sanctioned way to narrow a run, went to a local
+Playwright invocation, and got no evidence out of it at all;
+`feedback/2026-08-13-214729` reports that the suite blocks on a read from
+`/dev/tty`, so a session without a controlling terminal loses the instance and
+is told SUCCESS.
+
+The **Assumed** is the half that failed. The commands the script prints are
+`npm --prefix=Build run playwright:run -- --project e2e` and its `:open`
+counterpart, `Build/package.json` carries `playwright:install` as a script of
+its own, and the container path runs `IMAGE_PLAYWRIGHT` instead — so the local
+route has a precondition this entry never names, and the reporting session hit
+it as a browser build that was not on the host. The first **Wrong if** did not
+fire as written: what stopped that session was the route the entry offered, not
+the instance.
+
+The statement holds and the clause is true. Every e2e case builds `COMMAND` from
+`PLAYWRIGHT_PROJECT` alone and reaches no `"$@"` on `.checkouts/main`, `14.3`
+and `13.4`, where `-s unit`, `-s functional`, `-s npm`, `-s composer` and
+`-s phpstan` all do. That makes it the wrong sentence to hang a route on: a
+Playwright-only diff costs the whole suite, and the price is what belongs beside
+the command. `todo/open/2026-08-14-002523` carries the rewrite.

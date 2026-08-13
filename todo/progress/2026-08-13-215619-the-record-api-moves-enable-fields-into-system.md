@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-215619-the-record-api-moves-enable-fields-into-system.md
 **Priority:** normal
+**Branch:** todo/the-record-api-moves-enable-fields-into-system
+**Claimed:** 2026-08-13
 
 Judged on 2026-08-14 as a knowledge gap: the probe reaches the three hints the
 feedback named and nothing else, and the vocabulary is absent from `knowledge/`

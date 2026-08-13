@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-214754-the-checkout-skill-prescribes-a-detached-head.md
 **Priority:** normal
+**Branch:** todo/carry-a-patch-onto-current-code-on-a-named-branch
+**Claimed:** 2026-08-13
 
 Read what the contribution guide's cherry-pick page says about carrying a change
 into a checkout and whether it names a branch for it — the URL is in

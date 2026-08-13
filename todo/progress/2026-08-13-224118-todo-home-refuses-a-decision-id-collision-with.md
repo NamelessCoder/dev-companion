@@ -1,7 +1,9 @@
-# nothing says what the core's ESLint config actually enforces, so lintTypescript is the only way t...
+# todo:home refuses a decision-id collision with a raw PHPUnit failure and does not name the renumb...
 
-**Serves:** feedback/2026-08-13-215716-nothing-says-what-the-core-s-eslint-config.md
+**Serves:** feedback/2026-08-13-224118-todo-home-refuses-a-decision-id-collision-with.md
 **Priority:** low
+**Branch:** todo/todo-home-refuses-a-decision-id-collision-with
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# todo:home refuses a decision-id collision with a raw PHPUnit failure and does not name the renumb...
+# a new XLF trans-unit compiles into the ~labels types but throws at runtime until cache:flush and ...
 
-**Serves:** feedback/2026-08-13-224118-todo-home-refuses-a-decision-id-collision-with.md
+**Serves:** feedback/2026-08-13-215652-a-new-xlf-trans-unit-compiles-into-the-labels.md
 **Priority:** low
+**Branch:** todo/a-new-xlf-trans-unit-compiles-into-the-labels
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

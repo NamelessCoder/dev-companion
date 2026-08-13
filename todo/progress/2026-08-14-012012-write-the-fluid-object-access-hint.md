@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-215637-fluid-resolves-get-is-has-methods-before-a.md
 **Priority:** normal
+**Branch:** todo/write-the-fluid-object-access-hint
+**Claimed:** 2026-08-13
 
 Judged as `D-KNW-075`: step 1a, the knowledge is missing. The resolution order
 is established in that entry's evidence and read on all four covered lines, so

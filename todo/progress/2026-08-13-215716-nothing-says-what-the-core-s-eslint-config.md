@@ -1,7 +1,9 @@
-# a new XLF trans-unit compiles into the ~labels types but throws at runtime until cache:flush and ...
+# nothing says what the core's ESLint config actually enforces, so lintTypescript is the only way t...
 
-**Serves:** feedback/2026-08-13-215652-a-new-xlf-trans-unit-compiles-into-the-labels.md
+**Serves:** feedback/2026-08-13-215716-nothing-says-what-the-core-s-eslint-config.md
 **Priority:** low
+**Branch:** todo/nothing-says-what-the-core-s-eslint-config
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

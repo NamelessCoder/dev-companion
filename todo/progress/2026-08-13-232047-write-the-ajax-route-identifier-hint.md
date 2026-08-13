@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-215601-the-ajax-prefix-is-asymmetric-across-ajaxroutes.md
 **Priority:** normal
+**Branch:** todo/write-the-ajax-route-identifier-hint
+**Claimed:** 2026-08-13
 
 Judged as `D-KNW-070`: step 1a, and inside the boundary that entry already drew
 — what the core's own classes do with a route — so it is sentences on

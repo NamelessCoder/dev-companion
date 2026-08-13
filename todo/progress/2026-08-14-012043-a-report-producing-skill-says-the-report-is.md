@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-214811-the-review-skill-specifies-the-order-of.md
 **Priority:** normal
+**Branch:** todo/a-report-producing-skill-says-the-report-is
+**Claimed:** 2026-08-13
 
 Say in the report section of `typo3-core-patch-review`,
 `typo3-extension-conformance` and `typo3-core-issue-triage` that the report is

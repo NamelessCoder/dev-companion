@@ -1,15 +1,19 @@
-# the Record API moves enable fields into _system and unsets them from the properties, so $row['hid...
+# Write the hint for the shape a Record-sourced row has
 
 **Serves:** feedback/2026-08-13-215619-the-record-api-moves-enable-fields-into-system.md
-**Priority:** low
+**Priority:** normal
 **Branch:** todo/the-record-api-moves-enable-fields-into-system
 **Claimed:** 2026-08-13
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/records/judging.rst` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+Judged on 2026-08-14 as a knowledge gap: the probe reaches the three hints the
+feedback named and nothing else, and the vocabulary is absent from `knowledge/`
+and `skills/` — `D-KNW-074` carries the boundary and what the hint is written
+around. Read `Domain/RecordFactory.php`, `Domain/Record.php` and
+`Domain/Record/SystemProperties.php` in `.checkouts/13.4`, `14.3` and `main` for
+which fields are moved out, the `_system` keys with their types and the
+accessors, bind the statements with `since` because none of it is in `12.4`, and
+write them as a hint of their own in `knowledge/hints/records.json` whose
+`appliesTo` carries the field names as well as the class names. The second shape
+the hint pairs against — FormEngine's `databaseRow` — and the core's own
+fallback example are both still to be located: `RecordIdentityRenderer` is in no
+covered checkout.

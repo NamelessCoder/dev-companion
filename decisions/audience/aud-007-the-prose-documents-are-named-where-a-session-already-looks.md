@@ -126,3 +126,23 @@ missing is beside them rather than instead of them: the two skills name a
 it cut a page without saying how much of it it left. That is
 [`D-ANS-070`](../answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md),
 and the enumeration this entry decided against is still not what follows.
+
+**Since then**, on 2026-08-14, a session held the naming and opened a page
+whole. `feedback/2026-08-13-214927` reviewed a Gerrit change in a client that
+rendered no resource list, and reports the guide ids in `typo3_project_describe`
+as the only place the corpus was named to it — enough that it never called
+`typo3_server_scope`, which is the route this entry could not rely on.
+`feedback/2026-08-13-214838` is the same session and carries the read:
+`typo3_rule_lookup` with `documentId` `core/contribution/gerrit-workflow`, which
+`typo3-core-patch-checkout` names at its fetch step. The paragraph it needed —
+that the change refs are on the review server and `remote.origin.pushurl` is
+what to fetch from — is one its own words would not have matched in a search.
+
+The assumption the session flags as unchecked holds. `ProjectDescribe::guides()`
+enumerates `Documents::documents()`, so the list it read is the whole corpus
+rather than a selection of it, and reading it as complete was correct.
+
+So the first **Wrong if** has an instance the other way for the first time. Only
+the enumeration is read here; which surface produced the read is the session's
+own account, and it names the skill's step rather than the listing — the listing
+said what exists, and the skill said to open one of them.

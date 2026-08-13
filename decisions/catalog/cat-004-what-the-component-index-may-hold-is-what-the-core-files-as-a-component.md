@@ -79,3 +79,37 @@ checkout instead, and said so in
   directory also holds `_utility.scss`, `_type.scss` and `_root.scss` — partials
   no caller would look for as a component. Then the candidate set is not the
   directory, and the rule has to name what inside it is one.
+
+**Since then**, on 2026-08-14, a second session decided against the tool before
+calling it, and a re-run says the skip cost it two hits.
+`feedback/2026-08-13-214927` reviewed a Playwright diff asserting on six backend
+selectors — `.wizard-loader`, `.form-check-type-card`, `.node-name`,
+`#tracker-details`, `[role="treeitem"]` and `.wizard-actions button` — and
+grepped `Build/Sources/TypeScript` for each of them. Its reasoning: the index
+answers what the right class to use is, and a diff asks whether the class exists
+in the element the spec drives, which is a source question.
+
+Re-run on 2026-08-14 against the bundled snapshot (TYPO3 15.0 @ `4c8b38b2dd07`,
+verified 2026-07-28), each with `targetVersion` 15.0: `wizard-loader` and
+`wizard-actions` miss, `form-check-type-card` returns `form-check`, which
+carries it as a variant, and `node-name` returns `tree`, which carries it as a
+sub-component. Two of the six were curated by that name, and nothing the session
+held before calling told it which two.
+
+That is what its suggestion would cost. It asks the description to say the tool
+answers what is registered rather than whether a selector exists, and to name
+grepping the checkout for the second question. As a rule that is the narrowing
+this entry rejected, arriving by question shape rather than by subject: a caller
+cannot sort its own selectors into the two questions before it asks, so a line
+sending the *does it exist* shape to grep sends the curated hit there too.
+
+Both halves already reach a caller in the order it needs them. The description
+says a miss means uncurated rather than outside the subject, and the miss text
+names what settles it — "verify against the checkout before concluding a class
+does not exist". So the statement before the call says the miss is not
+authoritative, and the one after it says where the answer is.
+
+Considered and not taken: routing a review of backend markup to the lookup the
+way the instructions route authoring to it. Here that would have reported one
+asserted class as a documented variant, which is worth a call and is not a
+finding.

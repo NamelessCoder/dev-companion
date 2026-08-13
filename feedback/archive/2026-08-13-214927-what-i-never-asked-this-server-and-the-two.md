@@ -1,7 +1,8 @@
 ---
 date: 2026-08-13T21:49:27+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-13
 model: claude-opus-5[1m]
 tool: typo3_server_scope, typo3_project_describe, typo3-core-patch-review
 directory: /home/benji/projects/typo3-cms

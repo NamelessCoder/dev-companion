@@ -170,3 +170,21 @@ this: a session reports switching on a sentence that reaffirmed a finding after
 the counter-case is in the skill, which would say the boundary cannot be drawn
 in prose at all and that the crossing has to be a question the session asks
 rather than a trigger it recognises.
+
+## Since then
+
+On 2026-08-14 the rule the crossing guards held under the pressure it was
+written for. `feedback/2026-08-13-214927` reviewed a Playwright diff and names
+four things it could have fixed on the way past — a missing `isReady()`, a
+discarded return value, a dropped assertion, trailing blank lines — and reports
+that what stopped it is the sentence saying a session crossing that line looks
+like nothing from the inside. That sentence is this entry's own reading of
+`feedback/2026-08-07-132559` written back into the skill, and the session's
+account is that it names the failure mode concretely enough to recognise while
+it is happening.
+
+Nobody asked that session for the change, so what it reports on is the rule
+rather than the trigger beside it, and a report is evidence about where the
+boundary runs rather than a confirmation — `D-FBK-018`. What it does settle is
+which half of the paragraph is doing the work: the concrete failure mode, not
+the ownership sentence above it.

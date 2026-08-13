@@ -260,6 +260,7 @@ Text:
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+    - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
     - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
@@ -760,6 +761,11 @@ Data:
             {
                 "id": "installation-setup",
                 "title": "What typo3 setup Takes and What It Refuses",
+                "category": "PHP"
+            },
+            {
+                "id": "breaking-without-a-moved-member",
+                "title": "Whether a Change Is Breaking When No Member Moved",
                 "category": "PHP"
             },
             {
@@ -1430,6 +1436,7 @@ Text:
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+    - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
     - extension-test-extensions — Which Extensions a Functional Test Loads (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
@@ -1843,6 +1850,11 @@ Data:
             {
                 "id": "installation-setup",
                 "title": "What typo3 setup Takes and What It Refuses",
+                "category": "PHP"
+            },
+            {
+                "id": "breaking-without-a-moved-member",
+                "title": "Whether a Change Is Breaking When No Member Moved",
                 "category": "PHP"
             },
             {

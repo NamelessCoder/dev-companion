@@ -39,7 +39,39 @@
       {
         "text": "Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query \"breaking change\").",
         "scope": "core"
+      },
+      {
+        "text": "A change that moves no member at all is settled the other way round, on what it renders: typo3_hint_lookup with the id breaking-without-a-moved-member.",
+        "scope": "core"
       }
+    ]
+  },
+  {
+    "id": "breaking-without-a-moved-member",
+    "title": "Whether a Change Is Breaking When No Member Moved",
+    "scope": "core",
+    "domains": [
+      "php",
+      "typoscript",
+      "fluid"
+    ],
+    "appliesTo": [
+      "is this breaking",
+      "breaking change",
+      "changed frontend markup",
+      "changed rendered output",
+      "rendered html changed",
+      "changed default typoscript",
+      "which changelog type",
+      "backport"
+    ],
+    "hints": [
+      "A change that moves no PHP member can still be breaking. The core defines the type as functionality that may break or affect third-party code, and affect is what carries a change in what an installation renders.",
+      "So the second test is what an installation renders, or is configured by, for content nobody edited. A changed frontend markup, a changed or removed default TypoScript setting, a changed shipped Fluid template and a removed configuration option each carry it.",
+      "The core files these as breaking routinely rather than as exceptions, and its changelog guide offers \"Frontend output may change\" as an example of what an Impact section says.",
+      "Important is not the smaller version of breaking. It is the last resort for a change none of the other three types describes, so what takes it is an addition that leaves existing output alone.",
+      "Where the effect is the same, the target branch decides between the two. Such a change is breaking on main, and on a maintained release line it takes an Important instead — that line takes a breaking entry only as a rare exemption for a very important fix.",
+      "So the type settles the backport rather than following it. A patch that changes what is rendered and names a maintained line in its Releases trailer is a contradiction to settle before the entry is written."
     ]
   }
 ]

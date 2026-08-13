@@ -194,11 +194,15 @@ list.
   that carries it.
 - The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.
 - The type is the first of four that describes the change: `Breaking` where it
-  moves or removes core functionality third-party code may use, `Deprecation`
-  where it marks core functionality for a planned removal, `Feature` where it
-  adds functionality, and `Important` for anything else that may require manual
-  action. `Important` is the last resort, and the only one of the four an LTS
-  release may carry.
+  moves or removes core functionality that may break or affect third-party code,
+  `Deprecation` where it marks core functionality for a planned removal,
+  `Feature` where it adds functionality, and `Important` for anything else that
+  may require manual action. `Important` is the last resort, and the only one of
+  the four an LTS release may carry.
+- `Breaking` reaches past a moved PHP member. `affect` in that definition covers
+  a change in what an installation renders or is configured by, and which of
+  those the core files as breaking, and where the boundary against `Important`
+  runs, is `typo3_hint_lookup` with the id `breaking-without-a-moved-member`.
 - A casual bug fix owes no entry, because its commit message carries the
   information. Demanding one of a `BUGFIX` that removes nothing public is a
   review defect of its own.

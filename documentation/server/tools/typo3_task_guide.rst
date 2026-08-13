@@ -279,6 +279,7 @@ Text:
     - So the target branch is decided here rather than at commit-message time. A maintained release line carries no breaking change, no deprecation and no feature, which leaves Important the only one of the four it takes — a fix owed to one cannot carry the signature change at all.
     - Add rather than widen where the change has to reach a release line: a method of its own, or the state handed over on something the callee already receives — the core puts the calling ContentObjectRenderer on the request as the currentContentObject attribute instead of into a signature. Declaring the class or the method final first is no cheaper, because that is itself a breaking change with an entry of its own.
     - Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query "breaking change").
+    - A change that moves no member at all is settled the other way round, on what it renders: typo3_hint_lookup with the id breaking-without-a-moved-member.
 
     ## Events and Extension Points
     Hints:
@@ -630,6 +631,13 @@ Data:
                     },
                     {
                         "text": "Which entries decide each of those, and what the extension scanner can and cannot find, is typo3_rule_lookup(query \"breaking change\").",
+                        "since": null,
+                        "until": null,
+                        "versions": "",
+                        "scope": "core"
+                    },
+                    {
+                        "text": "A change that moves no member at all is settled the other way round, on what it renders: typo3_hint_lookup with the id breaking-without-a-moved-member.",
                         "since": null,
                         "until": null,
                         "versions": "",

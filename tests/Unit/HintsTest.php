@@ -1645,6 +1645,54 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('whether or not the parameter is optional', $message);
     }
 
+    /**
+     * D-KNW-072. The move that is not a move, which every statement above misses.
+     *
+     * A review had to say whether a patch turning `<figcaption>Caption</...>`
+     * into `<figcaption><p>Caption</p></...>` was breaking, and whether it could
+     * reach two release lines. Nothing here answered: every statement the corpus
+     * carried was keyed on a member being removed, narrowed or widened, and the
+     * session shipped its verdict from recall (`feedback/2026-08-12-092607`).
+     *
+     * The question outranks the signature one on its own words rather than by
+     * construction, so it is measured here: `public-api-surface` shares its
+     * `appliesTo` phrases and would otherwise answer the wrong half.
+     */
+    #[Test]
+    public function aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember(): void
+    {
+        foreach ([
+            'is a change to the rendered frontend HTML of existing content classified Breaking',
+            'changed default TypoScript output breaking change',
+            'is this breaking, the patch changes lib.parseFunc_RTE so a caption gets a p tag',
+        ] as $task) {
+            $reached = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('breaking-without-a-moved-member', $reached, $task);
+            if (in_array('public-api-surface', $reached, true)) {
+                self::assertLessThan(
+                    array_search('public-api-surface', $reached, true),
+                    array_search('breaking-without-a-moved-member', $reached, true),
+                    $task . ' — the signature hint answers a question that was not asked',
+                );
+            }
+        }
+
+        $written = json_encode(Hints::byId('breaking-without-a-moved-member'), JSON_THROW_ON_ERROR);
+        // The word the four-type definition dropped, which is what carries it.
+        self::assertStringContainsString('break or affect third-party code', $written);
+        // The boundary the sweep of `.checkouts/` established, both halves: what
+        // Important is for, and what decides between the two where it is not.
+        self::assertStringContainsString('leaves existing output alone', $written);
+        self::assertStringContainsString('the target branch decides', $written);
+        self::assertStringContainsString('rare exemption', $written);
+
+        // And the entry point the reporting session did reach, which stated the
+        // definition one word narrower than its source.
+        $bodies = implode("\n", array_column(Documents::search('breaking change changelog'), 'body'));
+        self::assertStringContainsString('may break or affect third-party code', $bodies);
+        self::assertStringContainsString('breaking-without-a-moved-member', $bodies);
+    }
+
     #[Test]
     public function aPathAloneReachesTheHintForTheSubsystemItIsIn(): void
     {

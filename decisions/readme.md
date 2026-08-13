@@ -230,10 +230,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
-- [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
 - [`D-KNW-076`][D-KNW-076] — What a new backend label costs before it resolves is a gap this server owns · 2026-08-14
 - [`D-KNW-077`][D-KNW-077] — The TypeScript style hint names the config and carries what cannot be guessed · 2026-08-14
+- [`D-KNW-078`][D-KNW-078] — The corpus states the shape a Record-sourced row has · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
@@ -300,10 +300,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-KNW-071]: knowledge/knw-071-proving-what-a-rendering-change-renders-is-a-procedure-this-server-carries.md
 [D-KNW-073]: knowledge/knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md
-[D-KNW-074]: knowledge/knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-KNW-075]: knowledge/knw-075-how-fluid-resolves-an-object-path-is-a-gap-this-server-owns.md
 [D-KNW-076]: knowledge/knw-076-what-a-new-backend-label-costs-before-it-resolves-is-a-gap-this-server-owns.md
 [D-KNW-077]: knowledge/knw-077-the-typescript-style-hint-names-the-config-and-carries-what-cannot-be-guessed.md
+[D-KNW-078]: knowledge/knw-078-the-corpus-states-the-shape-a-record-sourced-row-has.md
 [D-KNW-070]: knowledge/knw-070-backend-routing-internals-are-a-gap-this-server-owns.md
 [D-KNW-066]: knowledge/knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knowledge/knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md
@@ -677,6 +677,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### Revoked, and kept as the record
 
 - [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
+- [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14 → D-KNW-078
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files, and what is solved is taken from a package · 2026-08-09 → D-DOC-024
@@ -713,6 +714,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-KNW-072]: knowledge/knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
+[D-KNW-074]: knowledge/knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-019]: documentation/doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md

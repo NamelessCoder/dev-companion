@@ -89,3 +89,24 @@ The second **Wrong if** was read on 2026-08-12 and does not hold.
 `navigationComponent`, so the inheritance stays a statement and the hint stays
 the answer to it. What the tool should carry instead — the resolved component
 and the routes, for the installation in front of the caller — is `D-ANS-077`.
+
+`feedback/2026-08-13-215601` is a second identifier shape inside this boundary
+and it was not enumerated: an `AjaxRoutes.php` route is written three ways, and
+the hint says none of them. It is not the first **Wrong if**. That one describes
+a session going to the checkout for a fact the hint carries, and this one went
+for a fact it does not — so the boundary held and the enumeration under it was
+short. Nor is it routing: `bin/cli hints:probe` with "AjaxRoutes ajaxUrls route
+identifier prefix" ranks `backend-routing-internals` first on its `appliesTo`,
+which is the hint arriving with nothing to say.
+
+What the enumeration was short by is one mechanism rather than one sentence.
+`AbstractServiceProvider::configureBackendRoutes()` merges `Routes.php` under
+the keys the file writes and registers every `AjaxRoutes.php` entry under
+`'ajax_' . $routeIdentifier`, so the registration key is bare,
+`buildUriFromRoute` takes the prefixed name, and
+`PageRenderer::addAjaxUrlsToInlineSettings()` strips the prefix again for
+`TYPO3.settings.ajaxUrls`. Read on 12.4, 13.4, 14.3 and main; nothing is bound.
+`Routes.php` has no such asymmetry, which is the half `backend-modules` gets
+wrong by pairing the two files as "the same declarative style" — the general
+sentence written before the exception existed. `todo/open/2026-08-13-232047`
+carries it.

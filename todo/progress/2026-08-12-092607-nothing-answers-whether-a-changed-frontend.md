@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-12-092607-nothing-answers-whether-a-changed-frontend.md
 **Priority:** low
+**Branch:** todo/nothing-answers-whether-a-changed-frontend
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

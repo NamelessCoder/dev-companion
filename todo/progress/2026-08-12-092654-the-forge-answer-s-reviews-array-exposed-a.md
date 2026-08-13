@@ -1,7 +1,9 @@
-# a German-language review request activated no skill, and the whole session ran with no entry poin...
+# the forge answer's reviews array exposed a sibling backport and an issue subject contradicting th...
 
-**Serves:** feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md
+**Serves:** feedback/2026-08-12-092654-the-forge-answer-s-reviews-array-exposed-a.md
 **Priority:** low
+**Branch:** todo/the-forge-answer-s-reviews-array-exposed-a
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# typo3_gerrit_lookup returns no review comments or votes, so the review skill's "unanswered commen...
+# no recipe for rendering a bodytext snippet through lib.parseFunc_RTE, so the probe that decided t...
 
-**Serves:** feedback/2026-08-13-214644-typo3-gerrit-lookup-returns-no-review-comments.md
+**Serves:** feedback/2026-08-12-092633-no-recipe-for-rendering-a-bodytext-snippet.md
 **Priority:** low
+**Branch:** todo/no-recipe-for-rendering-a-bodytext-snippet
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

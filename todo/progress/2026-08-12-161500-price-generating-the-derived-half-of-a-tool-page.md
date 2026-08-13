@@ -2,6 +2,8 @@
 
 **Serves:** documentation/server/tools/
 **Priority:** low
+**Branch:** todo/price-generating-the-derived-half-of-a-tool-page
+**Claimed:** 2026-08-13
 
 Half of `documentation/server/tools/` is reproducible anywhere and is committed
 anyway. Measured on 2026-08-12: the 26 pages hold 8,533 derived lines — the

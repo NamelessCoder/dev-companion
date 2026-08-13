@@ -1,7 +1,9 @@
-# no recipe for rendering a bodytext snippet through lib.parseFunc_RTE, so the probe that decided t...
+# a German-language review request activated no skill, and the whole session ran with no entry poin...
 
-**Serves:** feedback/2026-08-12-092633-no-recipe-for-rendering-a-bodytext-snippet.md
+**Serves:** feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md
 **Priority:** low
+**Branch:** todo/a-german-language-review-request-activated-no
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

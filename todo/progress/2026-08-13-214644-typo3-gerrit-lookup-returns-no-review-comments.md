@@ -1,7 +1,9 @@
-# the forge answer's reviews array exposed a sibling backport and an issue subject contradicting th...
+# typo3_gerrit_lookup returns no review comments or votes, so the review skill's "unanswered commen...
 
-**Serves:** feedback/2026-08-12-092654-the-forge-answer-s-reviews-array-exposed-a.md
+**Serves:** feedback/2026-08-13-214644-typo3-gerrit-lookup-returns-no-review-comments.md
 **Priority:** low
+**Branch:** todo/typo3-gerrit-lookup-returns-no-review-comments
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

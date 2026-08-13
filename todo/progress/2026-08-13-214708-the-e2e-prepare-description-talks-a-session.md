@@ -1,7 +1,9 @@
-# base.md's deprecation sweep is owed by the letter in a patch review but answers nothing about the...
+# the e2e-prepare description talks a session into running a local playwright binary, which the bas...
 
-**Serves:** feedback/2026-08-11-055337-base-md-s-deprecation-sweep-is-owed-by-the.md
+**Serves:** feedback/2026-08-13-214708-the-e2e-prepare-description-talks-a-session.md
 **Priority:** low
+**Branch:** todo/the-e2e-prepare-description-talks-a-session
+**Claimed:** 2026-08-13
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

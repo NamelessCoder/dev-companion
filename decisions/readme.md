@@ -535,6 +535,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### feedback
 
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
+- [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
 - [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
@@ -568,6 +569,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
 [D-FBK-045]: feedback/fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
+[D-FBK-046]: feedback/fbk-046-the-check-that-catches-a-duplicate-id-names-the-files-and-the-command.md
 [D-FBK-041]: feedback/fbk-041-what-nothing-answers-for-is-called-unresolved.md
 [D-FBK-042]: feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
 [D-FBK-043]: feedback/fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md

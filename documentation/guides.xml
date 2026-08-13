@@ -23,7 +23,13 @@
     fail-on-error="true"
     links-are-relative="true"
 >
-    <project title="TYPO3 Dev Companion"/>
+    <!--
+        The last line of the footer. `copyright` is the renderer's own project
+        setting rather than the theme's, so it stands here beside the title and
+        the theme prints whatever it is handed; the licence it names is the one
+        `composer.json` declares.
+    -->
+    <project title="TYPO3 Dev Companion" copyright="© 2026 Benjamin Kott — MIT licensed"/>
     <!--
         The rail and the trail are the `toctree` each `index.rst` carries, which
         is what the corpus writes now that it can. `automatic-menu` stood here
@@ -71,7 +77,13 @@
         </navigation>
         <footer>
             <social href="https://github.com/benjaminkott/typo3-dev-companion" label="GitHub"/>
-            <note>Not an official TYPO3 project.</note>
+            <!--
+                What this is, under the mark and on every page. The front page
+                says it at length in the hero, which a reader who arrived on a
+                tool page has not seen — so what stands here is the whole claim
+                in two sentences: what it answers, and what it may touch.
+            -->
+            <note>A local MCP server that answers a coding agent's TYPO3 questions, bound to the versions each answer holds for. The client starts it beside the project, where it reads the installation and writes nothing into it.</note>
         </footer>
     </extension>
 </guides>

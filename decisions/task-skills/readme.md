@@ -11,6 +11,7 @@ one is added.
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14
+- [`D-SKL-041`][D-SKL-041] — A patch carried onto current code is carried on a named branch · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
@@ -51,6 +52,7 @@ one is added.
 [D-SKL-038]: skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md
 [D-SKL-040]: skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md
+[D-SKL-041]: skl-041-a-patch-carried-onto-current-code-is-carried-on-a-named-branch.md
 [D-SKL-035]: skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: skl-036-a-skill-runs-where-the-installer-put-it.md
 [D-SKL-033]: skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md

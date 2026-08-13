@@ -869,3 +869,80 @@ belong to its judgement.
 The feedback is closed by this commit and nothing is queued. No statement about
 TYPO3 was established here: the re-runs read this server's answers, and the
 attribution was settled by comparing two files on this machine.
+
+## Confirmed on 2026-08-14
+
+`feedback/2026-08-13-214838` reviewed Gerrit change 93319, a Playwright e2e
+diff, in `/home/benji/projects/typo3-cms`. It is a keep-request for three
+answers, and the first **Wrong if** did not fire: every counterfactual in it is
+an action an answer pre-empted — the `git fetch origin refs/changes/…` it did
+not run, the `typo3_extension_describe` it did not need, the `typo3_hint_lookup`
+a coverage sentence had already answered.
+
+The quotations are checked before the boundary is, and the one about TYPO3 is
+checked in `.checkouts/` rather than taken on trust. The reporting checkout is
+worked by another session, so the re-run was made from this repository's own
+`.checkouts/main` on 2026-08-14, with the feedback's own arguments:
+
+- `typo3_label_lookup` with query `newPage` and extension `backend` answers six
+  labels across two resources, which is the report's own count. The two the
+  review turned on are `backend.pages_new:newPage` at "Page" and
+  `backend.layout:newPage` at "Create new page", byte for byte in
+  `.checkouts/14.3` as in `.checkouts/main`. No console runs here — that
+  installation requires PHP 8.5 and this machine has 8.3 — so the answer came
+  from the packages, and the resource travelled with every hit on that path too.
+- `typo3_rule_lookup` with documentId `core/contribution/gerrit-workflow` hands
+  the document over as one section, the fetch paragraph in it: the ref is on
+  Gerrit and not on GitHub, and what to fetch from is `remote.origin.pushurl`.
+- `typo3_task_guide` states its coverage in `omittedHints`, a required key of
+  its own schema, with `HINTS_COMPLETE` saying the same thing in the text.
+
+**One implication is refused, and it is the one the strength argues from.** It
+credits the skill with sending it to read the document whole rather than search
+it, "the section I needed was not the one my words would have matched". Both
+*fetch a gerrit change into this checkout* and *fetch patch set refs/changes
+remote* return **Fetch a Change Into This Checkout** first. What the instruction
+bought is one call instead of a search and a read, not a miss avoided — and the
+same corpus asked in four subjects at once did miss, which is the cost side
+below.
+
+The third keep-request is the one that asks for something the answer already
+has. The report quotes `"omittedHints": []` and then asks for a machine-readable
+equivalent of the sentence beside it. It read the field and did not recognise it
+as the answer to its own ask, which is the shape `2026-08-03-164818` established
+and no rewrite here would change.
+
+The boundary is **what this corpus answers to a handle the caller holds against
+what it answers to a description of what is wanted**. Every answer this strength
+credits was asked for by a handle: a trans-unit id read out of the core source,
+a documentId the skill named, a Forge number off the commit message, the changed
+paths. The cost side is from the same session, seconds earlier —
+`feedback/2026-08-13-214857`, whose four-subject query returned `matchCount: 0`
+and was recovered by picking a documentId out of the miss listing. So the
+session that paid nothing for four handles paid a round trip for the one call it
+phrased as a description. That card is in hand elsewhere and naming its answer
+from here is the copy-down judging.rst warns about.
+
+Two keep-requests rested on nobody rewriting the file, and both are held now.
+The resource on a label hit was in no assertion in either half of the answer,
+and it is what separates two labels of one key in one extension —
+`LabelSearchTest::twoLabelsOfOneKeyAreToldApartByTheResourceEachIsIn` holds the
+console path in the text and in the data, and the packages path is asserted
+where that fallback already was. The fetch asymmetry was held in
+`typo3_gerrit_lookup`'s answer by `GerritTest` and nowhere in the document the
+skill sends a session to;
+`KnowledgeTest::theFetchDirectionNamesTheRemoteTheChangeRefIsOn` names it beside
+the write direction that was guarded already. The third is guarded twice over by
+`R-GUI-009` and needed nothing.
+
+One thing was found and left. `resource` is not among the keys
+`LabelLookup::outputSchema()` requires, which is where `tags` stood when
+`2026-08-03-164818` was judged. Requiring it would touch a declared schema,
+which judging.rst reviews rather than improvises, and it would promise less than
+it looks: the console path renders `''` where an item carries no resource, and
+an empty string satisfies a required key. The assertion is what holds the
+sentence, so the guard came first here as it did there.
+
+The feedback is closed by this commit and nothing is queued. The one statement
+about TYPO3 in it was verified in both covered majors and written into no
+`knowledge/` file, because the corpus already answers it from the installation.

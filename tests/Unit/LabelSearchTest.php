@@ -279,6 +279,55 @@ final class LabelSearchTest extends TestCase
     }
 
     /**
+     * The backend ships two labels keyed `newPage`, and which of them a piece
+     * of markup renders decides what an assertion on that markup has to expect:
+     * `backend.pages_new:newPage` is "Page" and `backend.layout:newPage` is
+     * "Create new page", in `.checkouts/14.3` as in `.checkouts/main`. Neither
+     * the key nor the extension separates them. The resource does, and the
+     * domain half of the ref is derived from it, so an answer that dropped the
+     * file would still be right and no longer decidable —
+     * `feedback/2026-08-13-214838`, which read the wrong guess off the key.
+     */
+    #[Test]
+    public function twoLabelsOfOneKeyAreToldApartByTheResourceEachIsIn(): void
+    {
+        $this->consoleThatPrints((string) json_encode(['items' => [
+            [
+                'resource' => 'EXT:backend/Resources/Private/Language/locallang_pages_new.xlf',
+                'labels' => [['domain' => 'backend.pages_new', 'reference' => 'newPage', 'label' => 'Page']],
+            ],
+            [
+                'resource' => 'EXT:backend/Resources/Private/Language/locallang_layout.xlf',
+                'labels' => [['domain' => 'backend.layout', 'reference' => 'newPage', 'label' => 'Create new page']],
+            ],
+        ]], JSON_THROW_ON_ERROR));
+
+        $result = Registry::call('typo3_label_lookup', ['query' => 'newPage', 'extension' => 'backend']);
+
+        self::assertSame(
+            [
+                ['backend.pages_new:newPage', 'Page', 'EXT:backend/Resources/Private/Language/locallang_pages_new.xlf'],
+                ['backend.layout:newPage', 'Create new page', 'EXT:backend/Resources/Private/Language/locallang_layout.xlf'],
+            ],
+            array_map(
+                static fn(array $label): array => [$label['ref'], $label['source'], $label['resource']],
+                $result->data['labels'],
+            ),
+        );
+        // The text is what a client rendering it instead of the data shows, and
+        // `resource` is no required key of the record, so both halves are held
+        // here rather than one of them by the schema.
+        self::assertStringContainsString(
+            "\n  EXT:backend/Resources/Private/Language/locallang_pages_new.xlf",
+            $result->text,
+        );
+        self::assertStringContainsString(
+            "\n  EXT:backend/Resources/Private/Language/locallang_layout.xlf",
+            $result->text,
+        );
+    }
+
+    /**
      * Both reports of German written into a source XLF came from a session
      * that called this tool and named labels nowhere else — `R-ANS-015`. So
      * the rule rides on the answer rather than on a query the caller would
@@ -331,6 +380,12 @@ final class LabelSearchTest extends TestCase
 
         self::assertSame('packages', $result->data['answeredBy']);
         self::assertSame('core.messages:labels.save', $result->data['labels'][0]['ref']);
+        // The file a hit is in travels on this path too, which is the half of
+        // the answer the caller opens next.
+        self::assertSame(
+            'EXT:core/Resources/Private/Language/locallang.xlf',
+            $result->data['labels'][0]['resource'],
+        );
         self::assertStringContainsString('LANG/resourceOverrides', $result->text);
     }
 

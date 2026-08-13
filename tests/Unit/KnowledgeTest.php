@@ -519,6 +519,27 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('Resolves:', $bodies('forge issue closed change'));
     }
 
+    /**
+     * The same asymmetry from the reading side, which no requirement names and
+     * which nothing here held: a core clone fetches the mirror and pushes the
+     * review server, so `git fetch origin refs/changes/…` reports a ref that
+     * does not exist in the one checkout whose push would reach it. `D-SKL-021`
+     * measured the two fetches, and `feedback/2026-08-13-214838` is the session
+     * that would have run the failing one and read it as an absent change.
+     */
+    #[Test]
+    public function theFetchDirectionNamesTheRemoteTheChangeRefIsOn(): void
+    {
+        $fetch = implode(
+            "\n",
+            array_column(Documents::search('fetch a gerrit change into this checkout'), 'body'),
+        );
+
+        self::assertStringContainsString('refs/changes/', $fetch);
+        self::assertStringContainsString('not on GitHub', $fetch, 'nothing says which remote carries the ref');
+        self::assertStringContainsString('remote.origin.pushurl', $fetch, 'nothing says what to fetch from instead');
+    }
+
     #[Test]
     public function aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt(): void
     {

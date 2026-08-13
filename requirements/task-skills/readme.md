@@ -29,6 +29,7 @@ when it is added.
 - [`R-SKL-020`][R-SKL-020] — A workflow that ends in public stops when the finding is a vulnerability · held
 - [`R-SKL-021`][R-SKL-021] — Every description is written to the budget they share · held
 - [`R-SKL-022`][R-SKL-022] — A review surface names the lookup that can answer it · held
+- [`R-SKL-023`][R-SKL-023] — A skill whose product is a report says the report is copyable markdown · held
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -52,3 +53,4 @@ when it is added.
 [R-SKL-020]: skl-020-a-workflow-that-ends-in-public-stops-when-the-finding-is-a-vulnerability.md
 [R-SKL-021]: skl-021-every-description-is-written-to-the-budget-they-share.md
 [R-SKL-022]: skl-022-a-review-surface-names-the-lookup-that-can-answer-it.md
+[R-SKL-023]: skl-023-a-skill-whose-product-is-a-report-says-the-report-is-copyable-markdown.md

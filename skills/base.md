@@ -108,11 +108,16 @@ matter too.
    the manual has no page for a surface either, that is a result and not an
    answer. Undocumented is not unsupported.
 
-   A task that produces no change does not reach this step at all — a triage, a
-   reproduction, a review of a report. The sweep asks what a package will have
-   to stop calling, and a task that writes nothing is not going to call
-   anything. Followed literally in a triage of one issue it costs one call per
-   declared major per tag and none of them bears on the report.
+   A task that produces no change does not reach this step at all. The property
+   is what the task produces, and a triage, a reproduction and a review are
+   illustrations of it rather than the list it is read off. The sweep asks what
+   a package will have to stop calling, and a task that writes nothing is not
+   going to call anything. Followed literally in a triage of one issue it costs
+   one call per declared major per tag and none of them bears on the report.
+
+   The exemption ends where the workflow produces a change. A review asked to
+   make the change is that other workflow, and it starts this order again
+   holding the files it is about to write.
 
    Skip the sweep only where the change touches no TYPO3 API — a code style
    fixer, a CI file, an `.editorconfig`. A deprecation is a statement about API
@@ -123,6 +128,10 @@ matter too.
    and never off the task it started as — one PHP file edited along the way puts
    it back among the ordinary ones, and a skip there costs the deprecation no
    finding would have walked into.
+
+   A report names the step it did not reach, under either exemption. A step
+   passed over in silence cannot be told from one that was dropped, which is
+   what step 2 already asks of itself.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a

@@ -654,6 +654,29 @@ final class SkillTest extends TestCase
             'A task that produces no change does not reach this step at all',
             self::flat($base),
         );
+        // Written as the three examples it was, that exemption held for the
+        // shape it was written for and let the next one through: a review of a
+        // patch was in none of them, skipped the sweep on a diff touching
+        // TYPO3 API, and read the distance from "a review of a report" as
+        // deliberate (`feedback/2026-08-11-055337`, `D-SKL-037`). So what the
+        // exemption states is the property and the examples illustrate it.
+        self::assertStringContainsString(
+            'illustrations of it rather than the list it is read off',
+            self::flat($base),
+        );
+        // The property's own boundary, which the enumeration never had to
+        // carry: a review asked to make the change is a workflow that produces
+        // one, and it reaches this step holding files.
+        self::assertStringContainsString(
+            'The exemption ends where the workflow produces a change',
+            self::flat($base),
+        );
+        // And the half the sighting reported against itself. Step 2 asks it
+        // already; nothing asked it of the step that goes unrun.
+        self::assertStringContainsString(
+            'A report names the step it did not reach',
+            self::flat($base),
+        );
     }
 
     #[Test]

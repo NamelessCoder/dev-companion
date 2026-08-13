@@ -1,7 +1,7 @@
 ---
 id: R-SKL-005
 status: held
-restsOn: [D-EVI-003, D-SKL-003, D-SKL-004, D-SKL-034]
+restsOn: [D-EVI-003, D-SKL-003, D-SKL-004, D-SKL-034, D-SKL-037]
 ---
 
 # R-SKL-005 — The order a task starts in is written once
@@ -20,6 +20,14 @@ and a change that calls none leaves the sweep empty before it is run. Which side
 a change falls on is read off the files it touches rather than the task it
 started as. Everywhere else the step is run, because a prescription that gets
 skipped teaches the next reader to skip the ones that matter too.
+
+A task that produces no change does not reach that step at all, and the property
+is what the task produces — a triage, a reproduction and a review are
+illustrations of it rather than the list it is read off. The exemption ends
+where the workflow produces a change: a review asked to make the change is that
+other workflow, and it starts the order again holding the files it is about to
+write. A report names the step it did not reach, under either exemption, because
+a step passed over in silence cannot be told from one that was dropped.
 
 The workflow step carries none. It is run in every session, this skill's own
 tasks included, because the brief is built from the caller's paths as well as
@@ -120,7 +128,10 @@ routed the task. Which of the two readings to write is a question about what is
 wanted, and the maintainer answered it on 2026-08-04 — the narrow one, in
 `D-SKL-015`. The workflow step's half of it came off again on 2026-08-11, after
 two sessions the condition did not cover skipped the step anyway and neither
-said so — `D-SKL-034`.
+said so — `D-SKL-034`. The sweep's other exemption was stated as a property
+after `feedback/2026-08-11-055337`: a review of one Gerrit change read the three
+examples as the list its own shape was not in, skipped the sweep on a diff that
+touches TYPO3 API, and said so nowhere in its report — `D-SKL-037`.
 
 ## Held by
 

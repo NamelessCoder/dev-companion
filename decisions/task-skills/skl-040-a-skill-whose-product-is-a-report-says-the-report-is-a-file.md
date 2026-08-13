@@ -1,7 +1,8 @@
 ---
 id: D-SKL-040
 date: 2026-08-14
-status: open
+status: revoked
+revokedBy: D-SKL-042
 ---
 
 # D-SKL-040 — A skill whose product is a report says the report is a file
@@ -73,3 +74,14 @@ does the one thing nothing told it not to and prints it into the chat.
   make summary-plus-path the cost instead of the fix.
 - One of the three turns out to produce something short enough that a file is
   ceremony. A triage of a single issue is the candidate.
+
+## Revoked on 2026-08-14
+
+Asked the same day it was written, the maintainer answered that the report may
+stay in the chat: what it has to be is copyable, and formatted HTML is what
+cannot be transferred. The second **Wrong if** above is the one that held, and
+it held within the hour. So the statement names one way of being copyable as the
+requirement, and `D-SKL-042` carries the property instead.
+
+What this entry read stands — the three sections specify a report exhaustively
+and name no form — and it is the reading `D-SKL-042` is built on.

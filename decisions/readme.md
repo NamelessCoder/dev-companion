@@ -449,8 +449,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
-- [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14
 - [`D-SKL-041`][D-SKL-041] — A patch carried onto current code is carried on a named branch · 2026-08-14
+- [`D-SKL-042`][D-SKL-042] — A report is copyable markdown, and the answer is where it goes · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
@@ -490,8 +490,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-037]: task-skills/skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: task-skills/skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: task-skills/skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md
-[D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md
 [D-SKL-041]: task-skills/skl-041-a-patch-carried-onto-current-code-is-carried-on-a-named-branch.md
+[D-SKL-042]: task-skills/skl-042-a-report-is-copyable-markdown-and-the-answer-is-where-it-goes.md
 [D-SKL-035]: task-skills/skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: task-skills/skl-036-a-skill-runs-where-the-installer-put-it.md
 [D-SKL-033]: task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
@@ -669,6 +669,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### Revoked, and kept as the record
 
 - [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
+- [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files, and what is solved is taken from a package · 2026-08-09 → D-DOC-024
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09 → D-DOC-028
@@ -703,6 +704,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-KNW-072]: knowledge/knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
+[D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
 [D-DOC-019]: documentation/doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md
 [D-DOC-020]: documentation/doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md

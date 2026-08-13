@@ -38,7 +38,7 @@ final class Links
      * published tree is written as, and it is the only one `Site` rewrites. A
      * `:doc:` names another page of the corpus and carries no extension. A
      * directive takes its path as its argument, which is how every drawing is
-     * referenced. And a card, a teaser or a hero says where it goes with
+     * referenced. And a card or a hero says where it goes with
      * `:href:` and what it shows with `:src:`, which are options rather than
      * arguments and were reaching no check at all — six of them stand on the
      * front page.

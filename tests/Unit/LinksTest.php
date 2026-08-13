@@ -134,7 +134,7 @@ final class LinksTest extends TestCase
             '',
             '.. image:: drawing.svg',
             '',
-            '.. teaser:: One that goes somewhere',
+            '.. card:: One that goes somewhere',
             '    :href: there',
             '',
             '.. card:: One that shows something',
@@ -145,7 +145,7 @@ final class LinksTest extends TestCase
             '',
             '.. image:: missing.svg',
             '',
-            '.. teaser:: One that goes nowhere',
+            '.. card:: One that goes nowhere',
             '    :href: no-page',
         ]));
 

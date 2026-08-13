@@ -174,7 +174,7 @@ The front page is the one page set in that theme's ``marketing`` layout —
 ``D-DOC-030``. ``:layout: marketing`` stands above the title, because the parser
 takes a field list as metadata only while no title has been found, and what
 follows is a run of ``band`` directives with the page's claims in them. What a
-band, a grid, a teaser and a card take is
+band, a grid, a card and a surface take is
 `the theme's own manual <https://benjaminkott.github.io/typo3-soul-design-system/guides-theme/directives.html>`_;
 nothing here renders any of them.
 

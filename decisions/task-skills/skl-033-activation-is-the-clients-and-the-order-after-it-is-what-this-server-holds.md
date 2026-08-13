@@ -91,7 +91,7 @@ not fire, so the wording is not what is left to suspect.
 
 ### 2026-08-14 — the second session, and one hypothesis fewer
 
-[`feedback/2026-08-12-092545`](../../feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md)
+[`feedback/archive/2026-08-12-092545`](../../feedback/archive/2026-08-12-092545-a-german-language-review-request-activated-no.md)
 is the same request shape in the same checkout two days later: German, naming
 Gerrit change 95169 by number and by review URL, and no skill activated at any
 point. It is the second session on record of the shape the third **Wrong if**

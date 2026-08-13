@@ -16,7 +16,7 @@ begun.
 ## Evidence
 
 - **The session.**
-  [`feedback/2026-08-12-092545`](../../feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md),
+  [`feedback/archive/2026-08-12-092545`](../../feedback/archive/2026-08-12-092545-a-german-language-review-request-activated-no.md),
   `/home/benji/projects/typo3-cms` on 2026-08-12, `claude-opus-5[1m]`. The brief
   was a German request naming Gerrit change 95169 by number and by review URL.
   No skill activated at any point, `typo3_project_describe`'s schema was loaded
@@ -106,3 +106,18 @@ begun.
 - A review session reports no skill and no entry point with this tail in place.
   Then the answering side is not the channel either, and what is left untried is
   the project's own agent instruction file, which `D-SKL-033` recorded.
+
+**Since then**
+
+Built on 2026-08-14. `GerritLookup::workflow()` is the tail, on the `change`
+form and where something came back, and
+`GerritTest::aNamedChangeIsHandedTheWorkflowsThatOwnIt` holds what it names and
+what it leaves out. A skill named in prose in a class is what no release of this
+server corrects in somebody's project, so
+`SkillTest::everySkillNamedByAToolIsPublished` reads every name below
+`src/Tool/` against what the installer publishes — the guard
+`everySkillNamedInKnowledgeIsPublished` gives the ones routed to from
+`knowledge/`. It scans three names rather than two: the evidence above is one
+out, because `typo3_feedback_record` already named `typo3-extension-conformance`
+in its schema as the example a session reports a skill by. No session has read
+the tail yet, so all three **Wrong if** stand as they were.

@@ -389,6 +389,38 @@ final class GerritTest extends TestCase
         ]));
     }
 
+    /**
+     * `D-SKL-038`. A caller holding one change is about to review it or to
+     * fetch it, and both of those are a workflow this server publishes.
+     *
+     * `feedback/2026-08-12-092545` is the session that shows what the answer
+     * was short of: no skill opened, `typo3_project_describe`'s schema was
+     * loaded and the tool never called, and this answer — the one call it did
+     * make — handed it the ref it then fetched the patch set with by hand.
+     */
+    #[Test]
+    public function aNamedChangeIsHandedTheWorkflowsThatOwnIt(): void
+    {
+        $said = GerritLookup::workflow('answered', '95169');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('typo3-core-patch-review', $said);
+        self::assertStringContainsString('typo3-core-patch-checkout', $said);
+        // The call the order opens on, which is the act the session skipped.
+        self::assertStringContainsString('typo3_project_describe', $said);
+        // And not the tool two sessions finished a task without calling:
+        // naming one nobody invokes is what `D-ANS-061` ruled out.
+        self::assertStringNotContainsString('typo3_server_scope', $said);
+
+        // The issue form takes none of it. "Has somebody already fixed this"
+        // precedes triage, patch development and review alike, so there is no
+        // one workflow to name.
+        self::assertNull(GerritLookup::workflow('answered', ''));
+        // Nothing to hand over where nothing came back.
+        self::assertNull(GerritLookup::workflow('empty', '95169'));
+        self::assertNull(GerritLookup::workflow('unavailable', '95169'));
+    }
+
     #[Test]
     public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNoPatch(): void
     {

@@ -2035,6 +2035,43 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The same question for the skills a tool writes rather than routes to.
+     *
+     * `typo3_task_guide` reads its names out of `task-intents.json`, which the
+     * test above holds. `typo3_gerrit_lookup` names two in the answer it ends a
+     * change lookup on (`D-SKL-038`) and `typo3_feedback_record` names one as
+     * the example a session reports a skill by, and both are prose in a class:
+     * a renamed skill leaves them pointing at nothing, and the first thing that
+     * reads them is a session in somebody else's project.
+     *
+     * Read off the source rather than off a rendered answer, because the
+     * answers that carry them are a review server away and an offline suite
+     * would scan nothing.
+     */
+    #[Test]
+    public function everySkillNamedByAToolIsPublished(): void
+    {
+        $named = [];
+        foreach (Finder::create()->files()->in(Paths::root() . '/src/Tool')->name('*.php')->sortByName() as $file) {
+            preg_match_all('/typo3-[a-z0-9]+(?:-[a-z0-9]+)+/', (string) $file->getContents(), $matches);
+            foreach (array_unique($matches[0]) as $skill) {
+                $named[] = [$file->getFilename(), $skill];
+            }
+        }
+
+        // Or the scan matched nothing and the loop below holds nothing.
+        self::assertNotSame([], $named, 'no tool names a skill at all');
+
+        foreach ($named as [$tool, $skill]) {
+            self::assertContains(
+                $skill,
+                Installer::skills(),
+                $tool . ' names ' . $skill . ', which this server does not publish',
+            );
+        }
+    }
+
+    /**
      * The call the hole was found on, with the session's own arguments.
      *
      * Two things had to be true for it to answer `typo3-extension-conformance`.

@@ -195,6 +195,36 @@ final class GerritLookup extends ReadOnlyTool
     }
 
     /**
+     * The workflow a patch set in front of a caller is in, where there is one.
+     *
+     * A review session that opened no skill asked this tool for change 95169
+     * and was handed a ref, a remote and nothing about the work it had just
+     * begun — it fetched the patch set by hand and reviewed it without an entry
+     * point (`feedback/2026-08-12-092545`, `D-SKL-038`). Naming the two
+     * workflows costs the answer three lines at the one moment the caller is
+     * certainly reading, which is the placement `D-ANS-061` earned.
+     *
+     * The `change` form alone. "Has somebody already fixed this" precedes
+     * triage, patch development and review alike, so an issue search has no one
+     * workflow to name and gets none of this.
+     *
+     * Separated from `answer()` so it can be held without a review server, the
+     * way `indistinguishable()` beside it is.
+     */
+    public static function workflow(string $status, string $change): ?string
+    {
+        if ($status !== 'answered' || trim($change) === '') {
+            return null;
+        }
+
+        return 'A patch set in front of you opens one of two workflows: `typo3-core-patch-review` reviews it, '
+            . 'and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one '
+            . "this task is before reading the diff.\n"
+            . 'Both start at `typo3_project_describe`: which installation this checkout is, what it runs, and '
+            . 'which whole procedures this server carries.';
+    }
+
+    /**
      * The newest review URL Gerrit posted on an issue, or null.
      *
      * Read from the journal rather than from the description, because that is
@@ -325,6 +355,12 @@ final class GerritLookup extends ReadOnlyTool
                 $lines[] = '';
                 $lines[] = self::held($answer['dropped']);
             }
+        }
+
+        $workflow = self::workflow($answer['status'], $change);
+        if ($workflow !== null) {
+            $lines[] = '';
+            $lines[] = $workflow;
         }
 
         return ToolResult::create(implode("\n", $lines), $data);

@@ -186,6 +186,17 @@ them, and the restoration is verified rather than assumed. This is what turns
 findings are where it earns most: what disproves a path is what makes it
 impossible, and a probe is often the only thing that can.
 
+**A diff that changes what the frontend renders is a class of patch where
+reading is not evidence at all.** TypoScript defaults, TypoScript declared in an
+`ext_localconf.php`, anything below `lib.parseFunc`: the diff says what it sets
+and nothing about what comes out, and where no test covers the constellation the
+suites stay green on either side of it. What settles it is a throwaway
+functional test that renders one snippet and prints what came out, and building
+one is `typo3_rule_lookup` with `documentId="core/testing/proving-a-rendering"`
+— which cObj renders the snippet, which operator form takes markup that spans
+lines, and how the output is got out of a test that would otherwise print
+nothing.
+
 ## Commit shape and target branch
 
 `typo3_commit_message_guide` with `workflow="core"`, the message and the change

@@ -172,6 +172,12 @@ invocation for the paths in hand rather than a suite name to guess at.
 decide which PHP and which database a suite runs against, which is exactly what
 an old report turns on when it says the behaviour depends on either.
 
+Where the symptom is rendered output, the throwaway has to produce it before it
+can assert anything, and the value is the unknown rather than the expectation.
+`typo3_rule_lookup` with `documentId="core/testing/proving-a-rendering"` is that
+harness: the snippet into TypoScript, the operator forms that silently do
+something else instead, and how the rendered HTML is printed at all.
+
 Two of those decide whether a reproduction means anything, and both were already
 answered by the step the base opens with:
 

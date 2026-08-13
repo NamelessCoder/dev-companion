@@ -60,6 +60,16 @@
       "scope": "core"
     },
     {
+      "topic": "Proving what a change to TypoScript, ext_localconf TypoScript or lib.parseFunc renders",
+      "depth": "The throwaway functional test that renders one snippet and prints what came out: the cObj that puts a snippet through parseFunc, the operator forms a value has to be written in, how output is got out of a test that would otherwise print nothing, the targeted invocation, and where the RTE setup comes from per version. It says nothing about what parseFunc does to a snippet, which is what the probe is for.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/core/testing/proving-a-rendering",
+      "scope": "core"
+    },
+    {
       "topic": "The PHPUnit configuration an extension runs its own tests with",
       "depth": "The two files a package writes into Build/, whole and ready to write out, one variant per PHPUnit the paired typo3/testing-framework release admits. Beside them: which two attributes a copy has to correct and why the bootstrap is referenced rather than copied, the environment a functional run reads its connection from, and what a finished suite leaves behind. It does not set the harness up for you and it names no dependency constraint — which release resolves is the solver's answer, not this document's.",
       "tools": [
@@ -338,6 +348,10 @@
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",
       "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
+    },
+    {
+      "when": "Judging a diff that changes TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc — the diff says what it sets and nothing about what comes out of it",
+      "call": "typo3_rule_lookup with documentId=\"core/testing/proving-a-rendering\" for the throwaway functional test that renders one snippet and prints it"
     },
     {
       "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",

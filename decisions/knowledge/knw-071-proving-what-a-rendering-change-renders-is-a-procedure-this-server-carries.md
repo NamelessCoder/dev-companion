@@ -97,3 +97,31 @@ renders — and spent five of six container rounds on its own harness.
 - The steps turn out to differ per covered line far enough that the page is a
   table of versions rather than a procedure — then it is hints with `since` and
   `until`, and this entry is what was wrong about the shape.
+
+## Since then
+
+Built as `core/testing/proving-a-rendering`, and routed to from the
+scratch-probe paragraph of `typo3-core-patch-review` and the throwaway-test
+rules of `typo3-core-issue-triage`. The probe was run on all four covered lines
+with `-s functional -d sqlite`, and both **Assumed** were settled by running it.
+
+The feedback's second trap does not exist as reported, and the reading replaced
+it with the one that does. `value = <figure …>` assigns the markup as text on
+every covered line. `value =<figure …>` is the reference operator, whose
+identifier stops at the first space, so the line becomes a reference to `figure`
+and the page renders `< figure` where the markup should be — a failure with no
+error in it, which is what a session sees as "unusable". What the multi-line
+`value ( … )` form is needed for is markup that spans lines, because a
+single-line assignment ends at the newline.
+
+The sentinel assertion is not the only way to read rendered output and is the
+worse one. `echo` from the test body prints whether the probe passes or fails,
+because the core's functional PHPUnit configuration sets no
+`beStrictAboutOutputDuringTests` on any covered line. No core helper prints
+rendered output, so the first **Wrong if** did not hold.
+
+The third did not hold either, and one section pair carries what differs: until
+12 `lib.parseFunc_RTE` is `fluid_styled_content`'s and needs both
+`$coreExtensionsToLoad` and the static include, either alone leaving
+`LogicException` 1641989097; since 13 the frontend registers it and the probe
+needs neither. The rest of the procedure holds on all four.

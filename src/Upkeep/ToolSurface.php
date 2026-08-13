@@ -143,7 +143,7 @@ final class ToolSurface
     private static function listing(): string
     {
         $lines = [];
-        foreach (Registry::definitions() as $definition) {
+        foreach (self::alphabetical() as $definition) {
             $lines[] = self::wrap(sprintf(
                 '* %s — %s',
                 Rst::doc($definition['name'], $definition['name']),
@@ -157,7 +157,7 @@ final class ToolSurface
         // every tool page points at it and a document in none is a warning.
         $pages = array_map(
             static fn(array $definition): string => $definition['name'],
-            Registry::definitions(),
+            self::alphabetical(),
         );
 
         return implode("\n", $lines) . "\n\n.. toctree::\n" . Rst::INDENT . ":hidden:\n\n"
@@ -165,6 +165,24 @@ final class ToolSurface
                 static fn(string $page): string => Rst::INDENT . $page . "\n",
                 [...$pages, self::SOURCES_PAGE],
             ));
+    }
+
+    /**
+     * The tools by name, which is the order every list on these pages is read
+     * in.
+     *
+     * The registry's own order is what a client is offered — orientation first,
+     * then the guides and lookups — and a reader arriving with one tool name in
+     * hand cannot reconstruct it, so on the site the name is the index.
+     *
+     * @return array<int, array{name: string, description: string, answersFrom: array<int, string>, inputSchema: array<string, mixed>, annotations: array<string, bool>, outputSchema: array<string, mixed>|null}>
+     */
+    private static function alphabetical(): array
+    {
+        $definitions = Registry::definitions();
+        usort($definitions, static fn(array $one, array $other): int => strcmp($one['name'], $other['name']));
+
+        return $definitions;
     }
 
     /**
@@ -299,7 +317,7 @@ final class ToolSurface
 
         foreach (Source::cases() as $source) {
             $tools = [];
-            foreach (Registry::definitions() as $definition) {
+            foreach (self::alphabetical() as $definition) {
                 if (in_array($source->value, $definition['answersFrom'], true)) {
                     $tools[] = Rst::doc($definition['name'], $definition['name']);
                 }

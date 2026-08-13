@@ -112,7 +112,7 @@ trait QueuedTodo
      *
      * What it serves and what its step says are the same two parameters: a case
      * about one todo needs neither, and a case about the relation between two
-     * of them — the card `todo:sync` wrote and the todo a judgement replaced it
+     * of them — the card a feedback arrived with and the todo a judgement replaced it
      * with — is about nothing else.
      *
      * @return Section

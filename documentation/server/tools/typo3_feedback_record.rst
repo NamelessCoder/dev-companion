@@ -77,6 +77,10 @@ Answers with
     # The same feedback as an absolute path. It is in the server's checkout, not in
     # the project the feedback was recorded from.
     path: string
+    # Path of the todo this feedback was queued as, relative to this server's own
+    # checkout. Every feedback arrives with one, so the report is on the board
+    # rather than waiting for somebody to notice the file.
+    todo: string
     # What was removed before the feedback was written, one entry per value, naming
     # the field it stood in and the shape it had. Empty where nothing was removed,
     # which is the ordinary case. Each removal stands in the file as a [redacted:

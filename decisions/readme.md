@@ -510,6 +510,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### feedback
 
+- [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
 - [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
@@ -531,7 +532,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-019`][D-FBK-019] — A secret pasted into a feedback is taken out on the way in · 2026-08-02
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02 · confirmed
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
-- [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
 - [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
 - [`D-FBK-024`][D-FBK-024] — A feedback about the caller's conduct toward its user names no surface · 2026-08-02 · confirmed
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
@@ -543,6 +543,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-045]: feedback/fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
 [D-FBK-041]: feedback/fbk-041-what-nothing-answers-for-is-called-unresolved.md
 [D-FBK-042]: feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
 [D-FBK-043]: feedback/fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md
@@ -564,7 +565,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-FBK-019]: feedback/fbk-019-a-secret-pasted-into-a-feedback-is-taken-out-on-the-way-in.md
 [D-FBK-020]: feedback/fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md
 [D-FBK-021]: feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
-[D-FBK-022]: feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-023]: feedback/fbk-023-a-correction-is-judged-by-what-its-withdrawal-moves.md
 [D-FBK-024]: feedback/fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md
 [D-FBK-006]: feedback/fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
@@ -661,6 +661,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
 - [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 → D-DIS-012
+- [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02 → D-FBK-045
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
@@ -693,6 +694,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-027]: answers/ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-029]: answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-DIS-008]: discovery/dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
+[D-FBK-022]: feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knowledge/knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
 [D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md

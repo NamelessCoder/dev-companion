@@ -46,6 +46,10 @@ trait RecordedFeedback
         foreach (Finder::create()->files()->in($store) as $file) {
             unlink($file->getPathname());
         }
+        // The queue with it: a feedback arrives with the card that asks for its
+        // judgement, so a store of this case's own has one of those too.
+        @rmdir($store . '/todo/open');
+        @rmdir($store . '/todo');
         @rmdir($store . '/feedback/archive');
         @rmdir($store . '/feedback');
         @rmdir($store);

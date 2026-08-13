@@ -11,8 +11,8 @@ use TYPO3\DevCompanion\Feedback\Channel;
  * each with whether a todo already names it.
  *
  * That flag is the whole difference between a feedback that is waiting and one
- * somebody has taken on. `bin/cli todo:sync` writes a card for every feedback
- * that has none, and `feedback:list` marks the ones that have — two readings of
+ * somebody has taken on. `bin/cli todo:check` reports the feedback no todo
+ * answers for, and `feedback:list` marks the ones that have — two readings of
  * one relation, kept here so they cannot disagree about it.
  */
 final class OpenFeedback

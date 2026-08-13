@@ -50,11 +50,11 @@ a report, and thirty out of one directory is a domain that has been asking for
 something since the first of them.
 
 That is not a refinement. On 2026-08-03 the board held 48 cards, 30 of them
-still the text ``todo:sync`` writes and 44 of them ``low``, while 35 open
-feedback carried one directory — a core checkout — and one of those, two days
-old, was a session proposing the skill the other 34 kept describing. Every one
-of them had been judged alone or not at all, and nothing in the reading order
-said to look sideways.
+still carrying the step a card is written with and 44 of them ``low``, while 35
+open feedback carried one directory — a core checkout — and one of those, two
+days old, was a session proposing the skill the other 34 kept describing. Every
+one of them had been judged alone or not at all, and nothing in the reading
+order said to look sideways.
 
 Strengths
 ---------
@@ -334,12 +334,12 @@ at all, only a date. What more than one session reported does not stay at
 ``low``. Where several cards turn out to be the same gap, one of them carries
 the work and names the others in its ``**Serves:**`` line, rather than each
 carrying a quarter of it. **The cards it took over are deleted by the same
-commit.** ``todo:sync`` writes no second card and removes none, so one left
-standing is a card asking the next session for the judgement this one has just
-made — and it is titled after its feedback while the todo that replaced it is
-titled after the work, so a listing prints the two with no word in common.
-``bin/cli todo:check`` reports the pair, ``R-FBK-014`` is why, and deleting the
-card is the whole of the repair.
+commit.** A feedback is given one card and never a second, and nothing removes
+one, so one left standing is a card asking the next session for the judgement
+this one has just made — and it is titled after its feedback while the todo that
+replaced it is titled after the work, so a listing prints the two with no word
+in common. ``bin/cli todo:check`` reports the pair, ``R-FBK-014`` is why, and
+deleting the card is the whole of the repair.
 
 Trimmed
 ~~~~~~~
@@ -418,12 +418,12 @@ feedback; one that is taken on leaves a todo serving it —
 One at a time
 -------------
 
-Every open feedback has a card on the board, written by ``bin/cli todo:sync``,
-and ``bin/cli todo:next`` hands over one card like any other todo. A fresh card
-is ``low``, below everything somebody has judged to be worth more, so the oldest
-unjudged feedback is what comes up once the decided work is done. A run is one
-judgement, and the loop ends when nothing is unjudged rather than after a fixed
-number.
+Every open feedback has a card on the board, written by the call that recorded
+it, and ``bin/cli todo:next`` hands over one card like any other todo. A fresh
+card is ``low``, below everything somebody has judged to be worth more, so the
+oldest unjudged feedback is what comes up once the decided work is done. A run
+is one judgement, and the loop ends when nothing is unjudged rather than after a
+fixed number.
 
 What that costs is the run that saw several at once: a feedback correcting three
 earlier ones, or the same gap reported by four sessions, is a relationship no
@@ -447,7 +447,7 @@ what closes it.
 =======================  ==========================  =================================================
 Where it is              What that means             What holds it
 =======================  ==========================  =================================================
-open, no todo serves it  nobody has judged it        ``bin/cli todo:check`` and ``todo:sync``
+open, no todo serves it  nobody has judged it        ``bin/cli todo:check``, which names it
 open, a todo serves it   judged, the work is queued  ``Todo::serves()``, which ``feedback:list`` marks
 ``feedback/archive/``    the improvement landed      ``bin/cli feedback:archive``, in that commit
 =======================  ==========================  =================================================
@@ -464,7 +464,7 @@ per todo the judgement derived.
 
 **The invariant:** a commit that judges a feedback either archives it or leaves
 at least one todo serving it. Anything else drops it back to unjudged, where the
-next ``bin/cli todo:sync`` writes it a fresh card and the judgement is lost.
+session to read it starts from the feedback again and the judgement is lost.
 "Nothing to do" is therefore not a special case but the *close* answer: archive
 in the same commit.
 
@@ -481,8 +481,8 @@ watched rather than held.
 
 A feedback that **cannot** be judged is not closed either. The card moves to
 ``todo/waiting/`` with the question in a ``**Waiting on:**`` line, where it
-still serves the feedback — so ``todo:sync`` writes no second card, and no
-session is handed a question nobody can answer.
+still serves the feedback — so it is judged rather than unjudged, and no session
+is handed a question nobody can answer.
 
 What the todo adds
 ------------------

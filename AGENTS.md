@@ -29,6 +29,7 @@ src/Contribution/  # the fourth source: the services the core's own process runs
 src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
 src/Search/        # the lexical matching every prose and label lookup goes through
 src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes into this checkout and `bin/cli feedback` reads; a development tool, offered from a standalone checkout alone
+src/Feedback/Card.php  # the todo a feedback arrives with, and the step every one of them carries
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and the typo3:// resources, documents and skills
 src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
@@ -63,7 +64,6 @@ documentation/contributing/  # working on the server itself: the commands, the s
 documentation/records/ # what is written down and where: feedback into todo, requirements, decisions, forward runs
 documentation/images/  # the drawings a page names, and the mark at its three optical sizes
 documentation/guides.xml  # what the render is: the copy it reads, the theme it selects, and everything the bar, the tab and the footer say — D-DOC-024
-.githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -434,10 +434,12 @@ open forward reviews in `scenarios/forward/`, targeted contract cases in
 on somebody's machine — that lives in `todo/reference/`, where it can go stale
 without taking a case with it.
 
-- A feedback arriving brings its card with it: `.githooks/pre-commit` runs
-  `bin/cli todo:sync` where the commit touches `feedback/`, and stages what it
-  wrote. It repairs and never refuses, so a commit made without it — another
-  checkout, `--no-verify` — is caught by `bin/cli todo:check` and by CI instead.
+- A feedback arriving brings its card with it: `typo3_feedback_record` writes
+  `todo/open/<the feedback's own name>.md` beside the report, so the board is
+  right the moment it arrives and nothing has to be run afterwards. A feedback
+  that got here some other way — added by hand, or its card deleted while it
+  stayed open — is reported by `bin/cli todo:check` and by CI, and the repair is
+  a card written into `todo/open/` by hand.
 - A feedback is worked off in a commit that both implements the improvement
   **and** archives it with `bin/cli feedback:archive <feedback>`, so `feedback/`
   only ever holds open items and the commit that moved it is the record of what

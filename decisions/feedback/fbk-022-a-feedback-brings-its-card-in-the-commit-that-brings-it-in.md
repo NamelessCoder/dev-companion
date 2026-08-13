@@ -1,7 +1,8 @@
 ---
 id: D-FBK-022
 date: 2026-08-02
-status: open
+status: revoked
+revokedBy: D-FBK-045
 ---
 
 # D-FBK-022 — A feedback brings its card in the commit that brings it in
@@ -71,3 +72,19 @@ comes apart.
 ## Covered by
 
 - `TodoTest::everyOpenFeedbackIsOnTheBoard`
+
+## Revoked on 2026-08-14
+
+The rejection at the foot of **Decided** was overturned and took the entry with
+it. [`D-FBK-045`](fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md)
+has `typo3_feedback_record` write the card in the call that records the
+feedback, so there is no sync to run and no commit for the hook to run it on;
+both are deleted, and `.githooks/` with them. What the cycle argument settled
+was where the code sits rather than whether the card is written there — the
+writing moved to `Feedback\Card`, which `Upkeep/` reads like the rest of the
+channel.
+
+The three **Assumed** are what this cost while it stood: every one of them was
+about a checkout where the hook was not enabled, not bypassed, or pointed at a
+`.githooks/` that was not there. What replaces them is that the card is written
+by the call that writes the feedback, wherever that call was made from.

@@ -88,3 +88,12 @@ not drowned anything. What was missing was the caller.
 [`D-FBK-022`](fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md)
 is that caller — a pre-commit hook that runs the sync where the commit touches
 `feedback/` — so the assumption is now held rather than made.
+
+On 2026-08-14 the caller became the recording itself, and the sync this entry
+names went with it:
+[`D-FBK-045`](fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md) has
+`typo3_feedback_record` write the card beside the feedback it stores. Everything
+this entry decided about the board stands — one card per open feedback, pointing
+rather than copying, carrying the same step at `low` — and only what writes it
+has moved. The third assumption is no longer made at all: there is no run to
+forget.

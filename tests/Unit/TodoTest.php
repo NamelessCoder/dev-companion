@@ -7,11 +7,11 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Feedback\Card;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
-use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
 use TYPO3\DevCompanion\Upkeep\OpenFeedback;
 use TYPO3\DevCompanion\Upkeep\Todo;
 
@@ -63,9 +63,10 @@ final class TodoTest extends TestCase
      * pile any more, so a feedback with no card is invisible rather than merely
      * far down a list.
      *
-     * It holds what `bin/cli todo:sync` leaves behind rather than the command
-     * itself. A feedback recorded since the last run of it is exactly the case
-     * this would catch, and the answer is to run it.
+     * It holds the state of the board rather than what writes it. A feedback
+     * arrives with its card, so what this catches is one that came in some
+     * other way — added by hand, or its card deleted while it stayed open — and
+     * the answer is a card written into `todo/open/` beside the rest.
      *
      * One assertion over the set rather than one per feedback, because an empty
      * `feedback/` is the state the board is in whenever everything is worked
@@ -80,15 +81,15 @@ final class TodoTest extends TestCase
         self::assertSame(
             [],
             array_values(array_diff(array_column(OpenFeedback::all(), 'file'), $served)),
-            'a feedback is open and no todo answers for it — `bin/cli todo:sync`',
+            'a feedback is open and no todo answers for it — write it a card in todo/open/',
         );
     }
 
     /**
-     * The same relation from above, which is the half `bin/cli todo:sync` cannot
-     * see: it skips a feedback a todo already serves, so it never writes a
-     * second card, and it never looks at the card that was already there when a
-     * later judgement folded that feedback onto another todo. What is left is a
+     * The same relation from above, which is the half nothing that writes a
+     * card can see: a feedback gets exactly one, at the moment it arrives, and
+     * nothing looks back at it when a later judgement folds that feedback onto
+     * another todo. What is left is a
      * card asking for a judgement somebody has made, ten lines away in a listing
      * and sharing no word with it — which is one claimed session, spent
      * arriving where the repository already was (`D-FBK-040`).
@@ -105,11 +106,10 @@ final class TodoTest extends TestCase
 
     /**
      * What tells the two apart is the step, and the step is a constant: every
-     * card `bin/cli todo:sync` writes carries the same sentence, because judging
-     * one feedback is the same work whichever it is, and a judgement is what
-     * replaces it. So a body still equal to `TodoSync::STEP` is a card nobody
-     * has judged, and beside a todo that serves the same feedback it is the one
-     * to delete.
+     * card carries the same sentence, because judging one feedback is the same
+     * work whichever it is, and a judgement is what replaces it. So a body
+     * still equal to `Card::STEP` is a card nobody has judged, and beside a
+     * todo that serves the same feedback it is the one to delete.
      *
      * Both other readings are here because both are legitimate and neither may
      * be reported: a card standing alone is the ordinary state of the board, and
@@ -121,7 +121,7 @@ final class TodoTest extends TestCase
     public function theCardAJudgementReplacedIsFoundByTheStepItStillCarries(): void
     {
         $feedback = 'feedback/' . self::MARKER . '.md';
-        $card = $this->queueATodo('low', '2026-08-02-090000', $feedback, TodoSync::STEP);
+        $card = $this->queueATodo('low', '2026-08-02-090000', $feedback, Card::STEP);
 
         self::assertSame([], Todo::folded(), 'a card nobody has judged yet is one somebody has');
 

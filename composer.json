@@ -55,10 +55,7 @@
             "@cgl:ci",
             "@stan",
             "@test"
-        ],
-        "hooks": "git rev-parse --git-dir > /dev/null 2>&1 && git config core.hooksPath .githooks || true",
-        "post-install-cmd": "@hooks",
-        "post-update-cmd": "@hooks"
+        ]
     },
     "scripts-descriptions": {
         "lint": "Check every PHP file for syntax errors.",
@@ -66,7 +63,6 @@
         "cgl:ci": "Report what cgl would change, and change nothing.",
         "stan": "Run the static analysis.",
         "test": "Run the test suite.",
-        "ci": "Everything CI runs: lint, coding guidelines, static analysis, tests.",
-        "hooks": "Point git at .githooks/, where this repository keeps its own."
+        "ci": "Everything CI runs: lint, coding guidelines, static analysis, tests."
     }
 }

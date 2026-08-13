@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Feedback\Card;
 use TYPO3\DevCompanion\Feedback\Channel;
 use TYPO3\DevCompanion\Feedback\Redaction;
 use TYPO3\DevCompanion\Installation\Instance;
@@ -185,6 +186,48 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString($path, $result->text);
         // And it says whose checkout that is, because the caller cannot tell.
         self::assertStringContainsString('not the project you are working in', $result->text);
+    }
+
+    /**
+     * The card is what puts a report in front of the next session, and it used
+     * to be written by a command run from a pre-commit hook — so a feedback
+     * recorded from anywhere else was on disk and on nobody's board until
+     * somebody committed in this checkout (`D-FBK-045`).
+     */
+    #[Test]
+    public function aRecordedFeedbackArrivesWithTheCardThatAsksForItsJudgement(): void
+    {
+        $file = $this->recordFeedback([
+            'observation' => self::MARKER . ' the lookup found nothing',
+            'subject' => self::MARKER . ' the lookup found nothing',
+        ]);
+
+        $card = Card::path($file);
+        self::assertSame('todo/open/' . basename($file), $card);
+
+        $contents = (string) file_get_contents($this->inStore($card));
+        self::assertStringContainsString('# ' . self::MARKER . ' the lookup found nothing', $contents);
+        // It points at the feedback rather than repeating it, and asks for the
+        // one thing a fresh card asks for.
+        self::assertStringContainsString('**Serves:** ' . $file, $contents);
+        self::assertStringContainsString('**Priority:** ' . Card::UNJUDGED, $contents);
+        self::assertStringContainsString(Card::STEP, $contents);
+    }
+
+    /** The caller is told where its report is waiting, not only where it was written. */
+    #[Test]
+    public function theToolReportsTheCardTheFeedbackWasQueuedAs(): void
+    {
+        $this->ownFeedbackStore();
+        $result = Registry::call('typo3_feedback_record', [
+            'observation' => self::MARKER . ' recorded through the tool',
+            'model' => 'claude-opus-5',
+        ]);
+
+        $todo = $result->data['todo'] ?? '';
+        self::assertIsString($todo);
+        self::assertFileExists($this->inStore($todo));
+        self::assertStringContainsString($todo, $result->text);
     }
 
     #[Test]

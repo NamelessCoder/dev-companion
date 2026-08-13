@@ -31,10 +31,10 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  * in the relation between a feedback and the todos rather than in one file: an
  * open feedback that no todo answers for, and a card still asking for a
  * judgement another todo has already been given. Both are drift rather than a
- * state — the first is repaired by `bin/cli todo:sync` and the second by the
- * deletion it names — and both are reported here because this is what a session
- * runs, while the cases that also hold them are in a suite the session that
- * recorded the feedback never runs.
+ * state, both are repaired by hand — a card written where one is missing, and
+ * the deletion this names for the other — and both are reported here because
+ * this is what a session runs, while the cases that also hold them are in a
+ * suite the session that recorded the feedback never runs.
  */
 #[AsCommand(
     name: 'todo:check',
@@ -179,21 +179,22 @@ final class TodoCheck
             }
         }
 
-        // An open feedback nothing answers for is one no session will be handed,
-        // and it is drift rather than a state: `bin/cli todo:sync` repairs it,
-        // so this says how many and names the command the way
-        // `bin/cli requirements:check` names the one that rebuilds a listing.
-        // Left to the suite alone it would be found by whoever runs phpunit,
-        // which is not the session that recorded the feedback.
-        $unserved = count(array_filter(OpenFeedback::all(), static fn(array $feedback): bool => !$feedback['judged']));
-        if ($unserved > 0) {
-            $problems[] = sprintf('%d open feedback answered for by no todo — `bin/cli todo:sync`', $unserved);
+        // An open feedback nothing answers for is one no session will be
+        // handed. `typo3_feedback_record` writes the card with the report, so
+        // one missing means the feedback got here some other way — added by
+        // hand, or its card deleted while it stayed open (`D-FBK-045`). Left to
+        // the suite alone it would be found by whoever runs phpunit, which is
+        // not the session that recorded the feedback.
+        foreach (OpenFeedback::all() as $feedback) {
+            if (!$feedback['judged']) {
+                $problems[] = $feedback['file'] . ' is open and no todo answers for it — write it a card in todo/open/';
+            }
         }
 
-        // And the same relation from above. `todo:sync` never writes a second
-        // card, so the pair only ever arrives the other way round: a judgement
-        // folds a feedback onto another todo's `Serves:` line and the card it
-        // already had keeps asking for the judgement that has just been made.
+        // And the same relation from above. A feedback is given one card and
+        // never a second, so the pair only ever arrives the other way round: a
+        // judgement folds a feedback onto another todo's `Serves:` line and the
+        // card it already had keeps asking for the judgement just made.
         // Nothing repairs this one — the fold deletes the card, and what is
         // named here is that deletion.
         foreach (Todo::folded() as $pair) {

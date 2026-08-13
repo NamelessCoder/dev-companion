@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
+use TYPO3\DevCompanion\Feedback\Card;
 use TYPO3\DevCompanion\Feedback\Channel;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
@@ -75,6 +76,7 @@ final class FeedbackRecord implements Tool
         return Schema::object([
             'file' => Schema::string('Path of the recorded feedback, relative to this server\'s own checkout.'),
             'path' => Schema::string('The same feedback as an absolute path. It is in the server\'s checkout, not in the project the feedback was recorded from.'),
+            'todo' => Schema::string('Path of the todo this feedback was queued as, relative to this server\'s own checkout. Every feedback arrives with one, so the report is on the board rather than waiting for somebody to notice the file.'),
             'redacted' => Schema::listOf(
                 Schema::string(),
                 'What was removed before the feedback was written, one entry per value, naming the field it stood in and the shape it had. Empty where nothing was removed, which is the ordinary case. Each removal stands in the file as a [redacted: ...] marker, so the report says of itself that it was altered.',
@@ -83,7 +85,7 @@ final class FeedbackRecord implements Tool
                 Schema::string(),
                 'What was cut for length before the feedback was written, one entry per field, naming the field and how much of it went. Empty where nothing was cut, which is the ordinary case. Each cut stands in the file as a [cut: ...] marker where the field stops, so the report says of itself that it is short of what was written.',
             ),
-        ], ['file', 'path', 'redacted', 'cut']);
+        ], ['file', 'path', 'todo', 'redacted', 'cut']);
     }
 
     public static function answer(array $args): ToolResult
@@ -100,16 +102,21 @@ final class FeedbackRecord implements Tool
         // thing in a real installation and differ where a test writes into one
         // of its own, and what this reports has to be where the file is.
         $path = Channel::root() . '/' . $file;
+        // The card the feedback was written with, which Channel::record() has
+        // already put in the queue — reported so the answer says the report is
+        // waiting to be judged rather than lying in a directory.
+        $todo = Card::path($file);
 
         return ToolResult::create(
             sprintf(
-                "Thanks — noted in %s.\n\nThat is this server's own checkout, not the project you are working in: "
-                . "nothing was written there, so the file will not be found under it.\n\n"
+                "Thanks — noted in %s and queued as %s.\n\nThat is this server's own checkout, not the project you "
+                . "are working in: nothing was written there, so neither file will be found under it.\n\n"
                 . 'It will be picked up when the knowledge base is next improved; '
                 . 'nothing about the current answer changes.',
                 $path,
+                $todo,
             ) . self::redactionNotice($redacted) . self::truncationNotice($cut),
-            ['file' => $file, 'path' => $path, 'redacted' => $redacted, 'cut' => $cut],
+            ['file' => $file, 'path' => $path, 'todo' => $todo, 'redacted' => $redacted, 'cut' => $cut],
         );
     }
 

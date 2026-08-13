@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Upkeep;
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Feedback\Card;
 use TYPO3\DevCompanion\Paths;
-use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
 
 /**
  * Reads todo/, where one todo is one file and the order is in the names.
@@ -601,25 +601,24 @@ final class Todo
     /**
      * The cards a judgement folded into another todo and nothing took away.
      *
-     * `bin/cli todo:sync` writes one card per open feedback and skips whichever
-     * a todo already serves, so no feedback is ever given a second card. What it
+     * A feedback arrives with one card and is never given a second. What that
      * cannot do is look backwards: a session that judges a cluster writes one
      * todo carrying two feedback on its `**Serves:**` line, and the card the
-     * first of them already had stays in the queue asking for the judgement that
-     * has just been made. The next session claims it, reads the feedback, and
-     * spends itself arriving where somebody already arrived — which is what
-     * `D-FBK-040` cost.
+     * first of them already had stays in the queue asking for the judgement
+     * that has just been made. The next session claims it, reads
+     * the feedback, and spends itself arriving where somebody already arrived —
+     * which is what `D-FBK-040` cost.
      *
      * The pair is one grouping over the three states of work somebody has taken
      * on, which is what `serves()` already reads, plus the one thing that tells
-     * the two cards apart: the step. It is the same sentence on every card
-     * `todo:sync` writes and it is a constant, so a body still equal to it is a
-     * card nobody has judged — while the todo beside it, whatever it says, is
-     * one somebody wrote.
+     * the two cards apart: the step. It is the same sentence on every card a
+     * feedback arrives with and it is a constant, so a body still equal to it
+     * is a card nobody has judged — while the todo beside it, whatever it says,
+     * is one somebody wrote.
      *
-     * What repairs it is a deletion and not a move, so this reports rather than
-     * acts: `todo:sync` repairs drift and anybody runs it, and a command that
-     * removes a claimed card is how a judgement gets lost instead of found.
+     * What repairs it is a deletion, so this reports rather than acts: a
+     * command that removes a claimed card is how a judgement gets lost instead
+     * of found.
      *
      * @return array<int, array{card: string, feedback: string, judged: array<int, string>}>
      */
@@ -636,7 +635,7 @@ final class Todo
 
         $folded = [];
         foreach ($todos as $todo) {
-            if ($todo['body'] !== TodoSync::STEP) {
+            if ($todo['body'] !== Card::STEP) {
                 continue;
             }
             foreach ($todo['serves'] as $what) {

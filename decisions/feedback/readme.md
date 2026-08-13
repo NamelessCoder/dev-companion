@@ -11,6 +11,7 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
 - [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
@@ -32,7 +33,6 @@ earns one.
 - [`D-FBK-019`][D-FBK-019] — A secret pasted into a feedback is taken out on the way in · 2026-08-02
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02 · confirmed
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
-- [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
 - [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
 - [`D-FBK-024`][D-FBK-024] — A feedback about the caller's conduct toward its user names no surface · 2026-08-02 · confirmed
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
@@ -44,6 +44,7 @@ earns one.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-045]: fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
 [D-FBK-041]: fbk-041-what-nothing-answers-for-is-called-unresolved.md
 [D-FBK-042]: fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
 [D-FBK-043]: fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md
@@ -65,7 +66,6 @@ earns one.
 [D-FBK-019]: fbk-019-a-secret-pasted-into-a-feedback-is-taken-out-on-the-way-in.md
 [D-FBK-020]: fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md
 [D-FBK-021]: fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
-[D-FBK-022]: fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-023]: fbk-023-a-correction-is-judged-by-what-its-withdrawal-moves.md
 [D-FBK-024]: fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
@@ -80,9 +80,11 @@ earns one.
 ### Revoked, and kept as the record
 
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
+- [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02 → D-FBK-045
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 
 [D-FBK-037]: fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
+[D-FBK-022]: fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-005]: fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-FBK-003]: fbk-003-a-session-is-handed-one-todo-not-the-file.md

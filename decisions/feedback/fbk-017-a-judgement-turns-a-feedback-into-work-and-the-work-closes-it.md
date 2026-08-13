@@ -78,3 +78,13 @@ there.
 
 - `TodoTest::everyOpenFeedbackIsOnTheBoard`
 - `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
+
+## Since then
+
+`bin/cli todo:sync` is gone, and the two bullets above that name it read
+differently without it —
+[`D-FBK-045`](fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md). A
+feedback dropped back to unjudged is not given a fresh card by anything; it
+simply stands there, and the next session to reach it starts from the report
+again. What `bin/cli todo:check` names is the feedback rather than a command to
+run. The invariant itself is untouched, and the same three states hold it.

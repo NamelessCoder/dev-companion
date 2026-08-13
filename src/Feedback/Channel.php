@@ -128,13 +128,21 @@ final class Channel
         $subject = self::withoutSecrets('subject', trim((string) ($args['subject'] ?? '')), $redacted);
 
         $file = self::uniquePath($directory, $subject === '' ? $observation : $subject);
-        $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin(), $subject);
+        $title = self::title($subject === '' ? $observation : $subject);
+        $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin(), $title);
 
         if (file_put_contents($file, $document) === false) {
             throw new \RuntimeException(sprintf('Cannot write the feedback feedback: %s', $file));
         }
 
-        return 'feedback/' . basename($file);
+        $path = 'feedback/' . basename($file);
+        // The card the report brings with it, written here rather than by the
+        // commit that brings the feedback in: a session that records one and
+        // goes on working leaves the board right, and nothing has to be run
+        // afterwards for it to be — `D-FBK-045`.
+        Card::write($path, $title);
+
+        return $path;
     }
 
     /**
@@ -482,7 +490,7 @@ final class Channel
         string $suggestion,
         string $model,
         string $origin,
-        string $subject = '',
+        string $title,
     ): string {
         $frontMatter = [
             'date: ' . date('c'),
@@ -502,7 +510,7 @@ final class Channel
         }
 
         $document = "---\n" . implode("\n", $frontMatter) . "\n---\n\n";
-        $document .= '# ' . self::title($subject === '' ? $observation : $subject) . "\n\n";
+        $document .= '# ' . $title . "\n\n";
         $document .= "## Observation\n\n" . $observation . "\n";
 
         if ($query !== '') {

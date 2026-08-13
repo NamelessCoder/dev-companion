@@ -57,36 +57,43 @@ queue is empty. It follows from what a judgement is. Judging a feedback is
 deciding whether it becomes work; the queue is the work that decision produced.
 
 Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
-card each, written by ``bin/cli todo:sync`` at ``low``, which is below
-everything somebody has judged to be worth more. The order above is unchanged
-and what enforces it has moved: the priority does it now, where a group boundary
-did it before. What is still behind the queue is the sighting of what nothing
-answers for, and it is reached when the queue runs dry — which now means that
-nothing decided is left *and* nothing has arrived unjudged. Leaving it standing
-in order to judge more feedback is deciding twice and doing nothing, and the
-pile it decides over grows faster than any session can read it.
+card each, written as the feedback arrives at ``low``, which is below everything
+somebody has judged to be worth more. The order above is unchanged and what
+enforces it has moved: the priority does it now, where a group boundary did it
+before. What is still behind the queue is the sighting of what nothing answers
+for, and it is reached when the queue runs dry — which now means that nothing
+decided is left *and* nothing has arrived unjudged. Leaving it standing in order
+to judge more feedback is deciding twice and doing nothing, and the pile it
+decides over grows faster than any session can read it.
 
 The second half of the same problem is the size of the reading, and the board is
-what solves it now. ``bin/cli todo:sync`` writes one card per open feedback, and
-``bin/cli todo:next`` hands over **one** of them, like any other todo — a fresh
-card is ``low``, so the oldest unjudged feedback comes up once the decided work
-is done. One query can be re-run in a session that also has work of its own;
-sixty-seven cannot, and a session handed all of them closes whatever is easiest.
-The portion was five until 2026-08-02, cut for a reader who could then only find
-the judgements in the commit that made them. What carries that instead is
-``decisions/``, which is where a judgement is written now — see :doc:`judging`
-and
+what solves it now. Every open feedback has one card, and ``bin/cli todo:next``
+hands over **one** of them, like any other todo — a fresh card is ``low``, so
+the oldest unjudged feedback comes up once the decided work is done. One query
+can be re-run in a session that also has work of its own; sixty-seven cannot,
+and a session handed all of them closes whatever is easiest. The portion was
+five until 2026-08-02, cut for a reader who could then only find the judgements
+in the commit that made them. What carries that instead is ``decisions/``, which
+is where a judgement is written now — see :doc:`judging` and
 `D-FBK-012 <../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md>`_.
 ``bin/cli feedback:list`` is still the whole of it, for whoever wants the
 overview.
 
-What runs the sync is ``.githooks/pre-commit``, on any commit that touches
-``feedback/``: it writes the missing cards and stages them, so the feedback and
-its card arrive together. ``composer install`` is what points git at that
-directory, and the hook repairs rather than refuses — a commit made where it is
-not enabled is caught by ``bin/cli todo:check`` and by CI, which is where the 20
-cards of 2026-08-02 were found —
-`D-FBK-022 <../../decisions/feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md>`_.
+What writes the card is ``typo3_feedback_record``, in the same call that stores
+the report: the feedback and its card land together, wherever the session
+recording it was standing, and nothing has to be run afterwards for the board to
+be right —
+`D-FBK-045 <../../decisions/feedback/fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md>`_.
+
+Nothing writes one afterwards. A ``bin/cli todo:sync`` did until 2026-08-14, run
+from a pre-commit hook on any commit that touched ``feedback/``, and both went
+with the writing that made them necessary — a repair kept for a case the
+recording no longer produces is a second way for a card to come about, and the
+hook was the half that only ever ran in this checkout
+(`D-FBK-022 <../../decisions/feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md>`_,
+revoked). What is left is the report: ``bin/cli todo:check`` and CI name an open
+feedback no todo answers for — one added by hand, or one whose card was deleted
+while it stayed open — and the repair is a card written into ``todo/open/``.
 
 What ``next`` can never do is run a feedback's own query against the server as
 it is now. A feedback is evidence about a version of this server that may no

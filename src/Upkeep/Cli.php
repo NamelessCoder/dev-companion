@@ -41,7 +41,6 @@ use TYPO3\DevCompanion\Upkeep\Command\TodoHome;
 use TYPO3\DevCompanion\Upkeep\Command\TodoList;
 use TYPO3\DevCompanion\Upkeep\Command\TodoNext;
 use TYPO3\DevCompanion\Upkeep\Command\TodoRelease;
-use TYPO3\DevCompanion\Upkeep\Command\TodoSync;
 use TYPO3\DevCompanion\Upkeep\Command\TodoWaiting;
 use TYPO3\DevCompanion\Upkeep\Command\ToolCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ToolIndex;
@@ -114,7 +113,6 @@ final class Cli
         $application->addCommand(new TodoHome());
         $application->addCommand(new TodoRelease());
         $application->addCommand(new TodoCheck());
-        $application->addCommand(new TodoSync());
         $application->addCommand(new ProseCheck());
         $application->addCommand(new ProseFormat());
         $application->addCommand(new LinkCheck());

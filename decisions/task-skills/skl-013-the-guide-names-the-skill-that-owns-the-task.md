@@ -149,6 +149,19 @@ is still a route into a workflow nobody asked for, and
 [`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md)
 is the entry that had to answer to it.
 
+### 2026-08-14 — the second Wrong if happened again, by the other route
+
+"Review core patch 95169 and say whether it is breaking" named
+`typo3-core-patch-development`, and no needle was false in doing it: `breaking`
+is the word the brief carries, and the intent behind it is the workflow for
+writing such a change rather than for reading one. The subject a needle names
+without naming the work is here the change under review, so the fix is not on
+the needle but on which intents may route at all — a brief that changes nothing
+routes only the workflows that change nothing, and `audit` gained the shapes a
+request naming its change by number arrives in.
+[`D-SKL-039`](skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md)
+has the measurement and what it left alone.
+
 ### 2026-08-04 — publication is read off the skill, and the list is gone
 
 `Installer::SKILLS` was a list of published names beside the directory it

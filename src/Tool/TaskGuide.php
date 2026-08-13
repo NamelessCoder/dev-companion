@@ -252,7 +252,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
-            'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
+            'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage and a boot name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
             'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
@@ -339,8 +339,11 @@ final class TaskGuide extends ReadOnlyTool
         ));
         // The core's own skills own the work only where nothing in the call is
         // outside it. A path in an extension settles the side, and the word
-        // "core" in a task text about a sitepackage does not.
-        $skills = TaskIntents::skills($confirmed, $coreWork && !$outsideCore);
+        // "core" in a task text about a sitepackage does not. A brief that
+        // changes nothing routes only the workflows that change nothing either:
+        // the words of the change under review name what it is about, not what
+        // the caller is doing (`D-SKL-039`).
+        $skills = TaskIntents::skills($confirmed, $coreWork && !$outsideCore, $changesNothing);
 
         $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
         $target = Versions::target($stated);

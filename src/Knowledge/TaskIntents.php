@@ -26,7 +26,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, skill: string, skillCore: string, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, skill: string, skillCore: string, changesNothing: bool, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -46,6 +46,11 @@ final class TaskIntents
             // descriptions hands the other side away in as many words.
             'skill' => (string) ($entry['skill'] ?? ''),
             'skillCore' => (string) ($entry['skillCore'] ?? ''),
+            // Whether the work this intent describes produces no change of its
+            // own: reviewing one, triaging a report, fetching somebody else's
+            // patch, running an installation. It is what skills() reads to
+            // decide which intents may route in a brief that changes nothing.
+            'changesNothing' => (bool) ($entry['changesNothing'] ?? false),
             // Whether the intent is the core's own contribution process rather
             // than a kind of work. Patch submission is one: outside the core
             // there is no Gerrit to submit to, so the intent is not a weaker
@@ -176,13 +181,23 @@ final class TaskIntents
      * the wrong answer rather than a partly wrong one — the same reason its
      * checklist items are marked with their condition instead of stated.
      *
+     * A brief that changes nothing routes only the intents that change nothing
+     * either (`D-SKL-039`). "Review core patch 95169 and say whether it is
+     * breaking" recognizes the kind of change under review, and the workflow
+     * for writing one is not the one that caller is in. What the intent knows
+     * still reaches them, because its checklist items are appended whichever
+     * way this goes; only the route is withheld.
+     *
      * @param array<int, array<string, mixed>> $intents
      * @return array<int, string>
      */
-    public static function skills(array $intents, bool $coreWork): array
+    public static function skills(array $intents, bool $coreWork, bool $changesNothing): array
     {
         $skills = [];
         foreach (self::confirmed($intents) as $intent) {
+            if ($changesNothing && $intent['changesNothing'] !== true) {
+                continue;
+            }
             $skill = (string) $intent[$coreWork ? 'skillCore' : 'skill'];
             if ($skill !== '') {
                 $skills[$skill] = true;

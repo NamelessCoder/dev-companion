@@ -298,6 +298,7 @@
     "id": "patch-checkout",
     "title": "Fetching a change from review",
     "skillCore": "typo3-core-patch-checkout",
+    "changesNothing": true,
     "scope": "core",
     "condition": "if the patch is one somebody pushed to review.typo3.org",
     "match": [
@@ -333,6 +334,7 @@
     "id": "triage",
     "title": "Issue triage",
     "skillCore": "typo3-core-issue-triage",
+    "changesNothing": true,
     "scope": "core",
     "condition": "if the report is one on forge.typo3.org",
     "match": [
@@ -373,6 +375,7 @@
     "title": "Review or audit",
     "skill": "typo3-extension-conformance",
     "skillCore": "typo3-core-patch-review",
+    "changesNothing": true,
     "match": [
       "audit",
       "conformance",
@@ -380,6 +383,9 @@
       "review the",
       "review this",
       "review of",
+      "review patch",
+      "review core patch",
+      "review change",
       "reviewing"
     ],
     "rulesQuery": "",
@@ -504,6 +510,7 @@
     "id": "installation-operations",
     "title": "Bringing an installation up and running it",
     "skill": "typo3-development-installation",
+    "changesNothing": true,
     "match": [
       "operations",
       "boot a",

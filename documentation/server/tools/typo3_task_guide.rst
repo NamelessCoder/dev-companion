@@ -100,8 +100,11 @@ Answers with
     # The task skills that own the recognized work, named so that a caller who
     # reached this server without one can load it. A skill is a file in your own
     # project rather than something this server can see, so a name here is not a
-    # promise that it is installed. Empty means no published skill owns what was
-    # recognized, which is not a statement that the work has no workflow.
+    # promise that it is installed. A review, a triage and a boot name only the
+    # workflows that change nothing either: the kind of change under review is still
+    # recognized in intents, and the workflow for writing one is not the one you are
+    # in. Empty means no published skill owns what was recognized, which is not a
+    # statement that the work has no workflow.
     skills: [string]
     # What typo3_hint_lookup answers for these paths, quoted whole and carried here
     # — the strongest few per group of paths, not everything it holds on them. A

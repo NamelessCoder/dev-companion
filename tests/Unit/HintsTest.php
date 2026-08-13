@@ -372,7 +372,7 @@ final class HintsTest extends TestCase
         self::assertContains('coding-standards', array_column($intents, 'id'));
         self::assertSame(
             ['typo3-extension-testing'],
-            TaskIntents::skills($intents, false),
+            TaskIntents::skills($intents, false, false),
         );
 
         // A word that names the subject without naming the work stays weak, so
@@ -382,7 +382,7 @@ final class HintsTest extends TestCase
             ['coding-standards' => 'weak'],
             array_column($weak, 'confidence', 'id'),
         );
-        self::assertSame([], TaskIntents::skills($weak, false));
+        self::assertSame([], TaskIntents::skills($weak, false, false));
     }
 
     #[Test]
@@ -3899,6 +3899,57 @@ final class HintsTest extends TestCase
         self::assertContains('content-element', array_column($weak->data['intents'], 'id'));
         self::assertSame([], $weak->data['skills']);
         self::assertStringNotContainsString('Owned by:', $weak->text);
+    }
+
+    /**
+     * A review request that names a change routes the review (`D-SKL-039`).
+     *
+     * Run on 2026-08-14, this named `typo3-core-patch-development`: "breaking"
+     * is the intent's own needle and the words of the patch under review are
+     * the words of writing one, while the review shapes `audit` carried were
+     * "review the", "review this", "review of" and "reviewing" — none of which
+     * a request naming its change by number arrives in. It is `D-SKL-013`'s
+     * second **Wrong if** by a second route: a needle that named the subject
+     * without naming the work, loading the workflow for making the change the
+     * caller is only asking about.
+     */
+    #[Test]
+    public function aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt(): void
+    {
+        $review = Registry::call('typo3_task_guide', [
+            'task' => 'review core patch 95169 and say whether it is breaking',
+        ]);
+
+        self::assertSame(['typo3-core-patch-review'], $review->data['skills']);
+        // The intent stays recognized and its checklist stays in the brief:
+        // what it knows is what the caller asked, and its first item is the
+        // answer. A workflow is entered and a statement is read, which is why
+        // only the route is withheld.
+        self::assertContains('breaking', array_column($review->data['intents'], 'id'));
+        self::assertStringContainsString(
+            'Settle first that the change is breaking at all',
+            implode("\n", $review->data['checklist']),
+        );
+
+        // The same words, from the side that writes the change, route what they
+        // always did.
+        $authoring = Registry::call('typo3_task_guide', [
+            'task' => 'remove the public method and make it a breaking change',
+            'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
+        ]);
+
+        self::assertSame(['typo3-core-patch-development'], $authoring->data['skills']);
+
+        // And the review that fetches what it reviews keeps both: neither
+        // workflow writes a change of its own.
+        $fetched = Registry::call('typo3_task_guide', [
+            'task' => 'review core patch 95169 and check whether the patch still applies',
+        ]);
+
+        self::assertSame(
+            ['typo3-core-patch-checkout', 'typo3-core-patch-review'],
+            $fetched->data['skills'],
+        );
     }
 
     /**

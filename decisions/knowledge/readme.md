@@ -8,7 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
-- [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14
+- [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
@@ -74,7 +74,7 @@ one is added.
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
 [D-KNW-071]: knw-071-proving-what-a-rendering-change-renders-is-a-procedure-this-server-carries.md
-[D-KNW-072]: knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
+[D-KNW-073]: knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md
 [D-KNW-070]: knw-070-backend-routing-internals-are-a-gap-this-server-owns.md
 [D-KNW-066]: knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md
@@ -141,6 +141,7 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03 → D-KNW-044
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
@@ -149,6 +150,7 @@ one is added.
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 
+[D-KNW-072]: knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
 [D-KNW-040]: knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-KNW-014]: knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md

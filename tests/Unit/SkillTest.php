@@ -2028,7 +2028,7 @@ final class SkillTest extends TestCase
         $body = self::flat((string) file_get_contents(
             Paths::root() . '/skills/typo3-core-patch-checkout/SKILL.md',
         ));
-        self::assertStringContainsString('## Two ways in', $body);
+        self::assertStringContainsString('## Three ways in', $body);
         // What the worktree path costs and the branch path does not, which is
         // the half a trigger alone would route a task into a body without.
         self::assertStringContainsString('no suite runs in it until they are installed there', $body);

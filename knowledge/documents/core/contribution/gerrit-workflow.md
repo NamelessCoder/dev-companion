@@ -1,6 +1,6 @@
 ---
 description: >-
-  How a core patch reaches review: the one-time git setup, fetching a patch set into the checkout, pushing, amending a patch set, and backporting.
+  How a core patch reaches review: the one-time git setup, fetching a patch set into the checkout, carrying one onto current code, pushing, amending a patch set, and backporting.
 whenToUse: >-
   When a change is ready to leave the checkout, when a patch under review has to be read or tried out locally, or when a patch already under review has to be changed.
 hints: []
@@ -100,7 +100,52 @@ and returned nothing at all over the GitHub one.
 
 A fetched patch set is somebody else's commit and is not on a branch. Detaching
 onto `FETCH_HEAD` says that in the checkout, which is what keeps a local branch
-from quietly acquiring a commit that belongs to a review.
+from quietly acquiring a commit that belongs to a review. That holds while the
+checkout is on the fetched commit and no longer — replaying it onto other code
+produces a commit made here, which is the section below.
+
+## Carry a Change Onto Current Code
+
+A patch is read against the code it was written on. Carrying it onto current
+code answers a different question — whether it still applies there and still
+passes — and Gerrit's Download menu copies the command for it:
+
+```bash
+git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/19/93319/21 && git cherry-pick FETCH_HEAD
+```
+
+That URL is the review server over https, and it serves the change refs to
+anyone: measured on 2026-08-14, `git ls-remote` over it listed all 21 patch sets
+of change 93319 with no account configured. The ssh URL above is the one a push
+needs.
+
+Where the commit lands is not in the command, and the
+[contribution guide's cherry-pick page](https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/HandlingAPatch/CherryPick.html)
+has it run after `git reset --hard origin/main` — so the cherry-pick writes onto
+`main` itself. A local branch tracking the core then carries a commit upstream
+does not have, nothing in the checkout says which one it is, and the next thing
+that reads that branch reads the patch as if it had been merged. So the carry
+goes on a branch of its own, named for the change and started at the tip of the
+branch the change targets:
+
+```bash
+git switch -c review/93319 origin/main
+git fetch <the Gerrit URL above> refs/changes/19/93319/21
+git cherry-pick FETCH_HEAD
+```
+
+Every patch is exactly one commit, so rebasing the fetched commit onto current
+code and cherry-picking it there are one move under two names: one commit
+replayed onto code it was not written on. The cherry-pick is the form the guide
+documents and the review server hands out.
+
+The carried commit is on no review server and in no other branch, so the branch
+is the only thing holding it and git refuses to drop it as merged:
+
+```bash
+git switch main
+git branch -D review/93319
+```
 
 ## Push a Patch for Review
 

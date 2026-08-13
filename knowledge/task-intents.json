@@ -323,7 +323,7 @@
     "checklist": [
       "Fetch the patch set the change is on rather than the one a link happens to name. A change is a series of patch sets, and reading an older one is a review of code nobody is proposing.",
       "A patch that no longer applies is a finding: the branch moved under a change nobody rebased. Resolving your way to something that compiles destroys that finding and produces a patch its author never wrote, so a conflict you cannot take from the change itself ends the work with what it found.",
-      "Leave the checkout on a clean current branch when you are done or when the patch will not apply. A fetched change sitting on a detached head is the state the next session cannot tell from its own work."
+      "Leave the checkout on a clean current branch when you are done or when the patch will not apply. A fetched change sitting on a detached head is the state the next session cannot tell from its own work, and a branch you carried the patch onto is that state under a name: delete it as deliberately as you made it."
     ],
     "checks": [],
     "tools": [

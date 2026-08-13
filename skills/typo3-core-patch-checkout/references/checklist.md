@@ -53,17 +53,17 @@ whatever happened in the first.
 - What the two sides wanted, in one sentence each. That is what makes the report
   usable by whoever rebases it properly, and it is the part a diff does not say.
 - Whether anything was resolved before the stop, and what. A partially resolved
-  rebase that was then aborted still tells the next person which hunks are free.
+  carry that was then aborted still tells the next person which hunks are free.
 
 ## After any resolution
 
 - The build and the suites that cover the touched paths are what says the
-  resolution holds. A rebase that produced a checkout nobody ran is not a rebase
+  resolution holds. A carry that produced a checkout nobody ran is not a carry
   that worked.
-- Say that the checkout is rebased and no longer the revision under review.
-  Every result from it is about your rebase and not about the patch set the
-  reviewers see, and reporting one as the other is the failure this whole file
-  guards.
-- The rebased state is local. It is not pushed, and pushing it would be opening
+- Say that the checkout holds the patch on other code and is no longer the
+  revision under review. Every result from it is about the commit you made and
+  not about the patch set the reviewers see, and reporting one as the other is
+  the failure this whole file guards.
+- The carried state is local. It is not pushed, and pushing it would be opening
   a patch set in somebody else's name — that belongs to the workflow that owns
   amending a change, and only where the change is yours to amend.

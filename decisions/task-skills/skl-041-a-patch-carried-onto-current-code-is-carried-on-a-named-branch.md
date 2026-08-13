@@ -6,8 +6,8 @@ status: open
 
 # D-SKL-041 — A patch carried onto current code is carried on a named branch
 
-**`typo3-core-patch-checkout` gains a way in whose result is a local branch named
-for the change, and an undo that deletes it.**
+**`typo3-core-patch-checkout` gains a way in whose result is a local branch
+named for the change, and an undo that deletes it.**
 
 The two ways in it has are both about reading the patch as its author wrote it,
 so every local result is disposable and the skill says so in as many words. A
@@ -20,8 +20,8 @@ giving it a name.
 - `feedback/2026-08-13-214754`: the session was asked to review change 93319 and
   cherry-pick it onto `main`. Neither way in fitted, so it detached onto `main`
   and cherry-picked there, leaving a new commit on no branch. The maintainer
-  corrected it mid-session — a checkout that cherry-picks onto `main` always gets
-  a review branch — and the rest of the review ran from `review/93319`.
+  corrected it mid-session — a checkout that cherry-picks onto `main` always
+  gets a review branch — and the rest of the review ran from `review/93319`.
 - `knowledge/task-intents.json` already matches "cherry-pick" and "cherry pick"
   onto `patch-checkout`. The routing fired and the skill it fired into has no
   form for the request, so this is not a routing failure.
@@ -29,14 +29,15 @@ giving it a name.
   matched nothing, and the one cherry-pick the corpus documents is a merger
   backporting a merged commit onto a release branch
   (`knowledge/documents/core/contribution/gerrit-workflow.md`), which is
-  authoring rather than reading. Nothing here covers a patch set carried locally.
+  authoring rather than reading. Nothing here covers a patch set carried
+  locally.
 - The detach rationale stands twice — in the skill's "Fetch and apply" and in
   that document — and both state it without its scope. It is about the fetched
   object, and a commit this session made is not one.
 - The gap reaches the rebase path the skill already has. "Put the checkout back"
-  step 2 says leaving the detached commit "loses nothing that is not still on the
-  review server", which stopped being true the moment a rebase or a cherry-pick
-  produced a commit that exists only locally.
+  step 2 says leaving the detached commit "loses nothing that is not still on
+  the review server", which stopped being true the moment a rebase or a
+  cherry-pick produced a commit that exists only locally.
 - One session behind it: the five feedback of 2026-08-13 are one review of one
   change. What carries the shape is the maintainer's correction, not a count.
 
@@ -60,10 +61,10 @@ giving it a name.
   naming and the undo go to the skill.
 - Priority `normal`. The intents file promises the path, so a session that asks
   for it by name is routed into a skill that steers it away from the answer.
-- Left to the reading: what the branch is called, and whether the existing rebase
-  path is folded into the new way in or stays beside it. Both are readable —
-  the contribution guide's cherry-pick page and the skill itself — and neither is
-  settled by this judgement.
+- Left to the reading: what the branch is called, and whether the existing
+  rebase path is folded into the new way in or stays beside it. Both are
+  readable — the contribution guide's cherry-pick page and the skill itself —
+  and neither is settled by this judgement.
 
 ## Assumed
 
@@ -71,8 +72,8 @@ giving it a name.
   from the person who maintains this repository, which is the strongest source a
   judgement here has and still one session.
 - Naming the local result costs less than it saves. A branch that outlives the
-  work is a state the next session cannot tell from its own, which is the failure
-  the detach was preventing, moved one step along.
+  work is a state the next session cannot tell from its own, which is the
+  failure the detach was preventing, moved one step along.
 
 ## Wrong if
 
@@ -84,4 +85,27 @@ giving it a name.
   which is the attributability this decision claims to improve, lost the way it
   was gained.
 - Sessions ask for the cherry-pick and the skill's rebase path already answers
-  them, which would say this was a wording fix to one paragraph and not a way in.
+  them, which would say this was a wording fix to one paragraph and not a way
+  in.
+
+## Since then
+
+The two questions left to the reading were read on 2026-08-14 and both are
+answered. The contribution guide's cherry-pick page names no branch at all: it
+has the checkout cleaned with `git fetch --all && git reset --hard origin/main`
+and then runs the line Gerrit's Download menu copies, so the cherry-picked
+commit lands on `main` itself. That is worse than what this repository's skill
+prescribed rather than a source for the name, and it is why the document now
+says where the guide's command puts the commit. So `review/<change number>` is
+the maintainer's correction written down, upstream having nothing to say about
+it.
+
+The rebase path is folded into the new way in rather than left beside it. Every
+core patch is exactly one commit, which the same document states, so rebasing
+the fetched commit onto current code and cherry-picking it there replay one
+commit onto code it was not written on and produce the same thing. Keeping them
+apart would state the boundary this entry draws twice, and the copy that had
+already gone stale — "Put the checkout back" step 2 — was the rebase one. The
+skill's section is now "Carry it onto current code only where the work needs
+it", which keeps the old rule about when to move a patch at all and gains the
+branch, its deletion, and that the findings name the carried commit.

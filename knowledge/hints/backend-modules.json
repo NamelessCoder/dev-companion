@@ -44,7 +44,7 @@
         "until": 13
       },
       "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
-      "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
+      "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style. They are not registered alike: an AjaxRoutes.php entry is registered under its key with ajax_ in front of it, a Routes.php entry under the key itself. backend-routing-internals carries the three spellings that follow from it.",
       "A module's controller answers with a response the module template renders: $this->moduleTemplateFactory->create($request), the variables assigned to it, then $view->renderResponse('<Directory>/<Template>') for the Fluid template below Resources/Private/Templates. It is the doc header, the module menu and the backend chrome the module sits in, so a response built any other way is a page outside the backend.",
       "The module's persisted per-user state arrives on the request as the moduleData attribute, built from the moduleData key of the registration. set() changes the object alone: what writes it back for the next request is $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray()), and a module that never calls it looks like one whose state is not persisted at all.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
@@ -60,6 +60,9 @@
       "Classes/Routing/",
       "Classes/Module/",
       "Classes/Breadcrumb/",
+      "Configuration/Backend/AjaxRoutes.php",
+      "buildUriFromRoute",
+      "ajaxUrls",
       "route identifier",
       "sub-route",
       "subroute",
@@ -82,6 +85,9 @@
       },
       "The module's _default route is registered under the module identifier itself. Every other route of the module is registered as <module identifier>.<route name>, because ModuleRegistry adds the collection under the module identifier and a dot.",
       "An Extbase module generates one route per controller action rather than taking a routes map, named <ControllerAlias>_<action>, so its sub-route identifiers read <module identifier>.<ControllerAlias>_<action>. Every one of them gets the module's own route options; there is no per-action entry to configure.",
+      "AbstractServiceProvider::configureBackendRoutes() registers every Configuration/Backend/AjaxRoutes.php entry under 'ajax_' and the key the file writes, prefixes /ajax to the path it declares, and sets the ajax option the route is later collected by.",
+      "So one AJAX route is spelled three ways and only the URL builder's spelling carries the prefix. The key in AjaxRoutes.php is page_tree_data, buildUriFromRoute('ajax_page_tree_data') builds its URL, and JavaScript reads TYPO3.settings.ajaxUrls.page_tree_data, because PageRenderer::addAjaxUrlsToInlineSettings() strips the prefix off again for that array. Each of the three fails at runtime when it is written wrong, and the file that looks wrong is the one that is right.",
+      "Configuration/Backend/Routes.php has no such asymmetry. Its entries are merged under the keys the file writes, so buildUriFromRoute() takes exactly the key that stands there.",
       "navigationComponent is inherited from the parent module unless the registration turns it off with inheritNavigationComponentFromMainModule, so a module's own Modules.php does not say whether it is page-tree navigated. Reading the registration files alone gives the wrong answer for every module that inherits.",
       "TYPO3\\CMS\\Backend\\Routing\\Route takes a path and an options array; TYPO3\\CMS\\Core\\Routing\\Route takes a path, defaults, requirements and then options. Passing backend route options to the core class puts them where defaults belong, getOption() returns null with no error, and a test built that way asserts nothing."
     ]

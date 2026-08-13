@@ -980,6 +980,45 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * `D-KNW-070` drew the boundary at what the core's own classes do with a
+     * route and then enumerated one identifier shape short. The corpus said a
+     * single sentence about `AjaxRoutes.php`, which paired it with `Routes.php`
+     * as the same declarative style — the general sentence written before the
+     * exception existed, and the one a reader is misled by.
+     *
+     * Read on 12.4, 13.4, 14.3 and main, so nothing is bound:
+     * `AbstractServiceProvider::configureBackendRoutes()` merges `Routes.php`
+     * under the keys the file writes and registers every `AjaxRoutes.php` entry
+     * prefixed, and `PageRenderer::addAjaxUrlsToInlineSettings()` strips the
+     * prefix off again.
+     */
+    #[Test]
+    public function anAjaxRouteIsCarriedThroughAllThreeOfItsSpellings(): void
+    {
+        // The reporting session's own task, which reached the hint that says one
+        // sentence about the file before the one that owns the mechanism.
+        $ids = array_column(Hints::find(
+            [],
+            'AJAX route registration AjaxRoutes UriBuilder buildUriFromRoute backend',
+            6,
+        )['matchedHints'], 'id');
+        self::assertSame('backend-routing-internals', $ids[0]);
+
+        $text = self::statementsOf('backend-routing-internals');
+
+        // One route through all three, which is what makes it a rule rather
+        // than three facts.
+        self::assertStringContainsString('The key in AjaxRoutes.php is page_tree_data', $text);
+        self::assertStringContainsString("buildUriFromRoute('ajax_page_tree_data')", $text);
+        self::assertStringContainsString('TYPO3.settings.ajaxUrls.page_tree_data', $text);
+        self::assertStringContainsString('fails at runtime when it is written wrong', $text);
+
+        // And the file the reader assumes behaves alike, on both sides.
+        self::assertStringContainsString('Routes.php has no such asymmetry', $text);
+        self::assertStringContainsString('They are not registered alike', self::statementsOf('backend-modules'));
+    }
+
     #[Test]
     public function siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist(): void
     {

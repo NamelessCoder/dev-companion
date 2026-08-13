@@ -108,5 +108,10 @@ the keys the file writes and registers every `AjaxRoutes.php` entry under
 `TYPO3.settings.ajaxUrls`. Read on 12.4, 13.4, 14.3 and main; nothing is bound.
 `Routes.php` has no such asymmetry, which is the half `backend-modules` gets
 wrong by pairing the two files as "the same declarative style" — the general
-sentence written before the exception existed. `todo/open/2026-08-13-232047`
-carries it.
+sentence written before the exception existed.
+
+The enumeration was extended on 2026-08-14: `backend-routing-internals` states
+the mechanism and carries `page_tree_data` through all three spellings,
+`backend-modules` qualifies the pairing, and the reporting session's own query
+now ranks the routing hint first on `Configuration/Backend/AjaxRoutes.php`,
+`buildUriFromRoute` and `ajaxUrls` in its `appliesTo`.

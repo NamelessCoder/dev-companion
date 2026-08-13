@@ -11,6 +11,14 @@ directory: /home/benji/projects/typo3-cms
 
 ## Observation
 
+Trimmed on 2026-08-14 to the part that is left. The language half is answered:
+`D-SKL-033` weighed German trigger words in the descriptions and decided against
+them, on a listing that arrived whole with this skill's description
+byte-identical to the published one. This session is written into that entry as
+the second of the shape, and it removes the other cause the earlier report
+offered — the request here named the change on the review server, and the skill
+stayed shut anyway. What is left is the suggestion below, judged as `D-SKL-038`.
+
 Task: review Gerrit change 95169 against the core checkout and say whether it is breaking. My transcript is complete from the first user message; nothing is summarised away.
 
 Zero skills activated in this session. Both typo3-core-patch-review and typo3-core-patch-checkout were listed to me and both matched the task literally — I reviewed a patch set somebody else pushed, and I fetched it into a checkout and backed out again. Neither opened. There is already a closed feedback on exactly this (2026-08-10, "a review request quoting the skill's own trigger words did not activate the skill", closed by 6d5aaa57 "[TASK] Judge a skill that was listed and stayed shut"), so this is a recurrence and the fix did not take.
@@ -27,4 +35,4 @@ User request, verbatim: "bitte review mir 95169: [BUGFIX] Add link parsing in RT
 
 ## Suggestion
 
-Two things. First, put the non-English case into the skill descriptions themselves — either a line of German/French trigger wording, or a sentence in the base instruction that a request in another language about a review.typo3.org change is still a patch review. A skill is chosen on its description alone and before any server instruction has been read, so the translation rule has to live where the description is, not in the tool prose. Second, make the no-skill path survivable: if typo3_gerrit_lookup is the first call of a session, its answer is the one place that knows a patch review has begun — it could carry a line naming typo3-core-patch-review and typo3_server_scope, the way project_describe's tail already names the guides.
+Make the no-skill path survivable: if typo3_gerrit_lookup is the first call of a session, its answer is the one place that knows a patch review has begun — it could carry a line naming typo3-core-patch-review and typo3_server_scope, the way project_describe's tail already names the guides.

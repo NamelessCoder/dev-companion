@@ -86,3 +86,28 @@ not fire, so the wording is not what is left to suspect.
 - A third session reports a skill that was listed, described in the request's
   own words, and left shut. Then the project's own instruction file is the
   channel to weigh, and this entry is what recorded that it was untried.
+
+## Since then
+
+### 2026-08-14 — the second session, and one hypothesis fewer
+
+[`feedback/2026-08-12-092545`](../../feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md)
+is the same request shape in the same checkout two days later: German, naming
+Gerrit change 95169 by number and by review URL, and no skill activated at any
+point. It is the second session on record of the shape the third **Wrong if**
+counts to three, and it is not the third.
+
+What it settles is the other half of the report this entry was written from.
+That session named two things as plausible causes, the language and a request
+naming a local commit rather than a change on the review server, and this one
+carries the change number, the review URL and the description's own two words.
+So the local commit is not what kept the skill shut, and the language and the
+client's own choice are what the entry already stops at.
+
+Everything **Decided** stands, including the German trigger words: the second
+session changes how often the shape arrives and not what a description could
+have matched. What it adds is a channel this entry did not weigh — the answer of
+the tool the session did call, which is
+[`D-SKL-038`](skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md).
+The project's own instruction file is untried still, and stays what the third
+**Wrong if** watches for.

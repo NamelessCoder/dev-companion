@@ -9,6 +9,9 @@ are agreeing to when it does.
 * :doc:`installing` — every client and layout
   ``bin/typo3-dev-companion install`` supports, and the configuration each one
   gets.
+* :doc:`checking-it-answers` — the ladder from a written entry to a session that
+  really has the tools, and what an answer says when the installation could not
+  be reached.
 
 It is a local subprocess, started by the client over stdio, and it reads. It
 writes nothing into the TYPO3 installation it is pointed at — the one exception
@@ -28,3 +31,4 @@ What the server can then be asked is :doc:`the server <../server/index>`.
     :hidden:
 
     installing
+    checking-it-answers

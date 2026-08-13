@@ -267,6 +267,8 @@ Its MCP entry goes to ``.vscode/mcp.json``, in one of the two shapes
 :ref:`the section below <installing-which-path-is-written>`
 sets out: VS Code is one of the two clients that resolve ``${workspaceFolder}``.
 
+.. _installing-finishing-in-the-client:
+
 Finishing in the client
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -357,8 +359,7 @@ answer is left unestablished rather than filled in:
 
 Antigravity and Pi receive skills only, so there is no entry and nothing to
 finish. Where a session has the entry and still offers no ``typo3_`` tool,
-:ref:`checking that it came up <installing-checking-that-it-came-up>` separates
-the two halves: a server that answers there is not the missing piece.
+:doc:`checking-it-answers` is the rest of the ladder.
 
 .. _installing-which-path-is-written:
 
@@ -527,31 +528,3 @@ in the guide rather than being duplicated in the prompt.
 Task skills are authored once below ``skills/``. They contain routing and order,
 not a second copy of tool answers; client installation publishes them from that
 source.
-
-.. _installing-checking-that-it-came-up:
-
-Checking that it came up
-------------------------
-
-Two JSON-RPC lines on stdin are enough to see the server start and list its
-tools:
-
-.. code-block:: bash
-
-    printf '%s\n' \
-      '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
-      '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
-      | php bin/typo3-dev-companion
-
-
-Where discovery needs help, two environment variables end the guessing:
-``TYPO3_DEV_COMPANION_ROOT`` names the installation and
-``TYPO3_DEV_COMPANION_CONSOLE`` the command that reaches its console, for
-example ``ddev exec .build/bin/typo3``. ``typo3_server_scope`` then names the
-installation it is reading, how it got there, and whether the console is
-reachable.
-
-``TYPO3_DEV_COMPANION_ROOT`` names what is read and not where the work is. Point
-it at a site installation from a core checkout and the icons and labels come
-from the site while the answers stay the core's; only where nothing can be
-walked up to does it decide that too.

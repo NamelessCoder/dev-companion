@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
+- [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
 - [`D-ANS-078`][D-ANS-078] — The icon lookup validates a list of identifiers in one call · 2026-08-12
 - [`D-ANS-074`][D-ANS-074] — A path-narrowed suite list names the domains it withheld and when to ask again · 2026-08-11
@@ -84,6 +85,7 @@ one is added.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-079]: ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
+[D-ANS-080]: ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
 [D-ANS-077]: ans-077-the-module-answer-carries-the-resolved-navigation-component-and-each-modules-routes.md
 [D-ANS-078]: ans-078-the-icon-lookup-validates-a-list-of-identifiers-in-one-call.md
 [D-ANS-074]: ans-074-a-path-narrowed-suite-list-names-the-domains-it-withheld-and-when-to-ask-again.md

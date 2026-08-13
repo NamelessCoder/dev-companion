@@ -280,21 +280,21 @@ Text:
     `CI=true ./Build/Scripts/runTests.sh -s e2e`
 
     End-to-end tests driving a real backend with Playwright.
-    Use for editor or administrator workflows that only break in the assembled backend.
+    Use for editor or administrator workflows that only break in the assembled backend. Nothing passes through to Playwright — no test path, no filter, whatever follows `--` — so the run is every spec of the project. A change to a single spec file costs the whole suite, and that run is the one a review reports.
 
     ## e2e-prepare
     Command from the TYPO3 core root:
     `CI=true ./Build/Scripts/runTests.sh -s e2e-prepare`
 
     Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.
-    Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.
+    Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal — CI=true does not stand in for one, and a run that has none exits at the prompt, removes the instance it just installed and still reports SUCCESS. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run.
 
     ## e2e-browser
     Command from the TYPO3 core root:
     `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
 
     The e2e suite in Playwright's own UI, served from the container.
-    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.
+    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
 
     ## composerInstall
     Command from the TYPO3 core root:
@@ -323,12 +323,13 @@ Text:
     - Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there lands in the next commit.
 
     ## Invoking runTests.sh
-    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
+    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.
     - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
     - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
     - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
     - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
     - `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
+    - A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes.
 
     Options:
     - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -616,7 +617,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
                 "targeted": null,
                 "description": "End-to-end tests driving a real backend with Playwright.",
-                "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend.",
+                "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend. Nothing passes through to Playwright — no test path, no filter, whatever follows `--` — so the run is every spec of the project. A change to a single spec file costs the whole suite, and that run is the one a review reports.",
                 "domains": [
                     "php",
                     "typescript",
@@ -629,7 +630,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
                 "targeted": null,
                 "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
-                "whenToUse": "Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.",
+                "whenToUse": "Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal — CI=true does not stand in for one, and a run that has none exits at the prompt, removes the instance it just installed and still reports SUCCESS. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run.",
                 "domains": [
                     "php",
                     "typescript",
@@ -643,7 +644,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
                 "targeted": null,
                 "description": "The e2e suite in Playwright's own UI, served from the container.",
-                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.",
+                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.",
                 "domains": [
                     "php",
                     "typescript",
@@ -695,12 +696,13 @@ Data:
                 "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container."
             ],
             "notes": [
-                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
+                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.",
                 "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
                 "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
                 "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
                 "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
-                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
+                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
+                "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
             ],
             "options": [
                 {
@@ -800,12 +802,13 @@ Text:
     Use for type-sensitive PHP changes and API contract changes.
 
     ## Invoking runTests.sh
-    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
+    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.
     - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
     - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
     - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
     - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
     - `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
+    - A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes.
 
     Options:
     - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -871,12 +874,13 @@ Data:
                 "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container."
             ],
             "notes": [
-                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
+                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.",
                 "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
                 "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
                 "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
                 "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
-                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
+                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
+                "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
             ],
             "options": [
                 {
@@ -971,12 +975,13 @@ Text:
     No runTests.sh suite matched "quantumflux". Try "unit", "functional", "phpstan", "checkRst", "build", "composer", or "npm".
 
     ## Invoking runTests.sh
-    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
+    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.
     - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
     - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
     - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
     - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
     - `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
+    - A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes.
 
     Options:
     - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -1030,12 +1035,13 @@ Data:
                 "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container."
             ],
             "notes": [
-                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
+                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.",
                 "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
                 "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
                 "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
                 "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
-                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
+                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
+                "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
             ],
             "options": [
                 {
@@ -1132,6 +1138,13 @@ Text:
 
     Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 21 suites out. A path landing in one of those domains means calling again.
 
+    ## e2e-prepare
+    Command from the TYPO3 core root:
+    `CI=true ./Build/Scripts/runTests.sh -s e2e-prepare`
+
+    Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.
+    Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal — CI=true does not stand in for one, and a run that has none exits at the prompt, removes the instance it just installed and still reports SUCCESS. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run.
+
     ## build-css
     Command from the TYPO3 core root:
     `CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css`
@@ -1144,14 +1157,7 @@ Text:
     `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
 
     The e2e suite in Playwright's own UI, served from the container.
-    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.
-
-    ## e2e-prepare
-    Command from the TYPO3 core root:
-    `CI=true ./Build/Scripts/runTests.sh -s e2e-prepare`
-
-    Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.
-    Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.
+    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
 
     ## lintScss
     Command from the TYPO3 core root:
@@ -1166,12 +1172,13 @@ Text:
     - Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there lands in the next commit.
 
     ## Invoking runTests.sh
-    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
+    - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.
     - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
     - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
     - The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
     - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
     - `PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.
+    - A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes.
 
     Options:
     - `-- <phpunit arguments>` — Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method.
@@ -1236,6 +1243,20 @@ Data:
         },
         "suites": [
             {
+                "suite": "e2e-prepare",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
+                "targeted": null,
+                "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
+                "whenToUse": "Use to look at a backend change in a real browser. It prints the instance URL and then waits: Enter re-runs the specs in the container, Control-C ends it. That wait is a read from /dev/tty, so the suite needs a controlling terminal — CI=true does not stand in for one, and a run that has none exits at the prompt, removes the instance it just installed and still reports SUCCESS. The two local Playwright commands it prints, headless and in the UI with PLAYWRIGHT_BASE_URL already set, are for iterating by eye rather than for reporting: they run on the host, where the browsers are an `npm --prefix=Build run playwright:install` of their own that the containerised suites never need. What a review reports is the `-s e2e` run.",
+                "domains": [
+                    "php",
+                    "typescript",
+                    "fluid",
+                    "css"
+                ],
+                "versions": "TYPO3 v13 and newer"
+            },
+            {
                 "suite": "build-css",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
                 "targeted": null,
@@ -1251,7 +1272,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
                 "targeted": null,
                 "description": "The e2e suite in Playwright's own UI, served from the container.",
-                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it.",
+                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.",
                 "domains": [
                     "php",
                     "typescript",
@@ -1259,20 +1280,6 @@ Data:
                     "css"
                 ],
                 "versions": "TYPO3 v14 and newer"
-            },
-            {
-                "suite": "e2e-prepare",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
-                "targeted": null,
-                "description": "Installs the same instance the e2e suite runs against, publishes it on a local port and leaves it up.",
-                "whenToUse": "Use to look at a backend change in a real browser, and to run Playwright yourself against the instance. It prints the URL to open and the two commands to run the specs locally, headless and in the UI, with PLAYWRIGHT_BASE_URL already set — which is how a single spec or project is selected, since the containerised suites pass no arguments through. Enter re-runs the specs in the container, Control-C ends it.",
-                "domains": [
-                    "php",
-                    "typescript",
-                    "fluid",
-                    "css"
-                ],
-                "versions": "TYPO3 v13 and newer"
             },
             {
                 "suite": "lintScss",
@@ -1292,12 +1299,13 @@ Data:
                 "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container."
             ],
             "notes": [
-                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
+                "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.",
                 "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
                 "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
                 "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
                 "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
-                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it."
+                "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
+                "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
             ],
             "options": [
                 {

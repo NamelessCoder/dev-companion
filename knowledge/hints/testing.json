@@ -259,7 +259,7 @@
       },
       "A backend module renders inside an iframe — id typo3-contentIframe, name list_frame — so every locator in a backend spec goes through page.frameLocator('#typo3-contentIframe'), and one that does not simply matches nothing.",
       {
-        "text": "A defect that has to be seen rather than asserted — a position, a stacking order, something that only appears while scrolling — is looked at rather than specced first. The core installs the instance the specs run against, publishes it and waits, so the backend can be opened in a browser and Playwright can be pointed at it from outside the container; typo3_test_run_guide has that suite and what it prints.",
+        "text": "A defect that has to be seen rather than asserted — a position, a stacking order, something that only appears while scrolling — is looked at rather than specced first. The core installs the instance the specs run against, publishes it and waits, so the backend can be opened in a browser; typo3_test_run_guide has that suite, what it prints and what the run costs.",
         "since": 13
       },
       "Two neighbours: browser-test-accessibility for what the same spec can assert, browser-tests-outside-core for the site they run against."

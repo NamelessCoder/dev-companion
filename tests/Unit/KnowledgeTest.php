@@ -31,6 +31,14 @@ final class KnowledgeTest extends TestCase
     private const GIT_DRIVEN_SUITES = ['cglGit', 'cglHeaderGit'];
 
     /**
+     * The suites whose script ends in a keypress it reads from `/dev/tty`.
+     *
+     * `runPlaywright()` waits there on every branch that has them, and the read
+     * is not a container flag `CI=true` can drop.
+     */
+    private const WAITING_SUITES = ['e2e-prepare', 'e2e-browser'];
+
+    /**
      * A corpus of this test's own, because `D-VER-005` cannot be held against
      * the real one: no bundled document declares a binding, and one written to
      * carry a `**Since:**` for a test would be a statement in the knowledge
@@ -1219,6 +1227,86 @@ final class KnowledgeTest extends TestCase
 
         self::assertStringContainsString('composerInstall', $section, 'the install section names no containerised form');
         self::assertStringContainsString('worktree', $section, 'the install section does not name the checkout that owes one');
+    }
+
+    /**
+     * The e2e answer says what a change to one spec costs.
+     *
+     * Every e2e case builds its Playwright command from the project alone and
+     * reaches no `"$@"`, so nothing a caller writes after `--` arrives — where
+     * `-s unit` and `-s functional` pass a path and a filter through. A
+     * Playwright-only diff therefore costs the whole suite, and the entry says
+     * so beside the command: the session in `feedback/2026-08-13-214708` read
+     * the old wording as an offer to narrow, went to a local Playwright run and
+     * got no reportable evidence out of it (`D-KNW-068`).
+     *
+     * The local commands the prepare suite prints keep their place and carry
+     * what they need. They run on the host, where the browsers are an install
+     * of their own — `Build/package.json` has `playwright:install` as a script
+     * beside `playwright:run` on every branch that carries the suites, while
+     * the containerised path runs the Playwright image and never asks.
+     */
+    #[Test]
+    public function theE2eAnswerStatesThePriceOfAPlaywrightOnlyChange(): void
+    {
+        $suites = array_column(TestSuiteHints::load(), null, 'suite');
+
+        $e2e = $suites['e2e']['whenToUse'];
+        self::assertStringContainsString('passes through', $e2e, 'the e2e entry does not say what it takes');
+        self::assertStringContainsString('whole suite', $e2e, 'the e2e entry does not say what a narrow change costs');
+
+        $prepare = $suites['e2e-prepare']['whenToUse'];
+        self::assertStringContainsString(
+            'playwright:install',
+            $prepare,
+            'the prepare entry offers a local run without the browsers it needs',
+        );
+        self::assertStringContainsString('-s e2e', $prepare, 'the prepare entry does not name the run a review reports');
+    }
+
+    /**
+     * A suite that waits for a keypress says it needs a terminal.
+     *
+     * `runPlaywright()` ends in `read ... </dev/tty`, which no container flag
+     * removes: without a controlling terminal the redirect fails, the wait
+     * ends, the cleanup takes the instance the suite exists to leave standing,
+     * and the exit code is still the one from before the wait. So the run
+     * reports SUCCESS having done the opposite of what was asked, which is the
+     * failure a reading session cannot see — the same shape `cglGit` has above.
+     * `feedback/2026-08-13-214729` lost the instance that way with `CI=true`
+     * set, which the note beside it read as covering exactly this.
+     */
+    #[Test]
+    public function aSuiteThatWaitsForAKeypressSaysItNeedsATerminal(): void
+    {
+        $suites = array_column(TestSuiteHints::load(), null, 'suite');
+
+        foreach (self::WAITING_SUITES as $suite) {
+            $whenToUse = $suites[$suite]['whenToUse'];
+            self::assertStringContainsString('/dev/tty', $whenToUse, $suite . ' does not say where it waits');
+            self::assertStringContainsString(
+                'controlling terminal',
+                $whenToUse,
+                $suite . ' does not say what the wait needs',
+            );
+            self::assertStringContainsString(
+                'SUCCESS',
+                $whenToUse,
+                $suite . ' does not say that the run without one reports a green',
+            );
+        }
+
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+        self::assertStringContainsString(
+            '/dev/tty',
+            $notes,
+            'the CI=true note still reads as covering every non-interactive run',
+        );
+        self::assertStringContainsString(
+            'script -qec',
+            $notes,
+            'the notes name no way to reach a waiting suite without a terminal',
+        );
     }
 
     /**

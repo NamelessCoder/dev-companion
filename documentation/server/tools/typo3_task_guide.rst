@@ -1125,6 +1125,9 @@ Text:
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
+    ## e2e-browser
+    `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
+    Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
     ## checkExtensionScannerRst
     `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
     Use when a deprecation or breaking change adds extension scanner matchers.
@@ -1134,9 +1137,6 @@ Text:
     ## composerInstall
     `CI=true ./Build/Scripts/runTests.sh -s composerInstall`
     Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.
-    ## e2e
-    `CI=true ./Build/Scripts/runTests.sh -s e2e`
-    Use for editor or administrator workflows that only break in the assembled backend.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -1313,6 +1313,20 @@ Data:
         "conditionalChecks": [],
         "testSuites": [
             {
+                "suite": "e2e-browser",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
+                "targeted": null,
+                "description": "The e2e suite in Playwright's own UI, served from the container.",
+                "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.",
+                "domains": [
+                    "php",
+                    "typescript",
+                    "fluid",
+                    "css"
+                ],
+                "versions": "TYPO3 v14 and newer"
+            },
+            {
                 "suite": "checkExtensionScannerRst",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
                 "targeted": null,
@@ -1347,19 +1361,6 @@ Data:
                     "typoscript"
                 ],
                 "versions": ""
-            },
-            {
-                "suite": "e2e",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
-                "targeted": null,
-                "description": "End-to-end tests driving a real backend with Playwright.",
-                "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend.",
-                "domains": [
-                    "php",
-                    "typescript",
-                    "fluid"
-                ],
-                "versions": "TYPO3 v13 and newer"
             }
         ],
         "checklist": [

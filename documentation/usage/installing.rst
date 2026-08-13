@@ -49,8 +49,8 @@ records every client it set up in ``.typo3-dev-companion/state.json``, and
 without an agent ``update`` refreshes all of them. A project is usually worked
 on by more than one, and which ones is knowledge only the project has.
 
-Being told that they are due
-----------------------------
+When they go stale
+------------------
 
 A published skill is a copy, so it goes stale without saying so: the client
 loads the file it finds, the workflow reads as current whatever version wrote
@@ -75,8 +75,8 @@ Where the record carries drafts, the line says ``update --drafts``: a run that
 does not ask for them removes them, and somebody acting on the line wants the
 project they have.
 
-Refreshing it when the package moves
-------------------------------------
+Refreshing on update
+--------------------
 
 The copy goes stale the moment this package moves, so a project can have the
 thing that moved it run the refresh. Composer fires ``post-update-cmd`` after
@@ -118,8 +118,8 @@ run that does not ask for them takes them out, and with the hook in place that
 happens on every ``composer update`` rather than when somebody typed the
 command.
 
-Trying a draft where it is loaded
----------------------------------
+Trying a draft
+--------------
 
 Both commands take ``--drafts``, which publishes the skills that still declare
 themselves drafts beside the ones this server publishes:
@@ -242,8 +242,8 @@ The same commands support the agent identifiers ``amp``, ``junie``, ``cursor``,
 path and, where the client supports it, its native MCP configuration.
 Antigravity and Pi receive skills only.
 
-VS Code reads the skills only once it is told to
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The VS Code switch
+~~~~~~~~~~~~~~~~~~
 
 ``--agent=copilot`` writes them to ``.github/skills``, which is one of the two
 locations VS Code searches by default — but only if ``chat.useAgentSkills`` is
@@ -263,11 +263,11 @@ workspace. ``github.copilot.chat.skillTool.enabled`` is a different,
 experimental switch and not the one that makes them visible.
 
 Its MCP entry goes to ``.vscode/mcp.json``, in one of the two shapes
-:ref:`the section below <installing-how-the-entry-names-this-server-per-client>`
+:ref:`the section below <installing-which-path-is-written>`
 sets out: VS Code is one of the two clients that resolve ``${workspaceFolder}``.
 
-A written entry is not a registered server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Finishing in the client
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The note above is one artefact over from the one every client install writes.
 Putting the entry on disk registers the server with nothing: a client that
@@ -359,10 +359,10 @@ finish. Where a session has the entry and still offers no ``typo3_`` tool,
 :ref:`checking that it came up <installing-checking-that-it-came-up>` separates
 the two halves: a server that answers there is not the missing piece.
 
-.. _installing-how-the-entry-names-this-server-per-client:
+.. _installing-which-path-is-written:
 
-How the entry names this server, per client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Which path is written
+~~~~~~~~~~~~~~~~~~~~~
 
 Three shapes, and which one a client gets is a property of that client. Where
 the project has this server as a Composer dependency, the entry names the path
@@ -485,8 +485,8 @@ that resolve ``${workspaceFolder}``:
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
-Which tools a client is offered
--------------------------------
+Which tools are offered
+-----------------------
 
 Every one of them, wherever the server was started. Some of what it knows is the
 core's own contribution process — the review rules, the Gerrit workflow, the

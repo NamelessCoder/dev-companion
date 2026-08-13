@@ -388,24 +388,28 @@ final class ToolAnswers
     /**
      * The same, short enough to head one answer among several.
      *
-     * The full sentence carries the kind, the version and the console's reason,
-     * which is what a page's head is for. Repeated over every call it would be
-     * longer than several of the answers under it, so what is left here is the
-     * one thing a reader is telling apart: which of the two roots, and whether
-     * its console answered.
+     * A heading is read in the contents list beside every other heading of the
+     * page, so it carries the one thing a reader is telling apart: which of the
+     * two roots. Where it sits, which version it declares and whether its
+     * console answered stand in the sentence above, once — written into every
+     * heading they were longer than several of the answers under them.
      */
     private static function shortly(): string
     {
         $root = Instance::describe()['root'] ?? null;
 
-        return $root === null
-            ? 'no installation'
-            : self::describeRoot((string) $root)
-                . ', whose console ' . (Typo3Cli::isAvailable() ? 'answers' : 'could not be reached');
+        return $root === null ? 'no installation' : self::root((string) $root)[0];
+    }
+
+    /** The same root, as the sentence that says what it is. */
+    private static function describeRoot(string $root): string
+    {
+        return self::root($root)[1];
     }
 
     /**
-     * A recorded root, named by what it is rather than by where it sits.
+     * A recorded root, named by what it is rather than by where it sits: what a
+     * heading calls it, and what a sentence says it is.
      *
      * The three this repository can produce are named as such — `bin/cli
      * tools:record` writes the fixture itself, `bin/cli checkouts:update` makes
@@ -421,32 +425,38 @@ final class ToolAnswers
      * Both sides are resolved first: a worktree reaches the checkouts through a
      * symlink, so the recording made in one would otherwise call this
      * repository's own checkout somebody's machine.
+     *
+     * @return array{0: string, 1: string}
      */
-    private static function describeRoot(string $root): string
+    private static function root(string $root): array
     {
         $root = (string) (realpath($root) ?: $root);
 
         $fixture = (string) realpath(Fixture::root());
         if ($fixture !== '' && $root === $fixture) {
-            return 'the installation this repository writes below .fixtures/';
+            return ['the fixture installation', 'the installation this repository writes below .fixtures/'];
         }
 
         $checkout = (string) realpath(CoreFixture::root());
         if ($checkout !== '' && $root === $checkout) {
-            return 'the core checkout this repository writes below .fixtures/';
+            return ['the fixture core checkout', 'the core checkout this repository writes below .fixtures/'];
         }
 
         $checkouts = (string) realpath(Checkouts::directory());
         if ($checkouts !== '' && str_starts_with($root, $checkouts)) {
-            return 'the ' . trim(substr($root, strlen($checkouts)), '/') . ' core checkout below .checkouts/';
+            $line = trim(substr($root, strlen($checkouts)), '/');
+
+            return ['the ' . $line . ' core checkout', 'the ' . $line . ' core checkout below .checkouts/'];
         }
 
         $environments = (string) realpath(Environments::directory());
         if ($environments !== '' && str_starts_with($root, $environments)) {
-            return 'the ' . strtoupper(basename($root)) . ' this repository makes below .environments/';
+            $name = strtoupper(basename($root));
+
+            return ['the ' . $name . ' environment', 'the ' . $name . ' this repository makes below .environments/'];
         }
 
-        return 'an installation outside this repository';
+        return ['an outside installation', 'an installation outside this repository'];
     }
 
     /**

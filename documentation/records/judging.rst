@@ -36,8 +36,8 @@ have closed and did not, which is the most valuable half of the corpus.
 Whether the self-criticism is accurate is not assessed, and cannot be: the
 session was there and the reader was not. Only the lever is assessed.
 
-Read the corpus before the card
--------------------------------
+The corpus first
+----------------
 
 .. code-block:: bash
 
@@ -56,8 +56,8 @@ old, was a session proposing the skill the other 34 kept describing. Every one
 of them had been judged alone or not at all, and nothing in the reading order
 said to look sideways.
 
-Where it reports no gap
------------------------
+Strengths
+---------
 
 Some feedback report what worked. The ladder below has no rung for them: every
 step names something missing, misplaced or misworded. So the question is asked
@@ -91,8 +91,10 @@ answer stays small. ``bin/cli feedback:list`` tells the two apart in one call.
           to a design decision, stopping at the first step supported by
           repository evidence.
 
-1. Gap — the answer is not here
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Gap
+~~~~~~
+
+**The answer is not here.**
 
 Two halves, told apart by what is missing rather than by what the feedback asks
 for.
@@ -145,8 +147,10 @@ regularly a routing failure, and one filed as ``tool-gap`` is regularly a rule
 that exists and never arrived. The ladder is walked from the observation, not
 from the front matter.
 
-2. Delivery — it is here and never reached the session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2. Delivery
+~~~~~~~~~~~
+
+**It is here and never reached the session.**
 
 **Evidence:** the rule exists, but it is not in the skill that was active, not
 in the ``instructions`` sent at initialize, and reachable only through a tool
@@ -157,16 +161,20 @@ nobody called.
 
 **Becomes:** placement — the rule moves to where the task actually passes.
 
-3. Routing — the right skill or tool exists and did not fire
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. Routing
+~~~~~~~~~~
+
+**The right skill or tool exists and did not fire.**
 
 **Evidence:** ``knowledge/task-intents.json``, the ``routing`` block of
 ``knowledge/server-scope.json``, and the skill's own trigger.
 
 **Becomes:** a routing entry, or a trigger the task shape actually matches.
 
-4. Wording — it was delivered and did not take
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4. Wording
+~~~~~~~~~~
+
+**It was delivered and did not take.**
 
 **Evidence:** the wording itself. Written as a recommendation where it needed to
 be a rule; buried below the part that answers the common case; ambiguous enough
@@ -175,8 +183,10 @@ that two readings are defensible.
 **Becomes:** a rewrite. This is the cheapest fix on the ladder and the one most
 often mistaken for step 1.
 
-5. Decision — everything worked as designed, and the design is the price
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5. Decision
+~~~~~~~~~~~
+
+**Everything worked as designed, and the design is the price.**
 
 **Evidence:** an entry in ``decisions/`` whose **Wrong if** this feedback
 satisfies. A feedback from practice *is* the event a **Wrong if** describes, and
@@ -211,8 +221,8 @@ changelog number, a deprecation, a version boundary. A feedback taken on trust
 becomes a knowledge entry written with the confidence of a reading and the
 substance of a guess, which is the one failure nothing downstream can detect.
 
-The answer names the gap, not the fix — where the fix is about TYPO3
---------------------------------------------------------------------
+The gap, not the fix
+--------------------
 
 A judgement ends at the diagnosis: which step of the ladder, on what evidence,
 and what is missing — not what the entry that fills it will say.
@@ -245,8 +255,10 @@ The answers
 
 Seven, and only five of them may be reached without asking.
 
-Taken on — *autonomous*
-~~~~~~~~~~~~~~~~~~~~~~~
+Taken on
+~~~~~~~~
+
+*Autonomous.*
 
 The feedback names something this server should be able to do and does not, and
 the evidence that it should is here. That is a decision, and the judgement makes
@@ -275,8 +287,10 @@ TYPO3, what the skill says, which of two shapes the practice actually has. That
 is the todo's first step, and it is research rather than a question for the
 maintainer.
 
-Closed on the spot — *autonomous*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Closed on the spot
+~~~~~~~~~~~~~~~~~~
+
+*Autonomous.*
 
 Only where there is nothing left to establish: the wording of a rule that is
 already there, moving one to where the task passes, a routing line onto a skill
@@ -290,16 +304,20 @@ Two things put a feedback on the other side of that line, and either is enough:
 * **Something about TYPO3 has to be looked up.** Then it is a todo, however
   small, because the run that judged it has read nothing but this repository.
 
-Already answered — *autonomous*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Already answered
+~~~~~~~~~~~~~~~~
+
+*Autonomous.*
 
 The feedback describes a version of this server that no longer exists. Re-run
 its query; where today's answer is correct, the feedback is answered and the
 commit says which query was run and what came back, so the judgement can be
 disagreed with.
 
-Queued — *autonomous*
-~~~~~~~~~~~~~~~~~~~~~
+Queued
+~~~~~~
+
+*Autonomous.*
 
 Something that already exists has to change, and it is too large for the spot:
 it touches code, a schema, a contract, or it needs a decision. Where the change
@@ -322,14 +340,18 @@ titled after the work, so a listing prints the two with no word in common.
 ``bin/cli todo:check`` reports the pair, ``R-FBK-014`` is why, and deleting the
 card is the whole of the repair.
 
-Trimmed — *autonomous*
-~~~~~~~~~~~~~~~~~~~~~~
+Trimmed
+~~~~~~~
+
+*Autonomous.*
 
 Part of the feedback is answered and part is not. The answered part goes, the
 rest stays open.
 
-Proposed — *needs an answer*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Proposed
+~~~~~~~~
+
+*Needs an answer.*
 
 Nothing on the ladder produced a lever worth pulling, or the cost is out of
 proportion to what it buys. That is a legitimate outcome and not one this
@@ -346,16 +368,18 @@ A feedback is discarded by nobody here. What is written instead is the proposal:
 which step of the ladder it reached, what evidence was found, what the change
 would cost, and why it is not recommended. It waits until it is answered.
 
-Contradicts a decision — *needs an answer*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Contradicts a decision
+~~~~~~~~~~~~~~~~~~~~~~
+
+*Needs an answer.*
 
 Step 5. The feedback is recorded against the decision it bears on, and the
 question goes up. What comes back is either a decision that stands with the cost
 now written into it, or one that is revised — and both are answers the feedback
 earned.
 
-Where the answer is a document
-------------------------------
+Answering with a document
+-------------------------
 
 The seven answers say what becomes of the feedback. What the judgement
 established still has to land, and three directories carry most of it:
@@ -390,8 +414,8 @@ The invariant is unchanged. A document written on the spot archives the
 feedback; one that is taken on leaves a todo serving it —
 `D-FBK-043 <../../decisions/feedback/fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md>`_.
 
-One at a time, and where the answer is written
-----------------------------------------------
+One at a time
+-------------
 
 Every open feedback has a card on the board, written by ``bin/cli todo:sync``,
 and ``bin/cli todo:next`` hands over one card like any other todo. A fresh card
@@ -413,8 +437,8 @@ A **skip** is the exception and stays out of both. It lasts one pass, is written
 down nowhere, and is not a state a feedback can be left in — a feedback that
 deserves a state gets one of the seven answers.
 
-The three states a feedback is in, and what holds each
-------------------------------------------------------
+The three states
+----------------
 
 A judgement does not close a feedback. It turns it into work, and the work is
 what closes it.
@@ -459,8 +483,8 @@ A feedback that **cannot** be judged is not closed either. The card moves to
 still serves the feedback — so ``todo:sync`` writes no second card, and no
 session is handed a question nobody can answer.
 
-What a todo may not repeat
---------------------------
+What the todo adds
+------------------
 
 A todo that serves a feedback does not restate it. It carries what the feedback
 does not: the answer — which step of the ladder, on what evidence — and the next

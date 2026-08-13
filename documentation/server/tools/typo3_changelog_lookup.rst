@@ -175,7 +175,7 @@ The answer carries exactly one of these sets of fields: ``query``,
 Answered
 --------
 
-Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-13 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -199,8 +199,8 @@ Called with:
         "query": "ext_tables.php"
     }
 
-From the 14.3 core checkout below .checkouts/, whose console could not be reached
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the 14.3 core checkout
+"""""""""""""""""""""""""""
 
 Text:
 
@@ -301,8 +301,8 @@ Data:
         "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
     }
 
-From the installation this repository writes below .fixtures/, whose console answers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the fixture installation
+"""""""""""""""""""""""""""""
 
 Text:
 
@@ -416,8 +416,8 @@ Called with:
         "tag": "FullyScanned"
     }
 
-From the 14.3 core checkout below .checkouts/, whose console could not be reached
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the 14.3 core checkout
+"""""""""""""""""""""""""""
 
 Text:
 
@@ -885,8 +885,8 @@ Data:
         "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
     }
 
-From the installation this repository writes below .fixtures/, whose console answers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the fixture installation
+"""""""""""""""""""""""""""""
 
 Text:
 
@@ -1367,8 +1367,8 @@ Called with:
         "query": "quantumflux"
     }
 
-From the 14.3 core checkout below .checkouts/, whose console could not be reached
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the 14.3 core checkout
+"""""""""""""""""""""""""""
 
 Text:
 
@@ -1454,8 +1454,8 @@ Data:
         ]
     }
 
-From the installation this repository writes below .fixtures/, whose console answers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the fixture installation
+"""""""""""""""""""""""""""""
 
 Text:
 

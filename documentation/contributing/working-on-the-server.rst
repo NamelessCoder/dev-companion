@@ -11,8 +11,8 @@ in `AGENTS.md <../../AGENTS.md>`_; these are the commands they rest on.
           classes to four answer sources, while the separate repository CLI runs
           upkeep commands over knowledge, evidence and work records.
 
-Keeping the repository in order
--------------------------------
+The upkeep CLI
+--------------
 
 Everything this repository is kept in order by is one command — the requirement
 and decision files, the forward-run scenarios, the hint corpus, the bundled

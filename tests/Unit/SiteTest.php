@@ -305,6 +305,59 @@ final class SiteTest extends TestCase
         self::assertSame([], $sentences);
     }
 
+    /**
+     * `D-DOC-032`: what a contents list shows for a section is the heading
+     * itself, there being no second name a section can carry, so the heading is
+     * a label.
+     *
+     * Five words where a page label gets four: a section may state a claim, and
+     * the ones this corpus writes are of the form *judged, not executed*.
+     *
+     * `server/tools/` is not read. Those pages are written by `ToolSurface` and
+     * `ToolAnswers` and held by `bin/cli tools:check`, and what heads a recorded
+     * answer there is the case it is of.
+     */
+    #[Test]
+    public function everySectionIsHeadedByALabel(): void
+    {
+        $source = Paths::root() . '/' . Site::SOURCE;
+        $pages = Finder::create()->files()->in($source)->notPath('server/tools')->name('*.rst')->sortByName();
+
+        $sentences = [];
+        foreach ($pages as $page) {
+            foreach (self::sections((string) file_get_contents($page->getPathname())) as $heading) {
+                if (count(preg_split('/\s+/', $heading) ?: []) > 5) {
+                    $sentences[] = $page->getRelativePathname() . ' has a section headed ' . $heading;
+                }
+            }
+        }
+
+        self::assertSame([], $sentences);
+    }
+
+    /**
+     * Every heading below the page's own, which is the underline that says
+     * which level it is — `Rst::LEVELS` past the first.
+     *
+     * Both lines start at the margin, which is what tells a heading from the
+     * front matter of a markdown example indented into a code block.
+     *
+     * @return list<string>
+     */
+    private static function sections(string $rst): array
+    {
+        preg_match_all('/^(\S.*)\n(-+|~+|"+)$/m', $rst, $found, PREG_SET_ORDER);
+
+        $headings = [];
+        foreach ($found as [, $text, $underline]) {
+            if (mb_strlen($underline) >= mb_strlen($text)) {
+                $headings[] = trim(str_replace('`', '', $text));
+            }
+        }
+
+        return $headings;
+    }
+
     /** What a page is shown as in a menu: its navigation title, or its heading. */
     private static function label(string $rst): string
     {

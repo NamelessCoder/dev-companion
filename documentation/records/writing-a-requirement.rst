@@ -61,8 +61,8 @@ Where a feedback is the route, the entry is added when it is worked off rather
 than when it arrives: a feedback nobody has judged yet is a feedback, not a
 requirement.
 
-What an entry looks like
-------------------------
+What an entry holds
+-------------------
 
 .. code-block:: markdown
 

@@ -60,8 +60,8 @@ regeneration.
 An id is never reused, and an entry is never deleted: a decision that turned out
 wrong is the one most worth reading, and it is revoked in place.
 
-Moving one to another number
-----------------------------
+Renumbering one
+---------------
 
 .. code-block:: bash
 
@@ -89,8 +89,8 @@ past the highest rather than the first gap. The generated listings are put back
 in order where they already carried the entry, because the number is what a
 group sorts on.
 
-What an entry looks like
-------------------------
+What an entry holds
+-------------------
 
 .. code-block:: markdown
 
@@ -156,8 +156,8 @@ What an entry looks like
   something the suite keeps. Every test named anywhere in an entry has to exist
   — ``DecisionsTest::everyTestADecisionNamesExists``.
 
-What a later session adds
--------------------------
+The dated sections
+------------------
 
 A dated section at the foot and nothing else: **Confirmed on ``<date>``** where
 somebody went back and it held, **Revoked on ``<date>``** where it did not, and
@@ -168,8 +168,8 @@ rather than bullets, because each is an account of one reading.
 names one decision, only a revoked entry may carry it, and the generated listing
 shows it, so nobody has to open a dead entry to find the live one.
 
-A statement that has stopped being true is revoked
---------------------------------------------------
+Revoking a statement
+--------------------
 
 Revoking is not only for an entry that turned out wrong. An entry whose
 **statement** no longer describes this server is revoked as well, and a new one
@@ -198,8 +198,8 @@ reading. A decision about the shape of an answer, or about which source a
 question is put to, is as true after somebody goes back to it as before, and
 that is the ordinary case.
 
-What rests on a decision
-------------------------
+What rests on one
+-----------------
 
 A requirement says which decisions it stands on, in its own front matter —
 ``restsOn: [D-FBK-005]``. That is the one crossing neither directory can see on

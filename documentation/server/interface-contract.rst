@@ -40,8 +40,8 @@ local to one server's catalogue. A URI scheme is not: it is the one namespace in
 MCP that two servers in the same client share whether they meant to or not. The
 namespace the draft leaves unnamed is the one that actually collides.
 
-What it would collide with here
--------------------------------
+Where it collides
+-----------------
 
 This server serves four shapes under ``typo3://``, and the first two predate the
 draft:
@@ -85,8 +85,8 @@ package declares ``typo3/dev-companion`` in its ``composer.json`` and is
 published nowhere. The ``typo3`` vendor on Packagist belongs to the TYPO3
 Association, and no claim is made on it here.
 
-What this server would change if it were adopted
-------------------------------------------------
+What adoption would cost
+------------------------
 
 * **``typo3://`` reserved as a whole.** Both trees move to a scheme of this
   server's own: a rename in ``ResourceHandler``, ``Factory``, ``Result\Prose``,

@@ -16,8 +16,8 @@ and it has a page per tool because a tool has a schema and a recorded answer.
 This is one page, because what a resource obliges is the same for every entry
 and the entries themselves are enumerated live under ``typo3://guides``.
 
-Picked out of a list, not called mid-task
------------------------------------------
+Picked, not called
+------------------
 
 **A resource is picked by the host application or by the user, where a tool is
 called by the model in the middle of a task.** That is the protocol's own
@@ -70,8 +70,8 @@ names fails the suite rather than reaching an extension author as core-only.
 client reads matches the tools it has; the resources stay. Excluding a tool
 takes away a call, not a document.
 
-Why a skill's URI ends in its own file name
--------------------------------------------
+The skill URI
+-------------
 
 **A skill is a directory, and what is picked has to be the whole of what was
 picked.** The body is short routing, and every one of them opens by sending the
@@ -121,8 +121,8 @@ Two fields the spec has stay absent, and the first is where the confusion is:
   ``composer.lock``, which has ``audience`` and ``priority`` alone. It is
   recorded as unavailable rather than faked through ``_meta``.
 
-Why this page is not generated
-------------------------------
+Not generated
+-------------
 
 ``bin/cli tools:index`` writes the tool reference because each page restates a
 description and two schemas that a class declares, and a hand copy stops

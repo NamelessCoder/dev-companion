@@ -15,8 +15,8 @@ arrived in the four commits since. A session that opens by editing has tested
 none of that, and it will find out in the one place where it is expensive —
 after the change is written.
 
-What is read before the first change
-------------------------------------
+Before the first change
+-----------------------
 
 * **What it serves.** The ``Serves:`` line names a requirement, a decision, a
   feedback, a directory, and that is where the todo's reason lives — the
@@ -34,8 +34,8 @@ What is read before the first change
   three weeks ago is answered in a file, and re-deciding it is how two entries
   end up saying different things about one subject.
 
-The step is judged, not executed
---------------------------------
+Judged, not executed
+--------------------
 
 The reading exists to be acted on. When it says the todo is wrong — the step is
 already done, is impossible here, is two steps, or serves something that no
@@ -50,8 +50,8 @@ describes the repository, and leaves whoever queued the todo unable to disagree
 with the substitution — which is the only reason the file is prose in the first
 place.
 
-A question the work turns on is settled, not recalled
------------------------------------------------------
+Settled, not recalled
+---------------------
 
 What is produced here is acted on without being checked: a statement in
 ``knowledge/`` reaches a session in somebody else's project, a skill is a file
@@ -90,8 +90,8 @@ it is recorded as one: the todo is trimmed to the part that is still open, the
 requirement says ``not guarded``, the decision says what the evidence would have
 to be. All three are legitimate states this repository already carries.
 
-What has no source here is asked
---------------------------------
+Asked, not guessed
+------------------
 
 Not every question has a source. A question about the code, the version, a
 tool's behaviour or the current practice does, and finding it is the work above.
@@ -147,8 +147,8 @@ the kind of answer somebody will want the reason for later — because an answer
 that lives only in the conversation is gone when the session ends, and so is a
 deferral nobody wrote down.
 
-What the commit carries, and what the file says afterwards
-----------------------------------------------------------
+What the commit leaves
+----------------------
 
 What was read, and what it showed — not as a report of effort, but because the
 next session's cheapest source is a commit that says where the answer came from.
@@ -180,8 +180,8 @@ and ``bin/cli todo:next`` prints the one that applies:
 From then on the commit is the only thing that remembers why the step was the
 one taken.
 
-What none of this holds
------------------------
+What nothing holds
+------------------
 
 Nothing on this page can be checked. A todo worked from the checkouts and the
 manuals is shaped exactly like one worked from memory — same diff, same message,

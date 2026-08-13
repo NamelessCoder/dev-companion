@@ -42,8 +42,8 @@ anybody editing a todo to say so. What is owed a feedback or an unresolved entry
 is that judgement — a todo that takes it on, or the sentence saying why it stays
 as it is — not the work itself, which is what the queue is for.
 
-Why the queue comes first
--------------------------
+The queue comes first
+---------------------
 
 For a while it did not, and the effect is worth writing down. A todo that recurs
 every session is due for as long as anything is unjudged, ``next`` asked the
@@ -92,8 +92,8 @@ What ``next`` can never do is run a feedback's own query against the server as
 it is now. A feedback is evidence about a version of this server that may no
 longer exist, and that reading is the session's.
 
-What happens to the todo it printed
------------------------------------
+Working the todo
+----------------
 
 Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
@@ -114,8 +114,8 @@ What the commit that finishes, trims or puts back a todo leaves behind is the
 last section of :doc:`working-a-todo`; how a todo is written is
 `todo/readme.md <../../todo/readme.md>`_ itself.
 
-Asking a session to file its own feedback
------------------------------------------
+The debrief prompt
+------------------
 
 A session in a client this repository can read leaves a transcript, and which
 skills activated and which tools were called are evidence in it. A session in
@@ -266,8 +266,8 @@ One feedback per commit where possible. When one change closes several, archive
 all of them in that commit — one call, since they are one commit — and mention
 them in the commit body.
 
-Why the archive is kept
------------------------
+The archive
+-----------
 
 A feedback is deleted nowhere. What it holds is a session's report about this
 server — which skill activated, which calls the task actually needed, what it
@@ -330,8 +330,8 @@ what produced an entry. How each one is written has a page of its own —
   and which of them a judging run may write rather than queue, is
   :doc:`judging`.
 
-What nothing fails on
----------------------
+Unresolved entries
+------------------
 
 The three states that mean unfinished are legitimate — a principle no test can
 hold and a decision nothing has come back about are not defects — so no check

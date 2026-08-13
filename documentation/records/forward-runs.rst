@@ -135,8 +135,8 @@ For a ``gap`` review, do not re-file the part that is already written down — i
 **Status today** line names the requirement. File what the task needed beyond
 it.
 
-When a run stops without an error
----------------------------------
+A run that hangs
+----------------
 
 Treat it as a defect in this server until something else is proven. A client
 waiting on a tool call that will never return looks exactly like a client

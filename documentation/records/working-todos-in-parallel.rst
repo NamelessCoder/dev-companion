@@ -18,8 +18,8 @@ about one file, and it is not worth doing for one.
           carries each session's unfinished work; completed branches return one
           at a time through rebase, checks and a fast-forward merge.
 
-What is everybody's and what is one session's
----------------------------------------------
+Main and the branch
+-------------------
 
 **``main`` carries the state, the branch carries the work.**
 
@@ -168,8 +168,8 @@ committed on. Standing on none — the wrong branch, a claim that was not on
 of those it is and stops. Where it refuses, that is the end of the session and
 not a cue to find something else to do.
 
-What the session does with it
------------------------------
+What the session does
+---------------------
 
 Nothing about it is special. It reads what the todo serves, settles what the
 step turns on, and leaves the file true — all of :doc:`working-a-todo`, which
@@ -211,8 +211,8 @@ there:
   in two accounts that could not both be the other. Name the feedback, the
   requirement or the decision instead: those survive whatever lands beside them.
 
-A question that arrives mid-work
---------------------------------
+A question mid-work
+-------------------
 
 A todo that turns out to need an answer nobody here can give is the normal case,
 not the exception, and a session working alone asks and waits. One of several

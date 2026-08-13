@@ -69,7 +69,7 @@ The answer carries exactly one of these sets of fields: ``matchCount``,
 Answered
 --------
 
-Recorded on 2026-08-12 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-13 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -91,8 +91,8 @@ Called with:
 
     {}
 
-From the 14.3 core checkout below .checkouts/, whose console could not be reached
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the 14.3 core checkout
+"""""""""""""""""""""""""""
 
 Text:
 
@@ -138,8 +138,8 @@ Data:
         "answeredBy": "packages"
     }
 
-From the installation this repository writes below .fixtures/, whose console answers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+From the fixture installation
+"""""""""""""""""""""""""""""
 
 Text:
 

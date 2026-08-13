@@ -14,8 +14,8 @@ nothing reports that it has fallen behind the server it came from and no release
 of this server corrects it. Whatever it states, it states permanently, in a
 context that is paid for by the token, about an installation it cannot see.
 
-Before there is a skill
------------------------
+Earning a skill
+---------------
 
 A domain earns one when a scenario or a recorded session shows that the tools
 and skills that exist **fail to carry the task** — not when the subject is large
@@ -38,8 +38,8 @@ two skills both believe they own. The skill is written around that and around
 nothing else. "Less is more" is not a preference here — it is an instruction
 every session in another project loads before it does anything.
 
-Before it is written
---------------------
+Research first
+--------------
 
 A skill is written against the current state of the practice, never from recall.
 What that costs is one session's reading; what recall costs is a file that
@@ -66,8 +66,8 @@ tool already owns, and where the practice moves fast enough that only an
 instruction to check survives being written down. Written from recall, a skill
 invents surfaces that do not exist and misses the one that decides the case.
 
-The draft is read by somebody before it is published
-----------------------------------------------------
+Review before publishing
+------------------------
 
 A skill is not finished when its tests pass. Those hold its shape — the name,
 the base, the references, that it keeps no second copy of what a tool owns — and
@@ -105,8 +105,8 @@ to a client, and the key carries this server's name because the same paragraph
 asks for one unique enough not to collide with another tool writing the same
 map.
 
-The rules, and what holds each one
-----------------------------------
+The rules
+---------
 
 * It is filed under the name it calls itself, with a description a client can
   route on — ``SkillTest::everySkillIsPublishedUnderTheNameItCallsItself``
@@ -309,8 +309,8 @@ and nothing reports that they are older than the server;
 `todo/reference/ <../../todo/reference/>`_ says which checkout plays which
 environment on this machine and how the installer is reached there.
 
-What none of this holds
------------------------
+What nothing holds
+------------------
 
 Three of the steps above are the author's and nothing reads them off a file:
 that a domain earned a skill at all, that the practice was researched before it

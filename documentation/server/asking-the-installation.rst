@@ -39,8 +39,8 @@ set of class names, or a platform check failing on a PHP this machine does not
 have, would take the whole MCP session down instead of one answer; a subprocess
 brings its own interpreter and fails as an exit code.
 
-How the probe gets there
-------------------------
+The probe
+---------
 
 `src/Installation/probe.php <../../src/Installation/probe.php>`_ is read as
 text, never included. ``Typo3Runtime`` strips its opening tag, writes the
@@ -97,8 +97,8 @@ stopped", starts it, and asks again must get the better answer in the same
 session — the same rule ``Typo3Cli::resolve()`` and ``Instance::describe()``
 follow.
 
-What an answer owes the caller
-------------------------------
+What an answer owes
+-------------------
 
 Every answer says which source it came from, in one vocabulary: ``answeredBy``
 is ``installation`` when the installation itself answered and ``packages`` when
@@ -114,8 +114,8 @@ casualty of the degradation. ``typo3_extension_describe`` carries those in
 ``notReadStatically`` and names them in its text; anything else that parses a
 declaration file owes its callers the same distinction.
 
-Checking it against a real installation
----------------------------------------
+Checking it by hand
+-------------------
 
 The suite cannot boot TYPO3 — this repository has no core and never will, so
 ``Typo3RuntimeTest`` holds everything around the boot: that the payload reaches

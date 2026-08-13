@@ -578,6 +578,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### documentation
 
+- [`D-DOC-032`][D-DOC-032] — A section heading is the label a contents list shows · 2026-08-13
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
@@ -605,6 +606,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-032]: documentation/doc-032-a-section-heading-is-the-label-a-contents-list-shows.md
 [D-DOC-024]: documentation/doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
 [D-DOC-025]: documentation/doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-026]: documentation/doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md

@@ -12,6 +12,9 @@ are agreeing to when it does.
 * :doc:`checking-it-answers` — the ladder from a written entry to a session that
   really has the tools, and what an answer says when the installation could not
   be reached.
+* :doc:`working-with-it` — what changes about your side of the conversation once
+  it runs, and the few places where a sentence of yours decides how good the
+  answer is.
 
 It is a local subprocess, started by the client over stdio, and it reads. It
 writes nothing into the TYPO3 installation it is pointed at — the one exception
@@ -32,3 +35,4 @@ What the server can then be asked is :doc:`the server <../server/index>`.
 
     installing
     checking-it-answers
+    working-with-it

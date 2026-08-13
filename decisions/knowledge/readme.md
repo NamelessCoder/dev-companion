@@ -7,6 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
@@ -71,6 +72,7 @@ one is added.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-071]: knw-071-proving-what-a-rendering-change-renders-is-a-procedure-this-server-carries.md
 [D-KNW-070]: knw-070-backend-routing-internals-are-a-gap-this-server-owns.md
 [D-KNW-066]: knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md

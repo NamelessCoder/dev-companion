@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-12-092633-no-recipe-for-rendering-a-bodytext-snippet.md
 **Priority:** normal
-**Branch:** todo/no-recipe-for-rendering-a-bodytext-snippet
-**Claimed:** 2026-08-13
 
 Judged on 2026-08-14 as step 1a landing as a document — `D-KNW-071` carries the
 evidence, the boundary and what the priority rests on. Write

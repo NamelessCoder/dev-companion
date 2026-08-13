@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-12-092545-a-german-language-review-request-activated-no.md
 **Priority:** normal
+**Branch:** todo/name-the-patch-skills-in-the-change-answer
+**Claimed:** 2026-08-13
 
 Judged as `D-SKL-038`: step 2, delivery. The skill and the order it holds exist
 and reached nothing, and the one call the session did make is the answer that

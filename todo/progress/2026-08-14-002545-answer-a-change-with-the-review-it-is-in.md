@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-214644-typo3-gerrit-lookup-returns-no-review-comments.md
 **Priority:** normal
+**Branch:** todo/answer-a-change-with-the-review-it-is-in
+**Claimed:** 2026-08-13
 
 Judged as `D-ANS-079`: step 1b, the shape is missing. The review skill routes
 its unanswered-comment surface to `typo3_gerrit_lookup`, the answer carries

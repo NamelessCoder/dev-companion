@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-12-092654-the-forge-answer-s-reviews-array-exposed-a.md
 **Priority:** normal
+**Branch:** todo/the-forge-answer-s-reviews-array-exposed-a
+**Claimed:** 2026-08-13
 
 Judged on 2026-08-14 as step 2 of the ladder, delivery: the review server
 returns the backport to the query `typo3_gerrit_lookup` already runs, and it

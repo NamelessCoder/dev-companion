@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-12-092607-nothing-answers-whether-a-changed-frontend.md
 **Priority:** normal
+**Branch:** todo/read-what-the-core-files-as-breaking-with-no
+**Claimed:** 2026-08-13
 
 Sweep `.checkouts/main`, `14.3`, `13.4` and `12.4` for Breaking entries that move
 no PHP member — a changed rendered frontend markup for unchanged content, a

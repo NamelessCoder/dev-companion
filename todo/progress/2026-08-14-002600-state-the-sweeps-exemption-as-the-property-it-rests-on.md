@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-11-055337-base-md-s-deprecation-sweep-is-owed-by-the.md
 **Priority:** normal
+**Branch:** todo/state-the-sweeps-exemption-as-the-property-it-rests-on
+**Claimed:** 2026-08-13
 
 `D-SKL-037` is the judgement, ladder step 4: step 5's exemption in
 `skills/base.md` is written as three examples — a triage, a reproduction, a

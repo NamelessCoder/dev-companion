@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-214708-the-e2e-prepare-description-talks-a-session.md
 **Priority:** normal
+**Branch:** todo/the-e2e-prepare-entry-states-the-price-of-a
+**Claimed:** 2026-08-13
 
 Judged step 4, wording, against `D-KNW-068`, whose **Since then** carries the
 reading. Rewrite the `e2e-prepare` `whenToUse` in

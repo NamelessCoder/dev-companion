@@ -2,14 +2,12 @@
 
 **Serves:** documentation/server/tools/
 **Priority:** low
-**Branch:** todo/price-generating-the-derived-half-of-a-tool-page
-**Claimed:** 2026-08-13
 **Waiting on:** whether the derived half stays committed. The reading is done
     and the measurement is below, so what is left is a want rather than a fact:
     whether 9,011 lines nobody edits are worth the diff they produce. Put to the
     maintainer on 2026-08-14 with three answers priced.
 
-    **Keep it, and delete this card.** The lines cost nothing to carry.
+**Keep it, and delete this card.** The lines cost nothing to carry.
     `bin/cli tools:index` rewrites them in one command, and
     `ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares` runs in `composer ci`,
     so a session that forgets is told before it commits rather than after.

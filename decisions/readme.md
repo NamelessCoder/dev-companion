@@ -232,6 +232,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14
+- [`D-KNW-076`][D-KNW-076] — What a new backend label costs before it resolves is a gap this server owns · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
@@ -300,6 +301,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-073]: knowledge/knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md
 [D-KNW-074]: knowledge/knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-KNW-075]: knowledge/knw-075-how-fluid-resolves-an-object-path-is-a-gap-this-server-owns.md
+[D-KNW-076]: knowledge/knw-076-what-a-new-backend-label-costs-before-it-resolves-is-a-gap-this-server-owns.md
 [D-KNW-070]: knowledge/knw-070-backend-routing-internals-are-a-gap-this-server-owns.md
 [D-KNW-066]: knowledge/knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knowledge/knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md

@@ -592,6 +592,70 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * `D-KNW-075`. The reported query was written in the mechanism's words and
+     * reached nothing, while what a session is actually holding is an error
+     * naming the ViewHelper and not the method that produced the value, so both
+     * phrasings are asserted here.
+     *
+     * The binding is the half that decision predicted wrong. Read by rendering
+     * the case against `.checkouts/12.4`, `13.4` and `14.3`, whose Fluid is
+     * `main`'s to the file: a `hasItems()` beside a public `$items` renders
+     * `{obj.items}` as `1` on all of them, `<f:for>` raises the quoted message
+     * on all of them where the boolean is true, and only the strict processor
+     * raises it for a false. On 12 the compiled template calls `renderStatic()`
+     * and drops the check with it, which is why the same page throws once and
+     * then renders nothing.
+     */
+    #[Test]
+    public function anObjectPathIsAnsweredWithTheGetterThatComesBeforeTheProperty(): void
+    {
+        foreach ([
+            'Fluid object accessor resolution getter isser hasser method before public property',
+            'f:for each argument is of type boolean error',
+            'hasItems method shadows the public items property in a Fluid template',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('fluid-object-access', $ids, $task);
+        }
+
+        $text = self::statementsOf('fluid-object-access');
+
+        // The order, and the two consequences that are what the statement is
+        // for: the method nothing reaches, and the property it hides.
+        self::assertStringContainsString('getFoo(), then isFoo(), then hasFoo(), and the public property foo last', $text);
+        self::assertStringContainsString('never for the hasItems() somebody wrote', $text);
+        self::assertStringContainsString('getHasMorePages()', $text);
+        self::assertStringContainsString('makes {obj.items} the boolean', $text);
+        self::assertStringContainsString('no has<Property>() or is<Property>()', $text);
+
+        $on = static fn(int $major): string => implode("\n", array_column(
+            (array) Hints::byId('fluid-object-access', $major)['hints'],
+            'text',
+        ));
+
+        // The container branch is the one instance of the order the corpus
+        // already stated, and it arrived with 13.
+        self::assertStringContainsString('PSR-11 container is asked ahead', $on(13));
+        self::assertStringNotContainsString('PSR-11', $on(12));
+
+        foreach ([12, 13, 14] as $major) {
+            self::assertStringContainsString('is of type "boolean"', $on($major), 'not stated for ' . $major);
+        }
+        self::assertStringContainsString('for a true and for a false alike', $on(14));
+        self::assertStringContainsString('Where the boolean is false, nothing is raised at all', $on(12));
+        self::assertStringNotContainsString('nothing is raised at all', $on(14));
+        self::assertStringContainsString('skips validateArguments()', $on(12));
+        self::assertStringNotContainsString('skips validateArguments()', $on(13));
+
+        // The neighbour the same reading corrected: the lenient check rejects a
+        // clear mismatch as well, and what walks through it is every empty
+        // value rather than every value.
+        $viewHelpers = implode("\n", array_column(Hints::byId('fluid-viewhelpers', 13)['hints'], 'text'));
+        self::assertStringContainsString('every empty value passes whatever the type says', $viewHelpers);
+        self::assertStringNotContainsString('is passed to the ViewHelper unchanged', $viewHelpers);
+    }
+
     #[Test]
     public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
     {

@@ -54,7 +54,7 @@
       "Only a few prefixes are available without declaring them; they are registered globally through the Configuration/Fluid/Namespaces.php of each package, so which ones depends on what is installed. typo3_fluid_namespace_list answers it for your installation.",
       "Every other namespace is declared per template, including the backend one: xmlns:be=\"http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers\" on the root element, together with data-namespace-typo3-fluid=\"true\" so the declaration is stripped from the rendered output.",
       "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory.",
-      "What a template may and may not do is fluid-layouts-sections, and where an expression goes wrong is fluid-conditions-and-arrays."
+      "What a template may and may not do is fluid-layouts-sections, where an expression goes wrong is fluid-conditions-and-arrays, and what {obj.foo} asks the object is fluid-object-access."
     ]
   },
   {
@@ -133,6 +133,55 @@
     ]
   },
   {
+    "id": "fluid-object-access",
+    "title": "How Fluid Resolves an Object Path, and the Method That Shadows a Property",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "object accessor",
+      "object path",
+      "getByPath",
+      "StandardVariableProvider",
+      "getter before the property",
+      "public property",
+      "is of type \"boolean\"",
+      "was registered with type \"array\"",
+      "f:for each",
+      "the template gets a boolean",
+      "shadows the property",
+      "hasItems",
+      "DTO rendered in a template",
+      "naming a method on a DTO",
+      "the property is never read"
+    ],
+    "hints": [
+      "A path segment is resolved by StandardVariableProvider::getByPath(), which takes the first thing of that name it finds: an array key or an ArrayAccess offset, then getFoo(), then isFoo(), then hasFoo(), and the public property foo last. A segment that matches none of them makes the whole path null, which renders as nothing.",
+      {
+        "text": "A PSR-11 container is asked ahead of all of them, has() and then get() for the segment. preview-record-variable is that branch for the one variable a backend preview template is handed.",
+        "since": 13
+      },
+      "So a method is reachable under the name of the property it looks like, never under its own. {obj.hasItems} makes Fluid look for getHasItems(), isHasItems(), hasHasItems() and a hasItems property, and never for the hasItems() somebody wrote. The core writes the convention the other way round: SlidingWindowPagination declares getHasMorePages(), and the redirects pagination partial reads it as {pagination.hasMorePages}.",
+      "The same order lets a boolean shadow the array it is about. A hasItems() beside a public array $items makes {obj.items} the boolean, rendered as 1 or as nothing, and the array cannot be reached from the template at all. A DTO that templates read therefore gets no has<Property>() or is<Property>() for a property of that name: write a count as get<Property>Count(), and keep a boolean name for something no property is called.",
+      {
+        "text": "<f:for each=\"{obj.items}\"> then stops the render, for a true and for a false alike: \"The argument \"each\" was registered with type \"array\", but is of type \"boolean\"\". What that names is the ViewHelper and never the method the value came from.",
+        "since": 14
+      },
+      {
+        "text": "<f:for each=\"{obj.items}\"> then stops the render where the boolean is true: \"The argument \"each\" was registered with type \"array\", but is of type \"boolean\"\". What that names is the ViewHelper and never the method the value came from.",
+        "until": 13
+      },
+      {
+        "text": "Where the boolean is false, nothing is raised at all. The lenient check passes every empty value, so the loop is skipped over it, and what is left in its place is a PHP warning — foreach() argument must be of type array|object — which the shipped exceptionalErrors does not turn into an exception.",
+        "until": 13
+      },
+      {
+        "text": "And the message survives only as long as the template is uncompiled. ForViewHelper is compiled into a direct renderStatic() call, which skips validateArguments() altogether, so the exception appears on the first render and a warm fluid_template cache renders the loop as nothing from then on.",
+        "until": 12
+      }
+    ]
+  },
+  {
     "id": "fluid-viewhelpers",
     "title": "ViewHelpers",
     "domains": [
@@ -159,7 +208,7 @@
         "since": 14
       },
       {
-        "text": "A value that does not match the type declared in registerArgument() is passed to the ViewHelper unchanged. An empty string reaches an array-typed argument as a string, and what happens next is that ViewHelper's own cast rather than an error — so the render succeeds and the output is wrong.",
+        "text": "A value that does not match the type declared in registerArgument() stops the render here too — \"The argument \"x\" was registered with type \"array\", but is of type \"string\"\" — and the lenient check this branch runs has one hole in it: every empty value passes whatever the type says. An empty string therefore reaches an array-typed argument as a string, and what happens next is that ViewHelper's own cast rather than an error — so the render succeeds and the output is wrong.",
         "until": 13
       },
       "ViewHelpers are covered by functional tests under Tests/Functional/ViewHelpers/, not unit tests: a ViewHelper needs a rendering context, so a unit test asserts the wrong thing.",

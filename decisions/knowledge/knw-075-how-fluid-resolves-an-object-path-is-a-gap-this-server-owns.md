@@ -1,7 +1,7 @@
 ---
 id: D-KNW-075
 date: 2026-08-14
-status: open
+status: confirmed
 ---
 
 # D-KNW-075 — How Fluid resolves an object path is a gap this server owns
@@ -105,3 +105,28 @@ the ViewHelper.
   as a shadowed property. The half that mattered is then the unreachable
   `hasItems()` and not the shadowing, and the statement leads with the wrong
   one.
+
+## Confirmed on 2026-08-14
+
+The gap held and is filled. `fluid-object-access` states the order and both
+consequences, and the query this feedback missed on now reaches it alone.
+
+The first **Wrong if** fired in part. The message the feedback quotes is not the
+strict processor's alone: 12.4 and 13.4 raise an `\InvalidArgumentException`
+carrying the same text, from `AbstractViewHelper::validateArguments()`. So what
+the priority rested on is wrong as it was written — both maintained lines do
+name the ViewHelper. The statement carries a binding all the same, along a line
+this entry did not predict. A `false` passes the lenient check, because every
+empty value does, so the loop is skipped and a PHP warning is all that is left.
+And on 12 the compiled template calls `renderStatic()` directly and skips the
+check with it, which is why the same page throws on its first render and renders
+nothing after it.
+
+Read by rendering the case rather than off the source: a `hasItems()` beside a
+public `$items` renders `{obj.items}` as `1` on `.checkouts/12.4`, `13.4` and
+`14.3`, and `main` ships the same Fluid as `14.3` to the file.
+
+One statement beside it was wrong and is corrected in the same commit.
+`fluid-viewhelpers` had an unmatched argument value "passed to the ViewHelper
+unchanged" `until: 13`, which holds for the empty values the check lets through
+and for nothing else.

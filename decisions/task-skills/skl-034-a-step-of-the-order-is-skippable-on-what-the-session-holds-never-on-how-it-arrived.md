@@ -101,3 +101,20 @@ direction.
 
 - `SkillTest::theWorkflowStepRunsInEverySession`
 - `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
+
+## Since then
+
+**2026-08-14.** The third **Assumed** fell. `feedback/2026-08-11-055337` is a
+session skipping the sweep on a change that touches TYPO3 API, and it was on the
+board 52 minutes before this entry was committed — so the absence of sightings
+was an absence of readings.
+
+What it shows is not the third **Wrong if** as that is written. It imagined a
+session reading the condition off the skill it activated; this one read the
+step's other paragraph, which exempts a task that produces no change and lists
+three examples its own task is not one of. The line between the two conditions
+therefore holds — what the session held was what its task produces, not how it
+arrived — and what does not hold is the last **Decided**: step 5 carries two
+tests for one skip, and a review of a patch answers them differently. That
+reading, and the work it queued, is
+[`D-SKL-037`](skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md).

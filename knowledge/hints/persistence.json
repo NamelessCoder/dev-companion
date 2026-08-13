@@ -46,6 +46,10 @@
         "text": "PageRepository::enableFields() is deprecated, and getDefaultConstraints() is what replaces it.",
         "since": 13,
         "until": 13
+      },
+      {
+        "text": "All of this is about which rows come back. What the object built from one of them is shaped like — and why $row['hidden'] is absent on it rather than false — is record-system-properties.",
+        "since": 13
       }
     ]
   }

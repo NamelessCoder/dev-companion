@@ -258,6 +258,7 @@ Text:
     - content-element-shape — What a Content Element Owns (PHP)
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+    - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
@@ -751,6 +752,11 @@ Data:
             {
                 "id": "tca-datetime-storage",
                 "title": "What a Datetime Column Stores, and When It Is Null",
+                "category": "PHP"
+            },
+            {
+                "id": "record-system-properties",
+                "title": "What a Record Object Carries, and What Moved Into _system",
                 "category": "PHP"
             },
             {
@@ -1434,6 +1440,7 @@ Text:
     - content-element-shape — What a Content Element Owns (PHP)
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+    - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
@@ -1840,6 +1847,11 @@ Data:
             {
                 "id": "tca-datetime-storage",
                 "title": "What a Datetime Column Stores, and When It Is Null",
+                "category": "PHP"
+            },
+            {
+                "id": "record-system-properties",
+                "title": "What a Record Object Carries, and What Moved Into _system",
                 "category": "PHP"
             },
             {

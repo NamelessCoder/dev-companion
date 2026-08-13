@@ -850,6 +850,73 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-074`. The corpus answered which rows a query returns and stopped
+     * there, and the layer after that one fails silently: an enable field
+     * `RecordFactory` moved into `SystemProperties` is absent from the row
+     * rather than false, and an absent key reads as permitted.
+     *
+     * Read off `.checkouts/13.4`, `14.3` and `main`, where `SystemProperties`
+     * and its `toArray()` are the same file on all three, so the key list and
+     * the types are one statement rather than a table of versions.
+     */
+    #[Test]
+    public function theShapeOfARecordSourcedRowNamesTheFieldsThatMovedAndTheSilentRead(): void
+    {
+        // The feedback's own query, which reached three hints about other
+        // layers and nothing about this one.
+        $reported = Hints::find(
+            [],
+            'Record API SystemProperties hidden starttime endtime fe_group enable fields',
+            6,
+        );
+        self::assertSame('record-system-properties', $reported['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('record-system-properties');
+
+        // That the absence is by design, and what produced it.
+        self::assertStringContainsString('unsets it from the properties', $text);
+
+        // The key list and the types, which is what a caller gets wrong next.
+        self::assertStringContainsString('isDeleted, isDisabled, isLockedForEditing', $text);
+        self::assertStringContainsString('\DateTimeImmutable', $text);
+        self::assertStringContainsString('LanguageInfo and VersionInfo objects', $text);
+
+        // The finding itself. A hint listing the accessors without this
+        // sentence stops nobody writing the bug.
+        self::assertStringContainsString("\$row['hidden'] on such an array is absent, not false", $text);
+        self::assertStringContainsString('empty reads as not disabled', $text);
+
+        // The two ways out that are not one: the raw record, which has every
+        // column the query selected, and the property access that answers on a
+        // table without a typeField and throws on the next one.
+        self::assertStringContainsString('getRawRecord()', $text);
+        self::assertStringContainsString('only where the record has no record type', $text);
+
+        // And the neighbour, which is where the reporting session landed.
+        self::assertStringContainsString('record-system-properties', self::statementsOf('persistence-reading'));
+    }
+
+    /**
+     * The subject does not exist on 12, which has no `Domain/Record.php` at
+     * all, and the `pages` exception arrives with 14: on 13.4 `Page` is no
+     * `Record` and `RecordFactory` builds none.
+     */
+    #[Test]
+    public function theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi(): void
+    {
+        self::assertNull(Hints::byId('record-system-properties', 12));
+
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('record-system-properties', $major)['hints'], 'text'),
+        );
+
+        self::assertStringNotContainsString('Page::toArray(true)', $on(13));
+        self::assertStringContainsString("\$row['_system']['isDisabled']", $on(13));
+        self::assertStringContainsString('Page::toArray(true)', $on(14));
+    }
+
+    /**
      * The two sinks arrive as different words — one caller asks about output
      * escaping, the other about a query — and what they need is the same
      * reading. A hint reachable only through the phrasing it was written for

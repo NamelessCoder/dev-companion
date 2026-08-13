@@ -73,6 +73,75 @@
     ]
   },
   {
+    "id": "record-system-properties",
+    "title": "What a Record Object Carries, and What Moved Into _system",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "SystemProperties",
+      "_system",
+      "RecordFactory",
+      "getSystemProperties",
+      "getRawRecord",
+      "RawRecord",
+      "Record API",
+      "record object",
+      "toArray",
+      "isDisabled",
+      "isLockedForEditing",
+      "publishAt",
+      "publishUntil",
+      "userGroupRestriction",
+      "createdAt",
+      "lastUpdatedAt",
+      "starttime",
+      "endtime",
+      "crdate",
+      "tstamp",
+      "fe_group",
+      "enable fields"
+    ],
+    "hints": [
+      {
+        "text": "RecordFactory moves the system fields out of a record rather than copying them: extractSystemInformation() reads each one off the raw row and unsets it from the properties. What goes is what TCA[ctrl] declares — crdate, tstamp, sortby, delete, editlock, descriptionColumn, the four enablecolumns (disabled, starttime, endtime, fe_group), the language fields including l10n_state and the diff source, and t3ver_wsid, t3ver_oid, t3ver_state and t3ver_stage. So $record->toArray() holds uid, pid and the record type's own columns, and not one of those.",
+        "since": 13
+      },
+      {
+        "text": "toArray(true) adds one further key, '_system', holding SystemProperties::toArray(): isDeleted, isDisabled, isLockedForEditing, createdAt, lastUpdatedAt, publishAt, publishUntil, userGroupRestriction, sorting, description, language and version. All twelve are present on every record and each is null where the table declares no such capability, so the key being there says nothing about the table having the field.",
+        "since": 13
+      },
+      {
+        "text": "The values are the API's rather than the column's. The four dates are \\DateTimeImmutable, userGroupRestriction is an int array from GeneralUtility::intExplode() of fe_group and keeps -1 and -2 as they stand, the three is* are booleans, sorting is an int, and language and version are LanguageInfo and VersionInfo objects — toArray() converts one level and leaves those two as they are.",
+        "since": 13
+      },
+      {
+        "text": "That is what makes the shape dangerous rather than merely different: $row['hidden'] on such an array is absent, not false. An absent key reads as empty, empty reads as not disabled, and a disabled record renders. Nothing throws and nothing is logged, so the wrong value looks like an answer. Read $row['_system']['isDisabled'], or ask the object with $record->getSystemProperties()?->isDisabled().",
+        "since": 13
+      },
+      {
+        "text": "Record carries getSystemProperties(), getLanguageInfo(), getLanguageId() and getVersionInfo(), and each of them may return null, so the null-safe call is the correct one and not a defensive habit. The full row is still reachable: getRawRecord() hands back the RawRecord the factory was given, whose get() and toArray() carry every column the query selected.",
+        "since": 13
+      },
+      {
+        "text": "$record->get('hidden') is no fallback either. Record::get() reaches the raw record only where the record has no record type, so the same call returns the raw value on a table without a typeField and throws RecordPropertyNotFoundException on tt_content or pages.",
+        "since": 13
+      },
+      {
+        "text": "A row therefore reaches a caller in one of two shapes. The plain one — a QueryBuilder fetch, BackendUtility::getRecord(), FormEngine's databaseRow — is flat, with the enable fields at top level under their TCA names; the Record-sourced one has them under _system under the API's names. Code consumed by both reads _system first and falls back to the raw field, because code that reads the field alone is correct on one caller and silently wrong on the other.",
+        "since": 13
+      },
+      {
+        "text": "pages is the exception. RecordFactory returns a Page for that table, and Page::toArray(true) rebuilds the whole row from the raw record — every selected column, overlaid with the resolved properties, plus _system and the _-prefixed special properties. A page asked that way does carry hidden; Page::toArray() without the argument is the ordinary shape and does not.",
+        "since": 14
+      },
+      {
+        "text": "Which rows a query returns at all is persistence-reading, and where such objects come from in the frontend is frontend-records.",
+        "since": 13
+      }
+    ]
+  },
+  {
     "id": "record-page-title",
     "title": "The Title of a Record Detail Page",
     "domains": [

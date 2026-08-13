@@ -1106,6 +1106,7 @@ Text:
     - Outside the frontend a query returns the live record, and the workspace version is put on top of it afterwards: PageRepository::versionOL($table, $row) overlays it in place. It is a step after the query, not a condition in it.
     - The translation works the same way: PageRepository::getLanguageOverlay($table, $row, ?LanguageAspect) replaces the row's fields with the translated ones and honours the fallback chain the LanguageAspect describes. Selecting rows by sys_language_uid is not the same thing and misses the fallback. PageRepository::getPage() shows the order both are applied in: versionOL() first, then the language overlay.
     - PageRepository::getDefaultConstraints($table, $enableFieldsToIgnore) returns the enable-field conditions as QueryBuilder expressions, for a query that builds its own restrictions. [TYPO3 v13 and newer]
+    - All of this is about which rows come back. What the object built from one of them is shaped like — and why $row['hidden'] is absent on it rather than false — is record-system-properties. [TYPO3 v13 and newer]
 
     ## System Extension Boundaries
     Hints:
@@ -1245,6 +1246,13 @@ Data:
                     },
                     {
                         "text": "PageRepository::getDefaultConstraints($table, $enableFieldsToIgnore) returns the enable-field conditions as QueryBuilder expressions, for a query that builds its own restrictions.",
+                        "since": 13,
+                        "until": null,
+                        "versions": "TYPO3 v13 and newer",
+                        "scope": null
+                    },
+                    {
+                        "text": "All of this is about which rows come back. What the object built from one of them is shaped like — and why $row['hidden'] is absent on it rather than false — is record-system-properties.",
                         "since": 13,
                         "until": null,
                         "versions": "TYPO3 v13 and newer",

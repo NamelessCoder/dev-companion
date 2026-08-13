@@ -140,6 +140,22 @@ final class SkillTest extends TestCase
         'typo3-extension-upgrade',
     ];
 
+    /**
+     * The skills whose product is a report somebody carries elsewhere, read off
+     * each body on 2026-08-14 — `D-SKL-042`. Each of the three specifies what
+     * the report contains and in which order, and the skill is what makes it
+     * long enough for the form to matter.
+     *
+     * Which those are is not readable off a file, like the sides a description
+     * names: `typo3-core-patch-checkout` ends in a checkout and
+     * `typo3-extension-upgrade` in a change, and neither closes on a document.
+     */
+    private const REPORTING_SKILLS = [
+        'typo3-core-patch-review',
+        'typo3-extension-conformance',
+        'typo3-core-issue-triage',
+    ];
+
     #[Test]
     public function theBaseFixesTheOrderEveryTaskStartsIn(): void
     {
@@ -927,6 +943,58 @@ final class SkillTest extends TestCase
             'what was raised while reading and dropped, with what dropped it',
             $auditSkill,
         );
+    }
+
+    /**
+     * `R-SKL-023`. Three skills specify a report exhaustively — the bands, what
+     * each finding owes, the surfaces it closes on — and none of them said what
+     * form the thing they specify has, so a review of a Gerrit patch set ran to
+     * a couple of hundred lines into a chat answer nobody could select
+     * (`feedback/2026-08-13-214811`).
+     *
+     * What the correction asked for is the form rather than a path: "reviews
+     * sollten immer im markdown format ausgegeben werden", then "damit es
+     * kopierbar ist". Asked on 2026-08-14, the maintainer answered that the
+     * report may stay in the chat and needs no path, and that formatted HTML is
+     * what cannot be transferred — which revoked `D-SKL-040`, whose statement
+     * had read the file that session wrote as the requirement.
+     *
+     * A file stays the caller's to ask for, and where one is written it goes
+     * outside the checkout the skill just assessed.
+     */
+    #[Test]
+    public function aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes(): void
+    {
+        foreach (self::REPORTING_SKILLS as $name) {
+            $skill = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
+
+            self::assertStringContainsString(
+                'is markdown the reader can copy, and the answer is where it goes',
+                $skill,
+                $name . ' specifies a report and names no form for it',
+            );
+            // The property being asked for, in the words that say what breaks
+            // without it: a form is what a long report has to survive being
+            // moved in.
+            self::assertStringContainsString(
+                'rendered output is what does not survive being moved',
+                $skill,
+                $name . ' states the form without what makes it the form',
+            );
+            // The path is the caller's, so nothing decides a name or a
+            // directory and the assessed checkout cannot be dirtied by
+            // accident.
+            self::assertStringContainsString(
+                'only where the caller asks for one',
+                $skill,
+                $name . ' prescribes a path the caller did not ask for',
+            );
+            self::assertStringContainsString(
+                'outside the checkout',
+                $skill,
+                $name . ' writes the report where the checkout it assessed is',
+            );
+        }
     }
 
     #[Test]

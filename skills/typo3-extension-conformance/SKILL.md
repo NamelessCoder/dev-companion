@@ -120,6 +120,13 @@ Unassessed and not requested both mean nothing was established there, and they
 are not the same thing: one is this review's gap, the other is what the request
 left out. Say which of the two per entry, and let neither read as clean.
 
+**The report is markdown the reader can copy, and the answer is where it goes.**
+The findings and the coverage list together are what make it long, and length is
+what makes the form matter: an audit is carried into an issue, into a ticket or
+into a chat, and rendered output is what does not survive being moved. Write it
+to a file only where the caller asks for one, at a path outside the checkout
+being assessed, which this workflow changes nothing in.
+
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to —
 `typo3-extension-testing`, `typo3-extension-documentation`,

@@ -276,6 +276,17 @@ is asked of every finding rather than of the ones that read as alarming, and
 which skills end in public is not readable off a file — so this is the author's,
 like the sides a description names.
 
+**A skill whose product is a report says what form the report has.** A section
+that fixes the severity bands, what each finding owes and the surfaces it closes
+on has specified a document rather than a chat reply, and it is what makes that
+document long — so it says the report is markdown the reader can copy and that
+the answer is where it goes
+(`R-SKL-023 <../../requirements/task-skills/skl-023-a-skill-whose-product-is-a-report-says-the-report-is-copyable-markdown.md>`_,
+held by ``SkillTest::aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes``). A
+path is the caller's to ask for, and where one is asked for it is outside the
+checkout the skill assessed. Which skills produce a report is the author's too,
+read off the bodies.
+
 Publishing it
 -------------
 

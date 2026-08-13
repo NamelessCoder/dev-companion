@@ -247,6 +247,12 @@ Report what you did not establish beside what you did. A triage whose reading
 stopped at the code path says so, because the next person's work is exactly the
 part that was left.
 
+**The verdict is markdown the reader can copy, and the answer is where it
+goes.** It is written for the person who will act on it, and rendered output is
+what does not survive being moved. Write it to a file only where the caller asks
+for one, at a path outside the checkout the reproduction ran in, whose tree this
+workflow leaves as it found it.
+
 ## What a previous attempt cost
 
 Where the issue was fixed once and the fix taken back out, the verdict is not

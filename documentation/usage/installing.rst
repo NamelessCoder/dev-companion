@@ -9,6 +9,7 @@ standalone checkout and as a Composer dependency of another project. The
 leaves out.
 
 .. image:: ../images/install-flow.svg
+    :zoomable:
     :alt: A standalone checkout or Composer dependency is installed into a
           project, which writes client configuration, publishes skills, records
           the setup and is then approved and verified in the client.

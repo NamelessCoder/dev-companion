@@ -246,6 +246,7 @@ would be lost on the next ``composer install``; there the server stays strictly
 read-only and neither tool appears in ``tools/list``.
 
 .. image:: ../images/feedback-loop.svg
+    :zoomable:
     :alt: A real task exposes a gap, records one feedback, moves it through the
           queue into a guarded improvement and verifies it in another real task.
 

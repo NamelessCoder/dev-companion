@@ -13,6 +13,7 @@ source answered one call is ``answeredBy`` in that answer, where the tool has
 two. This page is written by ``bin/cli tools:index`` from the Source enum.
 
 .. image:: ../../images/answer-sources.svg
+    :zoomable:
     :alt: The five sources plotted against how much of the machine has to be running:
           bundled knowledge and this server's own checkout answer with nothing
           running, packages need files on disk, the installation source needs a

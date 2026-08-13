@@ -7,6 +7,7 @@ For someone changing this repository rather than using it. The conventions are
 in `AGENTS.md <../../AGENTS.md>`_; these are the commands they rest on.
 
 .. image:: ../images/repository-map.svg
+    :zoomable:
     :alt: The stdio runtime routes client calls through Server, Tool and Result
           classes to four answer sources, while the separate repository CLI runs
           upkeep commands over knowledge, evidence and work records.

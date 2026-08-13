@@ -14,6 +14,7 @@ against different parts of the checkout. It is not worth doing for two todos
 about one file, and it is not worth doing for one.
 
 .. image:: ../images/parallel-todos.svg
+    :zoomable:
     :alt: Main carries the shared claim state while one branch and worktree
           carries each session's unfinished work; completed branches return one
           at a time through rebase, checks and a fast-forward merge.

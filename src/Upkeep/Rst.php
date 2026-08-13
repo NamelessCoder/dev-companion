@@ -140,12 +140,17 @@ final class Rst
      * drawing shows for a reader who is not looking at it, which is not the
      * same as a title under the figure.
      *
+     * Every drawing here is a diagram rather than a picture, and a diagram is
+     * drawn at the width of the column it lands in, which is not the width its
+     * labels were set for. `:zoomable:` is what gives that back.
+     *
      * @return list<string>
      */
     public static function image(string $path, string $alt): array
     {
         return [
             '.. image:: ' . $path,
+            self::INDENT . ':zoomable:',
             self::INDENT . ':alt: ' . Wrap::text($alt, self::INDENT . '      '),
             '',
         ];

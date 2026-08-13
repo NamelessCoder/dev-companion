@@ -11,6 +11,7 @@ Which versions are covered is declared in ``knowledge/versions.json`` and
 nowhere else; every check that needs the list reads it from there.
 
 .. image:: ../images/version-binding.svg
+    :zoomable:
     :alt: TYPO3 12 through 15 form the covered timeline; unbound statements
           apply to all of it, while since and until bind one statement and
           require verification on both sides of the boundary.

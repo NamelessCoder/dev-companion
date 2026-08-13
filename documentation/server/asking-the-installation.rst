@@ -11,6 +11,7 @@ The rules stay in `AGENTS.md <../../AGENTS.md>`_; what a change assumed is in
 procedure.
 
 .. image:: ../images/installation-fallback.svg
+    :zoomable:
     :alt: One square per entry the registry could return: the console path and
           the booted runtime return all of them, while the package-file fallback
           returns every declared entry and none of the dynamically registered

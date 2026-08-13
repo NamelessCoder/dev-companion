@@ -6,6 +6,7 @@ What a forward review is, and the five of them, are in
 one is carried out.
 
 .. image:: ../images/forward-run.svg
+    :zoomable:
     :alt: A recorded scenario runs in a clean real project without steering,
           produces a transcript and working-tree reading, is judged against
           fixed criteria and leaves reusable findings as feedback or a contract

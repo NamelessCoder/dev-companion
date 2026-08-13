@@ -87,6 +87,7 @@ rule which was already written and never arrived is not rebuilt, not so that the
 answer stays small. ``bin/cli feedback:list`` tells the two apart in one call.
 
 .. image:: ../images/feedback-judging-ladder.svg
+    :zoomable:
     :alt: A feedback is diagnosed from gap through delivery, routing and wording
           to a design decision, stopping at the first step supported by
           repository evidence.

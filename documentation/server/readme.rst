@@ -23,6 +23,7 @@ What it can be asked, and where each answer comes from.
   were ever adopted.
 
 .. image:: ../images/answer-flow.svg
+    :zoomable:
     :alt: A task starts by reading the project and identifying its workflow,
           then uses a specialist tool and returns the source, version, scope and
           limits with the answer.

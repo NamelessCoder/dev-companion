@@ -82,7 +82,8 @@ state the machine is in.
 * :doc:`typo3_forge_lookup <typo3_forge_lookup>` — Read the TYPO3 issue tracker
   at forge.typo3.org before writing a patch.
 * :doc:`typo3_gerrit_lookup <typo3_gerrit_lookup>` — Find out whether a TYPO3
-  core patch already exists, from the review server at review.typo3.org.
+  core patch already exists and what state its review is in, from the review
+  server at review.typo3.org.
 * :doc:`typo3_hint_lookup <typo3_hint_lookup>` — Return hints for TYPO3 core
   paths or task topics, grouped by section.
 * :doc:`typo3_icon_lookup <typo3_icon_lookup>` — Validate or find icon

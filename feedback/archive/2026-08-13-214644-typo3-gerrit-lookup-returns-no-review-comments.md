@@ -1,7 +1,8 @@
 ---
 date: 2026-08-13T21:46:44+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-13
 model: claude-opus-5[1m]
 tool: typo3_gerrit_lookup, typo3-core-patch-review
 directory: /home/benji/projects/typo3-cms

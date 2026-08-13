@@ -65,7 +65,7 @@ final class Gerrit
     public function changesForIssue(string $issue, int $limit = 10): array
     {
         $number = ltrim(trim($issue), '#');
-        $answer = $this->search('message:' . $number, $limit, true);
+        $answer = $this->search('message:' . $number, $limit, self::CURRENT_COMMIT);
 
         $named = [];
         foreach ($answer['changes'] as $change) {
@@ -126,7 +126,7 @@ final class Gerrit
         $found = [];
         foreach (array_chunk(array_values($wanted), self::BATCHED) as $batch) {
             $query = implode(' OR ', array_map(static fn(string $number): string => 'message:' . $number, $batch));
-            foreach ($this->search($query, self::MOST, true)['changes'] as $change) {
+            foreach ($this->search($query, self::MOST, self::CURRENT_COMMIT)['changes'] as $change) {
                 // What a row carries is the number, so a change without one is
                 // no handle and is nothing to report a row as having.
                 if (($change['number'] ?? 0) < 1) {
@@ -175,8 +175,8 @@ final class Gerrit
     }
 
     /**
-     * One change by its number or its Change-Id, and the changes sharing that
-     * id.
+     * One change by its number or its Change-Id, the changes sharing that id,
+     * and the review they are in.
      *
      * Nothing is filtered here. A caller naming a change has named it, and the
      * answer is that change whatever its commit message says.
@@ -188,39 +188,135 @@ final class Gerrit
      * answer the same set — and it is asked whether there is a sibling or not,
      * because only the answer says.
      *
+     * The votes come with it and the comments are one further call, made only
+     * where the change says it carries one — the count is in the payload, so a
+     * change nobody has commented on costs nothing to find that out about
+     * (`D-ANS-079`). The review log is what `$messages` asks for: "people"
+     * drops what a service user wrote, "all" keeps it, "none" leaves the option
+     * off the query. Every change the answer ends up carrying is read that way,
+     * the sibling included.
+     *
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
-    public function change(string $change, int $limit = 1): array
+    public function change(string $change, int $limit = 1, string $messages = 'none'): array
     {
+        $options = self::REVIEW . ($messages === 'none' ? '' : self::MESSAGES);
         $handle = trim($change);
-        $answer = $this->search('change:' . $handle, $limit);
+        $answer = $this->search('change:' . $handle, $limit, $options);
 
         $named = $answer['changes'][0] ?? null;
         $id = is_string($named['changeId'] ?? null) ? $named['changeId'] : '';
-        if (count($answer['changes']) !== 1 || $id === '' || strcasecmp($id, $handle) === 0) {
-            return $answer;
-        }
-
-        $siblings = $this->search('change:' . $id, $limit);
-        // A query that did not answer is not an absence of siblings, so the
-        // change that was named stands rather than being replaced by nothing.
-        if ($siblings['status'] !== 'answered') {
-            return $answer;
-        }
-
-        // The named change first, and `n` applied after it. Gerrit orders by
-        // last activity, so `change:<id>&n=1` answers the sibling that moved
-        // most recently — measured on 2026-08-14, where change 95169 asked for
-        // by number came back as 93202.
-        $changes = $answer['changes'];
-        foreach ($siblings['changes'] as $sibling) {
-            if (($sibling['number'] ?? null) !== ($named['number'] ?? null)) {
-                $changes[] = $sibling;
+        if (count($answer['changes']) === 1 && $id !== '' && strcasecmp($id, $handle) !== 0) {
+            $siblings = $this->search('change:' . $id, $limit, $options);
+            // A query that did not answer is not an absence of siblings, so the
+            // change that was named stands rather than being replaced by
+            // nothing.
+            if ($siblings['status'] === 'answered') {
+                // The named change first, and `n` applied after it. Gerrit
+                // orders by last activity, so `change:<id>&n=1` answers the
+                // sibling that moved most recently — measured on 2026-08-14,
+                // where change 95169 asked for by number came back as 93202.
+                $changes = $answer['changes'];
+                foreach ($siblings['changes'] as $sibling) {
+                    if (($sibling['number'] ?? null) !== ($named['number'] ?? null)) {
+                        $changes[] = $sibling;
+                    }
+                }
+                $siblings['changes'] = array_slice($changes, 0, max(1, $limit));
+                $answer = $siblings;
             }
         }
-        $siblings['changes'] = array_slice($changes, 0, max(1, $limit));
 
-        return $siblings;
+        foreach ($answer['changes'] as $index => $found) {
+            $answer['changes'][$index]['comments'] = $this->comments($found['number'], $found['commentCount']);
+            if (!is_array($found['messages'])) {
+                continue;
+            }
+            $written = array_values(array_filter(
+                $found['messages'],
+                static fn(array $message): bool => $message['bot'] === false,
+            ));
+            // Counted whichever way it was asked, so a log full of pipeline
+            // reports answering zero here is Gerrit no longer tagging its
+            // service users rather than a change no bot has been near.
+            $answer['changes'][$index]['botMessageCount'] = count($found['messages']) - count($written);
+            if ($messages === 'people') {
+                $answer['changes'][$index]['messages'] = $written;
+            }
+        }
+
+        return $answer;
+    }
+
+    /**
+     * The comments left on one change, oldest first.
+     *
+     * Its own endpoint, because no query option carries them. What comes back
+     * is a file to a list of comments, and `/PATCHSET_LEVEL` is the file a
+     * comment on the change itself is filed under.
+     *
+     * Nothing here decides whether a comment was answered. `unresolved`, the
+     * reply it is under and the patch set it was left on are handed over and
+     * the reviewer reads them: change 95179 carries a comment that is
+     * unresolved and has a reply, so either field alone answers that question
+     * wrongly (`D-ANS-079`).
+     *
+     * @param int $count what the change says it carries, so the call is made
+     *                   only where there is something to fetch
+     * @return list<array<string, mixed>>|null null where it could not be read
+     */
+    private function comments(int $number, int $count): ?array
+    {
+        if ($number < 1) {
+            return null;
+        }
+        if ($count < 1) {
+            return [];
+        }
+
+        $url = self::HOST . '/changes/' . $number . '/comments';
+        $held = Recent::held($url, self::HELD_FOR);
+        if (is_array($held)) {
+            return $held;
+        }
+
+        $decoded = Fetch::decode($this->fetch->get($url, ['Accept: application/json']));
+        if ($decoded === null) {
+            return null;
+        }
+
+        $comments = [];
+        foreach ($decoded as $file => $left) {
+            foreach (is_array($left) ? $left : [] as $comment) {
+                if (!is_array($comment)) {
+                    continue;
+                }
+                $author = is_array($comment['author'] ?? null) ? $comment['author'] : [];
+                $comments[] = [
+                    'id' => is_string($comment['id'] ?? null) ? $comment['id'] : '',
+                    'author' => is_string($author['name'] ?? null) ? $author['name'] : '',
+                    'on' => is_string($comment['updated'] ?? null) ? $comment['updated'] : '',
+                    'patchSet' => isset($comment['patch_set']) && is_numeric($comment['patch_set'])
+                        ? (int) $comment['patch_set']
+                        : 0,
+                    'file' => (string) $file,
+                    // Absent on a comment about the change rather than about a
+                    // place in it, which is every one filed under
+                    // `/PATCHSET_LEVEL`.
+                    'line' => isset($comment['line']) && is_numeric($comment['line']) ? (int) $comment['line'] : null,
+                    'unresolved' => (bool) ($comment['unresolved'] ?? false),
+                    'inReplyTo' => is_string($comment['in_reply_to'] ?? null) ? $comment['in_reply_to'] : null,
+                    'message' => is_string($comment['message'] ?? null) ? trim($comment['message']) : '',
+                ];
+            }
+        }
+        // Chronological across the files, because a thread is read in the order
+        // it was written and a reply sits under a comment on the same file.
+        usort($comments, static fn(array $one, array $other): int => strcmp($one['on'], $other['on']));
+
+        Recent::hold($url, $comments);
+
+        return $comments;
     }
 
     /**
@@ -246,6 +342,45 @@ final class Gerrit
     private const CURRENT_COMMIT = '&o=CURRENT_COMMIT';
 
     /**
+     * The options that answer what state the review is in: the value every
+     * voter holds per label, and the account each of them is.
+     *
+     * Asked only where a caller named a change. An issue search answers up to
+     * 25 of them and asks whether a patch exists at all, which no vote on one
+     * changes — and the options are what they cost: change 93319 came back at
+     * 1.9 KB plain and 14.3 KB with them, measured against `review.typo3.org`
+     * on 2026-08-14.
+     */
+    private const REVIEW = '&o=DETAILED_LABELS&o=DETAILED_ACCOUNTS';
+
+    /**
+     * The review log, which is asked for rather than answered with. The same
+     * change is 57.9 KB with it.
+     *
+     * What it carries that the labels do not is why a vote is gone. Gerrit
+     * writes "Outdated Votes: * Code-Review+1 (copy condition: …)" into the
+     * message of the upload that dropped it, and the label state afterwards
+     * looks exactly like a change nobody has voted on (`D-ANS-079`).
+     */
+    private const MESSAGES = '&o=MESSAGES';
+
+    /**
+     * The tag Gerrit puts on an account that is a machine.
+     *
+     * Read off the account rather than off a list of names, which is what
+     * `Forge::BOTS` has to be: the tracker's journal carries no such field, and
+     * `o=DETAILED_ACCOUNTS` carries this one. On change 93319 it separates
+     * core-ci's 20 pipeline reports from the 26 messages a person is behind.
+     *
+     * The `autogenerated:gerrit:*` tag `D-ANS-079` names is a different fact and
+     * not this one. Those messages are the uploader's own — measured on the same
+     * change, 23 of the 46 carry the tag and every one of them is a person
+     * pushing a patch set — and they are where the copy condition that dropped a
+     * vote is written, which is what the log is fetched for.
+     */
+    private const SERVICE_USER = 'SERVICE_USER';
+
+    /**
      * The most changes one query answers with. A batched query asks for all of
      * them: twelve issues answered twelve changes when it was measured, so the
      * headroom is what an issue with several patches costs rather than a bound
@@ -254,12 +389,14 @@ final class Gerrit
     private const MOST = 25;
 
     /**
+     * @param string $options what this query asks for beyond the current
+     *                        revision, as the query string carries it
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
-    private function search(string $query, int $limit, bool $withMessage = false): array
+    private function search(string $query, int $limit, string $options = ''): array
     {
         $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(self::MOST, $limit))
-            . self::CURRENT_REVISION . ($withMessage ? self::CURRENT_COMMIT : '');
+            . self::CURRENT_REVISION . $options;
         $held = Recent::held($url, self::HELD_FOR);
         if (is_array($held)) {
             return $held;
@@ -279,7 +416,9 @@ final class Gerrit
         foreach ($decoded as $entry) {
             if (is_array($entry)) {
                 $change = self::change_($entry);
-                if (!$withMessage) {
+                // What was not asked for cannot be in the answer, and the
+                // commit message is asked for by one query alone.
+                if (!str_contains($options, self::CURRENT_COMMIT)) {
                     unset($change['message']);
                 }
                 $changes[] = $change;
@@ -337,11 +476,13 @@ final class Gerrit
 
         return [
             'number' => $number,
-            'changeId' => is_string($entry['change_id'] ?? null) ? $entry['change_id'] : '',
             // What `o=CURRENT_COMMIT` adds, where it was asked for. Read to
             // decide whether the change is about the issue, and dropped before
             // the answer is handed over.
             'message' => is_string($commit['message'] ?? null) ? $commit['message'] : '',
+            // The one handle that survives a rebase onto another branch, and
+            // what a reviewer holds the commit in front of it against.
+            'changeId' => is_string($entry['change_id'] ?? null) ? $entry['change_id'] : '',
             'subject' => is_string($entry['subject'] ?? null) ? $entry['subject'] : '',
             'status' => is_string($entry['status'] ?? null) ? $entry['status'] : '',
             'branch' => is_string($entry['branch'] ?? null) ? $entry['branch'] : '',
@@ -356,7 +497,107 @@ final class Gerrit
                 'ref' => self::ref($number, $patchSet),
                 'remote' => self::HOST . '/' . $project,
             ] : null,
+            // Null rather than empty where the review was not read at all: a
+            // search asks for none of it, and "nobody has voted" is a different
+            // answer to a reviewer than "nobody asked".
+            'labels' => is_array($entry['labels'] ?? null)
+                ? self::labels($entry['labels'], $entry['submit_records'] ?? null)
+                : null,
+            // In the payload of every query, which is what lets the comments be
+            // fetched only where there are some.
+            'commentCount' => isset($entry['total_comment_count']) && is_numeric($entry['total_comment_count'])
+                ? (int) $entry['total_comment_count']
+                : 0,
+            // Filled by `change()`, from an endpoint of its own.
+            'comments' => null,
+            'messages' => is_array($entry['messages'] ?? null) ? self::messages($entry['messages']) : null,
+            // Counted by `change()`, before the filter it is the measure of.
+            'botMessageCount' => null,
         ];
+    }
+
+    /**
+     * What each label stands at, and whether that is enough.
+     *
+     * `all` is every voter with the value they hold, the zeros included: a
+     * reviewer who was added and has not voted is a fact about the review.
+     * Whether a label is satisfied is the submit rule's judgement rather than
+     * one made here — Verified runs -1 to +2 on review.typo3.org, so no
+     * threshold read off the values would be right, and a rule that requires
+     * the label at all is what makes the question mean anything.
+     *
+     * @param array<string, mixed> $labels
+     * @return list<array<string, mixed>>
+     */
+    private static function labels(array $labels, mixed $records): array
+    {
+        $satisfied = [];
+        foreach (is_array($records) ? $records : [] as $record) {
+            $required = is_array($record) && is_array($record['labels'] ?? null) ? $record['labels'] : [];
+            foreach ($required as $entry) {
+                $name = is_array($entry) && is_string($entry['label'] ?? null) ? $entry['label'] : '';
+                $status = is_array($entry) && is_string($entry['status'] ?? null) ? $entry['status'] : '';
+                // MAY is the label a rule permits and does not ask for, which
+                // is not an unmet condition and is not a met one either.
+                if ($name === '' || $status === 'MAY') {
+                    continue;
+                }
+                $satisfied[$name] = ($satisfied[$name] ?? true) && $status === 'OK';
+            }
+        }
+
+        $answer = [];
+        foreach ($labels as $name => $label) {
+            $votes = [];
+            foreach (is_array($label) && is_array($label['all'] ?? null) ? $label['all'] : [] as $vote) {
+                if (!is_array($vote)) {
+                    continue;
+                }
+                $votes[] = [
+                    'voter' => is_string($vote['name'] ?? null) ? $vote['name'] : '',
+                    'value' => isset($vote['value']) && is_numeric($vote['value']) ? (int) $vote['value'] : 0,
+                    // Empty on a reviewer who holds no vote, since nothing was
+                    // cast to carry a date.
+                    'on' => is_string($vote['date'] ?? null) ? $vote['date'] : '',
+                ];
+            }
+            $answer[] = [
+                'label' => (string) $name,
+                'satisfied' => $satisfied[(string) $name] ?? null,
+                'votes' => $votes,
+            ];
+        }
+
+        return $answer;
+    }
+
+    /**
+     * The review log, oldest first, each message said to be a machine's or not.
+     *
+     * @param array<mixed> $messages
+     * @return list<array<string, mixed>>
+     */
+    private static function messages(array $messages): array
+    {
+        $log = [];
+        foreach ($messages as $message) {
+            if (!is_array($message)) {
+                continue;
+            }
+            $author = is_array($message['author'] ?? null) ? $message['author'] : [];
+            $tags = is_array($author['tags'] ?? null) ? $author['tags'] : [];
+            $log[] = [
+                'author' => is_string($author['name'] ?? null) ? $author['name'] : '',
+                'on' => is_string($message['date'] ?? null) ? $message['date'] : '',
+                'patchSet' => isset($message['_revision_number']) && is_numeric($message['_revision_number'])
+                    ? (int) $message['_revision_number']
+                    : 0,
+                'bot' => in_array(self::SERVICE_USER, $tags, true),
+                'message' => is_string($message['message'] ?? null) ? trim($message['message']) : '',
+            ];
+        }
+
+        return $log;
     }
 
     /**

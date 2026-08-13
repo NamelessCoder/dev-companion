@@ -32,7 +32,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, the Change-Id, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
     public static function annotations(): array
@@ -60,6 +60,12 @@ final class GerritLookup extends ReadOnlyTool
                     'minLength' => 1,
                     'description' => 'One change to read, named either by the Change-Id its commit message carries, for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change number a review URL ends with, for example "89011". Prefer the Change-Id where the commit is in front of you: it is part of the patch being read, it survives being amended into a new patch set, and it cannot be mistaken for the Forge issue number the way a bare change number can. A call carries issue or change, never both.',
                 ],
+                'messages' => [
+                    'type' => 'string',
+                    'enum' => ['none', 'people', 'all'],
+                    'default' => 'none',
+                    'description' => 'The review log of a change: every message its patch sets and its reviewers left. Ask for it to find out why a vote is gone — Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the message of the upload that dropped it, and the labels afterwards look exactly like a change nobody has voted on. "none" leaves it out and is the default, since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people" drops what a service user wrote, which on that change is 20 of 46 messages and every one of them a CI pipeline report. "all" keeps them. How many were dropped is answered whichever you ask for. Narrows change and is ignored by issue.',
+                ],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 25, 'default' => 10],
             ],
             'oneOf' => [
@@ -77,7 +83,7 @@ final class GerritLookup extends ReadOnlyTool
             'query' => Schema::string('The Gerrit query this was answered with, so the same question can be asked again by hand.'),
             'changes' => Schema::listOf(Schema::object([
                 'number' => Schema::integer('Change number, the digits its review URL ends with.'),
-                'changeId' => Schema::string('The Change-Id its commit message carries, empty where the server named none. A backport keeps it unchanged, so changes sharing one are the same patch on more than one branch — pass it back as change to read all of them.'),
+                'changeId' => Schema::string('The Change-Id its commit message carries, empty where the server named none. It survives an amend and a rebase onto another branch, so it is what to hold the commit in front of you against — and changes sharing one are the same patch on more than one branch, which passing it back as change reads all of.'),
                 'subject' => Schema::string('The commit subject.'),
                 'status' => Schema::string('NEW while it is open, MERGED once it landed, ABANDONED when it was given up.'),
                 'branch' => Schema::string('The branch the change targets.'),
@@ -95,6 +101,65 @@ final class GerritLookup extends ReadOnlyTool
                         'remote' => Schema::string('What to fetch that ref from. It is the review server rather than origin: a core clone fetches from the GitHub mirror, and refs/changes is not there.'),
                     ],
                     'required' => ['ref', 'remote'],
+                ],
+                'labels' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'What the change stands at, one entry per label. Null where the review was '
+                        . 'not read, which is every hit of an issue search: a list with zeros in it means nobody '
+                        . 'has voted, and that is a different answer.',
+                    'items' => Schema::object([
+                        'label' => Schema::string('Code-Review and Verified are the two the core project votes with.'),
+                        'satisfied' => [
+                            'type' => ['boolean', 'null'],
+                            'description' => 'Whether the submit rule counts this label as met — false is the '
+                                . 'ordinary state of an open change, and null means no rule asks for it. What it '
+                                . 'stands at is in the votes: the range is the project\'s own, and Verified runs to '
+                                . '+2 here, so a +1 is not the top of it.',
+                        ],
+                        'votes' => Schema::listOf(Schema::object([
+                            'voter' => Schema::string(),
+                            'value' => Schema::integer('What this voter holds now. Zero is a reviewer who was added and has not voted; a vote a later patch set dropped is absent rather than zero, and only the review log says it was ever there.'),
+                            'on' => Schema::string('When it was cast, empty where nothing was.'),
+                        ], ['voter', 'value', 'on']), 'Everyone on the label, those holding nothing included.'),
+                    ], ['label', 'satisfied', 'votes']),
+                ],
+                'commentCount' => Schema::integer('How many comments the change carries, which the review server states whether or not they were read.'),
+                'comments' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'The comments left on the change, oldest first. Empty means it carries none. '
+                        . 'Null means they were not read: an issue search asks for none, and a change lookup whose '
+                        . 'comment call did not answer says so here rather than with an empty list — hold it '
+                        . 'against commentCount.',
+                    'items' => Schema::object([
+                        'id' => Schema::string('What the inReplyTo of a reply names.'),
+                        'author' => Schema::string(),
+                        'on' => Schema::string(),
+                        'patchSet' => Schema::integer('The patch set it was left on. One older than the current patch set is a comment written about code that may since have changed, and it is still unanswered until somebody answers it.'),
+                        'file' => Schema::string('The file it sits on. /PATCHSET_LEVEL is a comment on the change itself rather than on a place in it.'),
+                        'line' => ['type' => ['integer', 'null'], 'description' => 'Null on a comment about the change rather than about a line.'],
+                        'unresolved' => ['type' => 'boolean', 'description' => 'The flag on the thread, as whoever wrote or answered it last left it. It is not "nobody answered": a comment can carry a reply and stay unresolved, and one can be resolved with nothing written under it. Both are handed over and the reading is yours.'],
+                        'inReplyTo' => ['type' => ['string', 'null'], 'description' => 'The id of the comment this answers, null where it starts a thread.'],
+                        'message' => Schema::string('The comment as it was written.'),
+                    ], ['id', 'author', 'on', 'patchSet', 'file', 'line', 'unresolved', 'inReplyTo', 'message']),
+                ],
+                'messages' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'The review log, oldest first, where messages asked for it. Null otherwise, '
+                        . 'which is the default and every hit of an issue search.',
+                    'items' => Schema::object([
+                        'author' => Schema::string(),
+                        'on' => Schema::string(),
+                        'patchSet' => Schema::integer('The patch set it was written about.'),
+                        'bot' => ['type' => 'boolean', 'description' => 'Whether a service user wrote it, read off the account rather than off its name. On the core project that is the CI reporting a pipeline.'],
+                        'message' => Schema::string('The message as it stands. The upload of a patch set carries the votes it dropped and the copy condition that dropped them, which is the one place that is written down.'),
+                    ], ['author', 'on', 'patchSet', 'bot', 'message']),
+                ],
+                'botMessageCount' => [
+                    'type' => ['integer', 'null'],
+                    'description' => 'How many of the log a service user wrote, which messages: "people" is what '
+                        . 'drops. Answered whichever way it was asked, so a log full of pipeline reports answering '
+                        . 'zero here is Gerrit no longer tagging its service users rather than a change no bot has '
+                        . 'been near. Null where the log was not read.',
                 ],
             ]), 'The changes that matched, newest activity first.'),
             'unavailable' => [
@@ -270,11 +335,12 @@ final class GerritLookup extends ReadOnlyTool
         $issue = is_string($args['issue'] ?? null) ? trim($args['issue']) : '';
         $change = is_string($args['change'] ?? null) ? trim($args['change']) : '';
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 10;
+        $messages = is_string($args['messages'] ?? null) ? trim($args['messages']) : 'none';
 
         $gerrit = new Gerrit();
         $answer = $issue !== ''
             ? $gerrit->changesForIssue($issue, $limit)
-            : $gerrit->change($change, $limit);
+            : $gerrit->change($change, $limit, $messages);
 
         // The tracker is asked only where the review server answered
         // nothing for an issue, which is the one path where a second host
@@ -316,6 +382,8 @@ final class GerritLookup extends ReadOnlyTool
             $named = false;
             $fetchable = false;
             $ids = [];
+            $commented = false;
+            $voted = false;
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
                 $lines[] = sprintf('## %s (%s)', $entry['subject'], $entry['status']);
@@ -337,6 +405,26 @@ final class GerritLookup extends ReadOnlyTool
                 if ($entry['updated'] !== '') {
                     $lines[] = 'Last moved: ' . $entry['updated'];
                 }
+                foreach ($entry['labels'] ?? [] as $label) {
+                    $voted = true;
+                    $lines[] = self::vote($label);
+                }
+                $commented = $commented || ($entry['comments'] ?? []) !== [];
+                $lines = [...$lines, ...self::comments($entry, $issue === ''), ...self::log($entry, $messages)];
+            }
+            if ($commented) {
+                $lines[] = '';
+                $lines[] = '`unresolved` is the flag on the thread as its last writer left it, not a judgement '
+                    . 'that nobody answered: a comment can carry a reply and stay unresolved, and one can be '
+                    . 'resolved with nothing written under it. Which of them this review would otherwise make a '
+                    . 'second time is yours to read.';
+            }
+            if ($voted && $messages === 'none') {
+                $lines[] = '';
+                $lines[] = 'A vote a later patch set dropped is absent here rather than zero, and the copy '
+                    . 'condition that dropped it is written in the review log alone — ask again with '
+                    . '`messages: "people"` where a label stands at nothing and you need to know whether it '
+                    . 'ever stood elsewhere.';
             }
             // What the pair is, said where a reader would otherwise read two
             // changes with one subject as a duplicate — `D-ANS-080`.
@@ -378,6 +466,132 @@ final class GerritLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * One label, as a reviewer picking the change up reads it: where it stands
+     * and who put it there.
+     *
+     * The values carry their sign, because +1 and -1 are the vote and 1 is a
+     * number. A label nobody has voted on still lists its reviewers at 0, which
+     * is who was asked rather than who answered.
+     *
+     * @param array<string, mixed> $label
+     */
+    private static function vote(array $label): string
+    {
+        $held = [];
+        foreach ($label['votes'] as $vote) {
+            $held[] = sprintf('%s %s', $vote['voter'], $vote['value'] === 0 ? '0' : sprintf('%+d', $vote['value']));
+        }
+
+        return sprintf(
+            '%s: %s%s',
+            $label['label'],
+            match ($label['satisfied']) {
+                true => 'satisfied',
+                false => 'not satisfied',
+                default => 'not required',
+            },
+            $held === [] ? ' · nobody has been asked' : ' · ' . implode(' · ', $held),
+        );
+    }
+
+    /**
+     * The comments, and what an absent one means where the change said it has
+     * some.
+     *
+     * A reply names the comment it answers by an id nobody reads, so the author
+     * it answers is looked up here — which is also the field a caller has to
+     * hold against `unresolved` to read the thread at all.
+     *
+     * @param array<string, mixed> $entry
+     * @param bool $read whether the review was read for this change, which an
+     *                   issue search does for none of them
+     * @return list<string>
+     */
+    private static function comments(array $entry, bool $read): array
+    {
+        if ($entry['comments'] === null) {
+            return $read && $entry['commentCount'] > 0
+                ? ['', sprintf(
+                    'The %d comment%s on this change could not be read: the review server answered the change and '
+                        . 'not its comments, so this says nothing about whether one of them is unanswered.',
+                    $entry['commentCount'],
+                    $entry['commentCount'] === 1 ? '' : 's',
+                )]
+                : [];
+        }
+        if ($entry['comments'] === []) {
+            return [];
+        }
+
+        $by = [];
+        foreach ($entry['comments'] as $comment) {
+            $by[$comment['id']] = $comment['author'];
+        }
+
+        $unresolved = count(array_filter($entry['comments'], static fn(array $comment): bool => $comment['unresolved']));
+        $lines = ['', sprintf('### Comments (%d, %d unresolved)', count($entry['comments']), $unresolved)];
+        foreach ($entry['comments'] as $comment) {
+            $said = [$comment['author'], 'patch set ' . $comment['patchSet']];
+            if ($comment['file'] !== '/PATCHSET_LEVEL') {
+                $said[] = $comment['line'] === null
+                    ? $comment['file']
+                    : $comment['file'] . ':' . $comment['line'];
+            }
+            $said[] = $comment['unresolved'] ? 'unresolved' : 'resolved';
+            if (isset($by[$comment['inReplyTo']])) {
+                $said[] = 'answering ' . $by[$comment['inReplyTo']];
+            }
+            $lines[] = '';
+            $lines[] = '- ' . implode(' · ', $said);
+            $lines[] = self::quoted($comment['message']);
+        }
+
+        return $lines;
+    }
+
+    /**
+     * What somebody wrote, indented under the line that says who and where.
+     *
+     * The blank line inside a message keeps no indent, because trailing spaces
+     * are what a diff and a terminal both show and neither is what the message
+     * says.
+     */
+    private static function quoted(string $said): string
+    {
+        return implode("\n", array_map(
+            static fn(string $line): string => $line === '' ? '' : '  ' . $line,
+            explode("\n", $said),
+        ));
+    }
+
+    /**
+     * The review log, where it was asked for.
+     *
+     * @param array<string, mixed> $entry
+     * @return list<string>
+     */
+    private static function log(array $entry, string $messages): array
+    {
+        if ($entry['messages'] === null || $entry['messages'] === []) {
+            return [];
+        }
+
+        $lines = ['', sprintf(
+            '### Review log (%d messages, %d %s)',
+            count($entry['messages']),
+            (int) ($entry['botMessageCount'] ?? 0),
+            $messages === 'people' ? 'more a service user wrote held back' : 'of them a service user\'s',
+        )];
+        foreach ($entry['messages'] as $message) {
+            $lines[] = '';
+            $lines[] = sprintf('- %s · %s · patch set %d', $message['on'], $message['author'], $message['patchSet']);
+            $lines[] = self::quoted($message['message']);
+        }
+
+        return $lines;
     }
 
     /**

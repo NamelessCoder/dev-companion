@@ -44,9 +44,12 @@ and the change it is — and both are read before the code is read a second time
   it.
 - `typo3_gerrit_lookup` with the `Change-Id` the message carries. It answers
   whether the change is on the review server, at which patch set and with which
-  commit, against which branch and in what state. A comment somebody left on an
+  commit, against which branch and in what state — and what the review so far
+  is: the votes on it and the comments left on it. A comment somebody left on an
   earlier patch set and nobody answered is a finding of its own, and it is the
-  one this review would otherwise make a second time.
+  one this review would otherwise make a second time. What "unanswered" means is
+  yours to read: the flag on a thread and the reply under it are two facts and
+  both come back.
 
 **Both arguments come out of the commit message, and that is what makes them
 safe.** `Resolves:` is the Forge issue, `Change-Id:` is the change, and the

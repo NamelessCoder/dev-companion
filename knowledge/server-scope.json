@@ -31,8 +31,8 @@
       "scope": "core"
     },
     {
-      "topic": "Whether a patch for an issue already exists on the review server",
-      "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, the Change-Id, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id. That id is what a backport on a release branch keeps, and all that links it to the original. A change pushed as private is not visible to it.",
+      "topic": "Whether a patch for an issue already exists on the review server, and what state the review of it is in",
+      "depth": "The anonymous Gerrit REST API, read live: change number, Change-Id, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id, which is what a backport on a release branch keeps and all that links it to the original. A change read by name also carries the value every voter holds per label, the comments left on it with their patch set, file, line and thread state, and on request the review log, where the copy condition that dropped a vote is written. A change pushed as private is not visible to it.",
       "tools": [
         "typo3_gerrit_lookup"
       ],
@@ -271,9 +271,9 @@
       "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
     },
     {
-      "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
-      "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. It also answers the change's Change-Id and the changes sharing it, so a backport already pushed to a release branch is in the same answer. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those."
+      "topic": "Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
+      "why": "The review API is read without a credential, so a draft and a private change are outside it. The diff is not read over the API at all — the answer carries the ref that fetches the patch set, and the checkout is where a diff is read. Nothing here writes to Gerrit.",
+      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the diff. It also answers the change's Change-Id and the changes sharing it, so a backport already pushed to a release branch is in the same answer. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those."
     },
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

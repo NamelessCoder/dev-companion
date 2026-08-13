@@ -231,7 +231,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14
-- [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14
+- [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
 - [`D-KNW-076`][D-KNW-076] — What a new backend label costs before it resolves is a gap this server owns · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10

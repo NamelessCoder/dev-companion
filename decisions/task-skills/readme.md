@@ -12,6 +12,7 @@ one is added.
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
 - [`D-SKL-041`][D-SKL-041] — A patch carried onto current code is carried on a named branch · 2026-08-14
 - [`D-SKL-042`][D-SKL-042] — A report is copyable markdown, and the answer is where it goes · 2026-08-14
+- [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects, and a third is a call of its own · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
 - [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
@@ -40,7 +41,6 @@ one is added.
 - [`D-SKL-008`][D-SKL-008] — A review reads the review the patch is already in · 2026-08-03
 - [`D-SKL-009`][D-SKL-009] — The rule that keeps not landing is written as an act with an object · 2026-08-03 · confirmed
 - [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
-- [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03
 - [`D-SKL-012`][D-SKL-012] — Bringing a package's development installation into existence earns a task skill · 2026-08-03
 - [`D-SKL-013`][D-SKL-013] — The guide names the skill that owns the task · 2026-08-03
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
@@ -53,6 +53,7 @@ one is added.
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md
 [D-SKL-041]: skl-041-a-patch-carried-onto-current-code-is-carried-on-a-named-branch.md
 [D-SKL-042]: skl-042-a-report-is-copyable-markdown-and-the-answer-is-where-it-goes.md
+[D-SKL-043]: skl-043-a-rule-query-carries-two-subjects-and-a-third-is-a-call-of-its-own.md
 [D-SKL-035]: skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: skl-036-a-skill-runs-where-the-installer-put-it.md
 [D-SKL-033]: skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
@@ -81,7 +82,6 @@ one is added.
 [D-SKL-008]: skl-008-a-review-reads-the-review-the-patch-is-already-in.md
 [D-SKL-009]: skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
 [D-SKL-010]: skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
-[D-SKL-011]: skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md
 [D-SKL-012]: skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md
 [D-SKL-013]: skl-013-the-guide-names-the-skill-that-owns-the-task.md
 [D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed.md
@@ -93,6 +93,8 @@ one is added.
 
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
 - [`D-SKL-015`][D-SKL-015] — A step of the order is skipped only where it has already run or has nothing to find · 2026-08-04 → D-SKL-034
+- [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03 → D-SKL-043
 
 [D-SKL-040]: skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md
 [D-SKL-015]: skl-015-a-step-of-the-order-is-skipped-only-where-it-has-already-run-or-has-nothing-to-find.md
+[D-SKL-011]: skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md

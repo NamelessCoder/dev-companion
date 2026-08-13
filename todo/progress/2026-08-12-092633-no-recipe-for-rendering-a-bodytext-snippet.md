@@ -1,15 +1,20 @@
-# no recipe for rendering a bodytext snippet through lib.parseFunc_RTE, so the probe that decided t...
+# write down how a rendering change is proved in a throwaway functional test
 
 **Serves:** feedback/2026-08-12-092633-no-recipe-for-rendering-a-bodytext-snippet.md
-**Priority:** low
+**Priority:** normal
 **Branch:** todo/no-recipe-for-rendering-a-bodytext-snippet
 **Claimed:** 2026-08-13
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/records/judging.rst` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+Judged on 2026-08-14 as step 1a landing as a document — `D-KNW-071` carries the
+evidence, the boundary and what the priority rests on. Write
+`knowledge/documents/core/testing/` a page on making a rendering measurable:
+which cObj renders a snippet through a `lib.` object, which operator form takes
+multi-line markup, how output is forced out of a test that would otherwise print
+nothing, and the targeted invocation. Establish every step against
+`.checkouts/`, on all covered lines, and bind what does not hold on all of them
+— the feedback's own claim that a leading `<` in a value is a reference is
+contradicted by `LosslessTokenizer.php:432-451`, so what actually bit that
+session is the first thing to find out. Then route to it from the scratch-probe
+paragraph in `skills/typo3-core-patch-review/SKILL.md` and the throwaway-test
+rules in `skills/typo3-core-issue-triage/SKILL.md`, and archive the feedback in
+the same commit.

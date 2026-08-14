@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-224118-todo-home-refuses-a-decision-id-collision-with.md
 **Priority:** normal
+**Branch:** todo/name-both-files-and-the-renumber-in-the-duplicate-id-failure
+**Claimed:** 2026-08-14
 
 Judged as `D-FBK-046`: step 2, delivery. `bin/cli decisions:renumber` repairs
 the one collision this procedure predicts, and the assertion that catches it

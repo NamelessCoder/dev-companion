@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-215716-nothing-says-what-the-core-s-eslint-config.md
 **Priority:** normal
+**Branch:** todo/name-where-the-cores-typescript-style-is-decided
+**Claimed:** 2026-08-14
 
 Step 1a on the ladder, decided in `D-KNW-077`: the probe reaches
 `backend-typescript` and nothing there says where the style is decided. Write

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-13-215652-a-new-xlf-trans-unit-compiles-into-the-labels.md
 **Priority:** normal
+**Branch:** todo/write-the-backend-label-module-hint
+**Claimed:** 2026-08-14
 
 Judged as `D-KNW-076`: step 1a, the knowledge is missing. That entry establishes
 the two producers, the symptom string and the version boundary, so what is left

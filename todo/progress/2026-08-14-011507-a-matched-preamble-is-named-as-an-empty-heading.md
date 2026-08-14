@@ -2,6 +2,8 @@
 
 **Serves:** src/Result/
 **Priority:** low
+**Branch:** todo/a-matched-preamble-is-named-as-an-empty-heading
+**Claimed:** 2026-08-14
 
 A document's text above its first `##` is a section with no heading, and where
 the query matches it the answer names it as nothing: "of which the query matched

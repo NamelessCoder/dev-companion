@@ -1,7 +1,9 @@
-# todo:claim predicts the file two sessions will both open but not the decision id every one of the...
+# eight worktree sessions sent 369 calls and batched none of them, which is the rule AGENTS.md stat...
 
-**Serves:** feedback/2026-08-13-234208-todo-claim-predicts-the-file-two-sessions-will.md
+**Serves:** feedback/2026-08-13-224311-eight-worktree-sessions-sent-369-calls-and.md
 **Priority:** low
+**Branch:** todo/eight-worktree-sessions-sent-369-calls-and
+**Claimed:** 2026-08-14
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

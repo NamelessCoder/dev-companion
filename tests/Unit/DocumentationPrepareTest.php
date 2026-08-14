@@ -42,6 +42,11 @@ final class DocumentationPrepareTest extends TestCase
         self::assertSame(0, (new DocumentationPrepare())($output, $this->into));
         self::assertFileExists($this->into . '/source/index.rst');
         self::assertFileExists($this->into . '/source/server/tools/index.rst');
+        self::assertFileExists($this->into . '/source/usage/task-skills/typo3-extension-testing/index.rst');
+        self::assertFileEquals(
+            dirname(__DIR__, 2) . '/skills/typo3-extension-testing/SKILL.md',
+            $this->into . '/source/usage/task-skills/typo3-extension-testing/SKILL.md',
+        );
         self::assertStringContainsString($this->into . '/source — ', $output->fetch());
     }
 

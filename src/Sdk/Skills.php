@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Sdk;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Knowledge\Scope;
 use TYPO3\DevCompanion\Paths;
@@ -41,12 +43,13 @@ final class Skills
     /** The order every task starts in, which is a file in a skill only once it is published. */
     private const BASE = 'references/base.md';
 
-    /** @return array<int, array{id: string, title: string, path: string}> */
+    /** @return array<int, array{id: string, title: string, summary: string, path: string}> */
     public static function skills(): array
     {
         return array_map(static fn(string $id): array => [
             'id' => $id,
             'title' => self::title($id),
+            'summary' => self::summary($id),
             'path' => self::published($id),
         ], Installer::skills());
     }
@@ -169,6 +172,37 @@ final class Skills
         }
 
         return $id;
+    }
+
+    /**
+     * The task the skill declares itself for, as YAML readers receive it.
+     *
+     * This is exposed beside the title because the documentation index needs
+     * both. Reading it from the front matter keeps that catalog on the
+     * declaration the skill itself owns.
+     */
+    private static function summary(string $id): string
+    {
+        if (preg_match('/\A---\R(.*?)\R---\R/s', self::read($id), $block) !== 1) {
+            throw new \RuntimeException(sprintf('The %s skill has no front matter.', $id));
+        }
+
+        try {
+            $matter = Yaml::parse($block[1]);
+        } catch (ParseException $exception) {
+            throw new \RuntimeException(sprintf(
+                'The %s skill has invalid front matter: %s',
+                $id,
+                $exception->getMessage(),
+            ));
+        }
+
+        $summary = is_array($matter) ? ($matter['description'] ?? null) : null;
+        if (!is_string($summary) || $summary === '') {
+            throw new \RuntimeException(sprintf('The %s skill declares no description.', $id));
+        }
+
+        return $summary;
     }
 
     /**

@@ -121,27 +121,26 @@ Two fields the spec has stay absent, and the first is where the confusion is:
   ``composer.lock``, which has ``audience`` and ``priority`` alone. It is
   recorded as unavailable rather than faked through ``_meta``.
 
-Not generated
--------------
+What is generated
+-----------------
 
 ``bin/cli tools:index`` writes the tool reference because each page restates a
-description and two schemas that a class declares, and a hand copy stops
-describing the answer at the first change nobody carried across. The same
-generator here would have one line per entry to write, and those entries are
-already enumerated where they cannot go stale: the ``typo3://guides`` index is
-built from the same functions and its declared size is asserted against what is
-served, and ``knowledge/server-scope.json`` names every document and every skill
-with the scope it is offered under. A generated table would be a third copy, and
-its size column would change on every edit to a knowledge document.
+description and two schemas that a class declares. The installed skill catalog
+at :doc:`../../usage/task-skills/index` is generated for the same reason: it is
+where a person compares and reads the published workflows before installing.
+``bin/cli documentation:prepare`` copies the same Markdown the installer
+publishes into the site source and adds one embedding page per skill.
+
+There is no document-resource catalog in the manual. Those entries are already
+enumerated where they cannot go stale: the ``typo3://guides`` index is built
+from the same functions, and ``knowledge/server-scope.json`` names every
+document with the scope it is offered under. A generated table would be a third
+copy, and its size column would change on every edit to a knowledge document.
 
 What is written here is the half no generator produces: what a resource is, why
 the skill URI carries the file name, and why two fields of the spec are empty.
 That changes when the shape changes, which is a commit somebody writes prose for
 in any case.
-
-What would overturn it is a page that a reader has to compare entries on — a
-page per resource, or a table of what each one is worth. Then the argument for
-``tools:index`` applies and the generator earns itself.
 
 What holds it
 -------------

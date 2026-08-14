@@ -89,6 +89,15 @@ final class Site
             );
             $written[$published] = true;
         }
+        foreach (SkillSurface::files() as $file => $contents) {
+            $source = substr($file, strlen(Paths::root()) + 1);
+            $published = self::published($source);
+            self::write(
+                $target . '/' . $published,
+                str_ends_with($source, '.rst') ? self::page($source, $contents) : $contents,
+            );
+            $written[$published] = true;
+        }
 
         return ['written' => array_keys($written), 'removed' => self::sweep($target, $written)];
     }

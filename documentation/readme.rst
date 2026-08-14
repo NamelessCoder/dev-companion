@@ -47,6 +47,14 @@ TYPO3 Dev Companion
         One command writes the client entry and publishes the skills, into the
         two locations a client finds without being configured for it.
 
+    .. card:: :doc:`Choose a workflow <usage/task-skills/index>`
+        :label: Skills
+        :icon: actions-list
+        :action: Every published skill
+
+        Compare the task-specific workflows, then open one page containing its
+        complete Markdown instructions and every reference it uses.
+
     .. card:: :doc:`Ask it something <server/index>`
         :label: Server
         :icon: actions-book
@@ -270,10 +278,12 @@ procedure that is long enough to get wrong from memory.
         What is written down and where: how a feedback becomes a todo, what a
         requirement and a decision each hold, and how a forward run is measured.
 
-Part of two sections is written by nobody. ``server/tools/`` is rendered from
-the classes that declare each tool, down to the heading its recorded answer sits
-under, by ``bin/cli tools:index``; ``records/`` describes four working
-directories whose entries are the things themselves.
+Parts that repeat a declaration are generated from it. ``server/tools/`` is
+rendered from the classes that declare each tool by ``bin/cli tools:index``;
+``bin/cli documentation:prepare`` adds the published workflows in
+:doc:`usage/task-skills/index` from the skills the installer selects.
+``records/`` describes working directories whose entries are the things
+themselves.
 
 What does **not** belong here are those entries: what must hold is
 `requirements/ <../requirements/readme.md>`_, what a change assumed is

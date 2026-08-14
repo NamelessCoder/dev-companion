@@ -9,6 +9,8 @@ are agreeing to when it does.
 * :doc:`installing` — every client and layout
   ``bin/typo3-dev-companion install`` supports, and the configuration each one
   gets.
+* :doc:`task-skills/ <task-skills/index>` — every workflow the ordinary install
+  publishes, with its complete instructions and references.
 * :doc:`checking-it-answers` — the ladder from a written entry to a session that
   really has the tools, and what an answer says when the installation could not
   be reached.
@@ -23,10 +25,11 @@ offered from a standalone checkout alone. What it covers and what it declines to
 answer is ``typo3_server_scope``, which a client is handed at connect.
 
 Two things arrive with the install and are worth knowing before it runs. The
-skills are copied into the client's own skills directory, so they are files in
-your project from then on and a later release of this server does not correct
-them. And what the install writes into a client's configuration is guarded, so
-it can be written again without a second copy appearing beside the first.
+:doc:`task skills <task-skills/index>` are copied into the client's own skills
+directory, so they are files in your project from then on and a later release
+of this server does not correct them. And what the install writes into a
+client's configuration is guarded, so it can be written again without a second
+copy appearing beside the first.
 
 What the server can then be asked is :doc:`the server <../server/index>`.
 
@@ -34,5 +37,6 @@ What the server can then be asked is :doc:`the server <../server/index>`.
     :hidden:
 
     installing
+    task-skills/index
     checking-it-answers
     working-with-it

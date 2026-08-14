@@ -50,7 +50,8 @@ The manual reads as a site at
 and as files in [documentation/](documentation/readme.rst):
 
 - [Usage](documentation/usage/readme.rst) — every client and layout the install
-  supports, and what you are agreeing to when it runs.
+  supports, the task workflows it publishes, and what you are agreeing to when
+  it runs.
 - [Server](documentation/server/readme.rst) — what it can be asked, one page per
   tool, and where each answer comes from.
 - [Contributing](documentation/contributing/readme.rst) — working on this

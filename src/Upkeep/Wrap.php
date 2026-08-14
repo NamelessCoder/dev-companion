@@ -492,6 +492,12 @@ final class Wrap
         return implode("\n", self::lines($text, '', $continuation));
     }
 
+    /** A run of text whose first and following lines stand at the same indent. */
+    public static function indented(string $text, string $indent): string
+    {
+        return implode("\n", self::lines($text, $indent, $indent));
+    }
+
     /**
      * Greedy wrapping, with the spans that may not be broken kept whole.
      *

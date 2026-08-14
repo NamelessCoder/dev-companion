@@ -50,68 +50,184 @@ statement read the other way round, one heading per source with the tools it
 answers. What it settles is not what a tool is about but whether it can be asked
 at all in the state the machine is in.
 
-* :doc:`typo3_backend_module_lookup <typo3_backend_module_lookup>` — List the
-  backend modules registered in the TYPO3 installation you are working in, with
-  the extension that declares each one, its place in the module tree, its
-  labels, its access level, the route each one answers on and every sub-route it
-  registers.
-* :doc:`typo3_catalog_scope <typo3_catalog_scope>` — Report whether component
-  contracts come from the active installation or the bundled fallback, which
-  TYPO3 core revision the fallback catalogs were taken from, what they cover,
-  and how to re-check them.
-* :doc:`typo3_changelog_lookup <typo3_changelog_lookup>` — Search the TYPO3
-  changelog.
-* :doc:`typo3_commit_message_guide <typo3_commit_message_guide>` — Draft and
-  check a TYPO3 commit message.
-* :doc:`typo3_component_lookup <typo3_component_lookup>` — Look up TYPO3 backend
-  UI components by name or topic.
-* :doc:`typo3_configuration_lookup <typo3_configuration_lookup>` — Read an
-  effective TYPO3_CONF_VARS value from the installation you are working in.
-* :doc:`typo3_documentation_lookup <typo3_documentation_lookup>` — Search or
-  read the official live TYPO3 documentation for a covered TYPO3 line.
-* :doc:`typo3_extension_describe <typo3_extension_describe>` — Describe what one
-  installed extension registers.
-* :doc:`typo3_feedback_list <typo3_feedback_list>` — List improvement feedback
-  recorded via typo3_feedback_record, newest first, so they can be worked off.
-* :doc:`typo3_feedback_record <typo3_feedback_record>` — Leave feedback about a
-  gap, wrong answer, or missing capability of this knowledge server.
-* :doc:`typo3_fluid_namespace_list <typo3_fluid_namespace_list>` — List the
-  Fluid ViewHelper namespaces that are globally available in the TYPO3
-  installation you are working in, so a template knows which prefixes it may use
-  without declaring them.
-* :doc:`typo3_forge_lookup <typo3_forge_lookup>` — Read the TYPO3 issue tracker
-  at forge.typo3.org before writing a patch.
-* :doc:`typo3_gerrit_lookup <typo3_gerrit_lookup>` — Find out whether a TYPO3
-  core patch already exists and what state its review is in, from the review
-  server at review.typo3.org.
-* :doc:`typo3_hint_lookup <typo3_hint_lookup>` — Return hints for TYPO3 core
-  paths or task topics, grouped by section.
-* :doc:`typo3_icon_lookup <typo3_icon_lookup>` — Validate or find icon
-  identifiers in the TYPO3 backend icon registry of the installation you are
-  working in.
-* :doc:`typo3_label_lookup <typo3_label_lookup>` — Search the labels registered
-  in the TYPO3 installation you are working in.
-* :doc:`typo3_project_describe <typo3_project_describe>` — Describe the project
-  around the TYPO3 installation this server was started in.
-* :doc:`typo3_reference_list <typo3_reference_list>` — List the worked examples
-  the TYPO3 core ships of its own conventions, and what each one is a reference
-  for.
-* :doc:`typo3_rule_lookup <typo3_rule_lookup>` — Search the TYPO3 rules and
-  procedures this server carries, by topic.
-* :doc:`typo3_schema_lookup <typo3_schema_lookup>` — List the columns TYPO3
-  derives for a table from its TCA.
-* :doc:`typo3_script_lookup <typo3_script_lookup>` — Find notes for TYPO3 core
-  scripts and commands.
-* :doc:`typo3_server_scope <typo3_server_scope>` — Orientation for this server.
-* :doc:`typo3_system_extension_lookup <typo3_system_extension_lookup>` — Answer
-  whether an extension is part of the TYPO3 core, and on which versions.
-* :doc:`typo3_task_guide <typo3_task_guide>` — Build a task checklist enriched
-  with matching hints and relevant core checks.
-* :doc:`typo3_test_run_guide <typo3_test_run_guide>` — Say what this core
-  checkout needs before a test can run at all, and which
-  Build/Scripts/runTests.sh commands to run once it can.
-* :doc:`typo3_translation_domain_lookup <typo3_translation_domain_lookup>` —
-  Compute the translation domain an XLF file resolves to, from its path.
+.. The cards below are written by ``bin/cli tools:index``.
+
+.. grid:: wide
+
+    .. card:: :doc:`typo3_backend_module_lookup <typo3_backend_module_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        List the backend modules registered in the TYPO3 installation you are
+        working in, with the extension that declares each one, its place in the
+        module tree, its labels, its access level, the route each one answers on
+        and every sub-route it registers.
+
+    .. card:: :doc:`typo3_catalog_scope <typo3_catalog_scope>`
+        :label: Scope
+        :action: Open reference
+
+        Report whether component contracts come from the active installation or
+        the bundled fallback, which TYPO3 core revision the fallback catalogs
+        were taken from, what they cover, and how to re-check them.
+
+    .. card:: :doc:`typo3_changelog_lookup <typo3_changelog_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Search the TYPO3 changelog.
+
+    .. card:: :doc:`typo3_commit_message_guide <typo3_commit_message_guide>`
+        :label: Guide
+        :action: Open reference
+
+        Draft and check a TYPO3 commit message.
+
+    .. card:: :doc:`typo3_component_lookup <typo3_component_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Look up TYPO3 backend UI components by name or topic.
+
+    .. card:: :doc:`typo3_configuration_lookup <typo3_configuration_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Read an effective TYPO3_CONF_VARS value from the installation you are
+        working in.
+
+    .. card:: :doc:`typo3_documentation_lookup <typo3_documentation_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Search or read the official live TYPO3 documentation for a covered TYPO3
+        line.
+
+    .. card:: :doc:`typo3_extension_describe <typo3_extension_describe>`
+        :label: Describe
+        :action: Open reference
+
+        Describe what one installed extension registers.
+
+    .. card:: :doc:`typo3_feedback_list <typo3_feedback_list>`
+        :label: List
+        :action: Open reference
+
+        List improvement feedback recorded via typo3_feedback_record, newest
+        first, so they can be worked off.
+
+    .. card:: :doc:`typo3_feedback_record <typo3_feedback_record>`
+        :label: Record
+        :action: Open reference
+
+        Leave feedback about a gap, wrong answer, or missing capability of this
+        knowledge server.
+
+    .. card:: :doc:`typo3_fluid_namespace_list <typo3_fluid_namespace_list>`
+        :label: List
+        :action: Open reference
+
+        List the Fluid ViewHelper namespaces that are globally available in the
+        TYPO3 installation you are working in, so a template knows which
+        prefixes it may use without declaring them.
+
+    .. card:: :doc:`typo3_forge_lookup <typo3_forge_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Read the TYPO3 issue tracker at forge.typo3.org before writing a patch.
+
+    .. card:: :doc:`typo3_gerrit_lookup <typo3_gerrit_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Find out whether a TYPO3 core patch already exists and what state its
+        review is in, from the review server at review.typo3.org.
+
+    .. card:: :doc:`typo3_hint_lookup <typo3_hint_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Return hints for TYPO3 core paths or task topics, grouped by section.
+
+    .. card:: :doc:`typo3_icon_lookup <typo3_icon_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Validate or find icon identifiers in the TYPO3 backend icon registry of
+        the installation you are working in.
+
+    .. card:: :doc:`typo3_label_lookup <typo3_label_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Search the labels registered in the TYPO3 installation you are working
+        in.
+
+    .. card:: :doc:`typo3_project_describe <typo3_project_describe>`
+        :label: Describe
+        :action: Open reference
+
+        Describe the project around the TYPO3 installation this server was
+        started in.
+
+    .. card:: :doc:`typo3_reference_list <typo3_reference_list>`
+        :label: List
+        :action: Open reference
+
+        List the worked examples the TYPO3 core ships of its own conventions,
+        and what each one is a reference for.
+
+    .. card:: :doc:`typo3_rule_lookup <typo3_rule_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Search the TYPO3 rules and procedures this server carries, by topic.
+
+    .. card:: :doc:`typo3_schema_lookup <typo3_schema_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        List the columns TYPO3 derives for a table from its TCA.
+
+    .. card:: :doc:`typo3_script_lookup <typo3_script_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Find notes for TYPO3 core scripts and commands.
+
+    .. card:: :doc:`typo3_server_scope <typo3_server_scope>`
+        :label: Scope
+        :action: Open reference
+
+        Orientation for this server.
+
+    .. card:: :doc:`typo3_system_extension_lookup <typo3_system_extension_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Answer whether an extension is part of the TYPO3 core, and on which
+        versions.
+
+    .. card:: :doc:`typo3_task_guide <typo3_task_guide>`
+        :label: Guide
+        :action: Open reference
+
+        Build a task checklist enriched with matching hints and relevant core
+        checks.
+
+    .. card:: :doc:`typo3_test_run_guide <typo3_test_run_guide>`
+        :label: Guide
+        :action: Open reference
+
+        Say what this core checkout needs before a test can run at all, and
+        which Build/Scripts/runTests.sh commands to run once it can.
+
+    .. card:: :doc:`typo3_translation_domain_lookup <typo3_translation_domain_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Compute the translation domain an XLF file resolves to, from its path.
 
 .. toctree::
     :hidden:

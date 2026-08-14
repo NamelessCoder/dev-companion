@@ -48,10 +48,16 @@ final class ToolSurfaceTest extends TestCase
     {
         $pages = ToolSurface::pages();
         $index = (string) file_get_contents(ToolSurface::index());
+        self::assertStringContainsString('.. grid:: wide', $index);
 
         foreach (array_column(Registry::definitions(), 'name') as $name) {
             self::assertArrayHasKey(ToolSurface::file($name), $pages, $name . ' is offered and rendered nowhere');
             self::assertStringContainsString('<' . $name . '>`', $index, $name . ' is on no line of the index');
+            self::assertStringContainsString(
+                '.. card:: :doc:`' . $name,
+                $index,
+                $name . ' has no catalog card',
+            );
         }
 
         foreach (ToolSurface::written() as $written) {

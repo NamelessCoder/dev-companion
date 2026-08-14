@@ -35,8 +35,8 @@ final class ToolSurface
      */
     public const SOURCES_PAGE = 'answer-sources';
 
-    /** Where the generated listing begins, so the head above it survives a regeneration. */
-    private const LISTING_STARTS = '/^\* :doc:`typo3_.*$/ms';
+    /** The line above the generated cards, so the explanation survives a rewrite. */
+    private const LISTING_STARTS = ".. The cards below are written by ``bin/cli tools:index``.\n";
 
     public static function index(): string
     {
@@ -129,12 +129,16 @@ final class ToolSurface
     public static function indexPage(): string
     {
         $contents = (string) file_get_contents(self::index());
+        $start = strpos($contents, self::LISTING_STARTS);
+        if ($start === false) {
+            throw new \RuntimeException('The tool index has no generated-card marker.');
+        }
 
-        return (string) preg_replace(self::LISTING_STARTS, '', $contents) . self::listing();
+        return substr($contents, 0, $start) . self::LISTING_STARTS . "\n" . self::listing();
     }
 
     /**
-     * One line per tool: its name, its page, and the sentence its description
+     * One card per tool: its name, verb, page, and the sentence its description
      * opens with.
      *
      * The whole surface used to be here, and it was two thousand lines of field
@@ -142,13 +146,19 @@ final class ToolSurface
      */
     private static function listing(): string
     {
-        $lines = [];
+        $lines = ['.. grid:: wide', ''];
         foreach (self::alphabetical() as $definition) {
-            $lines[] = self::wrap(sprintf(
-                '* %s — %s',
-                Rst::doc($definition['name'], $definition['name']),
-                self::opening($definition['description']),
-            ), '  ');
+            $body = Rst::INDENT . Rst::INDENT;
+            $verb = ucfirst((string) substr(strrchr($definition['name'], '_') ?: '', 1));
+            $lines = [
+                ...$lines,
+                Rst::INDENT . '.. card:: ' . Rst::doc($definition['name'], $definition['name']),
+                $body . ':label: ' . $verb,
+                $body . ':action: Open reference',
+                '',
+                Wrap::indented(self::opening($definition['description']), $body),
+                '',
+            ];
         }
 
         // The rail of this section is the listing rather than a second list
@@ -160,7 +170,7 @@ final class ToolSurface
             self::alphabetical(),
         );
 
-        return implode("\n", $lines) . "\n\n.. toctree::\n" . Rst::INDENT . ":hidden:\n\n"
+        return implode("\n", $lines) . "\n.. toctree::\n" . Rst::INDENT . ":hidden:\n\n"
             . implode('', array_map(
                 static fn(string $page): string => Rst::INDENT . $page . "\n",
                 $pages,

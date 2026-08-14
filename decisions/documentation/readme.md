@@ -8,6 +8,7 @@ What was assumed about how they are written belongs here.
 See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-DOC-033`][D-DOC-033] — The derived half of a tool page stays committed · 2026-08-14
 - [`D-DOC-032`][D-DOC-032] — A section heading is the label a contents list shows · 2026-08-13
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
@@ -36,6 +37,7 @@ earns one.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-033]: doc-033-the-derived-half-of-a-tool-page-stays-committed.md
 [D-DOC-032]: doc-032-a-section-heading-is-the-label-a-contents-list-shows.md
 [D-DOC-024]: doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
 [D-DOC-025]: doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md

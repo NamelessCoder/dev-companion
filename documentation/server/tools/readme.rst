@@ -45,10 +45,10 @@ included. Absolute paths in a recorded answer are written as ``<repository>``,
 
 Each page names the sources that can answer that tool, under its annotations and
 at the foot of its description, and links them into
-:doc:`Where an answer comes from <answer-sources>` — which is the same statement
-read the other way round, one heading per source with the tools it answers. What
-it settles is not what a tool is about but whether it can be asked at all in the
-state the machine is in.
+:doc:`Where an answer comes from <../answer-sources>` — which is the same
+statement read the other way round, one heading per source with the tools it
+answers. What it settles is not what a tool is about but whether it can be asked
+at all in the state the machine is in.
 
 * :doc:`typo3_backend_module_lookup <typo3_backend_module_lookup>` — List the
   backend modules registered in the TYPO3 installation you are working in, with
@@ -142,4 +142,3 @@ state the machine is in.
     typo3_task_guide
     typo3_test_run_guide
     typo3_translation_domain_lookup
-    answer-sources

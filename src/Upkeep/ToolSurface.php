@@ -10,8 +10,8 @@ use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\Source;
 
 /**
- * The tool surface as a directory: one page per tool, and an index that reaches
- * them.
+ * The tool surface: one page per tool, an index that reaches them, and the
+ * server-level page defining their answer sources.
  *
  * A surface written out a second time by hand stops describing the answer at
  * the first change nobody carried across, so this renders it from
@@ -91,7 +91,7 @@ final class ToolSurface
     }
 
     /**
-     * The pages of this directory that belong to no single tool.
+     * The pages generated with this surface that belong to no single tool.
      *
      * Both `tools:index` and `tools:record` write the surface and then delete
      * what is not in what they wrote, so a page only one of them knows about is
@@ -103,7 +103,7 @@ final class ToolSurface
     {
         return [
             self::index() => self::indexPage(),
-            self::directory() . '/' . self::SOURCES_PAGE . '.rst' => self::sourcesPage(),
+            dirname(self::directory()) . '/' . self::SOURCES_PAGE . '.rst' => self::sourcesPage(),
         ];
     }
 
@@ -153,8 +153,8 @@ final class ToolSurface
 
         // The rail of this section is the listing rather than a second list
         // beside it, so a tool that is added reaches the menu by being in the
-        // registry and by nothing else. The sources page is in the tree because
-        // every tool page points at it and a document in none is a warning.
+        // registry and by nothing else. The server index carries the sources
+        // page, because it defines a server-wide boundary rather than a tool.
         $pages = array_map(
             static fn(array $definition): string => $definition['name'],
             self::alphabetical(),
@@ -163,7 +163,7 @@ final class ToolSurface
         return implode("\n", $lines) . "\n\n.. toctree::\n" . Rst::INDENT . ":hidden:\n\n"
             . implode('', array_map(
                 static fn(string $page): string => Rst::INDENT . $page . "\n",
-                [...$pages, self::SOURCES_PAGE],
+                $pages,
             ));
     }
 
@@ -308,7 +308,7 @@ final class ToolSurface
             ),
             '',
             ...Rst::image(
-                '../../images/answer-sources.svg',
+                '../images/answer-sources.svg',
                 'The five sources plotted against how much of the machine has to be running: bundled knowledge '
                 . 'and this server\'s own checkout answer with nothing running, packages need files on disk, the '
                 . 'installation source needs a booted installation, and network sources need outbound reach.',
@@ -319,7 +319,7 @@ final class ToolSurface
             $tools = [];
             foreach (self::alphabetical() as $definition) {
                 if (in_array($source->value, $definition['answersFrom'], true)) {
-                    $tools[] = Rst::doc($definition['name'], $definition['name']);
+                    $tools[] = Rst::doc($definition['name'], 'tools/' . $definition['name']);
                 }
             }
             $lines = [

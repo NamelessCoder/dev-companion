@@ -137,7 +137,7 @@ never handed a rule only the core has.
 
         The five sources an answer can come from, and what each one needs
         running before it can answer, are
-        :doc:`the tools' own table <server/tools/answer-sources>`.
+        :doc:`the server's source table <server/answer-sources>`.
 
     .. half::
 

@@ -10,8 +10,8 @@ What it can be asked, and where each answer comes from.
   with.
 * :doc:`resources/ <resources/index>` — the other surface a client is offered,
   the one that is picked out of a list rather than called mid-task.
-* :doc:`tools/answer-sources` — the five sources an answer can come from, and
-  what each one needs to be running before it can.
+* :doc:`answer-sources` — the five sources an answer can come from, and what
+  each one needs to be running before it can.
 * :doc:`knowledge-base` — what ships in ``knowledge/``, which is where almost
   every answer is read from.
 * :doc:`versions` — how a statement that holds for some TYPO3 versions and not
@@ -38,6 +38,7 @@ every answer names its source, its version binding and what it left out.
 
     tools/index
     resources/index
+    answer-sources
     knowledge-base
     versions
     asking-the-installation

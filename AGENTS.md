@@ -141,9 +141,9 @@ calls is the budget, and what one of them returns is nearly free. The 82
 worktree sessions of 2026-08-02 read 718 million cached input tokens back over
 5414 calls and wrote 5.9 million out — `D-FBK-020`.
 
-- **Send the calls that do not depend on each other together.** Not one of those
-  5414 was issued beside another, and most of what a session reads at the start
-  turns on nothing that came before it.
+- **Send the calls that do not depend on each other together.** Most of what a
+  session reads at the start turns on nothing that came before it, and the rule
+  moved the share issued beside another from 37% of the calls to 57.6%.
 - **Reach for a file with the client's own file and search tools.** Three
   quarters of the calls were `bash`, and half of those were `cat`, `sed`, `grep`
   and `ls` spelling out what one call answers.

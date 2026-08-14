@@ -19,6 +19,9 @@ somewhere else.
   5.9 million written out. The context a call re-reads was 124k at its peak and
   82k on average, so a call costs about as much as the session so far.
 - Not one of the 5414 was issued beside another: every turn carried exactly one.
+  **This one is wrong**, and the confirmations below say why: the shape it was
+  counted in cannot hold two calls, so it reads as one per turn whatever the
+  sessions did.
 - 4046 were `bash`, and 2092 of those were `cat`, `sed`, `grep` and `ls`. The
   file tool was reached for 624 times, the search tool 15 times across all 82
   sessions, and the glob tool never.
@@ -135,3 +138,47 @@ because the cached tokens fell by 15.6% while the calls fell by 15.8%, this run
 is consistent with the cost being per call and equally consistent with it being
 per token. What the run rules out is the case the **Wrong if** named — fewer
 calls bought at the same token cost — and that is the whole of what it settles.
+
+## Confirmed on 2026-08-14
+
+Measured a second time, on the eight worktree sessions of 2026-08-13, because
+`feedback/2026-08-13-224311` reports that those eight batched nothing at all.
+
+They batched. The feedback's dataset reproduces exactly — 369 calls between the
+claim at 22:20:42Z and the report at 22:43:11Z, 37 to 59 per session, 223 of
+them `bash`, 96 `Read`, 18 `Grep`, no `Glob`, and 79 opening with `ls`, `grep`,
+`sed`, `cat`, `head` or `wc` — so it is the same eight transcripts read again.
+Grouped on `message.id` rather than on the line, 96 of the 247 assistant
+messages carried more than one call, and 218 of the 369 calls were issued beside
+another. That is 59.1% against the 57.6% above.
+
+The miscount is the one corrected here on 2026-08-02, arrived at again by
+somebody who had not read that far down. Every JSONL line in this client's
+transcript carries exactly one `tool_use` block: over the whole board that night
+it is 1780 lines for 1780 calls, in 38 sessions. Counted per line, "one call per
+turn" is therefore an identity rather than a finding, and no run of sessions can
+move it. Grouped on the message, those 38 issued 43.7% of their calls beside
+another and 35 of them batched at least once. A session filed the same reading
+51 minutes later over 1234 calls, which makes three.
+
+None of the three **Wrong if** fired. Calls per session are 46.1 against the
+56.1 of the run of nine, and the cached tokens fell with them rather than
+staying put — 6.71M per session counted per line and 3.21M counted per message,
+against 7.59M and 3.85M. No batched message carried two calls against one path.
+`.checkouts/` was reached for 2.88 times per session in 5 of the 8 against 5.78
+in all nine, and that is the work rather than the rule: all eight were judging a
+feedback, which `documentation/records/judging.rst` describes as a run that
+reads this repository and establishes nothing about TYPO3.
+
+What the feedback reports and this reading confirms is the second bullet. 27.9
+`bash` calls per session against 27.2, 35.4% of them opening with a cheap
+command against 30.2%, `Glob` still never reached for. The rule moved that
+number once and has not moved it since.
+
+Nothing holds any of it and nothing here can: a call pattern lives in the
+client's transcripts, one directory per worktree outside this checkout, in the
+shape that produced this miscount three times. So it is measured per run and
+written into this entry, which is the answer to the feedback's question of what
+would hold the bullets. What was wrong was the evidence under the first bullet,
+and `AGENTS.md` carried the disproved sentence to every session until this
+commit.

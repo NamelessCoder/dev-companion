@@ -29,7 +29,7 @@
         the theme prints whatever it is handed; the licence it names is the one
         `composer.json` declares.
     -->
-    <project title="TYPO3 Dev Companion" copyright="© 2026 Benjamin Kott — MIT licensed"/>
+    <project title="TYPO3 Dev Companion" copyright="© 2026 The TYPO3 Project — MIT licensed"/>
     <!--
         The rail and the trail are the `toctree` each `index.rst` carries, which
         is what the corpus writes now that it can. `automatic-menu` stood here

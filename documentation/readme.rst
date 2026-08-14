@@ -37,7 +37,7 @@ TYPO3 Dev Companion
     changed in one cut on 2026-08-06. The tool names and the shapes they answer
     in can move the same way. Pin a commit where you depend on it.
 
-.. grid:: wide
+.. grid:: flush
 
     .. card:: :doc:`Install it <usage/installing>`
         :label: Usage
@@ -241,7 +241,7 @@ installation is not repeated as a pattern merely because it runs.
 Which section a page belongs to is decided by who reads it. One page per
 procedure that is long enough to get wrong from memory.
 
-.. grid:: wide
+.. grid:: flush
 
     .. card:: :doc:`Usage <usage/index>`
         :icon: actions-rocket

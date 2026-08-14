@@ -22,10 +22,12 @@ TYPO3 Dev Companion
     .. button-bar::
 
         .. button:: :doc:`Quickstart <usage/installing>`
+            :size: lg
             :icon: actions-rocket
 
         .. button:: GitHub
             :href: https://github.com/TYPO3/dev-companion
+            :size: lg
             :variant: secondary
             :icon: actions-brand-github
             :rel: external

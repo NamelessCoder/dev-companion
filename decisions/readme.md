@@ -231,9 +231,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
-- [`D-KNW-076`][D-KNW-076] — What a new backend label costs before it resolves is a gap this server owns · 2026-08-14
+- [`D-KNW-076`][D-KNW-076] — What a new backend label costs before it resolves is a gap this server owns · 2026-08-14 · confirmed
 - [`D-KNW-077`][D-KNW-077] — The TypeScript style hint names the config and carries what cannot be guessed · 2026-08-14
 - [`D-KNW-078`][D-KNW-078] — The corpus states the shape a Record-sourced row has · 2026-08-14
+- [`D-KNW-079`][D-KNW-079] — The corpus states what a new backend label costs · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
 - [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
 - [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
@@ -304,6 +305,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-076]: knowledge/knw-076-what-a-new-backend-label-costs-before-it-resolves-is-a-gap-this-server-owns.md
 [D-KNW-077]: knowledge/knw-077-the-typescript-style-hint-names-the-config-and-carries-what-cannot-be-guessed.md
 [D-KNW-078]: knowledge/knw-078-the-corpus-states-the-shape-a-record-sourced-row-has.md
+[D-KNW-079]: knowledge/knw-079-the-corpus-states-what-a-new-backend-label-costs.md
 [D-KNW-070]: knowledge/knw-070-backend-routing-internals-are-a-gap-this-server-owns.md
 [D-KNW-066]: knowledge/knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md
 [D-KNW-067]: knowledge/knw-067-the-javascript-test-layer-is-a-hint-and-a-test-query-still-answers-from-php.md

@@ -38,9 +38,8 @@ use TYPO3\DevCompanion\Upkeep\Site;
 )]
 final class DocumentationPreview
 {
-    /** What the theme is asked for, and where Composer finds a package no registry carries. */
+    /** The branch is named because the theme publishes no tagged release yet. */
     private const THEME = 'typo3/soul-guides-theme:dev-main';
-    private const VCS = 'https://github.com/TYPO3/soul-guides-theme';
 
     /** Where the renderer is fetched to, below the build directory it renders into. */
     private const RENDERER = 'renderer';
@@ -90,8 +89,8 @@ final class DocumentationPreview
      * one already.
      *
      * Composer has no way to require into an empty directory, so the manifest
-     * is written by `init` before the two commands that fill it in. It is not
-     * this repository's to keep: what asks for the theme is here, and the theme
+     * is written by `init` before the require that fills it in. It is not this
+     * repository's to keep: what asks for the theme is here, and the theme
      * brings phpDocumentor Guides with it.
      *
      * @return list<list<string>>
@@ -112,7 +111,6 @@ final class DocumentationPreview
 
         return [
             ['composer', 'init', $directory, '--no-interaction', '--name=typo3/dev-companion-render'],
-            ['composer', 'config', $directory, 'repositories.soul', 'vcs', self::VCS],
             ['composer', 'require', $directory, '--no-interaction', '--no-progress', self::THEME],
         ];
     }

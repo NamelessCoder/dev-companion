@@ -31,15 +31,14 @@ final class RequirementsTest extends TestCase
     #[Test]
     public function everyRequirementIsFoundUnderTheIdItGoesBy(): void
     {
-        $files = Requirements::files();
         $requirements = Requirements::all();
+        $duplicates = Requirements::duplicates();
 
         self::assertNotSame([], $requirements);
-        self::assertCount(
-            count($files),
-            $requirements,
-            'two requirement files claim the same id',
-        );
+        // The ids rather than the whole map: what a reader of this failure gets
+        // is the message, and PHPUnit's diff under it would repeat every path
+        // the message already names, in a tail `todo:home` cuts at 30 lines.
+        self::assertSame([], array_keys($duplicates), Requirements::collision($duplicates));
 
         foreach ($requirements as $id => $requirement) {
             self::assertSame($id, $requirement['heading'], $id . ' has another id in its heading');
@@ -54,6 +53,25 @@ final class RequirementsTest extends TestCase
                 $id . ' sits in a group its prefix does not name',
             );
         }
+    }
+
+    /**
+     * The message is all the reader of that failure gets, and there is no
+     * command to send them to — so it names both files and says that the move
+     * is by hand. Held here rather than by reading it, because the checkout it
+     * fails on is the one checkout where nothing collides.
+     */
+    #[Test]
+    public function aDuplicateIdNamesBothFilesAndThatNothingMovesOne(): void
+    {
+        $collision = Requirements::collision([
+            'R-COD-003' => ['requirements/code/cod-003-one.md', 'requirements/code/cod-003-two.md'],
+        ]);
+
+        self::assertStringContainsString('requirements/code/cod-003-one.md', $collision);
+        self::assertStringContainsString('requirements/code/cod-003-two.md', $collision);
+        self::assertStringContainsString('by hand', $collision);
+        self::assertSame('', Requirements::collision([]), 'a checkout without a collision says nothing');
     }
 
     /**

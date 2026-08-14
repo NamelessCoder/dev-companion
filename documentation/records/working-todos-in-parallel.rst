@@ -332,8 +332,10 @@ decision are numbered, every session reads the same last number, and ten of them
 reading it at once produce duplicates: the run of 2026-08-02 wrote ``D-ANS-009``
 twice and ``D-FBK-018`` twice. Nothing can prevent it and nothing needs to —
 ``composer ci`` in the second branch fails on *two decision files claim the same
-id* once the first is on ``main``, which is the rebase doing its job. Renumber
-the later one, fix what names it, amend, and the check goes quiet. Whichever
+id* once the first is on ``main``, which is the rebase doing its job. That
+failure names both files and the command below, so it is read where it lands
+rather than here. Renumber the later one, fix what names it, amend, and the
+check goes quiet. Whichever
 branch merged first keeps the number, so the order is decided by the order the
 work came home rather than by anybody arbitrating it.
 

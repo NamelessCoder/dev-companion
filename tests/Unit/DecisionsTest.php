@@ -33,11 +33,14 @@ final class DecisionsTest extends TestCase
     #[Test]
     public function everyDecisionIsFoundUnderTheIdItGoesBy(): void
     {
-        $files = Decisions::files();
         $decisions = Decisions::all();
+        $duplicates = Decisions::duplicates();
 
         self::assertNotSame([], $decisions);
-        self::assertCount(count($files), $decisions, 'two decision files claim the same id');
+        // The ids rather than the whole map: what a reader of this failure gets
+        // is the message, and PHPUnit's diff under it would repeat every path
+        // the message already names, in a tail `todo:home` cuts at 30 lines.
+        self::assertSame([], array_keys($duplicates), Decisions::collision($duplicates));
 
         foreach ($decisions as $id => $decision) {
             self::assertSame($id, $decision['heading'], $id . ' has another id in its heading');
@@ -52,6 +55,25 @@ final class DecisionsTest extends TestCase
                 $id . ' sits in a group its prefix does not name',
             );
         }
+    }
+
+    /**
+     * The collision is the one failure working in parallel predicts, and the
+     * message is all its reader gets — a size mismatch between two counts was
+     * what it used to be. Held here rather than by reading it, because the
+     * checkout it fails on is the one checkout where nothing collides.
+     */
+    #[Test]
+    public function aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne(): void
+    {
+        $collision = Decisions::collision([
+            'D-FBK-046' => ['decisions/feedback/fbk-046-one.md', 'decisions/feedback/fbk-046-two.md'],
+        ]);
+
+        self::assertStringContainsString('decisions/feedback/fbk-046-one.md', $collision);
+        self::assertStringContainsString('decisions/feedback/fbk-046-two.md', $collision);
+        self::assertStringContainsString('bin/cli decisions:renumber D-FBK-046', $collision);
+        self::assertSame('', Decisions::collision([]), 'a checkout without a collision says nothing');
     }
 
     /**

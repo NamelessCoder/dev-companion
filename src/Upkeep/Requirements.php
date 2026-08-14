@@ -84,6 +84,51 @@ final class Requirements
     }
 
     /**
+     * The ids more than one file claims, each with the files claiming it,
+     * relative to the root. `all()` is keyed by id and keeps whichever of the
+     * two it read last, so the collision is only visible from the files.
+     *
+     * @return array<string, array<int, string>>
+     */
+    public static function duplicates(): array
+    {
+        $claims = [];
+        foreach (self::files() as $path) {
+            $requirement = self::read($path);
+            $claims[$requirement['id']][] = basename(self::directory())
+                . '/' . $requirement['group'] . '/' . $requirement['file'];
+        }
+
+        return array_filter($claims, static fn(array $paths): bool => count($paths) > 1);
+    }
+
+    /**
+     * What the failure says, which is all a reader of it gets: `todo:home`
+     * prints the tail of a red `composer ci` and adds nothing to it. Nothing
+     * renumbers a requirement, so the message names the files and says that the
+     * move is by hand — `D-FBK-046`, and `D-DOC-015` for what by hand costs.
+     *
+     * @param array<string, array<int, string>> $duplicates
+     */
+    public static function collision(array $duplicates): string
+    {
+        if ($duplicates === []) {
+            return '';
+        }
+
+        $message = "two requirement files claim the same id\n";
+        foreach ($duplicates as $id => $paths) {
+            $message .= "\n    " . $id . "\n";
+            foreach ($paths as $path) {
+                $message .= '        ' . $path . "\n";
+            }
+        }
+
+        return $message . "\nNothing renumbers a requirement: the entry this branch added is moved by hand,"
+            . "\nand every file naming its id is read against `git diff main -- <file>`.";
+    }
+
+    /**
      * The requirements of one group, in the order its listing shows them.
      *
      * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>

@@ -82,3 +82,12 @@ the session is a size mismatch between two counts.
 - A requirement id collides and the two paths are not enough, because moving one
   by hand is the dangerous half. That is `D-DOC-015`'s fourth **Wrong if**
   reached from this side.
+
+## Covered by
+
+- `DecisionsTest::aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne` and
+  `RequirementsTest::aDuplicateIdNamesBothFilesAndThatNothingMovesOne`. What the
+  message says is held by a test rather than by reading it, because the checkout
+  the assertion fails on is the one checkout where nothing collides —
+  `Decisions::duplicates()` finds the files and `Decisions::collision()` writes
+  what the reader gets.

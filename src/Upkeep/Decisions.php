@@ -118,6 +118,51 @@ final class Decisions
     }
 
     /**
+     * The ids more than one file claims, each with the files claiming it,
+     * relative to the root. `all()` is keyed by id and keeps whichever of the
+     * two it read last, so the collision is only visible from the files.
+     *
+     * @return array<string, array<int, string>>
+     */
+    public static function duplicates(): array
+    {
+        $claims = [];
+        foreach (self::files() as $path) {
+            $decision = self::read($path);
+            $claims[$decision['id']][] = basename(self::directory())
+                . '/' . $decision['group'] . '/' . $decision['file'];
+        }
+
+        return array_filter($claims, static fn(array $paths): bool => count($paths) > 1);
+    }
+
+    /**
+     * What the failure says, which is all a reader of it gets: `todo:home`
+     * prints the tail of a red `composer ci` and adds nothing to it. So the id,
+     * both files and the command that repairs it stand in the message rather
+     * than on the page the reader would have to know to open — `D-FBK-046`.
+     *
+     * @param array<string, array<int, string>> $duplicates
+     */
+    public static function collision(array $duplicates): string
+    {
+        if ($duplicates === []) {
+            return '';
+        }
+
+        $message = "two decision files claim the same id\n";
+        foreach ($duplicates as $id => $paths) {
+            $message .= "\n    " . $id . "\n";
+            foreach ($paths as $path) {
+                $message .= '        ' . $path . "\n";
+            }
+            $message .= '    bin/cli decisions:renumber ' . $id . "\n";
+        }
+
+        return $message . "\nRenumber the entry this branch added; the command names what it cannot move.";
+    }
+
+    /**
      * The decisions of one group, or every one of them where no group is named.
      *
      * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}>

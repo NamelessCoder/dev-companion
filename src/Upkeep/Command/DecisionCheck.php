@@ -57,7 +57,8 @@ final class DecisionCheck
                 $problems[] = $id . ' has the heading of ' . $decision['heading'];
             }
             if (isset($seen[$id])) {
-                $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file;
+                $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file
+                    . ' — run bin/cli decisions:renumber ' . $id . ' on the one this branch added';
             }
             $seen[$id] = $file;
 

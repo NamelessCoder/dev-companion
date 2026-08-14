@@ -46,7 +46,59 @@
       },
       "The XLIFF linter symfony/translation ships is what these files are checked with, and a TYPO3 installation already has the package: it validates against the XLIFF schema rather than only parsing the XML. Its requireStrictFileNames constructor argument defaults to true, which is Symfony's own locale-suffix convention — messages.de.xlf — so at the default it rejects every locale-prefixed file with a mismatch between the file name and the target-language attribute. Pass false.",
       "Schema validity is the whole of what that linter establishes. That a translation declares target-language at all, that a source file is authored in English, and that a translation carries no unit its source has dropped are checks the project owns.",
-      "Two neighbours: translation-domain for how a label is referenced, label-retirement for one that is no longer used."
+      "Two neighbours: translation-domain for how a label is referenced, label-retirement for one that is no longer used.",
+      {
+        "text": "A unit a JavaScript module consumes arrives there later than it arrives in PHP — the l10n cache and a year-long browser cache sit between the file and the module. javascript-labels is that subject.",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "id": "javascript-labels",
+    "title": "Labels in a Backend JavaScript Module",
+    "domains": [
+      "xliff",
+      "typescript"
+    ],
+    "appliesTo": [
+      "~labels/",
+      "labels module",
+      "javascript labels",
+      "label in a JavaScript module",
+      "Label is not defined",
+      "LabelProvider",
+      "label-provider",
+      "labels.get(",
+      "language_domain",
+      "JavaScriptLanguageDomainProvider",
+      "Build/types/labels/",
+      "import labels",
+      "new label does not appear",
+      "label does not show up",
+      "label is missing at runtime"
+    ],
+    "hints": [
+      {
+        "text": "A module reaches a label by its translation domain: import labels from '~labels/core.bookmarks', then labels.get('groupType.global') with ICU placeholders. A key the imported bundle does not carry fails at runtime and nowhere earlier — label-provider.ts throws \"Label is not defined: <key>\". Nothing on disk answers that module name either: the backend resolves the ~labels/ import map prefix onto its language_domain route, where JavaScriptLanguageDomainProvider::createLanguageDomainResponse() builds the module per request out of LanguageService::getLabelsFromResource().",
+        "since": 14
+      },
+      {
+        "text": "So a trans-unit added to the backing XLF is not in the served bundle until the l10n cache is flushed. LocalizationFactory keys the parsed file on the domain, the locale and its fallback chain and on nothing about the file itself — no modification time, no content hash — so the entry written before the unit existed keeps answering. That cache is a SimpleFileBackend in group system: typo3 cache:flush --group=system.",
+        "since": 14
+      },
+      {
+        "text": "A browser hard reload is the second half, and it is owed after the flush rather than instead of it. The response carries Cache-Control: private with a max-age of one year, and the URL it was fetched from does not move when a label file changes: the route's cacheBustInfix is the package-dependent cache identifier hashed with JavaScriptLanguageDomain, which is the TYPO3 version, the project path and the installed package list. A flush alone leaves the page on the bundle it already has, which reads as a flush that did not help.",
+        "since": 14
+      },
+      {
+        "text": "In the core the build goes green over both steps. grunt scripts runs generate-types:labels, which reads the same XLF files and writes only the type stubs under Build/types/labels/ that Build/tsconfig.json maps ~labels/* onto — so the new key type-checks, the editor completes it and lint passes while the served bundle is still the old one. Those stubs are generated rather than committed, so nothing in a diff shows it either.",
+        "since": 14,
+        "scope": "core"
+      },
+      {
+        "text": "Two neighbours: translation-domain for the domain the module is named by, page-cache-flushing for what a change of another kind invalidates.",
+        "since": 14
+      }
     ]
   },
   {

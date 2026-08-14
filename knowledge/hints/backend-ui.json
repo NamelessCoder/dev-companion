@@ -18,6 +18,10 @@
     "hints": [
       "TypeScript source lives in Build/Sources/TypeScript/ and the JavaScript generated from it in the owning system extension's Resources/Public/JavaScript/. The generated file is committed, so a source change that is not built leaves the two disagreeing and the browser running the old one.",
       "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
+      {
+        "text": "A label bundle a module imports as ~labels/<domain> is not one of these generated files. It is an HTTP response the backend builds per request, so no build invalidates it and no rebuild fixes it — javascript-labels says what does.",
+        "since": 14
+      },
       "Keep TypeScript source and generated JavaScript in sync.",
       "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
       "Build/eslint.config.mjs decides the style, and CI=true ./Build/Scripts/runTests.sh -s lintTypescript settles a question about it. That file is the list: what it does not configure is untidiness rather than a lint failure.",

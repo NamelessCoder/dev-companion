@@ -1033,6 +1033,85 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('context-free id such as new', $result->text);
     }
 
+    /**
+     * `R-KNW-069`. The corpus answered how a label is authored and how the
+     * core's generated JavaScript goes stale, and the label bundle is neither:
+     * it is an HTTP response with a year on it, built from a cache that keys on
+     * nothing about the file. Both steps are owed and the build passes over both
+     * — `D-KNW-076`'s reading of `.checkouts/14.3` and `main`.
+     */
+    #[Test]
+    public function aNewBackendLabelIsToldWhatItCostsBeforeItResolves(): void
+    {
+        // The feedback's own query, which reached three hints about the layers
+        // either side of this one.
+        $reported = Hints::find(
+            [],
+            'JavaScript labels module cache flush after adding XLF trans-unit',
+            6,
+        );
+        self::assertSame('javascript-labels', $reported['matchedHints'][0]['id']);
+
+        // And the two phrasings the failure itself arrives in.
+        foreach ([
+            'Label is not defined at runtime after adding a new label',
+            'my new label does not show up in the backend JavaScript module',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('javascript-labels', $ids[0], $task);
+        }
+
+        $text = self::statementsOf('javascript-labels');
+
+        // The symptom, in the words it is searched with, and where the module
+        // that throws it comes from.
+        self::assertStringContainsString('Label is not defined: <key>', $text);
+        self::assertStringContainsString('createLanguageDomainResponse()', $text);
+
+        // The server half: why the flush is owed at all, and which group.
+        self::assertStringContainsString('no modification time, no content hash', $text);
+        self::assertStringContainsString('cache:flush --group=system', $text);
+
+        // The browser half, which the flush does not reach. Either statement
+        // alone leaves the caller where the report found them.
+        self::assertStringContainsString('hard reload', $text);
+        self::assertStringContainsString('cacheBustInfix', $text);
+        self::assertStringContainsString('reads as a flush that did not help', $text);
+
+        // And that nothing before runtime says so.
+        self::assertStringContainsString('generate-types:labels', $text);
+
+        // The two hints the reporting session was given both point here.
+        self::assertStringContainsString('javascript-labels', self::statementsOf('language-files'));
+        self::assertStringContainsString('javascript-labels', self::statementsOf('backend-typescript'));
+    }
+
+    /**
+     * The subject does not exist below 14: `JavaScriptLanguageDomainProvider` is
+     * in neither LTS checkout, which `D-KNW-067` read from the test side. The
+     * pointers go with it, because a neighbour naming a hint the caller cannot
+     * ask for is worse than no neighbour.
+     */
+    #[Test]
+    public function theLabelModuleIsWithheldFromTheMajorsThatHaveNone(): void
+    {
+        foreach ([12, 13] as $major) {
+            self::assertNull(Hints::byId('javascript-labels', $major), (string) $major);
+            self::assertStringNotContainsString(
+                'javascript-labels',
+                implode("\n", array_column((array) Hints::byId('language-files', $major)['hints'], 'text')),
+                (string) $major,
+            );
+            self::assertStringNotContainsString(
+                '~labels/',
+                implode("\n", array_column((array) Hints::byId('backend-typescript', $major)['hints'], 'text')),
+                (string) $major,
+            );
+        }
+
+        self::assertNotNull(Hints::byId('javascript-labels', 14));
+    }
+
     #[Test]
     public function aGermanSiteTaskReachesItsLabelLanguageSetup(): void
     {

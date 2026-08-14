@@ -68,12 +68,17 @@
             The four sections, and only those. The bar is where a reader goes
             from anywhere; the rail below it is the section they are in, and a
             manual with every page in the bar has said nothing.
+
+            No `label` on any of them: a section is called what its own
+            `:navigation-title:` says, so the name lives on the page the link
+            leads to and the two cannot drift apart. The attribute is for a link
+            whose target is not in this tree, which none of these is.
         -->
         <navigation>
-            <link href="/usage/index" label="Usage"/>
-            <link href="/server/index" label="Server"/>
-            <link href="/contributing/index" label="Contributing"/>
-            <link href="/records/index" label="Records"/>
+            <link href="/usage/index"/>
+            <link href="/server/index"/>
+            <link href="/contributing/index"/>
+            <link href="/records/index"/>
         </navigation>
         <footer>
             <social href="https://github.com/benjaminkott/typo3-dev-companion" label="GitHub"/>

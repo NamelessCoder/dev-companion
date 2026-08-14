@@ -20,6 +20,8 @@
       "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
       "Keep TypeScript source and generated JavaScript in sync.",
       "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
+      "Build/eslint.config.mjs decides the style, and CI=true ./Build/Scripts/runTests.sh -s lintTypescript settles a question about it. That file is the list: what it does not configure is untidiness rather than a lint failure.",
+      "@typescript-eslint/member-ordering is enforced, so where a member sits in a class is checked rather than left to taste, and adding a static method is where that lands. @typescript-eslint/no-explicit-any and @typescript-eslint/no-inferrable-types are off on purpose, so neither is a finding — imitating a neighbouring file turns a rule that is switched off into a diff nobody asked for.",
       "Frontend modules with state transitions should have focused JavaScript unit coverage."
     ]
   },

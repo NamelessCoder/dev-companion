@@ -46,7 +46,7 @@ writes into each of them, and every skill opens on that file.
 ## Documentation
 
 The manual reads as a site at
-[benjaminkott.github.io/typo3-dev-companion](https://benjaminkott.github.io/typo3-dev-companion/),
+[typo3.github.io/dev-companion](https://typo3.github.io/dev-companion/),
 and as files in [documentation/](documentation/readme.rst):
 
 - [Usage](documentation/usage/readme.rst) — every client and layout the install

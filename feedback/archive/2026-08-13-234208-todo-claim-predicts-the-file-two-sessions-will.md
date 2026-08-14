@@ -1,7 +1,8 @@
 ---
 date: 2026-08-13T23:42:08+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-14
 model: claude-opus-5[1m]
 tool: bincli, todoclaim, todohome, decisionsrenumber
 directory: /home/benji/projects/typo3-cms-mcp

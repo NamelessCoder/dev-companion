@@ -90,3 +90,15 @@ working directory, the message, and a session id apiece.
   being taken two at a time on work that turns out to share a file, in which
   case the overlap warning is reading the wrong signal: it counts entries a todo
   serves, and most of this queue serves a directory.
+
+## Since then
+
+The assumption was measured on 2026-08-13, over three rounds of eight claims: 24
+branches in one night, each brought home as its session reported. Five collided
+on a decision id and one pair collided in a file — the pair `todo:claim` had
+named in its overlap warning before the sessions started, which is what the
+second and third readings were added for. All of them were repaired in the
+worktree they happened in, and none cost a revert off `main`. What homing per
+branch bought is in the same measurement: a round's fastest session finished in
+5 minutes and its slowest in 25, and the slow one carried the file conflict, so
+it rebased onto a `main` that had already absorbed the other seven.

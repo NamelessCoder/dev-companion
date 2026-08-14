@@ -20,7 +20,7 @@ has to read to the end of.
   `:layout: marketing` renders a run of full-bleed bands with no rail, and
   `band`, `grid`, `teaser`, `card-grid` and `card` are directives
   `typo3/soul-guides-theme` ships — the manual for them is
-  [the theme's own](https://benjaminkott.github.io/typo3-soul-design-system/guides-theme/directives.html).
+  [the theme's own](https://typo3.github.io/soul-design-system/guides-theme/directives.html).
 - The field list has to stand above the title. `FieldListRule` takes one as
   document metadata only while no title has been found; below the title the same
   three words render as a definition list in the body of the page.

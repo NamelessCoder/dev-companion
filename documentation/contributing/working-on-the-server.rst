@@ -176,7 +176,7 @@ The front page is the one page set in that theme's ``marketing`` layout —
 takes a field list as metadata only while no title has been found, and what
 follows is a run of ``band`` directives with the page's claims in them. What a
 band, a grid, a card and a surface take is
-`the theme's own manual <https://benjaminkott.github.io/typo3-soul-design-system/guides-theme/directives.html>`_;
+`the theme's own manual <https://typo3.github.io/soul-design-system/guides-theme/directives.html>`_;
 nothing here renders any of them.
 
 Two things in ``guides.xml`` are load-bearing. ``theme="soul"`` selects a theme

@@ -40,7 +40,7 @@ final class DocumentationPreview
 {
     /** What the theme is asked for, and where Composer finds a package no registry carries. */
     private const THEME = 'typo3/soul-guides-theme:dev-main';
-    private const VCS = 'https://github.com/benjaminkott/typo3-soul-guides-theme';
+    private const VCS = 'https://github.com/TYPO3/soul-guides-theme';
 
     /** Where the renderer is fetched to, below the build directory it renders into. */
     private const RENDERER = 'renderer';

@@ -1,7 +1,7 @@
 ---
 id: D-AUD-008
 date: 2026-08-06
-status: open
+status: confirmed
 ---
 
 # D-AUD-008 — The server is called dev-companion, under the vendor TYPO3's own tooling uses
@@ -85,3 +85,17 @@ reads.
   operating an installation rather than building one.
 - A client configuration written before the cut is found broken by somebody who
   was never told, rather than by somebody who was.
+
+## Confirmed on 2026-08-14
+
+The vendor was granted. The repository is `TYPO3/dev-companion` on GitHub, and
+publishing under the `typo3/` vendor was answered yes with it, which is what the
+first **Wrong if** watched for and what the assumption above rested on. Every
+address that named the old one moved the same day: the `support` block in
+`composer.json`, which is where `Upkeep\Site` reads the repository the rendered
+site links into, the GitHub button and the footer link, and the `compatibility`
+line each published skill carries into somebody else's project. The site is
+`typo3.github.io/dev-companion`.
+
+The other three **Wrong if** are unread. Nothing has been published to Packagist
+yet, so the hard cut is still ahead of the install base it was judged against.

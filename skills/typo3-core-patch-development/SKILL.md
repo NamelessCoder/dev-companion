@@ -1,7 +1,7 @@
 ---
 name: typo3-core-patch-development
 description: 'Write a TYPO3 core patch and carry it to review: reproduce the issue on the branch you are fixing, make the change, cover it, write the changelog entry, run the project''s checks, and push to Gerrit. Also amending after review and backporting to a release branch.'
-compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/benjaminkott/typo3-dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
+compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
 # TYPO3 Core Patch Development

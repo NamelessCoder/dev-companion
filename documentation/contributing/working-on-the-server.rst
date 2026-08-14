@@ -205,7 +205,7 @@ no cache header. What is deployed does.
 
 ``.github/workflows/documentation.yml`` runs all of it on every push to ``main``
 and deploys the result to
-`GitHub Pages <https://benjaminkott.github.io/typo3-dev-companion/>`_. It needs
+`GitHub Pages <https://typo3.github.io/dev-companion/>`_. It needs
 ``Settings → Pages → Source: GitHub Actions`` on the repository: a deployment
 from a branch serves the root or ``/docs``, and this directory is neither. Node
 is there for the finish step alone, which is one bundled file and installs

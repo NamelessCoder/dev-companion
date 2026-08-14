@@ -20,7 +20,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
 - [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
-- [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06
+- [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06 · confirmed
 - [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
 - [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
 - [`D-AUD-007`][D-AUD-007] — The prose documents are named where a session already looks · 2026-08-04

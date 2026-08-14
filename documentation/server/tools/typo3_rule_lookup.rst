@@ -94,7 +94,9 @@ Answers with
     scope: string
     # The headings the query matched, where every match was in one document and the
     # answer is that document whole rather than the excerpts. Empty on every other
-    # answer, whose matches carry their own heading each.
+    # answer, whose matches carry their own heading each. The text above a page's
+    # first heading is no heading and is not one of them. A query that matched only
+    # that leaves this empty, and the answer names it in words.
     matchedHeadings: [string]
     # Documents that matched and were left out because they answer for the core
     # repository alone. Empty inside the core. Each is still readable in full as its

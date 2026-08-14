@@ -62,20 +62,48 @@ final class Prose
      */
     public static function wholePage(string $documentId, array $results): string
     {
-        $matched = array_values(array_unique(array_column($results, 'heading')));
+        $matched = self::matchedHeadings($results);
         $headings = Documents::headings($documentId);
 
         return self::BOUND_ELSEWHERE . "\n\n"
             . sprintf(
                 'Every section this query matched is in one document, so this is the page rather than the '
-                    . 'excerpts — %s (%s), %d headings, of which the query matched %s. It is the page as written, so '
+                    . 'excerpts — %s (%s), %d headings, of which the query matched %s%s. It is the page as written, so '
                     . "a section that holds on other majors than yours is in it and says so under its heading.\n\n",
                 $results[0]['title'],
                 Documents::uri($documentId),
                 count($headings),
-                implode(', ', $matched),
+                $matched === [] ? 'none' : implode(', ', $matched),
+                self::matchedTheOpening($results) ? ', and the opening above the first heading' : '',
             )
             . Documents::read($documentId);
+    }
+
+    /**
+     * The headings the query matched, for the answer that hands the page over.
+     *
+     * The text above a page's first heading is a section this corpus returns
+     * and carries no heading, so it is not one of these. Listed as one it named
+     * nothing at all: "of which the query matched The Probe, .". The count it
+     * is read against is `Documents::headings()`, which leaves the opening out
+     * for the same reason.
+     *
+     * @param array<int, array<string, mixed>> $results
+     * @return array<int, string>
+     */
+    public static function matchedHeadings(array $results): array
+    {
+        return array_values(array_unique(array_filter(array_column($results, 'heading'))));
+    }
+
+    /**
+     * Whether one of the matches is the text above the page's first heading.
+     *
+     * @param array<int, array<string, mixed>> $results
+     */
+    private static function matchedTheOpening(array $results): bool
+    {
+        return in_array('', array_column($results, 'heading'), true);
     }
 
     /**

@@ -61,7 +61,9 @@ final class RuleLookup extends ReadOnlyTool
         $schema['properties']['scope'] = Schema::scope();
         $schema['properties']['matchedHeadings'] = Schema::listOf(Schema::string(), 'The headings the query '
             . 'matched, where every match was in one document and the answer is that document whole rather than '
-            . 'the excerpts. Empty on every other answer, whose matches carry their own heading each.');
+            . 'the excerpts. Empty on every other answer, whose matches carry their own heading each. The text '
+            . 'above a page\'s first heading is no heading and is not one of them. A query that matched only '
+            . 'that leaves this empty, and the answer names it in words.');
         $schema['properties']['withheldDocuments'] = Schema::listOf(Schema::object([
             'id' => Schema::string(),
             'title' => Schema::string(),
@@ -170,9 +172,7 @@ final class RuleLookup extends ReadOnlyTool
             'matches' => $concentrated === null
                 ? Prose::records($results)
                 : Prose::pageRecords($concentrated, $results[0]['title']),
-            'matchedHeadings' => $concentrated === null
-                ? []
-                : array_values(array_unique(array_column($results, 'heading'))),
+            'matchedHeadings' => $concentrated === null ? [] : Prose::matchedHeadings($results),
             'scope' => $scope->value,
             'withheldDocuments' => $withheld,
             'alsoInHints' => array_map(

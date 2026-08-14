@@ -1011,6 +1011,40 @@ final class KnowledgeTest extends TestCase
         self::assertStringNotContainsString('typo3_rule_lookup with documentId', $first->text);
     }
 
+    /**
+     * The two calls reported on 2026-08-14, which read "of which the query
+     * matched The Probe, ." — the text above a page's first heading is a
+     * section this corpus returns, and it carries no heading.
+     *
+     * It is named for what it is rather than dropped: a query that matched it
+     * alone would otherwise be told the page it was handed matched nothing.
+     */
+    #[Test]
+    public function aMatchedOpeningIsNamedForWhatItIsRatherThanAsAHeading(): void
+    {
+        $headings = count(Documents::headings('core/testing/proving-a-rendering'));
+
+        $opening = Registry::call('typo3_rule_lookup', [
+            'query' => 'throwaway functional test renders one snippet and prints what came out TypoScript diff',
+            'targetVersion' => '15.0',
+        ]);
+        self::assertSame([], $opening->data['matchedHeadings']);
+        self::assertStringContainsString(
+            sprintf('%d headings, of which the query matched none, and the opening above the first heading.', $headings),
+            $opening->text,
+        );
+
+        $both = Registry::call('typo3_rule_lookup', [
+            'query' => 'throwaway functional test probe renders one snippet',
+            'targetVersion' => '15.0',
+        ]);
+        self::assertSame(['The Probe'], $both->data['matchedHeadings']);
+        self::assertStringContainsString(
+            sprintf('%d headings, of which the query matched The Probe, and the opening above the first heading.', $headings),
+            $both->text,
+        );
+    }
+
     /** A page every section of which is above says that, rather than naming none. */
     #[Test]
     public function anAnswerCarryingEveryHeadingOfAPageSaysThatToo(): void

@@ -73,6 +73,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18
+- [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
@@ -151,6 +152,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
+[D-ANS-082]: answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-079]: answers/ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
 [D-ANS-080]: answers/ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
 [D-ANS-077]: answers/ans-077-the-module-answer-carries-the-resolved-navigation-component-and-each-modules-routes.md
@@ -233,6 +235,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
 - [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a gap this server owns · 2026-08-18
+- [`D-KNW-086`][D-KNW-086] — Which PHP a covered version runs on is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -310,6 +313,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knowledge/knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
 [D-KNW-085]: knowledge/knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md
+[D-KNW-086]: knowledge/knw-086-which-php-a-covered-version-runs-on-is-a-gap-this-server-owns.md
 [D-KNW-080]: knowledge/knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knowledge/knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knowledge/knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

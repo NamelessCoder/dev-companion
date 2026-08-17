@@ -358,16 +358,19 @@ final class Hints
             );
         }
 
-        $candidates = array_values(array_filter(
-            self::load($target),
-            static function (array $hint) use ($selected, $withholding, $backendUi): bool {
-                if ($withholding && array_diff($hint['domains'], $backendUi) === []) {
-                    return false;
-                }
-
-                return array_intersect($hint['domains'], $selected) !== [];
-            },
-        ));
+        $inDomain = [];
+        $outside = [];
+        foreach (self::load($target) as $hint) {
+            if ($withholding && array_diff($hint['domains'], $backendUi) === []) {
+                continue;
+            }
+            if (array_intersect($hint['domains'], $selected) !== []) {
+                $inDomain[] = $hint;
+                continue;
+            }
+            $outside[] = $hint;
+        }
+        $candidates = array_merge($inDomain, self::crossingTheGate($outside, $inDomain, $taskText));
         if ($backendOnly) {
             // "sitepackage" is ownership context and "records" are what a
             // backend task works on. Neither asks for the package's frontend
@@ -480,6 +483,81 @@ final class Hints
             // an empty result to read as an absence (`D-KNW-055`).
             'availableHints' => self::available($scored, $refused, $limit),
         ];
+    }
+
+    /**
+     * The hints outside the selected domains a symptom reaches anyway.
+     *
+     * The gate asks the query where the work belongs, and while planning that is
+     * the same question the caller answered: a task names the layer it is in.
+     * Debugging separates them. A symptom names the layer the failure showed in
+     * and the mechanism that explains it lives in another one — "the content
+     * elements render in reverse order" is Fluid and TypoScript by its words,
+     * and `datahandler-placement`, which carries "reverse order" as curated
+     * vocabulary, is PHP.
+     *
+     * So a hint crosses on a phrase somebody curated onto it, and only where no
+     * selected hint claims that phrase too: the query is then asking something
+     * the layers it named cannot answer, which is what makes the crossing
+     * evidence rather than noise. The claim check is not a refinement — without
+     * it "unit test", curated on the PHPUnit hints as well as on the JavaScript
+     * one, puts test doubles back into a query about a `.ts` test and undoes
+     * `D-KNW-067`. `D-ANS-084` carries the measurement, and the two wider rules
+     * it rules out.
+     *
+     * Only the task text is read. A path carries its own domain in its
+     * extension, so a pattern matching one says nothing the gate did not have.
+     *
+     * @param array<int, array<string, mixed>> $outside
+     * @param array<int, array<string, mixed>> $inDomain
+     * @return array<int, array<string, mixed>>
+     */
+    private static function crossingTheGate(array $outside, array $inDomain, string $task): array
+    {
+        $claimed = [];
+        foreach ($inDomain as $hint) {
+            foreach (self::spelledOutPhrases($hint, $task) as $phrase) {
+                $claimed[$phrase] = true;
+            }
+        }
+
+        return array_values(array_filter(
+            $outside,
+            static fn(array $hint): bool => array_diff_key(
+                array_flip(self::spelledOutPhrases($hint, $task)),
+                $claimed,
+            ) !== [],
+        ));
+    }
+
+    /**
+     * The curated phrases of a hint the task writes out, each reduced to its
+     * terms so that the two hints claiming one phrase in different word forms
+     * claim the same phrase: `javascript-unit-tests` carries "unit test" and
+     * `unit-test-doubles` carries "unit tests", and compared as written those
+     * are two.
+     *
+     * A pattern of one word is not one of these. That is what a hint is filed
+     * under rather than what somebody anticipated being asked — `icon`, `menu`,
+     * `fal` — and a single word is what the domain gate is there to place.
+     *
+     * @param array<string, mixed> $hint
+     * @return array<int, string>
+     */
+    private static function spelledOutPhrases(array $hint, string $task): array
+    {
+        $spelled = [];
+        foreach ($hint['appliesTo'] as $pattern) {
+            $normalized = mb_strtolower((string) $pattern);
+            if (preg_match('/^[\p{L}\p{N}]+(?: [\p{L}\p{N}]+)+$/u', $normalized) !== 1) {
+                continue;
+            }
+            if (TermSearch::carriesWord($task, $normalized)) {
+                $spelled[] = implode(' ', TermSearch::terms($normalized)) ?: $normalized;
+            }
+        }
+
+        return $spelled;
     }
 
     private static function asksForFrontendRendering(string $haystack): bool

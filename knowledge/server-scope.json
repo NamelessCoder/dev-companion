@@ -378,6 +378,10 @@
       "call": "typo3_hint_lookup"
     },
     {
+      "when": "Debugging, where there is no subject yet — something renders, saves or builds wrong and which subsystem does it is the question",
+      "call": "typo3_hint_lookup with task written as the symptom, in the words the failure showed in"
+    },
+    {
       "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",
       "call": "typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result"
     },

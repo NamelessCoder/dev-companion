@@ -63,6 +63,11 @@ final class HintsTest extends TestCase
      * phrasings of somebody asking for a test, so a query about a JavaScript
      * one was answered with UnitTestCase, CSV fixtures and createStub as the
      * larger half of it. The path says which layer is meant.
+     *
+     * It is also the other half of `D-ANS-081`, where a curated phrase crosses
+     * the domain gate: "unit test" is curated on all three of these hints and on
+     * the JavaScript one, so the layer the path names answers the query itself
+     * and nothing crosses. A phrase let past on its own puts them back.
      */
     #[Test]
     public function aTypeScriptTestPathIsNotAnsweredWithPhpunit(): void
@@ -1630,6 +1635,31 @@ final class HintsTest extends TestCase
             'id',
         );
         self::assertNotContains($diluted, $part, 'half a query is a mention, whatever the other half was');
+    }
+
+    /**
+     * A symptom names the layer the failure showed in, and the hint that
+     * explains it lives in another one — `D-ANS-081`. The words of this query
+     * are Fluid and TypoScript, `datahandler-placement` is PHP, and "reverse
+     * order" is what its curator wrote down for exactly this sentence.
+     *
+     * What keeps the crossing to that case is that no selected hint claims the
+     * phrase. Where one does, the layers the query named can answer it
+     * themselves and nothing crosses — "unit test" is curated on the PHPUnit
+     * hints as well as on the JavaScript one, and
+     * aTypeScriptTestPathIsNotAnsweredWithPhpunit is where that half is held.
+     */
+    #[Test]
+    public function aSymptomReachesTheHintThatExplainsItFromAnotherDomain(): void
+    {
+        $result = Hints::find([], 'the content elements render in reverse order', 6);
+
+        self::assertContains('datahandler-placement', array_column($result['matchedHints'], 'id'));
+        self::assertNotContains(
+            Domains::PHP,
+            $result['domains'],
+            'the query says nothing about the layer the hint is in, which is the point',
+        );
     }
 
     #[Test]

@@ -49,7 +49,7 @@ final class HintLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately, and a statement is labelled where it obliges the other one.'],
-                'task' => ['type' => 'string', 'description' => 'Short task description or topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
+                'task' => ['type' => 'string', 'description' => 'Short task description or topic, in English. A symptom is a query this takes as readily as a subject: a hint is searched by its own statements, and a phrase it was indexed under reaches it from the layer that explains the failure rather than the one the failure showed in. Matching is lexical against English text, so another language reaches only the loanwords.'],
                 'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer lists the ids it did not return, so a subject a query missed can be requested by name rather than guessed at in other words.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". Statements that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration; where there is neither, nothing is filtered and every statement carries the versions it holds for.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::MAX_HINTS, 'default' => 6, 'description' => 'Maximum number of hints.'],
@@ -65,7 +65,7 @@ final class HintLookup extends ReadOnlyTool
             'scopes' => Schema::scopes('Which kind of work each path is. Paths of different scope are matched separately, so a hint that came back for one of them is about that path.'),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
-            'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
+            'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are returned only where the task spells out a phrase one of them was indexed under and no hint inside them claims it, which is how a symptom reaches the layer that explains it.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
             'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above, closest first: what the limit cut stands before what matched too little to return. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
@@ -142,7 +142,7 @@ final class HintLookup extends ReadOnlyTool
         $lines[] = VersionScope::line($targets);
         if ($result['domains'] !== []) {
             $lines[] = 'Domains: ' . implode(', ', $result['domains'])
-                . ' (hints outside these domains are not shown'
+                . ' (a hint outside these domains is shown only where the task names its own vocabulary'
                 . ($result['withheldCategories'] === []
                     ? ')'
                     : ', and ' . implode(' and ', $result['withheldCategories']) . ' was withheld inside them)');

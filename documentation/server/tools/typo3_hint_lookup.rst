@@ -23,7 +23,10 @@ Takes
     # are matched separately, and a statement is labelled where it obliges the other
     # one.
     paths: [string]  # optional
-    # Short task description or topic, in English. Matching is lexical against
+    # Short task description or topic, in English. A symptom is a query this takes
+    # as readily as a subject: a hint is searched by its own statements, and a
+    # phrase it was indexed under reaches it from the layer that explains the
+    # failure rather than the one the failure showed in. Matching is lexical against
     # English text, so another language reaches only the loanwords.
     task: string  # optional
     # Ask for one hint by its id, for example language-files, instead of matching.
@@ -69,7 +72,9 @@ Answers with
     # code lives under rather than drift. Empty when nothing was filtered by
     # version.
     targetVersions: [integer]  # optional
-    # Hints outside these domains are not returned.
+    # Hints outside these domains are returned only where the task spells out a
+    # phrase one of them was indexed under and no hint inside them claims it, which
+    # is how a symptom reaches the layer that explains it.
     domains: [string]
     # Categories that matched the domains but were left out because the task names
     # the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe
@@ -161,7 +166,7 @@ Text:
     Paths:
     - typo3/sysext/core/Classes/DataHandling/DataHandler.php
     Answered for TYPO3 v14: statements that do not hold there are left out.
-    Domains: php (hints outside these domains are not shown)
+    Domains: php (a hint outside these domains is shown only where the task names its own vocabulary)
 
     Hints:
     ### PHP
@@ -856,7 +861,7 @@ Text:
 
     Task: sass build
     Answered for TYPO3 v14: statements that do not hold there are left out.
-    Domains: css (hints outside these domains are not shown)
+    Domains: css (a hint outside these domains is shown only where the task names its own vocabulary)
 
     Hints:
     ### PHP
@@ -1365,7 +1370,7 @@ Text:
 
     Task: quantumflux
     Answered for TYPO3 v14: statements that do not hold there are left out.
-    Domains: php (hints outside these domains are not shown)
+    Domains: php (a hint outside these domains is shown only where the task names its own vocabulary)
 
     Hints:
     No hint matched. Name a path or a more specific topic, or ask for one of the ids below.

@@ -355,7 +355,12 @@ points at is real.
 
 .. code-block:: bash
 
-    bin/cli decisions:renumber <decision>
+    bin/cli decisions:renumber <the branch's own file>
+
+Name the file rather than the id. Both files carry the id, so the id says which
+number is meant and not which entry moves — the command refuses one two files
+claim, and names both. Two runs of 2026-08-18 moved the entry already on
+``main`` back when it picked between them itself.
 
 That moves the entry and every reference whose own line names its file, and
 prints the rest — the bare ones, which is what both mis-pointings were. Those

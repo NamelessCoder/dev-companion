@@ -113,3 +113,31 @@ unverified. It called `typo3_rule_lookup` at no point in the session.
   the work that produces an editor-facing view rather than to the surface.
 - A build session reports reading a guide off the `guides` array. Then the array
   was delivery after all, and what this entry moves bought nothing.
+
+## Covered by
+
+- `SkillTest::theBrowserStepNamesTheGuidesThatAnswerIt`
+
+## Since then
+
+The placement was settled on 2026-08-18, and it is the browser bullet of
+`typo3-content-element-development`. What decides it is who asks, which is
+`D-SKL-004`'s own test: the session that stopped had produced an editor-facing
+view and wanted to see it, and looking is not a test layer — `browser-check`
+opens by saying that a spec asserts what somebody already knows and that looking
+is the step before it. The other file is reached through a handoff for test
+infrastructure, so a name behind that handoff is read by a session that has
+already decided to build a suite, which this one never did.
+
+Both ids stand at the one step with what each alone answers, in the form
+`D-SKL-044` settled: `any/testing/browser-check` for an installation that
+already holds the content, `project/testing/playwright` for a repository with no
+browser suite yet. The crossing is named beside the second and nothing else
+moves — establishing that suite is still `typo3-extension-testing`'s work, which
+is what `R-SKL-003` holds.
+
+The demand did generalise past a review, and not as `R-SKL-022`. That
+requirement rests on a checklist item being answered in a report, which is what
+makes a review surface the one place a session cannot pass by; a build step has
+no such property, and this one was passed. So what holds this is `R-SKL-024`,
+written the same day and resting here.

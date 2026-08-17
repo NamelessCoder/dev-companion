@@ -85,7 +85,14 @@ changing a content element.
   and AssetCollector registration only. It does not execute JavaScript, apply
   CSS, measure layout or prove interaction. Report that boundary explicitly.
 - Add browser coverage when JavaScript interaction, editor workflow or
-  accessibility is part of the feature.
+  accessibility is part of the feature. Two guides answer that step and neither
+  is reconstructed here: `typo3_rule_lookup` with
+  `documentId="any/testing/browser-check"` for looking at the element in an
+  installation that already holds the content, which is the step before anything
+  asserts a backend preview, and with
+  `documentId="project/testing/playwright"` for a repository that has no browser
+  suite yet, which is the configuration, the backend login and a spec per
+  project, whole. Establishing that suite is `typo3-extension-testing`'s.
 - Re-run `typo3_extension_describe` after the change and report parser blind
   spots separately from implementation defects.
 

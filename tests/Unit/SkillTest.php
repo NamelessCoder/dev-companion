@@ -48,6 +48,7 @@ final class SkillTest extends TestCase
             'typo3_label_lookup',
             'typo3_icon_lookup',
             'typo3_component_lookup',
+            'typo3_rule_lookup',
             'typo3_commit_message_guide',
         ],
         'typo3-extension-testing' => [
@@ -2356,6 +2357,43 @@ final class SkillTest extends TestCase
 
         foreach ($judging as $name) {
             self::assertFileExists(Paths::root() . '/skills/' . $name . '/references/checklist.md');
+        }
+    }
+
+    /**
+     * The bullet named the moment and no way out of it. A build held both guide
+     * ids from `typo3_project_describe`, reached the point where six backend
+     * previews had to be seen, gave up on a scripted backend login and shipped
+     * them unverified — calling `typo3_rule_lookup` at no point in the session
+     * (`D-SKL-045`). Both halves are named here rather than one, because a
+     * caller holding the looking answer must not read the step as discharged
+     * (`D-SKL-044`).
+     */
+    #[Test]
+    public function theBrowserStepNamesTheGuidesThatAnswerIt(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-content-element-development/SKILL.md',
+        ));
+
+        self::assertStringContainsString('`documentId="any/testing/browser-check"`', $skill);
+        self::assertStringContainsString('`documentId="project/testing/playwright"`', $skill);
+        // What each one alone answers: the installation that can show it, and
+        // the suite a repository does not have yet.
+        self::assertStringContainsString('in an installation that already holds the content', $skill);
+        self::assertStringContainsString('a repository that has no browser suite yet', $skill);
+        // Only the second crosses a boundary, and the skill that owns the
+        // infrastructure is named where the crossing is — `R-SKL-003`.
+        self::assertStringContainsString('Establishing that suite is `typo3-extension-testing`', $skill);
+
+        // A named id that stopped resolving is a step routing to nothing.
+        foreach (['any/testing/browser-check', 'project/testing/playwright'] as $id) {
+            $document = Registry::call('typo3_rule_lookup', ['documentId' => $id])->data;
+            self::assertSame(
+                [$id],
+                array_column($document['matches'], 'documentId'),
+                $id . ' is named at the browser step and is no documentId',
+            );
         }
     }
 

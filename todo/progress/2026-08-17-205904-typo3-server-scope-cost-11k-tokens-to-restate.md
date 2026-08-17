@@ -1,7 +1,9 @@
-# nothing enumerates what a Composer install writes into the document root, so an ignore file writt...
+# typo3_server_scope cost 11k tokens to restate what typo3_project_describe had already answered on...
 
-**Serves:** feedback/2026-08-17-211141-nothing-enumerates-what-a-composer-install.md
+**Serves:** feedback/2026-08-17-205904-typo3-server-scope-cost-11k-tokens-to-restate.md
 **Priority:** low
+**Branch:** todo/typo3-server-scope-cost-11k-tokens-to-restate
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# the closing neighbour sentence is read at the moment the caller already has what it came for, and...
+# measured profile of one complete sitepackage-plus-distribution build: every call in order, the ro...
 
-**Serves:** feedback/2026-08-17-211306-the-closing-neighbour-sentence-is-read-at-the.md
+**Serves:** feedback/2026-08-17-211826-measured-profile-of-one-complete-sitepackage.md
 **Priority:** low
+**Branch:** todo/measured-profile-of-one-complete-sitepackage
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

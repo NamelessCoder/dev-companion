@@ -1,7 +1,9 @@
-# DDEV writes additional.php only once it recognises an installation, so the first start of a fresh...
+# the closing neighbour sentence is read at the moment the caller already has what it came for, and...
 
-**Serves:** feedback/2026-08-17-205850-ddev-writes-additional-php-only-once-it.md
+**Serves:** feedback/2026-08-17-211306-the-closing-neighbour-sentence-is-read-at-the.md
 **Priority:** low
+**Branch:** todo/the-closing-neighbour-sentence-is-read-at-the
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

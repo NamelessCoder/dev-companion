@@ -1,7 +1,9 @@
-# the index is consulted while planning and abandoned the moment a symptom appears, so four listed ...
+# nothing enumerates what a Composer install writes into the document root, so an ignore file writt...
 
-**Serves:** feedback/2026-08-17-205945-the-index-is-consulted-while-planning-and.md
+**Serves:** feedback/2026-08-17-211141-nothing-enumerates-what-a-composer-install.md
 **Priority:** low
+**Branch:** todo/nothing-enumerates-what-a-composer-install
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

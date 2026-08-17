@@ -1,7 +1,9 @@
-# typo3_server_scope cost 11k tokens to restate what typo3_project_describe had already answered on...
+# the index is consulted while planning and abandoned the moment a symptom appears, so four listed ...
 
-**Serves:** feedback/2026-08-17-205904-typo3-server-scope-cost-11k-tokens-to-restate.md
+**Serves:** feedback/2026-08-17-205945-the-index-is-consulted-while-planning-and.md
 **Priority:** low
+**Branch:** todo/the-index-is-consulted-while-planning-and
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

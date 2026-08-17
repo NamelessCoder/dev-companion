@@ -1,7 +1,9 @@
-# of the three lookups the server instructions say must never be guessed, only the one a skill repe...
+# the knowledge is indexed by subject, and a caller who is debugging has a symptom rather than a su...
 
-**Serves:** feedback/2026-08-17-210001-of-the-three-lookups-the-server-instructions.md
+**Serves:** feedback/2026-08-17-212010-the-knowledge-is-indexed-by-subject-and-a.md
 **Priority:** low
+**Branch:** todo/the-knowledge-is-indexed-by-subject-and-a
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# a workflow step named two hint ids, I fetched one, and the one I skipped held the answer to five ...
+# DDEV writes additional.php only once it recognises an installation, so the first start of a fresh...
 
-**Serves:** feedback/2026-08-17-211118-a-workflow-step-named-two-hint-ids-i-fetched.md
+**Serves:** feedback/2026-08-17-205850-ddev-writes-additional-php-only-once-it.md
 **Priority:** low
+**Branch:** todo/ddev-writes-additional-php-only-once-it
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

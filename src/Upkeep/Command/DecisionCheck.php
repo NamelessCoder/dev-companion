@@ -58,7 +58,7 @@ final class DecisionCheck
             }
             if (isset($seen[$id])) {
                 $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file
-                    . ' — run bin/cli decisions:renumber ' . $id . ' on the one this branch added';
+                    . ' — run bin/cli decisions:renumber on whichever of the two this branch added';
             }
             $seen[$id] = $file;
 

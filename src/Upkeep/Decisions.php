@@ -156,10 +156,11 @@ final class Decisions
             foreach ($paths as $path) {
                 $message .= '        ' . $path . "\n";
             }
-            $message .= '    bin/cli decisions:renumber ' . $id . "\n";
+            $message .= '    bin/cli decisions:renumber <the file this branch added>' . "\n";
         }
 
-        return $message . "\nRenumber the entry this branch added; the command names what it cannot move.";
+        return $message . "\nName the file rather than the id: both carry it, so the id says which number\n"
+            . 'is meant and not which entry moves. The command names what it cannot move.';
     }
 
     /**

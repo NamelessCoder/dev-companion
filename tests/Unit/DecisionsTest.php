@@ -72,7 +72,11 @@ final class DecisionsTest extends TestCase
 
         self::assertStringContainsString('decisions/feedback/fbk-046-one.md', $collision);
         self::assertStringContainsString('decisions/feedback/fbk-046-two.md', $collision);
-        self::assertStringContainsString('bin/cli decisions:renumber D-FBK-046', $collision);
+        // The id is what the message cannot end on: the command refuses one two
+        // files claim, because it says which number is meant and not which of
+        // them moves.
+        self::assertStringContainsString('bin/cli decisions:renumber <the file this branch added>', $collision);
+        self::assertStringNotContainsString('decisions:renumber D-FBK-046', $collision);
         self::assertSame('', Decisions::collision([]), 'a checkout without a collision says nothing');
     }
 

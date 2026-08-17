@@ -100,11 +100,13 @@ created for it.
    installation's own site configuration, and verify it again there.
 5. **Decide what the install wrote into the repository.** The installation's
    configuration, its writable state and its document root land in the Composer
-   root, which is the versioned repository itself. `typo3_hint_lookup` with
-   `id=project-configuration-files` and `id=project-build-and-scripts` says
-   which of them belong to the project and which are generated; the ignore rules
-   follow from that answer and are written before the first commit, not after
-   the first accidental one.
+   root, which is the versioned repository itself. `typo3_hint_lookup` owns
+   this: `id=project-configuration-files` for which of those files the project
+   owns and which the environment generates, `id=project-build-and-scripts` for
+   what surrounds the site rather than sitting in it — where the tooling and the
+   one-off scripts belong, how a colleague runs any of it, and what is never
+   committed. The ignore rules follow from both answers and are written before
+   the first commit, not after the first accidental one.
 
 ## The environment's settings against the installation's own
 

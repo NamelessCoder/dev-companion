@@ -2653,6 +2653,23 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('id=project-configuration-files', $skill);
         self::assertStringContainsString('knows only the services it provides itself', $flat);
 
+        // Step 5 names two ids, and `211118` fetched one: the shared clause
+        // described only the first, so the step read as discharged once that
+        // answer landed. Each id carries what it alone answers — D-SKL-044.
+        foreach (['project-configuration-files', 'project-build-and-scripts'] as $hint) {
+            self::assertMatchesRegularExpression(
+                '/`id=' . preg_quote($hint, '/') . '` for \w/',
+                $flat,
+                'step 5 names ' . $hint . ' without saying what it alone answers',
+            );
+            self::assertNotNull(
+                Hints::byId($hint),
+                'the skill defers to an id the corpus does not have',
+            );
+        }
+        // The step closes on both answers, so holding one cannot satisfy it.
+        self::assertStringContainsString('follow from both answers', $flat);
+
         // Named once in the description, which is what a client routes on, and
         // nowhere in the body: what that product does by default is the fact
         // that moves after this file is published into somebody else's project.

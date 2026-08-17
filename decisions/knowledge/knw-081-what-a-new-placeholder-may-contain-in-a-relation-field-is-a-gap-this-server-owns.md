@@ -1,7 +1,7 @@
 ---
 id: D-KNW-081
 date: 2026-08-17
-status: open
+status: confirmed
 ---
 
 # D-KNW-081 — What a NEW placeholder may contain in a relation field is a gap this server owns
@@ -74,3 +74,35 @@ relation, and the run reports success.
 - The drop is logged somewhere neither method shows. Two code paths were read,
   not a run, and "nothing anywhere reports it" is the part of the statement
   least able to survive being wrong.
+
+## Confirmed on 2026-08-18
+
+Two of the three **Wrong if** were read out on `.checkouts/14.3` and the
+statement went in as
+[`D-KNW-084`](knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md).
+
+The underscore costs nothing outside a relation value. The split on `_` happens
+in one place, the value-array loop of `processRemapStack()`, and everything else
+that reads a NEW id looks the whole string up: the datamap key, the pid and its
+`-NEW...` form, the MM parent in `dbAnalysisStoreExec()`, the container id in
+`updateFlexFormData()`. Five call sites push a value array onto the remap stack
+and four of them carry a `func` that consumes it — `category`, `group` and
+`select` with a `foreign_table`, `inline`, `file`. The fifth,
+`checkValueForInternalReferences()` for `transOrigPointerField` and
+`translationSource`, carries none, so the remapped array is never read and the
+spelling makes no difference there. No core test writes a NEW value into
+`l10n_parent`. So the rule is about what a relation field is handed, which is
+where the statement puts it.
+
+Nothing logs the drop, and the reading now covers every site rather than two.
+`RelationHandler` carries no logger at all; `readList()` drops a non-integer id
+without a word and `writeForeignField()` says nothing about an item that is no
+longer there. `processRemapStack()`, `checkValue_inline_processDBdata()`,
+`checkValue_file_processDBdata()` and `checkValue_group_select_processDBdata()`
+make no `log()` call on this path. Nothing compares the list before the drop with
+the list after it, so there is nothing that could report it. What the log does
+hold is the ordinary entry for the parent's own update, with the counter at 0.
+
+The first **Wrong if** stands: whether a session naming its datamap keys reaches
+the relation hint before it writes a relation field is not something reading the
+code can answer, and only a second feedback would show it.

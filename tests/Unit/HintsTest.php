@@ -2606,6 +2606,50 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A session that named its children `NEW_card1` lost every relation and got
+     * a clean run for it — `R-KNW-070`. The split is the one place a NEW value
+     * is read as two fields, and it is the same block on every covered major,
+     * so the statement carries no range.
+     */
+    #[Test]
+    public function aRelationValueSaysWhichPlaceholderSpellingSurvivesIt(): void
+    {
+        $statements = static fn(?int $major): string => implode("\n", array_column(
+            Hints::byId('datahandler-relations', $major)['hints'] ?? [],
+            'text',
+        ));
+        $text = $statements(null);
+
+        self::assertStringContainsString('may carry no underscore', $text);
+        self::assertStringContainsString('<table>_<uid> notation', $text, 'why the split happens');
+        self::assertStringContainsString('getUniqueId', $text, 'the id that always conforms');
+        self::assertStringContainsString(
+            'positioning pid and an MM parent id take an underscore',
+            $text,
+            'the constraint is on the relation value, not on the placeholder',
+        );
+
+        // The symptom, which is the only thing the reporting session had: no
+        // error, and rows that read as a plausible half-success.
+        self::assertStringContainsString('the run finishes clean', $text);
+        self::assertStringContainsString("parent's counter stays 0", $text);
+        self::assertStringContainsString('uid_foreign never set', $text);
+
+        foreach (Versions::majors() as $major) {
+            self::assertStringContainsString('may carry no underscore', $statements($major));
+        }
+
+        // The session had the symptom and not the rule, so those are the words
+        // it asks in.
+        $reached = Hints::find(
+            [],
+            'inline children created but the relation is empty, parent counter 0, uid_foreign 0, nothing logged',
+            6,
+        );
+        self::assertSame('datahandler-relations', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
+    /**
      * Picking the pid is the first question and the corpus answered only the
      * second one, so a session seeding a table of its own guessed at both the
      * page and the storage folder's role — `R-KNW-058`. What the doktype allows

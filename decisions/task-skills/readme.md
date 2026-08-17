@@ -7,6 +7,7 @@ order it works.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-SKL-044`][D-SKL-044] — A step that names two hint ids says what each one alone answers · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -48,6 +49,7 @@ one is added.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-044]: skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md
 [D-SKL-037]: skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

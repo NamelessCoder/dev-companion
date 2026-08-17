@@ -1,7 +1,8 @@
 ---
 id: D-ANS-081
 date: 2026-08-18
-status: open
+status: revoked
+revokedBy: D-ANS-084
 ---
 
 # D-ANS-081 — A symptom is answered across the domain it was observed in
@@ -96,3 +97,34 @@ in. Debugging is where they part.
 
 - `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`
 - `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
+
+## Confirmed on 2026-08-18
+
+The measurement this entry queued was run over 199 queries — the twelve of the
+sweep and the recorded misses beside them, every hint title, and every forward
+and contract prompt — comparing what each returned before and after. The first
+**Wrong if** did not hold: the sweep keeps its recall and its two negative
+controls, and no answer lost an entry. The second one did for both of the wider
+rules that were tried, which is why what shipped is neither of them.
+
+The third one holds for the query it was written about. "f:asset.css does not
+appear in the rendered page" still misses `fluid-layouts-sections`: Fluid is
+selected, the hint is inside it, and the query carries none of its words. That
+half of the feedback is a curation task, and it is what is left of the feedback.
+
+## Revoked on 2026-08-18
+
+By the change this entry asked for. The statement under the title is what the
+matcher did until that afternoon: the hint that explains the symptom is no
+longer gated out, so a reader who stops after the bold sentence would take it
+for a description of today. The evidence stays, because it is what the shape of
+the change was read off.
+
+What holds from here is
+[`D-ANS-084`](ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md)
+— the rule, the two wider ones it was measured against, and what each of those
+cost — and what must keep holding is
+[`R-ANS-031`](../../requirements/answers/ans-031-a-symptom-reaches-the-hint-that-explains-it.md).
+The successor's **Wrong if** is written against what can go wrong now, which is
+a hint crossing from a layer nobody asked about rather than one that cannot
+cross at all.

@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-17-205904-typo3-server-scope-cost-11k-tokens-to-restate.md
 **Priority:** normal
-**Branch:** todo/stop-sending-a-caller-holding-the-diagnostic-to-the-orientation-tool
-**Claimed:** 2026-08-17
 
 Take `typo3_server_scope reports the installation and its console.` out of the
 text `Result\Unsupported::because()` builds, and rewrite the

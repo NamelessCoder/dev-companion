@@ -9,6 +9,7 @@ one is added.
 
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17
+- [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
@@ -82,6 +83,7 @@ one is added.
 
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
+[D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md
 [D-KNW-071]: knw-071-proving-what-a-rendering-change-renders-is-a-procedure-this-server-carries.md
 [D-KNW-073]: knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md
 [D-KNW-075]: knw-075-how-fluid-resolves-an-object-path-is-a-gap-this-server-owns.md

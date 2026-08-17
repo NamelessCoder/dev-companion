@@ -26,11 +26,12 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  * somebody to.
  *
  * The order is the whole content. The rebase is what makes the merge a
- * fast-forward, because `main` moved while the session ran; `composer ci` runs
- * after that rebase and nowhere else, because that is the first moment the work
- * stands on what `main` has become; and the worktree comes down after the
- * merge, never before, because removed early it takes the only checkout the
- * rebase and the suite can run in.
+ * fast-forward, because `main` moved while the session ran; what the branch
+ * owes `main` is written between the rebase and `composer ci`, because the
+ * rebase is what lets a worktree get it right and the suite then runs on the
+ * tree that merges; and the worktree comes down after the merge, never before,
+ * because removed early it takes the only checkout the rebase and the suite can
+ * run in.
  *
  * One branch, and the next one starts again from the top. `main` moved when the
  * last merge landed, so a branch rebased before it is behind again — running two
@@ -111,9 +112,6 @@ final class TodoHome
             return 1;
         }
 
-        $moved = self::released($output, $home);
-        self::listings($output, $application, $root, $moved);
-
         $output->writeln('── repository:check');
         $worst = $application->doRun(new StringInput('repository:check'), $output);
 
@@ -170,6 +168,8 @@ final class TodoHome
         }
         $output->writeln('    rebased onto main');
 
+        self::owed($output, $path, $branch);
+
         [$green, $said] = Checkouts::run(['composer', 'ci'], $path);
         if ($green !== 0) {
             Cli::errors($output)->writeln(
@@ -206,101 +206,80 @@ final class TodoHome
     }
 
     /**
-     * The claim a merged branch left in `progress/`, put back.
+     * What the branch owes `main`, written into the branch's own commit.
      *
-     * A finished todo is a deletion the merge already carried, so what is still
-     * there is what the session did not finish — and `progress/` is a state for
-     * as long as a branch is live. The branch is gone by the time this runs, so
-     * the same file is now a lock on a todo with nothing behind it.
+     * Two things a session cannot get right and a rebased worktree can. The
+     * listing at the foot of a group readme is generated from every file in the
+     * group, so a session sees only its own new entry; `D-FBK-011` rejected
+     * letting a branch regenerate, and what it rejected was a session doing it
+     * mid-work, where the next rebase drops the conflict on whoever is second.
+     * After the rebase that objection is gone: the branch stands on what `main`
+     * has, nothing rebases onto it afterwards, and the fast-forward below is
+     * what carries the result.
      *
-     * @param array<int, string> $home the branches that came home
+     * The claim in `progress/` is the same shape. That state is for as long as
+     * a branch is live, and this branch is about to be deleted.
      *
-     * @return array<int, string> the paths the claims moved between
+     * Amended rather than committed beside the work: a listing line and the
+     * entry it lists are one change, and 37 of the 200 commits before
+     * 2026-08-18 were the separate commit saying otherwise — `D-FBK-011`.
+     *
+     * Before `composer ci`, so the suite runs on the tree that merges. A red
+     * one leaves all of this on the branch and none of it on `main`, and the
+     * next run of this command finds nothing left to write.
      */
-    private static function released(OutputInterface $output, array $home): array
+    private static function owed(OutputInterface $output, string $path, string $branch): void
     {
-        $moved = [];
+        $commands = [];
         foreach (Todo::progress() as $claim) {
-            if (!in_array($claim['branch'], $home, true)) {
-                continue;
+            // Read off `main`, which is where a claim names its branch, and
+            // released in the worktree, which is where the session may have
+            // written the question it stopped on. A todo it finished is a
+            // deletion this branch already carries, and there is nothing left
+            // to put back.
+            if ($claim['branch'] === $branch && is_file($path . '/' . $claim['path'])) {
+                $commands[] = ['todo:release', basename($claim['path'], '.md')];
             }
+        }
+        $commands[] = ['requirements:index'];
+        $commands[] = ['decisions:index'];
 
-            $from = $claim['path'];
-            $to = Todo::release($claim);
-            $moved[] = $from;
-            $moved[] = $to;
-            $output->writeln($claim['title']);
-            $output->writeln($claim['waitingOn'] === ''
-                ? '    released into the queue, its branch having come home'
-                : '    released into waiting, on ' . $claim['waitingOn']);
-            $output->writeln('');
+        foreach ($commands as $command) {
+            [$ran, $said] = Checkouts::run(array_merge([PHP_BINARY, $path . '/bin/cli'], $command), $path);
+            if ($ran !== 0) {
+                Cli::errors($output)->writeln(sprintf('    %s did not run: %s', $command[0], trim($said)));
+            }
         }
 
-        return $moved;
-    }
-
-    /**
-     * The listing at the foot of each group readme, which is the one thing a
-     * per-branch run cannot get right.
-     *
-     * It is generated from every file in the group, and a worktree sees only
-     * its own new entry — so entries merged from two branches leave it short by
-     * one, on the line every session is told not to touch. This is that command
-     * run before `requirements:check` has to ask for it, and the commit is here
-     * for the reason `todo:claim`'s is: a step left over for somebody to carry
-     * out by reading is the step that gets skipped.
-     *
-     * @param array<int, string> $moved the claim paths a release left behind
-     */
-    private static function listings(OutputInterface $output, Application $application, string $root, array $moved): void
-    {
-        $application->doRun(new StringInput('requirements:index'), $output);
-        $application->doRun(new StringInput('decisions:index'), $output);
-
-        $paths = $moved;
-        [, $changed] = Checkouts::run(['git', '-C', $root, 'status', '--porcelain', '--', 'requirements', 'decisions']);
+        // Only where those three write, because the branch's own tree was read
+        // clean above and everything dirty in them is what they just wrote.
+        [, $changed] = Checkouts::run(['git', '-C', $path, 'status', '--porcelain', '--', 'todo', 'requirements', 'decisions']);
+        $paths = [];
         foreach (preg_split('/\R/', trim($changed)) ?: [] as $line) {
-            $path = trim(substr(trim($line), 2));
-            if (str_ends_with($path, 'readme.md')) {
-                $paths[] = $path;
+            if (trim($line) !== '') {
+                $paths[] = trim(substr(trim($line), 2));
             }
         }
-
-        $output->writeln('');
         if ($paths === []) {
-            $output->writeln('The group listings were already what the merged entries make them.');
+            return;
+        }
+
+        [$done, $said] = Checkouts::run(array_merge(['git', '-C', $path, 'add', '--'], $paths));
+        if ($done === 0) {
+            [$done, $said] = Checkouts::run(array_merge([
+                'git', '-C', $path, 'commit', '--amend', '--no-edit', '--only', '--',
+            ], $paths));
+        }
+        if ($done !== 0) {
+            Cli::errors($output)->writeln('    owes main a rewrite nothing amended onto the branch: ' . trim($said));
 
             return;
         }
 
-        // Exactly the files this command wrote. The checkout it runs in is one
-        // somebody is working, and a commit that swept up their afternoon is
-        // worse than one nobody made.
-        [$staged, $said] = Checkouts::run(array_merge(['git', '-C', $root, 'add', '--'], $paths));
-        if ($staged !== 0) {
-            Cli::errors($output)->writeln('The listings are rewritten and nothing is staged: ' . trim($said));
-
-            return;
+        $output->writeln('    amended with what the branch owed main:');
+        foreach ($paths as $one) {
+            $output->writeln('        ' . $one);
         }
-
-        [$committed, $said] = Checkouts::run(array_merge([
-            'git', '-C', $root, 'commit', '--only',
-            '--message', '[TASK] Take up what the merged branches left for main to write',
-            '--message', "A group listing is generated from every file in the group, and a worktree\n"
-                . "sees only its own entry. A claim in progress/ is a state for as long as its\n"
-                . 'branch is live, and these branches have come home.',
-            '--',
-        ], $paths));
-        if ($committed !== 0) {
-            Cli::errors($output)->writeln('The listings are rewritten and not committed: ' . trim($said));
-
-            return;
-        }
-
-        foreach ($paths as $path) {
-            $output->writeln('    ' . $path);
-        }
-        $output->writeln('');
     }
 
     /**

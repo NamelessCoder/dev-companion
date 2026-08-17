@@ -62,3 +62,21 @@ green, never both.
 
 - Nothing: what this decides is that one assertion is absent from the suite, and
   the check it moved to is `bin/cli decisions:check`.
+
+## Since then
+
+The rejection above moved on 2026-08-18, and only the half of it about when. A
+session regenerating mid-work is still rejected for the reason given: two
+branches adding to one group insert conflicting lines into a block neither
+session wrote, and the procedure rebases rather than merges. `todo:home` now
+runs both index commands in the worktree after the rebase, where that objection
+is gone — the branch already stands on what `main` has, and nothing rebases onto
+one that is about to be fast-forwarded — and amends what they wrote onto the
+branch's own commit.
+
+What that replaces is the commit on `main` that used to carry the same rewrite.
+37 of the 200 commits before that day were
+`[TASK] Take up what the merged branches left for main to write`, each one
+holding a listing line separated by a commit boundary from the entry it lists.
+The claim a session left in `progress/` moved across with it, for the same
+reason and into the same commit.

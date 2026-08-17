@@ -188,11 +188,12 @@ there:
   generated from every file in the group, and a worktree can only see its own
   new entry. That means the command, ``bin/cli requirements:index`` or
   ``bin/cli decisions:index``, and it means the line: two sessions editing one
-  listing by hand conflict where two sessions leaving it alone do not. The
-  session that merges runs both commands once, and ``requirements:check`` says
-  so if it forgets. Nothing in ``composer ci`` says it, deliberately: a suite
-  that held the listing would fail every branch that adds an entry, on the one
-  line the branch is told not to touch — ``D-FBK-011``.
+  listing by hand conflict where two sessions leaving it alone do not.
+  ``todo:home`` runs both commands in the worktree once the rebase has made them
+  right, and amends what they wrote onto the branch's own commit. Nothing in
+  ``composer ci`` says it, deliberately: a suite that held the listing would
+  fail every branch that adds an entry, on the one line the branch is told not
+  to touch — ``D-FBK-011``.
 * **Say nothing about what another branch has done.** A sibling's state is the
   one fact a worktree cannot check, and writing it down is how a run of ten
   leaves two feedback answering for nothing. Twice now the same sentence has
@@ -255,7 +256,7 @@ none of it waits for the sessions still going. Nine branches held back until the
 tenth reports are nine that each need a bigger rebase when they finally move,
 against a ``main`` that kept going without them, and the only thing the waiting
 bought was a tidier-looking moment. There is no batch here: there are ten
-sequences of the same four steps, started whenever their session ends.
+sequences of the same steps, started whenever their session ends.
 
 **One at a time, rebased onto ``main`` and fast-forwarded — no merge commits.**
 
@@ -277,6 +278,8 @@ worktree made or merged some other way has to do the same.
 .. code-block:: bash
 
     git -C .worktrees/<name> rebase main
+    (cd .worktrees/<name> && bin/cli requirements:index && bin/cli decisions:index)
+    git -C .worktrees/<name> commit --amend --no-edit -- <what they rewrote>
     (cd .worktrees/<name> && composer ci)
     git merge --ff-only todo/<name>
     git worktree remove .worktrees/<name> && git branch -d todo/<name>
@@ -288,13 +291,13 @@ not what this procedure assumes, and that is worth stopping for. What comes out
 is one sequence of commits on ``main`` rather than a merge commit per claim
 saying nothing but that a claim existed.
 
-**The four steps belong to one branch, and the next branch starts them again
-from the top.** ``main`` moved when the last merge landed, so a branch rebased
-before it is behind again — running two merges from one rebase is the mistake
-the run of 2026-08-02 made, and ``--ff-only`` caught it, which is what it is
-for. And the worktree goes **after** the merge, never before: removed early it
-takes the only checkout the rebase and the suite can run in, and getting it back
-costs a fresh ``composer install``.
+**The sequence belongs to one branch, and the next branch starts it again from
+the top.** ``main`` moved when the last merge landed, so a branch rebased before
+it is behind again — running two merges from one rebase is the mistake the run
+of 2026-08-02 made, and ``--ff-only`` caught it, which is what it is for. And
+the worktree goes **after** the merge, never before: removed early it takes the
+only checkout the rebase and the suite can run in, and getting it back costs a
+fresh ``composer install``.
 
 **``composer ci`` runs in the worktree, after the rebase.** That is the first
 moment the session's work stands on what ``main`` has become, and it is the only
@@ -307,20 +310,22 @@ Where one branch fixes something the others are also failing on, that one goes
 first. Otherwise every merge behind it is checked against a suite that was
 already red, which is the one thing this order exists to avoid.
 
+**The rebase is also what makes the group listings writable, and they are
+written on the branch.** The listing at the foot of a group readme is generated
+from every file in that group, so a session working its todo sees only its own
+new entry — which is why it is told to leave the block alone. Once the branch
+stands on ``main``, nothing rebases onto it again and the two index commands
+produce exactly what the fast-forward should carry. What they wrote is amended
+onto the branch's own commit, because a listing line and the entry it lists are
+one change: written onto ``main`` afterwards instead, it was 37 of the 200
+commits before 2026-08-18, each saying nothing but that the one under it had
+been merged — ``D-FBK-011``.
+
 Then, on ``main``, which ``todo:home`` also carries out once the branch is in:
 
 .. code-block:: bash
 
-    bin/cli requirements:index && bin/cli decisions:index
     bin/cli repository:check
-
-That is something a per-branch run cannot see. The listing at the foot of a
-group readme is generated from every file in that group, so entries merged from
-two branches leave it short by one — ``bin/cli requirements:check`` says so and
-names the command, and the index commands above are that command run before it
-has to. What the rewrite changed is committed on the spot, exactly those files
-and nothing beside them, because a ``main`` left dirty by a merge is read as a
-half-finished change by whoever opens it next.
 
 What used to stand here as well was the queue: two sessions that each queued new
 work both read the same last number and both took it. There is no number now, so
@@ -335,9 +340,9 @@ twice and ``D-FBK-018`` twice. Nothing can prevent it and nothing needs to —
 id* once the first is on ``main``, which is the rebase doing its job. That
 failure names both files and the command below, so it is read where it lands
 rather than here. Renumber the later one, fix what names it, amend, and the
-check goes quiet. Whichever
-branch merged first keeps the number, so the order is decided by the order the
-work came home rather than by anybody arbitrating it.
+check goes quiet. Whichever branch merged first keeps the number, so the order
+is decided by the order the work came home rather than by anybody arbitrating
+it.
 
 **What is dangerous is the renumbering, not the collision.** Four runs of ten
 produced seven of them, and twice the files naming the old number did not all
@@ -377,12 +382,13 @@ reading, which is what a **Since then** carries, so the resolution is a heading
 each rather than a choice between them.
 
 **A claim left in ``progress/`` is released here**, and it is the one thing the
-merge does not carry. The session that ended on a question left its claim there
-on purpose — the branch was live and held the half that is done — and deleting
-that branch is what turns the same file into a lock on a todo with nothing
-behind it. ``todo:home`` therefore releases what the merge left standing, on the
-branch it has just deleted — to ``waiting/`` where the claim carries a question,
-to the queue where it carries none. ``bin/cli todo:release <name>`` is the same
-move made by hand, for a claim whose branch went some other way, and
+session could not release itself. It ended on a question and left the claim
+there on purpose — the branch was live and held the half that is done — and
+deleting that branch is what turns the same file into a lock on a todo with
+nothing behind it. ``todo:home`` therefore releases what the session left
+standing, in the worktree and beside the listings, so the release reaches
+``main`` in the commit the work is in — to ``waiting/`` where the claim carries
+a question, to the queue where it carries none. ``bin/cli todo:release <name>``
+is the same move made by hand, for a claim whose branch went some other way, and
 ``bin/cli todo:check`` reports a claim whose branch is gone so that forgetting
 costs a line rather than a todo.

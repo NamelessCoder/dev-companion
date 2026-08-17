@@ -26,10 +26,10 @@ use TYPO3\DevCompanion\Upkeep\Command\TodoHome;
  * one mistake it warns about twice over.
  *
  * Every case here stops before the merge, and that is deliberate rather than
- * partial. A run that merged would rewrite the group listings and commit them,
- * which is a write into a directory this repository keeps — `R-COD-003`. What
- * can be held without writing is the half that decides whether anything is
- * written at all, and it is the half that goes wrong.
+ * partial. A run that merged would fast-forward the checkout the suite is
+ * running in, which is a write into a directory this repository keeps —
+ * `R-COD-003`. What can be held without writing is the half that decides
+ * whether anything is written at all, and it is the half that goes wrong.
  */
 final class TodoHomeTest extends TestCase
 {
@@ -140,6 +140,36 @@ final class TodoHomeTest extends TestCase
         self::assertCount(2, $order, 'the rebase and the suite did not each run once');
         self::assertStringContainsString('rebase', $order[0]);
         self::assertStringContainsString('composer', $order[1]);
+    }
+
+    /**
+     * What the branch owes `main` goes into the branch's own commit, and the
+     * two steps around it are what put it there: the rebase is what lets a
+     * worktree write a group listing at all, and the suite then runs on the
+     * tree that merges. Committed onto `main` afterwards instead, it was 37 of
+     * the 200 commits before 2026-08-18 — `D-FBK-011`.
+     */
+    #[Test]
+    public function whatTheBranchOwesMainIsAmendedOntoItBetweenTheRebaseAndTheSuite(): void
+    {
+        $this->gitThatAnswers([
+            'status --porcelain -- todo' => " M decisions/readme.md\n",
+            'composer' => [1, "FAILURES!\n"],
+        ]);
+
+        (new TodoHome())(new BufferedOutput(), Cli::application(), [self::NAME]);
+
+        $order = array_values(array_filter(
+            array_map(static fn(array $command): string => implode(' ', $command), $this->ran),
+            static fn(string $line): bool => (bool) preg_match('/rebase main|decisions:index|commit --amend|composer/', $line),
+        ));
+
+        self::assertCount(4, $order, 'the rebase, the index, the amend and the suite did not each run once');
+        self::assertStringContainsString('rebase main', $order[0]);
+        self::assertStringContainsString('decisions:index', $order[1]);
+        self::assertStringContainsString('commit --amend', $order[2]);
+        self::assertStringContainsString('composer', $order[3]);
+        self::assertSame([], $this->matching('merge'), 'a red branch was merged');
     }
 
     /**

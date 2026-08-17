@@ -181,3 +181,15 @@ warning at 222 that no other value is supported).
 
 So the layout does not decide whether the file appears, and a card that claimed
 it did was wrong when it was worked off.
+
+**Since then**, on 2026-08-18, a session disputed one sentence of the reading
+above. `feedback/2026-08-17-205850` reports that DDEV writes the file only once
+it recognises an installation, so the first start of a clone with no `vendor/`
+writes nothing and the site answers 1396795884 until the project is started
+again after the dependencies are installed. That is a second thing stopping the
+file being written, where this entry's confirmation found only
+`disable_settings_management`. The reading was of the writer rather than of what
+calls it, and nothing here settles which of the two is right, so the statement
+of this entry stands and
+[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
+carries the question.

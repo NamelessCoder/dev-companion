@@ -150,12 +150,12 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-14 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
-whose console could not be reached: the installation requires PHP 8.5.0 and no
-interpreter on this machine provides it (running 8.3.23). Nothing checks what
-is below this heading; everything above it is derived from the class that
-answers the call, and ``bin/cli tools:check`` holds it.
+Recorded on 2026-08-17 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
+whose console could not be reached: <installation> has no TYPO3 console —
+none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and ``bin/cli tools:check`` holds it.
 
 gerrit: has this issue a patch already
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

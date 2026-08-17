@@ -125,7 +125,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-12 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-17 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -160,8 +160,8 @@ Text:
     The tracker's own API, read live. By number: subject, tracker, status, target version, who it is assigned to, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported. As a backlog: the unresolved issues of the core project, ordered by when they were filed or by how long nobody has touched them, narrowed by tracker, by area in the caller's own words, and by date, each with who holds it and both dates, and the count of everything that matched beside the page. The areas are read from the project itself, so a word naming none is answered with the ones that exist.
     Tools: typo3_forge_lookup
     Source: https://forge.typo3.org (network) (core)
-    ## Whether a patch for an issue already exists on the review server
-    The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. A change pushed as private is not visible to it.
+    ## Whether a patch for an issue already exists on the review server, and what state the review of it is in
+    The anonymous Gerrit REST API, read live: change number, Change-Id, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id, which is what a backport on a release branch keeps and all that links it to the original. A change read by name also carries the value every voter holds per label, the comments left on it with their patch set, file, line and thread state, and on request the review log, where the copy condition that dropped a vote is written. A change pushed as private is not visible to it.
     Tools: typo3_gerrit_lookup
     Source: https://review.typo3.org (network) (core)
     ## Commit messages
@@ -172,6 +172,10 @@ Text:
     Every suite this knowledge base knows, with the command, the targeted form, and when to use it. The script is part of the core repository, so paths that read as a project or third-party extension get the boundary stated instead of a command.
     Tools: typo3_test_run_guide, typo3_script_lookup
     Source: knowledge/test-suite-hints.json, typo3://guides/core/testing/scripts (core)
+    ## Proving what a change to TypoScript, ext_localconf TypoScript or lib.parseFunc renders
+    The throwaway functional test that renders one snippet and prints what came out: the cObj that puts a snippet through parseFunc, the operator forms a value has to be written in, how output is got out of a test that would otherwise print nothing, the targeted invocation, and where the RTE setup comes from per version. It says nothing about what parseFunc does to a snippet, which is what the probe is for.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/core/testing/proving-a-rendering (core)
     ## The PHPUnit configuration an extension runs its own tests with
     The two files a package writes into Build/, whole and ready to write out, one variant per PHPUnit the paired typo3/testing-framework release admits. Beside them: which two attributes a copy has to correct and why the bootstrap is referenced rather than copied, the environment a functional run reads its connection from, and what a finished suite leaves behind. It does not set the harness up for you and it names no dependency constraint — which release resolves is the solver's answer, not this document's.
     Tools: typo3_rule_lookup, typo3_hint_lookup
@@ -274,9 +278,9 @@ Text:
     ## Whether an uncatalogued component or CSS class exists on your branch
     The active installation supplies the contract for curated component entries, but the searchable index is deliberately a subset rather than every class in backend.css. Without an installation, even those entries fall back to one pinned core snapshot.
     Instead: Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index.
-    ## Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries
-    The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.
-    Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those.
+    ## Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries
+    The review API is read without a credential, so a draft and a private change are outside it. The diff is not read over the API at all — the answer carries the ref that fetches the patch set, and the checkout is where a diff is read. Nothing here writes to Gerrit.
+    Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the diff. It also answers the change's Change-Id and the changes sharing it, so a backport already pushed to a release branch is in the same answer. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those.
     ## What someone else's extension does: the API, the options and the documentation of a package the core does not ship
     Writing an extension is covered — the extension author is one of the three audiences this exists for, and the registration files, the subsystem conventions, the sitepackage layout and the test suite are all here. What is not here is the inside of somebody else's package: it has its own API, its own release cycle and its own documentation, and none of them is read by this server. Whether a name belongs to the core at all is a different question, and typo3_system_extension_lookup answers it.
     Instead: Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_describe from the files it ships.
@@ -295,6 +299,7 @@ Text:
     - Going through the core's open issues — the oldest, the ones nobody has touched for years, or what stands open in one area such as the RTE or the backend UI → typo3_forge_lookup with open="oldest" or open="stale", narrowed with category in the user's own words and with tracker, then typo3_forge_lookup with the number of the one being taken further
     - Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description → typo3_forge_lookup for the issue and its comments, then typo3_forge_lookup again with query in the words the issue uses for the other issues describing the same thing — its relations carry only what somebody linked by hand — then typo3_gerrit_lookup with the same number for whether a patch exists already
     - Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension → typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow="core"
+    - Judging a diff that changes TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc — the diff says what it sets and nothing about what comes out of it → typo3_rule_lookup with documentId="core/testing/proving-a-rendering" for the throwaway functional test that renders one snippet and prints it
     - Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review → typo3_task_guide with the paths you are changing, then typo3_hint_lookup with the same ones, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow
     - Starting a core task and looking for the applicable conventions and checks → typo3_task_guide
     - About to invent a layout, a directory structure or a test harness — the core has probably worked one out already → typo3_reference_list
@@ -379,8 +384,8 @@ Data:
                 "scope": "core"
             },
             {
-                "topic": "Whether a patch for an issue already exists on the review server",
-                "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. A change pushed as private is not visible to it.",
+                "topic": "Whether a patch for an issue already exists on the review server, and what state the review of it is in",
+                "depth": "The anonymous Gerrit REST API, read live: change number, Change-Id, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id, which is what a backport on a release branch keeps and all that links it to the original. A change read by name also carries the value every voter holds per label, the comments left on it with their patch set, file, line and thread state, and on request the review log, where the copy condition that dropped a vote is written. A change pushed as private is not visible to it.",
                 "tools": [
                     "typo3_gerrit_lookup"
                 ],
@@ -405,6 +410,16 @@ Data:
                     "typo3_script_lookup"
                 ],
                 "source": "knowledge/test-suite-hints.json, typo3://guides/core/testing/scripts",
+                "scope": "core"
+            },
+            {
+                "topic": "Proving what a change to TypoScript, ext_localconf TypoScript or lib.parseFunc renders",
+                "depth": "The throwaway functional test that renders one snippet and prints what came out: the cObj that puts a snippet through parseFunc, the operator forms a value has to be written in, how output is got out of a test that would otherwise print nothing, the targeted invocation, and where the RTE setup comes from per version. It says nothing about what parseFunc does to a snippet, which is what the probe is for.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/core/testing/proving-a-rendering",
                 "scope": "core"
             },
             {
@@ -619,9 +634,9 @@ Data:
                 "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
             },
             {
-                "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
-                "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-                "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those."
+                "topic": "Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
+                "why": "The review API is read without a credential, so a draft and a private change are outside it. The diff is not read over the API at all — the answer carries the ref that fetches the patch set, and the checkout is where a diff is read. Nothing here writes to Gerrit.",
+                "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the diff. It also answers the change's Change-Id and the changes sharing it, so a backport already pushed to a release branch is in the same answer. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those."
             },
             {
                 "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",
@@ -686,6 +701,10 @@ Data:
             {
                 "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",
                 "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
+            },
+            {
+                "when": "Judging a diff that changes TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc — the diff says what it sets and nothing about what comes out of it",
+                "call": "typo3_rule_lookup with documentId=\"core/testing/proving-a-rendering\" for the throwaway functional test that renders one snippet and prints it"
             },
             {
                 "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",

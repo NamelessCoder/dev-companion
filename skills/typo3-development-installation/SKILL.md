@@ -22,12 +22,12 @@ for that answer, and say which of the two came back.
 
 Then, before anything is created:
 
-- `typo3_server_scope` for whether an installation and a console can be reached
-  at all. That is what separates a repository with nothing installed from one
-  whose installation is merely not running. Skip it only where the base's
-  installation lookup already described a booted installation, because that
-  answer contains this one; everywhere else it is run, since a prescription that
-  gets skipped teaches the next reader to skip the steps that matter.
+- `typo3_server_scope` is discharged by the base's `typo3_project_describe`,
+  whatever it answered. What this step asks — whether an installation and a
+  console can be reached at all — is what that answer's `cause` states, and it
+  states it where there is no installation as well. The orientation tool is for
+  a caller who does not know whether this server can answer at all, which is not
+  this workflow's question.
 - The calls in the base that read the installation are asked again once it
   exists. Asked before, they are unanswerable; asked after, they are what says
   the work succeeded.

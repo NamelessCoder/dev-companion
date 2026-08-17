@@ -96,7 +96,7 @@ The answer carries exactly one of these sets of fields: ``table``,
 Answered
 --------
 
-Recorded on 2026-08-13 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-17 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -128,7 +128,6 @@ Text:
 .. code-block:: text
 
     This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
-    typo3_server_scope reports the installation and its console.
 
 Data:
 
@@ -223,7 +222,6 @@ Text:
 .. code-block:: text
 
     This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
-    typo3_server_scope reports the installation and its console.
 
 Data:
 

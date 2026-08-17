@@ -208,7 +208,7 @@ The answer carries exactly one of these sets of fields: ``root``,
 Answered
 --------
 
-Recorded on 2026-08-13 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-17 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -257,6 +257,7 @@ Text:
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
+    - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
     - core/testing/scripts — TYPO3 Core Script Help
     - extension/documentation/manual — Setting Up an Extension Manual
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
@@ -329,6 +330,10 @@ Data:
                 "title": "TYPO3 Contribution Sources"
             },
             {
+                "id": "core/testing/proving-a-rendering",
+                "title": "Proving What a Rendering Change Renders"
+            },
+            {
                 "id": "core/testing/scripts",
                 "title": "TYPO3 Core Script Help"
             },
@@ -376,6 +381,7 @@ Text:
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
+    - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
     - core/testing/scripts — TYPO3 Core Script Help
     - extension/documentation/manual — Setting Up an Extension Manual
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
@@ -459,6 +465,10 @@ Data:
             {
                 "id": "core/contribution/sources",
                 "title": "TYPO3 Contribution Sources"
+            },
+            {
+                "id": "core/testing/proving-a-rendering",
+                "title": "Proving What a Rendering Change Renders"
             },
             {
                 "id": "core/testing/scripts",

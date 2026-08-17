@@ -63,13 +63,10 @@ final class Unsupported
             default => self::NO_INSTALLATION,
         };
 
+        $text = sprintf('This is not answerable here, which is not the same as an empty answer: %s.', $reason);
+
         return ToolResult::create(
-            sprintf(
-                "This is not answerable here, which is not the same as an empty answer: %s.\n%s"
-                . 'typo3_server_scope reports the installation and its console.',
-                $reason,
-                $diagnosis === '' ? '' : $diagnosis . "\n",
-            ),
+            $diagnosis === '' ? $text : $text . "\n" . $diagnosis,
             $echo + [
                 // The reason travels as data, not only in the text beside it: a
                 // client that renders structuredContent alone would otherwise
@@ -79,9 +76,10 @@ final class Unsupported
                     'reason' => $reason,
                     'diagnosis' => $diagnosis,
                     // Where it looked and what was set wrong belong here too.
-                    // typo3_server_scope carried both, and a caller just told
-                    // that nothing could be asked is the one least able to
-                    // guess that a second tool holds the way out.
+                    // typo3_server_scope carried both, and this answer is the
+                    // whole diagnostic rather than a pointer at it — the
+                    // pointer cost a round trip for what the caller was already
+                    // holding, which `D-ANS-083` measured.
                     'searched' => Instance::searched(),
                     'misconfiguration' => $misconfiguration === '' ? null : $misconfiguration,
                     'settings' => [

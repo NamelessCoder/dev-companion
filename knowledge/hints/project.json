@@ -88,6 +88,12 @@
       "var/",
       "var/transient/",
       "gitignore",
+      "ignore file",
+      "what not to commit",
+      "generated files",
+      "typo3temp",
+      "_assets_install",
+      ".htaccess",
       "built assets",
       "commit the build"
     ],
@@ -97,7 +103,17 @@
       "A suite that needs a database or a base URL takes it from the environment, with the defaults in the configuration file itself. Then a checkout runs the suite with no setup, and CI overrides the four or five variables it has to — the alternative is a file everyone edits and nobody commits.",
       "var/ is TYPO3's writable state — caches, logs, sessions, and var/transient/ for what a temporary file is written to — and is not committed. A script that exists for one run therefore does not go there because it is ignored; it goes into Build/ with the rest of the tooling, or it is not kept at all.",
       "The document root is the other place it does not go, and for the opposite reason: it is served. In a Composer installation it is the directory extra.typo3/cms.web-dir names in the root composer.json, public/ where that key is absent, and it is where the installer writes index.php. A DDEV project mounts the project directory at /var/www/html in the web container and serves the docroot below it, so /var/www/html/public is the document root of a TYPO3 project configured that way and /var/www/html is the project root above it. A debug or scratch script written into the document root is reachable over HTTP by anyone who can reach the site, for as long as it is there — and it is there after the run that wrote it ends, because nothing cleans it up. A file dropped at the project root instead is not served, but it outlives the run in the same way and is in the tree that gets deployed. Both are the same answer as var/: it goes into Build/, or it is not written at all.",
-      "Whether the built frontend assets are committed is a decision, not a rule, and it has to be made once and written down: committed, a deploy needs no Node and the diff carries generated files; not committed, the build has to run somewhere on the way to production. Both are normal, and the .gitignore is where the answer is read off."
+      "Whether the built frontend assets are committed is a decision, not a rule, and it has to be made once and written down: committed, a deploy needs no Node and the diff carries generated files; not committed, the build has to run somewhere on the way to production. Both are normal, and the .gitignore is where the answer is read off.",
+      "What a Composer installation generates is written after that file is, so it is listed here rather than looked at. composer install puts index.php into the document root and publishes every installed package's Resources/Public below _assets/<hash>/, with vendor/ beside them at the project root. Setting the installation up adds the rest, through the folder structure the install tool fixes: the document root's .htaccess — web.config under IIS — and typo3temp/ with its assets/ below it, fileadmin/ with an .htaccess and _temp_/ and user_upload/ of its own, and var/ at the project root with an .htaccess of its own. A local file storage then writes _processed_/ inside itself as it processes an image, so fileadmin/_processed_/ arrives with the first thumbnail a page renders.",
+      {
+        "text": "The backend and the install tool have entry points of their own, so the document root also holds a typo3/ directory carrying typo3/index.php and typo3/install.php.",
+        "until": 13
+      },
+      {
+        "text": "_assets_install/ sits beside _assets/ and is the same publishing done from the failsafe container, so it holds the packages the install tool boots and not the rest. Nothing writes a typo3/ directory any more: the backend and the install tool are reached through index.php, and no entry point is generated beside it.",
+        "since": 14
+      },
+      "So the ignore file denies both directories and names back what the project owns, which is what typo3/cms-base-distribution ships: /vendor, /var/* with !/var/labels for the translations a language update downloads, and /public/* with !/public/.htaccess. Denying and naming back survives what enumerating does not — the set above moves between majors, and the file is written before the install that would show it. The .htaccess is the exception because the fixer writes it once: it creates the file where none exists and leaves the content of one that does, so the rewrite rules a project adds to it are the project's to keep. A sitepackage or fileadmin content that has to be committed is named back the same way."
     ]
   },
   {

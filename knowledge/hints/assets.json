@@ -12,6 +12,7 @@
       "public asset",
       "public resource",
       "_assets",
+      "_assets_install",
       "asset",
       "stylesheet",
       "asset:publish",
@@ -63,7 +64,12 @@
         "text": "PathUtility::getSystemResourceUri() sits beside it in the same class and is a third thing: neither the supported route nor the deprecated one. Its docblock marks it @internal and announces its removal, or its becoming private, before this major reaches LTS — which has not happened yet, so the signature reads as current API and is not one. It is there so the core can migrate its own call sites. Extension code calling it is a finding rather than a static shorthand, and the factory and the publisher above are the whole of what is offered.",
         "since": 14
       },
-      "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
+      {
+        "text": "_assets_install/ is the sibling directory that publishing writes, and a reader who has just learned about _assets/ has no reason to suspect it. It is the same publishing done from the failsafe container the install tool boots, so it holds that container's packages and not the rest, and the same asset:publish run produces both.",
+        "since": 14
+      },
+      "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout.",
+      "What publishing writes into the document root is generated and is not committed. The rest of what a Composer installation puts there, and the ignore file that is read off it, is project-build-and-scripts."
     ]
   },
   {

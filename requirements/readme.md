@@ -391,6 +391,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-KNW-067`][R-KNW-067] — The e2e answer states the price of a Playwright-only change · held
 - [`R-KNW-068`][R-KNW-068] — A suite that waits for a keypress says it needs a terminal · held
 - [`R-KNW-069`][R-KNW-069] — A new backend label is told what it costs before it resolves · held
+- [`R-KNW-070`][R-KNW-070] — A relation value says which placeholder spelling survives it · held
 
 [R-KNW-001]: knowledge/knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knowledge/knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -461,6 +462,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-KNW-067]: knowledge/knw-067-the-e2e-answer-states-the-price-of-a-playwright-only-change.md
 [R-KNW-068]: knowledge/knw-068-a-suite-that-waits-for-a-keypress-says-it-needs-a-terminal.md
 [R-KNW-069]: knowledge/knw-069-a-new-backend-label-is-told-what-it-costs-before-it-resolves.md
+[R-KNW-070]: knowledge/knw-070-a-relation-value-says-which-placeholder-spelling-survives-it.md
 
 ### code
 

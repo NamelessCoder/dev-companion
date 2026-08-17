@@ -657,7 +657,7 @@ final class Environments
     public static function build(string $branch, string $driver = self::DEFAULT_DRIVER): array
     {
         $database = self::driver($driver);
-        $project = self::project($branch);
+        $project = self::project($branch, $driver);
         $constraint = self::constraint($branch);
         $create = ['ddev', 'composer', 'create-project', self::DISTRIBUTION . ':' . $constraint];
         if (self::development($branch)) {

@@ -460,26 +460,31 @@ final class EnvironmentsTest extends TestCase
      * base URL naming another project is a frontend that answers nothing, and
      * every case that opens a page in it fails for a reason none of them is
      * about.
+     *
+     * Every driver, because the name is where the second database was dropped:
+     * a build that asked DDEV for the default project name in a directory of
+     * its own was refused by `ddev config` for a project root it does not own,
+     * minutes before the installation it was after.
      */
     #[Test]
     public function theSiteIsCreatedForTheAddressDdevGivesTheProject(): void
     {
-        $created = [];
-        foreach (Environments::build(Environments::branch()) as $command) {
-            foreach ($command as $argument) {
-                if (str_starts_with($argument, '--create-site=')) {
-                    $created[] = $argument;
-                }
-                if (str_starts_with($argument, '--project-name=') && in_array('config', $command, true)) {
-                    self::assertSame('--project-name=' . Environments::project(Environments::branch()), $argument);
+        foreach (Environments::drivers() as $driver) {
+            $project = Environments::project(Environments::branch(), $driver);
+            $created = [];
+            foreach (Environments::build(Environments::branch(), $driver) as $command) {
+                foreach ($command as $argument) {
+                    if (str_starts_with($argument, '--create-site=')) {
+                        $created[] = $argument;
+                    }
+                    if (str_starts_with($argument, '--project-name=') && in_array('config', $command, true)) {
+                        self::assertSame('--project-name=' . $project, $argument, $driver);
+                    }
                 }
             }
-        }
 
-        self::assertSame(
-            ['--create-site=https://' . Environments::project(Environments::branch()) . '.ddev.site/'],
-            $created,
-        );
+            self::assertSame(['--create-site=https://' . $project . '.ddev.site/'], $created, $driver);
+        }
     }
 
     /**

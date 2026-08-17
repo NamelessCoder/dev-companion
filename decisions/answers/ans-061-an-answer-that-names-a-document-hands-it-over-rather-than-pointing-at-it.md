@@ -107,3 +107,23 @@ unchanged.
 [`D-SKL-030`](../task-skills/skl-030-a-review-surface-names-the-lookup-that-can-answer-it.md)
 is that judgement. What is untouched here is this entry's own **Assumed**:
 nothing yet shows a session acting on a document named in an answer.
+
+### 2026-08-18 — a fourth session, and the name was in front of it all along
+
+`feedback/2026-08-17-205945` is a build rather than a review: a v14 demo site on
+14.3.6, a sitepackage and a distribution extension. It held the `guides` ids
+from `typo3_project_describe`, reached the point where it wanted to verify six
+backend previews in a browser, and called `typo3_rule_lookup` at no point in the
+session. `any/testing/browser-check` and `project/testing/playwright` both name
+that moment in their own `whenToUse`.
+
+That is this entry's second **Assumed** on the weakest ground it has stood on.
+The three sessions above held a bare `uri`; the one of 2026-08-09 held the ids
+and made the call with a search instead. This one held the ids, made no call at
+all, and says it stopped rather than that it could not.
+
+What the **Decided** says is unmoved and is what the case turns on: the lever is
+the moment, and here the moment is a build workflow's verification step rather
+than an answer.
+[`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md)
+is that judgement, and it is `D-SKL-030`'s one workflow over.

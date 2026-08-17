@@ -1112,6 +1112,73 @@ final class HintsTest extends TestCase
         self::assertNotNull(Hints::byId('javascript-labels', 14));
     }
 
+    /**
+     * `R-KNW-071`. The interpreter is picked before there is an installation to
+     * ask, so the answer has to be readable without one — and the numbers a
+     * project ends up holding are three different claims rather than three
+     * spellings of one.
+     */
+    #[Test]
+    #[TestWith(['which PHP version do I put in the container for a new project'])]
+    #[TestWith(['minimum PHP version'])]
+    #[TestWith(['php_version'])]
+    #[TestWith(['supported PHP versions'])]
+    public function whichInterpreterAVersionNeedsIsAnsweredBeforeAnythingIsInstalled(string $task): void
+    {
+        self::assertSame('php-versions', Hints::find([], $task, 6)['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('php-versions');
+
+        // The three sources, each named as what it alone says.
+        self::assertStringContainsString('typo3/cms-core declares in its own composer.json', $text);
+        self::assertStringContainsString('pins its own dependency resolution to a version at the floor', $text);
+        self::assertStringContainsString('The -p option of Build/Scripts/runTests.sh', $text);
+        self::assertStringContainsString('not what the TYPO3 project supports an installation on', $text);
+
+        // And the moment the number is chosen, which is the one the report was
+        // written from: nothing after it asks again.
+        self::assertStringContainsString('a floor below what is ever executed is a claim no run tests', $text);
+    }
+
+    /**
+     * Read in `.checkouts/` on 2026-08-18, fetched 2026-08-12:
+     * `typo3/sysext/core/composer.json` for the constraint,
+     * `config.platform.php` in the root manifest for what it resolves against,
+     * and the `-p` option of `Build/Scripts/runTests.sh` for the suites. The
+     * two LTS lines and the stable one share a constraint; `main` has already
+     * left every interpreter a released line runs on.
+     */
+    #[Test]
+    public function eachCoveredLineCarriesItsOwnFloorAndTestedRange(): void
+    {
+        $on = static fn(int $major): string => implode("\n", array_column(
+            (array) Hints::byId('php-versions', $major)['hints'],
+            'text',
+        ));
+
+        self::assertStringContainsString('PHP ^8.1', $on(12));
+        self::assertStringContainsString('PHP 8.1 through PHP 8.5', $on(12));
+
+        foreach ([13, 14] as $major) {
+            self::assertStringContainsString('PHP ^8.2', $on($major));
+            self::assertStringContainsString('PHP 8.2 through PHP 8.6', $on($major));
+            self::assertStringNotContainsString('PHP ^8.1', $on($major));
+        }
+
+        // The development line has already left every interpreter a released
+        // one runs on, which is the statement an extension author needs and the
+        // one a range cannot imply.
+        self::assertStringContainsString('PHP ^8.5', $on(15));
+        self::assertStringNotContainsString('PHP ^8.2', $on(15));
+        self::assertStringNotContainsString('8.4', $on(15));
+
+        // The choosing rule and the three sources hold on every line, so they
+        // are one statement each rather than a table.
+        foreach ([12, 13, 14, 15] as $major) {
+            self::assertStringContainsString('claim no run tests', $on($major), (string) $major);
+        }
+    }
+
     #[Test]
     public function aGermanSiteTaskReachesItsLabelLanguageSetup(): void
     {
@@ -3989,6 +4056,14 @@ final class HintsTest extends TestCase
             // rather than bare, which is what makes them exemptible here without
             // also exempting a count that happens to be three digits long.
             //
+            // A PHP version is the payload rather than the date. What this
+            // looks for is a statement tied to one TYPO3 branch, and which
+            // interpreter a branch requires is the thing being asked — carried
+            // by `since` and `until` like any other bound statement, and
+            // re-readable in every checkout. It is written with its word in
+            // front on both ends of a range, "PHP 8.2 through PHP 8.6", which
+            // is what keeps `^13.4` and a bare 8.2 out — `D-KNW-089`.
+            //
             // The zero-date literals are the same argument with quotes doing
             // the work the word does above. `'0000-00-00 00:00:00'` is what a
             // non-nullable native datetime column stores instead of NULL; it is
@@ -4000,9 +4075,10 @@ final class HintsTest extends TestCase
                 [
                     '/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i',
                     '/\bexception \d{10}\b/i', '/\bdoktype \d{1,3}\b/i',
+                    '/\bPHP \^?\d+\.\d+(\.\d+)?/i',
                     "/'0000-00-00 00:00:00'|'0000-00-00'|'00:00:00'/",
                 ],
-                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype', 'zero-date'],
+                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype', 'PHP', 'zero-date'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 

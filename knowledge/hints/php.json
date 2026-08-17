@@ -1,0 +1,42 @@
+[
+  {
+    "id": "php-versions",
+    "title": "Which PHP a TYPO3 Version Requires and Is Tested On",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "which PHP version",
+      "PHP version",
+      "php_version",
+      "minimum PHP",
+      "supported PHP",
+      "PHP requirement",
+      "PHP constraint",
+      "system requirements",
+      "config.platform",
+      "platform php",
+      "runTests.sh -p",
+      "interpreter"
+    ],
+    "hints": [
+      "The php constraint typo3/cms-core declares in its own composer.json is the requirement, and it is the only one of the three numbers here that is: Composer refuses to install the core on an interpreter outside it. A project narrowing it further supports less than the core does, for no reason the core gave.",
+      "config.platform.php in the core repository pins its own dependency resolution to a version at the floor of that constraint, so a Composer run there resolves as if it were on the oldest interpreter the core admits, whatever the machine runs. A project gets that property only by setting the key itself; without it, a container on a newer PHP resolves dependencies the declared floor may not be able to install.",
+      "The -p option of Build/Scripts/runTests.sh names the interpreters a branch runs its own suites on, and without it the script takes the floor. That is the core testing itself: it says what the branch is exercised against, not what the TYPO3 project supports an installation on.",
+      {
+        "text": "The constraint is PHP ^8.1, config.platform.php is PHP 8.1.1, and the suites run on PHP 8.1 through PHP 8.5.",
+        "until": 12
+      },
+      {
+        "text": "The constraint is PHP ^8.2, config.platform.php is PHP 8.2.0, and the suites run on PHP 8.2 through PHP 8.6.",
+        "since": 13,
+        "until": 14
+      },
+      {
+        "text": "The constraint is PHP ^8.5, config.platform.php is PHP 8.5.0, and the suites run on PHP 8.5 and PHP 8.6. The development line raises its floor ahead of the release it becomes, so what installs there is an interpreter no released line requires.",
+        "since": 15
+      },
+      "A container's interpreter is chosen before there is an installation to ask about it, and nothing afterwards revisits the number. Choose it against the constraint and the tested range of the target line rather than against what the machine already has, and keep the declared floor and the interpreter every environment runs in a relation you can name: a floor below what is ever executed is a claim no run tests."
+    ]
+  }
+]

@@ -3,6 +3,8 @@
 **Serves:** feedback/2026-08-17-211306-the-closing-neighbour-sentence-is-read-at-the.md
 **Priority:** normal
 **Run:** bin/cli hints:probe "rendering a content area a backend layout never declared"
+**Branch:** todo/say-what-a-listed-neighbour-prevents-and-correct
+**Claimed:** 2026-08-17
 
 Start with `page-content-areas`, because a pointer at it cannot be written until
 it is right: the hint says a column without an explicit identifier "renders

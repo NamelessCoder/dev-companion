@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-205945-the-index-is-consulted-while-planning-and.md
 **Priority:** normal
+**Branch:** todo/the-index-is-consulted-while-planning-and
+**Claimed:** 2026-08-17
 
 Judged on 2026-08-18 as step 3, routing, and queued because the change is a line
 in a published skill — `D-SKL-045` has the reading, and `D-ANS-061` carries what

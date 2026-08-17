@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212117-extension-setup-reports-success-without.md
 **Priority:** low
+**Branch:** todo/extension-setup-reports-success-without
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

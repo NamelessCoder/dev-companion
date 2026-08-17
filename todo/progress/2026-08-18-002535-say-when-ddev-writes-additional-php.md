@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-205850-ddev-writes-additional-php-only-once-it.md
 **Priority:** normal
+**Branch:** todo/say-when-ddev-writes-additional-php
+**Claimed:** 2026-08-17
 
 The judgement is `D-KNW-085`. Establish what guards DDEV v1.25.1's generation of `config/system/additional.php` —
 the `typo3` provider in `pkg/ddevapp`, around the `createTypo3SettingsFile` and

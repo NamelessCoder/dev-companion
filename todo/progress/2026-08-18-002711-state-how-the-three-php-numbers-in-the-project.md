@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-211157-three-php-versions-are-reported-side-by-side-in.md
 **Priority:** normal
+**Branch:** todo/state-how-the-three-php-numbers-in-the-project
+**Claimed:** 2026-08-17
 
 Derive the relation between `phpConstraint`, `corePhpConstraint` and
 `environment.php` in `typo3_project_describe` and state it in both halves of the

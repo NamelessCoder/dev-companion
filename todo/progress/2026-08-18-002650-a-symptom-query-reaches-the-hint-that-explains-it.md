@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212010-the-knowledge-is-indexed-by-subject-and-a.md
 **Priority:** normal
+**Branch:** todo/a-symptom-query-reaches-the-hint-that-explains-it
+**Claimed:** 2026-08-17
 
 Measure what the domain gate costs a query written as a symptom, then close it.
 `bin/cli hints:probe "the content elements render in reverse order"` returns

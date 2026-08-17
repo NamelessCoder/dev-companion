@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-211157-three-php-versions-are-reported-side-by-side-in.md
 **Priority:** normal
+**Branch:** todo/state-which-php-each-covered-version-requires
+**Claimed:** 2026-08-17
 
 Read the PHP floor and the tested range out of every covered branch —
 `composer.json` and `typo3/sysext/core/composer.json` for what the core

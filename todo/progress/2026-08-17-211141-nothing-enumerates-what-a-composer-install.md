@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-211141-nothing-enumerates-what-a-composer-install.md
 **Priority:** normal
+**Branch:** todo/nothing-enumerates-what-a-composer-install
+**Claimed:** 2026-08-17
 
 Step 1a, judged on 2026-08-18 in `D-KNW-088`: `project-build-and-scripts` defers
 to the `.gitignore` and names no path, `_assets_install` occurs nowhere below

@@ -21,7 +21,12 @@ Then, for this workflow:
 - `typo3_documentation_lookup` for version-specific TCA, DataHandler, Fluid or
   AssetCollector APIs.
 - `typo3_label_lookup` and `typo3_icon_lookup` before adding a label or choosing
-  an icon identifier.
+  an icon identifier. A label reference copied out of another extension is
+  consumed by your code as much as one you wrote, so a new extension with
+  nothing of its own to reuse still has those to check.
+- `typo3_component_lookup` with the target TYPO3 version before writing the
+  backend preview's markup, its CSS classes or the custom properties it reads. A
+  guessed custom property behind a CSS fallback renders and is wrong.
 - Read the nearby content elements, TCA files, TypoScript imports, templates,
   assets, schema and tests — the project's file organization is the thing a new
   element has to fit, and only the checkout has it.

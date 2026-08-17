@@ -1,10 +1,10 @@
 ---
-id: D-KNW-085
+id: D-KNW-088
 date: 2026-08-18
 status: open
 ---
 
-# D-KNW-085 — What a Composer installation generates below the document root is a gap this server owns
+# D-KNW-088 — What a Composer installation generates below the document root is a gap this server owns
 
 **What a Composer installation generates below the document root is enumerated
 in `knowledge/`, because the ignore file that names it is written before the

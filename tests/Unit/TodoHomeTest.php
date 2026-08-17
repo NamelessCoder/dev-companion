@@ -133,7 +133,7 @@ final class TodoHomeTest extends TestCase
         (new TodoHome())(new BufferedOutput(), Cli::application(), [self::NAME]);
 
         $order = array_values(array_filter(
-            array_map(static fn(array $command): string => implode(' ', $command), $this->ran),
+            array_map(self::asked(...), $this->ran),
             static fn(string $line): bool => str_contains($line, 'rebase') || str_contains($line, 'composer'),
         ));
 
@@ -188,9 +188,10 @@ final class TodoHomeTest extends TestCase
             function (array $command) use ($answers, $root, $worktree): array {
                 $this->ran[] = $command;
                 $line = implode(' ', $command);
+                $asked = self::asked($command);
 
                 foreach ($answers as $carries => $answer) {
-                    if (!str_contains($line, $carries)) {
+                    if (!str_contains($asked, $carries)) {
                         continue;
                     }
                     [$exitCode, $said] = is_array($answer) ? $answer : [0, $answer];
@@ -221,8 +222,38 @@ final class TodoHomeTest extends TestCase
     private function matching(string $carries): array
     {
         return array_values(array_filter(
-            array_map(static fn(array $command): string => implode(' ', $command), $this->ran),
+            array_map(self::asked(...), $this->ran),
             static fn(string $line): bool => str_contains($line, $carries),
         ));
+    }
+
+    /**
+     * What was run, with the `-C <path>` git is handed left out.
+     *
+     * A case is keyed on a word its command carries, and the path carries
+     * `Paths::root()` — so a checkout whose own directory name contains that
+     * word answered every call keyed on it. In
+     * `.worktrees/nothing-enumerates-what-a-composer-install` the cases keyed
+     * on `composer` fired on `rev-parse --abbrev-ref HEAD`, which reported
+     * `FAILURES!` as the branch name and left two cases red for every commit
+     * on that branch.
+     *
+     * @param array<int, string> $command
+     */
+    private static function asked(array $command): string
+    {
+        $said = [];
+
+        for ($at = 0; $at < count($command); $at++) {
+            if ($command[$at] === '-C') {
+                $at++;
+
+                continue;
+            }
+
+            $said[] = $command[$at];
+        }
+
+        return implode(' ', $said);
     }
 }

@@ -3,7 +3,7 @@
 **Serves:** feedback/2026-08-17-211141-nothing-enumerates-what-a-composer-install.md
 **Priority:** normal
 
-Step 1a, judged on 2026-08-18 in `D-KNW-085`: `project-build-and-scripts` defers
+Step 1a, judged on 2026-08-18 in `D-KNW-088`: `project-build-and-scripts` defers
 to the `.gitignore` and names no path, `_assets_install` occurs nowhere below
 `knowledge/`, and a query for it returns `public-assets`, which answers about
 `_assets` and is silent about the sibling. Establish which paths a Composer

@@ -9,6 +9,7 @@ one is added.
 
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
+- [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -85,6 +86,7 @@ one is added.
 
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
+[D-KNW-085]: knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

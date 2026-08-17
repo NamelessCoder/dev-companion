@@ -1968,6 +1968,48 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-087`. The hint said an area the layout never declared "renders
+     * empty with no error", and a session that skipped it got HTTP 500 on every
+     * page instead. `ContentAreaViewHelper::render()` throws for anything that
+     * is not a `ContentArea`, and `StandardVariableProvider::getByPath()` hands
+     * it null for an identifier `ContentAreaCollection::has()` does not know.
+     * The empty render is the other path — a column the layout does declare,
+     * holding no records — so the two are asserted apart rather than together.
+     */
+    #[Test]
+    public function anUndeclaredContentAreaIsSaidToThrowAndTheEmptyOneToRenderNothing(): void
+    {
+        $texts = static fn(int $major): string => implode("\n", array_column(
+            Hints::byId('page-content-areas', $major)['hints'],
+            'text',
+        ));
+
+        foreach ([14, 15] as $major) {
+            self::assertStringContainsString('exception 1770212183', $texts($major));
+            self::assertStringContainsString('HTTP 500 on every page', $texts($major));
+            self::assertStringContainsString('renders empty and reports nothing', $texts($major));
+            self::assertStringNotContainsString('renders empty with no error', $texts($major));
+        }
+
+        // What an undeclared column costs is not the same failure on both, and
+        // the caller is on one of them: the generated identifier is a
+        // deprecation on 14 and a refusal at layout resolution on 15.
+        self::assertStringContainsString('raises a deprecation', $texts(14));
+        self::assertStringNotContainsString('exception 1780173420', $texts(14));
+        self::assertStringContainsString('exception 1780173420', $texts(15));
+        self::assertStringNotContainsString('raises a deprecation', $texts(15));
+
+        // The hint the session reached three calls after the failure. It has to
+        // answer the task the caller is on and the trace they arrive with.
+        $reached = static fn(string $query): array => array_column(
+            Hints::find([], $query, 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('page-content-areas', $reached('rendering a content area a backend layout never declared'));
+        self::assertContains('page-content-areas', $reached('f:render.contentArea throws exception 1770212183'));
+    }
+
+    /**
      * `R-KNW-059`. The session this comes from ran `rm` on a cache directory
      * after a template edit, which is the one cache in the list that was
      * already correct: a compiled template is keyed on the file's modification

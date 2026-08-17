@@ -45,7 +45,9 @@
       "f:render.contentArea",
       "{content.",
       "column identifier",
-      "the column is empty"
+      "the column is empty",
+      "1770212183",
+      "contentArea argument must be an instance of"
     ],
     "hints": [
       {
@@ -53,8 +55,25 @@
         "since": 14
       },
       {
-        "text": "Those identifiers are the ones the page layout declares for its columns in mod.web_layout.BackendLayouts — see the site set hints. A column without an explicit identifier cannot be addressed by name, and the template then renders empty with no error.",
+        "text": "Those identifiers are the ones the page layout declares for its columns in mod.web_layout.BackendLayouts — see the site set hints.",
         "since": 14
+      },
+      {
+        "text": "An identifier the layout never declared resolves to nothing, and f:render.contentArea handed that nothing throws rather than rendering nothing: the argument is registered as a ContentArea, an absent one falls back to the tag's children, and neither of those is one. It is an InvalidArgumentValueException, exception 1770212183, and it is HTTP 500 on every page the template renders — so a mistyped identifier fails exactly like a column the layout has not got.",
+        "since": 14
+      },
+      {
+        "text": "A declared column holding no content elements is the case that renders empty and reports nothing: the area is there with no records in it, and the ViewHelper answers with the empty string.",
+        "since": 14
+      },
+      {
+        "text": "A column the layout declares without an explicit identifier is keyed on the md5 of the layout identifier and the colPos and raises a deprecation, so the area exists and no template can name it.",
+        "since": 14,
+        "until": 14
+      },
+      {
+        "text": "A column the layout declares without an explicit identifier is refused while the page layout is resolved, exception 1780173420, so the page fails before any template is reached.",
+        "since": 15
       }
     ]
   },

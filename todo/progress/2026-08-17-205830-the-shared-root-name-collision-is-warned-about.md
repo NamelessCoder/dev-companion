@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-205830-the-shared-root-name-collision-is-warned-about.md
 **Priority:** low
+**Branch:** todo/the-shared-root-name-collision-is-warned-about
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-204536-impexp-export-needs-include-related-sys-file.md, feedback/2026-08-17-211418-impexp-export-ignores-an-ext-filename-and.md
 **Priority:** normal
+**Branch:** todo/correct-what-the-impexp-artifact-hint-says-about-the-export-command
+**Claimed:** 2026-08-17
 
 Step 1a on both, judged in `D-KNW-080`: two sentences of `impexp-artifact` in
 `knowledge/hints/distribution.json` describe the console and were read off

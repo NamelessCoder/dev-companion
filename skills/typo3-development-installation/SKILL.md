@@ -72,12 +72,17 @@ created for it.
    root rather than into the extension directory below the document root, so an
    empty directory there is not a broken installation.
 2. **Declare the container.** Its project type and its document root follow from
-   the layout decided above, not the other way round. Two things then have to be
-   verified rather than assumed: that the environment fails its start when a
-   provisioning task fails, because an install that failed behind a green start
-   is the expensive failure of this step; and that a command which rewrites the
-   environment configuration has not dropped what was set by hand, which is what
-   reading the file back after such a command is for.
+   the layout decided above, not the other way round. Its interpreter is
+   declared here too, and it is the number nothing later re-asks:
+   `typo3_hint_lookup` with `id=php-versions` for what the target version
+   requires, what it resolves dependencies against and what the core runs its
+   own suites on, and the choice is made against that answer rather than against
+   what the machine already has. Two things then have to be verified rather than
+   assumed: that the environment fails its start when a provisioning task fails,
+   because an install that failed behind a green start is the expensive failure
+   of this step; and that a command which rewrites the environment configuration
+   has not dropped what was set by hand, which is what reading the file back
+   after such a command is for.
 3. **Install non-interactively.** The console's setup command answers its own
    questions from a fixed set of environment variables, and `typo3_hint_lookup`
    with `id=environment-runtime-readers` names them. Ask

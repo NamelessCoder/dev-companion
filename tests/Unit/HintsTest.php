@@ -1113,7 +1113,7 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `R-KNW-071`. The interpreter is picked before there is an installation to
+     * `R-KNW-072`. The interpreter is picked before there is an installation to
      * ask, so the answer has to be readable without one — and the numbers a
      * project ends up holding are three different claims rather than three
      * spellings of one.
@@ -2356,7 +2356,7 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `R-KNW-071`. The corpus said the generated file is rewritten on every
+     * `R-KNW-072`. The corpus said the generated file is rewritten on every
      * start, which is what a clone does not get: DDEV picks the settings paths
      * by looking for an installed TYPO3, so the start that precedes
      * `composer install` writes nothing and the site answers 1396795884 while

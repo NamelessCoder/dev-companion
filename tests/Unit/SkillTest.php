@@ -2692,6 +2692,17 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('id=project-configuration-files', $skill);
         self::assertStringContainsString('knows only the services it provides itself', $flat);
 
+        // Step 2 is where the interpreter is decided and nothing later asks
+        // again, so the step that declares the container carries the lookup
+        // rather than leaving the number to whatever the machine has —
+        // `R-KNW-072`.
+        self::assertMatchesRegularExpression(
+            '/`id=php-versions` for \w/',
+            $flat,
+            'the container step names no interpreter lookup',
+        );
+        self::assertNotNull(Hints::byId('php-versions'));
+
         // Step 5 names two ids, and `211118` fetched one: the shared clause
         // described only the first, so the step read as discharged once that
         // answer landed. Each id carries what it alone answers — D-SKL-044.

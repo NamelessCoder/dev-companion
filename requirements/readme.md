@@ -395,6 +395,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-KNW-069`][R-KNW-069] — A new backend label is told what it costs before it resolves · held
 - [`R-KNW-070`][R-KNW-070] — A relation value says which placeholder spelling survives it · held
 - [`R-KNW-071`][R-KNW-071] — A clone is told when DDEV writes additional.php · held
+- [`R-KNW-072`][R-KNW-072] — Which interpreter a covered version needs is answerable before anything is installed · held
 
 [R-KNW-001]: knowledge/knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knowledge/knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -467,6 +468,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-KNW-069]: knowledge/knw-069-a-new-backend-label-is-told-what-it-costs-before-it-resolves.md
 [R-KNW-070]: knowledge/knw-070-a-relation-value-says-which-placeholder-spelling-survives-it.md
 [R-KNW-071]: knowledge/knw-071-a-clone-is-told-when-ddev-writes-additional-php.md
+[R-KNW-072]: knowledge/knw-072-which-interpreter-a-covered-version-needs-is-answerable-before-anything-is-installed.md
 
 ### code
 

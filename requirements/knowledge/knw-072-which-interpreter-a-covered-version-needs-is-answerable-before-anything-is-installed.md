@@ -1,10 +1,10 @@
 ---
-id: R-KNW-071
+id: R-KNW-072
 status: held
-restsOn: [D-KNW-086, D-KNW-089]
+restsOn: [D-KNW-086, D-KNW-091]
 ---
 
-# R-KNW-071 — Which interpreter a covered version needs is answerable before anything is installed
+# R-KNW-072 — Which interpreter a covered version needs is answerable before anything is installed
 
 **What PHP a covered TYPO3 line requires, resolves against and runs its own
 suites on is answerable without an installation.**

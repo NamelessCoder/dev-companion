@@ -29,7 +29,7 @@
         "text": "The template name is not configurable. It is the page layout identifier with the pagets__ prefix stripped, and \"default\" where the page declares none — so backend_layout = pagets__landingpage renders Pages/Landingpage and nothing else will.",
         "since": 13
       },
-      "Its neighbours: page-content-areas for addressing a column, page-variables-and-processors for what the template is handed, page-cache-headers for what a cacheable page answers with."
+      "page-content-areas belongs before the template is written: an identifier the layout never declared is not an empty column, it is HTTP 500 on every page. page-variables-and-processors has the two that bite later — PAGEVIEW rejecting a variables. entry whose name it assigns itself, and a menu excludeDoktypes list that replaces the default rather than adding to it and puts every storage folder in the navigation. page-cache-headers is the page that is right in curl and wrong in the browser."
     ]
   },
   {

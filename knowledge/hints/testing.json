@@ -262,7 +262,7 @@
         "text": "A defect that has to be seen rather than asserted — a position, a stacking order, something that only appears while scrolling — is looked at rather than specced first. The core installs the instance the specs run against, publishes it and waits, so the backend can be opened in a browser; typo3_test_run_guide has that suite, what it prints and what the run costs.",
         "since": 13
       },
-      "Two neighbours: browser-test-accessibility for what the same spec can assert, browser-tests-outside-core for the site they run against."
+      "browser-test-accessibility is what the same spec can assert, and it is why a site suite must not copy the core's disabled color-contrast rule: contrast is where a theme actually fails and no assertion on the markup sees it. browser-tests-outside-core is the site they run against outside the core, where the specs speak to a real URL and the browsers do not go into the development environment's web container."
     ]
   },
   {

@@ -31,7 +31,7 @@
         "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
         "since": 13
       },
-      "Three neighbours: initial-content-import-once for why a changed file does not arrive, initial-content-references for what survives the import, impexp-artifact for writing the file in the first place."
+      "initial-content-import-once is why a changed file does not arrive: the import runs once and the registry remembers it, so nothing reaches an installation that already ran it. initial-content-references is what survives the import, and it is where shipped content ends up pointing at a stranger's records and the seeded site answers HTTP 404 at its own root. impexp-artifact writes the file in the first place, and the export it writes answers [OK] with the images left out."
     ]
   },
   {

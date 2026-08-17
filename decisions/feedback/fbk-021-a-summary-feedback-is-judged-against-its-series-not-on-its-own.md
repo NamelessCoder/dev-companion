@@ -234,3 +234,57 @@ Archiving on supersession is still undecided, and the case for it has changed
 shape rather than gone away. What the cards weighed was whether `closed` may
 stand over an open subject; what this shows is that the alternative is held by a
 watch nobody keeps.
+
+## Since then
+
+The first **Wrong if** fired on a fifth summary, and the orphaned half is not a
+subject the ladder can be walked over. `feedback/2026-08-17-211826` is a
+measured profile of one build session in `/home/benji/projects/site-demo` — a
+TYPO3 v14 sitepackage plus a distribution extension carrying the content, 215
+tool calls across 148 requests, 36 of them against this server, $29.59 at Opus 5
+list rates. The mapping is the widest in this entry, because the session filed
+one report per subject and twenty of them are still open:
+
+| Half of the summary                                              | Where it is                                                       |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `availableHints` is 78% of what `typo3_hint_lookup` transferred    | `212300`, which the session split out of this file for that reason  |
+| nine debugging cycles, ~45 round trips, the largest cost item      | `212010`, which states the same count                               |
+| the index abandoned the moment a symptom appears                   | `205945`                                                            |
+| `page-content-areas` fetched after the exception it would have prevented | `211306`                                                      |
+| `project-build-and-scripts` fetched only during the review         | `211118`                                                            |
+| the trusted-hosts cycle                                            | `205850` and `212702`                                               |
+| the stale TCA cache cycle                                          | `212117`                                                            |
+| the Fluid argument-type cycle                                      | `212100`                                                            |
+| three hints carrying an incorrect statement, and the partial collision | archived: `205817`, `204536`, `211418`, `205759`, `205830`      |
+| the whole-session profile                                          | nowhere else                                                        |
+
+One row of the ten is answered rather than carried, and five archived siblings
+are what answered it. `c595d790`, `fde155a9`, `30ba620d` and `f3219aba`
+corrected the four hints between the report and this judgement, each leaving an
+assertion in `HintsTest` behind it. So the sentence in the profile that counts
+three hints as carrying an incorrect statement was already out of date when it
+was read.
+
+**The orphaned half of a measured summary is the measurement.** The ladder's
+five steps each name something missing, misplaced or misworded, and a number is
+none of them — which is the position
+[`D-FBK-018`](fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+puts a strength in. So the **Wrong if** fires in form and not in substance: the
+summary is the only report of its subject, and what is owed is that the number
+is written where a later change can be measured against it, not that the ladder
+is walked. It is in
+[`D-FBK-020`](fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md),
+which is where this repository already keeps a per-run cost reading.
+
+The summary's own query reaches less than its halves do, for the fourth time.
+`bin/cli hints:probe` on it matches `content-elements` and `sitepackage-layout`
+and nothing else, against the 21 hints the session fetched by id — the dilution
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+names, measured on a probe as it was on `002951`.
+
+This feedback is archived by the commit that writes the measurement, and that
+does not answer the question the three summaries above are waiting on. They were
+held open over subjects nobody had worked; this one has a half that nothing else
+reports and that half lands here. What `closed` stands over is therefore the
+thing only this file said, and the nine subjects beside it are each named on a
+card of their own.

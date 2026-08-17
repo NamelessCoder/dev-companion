@@ -182,3 +182,51 @@ written into this entry, which is the answer to the feedback's question of what
 would hold the bullets. What was wrong was the evidence under the first bullet,
 and `AGENTS.md` carried the disproved sentence to every session until this
 commit.
+
+## Since then
+
+The first reading from the **caller's** side is in. `feedback/2026-08-17-211826`
+profiles one session in `/home/benji/projects/site-demo` that built a TYPO3 v14
+sitepackage plus a distribution extension carrying the content, on 14.3.6, and
+measured itself off its own client transcript deduplicated on `requestId`.
+Everything above is a session working in this repository; this one is a session
+using the server.
+
+| Measure                     | The build session                                        |
+| --------------------------- | -------------------------------------------------------- |
+| Tool calls / requests       | 215 / 148, so 1.45 calls per request                       |
+| Cached input read           | 38.06M, or 257k per request                                |
+| Cache written / output      | 620k / 174k                                                |
+| Cost at Opus 5 list rates   | $29.59, and $39.04 including the debrief                    |
+| Calls against this server   | 36 of 215, 17%                                             |
+
+**The statement holds where it is stated.** The server's 17% of the calls is
+about 17% of the cost — roughly $4.98 amortised over the turns each answer
+stayed in context — so what this server costs its caller tracks how often it is
+called rather than how much any one answer said. The reading also puts the
+entry's own count beyond argument: the profile separates calls from requests as
+two numbers, which is the distinction three sessions above collapsed into one.
+
+Two things bound it, and neither moves it. The first is the multiplier: 257k of
+context re-read per request against the 82k average of the 82, so a payload in a
+caller's session is paid back over more and larger requests than one here. The
+second is what that does to a payload that is both large and repeated — the
+session reports ~$2.57 of its $4.98, half of everything this server cost it, as
+the `availableHints` array reprinted on 21 answers it had asked by id.
+`feedback/2026-08-17-212300` is that half, with a card of its own, and the lever
+is the array rather than the rule.
+
+The largest single item is not a payload at all. Nine debugging cycles cost the
+session roughly 45 `bash` round trips, more than all 36 server calls put
+together, and every one of them was a question this server had no answer to or
+did not deliver. That is
+[`D-FBK-027`](fbk-027-the-server-builds-what-costs-its-caller-round-trips.md)'s
+premise measured from the outside, and the nine are on the board as
+`feedback/2026-08-17-212010` and its siblings.
+
+What this does not do is test the three **Wrong if**. They compare runs of
+worktree sessions in this checkout, n is 1 here, and nothing in this repository
+can reproduce a figure read out of a client transcript in somebody else's
+project. It is kept because a later change to answer size or routing has
+something to be measured against, which is what the reporting session asked for
+and the only form a keep can take for a number.

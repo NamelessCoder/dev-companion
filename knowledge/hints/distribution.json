@@ -109,7 +109,10 @@
       "impexp:import",
       "typo3/cms-impexp",
       "--table",
+      "--include-related",
       "save-files-outside-export-file",
+      "files_fal",
+      "sys_file_reference",
       "export the page tree"
     ],
     "hints": [
@@ -120,8 +123,10 @@
       },
       "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
       "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
-      "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
-      "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
+      "Images do not come along with the reference: --include-related=sys_file is what admits the sys_file record, and the bytes hang off that record rather than off the sys_file_reference. Naming sys_file under --table admits nothing, because a page tree holds no sys_file rows. The reference table still has to be named as well, under --table or under --include-related, and --include-related=sys_file_metadata is what brings the alt texts and titles with it.",
+      "Where the bytes then go is --save-files-outside-export-file: beside the export instead of base64 inside it, into a directory named after the file plus .files, each under its own sha1. That is the shape for an artifact that is committed. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
+      "The export keeps the basename of the filename argument and drops the rest: EXT:my_package/Initialisation/data becomes data, and the file lands in the default import-export folder below fileadmin. Nothing rejects the path that was dropped, and the success message names where the file went. A package artifact is moved into place afterwards, its .files directory with it. EXT:<key>/Initialisation/data.xml is the form that works for impexp:import, which resolves its argument through GeneralUtility::getFileAbsFileName().",
+      "impexp:export answers [OK] whatever it left out, so the artifact is what says whether it worked. A correct one has a files_fal section beside header and records, and its .files directory holds one file per image."
     ]
   }
 ]

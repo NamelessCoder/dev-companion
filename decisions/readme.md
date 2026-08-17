@@ -72,8 +72,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
-- [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
+- [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
@@ -152,8 +152,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
-[D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-ANS-082]: answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
+[D-ANS-084]: answers/ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md
 [D-ANS-083]: answers/ans-083-the-unsupported-answer-is-the-whole-diagnostic-and-the-orientation-tool-is-for-a-caller-who-has-none.md
 [D-ANS-079]: answers/ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
 [D-ANS-080]: answers/ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
@@ -716,6 +716,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### Revoked, and kept as the record
 
+- [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14 → D-KNW-078
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
@@ -753,6 +754,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
+[D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-KNW-072]: knowledge/knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
 [D-KNW-074]: knowledge/knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md

@@ -30,8 +30,20 @@ typo3_hint_lookup already takes a free-text `task`, so the surface exists. What 
 
 ## Query
 
-typo3_hint_lookup with task="inline children are created but uid_foreign stays 0" or task="f:asset.css does not appear in the rendered page" — compare what comes back against the ids that would have answered (datahandler-relations, fluid-layouts-sections)
+typo3_hint_lookup with task="f:asset.css does not appear in the rendered page" — compare what comes back against the id that would have answered (fluid-layouts-sections)
 
 ## Suggestion
 
-Index a second axis: what it looks like when this goes wrong. Many hints already carry the symptom in their prose — content-element-preview says a template reading {header} "renders an empty spot and logs nothing", sitepackage-templates says the layout collision comes back "on a page that still comes back without an error". Those sentences are exactly what a debugging caller would search with, and they are currently only reachable once you have already found the hint. Lifting them into a searchable field, or into the title, would let a symptom find its own answer. Failing that, saying plainly in the tool description that `task` matches symptoms as well as subjects — with one worked example of a symptom phrasing that hits — would at least make callers try it; I did not, because I assumed lexical matching against mechanism-side titles would not reach me.
+Many hints already carry the symptom in their prose — content-element-preview says a template reading {header} "renders an empty spot and logs nothing", sitepackage-templates says the layout collision comes back "on a page that still comes back without an error". Those sentences are exactly what a debugging caller would search with, and fluid-layouts-sections has none for the asset case. Give that hint the words a caller arrives with.
+
+## What is left of this
+
+Trimmed on 2026-08-18. The axis this asked for exists and is now reached across
+the domain gate as well — `D-ANS-081` measured it, `D-ANS-084` is the rule, and
+"the content elements render in reverse order" returns datahandler-placement.
+The `task` parameter and the `routing` block say a symptom is a query this tool
+takes, which is the documentation half of the suggestion.
+
+What is left is the one query above. It is not the gate: Fluid is selected, the
+hint is inside it, and the query carries none of its words, so this is curation
+of that hint.

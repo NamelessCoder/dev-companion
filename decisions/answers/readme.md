@@ -7,8 +7,8 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
+- [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
@@ -87,8 +87,8 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
-[D-ANS-081]: ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-ANS-082]: ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
+[D-ANS-084]: ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md
 [D-ANS-083]: ans-083-the-unsupported-answer-is-the-whole-diagnostic-and-the-orientation-tool-is-for-a-caller-who-has-none.md
 [D-ANS-079]: ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
 [D-ANS-080]: ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
@@ -169,11 +169,13 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
 - [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
+[D-ANS-081]: ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
 [D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md

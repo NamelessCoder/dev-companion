@@ -119,6 +119,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · held
 - [`R-ANS-029`][R-ANS-029] — An answer that names a record says enough of it to judge whether to open it · held
 - [`R-ANS-030`][R-ANS-030] — A bound on an answer is asked for and never applied by default · held
+- [`R-ANS-031`][R-ANS-031] — A symptom reaches the hint that explains it · held
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -151,6 +152,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-028]: answers/ans-028-an-answer-that-names-a-document-says-how-to-read-it-whole.md
 [R-ANS-029]: answers/ans-029-an-answer-that-names-a-record-says-enough-of-it-to-judge-whether-to-open-it.md
 [R-ANS-030]: answers/ans-030-a-bound-on-an-answer-is-asked-for-and-never-applied-by-default.md
+[R-ANS-031]: answers/ans-031-a-symptom-reaches-the-hint-that-explains-it.md
 
 ### documentation
 

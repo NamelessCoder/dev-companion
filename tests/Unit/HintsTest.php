@@ -3161,6 +3161,17 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theSharedRootCollisionIsStatedForPartialsBesideLayouts(): void
+    {
+        // `D-KNW-083`. The layout half was stated on its own, so a reader who
+        // subdivided Layouts/ on it put a Header/Header beside the core's and
+        // broke every element on the page.
+        $text = self::statementsOf('sitepackage-templates');
+        self::assertStringContainsString('Partials/Header/Header', $text);
+        self::assertStringContainsString('Partials/Header/All', $text, 'what renders it is why the failure is not local');
+    }
+
+    #[Test]
     public function theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures(): void
     {
         // `D-KNW-082`. The derivation was stated as a property of

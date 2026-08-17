@@ -1,10 +1,10 @@
 ---
-id: D-KNW-092
+id: D-KNW-091
 date: 2026-08-18
 status: open
 ---
 
-# D-KNW-092 — A PHP version is the payload a hint may state, and a TYPO3 version is not
+# D-KNW-091 — A PHP version is the payload a hint may state, and a TYPO3 version is not
 
 **A hint may write a PHP version where it writes the word `PHP` in front of it,
 and every other `<major>.<minor>` stays out of the corpus.**

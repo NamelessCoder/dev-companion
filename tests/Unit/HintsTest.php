@@ -3161,6 +3161,35 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures(): void
+    {
+        // `D-KNW-082`. The derivation was stated as a property of
+        // lib.contentElement and belongs to theme_camino, so a project that
+        // trusted it would have named no template at all.
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('sitepackage-templates', $major)['hints'], 'text'),
+        );
+
+        $derivation = array_filter(
+            (array) Hints::byId('sitepackage-templates', 14)['hints'],
+            static fn(array $hint): bool => str_contains($hint['text'], 'uppercamelcase'),
+        );
+        self::assertCount(1, $derivation);
+        self::assertStringContainsString('theme_camino', reset($derivation)['text'], 'the owner is what the statement was missing');
+
+        foreach ([12, 13, 14] as $major) {
+            self::assertStringContainsString('templateName = Text', $on($major), 'what fluid_styled_content does holds on all of them');
+        }
+
+        // theme_camino is a v14 package, so the convention it configures is
+        // withheld from the branches that cannot have it.
+        foreach ([12, 13] as $major) {
+            self::assertStringNotContainsString('uppercamelcase', $on($major));
+        }
+    }
+
+    #[Test]
     public function theTemplateTrapsThatFailWithoutAnErrorAreNamed(): void
     {
         // Both produce a wrong page rather than a failure: a variable assigned

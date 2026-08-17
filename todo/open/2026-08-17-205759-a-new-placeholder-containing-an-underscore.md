@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-17-205759-a-new-placeholder-containing-an-underscore.md
 **Priority:** normal
-**Branch:** todo/a-new-placeholder-containing-an-underscore
-**Claimed:** 2026-08-17
 
 Judged on 2026-08-17 as a knowledge gap: the probe reaches
 `datahandler-relations` and `datahandler-writing` and neither says how a NEW

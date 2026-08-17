@@ -87,3 +87,14 @@ is their content rather than their absence.
 ## Covered by
 
 - `HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo`
+
+## Since then
+
+A second question about the same variable was judged on 2026-08-18 and is queued
+beside this one: these statements say how a field is read off the record and
+never what the record or the field is as a PHP type, which is what a typed
+`f:argument` declares —
+[`D-KNW-090`](knw-090-the-corpus-names-the-php-type-a-record-and-a-transformed-column-arrive-as.md).
+Both land on `preview-record-variable`, so whichever is written second reads the
+statements this one put there rather than adding beside them.
+

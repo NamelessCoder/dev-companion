@@ -471,6 +471,86 @@ final class VersionsTest extends TestCase
         self::assertSame($majors, $answered, $constraint);
     }
 
+    /**
+     * Every `require.php` spelling the four core checkouts declare, and the
+     * lowest version each one admits.
+     *
+     * `D-ANS-082` assumed that reading a PHP constraint at minor granularity
+     * covers what a manifest writes, and named the way that assumption failed
+     * one level up: `D-VER-004` was broken by `>= 8.1 < 8.5`, an operator with a
+     * space. So it is owed the same corpus — every `require.php` in
+     * `.checkouts/{12.4,13.4,14.3,main}` and their vendor trees, read on
+     * 2026-08-18: 556 constraints in 36 distinct spellings, all of them below.
+     * Every expectation is composer/semver's own answer for that spelling, taken
+     * by asking it which is the lowest major.minor it admits any release of, not
+     * by reading the spelling.
+     *
+     * The last four are not in that corpus and are the shapes `D-ANS-082` is
+     * wrong if this misreads. Three of them answer, and the hyphen range does
+     * not: read as the comparators it splits into, `8.1 - 8.4` would answer 8.4,
+     * and a wrong floor carries the answer's authority where a missing one costs
+     * a sentence. `D-VER-004` found it in none of 3179 constraints and left it
+     * unread one level up; this leaves it unread for the same reason.
+     *
+     * @return iterable<string, array{string, ?string}>
+     */
+    public static function phpConstraintSpellingsFromTheCheckouts(): iterable
+    {
+        yield 'the commonest of all, a bare lower bound' => ['>=8.2', '8.2'];
+        yield 'the same one minor down' => ['>=8.1', '8.1'];
+        yield 'a lower bound carrying a patch level' => ['>=8.4.1', '8.4'];
+        yield 'a lower bound at a major on its own' => ['>=7.0', '7.0'];
+        yield 'a caret' => ['^8.1', '8.1'];
+        yield 'the newest one in the corpus' => ['^8.5', '8.5'];
+        yield 'a caret per major, the shape a library spanning two writes' => ['^7.2 || ^8.0', '7.2'];
+        yield 'the same with a patch level on the lower one' => ['^7.2.5 || ^8.0', '7.2'];
+        yield 'three majors, the oldest of them a 5' => ['^5.3.2 || ^7.0 || ^8.0', '5.3'];
+        yield 'alternatives separated by a single pipe' => ['^7.4|^8.0', '7.4'];
+        yield 'a single pipe with spaces around it' => ['^7.1 | ^8.0', '7.1'];
+        yield 'alternatives in descending order, so the floor is not the first' => ['^8.0 || ^7.4', '7.4'];
+        yield 'a lower and an upper bound in one alternative' => ['>=7.1 <9.0', '7.1'];
+        yield 'minor wildcards, one per supported minor' => ['8.1.* || 8.2.* || 8.3.* || 8.4.*', '8.1'];
+        yield 'a tilde per minor, as a tool pinning each one writes it' => [
+            '~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0',
+            '7.4',
+        ];
+
+        yield 'an operator with a space after it, which broke D-VER-004' => ['>= 8.1 < 8.5', '8.1'];
+        yield 'a bare minor wildcard' => ['8.2.*', '8.2'];
+        yield 'a tilde on a minor, with no patch level' => ['~8.3', '8.3'];
+        yield 'a constraint admitting everything, which names no floor' => ['*', null];
+        yield 'a branch name, which is no version at all' => ['dev-main', null];
+        yield 'Composer\'s hyphen range, which this declines to read' => ['8.1 - 8.4', null];
+    }
+
+    #[Test]
+    #[DataProvider('phpConstraintSpellingsFromTheCheckouts')]
+    public function aPhpSpellingFromTheCheckoutsAnswersItsLowestVersion(string $constraint, ?string $floor): void
+    {
+        self::assertSame($floor, Versions::floor($constraint), $constraint);
+    }
+
+    #[Test]
+    public function aConstraintThatDeclaresNoPhpHasNoFloor(): void
+    {
+        // The ordinary case in a site project, and the reason the whole relation
+        // is null rather than a comparison against a floor of 0.
+        self::assertNull(Versions::floor(null));
+        self::assertNull(Versions::floor(''));
+        self::assertNull(Versions::floor('   '));
+    }
+
+    #[Test]
+    public function theFloorIsReadOneLevelBelowTheMajorTheRestOfThisAnswers(): void
+    {
+        // Why this exists at all: `admits()` reasons in majors, so the pair the
+        // reporting session had — `^8.3` declared against a core requiring
+        // `^8.2` — is a difference it cannot carry. Both are TYPO3-major 8 to
+        // it, and both would be the same answer.
+        self::assertSame(Versions::admits('^8.3', 8), Versions::admits('^8.2', 8));
+        self::assertNotSame(Versions::floor('^8.3'), Versions::floor('^8.2'));
+    }
+
     #[Test]
     public function oneDeclaredMajorAnswersExactlyAsBefore(): void
     {

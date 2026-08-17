@@ -27,4 +27,8 @@ typo3_project_describe on a DDEV-based TYPO3 14.3.6 project and read phpConstrai
 
 ## Suggestion
 
-Say the relation, not just the numbers. Where phpConstraint, corePhpConstraint and the environment's php are all known, one derived line is enough: whether the declared floor is below, equal to or above what the core requires, and whether the environment actually runs on the declared floor or only somewhere inside the range. A project that declares a floor no environment it configures ever executes is worth naming, because that is a claim nothing tests. Separately: the version choice is made before the installation exists, when this tool has nothing to answer with, so the supported-PHP range for a target version is worth having somewhere that does not require an installation to read — that is the moment .ddev/config.yaml gets its number, and it is the only moment the number is easy to change.
+The version choice is made before the installation exists, when this tool has nothing to answer with, so the supported-PHP range for a target version is worth having somewhere that does not require an installation to read — that is the moment .ddev/config.yaml gets its number, and it is the only moment the number is easy to change.
+
+## Answered in part
+
+The first half — say the relation, not just the numbers — landed on 2026-08-18 as `R-PRJ-010`, decided in `D-ANS-082`. `typo3_project_describe` now derives `phpRelation` and states in both halves of its answer where the declared floor sits against what the installed core requires and against what any configured environment runs, saying in the same breath that nothing was executed on any of those versions. What stays open is the half above: it needs no installation and this tool answers from one, so it is not this tool's to give.

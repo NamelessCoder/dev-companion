@@ -10,15 +10,19 @@ own rather than TYPO3's, the sites it configures with the site sets each depends
 on, and the commands it declares in composer.json and package.json — each marked
 a check that hands the code back as it was, a change that rewrites something, or
 unknown where the declared body does not say. Read from files only, no console
-and no database, so it answers on a fresh clone. It also names the environment
-the repository configures to run itself in: a DDEV project states the PHP its
-container runs, which is a different interpreter from the caller's shell and
-where the commands below are run, plus what that environment runs without being
-asked — each hook as the stage it fires at and the command it runs, and the pull
-recipes its database and files come from. Call it before booting such a project
-or before recommending or running a check — these are the commands that exist in
-this repository, and the ones marked check are what a task told not to change
-files may run. Answers from: packages.
+and no database, so it answers on a fresh clone. It states how those PHP numbers
+stand to each other, which none of them says alone: whether the floor this
+project declares clears what the installed core requires, and whether anything
+configured here ever runs that floor or only some higher version inside the
+range. It also names the environment the repository configures to run itself in:
+a DDEV project states the PHP its container runs, which is a different
+interpreter from the caller's shell and where the commands below are run, plus
+what that environment runs without being asked — each hook as the stage it fires
+at and the command it runs, and the pull recipes its database and files come
+from. Call it before booting such a project or before recommending or running a
+check — these are the commands that exist in this repository, and the ones
+marked check are what a task told not to change files may run. Answers from:
+packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -52,6 +56,36 @@ Answers with
     # v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was
     # found to read.
     corePhpConstraint: string or null  # optional
+    # How the three PHP numbers above stand to each other, which none of them says
+    # on its own. Derived from the constraints and the environment as the files
+    # spell them — nothing was executed on any of these versions, so this is what
+    # the project claims and not evidence that any of it works. Null where
+    # phpConstraint names no floor: the project requires no PHP, or spells it in a
+    # way this will not claim to read, and a constraint it cannot read costs this
+    # object rather than buying a wrong relation.
+    phpRelation:  # optional
+      # The lowest PHP phpConstraint admits, as major.minor. What the project
+      # promises to run on, and the number its own commands are worth holding
+      # against.
+      floor: string
+      # The same, read off corePhpConstraint. Null where no core package was found
+      # to read one from.
+      coreFloor: string or null
+      # One of: below, same, above, null. Where floor sits against coreFloor. below:
+      # the project declares support for a PHP its own installed core refuses, so
+      # the promise cannot be kept. same: it declares what the core requires. above:
+      # it declares more than the core needs, which is a range the project narrowed
+      # itself and can widen without touching a dependency. Null where coreFloor is.
+      againstCore: string or null
+      # One of: below, same, above, null. Where the PHP environment.php states sits
+      # against floor. same: the declared floor is the version the commands are run
+      # on. above: the environment runs higher, so the floor is a version nothing
+      # configured here ever executes — a claim no check tests. below: the
+      # environment runs a PHP the project says it does not support. Null where
+      # there is no environment or it states no version. Only the floors are
+      # compared, so a version over what the constraint's own upper bound allows
+      # reads here like one inside it.
+      inEnvironment: string or null
     # The environment this repository configures to run itself in, read from that
     # environment's own files. Null means nothing here configures one that this
     # server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it
@@ -202,24 +236,22 @@ Answers with
         console: string
 
 The answer carries exactly one of these sets of fields: ``root``,
-``environment``, ``extensions``, ``sites``, ``commands``, ``patches``,
-``guides``, ``answeredBy`` — or ``unsupported``.
+``phpRelation``, ``environment``, ``extensions``, ``sites``, ``commands``,
+``patches``, ``guides``, ``answeredBy`` — or ``unsupported``.
 
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
-be reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
-installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-``bin/cli tools:check`` holds it.
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console answers.
+Answered against composer-project, TYPO3 14.3.0, the installation this
+repository writes below .fixtures/, whose console answers. The tools that
+declare ``answeredBy`` carry an answer from each, under a heading naming which;
+every other answer is from the first alone, because nothing in it would differ.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 project
 ~~~~~~~
@@ -238,6 +270,8 @@ Text:
 .. code-block:: text
 
     <installation> — core-checkout, TYPO3 14.3.7-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
+
+    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
     Extensions: none beyond TYPO3's own.
 
@@ -274,6 +308,12 @@ Data:
         "phpConstraint": "^8.2",
         "coreConstraint": null,
         "corePhpConstraint": "^8.2",
+        "phpRelation": {
+            "floor": "8.2",
+            "coreFloor": "8.2",
+            "againstCore": "same",
+            "inEnvironment": null
+        },
         "environment": null,
         "extensions": [],
         "sites": [],
@@ -362,6 +402,8 @@ Text:
 
     <installation> — composer-project, TYPO3 14.3.0, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
+    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
+
     Extensions that are not TYPO3's own:
     - acme_events (project) — packages/acme_events
 
@@ -398,6 +440,12 @@ Data:
         "phpConstraint": "^8.2",
         "coreConstraint": "^14.3",
         "corePhpConstraint": "^8.2",
+        "phpRelation": {
+            "floor": "8.2",
+            "coreFloor": "8.2",
+            "againstCore": "same",
+            "inEnvironment": null
+        },
         "environment": null,
         "extensions": [
             {

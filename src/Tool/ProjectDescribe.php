@@ -34,7 +34,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -51,6 +51,17 @@ final class ProjectDescribe extends ReadOnlyTool
             'phpConstraint' => Schema::nullableString('What composer.json requires of PHP. What the project declares, not what runs it — see environment.'),
             'coreConstraint' => Schema::nullableString('What it requires of typo3/cms-core.'),
             'corePhpConstraint' => Schema::nullableString('What the installed typo3/cms-core requires of PHP, out of that package\'s own composer.json — the lowest a package here may declare it supports. Neither of the other two PHP numbers: not what this project declares, and not what environment.php runs. Not derivable from the TYPO3 major either — v13.4 and v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was found to read.'),
+            'phpRelation' => [
+                'type' => ['object', 'null'],
+                'description' => 'How the three PHP numbers above stand to each other, which none of them says on its own. Derived from the constraints and the environment as the files spell them — nothing was executed on any of these versions, so this is what the project claims and not evidence that any of it works. Null where phpConstraint names no floor: the project requires no PHP, or spells it in a way this will not claim to read, and a constraint it cannot read costs this object rather than buying a wrong relation.',
+                'properties' => [
+                    'floor' => Schema::string('The lowest PHP phpConstraint admits, as major.minor. What the project promises to run on, and the number its own commands are worth holding against.'),
+                    'coreFloor' => Schema::nullableString('The same, read off corePhpConstraint. Null where no core package was found to read one from.'),
+                    'againstCore' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where floor sits against coreFloor. below: the project declares support for a PHP its own installed core refuses, so the promise cannot be kept. same: it declares what the core requires. above: it declares more than the core needs, which is a range the project narrowed itself and can widen without touching a dependency. Null where coreFloor is.'],
+                    'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where the PHP environment.php states sits against floor. same: the declared floor is the version the commands are run on. above: the environment runs higher, so the floor is a version nothing configured here ever executes — a claim no check tests. below: the environment runs a PHP the project says it does not support. Null where there is no environment or it states no version. Only the floors are compared, so a version over what the constraint\'s own upper bound allows reads here like one inside it.'],
+                ],
+                'required' => ['floor', 'coreFloor', 'againstCore', 'inEnvironment'],
+            ],
             'environment' => [
                 'type' => ['object', 'null'],
                 'description' => 'The environment this repository configures to run itself in, read from that environment\'s own files. Null means nothing here configures one that this server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it reads — so the commands below run wherever the caller runs them.',
@@ -102,7 +113,7 @@ final class ProjectDescribe extends ReadOnlyTool
                 'title' => Schema::string(),
             ], ['id', 'title']), 'The whole procedures this server carries, named here because this is the call every task starts with. They are also served as typo3://guides resources, and a client that lists no resources renders none of them — four sessions in one week finished without learning they exist. Each is one typo3_rule_lookup call by documentId, which needs no resource list; a search over sections answers a question and never hands one of these over whole.'),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-        ], ['root', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
+        ], ['root', 'phpRelation', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -123,6 +134,12 @@ final class ProjectDescribe extends ReadOnlyTool
             self::runtime($project['environment']),
             self::floor($project['corePhpConstraint']),
         )];
+
+        $relation = self::relation($project['phpRelation'], $project['environment']);
+        if ($relation !== '') {
+            $lines[] = '';
+            $lines[] = $relation;
+        }
 
         $lines[] = '';
         $lines[] = $project['extensions'] === []
@@ -309,6 +326,71 @@ final class ProjectDescribe extends ReadOnlyTool
         }
 
         return sprintf(', and the installed core requires %s — the lowest a package here may declare', $constraint);
+    }
+
+    /**
+     * How the three numbers on the line above stand to each other.
+     *
+     * The line states them and states which is which; what it never said is the
+     * relation, and the relation is the defect. A session that had all three
+     * declared `^8.3` over a core requiring `^8.2` and ran everything at 8.4, so
+     * it supported a version no command it owns ever executed — and it says the
+     * answer that would have shown it was one it had already read
+     * (`feedback/2026-08-17-211157`, `D-ANS-082`).
+     *
+     * Stated even where the three agree, for the reason `floor()` states the
+     * core's number where it repeats the project's own: a line the answer drops
+     * when nothing is wrong cannot be told from one it never computed.
+     *
+     * @param array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null $relation
+     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     */
+    private static function relation(?array $relation, ?array $environment): string
+    {
+        if ($relation === null) {
+            return '';
+        }
+
+        $sentences = [sprintf('Those PHP numbers, as they stand to each other. This project promises %s.', $relation['floor'])];
+        $sentences[] = match ($relation['againstCore']) {
+            Project::PHP_BELOW => sprintf(
+                'The installed core requires %s, so that promise cannot be kept here: the core refuses the version '
+                    . 'this project says it supports.',
+                (string) $relation['coreFloor'],
+            ),
+            Project::PHP_ABOVE => sprintf(
+                'The installed core requires %s, so this project asks for more than its dependency needs — a range it '
+                    . 'narrowed itself, and one it can widen without touching anything it does not own.',
+                (string) $relation['coreFloor'],
+            ),
+            Project::PHP_SAME => sprintf('The installed core requires %s as well, so the two agree.', (string) $relation['coreFloor']),
+            default => 'Nothing readable here says what the installed core requires, so there is no second floor to '
+                . 'hold that against.',
+        };
+        $sentences[] = match ($relation['inEnvironment']) {
+            Project::PHP_SAME => sprintf(
+                'The environment runs %s, which is that floor, so it is the version the commands above are actually '
+                    . 'executed on.',
+                (string) $environment['php'],
+            ),
+            Project::PHP_ABOVE => sprintf(
+                'The environment runs %s, above that floor, so nothing configured here ever executes the version this '
+                    . 'project promises — it is a claim, and every check passes without testing it.',
+                (string) $environment['php'],
+            ),
+            Project::PHP_BELOW => sprintf(
+                'The environment runs %s, below that floor, so the commands above are executed on a PHP this project '
+                    . 'says it does not support.',
+                (string) $environment['php'],
+            ),
+            default => 'No environment here states a PHP, so there is nothing to say which of the versions in that '
+                . 'range gets run.',
+        };
+        $sentences[] = 'All of it read from these files. Nothing was executed on any of these versions, and only the '
+            . 'floors were compared — a version over what a constraint\'s own upper bound allows reads here like one '
+            . 'inside it.';
+
+        return implode(' ', $sentences);
     }
 
     /**

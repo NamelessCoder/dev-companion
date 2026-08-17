@@ -25,6 +25,16 @@ use TYPO3\DevCompanion\Paths;
 final class Versions
 {
     /**
+     * One comparator of a Composer constraint: an optional operator, a major,
+     * and an optional minor that may be a wildcard.
+     *
+     * Shared by the two readings below so they cannot drift apart on a spelling
+     * — one asks which majors a constraint serves, the other what its lowest
+     * version is, and both are the same comparator read to a different depth.
+     */
+    private const COMPARATOR = '/^(\^|~|>=|<=|>|<|=|v)?\s*v?(\d+)(?:\.(\d+|\*|x))?/i';
+
+    /**
      * @return array<int, array{major: int, branch: string, status: string}>
      */
     public static function covered(): array
@@ -183,7 +193,7 @@ final class Versions
         if ($comparator === '') {
             return true;
         }
-        if (preg_match('/^(\^|~|>=|<=|>|<|=|v)?\s*v?(\d+)(?:\.(\d+|\*|x))?/i', $comparator, $matches) !== 1) {
+        if (preg_match(self::COMPARATOR, $comparator, $matches) !== 1) {
             return false;
         }
 
@@ -203,6 +213,81 @@ final class Versions
             '<=' => $major <= $stated,
             default => $major === $stated,
         };
+    }
+
+    /**
+     * The lowest version a Composer constraint admits, as `major.minor`, or
+     * null where it names none.
+     *
+     * `admits()` one level down, and for a subject that is not TYPO3: a PHP
+     * constraint is compared to another PHP constraint and to the interpreter
+     * an environment runs, and `^8.3` against `^8.2` is a difference the major
+     * does not carry. The minor is the whole of the depth — a floor is held
+     * against a DDEV `php_version`, which is major.minor and nothing more.
+     *
+     * Null rather than a number wherever the reading is not certain: a
+     * constraint with no lower bound, one alternative that states none, and a
+     * comparator this does not read — Composer's hyphen range `8.1 - 8.4`,
+     * which occurs nowhere in the corpus this was measured against and which
+     * read as its parts would answer 8.4. `D-ANS-082` is wrong if this states
+     * the wrong relation with the answer's authority, so a spelling it cannot
+     * read costs the caller a sentence rather than buying a wrong one.
+     */
+    public static function floor(?string $constraint): ?string
+    {
+        $constraint = trim((string) $constraint);
+        if ($constraint === '') {
+            return null;
+        }
+
+        $floor = null;
+        foreach (preg_split('/\s*\|\|?\s*/', $constraint) ?: [] as $alternative) {
+            $lowest = self::alternativeFloor(trim($alternative));
+            // An alternative admitting anything below is what the whole
+            // constraint admits, so there is no floor left to name.
+            if ($lowest === null) {
+                return null;
+            }
+            $floor = $floor === null || version_compare($lowest, $floor, '<') ? $lowest : $floor;
+        }
+
+        return $floor;
+    }
+
+    /**
+     * The lowest version one alternative admits.
+     *
+     * Its comparators are combined with and, so the floor is the highest lower
+     * bound among them — `>=7.1 <9.0` starts at 7.1, and the upper bound beside
+     * it states no floor of its own.
+     */
+    private static function alternativeFloor(string $alternative): ?string
+    {
+        if ($alternative === '' || $alternative === '*') {
+            return null;
+        }
+        $alternative = (string) preg_replace('/(>=|<=|>|<|=|\^|~)\s+/', '$1', $alternative);
+
+        $floor = null;
+        foreach (preg_split('/[\s,]+/', $alternative) ?: [] as $comparator) {
+            $comparator = trim($comparator);
+            if ($comparator === '') {
+                continue;
+            }
+            if (preg_match(self::COMPARATOR, $comparator, $matches) !== 1) {
+                return null;
+            }
+            // An upper bound is read and states nothing about the floor.
+            if (strtolower($matches[1]) === '<' || strtolower($matches[1]) === '<=') {
+                continue;
+            }
+
+            $minor = $matches[3] ?? '';
+            $lowest = $matches[2] . '.' . (ctype_digit($minor) ? $minor : '0');
+            $floor = $floor === null || version_compare($lowest, $floor, '>') ? $lowest : $floor;
+        }
+
+        return $floor;
     }
 
     /** The major in a version string, or null when there is none to read. */

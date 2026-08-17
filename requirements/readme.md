@@ -227,6 +227,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-PRJ-007`][R-PRJ-007] — A declared command says whether running it changes anything · held
 - [`R-PRJ-008`][R-PRJ-008] — The project answer says what runs it, not only what it declares · held
 - [`R-PRJ-009`][R-PRJ-009] — The project answer states the lifecycle its environment declares · held
+- [`R-PRJ-010`][R-PRJ-010] — The project answer relates its PHP numbers rather than listing them · held
 
 [R-PRJ-001]: project/prj-001-the-project-is-describable-from-its-files-alone.md
 [R-PRJ-002]: project/prj-002-one-unreadable-site-costs-that-site-and-no-other.md
@@ -237,6 +238,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-PRJ-007]: project/prj-007-a-declared-command-says-whether-running-it-changes-anything.md
 [R-PRJ-008]: project/prj-008-the-project-answer-says-what-runs-it.md
 [R-PRJ-009]: project/prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md
+[R-PRJ-010]: project/prj-010-the-project-answer-relates-its-php-numbers-rather-than-listing-them.md
 
 ### scope
 

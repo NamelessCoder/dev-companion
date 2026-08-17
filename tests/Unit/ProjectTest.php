@@ -247,6 +247,134 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theThreePhpNumbersAreRelatedAndNotOnlyListed(): void
+    {
+        // The exact project feedback/2026-08-17-211157 was written in: ^8.3
+        // declared, a core requiring ^8.2, a container at 8.4. Above the floor
+        // it could have declared, below the interpreter every command was run
+        // on, so no line of the package was ever executed on the version it
+        // claims to support — and the answer that held all three numbers said
+        // nothing about them relating (D-ANS-082).
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/vendor/typo3/cms-core/composer.json', json_encode([
+            'name' => 'typo3/cms-core',
+            'type' => 'typo3-cms-framework',
+            'require' => ['php' => '^8.2'],
+        ], JSON_THROW_ON_ERROR));
+        $this->manifest($root, ['require' => ['php' => '^8.3', 'typo3/cms-core' => '^14.3']]);
+        $this->declare($root . '/.ddev/config.yaml', "name: site-demo\ntype: typo3\nphp_version: \"8.4\"\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame([
+            'floor' => '8.3',
+            'coreFloor' => '8.2',
+            'againstCore' => Project::PHP_ABOVE,
+            'inEnvironment' => Project::PHP_ABOVE,
+        ], Project::describe()['phpRelation']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('This project promises 8.3.', $text);
+        self::assertStringContainsString('asks for more than its dependency needs', $text);
+        self::assertStringContainsString('nothing configured here ever executes', $text);
+        // What it may not claim. Nothing here ran anything, so the line is what
+        // the files say and never evidence that the floor works.
+        self::assertStringContainsString('Nothing was executed on any of these versions', $text);
+    }
+
+    #[Test]
+    public function aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut(): void
+    {
+        // Stated even where the three agree, for the reason ProjectDescribe
+        // states the core's number where it repeats the project's own: a line
+        // the answer drops when nothing is wrong cannot be told from one it
+        // never computed (D-ANS-082).
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/vendor/typo3/cms-core/composer.json', json_encode([
+            'name' => 'typo3/cms-core',
+            'require' => ['php' => '^8.2'],
+        ], JSON_THROW_ON_ERROR));
+        $this->manifest($root, ['require' => ['php' => '>=8.2']]);
+        $this->declare($root . '/.ddev/config.yaml', "name: site-demo\ntype: typo3\nphp_version: \"8.2\"\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame([
+            'floor' => '8.2',
+            'coreFloor' => '8.2',
+            'againstCore' => Project::PHP_SAME,
+            'inEnvironment' => Project::PHP_SAME,
+        ], Project::describe()['phpRelation']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('The installed core requires 8.2 as well, so the two agree.', $text);
+        self::assertStringContainsString('which is that floor', $text);
+    }
+
+    #[Test]
+    public function aFloorTheCoreRefusesAndAnEnvironmentUnderItAreBothSaid(): void
+    {
+        // The two shapes the other way round, and the only one of the four that
+        // is a defect rather than a choice: a project promising a PHP its own
+        // installed core will not accept, in a container that runs it anyway.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/vendor/typo3/cms-core/composer.json', json_encode([
+            'name' => 'typo3/cms-core',
+            'require' => ['php' => '^8.2'],
+        ], JSON_THROW_ON_ERROR));
+        $this->manifest($root, ['require' => ['php' => '^8.1']]);
+        $this->declare($root . '/.ddev/config.yaml', "name: site-old\ntype: typo3\nphp_version: \"8.0\"\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame([
+            'floor' => '8.1',
+            'coreFloor' => '8.2',
+            'againstCore' => Project::PHP_BELOW,
+            'inEnvironment' => Project::PHP_BELOW,
+        ], Project::describe()['phpRelation']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('that promise cannot be kept here', $text);
+        self::assertStringContainsString('says it does not support', $text);
+    }
+
+    #[Test]
+    public function aProjectWithNoReadableFloorIsRelatedToNothing(): void
+    {
+        // Declaring no PHP is what phpConstraint already says, and a relation
+        // built on a floor of 0 would be three numbers where there are two.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/vendor/typo3/cms-core/composer.json', json_encode([
+            'name' => 'typo3/cms-core',
+            'require' => ['php' => '^8.2'],
+        ], JSON_THROW_ON_ERROR));
+        $this->manifest($root, ['require' => ['typo3/cms-core' => '^14.3']]);
+        $this->declare($root . '/.ddev/config.yaml', "name: site-demo\ntype: typo3\nphp_version: \"8.4\"\n");
+        Instance::discoverFrom($root);
+
+        self::assertNull(Project::describe()['phpRelation']);
+        self::assertStringNotContainsString(
+            'as they stand to each other',
+            Registry::call('typo3_project_describe', [])->text,
+        );
+
+        // A project with a floor and nothing else readable still relates what it
+        // has: no core to compare against, and no environment stating a version.
+        $bare = $this->composerProject();
+        $this->manifest($bare, ['require' => ['php' => '^8.2']]);
+        Instance::discoverFrom($bare);
+
+        self::assertSame([
+            'floor' => '8.2',
+            'coreFloor' => null,
+            'againstCore' => null,
+            'inEnvironment' => null,
+        ], Project::describe()['phpRelation']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('no second floor to hold that against', $text);
+        self::assertStringContainsString('No environment here states a PHP', $text);
+    }
+
+    #[Test]
     public function aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave(): void
     {
         // DDEV takes php_version as major.minor and falls back to the default

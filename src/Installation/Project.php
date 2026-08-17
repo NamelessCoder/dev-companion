@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
  * What the project around the discovered installation consists of, read from
@@ -52,6 +53,19 @@ final class Project
     public const RUNS_UNDECLARED = 'unknown';
 
     /**
+     * Where one PHP version sits against another — the whole vocabulary of
+     * `phpRelation`, used for both of its comparisons.
+     *
+     * One word for one idea: the declared floor stands `below`, on the `same`
+     * version as, or `above` what the core requires, and the environment's
+     * interpreter stands the same three ways against that floor. What each of
+     * them means for the project is the schema's to say, not the value's.
+     */
+    public const PHP_BELOW = 'below';
+    public const PHP_SAME = 'same';
+    public const PHP_ABOVE = 'above';
+
+    /**
      * The keys a DDEV hook task states its command under.
      *
      * `exec` runs it in a container, `exec-host` on the machine DDEV was
@@ -85,6 +99,7 @@ final class Project
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
      *     corePhpConstraint: ?string,
+     *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null,
      *     environment: array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
@@ -101,15 +116,19 @@ final class Project
 
         $root = $instance['root'];
         $manifest = self::json($root . '/composer.json');
+        $php = self::requirement($manifest, 'php');
+        $corePhp = self::corePhpConstraint();
+        $environment = self::environment($root);
 
         return [
             'root' => $root,
             'kind' => $instance['kind'],
             'typo3Version' => Instance::typo3Version(),
-            'phpConstraint' => self::requirement($manifest, 'php'),
+            'phpConstraint' => $php,
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),
-            'corePhpConstraint' => self::corePhpConstraint(),
-            'environment' => self::environment($root),
+            'corePhpConstraint' => $corePhp,
+            'phpRelation' => self::phpRelation($php, $corePhp, $environment['php'] ?? null),
+            'environment' => $environment,
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
             'commands' => self::commands($root, $manifest),
@@ -826,6 +845,54 @@ final class Project
         $core = Instance::packages()['core'] ?? null;
 
         return $core === null ? null : self::requirement(self::json($core . '/composer.json'), 'php');
+    }
+
+    /**
+     * How the three PHP numbers beside it stand to each other.
+     *
+     * They have been in one answer since `D-KNW-055`, each field's description
+     * naming the other two to say which number it is not, and the comparison
+     * between them was the caller's. A session that had all three declared
+     * `^8.3` against a core requiring `^8.2`, ran every command in a container
+     * at 8.4, and executed no line on the floor it claims to support
+     * (`feedback/2026-08-17-211157`) — a claim nothing tests and every check
+     * passes. `D-ANS-082`: the one place that holds all three values is the
+     * answer that already prints them.
+     *
+     * Two comparisons, both against what this project declares, because that is
+     * what a manifest can be rewritten to. Nothing was run to find either out:
+     * this is what the files say, never evidence that the floor works.
+     *
+     * Null where the declared constraint names no floor — a project that
+     * requires no PHP, or one spelled in a way `Versions::floor()` will not
+     * claim to read. That the project declares nothing is already `phpConstraint`.
+     *
+     * @return array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null
+     */
+    private static function phpRelation(?string $declared, ?string $core, ?string $environment): ?array
+    {
+        $floor = Versions::floor($declared);
+        if ($floor === null) {
+            return null;
+        }
+        $coreFloor = Versions::floor($core);
+
+        return [
+            'floor' => $floor,
+            'coreFloor' => $coreFloor,
+            'againstCore' => $coreFloor === null ? null : self::sits($floor, $coreFloor),
+            'inEnvironment' => $environment === null ? null : self::sits($environment, $floor),
+        ];
+    }
+
+    /** Where one `major.minor` sits against another. */
+    private static function sits(string $version, string $against): string
+    {
+        return match (version_compare($version, $against)) {
+            -1 => self::PHP_BELOW,
+            1 => self::PHP_ABOVE,
+            default => self::PHP_SAME,
+        };
     }
 
     /**

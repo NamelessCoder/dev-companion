@@ -44,6 +44,12 @@ final class Renumber
             throw new \InvalidArgumentException($file . ' is no decision in ' . $root . '/decisions/');
         }
 
+        // Both sides of every path comparison below, in one spelling. The entry
+        // is recognised among the documents by being the same path, and a
+        // caller naming it relatively would leave its own id line unmoved.
+        $root = (string) (realpath($root) ?: $root);
+        $file = (string) realpath($file);
+
         // The entry the caller named rather than the id it carries: two files
         // claim one id after a rebase, which is the only state this exists for,
         // and the caller is the one who knows which of them moves.

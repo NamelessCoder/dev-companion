@@ -262,6 +262,28 @@ final class RenumberTest extends TestCase
         self::assertStringContainsString("id: D-GUI-901\n", (string) file_get_contents($collision));
     }
 
+    /**
+     * The entry is recognised among the documents by being the same path, and
+     * the caller writes that path however they reached the file. Named in any
+     * other spelling than the one the corpus is read in, it was rewritten
+     * everywhere except in its own front matter and heading — which is the one
+     * place `decisions:check` reads, so the run looked finished and the entry
+     * carried a number no longer its own.
+     */
+    #[Test]
+    public function theEntryMovesWhateverSpellingOfItsPathTheCallerUsed(): void
+    {
+        $root = $this->corpus();
+
+        $report = Renumber::decision($root, $root . '/decisions/guides/../guides/' . self::OLD, self::TO);
+
+        self::assertSame('decisions/guides/' . self::NEW, $report['file']);
+        self::assertStringContainsString(
+            "id: D-GUI-903\n",
+            (string) file_get_contents($root . '/decisions/guides/' . self::NEW),
+        );
+    }
+
     /** Every file naming one id, which is two only after a rebase merged two branches. */
     #[Test]
     public function anIdTwoFilesCarryNamesBothOfThem(): void

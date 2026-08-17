@@ -38,12 +38,16 @@ final class Renumber
      *
      * @return array{from: string, to: string, file: string, moved: list<array{file: string, line: int, text: string}>, named: list<array{file: string, line: int, text: string}>}
      */
-    public static function decision(string $root, string $from, string $to): array
+    public static function decision(string $root, string $file, string $to): array
     {
-        $file = self::file($root, $from);
-        if ($file === '') {
-            throw new \InvalidArgumentException($from . ' is no decision in ' . $root . '/decisions/');
+        if (!is_file($file)) {
+            throw new \InvalidArgumentException($file . ' is no decision in ' . $root . '/decisions/');
         }
+
+        // The entry the caller named rather than the id it carries: two files
+        // claim one id after a rebase, which is the only state this exists for,
+        // and the caller is the one who knows which of them moves.
+        $from = Decisions::read($file)['id'];
         if ($from === $to) {
             throw new \InvalidArgumentException($from . ' already has that number');
         }
@@ -53,7 +57,7 @@ final class Renumber
             // moves with it.
             throw new \InvalidArgumentException($from . ' and ' . $to . ' are not in one group');
         }
-        $taken = self::file($root, $to);
+        $taken = self::taken($root, $to);
         if ($taken !== '') {
             throw new \InvalidArgumentException($to . ' is already ' . self::relative($root, $taken));
         }
@@ -149,19 +153,45 @@ final class Renumber
         return implode("\n", $lines);
     }
 
-    /** The file one id is written in, or '' where no decision has it. */
-    public static function file(string $root, string $id): string
+    /**
+     * Every decision file a caller's argument names: a path names itself, an id
+     * names each file carrying it, and a bare file name names the one called
+     * that.
+     *
+     * More than one comes back only in the state this class exists for — two
+     * branches cut from one `main` handed out one id — and which of them moves
+     * is the caller's to say, because the entry already on `main` keeps its
+     * number.
+     *
+     * @return list<string>
+     */
+    public static function files(string $root, string $decision): array
     {
-        $directory = $root . '/decisions/' . (Decisions::GROUPS[substr($id, 2, 3)] ?? '');
+        if (is_file($decision)) {
+            return [$decision];
+        }
+
+        $isId = preg_match('/^D-[A-Z]{3}-\d{3}[a-z]?$/', $decision) === 1;
+        $directory = $root . '/decisions/' . ($isId ? Decisions::GROUPS[substr($decision, 2, 3)] ?? '' : '');
         if (!is_dir($directory)) {
-            return '';
+            return [];
         }
 
-        foreach (Finder::create()->files()->in($directory)->depth(0)->name(strtolower(substr($id, 2)) . '-*.md')->sortByName() as $file) {
-            return $file->getPathname();
+        $name = $isId ? strtolower(substr($decision, 2)) . '-*.md' : basename($decision);
+        $depth = $isId ? 0 : 1;
+
+        $paths = [];
+        foreach (Finder::create()->files()->in($directory)->depth('<= ' . $depth)->name($name)->sortByName() as $file) {
+            $paths[] = $file->getPathname();
         }
 
-        return '';
+        return $paths;
+    }
+
+    /** The file the number is already taken by, or '' where it is free. */
+    private static function taken(string $root, string $id): string
+    {
+        return self::files($root, $id)[0] ?? '';
     }
 
     /**

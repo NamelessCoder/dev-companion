@@ -55,7 +55,7 @@ final class RenumberTest extends TestCase
     public function theEntryTakesTheNumberInItsNameItsFrontMatterAndItsHeading(): void
     {
         $root = $this->corpus();
-        $report = Renumber::decision($root, self::MOVED, self::TO);
+        $report = Renumber::decision($root, $this->entry($root), self::TO);
 
         self::assertSame('decisions/guides/' . self::NEW, $report['file']);
         self::assertFileDoesNotExist($root . '/decisions/guides/' . self::OLD);
@@ -78,7 +78,7 @@ final class RenumberTest extends TestCase
     public function aReferenceWhoseOwnLineNamesTheFileMovesWithIt(): void
     {
         $root = $this->corpus();
-        Renumber::decision($root, self::MOVED, self::TO);
+        Renumber::decision($root, $this->entry($root), self::TO);
 
         self::assertStringContainsString(
             '[`D-GUI-903`](../../decisions/guides/' . self::NEW . ')',
@@ -108,7 +108,7 @@ final class RenumberTest extends TestCase
     public function aReferenceNoLineSettlesIsNamedRatherThanMoved(): void
     {
         $root = $this->corpus();
-        $report = Renumber::decision($root, self::MOVED, self::TO);
+        $report = Renumber::decision($root, $this->entry($root), self::TO);
 
         $named = array_map(
             static fn(array $reference): string => $reference['file'] . ':' . $reference['line'],
@@ -140,7 +140,7 @@ final class RenumberTest extends TestCase
         $root = $this->corpus();
         $before = $this->mentions($root);
 
-        $report = Renumber::decision($root, self::MOVED, self::TO);
+        $report = Renumber::decision($root, $this->entry($root), self::TO);
 
         $moved = array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['moved']);
         $named = array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['named']);
@@ -167,7 +167,7 @@ final class RenumberTest extends TestCase
     public function noPathIsLeftPointingAtTheOldFile(): void
     {
         $root = $this->corpus();
-        Renumber::decision($root, self::MOVED, self::TO);
+        Renumber::decision($root, $this->entry($root), self::TO);
 
         $dead = [];
         foreach (Finder::create()->files()->in($root)->name('*.md') as $file) {
@@ -190,7 +190,7 @@ final class RenumberTest extends TestCase
         $split = $root . '/decisions/guides/gui-901b-a-fixture-entry-split-off-the-one-that-moves.md';
         $before = (string) file_get_contents($split);
 
-        Renumber::decision($root, self::MOVED, self::TO);
+        Renumber::decision($root, $this->entry($root), self::TO);
 
         self::assertFileExists($split);
         self::assertSame($before, (string) file_get_contents($split));
@@ -220,21 +220,65 @@ final class RenumberTest extends TestCase
         $root = $this->corpus();
 
         $refusals = [
-            'D-GUI-999' => 'is no decision in',
-            'D-GUI-902' => 'is already',
+            'gui-999-a-file-no-group-holds.md' => ['file' => $root . '/decisions/guides/gui-999-a-file-no-group-holds.md', 'to' => self::TO, 'because' => 'is no decision in'],
+            'D-GUI-902' => ['file' => $this->entry($root), 'to' => 'D-GUI-902', 'because' => 'is already'],
         ];
-        foreach ($refusals as $id => $because) {
+        foreach ($refusals as $case => $refusal) {
             try {
-                Renumber::decision($root, $id === 'D-GUI-999' ? $id : self::MOVED, $id === 'D-GUI-999' ? self::TO : $id);
-                self::fail($id . ' was not refused');
+                Renumber::decision($root, $refusal['file'], $refusal['to']);
+                self::fail($case . ' was not refused');
             } catch (\InvalidArgumentException $exception) {
-                self::assertStringContainsString($because, $exception->getMessage());
+                self::assertStringContainsString($refusal['because'], $exception->getMessage());
             }
         }
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('are not in one group');
-        Renumber::decision($root, self::MOVED, 'D-SKL-950');
+        Renumber::decision($root, $this->entry($root), 'D-SKL-950');
+    }
+
+    /**
+     * The state the command exists for, and the one it got wrong twice on
+     * 2026-08-18: two files carry one id after a rebase, and the caller names
+     * the branch's, because the entry already on `main` keeps its number. What
+     * moved instead was whichever file sorted first, which was `main`'s both
+     * times, and nothing failed afterwards — both ids existed and both files
+     * were real.
+     */
+    #[Test]
+    public function theFileNamedIsTheOneThatMovesWhenTwoCarryTheId(): void
+    {
+        $root = $this->corpus();
+        // Sorting before the entry the case moves, which is how the wrong one
+        // was picked: `a-second` against `a-fixture` puts this one second, so
+        // the file that sorted first was the one nobody named.
+        $collision = $root . '/decisions/guides/gui-901-a-collision-cut-from-another-branch.md';
+        file_put_contents($collision, "---\nid: D-GUI-901\ndate: 2026-08-18\nstatus: open\n---\n\n# D-GUI-901 — A collision cut from another branch\n\n**This entry carries the number the other one does too.**\n");
+
+        $report = Renumber::decision($root, $this->entry($root), self::TO);
+
+        self::assertSame('decisions/guides/' . self::NEW, $report['file']);
+        self::assertFileExists($collision);
+        self::assertStringContainsString("id: D-GUI-901\n", (string) file_get_contents($collision));
+    }
+
+    /** Every file naming one id, which is two only after a rebase merged two branches. */
+    #[Test]
+    public function anIdTwoFilesCarryNamesBothOfThem(): void
+    {
+        $root = $this->corpus();
+        $collision = $root . '/decisions/guides/gui-901-a-collision-cut-from-another-branch.md';
+        file_put_contents($collision, "---\nid: D-GUI-901\n---\n\n# D-GUI-901 — A collision cut from another branch\n");
+
+        self::assertSame([$collision, $this->entry($root)], Renumber::files($root, self::MOVED));
+        self::assertSame([$this->entry($root)], Renumber::files($root, $this->entry($root)));
+        self::assertSame([], Renumber::files($root, 'D-GUI-999'));
+    }
+
+    /** The entry every case moves, by the path a caller would name it with. */
+    private function entry(string $root): string
+    {
+        return $root . '/decisions/guides/' . self::OLD;
     }
 
     /**

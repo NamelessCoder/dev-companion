@@ -22,6 +22,12 @@ use TYPO3\DevCompanion\Upkeep\Renumber;
  * wherever the files naming it did not all mean one entry, and no check fails
  * afterwards because the entry it now points at exists.
  *
+ * What moves is the file the caller named, never the first one carrying the id:
+ * both files do carry it, and on 2026-08-18 two runs moved the entry already on
+ * `main` instead of the branch's. An id that two files claim is refused with
+ * both named, because the one that keeps its number is the one that merged
+ * first and nothing here can read that.
+ *
  * This settles the half a file can settle — the entry, its name, and every
  * reference whose link path says which entry is meant — and prints the rest,
  * which is the half that has gone wrong both times it went wrong. A person
@@ -49,16 +55,26 @@ final class DecisionRenumber
         $errors = Cli::errors($output);
         $root = Paths::root();
 
-        $from = $this->id($decision);
-        if ($from === '') {
+        $files = Renumber::files($root, $decision);
+        if ($files === []) {
             $errors->writeln($decision . ' names neither an id nor a decision file');
 
             return 1;
         }
+        if (count($files) > 1) {
+            $errors->writeln($decision . ' is claimed by more than one file, and which of them moves is yours to say:');
+            foreach ($files as $path) {
+                $errors->writeln('    ' . self::relative($root, $path));
+            }
+
+            return 1;
+        }
+
+        $from = Decisions::read($files[0])['id'];
 
         try {
             $to = $number === '' ? Renumber::next($root, substr($from, 2, 3)) : $this->target($from, $number);
-            $report = Renumber::decision($root, $from, $to);
+            $report = Renumber::decision($root, $files[0], $to);
         } catch (\InvalidArgumentException|\RuntimeException $exception) {
             $errors->writeln($exception->getMessage());
 
@@ -105,20 +121,9 @@ final class DecisionRenumber
         return 0;
     }
 
-    /** The id a caller named, whether they named it or the file carrying it. */
-    private function id(string $decision): string
+    private static function relative(string $root, string $path): string
     {
-        if (preg_match('/^D-[A-Z]{3}-\d{3}[a-z]?$/', $decision) === 1) {
-            return $decision;
-        }
-
-        foreach (Decisions::files() as $path) {
-            if (basename($path) === basename($decision)) {
-                return Decisions::read($path)['id'];
-            }
-        }
-
-        return '';
+        return str_starts_with($path, $root . '/') ? substr($path, strlen($root) + 1) : $path;
     }
 
     /**

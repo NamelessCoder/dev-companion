@@ -160,7 +160,7 @@ final class TodoHomeTest extends TestCase
         (new TodoHome())(new BufferedOutput(), Cli::application(), [self::NAME]);
 
         $order = array_values(array_filter(
-            array_map(static fn(array $command): string => implode(' ', $command), $this->ran),
+            array_map(self::asked(...), $this->ran),
             static fn(string $line): bool => (bool) preg_match('/rebase main|decisions:index|commit --amend|composer/', $line),
         ));
 
@@ -189,6 +189,25 @@ final class TodoHomeTest extends TestCase
         self::assertSame(1, $exitCode);
         self::assertStringContainsString('is no worktree below .worktrees/', $output->fetch());
         self::assertSame([], $this->matching('rebase'));
+    }
+
+    /**
+     * The seam every case above stands on, asserted directly because it has
+     * gone wrong twice and neither time in a checkout that would notice. A key
+     * is a word a command carries, so what the command carries and nobody chose
+     * — where this checkout sits — is not part of it.
+     */
+    #[Test]
+    public function whatACaseIsKeyedOnCarriesNoneOfTheCheckoutsOwnPath(): void
+    {
+        $root = Paths::root();
+
+        self::assertSame('git status --porcelain', self::asked(['git', '-C', $root, 'status', '--porcelain']));
+        self::assertSame(
+            '/usr/bin/php /.worktrees/a-claim-that-has-reported/bin/cli requirements:index',
+            self::asked(['/usr/bin/php', $root . '/.worktrees/a-claim-that-has-reported/bin/cli', 'requirements:index']),
+        );
+        self::assertSame('composer ci', self::asked(['composer', 'ci']));
     }
 
     /**
@@ -258,15 +277,15 @@ final class TodoHomeTest extends TestCase
     }
 
     /**
-     * What was run, with the `-C <path>` git is handed left out.
+     * What was run, with the checkout's own path taken out of it.
      *
-     * A case is keyed on a word its command carries, and the path carries
-     * `Paths::root()` — so a checkout whose own directory name contains that
-     * word answered every call keyed on it. In
-     * `.worktrees/nothing-enumerates-what-a-composer-install` the cases keyed
-     * on `composer` fired on `rev-parse --abbrev-ref HEAD`, which reported
-     * `FAILURES!` as the branch name and left two cases red for every commit
-     * on that branch.
+     * A case is keyed on a word the command carries, and half of what a command
+     * carries is where this checkout sits: git is handed `-C <path>`, and the
+     * index steps are run as `<php> <path>/bin/cli requirements:index`. So a
+     * checkout whose directory name contains a key answered every call keyed on
+     * it — in `.worktrees/nothing-enumerates-what-a-composer-install` the cases
+     * keyed on `composer` fired on `rev-parse --abbrev-ref HEAD`, which then
+     * reported `FAILURES!` as the branch name.
      *
      * @param array<int, string> $command
      */
@@ -274,14 +293,20 @@ final class TodoHomeTest extends TestCase
     {
         $said = [];
 
-        for ($at = 0; $at < count($command); $at++) {
-            if ($command[$at] === '-C') {
-                $at++;
+        foreach ($command as $argument) {
+            $argument = str_replace(Paths::root(), '', $argument);
+
+            if ($argument === '') {
+                // The whole argument was the path, so the flag it was handed to
+                // goes with it: `-C <root>` says nothing once the root is gone.
+                if (end($said) === '-C') {
+                    array_pop($said);
+                }
 
                 continue;
             }
 
-            $said[] = $command[$at];
+            $said[] = $argument;
         }
 
         return implode(' ', $said);

@@ -1,7 +1,9 @@
-# impexp:export needs --include-related=sys_file; the hint says images come along on their own
+# sitepackage-templates attributes theme_camino's templateName configuration to lib.contentElement ...
 
-**Serves:** feedback/2026-08-17-204536-impexp-export-needs-include-related-sys-file.md
+**Serves:** feedback/2026-08-17-205817-sitepackage-templates-attributes-theme-camino-s.md
 **Priority:** low
+**Branch:** todo/sitepackage-templates-attributes-theme-camino-s
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

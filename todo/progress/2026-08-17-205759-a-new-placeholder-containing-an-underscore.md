@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-205759-a-new-placeholder-containing-an-underscore.md
 **Priority:** low
+**Branch:** todo/a-new-placeholder-containing-an-underscore
+**Claimed:** 2026-08-17
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

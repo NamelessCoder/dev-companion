@@ -228,6 +228,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### knowledge
 
+- [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
@@ -299,6 +300,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-080]: knowledge/knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-071]: knowledge/knw-071-proving-what-a-rendering-change-renders-is-a-procedure-this-server-carries.md
 [D-KNW-073]: knowledge/knw-073-the-corpus-states-what-makes-a-change-breaking-with-no-member-moved.md
 [D-KNW-075]: knowledge/knw-075-how-fluid-resolves-an-object-path-is-a-gap-this-server-owns.md

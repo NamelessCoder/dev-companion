@@ -236,7 +236,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
-- [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a gap this server owns · 2026-08-18
+- [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-086`][D-KNW-086] — Which PHP a covered version runs on is a gap this server owns · 2026-08-18
 - [`D-KNW-087`][D-KNW-087] — A listed neighbour says what it prevents · 2026-08-18
 - [`D-KNW-088`][D-KNW-088] — What a Composer installation generates below the document root is a gap this server owns · 2026-08-18

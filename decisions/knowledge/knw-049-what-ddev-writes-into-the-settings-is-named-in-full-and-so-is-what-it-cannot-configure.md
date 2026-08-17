@@ -193,3 +193,13 @@ calls it, and nothing here settles which of the two is right, so the statement
 of this entry stands and
 [`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
 carries the question.
+
+That entry has since been read against DDEV v1.25.1's own source and the
+reporting session was right. `disable_settings_management` is what stops the
+file being written for a project DDEV recognises; `setTypo3SiteSettingsPaths` is
+what decides whether it recognises one at all, and where it does not,
+`createTypo3SettingsFile` returns before anything is written. So the sentence
+above is the one that was too narrow, and the reading it came out of stopped one
+call short of the caller. The statement of this entry is untouched by that: what
+DDEV generates and what its generator cannot configure is what it settles, and
+when it generates it is `D-KNW-085`'s.

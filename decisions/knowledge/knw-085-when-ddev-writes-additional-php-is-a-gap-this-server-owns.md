@@ -1,7 +1,7 @@
 ---
 id: D-KNW-085
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-KNW-085 — When DDEV writes additional.php is a gap this server owns
@@ -99,3 +99,49 @@ exception naming the trusted hosts pattern rather than the file that carries it.
 - The next report arrives from a session that never asked what configures the
   installation. The statement would then be owed where a clone is booted, which
   is `installation-boot`, rather than where the file is owned.
+
+## Covered by
+
+- `HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten`
+
+## Confirmed on 2026-08-18
+
+Read in DDEV v1.25.1's own source, which is what the first two **Wrong if**
+asked for: `pkg/ddevapp/typo3.go` and `pkg/ddevapp/apptypes.go` at the tag. The
+condition is a detection and it belongs to DDEV rather than to the reporting
+project. `CreateSettingsFile` calls `SetApptypeSettingsPaths` before the
+generator, `setTypo3SiteSettingsPaths` looks for an installed TYPO3 — the
+`Typo3Version.php` below the Composer vendor directory for a Composer
+installation, `docroot/typo3` for a legacy one — and where it finds neither it
+sets both paths to files at the project root. `createTypo3SettingsFile` returns
+on its first line where the file's directory is that root, before the warning it
+would otherwise print, so the start says nothing at all. `CreateGitIgnore` is
+skipped by the same test in `CreateSettingsFile`, which is why the reporting
+session found `config/system/` holding only what it had committed.
+
+So the reporting session's account holds and the phrase it used for the trigger
+was accurate. It is the installed core rather than the document root, which is
+the third **Wrong if** settled too: the hypothesis that session disproved for
+itself — that `config/system/` existing is what triggers the write — is
+disproved in the source.
+
+One thing the statement says differently from the feedback's own suggestion. The
+report asks for the clone to be named as a second trigger for taking the file
+over, beside the SQLite and `omit_containers` case. Those two are not the same
+kind: the database-less installation is a collision that every start repeats, so
+the file has to be taken over there, while the clone is an ordering that a
+second start ends for good. So the statement names starting again as the way out
+and the committed project-owned file as the other, rather than presenting the
+takeover as the remedy.
+
+What the reading added beyond the report is the hooks. Both
+`CreateSettingsFile` calls in `Start()` run before `ProcessHooks("post-start")`,
+so the install hook `installation-operations` already discusses does not produce
+the file in the start that ran it — which is exactly the shape of setup that
+intent is briefing.
+
+`R-KNW-071` holds both places, and `bin/cli hints:probe` on the reporting
+session's own subject —
+"DDEV additional.php trustedHostsPattern first start fresh clone" — reaches
+`project-configuration-files` first at `appliesTo(37) + text(366)`, against the
+`text(335)` this entry recorded before the statement landed.

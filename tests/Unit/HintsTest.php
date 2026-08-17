@@ -2247,6 +2247,43 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-071`. The corpus said the generated file is rewritten on every
+     * start, which is what a clone does not get: DDEV picks the settings paths
+     * by looking for an installed TYPO3, so the start that precedes
+     * `composer install` writes nothing and the site answers 1396795884 while
+     * the console reports success.
+     *
+     * Two places state what DDEV does with that file, so both are held here —
+     * the hint that owns it and the checklist a boot is briefed with.
+     */
+    #[Test]
+    public function theDdevSettingsAnswerSaysWhenThatFileIsWritten(): void
+    {
+        $text = self::statementsOf('project-configuration-files');
+
+        // What decides it, and what the session sees instead of the file.
+        self::assertStringContainsString('Typo3Version.php', $text);
+        self::assertStringContainsString('writes nothing there', $text);
+        self::assertStringContainsString('leaves no additional.php', $text);
+        self::assertStringContainsString('exception 1396795884', $text);
+
+        // Neither way out is the restart alone: the hooks run after the
+        // detection, so the file arrives at the next start.
+        self::assertStringContainsString('before the post-start hooks', $text);
+        self::assertStringContainsString('starts it again afterwards', $text);
+
+        $checklist = implode("\n", Registry::call('typo3_task_guide', [
+            'task' => 'Bring the demo installation this repository declares up on this machine',
+            'changeType' => 'operations',
+        ])->data['checklist']);
+
+        self::assertStringNotContainsString('rewritten on every start', $checklist);
+        self::assertStringContainsString('every start that finds an installed TYPO3', $checklist);
+        self::assertStringContainsString('precedes composer install', $checklist);
+        self::assertStringContainsString('the detection runs before the hooks', $checklist);
+    }
+
+    /**
      * `R-KNW-065`. The reported brief carried four PHP hints and none of them
      * was about booting anything, because the corpus said nothing about it: the
      * change type `operations` moved the checklist and could not move this, and

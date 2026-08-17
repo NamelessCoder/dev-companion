@@ -72,6 +72,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
@@ -149,6 +150,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-ANS-079]: answers/ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
 [D-ANS-080]: answers/ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
 [D-ANS-077]: answers/ans-077-the-module-answer-carries-the-resolved-navigation-component-and-each-modules-routes.md

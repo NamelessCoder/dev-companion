@@ -90,6 +90,16 @@
       "scope": "extension"
     },
     {
+      "topic": "Whether an API is there on a TYPO3 major the package declares and the installation does not have",
+      "depth": "The reading that settles it: which declaration says who the question is about, what the changelog settles and where it stops, the invocations that read one symbol off the branch carrying the other major, and the path the installed copy spells differently. Beside them what a compatibility argument owes where nothing can be run. It reads no core source itself and states no signature: a bundled one is wrong at the next release, and a wrong one is believed as readily as a right one.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed",
+      "scope": "extension"
+    },
+    {
       "topic": "The Playwright suite a project runs its browser tests from",
       "depth": "The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.",
       "tools": [
@@ -442,6 +452,10 @@
     {
       "when": "Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer",
       "call": "typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it"
+    },
+    {
+      "when": "Writing against a core API in a package that declares a TYPO3 major the installation does not have — the installed copy answers for one of the declared majors, and the code has to run on all of them",
+      "call": "typo3_project_describe for what the package requires of typo3/cms-core, then typo3_rule_lookup with documentId=\"extension/compatibility/a-declared-major-that-is-not-installed\" for the reading that settles the other major"
     },
     {
       "when": "Upgrading or maintaining an installation, and needing the order of operations",

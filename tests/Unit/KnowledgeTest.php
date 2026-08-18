@@ -303,6 +303,48 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    /**
+     * The half `D-VER-007` took on: the question reaches the procedure, and the
+     * procedure hands the reading over rather than the answer.
+     *
+     * A session writing against a Schema API on an installation of one major,
+     * for a package declaring two, settled the other one by fetching five core
+     * files itself. Nothing here said how that is done, so the words the
+     * situation is described in have to arrive at the page that does.
+     */
+    #[Test]
+    public function aQuestionAboutADeclaredMajorReachesTheReadingThatSettlesIt(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'does this API exist on a declared major that is not installed',
+        ]);
+
+        self::assertContains(
+            'extension/compatibility/a-declared-major-that-is-not-installed',
+            array_column($result->data['matches'], 'documentId'),
+        );
+    }
+
+    /**
+     * What the same page may not become — `D-VER-007`, and the strength the
+     * same session reported half an hour later: a scope that says plainly "this
+     * is not mine" is worth more than a half-answer, because the half-answer is
+     * the one that gets believed.
+     *
+     * So the page names the invocation and carries no core symbol of its own. A
+     * signature written here is right on the day it is written, and nothing in
+     * the answer would tell a caller which day that was.
+     */
+    #[Test]
+    public function theCrossMajorPageHandsOverTheReadingAndNoSignature(): void
+    {
+        $page = Documents::read('extension/compatibility/a-declared-major-that-is-not-installed');
+
+        self::assertStringContainsString('git show <branch>:', $page);
+        self::assertStringNotContainsString('TYPO3\\CMS\\', $page);
+        self::assertDoesNotMatchRegularExpression('/function \w+\(.*\): /', $page);
+    }
+
     #[Test]
     public function everyBundledDocumentIsListedWithATitle(): void
     {

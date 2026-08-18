@@ -92,3 +92,38 @@ Nothing here says how that is settled, so a session that needs it invents a way.
   instead of as a lookup.
 - The procedure is followed and the curl remains cheaper, because assembling the
   other branch costs more than five files do.
+
+## Covered by
+
+- `KnowledgeTest::aQuestionAboutADeclaredMajorReachesTheReadingThatSettlesIt`
+- `KnowledgeTest::theCrossMajorPageHandsOverTheReadingAndNoSignature`
+- `ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope`
+
+## Since then
+
+Written on 2026-08-18 as
+`extension/compatibility/a-declared-major-that-is-not-installed`, in four
+sections: the declaration that says which majors the question is about, what the
+changelog settles and where it stops, the reading itself, and what reading
+proves against what only a run does.
+
+The invocations it names were run against this repository's own checkouts on
+that day. `git cat-file -e`, `git grep -n "function <name>"` and `git show` each
+answer for `13.4` out of the mirror `14.3` is checked out of, and
+`git diff 13.4 14.3 -- typo3/sysext/core/Classes/Schema/` is the same reading
+for a subsystem in one call. The path mapping is the sysext manifests':
+`typo3/sysext/indexed_search/composer.json` declares `typo3/cms-indexed-search`,
+which is the underscore-to-dash rule the page states.
+
+The third **Wrong if** is left standing rather than answered. The page names no
+cheap way to obtain a branch nobody has: a blobless single-branch clone of the
+local mirror over `file://` did not finish in two minutes here, so the claim
+that cloning is the small step is unmade. What it says instead is that two or
+three files are read as files, and that the branch is what a subsystem is worth
+assembling for.
+
+Routed three ways, none of which softens the refusal: the coverage entry that
+announces it, a `routing` entry from writing against a core API under a
+constraint the installation does not cover, and the `hints:` crossing to
+`extension-repository-layout`, which keeps the policy the page hands back to.
+The `doesNotCover` entry on PHP source as code is untouched.

@@ -42,7 +42,9 @@ it, and the describe answer carries what it declares before any of it is
 installed. One that declares none has an installation created for it. One that
 declares an environment and no procedure is both: run what it declares, take
 every step after that from the create branch, and change nothing that is
-declared.
+declared. One that is already up is none of the three — nothing is created and
+nothing is booted — and it is read from **The installation that already
+answers** below.
 
 ## Boot what the repository already declares
 
@@ -158,13 +160,15 @@ the URL the installation is configured for. Nothing is torn down to establish
 that, whoever wrote the sequence — an installation that was asked for and then
 destroyed is a change nobody asked for.
 
-Where a side does not answer, the failure is read from what the installation
-wrote down rather than out of the page it rendered. `typo3_hint_lookup` with
+Where a side errors, the failure is read from what the installation wrote down
+rather than out of the page it rendered. `typo3_hint_lookup` with
 `id=installation-exception-output` owns that: where an uncaught exception is
 written, which codes are shown and never written at all, and what decides
 whether the page carries the message. Fetching the rendered error page is the
-detour this replaces — it costs the whole document through the context and still
-holds nothing where the message was withheld.
+detour this replaces wherever something was thrown — it costs the whole document
+through the context and still holds nothing where the message was withheld. A
+side that answers something other than what it should wrote nothing down at all,
+and that is the section below rather than this one.
 
 Report the exact commands run, what each one printed, and what the installation
 now is: the document root, the console that reaches it, the URL that answered,
@@ -190,13 +194,67 @@ now carries, both are part of the work:
    container declaration and the ignore rules are that repository's own files,
    which is the workflow that argument names.
 
+## The installation that already answers
+
+Nothing here is built. An installation that is up is read, and what it answers
+is the evidence — which is why a session that arrives with one repairs it from
+the same two facts a build is proved by, in this order: what the installation
+answered, and what it wrote down about it.
+
+- **A log with an entry is an uncaught exception**, and it is read where **Prove
+  it** above says.
+- **A log that stayed empty is itself the finding.** A status code TYPO3 returns
+  on purpose is a response rather than a failure, so nothing is thrown and
+  nothing is written. The rendered page is then the only evidence the
+  installation holds, and fetching it is right here where it was the detour
+  above: the line it carries names the stage the answer came from, which
+  separates a request that matched a site and failed inside it from one that
+  matched no site at all.
+- An empty log has one other cause, and it is settled before a page is fetched:
+  some exceptions are never written down at all, and `typo3_hint_lookup` with
+  `id=installation-exception-output` is what names them.
+
+Where the answer says the request reached the wrong site or none, the subject is
+the installation's own site configuration rather than the code in front of it.
+Three lookups own what it can be: `typo3_hint_lookup` with
+`id=project-configuration-files` for which file TYPO3 reads and why the copy a
+package ships is not that file, `id=installation-boot` for a base whose host is
+not the host the site is served under, which matches no site and answers the
+root with a not-found, and `id=initial-content-references` for a base an import
+rewrote to the identifier it landed under. Correct it where TYPO3 reads it, and
+verify by asking the installation again rather than by rereading the file.
+`typo3_configuration_lookup` is what says which hosts are accepted at all and
+whether a page discloses its message, because those are merged at runtime and
+the merged value is what answers.
+
+Taking over an installation somebody else built is the same reading with one
+step in front of it: what it is running on is established before what it answers
+means anything. `typo3_hint_lookup` with `id=installation-boot` owns what such a
+hand-over is missing — the schema an imported dump owes the code, the caches
+that rode in with that dump, and the backend user whose password did not arrive.
+The single verbs of a running installation have no order to keep and get none
+here: flushing what a change invalidated, getting into a user nobody has the
+password for, adding one. Each is one command, and the hint a query for it
+reaches is what carries it.
+
+A first boot that writes a deprecation log is a finding about the package's own
+code rather than about the installation, and the installation is finished at
+that point rather than broken. State that it is up and what it answers, name the
+log and the package whose code fills it, change nothing in that package here,
+and invoke `typo3-extension-conformance` with those lines as the evidence it
+starts from.
+
 ## Where this stops
 
-This skill owns the installation a package is developed in: the Composer root
-package that installs TYPO3 beneath it, the container the repository declares,
-the non-interactive install, the content it is seeded with, and what the install
-writes into the repository. It does not own hosting, deployment or backups, and
-it does not own what runs against the installation once it answers.
+This skill owns the installation a package is developed in, from before it
+exists until it is answering: the Composer root package that installs TYPO3
+beneath it, the container the repository declares, the non-interactive install,
+the content it is seeded with, what the install writes into the repository, and
+what a running one answers — which site a request reached, what it wrote down,
+and the site configuration behind both. It does not own hosting, deployment or
+backups. Nor the major upgrade of an installation, which is a project of its own
+rather than a verb of the one somebody develops in, and which
+`typo3_hint_lookup` with `id=installation-upgrade` carries the order of.
 
 The installation a suite boots is not this one, and the difference is what each
 is for rather than how it is laid out. This workflow produces a site somebody

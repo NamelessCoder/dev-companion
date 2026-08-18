@@ -2781,6 +2781,7 @@ final class SkillTest extends TestCase
             '## Boot what the repository already declares',
             '## Create one where none is declared',
             '## Prove it, and how far depends on what the run wrote',
+            '## The installation that already answers',
             '## Where this stops',
         ];
         $position = -1;
@@ -2931,6 +2932,25 @@ final class SkillTest extends TestCase
             'a suite that needs a served site and has none is this workflow first',
             $flat,
         );
+
+        // The running half — `D-SKL-059`. An installation that is up is neither
+        // created nor booted, so the fork has a shape for it or the section
+        // below it is reachable only by finishing a build.
+        self::assertStringContainsString('One that is already up is none of the three', $flat);
+
+        // What `074606` paid a wrong turn for: it read the exception routing as
+        // covering a served 404, found a log of zero bytes, and the one line
+        // that decided the diagnosis was in the page it had been told not to
+        // fetch. So the detour is bounded by what was thrown, and the empty log
+        // is stated as the finding rather than as a missing file.
+        self::assertStringContainsString('the detour this replaces wherever something was thrown', $flat);
+        self::assertStringContainsString('A log that stayed empty is itself the finding', $flat);
+        self::assertStringContainsString('fetching it is right here where it was the detour above', $flat);
+
+        // And the ownership sentence, which gave the same half away in the
+        // clause `071526` quoted back at the server.
+        self::assertStringContainsString('what a running one answers', $flat);
+        self::assertStringNotContainsString('what runs against the installation once it answers', $flat);
     }
 
     /**
@@ -3297,6 +3317,10 @@ final class SkillTest extends TestCase
                 'typo3-extension-documentation',
             ],
             'typo3-extension-cleanup' => ['typo3-extension-conformance'],
+            // The deprecation log a first boot writes is about the package's
+            // code and not about the installation, and `071526` read it,
+            // reported it and stopped there because no workflow owned it.
+            'typo3-development-installation' => ['typo3-extension-conformance'],
         ];
 
         foreach ($crossings as $name => $successors) {

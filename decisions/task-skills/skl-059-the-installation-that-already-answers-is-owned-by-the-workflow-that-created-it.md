@@ -128,3 +128,19 @@ gives half of it away in its closing sentence.
 - The listing turns out not to bind — a client with more room, or a trim that
   frees a description — and the domain is then split cleanly in two. This entry
   would have read a wall as a boundary.
+
+## Since then
+
+The section was written on 2026-08-18, as **The installation that already
+answers**, and the fork above it names the shape that enters there — an
+installation that is up is neither created nor booted. The description was not
+touched: it already offered to boot and repair, which is what this entry read as
+the skill claiming the domain, and the 25 characters the listing has left would
+not have paid for more. Two things the section does not carry, because nothing
+here answers them yet: what a request that matched a site and then answered
+not-found means, which is
+`todo/open/2026-08-18-133000-say-what-a-not-found-means-when-a-site-was-matched.md`,
+and what form the crossing into `typo3-extension-conformance` takes beyond
+naming it, which is `feedback/2026-08-18-074245`'s card. The second **Wrong if**
+is what a session arriving with a running installation will answer, and nothing
+has yet.

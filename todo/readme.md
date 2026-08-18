@@ -49,9 +49,11 @@ is named in, so one habit covers both — and that is what a listing sorts by.
 
 Each file opens with its title, then a head of labelled lines:
 
-- `**Serves:** <ids>` — what this answers for: a requirement, a feedback, a
-  scenario, a directory. Without it, it is an idea rather than a todo, and ideas
-  go in the feedback that had them.
+- `**Serves:** <ids>` — what this answers for: a requirement, a decision, a
+  feedback, a scenario, a directory. Without it, it is an idea rather than a
+  todo, and ideas go in the feedback that had them. A decision is named by its
+  id where the step is that entry's **Wrong if** gone back to, and by
+  `decisions/` where it is the pile that is being sorted.
 - `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
   the whole list. Every todo in a stage carries one and a recurring todo carries
   none, because a cadence is what orders an appointment. A todo written for a

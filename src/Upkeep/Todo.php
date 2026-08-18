@@ -576,7 +576,8 @@ final class Todo
 
     /**
      * Everything the queue answers for, which is what turns an entry in
-     * requirements/ or a feedback in feedback/ into work somebody has taken on.
+     * requirements/ or decisions/, or a feedback in feedback/, into work
+     * somebody has taken on.
      *
      * Read from the queue, from what a session has in hand and from what waits,
      * which are the three states of work somebody has taken on. What is kept in
@@ -654,16 +655,24 @@ final class Todo
     /**
      * Why what a todo names cannot be read, or null where it can.
      *
-     * Four things are legitimate to serve, and each is checked against the place
+     * Five things are legitimate to serve, and each is checked against the place
      * that owns it rather than against a list kept here. A feedback is the one worth
      * catching: it is the reason the todo is in the queue, and the commit that
      * closes it deletes the file — so a todo still naming one is either
      * finished or has a part left that nobody has trimmed it down to.
+     *
+     * A decision is named by its id rather than by the directory it sits in,
+     * because the work such a todo carries is one entry's **Wrong if** gone back
+     * to, and `decisions/` says only that somebody is sorting the pile.
      */
     public static function unreadable(string $what): ?string
     {
         if (preg_match('/^R-[A-Z]{3}-\d+[a-z]?$/', $what) === 1) {
             return isset(Requirements::all()[$what]) ? null : 'which no requirement has';
+        }
+
+        if (preg_match('/^D-[A-Z]{3}-\d+[a-z]?$/', $what) === 1) {
+            return isset(Decisions::all()[$what]) ? null : 'which no decision has';
         }
 
         if (preg_match('/^[A-Z]+-\d+$/', $what) === 1) {
@@ -684,7 +693,7 @@ final class Todo
                 : 'and that feedback is closed — the todo is done, or trims to the part that is left';
         }
 
-        return 'which is none of a requirement, a scenario, a feedback, or a directory of this repository';
+        return 'which is none of a requirement, a decision, a scenario, a feedback, or a directory of this repository';
     }
 
     /**

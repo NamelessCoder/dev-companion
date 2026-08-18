@@ -19,11 +19,11 @@ Before the first change
 -----------------------
 
 * **What it serves.** The ``Serves:`` line names a requirement, a decision, a
-  feedback, a directory, and that is where the todo's reason lives — the
-  paragraph is only its next step. Read them whole. A todo serving a decision is
-  usually that entry's **Wrong if** compressed into a sentence, and the entry
-  itself says what evidence would settle it; a todo serving a requirement says
-  what must hold, and often names the test that would hold it.
+  scenario, a feedback, a directory, and that is where the todo's reason lives —
+  the paragraph is only its next step. Read them whole. A todo serving a
+  decision is usually that entry's **Wrong if** compressed into a sentence, and
+  the entry itself says what evidence would settle it; a todo serving a
+  requirement says what must hold, and often names the test that would hold it.
 * **What the code does now**, rather than what the todo says it does. The
   reading is the class, the check or the corpus the step names, plus the test
   that covers it today — because the honest form of most steps here is "the

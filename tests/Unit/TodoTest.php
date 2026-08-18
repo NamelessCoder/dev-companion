@@ -199,6 +199,51 @@ final class TodoTest extends TestCase
     }
 
     /**
+     * The five kinds a `Serves:` line may name, each checked against the place
+     * that owns it rather than against a list kept in `Todo`. The pair that
+     * matters is the id whose shape is right and whose entry is not there: a
+     * session is sent to read what the todo serves, and an id nothing answers
+     * to is a reading that quietly does not happen.
+     *
+     * A decision is one of the five because the work it carries is that entry's
+     * **Wrong if** gone back to, and `decisions/` says only that somebody is
+     * sorting the pile.
+     *
+     * @param string|null $unreadable why it cannot be read, or null where it can
+     */
+    #[Test]
+    #[DataProvider('whatATodoMayServe')]
+    public function whatATodoServesIsCheckedAgainstThePlaceThatOwnsIt(string $what, ?string $unreadable): void
+    {
+        self::assertSame($unreadable, Todo::unreadable($what));
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string|null}>
+     */
+    public static function whatATodoMayServe(): array
+    {
+        return [
+            'a requirement' => ['R-COD-003', null],
+            'an id no requirement has' => ['R-ZZZ-999', 'which no requirement has'],
+            'a decision' => ['D-FBK-017', null],
+            'an id no decision has' => ['D-ZZZ-999', 'which no decision has'],
+            'a scenario' => ['SKILL-13', null],
+            'an id no scenario has' => ['SKILL-999', 'which no scenario has'],
+            'a directory of this repository' => ['decisions/feedback/', null],
+            'a directory that is not one' => ['nowhere/', 'which is not a directory of this repository'],
+            'a feedback that is archived or gone' => [
+                'feedback/2026-01-01-000000-nothing-was-ever-recorded-here.md',
+                'and that feedback is closed — the todo is done, or trims to the part that is left',
+            ],
+            'none of the five' => [
+                'the component catalog',
+                'which is none of a requirement, a decision, a scenario, a feedback, or a directory of this repository',
+            ],
+        ];
+    }
+
+    /**
      * A todo that waits is out of the queue and says what it waits on, which is
      * the whole of what the state adds: `bin/cli todo:next` offers it to nobody, so
      * the question it is blocked on is asked by no session again. What it took

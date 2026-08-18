@@ -686,6 +686,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
 - [`D-DOC-035`][D-DOC-035] — What the prose costs is counted beside how long a sentence is · 2026-08-18
+- [`D-DOC-036`][D-DOC-036] — A todo serves a decision by its id · 2026-08-18
 - [`D-DOC-033`][D-DOC-033] — The derived half of a tool page stays committed · 2026-08-14
 - [`D-DOC-032`][D-DOC-032] — A section heading is the label a contents list shows · 2026-08-13
 - [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
@@ -717,6 +718,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-DOC-034]: documentation/doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
 [D-DOC-035]: documentation/doc-035-what-the-prose-costs-is-counted-beside-how-long-a-sentence-is.md
+[D-DOC-036]: documentation/doc-036-a-todo-serves-a-decision-by-its-id.md
 [D-DOC-033]: documentation/doc-033-the-derived-half-of-a-tool-page-stays-committed.md
 [D-DOC-032]: documentation/doc-032-a-section-heading-is-the-label-a-contents-list-shows.md
 [D-DOC-024]: documentation/doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md

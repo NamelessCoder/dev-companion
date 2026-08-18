@@ -130,6 +130,16 @@
       "scope": "any"
     },
     {
+      "topic": "Proving that a TypoScript condition matched against a running installation",
+      "depth": "How a verdict nothing prints is established from the page: what the backend's condition list is and is not, how a marker is derived from what the guarded branch alone renders, the shared Fluid wrapper that is no marker, a marker put into the condition on purpose, the negative control, and which cache stands between two runs. It requests nothing and flushes nothing.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/any/testing/proving-a-condition",
+      "scope": "any"
+    },
+    {
       "topic": "Reporting a security defect in TYPO3: who receives it, what the report carries, and what is not done with it in the meantime",
       "depth": "TYPO3's own published policy, as the core repository's SECURITY.md and the security team's pages state it. It holds for a defect in the core and for one in an extension alike. It carries no judgement of how bad a finding is: rating one is the team's work, and this says where it goes.",
       "tools": [

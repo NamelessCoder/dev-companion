@@ -24,20 +24,20 @@ workflow for authoring a breaking change.
   `typo3-core-patch-review`, which only the `audit` intent carries.
 - **It takes both repairs, and neither alone is enough.** Withholding the route
   needs the review to have been recognized, and `audit`'s needles were "review
-  the", "review this", "review of" and "reviewing" — a request naming its
-  change by number arrives in none of them. Adding the shapes alone leaves both
-  skills named, `breaking` first, which is the state `D-SKL-013`'s **Since
-  then** already ruled out for the `tests` intent: an assertion that the right
-  name is among them holds just as well while a whole workflow the task has
-  nothing to do with is loaded first.
+  the", "review this", "review of" and "reviewing" — a request naming its change
+  by number arrives in none of them. Adding the shapes alone leaves both skills
+  named, `breaking` first, which is the state `D-SKL-013`'s **Since then**
+  already ruled out for the `tests` intent: an assertion that the right name is
+  among them holds just as well while a whole workflow the task has nothing to
+  do with is loaded first.
 - **The checklist is the counter-example to withholding more than the route.**
-  The `breaking` intent's first item — "Settle first that the change is
-  breaking at all: `@internal` says the API is not public and does not decide
-  it" — is the answer to what that brief asked. Dropping the intent would take
-  the answer out with the route.
-- **The three negatives are this repository's own prompts.** `CORE-03`'s
-  "Review says my commit message is wrong", `SKILL-13`'s "Pull down that patch
-  from review" and `CORE-07`'s "pushing it for review" match none of the added
+  The `breaking` intent's first item — "Settle first that the change is breaking
+  at all: `@internal` says the API is not public and does not decide it" — is
+  the answer to what that brief asked. Dropping the intent would take the answer
+  out with the route.
+- **The three negatives are this repository's own prompts.** `CORE-03`'s "Review
+  says my commit message is wrong", `SKILL-13`'s "Pull down that patch from
+  review" and `CORE-07`'s "pushing it for review" match none of the added
   shapes, and a bare `review` needle would have matched all three — the matcher
   ends a needle at a non-letter, so it reaches `review.typo3.org` as well.
 
@@ -68,9 +68,10 @@ workflow for authoring a breaking change.
 
 ## Assumed
 
-- **That an adjective the shapes do not carry is rare enough.** `review core
-  patch` is in the list because it was measured; `review open patch` would miss,
-  and the needle mechanism has no way to state "review, then a change noun".
+- **That an adjective the shapes do not carry is rare enough.**
+  `review core patch` is in the list because it was measured;
+  `review open patch` would miss, and the needle mechanism has no way to state
+  "review, then a change noun".
 - **That a reviewer reads an authoring checklist item as an obligation to
   check.** The `audit` intent already states the same obligations in the
   reviewer's voice, so the brief carries both, and no run has been read for

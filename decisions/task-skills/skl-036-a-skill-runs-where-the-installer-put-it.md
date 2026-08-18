@@ -21,17 +21,17 @@ nothing.
 - `Installer::BASE` is written at publication, one copy per skill, because each
   lands in another project alone and a link out of its own directory would
   resolve here and nowhere it is read.
-- Making the copy work means committing one `references/base.md` per skill, which
-  two things refuse: `digest()` hashes `skills/base.md` once because it is the
-  only copy here, and `publishSkill()` writes the copy itself — so a committed
-  one is overwritten at every publication and stale in between.
+- Making the copy work means committing one `references/base.md` per skill,
+  which two things refuse: `digest()` hashes `skills/base.md` once because it is
+  the only copy here, and `publishSkill()` writes the copy itself — so a
+  committed one is overwritten at every publication and stale in between.
 - Nobody has reported copying the directory. The three options were priced
   against each other on 2026-08-08 and against no session that hit it.
 
 ## Decided
 
-- Unsupported, and said in `readme.md` where somebody about to copy the directory
-  looks, rather than in a skill they would only read afterwards.
+- Unsupported, and said in `readme.md` where somebody about to copy the
+  directory looks, rather than in a skill they would only read afterwards.
 - Rejected: committing the base per skill. It buys an unreported case by putting
   a file in the repository that is stale between publications and overwritten at
   each one.
@@ -41,12 +41,12 @@ nothing.
 
 ## Assumed
 
-- That somebody who copies a skill directory reads `readme.md` first, or reads it
-  once the link fails.
+- That somebody who copies a skill directory reads `readme.md` first, or reads
+  it once the link fails.
 
 ## Wrong if
 
 - A copied skill is used against this server and the session never notices the
   base is missing, so the order every task starts in is silently absent.
-- A client appears that reads a skills tree straight out of a git checkout, which
-  would make the copy the ordinary way in rather than a mistake.
+- A client appears that reads a skills tree straight out of a git checkout,
+  which would make the copy the ordinary way in rather than a mistake.

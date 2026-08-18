@@ -17,10 +17,10 @@ day, and none of the corrections has been in front of a session yet.
 ## Evidence
 
 - `feedback/2026-08-17-212218`, a v14 demo site built as a sitepackage plus a
-  distribution extension on 14.3.6. It reports the five bullets of
-  *Verify at the right layers* in `typo3-content-element-development` with one
-  executed, names two earlier instances of the same shape in the same session,
-  and states the repetition rather than any one bullet as what it found.
+  distribution extension on 14.3.6. It reports the five bullets of *Verify at
+  the right layers* in `typo3-content-element-development` with one executed,
+  names two earlier instances of the same shape in the same session, and states
+  the repetition rather than any one bullet as what it found.
 - It is a summary, so it is mapped onto its siblings before anything else
   ([`D-FBK-021`](../feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)).
   Its first instance is `feedback/archive/2026-08-17-211118`, judged in
@@ -69,11 +69,11 @@ day, and none of the corrections has been in front of a session yet.
   the price rather than a gap, a delivery, a routing entry or a wording.
 - **Proposed, so it waits for an answer.** The card carries the question and
   stays with the feedback, which keeps `D-FBK-017`'s invariant.
-- **The recommendation is to wait, and the trigger is named.**
-  `D-SKL-044`'s first **Wrong if** is a session that fetches one id and stops
-  with the corrected step in front of it, and `D-SKL-045`'s is a session that
-  ships a view unverified with the guide named at the step. Either firing is the
-  gate's case made on a corrected file.
+- **The recommendation is to wait, and the trigger is named.** `D-SKL-044`'s
+  first **Wrong if** is a session that fetches one id and stops with the
+  corrected step in front of it, and `D-SKL-045`'s is a session that ships a
+  view unverified with the guide named at the step. Either firing is the gate's
+  case made on a corrected file.
 - **Rejected: writing the gate now.** It would be the fourth intervention
   against three sightings, three of which landed on 2026-08-18 and none of which
   a session has met. Afterwards nothing could say which of the four carried a

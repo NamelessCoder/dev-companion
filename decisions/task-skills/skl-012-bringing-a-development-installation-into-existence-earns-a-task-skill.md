@@ -138,11 +138,11 @@ answers the task with a core patch checklist.
 ## Since then
 
 The boundary this entry drew reached `doesNotCover` only on 2026-08-18.
-`R-KNW-072` landed the interpreter a covered line requires in the
-`php-versions` hint, which sits inside the environment file this entry placed on
-the covered side. The excluded topic was still sending that question to the
-TYPO3 documentation, and `feedback/2026-08-17-211157` is the session that went
-there. The topic is unchanged otherwise: the operating around an installation
-stays outside, which is how `D-KNW-010` and `D-KNW-049` read it. What the entry
-now names is the one part of it that is answered here, held by
+`R-KNW-072` landed the interpreter a covered line requires in the `php-versions`
+hint, which sits inside the environment file this entry placed on the covered
+side. The excluded topic was still sending that question to the TYPO3
+documentation, and `feedback/2026-08-17-211157` is the session that went there.
+The topic is unchanged otherwise: the operating around an installation stays
+outside, which is how `D-KNW-010` and `D-KNW-049` read it. What the entry now
+names is the one part of it that is answered here, held by
 `ScopeTest::theInterpreterAnEnvironmentDeclaresIsNotDeclinedWithTheOperating`.

@@ -27,9 +27,9 @@ issue, a chat — and rich rendering is what it does not survive.
 - What that entry established holds unchanged: the three `## Report` sections
   specify five bands, what each finding owes and the surfaces it closes on, and
   none of them names a form.
-- The skill is what makes the report long, and length is why the form matters.
-  A hundred lines rendered as HTML is the case where copying breaks; four lines
-  is not.
+- The skill is what makes the report long, and length is why the form matters. A
+  hundred lines rendered as HTML is the case where copying breaks; four lines is
+  not.
 
 ## Decided
 

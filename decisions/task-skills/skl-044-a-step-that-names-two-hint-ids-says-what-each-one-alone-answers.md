@@ -23,14 +23,15 @@ full, and read the step as discharged.
   and reported the work finished. Five of the ten defects a reviewer then listed
   are in the hint it did not call, and the sixth cost is the one it names as
   larger: the repository has no test suite at all.
-- **The knowledge was there and is correct.** `bin/cli hints:probe "project
-  build and scripts"` on 2026-08-18 returns `project-build-and-scripts` first.
-  Read in `knowledge/hints/project.json` the same day, it carries every line the
-  feedback quotes — the Playwright configuration and its specs, the static
-  analysis configuration, the one-off seeding script and the keep-or-drop choice
-  on it, that there is no `runTests.sh` and the scripts are the only answer to
-  how anything is run, and naming them after what they do. So this is not step
-  1a, and nothing about TYPO3 had to be looked up to judge it.
+- **The knowledge was there and is correct.**
+  `bin/cli hints:probe "project build and scripts"` on 2026-08-18 returns
+  `project-build-and-scripts` first. Read in `knowledge/hints/project.json` the
+  same day, it carries every line the feedback quotes — the Playwright
+  configuration and its specs, the static analysis configuration, the one-off
+  seeding script and the keep-or-drop choice on it, that there is no
+  `runTests.sh` and the scripts are the only answer to how anything is run, and
+  naming them after what they do. So this is not step 1a, and nothing about
+  TYPO3 had to be looked up to judge it.
 - **The shared clause described the wrong half.** It read *says which of them
   belong to the project and which are generated*, which is
   `project-configuration-files`'s subject — `settings.php` against
@@ -63,10 +64,10 @@ full, and read the step as discharged.
   is paid for by the token in every session that loads the file. What would
   revive it is below rather than settled against.
 - **Closed on the spot rather than queued.** The change is one sentence of body
-  prose: no name, description, front matter, routing list, reference or `This
-  skill owns` moves, no tool is added or dropped, and both ids were already
-  named at this step. That is the ladder's step 4 — delivered and did not take —
-  and its cheapest fix.
+  prose: no name, description, front matter, routing list, reference or
+  `This skill owns` moves, no tool is added or dropped, and both ids were
+  already named at this step. That is the ladder's step 4 — delivered and did
+  not take — and its cheapest fix.
 
 ## Assumed
 

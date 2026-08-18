@@ -21,8 +21,8 @@ buys a decision rather than a reassurance.
   Anthropic's own `skill-creator` spawns the baseline and the with-skill run in
   one turn. Read on 2026-08-08.
 - What makes it more than a slogan is that superpowers measured their own file:
-  deleting one section moved test-first behaviour from 8/10 to 5/10, corroborated
-  on two models, and the section came back in a different form.
+  deleting one section moved test-first behaviour from 8/10 to 5/10,
+  corroborated on two models, and the section came back in a different form.
 - Superpowers price a sample at roughly $0.15–0.30 and run five or more per
   variant, so one measured change is a few dollars and a session's attention.
 - Three quarters of the mechanism is already here: `scenarios/contracts/` holds

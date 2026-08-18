@@ -24,8 +24,13 @@
         "since": 14
       },
       {
-        "text": "On older branches the same setup path has to be registered twice, under plugin.tx_form.settings.yamlConfigurations and module.tx_form.settings.yamlConfigurations. That registration is the predecessor of form sets and is deprecated for removal in the next major.",
-        "until": 13
+        "text": "A setup path is registered under TypoScript, and twice: under plugin.tx_form.settings.yamlConfigurations and under module.tx_form.settings.yamlConfigurations.",
+        "until": 14
+      },
+      {
+        "text": "That TypoScript registration is the predecessor of form sets and is still read: a path found under either key is merged after the auto-discovered ones, and reading it raises an E_USER_DEPRECATED. The core itself no longer declares the key.",
+        "since": 14,
+        "until": 14
       },
       "A version-controlled definition shipped by an extension lives below a path listed in persistenceManager.allowedExtensionPaths — conventionally Resources/Private/Forms/ — and its filename ends in .form.yaml. Database records are for editable definitions; file-mount storage is the predecessor, not a replacement for read-only extension storage.",
       "In the frontend FormFrontendController appends the content-element uid to the declared form identifier and retains the declared value in renderingOptions._originalIdentifier. Match the latter when code must identify the form; matching FormDefinition::getIdentifier() against the YAML value works in an isolated test and misses at runtime.",

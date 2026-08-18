@@ -326,9 +326,10 @@
         "since": 13
       },
       {
-        "text": "There is no semantic surface, text-color or state layer here. The backend's custom properties are component-scoped — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color, the --typo3-input-* family — and below them sit the Bootstrap variables the backend still builds on.",
+        "text": "There is no semantic surface, text-color or state layer here.",
         "until": 12
-      }
+      },
+      "Component-scoped custom properties carry a component's own colours whatever the layer above them offers — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color and the --typo3-input-* family — and below those sit the Bootstrap variables the backend still builds on."
     ]
   },
   {

@@ -16,22 +16,19 @@ call below is also the check.
 
 ## The order
 
-This is the order, and it is an order rather than a list because each step
-decides what the next one is worth. A convention fetched after the code has been
-read confirms a view instead of testing it. A command recommended before the
-project's own are known is a guess that sounds like advice. Where a step below
-carries a condition for skipping it, that condition is narrow on purpose: a
-prescription that gets skipped teaches the next reader to skip the ones that
-matter too.
+This is an order rather than a list: each step decides what the next one is
+worth. Where a step below carries a condition for skipping it, that condition is
+narrow on purpose — a prescription that gets skipped teaches the next reader to
+skip the ones that matter too.
 
 1. **`typo3_project_describe`** — the repository and whether anything is
    installed in it yet, its TYPO3 and PHP version, the extensions that are the
-   project's own, its sites, and the commands this repository actually declares. Every later answer is filtered by that version,
-   and a check the repository does not declare is a wrong answer however
-   sensible it sounds. It ends with the whole procedures this server carries, as
-   ids: that list is the only place they are named to a client that renders no
-   resource list, and each one is a `typo3_rule_lookup` with that `documentId`
-   rather than a search.
+   project's own, its sites, and the commands this repository actually declares.
+   Every later answer is filtered by that version, and a check the repository
+   does not declare is a wrong answer however sensible it sounds. It ends with
+   the whole procedures this server carries, as ids: that list is the only place
+   they are named to a client that renders no resource list, and each one is a
+   `typo3_rule_lookup` with that `documentId` rather than a search.
 2. **`typo3_extension_describe`** for each extension in scope — what it
    registers, and what it ships beside that: its manual, its README, its test
    layers, its XLF files with the source language each one declares. What it
@@ -51,8 +48,8 @@ matter too.
    caller is holding: a skill that covers the task is not that brief, and
    skipping the step costs the hints and the core checks those paths match.
    Where the guide's own answer is what named this skill, this is one call for
-   an answer already in the session. That is the price of a step there is
-   nothing to decide about.
+   an answer already in the session — the price of a step there is nothing to
+   decide about.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
    One query per subsystem; a single broad query is not subsystem evidence.
 
@@ -68,10 +65,7 @@ matter too.
    package declares, bounded by `tag` and with the query omitted. Those three
    are the changelog's own axes, and the extension's vocabulary is not among
    them: an entry carries a query only when its title carries every word of it
-   at once, and the core titled those entries about its own code. Words taken
-   from what step 2 reported are therefore matched against titles they were
-   never written in, and the sweep comes back empty however right the query
-   looks.
+   at once, and the core titled those entries about its own code.
 
    Step 2 picks the tags instead. `ext:core`, `ext:frontend`, `ext:form` and the
    rest name the system extension a change is **in** — one call for each one the
@@ -87,11 +81,9 @@ matter too.
    deprecation nothing here calls is not a finding — and carry the
    `FullyScanned` / `PartiallyScanned` tag into the answer, because it says
    whether the Extension Scanner can find the remaining call sites or whether
-   that reading is yours. Bounded this way the sweep is still writable before a
-   file is opened, which is why it is a step of the order: one left to the
-   reading reaches only what a finding stumbled into, and the deprecation that
-   decides whether the package survives the next major is not usually the one a
-   finding walks past.
+   that reading is yours. Bounded this way the sweep is writable before a file
+   is opened, which is why it is a step of the order rather than something the
+   reading stumbles into.
 
    A changelog records change events, so a pattern nothing has touched for ten
    majors has no entry at all. An empty sweep is therefore not an answer about
@@ -101,19 +93,18 @@ matter too.
 
    That is a question for a documented surface — a ViewHelper, a TCA type, a
    TypoScript setting. The manual matches page titles and section paths, never
-   the text of a page, so a PHP identifier has no page to be titled after. It
-   reaches whatever its own words happen to spell instead. An identifier goes to
-   `typo3_changelog_lookup` under its own name, which reaches the entries
-   writing it however the change was titled, and then to the class below. Where
-   the manual has no page for a surface either, that is a result and not an
-   answer. Undocumented is not unsupported.
+   the text of a page, so a PHP identifier has no page to be titled after.
+
+   An identifier goes to `typo3_changelog_lookup` under its own name, which
+   reaches the entries writing it however the change was titled, and then to the
+   class below. Where the manual has no page for a surface either, that is a
+   result and not an answer. Undocumented is not unsupported.
 
    A task that produces no change does not reach this step at all. The property
    is what the task produces, and a triage, a reproduction and a review are
    illustrations of it rather than the list it is read off. The sweep asks what
    a package will have to stop calling, and a task that writes nothing is not
-   going to call anything. Followed literally in a triage of one issue it costs
-   one call per declared major per tag and none of them bears on the report.
+   going to call anything.
 
    The exemption ends where the workflow produces a change. A review asked to
    make the change is that other workflow, and it starts this order again
@@ -129,8 +120,7 @@ matter too.
    it back among the ordinary ones, and a skip there costs the deprecation no
    finding would have walked into.
 
-   A report names the step it did not reach, under either exemption. A step
-   passed over in silence cannot be told from one that was dropped, which is
+   A report names the step it did not reach, under either exemption, which is
    what step 2 already asks of itself.
 
 **Then** read the checkout. Not before: listing the files first makes everything
@@ -172,16 +162,15 @@ changelog, the setting it is driven by, the versions the package declares it
 supports — and say so. Where a purpose is documented, what you have is a
 trade-off to name with its cost and its alternative, not a defect; where you
 cannot find one, the finding says that it could not be established rather than
-that none exists. This is the other direction of the rule above, and skipping it
-turns a review into a list of everything the author did on purpose.
+that none exists. Skipping this turns a review into a list of everything the
+author did on purpose.
 
 ## What a finding rests on is part of the finding
 
 Three things carry one: a file that was read, at its path and its line; a
 command that was run, with what it printed; a mechanism traced into an installed
 package. Say which of the three it is. Leaving it unsaid gives a finding read
-out of a CI file the weight of one with a verified line, and the reader has no
-way to separate them again.
+out of a CI file the weight of one with a verified line.
 
 Where one of the project's own commands would settle it, run it.
 `typo3_project_describe` marks each command it lists **check**, **change** or

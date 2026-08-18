@@ -1,17 +1,19 @@
 # Shorten what every session reads before its first change
 
-**Serves:** documentation/, skills/
-**Priority:** normal
+**Serves:** decisions/documentation/
+**Priority:** low
 **Run:** bin/cli prose:check
 **Branch:** todo/shorten-what-every-session-reads-before-its-first-change
 **Claimed:** 2026-08-18
 
-Cut AGENTS.md, `documentation/records/judging.rst` and `skills/base.md` to what
-a session actually needs before its first change — 6740, 3978 and 2125 words
-today, and AGENTS.md is second on `prose:check`'s own list with 53 sentences
-past the measure. These three set the register every session writes in, which is
-`D-DOC-035`'s second **Assumed** and what this todo tests: cut them first, then
-read the next five sessions' commits and comments against the ones before, and
-write what that showed into the entry. What may not be lost is a rule — a
-sentence that states one is kept and shortened, and a paragraph that explains
-why a rule is obvious is what goes.
+The cut is done and its counts are the **Since then** of `D-DOC-035`: AGENTS.md,
+`documentation/records/judging.rst` and `skills/base.md` were shortened on
+2026-08-18, every rule kept, and that commit is the boundary the rest is read
+against. What is left is the reading it was cut for — take the five sessions
+whose work lands after it, read their commits and the comments they wrote
+against the five before, and write into `D-DOC-035` whether the register moved.
+Its second **Assumed** is the claim being tested, and *nothing changed* is one
+of the answers.
+
+Not startable until those five sessions exist, which is what the `low` is saying
+rather than a judgement that the reading is worth little.

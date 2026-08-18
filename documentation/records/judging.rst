@@ -2,19 +2,18 @@ Judging a feedback
 ==================
 
 A feedback is a session's report about this server, left by an agent working
-somewhere else. What it is *not* is a work item: it names what went wrong from
-where that session stood, and what to do about it is a judgement nobody has made
-yet. This page is that judgement — what is asked of a feedback, in which order,
-on what evidence, and which of the answers may be given without asking first.
+somewhere else. It is not a work item: it names what went wrong from where that
+session stood, and what to do about it is a judgement nobody has made yet. This
+page is that judgement — what is asked of a feedback, in which order, on what
+evidence, and which of the answers may be given without asking first.
 
-**What the channel is for is deciding what to build.** It exists because the
-sessions using this server are the only ones who find out what it does not
-answer, and the corpus is the only place that knowledge lands. So a judgement
-that ends in nothing being built has to earn that as much as one that ends in a
-new tool: the default is not caution, it is a decision. Where the evidence is
-here — a run, a transcript, several sessions saying the same thing — the
-judgement decides, and what waits is only what nobody in this repository can
-establish.
+**What the channel is for is deciding what to build.** The sessions using this
+server are the only ones who find out what it does not answer, and the corpus is
+the only place that knowledge lands. So a judgement that ends in nothing being
+built has to earn that as much as one that ends in a new tool: the default is
+not caution, it is a decision. Where the evidence is here — a run, a transcript,
+several sessions saying the same thing — the judgement decides, and what waits
+is only what nobody in this repository can establish.
 
 :doc:`index` says where a feedback lives and what happens to it once it is
 worked off. This is the step between the two.
@@ -28,10 +27,10 @@ right:
 **Could anything about this server have prevented it?**
 
 Half the feedback this server receives is a session criticising its own work —
-it did not consider Extbase, it violated the language-file rules, it never
-activated the testing skill. Read as self-criticism those are somebody else's
-laundry. Read as the question above they are a list of gaps this server could
-have closed and did not, which is the most valuable half of the corpus.
+it did not consider Extbase, it never activated the testing skill. Read as
+self-criticism those are somebody else's laundry. Read as the question above
+they are a list of gaps this server could have closed and did not, which is the
+most valuable half of the corpus.
 
 Whether the self-criticism is accurate is not assessed, and cannot be: the
 session was there and the reader was not. Only the lever is assessed.
@@ -47,14 +46,8 @@ One call, grouped by the checkout each feedback was written in and marked where
 no todo names it. It comes before the ladder because the same observation is a
 different judgement depending on how many sessions arrived at it: one report is
 a report, and thirty out of one directory is a domain that has been asking for
-something since the first of them.
-
-That is not a refinement. On 2026-08-03 the board held 48 cards, 30 of them
-still carrying the step a card is written with and 44 of them ``low``, while 35
-open feedback carried one directory — a core checkout — and one of those, two
-days old, was a session proposing the skill the other 34 kept describing. Every
-one of them had been judged alone or not at all, and nothing in the reading
-order said to look sideways.
+something since the first of them. ``D-FBK-025`` is the board that was judged
+card by card while the sideways reading nobody had made was the answer.
 
 Strengths
 ---------
@@ -63,14 +56,12 @@ Some feedback report what worked. The ladder below has no rung for them: every
 step names something missing, misplaced or misworded. So the question is asked
 from the other side — what is the strength evidence of?
 
-Not that a decision holds. A session praising its own run reports from where it
-stood, which is why its self-criticism is not assessed either; a decision is
-confirmed by a recorded run, not by an account of one. What a strength carries
-is where a boundary runs, and the costs reported around it are the other side of
-the same boundary — usually from the same debrief. That reading is what goes
-into ``decisions/``, and the commit that writes it archives the feedback.
-`D-FBK-018 <../../decisions/feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md>`_
-is the case it was established on.
+Not that a decision holds: a decision is confirmed by a recorded run, not by an
+account of one. What a strength carries is where a boundary runs, and the costs
+reported around it are the other side of the same boundary, usually from the
+same debrief. That reading is what goes into ``decisions/``, and the commit that
+writes it archives the feedback —
+`D-FBK-018 <../../decisions/feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md>`_.
 
 The ladder
 ----------
@@ -84,7 +75,7 @@ already say it, or waved off as something the wording will fix.
 The ladder orders the *diagnosis*, not the appetite. Step 1 is the most
 expensive answer and regularly the right one; the cheap rungs exist so that a
 rule which was already written and never arrived is not rebuilt, not so that the
-answer stays small. ``bin/cli feedback:list`` tells the two apart in one call.
+answer stays small.
 
 .. image:: ../images/feedback-judging-ladder.svg
     :zoomable:
@@ -135,11 +126,11 @@ independently by two sessions. That last one is the evidence
 a domain earned a skill at all*. Its bar still has to be cleared; the feedback
 shows it has been reached, not that it can be skipped.
 
-Both are *taken on* rather than closed on the spot, and the building waits for
-the reading because a tool and a skill are contracts — a skill lands in somebody
-else's project, where a mistake is not corrected by the next release of this
-server. What may not wait is the decision. A 1b left as a question is a domain
-nobody owns, filed again by the next session that hits it.
+Both are *taken on* rather than closed on the spot, because a tool and a skill
+are contracts — a skill lands in somebody else's project, where a mistake is not
+corrected by the next release of this server. What may not wait is the decision.
+A 1b left as a question is a domain nobody owns, filed again by the next session
+that hits it.
 
 **The category is not the answer.** ``tool-gap``, ``missing-knowledge``,
 ``wrong-answer`` are how the reporting session saw it from where it stood, with
@@ -155,10 +146,8 @@ from the front matter.
 
 **Evidence:** the rule exists, but it is not in the skill that was active, not
 in the ``instructions`` sent at initialize, and reachable only through a tool
-nobody called.
-
-``bin/cli hints:coverage`` is this step read across the whole corpus: on
-2026-08-01 it reported 46 of 64 hints that no scenario prompt reaches at all.
+nobody called. ``bin/cli hints:coverage`` is this step read across the whole
+corpus.
 
 **Becomes:** placement — the rule moves to where the task actually passes.
 
@@ -207,7 +196,7 @@ Sources are asked in the order `AGENTS.md <../../AGENTS.md>`_ already sets for
 settling a question, and the cheap end answers most feedback:
 
 ======  ==============================  ==============================  ==================================================
-Source  Cost                            Answers
+Source  What is asked                   Cost                            Answers
 ======  ==============================  ==============================  ==================================================
 0       ``bin/cli hints:probe``         milliseconds                    is the answer here at all
 1       ``knowledge/``, ``skills/``     cheap                           where exactly, and in the right skill
@@ -231,22 +220,19 @@ and what is missing — not what the entry that fills it will say.
 That is a limit rather than an omission. The judging run has established nothing
 about TYPO3; it ran a probe and a few searches over this repository, which is
 what makes it cheap enough to walk the corpus at all. A solution named from that
-position is recalled, not read — and the todo that follows copies it down, so
-the guess ends up in ``knowledge/`` with a verified entry's authority and nobody
-left who would check it.
+position is recalled rather than read, and the todo that follows copies it into
+``knowledge/`` with a verified entry's authority.
 
 **That reason does not reach step 1b.** What a tool or a skill is missing is
 established from runs, transcripts, skill descriptions and the corpus — all of
 it in this repository, all of it read rather than recalled. So a judgement that
 lands on 1b decides **that** the thing is built and where its boundary runs, and
 leaves only what it will *say* about TYPO3 to the reading. Withholding that half
-does not protect anything: it turns a domain thirty sessions have described into
-a todo asking whether the domain exists, which is then queued at ``low`` behind
-the wording nits, and the next run judges the thirty-first report the same way.
-
-``D-SKL-005`` is what the rule cost. A core patch review that called this server
-nothing at all was first written up as *establish whether a core review earns a
-skill*, with the corpus that answers it sitting unread on the same board.
+turns a domain thirty sessions have described into a todo asking whether the
+domain exists, queued at ``low`` behind the wording nits. ``D-SKL-005`` is what
+the rule cost: a core patch review that called this server nothing at all was
+first written up as *establish whether a core review earns a skill*, with the
+corpus that answers it sitting unread on the same board.
 
 The expensive half belongs to the todo anyway, so the outcomes below read as
 *what the work is* rather than *what the answer is*.
@@ -269,16 +255,12 @@ priority the judgement sets. The feedback stays open until the commit that ships
 it archives it.
 
 What justifies it is the corpus, not the ask. One session's suggestion is a
-suggestion — its author was guessing about this repository as much as a
-judgement guesses about TYPO3. Two sessions arriving at the same shape from
-different tasks is the thing itself, and ``bin/cli feedback:list`` is where that
-is read. ``D-SKL-005`` was decided this way and the ask it answers, the proposal
-in ``feedback/2026-08-01-115220``, was the weakest evidence in it.
+suggestion, and two sessions arriving at the same shape from different tasks is
+the thing itself.
 
-The measure is what it takes off the caller. A session is charged one context
-per call, so a question that costs it four round trips and a trap that reads as
-a success is worth a tool that answers it in one — and the maintenance moving
-here is the trade rather than the objection
+The measure is what it takes off the caller: a question that costs a session
+four round trips is worth a tool that answers it in one, and the maintenance
+moving here is the trade rather than the objection
 (`D-FBK-027 <../../decisions/feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md>`_).
 Most feedback that reports such a cost has already counted it; that count is
 what the judgement reads.
@@ -329,17 +311,15 @@ commit that implements it archives it.
 
 **The judgement sets the priority and says what set it.** A card arrives at
 ``low`` because nobody has judged it, so leaving it there is the one outcome
-that records nothing — and a queue where 44 of 48 cards say ``low`` has no order
-at all, only a date. What more than one session reported does not stay at
-``low``. Where several cards turn out to be the same gap, one of them carries
-the work and names the others in its ``**Serves:**`` line, rather than each
-carrying a quarter of it. **The cards it took over are deleted by the same
-commit.** A feedback is given one card and never a second, and nothing removes
-one, so one left standing is a card asking the next session for the judgement
-this one has just made — and it is titled after its feedback while the todo that
-replaced it is titled after the work, so a listing prints the two with no word
-in common. ``bin/cli todo:check`` reports the pair, ``R-FBK-014`` is why, and
-deleting the card is the whole of the repair.
+that records nothing, and a queue where every card says ``low`` has no order at
+all. What more than one session reported does not stay at ``low``.
+
+Where several cards turn out to be the same gap, one of them carries the work
+and names the others in its ``**Serves:**`` line, rather than each carrying a
+quarter of it. **The cards it took over are deleted by the same commit.** A
+feedback is given one card and never a second, so one left standing is a card
+asking the next session for the judgement this one has just made.
+``bin/cli todo:check`` reports the pair, and ``R-FBK-014`` is why.
 
 Trimmed
 ~~~~~~~
@@ -401,8 +381,7 @@ Then the answer is a document, and who was lost decides which one.
   This is step 1a landing as prose rather than as a hint: a hint states one
   thing, and what was missing is a procedure.
 * **``documentation/``** where a session working in this repository was. How a
-  procedure here is carried out, grouped by subject, which is what that
-  directory is for.
+  procedure here is carried out, grouped by subject.
 
 Which of the two may be written in the judging run is the line this page already
 draws. A ``documentation/`` page describes this repository, which the run has
@@ -457,21 +436,14 @@ The middle state is the one worth being exact about. ``typo3_feedback_list``
 answers an agent somewhere else, and archiving is what that agent reads as
 ``closed``; a feedback closed the moment somebody decided about it would tell a
 session its report was dealt with while the thing it reported is still there. So
-the archive waits for the change, which is what AGENTS.md has always said, and
-``Todo::unreadable()`` enforces it from the other side — a todo serving an
-archived feedback is reported as a problem, so archiving early costs one error
-per todo the judgement derived.
+the archive waits for the change, and ``Todo::unreadable()`` enforces it from
+the other side — a todo serving an archived feedback is reported as a problem.
 
 **The invariant:** a commit that judges a feedback either archives it or leaves
-at least one todo serving it. Anything else drops it back to unjudged, where the
-session to read it starts from the feedback again and the judgement is lost.
-"Nothing to do" is therefore not a special case but the *close* answer: archive
-in the same commit.
-
-The same invariant from above: it leaves no card still asking for the judgement
-beside the todo that carries it. One does not cost a lost judgement, it costs a
-found one twice — a session claims the card, reads the feedback and arrives
-where this commit already was.
+at least one todo serving it, and no card still asking for the judgement it has
+just made. Anything else drops it back to unjudged, where the session to read it
+starts from the feedback again and the judgement is lost. "Nothing to do" is
+therefore not a special case but the *close* answer: archive in the same commit.
 
 What cannot be checked is whether the judgement reached ``decisions/``. A state
 check cannot see it, and a judgement may legitimately confirm an entry without
@@ -495,6 +467,5 @@ Otherwise the same account sits in ``feedback/``, in ``todo/`` and, once a
 requirement is written, a third time in ``requirements/`` — three places to
 maintain, and any one of them can be brought up to date and leave the other two
 saying something else. ``bin/cli todo:next`` prints the feedback a todo serves
-along with it, which is what lets the todo carry only its own half: the feedback
-is what happened once, the requirement is what must hold from now on, the todo
-is what to do next.
+along with it: the feedback is what happened once, the requirement is what must
+hold from now on, the todo is what to do next.

@@ -78,3 +78,25 @@ passed by writing two, and it read no file in `src/` at all.
 
 - `ProseTest::whatTheCommentsCostIsMeasured`
 - `ProseTest::aCommentThatNamesAnEntryAndRetellsItAnywayIsReported`
+
+## Since then
+
+**2026-08-18** — the three files the second **Assumed** names were cut, which is
+the half of that measurement anybody here can carry out. By `wc -w`, AGENTS.md
+went from 6798 words to 6149, `documentation/records/judging.rst` from 3978 to
+3638 and `skills/base.md` from 2133 to 1971. On this command's own count the
+same three went from 54 sentences over the measure to 46, from 37 to 32, and
+from 22 to 22.
+
+What came out is three things: the justification of a rule nobody would dispute,
+a sentence restating the one above it, and a number measured somewhere else and
+retold here — `D-FBK-020`'s call counts in AGENTS.md, `D-FBK-025`'s board in the
+judging page, both of which now name the entry instead. Every rule stayed, and
+in `skills/base.md` so did every sentence `SkillTest` quotes.
+
+The two counts do not move together, which is the point. `skills/base.md` lost a
+twelfth of its words and not one long sentence, because what came out of it was
+whole sentences rather than the middle of any.
+
+Whether that moves what a session writes is still unmeasured, and this commit is
+the boundary the reading is against.

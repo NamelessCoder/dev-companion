@@ -3,67 +3,67 @@
 ## Layout
 
 ```
-bin/typo3-dev-companion  # stdio entrypoint (the client launches it as a subprocess)
+bin/typo3-dev-companion  # stdio entrypoint; the client launches it as a subprocess
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
 src/               # grouped by what a class is: only Paths and the bootstrap sit loose
 src/Server/        # starting this server and setting a project up for it
 src/Server/Entrypoint.php  # what `bin/typo3-dev-companion` runs: the commands, the usage, the transport
 src/Server/Factory.php     # builds the mcp/sdk server from the tool definitions
-src/Server/Installer.php   # writes guarded generic or agent-specific client setup, publishes the skills, and says when what it published has gone stale
-src/Server/ExcludedTools.php  # the tools a caller asked not to be offered (TYPO3_DEV_COMPANION_EXCLUDE_TOOLS)
+src/Server/Installer.php   # writes the client setup, publishes the skills, says when a publication has gone stale
+src/Server/ExcludedTools.php  # what TYPO3_DEV_COMPANION_EXCLUDE_TOOLS takes away
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
 src/Tool/Registry.php  # every tool this server has, and the only place one is switched on
 src/Result/        # what a tool hands back, and what several of them build one from
-src/Knowledge/     # what this package knows about TYPO3: read from knowledge/, or computed where a rule has to be applied rather than looked up
-src/Knowledge/Scope.php  # the one vocabulary for which kind of work an answer is for, and how a path is placed in it
-src/Knowledge/Coverage.php  # knowledge/server-scope.json: what the server covers, what it does not, and the initialize instructions
+src/Knowledge/     # what this package knows about TYPO3: read from knowledge/, or computed where a rule is applied rather than looked up
+src/Knowledge/Scope.php  # which kind of work an answer is for, and how a path is placed in it
+src/Knowledge/Coverage.php  # knowledge/server-scope.json: what the server covers, and the initialize instructions
 src/Knowledge/Catalog/  # the component catalog and the translation domain derivation
 src/Installation/  # what only the installation being read can answer: its icons, labels, namespaces, changelog, project and extensions
 src/Installation/Instance.php  # finds the TYPO3 installation the agent is working in
 src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV where there is one
 src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
 src/Installation/probe.php  # what runs over there; never included here
-src/Manual/        # the third source: the public index and pages of the versioned TYPO3 manuals, and the core changelog above what an installation ships
-src/Contribution/  # the fourth source: the services the core's own process runs through, read over their APIs
-src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
+src/Manual/        # the third source: the versioned TYPO3 manuals, and the core changelog above what an installation ships
+src/Contribution/  # the fourth source: the services the core's own process runs through
+src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent
 src/Search/        # the lexical matching every prose and label lookup goes through
-src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes into this checkout and `bin/cli feedback` reads; a development tool, offered from a standalone checkout alone
-src/Feedback/Card.php  # the todo a feedback arrives with, and the step every one of them carries
+src/Feedback/      # the feedback channel; a development tool, offered from a standalone checkout alone
+src/Feedback/Card.php  # the todo a feedback arrives with
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and the typo3:// resources, documents and skills
 src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
 src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
 src/Upkeep/Cli.php # the console application, and the only place a command is switched on
 src/Upkeep/Command/  # one class per command, named `<subject>:<verb>` by its own #[AsCommand]
-src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
-knowledge/         # the knowledge base (markdown + JSON), the data source
-knowledge/documents/  # the prose corpus: searched by typo3_rule_lookup, served as typo3://core resources, and published by being in here
-feedback/          # feedback left by agents about this server (standalone checkout only)
-feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
-scenarios/         # user prompts and what has to come out of them, one case per file
-scenarios/forward/ # open forward reviews: a repository review and nothing more; the only kind that is run and recorded
-scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting situation: one named task shape each
-scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
-skills/            # canonical task skills installed into supported agent clients, and served as typo3://skill resources
-skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
-requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are not built yet
-decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
-todo/              # the order of the work and where the last session stopped: one todo per file, and where a file sits is the stage it is in; `bin/cli todo:next` prints one of them
-todo/open/         # the queue, read by the priority in each head and then by the date in each name
-todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
-todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
 src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
 src/Upkeep/Rst.php   # the reStructuredText the generators write: the underline per level, the directive, the literal, the two roles
 src/Upkeep/Site.php  # documentation/ as the source a generator publishes: the links that leave it, rewritten
-src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # what the server is and how a procedure is carried out; the rules stay here, the steps live there; published whole as the site; reStructuredText, where everything around it is markdown — D-DOC-029
+src/Upkeep/Todo.php  # todo/ as data: what recurs, what is queued, what each todo serves
+src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
+knowledge/         # the knowledge base (markdown + JSON), the data source
+knowledge/documents/  # the prose corpus: searched by typo3_rule_lookup, served as typo3://core resources
+feedback/          # feedback left by agents about this server (standalone checkout only)
+feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
+scenarios/         # user prompts and what has to come out of them, one case per file
+scenarios/forward/ # open forward reviews: the only kind that is run and recorded
+scenarios/contracts/ # targeted cases per audience, task skill and situation: one named task shape each
+scenarios/runs/    # one recorded forward run per review, with the judgment per criterion
+skills/            # canonical task skills installed into agent clients, and served as typo3://skill resources
+skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
+requirements/      # what must hold, and what holds it there: one per file; open ones are not built yet
+decisions/         # what a change assumed, and what would show it to be wrong: one per file
+todo/              # the order of the work: one todo per file, and where a file sits is the stage it is in
+todo/open/         # the queue, read by the priority in each head and then by the date in each name
+todo/progress/     # what a session has in hand, naming the branch the work is on
+todo/waiting/      # what nothing here can start, carrying the question it is blocked on
+documentation/     # what the server is and how a procedure is carried out; published whole as the site; reStructuredText, where everything around it is markdown — D-DOC-029
 documentation/usage/   # having this server answer in somebody's own project
-documentation/server/  # what it can be asked and where each answer comes from; tools/ and resources/ sit in here because they are the server
+documentation/server/  # what it can be asked and where each answer comes from
 documentation/contributing/  # working on the server itself: the commands, the session, the skills, the words
 documentation/records/ # what is written down and where: feedback into todo, requirements, decisions, forward runs
 documentation/images/  # the drawings a page names, and the mark at its three optical sizes
-documentation/guides.xml  # what the render is: the copy it reads, the theme it selects, and everything the bar, the tab and the footer say — D-DOC-024
+documentation/guides.xml  # what the render is: the copy, the theme, and everything the bar, the tab and the footer say — D-DOC-024
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -72,9 +72,8 @@ Every class below `src/` sits in the group it belongs to, and one that fits none
 of them is a group nobody has named yet rather than a file at the root. An
 answer comes from four of them — `Knowledge/`, `Installation/`, `Manual/` and
 `Contribution/` — and the last two reach outside this process, which is what
-their tools' `openWorldHint` says and what a caller reads before it calls.
-`Paths` sits loose because it is the one thing the server and the upkeep both
-stand on.
+their tools' `openWorldHint` says. `Paths` sits loose because the server and the
+upkeep both stand on it.
 
 Both binaries are the same shape: locate the autoloader, hand the arguments to
 the class that owns them — `Server\Entrypoint`, and `Upkeep\Cli` by way of the
@@ -102,21 +101,18 @@ confidence of a reading, because nothing afterwards can tell the two apart.
 
 What has no source here is **asked**, before the change rather than in the
 commit that presents it. Ask with the reading done — the options, what each
-costs, a recommendation — and put the todo back among them, because a todo that
-waits is not a worse outcome than one done on a guess. What comes back goes into
-`todo/` or `decisions/`, because an answer that lives only in the conversation
-ends with it.
+costs, a recommendation — and offer to put the todo back, which is not a worse
+outcome than one done on a guess. What comes back goes into `todo/` or
+`decisions/`, because an answer that lives only in the conversation ends with
+it.
 
 Nor in whatever the agent can remember on its own. A client's private memory is
 not a place this repository keeps anything: what was established goes into
 `todo/`, `requirements/`, `decisions/` or `documentation/`, where the next
-session reads it and a wrong line can be corrected. A note only one agent can
-see drifts as the checkout moves under it and is believed anyway, because it
-arrives sounding settled.
+session reads it and a wrong line can be corrected.
 
 Keeping [todo/](todo/readme.md) current is part of the work, not a step after
-it. A session that ends with the queue matching what is actually true has handed
-over correctly, whatever else it did.
+it.
 
 What is read before the first change, how a question is settled, what is asked
 and what the file says afterwards:
@@ -137,19 +133,15 @@ collides:
 ## How a session reads
 
 A session is charged one context per call, not one per token: the number of
-calls is the budget, and what one of them returns is nearly free. The 82
-worktree sessions of 2026-08-02 read 718 million cached input tokens back over
-5414 calls and wrote 5.9 million out — `D-FBK-020`.
+calls is the budget, and what one of them returns is nearly free — `D-FBK-020`,
+where the counts are.
 
 - **Send the calls that do not depend on each other together.** Most of what a
-  session reads at the start turns on nothing that came before it, and the rule
-  moved the share issued beside another from 37% of the calls to 57.6%.
-- **Reach for a file with the client's own file and search tools.** Three
-  quarters of the calls were `bash`, and half of those were `cat`, `sed`, `grep`
-  and `ls` spelling out what one call answers.
-- **Open a file once, whole.** 401 calls were `sed -n` windows into a file the
-  session went on to open again; one opened `src/Installation/Extension.php`
-  sixteen times.
+  session reads at the start turns on nothing that came before it.
+- **Reach for a file with the client's own file and search tools**, rather than
+  spelling out through `cat`, `sed`, `grep` and `ls` what one call answers.
+- **Open a file once, whole.** A window into a file the session opens again
+  afterwards is two calls for one reading.
 
 What that does not license is reading less. The step is still read against what
 the repository does today, and a question it turns on is still settled from a
@@ -160,29 +152,27 @@ source — in fewer calls, not from memory.
 One thing, one word. Where two compete, the one that wins is the one somebody
 outside this checkout can see — a tool name, a directory name, a CLI subject —
 because those are known by clients installed months ago and by paths people
-wrote down, while prose can be rewritten this afternoon. A synonym introduced in
-a paragraph is copied into a schema a week later.
+wrote down, while prose can be rewritten this afternoon.
 
 A directory below `src/` is named in the **singular**, for what one of the
 things in it is: `Tool/` holds one tool per class, `Command/` one command,
-`Manual/` one manual. The plural names the directory after its contents, which
-is what the file system already says, and it splits every name in two — a class
-lands in `Commands/` and is referred to as a command all the way down. The
-directories outside `src/` keep the names their callers know them by.
+`Manual/` one manual. The plural splits every name in two — a class lands in
+`Commands/` and is referred to as a command all the way down. The directories
+outside `src/` keep the names their callers know them by.
 
 What arrives through `typo3_feedback_record` is **a feedback**, countable, and
 [documentation/contributing/glossary.rst](documentation/contributing/glossary.rst)
 is where that and the words around it are defined. Two of them go wrong
 reliably: **record** is the verb it arrives by and never a noun, because in
-TYPO3 a record is a row in the database and this server explains that meaning to
-its callers; and **verdict** belongs to `scenarios/`, where it is how a run came
-out, while what becomes of a feedback is its **answer**.
+TYPO3 a record is a row in the database; and **verdict** belongs to
+`scenarios/`, where it is how a run came out, while what becomes of a feedback
+is its **answer**.
 
 ## Less is more
 
 Every task is also an occasion to leave the code smaller than it was. A change
 is finished when what it added is there **and** what it made unnecessary is
-gone; carrying both shapes at once is the expensive half of every feature.
+gone.
 
 - Before writing an abstraction, look for the one the change makes redundant.
   Two answers of the same shape share a formatter, and a branch nobody takes is
@@ -191,8 +181,7 @@ gone; carrying both shapes at once is the expensive half of every feature.
   parameter that is always passed the same value is not a parameter, and a
   helper with one caller is that caller.
 - Code written to be general is speculation until the second caller exists. The
-  second caller is also what shows what the two actually have in common — guess
-  before it arrives and the abstraction is built around the wrong thing.
+  second caller is also what shows what the two actually have in common.
 - Deleting needs no feature to justify it. A simplification that stands on its
   own is its own commit, and a review of code nobody has touched in a while is a
   legitimate task.
@@ -202,9 +191,9 @@ gone; carrying both shapes at once is the expensive half of every feature.
 What this does not license is a smaller API. Where a framework offers several
 ways in, take the one its own documentation and tests treat as the main path,
 even where that means more files. A cheaper-looking variant that needs an extra
-nudge to behave is not the smaller change: the nudge is the added concept, and
-it is presented as a trade-off exactly where none was on offer. Say which way in
-is the main one and which is being proposed; do not decide it for brevity.
+nudge to behave is not the smaller change: the nudge is the added concept. Say
+which way in is the main one and which is being proposed; do not decide it for
+brevity.
 
 ## Prose
 
@@ -240,8 +229,7 @@ an embedded link `Site` rewrites to GitHub.
 
 A comment earns its lines by saying what the code cannot: why this and not the
 obvious alternative, what was measured, what breaks if somebody changes it back.
-Everything else is deleted, and the same rules apply as above — one point per
-sentence, no sentence restating the one before it.
+Everything else is deleted, and the same rules apply as above.
 
 - A comment that restates the line under it is noise. Where the code is unclear,
   the fix is the name, not a sentence explaining the name.
@@ -259,22 +247,19 @@ what was settled. The rest is a report, since a long sentence can be the right
 one and a rewrite driven by a counter produces two short sentences saying what
 one said.
 
-It counts the comments too, and for the other reason: what grew there is how
-many there are rather than how long any one of them is, which a sentence measure
-cannot see. Reported are the share of the PHP that is comment and every comment
-that names a decision and retells it anyway, longest first — `D-DOC-035`.
+It counts the comments too, where what grew is how many there are rather than
+how long any one of them is: the share of the PHP that is comment, and every
+comment that names a decision and retells it anyway, longest first —
+`D-DOC-035`.
 
 `bin/cli prose:format <path>` is the other half and rewrites rather than
 reports: the prose this repository writes about itself, rewrapped at the column
-it is already written at. What it is for is the paragraph a rename left ragged —
-a word swept out of a hundred files leaves a hundred short lines behind it. It
-moves the line breaks and nothing else, which `ProseTest` asserts over the whole
-corpus rather than trusts, and it leaves alone everything a break means
-something in. Which those are is what the two markups disagree about, so the
-file is asked which it is — the front matter, a fence, a code span and a link in
-markdown; a heading and the rule under it, a directive and its indent, a drawn
-table, a literal and a role in reStructuredText. Named no path it rewraps the
-corpus, which is a diff to look at before it is a diff to make.
+it is already written at. What it is for is the paragraph a rename left ragged.
+It moves the line breaks and nothing else, which `ProseTest` asserts over the
+whole corpus rather than trusts, and it leaves alone everything a break means
+something in — which those are is what the two markups disagree about, so the
+file is asked which it is. Named no path it rewraps the corpus, which is a diff
+to look at before it is a diff to make.
 
 ## Tool names
 
@@ -297,8 +282,8 @@ because the verb is what tells a caller which shape the answer has:
 
 Nothing here writes into the TYPO3 installation it read, and that boundary is
 what "read-only" means throughout this repository. `record` is the other kind of
-writing and says so, because one word for both is how `453e439` read the
-feedback channel as a hole in the posture — `D-FBK-042`.
+writing and says so, because one word for both reads as a hole in the posture —
+`D-FBK-042`.
 
 `scope` and `describe` are the pair that gets confused. A scope answers for a
 source and states the boundary of what it can be asked; a describe answers for
@@ -325,7 +310,7 @@ below `src/Tool/` — what more than one tool builds its answer from is
 
 The word is the protocol's: an MCP tool is what the SDK declares as
 `Mcp\Schema\Tool`, beside `Prompt` and `Resource`. Nothing here is a "server
-tool" — a tool is defined by the protocol rather than by the side offering it.
+tool".
 
 Every tool returns a `ToolResult`: the text plus the same answer as data. The
 data half is a contract — clients may validate it against the `outputSchema()`
@@ -351,9 +336,8 @@ bin/cli knowledge:format <path>   # only that part of it
 - The JSON below `knowledge/` is written by that command and by nothing else:
   PHP's pretty print at the indentation `.editorconfig` states, slashes and
   unicode as they were typed, key order untouched. `JsonTest` fails on a file
-  that is not in the form, so a hand-reindented one is caught where a reviewer
-  reading the statement would not look. `.editorconfig` is where an indentation
-  is said at all — `StructureTest` holds the PHP one to php-cs-fixer's.
+  that is not in the form. `.editorconfig` is where an indentation is said at
+  all — `StructureTest` holds the PHP one to php-cs-fixer's.
 - The guidelines are php-cs-fixer's own, and `.php-cs-fixer.dist.php` is where
   they are declared: PER-CS 3.0 and the few rules on top of it this repository
   writes by. A rule is added there when the code already follows it and the
@@ -363,24 +347,21 @@ bin/cli knowledge:format <path>   # only that part of it
   so it works until somebody uses it from anywhere else and then fails as a
   missing class — held by `StructureTest::everyFileDeclaresOneClass`.
 - **A unit test holds a small part and stubs what is outside it** — `R-COD-003`.
-  It starts nothing: no console, no container, no request, no waiting on
-  something being up. It also arranges nothing on the machine: an executable
-  written into a temporary directory and put on the `PATH` is the same
-  dependency one layer down, and this repository had two of those. What the code
+  It starts nothing and arranges nothing on the machine: no console, no
+  container, no request, no waiting on something being up, and no executable
+  written into a temporary directory and put on the `PATH`. What the code
   reaches outside through is a seam a caller replaces —
   `TYPO3\DevCompanion\Process\CommandRunner` for a command or an executable
   lookup, handed in with `Typo3Cli::useRunner()`, `Environments::useRunner()` or
   `Checkouts::useRunner()`, and `Todo::useDirectory()` for a queue to write
-  into. The double is PHPUnit's — `self::createStub()` where it only has to
-  answer, `self::createMock()` where the call itself is the assertion — rather
-  than a class written by hand. Where a class has no such seam, making one is
-  part of the work. Several inputs to one behaviour are a `#[DataProvider]` with
-  a named case each, so a failure names the input. `tests/Smoke/` is where a
-  subprocess is the subject, and what it starts is this repository's own CLI.
-  `D-COD-004` has the reasoning, including why no test polices this one.
-- A directory is read with `symfony/finder`, whatever the depth. `glob()`,
-  `scandir()` and `RecursiveDirectoryIterator` were two idioms for one question,
-  and the deep one cost a dozen lines each time — held by
+  into. Where a class has no such seam, making one is part of the work. The
+  double is PHPUnit's — `self::createStub()` where it only has to answer,
+  `self::createMock()` where the call itself is the assertion. Several inputs to
+  one behaviour are a `#[DataProvider]` with a named case each, so a failure
+  names the input. `tests/Smoke/` is where a subprocess is the subject, and what
+  it starts is this repository's own CLI. `D-COD-004` has the reasoning,
+  including why no test polices this one.
+- A directory is read with `symfony/finder`, whatever the depth — held by
   `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in
   `D-COD-003`. A directory that may be absent is guarded with `is_dir()`,
   because Finder throws where `glob()` returned nothing.
@@ -433,18 +414,16 @@ dependency never sees them. That is also why `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`
 does not reach them — `R-SCO-009` names them beside `typo3_server_scope` as what
 a caller cannot take away.
 
-`scenarios/` holds the sessions those came out of, so they can be run again:
-open forward reviews in `scenarios/forward/`, targeted contract cases in
-`scenarios/contracts/`. A prompt names a kind of project, never one installation
-on somebody's machine — that lives in `todo/reference/`, where it can go stale
-without taking a case with it.
+`scenarios/` holds the sessions those came out of, so they can be run again. A
+prompt names a kind of project, never one installation on somebody's machine —
+that lives in `todo/reference/`, where it can go stale without taking a case
+with it.
 
 - A feedback arriving brings its card with it: `typo3_feedback_record` writes
-  `todo/open/<the feedback's own name>.md` beside the report, so the board is
-  right the moment it arrives and nothing has to be run afterwards. A feedback
-  that got here some other way — added by hand, or its card deleted while it
-  stayed open — is reported by `bin/cli todo:check` and by CI, and the repair is
-  a card written into `todo/open/` by hand.
+  `todo/open/<the feedback's own name>.md` beside the report. A feedback that
+  got here some other way — added by hand, or its card deleted while it stayed
+  open — is reported by `bin/cli todo:check` and by CI, and the repair is a card
+  written into `todo/open/` by hand.
 - A feedback is worked off in a commit that both implements the improvement
   **and** archives it with `bin/cli feedback:archive <feedback>`, so `feedback/`
   only ever holds open items and the commit that moved it is the record of what
@@ -456,8 +435,7 @@ without taking a case with it.
 - What outlives it goes to three directories, and none of them is the feedback's
   own: `requirements/` for what must be true from now on and what holds it
   there, `decisions/` for what a change rested on and what would show it wrong,
-  `todo/` for the order of the work. A feedback is one route into the first two,
-  and an entry is read long after the question that produced it was answered.
+  `todo/` for the order of the work.
 - Where what the session found unclear is a **structure** rather than a
   statement — in which order the steps go, what a thing consists of — the answer
   is a document instead: `knowledge/documents/` where the caller needed it,
@@ -507,14 +485,14 @@ documentation debt, it is a lie the server tells its callers.
 
 Some of it is already guarded: `ScopeTest` holds the scope and the tool list to
 each other in both directions, and `ToolNamingTest` holds every tool name
-written in `knowledge/`, in a skill, or in a rendered answer to the registry — a
-skill matters twice over, because it is installed into somebody else's project,
-where a stale name is not corrected by the next release of this server. Those
-catch a name going stale, not a sentence going false. Prose is on you.
+written in `knowledge/`, in a skill, or in a rendered answer to the registry.
+Those catch a name going stale, not a sentence going false. Prose is on you.
 
-That property is also why a skill is written under rules of its own — what it is
-named and routed by, what it may state, what it leaves to the tool that owns it,
-and what has to be shown before a domain becomes one at all:
+A skill is installed into somebody else's project, where a stale name is not
+corrected by the next release of this server. So it is written under rules of
+its own — what it is named and routed by, what it may state, what it leaves to
+the tool that owns it, and what has to be shown before a domain becomes one at
+all:
 [documentation/contributing/writing-a-skill.rst](documentation/contributing/writing-a-skill.rst),
 where every rule names the test that holds it.
 
@@ -537,10 +515,9 @@ diff carries the detail, so the message does not have to.
   process, which this checkout does not run.
 - Keep the whole subject line, keyword included, under 52 characters, and never
   past 72. Wrap the body at 72. Those are the numbers
-  `typo3_commit_message_guide` returns for `workflow="project"`, so what this
-  repository writes by and what its own tool states are one measure rather than
-  two — `D-DOC-013`. The 80 `bin/cli prose:format` wraps at belongs to the
-  markdown corpus and reaches no commit message.
+  `typo3_commit_message_guide` returns for `workflow="project"` — `D-DOC-013`.
+  The 80 `bin/cli prose:format` wraps at belongs to the markdown corpus and
+  reaches no commit message.
 - The body says only what the diff cannot: what was measured, what was rejected,
   what the change rests on. Where a decision or a requirement already carries
   that, the body names the id instead. A body that summarises the entry beside
@@ -548,8 +525,8 @@ diff carries the detail, so the message does not have to.
 - The prose rule holds here as everywhere: one point per sentence, no sentence
   restating the one above it. What it does not ask for is density: a subject
   nobody understands without the diff open is too short, not short enough.
-  Nothing measures a commit message — not the keyword, not the two widths, not
-  this rule — so all of it is held by rereading it before `git commit`.
+  Nothing measures a commit message, so all of it is held by rereading it before
+  `git commit`.
 - Only commit the files you changed yourself in this session. The working tree
   may already contain unrelated modifications or staged changes from someone
   else — leave them alone.
@@ -570,20 +547,17 @@ version says so; see the audience requirements in `requirements/audience/`.
 In the code and in every payload that is one word, `scope`: the
 `Knowledge\Scope` enum, whose cases are `core`, `project`, `extension`, `any`
 and `uncertain`. A statement in `knowledge/` declares one, a path is placed in
-one, and nothing else says the same thing under another name — `binding`,
-`provenance`, `audience` and an `outsideCore` boolean were four spellings of it
-until `D-KNW-005`. Audience stays the word for the idea, in
-`requirements/audience/` and in prose; `scope` is the word anything
-machine-readable uses.
+one, and nothing else says the same thing under another name — `D-KNW-005`.
+Audience stays the word for the idea, in `requirements/audience/` and in prose;
+`scope` is the word anything machine-readable uses.
 
 - **Everything below `knowledge/` is written in English**, and so is every query
   that reaches it. That is a property of the matcher rather than a preference:
   matching is lexical, so a query in another language reaches only the loanwords
   the two share. The server tells the calling agent to translate — in the
   `instructions` it sends at initialize, in `typo3_server_scope`, and on the
-  free-text parameters of the tools that match against prose. Adding a second
-  query language would mean translating the corpus, not the query, so a German
-  sentence in a hint is not a nice extra, it is a statement nothing can find.
+  free-text parameters of the tools that match against prose. A German sentence
+  in a hint is a statement nothing can find.
 - Everything the tools answer from lives below `knowledge/`, with one exception:
   facts owned by an installation are read from that installation, because no
   bundled answer could be right for it. Runtime registries use `Typo3Cli` where
@@ -617,10 +591,9 @@ machine-readable uses.
   issue that answers 403, then 200 with a challenge page, then JSON whose
   decision sits in a field nobody would guess — is worth a tool that answers it
   in one. The cost moves here permanently and that is the trade rather than the
-  objection: a surface somebody else owns becomes ours to keep true, for a
-  saving every session gets. What does not earn it is a fact the caller reads
-  once from its own checkout, and anything whose lookup would report
-  `unavailable` often enough that the call buys nothing (`D-FBK-027`).
+  objection. What does not earn it is a fact the caller reads once from its own
+  checkout, and anything whose lookup would report `unavailable` often enough
+  that the call buys nothing (`D-FBK-027`).
 - Verify facts against the core checkouts below `.checkouts/` before writing
   them into `knowledge/`, and bind what does not hold on all of them. The
   checkouts are this repository's own — one worktree per covered version,
@@ -628,9 +601,7 @@ machine-readable uses.
   at any time. Verifying against whatever checkout happens to be on the machine
   makes the evidence unreproducible for the next person. A statement whose
   subject is `typo3/testing-framework` is verified there too, in
-  `.checkouts/testing-framework/<line>` — the same command keeps one worktree
-  per release line the covered branches pin, because that package releases on a
-  cycle of its own and the core repository does not contain it.
+  `.checkouts/testing-framework/<line>`, which the same command keeps.
 
 ### Which versions an answer holds for
 

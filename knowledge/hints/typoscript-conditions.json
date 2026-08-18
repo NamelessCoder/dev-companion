@@ -1,0 +1,55 @@
+[
+  {
+    "id": "typoscript-conditions",
+    "title": "What a TypoScript Condition Is Handed",
+    "domains": [
+      "typoscript",
+      "php"
+    ],
+    "appliesTo": [
+      "TypoScript condition",
+      "condition matcher",
+      "IncludeTreeConditionMatcherVisitor",
+      "ExpressionLanguage",
+      "expression language provider",
+      "RequestWrapper",
+      "AfterPageAndLanguageIsResolvedEvent",
+      "TYPO3_REQUEST",
+      "GLOBALS['TSFE']",
+      "getTSFE",
+      "applicationContext ==",
+      "siteLanguage",
+      "condition evaluates false",
+      "condition does not match",
+      "conditions stopped working"
+    ],
+    "hints": [
+      "A condition is evaluated against the variables the condition matcher was initialized with, and against nothing else the surrounding PHP could reach. Those are `request`, `page`, `site`, `siteLanguage`, `context`, `tree`, and `frontend`, `backend` and `workspace` where the matching aspect exists. `page` is the resolved page record as a plain array, so a page field is tested as `[page[\"backend_layout\"] == \"pagets__landingpage\"]`.",
+      "`request` is a RequestWrapper around the PSR-7 request rather than the request itself. It answers getQueryParams(), getParsedBody(), getHeaders(), getCookieParams(), getNormalizedParams(), getPageArguments(), getSite() and getSiteLanguage(), and it has no getAttribute() — so a request attribute a migration note points at is not reachable from a condition, whatever the attribute holds.",
+      "`pageId`, `localRootLine` and `fullRootLine` are handed to the matcher and unset again before the resolver is built, so no condition can name them. The rootline is `tree.rootLine`, `tree.fullRootLine`, `tree.rootLineIds`, `tree.rootLineParentIds` and `tree.level`; the page id is `page[\"uid\"]`.",
+      {
+        "text": "`tsfe` is in the list as well, the TypoScriptFrontendController itself, and it goes when that controller does.",
+        "until": 13
+      },
+      {
+        "text": "Conditions are matched inside the middleware stack, and by then the frontend has put both `$GLOBALS['TSFE']` and `$GLOBALS['TYPO3_REQUEST']` in place. PHP running behind a condition — a custom ExpressionLanguage provider — reads either one and works.",
+        "until": 13
+      },
+      {
+        "text": "`$GLOBALS['TSFE']` is gone, and `$GLOBALS['TYPO3_REQUEST']` is assigned by the frontend request handler, which the middleware stack wraps. Conditions are matched while that global is still unset, so a provider reading it gets null.",
+        "since": 14
+      },
+      "The failure is silent, which is what makes it expensive. `$GLOBALS['TSFE']->page ?? []` suppresses the read on null, the provider answers with an empty page record, the condition evaluates false, no error is raised and nothing is logged — the page renders through the wrong branch of the TypoScript. Code resting on either global works on the majors that populate it and fails on the ones that do not, so a verdict verified on one major says nothing about the other.",
+      "Where an extension needs the current page record in its own PHP, take it from AfterPageAndLanguageIsResolvedEvent. It is dispatched before conditions are matched on every covered major, so a listener that stores the record is what the provider reads at evaluation time.",
+      {
+        "text": "The event hands the record over as $event->getPageInformation()->getPageRecord().",
+        "since": 13
+      },
+      {
+        "text": "The event carries the controller instead, and the record is $event->getController()->page.",
+        "until": 12
+      },
+      "The frontend's half of the list is assembled where the page is prepared for rendering, and IncludeTreeConditionMatcherVisitor::initializeExpressionMatcherWithVariables() completes it — that is where the request is wrapped, the aspects are added and the three variables are unset again."
+    ]
+  }
+]

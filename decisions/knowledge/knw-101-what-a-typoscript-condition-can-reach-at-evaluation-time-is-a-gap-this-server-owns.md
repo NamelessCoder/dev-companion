@@ -1,7 +1,7 @@
 ---
 id: D-KNW-101
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-KNW-101 — What a TypoScript condition can reach at evaluation time is a gap this server owns
@@ -18,10 +18,11 @@ runs.
 ## Evidence
 
 - The feedback's own query still reaches nothing. Run in this checkout on
-  2026-08-18, `bin/cli hints:probe "typoscript condition variables page request
-  v14"` and `bin/cli hints:probe "TSFE removed TypoScript condition
-  ExpressionLanguage provider"` both classify `typoscript`, take 21 hints as
-  candidates and match none of them.
+  2026-08-18,
+  `bin/cli hints:probe "typoscript condition variables page request v14"` and
+  `bin/cli hints:probe "TSFE removed TypoScript condition ExpressionLanguage provider"`
+  both classify `typoscript`, take 21 hints as candidates and match none of
+  them.
 - The subject is absent from the corpus rather than badly worded. `knowledge/`
   and `skills/` carry no occurrence of `ExpressionLanguage`, `TYPO3_REQUEST`,
   `$GLOBALS['TSFE']` or `AfterPageAndLanguageIsResolvedEvent`.
@@ -33,8 +34,8 @@ runs.
   the middleware stack wraps — so the global is unset while conditions are
   evaluated and a fix resting on it passes on 13 and fails silently on 14.
 - Two corrections to how the report gets there, neither of which changes that
-  verdict. `PrepareTypoScriptFrontendRendering` is not gone on 14.3; what is gone
-  is `TypoScriptFrontendInitialization`, whose work moved into it. And 13.4
+  verdict. `PrepareTypoScriptFrontendRendering` is not gone on 14.3; what is
+  gone is `TypoScriptFrontendInitialization`, whose work moved into it. And 13.4
   assigns the global a second time, in
   `PrepareTypoScriptFrontendRendering.php:184`, after the `frontend.typoscript`
   attribute is already set — so it is not what a condition on 13.4 sees either.
@@ -59,9 +60,9 @@ runs.
 
 ## Decided
 
-- Step 1a of the ladder, and queued rather than closed on the spot. What lands is
-  a statement about TYPO3 across a version boundary, and writing it is the todo's
-  work.
+- Step 1a of the ladder, and queued rather than closed on the spot. What lands
+  is a statement about TYPO3 across a version boundary, and writing it is the
+  todo's work.
 - `normal`, not the `low` the card arrived at. The failure the gap produces is a
   wrong condition verdict with no error, no log and no failing build, and it is
   version-bound, so a session that verifies on one major ships the bug on the
@@ -96,9 +97,37 @@ runs.
 
 - A hint reaches either probe query once the corpus grows around it. Then what
   was missing was the placement rather than the statement, and this was step 2.
-- Something in the default 14 frontend stack populates `$GLOBALS['TYPO3_REQUEST']`
-  before TypoScript is compiled — a middleware not read here, or a path other
-  than the default stack. The statement is then a default rather than a rule.
+- Something in the default 14 frontend stack populates
+  `$GLOBALS['TYPO3_REQUEST']` before TypoScript is compiled — a middleware not
+  read here, or a path other than the default stack. The statement is then a
+  default rather than a rule.
 - `AfterPageAndLanguageIsResolvedEvent` turns out not to be dispatched before
   condition matching on 12.4. The hint binds `since: 13` rather than holding on
   every covered major, and the recommendation is wrong for the oldest one.
+
+## Covered by
+
+- `HintsTest::aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest`
+- `HintsTest::whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem`
+
+## Confirmed on 2026-08-18
+
+The statement was written as a hint of its own, `typoscript-conditions` in
+`knowledge/hints/typoscript-conditions.json`, and both probe queries the
+evidence recorded as reaching nothing now reach it.
+
+The 12.4 reading the entry left open came out the other way from the **Wrong
+if** above. `AfterPageAndLanguageIsResolvedEvent` is dispatched from
+`TypoScriptFrontendController::determineId()` — `.checkouts/12.4:718` — which
+the `tsfe` middleware calls, and `prepare-tsfe-rendering` declares itself
+`after` that one and is where the conditions are matched. So the event is ahead
+of condition matching on every covered major and the recommendation is not
+bound; what binds is the accessor a listener takes the record off, because the
+event carries the controller on 12.4 and the `PageInformation` from 13.4 on. The
+variable set is the same reading on 12.4 as the entry recorded for 13.4, minus
+the middleware: it is assembled in `getFromCache()` and completed by the same
+visitor, `tsfe` included.
+
+Both globals are populated before condition matching on 12.4 as well —
+`TypoScriptFrontendInitialization.php:55` and `:114` — so the statement about
+them binds at 14 rather than at 13.

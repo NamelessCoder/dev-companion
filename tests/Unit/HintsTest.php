@@ -866,6 +866,66 @@ final class HintsTest extends TestCase
         self::assertNotContains(Hints::CATEGORY_CSS, $categories);
     }
 
+    /**
+     * `D-KNW-101`. The reporting session read the middleware order out of three
+     * branches by hand, because the migration the removal changelog prescribes —
+     * read the page off the request — has nothing to read it from where a
+     * condition runs.
+     */
+    #[Test]
+    public function aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest(): void
+    {
+        $held = Hints::find([], 'typoscript condition variables page request', 6);
+        self::assertSame('typoscript-conditions', $held['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('typoscript-conditions');
+
+        // The variable set, and the three that are taken away again: a
+        // condition naming pageId is a parse error rather than a wrong verdict.
+        self::assertStringContainsString('`request`, `page`, `site`, `siteLanguage`, `context`, `tree`', $text);
+        self::assertStringContainsString('unset again before the resolver is built', $text);
+
+        // Why the prescribed migration cannot be followed here: the wrapper
+        // has no getAttribute() to read the page information attribute off.
+        self::assertStringContainsString('has no getAttribute()', $text);
+
+        // The symptom, which is what a caller arrives with — there is no error
+        // to search for.
+        self::assertStringContainsString('no error is raised and nothing is logged', $text);
+
+        // And the way in that holds wherever this knowledge base reaches.
+        self::assertStringContainsString('AfterPageAndLanguageIsResolvedEvent', $text);
+    }
+
+    /**
+     * The half that decides whether a fix works: the globals a provider behind a
+     * condition may read are populated on the older majors and not on the newer
+     * ones, so an unbound statement would be wrong on half the corpus either
+     * way.
+     */
+    #[Test]
+    public function whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem(): void
+    {
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('typoscript-conditions', $major)['hints'], 'text'),
+        );
+
+        self::assertStringContainsString('reads either one and works', $on(12));
+        self::assertStringContainsString('reads either one and works', $on(13));
+        self::assertStringContainsString('`tsfe` is in the list', $on(13));
+
+        self::assertStringContainsString('a provider reading it gets null', $on(14));
+        self::assertStringNotContainsString('reads either one and works', $on(14));
+        self::assertStringNotContainsString('`tsfe` is in the list', $on(14));
+
+        // The event is the recommendation on every covered major, and what a
+        // listener takes the record off changed with the controller.
+        self::assertStringContainsString('$event->getController()->page', $on(12));
+        self::assertStringContainsString('$event->getPageInformation()->getPageRecord()', $on(13));
+        self::assertStringContainsString('$event->getPageInformation()->getPageRecord()', $on(14));
+    }
+
     #[Test]
     public function aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions(): void
     {

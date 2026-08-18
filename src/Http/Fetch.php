@@ -9,32 +9,13 @@ use TYPO3\DevCompanion\Server\Factory;
 /**
  * The one way this server reads a host outside itself.
  *
- * Two sources reach outside — the manuals at `docs.typo3.org` and the services
- * the core's own process runs through — and each carried its own `curl` block
- * with the same options in it. What that costs is not the duplicated lines: it
- * is that the timeouts, the redirect limit and the user agent are a policy, and
- * a policy in two places is two policies as soon as one of them is edited.
- *
- * The timeouts are the policy worth naming. A lookup runs inside a tool call
- * somebody is waiting on, so a host that is slow is a host that did not answer:
- * three seconds to connect, eight in total, and after that the caller is told
- * rather than kept.
- *
- * The user agent is deliberately this server's own and not a browser's. It says
- * who is calling, which is what a host operator needs to see; and where bot
- * protection sits in front of one, it is the browser-shaped agents that get the
- * challenge page — a plain client agent is what gets through.
- *
- * Compression is asked for on every read. docs.typo3.org answers
- * `Vary: Accept-Encoding` and `Content-Encoding: gzip` on everything tried, and
- * the TYPO3 Explained root is 169 kB plain against 19.9 kB compressed — so the
- * option that was missing cost this server 8.5 times the payload and the host
- * 8.5 times the egress, on every manual lookup.
- *
- * One handle serves every read of one instance, so the connection under it is
- * reused instead of being built again per read. A manual search makes ten reads
- * of one host, and each one paid for a TCP connection and a TLS handshake:
- * 90.9 ms against 27.6 ms per read, measured through this class — `D-ANS-066`.
+ * The timeouts, the redirect limit and the agent are a policy, and a policy in
+ * two places is two policies as soon as one of them is edited. A lookup runs
+ * inside a tool call somebody is waiting on, so a slow host is a host that did
+ * not answer; the agent is this server's own because bot protection challenges
+ * the browser-shaped ones; compression is asked for on every read, the TYPO3
+ * Explained root being 169 kB plain against 19.9 kB compressed; and one handle
+ * serves every read of one instance — `D-ANS-066`.
  */
 final class Fetch
 {

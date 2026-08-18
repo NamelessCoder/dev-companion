@@ -30,35 +30,12 @@ final class Text
     /**
      * Whether $haystack carries $needle as the word it is.
      *
-     * Plain substring matching produces false positives that are hard to spot:
-     * "preview" contains "review", "success" contains "css". Anchoring at a word
-     * boundary keeps prefix matching ("label" finds "labels") without them.
-     *
-     * A needle of several words is separated by a hyphen as readily as by a
-     * space, because a compound is written both ways and every curated
-     * vocabulary here is written one way. All of them read this — the domain
-     * keywords, the hint patterns, the markers — so a caller writing
-     * `content-element` used to fail every one at once: the domain fell back to
-     * PHP and the hint was never a candidate, and the `content element` pattern
-     * was then searched for verbatim anyway.
-     *
-     * Measured over the 195 multi-word patterns of the hint corpus, asked in
-     * both spellings: hyphenated, 110 reached the hint the pattern was written
-     * for, and 176 do now — the same number the spaced spelling reaches. Over
-     * the 107 texts this repository had to hand then, nothing moved at all.
-     * `D-ANS-022` has the rest of the sweep and what it ruled out.
-     *
-     * Only the space between words is loosened. A separator inside one word —
-     * `tt_content`, `mod.web_layout`, `list_type` — is what `D-ANS-006` is
-     * about, and it is matched as it is written.
-     *
-     * On the right the word ends where the needle does, give or take one of
-     * INFLECTIONS. Ending nowhere is what made `test` match "testimonials" and
-     * `boot` match "Bootstrap", while prefix matching is what makes `label`
-     * find "labels" — so what has to be told apart is not the needle and not
-     * the corpus but the rest of the word, which is an ending in the one case
-     * and another word in the other (`D-ANS-050`). A needle that is a stem
-     * rather than a word is asked with startsWord() instead.
+     * Plain substring matching is hard to police: "preview" contains "review",
+     * "success" contains "css". The word boundary keeps prefix matching ("label"
+     * finds "labels") without them; two words are joined by a hyphen as readily
+     * as by a space (`D-ANS-022`); a separator inside one word is matched as
+     * written (`D-ANS-006`); and the match ends where the needle's word does,
+     * give or take an inflection (`D-ANS-050`), where a stem takes startsWord().
      */
     public static function containsWord(string $haystack, string $needle): bool
     {
@@ -97,16 +74,12 @@ final class Text
     /**
      * What a match may run into past the needle, and where it has to stop.
      *
-     * Only a needle ending in a letter can run into the next word at all. One
-     * ending in a separator already ends where its word does — `f:` is the
-     * Fluid namespace prefix and what follows it is the whole point,
-     * `typo3/sysext/` is a path a file name continues — so their right side is
-     * left as it was.
-     *
-     * A letter is what closes it rather than a word character, because a needle
-     * running into an underscore is inside one identifier rather than in the
-     * next word: `sys_file` reaching `sys_file_reference` is `D-ANS-006`'s side
-     * of the same question and is left alone.
+     * Only a needle ending in a letter can run into the next word at all: `f:`
+     * and `typo3/sysext/` already end where their word does, so their right side
+     * is left as it was. A letter closes it rather than a word character,
+     * because a needle running into an underscore is inside one identifier
+     * rather than in the next word — `sys_file` reaching `sys_file_reference` is
+     * `D-ANS-006`'s side of the same question.
      */
     private static function ending(string $needle): string
     {

@@ -21,36 +21,13 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  * Calls every tool once and writes down what came back.
  *
  * `tools:index` renders the surface, which is derivable and therefore checked.
- * This is the other half — what a filled answer looks like — and it is neither:
- * half of these answers belong to the installation being read, so the recording
- * is evidence rather than a derivation. It is in the shape of `catalog:check`
- * for that reason: a command run against a checkout of somebody's own, whose
- * result is committed as data.
- *
- * The default root is the newest covered core checkout below `.checkouts/`,
- * because that is the one installation this repository can recreate — `bin/cli
- * checkouts:update` makes it, so the recording is repeatable by whoever reads
- * it. It has no reachable console, which is itself worth recording: those tools
- * answer from the packages or say they could not be asked, and both shapes are
- * ones a client meets. So a checkout carrying anything that command did not put
- * there is refused rather than recorded from — `D-DOC-034`.
- *
- * What it cannot show is the third: what a booted TYPO3 answers, which is the
- * ordinary case. So the installation-backed tools are recorded a second time,
- * against the installation `Fixture` writes below `.fixtures/` — a Composer
- * project whose console this command starts and reads like any other. Recording
- * everything against one root instead was measured and is a trade rather than a
- * gain: `D-DOC-006` has what each side of it costs.
- *
- * The second root was the made `E-SITE` and is the fixture because the
- * recording is committed. A root that exists on the machine that has DDEV is a
- * page that gains its second answer there and silently loses it everywhere
- * else, which is what happened to three of them; the fixture is written on the
- * way past and every machine records the same thing.
- *
- * Nothing here takes a path to somebody's own site for the second root either.
- * A recording pointed at one is repeatable by the machine that holds it and by
- * nobody else, which is the reason the first root defaults to a checkout.
+ * This is the other half — what a filled answer looks like — and half of those
+ * answers belong to the installation being read, so it is evidence rather than
+ * a derivation. Two roots, because neither the newest covered core checkout
+ * below `.checkouts/` nor the installation `Fixture` writes fills the surface
+ * alone, and neither of them is somebody's own site, which only the machine
+ * holding it could record again — `D-DOC-006`. A checkout carrying anything
+ * `checkouts:update` did not put there is refused — `D-DOC-034`.
  */
 #[AsCommand(
     name: 'tools:record',

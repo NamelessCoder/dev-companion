@@ -11,34 +11,12 @@ use TYPO3\DevCompanion\Search\Text;
 /**
  * The issue tracker a core patch starts from, read over its Redmine API.
  *
- * What it costs by hand is counted in `feedback/2026-08-02-144511` and `145217`:
- * a browser-shaped request is refused, a browser-shaped user agent gets HTTP 200
- * with a challenge page — a success wrapping a non-answer — and the JSON that
- * finally arrives has to be searched for the part that decides anything. Which
- * is not the description: it is the journal, where the maintainer who closed the
- * issue said why.
- *
- * So an answer is only an answer when it parses as the API. Anything else with a
- * 200 in front of it is the protection or a portal, and reading it as "no issue"
- * would be the same mistake in the other direction.
- *
- * The `.json` endpoint is asked for rather than the page, because the fields
- * this answers with — the tracker, the target version, the custom field the
- * reported version lives in, the relations, the journal — are fields there and
- * would be scraped anywhere else.
- *
- * Which agent gets through was measured on 2026-08-03: this server's own
- * `typo3-dev-companion/<version>` and a plain `curl/…` both answer 200 with JSON, and
- * a `Mozilla/5.0 …` answers 200 with a 7.5 kB challenge page. So the first
- * attempt is already the shape that works, and the retry below is what happens
- * if that stops being true.
- *
- * Three ways in, because three questions are asked of one tracker and only one
- * of them starts from a number. Whether another issue describes the same bug is
- * asked before a patch is written, and the same two sessions searched for it by
- * hand: `/search.json` is that call (`D-ANS-038`). Which issues are still open
- * after all these years is asked before there is an issue at all, and no number
- * and no wording reaches it: `/issues.json` filtered and sorted is that one.
+ * An answer is only an answer when it parses as the API: this host answers a
+ * browser-shaped request with 200 and a challenge page, and reading that as
+ * "no issue" would be the same mistake in the other direction. The `.json`
+ * endpoint is asked for rather than the page, because the fields that decide
+ * anything would be scraped anywhere else. Three ways in, because only one of
+ * the three questions asked of one tracker starts from a number — `D-ANS-038`.
  */
 final class Forge
 {
@@ -171,20 +149,14 @@ final class Forge
     }
 
     /**
-     * The relations of these records, with what it takes to decide whether to
-     * read one.
+     * The relations of these records, filled with what decides whether to read
+     * one.
      *
-     * A relation came back as a number and a word, which costs one issue read
-     * to evaluate — so a caller holding four of them evaluates none. On 15984
-     * that was four, and the one that answered what a fix would cost was
-     * `#32756`, "Massive Memory Leak in 4.5.8+ / 4.6": the issue the 2012
-     * revert was filed under, found afterwards in a git commit message
-     * (`D-ANS-064`).
-     *
+     * A relation came back as a number and a word, which costs one issue read to
+     * evaluate — so a caller holding four of them evaluates none (`D-ANS-064`).
      * The price is one bulk read for everything handed in rather than one per
-     * relation, which is what makes this a fix and not a trade — and it is why
-     * a whole page goes through here at once rather than a record at a time.
-     * Where it cannot be reached the relations stand as they came back.
+     * relation, which is why a whole page goes through here at once; where it
+     * cannot be reached the relations stand as they came back.
      *
      * @param list<array<string, mixed>> $records
      * @return list<array<string, mixed>>
@@ -210,22 +182,14 @@ final class Forge
     }
 
     /**
-     * The changes the review server holds for these rows, one query per twelve
-     * of them.
+     * The changes the review server holds for these rows, one query per twelve.
      *
-     * The signal a triage stops on and the one no row carried: whether somebody
-     * has already pushed a patch. It is not in the index answer and not
-     * reachable from it — the change reference lives in the journal, which
-     * `/issues.json` does not serve at all, so the enumeration would be one
-     * issue read per row to find out (`D-ANS-069`).
-     *
-     * What is carried is the handle and not the state. A change is named here
-     * so `typo3_gerrit_lookup` can be asked what it is now; a row that says
-     * merged or abandoned is a verdict, and this list is read to choose what to
-     * read.
-     *
-     * Where the review server cannot be reached the rows stand as they came
-     * back, which is the same trade the relation fill makes.
+     * Whether somebody has already pushed a patch is the signal a triage stops
+     * on, and it is not in the index answer: the change reference lives in the
+     * journal, which `/issues.json` does not serve (`D-ANS-069`). The handle is
+     * carried and not the state, because this list is read to choose what to
+     * read; where the review server cannot be reached the rows stand as they
+     * came back.
      *
      * @param list<array<string, mixed>> $results
      * @return list<array<string, mixed>>
@@ -249,12 +213,8 @@ final class Forge
      * The issues whose text matches these words.
      *
      * What it answers is which other issues mention this, and not which one is
-     * the duplicate: the order is the tracker's own, nothing here ranks, and one
-     * wording does not settle the question — three phrasings of the same bug
-     * returned 15, 134 and 279 hits on 2026-08-03. So the query comes back with
-     * the answer, because a caller holding a narrow set has to be able to see
-     * which words produced it (`D-ANS-038`).
-     *
+     * the duplicate: nothing here ranks, and one wording does not settle the
+     * question, so the query comes back with the answer (`D-ANS-038`).
      * `issues=1` is what keeps wiki pages, forum posts and changesets out of an
      * answer whose entries are issue numbers.
      *
@@ -666,19 +626,13 @@ final class Forge
     }
 
     /**
-     * One issue of an enumeration, in the same shape a search hit comes back
-     * in, so a caller reads one record rather than two.
+     * One issue of an enumeration, in the shape a search hit comes back in.
      *
      * Everything here is a field, where a search hit has to be read out of its
-     * title — which is what makes the two dates answerable at all. They are the
-     * two a triage sorts on and they say different things: filed long ago is
-     * about the report, untouched for years is about the attention it got.
-     *
-     * The relations and the files come back with the page where the call asked
-     * for them, and cost nothing beyond it. What they decide is which row is
-     * worth reading: over the 36 issues `D-ANS-069` measured, 19 carried a
-     * relation and 6 carried a file, and a report whose evidence is a
-     * screenshot is a different candidate to one whose report is prose.
+     * title — which is what makes the two dates answerable at all, and they say
+     * different things: filed long ago is about the report, untouched for years
+     * is about the attention it got. The relations and the files come with the
+     * page and decide which row is worth reading — `D-ANS-069`.
      *
      * @param array<string, mixed> $raw
      * @return array<string, mixed>
@@ -803,20 +757,12 @@ final class Forge
     /**
      * The review changes the journal names, as handles rather than as prose.
      *
-     * They are in the payload already and only inside a sentence — "Patch set 3
-     * of change I98ea… has been pushed to the review server. It is available at
-     * http://review.typo3.org/1186" — where they read as history already told.
-     * A session triaging 15984 never called `typo3_gerrit_lookup` and never
-     * loaded its schema, and answered the question from `git log --all --grep`
-     * instead (`D-ANS-064`).
-     *
-     * Nothing is claimed about the change's state. The journal says what was
-     * true on the day somebody wrote the note, and what is true now is one
-     * `typo3_gerrit_lookup` call away.
-     *
-     * Two passes, because the two handles arrive in different notes: the bot's
-     * names the change id and the number together, a human's later note is a
-     * bare URL. Which one a note carries is what the second pass resolves.
+     * They are in the payload already and only inside a sentence, where they
+     * read as history already told — a session triaging 15984 answered the
+     * question from `git log --all --grep` instead (`D-ANS-064`). Nothing is
+     * claimed about their state, which is one `typo3_gerrit_lookup` call away.
+     * Two passes, because the bot's note names the change id and the number
+     * together where a human's later note is a bare URL.
      *
      * @param list<array{author: string, on: string, note: string}> $notes
      * @return list<array<string, mixed>>

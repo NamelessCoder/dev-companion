@@ -12,46 +12,15 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tool\Registry;
 
 /**
- * What every tool actually answered, once, written down.
+ * What every tool actually answered, once, written down: the half of a tool's
+ * page below `## Answered`, where `ToolSurface` writes the half above it.
  *
- * The half of a tool's page above `## Answered` says which fields an answer
- * has; this is what goes below it — what one looks like filled, a match with
- * its score, an `unsupported` with its cause.
- *
- * For most tools that half is not derivable from the registry and cannot be a
- * test either: it needs an installation, and no test run discovers one. So it
- * is a recording rather than a check. It is evidence from one machine on one
- * day, every section says so where it opens, and nothing fails on it being
- * older than the code — a command only a machine with checkouts can run must
- * not be able to turn CI red.
- *
- * The tools `ToolCalls::derived()` names are the other case. Their answers read
- * nothing an installation contains, so there is no evidence to record: what a
- * call comes back with follows from `knowledge/` and from which TYPO3 major the
- * caller is on, both of which are here. `derivedSections()` writes that half
- * against `CoreFixture`, and `tools:check` holds it exactly as it holds the
- * fields above it.
- *
- * It sits on the tool's own page rather than in a directory of its own, so the
- * reader who arrived with one tool in hand meets the shape and a filled answer
- * without following a link. `ToolSurface` renders the half above and carries
- * this one over untouched; this writes the half below and carries that one over
- * the same way.
- *
- * The answers are whole. What a recording is for is seeing a filled answer, and
- * a block with `… 14 more` where the entries were is a count of one instead.
- *
- * Of two working directories, because no single one fills the surface. A core
- * checkout answers the core half and has no console, so the tools that reach an
- * installation come back `unsupported` or read the packages; the installation
- * `Fixture` writes answers those from its booted TYPO3 and has no
- * `runTests.sh`, `Build/Sources` or `EXT:styleguide` for the other half to
- * read. Recording
- * against one of them alone is a trade rather than an improvement, and
- * `D-DOC-006` has what each side costs. So the second recording is added where
- * it is the answer and nowhere else: a tool that declares `answeredBy` is
- * declaring that its answer has two provenances, and those are exactly the
- * pages that carry both.
+ * A recording and not a check, because it needs an installation and no test run
+ * discovers one — `D-DOC-006`. The tools `ToolCalls::derived()` names read
+ * nothing an installation contains, so `derivedSections()` writes their half
+ * against `CoreFixture` and `tools:check` holds it. Of two working directories,
+ * because neither fills the surface alone, and the second answer goes on the
+ * pages of the tools that declare `answeredBy` — `D-DOC-012`.
  */
 final class ToolAnswers
 {

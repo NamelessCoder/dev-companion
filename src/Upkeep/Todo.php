@@ -13,57 +13,12 @@ use TYPO3\DevCompanion\Paths;
  *
  * It was one document, the way requirements/ and decisions/ each were before
  * they became directories, and it failed in the same way twice over. Finishing
- * a todo meant loading 30 kB to delete a paragraph, at the end of a run where
- * there is least room for exactly that. And every session that added, moved or
- * dropped work wrote the same file, so two of them could not do it at once.
+ * a todo meant loading 30 kB to delete a paragraph, and every session that
+ * added, moved or dropped work wrote the same file.
  *
- * Where a file sits is what it is, and the head it opens with says the rest:
- *
- *     todo/open/2026-07-29-114302-give-d-cat-001-a-digest-to-notice-markup-by.md
- *
- *     # Give `D-CAT-001` a digest to notice markup by
- *
- *     **Serves:** decisions/
- *     **Priority:** normal
- *     **Run:** bin/cli catalog:check
- *
- *     One paragraph: the next concrete step.
- *
- * Three of the directories are the stages a todo runs through, and a move
- * between them is the whole of what happens to one. `open/` is the queue, whose
- * order is the priority in the head and, below that, the stamp in the name.
- * Neither is a place, so nothing is renamed to put one todo before another.
- * `progress/` is what a session has
- * in hand: it is offered to nobody else, and it says on which branch the work
- * is and since when. `waiting/` is what no session can start, because it is
- * blocked on an answer this repository cannot produce, and it carries that
- * answer's question in a `**Waiting on:**` line. Closing is not a fourth place
- * — a finished todo is deleted, and the commit that finishes it is the record.
- *
- * The other two are beside the stages rather than among them. `recurring/` is
- * what comes round and is never deleted, so it has no closing to run towards.
- * `reference/` is not work at all and is there so a session does not rediscover
- * it and mistake it for some.
- *
- * `Serves:` is what makes a todo work rather than an idea, and `Priority:` is
- * where it stands among the rest — one of three words, on every todo in a stage
- * and on none that recurs, because a cadence is what orders those. `Every:` is the
- * cadence of a recurring one, and `Run:` is the command the step starts from,
- * which `bin/cli todo:next` runs where this repository owns it. `Branch:` and
- * `Claimed:` belong to a todo in hand: the first is where the work is, the
- * second is what tells a claim somebody is working from one nobody came back
- * to.
- *
- * A cadence is `session` or a number of days, and the days are why the pair
- * exists: five sessions in an afternoon owe the feedback five readings and the
- * release check none. What is measured in days carries `**Checked:** <date>`,
- * the session that ran it writes the date, and a todo that is not due is not
- * printed. Forgetting the date costs one repeat rather than a stale answer.
- *
- * The paragraph under the head is one step, because it is printed whole and a
- * session that has to read three of them to find where to start is reading
- * instead of working. Two steps are two todos, and what says which comes first
- * is the priority on each, not the order they were written in.
+ * Where a file sits is what it is and the head it opens with says the rest.
+ * `todo/readme.md` is that form — the stages, the labelled lines, the one
+ * paragraph under them — and this reads it rather than restating it.
  *
  * @phpstan-type Section array{title: string, kind: string, priority: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
@@ -132,24 +87,12 @@ final class Todo
     /**
      * What one of several sessions is started with, and the whole of it.
      *
-     * It carries no worktree path, no branch and no todo, which is the point:
-     * a message with a blank in it is a message somebody fills in, and the one
-     * run that went wrong here went wrong that way — the template was sent as
-     * it stands, placeholders and all, and the session had no way to tell that
-     * from an instruction. Nothing in this one is per-session, so every session
-     * gets the same characters and there is nothing to get wrong.
-     *
-     * What it therefore cannot say is which todo is being worked, and that is
-     * the half the repository answers rather than the prompt:
-     * `bin/cli todo:next --worktree` reads it off the branch the session is
-     * standing on, and refuses where that is not a worktree carrying a claim.
-     * A path handed to a session is one it has no reason to doubt; a claim read
-     * out of the checkout it is standing in cannot be the wrong one.
-     *
-     * How to read is in here as well as in `AGENTS.md`, which is the one thing
-     * duplicated on purpose: of the 82 sessions of 2026-08-02, every one opened
-     * the procedure page and 13 opened `AGENTS.md`. A rule about what the first
-     * calls cost has to arrive before them — `D-FBK-020`.
+     * Nothing in it is per-session, so there is no blank for anybody to fill in
+     * and no template to send as it stands; which todo is being worked is read
+     * out of the checkout instead, by `bin/cli todo:next --worktree`. How to
+     * read is duplicated from `AGENTS.md` on purpose — of the 82 sessions of
+     * 2026-08-02 every one opened the procedure page and 13 opened `AGENTS.md`
+     * (`D-FBK-020`).
      */
     public const BRIEFING = <<<'TEXT'
         You work in the git worktree you were started in, and only there. Check with
@@ -602,24 +545,10 @@ final class Todo
     /**
      * The cards a judgement folded into another todo and nothing took away.
      *
-     * A feedback arrives with one card and is never given a second. What that
-     * cannot do is look backwards: a session that judges a cluster writes one
-     * todo carrying two feedback on its `**Serves:**` line, and the card the
-     * first of them already had stays in the queue asking for the judgement
-     * that has just been made. The next session claims it, reads
-     * the feedback, and spends itself arriving where somebody already arrived —
-     * which is what `D-FBK-040` cost.
-     *
-     * The pair is one grouping over the three states of work somebody has taken
-     * on, which is what `serves()` already reads, plus the one thing that tells
-     * the two cards apart: the step. It is the same sentence on every card a
-     * feedback arrives with and it is a constant, so a body still equal to it
-     * is a card nobody has judged — while the todo beside it, whatever it says,
-     * is one somebody wrote.
-     *
-     * What repairs it is a deletion, so this reports rather than acts: a
-     * command that removes a claimed card is how a judgement gets lost instead
-     * of found.
+     * A feedback arrives with one card and is never given a second, so a session
+     * judging a cluster writes one todo carrying two feedback while the card the
+     * first already had stays in the queue — `D-FBK-040`. The constant step is
+     * what tells them apart, and repairing it is a deletion, so this reports.
      *
      * @return array<int, array{card: string, feedback: string, judged: array<int, string>}>
      */

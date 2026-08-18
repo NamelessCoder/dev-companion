@@ -10,37 +10,17 @@ use TYPO3\DevCompanion\Paths;
 /**
  * A TYPO3 installation this repository writes, whose console answers.
  *
- * Nine tools answer from the installation the caller is standing in, and which
- * of two answers they give depends on whether its console can be reached:
- * `installation` where TYPO3 booted and said so, `packages` where the files had
- * to stand in. A core checkout below `.checkouts/` is the second of those and
- * has nothing to boot, so the first shape could only ever be recorded against a
- * real site — which is one machine's, and three pages lost their second answer
- * the first time somebody recorded without one.
+ * Nine tools answer `installation` where TYPO3 booted and said so and
+ * `packages` where the files had to stand in, and a core checkout can only ever
+ * produce the second — so the first shape used to be recorded against whichever
+ * real site the machine had (`D-DOC-006`). Nothing is faked on this side of the
+ * process boundary: `Typo3Cli` resolves this project, starts it and reads what
+ * it printed exactly as it does anywhere else.
  *
- * So the installation is written here instead: a Composer project whose
- * `vendor/autoload.php` the real probe really boots into and whose
- * `vendor/bin/typo3` really answers the four commands those tools run. Nothing
- * is faked on this side of the process boundary — `Typo3Cli` resolves it,
- * starts it and reads what it printed exactly as it does anywhere else, which
- * is the property that makes an answer recorded from here worth writing down.
- *
- * It is written rather than committed, for the reason `.checkouts/` is not in
- * git either: what produces it is the source, and a copy of the output beside
- * it is a second thing to keep true. Unlike a checkout it costs no network and
- * no minute, so nothing has to be run before `tools:record` — that command
- * writes it on its way past.
- *
- * What shapes it is `ToolCalls`: the label the search asks for is in it, the
- * tagged deprecation the sweep asks for is in it, and the queries that ask for
- * nothing find nothing. Shaping it after a real site instead is what the
- * `E-SITE` already is, and neither its labels nor its changelog would have
- * anything to do with what is asked of them.
- *
- * Everything in it says whose it is. An answer recorded from here is true of
- * this installation and of nothing else, so an entry a reader could take for
- * TYPO3's own is the one thing it must not carry — `D-DOC-006` is why the
- * distinction is not decoration.
+ * Written rather than committed, for the reason `.checkouts/` is not in git
+ * either, and shaped by `ToolCalls` rather than after a real site. Everything
+ * in it says whose it is, because an entry a reader could take for TYPO3's own
+ * is the one thing a recorded answer must not carry.
  */
 final class Fixture
 {

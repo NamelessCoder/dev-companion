@@ -1,7 +1,9 @@
-# no skill owns the project as a deliverable or the packaging of content as a distribution, and bot...
+# multi-item prescriptions were executed partially three separate times in one session, and nothing...
 
-**Serves:** feedback/2026-08-17-212538-no-skill-owns-the-project-as-a-deliverable-or.md
+**Serves:** feedback/2026-08-17-212218-multi-item-prescriptions-were-executed.md
 **Priority:** low
+**Branch:** todo/multi-item-prescriptions-were-executed
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

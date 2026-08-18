@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212300-availablehints-is-78-percent-of-everything-hint.md
 **Priority:** low
+**Branch:** todo/availablehints-is-78-percent-of-everything-hint
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

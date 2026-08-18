@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-205945-the-index-is-consulted-while-planning-and.md
 **Priority:** normal
+**Branch:** todo/the-index-is-consulted-while-planning-and
+**Claimed:** 2026-08-18
 
 What is left of the feedback is its first suggestion. The build workflows route
 lookups by subject at planning time and none of them says what to do once

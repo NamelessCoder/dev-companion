@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-211157-three-php-versions-are-reported-side-by-side-in.md
 **Priority:** low
+**Branch:** todo/three-php-versions-are-reported-side-by-side-in
+**Claimed:** 2026-08-18
 
 Judge the half of this feedback that is left rather than fix what it reports.
 The other half landed on 2026-08-18 as `R-PRJ-010`, and this one is the sentence

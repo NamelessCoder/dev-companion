@@ -2,6 +2,8 @@
 
 **Serves:** documentation/server/tools/
 **Priority:** normal
+**Branch:** todo/the-core-checkouts-a-recording-answers-from-have
+**Claimed:** 2026-08-18
 
 `bin/cli tools:record` defaults to the newest released core checkout because
 `bin/cli checkouts:update` makes it, which is what makes the recording

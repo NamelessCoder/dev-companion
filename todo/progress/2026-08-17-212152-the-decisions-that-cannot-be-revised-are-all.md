@@ -1,7 +1,9 @@
-# multi-item prescriptions were executed partially three separate times in one session, and nothing...
+# the decisions that cannot be revised are all made before an installation exists, which is when al...
 
-**Serves:** feedback/2026-08-17-212218-multi-item-prescriptions-were-executed.md
+**Serves:** feedback/2026-08-17-212152-the-decisions-that-cannot-be-revised-are-all.md
 **Priority:** low
+**Branch:** todo/the-decisions-that-cannot-be-revised-are-all
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212010-the-knowledge-is-indexed-by-subject-and-a.md
 **Priority:** normal
+**Branch:** todo/a-symptom-about-an-asset-reaches-the-layout-hint
+**Claimed:** 2026-08-18
 
 Curation, not matching:
 `bin/cli hints:probe "f:asset.css does not appear in the rendered page"` selects

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212117-extension-setup-reports-success-without.md
 **Priority:** normal
+**Branch:** todo/say-what-a-warm-tca-cache-does-to-the-schema-step
+**Claimed:** 2026-08-18
 
 The judgement is `D-KNW-089`, step 1a: the schema step migrates from the cached
 TCA and the command reports success either way, and no statement below

@@ -1,7 +1,9 @@
-# the decisions that cannot be revised are all made before an installation exists, which is when al...
+# no skill owns the project as a deliverable or the packaging of content as a distribution, and bot...
 
-**Serves:** feedback/2026-08-17-212152-the-decisions-that-cannot-be-revised-are-all.md
+**Serves:** feedback/2026-08-17-212538-no-skill-owns-the-project-as-a-deliverable-or.md
 **Priority:** low
+**Branch:** todo/no-skill-owns-the-project-as-a-deliverable-or
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

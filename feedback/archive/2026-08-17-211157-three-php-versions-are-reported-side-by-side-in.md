@@ -1,7 +1,8 @@
 ---
 date: 2026-08-17T21:11:57+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-18
 model: claude-opus-5
 tool: typo3_project_describe
 directory: /home/benji/projects/site-demo
@@ -29,6 +30,10 @@ typo3_project_describe on a DDEV-based TYPO3 14.3.6 project and read phpConstrai
 
 The version choice is made before the installation exists, when this tool has nothing to answer with, so the supported-PHP range for a target version is worth having somewhere that does not require an installation to read — that is the moment .ddev/config.yaml gets its number, and it is the only moment the number is easy to change.
 
-## Answered in part
+## Answered
 
-The first half — say the relation, not just the numbers — landed on 2026-08-18 as `R-PRJ-010`, decided in `D-ANS-082`. `typo3_project_describe` now derives `phpRelation` and states in both halves of its answer where the declared floor sits against what the installed core requires and against what any configured environment runs, saying in the same breath that nothing was executed on any of those versions. What stays open is the half above: it needs no installation and this tool answers from one, so it is not this tool's to give.
+The first half — say the relation, not just the numbers — landed on 2026-08-18 as `R-PRJ-010`, decided in `D-ANS-082`. `typo3_project_describe` now derives `phpRelation` and states in both halves of its answer where the declared floor sits against what the installed core requires and against what any configured environment runs, saying in the same breath that nothing was executed on any of those versions.
+
+The second half — the range readable before an installation exists — landed the same day as `R-KNW-072`, in the `php-versions` hint. `typo3_hint_lookup` with `id=php-versions` answers it from a directory holding no installation, per covered line: the constraint `typo3/cms-core` declares, the `config.platform.php` the core repository resolves against, and the interpreters `runTests.sh -p` exercises the branch on. The installation task skill fetches it at the step that declares the container, which is the moment this report names.
+
+The orientation is what stayed wrong after both. `doesNotCover` excluded "server and container setup" whole and sent the caller to docs.typo3.org, which is where this session went. It now names the interpreter as the part answered here — `D-SKL-012`, **Since then**.

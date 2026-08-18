@@ -288,8 +288,8 @@ Text:
     A site set is a convention and is covered; what one installation writes into config/sites/<identifier>/config.yaml is that site's decision, and nothing here would make one answer to it more right than another. The file is read rather than composed — typo3_project_describe reports the sites a repository configures and the sets they depend on.
     Instead: Read what the project already has with typo3_project_describe, ask typo3_hint_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/.
     ## Running an installation: server and container setup, deployment, backups, the editorial use of the backend
-    The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.
-    Instead: Use the TYPO3 documentation at https://docs.typo3.org/.
+    The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources. What a project's own environment file declares is the exception, because that file is written into the project.
+    Instead: Use the TYPO3 documentation at https://docs.typo3.org/. typo3_project_describe reports what the environment file configures. Which interpreter to declare in it is typo3_hint_lookup with id=php-versions, asked before there is an installation to ask anything else.
     ## The content itself: a record read or written — a page, a content element, a file reference, a workspace
     The content model is answered here and the content is not. typo3_schema_lookup returns a table as the installation's container assembles it, and no tool touches a row of one. The reason is the trust model: your client launches this server as a stdio subprocess, so the process boundary is the whole of its security, and reading a record would put the shell user's database access where a backend user's permissions belong.
     Instead: Work the records where the permissions apply — the backend, or the installation's own console at vendor/bin/typo3. For what a table holds, its columns and their types, ask typo3_schema_lookup, and for what the DataHandler expects of code you write, typo3_hint_lookup.
@@ -650,8 +650,8 @@ Data:
             },
             {
                 "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
-                "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
-                "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+                "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources. What a project's own environment file declares is the exception, because that file is written into the project.",
+                "instead": "Use the TYPO3 documentation at https://docs.typo3.org/. typo3_project_describe reports what the environment file configures. Which interpreter to declare in it is typo3_hint_lookup with id=php-versions, asked before there is an installation to ask anything else."
             },
             {
                 "topic": "The content itself: a record read or written — a page, a content element, a file reference, a workspace",

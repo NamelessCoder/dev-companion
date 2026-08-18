@@ -297,8 +297,8 @@
     },
     {
       "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
-      "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
-      "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+      "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources. What a project's own environment file declares is the exception, because that file is written into the project.",
+      "instead": "Use the TYPO3 documentation at https://docs.typo3.org/. typo3_project_describe reports what the environment file configures. Which interpreter to declare in it is typo3_hint_lookup with id=php-versions, asked before there is an installation to ask anything else."
     },
     {
       "topic": "The content itself: a record read or written — a page, a content element, a file reference, a workspace",

@@ -745,6 +745,31 @@ final class ScopeTest extends TestCase
         );
     }
 
+    /**
+     * The declined subject holds one question this server does answer, and it
+     * is the one asked first: the interpreter is written into the environment
+     * file before anything is installed, and `php-versions` says which. The
+     * entry sent the caller outside for all of it.
+     *
+     * `D-SKL-012` put the environment file a repository declares on the covered
+     * side and the payload never followed; `R-KNW-072` then landed the answer
+     * inside the excluded topic. What stays declined is the operating around
+     * it, which is the reading `D-KNW-010` and `D-KNW-049` both took.
+     */
+    #[Test]
+    public function theInterpreterAnEnvironmentDeclaresIsNotDeclinedWithTheOperating(): void
+    {
+        $declined = array_values(array_filter(
+            Coverage::read()['doesNotCover'],
+            static fn(array $entry): bool => str_contains(mb_strtolower($entry['topic']), 'running an installation'),
+        ));
+        self::assertCount(1, $declined, 'nothing in the orientation declines operating an installation');
+
+        self::assertNotNull(Hints::byId('php-versions'));
+        self::assertStringContainsString('php-versions', $declined[0]['instead']);
+        self::assertStringContainsString('typo3_hint_lookup', $declined[0]['instead']);
+    }
+
     #[Test]
     public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
     {

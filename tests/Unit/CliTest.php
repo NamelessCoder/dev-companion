@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Command\TodoClaim;
 use TYPO3\DevCompanion\Upkeep\Todo;
@@ -49,6 +51,54 @@ final class CliTest extends TestCase
                 '"' . $sighting['title'] . '" is a sighting and came up while the queue still had ' . count(Todo::items()) . ' items',
             );
         }
+    }
+
+    /**
+     * An appointment comes up on its clock and on its own command, and the
+     * second half is the one that went missing.
+     *
+     * A recurring todo whose `Run:` names a command this console owns is asked
+     * rather than assumed: the command exits nonzero when it found work, so the
+     * todo stops coming up the moment there is none. What that costs is a todo
+     * pointed at a command that always exits 0 — it is never handed over,
+     * whatever its cadence says, and `bin/cli todo:list` marks it due the whole
+     * time. `read-the-contract-cases-no-test-can-hold` sat 16 days past its date
+     * that way, and nothing failed, because nothing asks.
+     */
+    #[Test]
+    public function anAppointmentComesUpOnlyWhileItsCommandFindsWork(): void
+    {
+        // `todo:next` refuses a worktree standing on no claim before it reads
+        // any cadence, and the suite runs in the worktrees. Git answering the
+        // same directory twice is the checkout they were cut from — `R-COD-003`,
+        // rather than making a real worktree to ask in.
+        $this->ownQueue();
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(['ok' => true, 'exitCode' => 0, 'output' => "/repo/.git\n", 'error' => '']);
+        Checkouts::useRunner($git);
+
+        $queued = $this->queueATodo();
+        $appointment = self::MARKER . '-appointment';
+        // Long past its date, so the clock is not what either half turns on.
+        $this->recurATodo('14 days', $appointment, 'bin/cli todo:waiting', '2026-01-01');
+
+        $quiet = new BufferedOutput();
+        Cli::application()->doRun(new StringInput('todo:next'), $quiet);
+
+        $this->waitATodo();
+        $working = new BufferedOutput();
+        Cli::application()->doRun(new StringInput('todo:next'), $working);
+
+        self::assertStringStartsWith(
+            $queued['title'],
+            trim($quiet->fetch()),
+            'an appointment whose command found nothing was handed over ahead of the queue',
+        );
+        self::assertStringStartsWith(
+            $appointment,
+            trim($working->fetch()),
+            'an appointment past its date whose command found work never came up',
+        );
     }
 
     /**

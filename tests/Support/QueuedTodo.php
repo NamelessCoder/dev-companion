@@ -150,13 +150,33 @@ trait QueuedTodo
      * comes before the queue needs one to exist. It used to read whichever the
      * repository was carrying, which made the case pass or fail on a directory
      * it was not about.
+     *
+     * A cadence in days needs the other two lines with it, because an
+     * appointment is due on both: the date it was last run, and what its own
+     * command answers when it is run again.
      */
-    private function recurATodo(string $every = 'session', string $title = self::MARKER . '-recurring'): void
-    {
+    private function recurATodo(
+        string $every = 'session',
+        string $title = self::MARKER . '-recurring',
+        string $run = '',
+        string $checked = '',
+    ): void {
         file_put_contents(
             $this->ownQueue() . '/todo/recurring/' . $title . '.md',
             '# ' . $title . "\n\n**Serves:** todo/\n**Every:** " . $every
+            . ($checked === '' ? '' : "\n**Checked:** " . $checked)
+            . ($run === '' ? '' : "\n**Run:** " . $run)
             . "\n\nThe reading this fixture stands for.\n",
+        );
+    }
+
+    /** One todo blocked on an answer, which is what `bin/cli todo:waiting` reports. */
+    private function waitATodo(string $waitingOn = 'the answer this fixture stands for'): void
+    {
+        file_put_contents(
+            $this->ownQueue() . '/todo/waiting/' . self::MARKER . '.md',
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Waiting on:** " . $waitingOn
+            . "\n\nThe step this question blocks.\n",
         );
     }
 

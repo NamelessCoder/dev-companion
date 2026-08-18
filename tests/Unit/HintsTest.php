@@ -2559,6 +2559,65 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-FBK-018`. What a boot brief is credited with is not the verdict but the
+     * file, command or number the caller can check the verdict against: a
+     * session ran `ddev restart` on the Typo3Version.php sentence alone, and
+     * searched for `Initialisation/` rather than inheriting "inert on v14",
+     * which is the branch it would have got wrong — `feedback/2026-08-18-070515`.
+     *
+     * Each of the three was in no assertion, so the decidable half could have
+     * been summarised away while the conclusion beside it stayed and read as
+     * unchanged.
+     */
+    #[Test]
+    public function aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict(): void
+    {
+        $checklist = implode("\n", Registry::call('typo3_task_guide', [
+            'task' => 'Boot the local DDEV development installation for the blog extension repository: '
+                . 'composer install, TYPO3 setup, site and demo content, so the backend and frontend answer',
+            'changeType' => 'operations',
+            'paths' => ['.ddev/config.yaml', 'composer.json', 'blog'],
+        ])->data['checklist']);
+
+        // What DDEV reads to decide the file belongs there, which is what makes
+        // the missing additional.php a write order rather than a TYPO3 fault.
+        self::assertStringContainsString(
+            'vendor/typo3/cms-core/Classes/Information/Typo3Version.php',
+            $checklist,
+        );
+
+        // The file whose presence decides whether --create-site is honoured.
+        self::assertStringContainsString('required package ships Initialisation/data.xml', $checklist);
+
+        // And what the generated file supplies, which is what a hand-written
+        // database connection into it costs.
+        self::assertStringContainsString('Leave config/system/additional.php to DDEV', $checklist);
+    }
+
+    /**
+     * The setup command prints neither the user it created nor the password it
+     * was handed, and sets `BE/installToolPassword` to the same value without
+     * an option of its own. So a boot that reports only the backend user hands
+     * over half of what the installation now holds —
+     * `feedback/2026-08-18-070515`, whose session says it would not have named
+     * the install tool half on its own.
+     */
+    #[Test]
+    public function theAdminPasswordIsAnsweredWithWhatItAlsoBecomesAndHowItIsRecovered(): void
+    {
+        $checklist = implode("\n", Registry::call('typo3_task_guide', [
+            'task' => 'Install TYPO3 unattended and report the backend user to whoever asked for the installation',
+            'changeType' => 'operations',
+        ])->data['checklist']);
+
+        self::assertStringContainsString('State the admin username and the password in your reply', $checklist);
+        self::assertStringContainsString('the URL of the backend they belong to', $checklist);
+        self::assertStringContainsString('Generate that password rather than inventing a quiet default', $checklist);
+        self::assertStringContainsString('sets BE/installToolPassword in config/system/settings.php', $checklist);
+        self::assertStringContainsString('backend:resetpassword', $checklist);
+    }
+
+    /**
      * `R-KNW-065`. The reported brief carried four PHP hints and none of them
      * was about booting anything, because the corpus said nothing about it: the
      * change type `operations` moved the checklist and could not move this, and
@@ -5391,6 +5450,14 @@ final class HintsTest extends TestCase
             'what an idempotent installer guards on, since the command guards on the schema',
         );
 
+        // Which of the two refusals a run met, and what --force moves. A number
+        // is what tells them apart in the output a script sees, and only the
+        // settings half is rewritten — `feedback/2026-08-18-070515` reports the
+        // three as what put its sequence in order before any of them fired.
+        self::assertStringContainsString('exception 1669747685', $statements);
+        self::assertStringContainsString('exception 1669747200', $statements);
+        self::assertStringContainsString('--force overwrites the settings files and never the schema', $statements);
+
         // The site half is the one that moved. Before the distribution option
         // existed, --create-site wrote the site configuration whatever else was
         // installed; since it does, a required package that ships an
@@ -5406,6 +5473,13 @@ final class HintsTest extends TestCase
             $onFourteen,
             'the consequence the two inert options have',
         );
+
+        // Which package silences them is a test the caller runs rather than a
+        // list it inherits, and `SetupService::getAvailableDistributions()` has
+        // no second predicate — a package ships one of the two files or it is
+        // not a distribution, in `.checkouts/14.3` as in `.checkouts/main`.
+        self::assertStringContainsString('Initialisation/data.xml or Initialisation/data.t3d', $onFourteen);
+        self::assertStringContainsString('is the whole test for being one', $onFourteen);
     }
 
     #[Test]

@@ -978,3 +978,97 @@ that can go stale. The judgement is
 [`D-SKL-052`](../task-skills/skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md),
 where the size the report asks be watched is read as what that rule leaves. The
 feedback is closed by this commit and nothing is queued.
+
+## Confirmed on 2026-08-18
+
+The 2026-08-03 section says the check on a praised absence is not whether the
+words are still there but whether the enumeration is exhaustive over the axis
+the praise reads into it, and that only the domain answers that.
+`feedback/2026-08-18-070515` is the first strength that was **handed** that axis
+rather than supplying it: the sentence it credits states its own test, the
+session ran the test, and the branch it took was the one the test decided.
+
+It booted a clone of the `t3g/blog` extension repository in
+`/home/benji/projects/blog` on four calls and credits five things. The first
+**Wrong if** did not fire. Every counterfactual in the file is an action an
+answer pre-empted — the `ddev restart` it would not have run, the wrong
+distribution branch it would have inherited, the database connection it was
+about to hand-write, the install-tool password it says it would not have
+reported. The one command it ran beside a call,
+`find .build/vendor -maxdepth 3 -type d -name Initialisation`, is the test the
+answer handed it, which is not the *did instead* the ladder is walked from —
+`2026-07-31-194823`. Its second `typo3_project_describe` is a repeated call, and
+what caused it is `feedback/2026-08-18-070333`, filed 102 seconds earlier with a
+card of its own.
+
+The quotations are checked before the boundary is. Re-run on 2026-08-18 through
+`bin/typo3-dev-companion` with the feedback's own arguments —
+`typo3_hint_lookup` with `id=installation-boot`, then `typo3_task_guide` with
+`changeType=operations` and `paths=[".ddev/config.yaml","composer.json","blog"]`
+— and all five come back verbatim. Four of them arrive in that one
+`typo3_task_guide` answer, whose `intents` are `installation-setup` and
+`installation-operations`, so the brief the report calls "the checklist" is both
+of their checklists in one call.
+
+The praised absence is exhaustive, and this is the first keep-request whose axis
+could be read straight off the core. `SetupService::getAvailableDistributions()`
+walks `getAvailablePackages()` and skips every package that has neither
+`Initialisation/data.xml` nor `Initialisation/data.t3d` in its package path.
+There is no second predicate — not the Composer type, not a manifest key — so
+*shipping one of the two files is the whole test* is closed over the axis the
+session read into it. The method is byte-identical in `.checkouts/14.3` and
+`.checkouts/main` but for a blank line, and `SetupCommand` honours
+`--create-site` in both wherever `$distributions['active'] === []`.
+
+The boundary is **what an answer hands the caller to check against what it asks
+the caller to believe**. Everything this strength credits is on the first side,
+and each is a different kind of handle: a file path the environment reads
+(`Typo3Version.php`), a file whose presence decides a branch
+(`Initialisation/data.xml`), an exception number that tells two refusals apart
+(1669747685 against 1669747200), a settings key a value silently becomes
+(`BE/installToolPassword`), a command that recovers what is not stored
+reversibly (`backend:resetpassword`). None of them is a conclusion; each is
+something the session could put to its own machine.
+
+The cost side is the same debrief, seven files in three minutes, and every one
+of them is a conclusion with no test attached. `2026-08-18-070632` is the exact
+inverse of the strength's item 2: `--create-site` carries `until: 13`, which
+reads as removed at v14, and the clause that decides it — *read only where no
+distribution is active yet* — sits mid-paragraph in the statement beside it, so
+the session reconciled two statements and then verified empirically.
+`2026-08-18-070423` names the variables `typo3 setup` reads and not the
+invocation that carries them into the container, and two round trips went on
+`ddev exec -e` and `--raw=false`. `2026-08-18-070358` answers `scope: uncertain`
+for an extension key the parameter documentation says counts as a path.
+`2026-08-18-070333` promises in a tool description that the answer holds on a
+fresh clone, which is the one state it does not. Four cards, four conclusions
+the caller had no way to check; five sentences, five tests it could run. One
+session reported both directions without seeing them as one line.
+
+What the report proposes generalising — *state the decidable test alongside the
+conclusion* — is the same reading, and it is not written as a requirement here.
+One debrief is where the shape was found, `070632` is the single instance of the
+absence and has a card of its own, and naming its answer from here is the
+copy-down judging.rst warns about. What would establish it is a second debrief
+reporting the same split from a different task shape.
+
+Four of the five keep-requests rested on nobody rewriting the file. The
+additional.php paragraph was held for the timing and not for the path the
+detection reads, which is the half the session acted on;
+`aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict` names that
+path, the `Initialisation/data.xml` clause and the sentence that leaves the file
+to DDEV, all three in the brief the report received. The four password lines
+were in no assertion at all —
+`theAdminPasswordIsAnsweredWithWhatItAlsoBecomesAndHowItIsRecovered` holds the
+report obligation, the generated password, the install-tool half and the reset.
+The two exception numbers and what `--force` moves were held by their wording
+alone, and the distribution predicate by neither, so both are added to
+`anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses`. The fifth, the
+`Typo3Version.php` sentence in the hint that owns it, was guarded already by
+`theDdevSettingsAnswerSaysWhenThatFileIsWritten`.
+
+One statement about TYPO3 was checked and none was established: the predicate
+was read in `.checkouts/`, and everything else is this server's own answers
+re-run. The feedback is closed by this commit and nothing is queued. What it
+asks be kept is now asserted rather than left standing, which is the third
+**Wrong if** asked of a closed strength.

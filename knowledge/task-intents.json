@@ -63,6 +63,7 @@
     "title": "Changelog or ReST documentation",
     "skill": "typo3-extension-documentation",
     "skillCore": "typo3-core-patch-development",
+    "guide": "extension/documentation/manual",
     "match": [
       "changelog",
       "rst",
@@ -189,6 +190,7 @@
     "title": "Test coverage",
     "skill": "typo3-extension-testing",
     "skillCore": "typo3-core-patch-development",
+    "guide": "extension/testing/phpunit",
     "match": [
       "test",
       "coverage",
@@ -210,6 +212,7 @@
     "title": "Browser tests",
     "skill": "typo3-extension-testing",
     "skillCore": "typo3-core-patch-development",
+    "guide": "project/testing/playwright",
     "match": [
       "playwright",
       "browser test",
@@ -512,6 +515,7 @@
     "id": "installation-operations",
     "title": "Bringing an installation up and running it",
     "skill": "typo3-development-installation",
+    "guide": "project/installation/booting-a-clone",
     "changesNothing": true,
     "match": [
       "operations",

@@ -26,7 +26,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, skill: string, skillCore: string, changesNothing: bool, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, skill: string, skillCore: string, guide: string, guideCore: string, changesNothing: bool, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -46,6 +46,15 @@ final class TaskIntents
             // descriptions hands the other side away in as many words.
             'skill' => (string) ($entry['skill'] ?? ''),
             'skillCore' => (string) ($entry['skillCore'] ?? ''),
+            // The knowledge document this kind of work is written up in, split
+            // the same way and for the same reason: a package's test harness
+            // and the core's are two procedures, and a brief that names the
+            // wrong one sends a session to a page it cannot follow. Empty where
+            // no page here writes that side up, which is every core one so far:
+            // what a core intent would name is the three contribution documents
+            // the rule sections in the same answer already do (`D-GUI-012`).
+            'guide' => (string) ($entry['guide'] ?? ''),
+            'guideCore' => (string) ($entry['guideCore'] ?? ''),
             // Whether the work this intent describes produces no change of its
             // own: reviewing one, triaging a report, fetching somebody else's
             // patch, running an installation. It is what skills() reads to
@@ -181,18 +190,48 @@ final class TaskIntents
      */
     public static function skills(array $intents, bool $coreWork, bool $changesNothing): array
     {
-        $skills = [];
+        return self::owned($intents, $coreWork ? 'skillCore' : 'skill', $changesNothing);
+    }
+
+    /**
+     * The knowledge documents that write up the work these intents recognized,
+     * in catalog order and deduplicated.
+     *
+     * The other half of the same route (`D-GUI-012`): the skill is the workflow
+     * in the caller's own project and this one is the page on this server, so a
+     * session whose client lists no resources learns the guide exists at the
+     * moment the work does. Which intents may name one is decided exactly as
+     * above, because a guide loaded on a weak match or on the words of the
+     * change under review is the wrong page rather than a partly right one.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @return array<int, string>
+     */
+    public static function guides(array $intents, bool $coreWork, bool $changesNothing): array
+    {
+        return self::owned($intents, $coreWork ? 'guideCore' : 'guide', $changesNothing);
+    }
+
+    /**
+     * What the confirmed intents name under one key, once each.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @return array<int, string>
+     */
+    private static function owned(array $intents, string $key, bool $changesNothing): array
+    {
+        $owned = [];
         foreach (self::confirmed($intents) as $intent) {
             if ($changesNothing && $intent['changesNothing'] !== true) {
                 continue;
             }
-            $skill = (string) $intent[$coreWork ? 'skillCore' : 'skill'];
-            if ($skill !== '') {
-                $skills[$skill] = true;
+            $named = (string) $intent[$key];
+            if ($named !== '') {
+                $owned[$named] = true;
             }
         }
 
-        return array_keys($skills);
+        return array_keys($owned);
     }
 
     /**

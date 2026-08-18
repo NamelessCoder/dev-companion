@@ -4747,6 +4747,62 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * And the page that kind of work is written up in (`D-GUI-012`).
+     *
+     * The reporting session learned the corpus exists from one place — the
+     * `guides` key of `typo3_project_describe`, read while diagnosing a 404 —
+     * and added functional tests three turns later without
+     * `extension/testing/phpunit` (`feedback/2026-08-18-074226`). Measured
+     * before the change, that brief named `core/contribution/rules`: the page a
+     * core patch is judged by, handed to a package.
+     */
+    #[Test]
+    public function aBriefNamesTheGuideTheWorkIsWrittenUpIn(): void
+    {
+        $tests = Registry::call('typo3_task_guide', [
+            'task' => 'add unit and functional tests for a ViewHelper in the blog extension',
+            'paths' => ['packages/blog/Classes/ViewHelpers/GravatarViewHelper.php'],
+            'changeType' => 'test',
+        ]);
+
+        self::assertSame(
+            ['extension/testing/phpunit'],
+            array_column($tests->data['guides'], 'id'),
+        );
+        // As the call rather than as the typo3://guides address, because the
+        // client that reported this rendered no resource list at all.
+        self::assertStringContainsString('extension/testing/phpunit', $tests->text);
+        self::assertStringContainsString('typo3_rule_lookup call with that documentId', $tests->text);
+        self::assertLessThan(
+            (int) strpos($tests->text, 'Hints:'),
+            (int) strpos($tests->text, 'Written up in:'),
+        );
+
+        // The core side of the same work names none: what a core patch owes is
+        // the three contribution documents, which the rule sections in the same
+        // answer already name and quote.
+        $core = Registry::call('typo3_task_guide', [
+            'task' => 'add unit tests for the DataHandler hook',
+            'paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
+            'changeType' => 'test',
+        ]);
+
+        self::assertSame([], $core->data['guides']);
+        self::assertStringNotContainsString('Written up in:', $core->text);
+
+        // A brief that changes nothing names only the pages of work that
+        // changes nothing either, the rule `D-SKL-039` established for the
+        // skill on the line above: the words of the change under review are the
+        // words of writing one.
+        $review = Registry::call('typo3_task_guide', [
+            'task' => 'review the patch that adds playwright tests',
+            'changeType' => 'audit',
+        ]);
+
+        self::assertSame([], $review->data['guides']);
+    }
+
+    /**
      * A review request that names a change routes the review (`D-SKL-039`).
      *
      * Run on 2026-08-14, this named `typo3-core-patch-development`: "breaking"

@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tool;
 
 use TYPO3\DevCompanion\Feedback\Channel;
 use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Knowledge\Domains;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\Scope;
@@ -112,6 +113,21 @@ final class TaskGuide extends ReadOnlyTool
         . 'type "deprecation" and the query omitted, %s. One call per tag: the ext: tag of each system extension '
         . 'this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every '
         . 'call also returns the tags that major carries, so the second onwards is read off the first.';
+
+    /**
+     * The page this kind of work is written up in, said in the same place
+     * (`D-GUI-012`).
+     *
+     * The corpus was named once per session, in the `guides` key of
+     * `typo3_project_describe`, which is the call made before anybody knows
+     * what the work is. The session that reported it read that list while
+     * diagnosing a 404, turned to test work three turns later and never went
+     * back — so the pointer arrives with the work instead of before it. Named
+     * as the call rather than as the `typo3://guides` address, because a client
+     * that lists no resources cannot act on an address (`D-ANS-061`).
+     */
+    public const GUIDES_OWNING = 'Written up in: %s. Each is one typo3_rule_lookup call with that documentId, '
+        . 'no resource list needed — the procedure for this kind of work, which this brief does not repeat.';
 
     /**
      * The change type of a task that changes nothing, and the id of the intent
@@ -225,7 +241,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", and bringing an installation up is "operations" — all three get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", and bringing an installation up is "operations" — all three get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does, beside the guide the work is written up in where this server carries one. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array
@@ -260,6 +276,7 @@ final class TaskGuide extends ReadOnlyTool
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
             'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage and a boot name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
+            'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures the recognized work is written up in, the same corpus typo3_project_describe lists at orientation and this server serves as typo3://guides resources. Named rather than carried: a brief is one call inside a procedure, and the page is one typo3_rule_lookup call by documentId. Empty means no page here is the write-up of what was recognized, which is not a statement that none of them is worth reading — the whole list is in that orientation call.'),
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
             'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
@@ -279,7 +296,7 @@ final class TaskGuide extends ReadOnlyTool
                 'tool' => Schema::string(),
                 'when' => Schema::string(),
             ], ['tool', 'when'])),
-        ], ['task', 'changeType', 'domains', 'skills', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
+        ], ['task', 'changeType', 'domains', 'skills', 'guides', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -351,6 +368,7 @@ final class TaskGuide extends ReadOnlyTool
         // the words of the change under review name what it is about, not what
         // the caller is doing (`D-SKL-039`).
         $skills = TaskIntents::skills($confirmed, $coreWork && !$outsideCore, $changesNothing);
+        $guides = self::guideRecords(TaskIntents::guides($confirmed, $coreWork && !$outsideCore, $changesNothing));
 
         $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
         $target = Versions::target($stated);
@@ -451,6 +469,16 @@ final class TaskGuide extends ReadOnlyTool
         // once the reading has started.
         if ($skills !== []) {
             $lines[] = sprintf(self::SKILLS_OWNING, implode(', ', $skills));
+        }
+        // Under the skill and above the payload for the same reason, and two
+        // lines rather than one: the skill is a file in the caller's own
+        // project and the guide is a page here, so a session that has neither
+        // installed nor listed still gets the one it can reach.
+        if ($guides !== []) {
+            $lines[] = sprintf(self::GUIDES_OWNING, implode(', ', array_map(
+                static fn(array $guide): string => $guide['id'] . ' — ' . $guide['title'],
+                $guides,
+            )));
         }
 
         $lines[] = '';
@@ -719,6 +747,7 @@ final class TaskGuide extends ReadOnlyTool
                 'condition' => (string) $intent['condition'],
             ], $intents),
             'skills' => $skills,
+            'guides' => $guides,
             'hints' => MatchedHints::records($hints['matchedHints']),
             'omittedHints' => $omitted,
             'rules' => Prose::records($rules),
@@ -729,6 +758,30 @@ final class TaskGuide extends ReadOnlyTool
             'checkoutDiscovery' => $checkoutDiscovery,
             'nextTools' => $nextTools,
         ]);
+    }
+
+    /**
+     * The documents an intent named, with the titles a caller picks one by.
+     *
+     * A document whose file is gone is dropped rather than named: an id that
+     * answers nothing is worse than no pointer, and `KnowledgeTest` fails on
+     * the same mapping so nobody finds out here.
+     *
+     * @param array<int, string> $ids
+     * @return array<int, array{id: string, title: string}>
+     */
+    private static function guideRecords(array $ids): array
+    {
+        $titles = array_column(Documents::documents(), 'title', 'id');
+
+        $records = [];
+        foreach ($ids as $id) {
+            if (isset($titles[$id])) {
+                $records[] = ['id' => $id, 'title' => (string) $titles[$id]];
+            }
+        }
+
+        return $records;
     }
 
     /**

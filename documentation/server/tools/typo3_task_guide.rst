@@ -10,10 +10,11 @@ bringing an installation up is "operations" — all three get a brief of their o
 rather than the steps a patch owes. Built from bundled conventions only: it does
 not read your checkout, so it also names what you have to establish there
 yourself, routes to the lookups that fit the task, and names the task skill that
-owns the work where a published one does. Work that reads as a project or
-third-party extension is answered with what transfers only — the core checks,
-checklist items and steps that name something only the core repository has are
-left out rather than handed over. Answers from: knowledge.
+owns the work where a published one does, beside the guide the work is written
+up in where this server carries one. Work that reads as a project or third-party
+extension is answered with what transfers only — the core checks, checklist
+items and steps that name something only the core repository has are left out
+rather than handed over. Answers from: knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -106,6 +107,17 @@ Answers with
     # in. Empty means no published skill owns what was recognized, which is not a
     # statement that the work has no workflow.
     skills: [string]
+    # The whole procedures the recognized work is written up in, the same corpus
+    # typo3_project_describe lists at orientation and this server serves as
+    # typo3://guides resources. Named rather than carried: a brief is one call
+    # inside a procedure, and the page is one typo3_rule_lookup call by documentId.
+    # Empty means no page here is the write-up of what was recognized, which is not
+    # a statement that none of them is worth reading — the whole list is in that
+    # orientation call.
+    guides:
+      - # What typo3_rule_lookup takes as documentId to return the whole document.
+        id: string
+        title: string
     # What typo3_hint_lookup answers for these paths, quoted whole and carried here
     # — the strongest few per group of paths, not everything it holds on them. A
     # rule taken from one of these belongs to that lookup, so a report citing it
@@ -460,6 +472,7 @@ Data:
         "skills": [
             "typo3-core-patch-development"
         ],
+        "guides": [],
         "hints": [
             {
                 "id": "system-extension-boundaries",
@@ -964,6 +977,7 @@ Data:
             }
         ],
         "skills": [],
+        "guides": [],
         "hints": [],
         "omittedHints": [],
         "rules": [
@@ -1207,6 +1221,7 @@ Data:
         "scope": "core",
         "intents": [],
         "skills": [],
+        "guides": [],
         "hints": [
             {
                 "id": "persistence-reading",

@@ -361,6 +361,57 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    /**
+     * A brief names the page the recognized work is written up in
+     * (`D-GUI-012`), and an id that answers nothing is worse than no pointer:
+     * the caller pays a `typo3_rule_lookup` call to be told the document does
+     * not exist. One direction only — a document no intent names is still
+     * listed at orientation and served as its resource, which is what the
+     * skills the same file routes to have no equivalent of.
+     */
+    #[Test]
+    public function everyGuideAnIntentNamesIsADocument(): void
+    {
+        $ids = array_column(Documents::documents(), 'id');
+
+        $named = [];
+        foreach (TaskIntents::load() as $intent) {
+            foreach (['guide', 'guideCore'] as $key) {
+                if ($intent[$key] !== '') {
+                    $named[] = [$intent['id'], $intent[$key]];
+                }
+            }
+        }
+        self::assertNotSame([], $named, 'no intent names the guide its work is written up in');
+
+        foreach ($named as [$intent, $guide]) {
+            self::assertContains($guide, $ids, $intent . ' names ' . $guide . ', which is no document here');
+        }
+    }
+
+    /**
+     * The side a guide is named on is the side it answers for.
+     *
+     * `guide` is taken where nothing in the call is core work and `guideCore`
+     * where everything is, so a core-only page under `guide` is the core's own
+     * process handed to somebody's package — which is what the brief measured
+     * in `D-GUI-012` did with `core/contribution/rules`.
+     */
+    #[Test]
+    public function aGuideNamedOutsideTheCoreIsNotTheCoresOwn(): void
+    {
+        foreach (TaskIntents::load() as $intent) {
+            if ($intent['guide'] === '') {
+                continue;
+            }
+
+            self::assertFalse(
+                Documents::isCoreOnly($intent['guide']),
+                $intent['id'] . ' names ' . $intent['guide'] . ' for work outside the core',
+            );
+        }
+    }
+
     #[Test]
     public function readReturnsTheDocumentAndRejectsUnknownIds(): void
     {

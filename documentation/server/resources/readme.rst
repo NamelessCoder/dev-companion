@@ -30,7 +30,9 @@ what the choice is made on rather than decoration —
 
 The model's route into the same prose while it works is a tool:
 ``typo3_rule_lookup`` searches the documents, and ``typo3_task_guide`` names the
-workflow that owns the task it recognized.
+workflow that owns the task it recognized and the document that work is written
+up in, as the ``typo3_rule_lookup`` call that reads it rather than as the URI a
+client may render nowhere.
 
 The four shapes
 ---------------

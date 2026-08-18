@@ -83,3 +83,56 @@ session outside the core no guide at all.
   over whole.
 - A named guide repeats what the skill on the same line carries, which would say
   the two are one pointer rather than two.
+
+## Covered by
+
+- `R-GUI-013`
+
+## Since then
+
+### 2026-08-18 — the shape is the intent, measured against the other one
+
+**The guide is named on the intent, `guide` and `guideCore` beside `skill` and
+`skillCore`, read by `TaskIntents::guides()`.** Both shapes were run against
+what the intents own today, and the widening is the one that loses:
+
+- `tests` and `browser-tests` are the two intents whose `rulesQuery` reaches the
+  pages the reporting session needed, so widening answers that feedback and
+  little else. Eleven of the nineteen intents carry no `rulesQuery` at all, and
+  `installation-operations` is one of them —
+  `project/installation/booting-a-clone` is unreachable by any widening, and a
+  query invented to reach it is the mapping written as a lexical match.
+- Where the two shapes disagree they disagree about which is right, not about
+  how much. "Write playwright tests for the editor journey" with a package path
+  is placed as extension work, so widening per scope reaches
+  `extension/testing/phpunit` and not `project/testing/playwright` — while the
+  intent's own checklist says the suite belongs to what is deployed rather than
+  to the package. The intent knows what the work is; the path knows where the
+  file is, and for a browser suite those are two repositories.
+- The naming is then deterministic rather than a coverage threshold away from
+  silence, which is what a page an intent declares it owns has to be.
+
+**It lands in a `guides` field of its own, not in `rules`**, which is what the
+card said. A `rules` entry is a matched section — a body, a heading and a
+coverage share — and a page that is named rather than searched has none of the
+three; a bodyless record in a declared schema is a hole in the contract to save
+a field. `guides` is `skills` for the other corpus, on the line under it, in the
+shape `typo3_project_describe` already answers its own `guides` with
+(`Schema::guideReference()`, now both tools').
+
+**Four intents name a guide, and one direction is guarded.** `tests`,
+`browser-tests`, `changelog` and `installation-operations`; `guideCore` is empty
+throughout, because the core pages an intent would name are the three
+contribution documents the rule sections in the same answer already name.
+`KnowledgeTest` holds every named guide to being a document and to not being the
+core's own, and there is no check in the other direction: a document no intent
+names is still listed at orientation and served as its resource, where a
+published skill nobody routes to is reachable by nobody.
+
+**One of the Evidence bullets above is wrong.** `TaskIntents::RULE_DOCUMENTS` is
+not why "prove a rendering change in the browser after fixing a frontend crash"
+named no document: measured on the same day, that task matches no intent at all,
+so no query is run over any corpus. `any/testing/browser-check` and
+`core/testing/proving-a-rendering` are the pages for it and no intent recognizes
+the work either belongs to, which is recognition rather than placement and is
+`todo/open/2026-08-18-092500-nothing-recognizes-looking-at-a-change-in-a-browser.md`.

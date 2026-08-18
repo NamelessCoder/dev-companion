@@ -242,6 +242,26 @@ final class Schema
         ], ['id', 'title', 'category']);
     }
 
+    /**
+     * A whole procedure named rather than handed over, and the call that reads
+     * it.
+     *
+     * Two tools answer with one: the orientation call lists every page this
+     * server carries, and a brief names the one the work it recognized belongs
+     * to. A `typo3://guides` address reaches only a client that renders
+     * resources, so what is named is the id `typo3_rule_lookup` takes —
+     * `D-ANS-061`, `D-GUI-012`.
+     *
+     * @return array<string, mixed>
+     */
+    public static function guideReference(): array
+    {
+        return self::object([
+            'id' => self::string('What typo3_rule_lookup takes as documentId to return the whole document.'),
+            'title' => self::string(),
+        ], ['id', 'title']);
+    }
+
     /** @return array<string, mixed> */
     public static function testSuiteRecord(): array
     {

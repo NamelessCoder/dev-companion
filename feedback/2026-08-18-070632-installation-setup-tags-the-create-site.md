@@ -32,4 +32,9 @@ typo3_hint_lookup id=installation-setup, returned inside typo3_task_guide change
 
 ## Suggestion
 
-Retag or restate the --create-site statement so it is not bounded at v13. Either give it since: null / until: null with the conditional inside it — "--create-site and TYPO3_SETUP_CREATE_SITE create the root page and its site configuration under config/sites/; up to v13 nothing suppresses them, and from v14 they are read only where no required package ships an Initialisation/ data file" — or add a third statement tagged since: 14 that says plainly that --create-site remains the way to get a site configuration on v14 in the absence of an active distribution. The general risk is worth a look beyond this entry: an until: N tag on a statement that was narrowed rather than removed at N+1 reads as removal, and the reader who trusts the tags rather than the prose gets the opposite of the intended answer.
+The general risk is worth a look beyond this entry: an until: N tag on a statement that was narrowed rather than removed at N+1 reads as removal, and the reader who trusts the tags rather than the prose gets the opposite of the intended answer.
+
+*Trimmed on 2026-08-18. The installation-setup entry itself was corrected — what
+--create-site writes is unbound and the condition that arrived at v14 is a
+statement of its own. Verified against .checkouts/13.4, 14.3 and main; the rule
+is D-VER-006. What stays open is the sweep of the rest of the corpus.*

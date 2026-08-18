@@ -41,6 +41,11 @@ runtime, and the failure is silent. The rules below follow from it.
   means it was checked against 13.4 and found absent, and against 14 and found
   present. Name both branches in the commit message — that is the evidence
   nobody can reconstruct later.
+* **Split a narrowed statement before binding it.** ``until`` says the sentence
+  stopped holding, so a subject that survived under a new condition needs two
+  statements: the unbound half that still describes it, and the bound half
+  carrying what arrived. Bound whole, the surviving half reads as removed, and
+  the range is contiguous either way so nothing sees it — ``D-VER-006``.
 * **Prose stays free of version numbers.** The binding is in the field, so the
   sentence does not need "since v14" in it, and a sentence that carries one
   cannot be filtered, re-rendered, or checked. ``HintsTest`` enforces this.

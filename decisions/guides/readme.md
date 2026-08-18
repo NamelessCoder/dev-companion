@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-GUI-012`][D-GUI-012] — The brief names the guide the recognized work belongs to · 2026-08-18
+- [`D-GUI-013`][D-GUI-013] — The brief names the sweep a change owes · 2026-08-18
 - [`D-GUI-011`][D-GUI-011] — Reviewing a report against code is a change type of its own · 2026-08-08
 - [`D-GUI-009`][D-GUI-009] — A stated change type keeps the skeleton and the words keep their surface · 2026-08-04
 - [`D-GUI-010`][D-GUI-010] — The commit workflow defaults to the repository most callers are in · 2026-08-04
@@ -20,6 +21,7 @@ one is added.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
 [D-GUI-012]: gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md
+[D-GUI-013]: gui-013-the-brief-names-the-sweep-a-change-owes.md
 [D-GUI-011]: gui-011-reviewing-a-report-against-code-is-a-change-type-of-its-own.md
 [D-GUI-009]: gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md
 [D-GUI-010]: gui-010-the-commit-workflow-defaults-to-the-repository-most-callers-are-in.md

@@ -2058,8 +2058,17 @@ final class SkillTest extends TestCase
         // took 5997 characters of the 6000 a 200k session had that day.
         $ceiling = 3600;
 
-        $listing = count(self::skills()) - 1;
-        foreach (array_keys(self::skills()) as $name) {
+        // What a client reads, which is `Installer::skills()` and not the
+        // directory. A draft is published to nobody and costs no listing
+        // anything, so counting it here would charge the twelve published
+        // descriptions for a workflow nobody can load — and the charge would
+        // fall on the session that writes the draft rather than on the one that
+        // decides to publish it, which is where the trade actually is
+        // (`D-SKL-051`). A run that asks for `--drafts` pays for them in that
+        // one project, deliberately.
+        $published = Installer::skills();
+        $listing = count($published) - 1;
+        foreach ($published as $name) {
             $listing += mb_strlen($name) + 4 + mb_strlen(self::description($name));
         }
 

@@ -201,6 +201,14 @@ skills and not by its own, and a thirteenth skill costs the twelve.
 is where that arithmetic was read off the client, what the twelve cost after it,
 and what the client's own bundled skills leave over.
 
+A draft stands in no client's listing and costs it nothing, so what the budget
+asks is asked at publication and not of the file being written
+(`D-SKL-051 <../../decisions/task-skills/skl-051-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md>`_).
+Where the room is not there, the publishing commit is where a description is
+shortened or a workflow is merged into one that already exists — a question
+about which twelve descriptions are worth their room, which nobody can answer
+while writing the thirteenth.
+
 **Starting from the base.** The skill links ``references/base.md`` and then
 states what it *adds* to it. It never restates a step the base already fixes:
 five hand-written copies of one order is what the base replaced, and the copy

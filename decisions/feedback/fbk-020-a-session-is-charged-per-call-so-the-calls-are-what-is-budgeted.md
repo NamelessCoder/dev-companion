@@ -230,3 +230,39 @@ can reproduce a figure read out of a client transcript in somebody else's
 project. It is kept because a later change to answer size or routing has
 something to be measured against, which is what the reporting session asked for
 and the only form a keep can take for a number.
+
+## Since then
+
+A second caller-side reading is in, and it is a reading of what the *absence* of
+an answer costs rather than of what a payload costs.
+`feedback/2026-08-18-081228` accounts for one session in
+`/home/benji/projects/blog` that repaired `ext:blog`'s `[blog.isPost()]`
+TypoScript conditions on v14 while keeping them working on v13, counted from its
+own transcript. Roughly 30 round trips, every one of them `bash`, and none
+against this server.
+
+| What the round trips established                              | How many |
+| ------------------------------------------------------------- | -------- |
+| what a TypoScript condition can see, per major                  | 13       |
+| proving the verdict against the running frontend                | 7        |
+| constructor injection through `GeneralUtility::makeInstance`    | 2        |
+| the caller's own repository conventions                         | 2        |
+| locating changelog entries by listing a directory               | 2        |
+
+What came out was one modified class, two new ones and two test files, so about
+43 percent of the session went on a single subject nothing here covered. The
+number is kept for the reason the reading above is kept, with one thing this one
+adds: the change it measures has since landed. Twenty-two of the thirty are the
+first three rows, and all three are now in the corpus — `typoscript-conditions`
+and `typoscript-condition-providers` as hints, and proving a verdict as
+`knowledge/documents/any/testing/proving-a-condition.md`. So the same task run
+again is the comparison, and what it would measure is not whether the answers
+are there but whether they are called for at all, which is the zero this session
+also reported.
+
+**A cost like this one is not visible from inside this repository.** The
+sessions measured above are working here and every call they make is a call
+against a file somebody can open; a caller's archaeology in somebody else's
+checkout leaves nothing behind unless a debrief counts it. That is what
+`documentation/records/asking-for-a-debrief.rst` asks for, and this is the
+second run it has produced a number from.

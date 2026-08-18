@@ -414,3 +414,49 @@ rather than the `waiting/` the first three summaries went to. The feedback stays
 open behind it: what it reports is still there, and archiving is what tells its
 author otherwise —
 [`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md).
+
+## Since then
+
+A ninth summary was judged by the mapping on 2026-08-18, and it is the first one
+the mapping **closes**. `feedback/2026-08-18-081228` is the round-trip
+accounting of the session above — roughly 30 calls, all Bash, counted from the
+transcript and grouped by what they established — and the row the eighth summary
+handed it is the one that had not landed yet. It has since.
+
+| Half of the summary                                                        | Where it is                                                                 |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 13 round trips: what a condition can see, which global is populated when, and the event ahead of matching | archived `080532`, judged in [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md) |
+| 1 of those 13 ruling out a request-scoped service, and 2 on constructor injection through `makeInstance` | archived `080604`, judged in [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md) |
+| 7 round trips proving the verdict against the running frontend, filed separately by the session itself | archived `081100`, judged in [`D-KNW-102`](../knowledge/knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md) |
+| 2 locating changelog entries by listing a directory, where `typo3_changelog_lookup` would have searched by words | `113308`, which the eighth summary already sent its discoverability half to |
+| 2 on the caller's own conventions — `Services.yaml`, a `Listener` directory, the existing test style | its own repository, which `doesNotCover` puts outside |
+| the two core directories asked for as `typo3_reference_list` entries | [`D-CAT-005`](../catalog/cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md) |
+| the measurement: 13 of roughly 30 on one uncovered subject | [`D-FBK-020`](fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md) |
+
+Four of the seven rows are answered rather than carried, and the three hints
+behind them were written between 16:22 and 17:15 the same day — six hours after
+the session filed at 10:12 local. So the mapping dates this summary the way it
+dated the sixth, except that here the dating is the whole judgement: the
+feedback asks for the frontend lifecycle "by stage and by major" and names the
+questions it must answer directly, and every one of them now reaches a hint.
+Probed in this checkout, "what does a TypoScript condition see at evaluation
+time" returns `typoscript-conditions` at `appliesTo(20) + text(193)`, "is
+TYPO3_REQUEST populated before TypoScript conditions are matched on v14" at
+`appliesTo(33) + text(240)`, and "which PSR-14 event fires before TypoScript
+condition matching" at `appliesTo(20) + text(133)`.
+
+**What is left of the suggestion is a shape rather than an answer.** A table
+keyed by every stage of the frontend stack would say at each one what is
+assembled, and only one of its rows has ever been paid for. Nobody has reported
+a cost at the others — the corpus carries no second report of a middleware or
+lifecycle question — so building the rest is the speculation
+`documentation/records/judging.rst` rules out when it says one session's
+suggestion is a suggestion. The row that was paid for is written, and the next
+report is what would add another.
+
+This summary is therefore *already answered* and archived by this commit, which
+is the outcome the second **Wrong if** describes from the other side. What held
+the first three open was that each closing commit archives only the feedback it
+worked off; here the judgement of the summary is the commit that reads the
+siblings' landings against it. The card in `todo/progress/` goes with it, and no
+todo is derived.

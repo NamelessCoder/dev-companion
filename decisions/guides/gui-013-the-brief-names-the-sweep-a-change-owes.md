@@ -97,5 +97,5 @@ stands in the checklist of every brief whose change type produces a change, at
 the majors that brief was answered for, and the line above a brief that changes
 nothing names the sweep beside the diff, the coverage and the commit message it
 already left out. Step 4 of `skills/base.md` names `omittedHints` as its own
-sentence in data. The entry stays open: each **Wrong if** is about what a session
-does with a line it is now holding, and none of them has been measured.
+sentence in data. The entry stays open: each **Wrong if** is about what a
+session does with a line it is now holding, and none of them has been measured.

@@ -917,6 +917,43 @@ final class ScopeTest extends TestCase
     }
 
     /**
+     * The exclusion a session had already acted on before it read it.
+     *
+     * `feedback/2026-08-18-080743` asks that this entry survive any rewrite: a
+     * whole session went on establishing what a class declares on two majors,
+     * and the boundary said that was not this server's. Praise tests an
+     * exclusion in no way — the session did what the `instead` prescribes before
+     * the answer arrived — so what holds it is an assertion, and the `why` was
+     * read against `src/` rather than believed. `D-FBK-018`.
+     */
+    #[Test]
+    public function theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact(): void
+    {
+        $excluded = array_values(array_filter(
+            Coverage::read()['doesNotCover'],
+            static fn(array $entry): bool => str_contains(mb_strtolower($entry['topic']), 'php source'),
+        ));
+        self::assertCount(1, $excluded, 'nothing says PHP source as code is outside what this server reads');
+
+        // The half a core reviewer holds it for: whether a removed member was
+        // public API is what decides whether the removal is breaking.
+        self::assertStringContainsString('@internal', $excluded[0]['topic']);
+        // The only half of an exclusion a caller acts on.
+        self::assertStringContainsString('Read the class', $excluded[0]['instead']);
+        // The qualification a summarising rewrite drops first, and the one that
+        // keeps the sentence true: registration files are read, and tokenised —
+        // Extension::declarationsIn() takes TCA tables, content elements and
+        // plugin signatures out of them, PhpArray and FluidNamespaces take the
+        // keys of a configuration file, Instance::typo3Version() one constant.
+        self::assertStringContainsString('never for a signature or an annotation', $excluded[0]['why']);
+        // What is answered beside it, so the exclusion turns a caller away from
+        // one question rather than from this server.
+        foreach (['typo3_schema_lookup', 'typo3_changelog_lookup', 'typo3_hint_lookup'] as $tool) {
+            self::assertStringContainsString($tool, $excluded[0]['instead']);
+        }
+    }
+
+    /**
      * How the claim reads when it names who it turns away: something is put
      * beyond this server, and what it names is one of the audiences below.
      *

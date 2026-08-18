@@ -99,3 +99,15 @@ the one field it was after.
 - `typo3_server_scope` gains a form that answers the binary question cheaply.
   Then the second **Decided** is about a call that costs nothing, and the step
   goes back unconditional.
+
+## Since then
+
+`feedback/2026-08-18-080743` is the second session on record that called
+`typo3_server_scope`, from `/home/benji/projects/blog` and after its work rather
+than before it. It reports the answer as accurate and names no decision the
+answer changed: the exclusion it credits agreed with a choice already made, and
+the installation discovery matched what the session had read out of `.ddev` and
+`composer.json` by hand. That is the cost `2026-08-17-205904` measured, reported
+from the other side by a session that liked what it got. The judgement is on
+[`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md),
+where the boundary is the moment the answer is read.

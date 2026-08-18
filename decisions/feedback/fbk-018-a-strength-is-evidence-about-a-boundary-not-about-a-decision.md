@@ -1164,3 +1164,102 @@ of the text.
 No statement about TYPO3 was established: the re-runs read this server's own
 answers, and the item that made seventeen eighteen was read in this repository's
 own history. The feedback is closed by this commit and nothing is queued.
+
+## Confirmed on 2026-08-18
+
+The 2026-08-03 section says an exclusion is used through its `instead`, and that
+its `why` is read once and believed. `feedback/2026-08-18-080743` is the
+strength where the caller did not use the `instead` either. It had read the
+class, on both majors, before the answer arrived.
+
+It is the debrief half of a session that fixed the `[blog.isPost()]` TypoScript
+conditions on TYPO3 v14 in `/home/benji/projects/blog` and called this server no
+times while doing it. `typo3_server_scope`, called afterwards, agreed with it:
+the *PHP source as code* exclusion describes what the session consisted of. The
+cost half is `feedback/2026-08-18-080710`, filed 33 seconds earlier, which is on
+the board with a card of its own.
+
+The first **Wrong if** did not fire. Reading the class is what the exclusion
+prescribes, so it is compliance rather than the *did instead* the ladder is
+walked from — `2026-07-31-194823` is where a corroboration was established not
+to be one. Every other counterfactual in the file belongs to a sibling: the
+session that called nothing to `080710`, the guides nobody listed to the note
+named below.
+
+The quotations are checked before the boundary is. The reporting project is
+another session's checkout, so the re-run was made on 2026-08-18 through
+`bin/typo3-dev-companion` from this repository's own `.checkouts/14.3`:
+
+- The exclusion reproduces verbatim, `Instead: Read the class` included, and the
+  three tools it hands the neighbouring questions to are registered.
+- Every covered topic carries its `Tools:` and `Source:` line, which is what let
+  the session tell a Bash detour with a tool behind it from one without.
+- The `answersFrom` block distinguishes the five sources the report names:
+  installation with 8 tools, packages 8, knowledge 12, network 4, checkout 2.
+- The installation half reproduces in shape and not in its values. This checkout
+  answers `core-checkout` with a console via php at 8.3.23; the
+  `composer-project` and the ddev console at PHP 8.2 are that machine's.
+
+**The praised sentence is true, which the 2026-08-01 section requires be checked
+rather than assumed.** Nothing here reads a class for what it declares.
+`Extension::declarationsIn()` tokenises the registration files an extension
+ships and takes TCA table names, content elements, plugin signatures and
+FlexForm data structures out of them. `PhpArray` and `FluidNamespaces` tokenise
+a configuration file for its keys, and `Instance::typo3Version()` matches one
+class constant. All of it is a registration or metadata, and none of it is a
+signature or an annotation.
+
+The boundary is **what an orientation answer is worth to a caller that has
+already decided against what it is worth to one that has not**. Everything this
+strength credits is a confirmation: an exclusion that agreed, a discovery that
+matched what the session had worked out from `.ddev` and `composer.json`, a
+per-topic attribution that made the debrief writable. None of it changed an
+action, because the call came after the work. The same answer carries the
+routing line that would have changed one — *starting work on a TYPO3 major you
+have not built on recently … → typo3_changelog_lookup* — which the cost half
+names as the one call it would make next time. One document, one session, and
+what separates the two halves is when it was read.
+
+The corpus repeats that split one hint deeper. The report ends on the two
+failures the session did have, both in Bash, one of them an unquoted
+`--filter A|B` whose pipe the shell ate inside `ddev exec`.
+`knowledge/hints/configuration.json` carries that trap and the `bash -c` form
+that survives it. So the answer to the one thing that went wrong was written
+here, and a session that calls nothing reaches no delivery.
+
+The suggestion is refused, and it is the shape `2026-08-03-164818` established:
+an ask for something the answer already does. It asks that covers entries gain
+an explicit *and not X* clause of the exclusions' firmness. On 2026-08-18, 26 of
+the 28 carry one — *it says nothing about what parseFunc does to a snippet*, *it
+runs nothing and starts no installation*, *a miss says the name is not a system
+extension there, never that it does not exist* — and the two that do not are the
+two shortest topics. What differs is the form: a covered topic renders as one
+line of `depth` with the clause at its tail, an exclusion as a heading of its
+own with an `Instead:` under it. Giving the clause that form states a boundary
+in a second place, and `R-SCO-008` makes `doesNotCover` the exhaustive one. What
+a boundary nobody tests costs is what the 2026-08-01 section priced. A second
+session reporting it read a covered topic and mistook its limit is what would
+change this.
+
+The keep-request is answered against the file as it is now, and it names two
+things. The `answersFrom` split is held already:
+`SourceTest::theOrientationAnswerGroupsEveryOfferedTool` asserts that every
+offered tool stands under a source and that each entry's meaning is the enum's,
+and a case cannot be dropped without the tool definitions failing to resolve.
+The exclusion rested on nobody rewriting the file. `SkillTest` holds
+`typo3-core-patch-review` restating it and nothing held the entry it restates,
+so `ScopeTest::theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact`
+names the `@internal` half of the topic, the `instead` the caller acts on, the
+three tools beside it, and the qualification a summarising rewrite drops first —
+*never for a signature or an annotation*, which is what the registration reads
+above would otherwise falsify.
+
+The guides half is the third arrival on one line and is nobody's to take over
+here. `feedback/2026-08-18-074226` is archived, the instructions have named
+those resources since `c62ecbcf` on 2026-08-04, and `feedback/2026-08-18-113425`
+reports from another project that naming them without listing them is not
+enough. Its card carries that.
+
+The feedback is closed by this commit and nothing is queued. No statement about
+TYPO3 was established: the re-run read this server's own answers, and what the
+exclusion claims about this server was settled against `src/`.

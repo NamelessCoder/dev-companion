@@ -26,6 +26,7 @@ one is added.
 - [`D-KNW-099`][D-KNW-099] — What a row handed to lib.contentElement owes is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-100`][D-KNW-100] — How an extension extends a TypoScript condition is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-101`][D-KNW-101] — What a TypoScript condition can reach at evaluation time is a gap this server owns · 2026-08-18 · confirmed
+- [`D-KNW-102`][D-KNW-102] — Proving a TypoScript condition verdict against a running installation is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -119,6 +120,7 @@ one is added.
 [D-KNW-099]: knw-099-what-a-row-handed-to-lib-contentelement-owes-is-a-gap-this-server-owns.md
 [D-KNW-100]: knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md
 [D-KNW-101]: knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md
+[D-KNW-102]: knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

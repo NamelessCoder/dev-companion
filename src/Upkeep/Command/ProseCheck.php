@@ -11,18 +11,13 @@ use TYPO3\DevCompanion\Upkeep\Prose;
 /**
  * What the prose rule in AGENTS.md costs when nothing reads it.
  *
- * Every other rule that file states is held by something. "One point per
- * sentence" was held by whoever reread the paragraph, and the result was a
- * requirement whose opening sentence ran to 96 words before anybody counted.
- *
- * This counts. It fails on one thing only — the bold sentence a requirement or
- * a decision opens with, because that one has a job the rest of the file does
- * not — and reports the rest, in the shape `hints:coverage` already uses for a
- * corpus measured against a number: how many, where, and the worst one by name.
- *
- * The comments are counted for a different reason than the sentences: what
- * grew there is the number of them rather than the length of any one, and a
- * measure of sentence length is passed by writing two — `D-DOC-035`.
+ * Every other rule that file states is held by something, and "one point per
+ * sentence" was held by whoever reread the paragraph. This counts. It fails on
+ * one thing only — the bold sentence a requirement or a decision opens with,
+ * because that one has a job the rest of the file does not — and reports the
+ * rest. The comments are counted for a different reason than the sentences:
+ * what grew there is the number of them rather than the length of any one, and
+ * a measure of sentence length is passed by writing two — `D-DOC-035`.
  */
 #[AsCommand(
     name: 'prose:check',

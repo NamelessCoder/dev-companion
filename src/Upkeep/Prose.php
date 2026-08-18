@@ -135,22 +135,12 @@ final class Prose
     /**
      * The prose a client is handed before it has asked anything.
      *
-     * `documents()` is what this repository writes about itself and reaches no
-     * file in `src/`, so the half a caller actually pays for was counted by
-     * nobody: on 2026-08-03 the connect payload measured 118202 characters, of
-     * which 14502 were the tool descriptions and 11507 the input schema fields,
-     * and the 1219 taken off that day were found by somebody rereading rather
-     * than by a report (`R-COD-002`).
-     *
-     * Every string here is written by this repository and read by a machine
-     * that cannot skim, which is the argument for holding it to the same
-     * measure — `D-DOC-002`. What it is not is a budget: `R-ANS-013` is what
-     * holds the instructions to a size, and this counts sentences.
-     *
-     * What it counts is the prose alone, so its weight is not the 118202 above
-     * and the two may not be compared. That figure was the whole connect
-     * payload — the schemas with their keys, types and enums, which nobody
-     * writes sentences in. This is the part somebody wrote and can shorten.
+     * `documents()` reaches no file in `src/`, so the half a caller pays for was
+     * counted by nobody, and what came off it was found by somebody rereading
+     * rather than by a report (`R-COD-002`). Every string here is read by a
+     * machine that cannot skim, which is the argument for the same measure
+     * (`D-DOC-002`). It is not a budget — `R-ANS-013` is — and what it counts is
+     * the prose alone rather than the schemas around it.
      *
      * @return list<array{where: string, text: string}>
      */

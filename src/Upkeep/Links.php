@@ -34,17 +34,12 @@ final class Links
      * The same thing in reStructuredText, which `documentation/` is written in
      * and the rest of this corpus is not — `D-DOC-029`.
      *
-     * Five forms carry a path. An embedded URI is what a link leaving the
-     * published tree is written as, and it is the only one `Site` rewrites. A
-     * `:doc:` names another page of the corpus and carries no extension. A
-     * directive takes its path as its argument, which is how every drawing is
-     * referenced. And a card or a hero says where it goes with
-     * `:href:` and what it shows with `:src:`, which are options rather than
-     * arguments and were reaching no check at all — six of them stand on the
-     * front page.
-     *
-     * `:ref:` is deliberately not here: it names a label rather than a path, so
-     * nothing on disk answers it and `deadLabels()` is what reads it.
+     * Five forms carry a path: an embedded URI, which is what a link leaving the
+     * published tree is written as and the only one `Site` rewrites; a `:doc:`,
+     * which names another page and carries no extension; a directive, which
+     * takes its path as its argument; and a card's `:href:` and `:src:`, which
+     * are options rather than arguments. `:ref:` names a label rather than a
+     * path, so `deadLabels()` is what reads it.
      */
     private const RST_PATTERN = '/(?:`[^`<]*<\s*([^>\s]+)\s*>`__?|:doc:`(?:[^`<]*<\s*([^>\s]+)\s*>|([^`<>]+))`|^\s*\.\.\s+(?:image|figure|hero|include|literalinclude)::\s*(\S+)|^\s*:href:\s*(\S+)|^\s*:src:\s*(\S+))/m';
 
@@ -348,14 +343,12 @@ final class Links
      * Where a link that a skill resolves only once it is published points in
      * this checkout.
      *
-     * Each `SKILL.md` opens by sending the reader to `references/base.md`, and
-     * `Installer` writes that file when it publishes the skill, copying
-     * `skills/base.md` into every one of them rather than sharing a file a
-     * skill in somebody else's project could not reach
+     * Each `SKILL.md` opens by sending the reader to `references/base.md`, which
+     * `Installer` writes as a copy of `skills/base.md` when it publishes the
+     * skill
      * ([`D-SKL-001`](../../decisions/task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md)).
-     * So the link is right and the file is absent here, and what holds it is
-     * the source it will be a copy of: delete `skills/base.md` and seven links
-     * go dead at the next install.
+     * So the link is right and the file is absent here, and what holds it is the
+     * source it will be a copy of.
      */
     private static function publishedFrom(string $path): string
     {

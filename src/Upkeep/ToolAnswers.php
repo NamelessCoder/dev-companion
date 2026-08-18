@@ -202,15 +202,12 @@ final class ToolAnswers
     /**
      * The recorded half of one tool's page: what it is of, then every call.
      *
-     * It says which day and which installation it came from because a recording
-     * that does not is an assertion about nothing, and because the half above it
-     * is derived and may not make that claim for it — `D-DOC-006`.
-     *
-     * A call is the unit whether it was answered once or twice, so the second
-     * answer goes under the same heading as the first. The arguments are the
-     * same both times and are written once: what a reader came to compare is the
-     * two answers, and a call whose two halves sit 600 lines apart is not a
-     * comparison.
+     * It says which day and which installation it came from, because a recording
+     * that does not is an assertion about nothing and the derived half above it
+     * may not make that claim for it — `D-DOC-006`. A call is the unit whether it
+     * was answered once or twice, so the second answer goes under the same
+     * heading and the arguments are written once: two answers 600 lines apart
+     * are not a comparison.
      *
      * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
      */

@@ -11,14 +11,11 @@ use TYPO3\DevCompanion\Upkeep\OpenFeedback;
 /**
  * The pile as a pile, for whoever wants to read it rather than work it.
  *
- * What is to be done about any of it is on the board — one card per open
- * feedback, handed over one at a time like every other todo. This is the other
- * question: what has arrived, and which of it somebody has taken on.
- *
- * Grouped by the checkout it was written in, because that is the reading a
- * judgement needs and the one nothing offered. A gap reported once is a report;
- * the same gap reported by thirty sessions out of one directory is a domain,
- * and the two are judged differently (`D-FBK-025`).
+ * What is to be done about any of it is on the board, one card per open
+ * feedback. This is the other question: what has arrived, and which of it
+ * somebody has taken on. Grouped by the checkout it was written in, because a
+ * gap reported once and the same gap reported by thirty sessions out of one
+ * directory are judged differently — `D-FBK-025`.
  */
 #[AsCommand(
     name: 'feedback:list',

@@ -22,10 +22,8 @@ use TYPO3\DevCompanion\Upkeep\TestingFramework;
  *
  * typo3/testing-framework is kept here too, because a statement about the
  * harness a project extension tests in is verified against a tag of that
- * package rather than against a core branch (D-KNW-002), and reading it anywhere
- * else makes the evidence unreproducible for exactly the same reason. Which
- * release line pairs with which major is the core's own require-dev pin, so
- * nothing about it is recorded: see TYPO3\DevCompanion\Upkeep\TestingFramework.
+ * package rather than against a core branch — `D-KNW-002`, and
+ * `Upkeep\TestingFramework` for which line pairs with which major.
  */
 #[AsCommand(
     name: 'checkouts:update',

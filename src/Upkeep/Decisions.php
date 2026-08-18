@@ -287,10 +287,8 @@ final class Decisions
      * section `Revoked on`, and the date belongs to the entry rather than to
      * the shape.
      *
-     * They were bullets carrying a bold label until 2026-08-02, and the label
-     * repeated: half the entries make more than one decision and a fifth of
-     * them rest on more than one assumption, so `- **Decided:**` was written
-     * seven times in the worst case. A section says it once. See `D-DOC-003`.
+     * They were bullets carrying a bold label, and the label repeated once an
+     * entry made more than one decision. A section says it once — `D-DOC-003`.
      *
      * @return array<int, string>
      */

@@ -19,10 +19,9 @@ use TYPO3\DevCompanion\Upkeep\RequirementState;
  *
  * An id that agrees with its file name, its heading and its group, a statement
  * to open with, a status, and tests that exist behind what claims to be held.
- * `composer test` runs the same check through RequirementsTest, the listing
- * apart: that one is generated from every file in a group and can only be true
- * on a checkout that has all of them, so it is held here alone (D-FBK-011).
- * This is also the readable half.
+ * `composer test` runs the same check through `RequirementsTest`, the listing
+ * apart: that one can only be true on a checkout that has every file in the
+ * group, so it is held here alone — `D-FBK-011`.
  */
 #[AsCommand(
     name: 'requirements:check',

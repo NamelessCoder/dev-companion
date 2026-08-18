@@ -364,18 +364,12 @@ final class Wrap
      * Whether an item may open where a paragraph is already running.
      *
      * Markdown lets a bullet and a `1.` interrupt a paragraph and no other
-     * number, which would otherwise open an item wherever a wrapped line
-     * happens to begin with a figure — `D-KNW-049` has one starting `5432.`.
-     * The exception is a list already running: its next item stands at the same
-     * indent and closes with the same delimiter, which is what `2.` under `1.`
-     * is and a stray figure is not.
-     *
-     * The list it is read against is any of the ones still open, not only the
-     * paragraph directly above. A step that follows a nested bullet is the
-     * outer list's next item, and read against the bullet alone it is a figure
-     * at the head of a line: `1830ee9` joined three steps of
-     * `typo3-core-patch-development` into the sub-bullet above them that way,
-     * and nothing reported it because no word moved.
+     * number, which would otherwise open an item wherever a wrapped line happens
+     * to begin with a figure — `D-KNW-049` has one starting `5432.`. The
+     * exception is a list already running, and it is read against any of the
+     * ones still open rather than the paragraph directly above: a step following
+     * a nested bullet is the outer list's next item, and read against the bullet
+     * alone it is a figure at the head of a line.
      *
      * @param array{string, string}  $marker
      * @param array<int, string>     $lists

@@ -40,13 +40,11 @@ final class CatalogCheck
 
     /**
      * What the hints about typo3/testing-framework rest on, per file of the
-     * package, so that a release changing one of them fails here rather than
-     * ageing quietly into a wrong answer (D-KNW-002).
-     *
-     * Existence carries the statement that the four boilerplate files are there
-     * to be copied; each needle carries one sentence of `project-extension-tests`
-     * in `knowledge/hints/testing.json`, named beside it. What no needle
-     * covers is not guarded — this is the load-bearing half, not the hint.
+     * package, so a release changing one of them fails here rather than ageing
+     * quietly into a wrong answer (`D-KNW-002`). Existence carries the statement
+     * that the four boilerplate files are there to be copied; each needle
+     * carries one sentence of `project-extension-tests`, named beside it, and
+     * what no needle covers is not guarded.
      *
      * @var array<string, array<int, string>>
      */
@@ -102,18 +100,13 @@ final class CatalogCheck
      * Whether the major the translation domain answer is withheld below is still
      * the major the checkouts say the API arrived in.
      *
-     * This is D-DIS-004's first "Wrong if" and the reason the number is one number
-     * in one place: the domain API backported into a 13.x patch makes the
-     * constant in `Tools` wrong. What makes it wrong is a release rather than an
-     * edit here, so no test in this repository can see it — `knowledge/` holds
-     * the covered versions but not this fact, and `VersionsTest` can only tie
-     * the constant to that list. The checkouts hold the fact, so it is read
-     * where the other release-driven facts are.
-     *
-     * The class carrying the rules has been both TranslationDomainMapper and
-     * TranslationDomainResolver, so the branch is asked for either rather than
-     * for the name one branch happens to use. The reading is printed whether or
-     * not it fails, because this is where that number is looked up.
+     * This is `D-DIS-004`'s first **Wrong if**, and it is read here because the
+     * domain API backported into a 13.x patch makes the constant wrong by a
+     * release rather than by an edit, which no test in this repository can see.
+     * The class carrying the rules has been both `TranslationDomainMapper` and
+     * `TranslationDomainResolver`, so the branch is asked for either. The reading
+     * is printed whether or not it fails, because this is where that number is
+     * looked up.
      */
     private static function verifyTranslationDomains(OutputInterface $output, string $checkouts): int
     {
@@ -166,16 +159,11 @@ final class CatalogCheck
      * Whether the testing-framework release each branch pins still says what the
      * hints about it say.
      *
-     * D-KNW-002 verified those statements against tags, because the package has a
-     * release cycle of its own and no checkout here contains it — and named its
-     * own gap in doing so: a release that changes one of them inside a line would
-     * be noticed by nobody, since this command re-read the core and nothing else.
-     *
-     * Nothing about the pairing is recorded: the core pins the line per branch in
-     * its own require-dev, the newest tag on that line is what the worktree holds,
-     * and both are re-derived here. So a release that changes nothing relevant
-     * passes silently, and one that moves a load-bearing sentence fails — which is
-     * the difference between a guard and a reminder to go and look.
+     * `D-KNW-002` verified those statements against tags and named its own gap in
+     * doing so: a release changing one of them inside a line would be noticed by
+     * nobody. Nothing about the pairing is recorded — the core pins the line per
+     * branch in its own require-dev, the newest tag on that line is what the
+     * worktree holds, and both are re-derived here.
      */
     private static function verifyTestingFramework(OutputInterface $output, string $checkouts): int
     {
@@ -267,16 +255,11 @@ final class CatalogCheck
     /**
      * Which Fluid engine each covered branch pins itself to.
      *
-     * D-VER-003 gave Fluid no version axis of its own: the core pins the engine in
-     * its own composer.json, so `since` / `until` on the TYPO3 major already says
-     * which engine a Fluid statement was verified against. That holds only while
-     * a branch admits exactly one engine major — the day one loosens its
-     * constraint to span two, a `since:` on a Fluid statement stops naming an
-     * engine, and nothing about the statement changes to say so.
-     *
-     * The reading is printed whether or not it fails, because a Fluid statement
-     * is written against the engine a branch pins and this is where that number
-     * is looked up.
+     * `D-VER-003` gave Fluid no version axis of its own, which holds only while a
+     * branch admits exactly one engine major: the day one loosens its constraint
+     * to span two, a `since:` on a Fluid statement stops naming an engine and
+     * nothing about the statement changes to say so. The reading is printed
+     * whether or not it fails, because this is where that number is looked up.
      */
     private static function verifyFluidEngine(OutputInterface $output, string $checkouts): int
     {
@@ -474,13 +457,10 @@ final class CatalogCheck
      * that no longer carries what the entry recorded.
      *
      * The binding above is derived from names, so a demo rewritten around the
-     * same classes reads as unchanged and the snapshot ages quietly into a wrong
-     * answer — D-CAT-001 named that as what would show it wrong. A digest per
-     * entry per checkout is what notices it: the entry records what each covered
-     * version's demo said when somebody last read it, and a rewrite fails here.
-     *
-     * Nothing is written. A failure is a demo somebody has to reread, and the
-     * new digest is only true once the entry says what that demo now shows.
+     * same classes reads as unchanged — `D-CAT-001` named that as what would show
+     * it wrong, and a digest per entry per checkout is what notices it. Nothing
+     * is written: a failure is a demo somebody has to reread, and the new digest
+     * is only true once the entry says what that demo now shows.
      *
      * @param array<int, array<string, mixed>> $components
      */
@@ -603,17 +583,11 @@ final class CatalogCheck
     /**
      * The range each suite hint declares, against the script that has to have it.
      *
-     * `since`/`until` on an entry in `knowledge/test-suite-hints.json` is a
-     * claim about `Build/Scripts/runTests.sh`, and the whole of `R-KNW-024`
-     * rests on it: the checks a brief states, the suites a guide lists, and
-     * what the prose documents may name. Nothing re-read the script, so `build`
-     * sat unranged and was handed to 12.4 callers as a command its own tool
-     * description promised it would not be.
-     *
-     * The suite is taken from the command rather than from the `suite` field,
-     * because the command is what has to run: `build-css` is an npm script and
-     * its entry runs `-s npm -- run build-css`, so what the script needs to
-     * have is `npm`.
+     * `since`/`until` on an entry in `knowledge/test-suite-hints.json` is a claim
+     * about `Build/Scripts/runTests.sh`, and the whole of `R-KNW-024` rests on
+     * it. The suite is taken from the command rather than from the `suite` field,
+     * because the command is what has to run: `build-css` is an npm script, so
+     * what the script needs to have is `npm`.
      *
      * @param array<int, array{suite: string, command: string, since: ?int, until: ?int}> $suites
      */
@@ -813,16 +787,12 @@ final class CatalogCheck
      * Re-reads which covered versions have each worked example, and reports every
      * entry whose recorded range no longer says so.
      *
-     * An index of paths is the kind of thing a core release invalidates silently: a
-     * directory that moved leaves an answer pointing at nothing, and the caller
+     * A directory that moved leaves an answer pointing at nothing, and the caller
      * reads the miss as "I looked in the wrong place". Existence of the directory
-     * was the whole test until it caught nothing on the entry D-CAT-002 named itself:
-     * `Build/tests/playwright/e2e` is there on 13.4 while the layout the entry
-     * promises — one directory per module, the accessibility scan among them —
-     * arrived in 14.3. So an entry whose sentence promises a shape names the files
-     * that carry it in `files`, and a version has the example when it has all of
-     * them. What no file covers is still prose a human wrote and a human has to
-     * reread.
+     * was the whole test until it caught nothing on the entry `D-CAT-002` named
+     * itself, so an entry whose sentence promises a shape names the files that
+     * carry it in `files`, and a version has the example when it has all of them.
+     * What no file covers is prose a human has to reread.
      *
      * @param array<int, array<string, mixed>> $references
      */

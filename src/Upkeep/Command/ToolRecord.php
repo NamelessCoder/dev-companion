@@ -148,15 +148,10 @@ final class ToolRecord
      * nothing at all for any other root.
      *
      * The first root is one of ours, and the recording is evidence about the
-     * checkout `checkouts:update` makes: it has no console, so five tools
-     * answer from the packages and two say they could not ask one. Run
-     * `composer install` in it and the same calls record a Doctrine exception
-     * about a database nothing here creates — an answer no reader can produce
-     * again, which is what the recording is for. Measured on 2026-08-18 against
-     * all four checkouts on this machine; `D-DOC-034` has it.
-     *
-     * A root somebody named is theirs, and this says nothing about it. What
-     * makes such a recording reproducible is a question for whoever commits it.
+     * checkout `checkouts:update` makes: run `composer install` in it and the
+     * same calls record a Doctrine exception about a database nothing here
+     * creates, which is an answer no reader can produce again — `D-DOC-034`. A
+     * root somebody named is theirs, and this says nothing about it.
      *
      * @return array<int, string>
      */

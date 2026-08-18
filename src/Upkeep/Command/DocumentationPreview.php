@@ -17,20 +17,13 @@ use TYPO3\DevCompanion\Upkeep\Site;
  * The whole site on this machine, in one call, to look at.
  *
  * `documentation:prepare` is what a deployment needs and it stops at the copy —
- * `D-DOC-028`. This is the other half for whoever is writing a page and wants
- * to see it: it fetches the renderer into a gitignored directory beside the
- * build, renders, runs the theme's finish step and says where to read the
- * result.
- *
- * The renderer is fetched where it is missing and not otherwise, because a
- * preview is run again after every paragraph. What a deployment renders with is
- * resolved fresh every time, in the workflow, and `.site/` is deleted to get
- * that here.
- *
- * Every step that leaves this process is printed as the command a person could
- * have typed, and a failure quotes it with its output. The first one on a cold
- * machine is a `composer require`, and a preview that dies has to say which
- * step.
+ * `D-DOC-028`. This is the other half: it fetches the renderer into a gitignored
+ * directory beside the build, renders, runs the theme's finish step and says
+ * where to read the result. The renderer is fetched where it is missing and not
+ * otherwise, because a preview is run again after every paragraph, and `.site/`
+ * is deleted to resolve it fresh. Every step that leaves this process is
+ * printed as the command a person could have typed, because a preview that dies
+ * has to say which step.
  */
 #[AsCommand(
     name: 'documentation:preview',

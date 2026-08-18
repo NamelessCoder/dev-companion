@@ -100,3 +100,12 @@ full, and read the step as discharged.
 ## Covered by
 
 - `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+
+## Since then
+
+The gate the first **Wrong if** leaves to weigh was weighed on 2026-08-18, and
+the answer is that it waits for this correction to be met —
+[`D-SKL-049`](skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md).
+So that **Wrong if** is now the trigger of another entry as well as of this one:
+a session fetching one id and stopping with the corrected step in front of it
+makes the gate's case on a file that has already been fixed at the point of use.

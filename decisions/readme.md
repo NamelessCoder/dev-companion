@@ -489,6 +489,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-046`][D-SKL-046] — A precondition is restated in the workflow that writes the file it guards · 2026-08-18
 - [`D-SKL-047`][D-SKL-047] — The Composer root step fetches the installer keys from the hint that owns them · 2026-08-18
 - [`D-SKL-048`][D-SKL-048] — A build workflow says a symptom is a lookup trigger · 2026-08-18
+- [`D-SKL-049`][D-SKL-049] — The gate at the end of a workflow waits for the corrections it would sit on · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -535,6 +536,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-046]: task-skills/skl-046-a-precondition-is-restated-in-the-workflow-that-writes-the-file-it-guards.md
 [D-SKL-047]: task-skills/skl-047-the-composer-root-step-fetches-the-installer-keys-from-the-hint-that-owns-them.md
 [D-SKL-048]: task-skills/skl-048-a-build-workflow-says-a-symptom-is-a-lookup-trigger.md
+[D-SKL-049]: task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md
 [D-SKL-037]: task-skills/skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: task-skills/skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: task-skills/skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

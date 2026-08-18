@@ -288,3 +288,33 @@ held open over subjects nobody had worked; this one has a half that nothing else
 reports and that half lands here. What `closed` stands over is therefore the
 thing only this file said, and the nine subjects beside it are each named on a
 card of their own.
+
+## Since then
+
+The first **Wrong if** fired on a sixth summary, and the orphaned half is a
+conclusion rather than a subject. `feedback/2026-08-17-212218` is from the same
+build as the fifth and names three prescriptions it executed in part — a step
+naming two hint ids, the closing sentence naming a hint's neighbours, and the
+five bullets of *Verify at the right layers* — with the repetition stated as the
+finding:
+
+| Half of the summary                                        | Where it is                                                       |
+| ---------------------------------------------------------- | ----------------------------------------------------------------- |
+| step 5 of `typo3-development-installation` named two ids under one clause | archived `211118`, judged in [`D-SKL-044`](../task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md) |
+| the closing neighbour sentence read at the moment the answer lands | archived `211306`, judged in [`D-KNW-087`](../knowledge/knw-087-a-listed-neighbour-says-what-it-prevents.md) |
+| the browser bullet of the verification section named no lookup | `205945` case four, judged in [`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md), held by `R-SKL-024` |
+| a multi-item prescription in prose has nothing at the end asking whether the list was finished | nowhere else |
+
+Three of the four rows are answered rather than carried, and each was corrected
+on 2026-08-18 — `7dab8ef8`, `9111d6a8` with `1f189b5f`, and `4ec22687`. So the
+mapping is what dates the summary rather than what closes it: every example in
+it describes a file that has since changed at the step it names.
+
+The fourth row is the ladder's step 5 and it is
+[`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md).
+What that adds to the mechanism is where a summary's own conclusion goes. A
+roundup orphans a subject and a measurement orphans a number; this one orphans
+the reading the session drew across its three reports, and that reading is the
+one thing the siblings cannot carry, because each of them is one instance of it.
+The summary stays open behind it, which is `D-FBK-017`'s invariant with the card
+in `waiting/` rather than in `open/`.

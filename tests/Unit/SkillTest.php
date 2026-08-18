@@ -55,8 +55,12 @@ final class SkillTest extends TestCase
             'typo3_documentation_lookup',
             'typo3_commit_message_guide',
         ],
+        // `typo3_server_scope` is not among them: the step that named it says
+        // the call is discharged by the base's `typo3_project_describe`
+        // (`D-ANS-083`), and a routing listed here is asserted by finding the
+        // name in the file — which that sentence satisfies while telling the
+        // caller not to make the call.
         'typo3-development-installation' => [
-            'typo3_server_scope',
             'typo3_documentation_lookup',
             'typo3_configuration_lookup',
             'typo3_commit_message_guide',
@@ -2362,6 +2366,32 @@ final class SkillTest extends TestCase
                 $position = $next;
             }
         }
+    }
+
+    /**
+     * The one tool a skill names in order not to call it, held as that rather
+     * than as a routing. `D-ANS-083` settled that a caller holding the
+     * unsupported answer already has what the orientation would add, and
+     * `73cff0ab` rewrote the step to say so — while the routing list went on
+     * naming the tool, which is asserted by finding its name in the file and so
+     * was satisfied by the very sentence telling the caller to skip it. Held on
+     * the count: routing it back is a second mention.
+     */
+    #[Test]
+    public function theInstallationSkillNamesTheScopeCallOnlyToDischargeIt(): void
+    {
+        $skill = (string) file_get_contents(Paths::root() . '/skills/typo3-development-installation/SKILL.md');
+
+        self::assertStringContainsString(
+            '`typo3_server_scope` is discharged by the base',
+            $skill,
+            'the step no longer says the orientation call is already answered',
+        );
+        self::assertSame(
+            1,
+            substr_count($skill, 'typo3_server_scope'),
+            'the tool is named a second time, which is a routing to what this step discharges',
+        );
     }
 
     /**

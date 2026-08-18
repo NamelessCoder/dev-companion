@@ -7,6 +7,7 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-GUI-015`][D-GUI-015] — A case's own prompt reaches less than the brief that stands in for it · 2026-08-19
 - [`D-GUI-012`][D-GUI-012] — The brief names the guide the recognized work belongs to · 2026-08-18
 - [`D-GUI-013`][D-GUI-013] — The brief names the sweep a change owes · 2026-08-18
 - [`D-GUI-014`][D-GUI-014] — Looking at a change is an intent of its own · 2026-08-18
@@ -21,6 +22,7 @@ one is added.
 - [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
+[D-GUI-015]: gui-015-a-cases-own-prompt-reaches-less-than-the-brief-that-stands-in-for-it.md
 [D-GUI-012]: gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md
 [D-GUI-013]: gui-013-the-brief-names-the-sweep-a-change-owes.md
 [D-GUI-014]: gui-014-looking-at-a-change-is-an-intent-of-its-own.md

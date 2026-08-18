@@ -46,8 +46,8 @@ the index.
 | Group | Cases |
 | --- | --- |
 | [core-contributor/](core-contributor/readme.md) | `CORE-01` … `CORE-07` |
-| [extension-author/](extension-author/readme.md) | `EXT-01` … `EXT-07` |
-| [site-developer/](site-developer/readme.md) | `SITE-01` … `SITE-08` |
+| [extension-author/](extension-author/readme.md) | `EXT-01` … `EXT-08` |
+| [site-developer/](site-developer/readme.md) | `SITE-01` … `SITE-09` |
 | [cross-cutting/](cross-cutting/readme.md) | `META-01` … `META-05` |
 | [task-skills/](task-skills/readme.md) | `SKILL-01` … `SKILL-14` |
 

@@ -9,6 +9,12 @@ the hint sends back to its subsystem. That a session checks the event is
 dispatched before writing a listener for it is **not guarded**, and this case
 measures it.
 
+**Read 2026-08-19:** measured, and the prompt below reaches nothing. It detects
+no intent, and `typo3_task_guide` answers the events hint only where the caller
+already passes `Classes/EventListener/` — not with no path, not with `Classes/`,
+not with `ext_localconf.php`. The brief the two tests feed names the answer, so
+what they hold is the vocabulary rather than the arrival: `D-GUI-015`.
+
 > Our extension has to add a line to the mail that the core sends after a
 > registration. I do not want to override the class that sends it.
 

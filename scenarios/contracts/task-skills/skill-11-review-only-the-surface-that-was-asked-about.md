@@ -9,6 +9,10 @@ that a session given a focused prompt actually writes the whole list and reads
 only part of it is **not guarded**, because no recorded run has ever been given
 a focused prompt. This case is what measures it.
 
+**Read 2026-08-19:** the prompt below reaches no skill at all, with `Classes/`
+and a template path, so the narrowing this case is written about is measured
+after a route that does not happen. `D-GUI-015` carries the measurement.
+
 > Go over the security of this extension — anything an editor or a visitor
 > could reach that we have not thought about. Just security for now, with
 > evidence and severity. This is a review only; do not change files.

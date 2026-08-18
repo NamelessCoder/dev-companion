@@ -13,6 +13,12 @@ that the brief asks for it by name, but that a session passes
 `missing-issue` error besides — measured on 2026-08-02 and recorded on
 [`D-GUI-002`](../../../decisions/guides/gui-002-the-commit-workflow-is-asked-for-not-inferred.md).
 
+**Read 2026-08-19:** the 2026-08-02 measurement no longer reproduces. With the
+workflow left out the guide defaults to `project`: the draft carries no
+`Releases:` trailer, no `missing-issue` error is reported, and the answer says
+the Forge issue and that trailer do not apply. That a session names the workflow
+at all is unguarded still, and now costs it nothing.
+
 > Somebody reported that our list plugin crashes when the storage page is empty.
 > Reproduce it, fix it, and commit it — we tag a patch release afterwards.
 

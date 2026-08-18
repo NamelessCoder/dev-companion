@@ -9,6 +9,11 @@ workflow exists since 2026-07-31 and owns the order this case asks for
 that a session works in that order is `not guarded`, and by `D-EVI-002`'s
 reasoning no forward run will hold it — the wording is the proxy
 
+**Read 2026-08-19:** the skill's description and body were rewritten on
+2026-08-18 so a defect inside the declared range meets the premise, and this case
+was updated in that commit — `D-SKL-061`. The order a session works in is
+unguarded as before.
+
 > Our extension supports TYPO3 12 and 13. The next major is out and I want to add
 > support for it without dropping 13. Go through the extension, find what breaks,
 > and fix it.

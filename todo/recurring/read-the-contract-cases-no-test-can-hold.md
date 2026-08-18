@@ -2,7 +2,7 @@
 
 **Serves:** scenarios/, decisions/
 **Every:** 14 days
-**Checked:** 2026-08-02
+**Checked:** 2026-08-19
 **Run:** bin/cli scenarios:contract
 
 Read the cases the command above prints, which are the ones whose `Held by` says

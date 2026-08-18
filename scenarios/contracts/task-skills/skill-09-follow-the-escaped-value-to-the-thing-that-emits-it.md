@@ -12,6 +12,13 @@ follows the value instead of stopping at the opt-out is **not guarded** — a
 sentence and a lookup are the kind of hold a reorganization satisfies while the
 behavior goes. This case is what measures the rest.
 
+**Read 2026-08-19:** the finding gate in
+`typo3-extension-conformance/references/checklist.md` still carries every clause
+this case is written against — the sink named and its code read, a ViewHelper
+handing its children on as path rather than end, the opt-out that prevents double
+encoding, the unverified finding naming the unread class. Whether a review
+follows the value is unguarded as before.
+
 > Before we hand this extension over to a new maintainer, check whether any
 > editor-supplied value reaches the frontend unescaped. Report what you find
 > with evidence and severity. This is a review only; do not change files.

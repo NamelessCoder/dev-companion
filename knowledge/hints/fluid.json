@@ -98,6 +98,7 @@
     ],
     "hints": [
       "A template that declares a layout renders its sections and nothing else. Markup, an <f:variable> assignment or any other ViewHelper call outside <f:section> is never executed — the layout is rendered in place of the template body, so the value is simply absent, no error is raised and nothing is logged. A variable a section uses is declared inside that section.",
+      "<f:asset.css> and <f:asset.script> are where that is invisible: they render nothing where they stand and register the file with the AssetCollector instead. A call outside a section leaves the stylesheet published under _assets and no link tag in the rendered page. Nothing requests the file, so there is no HTTP 404 to find either. The call belongs inside the section that needs the asset, or in the layout.",
       "Notes in a template belong in <f:comment>, whose children are not rendered at all. An HTML comment is part of the response, and the {expressions} inside it are resolved on the way there — a comment that documents the variables of a loop ships their values to the browser."
     ]
   },

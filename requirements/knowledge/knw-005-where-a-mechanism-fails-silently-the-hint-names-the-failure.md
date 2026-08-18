@@ -24,3 +24,5 @@ storage folder appeared in the menu (2026-07-29).
 
 - `HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed`
 - `HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured`
+- `HintsTest::anAssetThatNeverReachesThePageIsAnsweredByTheLayoutThatSwallowedIt`
+  — the other half: naming the failure is what makes the hint reachable by it

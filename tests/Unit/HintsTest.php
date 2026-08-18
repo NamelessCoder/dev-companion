@@ -3554,6 +3554,35 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('<f:comment>', $text);
     }
 
+    /**
+     * The trap was stated from the mechanism's side alone, so it was reachable
+     * by «a viewhelper call outside a section is never executed» and by nothing
+     * a caller says while debugging. `D-ANS-081` measured the miss on the query
+     * below, and the session that reported it read core source instead.
+     *
+     * The words are a statement rather than curated vocabulary, and that was
+     * measured too: "no link tag" in `appliesTo` crosses the domain gate on
+     * every query that spells it (`D-ANS-084`), which put this hint above
+     * `extension-asset-build` on "my sass build produces css but there is no
+     * link tag". `f:asset.css` as a pattern does the same to the how-to below,
+     * where the trap is not the answer and publishing is.
+     */
+    #[Test]
+    public function anAssetThatNeverReachesThePageIsAnsweredByTheLayoutThatSwallowedIt(): void
+    {
+        $text = self::statementsOf('fluid-layouts-sections');
+        self::assertStringContainsString('<f:asset.css>', $text);
+
+        $symptom = Hints::find([], 'f:asset.css does not appear in the rendered page', 6);
+        self::assertContains('fluid-layouts-sections', array_column($symptom['matchedHints'], 'id'));
+
+        $howTo = Hints::find([], 'how do I add a stylesheet with f:asset.css', 6);
+        self::assertNotSame(
+            'fluid-layouts-sections',
+            array_column($howTo['matchedHints'], 'id')[0] ?? null,
+        );
+    }
+
     #[Test]
     public function theTestKindThatNeedsABrowserIsCovered(): void
     {

@@ -40,31 +40,35 @@ failed.
 - `scenarios:show` keeps a 0 either way. A forward review claims its state on a
   recorded run, so the same question of it would be answered by
   `scenarios:check` rather than by whether a test exists.
-- The todo names the criterion and the command that enumerates the cases instead
-  of the cases. Rejected: rewriting the list against today's cases, which is
-  what was there and what went stale, and would go stale again on the next case
-  that changes state.
+- Named no case at all the command answers for every one of them, and that is
+  what the todo runs. Rejected: naming one case in the `**Run:**` line and
+  letting it stand for the rest. `SKILL-09` says in as many words that it
+  measures the others, which made it the obvious sentinel and would have put the
+  same failure one case further out — the todo goes quiet the day that one is
+  guarded and the others are not.
+- The todo names the criterion and the command that prints the cases instead of
+  the cases. Rejected: rewriting the list against today's cases, which is what
+  was there and what went stale, and would go stale again on the next case that
+  changes state.
 - `ScenarioReport::report()` returns nothing. It always returned 0, and a return
   value nobody varies read as though the exit code were the printer's to decide
   when it is each command's.
 
 ## Assumed
 
-- That `SKILL-09` stays unguarded for as long as any of them is. The todo's
-  `**Run:**` names one case, so due-ness is that case's answer standing in for
-  all of them, and the case says in as many words that it measures the rest. It
-  is the one thing here that a list would not have got wrong.
+- That a case's `Held by` statement is true. It is written by hand and read as
+  data here, so a case is owed a reading exactly as long as somebody says it is.
 
 ## Wrong if
 
-- `SKILL-09` is guarded while another case still says `not guarded`, and the
-  todo goes quiet again with work left in it. What would show it is a
-  `grep -rl 'not guarded' scenarios/contracts/` that finds cases on a day
-  `bin/cli scenarios:contract SKILL-09` exits 0 — the same failure as the one
-  above, one sentinel later.
-- A case is guarded by a test that does not hold what the case measures, so the
-  exit turns 0 while the reading is still owed. The exit code reads the
-  `Held by` statement, and that statement is written by hand.
+- A case is given a test that does not hold what the case measures, and its line
+  drops `not guarded` anyway. The exit turns 0 with the reading still owed, and
+  nothing here can tell that from the case being held: the only thing read is
+  the sentence. What would show it is a case that stopped being printed and a
+  later session finding the behaviour gone.
+- The reading the todo now asks for is more than a session does, so the date is
+  written without the cases being read. That is the failure a list of five could
+  not have — it was small enough to look done.
 
 ## Covered by
 

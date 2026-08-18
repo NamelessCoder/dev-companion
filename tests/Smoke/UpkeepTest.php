@@ -45,6 +45,7 @@ final class UpkeepTest extends TestCase
             'scenarios:check' => [['scenarios:check']],
             'scenarios:show, which takes the review to hand over' => [['scenarios:show', 'REVIEW-01']],
             'scenarios:contract, which takes the case to hand over' => [['scenarios:contract', 'SKILL-09']],
+            'scenarios:contract, named no case at all' => [['scenarios:contract']],
             'prose:check' => [['prose:check']],
             'catalog:check' => [['catalog:check']],
             'hints:coverage' => [['hints:coverage']],

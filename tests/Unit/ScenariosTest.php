@@ -180,6 +180,14 @@ final class ScenariosTest extends TestCase
         }
 
         self::assertSame($expected, $answered);
+        // Named no case the command answers for all of them at once, which is
+        // what the todo runs: one case standing in for the rest goes quiet the
+        // day that case is guarded and the others are not.
+        self::assertSame(
+            in_array(1, $expected, true) ? 1 : 0,
+            $application->doRun(new StringInput('scenarios:contract'), new BufferedOutput()),
+            'the answer for every case at once disagrees with the cases',
+        );
     }
 
     #[Test]

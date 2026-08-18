@@ -464,6 +464,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### scope
 
+- [`D-SCO-013`][D-SCO-013] — A declared command carries the interpreter it runs on, Node as well as PHP · 2026-08-19
 - [`D-SCO-012`][D-SCO-012] — The root manifest places the work before the dependencies are installed · 2026-08-18
 - [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
 - [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
@@ -474,6 +475,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
 
+[D-SCO-013]: scope/sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
 [D-SCO-012]: scope/sco-012-the-root-manifest-places-the-work-before-the-dependencies-are-installed.md
 [D-SCO-010]: scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md
 [D-SCO-011]: scope/sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md

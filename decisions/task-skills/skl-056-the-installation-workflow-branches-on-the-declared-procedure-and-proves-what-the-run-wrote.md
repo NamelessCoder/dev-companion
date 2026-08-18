@@ -109,3 +109,10 @@ them. Step 1 is where `extension-repository-installation` is named, and the
 layout it answers for is what the session probed by hand. `D-SKL-058` routes the
 boot branch to that hint on what the repository is, which leaves the fork as
 this entry cut it.
+
+The last **Decided** was reversed on 2026-08-18. `074606` no longer keeps its
+own card: `D-SKL-059` decides the 1b question it asks — an installation that is
+up is `typo3-development-installation`'s own — and folds the card into the one
+that carries that work. The reason this entry gave still holds and is what
+changed: the card was kept so a rewrite would not hide the question, and it is
+folded into the card that answers it rather than into a rewrite.

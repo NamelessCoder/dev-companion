@@ -119,16 +119,23 @@ answers** below.
    it needs its own guard on what a previous run left behind, and forcing the
    settings does not remove a schema.
 4. **Seed the content the package is to be developed against**, where the task
-   needs one. `typo3_hint_lookup` owns this: `id=sitepackage-initial-content`
-   for which of the two setup commands imports it and what makes a package count
-   as a distribution, `id=initial-content-import-once` for why a changed file
-   does not arrive a second time, `id=initial-content-references` for what the
-   import remaps and what it leaves pointing at a stranger. What this workflow
-   adds is where to look when it lands: a seeded installation answering
-   not-found at the project root is a site configuration whose base is not this
-   installation's URL, which is the importer's doing and not the package's. Read
-   what actually landed with `typo3_configuration_lookup`, correct it in the
-   installation's own site configuration, and verify it again there.
+   needs one. By which mechanism this package fills an instance is the first
+   question and it has more than one answer: `typo3_hint_lookup` with
+   `id=fresh-instance-seeding` for the ways a package declares one, and for what
+   holds when it declares none — then the procedure is written down only in the
+   package's own manual, and `typo3_extension_describe` reports where that
+   manual is beside the data files, the console commands and the site sets it
+   ships. Where the mechanism is a shipped data file, `typo3_hint_lookup` owns
+   the rest: `id=sitepackage-initial-content` for which of the two setup
+   commands imports it and what makes a package count as a distribution,
+   `id=initial-content-import-once` for why a changed file does not arrive a
+   second time, `id=initial-content-references` for what the import remaps and
+   what it leaves pointing at a stranger. What this workflow adds is where to
+   look when it lands: a seeded installation answering not-found at the project
+   root is a site configuration whose base is not this installation's URL, which
+   is the importer's doing and not the package's. Read what actually landed with
+   `typo3_configuration_lookup`, correct it in the installation's own site
+   configuration, and verify it again there.
 5. **Decide what the install wrote into the repository.** The installation's
    configuration, its writable state and its document root land in the Composer
    root, which is the versioned repository itself. `typo3_hint_lookup` owns

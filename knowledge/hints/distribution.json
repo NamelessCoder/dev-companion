@@ -1,5 +1,36 @@
 [
   {
+    "id": "fresh-instance-seeding",
+    "title": "The Ways a Package Fills a Fresh Instance",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "fills a fresh instance",
+      "content into a fresh instance",
+      "how does this extension seed",
+      "which mechanism seeds",
+      "nothing to look at after the install",
+      "ext_tables_static+adt.sql",
+      "static table data",
+      "setup wizard"
+    ],
+    "hints": [
+      "Core reads four things out of a package at typo3 extension:setup, and in each case the file being there is the whole declaration: Initialisation/data.t3d or Initialisation/data.xml for the page tree and the content, Initialisation/Site/<identifier>/ for the site configuration, Initialisation/Files/ for what is copied into fileadmin under the extension key, and ext_tables_static+adt.sql for static table rows. sitepackage-initial-content is the first two of those and initial-content-import-once is why a second setup imports nothing.",
+      "The static SQL file is the one that does arrive again: the registry keeps its hash rather than a flag, so an edited ext_tables_static+adt.sql is imported on the next setup while an edited data file is not.",
+      {
+        "text": "A package can fill the instance itself instead, by listening on the package initialization event — the same event every import above is a listener on, so a listener of its own runs at extension:setup with no file convention behind it.",
+        "since": 13
+      },
+      "A console command the package ships is a declaration a caller can see and core never runs: it is tagged console.command and it stands in typo3 list, and what fills the instance is somebody typing it.",
+      {
+        "text": "A site set fills nothing by itself. Configuration/Sets/<name>/config.yaml carries TypoScript, page TSconfig, settings and labels, and it reaches an installation only where a site's own config.yaml names it under dependencies — so a package shipping sets alone needs a site to exist before any of it applies.",
+        "since": 13
+      },
+      "A package declaring none of them still fills the instance, by a procedure only its own manual writes down — a backend module to click through, or steps to follow by hand. Nothing the package registers says which module that is, so the manual is the source rather than the file listing, and the absence of everything above is what says to read it."
+    ]
+  },
+  {
     "id": "sitepackage-initial-content",
     "title": "Shipping Initial Content with an Extension",
     "domains": [
@@ -31,7 +62,7 @@
         "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
         "since": 13
       },
-      "initial-content-import-once is why a changed file does not arrive: the import runs once and the registry remembers it, so nothing reaches an installation that already ran it. initial-content-references is what survives the import, and it is where shipped content ends up pointing at a stranger's records and the seeded site answers HTTP 404 at its own root. impexp-artifact writes the file in the first place, and the export it writes answers [OK] with the images left out."
+      "initial-content-import-once is why a changed file does not arrive: the import runs once and the registry remembers it, so nothing reaches an installation that already ran it. initial-content-references is what survives the import, and it is where shipped content ends up pointing at a stranger's records and the seeded site answers HTTP 404 at its own root. impexp-artifact writes the file in the first place, and the export it writes answers [OK] with the images left out. fresh-instance-seeding is the other ways a package fills an instance, for a package that ships no such file at all."
     ]
   },
   {

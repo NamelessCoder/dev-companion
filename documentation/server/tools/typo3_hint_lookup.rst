@@ -247,6 +247,7 @@ Text:
     - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
     - record-page-title — The Title of a Record Detail Page (PHP)
     - extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
+    - fresh-instance-seeding — The Ways a Package Fills a Fresh Instance (PHP)
     - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
     - upgrade-wizards — Upgrade Wizards (PHP)
     - installation-upgrade — Upgrading an Installation (PHP)
@@ -679,6 +680,11 @@ Data:
             {
                 "id": "extbase-plugin-registration",
                 "title": "The Two Calls That Register a Plugin",
+                "category": "PHP"
+            },
+            {
+                "id": "fresh-instance-seeding",
+                "title": "The Ways a Package Fills a Fresh Instance",
                 "category": "PHP"
             },
             {
@@ -1441,6 +1447,7 @@ Text:
     - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
     - record-page-title — The Title of a Record Detail Page (PHP)
     - extbase-plugin-registration — The Two Calls That Register a Plugin (PHP)
+    - fresh-instance-seeding — The Ways a Package Fills a Fresh Instance (PHP)
     - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
     - upgrade-wizards — Upgrade Wizards (PHP)
     - installation-upgrade — Upgrading an Installation (PHP)
@@ -1786,6 +1793,11 @@ Data:
             {
                 "id": "extbase-plugin-registration",
                 "title": "The Two Calls That Register a Plugin",
+                "category": "PHP"
+            },
+            {
+                "id": "fresh-instance-seeding",
+                "title": "The Ways a Package Fills a Fresh Instance",
                 "category": "PHP"
             },
             {

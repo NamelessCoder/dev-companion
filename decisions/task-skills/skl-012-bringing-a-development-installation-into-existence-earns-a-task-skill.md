@@ -146,3 +146,10 @@ The topic is unchanged otherwise: the operating around an installation stays
 outside, which is how `D-KNW-010` and `D-KNW-049` read it. What the entry now
 names is the one part of it that is answered here, held by
 `ScopeTest::theInterpreterAnEnvironmentDeclaresIsNotDeclinedWithTheOperating`.
+
+The third **Assumed** took its first counter-report on 2026-08-18. Booting and
+creating are one domain, which is what it concluded, but they do not differ in
+the first step: `feedback/2026-08-18-070448` is a repository declaring an
+environment and no procedure, where the session ran both branches at once.
+`D-SKL-056` carries that judgement and re-cuts the discriminant the skill
+branches on.

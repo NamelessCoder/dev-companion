@@ -366,6 +366,31 @@ final class ExtensionDescribe extends ReadOnlyTool
                 . 'typo3_hint_lookup owns that rule.';
         }
 
+        // Each absence names the workflow that owns it, on the object the
+        // caller is already looking at. A session read `manual: null`,
+        // `readme: null` and `tests: []` twice, wrote three READMEs by hand and
+        // shipped no test at all, holding the closing sentence of the skill it
+        // was following, which names both of these — D-SKL-053. Only where the
+        // artifact is absent, so an extension that ships them reads as it did
+        // before. Only these two, because no field of this answer reports that
+        // nobody audited the package, and an absence is what a name here hangs
+        // on.
+        $absent = [];
+        if ($artifacts['manual'] === null) {
+            $absent[] = 'manual';
+        }
+        if ($artifacts['readme'] === null) {
+            $absent[] = 'README';
+        }
+        if ($absent !== []) {
+            $lines[] = 'It ships no ' . implode(' and no ', $absent)
+                . ': `typo3-extension-documentation` is the workflow that writes '
+                . (count($absent) === 1 ? 'one' : 'them') . '.';
+        }
+        if ($artifacts['tests'] === []) {
+            $lines[] = 'It ships no test: `typo3-extension-testing` is the workflow that sets the first one up.';
+        }
+
         $lines[] = '';
         // The boundary of this answer, stated rather than implied — and it is
         // not the same boundary in both cases, which is why it is not one

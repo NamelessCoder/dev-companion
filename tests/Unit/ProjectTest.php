@@ -1686,6 +1686,52 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function anAbsentArtifactNamesTheWorkflowThatOwnsIt(): void
+    {
+        // A session read manual: null, readme: null and tests: [] twice, wrote
+        // three READMEs by hand and shipped no test at all — while holding the
+        // closing sentence of the skill it was following, which names both of
+        // these workflows. The name arrives on the object it was already
+        // looking at instead — D-SKL-053.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        Instance::discoverFrom($root);
+
+        $bare = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
+
+        self::assertStringContainsString(
+            'It ships no manual and no README: `typo3-extension-documentation` is the workflow that writes them.',
+            $bare->text,
+        );
+        self::assertStringContainsString(
+            'It ships no test: `typo3-extension-testing` is the workflow that sets the first one up.',
+            $bare->text,
+        );
+
+        $this->declare($extension . '/README.md', "# my_sitepackage\n");
+        $partial = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
+
+        self::assertStringContainsString(
+            'It ships no manual: `typo3-extension-documentation` is the workflow that writes one.',
+            $partial->text,
+        );
+
+        // Nothing where the extension ships all three, because the name hangs
+        // on the absence: an answer about registrations does not carry a route
+        // to a workflow that has nothing left to do here.
+        $this->declare($extension . '/Documentation/Index.rst', "=====\nTitle\n=====\n");
+        $this->declare($extension . '/Tests/Unit/SomeTest.php', "<?php\n");
+        $shipped = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
+
+        self::assertStringContainsString(
+            'Ships: manual Documentation/Index.rst, readme README.md, tests Unit',
+            $shipped->text,
+        );
+        self::assertStringNotContainsString('typo3-extension-documentation', $shipped->text);
+        self::assertStringNotContainsString('typo3-extension-testing', $shipped->text);
+    }
+
+    #[Test]
     public function theDeprecatedFilesBlockNamesBothFilesItLookedAt(): void
     {
         // The audit of 2026-08-03 got this block for ext_emconf.php alone and

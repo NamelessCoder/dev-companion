@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-081159-skills-are-matched-once-against-the-opening.md
 **Priority:** normal
+**Branch:** todo/skills-are-matched-once-against-the-opening
+**Claimed:** 2026-08-18
 
 Judged as the ladder's step 2, delivery, in `D-SKL-062`: the brief already
 recognizes the sub-step and names the skill and the guide that own it — measured

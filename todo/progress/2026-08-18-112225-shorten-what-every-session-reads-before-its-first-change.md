@@ -3,6 +3,8 @@
 **Serves:** decisions/documentation/
 **Priority:** low
 **Run:** bin/cli prose:check
+**Branch:** todo/shorten-what-every-session-reads-before-its-first-change
+**Claimed:** 2026-08-18
 
 The cut is done and its counts are the **Since then** of `D-DOC-035`: AGENTS.md,
 `documentation/records/judging.rst` and `skills/base.md` were shortened on

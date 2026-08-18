@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113308-a-client-that-defers-mcp-schemas-lists-the.md, feedback/2026-08-18-080710-a-whole-session-ran-with-zero-calls-because-a.md
 **Priority:** low
+**Branch:** todo/a-client-that-defers-mcp-schemas-lists-the
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

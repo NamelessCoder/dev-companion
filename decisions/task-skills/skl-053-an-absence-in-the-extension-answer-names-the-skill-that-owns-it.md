@@ -164,3 +164,34 @@ The answering half landed first and in a commit of its own:
 reports no manual or no README and `typo3-extension-testing` where it reports no
 test layer. Two levers now stand against one report, which is what the third
 **Assumed** says a later session has to separate.
+
+**A second session then read a closing crossing and did not act on it.**
+`feedback/2026-08-18-074245`, `/home/benji/projects/blog`, a DDEV installation
+on 14.3.6, `claude-opus-5[1m]`. `typo3-development-installation` was active and
+carried the diagnosis; the session states it read "Where this stops" when the
+skill loaded, at which point it held a 404 and no test. Forty minutes and
+several user turns later it extended `Tests/Functional/` and built a second core
+installation, and invoked neither `typo3-extension-testing` nor
+`typo3-extension-upgrade`. That is the third **Assumed** arriving a second time
+— another project, another workflow, another task — and it is the position and
+not the imperative that is left: the paragraph names the successor, describes
+the crossing in both directions, and says to activate it.
+
+**What the pass left standing.** It read the seven extension workflows, and
+`typo3-development-installation` is not one of them. Its crossing into
+`typo3-extension-testing` is the last handover in `skills/` still written in the
+paragraph the workflow is being left in.
+
+**Both halves of the guard pass on it.** The `$crossings` map names
+`typo3-extension-conformance` for that skill and not `typo3-extension-testing`,
+so the imperative half never asks. The position half reads the last paragraph of
+every skill for `nvoke`, and this one says "activate it" — the verb this entry's
+own evidence was written to falsify. A crossing is held where somebody listed it
+and where its author happened to pick one of two words.
+
+The report is about this server rather than an older one: it was recorded at
+07:42 UTC, an hour after the pass, and quotes the paragraph as it still reads.
+Judged step 4 and queued at `normal` on the card that serves it, bounded to that
+one crossing — `typo3-extension-upgrade` staying shut in the same session is a
+description that reads from the maintainer's intent, and `feedback/2026-08-18-080630`
+carries it on a card of its own.

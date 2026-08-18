@@ -1354,16 +1354,12 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
-     * `binding`, `provenance` and `audience` were three fields asking one
-     * question, and D-KNW-003 kept the first two apart on one condition: no value
-     * reads naturally on both. `installation` is what held them apart, and it
-     * was never an obligation — it says where an answer is read from, which is
-     * what `source` already says.
+     * The four vocabularies are one now, the `Scope` enum — `D-KNW-003` is where
+     * the last of them was kept apart and `D-KNW-005` where it went.
      *
-     * They are one vocabulary now, the `Scope` enum, and this is what holds it
-     * to one: every scope written anywhere in the corpus has to be a case of
-     * it, and a statement may not claim `uncertain`, which belongs to a path
-     * nothing placed rather than to a sentence somebody wrote.
+     * This is what holds it to one: every scope written anywhere in the corpus
+     * has to be a case of it, and a statement may not claim `uncertain`, which
+     * belongs to a path nothing placed rather than to a sentence somebody wrote.
      */
     #[Test]
     public function everyScopeInTheCorpusIsOneTheEnumDeclares(): void

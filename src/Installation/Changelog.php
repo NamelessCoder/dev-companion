@@ -165,11 +165,9 @@ final class Changelog
     /**
      * The identifiers an entry names, as its body spells them.
      *
-     * A caller after a removed method types the method name, and the name is in
-     * the body rather than in the file name. Every inline literal is read
-     * whatever markup it is written in, because the `:php:` role postdates 9.0.
-     * Only a word carrying a hump or an underscore is one, which is what keeps
-     * the index free of the words a query is made of — `D-ANS-042`.
+     * Every inline literal is read whatever markup it is written in, because the
+     * `:php:` role postdates 9.0. Only a word carrying a hump or an underscore
+     * is one — `D-ANS-042`.
      *
      * @param array{file: string} $entry
      * @return array<int, string>

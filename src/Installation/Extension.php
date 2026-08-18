@@ -1257,9 +1257,7 @@ final class Extension
      * what reading it yields: a list assembled in a `foreach` exists only once
      * the file has run, and an empty list is omitted, so such a file arrives as
      * the same silence as one that does not exist. `ext_localconf.php` and
-     * `ext_tables.php` stay out, because neither is a list a reading could yield
-     * and naming them would report a permanent property of this answer as a
-     * degradation the installation could lift — `D-ANS-003`.
+     * `ext_tables.php` stay out, for the reason `D-ANS-003` records.
      *
      * @return array<int, string>
      */

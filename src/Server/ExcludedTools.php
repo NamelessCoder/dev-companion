@@ -11,11 +11,9 @@ use TYPO3\DevCompanion\Tool\Registry;
  *
  * The only subtraction this server makes, and the caller makes it. What was here
  * before decided per checkout instead, which is reasoning that holds for the
- * repository and not for the task — `R-AUD-002` — so a core-shaped question
- * asked from a site installation was answered as core work and then routed to a
- * tool that had been taken away. Which half of an answer is worth having is said
- * in the answer, per topic and per path, because withholding a tool costs the
- * caller the doorway and leaves it the knowledge.
+ * repository and not for the task — `R-AUD-002`. Which half of an answer is
+ * worth having is said in the answer, per topic and per path, because
+ * withholding a tool costs the caller the doorway and leaves it the knowledge.
  */
 final class ExcludedTools
 {

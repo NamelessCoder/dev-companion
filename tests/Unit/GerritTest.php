@@ -292,11 +292,8 @@ final class GerritTest extends TestCase
     }
 
     /**
-     * The other half of that: naming the patch set and not how to get it was
-     * two sessions holding a description of a change they could not fetch, both
-     * of which wrote the ref themselves out of Gerrit trivia this answer never
-     * stated — `D-ANS-068`. The remote is in it because a core clone fetches
-     * from the GitHub mirror, where the ref does not exist.
+     * The other half of that, and `D-ANS-068`. The remote is in the ref because
+     * a core clone fetches from the GitHub mirror, where it does not exist.
      *
      * The second case is the padding. Gerrit shards by the change number modulo
      * 100 written as two digits, so 95108 is filed under `08` and a ref built

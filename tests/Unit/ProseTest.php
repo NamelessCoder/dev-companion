@@ -25,15 +25,9 @@ final class ProseTest extends TestCase
     /**
      * `R-COD-002`. The half a caller pays for is reached at all.
      *
-     * `Prose::documents()` reads the markdown corpus and no file in `src/`, so
-     * the tool descriptions, the schema fields and the `instructions` sent at
-     * initialize were measured by nobody — and the 1219 characters cut on
-     * 2026-08-03 were found by rereading rather than by a report.
-     *
      * What is held is that the reading happens and reaches every tool, not that
-     * nothing runs long. A description over the measure is reported like any
-     * other sentence, because a rewrite driven by a counter produces two short
-     * sentences saying what one said.
+     * nothing runs long: `Prose::documents()` reads the markdown corpus and no
+     * file in `src/`.
      */
     #[Test]
     public function theProseAClientIsHandedIsMeasured(): void

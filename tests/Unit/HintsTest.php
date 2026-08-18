@@ -570,9 +570,7 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `D-KNW-055`. The corpus held the analyser half of the static-quality layer
-     * and spelled the whole layer with the analyser's words, so "php-cs-fixer"
-     * reached nothing out of 81 candidates.
+     * `D-KNW-055`, the half of the static-quality layer the corpus had.
      *
      * Read back out of an installed `typo3/coding-standards` v0.9.0, because the
      * package is in no checkout and in no environment here. Two of the three
@@ -762,17 +760,9 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `R-KNW-063`. The audit this comes from had an extension's own
-     * `Resources/Private/Layouts/Login.html` beside the core's
-     * `Login.fluid.html` and could not say from the corpus which of the two
-     * renders. It settled that by reading the resolver out of an installed
-     * vendor tree — three shell round trips for the first half of the verdict.
-     *
-     * Read back the same way, because `typo3fluid/fluid` is in no checkout: the
-     * whole file-name chain runs inside one root path before the next is tried.
-     * The two mechanisms could have disagreed, because the core's own
-     * `TemplatePaths` sorts each list first and skips that sort as soon as one
-     * key in it is a string.
+     * `R-KNW-063`, read out of an installed vendor tree because
+     * `typo3fluid/fluid` is in no checkout: the whole file-name chain runs
+     * inside one root path before the next is tried.
      */
     #[Test]
     public function aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath(): void
@@ -2124,12 +2114,7 @@ final class HintsTest extends TestCase
 
     /**
      * The near-miss is the answer the index is worth most on, and it was the
-     * one answer without it.
-     *
-     * A query for a code style fixer matched three hints about something else
-     * and `availableHints` came back empty, so the field that would have named
-     * `extension-static-analysis` was present and empty exactly where the caller
-     * needed it (`D-KNW-055`).
+     * one answer without it (`D-KNW-055`).
      *
      * The whole domain index rather than the categories the matched hints are
      * in, because narrowing to those drops hints and none of the length: a near

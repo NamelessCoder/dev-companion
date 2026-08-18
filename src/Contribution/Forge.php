@@ -152,11 +152,9 @@ final class Forge
      * The relations of these records, filled with what decides whether to read
      * one.
      *
-     * A relation came back as a number and a word, which costs one issue read to
-     * evaluate — so a caller holding four of them evaluates none (`D-ANS-064`).
-     * The price is one bulk read for everything handed in rather than one per
-     * relation, which is why a whole page goes through here at once; where it
-     * cannot be reached the relations stand as they came back.
+     * One bulk read for everything handed in rather than one per relation
+     * (`D-ANS-064`), which is why a whole page goes through here at once. Where
+     * it cannot be reached the relations stand as they came back.
      *
      * @param list<array<string, mixed>> $records
      * @return list<array<string, mixed>>
@@ -184,12 +182,9 @@ final class Forge
     /**
      * The changes the review server holds for these rows, one query per twelve.
      *
-     * Whether somebody has already pushed a patch is the signal a triage stops
-     * on, and it is not in the index answer: the change reference lives in the
-     * journal, which `/issues.json` does not serve (`D-ANS-069`). The handle is
-     * carried and not the state, because this list is read to choose what to
-     * read; where the review server cannot be reached the rows stand as they
-     * came back.
+     * The handle is carried and not the state, because this list is read to
+     * choose what to read (`D-ANS-069`); where the review server cannot be
+     * reached the rows stand as they came back.
      *
      * @param list<array<string, mixed>> $results
      * @return list<array<string, mixed>>
@@ -212,9 +207,8 @@ final class Forge
     /**
      * The issues whose text matches these words.
      *
-     * What it answers is which other issues mention this, and not which one is
-     * the duplicate: nothing here ranks, and one wording does not settle the
-     * question, so the query comes back with the answer (`D-ANS-038`).
+     * Nothing here ranks, and the query comes back with the answer, because one
+     * wording does not settle which issue is the duplicate (`D-ANS-038`).
      * `issues=1` is what keeps wiki pages, forum posts and changesets out of an
      * answer whose entries are issue numbers.
      *
@@ -757,12 +751,11 @@ final class Forge
     /**
      * The review changes the journal names, as handles rather than as prose.
      *
-     * They are in the payload already and only inside a sentence, where they
-     * read as history already told — a session triaging 15984 answered the
-     * question from `git log --all --grep` instead (`D-ANS-064`). Nothing is
-     * claimed about their state, which is one `typo3_gerrit_lookup` call away.
-     * Two passes, because the bot's note names the change id and the number
-     * together where a human's later note is a bare URL.
+     * They are in the payload already and only inside a sentence, which is where
+     * a triage stops reading them (`D-ANS-064`). Nothing is claimed about their
+     * state, which is one `typo3_gerrit_lookup` call away. Two passes, because
+     * the bot's note names the change id and the number together where a human's
+     * later note is a bare URL.
      *
      * @param list<array{author: string, on: string, note: string}> $notes
      * @return list<array<string, mixed>>

@@ -298,8 +298,7 @@ final class InstallerTest extends TestCase
      * The third shape `D-DIS-016` names: a client that resolves a variable to
      * the project root gets an entry that is true in every checkout of it.
      *
-     * Two of the eleven document one, and both spell it `${workspaceFolder}`.
-     * It is the variable rather than a plain relative path because the working
+     * The variable rather than a plain relative path, because the working
      * directory a client spawns the server in is not something the MCP
      * specification defines — which is what `D-DIS-015` was revoked over.
      *

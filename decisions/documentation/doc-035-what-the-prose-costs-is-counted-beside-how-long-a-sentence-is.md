@@ -133,3 +133,41 @@ what a todo is called. It was cut for another reason, the form it spelled out
 being `todo/readme.md`'s, and the id went with the example. What a comment
 quotes is not a comment resting on an entry, and the pattern cannot tell the two
 apart.
+
+The tail was read one at a time the same day: the 141 comments running to 11, 12
+or 13 lines, each against the entry it names.
+
+**The third Wrong if fires for that band.** 113 of the 141 are cross-references
+and were left as they are. Such a comment names the id and then says what the
+entry does not — which of its claims this line carries, what the alternative was
+here, what the code does with it. The sweep before this one found retellings
+because it went longest first, and length is where they were.
+
+**What the other 28 carried is the entry's own account, and that is what came
+off.** They are recognisable by shape rather than by wording: the paragraph a
+decision opens with, a bullet of its **Evidence**, the **From** of a
+requirement, the session whose failure produced it. `ToolContractTest` opened
+with `D-ANS-017`'s bold sentence, `Process\CommandRunner` retold `R-COD-003`'s
+`ddev` written onto the `PATH`, and `HintsTest` repeated `D-KNW-055`'s "nothing
+out of 81 candidates". None of the 28 lost anything to the cut, which is the
+first **Assumed** holding a second time.
+
+**One comment on the list is there because its entry put it there.**
+`D-FBK-042`'s **Decided** names the `Channel` docblock as one of the places the
+two kinds of writing have to be named apart, so what reads as a retelling of the
+statement is the statement being delivered. A comment naming an entry that names
+the comment back is not something this pattern can see.
+
+**Cutting the retelling does not reliably take a comment off the list.** Seven
+of the 28 still run to 11 lines with nothing retold left in them, because an
+annotated docblock spends the delimiters, the summary, a blank line and its
+`@param` or `@return` before a sentence is written. The band cost 21 entries and
+83 lines: the list went from 179 to 158 and the comment share of the PHP from
+32.3% to 32.2%.
+
+**So the count at ten lines has stopped naming work.** The band this reading
+covered is read and right, and everything above it was cut by the sweep before.
+The second **Wrong if** watched for the number sitting still; what happened is
+the number falling to where it measures the shape of a docblock rather than what
+is written in one. What the report should count instead is queued rather than
+decided here.

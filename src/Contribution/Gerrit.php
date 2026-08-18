@@ -425,14 +425,12 @@ final class Gerrit
     }
 
     /**
-     * One change, in the fields a caller asked this question for: whether it
-     * exists, what it is called, which branch it targets, whether it is still
-     * open, which patch set the answer is about, and the Change-Id it carries.
+     * One change, in the fields a caller asked this question for.
      *
      * The patch set is the one a review turns on: a change is a series of them
      * and the checkout in front of the reviewer is one commit, which is what
-     * settles it against a local `HEAD`. The Change-Id is what a backport keeps,
-     * and Gerrit relates the two changes by nothing else — `D-ANS-080`.
+     * settles it against a local `HEAD`. What the Change-Id is carried for is
+     * `D-ANS-080`.
      *
      * @param array<string, mixed> $entry
      * @return array<string, mixed>

@@ -841,13 +841,10 @@ final class Project
     /**
      * How the three PHP numbers beside it stand to each other.
      *
-     * They have been in one answer since `D-KNW-055`, and the comparison between
-     * them was the caller's until `D-ANS-082`: the one place that holds all
-     * three values is the answer that already prints them. Two comparisons, both
-     * against what this project declares, because that is what a manifest can be
-     * rewritten to. Nothing was run to find either out — this is what the files
-     * say, never evidence that the floor works. Null where the declared
-     * constraint names no floor.
+     * Two comparisons, both against what this project declares, because that is
+     * what a manifest can be rewritten to (`D-ANS-082`). Nothing was run to find
+     * either out — this is what the files say, never evidence that the floor
+     * works. Null where the declared constraint names no floor.
      *
      * @return array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null
      */

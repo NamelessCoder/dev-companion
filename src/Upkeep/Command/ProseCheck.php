@@ -15,9 +15,7 @@ use TYPO3\DevCompanion\Upkeep\Prose;
  * sentence" was held by whoever reread the paragraph. This counts. It fails on
  * one thing only — the bold sentence a requirement or a decision opens with,
  * because that one has a job the rest of the file does not — and reports the
- * rest. The comments are counted for a different reason than the sentences:
- * what grew there is the number of them rather than the length of any one, and
- * a measure of sentence length is passed by writing two — `D-DOC-035`.
+ * rest, over the three corpora `D-DOC-035` names.
  */
 #[AsCommand(
     name: 'prose:check',

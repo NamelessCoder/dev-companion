@@ -118,12 +118,9 @@ final class TaskGuide extends ReadOnlyTool
      * The page this kind of work is written up in, said in the same place
      * (`D-GUI-012`).
      *
-     * The corpus was named once per session, in the `guides` key of
-     * `typo3_project_describe`, which is the call made before anybody knows
-     * what the work is. The session that reported it read that list while
-     * diagnosing a 404, turned to test work three turns later and never went
-     * back — so the pointer arrives with the work instead of before it. Named
-     * as the call rather than as the `typo3://guides` address, because a client
+     * The pointer arrives with the work instead of before it, where the `guides`
+     * key of `typo3_project_describe` names the corpus once a session. Named as
+     * the call rather than as the `typo3://guides` address, because a client
      * that lists no resources cannot act on an address (`D-ANS-061`).
      */
     public const GUIDES_OWNING = 'Written up in: %s. Each is one typo3_rule_lookup call with that documentId, '

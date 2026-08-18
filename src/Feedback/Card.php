@@ -8,13 +8,11 @@ namespace TYPO3\DevCompanion\Feedback;
  * The card a feedback brings with it: one todo in the queue, asking for the
  * judgement nobody has made yet.
  *
- * It is written when the feedback is recorded, so the pair is never apart and
- * there is nothing left to run afterwards (`D-FBK-045`). It lives here rather
- * than in `Upkeep/` because `Upkeep/` already reads this channel, and a card
- * written from there would make that a cycle. The card points and does not copy:
- * `**Serves:**` names the file, the heading is the feedback's own so that a
- * listing says which one it is, and the step is the same on every card because
- * it is the same step.
+ * It is written by the recording rather than by a step afterwards, and it lives
+ * here rather than in `Upkeep/` — `D-FBK-045`. The card points and does not
+ * copy: `**Serves:**` names the file, the heading is the feedback's own so that
+ * a listing says which one it is, and the step is the same on every card
+ * because it is the same step.
  */
 final class Card
 {

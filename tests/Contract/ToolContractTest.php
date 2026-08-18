@@ -109,12 +109,10 @@ final class ToolContractTest extends TestCase
     /**
      * No argument declares more than one type.
      *
-     * An input schema is a grammar a client generates against, and the surface's
-     * only union was the only argument a client has ever failed to compose a
-     * call for at all. It is a plain string since `D-ANS-017`, and this is what
-     * says the shape did not come back somewhere else: a union declared in a
-     * second tool is also that entry's third **Wrong if**, so a session that
-     * means to try one deletes this case and says so.
+     * The one union the surface had is a plain string since `D-ANS-017`, and
+     * this is what says the shape did not come back somewhere else: a union
+     * declared in a second tool is also that entry's third **Wrong if**, so a
+     * session that means to try one deletes this case and says so.
      *
      * Output schemas are not held here, because every union in them is
      * `[X, "null"]` rather than an alternative a caller has to produce.

@@ -12,11 +12,9 @@ use TYPO3\DevCompanion\Paths;
 /**
  * A feedback store of the test's own, for the cases that record one.
  *
- * The same arrangement as `QueuedTodo` and for the same reason: a case that has
- * to have a feedback in order to filter, close or archive it used to write one
- * into the real `feedback/`, and a run that dies in between leaves a fixture the
- * next session reads as a report somebody left. A unit test writes into no
- * directory this repository keeps (`R-COD-003`).
+ * The same arrangement as `QueuedTodo` and for the same reason: a unit test
+ * writes into no directory this repository keeps, and a fixture left in
+ * `feedback/` by a run that died is a report somebody left (`R-COD-003`).
  *
  * The redirect happens on the first write, so the cases that are *about* the
  * corpus — the mangled names, the tools every feedback in the archive names —

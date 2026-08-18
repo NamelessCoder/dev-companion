@@ -135,12 +135,10 @@ final class Prose
     /**
      * The prose a client is handed before it has asked anything.
      *
-     * `documents()` reaches no file in `src/`, so the half a caller pays for was
-     * counted by nobody, and what came off it was found by somebody rereading
-     * rather than by a report (`R-COD-002`). Every string here is read by a
-     * machine that cannot skim, which is the argument for the same measure
-     * (`D-DOC-002`). It is not a budget — `R-ANS-013` is — and what it counts is
-     * the prose alone rather than the schemas around it.
+     * `documents()` reaches no file in `src/`, so this is the half a caller pays
+     * for and nobody counted — `R-COD-002`, `D-DOC-002`. It is not a budget,
+     * which `R-ANS-013` is, and what it counts is the prose alone rather than
+     * the schemas around it.
      *
      * @return list<array{where: string, text: string}>
      */

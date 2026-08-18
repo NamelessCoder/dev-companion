@@ -973,16 +973,10 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * `R-SKL-023`. Three skills specify a report exhaustively and none of them
-     * said what form the thing they specify has, so a review of a Gerrit patch
-     * set ran to a couple of hundred lines into a chat answer nobody could
-     * select.
-     *
-     * What the correction asked for is the form rather than a path: asked on
-     * 2026-08-14, the maintainer answered that the report may stay in the chat
-     * and needs no path, and that formatted HTML is what cannot be transferred —
-     * which revoked `D-SKL-040`. A file stays the caller's to ask for, and where
-     * one is written it goes outside the checkout the skill just assessed.
+     * `R-SKL-023`, and `D-SKL-040` revoked with it: what the correction asked
+     * for is the form rather than a path. A file stays the caller's to ask for,
+     * and where one is written it goes outside the checkout the skill just
+     * assessed.
      */
     #[Test]
     public function aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes(): void
@@ -2051,15 +2045,9 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * The same mechanism a third time, and the premise rather than a step
-     * clause. A session asked in German to fix TypoScript conditions broken on
-     * v14 while keeping them working on v13 read `typo3-extension-upgrade`'s
-     * opening — carrying a package from the versions it supports today to
-     * another set — as a premise its task did not meet, and activated nothing
-     * from investigation to commit (`D-SKL-061`). The words that would have
-     * matched stood after the colon already. So both halves are held here too:
-     * the premise a defect inside a declared range meets, and the step the body
-     * owes it once it did.
+     * The same mechanism a third time, and the premise rather than a step clause
+     * — `D-SKL-061`. So both halves are held here too: the premise a defect
+     * inside a declared range meets, and the step the body owes it once it did.
      */
     #[Test]
     public function aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval(): void

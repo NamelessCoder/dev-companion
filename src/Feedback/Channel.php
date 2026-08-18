@@ -733,13 +733,12 @@ final class Channel
     /**
      * The tools a feedback is about.
      *
-     * An observation is regularly about several tools at once, and one string
-     * with everything but [a-z0-9_] stripped ran their names together into one
-     * unsearchable word. So a string is split on what separates names in it, and
-     * what is left of a name is kept as it was written — the hyphen
-     * (`R-FBK-013`) and the case (`D-FBK-039`), because `comparable()` is where
-     * two spellings meet. A list is still taken for a caller standing in this
-     * package and no longer for one on the wire, which `D-ANS-017` traded away.
+     * An observation is regularly about several tools at once, so a string is
+     * split on what separates names in it, and what is left of a name is kept as
+     * it was written — the hyphen (`R-FBK-013`) and the case (`D-FBK-039`),
+     * because `comparable()` is where two spellings meet. A list is still taken
+     * for a caller standing in this package and no longer for one on the wire,
+     * which `D-ANS-017` traded away.
      *
      * @return array<int, string>
      */

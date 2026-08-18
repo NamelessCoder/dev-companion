@@ -367,14 +367,10 @@ final class StdioServerTest extends TestCase
      * The one argument that ever declared two types, over the wire that decides
      * whether a client can compose the call at all.
      *
-     * `tool` was `["string", "array"]`, the only union in any input schema here,
-     * and the one model that never once sent the argument reported it as a call
-     * it could not produce. It is a plain string now, the several travel
-     * separated by commas, and the list a client sends instead is refused with
-     * the type it should have used — `D-ANS-017` says what would show the union
-     * was not what stopped that client. Both halves belong over the wire,
-     * because `FeedbackTest` calls `Channel::record` directly and the recorder
-     * still takes a list.
+     * `tool` is a plain string since `D-ANS-017`, the several travel separated
+     * by commas, and the list a client sends instead is refused with the type it
+     * should have used. Both halves belong over the wire, because `FeedbackTest`
+     * calls `Channel::record` directly and the recorder still takes a list.
      */
     #[Test]
     public function severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted(): void

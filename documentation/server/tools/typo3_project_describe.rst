@@ -25,10 +25,15 @@ itself in: a DDEV project states the PHP its container runs, which is a
 different interpreter from the caller's shell and where the commands below are
 run, plus what that environment runs without being asked — each hook as the
 stage it fires at and the command it runs, and the pull recipes its database and
-files come from. Call it before booting such a project or before recommending or
-running a check — these are the commands that exist in this repository, and the
-ones marked check are what a task told not to change files may run. Answers
-from: packages.
+files come from. Where the repository declares npm commands it answers the same
+question for Node: what package.json admits in engines.node, what an .nvmrc
+pins, what an actions/setup-node step below .github/workflows/ sets up, what a
+DDEV project states as its nodejs_version, and how those stand to each other. A
+version one of them names outright is read; one a matrix or another file decides
+is handed back as the workflow states it, unresolved. Call it before booting
+such a project or before recommending or running a check — these are the
+commands that exist in this repository, and the ones marked check are what a
+task told not to change files may run. Answers from: packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -129,6 +134,82 @@ Answers with
       # where this repository configures no environment, the shell you run them in
       # is the interpreter and nothing here reads it.
       environmentAgainstBound: string or null
+    # Which Node the npm commands below run on, from the four files that state one:
+    # engines.node in package.json, an .nvmrc beside it, the actions/setup-node
+    # steps below .github/workflows/, and the nodejs_version a DDEV project states.
+    # The composer half of that command list has had its interpreter in this answer
+    # all along and the npm half had none, while a version difference between the
+    # machine and CI is what a build breaks on. Null where this repository has no
+    # package.json and nothing states a Node anywhere, which is a repository with no
+    # npm surface to run.
+    node:  # optional
+      # What package.json requires of Node in engines.node, as spelled. A range: it
+      # says which versions are admitted, never which one a command is executed on.
+      # Null where the manifest states none, which is the ordinary case.
+      engines: string or null
+      # What the .nvmrc beside it says, as spelled. The closest thing here to what a
+      # developer actually runs, because a version manager reads that file and
+      # selects it. An alias like lts/iron is kept and not resolved — what it
+      # names is a list nvm downloads, not anything in this repository. Null where
+      # there is no such file.
+      nvmrc: string or null
+      # The Node the environment states, which for DDEV is nodejs_version. Null is
+      # not "none": a project that states none gets the default of the installed
+      # DDEV, which is not in these files and changes from one release to the next.
+      # Also null where the environment is not DDEV, or where there is no
+      # environment at all.
+      environment: string or null
+      # Every actions/setup-node step below .github/workflows/, one entry per
+      # distinct statement rather than per job — a matrix of five jobs setting up
+      # the same version is one fact. Empty means no workflow here sets Node up, so
+      # nothing states which Node CI runs these commands on.
+      ci:
+        - # The workflow file, relative to the project root.
+          workflow: string
+          # One of: node-version, node-version-file, none. Which input the step sets
+          # Node up by. none: it states neither, so the runner image's own Node is
+          # what runs — a version this repository does not decide.
+          from: string
+          # The value as the workflow writes it, empty where from is none.
+          states: string
+          # The version that value names outright. Null where it does not: a ${{ }}
+          # expression, a matrix entry, a file to read it from, an lts alias, or a
+          # range that installs whatever is newest. Not resolved — the workflow is
+          # one file for you to read, and a resolved wrong number would carry this
+          # answer's authority.
+          version: string or null
+      # How those numbers stand to each other, in the same three words phpRelation
+      # uses. Null where neither .nvmrc nor engines.node names a version this will
+      # read — there is then nothing this repository declares to hold the others
+      # against, and the numbers above still stand.
+      relation:
+        # The Node this repository declares for itself, and what the other two are
+        # held against.
+        declared: string
+        # One of: .nvmrc, package.json. Which file that came from. .nvmrc wins where
+        # both state one: the pin is what a version manager selects and therefore
+        # what a run is executed on, while engines.node is a range and only its
+        # lowest version could be compared.
+        declaredBy: string
+        # One of: below, same, above, null. Where the pin sits against the lowest
+        # version engines.node admits. below: the pinned Node is one this package
+        # says it does not run on. Null where either is absent or spelled in a way
+        # this will not read.
+        nvmrcAgainstEngines: string or null
+        # One of: below, same, above, null. Where the Node the environment states
+        # sits against declared. Null where no environment states one.
+        inEnvironment: string or null
+        # The Node the workflows set up, where they all state the same one. Null
+        # where none states a version outright, or where they disagree — which of
+        # them applies is then the workflow's own condition, and ci above carries
+        # each statement.
+        ci: string or null
+        # One of: below, same, above, null. Where that version sits against
+        # declared. Only the segments both spell are compared, so an .nvmrc naming a
+        # major and a workflow naming a patch level agree wherever the major does
+        # — the release difference inside one major is a thing no file here
+        # states.
+        inCi: string or null
     # The environment this repository configures to run itself in, read from that
     # environment's own files. Null means nothing here configures one that this
     # server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it
@@ -145,6 +226,11 @@ Answers with
       # version nowhere this server can read. typo3_server_scope reports the version
       # the console actually answers on.
       php: string or null
+      # The Node that environment runs, where its files state one — nodejs_version
+      # in the .ddev configuration. Null where they state none, and then the
+      # installed DDEV's own default applies. The node object above is where it is
+      # held against what this repository declares.
+      node: string or null
       # Where this was read: the .ddev config file that states the version last, or
       # TYPO3_DEV_COMPANION_CONSOLE.
       source: string
@@ -281,13 +367,13 @@ Answers with
         console: string
 
 The answer carries exactly one of these sets of fields: ``root``, ``installed``,
-``phpRelation``, ``environment``, ``extensions``, ``sites``, ``commands``,
-``patches``, ``guides``, ``answeredBy`` — or ``unsupported``.
+``phpRelation``, ``node``, ``environment``, ``extensions``, ``sites``,
+``commands``, ``patches``, ``guides``, ``answeredBy`` — or ``unsupported``.
 
 Answered
 --------
 
-Recorded on 2026-08-19 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -369,6 +455,7 @@ Data:
             "bound": null,
             "environmentAgainstBound": null
         },
+        "node": null,
         "environment": null,
         "extensions": [],
         "sites": [],
@@ -525,6 +612,7 @@ Data:
             "bound": null,
             "environmentAgainstBound": null
         },
+        "node": null,
         "environment": null,
         "extensions": [
             {

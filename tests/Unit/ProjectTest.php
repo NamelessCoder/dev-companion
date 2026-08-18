@@ -133,6 +133,7 @@ final class ProjectTest extends TestCase
         self::assertSame([
             'via' => Typo3Cli::VIA_DDEV,
             'php' => '8.4',
+            'node' => null,
             'source' => '.ddev/config.local.yaml',
             'project' => 'site-new',
             'hostnames' => ['site-new.ddev.site'],
@@ -263,8 +264,8 @@ final class ProjectTest extends TestCase
         self::assertSame([
             'floor' => '8.3',
             'coreFloor' => '8.2',
-            'againstCore' => Project::PHP_ABOVE,
-            'inEnvironment' => Project::PHP_ABOVE,
+            'againstCore' => Project::ABOVE,
+            'inEnvironment' => Project::ABOVE,
             'bound' => null,
             'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
@@ -297,8 +298,8 @@ final class ProjectTest extends TestCase
         self::assertSame([
             'floor' => '8.2',
             'coreFloor' => '8.2',
-            'againstCore' => Project::PHP_SAME,
-            'inEnvironment' => Project::PHP_SAME,
+            'againstCore' => Project::SAME,
+            'inEnvironment' => Project::SAME,
             'bound' => null,
             'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
@@ -326,8 +327,8 @@ final class ProjectTest extends TestCase
         self::assertSame([
             'floor' => '8.1',
             'coreFloor' => '8.2',
-            'againstCore' => Project::PHP_BELOW,
-            'inEnvironment' => Project::PHP_BELOW,
+            'againstCore' => Project::BELOW,
+            'inEnvironment' => Project::BELOW,
             'bound' => null,
             'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
@@ -399,7 +400,7 @@ final class ProjectTest extends TestCase
 
         self::assertSame('8.4.0', $project['installedPhpBound']);
         self::assertSame('8.4', $project['phpRelation']['bound']);
-        self::assertSame(Project::PHP_BELOW, $project['phpRelation']['environmentAgainstBound']);
+        self::assertSame(Project::BELOW, $project['phpRelation']['environmentAgainstBound']);
 
         $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('The install itself is bounded at 8.4.0, over the 8.3', $text);
@@ -420,7 +421,7 @@ final class ProjectTest extends TestCase
         Instance::discoverFrom($root);
 
         self::assertSame(
-            Project::PHP_SAME,
+            Project::SAME,
             Project::describe()['phpRelation']['environmentAgainstBound'],
         );
 
@@ -467,6 +468,185 @@ final class ProjectTest extends TestCase
         $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('Nothing here bounds the interpreter', $text);
         self::assertStringNotContainsString('They do not start', $text);
+    }
+
+    #[Test]
+    public function theNodeThoseNpmCommandsRunOnIsStatedBesideThem(): void
+    {
+        // feedback/2026-08-18-113501: five sixths of a sitepackage maintenance
+        // session were Node, npm and GitHub Actions work, and the defect was
+        // the machine and CI running different releases of one Node major. The
+        // composer half of the command list has carried its interpreter since
+        // R-PRJ-008; the npm half beside it said nothing (D-SCO-013).
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/package.json', json_encode([
+            'engines' => ['node' => '^24.0.0'],
+            'scripts' => ['build' => 'grunt build'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/.nvmrc', "24\n");
+        $this->declare($root . '/.github/workflows/ci.yml', <<<'YAML'
+            name: ci
+            jobs:
+                build:
+                    steps:
+                        - uses: actions/checkout@v5
+                        - uses: actions/setup-node@v4
+                          with:
+                            node-version: 24.19.0
+                        - run: npm ci
+                lint:
+                    steps:
+                        - uses: actions/setup-node@v5
+                          with:
+                            node-version: "24.19.0"
+            YAML);
+        $this->declare($root . '/.ddev/config.yaml', "name: sitepackage\nnodejs_version: \"20\"\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame([
+            'engines' => '^24.0.0',
+            'nvmrc' => '24',
+            'environment' => '20',
+            // Two jobs setting the same version up are one fact about this
+            // repository, and the second line saying it says nothing.
+            'ci' => [[
+                'workflow' => '.github/workflows/ci.yml',
+                'from' => 'node-version',
+                'states' => '24.19.0',
+                'version' => '24.19.0',
+            ]],
+            'relation' => [
+                'declared' => '24',
+                'declaredBy' => '.nvmrc',
+                // Only the segments both files spell are compared: a pin naming
+                // a major and a workflow naming a patch level agree wherever
+                // the major does.
+                'nvmrcAgainstEngines' => Project::SAME,
+                'inEnvironment' => Project::BELOW,
+                'ci' => '24.19.0',
+                'inCi' => Project::SAME,
+            ],
+        ], Project::describe()['node']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('This repository declares 24, in .nvmrc.', $text);
+        self::assertStringContainsString('Its package.json admits ^24.0.0', $text);
+        self::assertStringContainsString('Its workflows set up 24.19.0', $text);
+        self::assertStringContainsString('The environment runs 20, below it.', $text);
+        self::assertStringContainsString('- .github/workflows/ci.yml — node-version: 24.19.0', $text);
+        // What it may not claim, for the reason the PHP relation may not claim
+        // it: nothing here was run, and the interpreter the caller's own shell
+        // has is in none of these files.
+        self::assertStringContainsString('Nothing was run to find it out', $text);
+    }
+
+    #[Test]
+    public function aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved(): void
+    {
+        // The third Wrong if of D-SCO-013: a resolved wrong number carries this
+        // server's authority, which is worse than the silence it replaced. A
+        // matrix entry, a file and a step that states nothing are each handed
+        // back as the workflow writes them — and two workflows naming different
+        // versions are a disagreement no single relation states.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/package.json', json_encode([
+            'engines' => ['node' => '>=20.9.0'],
+            'scripts' => ['build' => 'vite build'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/.github/workflows/ci.yml', <<<'YAML'
+            jobs:
+                test:
+                    strategy:
+                        matrix:
+                            node: [20, 22]
+                    steps:
+                        - uses: actions/setup-node@v4
+                          with:
+                            node-version: ${{ matrix.node }}
+                docs:
+                    steps:
+                        - uses: actions/setup-node@v4
+            YAML);
+        $this->declare(
+            $root . '/.github/workflows/lint.yml',
+            "jobs:\n  lint:\n    steps:\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n",
+        );
+        $this->declare(
+            $root . '/.github/workflows/publish.yml',
+            "jobs:\n  npm:\n    steps:\n      - uses: actions/setup-node@v4\n        with:\n          node-version-file: .nvmrc\n",
+        );
+        $this->declare(
+            $root . '/.github/workflows/release.yml',
+            "jobs:\n  build:\n    steps:\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 20.9.0\n",
+        );
+        Instance::discoverFrom($root);
+
+        $node = Project::describe()['node'];
+
+        self::assertSame([
+            ['workflow' => '.github/workflows/ci.yml', 'from' => 'node-version', 'states' => '${{ matrix.node }}', 'version' => null],
+            ['workflow' => '.github/workflows/ci.yml', 'from' => 'none', 'states' => '', 'version' => null],
+            ['workflow' => '.github/workflows/lint.yml', 'from' => 'node-version', 'states' => '22', 'version' => '22'],
+            ['workflow' => '.github/workflows/publish.yml', 'from' => 'node-version-file', 'states' => '.nvmrc', 'version' => null],
+            ['workflow' => '.github/workflows/release.yml', 'from' => 'node-version', 'states' => '20.9.0', 'version' => '20.9.0'],
+        ], $node['ci']);
+        self::assertSame('20.9', $node['relation']['declared'], 'the range the manifest admits has a lowest version');
+        self::assertSame('package.json', $node['relation']['declaredBy']);
+        self::assertNull($node['relation']['ci'], 'two workflows naming different versions name no version');
+        self::assertNull($node['relation']['inCi']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('What its workflows set up is below, as each of them states it.', $text);
+        self::assertStringContainsString('node-version: ${{ matrix.node }}, which names no version outright', $text);
+        self::assertStringContainsString('node-version-file: .nvmrc, so the version is whatever that file says', $text);
+        self::assertStringContainsString('without stating a version, so the runner image\'s own', $text);
+    }
+
+    #[Test]
+    public function aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone(): void
+    {
+        // The silence is the finding: npm commands are in the list above, and
+        // what runs them is whatever the shell has. An .nvmrc naming an alias
+        // is the second state and not the same one — there is a file to open,
+        // and what it resolves to is nvm's download list rather than anything
+        // here.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/package.json', json_encode([
+            'scripts' => ['build' => 'grunt build'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $node = Project::describe()['node'];
+        self::assertNull($node['engines']);
+        self::assertNull($node['relation']);
+        self::assertStringContainsString(
+            'Nothing here declares which Node those npm commands run on: package.json states no engines.node',
+            Registry::call('typo3_project_describe', [])->text,
+        );
+
+        $this->declare($root . '/.nvmrc', "lts/iron\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame('lts/iron', Project::describe()['node']['nvmrc']);
+        self::assertStringContainsString(
+            'its .nvmrc says lts/iron',
+            Registry::call('typo3_project_describe', [])->text,
+        );
+    }
+
+    #[Test]
+    public function aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode(): void
+    {
+        // The one silence that says something: no package.json, no workflow, no
+        // environment stating one. There are no npm commands to run, so a
+        // paragraph about their interpreter is a sentence every PHP-only
+        // project pays for and nobody reads.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->manifest($root, ['require' => ['php' => '^8.2'], 'scripts' => ['cgl' => 'php-cs-fixer fix']]);
+        Instance::discoverFrom($root);
+
+        self::assertNull(Project::describe()['node']);
+        self::assertStringNotContainsString('Node', Registry::call('typo3_project_describe', [])->text);
     }
 
     #[Test]
@@ -663,6 +843,7 @@ final class ProjectTest extends TestCase
         self::assertSame([
             'via' => Typo3Cli::VIA_OVERRIDE,
             'php' => null,
+            'node' => null,
             'source' => Typo3Cli::CONSOLE_VARIABLE,
             'project' => null,
             'hostnames' => [],

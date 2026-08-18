@@ -57,17 +57,17 @@ final class Project
     public const RUNS_UNDECLARED = 'unknown';
 
     /**
-     * Where one PHP version sits against another — the whole vocabulary of
-     * `phpRelation`, used for both of its comparisons.
+     * Where one version sits against another — the whole vocabulary of every
+     * relation this answer states, the PHP numbers and the Node ones alike.
      *
      * One word for one idea: the declared floor stands `below`, on the `same`
      * version as, or `above` what the core requires, and the environment's
      * interpreter stands the same three ways against that floor. What each of
      * them means for the project is the schema's to say, not the value's.
      */
-    public const PHP_BELOW = 'below';
-    public const PHP_SAME = 'same';
-    public const PHP_ABOVE = 'above';
+    public const BELOW = 'below';
+    public const SAME = 'same';
+    public const ABOVE = 'above';
 
     /**
      * The keys a DDEV hook task states its command under.
@@ -106,7 +106,8 @@ final class Project
      *     corePhpConstraint: ?string,
      *     installedPhpBound: ?string,
      *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null,
-     *     environment: array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
+     *     node: array{engines: ?string, nvmrc: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null,
+     *     environment: array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
      *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
@@ -140,6 +141,7 @@ final class Project
             'corePhpConstraint' => $corePhp,
             'installedPhpBound' => $bound,
             'phpRelation' => self::phpRelation($php, $corePhp, $environment['php'] ?? null, $bound),
+            'node' => Node::describe($root, $environment['node'] ?? null),
             'environment' => $environment,
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
@@ -160,7 +162,7 @@ final class Project
      * reads exactly like a running one here. The interpreter is half of it, and
      * what the environment runs by itself is `R-PRJ-009`.
      *
-     * @return array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
+     * @return array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
      */
     private static function environment(string $root): ?array
     {
@@ -170,6 +172,7 @@ final class Project
             return [
                 'via' => Typo3Cli::VIA_DDEV,
                 'php' => $ddev['php'],
+                'node' => $ddev['node'],
                 'source' => $ddev['source'],
                 'project' => $ddev['project'],
                 'hostnames' => $ddev['hostnames'],
@@ -194,6 +197,7 @@ final class Project
             return [
                 'via' => Typo3Cli::VIA_OVERRIDE,
                 'php' => null,
+                'node' => null,
                 'source' => Typo3Cli::CONSOLE_VARIABLE,
                 // A command line names no project and no site.
                 'project' => null,
@@ -248,7 +252,7 @@ final class Project
      * project name and one wrong attempt in between
      * (`feedback/2026-08-10-101723`).
      *
-     * @return array{php: ?string, source: string, project: ?string, hostnames: array<int, string>, hooks: array<int, array{stage: string, command: string, service: ?string}>}
+     * @return array{php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, hooks: array<int, array{stage: string, command: string, service: ?string}>}
      */
     private static function ddev(string $root): array
     {
@@ -259,6 +263,7 @@ final class Project
         }
 
         $php = null;
+        $node = null;
         $source = '.ddev/config.yaml';
         $stages = [];
         // What DDEV falls back to when no file names one: `ddev config
@@ -270,11 +275,12 @@ final class Project
         $fqdns = [];
         foreach ($files as $file) {
             $configuration = self::yaml($root . '/' . $file);
-            $version = self::phpVersion($configuration['php_version'] ?? null);
+            $version = self::configuredVersion($configuration['php_version'] ?? null);
             if ($version !== null) {
                 $php = $version;
                 $source = $file;
             }
+            $node = self::configuredVersion($configuration['nodejs_version'] ?? null) ?? $node;
 
             $project = is_string($configuration['name'] ?? null) && $configuration['name'] !== ''
                 ? $configuration['name']
@@ -311,6 +317,7 @@ final class Project
 
         return [
             'php' => $php,
+            'node' => $node,
             'source' => $source,
             'project' => $project,
             // A fully qualified name is the caller's own and takes no tld.
@@ -446,19 +453,27 @@ final class Project
     }
 
     /**
-     * A `php_version` as the file spells it.
+     * A version a DDEV configuration states, as the file spells it —
+     * `php_version` and `nodejs_version` alike.
      *
-     * Quoting it is optional in DDEV and the difference reaches here: unquoted,
-     * `8.0` is a YAML float, and casting that to a string gives "8" — a PHP
-     * version that exists nowhere. Both digits are kept instead, which is the
-     * whole of the spelling: DDEV v1.25.1 takes major.minor from a list it
-     * ships (5.6 through 8.5) and refuses "8.4.3" and "8" by name, so there is
-     * no patch level and no bare major to carry.
+     * Quoting it is optional there and the difference reaches here: unquoted,
+     * `8.0` is a YAML float and casting that to a string gives "8", a version
+     * that exists nowhere. `nodejs_version` is why the spelling is kept rather
+     * than cut to major.minor: DDEV v1.25.1 takes a bare major there, and a
+     * `20.19` beside a workflow's `20.19.0` is the pair the relation is read
+     * from.
      */
-    private static function phpVersion(mixed $stated): ?string
+    private static function configuredVersion(mixed $stated): ?string
     {
+        if (is_float($stated)) {
+            // A float carries no trailing zero, so 8.0 comes back "8" — a
+            // version that exists nowhere. Everything else it spells as typed.
+            $spelled = (string) $stated;
+
+            return str_contains($spelled, '.') ? $spelled : $spelled . '.0';
+        }
+
         return match (true) {
-            is_float($stated) => sprintf('%.1F', $stated),
             is_int($stated) => (string) $stated,
             is_string($stated) && trim($stated) !== '' => trim($stated),
             default => null,
@@ -892,13 +907,27 @@ final class Project
         return $boundFloor === null || $environment === null ? null : self::sits($environment, $boundFloor);
     }
 
-    /** Where one `major.minor` sits against another. */
-    private static function sits(string $version, string $against): string
+    /**
+     * Where one version sits against another, read to the depth both of them
+     * state.
+     *
+     * The PHP numbers are `major.minor` on both sides and the depth never
+     * bites. A Node version is where it does: an `.nvmrc` says 24 and a
+     * workflow says 24.19.0, and compared as written the pin would come out
+     * below the version that satisfies it.
+     */
+    public static function sits(string $version, string $against): string
     {
-        return match (version_compare($version, $against)) {
-            -1 => self::PHP_BELOW,
-            1 => self::PHP_ABOVE,
-            default => self::PHP_SAME,
+        $depth = min(substr_count($version, '.'), substr_count($against, '.')) + 1;
+        $shared = static fn(string $stated): string => implode(
+            '.',
+            array_slice(explode('.', $stated), 0, $depth),
+        );
+
+        return match (version_compare($shared($version), $shared($against))) {
+            -1 => self::BELOW,
+            1 => self::ABOVE,
+            default => self::SAME,
         };
     }
 

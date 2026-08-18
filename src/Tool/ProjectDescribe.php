@@ -50,7 +50,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Where the repository declares npm commands it answers the same question for Node: what package.json admits in engines.node, what an .nvmrc pins, what an actions/setup-node step below .github/workflows/ sets up, what a DDEV project states as its nodejs_version, and how those stand to each other. A version one of them names outright is read; one a matrix or another file decides is handed back as the workflow states it, unresolved. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -75,12 +75,41 @@ final class ProjectDescribe extends ReadOnlyTool
                 'properties' => [
                     'floor' => Schema::string('The lowest PHP phpConstraint admits, as major.minor. What the project promises to run on, and the number its own commands are worth holding against.'),
                     'coreFloor' => Schema::nullableString('The same, read off corePhpConstraint. Null where no core package was found to read one from.'),
-                    'againstCore' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where floor sits against coreFloor. below: the project declares support for a PHP its own installed core refuses, so the promise cannot be kept. same: it declares what the core requires. above: it declares more than the core needs, which is a range the project narrowed itself and can widen without touching a dependency. Null where coreFloor is.'],
-                    'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where the PHP environment.php states sits against floor. same: the declared floor is the version the commands are run on. above: the environment runs higher, so the floor is a version nothing configured here ever executes — a claim no check tests. below: the environment runs a PHP the project says it does not support. Null where there is no environment or it states no version. Only the floors are compared, so a version over what the constraint\'s own upper bound allows reads here like one inside it.'],
+                    'againstCore' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where floor sits against coreFloor. below: the project declares support for a PHP its own installed core refuses, so the promise cannot be kept. same: it declares what the core requires. above: it declares more than the core needs, which is a range the project narrowed itself and can widen without touching a dependency. Null where coreFloor is.'],
+                    'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the PHP environment.php states sits against floor. same: the declared floor is the version the commands are run on. above: the environment runs higher, so the floor is a version nothing configured here ever executes — a claim no check tests. below: the environment runs a PHP the project says it does not support. Null where there is no environment or it states no version. Only the floors are compared, so a version over what the constraint\'s own upper bound allows reads here like one inside it.'],
                     'bound' => Schema::nullableString('installedPhpBound as major.minor, which is the depth the environment states its own version at. Null where the install bounds nothing.'),
-                    'environmentAgainstBound' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where the PHP environment.php states sits against bound — the only one of these three that says whether a command runs at all rather than what it would run on. below: every command in the list below aborts in Composer\'s platform check before its own tool starts, whatever runs says about it, and the check has to be run somewhere else. same or above: nothing in that file stops them. Null where there is no bound to clear, or no environment stating the version that would clear it — and where this repository configures no environment, the shell you run them in is the interpreter and nothing here reads it.'],
+                    'environmentAgainstBound' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the PHP environment.php states sits against bound — the only one of these three that says whether a command runs at all rather than what it would run on. below: every command in the list below aborts in Composer\'s platform check before its own tool starts, whatever runs says about it, and the check has to be run somewhere else. same or above: nothing in that file stops them. Null where there is no bound to clear, or no environment stating the version that would clear it — and where this repository configures no environment, the shell you run them in is the interpreter and nothing here reads it.'],
                 ],
                 'required' => ['floor', 'coreFloor', 'againstCore', 'inEnvironment', 'bound', 'environmentAgainstBound'],
+            ],
+            'node' => [
+                'type' => ['object', 'null'],
+                'description' => 'Which Node the npm commands below run on, from the four files that state one: engines.node in package.json, an .nvmrc beside it, the actions/setup-node steps below .github/workflows/, and the nodejs_version a DDEV project states. The composer half of that command list has had its interpreter in this answer all along and the npm half had none, while a version difference between the machine and CI is what a build breaks on. Null where this repository has no package.json and nothing states a Node anywhere, which is a repository with no npm surface to run.',
+                'properties' => [
+                    'engines' => Schema::nullableString('What package.json requires of Node in engines.node, as spelled. A range: it says which versions are admitted, never which one a command is executed on. Null where the manifest states none, which is the ordinary case.'),
+                    'nvmrc' => Schema::nullableString('What the .nvmrc beside it says, as spelled. The closest thing here to what a developer actually runs, because a version manager reads that file and selects it. An alias like lts/iron is kept and not resolved — what it names is a list nvm downloads, not anything in this repository. Null where there is no such file.'),
+                    'environment' => Schema::nullableString('The Node the environment states, which for DDEV is nodejs_version. Null is not "none": a project that states none gets the default of the installed DDEV, which is not in these files and changes from one release to the next. Also null where the environment is not DDEV, or where there is no environment at all.'),
+                    'ci' => Schema::listOf(Schema::object([
+                        'workflow' => Schema::string('The workflow file, relative to the project root.'),
+                        'from' => ['type' => 'string', 'enum' => ['node-version', 'node-version-file', 'none'], 'description' => 'Which input the step sets Node up by. none: it states neither, so the runner image\'s own Node is what runs — a version this repository does not decide.'],
+                        'states' => Schema::string('The value as the workflow writes it, empty where from is none.'),
+                        'version' => Schema::nullableString('The version that value names outright. Null where it does not: a ${{ }} expression, a matrix entry, a file to read it from, an lts alias, or a range that installs whatever is newest. Not resolved — the workflow is one file for you to read, and a resolved wrong number would carry this answer\'s authority.'),
+                    ], ['workflow', 'from', 'states', 'version']), 'Every actions/setup-node step below .github/workflows/, one entry per distinct statement rather than per job — a matrix of five jobs setting up the same version is one fact. Empty means no workflow here sets Node up, so nothing states which Node CI runs these commands on.'),
+                    'relation' => [
+                        'type' => ['object', 'null'],
+                        'description' => 'How those numbers stand to each other, in the same three words phpRelation uses. Null where neither .nvmrc nor engines.node names a version this will read — there is then nothing this repository declares to hold the others against, and the numbers above still stand.',
+                        'properties' => [
+                            'declared' => Schema::string('The Node this repository declares for itself, and what the other two are held against.'),
+                            'declaredBy' => ['type' => 'string', 'enum' => ['.nvmrc', 'package.json'], 'description' => 'Which file that came from. .nvmrc wins where both state one: the pin is what a version manager selects and therefore what a run is executed on, while engines.node is a range and only its lowest version could be compared.'],
+                            'nvmrcAgainstEngines' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the pin sits against the lowest version engines.node admits. below: the pinned Node is one this package says it does not run on. Null where either is absent or spelled in a way this will not read.'],
+                            'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the Node the environment states sits against declared. Null where no environment states one.'],
+                            'ci' => Schema::nullableString('The Node the workflows set up, where they all state the same one. Null where none states a version outright, or where they disagree — which of them applies is then the workflow\'s own condition, and ci above carries each statement.'),
+                            'inCi' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where that version sits against declared. Only the segments both spell are compared, so an .nvmrc naming a major and a workflow naming a patch level agree wherever the major does — the release difference inside one major is a thing no file here states.'],
+                        ],
+                        'required' => ['declared', 'declaredBy', 'nvmrcAgainstEngines', 'inEnvironment', 'ci', 'inCi'],
+                    ],
+                ],
+                'required' => ['engines', 'nvmrc', 'environment', 'ci', 'relation'],
             ],
             'environment' => [
                 'type' => ['object', 'null'],
@@ -88,6 +117,7 @@ final class ProjectDescribe extends ReadOnlyTool
                 'properties' => [
                     'via' => ['type' => 'string', 'enum' => ['ddev', 'override'], 'description' => 'ddev: the repository carries a .ddev/config.yaml. override: nothing in the files says so, and TYPO3_DEV_COMPANION_CONSOLE names a command that reaches this installation somewhere other than the caller\'s own shell.'],
                     'php' => Schema::nullableString('The PHP that environment runs, where its files state it. Null is not "none": a DDEV project that states no php_version gets the default of the installed DDEV, and an environment named by TYPO3_DEV_COMPANION_CONSOLE states its version nowhere this server can read. typo3_server_scope reports the version the console actually answers on.'),
+                    'node' => Schema::nullableString('The Node that environment runs, where its files state one — nodejs_version in the .ddev configuration. Null where they state none, and then the installed DDEV\'s own default applies. The node object above is where it is held against what this repository declares.'),
                     'source' => Schema::string('Where this was read: the .ddev config file that states the version last, or TYPO3_DEV_COMPANION_CONSOLE.'),
                     'project' => Schema::nullableString('The DDEV project name, which is what every ddev command takes and what the containers are named after: ddev-<project>-web and ddev-<project>-db. Where no file states it, DDEV uses the directory name and so does this. Null where the environment is not DDEV.'),
                     'hostnames' => Schema::listOf(Schema::string(), 'The hostnames those files declare the site is served under: <project>.ddev.site, every additional_hostnames entry with the same top-level domain, and every additional_fqdns entry as written. What the configuration declares, not what is running — the ports the router binds and its address on the container network are not in these files, and `ddev describe -j` is what carries them. Empty where the environment is not DDEV.'),
@@ -103,7 +133,7 @@ final class ProjectDescribe extends ReadOnlyTool
                         'operations' => Schema::listOf(Schema::string(), 'pull, push, or both — which of the two the recipe declares commands for. A recipe with no push commands is one you cannot push upstream with.'),
                     ], ['name', 'source', 'operations']), 'The pull and push recipes below .ddev/providers/ that this repository wrote, which is where its database and files come from. DDEV writes its own recipes into every project and marks them #ddev-generated; those are left out, because they say what DDEV puts everywhere rather than what this project decided.'),
                 ],
-                'required' => ['via', 'php', 'source', 'project', 'hostnames', 'entered', 'hooks', 'providers'],
+                'required' => ['via', 'php', 'node', 'source', 'project', 'hostnames', 'entered', 'hooks', 'providers'],
             ],
             'extensions' => Schema::listOf(Schema::object([
                 'key' => Schema::string(),
@@ -130,7 +160,7 @@ final class ProjectDescribe extends ReadOnlyTool
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
             'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures this server carries, named here because this is the call every task starts with. They are also served as typo3://guides resources, and a client that lists no resources renders none of them — four sessions in one week finished without learning they exist. Each is one typo3_rule_lookup call by documentId, which needs no resource list; a search over sections answers a question and never hands one of these over whole.'),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-        ], ['root', 'installed', 'phpRelation', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
+        ], ['root', 'installed', 'phpRelation', 'node', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -217,6 +247,10 @@ final class ProjectDescribe extends ReadOnlyTool
                 $command['runs'],
                 $command['declares'],
             );
+        }
+
+        foreach (self::node($project['node'], $project['environment']) as $line) {
+            $lines[] = $line;
         }
 
         foreach (self::lifecycle($project['environment']) as $line) {
@@ -307,7 +341,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * machines. Empty where there is one machine, so the line an ordinary
      * project answers with does not change.
      *
-     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function runtime(?array $environment): string
     {
@@ -362,7 +396,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * wrong cannot be told from one it never computed.
      *
      * @param array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null $relation
-     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function relation(?array $relation, ?array $environment, ?string $bound): string
     {
@@ -372,32 +406,32 @@ final class ProjectDescribe extends ReadOnlyTool
 
         $sentences = [sprintf('Those PHP numbers, as they stand to each other. This project promises %s.', $relation['floor'])];
         $sentences[] = match ($relation['againstCore']) {
-            Project::PHP_BELOW => sprintf(
+            Project::BELOW => sprintf(
                 'The installed core requires %s, so that promise cannot be kept here: the core refuses the version '
                     . 'this project says it supports.',
                 (string) $relation['coreFloor'],
             ),
-            Project::PHP_ABOVE => sprintf(
+            Project::ABOVE => sprintf(
                 'The installed core requires %s, so this project asks for more than its dependency needs — a range it '
                     . 'narrowed itself, and one it can widen without touching anything it does not own.',
                 (string) $relation['coreFloor'],
             ),
-            Project::PHP_SAME => sprintf('The installed core requires %s as well, so the two agree.', (string) $relation['coreFloor']),
+            Project::SAME => sprintf('The installed core requires %s as well, so the two agree.', (string) $relation['coreFloor']),
             default => 'Nothing readable here says what the installed core requires, so there is no second floor to '
                 . 'hold that against.',
         };
         $sentences[] = match ($relation['inEnvironment']) {
-            Project::PHP_SAME => sprintf(
+            Project::SAME => sprintf(
                 'The environment runs %s, which is that floor, so it is the version the commands above are actually '
                     . 'executed on.',
                 (string) $environment['php'],
             ),
-            Project::PHP_ABOVE => sprintf(
+            Project::ABOVE => sprintf(
                 'The environment runs %s, above that floor, so nothing configured here ever executes the version this '
                     . 'project promises — it is a claim, and every check passes without testing it.',
                 (string) $environment['php'],
             ),
-            Project::PHP_BELOW => sprintf(
+            Project::BELOW => sprintf(
                 'The environment runs %s, below that floor, so the commands above are executed on a PHP this project '
                     . 'says it does not support.',
                 (string) $environment['php'],
@@ -411,7 +445,7 @@ final class ProjectDescribe extends ReadOnlyTool
             // (`D-ANS-086`).
             $bound === null => 'Nothing here bounds the interpreter — there is no composer/platform_check.php below '
                 . 'the vendor directory to read one out of — so no PHP version stops a command below from starting.',
-            $relation['environmentAgainstBound'] === Project::PHP_BELOW => sprintf(
+            $relation['environmentAgainstBound'] === Project::BELOW => sprintf(
                 'The install itself is bounded at %s, over the %s the environment runs.',
                 $bound,
                 (string) $environment['php'],
@@ -443,7 +477,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * is built for — which is the finding `feedback/2026-07-31-193611` reported
      * as a version mismatch that blocked nothing.
      *
-     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function whereTheyRun(?array $environment, ?string $bound): string
     {
@@ -494,7 +528,7 @@ final class ProjectDescribe extends ReadOnlyTool
         }
 
         return match (Project::againstBound($interpreter, $bound)) {
-            Project::PHP_BELOW => sprintf(
+            Project::BELOW => sprintf(
                 ' They do not start there: the install is bounded at PHP %s and %s runs %s, so each of them aborts '
                     . 'in composer/platform_check.php before its own tool does anything.',
                 $bound,
@@ -519,6 +553,129 @@ final class ProjectDescribe extends ReadOnlyTool
     }
 
     /**
+     * Which Node the npm commands in that list run on, which nothing beside
+     * them said.
+     *
+     * The PHP relation above is the same sentence for the other interpreter,
+     * and the reported defect was this one: a build broke on the machine and CI
+     * being different releases of one Node major (`D-SCO-013`). Empty where
+     * this repository has no npm surface at all, which is the one case where a
+     * silence about Node says something rather than hiding it.
+     *
+     * @param array{engines: ?string, nvmrc: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null $node
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @return array<int, string>
+     */
+    private static function node(?array $node, ?array $environment): array
+    {
+        if ($node === null) {
+            return [];
+        }
+
+        $relation = $node['relation'];
+        $sentences = [$relation === null
+            ? self::undeclaredNode($node['engines'], $node['nvmrc'])
+            : sprintf(
+                'The Node those npm commands run on. This repository declares %s, in %s.',
+                $relation['declared'],
+                $relation['declaredBy'],
+            )];
+
+        if ($relation !== null && $relation['declaredBy'] === '.nvmrc' && $node['engines'] !== null) {
+            $sentences[] = match ($relation['nvmrcAgainstEngines']) {
+                Project::SAME => sprintf('Its package.json admits %s, which that pin is the lowest version of.', $node['engines']),
+                Project::ABOVE => sprintf('Its package.json admits %s, and the pin sits above the lowest version of that.', $node['engines']),
+                Project::BELOW => sprintf(
+                    'Its package.json admits %s, which the pin is below — the version a machine here selects is one '
+                        . 'this package says it does not run on.',
+                    $node['engines'],
+                ),
+                default => sprintf(
+                    'Its package.json admits %s, in a spelling this will not read a lowest version out of, so the two '
+                        . 'are not held against each other.',
+                    $node['engines'],
+                ),
+            };
+        }
+
+        $sentences[] = match (true) {
+            $node['ci'] === [] => 'No workflow below .github/workflows/ sets Node up, so nothing here says which one '
+                . 'CI runs them on.',
+            $relation === null || $relation['inCi'] === null => 'What its workflows set up is below, as each of them '
+                . 'states it.',
+            $relation['inCi'] === Project::SAME => sprintf(
+                'Its workflows set up %s, which is that version as far as both of them spell it.',
+                (string) $relation['ci'],
+            ),
+            default => sprintf(
+                'Its workflows set up %s, %s it.',
+                (string) $relation['ci'],
+                $relation['inCi'] === Project::ABOVE ? 'above' : 'below',
+            ),
+        };
+
+        if ($node['environment'] !== null) {
+            $sentences[] = match ($relation['inEnvironment'] ?? null) {
+                Project::SAME => sprintf('The environment runs %s, which is that version.', $node['environment']),
+                Project::ABOVE => sprintf('The environment runs %s, above it.', $node['environment']),
+                Project::BELOW => sprintf('The environment runs %s, below it.', $node['environment']),
+                default => sprintf('The environment runs %s.', $node['environment']),
+            };
+        } elseif ($environment !== null && $environment['via'] === Typo3Cli::VIA_DDEV) {
+            $sentences[] = 'That DDEV project states no nodejs_version, so the default of the installed DDEV applies '
+                . 'and these files do not carry it.';
+        }
+
+        $sentences[] = 'All of it read from these files. Nothing was run to find it out, and the Node your own shell '
+            . 'has is not among them.';
+
+        $lines = ['', implode(' ', $sentences)];
+        foreach ($node['ci'] as $step) {
+            $lines[] = sprintf('- %s — %s', $step['workflow'], match (true) {
+                $step['from'] === 'none' => 'sets Node up without stating a version, so the runner image\'s own',
+                $step['version'] !== null => 'node-version: ' . $step['states'],
+                $step['from'] === 'node-version-file' => sprintf(
+                    'node-version-file: %s, so the version is whatever that file says',
+                    $step['states'],
+                ),
+                default => sprintf(
+                    'node-version: %s, which names no version outright — the workflow is what says which one that is',
+                    $step['states'],
+                ),
+            });
+        }
+
+        return $lines;
+    }
+
+    /**
+     * That no file here declares the Node, and what those files say instead.
+     *
+     * Two states wear one sentence otherwise: a repository that states nothing,
+     * and one that states `lts/iron` or a range whose lowest version this will
+     * not claim to read. The second is where the caller has something to open.
+     */
+    private static function undeclaredNode(?string $engines, ?string $nvmrc): string
+    {
+        $stated = [];
+        if ($nvmrc !== null) {
+            $stated[] = 'its .nvmrc says ' . $nvmrc;
+        }
+        if ($engines !== null) {
+            $stated[] = 'its package.json admits ' . $engines;
+        }
+
+        return $stated === []
+            ? 'Nothing here declares which Node those npm commands run on: package.json states no engines.node and '
+                . 'there is no .nvmrc beside it, so what runs them is whatever node is on the path.'
+            : sprintf(
+                'Nothing here declares which Node those npm commands run on in a spelling this will read as a '
+                    . 'version: %s, and what either of those resolves to is decided outside this repository.',
+                implode(', and ', $stated),
+            );
+    }
+
+    /**
      * What the environment serves, which is not the same question as where the
      * commands run and is answered whether the repository declares any.
      *
@@ -526,7 +683,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * container address are not in these files, and `R-DIS-006` is why nothing
      * here starts anything to find out.
      *
-     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function site(?array $environment): string
     {
@@ -552,7 +709,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * `R-PRJ-009`. Said even where there are none, because an answer that names
      * no hook reads as "there is none" whether this looked or not.
      *
-     * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      * @return array<int, string>
      */
     private static function lifecycle(?array $environment): array

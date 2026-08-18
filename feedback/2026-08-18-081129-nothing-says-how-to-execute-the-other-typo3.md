@@ -38,3 +38,15 @@ A procedure — belonging to typo3-extension-upgrade, and worth its own guide un
 It should also state the honest fallback, because it is often the right answer: where the second major cannot be run, name what a static compatibility argument must cover to be worth anything — that every symbol used exists on the other branch, and that the execution order the fix relies on holds there too — and require that the unproven half be declared as unproven rather than implied.
 
 typo3_project_describe is the natural place to surface the input: it already reports the declared commands and the environment, and the TYPO3 constraint from composer.json plus the CI matrix would tell a caller immediately whether a claimed major is covered by anything at all.
+
+Trimmed on 2026-08-18 of the second suggestion. What a static compatibility
+argument owes where nothing can be run was written the same day as
+`typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed`,
+in its closing section: the symbols, the branch and the revision that branch was
+at, what the reading left uncovered, and that the claim is declared unproven
+outright. The execution order this report names beside the symbols is what "left
+uncovered" already asks for. What is left is the first suggestion — the procedure
+for exercising the package against the major that is not installed — and
+`D-VER-008` is the judgement that takes it on, including why the third suggestion
+is answered by that procedure rather than by a field on
+`typo3_project_describe`.

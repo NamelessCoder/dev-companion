@@ -3,6 +3,8 @@
 **Serves:** src/, tests/
 **Priority:** low
 **Run:** bin/cli prose:check
+**Branch:** todo/cut-the-comments-that-retell-the-entry-they-name
+**Claimed:** 2026-08-18
 
 The sweep was run on 2026-08-18, longest first, from the 59 lines above
 `src/Upkeep/Todo.php` down to 14: every comment over 13 lines was read against

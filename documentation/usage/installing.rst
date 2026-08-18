@@ -264,8 +264,8 @@ workspace. ``github.copilot.chat.skillTool.enabled`` is a different,
 experimental switch and not the one that makes them visible.
 
 Its MCP entry goes to ``.vscode/mcp.json``, in one of the two shapes
-:ref:`the section below <installing-which-path-is-written>`
-sets out: VS Code is one of the two clients that resolve ``${workspaceFolder}``.
+:ref:`the section below <installing-which-path-is-written>` sets out: VS Code is
+one of the two clients that resolve ``${workspaceFolder}``.
 
 .. _installing-finishing-in-the-client:
 
@@ -524,6 +524,12 @@ What comes with it
 Clients that expose MCP prompts also list ``commit_message``. It turns a summary
 into the same checked draft as ``typo3_commit_message_guide``; the rules remain
 in the guide rather than being duplicated in the prompt.
+
+``debrief`` stands beside it in a standalone checkout of this repository, where
+the feedback channel is offered. It takes no arguments and asks the session that
+has just finished what this server did for it and what it lacked. The two
+feedback tools are gated the same way, so a project that installed the server as
+a dependency lists none of the three.
 
 Task skills are authored once below ``skills/``. They contain routing and order,
 not a second copy of tool answers; client installation publishes them from that

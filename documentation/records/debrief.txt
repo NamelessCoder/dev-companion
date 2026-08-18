@@ -1,0 +1,76 @@
+The work is done. What follows is a debrief about the TYPO3 knowledge server you
+had available, not about the repository you just worked in. Change no files.
+
+That server records feedback about itself with typo3_feedback_record, and the
+people who maintain it read them. Report the session you just had from your own
+transcript, not from how it felt. Where that transcript begins at a summary of
+earlier turns, say so and answer for the part you can see: what is missing from
+your window is not the same as what did not happen.
+
+- Which of its skills you activated, whether the skill fitted the task, and what
+  in it you would keep or drop. Name the skill. If none activated, say so — that
+  is a result.
+- Which part of the task no skill carried: the step you worked out for yourself
+  and would work out again in the next session. Say what you were doing at the
+  moment one would have had to activate, and in which words — the request, the
+  symptom, the files you had open. A skill is chosen on its description alone,
+  so one that exists and stayed shut is a different finding from one that is
+  not there.
+- Which tool calls the task actually needed, in the order you made them, and how
+  many round trips each answer cost. Walk the whole list rather than the calls
+  you remember as notable; the ones that returned nothing are what memory drops.
+  Name the ones you would not make again: a
+  lookup that returned nothing usable, one you had to repeat with different
+  arguments to get an answer, one that only restated what the previous answer
+  already said. Where several of them went into one question, say which single
+  call would have settled it and what it would have had to return.
+- Which of the documents it offers as resources you read whole, and whether your
+  client showed you that list at all. They are picked out of a list rather than
+  called mid-task, so a session can finish without learning they exist. Where you
+  read one, say whether it carried the procedure end to end or sent you back to a
+  search. Where you assembled the steps yourself, say what the page you wanted
+  would have been called.
+- What you never put to it. A question you took elsewhere because you did not
+  expect an answer, or a tool you read and passed over, is a finding the server
+  has no other way of learning — it sees the calls that were made and nothing
+  else. Name what you assumed, and whether it held.
+- Where a name did not mean what it said: a tool whose name or description
+  promised another answer, one you would not have found from its name, a word
+  you searched with that the server spells another way. That holds for what it
+  answered as much as for what it is called — knowledge you took to be missing
+  may have been there under a term you did not try. Say how you found the tools
+  you did reach — from the list, from what the server told you at the start, or
+  from a guess that landed. A name is what a client installed months ago still
+  calls it by.
+- Where something went wrong: an error, an answer that was incorrect, an answer
+  that did not hold on the TYPO3 version you were working against, an argument
+  or a schema you had to guess at, a call you could not complete.
+- What the server saved you from — a wrong path you did not take, a file you did
+  not have to read, an assumption it corrected before you acted on it. Be as
+  concrete here as about the failures; what worked is what must not be broken
+  later.
+- What you had to establish elsewhere — from the checkout, from your own
+  knowledge, from the web. All of it, not only the part you take to be this
+  server's subject.
+- Where an answer was right and stopped one step short: it named the API and not
+  how to register it, the file and not what has to stand in it, the rule and not
+  the case in front of you. Say which step you took yourself after reading it.
+  That is a different finding from an answer that was missing, and you are the
+  only one who can tell the two apart. Read the answers again rather than
+  recalling them, and where one reported a gap about itself — a confidence it
+  qualified, a route it said it had none for — say whether you acted on it.
+- What you would have wanted from it: the one answer, tool or page that would
+  have made this session shorter. Do not weigh it against what you take this
+  server to be for — where its boundary runs is a question for the people
+  maintaining it, and a wish dropped as out of scope is the one they never hear.
+- What this list did not ask you about, and you would report anyway.
+
+File what you find with that tool. What each of its parameters wants, it says
+itself — read them there and fill in every one you can, including the model you
+are running as.
+
+Then tell me which feedback you filed and what each one says, and what this
+session cost: the tokens, the number of calls, the time it ran, whatever your
+client reports. Read those where they are written down rather than estimating
+them, name what your client does not report at all, and say whether the figure
+covers this debrief as well.

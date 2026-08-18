@@ -10,8 +10,10 @@ use Mcp\Schema\ResourceTemplate;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
+use TYPO3\DevCompanion\Feedback\Channel;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Sdk\ResourceHandler;
 use TYPO3\DevCompanion\Sdk\SkillReferenceHandler;
 use TYPO3\DevCompanion\Sdk\Skills;
@@ -100,6 +102,22 @@ final class Factory
             title: 'Draft a TYPO3 commit message',
             description: 'Turn a summary into the checked commit-message draft already provided by typo3_commit_message_guide.',
         );
+
+        // Where the channel it ends in is, which is what `Registry` gates the
+        // two feedback tools on: a session that cannot record a feedback has no
+        // use for the questions. A prompt rather than a tool, because a tool
+        // stands in the model's list from the first call and the session would
+        // learn while it is still working that it will be debriefed —
+        // `D-FBK-048`.
+        if (Channel::isAvailable()) {
+            $builder->addPrompt(
+                static fn(): array => ['user' => (string) file_get_contents(Paths::debrief())],
+                name: 'debrief',
+                title: 'Debrief the session that has just finished',
+                description: 'Ask a finished session what this server did for it and what it lacked, and have it '
+                    . 'record what it found with typo3_feedback_record. Run it after the work, in a message of its own.',
+            );
+        }
 
         $resourceHandler = new ResourceHandler();
         foreach (self::resources() as $resource) {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion;
 
 /**
- * Resolves paths to the bundled knowledge base. The project root is the parent
- * of the src/ directory; the knowledge/ directory lives next to it.
+ * Resolves the paths this checkout keeps things at. The project root is the
+ * parent of the src/ directory, and everything below is named from there.
  */
 final class Paths
 {
@@ -108,5 +108,20 @@ final class Paths
     public static function feedbackArchive(): string
     {
         return self::feedback() . '/archive';
+    }
+
+    /**
+     * The questions a finished session is debriefed with, which the `debrief`
+     * prompt hands over and `documentation/records/asking-for-a-debrief.rst`
+     * includes — one text, so what somebody pastes is what the server offers
+     * (`D-FBK-048`).
+     *
+     * It sits in the published tree rather than below `knowledge/` because the
+     * page is what includes it, and a renderer resolves an include against the
+     * directory it publishes and nothing outside it.
+     */
+    public static function debrief(): string
+    {
+        return self::root() . '/documentation/records/debrief.txt';
     }
 }

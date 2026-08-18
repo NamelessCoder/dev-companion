@@ -189,6 +189,32 @@ final class StdioServerTest extends TestCase
         );
     }
 
+    /**
+     * The other prompt, offered because this checkout is where the feedback
+     * channel is — `D-FBK-048`. What it hands over is the file the page
+     * includes, which is what holds the two to one text.
+     */
+    #[Test]
+    public function theDebriefIsAvailableAsAPromptTakingNoArguments(): void
+    {
+        $prompts = $this->session([$this->request(2, 'prompts/list')])[2]['result']['prompts'];
+        $debrief = array_values(array_filter(
+            $prompts,
+            static fn(array $prompt): bool => $prompt['name'] === 'debrief',
+        ));
+
+        self::assertCount(1, $debrief);
+        self::assertSame([], $debrief[0]['arguments'] ?? []);
+
+        $result = $this->session([$this->request(2, 'prompts/get', ['name' => 'debrief'])])[2]['result'];
+
+        self::assertSame('user', $result['messages'][0]['role']);
+        self::assertSame(
+            (string) file_get_contents(Paths::debrief()),
+            $result['messages'][0]['content']['text'],
+        );
+    }
+
     #[Test]
     public function aToolCallReturnsTextAndStructuredContent(): void
     {

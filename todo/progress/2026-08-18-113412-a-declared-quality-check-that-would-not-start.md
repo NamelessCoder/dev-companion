@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113412-a-declared-quality-check-that-would-not-start.md, D-ANS-086
 **Priority:** normal
+**Branch:** todo/a-declared-quality-check-that-would-not-start
+**Claimed:** 2026-08-18
 
 Judged as the ladder's step 1b: `typo3_project_describe` marks `composer cgl:ci`
 a `check` a review may run and carries nothing that says it aborts before the

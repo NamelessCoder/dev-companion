@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113441-a-project-package-s-release-and-backport-policy.md
 **Priority:** normal
+**Branch:** todo/a-project-package-s-release-and-backport-policy
+**Claimed:** 2026-08-18
 
 Write the rule into `skills/typo3-extension-cleanup/SKILL.md`, at the step where
 a change is committed: which branch a fix belongs on, whether it is squashed,

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-074124-nothing-answers-about-an-api-at-a-typo3-major.md
 **Priority:** normal
+**Branch:** todo/nothing-answers-about-an-api-at-a-typo3-major
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 1b and written up in `D-VER-007`. The
 cost is real and the tool the feedback asks for is the one `doesNotCover`

@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-059, feedback/2026-08-18-071526-task-guide-returns-two-installation-intents-but.md, feedback/2026-08-18-074606-no-skill-owns-an-installation-that-boots-but.md
 **Priority:** normal
+**Branch:** todo/own-the-installation-that-already-answers
+**Claimed:** 2026-08-18
 
 Write the half of `skills/typo3-development-installation/SKILL.md` that owns an
 installation which already answers, and re-cut **Where this stops** so it stops

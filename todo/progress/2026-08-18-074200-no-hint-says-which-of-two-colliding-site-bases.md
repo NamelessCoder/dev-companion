@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-074200-no-hint-says-which-of-two-colliding-site-bases.md
 **Priority:** low
+**Branch:** todo/no-hint-says-which-of-two-colliding-site-bases
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

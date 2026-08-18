@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-071500-nothing-answers-how-a-freshly-booted-extension.md
 **Priority:** normal
+**Branch:** todo/nothing-answers-how-a-freshly-booted-extension
+**Claimed:** 2026-08-18
 
 Judged as step 1a and taken on: `D-KNW-096` has the evidence, the boundary and
 what would show it wrong. Establish against `.checkouts/` which ways core lets a

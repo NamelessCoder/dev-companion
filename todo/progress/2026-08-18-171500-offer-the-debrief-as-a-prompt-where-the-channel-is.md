@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-071603-every-finding-in-this-session-s-ten-feedbacks.md, D-FBK-048
 **Priority:** normal
+**Branch:** todo/offer-the-debrief-as-a-prompt-where-the-channel-is
+**Claimed:** 2026-08-18
 
 Move the debrief text out of the code block in
 `documentation/records/asking-for-a-debrief.rst` into one file both sides read,

@@ -110,18 +110,12 @@ final class HintsTest extends TestCase
     /**
      * `R-ANS-026`: a path says which subsystem the question is about.
      *
-     * Two sessions on 2026-08-07 passed the Extbase persistence paths and got
-     * FAL storages back, from `typo3_hint_lookup` and from `typo3_task_guide`.
-     * A bare `appliesTo` word is matched against the paths as a prefix, so
-     * `storage` claimed the `Storage/` segment and `/Persistence/` claimed the
-     * directory above it, and both outranked everything on the keyword tier
-     * while their own words answered nothing — `D-ANS-060`.
-     *
-     * The negative is what this holds. Which hint *should* answer here is a
-     * subject the corpus does not carry yet: `persistence-reading` is the core
-     * QueryBuilder and `PageRepository`, and `extbase-domain-mapping` is the
-     * model and its table, so neither covers the query parser, the column map
-     * or `Backend`.
+     * Two sessions passed the Extbase persistence paths and got FAL storages
+     * back. A bare `appliesTo` word is matched against the paths as a prefix, so
+     * `storage` claimed the `Storage/` segment and `/Persistence/` the directory
+     * above it, and both outranked everything on the keyword tier while their
+     * own words answered nothing — `D-ANS-060`. The negative is what this holds:
+     * which hint *should* answer here is a subject the corpus does not carry.
      */
     #[Test]
     public function anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem(): void
@@ -149,11 +143,10 @@ final class HintsTest extends TestCase
      *
      * `keywords` used to sort above `score` unconditionally, so a pattern match
      * was worth more than the hint's own words whatever they said.
-     * `system-extension-boundaries` is what that cost: it claims `typo3/sysext/`
-     * and `sysext`, which every core path in the world carries, and it scored 0
-     * against every query measured on 2026-08-07 — while standing second on a
-     * FAL question, above `fal-basics` and `fal-storages-drivers`. That is the
-     * tier order `D-ANS-060` left open.
+     * `system-extension-boundaries` is what that cost: it claims `typo3/sysext/`,
+     * which every core path in the world carries, and scored 0 against every
+     * query measured while standing second on a FAL question. That is the tier
+     * order `D-ANS-060` left open.
      */
     #[Test]
     public function aHintWhoseOwnWordsAnswerNothingRanksBelowOneThatDoes(): void
@@ -335,15 +328,11 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `R-KNW-073`, `D-KNW-089`. The statement carries no version binding
-     * because the mechanism reads the same on all four checkouts: the TCA cache
-     * identifier is `PackageDependentCacheIdentifier` with the `tca_base`
-     * prefix on 12.4, 13.4, 14.3 and main alike, and the success message is
-     * unconditional in the setup command on all of them. What a stale entry
-     * hides differs by major and the two statements beside this one already
-     * carry that — whole tables where the migrator adds one per TCA name,
-     * the derived columns and MM tables where it enriches only what
-     * `ext_tables.sql` declared.
+     * `R-KNW-073`, `D-KNW-089`. The statement carries no version binding because
+     * the mechanism reads the same on all four checkouts: the TCA cache
+     * identifier and the unconditional success message are what they are on
+     * 12.4, 13.4, 14.3 and main alike. What a stale entry hides differs by major
+     * and the two statements beside this one already carry that.
      */
     #[Test]
     public function theSchemaStepIsSaidToMigrateFromTheCachedTca(): void
@@ -411,17 +400,14 @@ final class HintsTest extends TestCase
 
     /**
      * `D-KNW-055`. The corpus held the analyser half of the static-quality layer
-     * and spelled the whole layer with the analyser's words, so every word a
-     * fixer task carries reached something else: the reported query returned
-     * `extension-repository-layout` on text alone, and "php-cs-fixer" reached
-     * nothing out of 81 candidates.
+     * and spelled the whole layer with the analyser's words, so "php-cs-fixer"
+     * reached nothing out of 81 candidates.
      *
      * Read back out of an installed `typo3/coding-standards` v0.9.0, because the
      * package is in no checkout and in no environment here. Two of the three
      * things the report asked for do not hold: the excludes are directory names
-     * matched at any depth rather than literal paths, and `.build` is hidden, so
-     * the shipped `->in(__DIR__)` is not the trap it was reported as. What is
-     * one is a build directory that is neither hidden nor one of the four names.
+     * matched at any depth rather than literal paths, and `.build` is hidden.
+     * What is one is a build directory that is neither.
      */
     #[Test]
     public function theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable(): void
@@ -611,16 +597,11 @@ final class HintsTest extends TestCase
      * renders. It settled that by reading the resolver out of an installed
      * vendor tree — three shell round trips for the first half of the verdict.
      *
-     * Read back the same way, because `typo3fluid/fluid` is in no checkout:
-     * `TemplatePaths::resolveFileInPaths()` in 5.3.1 under `.environments/`
-     * builds its candidates path by path over `array_reverse($paths)`, so the
-     * whole file-name chain runs inside one root path before the next is
-     * tried. Which root path is the later one is not in the changelog entry
-     * that announced the chain, and the two mechanisms could have disagreed:
-     * the core's own `TemplatePaths` sorts each list through
-     * `ArrayUtility::sortArrayWithIntegerKeys()` first, on 12.4, 13.4 and 14.3
-     * alike, and that sort is skipped for the whole list as soon as one key in
-     * it is a string.
+     * Read back the same way, because `typo3fluid/fluid` is in no checkout: the
+     * whole file-name chain runs inside one root path before the next is tried.
+     * The two mechanisms could have disagreed, because the core's own
+     * `TemplatePaths` sorts each list first and skips that sort as soon as one
+     * key in it is a string.
      */
     #[Test]
     public function aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath(): void
@@ -700,14 +681,10 @@ final class HintsTest extends TestCase
      * naming the ViewHelper and not the method that produced the value, so both
      * phrasings are asserted here.
      *
-     * The binding is the half that decision predicted wrong. Read by rendering
-     * the case against `.checkouts/12.4`, `13.4` and `14.3`, whose Fluid is
-     * `main`'s to the file: a `hasItems()` beside a public `$items` renders
-     * `{obj.items}` as `1` on all of them, `<f:for>` raises the quoted message
-     * on all of them where the boolean is true, and only the strict processor
-     * raises it for a false. On 12 the compiled template calls `renderStatic()`
-     * and drops the check with it, which is why the same page throws once and
-     * then renders nothing.
+     * The binding is the half that decision predicted wrong: only the strict
+     * processor raises the message for a false, and on 12 the compiled template
+     * calls `renderStatic()` and drops the check with it, which is why the same
+     * page throws once and then renders nothing.
      */
     #[Test]
     public function anObjectPathIsAnsweredWithTheGetterThatComesBeforeTheProperty(): void
@@ -879,16 +856,11 @@ final class HintsTest extends TestCase
      * A core path answered with a sitepackage hint is told whose work it is.
      *
      * Three core frontend `Classes/` paths drew `frontend-records` and
-     * `page-variables-and-processors` — TCA files of your own, `dataProcessing`
-     * on `PAGEVIEW`, menu processor options — and the answer said nothing about
-     * either being somebody else's obligation, so the session read them as
-     * material for a core patch and reported one partial hit in four.
-     *
-     * What is asserted here is the notice and not the rank. Measured on
-     * 2026-08-08, both sit below the two hints that answer the query, so
-     * neither is outranking anything; the corpus gap `frontend-access-restriction`
-     * fills was the finding, and the notice is what the answer still owed
-     * (`D-ANS-060`).
+     * `page-variables-and-processors`, and the answer said nothing about either
+     * being somebody else's obligation, so the session read them as material for
+     * a core patch. What is asserted here is the notice and not the rank: both
+     * sit below the two hints that answer the query, and the notice is what the
+     * answer still owed (`D-ANS-060`).
      */
     #[Test]
     public function aHintBindingOutsideTheCoreSaysSoOnACorePath(): void
@@ -1366,11 +1338,9 @@ final class HintsTest extends TestCase
      * as the same declarative style — the general sentence written before the
      * exception existed, and the one a reader is misled by.
      *
-     * Read on 12.4, 13.4, 14.3 and main, so nothing is bound:
-     * `AbstractServiceProvider::configureBackendRoutes()` merges `Routes.php`
-     * under the keys the file writes and registers every `AjaxRoutes.php` entry
-     * prefixed, and `PageRenderer::addAjaxUrlsToInlineSettings()` strips the
-     * prefix off again.
+     * Read on 12.4, 13.4, 14.3 and main, so nothing is bound: every
+     * `AjaxRoutes.php` entry is registered prefixed, and
+     * `PageRenderer::addAjaxUrlsToInlineSettings()` strips the prefix off again.
      */
     #[Test]
     public function anAjaxRouteIsCarriedThroughAllThreeOfItsSpellings(): void
@@ -1435,24 +1405,13 @@ final class HintsTest extends TestCase
 
     /**
      * The sweep the three constants in `D-ANS-002` were picked off, as far as it
-     * was written down.
-     *
-     * It was eighteen queries with a known right answer, run against every
-     * candidate value until one held all of them; only what the commit and the
-     * decision quote survives, which is fourteen. Four are lost, and that they
-     * are is the reason the rest is here rather than in a session's scrollback:
+     * was written down: eighteen queries with a known right answer, of which
+     * fourteen survive. It is here rather than in a session's scrollback because
      * a constant measured against a set nobody kept can only be re-measured
-     * against a set somebody reconstructs.
-     *
-     * Twelve of the fourteen are in this provider. The other two are recorded
-     * misses and are asserted where their reason is written down —
-     * «my button looks wrong» in whatACallerCanSeeReachesTheHintAboutIt, and
-     * «wie lege ich ein neues Content-Element an» nowhere, because `R-AUD-006`
-     * settled that this server is queried in English.
-     *
-     * A null answer is the corpus having none, and it carries the same weight
-     * as a hit: answering everything is worth what answering nothing is, and
-     * the negative controls are what the dilution weight exists for.
+     * against a set somebody reconstructs. Twelve of the fourteen are in this
+     * provider; the other two are asserted where their reason is written down,
+     * the German one nowhere, because `R-AUD-006` settled that this server is
+     * queried in English. A null answer carries the same weight as a hit.
      *
      * @return array<string, array{0: string, 1: ?string}>
      */
@@ -1741,10 +1700,9 @@ final class HintsTest extends TestCase
      * order" is what its curator wrote down for exactly this sentence.
      *
      * What keeps the crossing to that case is that no selected hint claims the
-     * phrase. Where one does, the layers the query named can answer it
-     * themselves and nothing crosses — "unit test" is curated on the PHPUnit
-     * hints as well as on the JavaScript one, and
-     * aTypeScriptTestPathIsNotAnsweredWithPhpunit is where that half is held.
+     * phrase: where one does, the layers the query named can answer it
+     * themselves, and aTypeScriptTestPathIsNotAnsweredWithPhpunit is where that
+     * half is held.
      */
     #[Test]
     public function aSymptomReachesTheHintThatExplainsItFromAnotherDomain(): void
@@ -1847,22 +1805,14 @@ final class HintsTest extends TestCase
      * The near-miss is the answer the index is worth most on, and it was the
      * one answer without it.
      *
-     * `feedback/2026-08-04-055626`: a query for a code style fixer matched
-     * `extension-manifest`, `extension-repository-layout` and
-     * `extension-boot-files` — three hints about something else — and
-     * `availableHints` came back empty. So the field that would have named
-     * `extension-static-analysis` was present and empty exactly where the
-     * caller needed it, and the session reached that id only because a skill
-     * file happens to name it in prose (`D-KNW-055`).
+     * A query for a code style fixer matched three hints about something else
+     * and `availableHints` came back empty, so the field that would have named
+     * `extension-static-analysis` was present and empty exactly where the caller
+     * needed it (`D-KNW-055`).
      *
      * The whole domain index rather than the categories the matched hints are
-     * in, and the measurement is why: of the 81 hints the `php` domain holds,
-     * 76 are in the category `PHP`, so narrowing to the categories that matched
-     * this query drops five of them and none of the length. What it costs is
-     * the length the empty answer in the same domains already carries — 81
-     * entries at about 5.7 kB of text, against 127 for an id that does not
-     * exist — so a near miss is now at most as long as the miss beside it, and
-     * no answer of this tool grew a ceiling it did not have.
+     * in, because narrowing to those drops hints and none of the length: a near
+     * miss is at most as long as the miss beside it.
      */
     #[Test]
     public function anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn(): void
@@ -1892,12 +1842,11 @@ final class HintsTest extends TestCase
      * The index the near-miss answer carries is only worth its lines if the
      * near miss is at the top of it.
      *
-     * `feedback/2026-08-10-182451` is what the file order cost: the session was
-     * shown `javascript-unit-tests` at position 43 of 46 while the matcher had
-     * just ranked it seventh of the 13 it admitted and `limit=6` had cut it by
-     * one place. It spent six calls rebuilding that hint's subject out of the
-     * filesystem instead. What the limit cut is what the query came closest to
-     * and did not get, so it is what the index opens with — `D-ANS-075`.
+     * The file order showed a session `javascript-unit-tests` at position 43 of
+     * 46 while the matcher had just ranked it seventh of the 13 it admitted, and
+     * it spent six calls rebuilding that hint's subject out of the filesystem
+     * instead. What the limit cut is what the query came closest to and did not
+     * get, so it is what the index opens with — `D-ANS-075`.
      */
     #[Test]
     public function theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused(): void
@@ -2033,17 +1982,11 @@ final class HintsTest extends TestCase
      *
      * A core patch drafted an optional third parameter onto the public
      * `GifBuilder::start()` of a class that is not final, and every check the
-     * project has was green on it: no core class overrides the method, so
-     * 3613 functional tests, 235 unit tests, cgl over 6300 files and phpstan
-     * over 6265 said nothing. What raised it was the `breaking-not-assessed`
-     * line of `typo3_commit_message_guide`, after the diff and the entry were
-     * written, and its wording named removing and narrowing
-     * (`feedback/2026-08-08-224316`).
-     *
-     * The path is not what carries it. Keyed on core `Classes/` the hint
-     * outranked `fal-basics` on a FAL question and displaced it out of a
-     * brief, so the reachable-by-construction half is the development skill's
-     * blast radius step and this is the half a session that asks gets.
+     * project has was green on it. What raised it was the
+     * `breaking-not-assessed` line of `typo3_commit_message_guide`, after the
+     * diff and the entry were written. The path is not what carries it: keyed on
+     * core `Classes/` the hint outranked `fal-basics` on a FAL question and
+     * displaced it out of a brief.
      */
     #[Test]
     public function wideningAPublicSignatureIsAnsweredAsTheBreakingMoveItIs(): void
@@ -2091,15 +2034,12 @@ final class HintsTest extends TestCase
     /**
      * D-KNW-072. The move that is not a move, which every statement above misses.
      *
-     * A review had to say whether a patch turning `<figcaption>Caption</...>`
-     * into `<figcaption><p>Caption</p></...>` was breaking, and whether it could
-     * reach two release lines. Nothing here answered: every statement the corpus
-     * carried was keyed on a member being removed, narrowed or widened, and the
-     * session shipped its verdict from recall (`feedback/2026-08-12-092607`).
-     *
-     * The question outranks the signature one on its own words rather than by
-     * construction, so it is measured here: `public-api-surface` shares its
-     * `appliesTo` phrases and would otherwise answer the wrong half.
+     * A review had to say whether a patch changing rendered markup was breaking,
+     * and every statement the corpus carried was keyed on a member being
+     * removed, narrowed or widened. The question outranks the signature one on
+     * its own words rather than by construction, so it is measured here:
+     * `public-api-surface` shares its `appliesTo` phrases and would otherwise
+     * answer the wrong half.
      */
     #[Test]
     public function aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember(): void
@@ -2487,13 +2427,10 @@ final class HintsTest extends TestCase
     /**
      * The corpus named the database settings alone, which made the two ways out
      * of the generated file look interchangeable: a session took the file over,
-     * wrote that half back, and the installation answered every request with
-     * exception 1396795884 for the trusted hosts pattern nobody had named —
-     * `R-KNW-060`.
-     *
-     * The database-less half is the same omission read the other way. DDEV's
-     * generator writes the DB block unconditionally, so an installation whose
-     * connection comes from somewhere else has to take the file over.
+     * wrote that half back, and the installation answered every request with the
+     * trusted hosts exception nobody had named — `R-KNW-060`. The database-less
+     * half is the same omission read the other way, because DDEV's generator
+     * writes the DB block unconditionally.
      */
     #[Test]
     public function theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes(): void
@@ -2560,13 +2497,9 @@ final class HintsTest extends TestCase
 
     /**
      * `D-FBK-018`. What a boot brief is credited with is not the verdict but the
-     * file, command or number the caller can check the verdict against: a
-     * session ran `ddev restart` on the Typo3Version.php sentence alone, and
-     * searched for `Initialisation/` rather than inheriting "inert on v14",
-     * which is the branch it would have got wrong — `feedback/2026-08-18-070515`.
-     *
-     * Each of the three was in no assertion, so the decidable half could have
-     * been summarised away while the conclusion beside it stayed and read as
+     * file, command or number the caller can check the verdict against. Each of
+     * the three was in no assertion, so the decidable half could have been
+     * summarised away while the conclusion beside it stayed and read as
      * unchanged.
      */
     #[Test]
@@ -3240,28 +3173,14 @@ final class HintsTest extends TestCase
 
     /**
      * The corpus said every test class gets a database of its own and never what
-     * becomes of it, so a session watched the set grow, could not tell a
-     * leftover from the database the site runs on, and started accounting for
-     * records by hand (`D-KNW-022`). «live database versus test database»
-     * reached no hint at all.
-     *
-     * Read rather than recalled, on `.checkouts/testing-framework` at `8`, `9`
-     * and `main`, which agree line for line: the single `dropDatabase()` sits in
-     * `Testbase::setUpTestDatabase()` and runs at the *start* of a class's first
-     * test — drop where it exists, then create — `FunctionalTestCase::tearDown()`
-     * removes a site configuration directory and one cache file, and no ref
-     * declares `tearDownAfterClass()`. `getInstanceIdentifier()` is
-     * `substr(sha1(static::class), 0, 7)`, so the suffix is per class and the
-     * set is bounded by the classes rather than by the runs; and
-     * `DatabaseSnapshot` keeps its rows in memory or in a `.snapshot.sqlite`
-     * written by the first test of the same run, so a leftover is never read
-     * back.
+     * becomes of it, so a session could not tell a leftover from the database
+     * the site runs on and started accounting for records by hand (`D-KNW-022`).
      *
      * Both cases that carry no such name are asserted, because either one left
-     * out makes the suffix too strong as the mark: `$initializeDatabase = false`
-     * returns before `setUpTestDatabase()` is reached, and under `pdo_sqlite`
-     * the per-class database is a file below `functional-sqlite-dbs/` with no
-     * `_ft` name anywhere.
+     * out makes the per-class suffix too strong as the mark:
+     * `$initializeDatabase = false` returns before `setUpTestDatabase()` is
+     * reached, and under `pdo_sqlite` the per-class database is a file below
+     * `functional-sqlite-dbs/` with no `_ft` name anywhere.
      */
     #[Test]
     public function thePerClassDatabaseAnswerSaysWhatSurvivesTheRun(): void
@@ -3568,14 +3487,11 @@ final class HintsTest extends TestCase
      * caller writing that file before the install — which is when it has to be
      * written — could read the answer off nothing.
      *
-     * Read off `.checkouts/` for the half TYPO3 owns:
-     * `Install\FolderStructure\DefaultFactory` places `typo3temp/`, `fileadmin/`
-     * and the generated `.htaccess` files the same way on all four branches, and
-     * `FileNode::fixSelf()` writes content only where the file did not exist.
-     * The rest is `typo3/cms-base-distribution` and `typo3/cms-composer-installers`,
-     * which are in no checkout: read out of an installed distribution per major,
-     * where the shipped ignore file denies both directories rather than
-     * enumerating what lands in them.
+     * Read off `.checkouts/` for the half TYPO3 owns, where
+     * `Install\FolderStructure\DefaultFactory` places the directories the same
+     * way on all four branches. The rest is `typo3/cms-base-distribution` and
+     * `typo3/cms-composer-installers`, which are in no checkout: read out of an
+     * installed distribution per major.
      */
     #[Test]
     public function whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff(): void
@@ -3705,11 +3621,9 @@ final class HintsTest extends TestCase
      * below, and the session that reported it read core source instead.
      *
      * The words are a statement rather than curated vocabulary, and that was
-     * measured too: "no link tag" in `appliesTo` crosses the domain gate on
-     * every query that spells it (`D-ANS-084`), which put this hint above
-     * `extension-asset-build` on "my sass build produces css but there is no
-     * link tag". `f:asset.css` as a pattern does the same to the how-to below,
-     * where the trap is not the answer and publishing is.
+     * measured too: a phrase in `appliesTo` crosses the domain gate on every
+     * query that spells it (`D-ANS-084`), which put this hint above
+     * `extension-asset-build` on a query about a sass build.
      */
     #[Test]
     public function anAssetThatNeverReachesThePageIsAnsweredByTheLayoutThatSwallowedIt(): void
@@ -3749,20 +3663,14 @@ final class HintsTest extends TestCase
 
     /**
      * The layer was covered and unreachable. `browser-tests` could be found only
-     * by words that already name the answer — playwright, e2e, spec.ts — and the
-     * caller who needs it most is the one who has not yet decided that a browser
-     * is involved, so a question about whether an element renders correctly
-     * stopped at `content-elements` and was answered with how to register it
-     * (`D-KNW-017`).
+     * by words that already name the answer, and the caller who needs it most is
+     * the one who has not yet decided that a browser is involved (`D-KNW-017`).
      *
-     * The crossing is a statement in the two hints those questions do reach,
-     * rather than terms on `browser-tests` itself, and that was measured rather
-     * than preferred: «content element» detects as Fluid and TypoScript, the
-     * hint is PHP and TypeScript, so for half of these queries the domain gate
-     * drops it before a single term is scored. The one term that did carry the
-     * other half — `backend preview` — put a testing hint into "the backend
-     * preview of my content element is empty" as well, which is what that entry
-     * named as the way to get this wrong.
+     * The crossing is a statement in the two hints those questions do reach
+     * rather than terms on `browser-tests` itself, and that was measured: for
+     * half of these queries the domain gate drops the hint before a single term
+     * is scored, and the one term that did carry the other half put a testing
+     * hint into "the backend preview of my content element is empty" as well.
      */
     #[Test]
     public function aRenderedVerificationQuestionReachesTheLayerThatVerifiesIt(): void
@@ -3851,29 +3759,13 @@ final class HintsTest extends TestCase
 
     /**
      * `R-KNW-055`. The question is "I am changing rendered output, what asserts
-     * it", and before this statement existed the corpus answered a different
-     * one: `hints:probe` with the reporting session's own query returned
-     * system-extension-boundaries, project-build-and-scripts,
-     * routing-request-handling and caching, none of them about a test
-     * expectation.
+     * it", and before this statement existed the corpus answered a different one.
      *
-     * The two halves are asserted separately because either one alone leaves
-     * the search wrong, and both were measured on `.checkouts/main` at
-     * `c71b2bdb2f` over `typo3/sysext/*\/Tests/`. Grepping the tree for
-     * `fileadmin/|typo3temp/assets|Resources/Public/` reaches 188 files and 24
-     * of the 26 the session had to touch; the same pattern restricted to
-     * `*Test.php` reaches 91 and 21, losing all three
-     * `backend/Tests/Functional/Template/Fixtures/*CopyToClipboard.php` files,
-     * which are the ones holding the expectations. The two it never reaches
-     * hold none: `ShortcutButtonTest` requires its expected markup from those
-     * fixtures, and `FluidEmailTest` asserts no URI at that commit at all.
-     *
-     * Searching for the value rather than around it is the other half:
-     * `\?[0-9]{9,10}`, the rendered cache buster itself, reaches 1 of the 26.
-     * The ratio is a property of the corpus rather than of the asset area —
-     * `<a href=|<img src=|<script src=` sits at 44 of 71 in `*Test.php`, `&amp;`
-     * at 49 of 79 — and it holds on 13.4 (85 of 179) and 14.3 (94 of 192) as it
-     * does on main, so the statement carries no version range.
+     * The two halves are asserted separately because either one alone leaves the
+     * search wrong: searching around the value reaches the fixtures that hold
+     * the expectations, and searching for the value itself reaches almost none
+     * of them. The ratio holds on every covered line, so the statement carries
+     * no version range.
      */
     #[Test]
     public function aRenderedOutputChangeIsToldWhereTheExpectationsHide(): void
@@ -3903,12 +3795,10 @@ final class HintsTest extends TestCase
      * `D-KNW-008`: two hints are named after a sitepackage and none after
      * setting tests up, so "site package" was the discriminating pair of terms
      * and "tests" separated nothing — `R-ANS-007` working as designed on a
-     * corpus where the word naming the subject is the weaker signal.
-     *
-     * The vocabulary is what moved, not the corpus: three phrasings that name
-     * the work rather than the harness. `add tests` was measured with them and
-     * left out — it puts the project hint ahead of `core-tests` for "add tests
-     * for the DataHandler change", which is a core question.
+     * corpus where the word naming the subject is the weaker signal. The
+     * vocabulary is what moved, not the corpus: `add tests` was measured with
+     * these three phrasings and left out, because it puts the project hint ahead
+     * of `core-tests` for a question about the DataHandler.
      */
     #[Test]
     public function settingTestsUpInAPackageReachesTheHintAboutThat(): void
@@ -3964,15 +3854,12 @@ final class HintsTest extends TestCase
      * The sixth phrasing `D-KNW-009`'s first **Wrong if** asked about, and it
      * came out of this repository's own text: the conformance checklist wrote
      * its quality surface down as the bare `tests` that entry had rejected, so
-     * an audit asking in the checklist's own wording reached no PHP hint at
-     * all and no rule about the supported range either. What that cost is on
-     * the record — a recommendation to use a `typo3/cms-compatibility` package
-     * for cross-version testing that no covered line ships (`D-KNW-013`).
-     *
-     * Both ends are held here because either alone is inert, and the wording
-     * is read out of the checklist rather than quoted: the vocabulary was
-     * widened to meet that sentence, so a session that writes the bare word
-     * back fails here rather than in an audit six weeks later.
+     * an audit asking in the checklist's own wording reached no PHP hint at all
+     * and no rule about the supported range either — `D-KNW-013` is what that
+     * cost. Both ends are held here because either alone is inert, and the
+     * wording is read out of the checklist rather than quoted, so a session that
+     * writes the bare word back fails here rather than in an audit six weeks
+     * later.
      */
     #[Test]
     public function anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange(): void
@@ -4166,17 +4053,15 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `D-KNW-001`'s **Wrong if**, run against the server on 2026-08-02. Two of
+     * `D-KNW-001`'s **Wrong if**, run against the server on 2026-08-02: two of
      * five backend-only task texts that name a content element came back with
-     * the sitepackage layout — «Add a TCA field to the content element in the
-     * backend» and «The backend preview of the content element is broken in the
-     * page module».
+     * the sitepackage layout.
      *
      * The exclusion that answers it existed already and was reached only by the
-     * words "backend module". Nothing about it was about modules: the two large
-     * hints displace what the task named whenever the task is backend-only,
-     * because a sitepackage layout is written in the words of the backend it is
-     * administered from and wins on its body rather than on its vocabulary.
+     * words "backend module", while nothing about it was about modules: the two
+     * large hints displace what the task named whenever the task is
+     * backend-only, because a sitepackage layout is written in the words of the
+     * backend it is administered from.
      */
     #[Test]
     public function aBackendOnlyTaskNamingAContentElementIsNotAnsweredWithTheSitepackageLayout(): void
@@ -4411,12 +4296,9 @@ final class HintsTest extends TestCase
      * The other half of that narrowing, on the call `D-ANS-074` was decided
      * from: paths in css and fluid, and five domains none of them reached.
      *
-     * `lintTypescript` and `unitJavascript` are among the withheld ones — the
-     * two the session in `feedback/2026-08-10-182435` left this server for
-     * `runTests.sh -h` and a grep to find, holding an answer that named only
-     * what it had kept.
-     *
-     * The count is asserted against the suites that branch actually offers
+     * `lintTypescript` and `unitJavascript` are among the withheld ones, which
+     * is what a session left this server for `runTests.sh -h` and a grep to
+     * find. The count is asserted against the suites that branch actually offers
      * rather than against a number written here, because a suite added to
      * knowledge/test-suite-hints.json moves it.
      */
@@ -4561,10 +4443,9 @@ final class HintsTest extends TestCase
      * beside it is the exception rather than a rewrite.
      *
      * Both notes are asserted together because the exception is only readable
-     * next to the rule: on its own it says run the whole suite, which is the
-     * advice `feedback/2026-08-02-145003` was already given and the one that
-     * cost it fifteen runs. What makes it cheap is the search before the run,
-     * so the note points at the statement that says where to aim it.
+     * next to the rule: on its own it says run the whole suite, and what makes
+     * that cheap is the search before the run, so the note points at the
+     * statement that says where to aim it.
      */
     #[Test]
     public function theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor(): void
@@ -4697,20 +4578,12 @@ final class HintsTest extends TestCase
     /**
      * A brief names the task skill that owns the work.
      *
-     * D-SKL-013. `skills/base.md` has told every task since 2026-07-31 that
-     * this call returns "the workflow this task belongs to", and the
-     * `instructions` every client receives at initialize say it "hands the
-     * parts that have their own workflow to the skill that owns them" — while
-     * `TaskGuide` named no skill at all. `feedback/2026-08-01-003356` is what
-     * that cost: a session in `site-new` built a content element with a custom
-     * backend preview, loaded no skill, and guessed at facts
-     * `typo3-content-element-development` exists to route.
-     *
-     * It is named alone, which is the half `D-ANS-050` closed: "testimonials"
-     * matched the `test` of the tests intent, so the same call named
-     * `typo3-extension-testing` ahead of the skill that owns the task, and an
-     * assertion that the right name is among them holds just as well when a
-     * whole workflow the task has nothing to do with is loaded first.
+     * `D-SKL-013`. `skills/base.md` and the `instructions` every client receives
+     * at initialize both say this call returns the workflow a task belongs to,
+     * while `TaskGuide` named no skill at all. It is named alone, which is the
+     * half `D-ANS-050` closed: an assertion that the right name is among them
+     * holds just as well when a whole workflow the task has nothing to do with
+     * is loaded first.
      */
     #[Test]
     public function aBriefNamesTheSkillThatOwnsTheWork(): void
@@ -4765,13 +4638,10 @@ final class HintsTest extends TestCase
      * A review request that names a change routes the review (`D-SKL-039`).
      *
      * Run on 2026-08-14, this named `typo3-core-patch-development`: "breaking"
-     * is the intent's own needle and the words of the patch under review are
-     * the words of writing one, while the review shapes `audit` carried were
-     * "review the", "review this", "review of" and "reviewing" — none of which
-     * a request naming its change by number arrives in. It is `D-SKL-013`'s
-     * second **Wrong if** by a second route: a needle that named the subject
-     * without naming the work, loading the workflow for making the change the
-     * caller is only asking about.
+     * is the intent's own needle and the words of the patch under review are the
+     * words of writing one, while none of the review shapes `audit` carried is
+     * one a request naming its change by number arrives in. It is `D-SKL-013`'s
+     * second **Wrong if** by a second route.
      */
     #[Test]
     public function aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt(): void
@@ -4974,9 +4844,8 @@ final class HintsTest extends TestCase
     /**
      * A review brief names what the change removes, whatever the task says.
      *
-     * R-GUI-010, and the call is `feedback/2026-08-01-115711`'s own: a core
-     * patch review that under-stated the removal of an `@internal`
-     * `GifBuilder` method until the user pushed back. `D-GUI-004` read why
+     * `R-GUI-010`, on a core patch review that under-stated the removal of an
+     * `@internal` method until the user pushed back. `D-GUI-004` read why
      * nothing could have named it — the `breaking` intent matches on words a
      * review's task text does not have, because what a diff takes away is what
      * the review is about to find out — so the surface is stated rather than
@@ -5249,13 +5118,11 @@ final class HintsTest extends TestCase
      * `R-GUI-009`, second half. The sentence is what the brief did, not a
      * standing disclaimer.
      *
-     * `feedback/2026-08-07-065259` read a populated `hints` array as the
-     * prescribed per-subsystem call already answered. It was not wrong about
-     * the content: `typo3_hint_lookup` returns the same three hints for those
-     * paths at every limit, so the brief carried all of them and `omittedHints`
-     * was correctly empty. What the payload did was claim otherwise in prose
-     * beside that empty list, sending a caller to a call with nothing behind
-     * it — the failure `R-GUI-012` names from the other direction.
+     * A session read a populated `hints` array as the prescribed per-subsystem
+     * call already answered, and it was not wrong about the content: the brief
+     * carried every hint those paths reach and `omittedHints` was correctly
+     * empty. What the payload did was claim otherwise in prose beside that empty
+     * list — the failure `R-GUI-012` names from the other direction.
      */
     #[Test]
     public function aBriefThatCarriedEverythingDoesNotSendTheCallerBackForMore(): void

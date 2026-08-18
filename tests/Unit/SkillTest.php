@@ -151,15 +151,12 @@ final class SkillTest extends TestCase
     ];
 
     /**
-     * The skills whose workflow ends in a change to a repository that is not
-     * the core's, read off each body on 2026-08-04 — `D-SKL-014`. The two core
-     * skills are not among them: both name the guide already and both commit in
-     * the core, where the argument's default is the right one.
-     *
-     * `typo3-extension-conformance` is not among them either. It is pure
-     * analysis and its body makes no change of any kind, which is the second
-     * **Wrong if** of `D-SKL-014`: a commit line in a review's answer is what
-     * `R-GUI-006` exists to keep out of one.
+     * The skills whose workflow ends in a change to a repository that is not the
+     * core's, read off each body — `D-SKL-014`. The two core skills are not among
+     * them: both name the guide already and both commit in the core, where the
+     * argument's default is the right one. `typo3-extension-conformance` is not
+     * either, because it is pure analysis and a commit line in a review's answer
+     * is what `R-GUI-006` exists to keep out of one.
      */
     private const COMMITTING_SKILLS = [
         'typo3-backend-module-development',
@@ -282,20 +279,12 @@ final class SkillTest extends TestCase
      * of the answer.
      *
      * The rest of the authoring contract is read off the file, which makes it a
-     * proxy: the wording stays where it is while the answer behind it moves.
-     * And a skill does not only name a tool — the base has a session read
-     * whether a declared command is a check, a change or unknown, the test
-     * layers and the source language each XLF declares, and the sentence that
-     * says whether the hint step is still owed. A tool that stopped reporting
-     * one of those fails nothing: the skill still names it,
-     * `everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder` still passes, and
-     * the session is sent to a key that is not there.
-     *
-     * So the four are called, in the order the base fixes them and threaded the
-     * way a session reads them — the extension key comes out of step 1, the
-     * hint id comes out of step 3. The two that need an installation are asked
-     * of the one this repository writes, which is what makes this answerable on
-     * any machine rather than on the author's (`D-SKL-025`).
+     * proxy: the wording stays where it is while the answer behind it moves. A
+     * tool that stopped reporting one of the keys the base sends a session to
+     * fails nothing — the skill still names it, and the session is sent to a key
+     * that is not there. So the four are called, in the order the base fixes
+     * them and threaded the way a session reads them, and the two that need an
+     * installation are asked of the one this repository writes (`D-SKL-025`).
      */
     #[Test]
     public function everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead(): void
@@ -978,21 +967,16 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * `R-SKL-023`. Three skills specify a report exhaustively — the bands, what
-     * each finding owes, the surfaces it closes on — and none of them said what
-     * form the thing they specify has, so a review of a Gerrit patch set ran to
-     * a couple of hundred lines into a chat answer nobody could select
-     * (`feedback/2026-08-13-214811`).
+     * `R-SKL-023`. Three skills specify a report exhaustively and none of them
+     * said what form the thing they specify has, so a review of a Gerrit patch
+     * set ran to a couple of hundred lines into a chat answer nobody could
+     * select.
      *
-     * What the correction asked for is the form rather than a path: "reviews
-     * sollten immer im markdown format ausgegeben werden", then "damit es
-     * kopierbar ist". Asked on 2026-08-14, the maintainer answered that the
-     * report may stay in the chat and needs no path, and that formatted HTML is
-     * what cannot be transferred — which revoked `D-SKL-040`, whose statement
-     * had read the file that session wrote as the requirement.
-     *
-     * A file stays the caller's to ask for, and where one is written it goes
-     * outside the checkout the skill just assessed.
+     * What the correction asked for is the form rather than a path: asked on
+     * 2026-08-14, the maintainer answered that the report may stay in the chat
+     * and needs no path, and that formatted HTML is what cannot be transferred —
+     * which revoked `D-SKL-040`. A file stays the caller's to ask for, and where
+     * one is written it goes outside the checkout the skill just assessed.
      */
     #[Test]
     public function aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes(): void
@@ -1313,17 +1297,11 @@ final class SkillTest extends TestCase
      * worth taking on, and for saying what a maintainer would need before it
      * can move", and its body stopped at the verdict.
      *
-     * The session that reported it had worked the procedure out and would work
-     * it out again: read the revert reason out of the related issue, grep for
-     * production callers of the method the reverted patch touched, and
-     * establish whether the path named in the revert still routes through it.
-     * On Forge 15984 that was one caller outside its own class, and the path
-     * that blew up in 2012 no longer touches the method at all.
-     *
-     * What makes it a step rather than a note is that the trigger is in the
-     * answer now: a relation carries its subject and `reviews` names the
-     * changes the journal mentions, so a merged-then-reverted history is
-     * visible before the checkout is opened (`R-ANS-029`).
+     * The session that reported it had worked the procedure out and would have
+     * worked it out again. What makes it a step rather than a note is that the
+     * trigger is in the answer now: a relation carries its subject and `reviews`
+     * names the changes the journal mentions, so a merged-then-reverted history
+     * is visible before the checkout is opened (`R-ANS-029`).
      */
     #[Test]
     public function aTriageSaysWhatThePreviousAttemptCostBeforeItHandsOver(): void
@@ -1396,20 +1374,16 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * `R-SKL-020`. Both core workflows end in public — one at a tracker entry,
-     * the other at a pushed change — and neither carried a branch for the case
-     * where the finding is a security defect. A workflow that does not name that
-     * case is one whose ordinary path runs through it: the failure is not that
-     * the session judges wrong, it is that nothing asks the question, so the
-     * finding is disclosed by the step that was meant to report it.
+     * `R-SKL-020`. Both core workflows end in public and neither carried a branch
+     * for the case where the finding is a security defect: the failure is not
+     * that the session judges wrong, it is that nothing asks the question, so
+     * the finding is disclosed by the step that was meant to report it.
      *
-     * What the process actually asks for is read rather than recalled, and it is
-     * in the corpus rather than in either file: `SECURITY.md` is identical on
-     * 12.4, 13.4, 14.3 and `main` apart from its supported-version matrix, and
-     * it names one address for a core defect and an extension defect alike. That
-     * address is what a published skill may not carry — a contact route is the
-     * fact that moves, and a copy in somebody else's project is corrected by no
-     * release of this server.
+     * What the process asks for is read rather than recalled: `SECURITY.md` is
+     * identical on all four branches apart from its supported-version matrix,
+     * and it names one address for a core defect and an extension defect alike.
+     * That address is what a published skill may not carry, because a contact
+     * route is the fact that moves.
      */
     #[Test]
     public function aWorkflowThatEndsInPublicationStopsAtAVulnerability(): void
@@ -2047,15 +2021,12 @@ final class SkillTest extends TestCase
 
     /**
      * The same shape, measured here rather than borrowed. A session asked to
-     * review change 95179 in a git worktree read `typo3-core-patch-checkout`'s
-     * description — every verb of it moving the branch it stands on — as
-     * another skill's case, and fetched and created the worktree by hand with
-     * the review skill's routing line naming this one in front of it
-     * (`feedback/2026-08-08-224413`, `D-SKL-024`). A step clause does not only
-     * summarise the body, it narrows what the description names, and the budget
-     * trim of the same day is what wrote this one back after a sweep had cut it
-     * (`D-SKL-026`). So both halves are held: the word a user types, and the
-     * body that has to answer once it did.
+     * review a change in a git worktree read `typo3-core-patch-checkout`'s
+     * description as another skill's case and did the work by hand
+     * (`D-SKL-024`). A step clause does not only summarise the body, it narrows
+     * what the description names, and a budget trim is what cut this one before
+     * it was written back (`D-SKL-026`). So both halves are held: the word a
+     * user types, and the body that has to answer once it did.
      */
     #[Test]
     public function aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout(): void
@@ -2150,16 +2121,12 @@ final class SkillTest extends TestCase
     /**
      * The same question for the skills a tool writes rather than routes to.
      *
-     * `typo3_task_guide` reads its names out of `task-intents.json`, which the
-     * test above holds. `typo3_gerrit_lookup` names two in the answer it ends a
-     * change lookup on (`D-SKL-038`) and `typo3_feedback_record` names one as
-     * the example a session reports a skill by, and both are prose in a class:
-     * a renamed skill leaves them pointing at nothing, and the first thing that
-     * reads them is a session in somebody else's project.
-     *
-     * Read off the source rather than off a rendered answer, because the
-     * answers that carry them are a review server away and an offline suite
-     * would scan nothing.
+     * `typo3_gerrit_lookup` names two in the answer it ends a change lookup on
+     * (`D-SKL-038`) and `typo3_feedback_record` names one as the example a
+     * session reports a skill by, and both are prose in a class: a renamed skill
+     * leaves them pointing at nothing. Read off the source rather than off a
+     * rendered answer, because the answers that carry them are a review server
+     * away and an offline suite would scan nothing.
      */
     #[Test]
     public function everySkillNamedByAToolIsPublished(): void
@@ -2187,14 +2154,11 @@ final class SkillTest extends TestCase
     /**
      * The call the hole was found on, with the session's own arguments.
      *
-     * Two things had to be true for it to answer `typo3-extension-conformance`.
-     * No intent named `typo3-core-issue-triage`, so nothing could match the
-     * work; and "Triage an old open core bug report" carried none of the
-     * markers that say core, so every intent that did match answered with its
-     * extension side — in a checkout `typo3_project_describe` had reported one
-     * call earlier as `core-checkout` (`D-SKL-023`). The task names the core as
-     * a tracker rather than as a patch, which is what the work ending before a
-     * patch does.
+     * Two things had to be true for it to answer `typo3-extension-conformance`:
+     * no intent named `typo3-core-issue-triage`, and the task carried none of
+     * the markers that say core, so every intent that did match answered with
+     * its extension side (`D-SKL-023`). The task names the core as a tracker
+     * rather than as a patch, which is what work ending before a patch does.
      */
     #[Test]
     public function aCoreTriageReachesTheSkillThatOwnsItWithoutNamingAPath(): void
@@ -2215,18 +2179,12 @@ final class SkillTest extends TestCase
      * A brief is a task, not a subject, and a task names as many units as it
      * names.
      *
-     * The session behind `feedback/2026-08-17-212538` asked for three — a
-     * development installation, a sitepackage with custom content elements, and
-     * a distribution carrying the content — and was routed to the content
-     * element alone. It activated `typo3-development-installation` itself,
-     * because the directory was empty and it could see it needed one. Nothing in
-     * the answer shape was in the way: the skills of every confirmed intent are
-     * collected. What was in the way is that `installation-setup` matched on the
-     * act of setting one up and on no word a brief names the installation with
-     * (`D-SKL-051`).
-     *
-     * Two of the three, because the third has no intent yet: the workflow that
-     * produces a distribution's content is `D-SKL-050`'s card.
+     * A session asked for three units of work and was routed to the content
+     * element alone. Nothing in the answer shape was in the way — the skills of
+     * every confirmed intent are collected — what was in the way is that
+     * `installation-setup` matched on the act of setting one up and on no word a
+     * brief names the installation with (`D-SKL-051`). Two of the three, because
+     * the third has no intent yet: that workflow is `D-SKL-050`'s card.
      */
     #[Test]
     public function aBriefThatNamesSeveralUnitsRoutesToTheSkillOfEach(): void
@@ -2244,17 +2202,13 @@ final class SkillTest extends TestCase
     /**
      * The other direction, which is the one that fails without saying so.
      *
-     * A client selects a skill on its description and `typo3_task_guide`
-     * selects one on the intents, so a skill in the first and absent from the
-     * second is reachable only by a caller who already knew it existed. What
-     * the guide answers such a task with is the nearest intent that did match —
-     * a different workflow, confidently named. A core triage was answered
-     * `skills: ["typo3-extension-conformance"]` that way, with a patch-review
-     * checklist, inside a checkout reported as `core-checkout` (`D-SKL-023`).
-     *
-     * A draft is not in this set. `Installer::skills()` is what the server
-     * publishes, and a draft reachable by routing is one nobody chose — which
-     * is the exemption this check has and the only one.
+     * A client selects a skill on its description and `typo3_task_guide` selects
+     * one on the intents, so a skill in the first and absent from the second is
+     * reachable only by a caller who already knew it existed. What the guide
+     * answers such a task with is the nearest intent that did match — a
+     * different workflow, confidently named (`D-SKL-023`). A draft is not in this
+     * set, because a draft reachable by routing is one nobody chose, and that is
+     * the exemption this check has and the only one.
      */
     #[Test]
     public function everyPublishedSkillIsNamedByAnIntent(): void
@@ -2419,12 +2373,10 @@ final class SkillTest extends TestCase
      * held without anybody having seen this.
      *
      * `D-ANS-083` settled that a caller holding the unsupported answer already
-     * has what the orientation would add, and `73cff0ab` rewrote
-     * `typo3-development-installation`'s step to say so — while `ROUTING_SKILLS`
-     * went on naming the tool, which is asserted by finding its name in the file
-     * and so was satisfied by the very sentence telling the caller to skip it.
-     * What separates the two is the construct and not the prose around it:
-     * a discharge names what answers instead, in the words `DISCHARGE` carries,
+     * has what the orientation would add, while `ROUTING_SKILLS` went on naming
+     * the tool and was satisfied by the very sentence telling the caller to skip
+     * it. What separates the two is the construct and not the prose around it: a
+     * discharge names what answers instead, in the words `DISCHARGE` carries,
      * and a routing is any other mention — `D-SKL-055`.
      */
     #[Test]
@@ -2462,28 +2414,14 @@ final class SkillTest extends TestCase
     /**
      * Judgment is what a checklist is for, and it is also the thing a skill
      * grows a body around: the ones that carry it keep it beside them rather
-     * than in the instruction every session pays for. Four are not among them.
-     * Building a backend module is construction, and what it needs is the
-     * registries, which are tools rather than a list. An upgrade is construction
-     * too, and its work list is produced by the sweep rather than read off a
-     * rubric — what it would otherwise judge, whether the package is sound in
-     * the first place, it hands to the skill whose checklist already covers it.
-     * Writing a core patch is the third: its work list is the issue and the
-     * findings the review skill hands it, and the surfaces it would otherwise
-     * check are that skill's checklist, one directory away. Bringing an
-     * installation into existence is the fourth, and the one where a rubric
-     * would be furthest from the evidence: its work list is the order the five
-     * steps' dependencies force, and what it would otherwise judge — whether the
-     * installation is right — is what a cold start answers. Remediation is the
-     * fifth, and it is the upgrade's case exactly: its work list is produced by
-     * the conformance report rather than read off a rubric, and what it would
-     * otherwise judge — whether a finding is one, what it is worth, who owns it
-     * — is the checklist one directory away, whose report it is forbidden from
-     * re-deriving (`D-SKL-016`). Producing a distribution's content is the
-     * sixth: it builds an artifact, and what would otherwise be judged — whether
-     * the artifact is complete — is answered by installing the package on an
-     * installation that has never had it, which is the last step of its own
-     * order.
+     * than in the instruction every session pays for.
+     *
+     * The six without one are construction, and each hands what it would
+     * otherwise judge to the evidence or to the checklist one directory away:
+     * the registries a backend module needs, the sweep an upgrade produces, the
+     * findings a review hands a patch, the cold start an installation answers
+     * to, the conformance report a remediation may not re-derive (`D-SKL-016`),
+     * and the install that says whether a distribution is complete.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
@@ -2815,16 +2753,12 @@ final class SkillTest extends TestCase
      * were read. The two projects are the two shapes this holds the skill to:
      * one repository had no installation and had to produce one, the other
      * declared its own environment and had to boot it, and a skill that carries
-     * only the first sends the second back to the patch workflow both of them
-     * already landed in.
+     * only the first sends the second back to the patch workflow.
      *
-     * A third repository declared an environment and no procedure at all, took
-     * the boot branch on that one trace and ran out of declared steps as soon
-     * as the container was up. So the fork asks which procedure is declared,
-     * and what the closing section owes follows what the install left the
-     * repository carrying rather than who wrote the sequence. Both
-     * discriminants are wording and nothing else, which is why they are held
-     * here — `D-SKL-056`.
+     * A third declared an environment and no procedure at all, so the fork asks
+     * which procedure is declared, and what the closing section owes follows
+     * what the install left the repository carrying. Both discriminants are
+     * wording and nothing else, which is why they are held here — `D-SKL-056`.
      */
     #[Test]
     public function anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers(): void
@@ -3322,24 +3256,14 @@ final class SkillTest extends TestCase
      *
      * Each of the three core crossings named its successor in prose about
      * ownership, and each was read by a session that then did the successor's
-     * work itself: one wrote a whole patch over forty turns after a triage, one
-     * edited the patch it was reviewing, ran seven suites and amended the
-     * commit, and one finished a push-ready patch and handed it over
-     * unreviewed. No session reports a wrong outcome; all three reconstructed
-     * an order that was one call away (`D-SKL-022`).
-     *
+     * work itself, reconstructing an order that was one call away (`D-SKL-022`).
      * The extension crossings came in on the report that falsified the reading
-     * which had left them out. `typo3-content-element-development` closed on an
-     * imperative naming three successors, a session followed that workflow to
-     * completion on a six-element sitepackage, and none of the three fired: no
-     * test at any layer, three README files written by hand, and the user
-     * auditing the delivery himself (`D-SKL-053`). So the imperative is not the
-     * property — what the two crossings that fired carry beside it is the
-     * moment, and every crossing here is written at the point it happens.
-     *
-     * What is read is still the imperative and the position. That the moment is
-     * the right one, and which sentences a reader-spoken trigger has to
-     * exclude, are readings of the workflow rather than properties of a file.
+     * which had left them out: a skill closed on an imperative naming three
+     * successors and none of the three fired (`D-SKL-053`), so the imperative is
+     * not the property — what the two crossings that fired carry beside it is
+     * the moment, and every crossing here is written at the point it happens.
+     * That the moment is the right one is a reading of the workflow rather than
+     * a property of a file.
      */
     #[Test]
     public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void

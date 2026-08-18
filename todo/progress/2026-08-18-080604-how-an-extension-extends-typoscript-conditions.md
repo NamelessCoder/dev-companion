@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080604-how-an-extension-extends-typoscript-conditions.md
 **Priority:** low
+**Branch:** todo/how-an-extension-extends-typoscript-conditions
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

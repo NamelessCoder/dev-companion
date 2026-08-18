@@ -1,7 +1,9 @@
-# Every tool arrives deferred, so each first use costs a schema fetch the skill could have batched
+# Nothing says what is reachable at TypoScript condition evaluation time, and #107831's migration a...
 
-**Serves:** feedback/2026-08-18-074627-every-tool-arrives-deferred-so-each-first-use.md
+**Serves:** feedback/2026-08-18-080532-nothing-says-what-is-reachable-at-typoscript.md
 **Priority:** low
+**Branch:** todo/nothing-says-what-is-reachable-at-typoscript
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

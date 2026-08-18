@@ -71,3 +71,16 @@ reading, not that the declaration can be read.
   reviews that now run the checks report the same findings they read out of CI
   files, in which case the runs cost time and settled nothing, and the base's
   three-way distinction was doing all the work by itself.
+
+
+**Since then** a review did run one of those checks and it would not start.
+`feedback/2026-08-18-113412` reports `composer cgl:ci` aborting in the vendor
+tree's `platform_check.php` on an interpreter a minor below what the installed
+packages require, so a command offered as safe to run never reached the code it
+was pointed at. Neither **Wrong if** covers it: the classification was right,
+and the checkout came back unmodified because nothing ran at all. What it shows
+is that the property answers what a command does to the sources and never
+whether it can start here, which is the second question
+[D-ANS-086](../answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md)
+puts into the same answer. The decision stands; what was missing is a number
+beside the property rather than a different reading of it.

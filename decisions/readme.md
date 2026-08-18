@@ -76,6 +76,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository, not by the installation in it · 2026-08-18
@@ -157,6 +158,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-086]: answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md
 [D-ANS-082]: answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-084]: answers/ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md
 [D-ANS-085]: answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md

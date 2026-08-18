@@ -2,6 +2,8 @@
 
 **Serves:** D-KNW-098, feedback/2026-08-18-074545-the-core-auto-creates-a-site-for-a-new-root.md
 **Priority:** normal
+**Branch:** todo/the-core-auto-creates-a-site-for-a-new-root
+**Claimed:** 2026-08-18
 
 Step 1a: nothing says TYPO3 writes a site of its own when a page is created at
 the root, so a caller holding one is routed to a collision or an import that is

@@ -2,6 +2,8 @@
 
 **Serves:** D-GUI-012
 **Priority:** normal
+**Branch:** todo/nothing-recognizes-looking-at-a-change-in-a-browser
+**Claimed:** 2026-08-18
 
 Measured on 2026-08-18 while working `D-GUI-012`: "prove a rendering change in
 the browser after fixing a frontend crash" matches no intent in

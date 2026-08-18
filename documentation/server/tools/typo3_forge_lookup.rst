@@ -315,7 +315,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -1291,7 +1291,7 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2477 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2478 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1329,7 +1329,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments",
         "query": "",
-        "total": 2477,
+        "total": 2478,
         "categories": [
             "AdminPanel",
             "Authentication",

@@ -90,7 +90,7 @@ The answer carries exactly one of these sets of fields: ``path``, ``found``,
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -151,21 +151,7 @@ Text:
 
 .. code-block:: text
 
-    Effective value of TYPO3_CONF_VARS/SYS/fluid in this installation:
-
-    ```json
-    {
-        "namespaces": {
-            "f": [
-                "TYPO3Fluid\\Fluid\\ViewHelpers",
-                "TYPO3\\CMS\\Fluid\\ViewHelpers"
-            ]
-        },
-        "interceptors": []
-    }
-    ```
-
-    This is the assembled runtime value, not the default the core ships.
+    The installation has no configuration at "SYS/fluid".
 
 Data:
 
@@ -173,15 +159,7 @@ Data:
 
     {
         "path": "SYS/fluid",
-        "found": true,
-        "value": {
-            "namespaces": {
-                "f": [
-                    "TYPO3Fluid\\Fluid\\ViewHelpers",
-                    "TYPO3\\CMS\\Fluid\\ViewHelpers"
-                ]
-            },
-            "interceptors": []
-        },
+        "found": false,
+        "value": null,
         "answeredBy": "installation"
     }

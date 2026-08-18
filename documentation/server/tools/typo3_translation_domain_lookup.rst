@@ -60,7 +60,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this

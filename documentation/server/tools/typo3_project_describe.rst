@@ -260,13 +260,15 @@ Answered
 Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console answers.
-Answered against composer-project, TYPO3 14.3.0, the installation this
-repository writes below .fixtures/, whose console answers. The tools that
-declare ``answeredBy`` carry an answer from each, under a heading naming which;
-every other answer is from the first alone, because nothing in it would differ.
-Nothing checks what is below this heading; everything above it is derived from
-the class that answers the call, and ``bin/cli tools:check`` holds it.
+14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare ``answeredBy`` carry an answer from each, under a
+heading naming which; every other answer is from the first alone, because
+nothing in it would differ. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+``bin/cli tools:check`` holds it.
 
 project
 ~~~~~~~
@@ -302,14 +304,18 @@ Text:
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
+    - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
     - core/testing/scripts — TYPO3 Core Script Help
+    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed
+    - extension/compatibility/running-on-a-declared-major-that-is-not-installed — Running a Package on a Declared Major That Is Not Installed
     - extension/documentation/manual — Setting Up an Extension Manual
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
+    - project/installation/booting-a-clone — Booting a Clone Into a Running Installation
     - project/testing/playwright — Setting Up Playwright in a TYPO3 Project
 
 Data:
@@ -370,6 +376,10 @@ Data:
                 "title": "Looking at a Change in a Real Browser"
             },
             {
+                "id": "any/testing/proving-a-condition",
+                "title": "Proving a TypoScript Condition Verdict"
+            },
+            {
                 "id": "core/contribution/commit-messages",
                 "title": "TYPO3 Core Commit Message Rules"
             },
@@ -394,12 +404,24 @@ Data:
                 "title": "TYPO3 Core Script Help"
             },
             {
+                "id": "extension/compatibility/a-declared-major-that-is-not-installed",
+                "title": "Settling an API Question on a Declared Major That Is Not Installed"
+            },
+            {
+                "id": "extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+                "title": "Running a Package on a Declared Major That Is Not Installed"
+            },
+            {
                 "id": "extension/documentation/manual",
                 "title": "Setting Up an Extension Manual"
             },
             {
                 "id": "extension/testing/phpunit",
                 "title": "Setting Up PHPUnit in a TYPO3 Extension"
+            },
+            {
+                "id": "project/installation/booting-a-clone",
+                "title": "Booting a Clone Into a Running Installation"
             },
             {
                 "id": "project/testing/playwright",
@@ -435,14 +457,18 @@ Text:
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
+    - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
     - core/testing/scripts — TYPO3 Core Script Help
+    - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed
+    - extension/compatibility/running-on-a-declared-major-that-is-not-installed — Running a Package on a Declared Major That Is Not Installed
     - extension/documentation/manual — Setting Up an Extension Manual
     - extension/testing/phpunit — Setting Up PHPUnit in a TYPO3 Extension
+    - project/installation/booting-a-clone — Booting a Clone Into a Running Installation
     - project/testing/playwright — Setting Up Playwright in a TYPO3 Project
 
 Data:
@@ -516,6 +542,10 @@ Data:
                 "title": "Looking at a Change in a Real Browser"
             },
             {
+                "id": "any/testing/proving-a-condition",
+                "title": "Proving a TypoScript Condition Verdict"
+            },
+            {
                 "id": "core/contribution/commit-messages",
                 "title": "TYPO3 Core Commit Message Rules"
             },
@@ -540,12 +570,24 @@ Data:
                 "title": "TYPO3 Core Script Help"
             },
             {
+                "id": "extension/compatibility/a-declared-major-that-is-not-installed",
+                "title": "Settling an API Question on a Declared Major That Is Not Installed"
+            },
+            {
+                "id": "extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+                "title": "Running a Package on a Declared Major That Is Not Installed"
+            },
+            {
                 "id": "extension/documentation/manual",
                 "title": "Setting Up an Extension Manual"
             },
             {
                 "id": "extension/testing/phpunit",
                 "title": "Setting Up PHPUnit in a TYPO3 Extension"
+            },
+            {
+                "id": "project/installation/booting-a-clone",
+                "title": "Booting a Clone Into a Running Installation"
             },
             {
                 "id": "project/testing/playwright",

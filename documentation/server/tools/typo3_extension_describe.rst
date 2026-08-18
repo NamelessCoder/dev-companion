@@ -275,7 +275,7 @@ The answer carries exactly one of these sets of fields: ``key``, ``path``,
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -378,6 +378,7 @@ Text:
     - Resources/Private/Language/siteconfiguration_fieldinformation.xlf — source-language en, no translations beside it
     - Resources/Private/Language/user_profile.xlf — source-language en, no translations beside it
     The source language is what each file declares, not what it should declare — typo3_hint_lookup owns that rule.
+    It ships no manual: `typo3-extension-documentation` is the workflow that writes one.
 
     Read from the files, so this is what the extension declares — not what it does at runtime. A table or an icon list built in a loop, and anything a hook or an event listener changes, are not in this list; the files that could hold them are named above. The installation itself was not asked: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
     ext_localconf.php is named above and read by nothing here. Each registers by running, so a hook, an RTE preset or a global Fluid namespace it sets is in none of the lists above. The booted installation answers the tables, content elements and icons it adds, and none of the rest.
@@ -1074,6 +1075,8 @@ Text:
     Ships: manual none, readme none, tests none, language files 1
     - Resources/Private/Language/locallang.xlf — source-language en, no translations beside it
     The source language is what each file declares, not what it should declare — typo3_hint_lookup owns that rule.
+    It ships no manual and no README: `typo3-extension-documentation` is the workflow that writes them.
+    It ships no test: `typo3-extension-testing` is the workflow that sets the first one up.
 
     The tables, content elements and icons are what the booted installation has, attributed to this extension by the EXT: reference each entry carries; everything else is read from its files. What a hook or an event listener changes at request time is in neither.
 

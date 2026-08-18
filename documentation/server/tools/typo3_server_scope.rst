@@ -125,7 +125,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-17 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -184,14 +184,30 @@ Text:
     The two files that make a directory a manual and the conventional ones beside them: a minimal guides.xml to copy, the Index.rst header and toctree that pull the chapters in, and the two files that look like a template and are not — a core system extension's renderer configuration and the Settings.cfg of a manual that predates it. Beside them the render command, what its "successfully placed" does not promise, and the flag that makes a failed directive a non-zero exit. It does not write the chapters, and what a manual is for is the extension-documentation hint.
     Tools: typo3_rule_lookup, typo3_hint_lookup
     Source: typo3://guides/extension/documentation/manual (extension)
+    ## Whether an API is there on a TYPO3 major the package declares and the installation does not have
+    The reading that settles it: which declaration says who the question is about, what the changelog settles and where it stops, the invocations that read one symbol off the branch carrying the other major, and the path the installed copy spells differently. Beside them what a compatibility argument owes where nothing can be run. It reads no core source itself and states no signature: a bundled one is wrong at the next release, and a wrong one is believed as readily as a right one.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed (extension)
+    ## Running a package's own suite against a TYPO3 major it declares and the installation does not have
+    The procedure, as it was carried out: what the repository's CI already covers and what pushing proves, the Composer root of its own the other major is resolved into and the manifest that root carries, what the working installation keeps, what the second root resolves differently from it, whether the database survives, which checks are worth re-running there, and what a resolved tree is not. It installs nothing itself, and it says what a claim about what renders on the other major would additionally cost.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/extension/compatibility/running-on-a-declared-major-that-is-not-installed (extension)
     ## The Playwright suite a project runs its browser tests from
     The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.
     Tools: typo3_rule_lookup, typo3_hint_lookup
     Source: typo3://guides/project/testing/playwright (project)
+    ## Booting a cloned project repository into a running installation
+    The run in order, from a clone to a site that answers on both sides: what the clone does not carry, why the environment is started twice, where the data comes from when the repository declares no import, what makes the installation agree with the code in front of it, and what a login costs. It runs nothing and starts nothing. Creating an installation for a package that declares no procedure is the neighbouring task and begins a step earlier.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/project/installation/booting-a-clone (project)
     ## Looking at a change in a real browser, against the installation that has the content
     Which installation can show the case at all, how a browser running in a container reaches a DDEV site — the router's network and its hostname aliases, the certificate it does not carry, the wildcard hostname it cannot answer — and where a harness and its screenshots go so neither reaches a commit. It runs nothing and starts no installation.
     Tools: typo3_rule_lookup, typo3_hint_lookup
     Source: typo3://guides/any/testing/browser-check (any)
+    ## Proving that a TypoScript condition matched against a running installation
+    How a verdict nothing prints is established from the page: what the backend's condition list is and is not, how a marker is derived from what the guarded branch alone renders, the shared Fluid wrapper that is no marker, a marker put into the condition on purpose, the negative control, and which cache stands between two runs. It requests nothing and flushes nothing.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/any/testing/proving-a-condition (any)
     ## Reporting a security defect in TYPO3: who receives it, what the report carries, and what is not done with it in the meantime
     TYPO3's own published policy, as the core repository's SECURITY.md and the security team's pages state it. It holds for a defect in the core and for one in an extension alike. It carries no judgement of how bad a finding is: rating one is the team's work, and this says where it goes.
     Tools: typo3_rule_lookup
@@ -204,7 +220,7 @@ Text:
     Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.
     Tools: typo3_hint_lookup, typo3_task_guide
     Source: knowledge/hints/ (any)
-    ## Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version
+    ## Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version
     The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-dev-companion install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.
     Tools: typo3_task_guide
     Source: typo3://skill/typo3-backend-module-development/SKILL.md, typo3://skill/typo3-content-element-development/SKILL.md, typo3://skill/typo3-development-installation/SKILL.md, typo3://skill/typo3-extension-cleanup/SKILL.md, typo3://skill/typo3-extension-conformance/SKILL.md, typo3://skill/typo3-extension-documentation/SKILL.md, typo3://skill/typo3-extension-testing/SKILL.md, typo3://skill/typo3-extension-upgrade/SKILL.md (any)
@@ -241,7 +257,7 @@ Text:
     Tools: typo3_catalog_scope
     Source: knowledge/catalog/meta.json (any)
     ## What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration, the columns TYPO3 derives for a table
-    Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.
+    Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry, and the effective configuration, whose command arrived in TYPO3 14.2 and would leave the two LTS lines holding "command is not defined" — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.
     Tools: typo3_component_lookup, typo3_label_lookup, typo3_icon_lookup, typo3_backend_module_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_schema_lookup
     Source: the discovered TYPO3 installation — read from the installation being worked in, not from a bundled snapshot. (any)
     ## The project around the installation: its extensions, its sites and their sets, its own commands, the environment it declares and what that environment runs by itself, and what one of those extensions registers
@@ -306,6 +322,7 @@ Text:
     - About to write backend markup or invent a CSS class name, the module chrome and other layout classes included. The index is a curated subset of what the core itself files as a component, so a miss means uncurated rather than outside the subject. → typo3_component_lookup
     - About to run tests or any other core check → typo3_test_run_guide
     - Working in a concrete file and unsure about the subsystem's conventions → typo3_hint_lookup
+    - Debugging, where there is no subject yet — something renders, saves or builds wrong and which subsystem does it is the question → typo3_hint_lookup with task written as the symptom, in the words the failure showed in
     - Needing the official API, reference or tutorial documentation for a covered TYPO3 version → typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result
     - Writing or amending the commit message → typo3_commit_message_guide, whose default is a repository of your own
     - Pushing for review, amending a patch set, or backporting → typo3_rule_lookup with a Gerrit query
@@ -319,6 +336,8 @@ Text:
     - About to recommend a command, or asking what this project consists of → typo3_project_describe
     - Starting work on a TYPO3 major you have not built on recently, or planning an upgrade to one this installation does not have — before asking what a version changed → typo3_changelog_lookup
     - Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer → typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it
+    - Writing against a core API in a package that declares a TYPO3 major the installation does not have — the installed copy answers for one of the declared majors, and the code has to run on all of them → typo3_project_describe for what the package requires of typo3/cms-core, then typo3_rule_lookup with documentId="extension/compatibility/a-declared-major-that-is-not-installed" for the reading that settles the other major
+    - About to claim that a change holds on a declared TYPO3 major the installation does not have — reading settles the shape and the claim is worth what it ran on → typo3_rule_lookup with documentId="extension/compatibility/running-on-a-declared-major-that-is-not-installed" for standing that major up beside the installation and running the package's own suite there
     - Upgrading or maintaining an installation, and needing the order of operations → typo3_task_guide, then typo3_project_describe and typo3_changelog_lookup for what this one is and what the target version changed
     - Working in one extension and needing what it registers → typo3_extension_describe with its key
     - About to claim that an extension is (or is not) part of the core, or to require one → typo3_system_extension_lookup
@@ -443,6 +462,26 @@ Data:
                 "scope": "extension"
             },
             {
+                "topic": "Whether an API is there on a TYPO3 major the package declares and the installation does not have",
+                "depth": "The reading that settles it: which declaration says who the question is about, what the changelog settles and where it stops, the invocations that read one symbol off the branch carrying the other major, and the path the installed copy spells differently. Beside them what a compatibility argument owes where nothing can be run. It reads no core source itself and states no signature: a bundled one is wrong at the next release, and a wrong one is believed as readily as a right one.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed",
+                "scope": "extension"
+            },
+            {
+                "topic": "Running a package's own suite against a TYPO3 major it declares and the installation does not have",
+                "depth": "The procedure, as it was carried out: what the repository's CI already covers and what pushing proves, the Composer root of its own the other major is resolved into and the manifest that root carries, what the working installation keeps, what the second root resolves differently from it, whether the database survives, which checks are worth re-running there, and what a resolved tree is not. It installs nothing itself, and it says what a claim about what renders on the other major would additionally cost.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+                "scope": "extension"
+            },
+            {
                 "topic": "The Playwright suite a project runs its browser tests from",
                 "depth": "The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.",
                 "tools": [
@@ -453,6 +492,16 @@ Data:
                 "scope": "project"
             },
             {
+                "topic": "Booting a cloned project repository into a running installation",
+                "depth": "The run in order, from a clone to a site that answers on both sides: what the clone does not carry, why the environment is started twice, where the data comes from when the repository declares no import, what makes the installation agree with the code in front of it, and what a login costs. It runs nothing and starts nothing. Creating an installation for a package that declares no procedure is the neighbouring task and begins a step earlier.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/project/installation/booting-a-clone",
+                "scope": "project"
+            },
+            {
                 "topic": "Looking at a change in a real browser, against the installation that has the content",
                 "depth": "Which installation can show the case at all, how a browser running in a container reaches a DDEV site — the router's network and its hostname aliases, the certificate it does not carry, the wildcard hostname it cannot answer — and where a harness and its screenshots go so neither reaches a commit. It runs nothing and starts no installation.",
                 "tools": [
@@ -460,6 +509,16 @@ Data:
                     "typo3_hint_lookup"
                 ],
                 "source": "typo3://guides/any/testing/browser-check",
+                "scope": "any"
+            },
+            {
+                "topic": "Proving that a TypoScript condition matched against a running installation",
+                "depth": "How a verdict nothing prints is established from the page: what the backend's condition list is and is not, how a marker is derived from what the guarded branch alone renders, the shared Fluid wrapper that is no marker, a marker put into the condition on purpose, the negative control, and which cache stands between two runs. It requests nothing and flushes nothing.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/any/testing/proving-a-condition",
                 "scope": "any"
             },
             {
@@ -491,7 +550,7 @@ Data:
                 "scope": "any"
             },
             {
-                "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version",
+                "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version",
                 "depth": "The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-dev-companion install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.",
                 "tools": [
                     "typo3_task_guide"
@@ -574,7 +633,7 @@ Data:
             },
             {
                 "topic": "What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration, the columns TYPO3 derives for a table",
-                "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.",
+                "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry, and the effective configuration, whose command arrived in TYPO3 14.2 and would leave the two LTS lines holding \"command is not defined\" — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. Every answer identifies its source, so a fallback stays visible.",
                 "tools": [
                     "typo3_component_lookup",
                     "typo3_label_lookup",
@@ -731,6 +790,10 @@ Data:
                 "call": "typo3_hint_lookup"
             },
             {
+                "when": "Debugging, where there is no subject yet — something renders, saves or builds wrong and which subsystem does it is the question",
+                "call": "typo3_hint_lookup with task written as the symptom, in the words the failure showed in"
+            },
+            {
                 "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",
                 "call": "typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result"
             },
@@ -781,6 +844,14 @@ Data:
             {
                 "when": "Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer",
                 "call": "typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it"
+            },
+            {
+                "when": "Writing against a core API in a package that declares a TYPO3 major the installation does not have — the installed copy answers for one of the declared majors, and the code has to run on all of them",
+                "call": "typo3_project_describe for what the package requires of typo3/cms-core, then typo3_rule_lookup with documentId=\"extension/compatibility/a-declared-major-that-is-not-installed\" for the reading that settles the other major"
+            },
+            {
+                "when": "About to claim that a change holds on a declared TYPO3 major the installation does not have — reading settles the shape and the claim is worth what it ran on",
+                "call": "typo3_rule_lookup with documentId=\"extension/compatibility/running-on-a-declared-major-that-is-not-installed\" for standing that major up beside the installation and running the package's own suite there"
             },
             {
                 "when": "Upgrading or maintaining an installation, and needing the order of operations",

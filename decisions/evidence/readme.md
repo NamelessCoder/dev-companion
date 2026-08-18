@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-EVI-007`][D-EVI-007] — A case no test holds says so with its exit code · 2026-08-18
+- [`D-EVI-008`][D-EVI-008] — What the server buys is a ceiling rather than a lower average · 2026-08-18
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
 - [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
@@ -16,6 +17,7 @@ one is added.
 - [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31
 
 [D-EVI-007]: evi-007-a-case-no-test-holds-says-so-with-its-exit-code.md
+[D-EVI-008]: evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md
 [D-EVI-006]: evi-006-one-installation-per-covered-version-kept-and-started.md
 [D-EVI-004]: evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
 [D-EVI-005]: evi-005-a-registration-nothing-can-reach-is-cleared-and-the-database-goes-with-it.md

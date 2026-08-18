@@ -19,6 +19,12 @@ TYPO3 Dev Companion
     The server, the knowledge it answers from, and the skills it publishes into
     a client ship together from one repository.
 
+    What it buys a session is a ceiling rather than a lower average: a lookup
+    that would otherwise take a handful of turns and cost whatever the search
+    happens to cost arrives in one call, at a price that varies little. It is
+    not a discount, and nothing here has been measured for whether it makes an
+    agent more correct.
+
     .. button-bar::
 
         .. button:: :doc:`Quickstart <usage/installing>`

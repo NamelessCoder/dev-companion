@@ -103,3 +103,36 @@ schemas.
 - `ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers`
 - `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`
 - `ScopeTest::theInstructionsFitWhatAClientKeeps`
+
+## Since then
+
+`feedback/2026-08-18-113357`, from the same debrief as the first feedback above,
+names an entry this one did not buy. The session wrote six commit messages for a
+sitepackage repository and derived their convention from
+`git log --oneline -15`, having read `typo3_commit_message_guide` as the core's
+Gerrit convention from its name alone. That is step 2 again: the sentence it
+needed stands in the tool's own `description` and in the `routing` entry
+*Writing or amending the commit message*, and under this client neither is a
+channel. So the third **Assumed** above is answered — the reported task shape it
+said the remaining lines would lack is on the same board, and
+`typo3_hint_lookup` is no longer the largest surface left out.
+
+The name is not the alternative lever the feedback offers beside it. `typo3_` is
+on every tool this server declares, so no name distinguishes core work from the
+rest, and a tool name is the one surface clients installed months ago have
+already written down — `AGENTS.md`.
+
+What blocks the line is the room. Re-measured on 2026-08-18, the instructions
+stand at 1912 characters with the stale-skills notice and nothing excluded, and
+at 2035 in the worst assembled case, against 2048; an index bullet is about
+seventy. Nothing a decision placed is left to displace, which is this entry's
+third **Wrong if**.
+
+The room is somewhere nobody placed. The index is prose inside the stored
+`instructions`, so it is not filtered by `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`: a
+caller that excluded everything it can is still told which four tools to call,
+which is both the case that binds the budget and what `Coverage::offered()`
+already refuses for `covers` and `routing`. That is the step, queued at `normal`
+on
+`todo/open/2026-08-18-113357-typo3-commit-message-guide-reads-as-core-only.md` —
+a change to `src/`, so not one the judging run makes.

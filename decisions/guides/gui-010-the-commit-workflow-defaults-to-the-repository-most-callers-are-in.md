@@ -75,3 +75,12 @@ Forge issue and the Releases trailer, which cannot be recalled from the last
 commit; the project workflow carries two widths and a wrap, which can. Nothing
 is changed for it, and it is written here because a usage curve that drops after
 the first call reads as a tool nobody wants when it is a tool that taught.
+
+On 2026-08-18 a session that never called the guide reported the same default
+from the other side. `feedback/2026-08-18-113357` wrote six commit messages in a
+sitepackage repository by hand, read the schema at the debrief, and says nothing
+about the behaviour needs changing because the default was already the case it
+was in. What the **Assumed** above says of a core contributor holds for a
+project one too — the route has to name the tool — and under a client that
+defers tool schemas the name was all this session had. That half is judged on
+`D-AUD-011`.

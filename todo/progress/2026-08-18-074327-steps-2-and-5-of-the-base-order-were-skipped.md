@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-074327-steps-2-and-5-of-the-base-order-were-skipped.md
 **Priority:** normal
+**Branch:** todo/steps-2-and-5-of-the-base-order-were-skipped
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 2, delivery, and written up in
 `D-GUI-013`: the deprecation sweep is stated only in step 5 of `skills/base.md`,

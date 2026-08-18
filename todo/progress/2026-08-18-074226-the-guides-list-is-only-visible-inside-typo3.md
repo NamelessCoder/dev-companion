@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-074226-the-guides-list-is-only-visible-inside-typo3.md
 **Priority:** normal
+**Branch:** todo/the-guides-list-is-only-visible-inside-typo3
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 2, delivery, and written up in
 `D-GUI-012`. The guides are here, the reporting client rendered no resource

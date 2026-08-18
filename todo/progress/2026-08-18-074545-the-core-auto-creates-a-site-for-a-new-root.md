@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-074545-the-core-auto-creates-a-site-for-a-new-root.md
 **Priority:** low
+**Branch:** todo/the-core-auto-creates-a-site-for-a-new-root
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-053, feedback/2026-08-18-074245-the-installation-skill-s-handoff-to-the-testing.md
 **Priority:** normal
+**Branch:** todo/the-installation-skill-s-handoff-to-the-testing
+**Claimed:** 2026-08-18
 
 Step 4. `R-SKL-018` was applied to the seven extension workflows and
 `typo3-development-installation` is not one of them, so its crossing into

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113327-how-a-core-tt-content-palette-showitem-differs.md, D-KNW-103
 **Priority:** normal
+**Branch:** todo/how-a-core-tt-content-palette-showitem-differs
+**Claimed:** 2026-08-18
 
 Step 1a on `D-KNW-103`: the probe reaches `content-elements` and
 `tca-formengine`, the word `palette` is in no hint file, and nothing says that a

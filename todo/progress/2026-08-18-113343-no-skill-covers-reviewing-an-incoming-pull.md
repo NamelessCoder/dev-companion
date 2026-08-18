@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113343-no-skill-covers-reviewing-an-incoming-pull.md
 **Priority:** normal
+**Branch:** todo/no-skill-covers-reviewing-an-incoming-pull
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 1b and written up in `D-SKL-063`:
 nothing owns judging one change proposed against a package that is not the core,

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113357-typo3-commit-message-guide-reads-as-core-only.md, D-AUD-011
 **Priority:** normal
+**Branch:** todo/typo3-commit-message-guide-reads-as-core-only
+**Claimed:** 2026-08-18
 
 `Coverage::instructions()` returns the stored string whole, so the "What to call
 for what" index names tools a caller excluded — the case that binds `R-ANS-013`

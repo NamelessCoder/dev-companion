@@ -91,3 +91,7 @@ an environment and nothing else falls on the wrong side of each.
   than as what the repository now carries.
 - A repository with a full boot procedure is sent through the create branch's
   steps. The condition would be catching more than it was written for.
+
+## Covered by
+
+- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`

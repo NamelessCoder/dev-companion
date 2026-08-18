@@ -32,11 +32,13 @@ Then, before anything is created:
   exists. Asked before, they are unanswerable; asked after, they are what says
   the work succeeded.
 
-The repository decides which of two shapes this task has, and only the first
-step differs. A repository that already declares an installation — an
-environment configuration, a document root, a site configuration, a lock file —
-is booted from what it declares. One that declares none has an installation
-created for it.
+The repository decides where this task starts, and what decides it is the boot
+procedure it declares rather than the traces an installation has left in it: a
+script its manifest declares, a task its environment runs at start, a sequence
+its own instructions write down. A repository that declares one is booted from
+it. One that declares none has an installation created for it. One that declares
+an environment and no procedure is both: run what it declares, take every step
+after that from the create branch, and change nothing that is declared.
 
 ## Boot what the repository already declares
 
@@ -131,13 +133,12 @@ afterwards. Establish what the merged result actually is with
 `typo3_configuration_lookup` rather than from the files, because the merge is
 what the installation runs on.
 
-## Prove it, and how far depends on who wrote the sequence
+## Prove it, and how far depends on what the run wrote
 
-A repository that was booted from what it already declares is proved by the site
-answering: the backend, and the frontend on the URL the installation is
-configured for. Nothing here is torn down to establish that. Booting is not
-authoring, there is no new sequence to test, and an installation that was asked
-for and then destroyed is a change nobody asked for.
+The site answering is the proof in every case: the backend, and the frontend on
+the URL the installation is configured for. Nothing is torn down to establish
+that, whoever wrote the sequence — an installation that was asked for and then
+destroyed is a change nobody asked for.
 
 Where a side does not answer, the failure is read from what the installation
 wrote down rather than out of the page it rendered. `typo3_hint_lookup` with
@@ -147,22 +148,26 @@ whether the page carries the message. Fetching the rendered error page is the
 detour this replaces — it costs the whole document through the context and still
 holds nothing where the message was withheld.
 
-Where the sequence was written in this session, it is proved from the state it
-will be started in again, and every step below is part of the work:
+Report the exact commands run, what each one printed, and what the installation
+now is: the document root, the console that reaches it, the URL that answered,
+and the database it is on. `typo3_task_guide` carries what a finished setup owes
+its user beyond that, credentials included; report what it names rather than a
+second version of it.
+
+What is owed past that follows from what the install wrote into the repository,
+which is read off the ignore rules rather than off this session's account of
+itself. Where every path it wrote is ignored — the document root, the
+installation's configuration, its writable state — there is no sequence a clone
+would run and nothing for a message to be about, so both steps below are excused
+and the report names the two and says why. Where it left files the repository
+now carries, both are part of the work:
 
 1. Start from the state a colleague's clone is in — no installed dependencies,
    no installation, no container — and let the declared sequence run unattended.
-   Anything that needed a hand is not part of the setup yet.
-2. Prove that the site answers on both sides: the backend, and the frontend on
-   the URL the installation is configured for.
-3. Start it a second time without cleaning up. A setup that is not idempotent is
-   a setup somebody will run twice.
-4. Report the exact commands run, what each one printed, and what the
-   installation now is: the document root, the console that reaches it, the URL
-   that answered, and the database it is on. `typo3_task_guide` carries what a
-   finished setup owes its user beyond that, credentials included; report what
-   it names rather than a second version of it.
-5. Draft the message for what the setup added to the repository with
+   Anything that needed a hand is not part of the setup yet. Then start it a
+   second time without cleaning up, because a setup that is not idempotent is a
+   setup somebody will run twice.
+2. Draft the message for what the setup added to the repository with
    `typo3_commit_message_guide` and `workflow="project"`. The manifest, the
    container declaration and the ignore rules are that repository's own files,
    which is the workflow that argument names.

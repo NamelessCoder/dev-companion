@@ -1,7 +1,8 @@
 ---
 date: 2026-08-18T07:04:48+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-18
 model: claude-opus-5[1m]
 tool: typo3-development-installation
 directory: /home/benji/projects/blog

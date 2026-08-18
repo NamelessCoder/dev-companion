@@ -2816,6 +2816,14 @@ final class SkillTest extends TestCase
      * declared its own environment and had to boot it, and a skill that carries
      * only the first sends the second back to the patch workflow both of them
      * already landed in.
+     *
+     * A third repository declared an environment and no procedure at all, took
+     * the boot branch on that one trace and ran out of declared steps as soon
+     * as the container was up. So the fork asks which procedure is declared,
+     * and what the closing section owes follows what the install left the
+     * repository carrying rather than who wrote the sequence. Both
+     * discriminants are wording and nothing else, which is why they are held
+     * here — `D-SKL-056`.
      */
     #[Test]
     public function anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers(): void
@@ -2838,7 +2846,7 @@ final class SkillTest extends TestCase
             '[references/base.md](references/base.md)',
             '## Boot what the repository already declares',
             '## Create one where none is declared',
-            '## Prove it, and how far depends on who wrote the sequence',
+            '## Prove it, and how far depends on what the run wrote',
             '## Where this stops',
         ];
         $position = -1;
@@ -2848,6 +2856,23 @@ final class SkillTest extends TestCase
             self::assertGreaterThan($position, $next, $step . ' is stated out of order');
             $position = $next;
         }
+
+        // What the fork asks, and the shape that has no side to fall on until
+        // it does: an environment configuration on its own is a trace, and
+        // `070448` entered the boot branch on it and found nothing to run.
+        self::assertStringContainsString(
+            'the boot procedure it declares rather than the traces an installation has left in it',
+            $flat,
+        );
+        // Stated in the fork and not in a section of its own, which is what the
+        // file's size is paid with — `D-SKL-052`.
+        $third = strpos($flat, 'One that declares an environment and no procedure is both');
+        self::assertNotFalse($third, 'the fork carries no shape for a repository that declares only an environment');
+        self::assertLessThan(
+            (int) strpos($flat, '## Boot what the repository already declares'),
+            $third,
+            'the third shape is stated below the branches it sends the session through',
+        );
 
         // The five steps in the order their dependencies force, which is what
         // `162745` numbered after inventing it once.
@@ -2938,6 +2963,17 @@ final class SkillTest extends TestCase
         self::assertGreaterThan($proving, $exceptions, 'the exception lookup is named before the site is proved');
         self::assertNotNull(Hints::byId('installation-exception-output'));
         self::assertStringContainsString('which codes are shown and never written at all', $flat);
+
+        // What the closing section owes is read off the repository and not off
+        // the session: `070448` authored every step and committed nothing, so
+        // the re-run would have destroyed the installation it had just been
+        // asked for and the message had no subject — `D-SKL-056`.
+        self::assertStringContainsString(
+            'follows from what the install wrote into the repository',
+            $flat,
+        );
+        self::assertStringContainsString('Where every path it wrote is ignored', $flat);
+        self::assertStringContainsString('the report names the two and says why', $flat);
 
         // Both directions of the crossing, because the feedback asked for both.
         self::assertStringContainsString('typo3-extension-testing', $skill);

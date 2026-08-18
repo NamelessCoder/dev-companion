@@ -25,6 +25,38 @@
     ]
   },
   {
+    "id": "tca-core-palette",
+    "title": "Adding a Field to a Core Palette",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "palette",
+      "showitem",
+      "addFieldsToPalette",
+      "addFieldsToAllPalettesOfField",
+      "--linebreak--",
+      "core palette",
+      "tt_content palette",
+      "line break in a palette",
+      "field is missing from the backend form",
+      "extend a core table"
+    ],
+    "hints": [
+      "A palette on a core table is core's string and not the extension's. Add to it from Configuration/TCA/Overrides/ with ExtensionManagementUtility::addFieldsToPalette('tt_content', 'frames', 'my_field'), never by concatenating onto $GLOBALS['TCA']['tt_content']['palettes']['frames']['showitem']: the concatenation depends on the shape core happened to write — a trailing comma, line breaks, a label suffix per item — and core rewrites that shape between majors.",
+      "Where the string ends in no comma the appended item fuses with core's last one into an item naming no column, and PaletteAndSingleContainer skips an item naming no column without logging. So the core field at the end of the palette and the appended --linebreak-- both leave the backend form, no error is raised, and the stored rows are untouched. A field missing from a form after an override is that, a palette name core has changed, or a column the extension never declared with addTCAcolumns().",
+      "addFieldsToPalette() takes that shape apart itself. It trims the trailing comma and the whitespace off the existing string before joining, and drops from the insertion every field the palette already carries, so a second call adds the field once; --linebreak-- is exempt from that deduplication, so two overrides adding one each leave two line breaks. The fourth argument positions the insertion as before:<field>, after:<field> or replace:<field>, and where the palette carries no such field it is appended instead of refused. A palette that does not exist is created rather than refused too, and a palette no type's showitem names renders nowhere.",
+      {
+        "text": "The core's own showitem strings were rewritten on this branch: an item label is a short form reference where it was kept at all — starttime;core.db.general:starttime rather than an LLL:EXT: path — and tt_content's palettes lost their labels, their line breaks and the trailing comma two of them ended with. Extension code that appends to one of those strings, or matches a pattern in it, breaks on the upgrade to this branch and reports nothing. typo3_changelog_lookup with query \"showitem\" returns the breaking entry that lists what was replaced.",
+        "since": 14
+      },
+      {
+        "text": "Appending to one of those strings works on this branch, which is what makes it the thing that breaks on the upgrade: core rewrites its own palette strings on the next major, and the field that disappears takes a core field with it.",
+        "until": 13
+      }
+    ]
+  },
+  {
     "id": "tca-schema-api",
     "title": "TCA Schema API",
     "domains": [

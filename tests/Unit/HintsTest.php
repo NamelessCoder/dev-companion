@@ -1907,11 +1907,13 @@ final class HintsTest extends TestCase
      * a hint stopped being a candidate for any one-term query it was not
      * curated for. Not ranked lower: dropped, with nothing to say so.
      *
-     * Each of these four is stated by exactly one hint in the corpus, appears
+     * Each of these four was stated by exactly one hint in the corpus, appears
      * nowhere in that hint's title or `appliesTo`, and reached nothing at all,
      * while the hint's own body is what a caller naming it is after. Two hints
      * are the ones the symptom was reported on and two are the far end of the
-     * corpus at 981 and 1147 words.
+     * corpus at 981 and 1147 words. `showitem` is a second hint's keyword now,
+     * and what this holds is unchanged: the long body is reached, not that it
+     * is the only one.
      */
     #[Test]
     #[TestWith(['showitem', 'content-elements'])]
@@ -6235,6 +6237,85 @@ final class HintsTest extends TestCase
             6,
         );
         self::assertSame('content-element-preview', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
+    /**
+     * The reported bug was a one-line TCA override that had worked for years:
+     * an extension appended to a core palette with `.=`, and on the next major
+     * the field and its line break left the backend form with nothing logged —
+     * `D-KNW-103`. Both halves are read off the checkouts. `addFieldsToPalette()`
+     * is byte for byte the same on all four, and it is the half that survives a
+     * reshaping, so the statement of it carries no binding; what the reshaping
+     * did is bound, because that is what a caller upgrading arrives with.
+     */
+    #[Test]
+    public function addingToACorePaletteIsStatedAsTheCallAndNotAsTheString(): void
+    {
+        foreach (Versions::majors() as $major) {
+            $texts = implode("\n", array_column(
+                Hints::byId('tca-core-palette', $major)['hints'],
+                'text',
+            ));
+
+            // The rule, and the reason it is not a matter of taste.
+            self::assertStringContainsString('addFieldsToPalette', $texts);
+            self::assertStringContainsString("core's string and not the extension's", $texts);
+            self::assertStringContainsString('shape core happened to write', $texts);
+
+            // Why nothing reports the loss, which is what left the reporting
+            // session with a form to read rather than an error to search for.
+            self::assertStringContainsString('naming no column', $texts);
+            self::assertStringContainsString('without logging', $texts);
+
+            // What the call does that the concatenation does not, item by item:
+            // a session told only "use the API" writes the second call twice
+            // and the line break once.
+            self::assertStringContainsString('trims the trailing comma', $texts);
+            self::assertStringContainsString('a second call adds the field once', $texts);
+            self::assertStringContainsString('--linebreak-- is exempt', $texts);
+            self::assertStringContainsString('created rather than refused', $texts);
+        }
+
+        // The reshaping is the bound half, and the version question keeps the
+        // route D-KNW-103 measured rather than being restated here.
+        $onFourteen = implode("\n", array_column(
+            Hints::byId('tca-core-palette', 14)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('short form reference', $onFourteen);
+        self::assertStringContainsString('typo3_changelog_lookup', $onFourteen);
+        self::assertStringNotContainsString('works on this branch', $onFourteen);
+
+        $onThirteen = implode("\n", array_column(
+            Hints::byId('tca-core-palette', 13)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('works on this branch', $onThirteen);
+        self::assertStringNotContainsString('short form reference', $onThirteen);
+
+        // The four probes D-KNW-103 recorded the gap on, of which the last
+        // reached nothing at all, and the symptom the session actually had.
+        $reached = static fn(string $query): array => array_column(
+            Hints::find([], $query, 6)['matchedHints'],
+            'id',
+        );
+        foreach ([
+            'add a field to a core tt_content palette',
+            'addFieldsToPalette tt_content frames',
+            'appending to core TCA showitem string breaks',
+            'extend core palette showitem with a linebreak',
+        ] as $query) {
+            self::assertContains('tca-core-palette', $reached($query), $query);
+        }
+        self::assertSame(
+            'tca-core-palette',
+            $reached('my field is missing from the backend form after a TCA override')[0] ?? '',
+        );
+
+        // And the boundary the statement had to land inside: the palette words
+        // are a third TCA subject, not a claim on either neighbour.
+        self::assertContains('content-elements', $reached('register a content element'));
+        self::assertContains('tca-formengine', $reached('validate a form field in the backend'));
     }
 
     #[Test]

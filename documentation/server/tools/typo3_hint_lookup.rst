@@ -205,6 +205,7 @@ Text:
     - environment-placeholders — %env() in a YAML Configuration (PHP)
     - di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
     - frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
+    - tca-core-palette — Adding a Field to a Core Palette (PHP)
     - extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
     - authentication-permissions — Authentication and Permissions (PHP)
     - backend-modules — Backend Module and Route Registration (PHP)
@@ -431,6 +432,11 @@ Data:
             {
                 "id": "frontend-access-restriction",
                 "title": "Access Restricted Pages and extendToSubpages in the Frontend",
+                "category": "PHP"
+            },
+            {
+                "id": "tca-core-palette",
+                "title": "Adding a Field to a Core Palette",
                 "category": "PHP"
             },
             {
@@ -1434,6 +1440,7 @@ Text:
     - environment-placeholders — %env() in a YAML Configuration (PHP)
     - di-service-not-found — A Service the Container Cannot Find at Runtime (PHP)
     - frontend-access-restriction — Access Restricted Pages and extendToSubpages in the Frontend (PHP)
+    - tca-core-palette — Adding a Field to a Core Palette (PHP)
     - extension-test-frontend-request — Asserting a Frontend Response in a Test (PHP)
     - authentication-permissions — Authentication and Permissions (PHP)
     - backend-modules — Backend Module and Route Registration (PHP)
@@ -1561,6 +1568,11 @@ Data:
             {
                 "id": "frontend-access-restriction",
                 "title": "Access Restricted Pages and extendToSubpages in the Frontend",
+                "category": "PHP"
+            },
+            {
+                "id": "tca-core-palette",
+                "title": "Adding a Field to a Core Palette",
                 "category": "PHP"
             },
             {

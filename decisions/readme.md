@@ -260,7 +260,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-100`][D-KNW-100] — How an extension extends a TypoScript condition is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-101`][D-KNW-101] — What a TypoScript condition can reach at evaluation time is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-102`][D-KNW-102] — Proving a TypoScript condition verdict against a running installation is a gap this server owns · 2026-08-18
-- [`D-KNW-103`][D-KNW-103] — How an extension adds a field to a core palette is a gap this server owns · 2026-08-18
+- [`D-KNW-104`][D-KNW-104] — The corpus states how an extension adds a field to a core palette · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -355,7 +355,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-100]: knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md
 [D-KNW-101]: knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md
 [D-KNW-102]: knowledge/knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md
-[D-KNW-103]: knowledge/knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-gap-this-server-owns.md
+[D-KNW-104]: knowledge/knw-104-the-corpus-states-how-an-extension-adds-a-field-to-a-core-palette.md
 [D-KNW-080]: knowledge/knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knowledge/knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knowledge/knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md
@@ -815,6 +815,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### Revoked, and kept as the record
 
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
+- [`D-KNW-103`][D-KNW-103] — How an extension adds a field to a core palette is a gap this server owns · 2026-08-18 → D-KNW-104
 - [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14 → D-KNW-078
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
@@ -853,6 +854,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
+[D-KNW-103]: knowledge/knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-gap-this-server-owns.md
 [D-KNW-072]: knowledge/knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
 [D-KNW-074]: knowledge/knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-the-report-is-a-file.md

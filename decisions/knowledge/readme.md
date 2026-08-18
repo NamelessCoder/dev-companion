@@ -27,7 +27,7 @@ one is added.
 - [`D-KNW-100`][D-KNW-100] — How an extension extends a TypoScript condition is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-101`][D-KNW-101] — What a TypoScript condition can reach at evaluation time is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-102`][D-KNW-102] — Proving a TypoScript condition verdict against a running installation is a gap this server owns · 2026-08-18
-- [`D-KNW-103`][D-KNW-103] — How an extension adds a field to a core palette is a gap this server owns · 2026-08-18
+- [`D-KNW-104`][D-KNW-104] — The corpus states how an extension adds a field to a core palette · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -122,7 +122,7 @@ one is added.
 [D-KNW-100]: knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md
 [D-KNW-101]: knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md
 [D-KNW-102]: knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md
-[D-KNW-103]: knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-gap-this-server-owns.md
+[D-KNW-104]: knw-104-the-corpus-states-how-an-extension-adds-a-field-to-a-core-palette.md
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md
@@ -199,6 +199,7 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-KNW-103`][D-KNW-103] — How an extension adds a field to a core palette is a gap this server owns · 2026-08-18 → D-KNW-104
 - [`D-KNW-072`][D-KNW-072] — What makes a core change breaking when no PHP member moved is a gap this server owns · 2026-08-14 → D-KNW-073
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14 → D-KNW-078
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03 → D-KNW-044
@@ -209,6 +210,7 @@ one is added.
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 
+[D-KNW-103]: knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-gap-this-server-owns.md
 [D-KNW-072]: knw-072-what-makes-a-core-change-breaking-when-no-php-member-moved-is-a-gap-this-server-owns.md
 [D-KNW-074]: knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md
 [D-KNW-040]: knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md

@@ -1,7 +1,8 @@
 ---
 id: D-KNW-103
 date: 2026-08-18
-status: open
+status: revoked
+revokedBy: D-KNW-104
 ---
 
 # D-KNW-103 — How an extension adds a field to a core palette is a gap this server owns
@@ -121,3 +122,30 @@ queued at `normal`.
 - A query naming a content element or the TCA conventions stops reaching
   `content-elements` or `tca-formengine` once the statement lands. The boundary
   between the three would be wrong.
+
+## Confirmed on 2026-08-18
+
+The first **Assumed** was the open one, and the sweep it asked for settles it in
+the statement's favour. Every shipped core palette was read on all four
+checkouts, not only `tt_content`'s `frames`: the per-field labels went from 38
+of 73 palettes on `12.4` and 35 of 97 on `13.4` to 5 of 110 on `14.3` and on
+`main`, all five of them the short form. The trailing comma did not move with
+them — six palettes carried one on both older branches and five do on both newer
+ones, with `tt_content`'s two losing theirs and `tx_scheduler_task`'s
+`execution` gaining one — so a statement naming the comma as a property of a
+major would have been wrong on the day it was written.
+
+The second **Wrong if** does not hold. `addFieldsToPalette()` and the two
+functions under it are byte for byte identical on `12.4`, `13.4`, `14.3` and
+`main`, so the remedy needed no binding.
+
+## Revoked on 2026-08-18
+
+By the work this entry queued. Its statement says nothing below `knowledge/`
+names the call, and `tca-core-palette` does now, so `confirmed` over that
+sentence would read as a claim about a gap that is closed. What holds from here
+is
+[`D-KNW-104`](knw-104-the-corpus-states-how-an-extension-adds-a-field-to-a-core-palette.md),
+whose **Wrong if** is a different list: what can go wrong now is a statement
+going stale as core reshapes again, and a keyword claiming a neighbour's
+question.

@@ -297,24 +297,31 @@ final class ScopeTest extends TestCase
         // The sentence below this one is why the length is held at all: both
         // release runs of 2026-07-31 were handed instructions cut from 3662 to
         // 2048 characters, and the half that fell off ended with "in English".
-        // The prefix naming what was excluded is measured too, because it grows
-        // with the list and a caller may exclude most of the server. That case
-        // is at the budget exactly as of 2026-08-05, so anything added to the
-        // instructions has to come out of them first: a session asked for one
-        // line there saying that clients expose tool names with a prefix of
-        // their own, and there was nowhere to put it.
         self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
+        // The largest assembly, measured on 2026-08-18: nothing excluded, in a
+        // project whose task skills nobody has updated. 2021 characters, of
+        // which the index entry for typo3_commit_message_guide is 96 and the
+        // sentence under the entries 13 more than the one that counted them.
+        self::assertLessThanOrEqual(
+            Coverage::INSTRUCTIONS_BUDGET,
+            mb_strlen(Coverage::instructions(Installer::NOTICE)),
+            'instructions where the skills are stale',
+        );
+
+        // The prefix naming what was excluded is measured too, because it grows
+        // with the list and a caller may exclude most of the server. Both cases
+        // below used to be the worst one: the index was prose and named four
+        // tools whatever the caller had left. Now it is data, the entries of an
+        // excluded tool go with it, and what is longest is a prefix that names
+        // 23 tools rather than counting them — 2018 characters, against 1598
+        // where the notice pushes the same prefix onto the count.
         putenv(ExcludedTools::VARIABLE . '=' . implode(',', array_column(Registry::definitions(), 'name')));
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen(Coverage::instructions()),
             'instructions where the caller excluded everything it could',
         );
-        // The worst case is both at once, and it is the one the notice was
-        // sized against: a caller that excluded every tool, in a project whose
-        // task skills nobody has updated. What made room for it is the sentence
-        // R-DIS-025 displaced, which is what adding one here costs.
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen(Coverage::instructions(Installer::NOTICE)),
@@ -350,6 +357,11 @@ final class ScopeTest extends TestCase
      * Two sessions in two projects called nothing at all under a client that
      * lists the tools by name and defers their schemas, so a name was the whole
      * of what either of them had to choose on.
+     *
+     * The commit guide is the third of them, `feedback/2026-08-18-113357`: six
+     * commit messages written for a sitepackage repository with the convention
+     * derived from `git log`, because "TYPO3 commit message" read as the core's
+     * Gerrit convention. So the entry says whose repository it is for.
      */
     #[Test]
     public function theInstructionsIndexTheQuestionEachToolAnswers(): void
@@ -358,6 +370,42 @@ final class ScopeTest extends TestCase
 
         self::assertStringContainsString('What to call for what:', $instructions);
         self::assertStringContainsString('typo3_changelog_lookup', $instructions);
+        self::assertStringContainsString(
+            'the commit message, in your own repository as much as in the core: typo3_commit_message_guide',
+            $instructions,
+        );
+    }
+
+    /**
+     * The room that entry was paid out of, and the reason the index is data.
+     *
+     * A caller that had excluded most of the server was still told which four
+     * tools to call — the case that binds `R-ANS-013`, spending the budget on
+     * an index of tools that caller does not have.
+     */
+    #[Test]
+    public function theIndexNamesNoToolTheCallerExcluded(): void
+    {
+        // Read before anything is excluded: the registry answers with the list
+        // as it is filtered, so asking it afterwards would leave out the two
+        // taken away here and hand them back in the second half.
+        $everyTool = implode(',', array_column(Registry::definitions(), 'name'));
+
+        putenv(ExcludedTools::VARIABLE . '=typo3_icon_lookup,typo3_commit_message_guide');
+        $instructions = Coverage::instructions();
+
+        // The questions rather than the tool names: the prefix in front of the
+        // routing names both of them, which is what it is there for.
+        self::assertStringNotContainsString('a backend icon identifier', $instructions);
+        self::assertStringNotContainsString('the commit message, in your own repository', $instructions);
+        // What is still offered keeps its entry, so the index is shorter rather
+        // than gone.
+        self::assertStringContainsString('backend markup or a CSS class: typo3_component_lookup', $instructions);
+
+        // And with nothing left to name, the heading and the note go with the
+        // entries: a list of none is worse than no list.
+        putenv(ExcludedTools::VARIABLE . '=' . $everyTool);
+        self::assertStringNotContainsString('What to call for what:', Coverage::instructions());
     }
 
     /**

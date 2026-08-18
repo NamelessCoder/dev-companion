@@ -101,6 +101,7 @@ schemas.
 ## Covered by
 
 - `ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers`
+- `ScopeTest::theIndexNamesNoToolTheCallerExcluded`
 - `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`
 - `ScopeTest::theInstructionsFitWhatAClientKeeps`
 
@@ -132,7 +133,20 @@ The room is somewhere nobody placed. The index is prose inside the stored
 `instructions`, so it is not filtered by `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`: a
 caller that excluded everything it can is still told which four tools to call,
 which is both the case that binds the budget and what `Coverage::offered()`
-already refuses for `covers` and `routing`. That is the step, queued at `normal`
-on
-`todo/open/2026-08-18-113357-typo3-commit-message-guide-reads-as-core-only.md` —
-a change to `src/`, so not one the judging run makes.
+already refuses for `covers` and `routing`.
+
+That step was taken on 2026-08-18. The index is data in
+`knowledge/server-scope.json`, `Coverage::offered()` drops the entry of a tool
+the caller excluded, and the line the feedback asked for is the fifth entry: the
+commit message, in your own repository as much as in the core. The sentence
+under the entries names the three that fail at runtime rather than counting
+them, since which entry is first now depends on the caller. The heading and that
+sentence are rendered with the entries, so a caller left with none is handed no
+empty list.
+
+What it measures, the same day: the longest assembly is now the stale-skills
+notice with nothing excluded, at 2021 characters of the 2048. A caller that
+excluded every tool it can reads 2018, where the room freed is spent naming all
+23 rather than counting them, and 1598 where the notice pushes that prefix back
+onto the count. So the budget bought the entry and is no longer what blocks the
+next one — the third **Wrong if** above is what to argue with instead.

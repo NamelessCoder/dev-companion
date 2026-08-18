@@ -40,9 +40,11 @@ final class Coverage
      *
      * The write sentence is appended rather than stored, because whether this
      * server can write at all depends on the checkout it runs from, and a client
-     * told "read-only" must not then be offered a tool that creates a file.
-     * Everything assembled here has to fit what a client keeps, and `R-ANS-013`
-     * holds the whole of it — prefix and suffix included — to that budget.
+     * told "read-only" must not then be offered a tool that creates a file. The
+     * statement is taken in the form this caller is offered it, so the index
+     * names no tool the caller excluded. Everything assembled here has to fit
+     * what a client keeps, and `R-ANS-013` holds the whole of it — prefix and
+     * suffix included — to that budget.
      */
     /**
      * @param string $notice what is wrong with the project this server was
@@ -50,7 +52,7 @@ final class Coverage
      */
     public static function instructions(string $notice = ''): string
     {
-        $instructions = self::read()['instructions'];
+        $instructions = self::offered()['instructions'];
         if (Channel::isAvailable()) {
             $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
                 . 'which creates a new markdown feedback under feedback/ and writes nothing else.';
@@ -100,7 +102,8 @@ final class Coverage
      * The stored file describes the whole server, and by default that is what a
      * client gets. Where the caller excluded a tool, no entry may still point at
      * it: a map routing to something that is not in the list is a broken server
-     * as far as a client can tell.
+     * as far as a client can tell. The index inside the instructions is such a
+     * map, and the one a client reads without asking for it.
      *
      * @return array{
      *     purpose: string,
@@ -117,6 +120,8 @@ final class Coverage
         if (ExcludedTools::all() === []) {
             return $coverage;
         }
+
+        $coverage['instructions'] = self::assembled(self::decoded()['instructions'] ?? null, true);
 
         $covers = [];
         foreach ($coverage['covers'] as $entry) {
@@ -163,14 +168,11 @@ final class Coverage
      */
     public static function read(): array
     {
-        $decoded = json_decode((string) file_get_contents(Paths::knowledgeFile('server-scope.json')), true);
-        if (!is_array($decoded) || !isset($decoded['covers'], $decoded['routing'])) {
-            throw new \RuntimeException('Invalid server-scope.json');
-        }
+        $decoded = self::decoded();
 
         return [
             'purpose' => (string) ($decoded['purpose'] ?? ''),
-            'instructions' => (string) ($decoded['instructions'] ?? ''),
+            'instructions' => self::assembled($decoded['instructions'] ?? null, false),
             'covers' => array_map(static fn(array $entry): array => [
                 'topic' => (string) $entry['topic'],
                 'depth' => (string) ($entry['depth'] ?? ''),
@@ -194,5 +196,53 @@ final class Coverage
                 'call' => (string) $entry['call'],
             ], $decoded['routing']),
         ];
+    }
+
+    /**
+     * The statement, with the index of which tool answers what rendered into it.
+     *
+     * The index is data rather than a paragraph of the stored prose so that an
+     * entry naming an excluded tool can be dropped the way a `routing` entry
+     * already is. It was the case that bound `R-ANS-013`: a caller that had
+     * excluded everything it could was still told which four tools to call, out
+     * of the budget, and `D-AUD-011` had nothing left to displace for the entry
+     * a session had asked for.
+     *
+     * The heading and the note under the entries travel with them. A caller
+     * left with none of them is told nothing about a list it does not have.
+     */
+    private static function assembled(mixed $stored, bool $offered): string
+    {
+        $stored = is_array($stored) ? $stored : [];
+        $index = array_map(
+            static fn(array $entry): string => '- ' . (string) $entry['question'] . ': ' . (string) $entry['call'],
+            is_array($stored['index'] ?? null) ? $stored['index'] : [],
+        );
+        if ($offered) {
+            $index = array_filter($index, static fn(string $entry): bool => !self::namesExcludedTool($entry));
+        }
+
+        $paragraphs = [(string) ($stored['start'] ?? '')];
+        if ($index !== []) {
+            $paragraphs[] = implode("\n", ['What to call for what:', ...$index, (string) ($stored['note'] ?? '')]);
+        }
+        $paragraphs[] = (string) ($stored['then'] ?? '');
+
+        return implode("\n\n", $paragraphs);
+    }
+
+    /**
+     * The file, held to the two lists nothing here can be assembled without.
+     *
+     * @return array<string, mixed>
+     */
+    private static function decoded(): array
+    {
+        $decoded = json_decode((string) file_get_contents(Paths::knowledgeFile('server-scope.json')), true);
+        if (!is_array($decoded) || !isset($decoded['covers'], $decoded['routing'])) {
+            throw new \RuntimeException('Invalid server-scope.json');
+        }
+
+        return $decoded;
     }
 }

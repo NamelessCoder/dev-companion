@@ -630,6 +630,9 @@ final class KnowledgeTest extends TestCase
             'installation-upgrade' => 'Upgrade the installation to the new major',
             'installation-operations' => 'Boot the local environment from a fresh clone',
             'content-element' => 'Add a content element for an editor-owned carousel',
+            'tca-field' => 'Add a TCA column to a table an extension already ships',
+            'site-setting' => 'Add a setting to the site set a sitepackage ships',
+            'event-listener' => 'Register an event listener for the PSR-14 event a package dispatches',
         ];
 
         $cases = [];

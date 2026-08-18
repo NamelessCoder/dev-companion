@@ -1107,6 +1107,7 @@ Text:
     Paths:
     - packages/acme_events/Classes/Domain/Repository/EventRepository.php (extension)
     - typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
+    Possibly also: Registering an event listener, only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this. Its checklist items are marked as conditional below and its checks are listed separately.
 
     Hints:
     The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide.
@@ -1167,6 +1168,10 @@ Text:
     - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
     - Reproduce the bug first, ideally with a failing test that the fix turns green.
     - Check whether the bug also affects maintained older release branches.
+    - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: find the event that is really dispatched before writing a listener for it. An event class that reads plausibly and is dispatched nowhere is a listener that never runs and throws nothing, which is the failure this task shape has instead of an error.
+    - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: how a listener is registered is bound to the TYPO3 line and is not stated here: typo3_hint_lookup with id=events-extension-points carries both mechanisms with the versions each holds on, and a package serving two majors gets both from it.
+    - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: say what happens when another listener has already run. Ordering is declared or it is not there, and a listener that quietly assumes it goes first is correct until somebody installs a second extension.
+    - Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: a hook is not the fallback. Where a subsystem still has hook-based extension points that is a fact about that subsystem — ask its own hint with the intent, and take the narrower event where there is one.
     - Write the commit message with typo3_commit_message_guide and workflow="core": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
     Establish in your checkout — this server cannot see it:
@@ -1184,8 +1189,9 @@ Text:
       Identify the XLF resource already used at the consuming code, then ask typo3_label_lookup with that resource. It applies the installation's resource overrides, but a match from another module or package is not reusable in this context. Where the console cannot be reached it reads the installed package's XLF file instead and says so; only where there is no installation at all is there nothing to ask.
 
     Next lookups for this task:
+    - typo3_hint_lookup — with id=events-extension-points, for the registration each covered line has and what an event class owes its listeners
+    - typo3_extension_describe — for what the extension dispatching the event already registers
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
-    - typo3_hint_lookup — with the concrete file paths, once they are known
     - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
     - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and adds no Forge issue or release trailer
     - typo3_feedback_record — when one of these answers was wrong or incomplete
@@ -1219,7 +1225,14 @@ Data:
             "php"
         ],
         "scope": "core",
-        "intents": [],
+        "intents": [
+            {
+                "id": "event-listener",
+                "title": "Registering an event listener",
+                "confidence": "weak",
+                "condition": "only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this"
+            }
+        ],
         "skills": [],
         "guides": [],
         "hints": [
@@ -1401,6 +1414,10 @@ Data:
             "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
             "Reproduce the bug first, ideally with a failing test that the fix turns green.",
             "Check whether the bug also affects maintained older release branches.",
+            "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: find the event that is really dispatched before writing a listener for it. An event class that reads plausibly and is dispatched nowhere is a listener that never runs and throws nothing, which is the failure this task shape has instead of an error.",
+            "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: how a listener is registered is bound to the TYPO3 line and is not stated here: typo3_hint_lookup with id=events-extension-points carries both mechanisms with the versions each holds on, and a package serving two majors gets both from it.",
+            "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: say what happens when another listener has already run. Ordering is declared or it is not there, and a listener that quietly assumes it goes first is correct until somebody installs a second extension.",
+            "Only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this: a hook is not the fallback. Where a subsystem still has hook-based extension points that is a fact about that subsystem — ask its own hint with the intent, and take the narrower event where there is one.",
             "Write the commit message with typo3_commit_message_guide and workflow=\"core\": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
         ],
         "checkoutDiscovery": [
@@ -1431,12 +1448,16 @@ Data:
         ],
         "nextTools": [
             {
-                "tool": "typo3_changelog_lookup",
-                "when": "for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact"
+                "tool": "typo3_hint_lookup",
+                "when": "with id=events-extension-points, for the registration each covered line has and what an event class owes its listeners"
             },
             {
-                "tool": "typo3_hint_lookup",
-                "when": "with the concrete file paths, once they are known"
+                "tool": "typo3_extension_describe",
+                "when": "for what the extension dispatching the event already registers"
+            },
+            {
+                "tool": "typo3_changelog_lookup",
+                "when": "for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact"
             },
             {
                 "tool": "typo3_test_run_guide",

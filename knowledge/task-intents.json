@@ -591,5 +591,95 @@
       "typo3_hint_lookup with id=content-elements, for what the element owns and how the record type is registered, then with id=extbase and id=frontend-records for the two sides of the Extbase fork",
       "typo3_extension_describe, for the architecture this extension already has: each content element it registers with a kind of element or plugin, and the templates they render through"
     ]
+  },
+  {
+    "id": "tca-field",
+    "title": "Adding or changing a field on an existing table",
+    "match": [
+      "tca",
+      "showitem",
+      "palette",
+      "ext_tables.sql",
+      "database column"
+    ],
+    "matchWeak": [
+      "record form",
+      "backend form",
+      "form field",
+      "add a field",
+      "new field"
+    ],
+    "condition": "only if the task adds or changes a field on a table that already exists; a new table, and the content element or backend module that owns one, are the neighbouring categories",
+    "rulesQuery": "",
+    "checklist": [
+      "Name the table and the type before the field. A column in the columns section exists in the schema and appears in no form until a type's showitem puts it there, and a table with several types shows a different form per type — so \"add the field\" is two edits and the second one is the one that is forgotten.",
+      "Read what the table already has rather than adding beside it: typo3_extension_describe reports what this extension registers, and a field whose job is already done by an existing column is a second way to store one thing.",
+      "Settle the database column with typo3_schema_lookup rather than by writing ext_tables.sql first. It lists what TYPO3 derives from the TCA itself, with the Doctrine type, the NOT NULL and the default — which is also exactly what an ext_tables.sql does not have to declare, so a redundant declaration is found there instead of in a review.",
+      "Pass the XLF resource used at the consuming code to typo3_label_lookup before wording the field's label. A match in another resource is not reusable there, and a guessed label key fails only at runtime.",
+      "The conventions are typo3_hint_lookup with id=tca-formengine for the form side and id=tca-schema-api for what the schema API answers about a field; a datetime column has its own, id=tca-datetime-storage, because what it stores and when it is null is not what the type name suggests."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_schema_lookup, for the column this field produces and whether ext_tables.sql has to declare it at all",
+      "typo3_hint_lookup with id=tca-formengine and id=tca-schema-api, for the conventions the field is written under",
+      "typo3_extension_describe, for what the table and the extension around it already register"
+    ]
+  },
+  {
+    "id": "site-setting",
+    "title": "Adding a setting to a site set",
+    "match": [
+      "site set",
+      "settings.definitions.yaml",
+      "site setting",
+      "settings.yaml"
+    ],
+    "matchWeak": [
+      "setting",
+      "typoscript constant",
+      "constants"
+    ],
+    "condition": "only if the task adds or changes a setting a site set defines; the site configuration itself — its languages, its base, its error handling — is not this and is not covered",
+    "rulesQuery": "",
+    "checklist": [
+      "Decide who the value is for before deciding where it goes. A value an integrator changes per site is a set setting; a value that never differs between sites is the package's own and needs no setting at all. What it is not is a TypoScript constant: sets arrived in TYPO3 v13 and settings.definitions.yaml replaced constants there, so a package on that line or above writes a setting and a package still serving v12 has no set to put one in — typo3_hint_lookup with id=site-set-settings carries the range each statement holds on.",
+      "Define it and give it a value in two different places. The definition — its type, its default, its label — belongs to the set that owns it, and what a site actually runs with is the value that site's configuration supplies; a default that is only ever written once is a definition nobody had to make.",
+      "Say which set owns it. A package that ships several sets has to answer why this setting sits in this one, and a setting a dependent set needs is a setting the depended-on set defines.",
+      "The conventions are typo3_hint_lookup with id=site-sets for what a set is and id=site-set-settings for the settings themselves; a package moving constants over asks id=site-set-migration, which is about what the move leaves behind rather than about the new setting."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup with id=site-set-settings, then id=site-sets for the set around it",
+      "typo3_project_describe, for the sites this project configures and the sets they already depend on"
+    ]
+  },
+  {
+    "id": "event-listener",
+    "title": "Registering an event listener",
+    "match": [
+      "event listener",
+      "aseventlistener",
+      "psr-14",
+      "psr 14",
+      "event dispatcher"
+    ],
+    "matchWeak": [
+      "listener",
+      "event",
+      "hook"
+    ],
+    "condition": "only if the task listens to an event something else dispatches; dispatching a new event from your own code is the other half of the subject and is not this",
+    "rulesQuery": "",
+    "checklist": [
+      "Find the event that is really dispatched before writing a listener for it. An event class that reads plausibly and is dispatched nowhere is a listener that never runs and throws nothing, which is the failure this task shape has instead of an error.",
+      "How a listener is registered is bound to the TYPO3 line and is not stated here: typo3_hint_lookup with id=events-extension-points carries both mechanisms with the versions each holds on, and a package serving two majors gets both from it.",
+      "Say what happens when another listener has already run. Ordering is declared or it is not there, and a listener that quietly assumes it goes first is correct until somebody installs a second extension.",
+      "A hook is not the fallback. Where a subsystem still has hook-based extension points that is a fact about that subsystem — ask its own hint with the intent, and take the narrower event where there is one."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup with id=events-extension-points, for the registration each covered line has and what an event class owes its listeners",
+      "typo3_extension_describe, for what the extension dispatching the event already registers"
+    ]
   }
 ]

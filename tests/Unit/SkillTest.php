@@ -2361,6 +2361,42 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The workflow routed every lookup by subject and at planning time, which
+     * is the moment a subject is the one thing a debugging session does not
+     * have. A build read core source through nine debugging cycles with the
+     * index in its context throughout, and three of them had a hint titled
+     * after what it was staring at (`D-SKL-048`). The queries are made rather
+     * than described: the line promises a caller that a symptom reaches, and
+     * curation is what can make that false without touching the skill.
+     */
+    #[Test]
+    public function theBuildWorkflowSaysASymptomIsALookupTrigger(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-content-element-development/SKILL.md',
+        ));
+
+        self::assertStringContainsString('A symptom is a lookup trigger, and not only a task is.', $skill);
+        self::assertStringContainsString('`typo3_hint_lookup` takes the observation as its `task`', $skill);
+        // Before the installed source, which is the order the session inverted:
+        // the base fixes that reading as the step after the lookups.
+        self::assertStringContainsString('before reading the installed source', $skill);
+
+        $symptoms = [
+            'the content elements render in reverse order' => 'datahandler-placement',
+            'the child rows exist, uid_foreign is 0, tablename is empty' => 'datahandler-relations',
+        ];
+        foreach ($symptoms as $symptom => $id) {
+            $answer = Registry::call('typo3_hint_lookup', ['task' => $symptom])->data;
+            self::assertContains(
+                $id,
+                array_column($answer['hints'], 'id'),
+                '"' . $symptom . '" is the shape the workflow promises reaches, and it misses ' . $id,
+            );
+        }
+    }
+
+    /**
      * The bullet named the moment and no way out of it. A build held both guide
      * ids from `typo3_project_describe`, reached the point where six backend
      * previews had to be seen, gave up on a scripted backend login and shipped

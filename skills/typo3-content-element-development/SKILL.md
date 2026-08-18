@@ -74,6 +74,16 @@ changing a content element.
 - Keep raw Fluid output limited to markup already rendered by a trusted TYPO3
   rendering API.
 
+## Look up what broke
+
+A symptom is a lookup trigger, and not only a task is. `typo3_hint_lookup` takes
+the observation as its `task` — content elements in reverse order, child rows
+that saved without their parent — and matches it against what each hint states,
+so the subject does not have to be named first. Make that call before reading
+the installed source, which the base fixes as the step after the lookups rather
+than one instead of them. Finding nothing is an answer, and the reading is what
+follows it.
+
 ## Verify at the right layers
 
 - Validate PHP, YAML, Fluid, XLIFF and TypoScript through commands the project
@@ -89,10 +99,10 @@ changing a content element.
   is reconstructed here: `typo3_rule_lookup` with
   `documentId="any/testing/browser-check"` for looking at the element in an
   installation that already holds the content, which is the step before anything
-  asserts a backend preview, and with
-  `documentId="project/testing/playwright"` for a repository that has no browser
-  suite yet, which is the configuration, the backend login and a spec per
-  project, whole. Establishing that suite is `typo3-extension-testing`'s.
+  asserts a backend preview, and with `documentId="project/testing/playwright"`
+  for a repository that has no browser suite yet, which is the configuration,
+  the backend login and a spec per project, whole. Establishing that suite is
+  `typo3-extension-testing`'s.
 - Re-run `typo3_extension_describe` after the change and report parser blind
   spots separately from implementation defects.
 

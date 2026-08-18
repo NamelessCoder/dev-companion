@@ -348,13 +348,11 @@ final class ScopeTest extends TestCase
      * The entry point claims the work that ends before a patch.
      *
      * It used to say "The coding agent writes the patch; this server supplies
-     * the task knowledge and workflows around it", immediately after the
-     * sentence routing a task to `typo3_task_guide`. A session asked whether a
+     * the task knowledge and workflows around it", and a session asked whether a
      * 2006 bug still reproduces read that as addressed to work it was
-     * deliberately not doing — the user's words were "before I touch it" — and
-     * skipped the guide, saying it would make the same call again from the same
-     * wording (`D-AUD-009`). Triage, reproduction and pricing a fix are three
-     * task shapes `scenarios/` holds cases for.
+     * deliberately not doing, skipping the guide and saying it would make the
+     * same call again from the same wording (`D-AUD-009`). Triage, reproduction
+     * and pricing a fix are three task shapes `scenarios/` holds cases for.
      */
     #[Test]
     public function theEntryPointClaimsTheWorkThatEndsBeforeAPatch(): void
@@ -593,13 +591,11 @@ final class ScopeTest extends TestCase
      * answers.
      *
      * It has to be said what that is worth. Both runs are reviews of somebody's
-     * own repository, so every one of these decisions is `outside-core` — and
-     * `outside-core` is what the sysext check returns for every path that does
-     * not carry the marker, which is all of them. The agreement is the corpus
-     * having one side rather than the two signals reading the same evidence:
-     * eight of these were carried by the installation and one by the task text,
-     * and the sysext check read neither. The other half of the measurement is
-     * the test below.
+     * own repository, so every one of these decisions is `outside-core`, which
+     * is what the sysext check returns for every path without the marker. The
+     * agreement is the corpus having one side rather than the two signals
+     * reading the same evidence, and the other half of the measurement is the
+     * test below.
      */
     #[Test]
     #[DataProvider('everyAudienceTheRecordedRunsDecided')]

@@ -48,15 +48,11 @@ final class ToolAnswersTest extends TestCase
      * Every call on a page carries its arguments and each answer it got.
      *
      * What this used to guard is gone with the markdown — `D-DOC-029`. Half of
-     * these answers are documents themselves, code blocks included, and in a
-     * fenced corpus an answer's own closing fence ended the block it had been
-     * written into: the rest of the section then rendered as prose and the JSON
-     * above it read as the end of one. A directive has no closing marker for an
-     * answer to imitate, so a block ends where the indentation does and nothing
-     * an answer can contain reaches out of it.
-     *
-     * The counting stays, because it is what says a page holds what it claims
-     * to: one set of arguments per call, and a text and a data answer for each.
+     * these answers are documents themselves, and in a fenced corpus an answer's
+     * own closing fence ended the block it had been written into, while a
+     * directive has no closing marker for an answer to imitate. The counting
+     * stays, because it is what says a page holds what it claims to: one set of
+     * arguments per call, and a text and a data answer for each.
      */
     #[Test]
     public function everyCallOnAPageCarriesItsArgumentsAndItsAnswers(): void

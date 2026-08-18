@@ -376,13 +376,12 @@ final class Typo3CliTest extends TestCase
      * `R-DIS-009` one step further in: the caller who reads "start the project"
      * is the one who starts it, and asks again in the same session.
      *
-     * Measured on 2026-08-04 in one server process against
-     * `.environments/e-site-main`, before the bound was read from the install:
-     * host PHP 8.3 satisfied a bound nothing stated, so the resolution
-     * succeeded through it and was remembered, and `ddev start` changed nothing
-     * until the client was restarted — `META-02`'s third **How it fails**. With
-     * the bound at what the packages require, the stopped project has no
-     * answer at all, and an answer that was never given is not remembered.
+     * Measured in one server process before the bound was read from the install:
+     * host PHP satisfied a bound nothing stated, so the resolution succeeded
+     * through it and was remembered, and `ddev start` changed nothing until the
+     * client was restarted. With the bound at what the packages require, the
+     * stopped project has no answer at all, and an answer that was never given
+     * is not remembered.
      */
     #[Test]
     public function aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts(): void

@@ -100,3 +100,36 @@ whole sentences rather than the middle of any.
 
 Whether that moves what a session writes is still unmeasured, and this commit is
 the boundary the reading is against.
+
+The sweep this entry queued was run on 2026-08-18, longest first, over the whole
+list. The comments below `src/` were read and cut to what the code cannot say;
+below `tests/` the same was done down to the tail. The list went from 240 to
+166, the comment share of the PHP from 33.5% to 32.2%, and about 1,350 lines of
+comment are gone. Nothing an entry does not carry was cut: what came out is the
+account of the session, the counts and the sweeps, all of which the entry each
+comment names already holds.
+
+**The first assumption held and the third Wrong if did not fire.** Of the ones
+read, none turned out to hold evidence its entry lacks — every retelling was one
+— so cutting lost nothing. What such a comment is, once the retelling is out, is
+what a reader editing that line has to know: the alternative that was rejected,
+what breaks if somebody puts it back, and the id for the rest.
+
+**The list has a floor, and the floor is the measure counting its own
+structure.** A comment is measured from `/**` to `*/`, so an annotated docblock
+spends seven of its ten lines on the delimiters, the summary line, one blank
+line and a `@param` or `@return` — leaving three lines of prose. Two sentences
+and an id do not fit in three lines. That is where most of the 166 sit: 133 of
+them run to 13 lines or fewer, and reading one now finds a comment that was
+already cut rather than one nobody has looked at. So the second **Wrong if** has
+to be read against that floor: the number staying near 166 is the shape of the
+count, and only a number staying near 240 is what it names.
+
+**An id is matched wherever it appears, including where it is not a reason.**
+The longest comment on the report was `Upkeep\Todo`'s class docblock at 59
+lines, and the `D-CAT-001` it named was inside an example file name —
+`todo/open/…-give-d-cat-001-a-digest-to-notice-markup-by.md`, an illustration of
+what a todo is called. It was cut for another reason, the form it spelled out
+being `todo/readme.md`'s, and the id went with the example. What a comment
+quotes is not a comment resting on an entry, and the pattern cannot tell the two
+apart.

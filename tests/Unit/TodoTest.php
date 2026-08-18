@@ -424,18 +424,13 @@ final class TodoTest extends TestCase
      * A worktree standing on no claim is the setup that went wrong, and the
      * only thing that can say so is that it is a worktree at all.
      *
-     * `claimed()` answers null for it and null for the main checkout on `main`,
-     * so `bin/cli todo:next` refuses in the first case and hands over the queue
-     * in the second, and this is the question it tells them apart by. What
-     * `linked()` does with git's two answers is the part that can be wrong and
-     * the part this holds: the directories are compared with trailing slashes
-     * off, and either call failing is read as "not a worktree" rather than as
-     * one. It used to answer by making a real worktree and a real branch in
-     * whichever checkout the suite was running in — `R-COD-003`.
-     *
-     * What a stub cannot say is whether the local git has
-     * `--path-format=absolute` at all, which is a property of the machine: where
-     * it is missing both calls fail and the refusal quietly stops happening.
+     * What `linked()` does with git's two answers is the part that can be wrong
+     * and the part this holds: the directories are compared with trailing
+     * slashes off, and either call failing is read as "not a worktree" rather
+     * than as one. It used to answer by making a real worktree and a real branch
+     * in whichever checkout the suite was running in — `R-COD-003`. What a stub
+     * cannot say is whether the local git has `--path-format=absolute` at all,
+     * which is a property of the machine.
      *
      * @param array{0: int, 1: string} $own
      * @param array{0: int, 1: string} $shared

@@ -406,6 +406,12 @@ final class SkillTest extends TestCase
         self::assertStringContainsString($sentence, $carried->text, 'a brief that carried them all does not say so');
         self::assertStringNotContainsString($sentence, $brief->text, 'a brief that stopped short says it carried them all');
 
+        // And the same signal as data, which the step points at since
+        // `D-GUI-013`: two sessions read `"omittedHints": []` beside that
+        // sentence and asked for a machine-readable form of it, because the step
+        // named the key it warns off and not the one that answers.
+        self::assertStringContainsString('`omittedHints` is that sentence as data', $base);
+
         // Step 4: one query per subsystem with its concrete paths, and the id
         // route step 3 sends the session down where the brief already spent the
         // query.

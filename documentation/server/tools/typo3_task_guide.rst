@@ -375,6 +375,7 @@ Text:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
     - Confirm the target TYPO3 core branch and issue context.
     - Inspect nearby code, tests, and established subsystem conventions.
+    - Sweep the deprecations before writing: typo3_changelog_lookup with type "deprecation" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.
     - Keep the patch focused on the stated task.
     - Add or update the narrowest useful test coverage.
     - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
@@ -773,6 +774,7 @@ Data:
             "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
             "Confirm the target TYPO3 core branch and issue context.",
             "Inspect nearby code, tests, and established subsystem conventions.",
+            "Sweep the deprecations before writing: typo3_changelog_lookup with type \"deprecation\" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.",
             "Keep the patch focused on the stated task.",
             "Add or update the narrowest useful test coverage.",
             "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
@@ -906,6 +908,7 @@ Text:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
     - Confirm the target TYPO3 core branch and issue context.
     - Inspect nearby code, tests, and established subsystem conventions.
+    - Sweep the deprecations before writing: typo3_changelog_lookup with type "deprecation" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.
     - Keep the patch focused on the stated task.
     - Add or update the narrowest useful test coverage.
     - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
@@ -1000,6 +1003,7 @@ Data:
             "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
             "Confirm the target TYPO3 core branch and issue context.",
             "Inspect nearby code, tests, and established subsystem conventions.",
+            "Sweep the deprecations before writing: typo3_changelog_lookup with type \"deprecation\" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.",
             "Keep the patch focused on the stated task.",
             "Add or update the narrowest useful test coverage.",
             "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
@@ -1143,6 +1147,7 @@ Text:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
     - Confirm the target TYPO3 core branch and issue context.
     - Inspect nearby code, tests, and established subsystem conventions.
+    - Sweep the deprecations before writing: typo3_changelog_lookup with type "deprecation" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.
     - Keep the patch focused on the stated task.
     - Add or update the narrowest useful test coverage.
     - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
@@ -1375,6 +1380,7 @@ Data:
             "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
             "Confirm the target TYPO3 core branch and issue context.",
             "Inspect nearby code, tests, and established subsystem conventions.",
+            "Sweep the deprecations before writing: typo3_changelog_lookup with type \"deprecation\" and the query omitted, at TYPO3 v14. One call per tag: the ext: tag of each system extension this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every call also returns the tags that major carries, so the second onwards is read off the first.",
             "Keep the patch focused on the stated task.",
             "Add or update the narrowest useful test coverage.",
             "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",

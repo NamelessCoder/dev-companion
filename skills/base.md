@@ -60,7 +60,8 @@ skip the ones that matter too.
    that instead and names the ids it left, and those are what is owed: fetch
    them by id rather than repeating the query. Read the sentence rather than the
    populated `hints` key, which is present either way and does not tell the two
-   apart.
+   apart. `omittedHints` is that sentence as data: empty where the brief carried
+   everything, and the ids it left where it stopped short.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
    package declares, bounded by `tag` and with the query omitted. Those three
    are the changelog's own axes, and the extension's vocabulary is not among

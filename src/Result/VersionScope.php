@@ -87,7 +87,7 @@ final class VersionScope
     }
 
     /** @param array<int, int> $majors */
-    private static function majorList(array $majors): string
+    public static function majorList(array $majors): string
     {
         $labels = array_map(static fn(int $major): string => 'v' . $major, $majors);
         $last = array_pop($labels);

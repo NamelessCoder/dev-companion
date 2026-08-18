@@ -99,6 +99,21 @@ final class TaskGuide extends ReadOnlyTool
         . 'the working order for this kind of work, and this brief is one call inside it.';
 
     /**
+     * The sweep a change owes, said in the brief that classified it
+     * (`D-GUI-013`).
+     *
+     * It is step 5 of `skills/base.md`, and the paragraph before it exempts the
+     * task that produces no change — so a session that walked the order on a 404
+     * and then wrote four PHP files has read the step and taken the exemption.
+     * What is placed here is the obligation and its axes; the step's reasoning
+     * stays where it is.
+     */
+    public const DEPRECATION_SWEEP = 'Sweep the deprecations before writing: typo3_changelog_lookup with '
+        . 'type "deprecation" and the query omitted, %s. One call per tag: the ext: tag of each system extension '
+        . 'this package calls into, and TCA, Fluid, Backend or Frontend for the kinds of file it ships. Every '
+        . 'call also returns the tags that major carries, so the second onwards is read off the first.';
+
+    /**
      * The change type of a task that changes nothing, and the id of the intent
      * that recognizes one described rather than classified. They are the same
      * word because the type is fed to the intent matcher.
@@ -392,9 +407,9 @@ final class TaskGuide extends ReadOnlyTool
         // Said once, because the steps a caller expects and does not find are
         // the ones they go looking for a second time.
         if ($changesNothing) {
-            $lines[] = 'This is a brief for work that changes nothing, so what a patch owes — the focused '
-                . 'diff, the test coverage, the commit message — is left out below. Pass changeType where '
-                . 'the task does change something.';
+            $lines[] = 'This is a brief for work that changes nothing, so what a patch owes — the deprecation '
+                . 'sweep, the focused diff, the test coverage, the commit message — is left out below. Pass '
+                . 'changeType where the task does change something.';
             $lines[] = '';
         }
 
@@ -597,6 +612,12 @@ final class TaskGuide extends ReadOnlyTool
                     ? 'Confirm the target branch and the issue context of this repository.'
                     : 'Confirm the target TYPO3 core branch and issue context.',
                 'Inspect nearby code, tests, and established subsystem conventions.',
+                sprintf(
+                    self::DEPRECATION_SWEEP,
+                    $targets === []
+                        ? 'at each TYPO3 major this repository declares'
+                        : 'at TYPO3 ' . VersionScope::majorList($targets),
+                ),
                 'Keep the patch focused on the stated task.',
                 'Add or update the narrowest useful test coverage.',
                 'Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.',

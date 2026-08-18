@@ -4630,6 +4630,64 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A brief for work that produces a change names the deprecation sweep.
+     *
+     * `D-GUI-013`. The obligation is step 5 of `skills/base.md`, stated in the
+     * paragraph after the exemption that removes the step — and the session of
+     * `feedback/2026-08-18-074327` had taken that exemption on a 404 before the
+     * task became three commits touching `Classes/ViewHelpers`,
+     * `Classes/Service` and `Classes/Controller`. So the brief carries the
+     * obligation and its axes, and the arm that changes nothing names it among
+     * what a re-run would owe.
+     */
+    #[Test]
+    public function aBriefForAChangeNamesTheDeprecationSweepItOwes(): void
+    {
+        // That session's own paths, and the change type it would have passed
+        // once the task turned into a patch.
+        $patch = Registry::call('typo3_task_guide', [
+            'task' => 'fix the 404 the blog extension returns in the frontend after setup',
+            'paths' => [
+                'packages/blog/Classes/ViewHelpers/CommentsViewHelper.php',
+                'packages/blog/Classes/Controller/BlogController.php',
+            ],
+            'changeType' => 'bugfix',
+            'targetVersion' => '14',
+        ]);
+
+        $checklist = implode("\n", $patch->data['checklist']);
+        // The axes rather than step 5's reasoning: the type, the omitted query,
+        // the major and the tag.
+        self::assertStringContainsString('Sweep the deprecations before writing', $checklist);
+        self::assertStringContainsString('type "deprecation" and the query omitted, at TYPO3 v14', $checklist);
+        self::assertStringContainsString('One call per tag', $checklist);
+        self::assertStringContainsString('Sweep the deprecations before writing', $patch->text);
+
+        // Every path in the report was an extension's, and the sweep is
+        // addressed to the package rather than to the core repository — so it
+        // survives the filter that drops what only the core has.
+        self::assertStringContainsString(Scope::OUTSIDE_CORE_NOTICE, $patch->text);
+
+        // The other arm, and the moment the step was lost: a brief for work that
+        // changes nothing leaves the sweep out, and says so beside the diff, the
+        // coverage and the commit message it already named.
+        $operations = Registry::call('typo3_task_guide', [
+            'task' => 'run the blog setup and get the frontend answering',
+            'changeType' => 'operations',
+        ]);
+
+        self::assertStringNotContainsString(
+            'Sweep the deprecations',
+            implode("\n", $operations->data['checklist']),
+        );
+        self::assertStringContainsString(
+            'what a patch owes — the deprecation sweep, the focused diff',
+            $operations->text,
+        );
+        self::assertStringContainsString('Pass changeType where the task does change something', $operations->text);
+    }
+
+    /**
      * A brief names the task skill that owns the work.
      *
      * `D-SKL-013`. `skills/base.md` and the `instructions` every client receives

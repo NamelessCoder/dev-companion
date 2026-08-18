@@ -1072,3 +1072,95 @@ was read in `.checkouts/`, and everything else is this server's own answers
 re-run. The feedback is closed by this commit and nothing is queued. What it
 asks be kept is now asserted rather than left standing, which is the third
 **Wrong if** asked of a closed strength.
+
+## Confirmed on 2026-08-18
+
+`feedback/2026-08-18-074305` is the first strength that prices a construction
+this repository chose knowing it would cost something, and the price it reports
+is the one the choice assumed.
+
+It credits three answers from a session that repaired a frontend 404 on a DDEV
+installation of `t3g/blog` in `/home/benji/projects/blog` and then wrote three
+commits: `typo3_project_describe` as the first call, the `operations` brief, and
+`typo3_commit_message_guide`. The first **Wrong if** did not fire. Every
+counterfactual in it is an action an answer pre-empted — the generated
+`config/system/additional.php` it did not touch, the TypoScript and caches it
+did not chase, the round trip it did not spend guessing a commit convention —
+and the two commands it ran, it ran *because* of an answer rather than instead
+of one.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another session's work, so the re-runs were made on 2026-08-18 from this
+worktree, with the feedback's own arguments, and from `.checkouts/14.3` where
+the answer needs an installation:
+
+- `typo3_task_guide` with the feedback's task, `changeType=operations`,
+  `targetVersion=14.3` and its three paths answers `installation-operations`
+  strong and `installation-setup` weak. Both credited items come back: the
+  `additional.php` ownership paragraph in the hints and again as a checklist
+  item, and the seeded installation answering 404 at its own root because
+  `Import::processSiteConfigurations()` overwrote the base.
+- `typo3_commit_message_guide` with `workflow=project` returns the wrapped
+  message and one check, `summary-length-preferred`, which is the code the
+  report names.
+- `typo3_project_describe` from `.checkouts/14.3` renders the marking and the
+  paragraph that explains it, and classifies that checkout's four `gerrit:setup`
+  scripts as `unknown`.
+
+**The credit is not misplaced, which is worth saying after five corpora in which
+it was.** The report says it ran `composer test:php:lint` and `composer phpstan`
+unasked because both were marked `check`, and those two declarations are the two
+`ProjectTest`'s own asserted table answers `RUNS_AS_CHECK` for. Its count is
+exact where it can be checked and stale by one where it cannot: six guarded
+items reproduce as six, and the seventeen it counted are eighteen, because
+`94765545` added the fresh-instance item to `installation-operations` five and a
+half hours after the report — on the unguarded side.
+
+The caveat is the whole of what this strength adds, and it is the report's own
+qualification of what it is praising: six of the items were guarded
+`only if the task is setting an installation up rather than working on the code in one`,
+which did not hold, "so the guard worked; it is just a lot of answer to read
+past". `TaskIntents::confirmed()` never promotes a weak match and states the
+condition instead, and `ScopeTest`'s
+`aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules` calls that cost
+"a prefix rather than a lookup" over two items. This is the same price paid at
+six items in eighteen, by a session that read them, skipped them and calls the
+prefix worth keeping. So it prices `D-SKL-051`'s weak `development installation`
+rather than contradicting it, and there is nothing to queue: its second **Wrong
+if** is about a weak match arriving alone, and here `installation-operations`
+matched strongly and carried `typo3-development-installation` in.
+
+The boundary is **what a session can settle when the answer arrives against what
+it would have to be reminded of later**. Everything credited is on the first
+side: the sites and the command marking arrived at orientation and were acted on
+in the same minute, the `additional.php` paragraph and the base item answered
+the question the session was holding, the length check answered a message it had
+just written. So are the six guarded items, from the other end — their condition
+is one the reader settles on arrival, which is why reading past them costs a
+prefix. The cost side is the same debrief, and it is everything whose condition
+could only become true later: `074226`'s guides list, delivered at orientation
+and wanted three user turns afterwards; `074245`'s hand-off, read once before
+the work that triggers it existed; `074327`'s five-step order, walked against
+the task as first phrased and never re-raised when it became a patch. This
+server answers a call and never sees the session again. Each of the three has a
+card of its own, and naming what fills that half from here is the copy-down
+judging.rst warns about.
+
+Two keep-requests rested on nobody rewriting the file, and both are held now.
+The marking was guarded twice over already —
+`ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources` holds the
+sentence the report acts on, and `SkillTest` the three values — but nothing held
+the guard on the setup items for the case that produced this report:
+`theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists` names the
+confidences, the prefix on every one of the six, and that the password
+instruction reaches no other item. The other is the site line the diagnosis
+turned on. `base` and `rootPageId` are required keys of
+`ProjectDescribe::outputSchema()`, so the data was held and the sentence
+rendering them was in no assertion —
+`ProjectTest::everySiteIsNamedWithTheBaseAndTheRootPageItCarries` builds the two
+sites `074200` describes, one on a host and one on `/`, and reads both back out
+of the text.
+
+No statement about TYPO3 was established: the re-runs read this server's own
+answers, and the item that made seventeen eighteen was read in this repository's
+own history. The feedback is closed by this commit and nothing is queued.

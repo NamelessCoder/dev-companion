@@ -4842,6 +4842,65 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A task about an installation that already exists gets the setup items
+     * under their condition, never as instructions.
+     *
+     * `feedback/2026-08-18-074305` is the keep-request: six of the brief's
+     * items were "correctly labelled, so the guard worked", on a session
+     * repairing an installation somebody else had set up. What it read is
+     * `installation-setup` matching weakly through `development installation`,
+     * which `D-SKL-051` decided and nothing held for this intent — a needle
+     * moved into `match` would state "state the admin username and the
+     * password in your reply" as a step of a repair.
+     */
+    #[Test]
+    public function theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists(): void
+    {
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => 'Blog extension development installation was set up, backend works but frontend '
+                . 'returns 404 page not found',
+            'changeType' => 'operations',
+            'targetVersion' => '14.3',
+            'paths' => ['config/sites/blog/config.yaml', 'config/sites/main/config.yaml', '.ddev/config.yaml'],
+        ]);
+
+        $confidences = array_column($brief->data['intents'], 'confidence', 'id');
+        self::assertSame('strong', $confidences['installation-operations'] ?? null);
+        self::assertSame('weak', $confidences['installation-setup'] ?? null);
+
+        $setup = array_values(array_filter(
+            TaskIntents::load(),
+            static fn(array $intent): bool => $intent['id'] === 'installation-setup',
+        ))[0];
+        $guard = ucfirst($setup['condition']) . ': ';
+
+        $guarded = array_values(array_filter(
+            $brief->data['checklist'],
+            static fn(string $entry): bool => str_starts_with($entry, $guard),
+        ));
+        self::assertCount(
+            count($setup['checklist']),
+            $guarded,
+            'the items of a weakly matched intent are stated as fact or dropped, rather than guarded',
+        );
+        self::assertStringContainsString('the admin username and the password in your reply', implode("\n", $guarded));
+
+        // The guard is what lets them be skipped, so it is the prefix and not
+        // a sentence somewhere above them.
+        foreach ($brief->data['checklist'] as $entry) {
+            if (str_starts_with($entry, $guard)) {
+                continue;
+            }
+            self::assertStringNotContainsString('admin username', $entry);
+        }
+
+        // What the condition costs stays a prefix: the skill still arrives,
+        // from the intent that matched strongly.
+        self::assertStringContainsString('Possibly also: Setting an installation up, ' . $setup['condition'], $brief->text);
+        self::assertContains('typo3-development-installation', $brief->data['skills']);
+    }
+
+    /**
      * A review brief names what the change removes, whatever the task says.
      *
      * `R-GUI-010`, on a core patch review that under-stated the removal of an

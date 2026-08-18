@@ -586,6 +586,33 @@ final class ProjectTest extends TestCase
         );
     }
 
+    /**
+     * Each site is named with the base and the root page it carries.
+     *
+     * Two feedback from one session name that pair as what gave a frontend 404
+     * its shape before a file was opened — `2026-08-18-074305` and
+     * `2026-08-18-074200`, on an installation whose second site had base `/`
+     * and a root page that was gone. `base` and `rootPageId` are required keys
+     * of `ProjectDescribe::outputSchema()`; the sentence that carries them was
+     * in no assertion.
+     */
+    #[Test]
+    public function everySiteIsNamedWithTheBaseAndTheRootPageItCarries(): void
+    {
+        $root = $this->composerProject();
+        $this->site($root, 'main', ['base' => 'https://blog.ddev.site/', 'rootPageId' => 1]);
+        $this->site($root, 'blog', ['base' => '/', 'rootPageId' => 2]);
+        Instance::discoverFrom($root);
+
+        $sites = array_column(Project::describe()['sites'], null, 'identifier');
+        self::assertSame('https://blog.ddev.site/', $sites['main']['base']);
+        self::assertSame(2, $sites['blog']['rootPageId']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('- main at https://blog.ddev.site/, root page 1', $text);
+        self::assertStringContainsString('- blog at /, root page 2', $text);
+    }
+
     #[Test]
     public function aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther(): void
     {

@@ -24,18 +24,13 @@ final class ChangelogLookup extends ReadOnlyTool
     /**
      * What an entry that states no removal leaves to be said.
      *
-     * The removal version is what an upgrade audit decides on, and a field
-     * carrying only what the entry states is empty for 31 of the 75
-     * deprecations of one major. An empty field beside a populated one is read
-     * as "no removal planned" — the silence-as-verdict failure `D-ANS-009` was
-     * built against — so the rule that covers the silence travels with the
-     * answer, as data and not only as text: a client that renders
-     * `structuredContent` and drops the text block is what `R-ANS-002` is
-     * written against.
-     *
-     * The rule is stated, never applied per entry. `13.4` #105297 names v15 and
-     * skips v14, and the core kept it: a number derived from the rule would
-     * have been wrong there, in the field a caller acts on.
+     * The removal version is what an upgrade audit decides on, and an empty
+     * field beside a populated one is read as "no removal planned" — the
+     * silence-as-verdict failure `D-ANS-009` was built against. So the rule that
+     * covers the silence travels with the answer as data and not only as text,
+     * which is what `R-ANS-002` is written against. It is stated, never applied
+     * per entry: a number derived from the rule would have been wrong where the
+     * core kept an entry that skips a major.
      */
     private const REMOVAL_RULE = 'A deprecated API keeps working until the next major release. An entry that '
         . 'states a removal version overrides that, and some state one more than a major away. An empty removal '

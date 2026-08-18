@@ -432,10 +432,9 @@ final class ExtensionDescribe extends ReadOnlyTool
      * What one content element of the list renders through.
      *
      * A plugin and an element are two answers to that, and the plugin one used
-     * to be given as the element one with the template missing — which sent an
-     * audit looking for a TypoScript file nobody was ever going to write
-     * (`D-ANS-015`). What replaces the absence is where its configuration is,
-     * because that is the file the caller was after.
+     * to be given as the element one with the template missing (`D-ANS-015`).
+     * What replaces the absence is where its configuration is, because that is
+     * the file the caller was after.
      *
      * @param array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string} $element
      */

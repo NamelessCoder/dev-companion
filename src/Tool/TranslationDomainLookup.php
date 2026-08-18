@@ -25,18 +25,12 @@ final class TranslationDomainLookup extends ReadOnlyTool
     /**
      * The first TYPO3 major that resolves translation domains.
      *
-     * Verified against the core: 13.4 has no TranslationDomain* class at all,
-     * 14 ships the mapper. A domain written into a label below this renders
-     * nothing — the failure is silent and at runtime, which is why this is the
-     * one version fact the code carries rather than the knowledge base.
-     *
-     * Public because it is one number in one place (D-DIS-004) and two things
-     * outside this class hold it to what it claims: `VersionsTest` ties it to
-     * the majors `knowledge/versions.json` declares, so the code cannot go on
-     * withholding below a version nothing covers; `bin/cli catalog:check` reads
-     * the checkouts for the class that resolves domains, because the release
-     * that would make this number wrong is a backport into a 13.x patch, and no
-     * test here can see one.
+     * Verified against the core: 13.4 has no TranslationDomain* class at all, 14
+     * ships the mapper. A domain written into a label below this renders
+     * nothing, silently and at runtime, which is why this is the one version
+     * fact the code carries rather than the knowledge base. Public because it is
+     * one number in one place (`D-DIS-004`), held to what it claims by
+     * `VersionsTest` and by `bin/cli catalog:check`.
      */
     public const SINCE = 14;
 

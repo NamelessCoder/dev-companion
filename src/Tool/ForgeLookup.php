@@ -11,19 +11,13 @@ use TYPO3\DevCompanion\Result\ToolResult;
 /**
  * What a Forge issue actually says, including the part that decides it.
  *
- * Four round trips and a trap by hand: the request refused, a browser-shaped
- * one answered 200 with a challenge page, then JSON whose decision sits in the
- * journal rather than in the description (`D-FBK-027`).
- *
- * A number is not the only way in. Whether somebody else already reported this
- * is asked before a patch and no number answers it, so `query` searches the
- * tracker by words — the step two sessions took by hand between reading an
- * issue and looking for its patch (`D-ANS-038`).
- *
- * Nor is a wording. A triage starts before there is an issue in hand at all,
- * and what it needs is the backlog ordered by age or by neglect, which no
- * number holds and no query reaches: the issue nobody has touched since 2015 is
- * worded the way nobody thinks of. `open` is that way in.
+ * Four round trips and a trap by hand, and the decision sits in the journal
+ * rather than in the description (`D-FBK-027`). A number is not the only way in:
+ * whether somebody else already reported this is asked before a patch and no
+ * number answers it, so `query` searches the tracker by words (`D-ANS-038`). Nor
+ * is a wording — a triage starts before there is an issue in hand at all, and
+ * the issue nobody has touched since 2015 is worded the way nobody thinks of, so
+ * `open` is that way in.
  */
 final class ForgeLookup extends ReadOnlyTool
 {

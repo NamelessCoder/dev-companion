@@ -257,17 +257,13 @@ final class ProjectDescribe extends ReadOnlyTool
     /**
      * The whole procedures this server carries, named where every task starts.
      *
-     * Four sessions in one week finished without learning they exist. They are
-     * served as `typo3://guides` resources and a client that lists no resources
-     * renders none of them; `typo3_server_scope` names them and is the call an
+     * They are served as `typo3://guides` resources and a client that lists no
+     * resources renders none of them, while `typo3_server_scope` is the call an
      * agent skips precisely when the task looks legible without orientation.
      * This tool is the one the instructions open every task with, so the
-     * inventory is here and the detail stays there (`D-ANS-061`,
-     * `feedback/2026-08-07-231203`).
-     *
-     * Last in the answer rather than first. What this tool is called for is the
-     * installation, and an inventory that pushes those facts down has traded one
-     * discovery problem for another.
+     * inventory is here and the detail stays there (`D-ANS-061`). Last in the
+     * answer rather than first, because what this tool is called for is the
+     * installation.
      *
      * @return array{lines: array<int, string>, records: array<int, array{id: string, title: string}>}
      */
@@ -340,16 +336,12 @@ final class ProjectDescribe extends ReadOnlyTool
      * The third PHP number, on the same line as the other two.
      *
      * A task that has to state what PHP a package supports needs the floor the
-     * core requires, and the two numbers already here are the wrong ones to
-     * take it from: the project's own constraint is what it accepts and may be
-     * absent, the environment's is what the container happens to run. A session
-     * asked to declare an extension's `php` had `phpConstraint: null` and a
-     * DDEV container at 8.4 in this answer, and read `^8.2` out of the vendor
-     * tree by hand (`feedback/2026-08-04-055638`, `D-KNW-055`). Here rather
-     * than in a section of its own, because it is the line the first call of a
-     * workflow is read for. Stated even where it repeats the project's own,
-     * which is the ordinary case in a core checkout: a number the answer drops
-     * where the two agree cannot be told from one it never read.
+     * core requires, and the two numbers already here are the wrong ones to take
+     * it from: one is what the project accepts and may be absent, the other what
+     * the container happens to run (`D-KNW-055`). Here rather than in a section
+     * of its own, because it is the line the first call of a workflow is read
+     * for, and stated even where it repeats the project's own — a number the
+     * answer drops where the two agree cannot be told from one it never read.
      */
     private static function floor(?string $constraint): string
     {
@@ -364,15 +356,10 @@ final class ProjectDescribe extends ReadOnlyTool
      * How the three numbers on the line above stand to each other.
      *
      * The line states them and states which is which; what it never said is the
-     * relation, and the relation is the defect. A session that had all three
-     * declared `^8.3` over a core requiring `^8.2` and ran everything at 8.4, so
-     * it supported a version no command it owns ever executed — and it says the
-     * answer that would have shown it was one it had already read
-     * (`feedback/2026-08-17-211157`, `D-ANS-082`).
-     *
-     * Stated even where the three agree, for the reason `floor()` states the
-     * core's number where it repeats the project's own: a line the answer drops
-     * when nothing is wrong cannot be told from one it never computed.
+     * relation, and the relation is the defect (`D-ANS-082`). Stated even where
+     * the three agree, for the reason `floor()` states the core's number where
+     * it repeats the project's own: a line the answer drops when nothing is
+     * wrong cannot be told from one it never computed.
      *
      * @param array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null $relation
      * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
@@ -469,11 +456,9 @@ final class ProjectDescribe extends ReadOnlyTool
      * What the environment serves, which is not the same question as where the
      * commands run and is answered whether the repository declares any.
      *
-     * A session that had this answer in hand spent four shell round trips
-     * finding the project name and the hostname, and one wrong attempt in
-     * between (`feedback/2026-08-10-101723`). The running half is named rather
-     * than guessed at: bound ports and a container address are not in these
-     * files, and `R-DIS-006` is why nothing here starts anything to find out.
+     * The running half is named rather than guessed at: bound ports and a
+     * container address are not in these files, and `R-DIS-006` is why nothing
+     * here starts anything to find out.
      *
      * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
@@ -498,12 +483,8 @@ final class ProjectDescribe extends ReadOnlyTool
      * What the environment runs by itself, which the commands above never
      * covered: those are what a caller may run, these run without being asked.
      *
-     * `R-PRJ-009`. A boot of a demo site took its schema update, its extension
-     * setup and its backend user out of `.ddev/config.yaml` by hand, beside an
-     * answer that had opened the same file for one PHP version
-     * (`feedback/2026-08-03-154501`). Said even where there are none, because
-     * an answer that names no hook reads as "there is none" whether this looked
-     * or not.
+     * `R-PRJ-009`. Said even where there are none, because an answer that names
+     * no hook reads as "there is none" whether this looked or not.
      *
      * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      * @return array<int, string>

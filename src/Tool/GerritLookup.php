@@ -209,19 +209,12 @@ final class GerritLookup extends ReadOnlyTool
     /**
      * What an empty answer cannot separate, where it cannot separate anything.
      *
-     * A caller that named one change has named something it read somewhere — a
-     * Change-Id out of a commit message in front of it, a number off a review
-     * URL. An empty answer there is a restricted change at least as often as an
-     * absent one, and this server cannot tell which: it reads Gerrit
-     * anonymously, so private and work-in-progress changes are invisible to it
-     * (`R-ANS-027`).
-     *
-     * An issue search is not the same case and gets none of this. "No change
-     * names this issue" is a claim about a query rather than about a record
-     * somebody is holding, and its own sentence already carries the caveat.
-     *
-     * Separated from `answer()` so it can be held without a review server: this
-     * is the whole of the judgement, and what it reads is its arguments.
+     * A caller that named one change has named something it read somewhere, and
+     * an empty answer there is a restricted change at least as often as an
+     * absent one: this server reads Gerrit anonymously (`R-ANS-027`). An issue
+     * search is not the same case and gets none of this, because "no change
+     * names this issue" is a claim about a query. Separated from `answer()` so
+     * it can be held without a review server.
      *
      * @param array{author: string, url: string}|null $review what Gerrit posted
      *     on the issue, where a search for one came back empty and the tracker
@@ -263,19 +256,13 @@ final class GerritLookup extends ReadOnlyTool
     /**
      * The workflow a patch set in front of a caller is in, where there is one.
      *
-     * A review session that opened no skill asked this tool for change 95169
-     * and was handed a ref, a remote and nothing about the work it had just
-     * begun — it fetched the patch set by hand and reviewed it without an entry
-     * point (`feedback/2026-08-12-092545`, `D-SKL-038`). Naming the two
-     * workflows costs the answer three lines at the one moment the caller is
-     * certainly reading, which is the placement `D-ANS-061` earned.
-     *
-     * The `change` form alone. "Has somebody already fixed this" precedes
-     * triage, patch development and review alike, so an issue search has no one
-     * workflow to name and gets none of this.
-     *
-     * Separated from `answer()` so it can be held without a review server, the
-     * way `indistinguishable()` beside it is.
+     * A review session that opened no skill asked this tool for a change and was
+     * handed a ref, a remote and nothing about the work it had just begun
+     * (`D-SKL-038`). Naming the two workflows costs three lines at the one
+     * moment the caller is certainly reading, which is the placement `D-ANS-061`
+     * earned. The `change` form alone, because an issue search has no one
+     * workflow to name. Separated from `answer()` so it can be held without a
+     * review server.
      */
     public static function workflow(string $status, string $change): ?string
     {

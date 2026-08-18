@@ -58,13 +58,10 @@ final class Registry
     /**
      * Offered from a standalone checkout alone — see the feedback channel.
      *
-     * The exclusion list does not reach these two, which is R-SCO-009's second
-     * exception rather than an oversight: the channel is a development tool for
-     * building this server, its caller is whoever owns the checkout, and what
-     * an exclusion would take away is the one route by which a session hands
-     * back what it found. `typo3_feedback_record` writes into that checkout and
-     * not into the installation the server read — D-FBK-042, written because
-     * the two were read as one.
+     * The exclusion list does not reach these two, which is `R-SCO-009`'s second
+     * exception rather than an oversight. `typo3_feedback_record` writes into
+     * that checkout and not into the installation the server read — `D-FBK-042`,
+     * written because the two were read as one.
      *
      * @var array<int, class-string<Tool>>
      */

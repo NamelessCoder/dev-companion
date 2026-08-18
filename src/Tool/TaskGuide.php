@@ -56,13 +56,10 @@ final class TaskGuide extends ReadOnlyTool
     /**
      * The second half of `HINTS_SOURCE`, said only where it is true.
      *
-     * It was printed unconditionally and claimed the lookup holds more
-     * whenever a brief carried hints at all — beside an `omittedHints` that
-     * was empty and said the opposite in the same payload. For the Extbase
-     * persistence paths of `feedback/2026-08-07-065259` the lookup returns
-     * the same three hints at every limit, so the brief carried all of them
-     * and the sentence sent the caller to a call with nothing behind it,
-     * which is the pointer `R-GUI-012` exists to stop being empty.
+     * It was printed unconditionally and claimed the lookup holds more whenever
+     * a brief carried hints at all, beside an `omittedHints` that was empty and
+     * said the opposite in the same payload — which is the pointer `R-GUI-012`
+     * exists to stop being empty.
      */
     public const HINTS_TRUNCATED = 'A brief carries the %d strongest per group of paths, which is not '
         . 'everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.';
@@ -122,17 +119,12 @@ final class TaskGuide extends ReadOnlyTool
     /**
      * The third change type that writes no file, and the intent it is the id of.
      *
-     * It exists because a session triaging a core report picked `audit` — "the
-     * closest of the available values", since it is the one documented as
-     * writing no file — and was answered with what a review of a diff owes: the
-     * removals to enumerate, the extension scanner matcher, `checkRst` over a
-     * core diff. It used none of them, because a triage produces no diff
-     * (`D-GUI-011`).
-     *
-     * So `audit` keeps its meaning, which is reviewing a body of code, and the
-     * work of reviewing a report against code has a value of its own. What
-     * withholds the diff items is that neither intent matches the other's
-     * words, rather than a rule about which items apply.
+     * It exists because a session triaging a core report picked `audit` — the
+     * one documented as writing no file — and was answered with what a review of
+     * a diff owes, which it used none of because a triage produces no diff
+     * (`D-GUI-011`). So `audit` keeps its meaning, and what withholds the diff
+     * items is that neither intent matches the other's words rather than a rule
+     * about which items apply.
      */
     private const TRIAGE = 'triage';
 

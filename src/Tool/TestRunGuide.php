@@ -223,16 +223,11 @@ final class TestRunGuide extends ReadOnlyTool
      * The document this answer is the short form of, named where it is used.
      *
      * A session that had every `runTests.sh` question answered here never
-     * reached `typo3_script_lookup`, whose description reads as a subset of
-     * this one, and so never saw the guide either — although it returns it
-     * inline. What the guide carries and this does not is what the two
-     * sentences below name, both of which cost that session real time
-     * (`feedback/2026-08-07-130058`, `feedback/2026-08-07-130007`,
-     * `D-ANS-061`).
-     *
-     * The moment a caller is about to run something is the one moment they are
-     * certainly reading, which is why the pointer sits here rather than waiting
-     * for somebody to ask what exists.
+     * reached `typo3_script_lookup`, whose description reads as a subset of this
+     * one, and so never saw the guide either (`D-ANS-061`). The moment a caller
+     * is about to run something is the one moment they are certainly reading,
+     * which is why the pointer sits here rather than waiting for somebody to ask
+     * what exists.
      */
     public const SCRIPTS_GUIDE = "## The whole procedure\n"
         . 'This is the suites and how to invoke them. The rest is one call away — typo3_rule_lookup with '
@@ -245,13 +240,11 @@ final class TestRunGuide extends ReadOnlyTool
     /**
      * The page the e2e suites hand the caller over to, named where they are.
      *
-     * A session reviewing a backend CSS patch held `any/testing/browser-check`
-     * from `typo3_project_describe`, never opened it, and told its reader five
-     * times it could not judge the change visually — improvising
-     * `-s e2e-prepare` out of this answer each time
-     * (`feedback/2026-08-10-182417`, `D-KNW-069`). The suite was already in
-     * front of it; the page saying what to do with a styleguide instance that
-     * has not got the content was not.
+     * A session reviewing a backend CSS patch held `any/testing/browser-check`,
+     * never opened it, and told its reader five times it could not judge the
+     * change visually (`D-KNW-069`). The suite was already in front of it; the
+     * page saying what to do with a styleguide instance that has not got the
+     * content was not.
      */
     public const BROWSER_CHECK_GUIDE = "## Looking at it rather than asserting it\n"
         . 'The suites above start a browser and stop there. The rest is one call away — typo3_rule_lookup with '

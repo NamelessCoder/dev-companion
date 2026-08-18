@@ -14,15 +14,11 @@ use TYPO3\DevCompanion\Result\Unsupported;
  * The columns TYPO3 adds to a table by itself, which an ext_tables.sql may
  * leave out.
  *
- * The core derives a table's technical columns from its TCA: `uid` and `pid`,
- * the timestamps, the delete and disable fields, the language and versioning
- * columns, and one column per TCA field whose type says what it stores. A
- * declaration that repeats them is the thing a review cannot check without
- * asking the installation, which is what `REVIEW-02` run 5 stopped at.
- *
- * Bounded to that side on purpose (D-DIS-008): what is derived, never what the
- * database has. The live schema is a different question, it needs a schema to
- * exist, and this one is asked while writing the file that creates it.
+ * The core derives a table's technical columns from its TCA, and a declaration
+ * that repeats them is the thing a review cannot check without asking the
+ * installation. Bounded to that side on purpose (`D-DIS-008`): what is derived,
+ * never what the database has, because the live schema needs a schema to exist
+ * and this one is asked while writing the file that creates it.
  */
 final class SchemaLookup extends ReadOnlyTool
 {

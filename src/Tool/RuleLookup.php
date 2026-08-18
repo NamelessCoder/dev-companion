@@ -186,16 +186,11 @@ final class RuleLookup extends ReadOnlyTool
      * One document, whole, for a caller who cannot read the resource.
      *
      * A match carries `uri`, and a `typo3://guides` resource is only reachable
-     * where the client lists resources at all. Three core sessions on
-     * 2026-08-07 held that uri and read none of them: one finished a full patch
-     * review having read no document end to end, and the page it says it wanted
-     * — "what each change type owes" — is a section of the document its own
-     * answer had named twice (`D-ANS-061`, `R-ANS-028`).
-     *
-     * No search and no version filter. The caller named the document, so there
-     * is nothing to guess at, and a section left out for a major it does not
-     * hold on is a hole in a page somebody asked to read whole; the sections say
-     * their own range.
+     * where the client lists resources at all — three core sessions held that
+     * uri and read none of them (`D-ANS-061`, `R-ANS-028`). No search and no
+     * version filter: the caller named the document, and a section left out for
+     * a major it does not hold on is a hole in a page somebody asked to read
+     * whole.
      */
     private static function wholeDocument(string $documentId): ToolResult
     {
@@ -259,15 +254,11 @@ final class RuleLookup extends ReadOnlyTool
     /**
      * What the knowledge base does cover, for a query that reached none of it.
      *
-     * It carries the same fields a hit does, boundary included: a client that
-     * validates the answer must not have to branch on which of the two it got,
-     * and a miss is where it is most likely to look.
-     *
-     * The words that emptied it come first, because that is what the caller can
-     * act on in the same call: the topic list says what is here, and the subset
-     * says which part of this query reaches it (`R-ANS-006`). The subsets are
-     * counted over the documents this call may answer from, so one offered
-     * outside the core is not answered with the withholding notice.
+     * It carries the same fields a hit does, boundary included, so a client that
+     * validates the answer never has to branch on which of the two it got. The
+     * words that emptied it come first, because that is what the caller can act
+     * on in the same call (`R-ANS-006`). The subsets are counted over the
+     * documents this call may answer from.
      *
      * @param array<int, array<string, mixed>> $hints
      * @param array<int, int> $targets

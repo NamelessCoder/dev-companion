@@ -281,8 +281,7 @@ final class IconLookup extends ReadOnlyTool
      *
      * A miss keeps suggestions and a hit gets none: neighbours of a correct
      * identifier are noise, and neighbours of a wrong one are the next step —
-     * `D-ANS-016`. Empty where nothing was passed, which is what puts the call
-     * back into the ranked mode.
+     * `D-ANS-016`. Empty where nothing was passed.
      *
      * @param array<string, array<int, string>> $concepts
      * @return array<int, array{identifier: string, registered: bool, category: string, aliasOf: ?string, source: string, suggestions: array<int, string>}>

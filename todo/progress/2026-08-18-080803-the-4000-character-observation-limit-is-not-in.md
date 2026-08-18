@@ -1,7 +1,9 @@
-# Nothing says how to execute the other TYPO3 major a package claims, so half of a two-major fix sh...
+# The 4000-character observation limit is not in the parameter description, so it is only discovere...
 
-**Serves:** feedback/2026-08-18-081129-nothing-says-how-to-execute-the-other-typo3.md
+**Serves:** feedback/2026-08-18-080803-the-4000-character-observation-limit-is-not-in.md
 **Priority:** low
+**Branch:** todo/the-4000-character-observation-limit-is-not-in
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

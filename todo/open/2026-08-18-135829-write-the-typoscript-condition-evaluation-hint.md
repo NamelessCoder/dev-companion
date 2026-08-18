@@ -3,7 +3,7 @@
 **Serves:** feedback/2026-08-18-080532-nothing-says-what-is-reachable-at-typoscript.md
 **Priority:** normal
 
-Judged as `D-KNW-100`: step 1a, the knowledge is missing. That entry establishes
+Judged as `D-KNW-101`: step 1a, the knowledge is missing. That entry establishes
 the variable set, the ordering on 13.4, 14.3 and `main`, and the event that is
 reachable on both, so what is left is the reading on 12.4, the binding, and where
 the statement goes.
@@ -12,7 +12,7 @@ the statement goes.
   `siteLanguage`, `request` as a `RequestWrapper`, `context`, `tree` and the
   `frontend`, `backend` and `workspace` objects, that `pageId`, `localRootLine`
   and `fullRootLine` are unset again before the resolver sees them, and that
-  `tsfe` was there until 14. `D-KNW-100` names both classes the list is assembled
+  `tsfe` was there until 14. `D-KNW-101` names both classes the list is assembled
   in.
 - State that condition evaluation happens inside the middleware stack, which is
   what makes `$GLOBALS['TYPO3_REQUEST']` unusable there from 14 while it happens

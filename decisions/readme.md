@@ -255,7 +255,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-097`][D-KNW-097] — Which site a request matches when two bases collide is a gap this server owns · 2026-08-18
 - [`D-KNW-098`][D-KNW-098] — Where a site nobody wrote came from is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-099`][D-KNW-099] — What a row handed to lib.contentElement owes is a gap this server owns · 2026-08-18 · confirmed
-- [`D-KNW-100`][D-KNW-100] — What a TypoScript condition can reach at evaluation time is a gap this server owns · 2026-08-18
+- [`D-KNW-100`][D-KNW-100] — How an extension extends a TypoScript condition is a gap this server owns · 2026-08-18
+- [`D-KNW-101`][D-KNW-101] — What a TypoScript condition can reach at evaluation time is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -347,7 +348,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-097]: knowledge/knw-097-which-site-a-request-matches-when-two-bases-collide-is-a-gap-this-server-owns.md
 [D-KNW-098]: knowledge/knw-098-where-a-site-nobody-wrote-came-from-is-a-gap-this-server-owns.md
 [D-KNW-099]: knowledge/knw-099-what-a-row-handed-to-lib-contentelement-owes-is-a-gap-this-server-owns.md
-[D-KNW-100]: knowledge/knw-100-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md
+[D-KNW-100]: knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md
+[D-KNW-101]: knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md
 [D-KNW-080]: knowledge/knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knowledge/knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knowledge/knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

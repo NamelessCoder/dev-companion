@@ -1,10 +1,10 @@
 ---
-id: D-KNW-100
+id: D-KNW-101
 date: 2026-08-18
 status: open
 ---
 
-# D-KNW-100 — What a TypoScript condition can reach at evaluation time is a gap this server owns
+# D-KNW-101 — What a TypoScript condition can reach at evaluation time is a gap this server owns
 
 **What a TypoScript condition is handed, and which globals are populated when it
 runs, is inside this server's boundary and absent from it, so the feedback is

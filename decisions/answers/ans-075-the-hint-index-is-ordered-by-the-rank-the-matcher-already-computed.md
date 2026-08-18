@@ -103,3 +103,57 @@ just ranked it seventh.
 - `HintsTest::theIndexIsNotOfferingWhatTheSameAnswerWithheld`
 - `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`
 - `HintsTest::anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn`
+
+## Since then
+
+The first **Wrong if** fired on 2026-08-18, and what it leaves standing is the
+length and the place the list is printed in rather than the order.
+
+`feedback/2026-08-17-212300` and `feedback/2026-08-17-205945` are one session
+building a TYPO3 v14 sitepackage in `/home/benji/projects/site-demo`. It made 21
+`typo3_hint_lookup` calls and every one of them named an id. The first report is
+what the index cost it — 78% of everything the tool transferred. The second is
+what the index bought it, which was nothing, four times over. Both were
+re-measured here on 2026-08-18 by replaying all 21 ids through
+`bin/typo3-dev-companion` at `targetVersion=14.3`.
+
+The cost reproduces. The 21 answers carry 172,297 characters of text, of which
+the index is 116,962 — 67.9%. Their structured halves carry 208,452, of which
+the index is 155,311 — 74.5%. The report measured through a client and against a
+corpus four hint corrections older, so its 78% and this 68% are the same
+reading.
+
+The index named every id that session went around, and named it near the head.
+Each of the 21 answers lists at least one of the three. `datahandler-placement`
+is in fifteen of them, at 18th or 19th in thirteen and never below 39th of 113;
+the session spent five calls rebuilding its subject from `DataHandler.php`.
+`preview-record-variable` is in seven, at 4th of 25, 6th of 37 and 15th of 112,
+and six backend previews were written from a neighbouring hint and a third-party
+package's templates instead. `fluid-layouts-sections` is in the same seven, at
+7th of 25, 10th of 37 and 56th of 112, and cost three calls and a diff of two
+rendered pages.
+
+So the **Assumed** that a caller reads the head of a list and not its middle is
+measured, and it does not hold: the head is where these three ids stood. The
+second **Assumed** is untouched, because an id call has no refused tail to be
+worth its lines.
+
+What the ordering decided here reached none of those 21 calls. `available()`
+builds its order from the candidates `find()` scored, and an id call scores
+nothing — it returns through `index()`, which reads the corpus by file. The
+index an id call carries is every hint in the returned hint's own domains: 19 to
+113 entries, and 90 in ten of the twenty-one. `outputSchema()` says that list is
+"closest first", which is not true of it.
+
+Which of the two the index becomes is therefore open again, in the terms
+`D-KNW-055`'s fourth **Wrong if** already set — and its other half, that callers
+stop reading them, is what these three positions measure. Suppressing the index
+on an id call is what both reports ask for and it reverses this entry's own
+**Decided**. The measurement does not settle it: it prices the index and shows
+the ids were reachable, and what it cannot say is what the sessions that do use
+the index would lose. Nothing on record attributes a fetched id to an id call's
+index: `feedback/2026-08-10-182451` names the availableHints of its first call,
+which was a query call, and `2026-08-17-205945` names `typo3_task_guide`. The
+question goes up on
+`todo/waiting/2026-08-17-212300-availablehints-is-78-percent-of-everything-hint.md`,
+which prices four shapes and recommends one.

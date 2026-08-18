@@ -171,3 +171,44 @@ The second **Wrong if** watched for the number sitting still; what happened is
 the number falling to where it measures the shape of a docblock rather than what
 is written in one. What the report should count instead is queued rather than
 decided here.
+
+**The register did not move.** The second **Assumed** was read on 2026-08-18,
+against the claim rather than the merge: a session read the shortened files
+where `bin/cli todo:claim` made its worktree after the cut, which puts the nine
+claimed at 10:36 and 11:33 before it and the fourteen claimed between 12:10 and
+12:58 after. The sweep's own session and this one are left out of both. In their
+commit bodies the nine wrote 58 sentences at 19.7 words with 12 over the
+measure, the fourteen 84 at 21.0 words with 24 over. In the entries they created
+the same pair is 22.8 words and 23.0% against 23.6 and 26.4%. Both differences
+run against the assumption and both are small.
+
+**They are inside what a day of this corpus varies by.** The decision files
+created on the thirteen days from 2026-07-31 that carry more than five of them
+run from 19.7 to 25.3 words a sentence and from 8.6% to 33.9% over the measure.
+Split at the cut's position in `main`, 2026-08-18 sits at 21.6 words and 19.2%
+before it and at 22.0 and 22.3% after, mid-band on both sides.
+
+**The comments went the other way, and cannot be read anyway.** Per line of PHP
+the same sessions added, the nine before wrote 0.74 lines of comment and the
+fourteen after 0.95, while the absolute count fell from 280 to 106 because two
+of the nine wrote most of the code in the window. The sweep recorded above ran
+in the same hours and cut the comments a session reads while editing the file it
+is in, so nothing written that afternoon is attributable to the cut alone.
+
+**What a session writes was already what the cut was reaching for.** `D-SKL-057`
+and `D-SKL-058` are consecutive ids, the same work — a feedback judged into a
+decision and its card — one on each side of the cut, 1027 words against 1180,
+and the same entry to read. Both name their ids where the reason lives
+elsewhere, which is the rule AGENTS.md was itself being held to that morning.
+
+**One session wrote back a shape the cut had removed.** `c4f48e32` put "the work
+such a todo carries is one entry's **Wrong if** gone back to, and `decisions/`
+says only that somebody is sorting the pile" into `Upkeep\Todo`, and the second
+clause verbatim into `TodoTest`. A sentence restating the one above it is one of
+the three things that came out of AGENTS.md at 11:54, written again at 12:18 by
+a session that had read the shortened file.
+
+**So the assumption is not held.** The cut cost a session nothing and kept every
+rule, so it stands on what it is; what it does not buy is shorter prose from the
+sessions that read it, and shortening a file every session reads is not a way to
+move what a session writes.

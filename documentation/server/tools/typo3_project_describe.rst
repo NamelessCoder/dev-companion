@@ -392,7 +392,7 @@ The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-19 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -435,6 +435,22 @@ Text:
     - composer gerrit:setup:commitMessageHook:enable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::enableCommitMessageHook
     - composer gerrit:setup:preCommitHook:enable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::enablePreCommitHook
     - composer gerrit:setup:preCommitHook:disable (composer.json) — unknown: TYPO3\CMS\Composer\Scripts\InstallerScripts::disablePreCommitHook
+    - npm --prefix Build run build (Build/package.json) — change: ./node_modules/.bin/grunt
+    - npm --prefix Build run build-css (Build/package.json) — change: ./node_modules/.bin/grunt css
+    - npm --prefix Build run build-js (Build/package.json) — change: ./node_modules/.bin/grunt scripts
+    - npm --prefix Build run build-flags (Build/package.json) — change: ./node_modules/.bin/grunt flags-build
+    - npm --prefix Build run build-fonts (Build/package.json) — change: ./node_modules/.bin/grunt fonts
+    - npm --prefix Build run update (Build/package.json) — change: ./node_modules/.bin/grunt update
+    - npm --prefix Build run lint (Build/package.json) — change: ./node_modules/.bin/grunt lint
+    - npm --prefix Build run test (Build/package.json) — unknown: wtr
+    - npm --prefix Build run playwright:install (Build/package.json) — unknown: playwright install
+    - npm --prefix Build run playwright:open (Build/package.json) — unknown: playwright test --ui
+    - npm --prefix Build run playwright:run (Build/package.json) — unknown: playwright test
+    - npm --prefix Build run playwright:codegen (Build/package.json) — unknown: playwright codegen --ignore-https-errors
+    - npm --prefix Build run watch:build (Build/package.json) — change: grunt watch
+    - npm --prefix Build run watch:test (Build/package.json) — unknown: wtr --watch
+
+    The Node those npm commands run on. This repository declares 24.14, in Build/.nvmrc. Its Build/package.json admits >=24.14.0 <25.0.0, which that pin is the lowest version of. No workflow below .github/workflows/ sets Node up, so nothing here says which one CI runs them on. All of it read from these files. Nothing was run to find it out, and the Node your own shell has is not among them.
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
@@ -474,7 +490,22 @@ Data:
             "bound": null,
             "environmentAgainstBound": null
         },
-        "node": null,
+        "node": {
+            "engines": ">=24.14.0 <25.0.0",
+            "enginesIn": "Build/package.json",
+            "nvmrc": "v24.14",
+            "nvmrcIn": "Build/.nvmrc",
+            "environment": null,
+            "ci": [],
+            "relation": {
+                "declared": "24.14",
+                "declaredBy": "Build/.nvmrc",
+                "nvmrcAgainstEngines": "same",
+                "inEnvironment": null,
+                "ci": null,
+                "inCi": null
+            }
+        },
         "environment": null,
         "extensions": [],
         "sites": [],
@@ -501,6 +532,90 @@ Data:
                 "command": "composer gerrit:setup:preCommitHook:disable",
                 "source": "composer.json",
                 "declares": "TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::disablePreCommitHook",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run build",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run build-css",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt css",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run build-js",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt scripts",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run build-flags",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt flags-build",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run build-fonts",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt fonts",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run update",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt update",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run lint",
+                "source": "Build/package.json",
+                "declares": "./node_modules/.bin/grunt lint",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run test",
+                "source": "Build/package.json",
+                "declares": "wtr",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run playwright:install",
+                "source": "Build/package.json",
+                "declares": "playwright install",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run playwright:open",
+                "source": "Build/package.json",
+                "declares": "playwright test --ui",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run playwright:run",
+                "source": "Build/package.json",
+                "declares": "playwright test",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run playwright:codegen",
+                "source": "Build/package.json",
+                "declares": "playwright codegen --ignore-https-errors",
+                "runs": "unknown"
+            },
+            {
+                "command": "npm --prefix Build run watch:build",
+                "source": "Build/package.json",
+                "declares": "grunt watch",
+                "runs": "change"
+            },
+            {
+                "command": "npm --prefix Build run watch:test",
+                "source": "Build/package.json",
+                "declares": "wtr --watch",
                 "runs": "unknown"
             }
         ],

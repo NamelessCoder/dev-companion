@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SCO-013`][D-SCO-013] — A declared command carries the interpreter it runs on, Node as well as PHP · 2026-08-19
+- [`D-SCO-014`][D-SCO-014] — The npm manifest is read where the repository keeps it, `Build/` included · 2026-08-19
 - [`D-SCO-012`][D-SCO-012] — The root manifest places the work before the dependencies are installed · 2026-08-18
 - [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
 - [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
@@ -20,6 +21,7 @@ one is added.
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
 
 [D-SCO-013]: sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
+[D-SCO-014]: sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it.md
 [D-SCO-012]: sco-012-the-root-manifest-places-the-work-before-the-dependencies-are-installed.md
 [D-SCO-010]: sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md
 [D-SCO-011]: sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md

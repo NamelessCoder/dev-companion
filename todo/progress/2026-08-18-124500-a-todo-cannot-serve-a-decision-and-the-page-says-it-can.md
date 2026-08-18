@@ -2,6 +2,8 @@
 
 **Serves:** documentation/records/
 **Priority:** normal
+**Branch:** todo/a-todo-cannot-serve-a-decision-and-the-page-says-it-can
+**Claimed:** 2026-08-18
 
 `Todo::unreadable()` accepts a requirement, a scenario, a feedback and a
 directory, and answers anything else with *which is none of a requirement, a

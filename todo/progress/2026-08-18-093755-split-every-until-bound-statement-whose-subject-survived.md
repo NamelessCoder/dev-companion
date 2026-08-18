@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070632-installation-setup-tags-the-create-site.md
 **Priority:** normal
+**Branch:** todo/split-every-until-bound-statement-whose-subject-survived
+**Claimed:** 2026-08-18
 
 Read each statement in `knowledge/hints/` carrying `until` against the checkouts
 on both sides of its boundary, and split the ones whose subject is still there

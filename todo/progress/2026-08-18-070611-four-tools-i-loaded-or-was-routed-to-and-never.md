@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070611-four-tools-i-loaded-or-was-routed-to-and-never.md
 **Priority:** normal
+**Branch:** todo/four-tools-i-loaded-or-was-routed-to-and-never
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's rung 3, routing, and queued because the
 change is a sentence in a published skill. `D-SKL-057` carries the reading and

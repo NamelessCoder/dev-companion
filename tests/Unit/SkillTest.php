@@ -101,6 +101,19 @@ final class SkillTest extends TestCase
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
         ],
+        // The order the research behind `D-SKL-063` put the five checks in: the
+        // conventions for the paths the diff touches, then the two whole
+        // procedures that settle a declared major nobody can run here, then
+        // what the changelog and the manual add to that, then the extension a
+        // proposed alternative would pull in, and the message last.
+        'typo3-extension-patch-review' => [
+            'typo3_hint_lookup',
+            'typo3_rule_lookup',
+            'typo3_changelog_lookup',
+            'typo3_documentation_lookup',
+            'typo3_system_extension_lookup',
+            'typo3_commit_message_guide',
+        ],
         'typo3-extension-documentation' => [
             'typo3_documentation_lookup',
             'typo3_label_lookup',
@@ -148,6 +161,10 @@ final class SkillTest extends TestCase
      */
     private const DISCHARGED_TOOLS = [
         'typo3-development-installation' => ['typo3_server_scope'],
+        // The constraint the package declares is what every version answer in
+        // that review turns on, and it comes back with the base's first step
+        // rather than from a call the skill makes.
+        'typo3-extension-patch-review' => ['typo3_project_describe'],
     ];
 
     /**
@@ -183,6 +200,9 @@ final class SkillTest extends TestCase
         'typo3-core-patch-review',
         'typo3-extension-conformance',
         'typo3-core-issue-triage',
+        // The fourth closes on a document for the same reason the first does,
+        // and the place it is carried into is a pull request thread.
+        'typo3-extension-patch-review',
     ];
 
     #[Test]
@@ -3344,6 +3364,11 @@ final class SkillTest extends TestCase
                 'typo3-extension-documentation',
             ],
             'typo3-extension-cleanup' => ['typo3-extension-conformance'],
+            'typo3-extension-patch-review' => [
+                'typo3-extension-cleanup',
+                'typo3-extension-conformance',
+                'typo3-core-patch-review',
+            ],
             // The deprecation log a first boot writes is about the package's
             // code and not about the installation, and `071526` read it,
             // reported it and stopped there because no workflow owned it. The

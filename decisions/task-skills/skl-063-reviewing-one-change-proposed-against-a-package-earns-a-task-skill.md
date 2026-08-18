@@ -104,3 +104,28 @@ object.
   missing.
 - The listing budget at publication leaves no room, and what the twelve are
   worth turns out to be more than what the thirteenth adds.
+
+## Since then
+
+The research `writing-a-skill.rst` asks for was carried out on 2026-08-18, by
+putting the five checks to the tools themselves rather than reading their
+descriptions. The first **Wrong if** did not fire: conformance's checklist is
+written per surface of a whole package, and three of the five reach none of
+those surfaces. What the calls moved is the order. `typo3_project_describe`
+already carries the constraint the package declares, so the version axis costs
+no call of the skill's own and is written as a discharge. The two compatibility
+documents own the second check whole and are read by `documentId` rather than
+searched, and `typo3_changelog_lookup` narrows it without closing it — asked
+where no installed core ships the changelog it says so, which is not an empty
+answer. The fourth check turned out to be two steps rather than one:
+`typo3_commit_message_guide` with `workflow="project"` holds a message to
+TYPO3's keyword convention and answers a message written in another one with an
+error, so which convention the repository writes is established from its own log
+first. The fifth is not this server's at all — whether the branch merges and
+what the pipeline said are the forge's, and what the review can add is the
+checks the repository declares, run here.
+
+The draft is `skills/typo3-extension-patch-review/SKILL.md`. Two things at
+publication are not settled by any of that: the intent that routes to it, which
+`typo3_task_guide` today answers with `typo3-extension-conformance` for a review
+of one diff against an extension, and the listing budget.

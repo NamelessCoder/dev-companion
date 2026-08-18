@@ -13,6 +13,7 @@
       "expression language provider",
       "condition provider",
       "typoscript condition provider",
+      "typoscript condition expressionlanguage",
       "AbstractProvider",
       "getExpressionLanguageVariables",
       "getExpressionLanguageProviders",

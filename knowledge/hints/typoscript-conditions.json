@@ -10,8 +10,6 @@
       "TypoScript condition",
       "condition matcher",
       "IncludeTreeConditionMatcherVisitor",
-      "ExpressionLanguage",
-      "expression language provider",
       "RequestWrapper",
       "AfterPageAndLanguageIsResolvedEvent",
       "TYPO3_REQUEST",

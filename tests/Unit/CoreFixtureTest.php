@@ -75,16 +75,12 @@ final class CoreFixtureTest extends TestCase
      * Both directions, because the list fails in both.
      *
      * A tool in it whose answers move is a checked page asserting one root's
-     * content. A tool outside it whose answers do not move is a recording
-     * nobody needs — which is what all eight of these were until 2026-08-04,
-     * two of them carrying an answer `knowledge/` had moved on from.
-     *
-     * Two kinds of tool are outside the question rather than outside the set. A
-     * tool that reaches a host answers from something no root here holds
-     * (`D-DOC-008`) and is not driven at all. One that answers from the
-     * installation turns on a console neither of these roots has, so the two
-     * agree here for a reason that says nothing about a caller with a booted
-     * TYPO3 — agreement is no evidence, so it is not read as any.
+     * content. A tool outside it whose answers do not move is a recording nobody
+     * needs. Two kinds are outside the question rather than outside the set: one
+     * that reaches a host answers from something no root here holds
+     * (`D-DOC-008`) and is not driven at all, and one that answers from the
+     * installation turns on a console neither root has, so the two agree for a
+     * reason that says nothing about a caller with a booted TYPO3.
      */
     #[Test]
     public function everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne(): void

@@ -17,17 +17,13 @@ use TYPO3\DevCompanion\Upkeep\Renumber;
  *
  * The command's whole value is that it leaves nothing behind, so the cases that
  * matter are the accounting ones: every line naming the old id is either
- * rewritten or reported, and after the move the only lines still naming it are
- * exactly the ones reported. A renumber that dropped one would fail silently —
- * the check that would catch it is the one being worked around, because the
- * entry the stale reference now points at exists.
+ * rewritten or reported, and a renumber that dropped one would fail silently,
+ * because the entry the stale reference now points at exists.
  *
  * The corpus is written rather than the repository's own, for `R-COD-003`: this
  * case renames files and rewrites them, and doing that to `decisions/` would
  * leave the checkout wrong wherever a run stops in the middle. It carries one of
- * each reference this repository writes — the entry, a generated listing, an
- * inline link, a requirement's `restsOn`, prose, a PHP comment, and the
- * letter-suffixed entry that is a different decision.
+ * each reference this repository writes.
  */
 final class RenumberTest extends TestCase
 {

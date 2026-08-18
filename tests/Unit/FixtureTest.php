@@ -19,15 +19,11 @@ use TYPO3\DevCompanion\Upkeep\ToolCalls;
  * The installation this repository writes, held to what it is written for.
  *
  * The second half of a tool's page is recorded rather than checked, because it
- * needs an installation and no test run discovers one — `D-DOC-006`. This is
- * the exception the fixture creates: it is an installation this repository
- * produces itself, so what it answers can be asked here, on any machine, and a
- * fixture that stopped booting would otherwise be found by the next recording
- * quietly writing `unsupported` onto nine pages.
- *
- * What is held is that it answers, not what it answers with. The second is the
- * recording's, and pinning a label or a column here would make every change to
- * the fixture a change to this file as well.
+ * needs an installation and no test run discovers one — `D-DOC-006`. This is the
+ * exception the fixture creates: it is an installation this repository produces
+ * itself, so a fixture that stopped booting fails here rather than in the next
+ * recording quietly writing `unsupported` onto nine pages. What is held is that
+ * it answers, not what it answers with, which is the recording's.
  */
 final class FixtureTest extends TestCase
 {

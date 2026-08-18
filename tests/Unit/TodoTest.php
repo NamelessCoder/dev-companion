@@ -58,20 +58,15 @@ final class TodoTest extends TestCase
 
     /**
      * The board is where a feedback waits, so one that is on none is one no
-     * session will be handed. That used to be a sighting's job and is now a
-     * card per feedback, which means the failure has moved: nothing prints the
-     * pile any more, so a feedback with no card is invisible rather than merely
-     * far down a list.
+     * session will be handed, and nothing prints the pile any more: such a
+     * feedback is invisible rather than merely far down a list.
      *
      * It holds the state of the board rather than what writes it. A feedback
-     * arrives with its card, so what this catches is one that came in some
-     * other way — added by hand, or its card deleted while it stayed open — and
-     * the answer is a card written into `todo/open/` beside the rest.
-     *
-     * One assertion over the set rather than one per feedback, because an empty
-     * `feedback/` is the state the board is in whenever everything is worked
-     * off — `D-FBK-013` — and a loop asserts nothing there, which PHPUnit
-     * reports as risky and CI reads as a failure.
+     * arrives with its card, so what this catches is one that came in some other
+     * way, and the answer is a card written into `todo/open/` by hand. One
+     * assertion over the set rather than one per feedback, because an empty
+     * `feedback/` is a state the board is legitimately in (`D-FBK-013`) and a
+     * loop asserts nothing there.
      */
     #[Test]
     public function everyOpenFeedbackIsOnTheBoard(): void
@@ -430,22 +425,17 @@ final class TodoTest extends TestCase
      * only thing that can say so is that it is a worktree at all.
      *
      * `claimed()` answers null for it and null for the main checkout on `main`,
-     * and one of those is every session this repository had before there were
-     * two. So `bin/cli todo:next` refuses in the first case and hands over the
-     * queue in the second, and this is the question it tells them apart by.
-     *
-     * What `linked()` does with git's two answers is the part that can be
-     * wrong, and it is what this holds: the directories are compared with
-     * trailing slashes off, and either call failing is read as "not a worktree"
-     * rather than as one. It used to answer by making a real worktree and a
-     * real branch in whichever checkout the suite was running in, which is a
-     * process and a write — `R-COD-003`.
+     * so `bin/cli todo:next` refuses in the first case and hands over the queue
+     * in the second, and this is the question it tells them apart by. What
+     * `linked()` does with git's two answers is the part that can be wrong and
+     * the part this holds: the directories are compared with trailing slashes
+     * off, and either call failing is read as "not a worktree" rather than as
+     * one. It used to answer by making a real worktree and a real branch in
+     * whichever checkout the suite was running in — `R-COD-003`.
      *
      * What a stub cannot say is whether the local git has
-     * `--path-format=absolute` at all. That is a property of the machine rather
-     * than of this code: where it is missing both calls fail, which is the last
-     * case below, and the refusal quietly stops happening. A real run is what
-     * would show that.
+     * `--path-format=absolute` at all, which is a property of the machine: where
+     * it is missing both calls fail and the refusal quietly stops happening.
      *
      * @param array{0: int, 1: string} $own
      * @param array{0: int, 1: string} $shared

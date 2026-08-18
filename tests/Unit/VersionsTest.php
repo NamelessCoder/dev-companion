@@ -429,11 +429,10 @@ final class VersionsTest extends TestCase
      * it is wrong if a spelling in the wild answers false for a major it does
      * serve — a failure that surfaces as a statement missing from an answer
      * rather than as an error, so nothing but a table like this one would catch
-     * it. Read on 2026-08-02 out of the three checkouts that play `E-EXT`,
-     * their root manifests and every `typo3/cms-*` requirement in the vendor
-     * trees they installed: `bk2k/syntax`, `bk2k/bootstrap-package` and
-     * `georgringer/news`. Every expectation below is composer/semver's own
-     * answer for that spelling, not a reading of it.
+     * it. Read on 2026-08-02 out of the three checkouts that play `E-EXT`, their
+     * root manifests and every `typo3/cms-*` requirement in the vendor trees they
+     * installed, and every expectation below is composer/semver's own answer for
+     * that spelling rather than a reading of it.
      *
      * Asked over majors rather than over the covered ones, because which majors
      * a spelling serves is a property of the spelling: a version this knowledge
@@ -476,21 +475,16 @@ final class VersionsTest extends TestCase
      * lowest version each one admits.
      *
      * `D-ANS-082` assumed that reading a PHP constraint at minor granularity
-     * covers what a manifest writes, and named the way that assumption failed
-     * one level up: `D-VER-004` was broken by `>= 8.1 < 8.5`, an operator with a
-     * space. So it is owed the same corpus — every `require.php` in
-     * `.checkouts/{12.4,13.4,14.3,main}` and their vendor trees, read on
-     * 2026-08-18: 556 constraints in 36 distinct spellings, all of them below.
-     * Every expectation is composer/semver's own answer for that spelling, taken
-     * by asking it which is the lowest major.minor it admits any release of, not
-     * by reading the spelling.
+     * covers what a manifest writes, and `D-VER-004` names the way that
+     * assumption failed one level up. So it is owed the same corpus — every
+     * `require.php` in the four checkouts and their vendor trees, read on
+     * 2026-08-18 — and every expectation is composer/semver's own answer for
+     * that spelling rather than a reading of it.
      *
      * The last four are not in that corpus and are the shapes `D-ANS-082` is
-     * wrong if this misreads. Three of them answer, and the hyphen range does
-     * not: read as the comparators it splits into, `8.1 - 8.4` would answer 8.4,
-     * and a wrong floor carries the answer's authority where a missing one costs
-     * a sentence. `D-VER-004` found it in none of 3179 constraints and left it
-     * unread one level up; this leaves it unread for the same reason.
+     * wrong if this misreads. Three answer, and the hyphen range does not: a
+     * wrong floor carries the answer's authority where a missing one costs a
+     * sentence, so it is left unread the way `D-VER-004` left it.
      *
      * @return iterable<string, array{string, ?string}>
      */

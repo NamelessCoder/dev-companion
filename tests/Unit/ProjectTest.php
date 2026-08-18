@@ -80,17 +80,12 @@ final class ProjectTest extends TestCase
     /**
      * The one call every task opens with says which guides exist.
      *
-     * Four sessions in one week finished without learning they do.
-     * `feedback/2026-08-07-231203` is the fourth: its client surfaced the
-     * resource tools as deferred and rendered no listing, and
-     * `typo3_server_scope` — which names them — was loaded and never called,
-     * because the task looked legible without orientation. So the session
-     * assembled a whole procedure by hand and says it will do it again next
-     * session.
-     *
-     * `D-ANS-061` decided the lever is the tool a session does call. This is
-     * that argument one step earlier: the instructions open every task with
-     * `typo3_project_describe`, and it was the one call this session made.
+     * Four sessions in one week finished without learning they do: one client
+     * rendered no resource listing and never called `typo3_server_scope`, which
+     * names them, because the task looked legible without orientation.
+     * `D-ANS-061` decided the lever is the tool a session does call, and this is
+     * that argument one step earlier — the instructions open every task with
+     * `typo3_project_describe`, which was the one call that session made.
      */
     #[Test]
     public function theCallEveryTaskOpensWithNamesTheGuidesThereAre(): void

@@ -483,16 +483,12 @@ final class KnowledgeTest extends TestCase
     /**
      * One brief per kind of work, each reaching its own kind and no other.
      *
-     * A needle is widened to reach a task that named its work and nothing said,
-     * before this, what that cost the neighbouring intents — a word broad enough
-     * to reach one brief reaches several, and the second intent arrives stated as
-     * fact with a checklist and a skill behind it. `D-SKL-051` widened
-     * `installation-setup` against exactly this set.
-     *
-     * The briefs are written here rather than taken from `scenarios/`, because a
-     * scenario prompt is a whole task and half of them name two kinds of work on
-     * purpose. What this holds is the one-kind case: the sentence a caller writes
-     * when the work is one thing.
+     * A needle is widened to reach a task that named its work, and nothing said
+     * before this what that cost the neighbouring intents: a word broad enough
+     * to reach one brief reaches several, and the second intent arrives stated
+     * as fact with a checklist and a skill behind it (`D-SKL-051`). The briefs
+     * are written here rather than taken from `scenarios/`, because a scenario
+     * prompt is a whole task and half of them name two kinds of work on purpose.
      */
     #[Test]
     #[DataProvider('aBriefForEachKindOfWork')]
@@ -976,13 +972,10 @@ final class KnowledgeTest extends TestCase
     /**
      * The two wrong moves this document exists to stop, held as sentences.
      *
-     * `feedback/2026-08-08-224426` asked for one query and got both sections
-     * back, and reports each of them stopping an action already in flight: it
-     * would have written an `Important-58705-*.rst` "to be safe", which the
-     * changelog section names as a review defect, and it had run `git branch -r`
-     * one turn earlier and was about to read the release targets off it. Three
-     * more reports credit the changelog half — `2026-08-05-033954` and
-     * `2026-08-05-033924` in the archive, and `D-ANS-058`'s own evidence.
+     * A session asked for one query, got both sections back, and reports each of
+     * them stopping an action already in flight: an `Important-*.rst` written
+     * "to be safe", and the release targets about to be read off `git branch -r`
+     * (`D-ANS-058`).
      *
      * The obligation itself is held twice over, by the ranking test above and by
      * the section lead it asserts. What rested on nobody rewriting the file is
@@ -1340,17 +1333,13 @@ final class KnowledgeTest extends TestCase
      * The invocation notes say what a checkout has to hold before any suite
      * runs, and name the command that puts it there.
      *
-     * `runTests.sh` mounts the started-from directory alone, so a suite finds
-     * the `vendor/` of that directory or none at all. A git worktree has none —
-     * `/vendor/*` and `/bin/*` are gitignored, so git never brings them — and
+     * `runTests.sh` mounts the started-from directory alone, so a suite finds the
+     * `vendor/` of that directory or none at all. A git worktree has none, and
      * the run stops at `bin/phpunit: not found`, which names phpunit rather than
-     * the directory. The note carries the symptom for that reason: a session
-     * that recognises it from the error does not have to reach the diagnosis.
-     *
-     * It sits under `preconditions` rather than in one suite entry, because it
-     * holds for every suite the script offers and is read before one is chosen
-     * — which is also where `typo3_test_run_guide` prints it, above the suites
-     * rather than below them (`D-AUD-009`).
+     * the directory — the note carries the symptom for that reason. It sits
+     * under `preconditions` rather than in one suite entry, because it holds for
+     * every suite the script offers and is read before one is chosen, which is
+     * where `typo3_test_run_guide` prints it (`D-AUD-009`).
      */
     #[Test]
     public function theInvocationNotesNameTheInstallAFreshCheckoutOwes(): void
@@ -1401,18 +1390,15 @@ final class KnowledgeTest extends TestCase
      * The e2e answer says what a change to one spec costs.
      *
      * Every e2e case builds its Playwright command from the project alone and
-     * reaches no `"$@"`, so nothing a caller writes after `--` arrives — where
+     * reaches no `"$@"`, so nothing a caller writes after `--` arrives, where
      * `-s unit` and `-s functional` pass a path and a filter through. A
      * Playwright-only diff therefore costs the whole suite, and the entry says
-     * so beside the command: the session in `feedback/2026-08-13-214708` read
-     * the old wording as an offer to narrow, went to a local Playwright run and
-     * got no reportable evidence out of it (`D-KNW-068`).
+     * so beside the command — a session read the old wording as an offer to
+     * narrow and got no reportable evidence out of it (`D-KNW-068`).
      *
      * The local commands the prepare suite prints keep their place and carry
-     * what they need. They run on the host, where the browsers are an install
-     * of their own — `Build/package.json` has `playwright:install` as a script
-     * beside `playwright:run` on every branch that carries the suites, while
-     * the containerised path runs the Playwright image and never asks.
+     * what they need: they run on the host, where the browsers are an install of
+     * their own, while the containerised path never asks.
      */
     #[Test]
     public function theE2eAnswerStatesThePriceOfAPlaywrightOnlyChange(): void

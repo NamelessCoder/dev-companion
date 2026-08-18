@@ -61,13 +61,9 @@ final class ToolContractTest extends TestCase
      *
      * A `oneOf` on the way in is a rule declared in the one place nothing reads
      * out to a caller: `required` names neither branch, so a caller composing
-     * the call is shown two plain optional arguments, and the refusal that
-     * follows names one branch per sentence rather than the rule. That is
-     * `D-ANS-012`, and the answer was to keep the keyword — a client that reads
-     * it gets exclusivity nothing else declares — and state the rule where the
-     * call is written instead.
-     *
-     * The descriptions are on the wire in `tools/list`, which is why this holds
+     * the call is shown two plain optional arguments (`D-ANS-012`). The answer
+     * was to keep the keyword and state the rule where the call is written, and
+     * the descriptions are on the wire in `tools/list`, which is why this holds
      * them rather than the reference alone.
      */
     #[Test]
@@ -114,16 +110,14 @@ final class ToolContractTest extends TestCase
      * No argument declares more than one type.
      *
      * An input schema is a grammar a client generates against, and the surface's
-     * only union — `typo3_feedback_record` `/tool`, `["string", "array"]` — was
-     * the only argument a client has ever failed to compose a call for at all.
-     * It is a plain string since `D-ANS-017`, and this is what says the shape
-     * did not come back somewhere else: a union declared in a second tool is
-     * also the third **Wrong if** of that entry, so a session that means to try
-     * one deletes this case and says so.
+     * only union was the only argument a client has ever failed to compose a
+     * call for at all. It is a plain string since `D-ANS-017`, and this is what
+     * says the shape did not come back somewhere else: a union declared in a
+     * second tool is also that entry's third **Wrong if**, so a session that
+     * means to try one deletes this case and says so.
      *
-     * Output schemas are not held here. Every union in them is `[X, "null"]`,
-     * which is a nullable field rather than an alternative between two shapes a
-     * caller has to produce.
+     * Output schemas are not held here, because every union in them is
+     * `[X, "null"]` rather than an alternative a caller has to produce.
      */
     #[Test]
     public function noArgumentDeclaresMoreThanOneType(): void
@@ -310,16 +304,13 @@ final class ToolContractTest extends TestCase
      * Every tool, on a hit and on a miss: the shape has to hold for both, since
      * a miss is where a client is most likely to look at the data.
      *
-     * The table is `Upkeep\ToolCalls`, because `bin/cli tools:record` drives
-     * the same calls to write down what a filled answer looks like, and a
-     * second table would drift from this one. In a test run nothing discovers
-     * an installation, so every installation-backed entry here exercises the
-     * unanswered path.
-     *
-     * Two of the calls reach docs.typo3.org, which is the one tool that reaches
-     * anywhere. What is asserted below does not turn on the host: unreached, it
-     * answers `source-not-answering`, and that validates like any other answer —
-     * `D-DOC-008`, held by `DocumentationTest`.
+     * The table is `Upkeep\ToolCalls`, because `bin/cli tools:record` drives the
+     * same calls and a second table would drift from this one. In a test run
+     * nothing discovers an installation, so every installation-backed entry here
+     * exercises the unanswered path. Two of the calls reach docs.typo3.org, and
+     * what is asserted below does not turn on the host: unreached, it answers
+     * `source-not-answering`, which validates like any other answer —
+     * `D-DOC-008`.
      *
      * @return array<string, array{0: string, 1: array<string, mixed>}>
      */

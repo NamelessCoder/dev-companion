@@ -12,23 +12,15 @@ use TYPO3\DevCompanion\Upkeep\Todo;
 /**
  * A queue of the test's own, for the cases that need a todo in it to hold.
  *
- * The queue empties. That is not the repository running out — it is the state
- * the sightings are reached in, and the whole of what `**Every:** session`
- * means. Three cases opened with `assertNotSame([], Todo::items())` instead,
- * which made the ordinary commit that finishes the last todo the one commit
- * that could not be green, and left the session that wrote it holding a failure
- * about nothing it had done. A precondition that is a state rather than a
- * property of this checkout is made here rather than asserted — the suite may
- * not skip itself past one either (`StructureTest::noTestSkipsItselfInsteadOfHolding`),
- * and both roads out lead here. See `D-FBK-013`.
- *
- * It is made below the system temporary directory and `Todo` is pointed at it
- * for the length of the case. It used to be written into the real `todo/`,
- * carrying a marker in its name so that whatever the move under test did with
- * it, it could be found again and taken away — which held while every run
- * finished, and left a fixture in the queue a session reads whenever one did
- * not. A unit test writes into no directory this repository keeps
- * (`R-COD-003`).
+ * The queue empties, which is not the repository running out but the state the
+ * sightings are reached in. Three cases opened with
+ * `assertNotSame([], Todo::items())` instead, which made the ordinary commit
+ * that finishes the last todo the one commit that could not be green. A
+ * precondition that is a state rather than a property of this checkout is made
+ * here rather than asserted, and the suite may not skip itself past one either
+ * (`D-FBK-013`). It is made below the system temporary directory and `Todo` is
+ * pointed at it for the length of the case, because a unit test writes into no
+ * directory this repository keeps (`R-COD-003`).
  *
  * @phpstan-import-type Section from Todo
  */

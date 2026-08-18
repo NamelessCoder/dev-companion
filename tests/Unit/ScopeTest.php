@@ -974,15 +974,10 @@ final class ScopeTest extends TestCase
      *
      * That list is where the claim was written down last, not where it lived:
      * the same sentence stood in a knowledge document and in the notice every
-     * tool opens with, and each was corrected on its own after somebody read
-     * it. D-SCO-006 named the three no test reads — a tool description, the
-     * readme, a hint — and this is that test, so the next occurrence costs a
-     * failing suite rather than a session's confidence.
-     *
-     * What is matched is wording, which is as weak as wording always is. The
-     * three sentences the decision recorded are run through the matcher first,
-     * so one that has stopped recognising the claim fails here rather than
-     * passing everywhere.
+     * tool opens with, and each was corrected on its own. `D-SCO-006` named the
+     * three surfaces no test reads, and this is that test. What is matched is
+     * wording, which is as weak as wording always is, so the three sentences the
+     * decision recorded are run through the matcher first.
      */
     #[Test]
     public function noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor(): void

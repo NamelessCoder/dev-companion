@@ -341,18 +341,14 @@ final class StdioServerTest extends TestCase
      * The one argument that ever declared two types, over the wire that decides
      * whether a client can compose the call at all.
      *
-     * `tool` was `["string", "array"]` — the only union in any input schema
-     * here — and `opencode/mimo-v2.5-free`, the one model that has recorded
-     * feedback and never once sent the argument, reported it as a call it could
-     * not produce. It is a plain string now, the several travel separated by
-     * commas, and the list a client sends instead is refused with the type it
-     * should have used. `D-ANS-017` says what would show the union was not what
-     * stopped that client.
-     *
-     * Both halves belong over the wire, because neither is visible below it:
-     * `FeedbackTest` calls `Channel::record` directly, the recorder still takes
-     * a list, and an array starting to be refused would have left every test
-     * there green.
+     * `tool` was `["string", "array"]`, the only union in any input schema here,
+     * and the one model that never once sent the argument reported it as a call
+     * it could not produce. It is a plain string now, the several travel
+     * separated by commas, and the list a client sends instead is refused with
+     * the type it should have used — `D-ANS-017` says what would show the union
+     * was not what stopped that client. Both halves belong over the wire,
+     * because `FeedbackTest` calls `Channel::record` directly and the recorder
+     * still takes a list.
      */
     #[Test]
     public function severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted(): void
@@ -382,18 +378,14 @@ final class StdioServerTest extends TestCase
     }
 
     /**
-     * The one input-side alternative on the surface, over the wire that
-     * produced the complaint. `typo3_documentation_lookup` takes `queries` or
-     * `page`, `required` names neither, and a call carrying only
-     * `targetVersion` is refused for both branches at once — one sentence per
-     * branch, joined, because the SDK formats the leaves of a failed `oneOf`
-     * separately. A session read the last half as "page is required", sent
-     * `page: ""`, and reported the tool as unusable for search.
-     *
-     * The keyword stays and the rule is now stated where the call is composed
-     * — both argument descriptions, on the wire in `tools/list` — so this holds
-     * what a client still validates against. `D-ANS-012` says what would show
-     * that the wrong half was fixed.
+     * The one input-side alternative on the surface, over the wire that produced
+     * the complaint. A call carrying neither branch is refused for both at once,
+     * one sentence per branch, because the SDK formats the leaves of a failed
+     * `oneOf` separately — a session read the last half as "page is required"
+     * and reported the tool as unusable for search. The keyword stays and the
+     * rule is stated where the call is composed, so this holds what a client
+     * still validates against; `D-ANS-012` says what would show that the wrong
+     * half was fixed.
      */
     #[Test]
     public function aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth(): void

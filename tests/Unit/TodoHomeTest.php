@@ -21,15 +21,13 @@ use TYPO3\DevCompanion\Upkeep\Command\TodoHome;
  * sequence: a suite run before the rebase checked a tree that no longer exists,
  * a worktree removed before the merge takes the only checkout the merge could
  * have run in, and a merge attempted after a failed rebase is a merge commit
- * where the procedure says there are none. Prose said all of that and could
- * hold nobody to it — the run of 2026-08-02 read the page and then made the
- * one mistake it warns about twice over.
+ * where the procedure says there are none. Prose said all of that and could hold
+ * nobody to it.
  *
- * Every case here stops before the merge, and that is deliberate rather than
- * partial. A run that merged would fast-forward the checkout the suite is
- * running in, which is a write into a directory this repository keeps —
- * `R-COD-003`. What can be held without writing is the half that decides
- * whether anything is written at all, and it is the half that goes wrong.
+ * Every case here stops before the merge, deliberately: a run that merged would
+ * fast-forward the checkout the suite is running in, which is a write into a
+ * directory this repository keeps (`R-COD-003`). What can be held without
+ * writing is the half that decides whether anything is written at all.
  */
 final class TodoHomeTest extends TestCase
 {

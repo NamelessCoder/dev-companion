@@ -235,18 +235,14 @@ final class Typo3CliTest extends TestCase
     /**
      * `ddev exec` joins its arguments into a line and hands that to bash inside
      * the container, so an argument carrying a character bash acts on never
-     * reaches the console. `typo3_label_lookup` builds one — the search is a
-     * regex, and `--regex=/(save)/i` is a subshell to bash — so against every
-     * DDEV installation it came back exit 2 and fell through to reading the
-     * package files, reporting `answeredBy: "packages"` as though the console
-     * were unreachable. Found by the first recording made against a booted
-     * TYPO3 rather than by anything here, which is what `D-EVI-004` said an
-     * installation of this repository's own would be for.
+     * reaches the console — `typo3_label_lookup` builds one, and against every
+     * DDEV installation it came back exit 2 and reported `answeredBy: "packages"`
+     * as though the console were unreachable. Found by the first recording made
+     * against a booted TYPO3, which is what `D-EVI-004` said an installation of
+     * this repository's own would be for.
      *
-     * What this holds is the quoting, which is this class's part: every
-     * argument reaches `ddev exec` in the form that survives being joined into
-     * a line. That the joining then happens is DDEV's behaviour and is not
-     * reproduced here — it was measured against v1.25.1 on 2026-08-02 and the
+     * What this holds is the quoting, which is this class's part. That the
+     * joining then happens is DDEV's behaviour and is not reproduced here; the
      * measurement is written into `Typo3Cli::pastTheShell()`.
      *
      * @param array<int, string> $arguments

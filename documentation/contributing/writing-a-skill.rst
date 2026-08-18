@@ -203,7 +203,7 @@ and what the client's own bundled skills leave over.
 
 A draft stands in no client's listing and costs it nothing, so what the budget
 asks is asked at publication and not of the file being written
-(`D-SKL-051 <../../decisions/task-skills/skl-051-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md>`_).
+(`D-SKL-054 <../../decisions/task-skills/skl-054-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md>`_).
 Where the room is not there, the publishing commit is where a description is
 shortened or a workflow is merged into one that already exists — a question
 about which twelve descriptions are worth their room, which nobody can answer

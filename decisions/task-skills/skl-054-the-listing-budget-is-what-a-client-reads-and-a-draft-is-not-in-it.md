@@ -1,10 +1,10 @@
 ---
-id: D-SKL-051
+id: D-SKL-054
 date: 2026-08-18
 status: open
 ---
 
-# D-SKL-051 — The listing budget is what a client reads, and a draft is not in it
+# D-SKL-054 — The listing budget is what a client reads, and a draft is not in it
 
 **The description budget is counted over the published skills rather than over
 the directory, so a draft costs no listing anything until the commit that

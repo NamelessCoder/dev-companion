@@ -123,6 +123,11 @@ final class SkillTest extends TestCase
             'typo3_documentation_lookup',
             'typo3_commit_message_guide',
         ],
+        'typo3-distribution-content' => [
+            'typo3_documentation_lookup',
+            'typo3_configuration_lookup',
+            'typo3_commit_message_guide',
+        ],
     ];
 
     /**
@@ -140,6 +145,7 @@ final class SkillTest extends TestCase
         'typo3-backend-module-development',
         'typo3-content-element-development',
         'typo3-development-installation',
+        'typo3-distribution-content',
         'typo3-extension-documentation',
         'typo3-extension-cleanup',
         'typo3-extension-testing',
@@ -2064,7 +2070,7 @@ final class SkillTest extends TestCase
         // descriptions for a workflow nobody can load — and the charge would
         // fall on the session that writes the draft rather than on the one that
         // decides to publish it, which is where the trade actually is
-        // (`D-SKL-051`). A run that asks for `--drafts` pays for them in that
+        // (`D-SKL-054`). A run that asks for `--drafts` pays for them in that
         // one project, deliberately.
         $published = Installer::skills();
         $listing = count($published) - 1;
@@ -2423,7 +2429,11 @@ final class SkillTest extends TestCase
      * the conformance report rather than read off a rubric, and what it would
      * otherwise judge — whether a finding is one, what it is worth, who owns it
      * — is the checklist one directory away, whose report it is forbidden from
-     * re-deriving (`D-SKL-016`).
+     * re-deriving (`D-SKL-016`). Producing a distribution's content is the
+     * sixth: it builds an artifact, and what would otherwise be judged — whether
+     * the artifact is complete — is answered by installing the package on an
+     * installation that has never had it, which is the last step of its own
+     * order.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
@@ -2436,6 +2446,7 @@ final class SkillTest extends TestCase
                 'typo3-core-patch-development',
                 'typo3-development-installation',
                 'typo3-extension-cleanup',
+                'typo3-distribution-content',
             ],
         );
 

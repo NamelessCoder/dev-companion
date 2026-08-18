@@ -1,7 +1,7 @@
 ---
 id: D-SKL-050
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-SKL-050 — Producing a distribution's content earns a task skill, and the project repository is owned
@@ -21,8 +21,8 @@ activated by hand.
 
 - **The re-run reproduces the routing.** `typo3_task_guide` was called through
   `bin/typo3-dev-companion` from this worktree on 2026-08-18, with the
-  feedback's own query and `changeType: feature`. The answer opens `Recognized
-  as: Adding or changing a content element` and names one skill,
+  feedback's own query and `changeType: feature`. The answer opens
+  `Recognized as: Adding or changing a content element` and names one skill,
   `typo3-content-element-development`. `installation-setup` is not named at all,
   weakly or otherwise, though the brief's first unit is a development
   installation.
@@ -66,11 +66,11 @@ activated by hand.
   softref pointed where I expected. That is reasoning, not verification." That
   is the terminal proof this feedback says nothing owns, missed from another
   project on another task.
-- **The order exists only as neighbour sentences.** `sitepackage-initial-content`
-  closes by naming the other three hints and what each one adds.
-  `feedback/2026-08-17-211306`, archived, is the same session reporting that
-  such a closing sentence is read where the appetite for another lookup is
-  lowest.
+- **The order exists only as neighbour sentences.**
+  `sitepackage-initial-content` closes by naming the other three hints and what
+  each one adds. `feedback/2026-08-17-211306`, archived, is the same session
+  reporting that such a closing sentence is read where the appetite for another
+  lookup is lowest.
 - **The corpus is one session on this half.** `bin/cli feedback:list` on
   2026-08-18 reports 13 open, all in `/home/benji/projects/site-demo`, all
   `claude-opus-5`, all recorded between 20:59 and 21:30 on 2026-08-17. The
@@ -138,3 +138,55 @@ activated by hand.
   reads under one budget, and the one dropped is
   `typo3-development-installation`. Then this entry bought one workflow by
   quietly removing the one that owns the other half of the same task.
+
+## Confirmed on 2026-08-18
+
+The producing side was run end to end and the first **Wrong if** did not fire:
+it is not four hints in an order and one verify command. Two installations on
+14.3.6 below this worktree, one on mariadb to produce the artifact and one on
+mysql to receive it, both built by `bin/cli environment:create`. A page tree of
+three pages under the root, two content elements, three images and one internal
+link, seeded through DataHandler; exported; placed in a package; installed on
+the second one from empty.
+
+Four of the steps carry a failure that reports success, and three of them were
+paid for in this session rather than read:
+
+- A page takes the default its TCA declares, which is 1 for `pages.hidden`
+  against 0 in the schema — `Configuration/TCA/Overrides/pages.php` on 13.4,
+  14.3 and `main`, and the column itself on 12.4. The first seed wrote three
+  hidden pages, the export shipped them, and the receiving installation answered
+  404 on every page below its root while every command involved reported
+  success.
+- `processRemapStack()` splits a NEW id on its last underscore and reads what is
+  in front of it as a table name, on all four covered lines. `NEW_ref1` in a
+  relation field therefore substituted nothing: three `sys_file_reference` rows
+  were written with `uid_foreign` 0, the parent's field counted 0, and nothing
+  was logged. Renamed to `NEWref1` the same single datamap attached all three.
+- The site configuration route that keeps the base intact copies the whole
+  directory: `ImportSiteConfigurationsOnPackageInitialization` calls
+  `GeneralUtility::copyDirectory()`. Shipping only `config.yaml` produced a
+  receiving installation that resolved its site, found all four pages, and
+  answered 500 with "no TypoScript object of type PAGE" — because `typo3 setup`
+  had written `setup.typoscript` beside the yaml on the exporting installation
+  and it had not travelled. With that one file shipped as well, all four pages
+  answered 200, the images rendered, and the internal link resolved to the page
+  it was exported pointing at.
+- `--include-related=sys_file` is what admits the bytes, as `D-KNW-080`
+  recorded. `--table=_ALL --include-related=_ALL`, which the official page on
+  creating a distribution prescribes, added `sys_file_storage` to this tree and
+  nothing else.
+
+Two claims of the corpus held as written. `typo3 setup` on the receiving
+installation answered "The --distribution and --create-site commandline options
+have no effect, when distributions are already active" and let the shipped site
+configuration through, with `rootPageId` rewritten to the imported page and
+`base` untouched. The import was remembered as
+`site_distribution:Initialisation/dataImported`.
+
+What the reading could not settle here is what publication owes. The twelve
+published descriptions stand at 3597 characters against a ceiling of 3600, which
+is this entry's fourth **Wrong if** arriving as a wall rather than as a
+displaced skill — so the skill is published as a draft, the budget is counted
+over what a client reads (`D-SKL-054`), and the baseline run `D-SKL-035` buys
+and the review `writing-a-skill.rst` requires are the publishing card's.

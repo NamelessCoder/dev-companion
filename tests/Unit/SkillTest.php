@@ -2051,6 +2051,35 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The same mechanism a third time, and the premise rather than a step
+     * clause. A session asked in German to fix TypoScript conditions broken on
+     * v14 while keeping them working on v13 read `typo3-extension-upgrade`'s
+     * opening — carrying a package from the versions it supports today to
+     * another set — as a premise its task did not meet, and activated nothing
+     * from investigation to commit (`D-SKL-061`). The words that would have
+     * matched stood after the colon already. So both halves are held here too:
+     * the premise a defect inside a declared range meets, and the step the body
+     * owes it once it did.
+     */
+    #[Test]
+    public function aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval(): void
+    {
+        $upgrade = self::description('typo3-extension-upgrade');
+        self::assertStringNotContainsString('from the TYPO3 and PHP versions it supports today', $upgrade);
+        self::assertStringContainsString('working on the TYPO3 and PHP versions it declares', $upgrade);
+        self::assertStringContainsString('code broken by what a supported major deprecated or removed', $upgrade);
+
+        // A description widened alone would route the defect into a body whose
+        // opening reads as somebody else's case and whose third step asks which
+        // range to cross to.
+        $body = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-upgrade/SKILL.md',
+        ));
+        self::assertStringContainsString('A package is broken by what a major it already supports removed', $body);
+        self::assertStringContainsString('Where nothing is being crossed, that range is the declared one', $body);
+    }
+
+    /**
      * The descriptions are read in one listing and paid for out of one budget:
      * Claude Code allows all of them together the characters in one percent of
      * the context window, and where they do not fit it drops whole descriptions
@@ -2664,7 +2693,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing(): void
+    public function anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts(): void
     {
         // The REVIEW-02 run in an extension declaring two majors against an
         // installation a major behind moved the feedback that asked for this skill:
@@ -2682,7 +2711,7 @@ final class SkillTest extends TestCase
         $order = [
             '[references/base.md](references/base.md)',
             '## Widen the sweep into a work list',
-            '## Resolve the range, rather than assert it',
+            '## Settle the range, rather than assert it',
             '## The boundary of what may change',
             '## Prove it on every version it claims',
         ];
@@ -2736,7 +2765,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('named as unrun', $skill);
 
         // What it does not own, and the skill that hands it the sweep whole.
-        self::assertStringContainsString('This skill owns crossing a package', $skill);
+        self::assertStringContainsString('This skill owns what a package owes the TYPO3 majors', $skill);
         foreach ([
             'typo3-extension-conformance',
             'typo3-extension-testing',

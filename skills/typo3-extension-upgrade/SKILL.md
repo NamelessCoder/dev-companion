@@ -1,16 +1,17 @@
 ---
 name: typo3-extension-upgrade
-description: 'Carry a TYPO3 extension, sitepackage or project package from the TYPO3 and PHP versions it supports today to another set: adding a new major, dropping one that is no longer maintained, replacing what a major deprecated or removed, and proving every version it claims.'
+description: 'Keep a TYPO3 extension, sitepackage or project package working on the TYPO3 and PHP versions it declares, or carry it to another set: code broken by what a supported major deprecated or removed, adding a new major, dropping one, and proving every version it claims.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 
 # TYPO3 Extension Upgrade
 
-Cross a package from the range it declares to the range it is meant to declare,
-in an order where each step decides what the next one is worth. Keep this skill
-as routing and workflow; never retain version-specific APIs, constraints,
-replacements, or the contents of a changelog — every one of those is a property
-of the installation being read and of the target being aimed at.
+A package is broken by what a major it already supports removed, or it has to
+support a range it does not declare yet. Both run in the same order, where each
+step decides what the next one is worth. Keep this skill as routing and
+workflow; never retain version-specific APIs, constraints, replacements, or the
+contents of a changelog — every one of those is a property of the installation
+being read and of the target being aimed at.
 
 ## The order
 
@@ -19,14 +20,16 @@ of the installation being read and of the target being aimed at.
    sweep of the installed core's deprecations over that surface. This workflow
    starts from the result of that sweep rather than restating it.
 2. Widen the sweep, below, into the work list.
-3. Resolve the range the package may declare, below. Not before: what breaks is
-   what decides whether a range is reachable at all.
+3. Settle the range the package has to serve, below. Not before: what breaks is
+   what decides whether a range is reachable at all. Where nothing is being
+   crossed, that range is the declared one and this step reads it rather than
+   resolving it — it still decides what the two steps after it may do.
 4. Change what the list justifies, and nothing else.
 5. Prove it against every combination the package declares.
 
 ## Widen the sweep into a work list
 
-The base sweeps one source. An upgrade needs three, because each reaches call
+The base sweeps one source. This workflow needs three, because each reaches call
 sites the others cannot:
 
 - **The changelog**, as the base sweeps it, and `typo3_changelog_lookup` again
@@ -46,14 +49,17 @@ sites the others cannot:
   — is reached only this way, and a class deprecated as a whole takes every call
   site of it with it.
 
+The **target** is the major this work has to reach: the one being added, or —
+where nothing is being added — the declared one the code fails on.
+
 Both the changelog and the scanner answer from the **core that is installed**,
 which is the boundary this whole order rests on: they say what this package owes
 the majors it already runs on, and they do not know what the target major
 changed until the installation is on it. Until then the target's changes come
 from official documentation for that version, never from memory — a list of
 "what the new major changed" written from recall reads exactly like one that was
-looked up. Once the resolution below puts the installation on the target, run
-the sweep again there; that second pass is what says the work is done.
+looked up. Once the installation is on the target, run the sweep again there;
+that second pass is what says the work is done.
 
 Write the result down before changing a file: one entry per call site, with the
 identifier, the path and line in this package, which declared major deprecates
@@ -61,7 +67,11 @@ or removes it, and which of the three established it. That list is the work, and
 it is what the result closes on — including the entries that came back empty,
 with the majors they covered.
 
-## Resolve the range, rather than assert it
+## Settle the range, rather than assert it
+
+Where the work crosses no range, the first two entries are the whole of this
+step: the declared range is what the fix has to hold on, and the three below
+them decide a constraint that is not moving.
 
 - The declared range is in the Composer manifest and in `ext_emconf.php`, and
   the two either say the same thing or the difference is itself a finding: for a
@@ -126,11 +136,12 @@ ownership: load the skill by name and work from it.
    The crossing lands in the package's own repository, and the range it now
    declares is what the message is about.
 
-This skill owns crossing a package from one supported range to another: the
-sweep that says what breaks, the constraints that say what may be declared, the
-changes those two justify, and the proof per declared combination. It does not
-own deciding whether the package is otherwise sound, establishing a harness that
-is missing, or rewriting the documentation — each of those is named above with
-the workflow it belongs to, and the crossing to it is explicit: state the
-verified point the upgrade reached, stop before editing that owner's files, and
-carry across the range and the call sites already established.
+This skill owns what a package owes the TYPO3 majors it declares and the ones it
+is meant to declare: the sweep that says what breaks, the constraints that say
+what may be declared, the changes those two justify, and the proof per declared
+combination. It does not own deciding whether the package is otherwise sound,
+establishing a harness that is missing, or rewriting the documentation — each of
+those is named above with the workflow it belongs to, and the crossing to it is
+explicit: state the verified point the upgrade reached, stop before editing that
+owner's files, and carry across the range and the call sites already
+established.

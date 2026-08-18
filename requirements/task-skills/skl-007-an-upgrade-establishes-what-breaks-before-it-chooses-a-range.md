@@ -6,13 +6,16 @@ restsOn: [D-EVI-001]
 
 # R-SKL-007 — An upgrade establishes what breaks before it chooses a range
 
-**Crossing a package from one supported TYPO3 range to another is ordered
-work.**
+**What a package owes the TYPO3 majors it declares, and the ones it is meant to
+declare, is ordered work.**
 
 What breaks is established from the sweep before a range is chosen, the range is
 resolved by the dependency solver rather than asserted, the lowest declared
 major decides every shape that is written, and every declared combination is
-proven or named as unproven.
+proven or named as unproven. Where the work crosses no range — a defect whose
+cause is a removal inside the range the package already declares — the same
+order runs and the range step reads the declared range instead of resolving one
+(`D-SKL-061`).
 
 The sweep the base fixes is where it starts, so it is not restated here — what
 this workflow adds are the two sources a changelog query cannot reach. The
@@ -46,7 +49,8 @@ a checkout that has one.
 
 ## Held by
 
-- `SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`
+- `SkillTest::anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts`
+- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
 - That a session works in this order is not guarded and will not be by a forward

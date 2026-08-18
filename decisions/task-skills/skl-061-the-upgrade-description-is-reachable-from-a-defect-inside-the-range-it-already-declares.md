@@ -19,7 +19,7 @@ carries the activation states a premise the task does not meet.
 
 - **The session.** `/home/benji/projects/blog` on 2026-08-18,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-18-080630`](../../feedback/2026-08-18-080630-typo3-extension-upgrade-describes-this-task.md).
+  [`feedback/2026-08-18-080630`](../../feedback/archive/2026-08-18-080630-typo3-extension-upgrade-describes-this-task.md).
   The request was a German symptom report — these TypoScript conditions seem to
   be broken in v14, they must still work in v13 — with one file selected in the
   editor. No skill activated at any point of the session, investigation through
@@ -111,3 +111,21 @@ carries the activation states a premise the task does not meet.
 ## Covered by
 
 - `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
+- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval`
+
+## Since then
+
+The rewrite landed on 2026-08-18. The description opens on keeping a package
+working on the versions it declares **or** carrying it to another set, so the
+shapes after the colon are read under a premise a defect meets; the body opens
+on the same two cases, and its third step reads the declared range where nothing
+is being crossed rather than resolving one. `R-SKL-007` was widened with it, and
+what the skill says it owns is no longer the crossing alone.
+
+What the trade actually had to fit is smaller than this entry says. Measured the
+way `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare` measures — which
+counts the description as the front matter writes it, quotes included — the
+listing stood at 3597 of the 3600 the ratchet allows before this change and at
+3595 after, and the upgrade description went from 269 characters to 266. So the
+room was 3 characters and not 28, and the next rewrite of any of the twelve
+reads the number off that test rather than off this entry.

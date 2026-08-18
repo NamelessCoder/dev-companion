@@ -181,6 +181,16 @@ so a request naming a git worktree read as another skill's case altogether.
 ``SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout`` holds the trigger
 and the body it promises, on the one description that was measured.
 
+The clause a description **opens on** narrows the hardest, because everything
+after it is read as a case of it. ``typo3-extension-upgrade`` listed replacing
+what a major removed among its shapes and opened on carrying a package to
+another set of versions, so a bug report whose cause is such a removal read as a
+premise the task did not meet and the skill stayed shut for a whole session
+(`D-SKL-061 <../../decisions/task-skills/skl-061-the-upgrade-description-is-reachable-from-a-defect-inside-the-range-it-already-declares.md>`_).
+A premise is rewritten with the body it governs, and
+``SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval``
+holds that pair.
+
 It names **every side of the domain the skill owns**, and a skill that owns two
 sides of one thing says so in the opening line rather than in the ninth item of
 a list. A domain named by one of its halves — "frontend content elements" for a

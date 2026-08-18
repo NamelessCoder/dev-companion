@@ -158,7 +158,7 @@
       "scope": "any"
     },
     {
-      "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and carrying a package to another TYPO3 version",
+      "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version",
       "depth": "The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-dev-companion install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.",
       "tools": [
         "typo3_task_guide"

@@ -375,6 +375,60 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-097`. The statement carries no version binding because the sort
+     * reads the same on all four checkouts: `sortMatchedRoutes()` compares the
+     * host score before the path on 12.4, 13.4, 14.3 and main alike, and the
+     * only difference between them is the `strpos` the tail tiebreak below it
+     * uses on 12.4.
+     */
+    #[Test]
+    public function whichOfTwoCollidingSiteBasesWinsIsStatedAndReachedFromTheSymptom(): void
+    {
+        // The feedback's own task, and the symptom stripped of the project it
+        // arrived from. Neither reached the mechanism before this hint: the
+        // first answered with Extbase arguments and the second with the import
+        // the reporting session then followed.
+        foreach ([
+            'Blog extension development installation was set up, backend works but frontend returns 404 page not found',
+            'frontend returns 404 at the site root',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('site-base-collision', $ids[0] ?? null, $task);
+        }
+
+        $text = self::statementsOf('site-base-collision');
+
+        // Which base wins, and the sort that decides it.
+        self::assertStringContainsString('a base carrying a host beats a base that does not', $text);
+        self::assertStringContainsString('getHostMatchScore()', $text);
+        self::assertStringContainsString('the host is compared before the path ever is', $text);
+
+        // And what the failure looks like, which is what makes it worth
+        // reaching: the message reads like a slug that is spelled wrong.
+        self::assertStringContainsString('The requested page does not exist', $text);
+        self::assertStringContainsString('rootPageId above 0', $text);
+
+        // The two neighbours it must not displace. A boot is not a collision,
+        // and an import that rewrote a base is the other hint's subject.
+        $boot = array_column(
+            Hints::find([], 'boot the installation from a fresh clone, import the database and verify the site responds', 6)['matchedHints'],
+            'id',
+        );
+        self::assertSame('installation-boot', $boot[0] ?? null);
+        self::assertNotContains('site-base-collision', $boot);
+
+        $imported = array_column(
+            Hints::find([], 'distribution imported with extension:setup answers 404 at the project root', 6)['matchedHints'],
+            'id',
+        );
+        self::assertLessThan(
+            array_search('site-base-collision', $imported, true) ?: PHP_INT_MAX,
+            array_search('initial-content-references', $imported, true),
+            'a base an import rewrote is still the import hint\'s answer',
+        );
+    }
+
+    /**
      * Setting the analysis up is the extension author's question, and the core
      * is no answer to it: its configuration sits in a mono repository, half of
      * what it declares is its own rule set, and the paths are relative to a

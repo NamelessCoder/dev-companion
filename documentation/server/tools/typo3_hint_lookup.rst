@@ -274,6 +274,7 @@ Text:
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+    - site-base-collision — Which Site Answers When Two Bases Collide (PHP)
     - initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
     - dependency-injection — Wiring a Service (PHP)
     - core-tests — Writing Core Tests (PHP)
@@ -815,6 +816,11 @@ Data:
             {
                 "id": "fal-processing",
                 "title": "Which Processor Claims a File, and What Runs Below It",
+                "category": "PHP"
+            },
+            {
+                "id": "site-base-collision",
+                "title": "Which Site Answers When Two Bases Collide",
                 "category": "PHP"
             },
             {
@@ -1474,6 +1480,7 @@ Text:
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+    - site-base-collision — Which Site Answers When Two Bases Collide (PHP)
     - initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
     - dependency-injection — Wiring a Service (PHP)
     - core-tests — Writing Core Tests (PHP)
@@ -1928,6 +1935,11 @@ Data:
             {
                 "id": "fal-processing",
                 "title": "Which Processor Claims a File, and What Runs Below It",
+                "category": "PHP"
+            },
+            {
+                "id": "site-base-collision",
+                "title": "Which Site Answers When Two Bases Collide",
                 "category": "PHP"
             },
             {

@@ -223,16 +223,17 @@ answered, and what it wrote down about it.
 
 Where the answer says the request reached the wrong site or none, the subject is
 the installation's own site configuration rather than the code in front of it.
-Three lookups own what it can be: `typo3_hint_lookup` with
+Four lookups own what it can be: `typo3_hint_lookup` with
 `id=project-configuration-files` for which file TYPO3 reads and why the copy a
 package ships is not that file, `id=installation-boot` for a base whose host is
 not the host the site is served under, which matches no site and answers the
-root with a not-found, and `id=initial-content-references` for a base an import
-rewrote to the identifier it landed under. Correct it where TYPO3 reads it, and
-verify by asking the installation again rather than by rereading the file.
-`typo3_configuration_lookup` is what says which hosts are accepted at all and
-whether a page discloses its message, because those are merged at runtime and
-the merged value is what answers.
+root with a not-found, `id=site-base-collision` for which of two sites answers
+where both bases fit the request, and `id=initial-content-references` for a base
+an import rewrote to the identifier it landed under. Correct it where TYPO3
+reads it, and verify by asking the installation again rather than by rereading
+the file. `typo3_configuration_lookup` is what says which hosts are accepted at
+all and whether a page discloses its message, because those are merged at
+runtime and the merged value is what answers.
 
 Taking over an installation somebody else built is the same reading with one
 step in front of it: what it is running on is established before what it answers

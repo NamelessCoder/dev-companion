@@ -125,7 +125,8 @@
       {
         "text": "Two conditions stop that method running at all, and both read like the cause: an importing backend user who is not an admin, in which case no site configuration arrives, and a package shipping Initialisation/Site/, where ImportSiteConfigurationsOnPackageInitialization takes over and the shipped base survives untouched.",
         "since": 14
-      }
+      },
+      "site-base-collision is the other cause of an HTTP 404 at the project root and the one to check where nothing was imported: a bare path loses every request to a site naming the host, so the answer comes out of the wrong site's page tree."
     ]
   },
   {

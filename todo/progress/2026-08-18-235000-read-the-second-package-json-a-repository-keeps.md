@@ -2,6 +2,8 @@
 
 **Serves:** D-SCO-013
 **Priority:** low
+**Branch:** todo/read-the-second-package-json-a-repository-keeps
+**Claimed:** 2026-08-18
 
 Decide whether `Project::commands()` and `Node::describe()` read a
 `Build/package.json` beside the root one, and build it or write down why not.

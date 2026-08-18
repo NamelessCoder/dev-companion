@@ -111,3 +111,15 @@ hint half of `feedback/2026-08-03-154508` was open behind that.
 ## Covered by
 
 - `HintsTest::bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback`
+
+## Since then
+
+The fourth **Wrong if** fired, and the second report the first **Assumed** was
+waiting for arrived with it. `feedback/2026-08-17-212702` is a session on the
+create branch of the published skill, which names five hints and none of them
+this one, while the boot section it would otherwise have crossed into names no
+hint at all. It ruled the entry out by its title, hit exception 1396795884 on
+the rebuild that had turned its task into the boot case, and diagnosed that from
+24,000 characters of rendered HTML. So the patterns are not what failed here:
+the query was never made. `D-KNW-092` carries that judgement, and the hint it
+queues is reached from the symptom rather than from the task.

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-071526-task-guide-returns-two-installation-intents-but.md
 **Priority:** low
+**Branch:** todo/task-guide-returns-two-installation-intents-but
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

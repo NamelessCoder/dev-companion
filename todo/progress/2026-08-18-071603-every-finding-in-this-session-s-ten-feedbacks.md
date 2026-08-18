@@ -1,7 +1,9 @@
-# Nothing answers about an API at a TYPO3 major other than the installed one
+# every finding in this session's ten feedbacks was produced by being asked afterwards, and a secon...
 
-**Serves:** feedback/2026-08-18-074124-nothing-answers-about-an-api-at-a-typo3-major.md
+**Serves:** feedback/2026-08-18-071603-every-finding-in-this-session-s-ten-feedbacks.md
 **Priority:** low
+**Branch:** todo/every-finding-in-this-session-s-ten-feedbacks
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

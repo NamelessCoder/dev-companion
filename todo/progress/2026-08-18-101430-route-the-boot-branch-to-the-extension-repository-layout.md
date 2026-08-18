@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-071435-the-hint-answering-the-extension-repository.md
 **Priority:** normal
+**Branch:** todo/route-the-boot-branch-to-the-extension-repository-layout
+**Claimed:** 2026-08-18
 
 Judged as the ladder's step 2, delivery: the hint is verified, reachable from
 the symptom and named in the create branch alone, so a booting session rules it

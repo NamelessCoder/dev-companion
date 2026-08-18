@@ -1,7 +1,9 @@
-# every finding in this session's ten feedbacks was produced by being asked afterwards, and a secon...
+# nothing answers how a freshly booted extension seeds its own content, and hunting for it cost fiv...
 
-**Serves:** feedback/2026-08-18-071603-every-finding-in-this-session-s-ten-feedbacks.md
+**Serves:** feedback/2026-08-18-071500-nothing-answers-how-a-freshly-booted-extension.md
 **Priority:** low
+**Branch:** todo/nothing-answers-how-a-freshly-booted-extension
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

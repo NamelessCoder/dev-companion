@@ -1,7 +1,9 @@
-# nothing answers how a freshly booted extension seeds its own content, and hunting for it cost fiv...
+# Nothing answers about an API at a TYPO3 major other than the installed one
 
-**Serves:** feedback/2026-08-18-071500-nothing-answers-how-a-freshly-booted-extension.md
+**Serves:** feedback/2026-08-18-074124-nothing-answers-about-an-api-at-a-typo3-major.md
 **Priority:** low
+**Branch:** todo/nothing-answers-about-an-api-at-a-typo3-major
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

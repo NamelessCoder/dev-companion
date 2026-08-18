@@ -130,8 +130,11 @@ The three commands this entry names are one. `documentation:build`,
 `documentation:assets` and `documentation:search` were a sequence a person had
 to keep in the right order and could not, and
 [`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md)
-folded them into `bin/cli documentation:render`. What is published, and that it
-is a copy, is unchanged.
+folded them into one. That one has moved since:
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md)
+took the renderer out of the checkout on 2026-08-12, and what is left here is
+`bin/cli documentation:prepare`, which writes the copy and nothing else. What is
+published, and that it is a copy, is unchanged through all three.
 
 The two cases this entry named over the search index went with the index. It is
 the theme's now, written from the rendered pages rather than from the copy —

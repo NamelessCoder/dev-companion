@@ -59,6 +59,7 @@ final class SkillTest extends TestCase
         // the call is discharged by the base's `typo3_project_describe`
         // (`D-ANS-083`), which `DISCHARGED_TOOLS` below is where it is recorded.
         'typo3-development-installation' => [
+            'typo3_rule_lookup',
             'typo3_documentation_lookup',
             'typo3_configuration_lookup',
             'typo3_commit_message_guide',
@@ -2980,6 +2981,33 @@ final class SkillTest extends TestCase
         self::assertStringContainsString(
             'a suite that needs a served site and has none is this workflow first',
             $flat,
+        );
+    }
+
+    /**
+     * The step that runs a declared clone up names the document that carries
+     * the run, in the form `D-SKL-045` set: the id, and what it alone answers.
+     *
+     * `070538` read the guides list, found no installation entry among the
+     * eleven, and assembled the procedure out of a skill and two hint ids —
+     * `D-KNW-095`. The order is the document's from that entry on, so a step
+     * that names only the hint sends the caller to the facts and to no run.
+     */
+    #[Test]
+    public function theBootStepNamesTheGuideThatCarriesTheRun(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-development-installation/SKILL.md',
+        ));
+
+        self::assertStringContainsString('`documentId="project/installation/booting-a-clone"`', $skill);
+        self::assertStringContainsString('carries the order the steps go in', $skill);
+
+        // A named id that stopped resolving is a step routing to nothing.
+        $document = Registry::call('typo3_rule_lookup', ['documentId' => 'project/installation/booting-a-clone'])->data;
+        self::assertSame(
+            ['project/installation/booting-a-clone'],
+            array_unique(array_column($document['matches'], 'documentId')),
         );
     }
 

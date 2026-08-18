@@ -274,6 +274,35 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('typo3://guides/extension/testing/phpunit', $result->text);
     }
 
+    /**
+     * The split `D-KNW-095` made: the document orders the run and the hint
+     * keeps the facts it runs on.
+     *
+     * `installation-boot` was the procedure — its first statement enumerated
+     * the four steps — and a session that read the guides list found no
+     * installation entry among the eleven and assembled one out of a skill and
+     * two hint ids. Two orderings that release together are the pair that
+     * disagrees, so the hint may not grow the order back.
+     */
+    #[Test]
+    public function theBootRunIsOrderedInTheDocumentAndNotInTheHint(): void
+    {
+        self::assertStringContainsString(
+            '## The Order the Steps Go In',
+            Documents::read('project/installation/booting-a-clone'),
+        );
+
+        $hint = Registry::call('typo3_hint_lookup', ['id' => 'installation-boot']);
+        self::assertStringNotContainsString('four steps', $hint->text);
+
+        // The crossing is declared on the document alone — `D-KNW-057` — so
+        // this is what a caller who reached the hint is told the run is in.
+        self::assertContains(
+            ['uri' => 'typo3://guides/project/installation/booting-a-clone', 'hint' => 'installation-boot'],
+            $hint->data['documents'],
+        );
+    }
+
     #[Test]
     public function everyBundledDocumentIsListedWithATitle(): void
     {
@@ -1053,9 +1082,18 @@ final class KnowledgeTest extends TestCase
      * page it never opened — `D-ANS-076`.
      *
      * Each matched one heading of `core/contribution/commit-messages`, and the
-     * first answer already named the heading the second went looking for. So
-     * the first call answers with the page: the second search is what the cut
+     * first answer already carries what the second went looking for. So one of
+     * the two is answered with the page: the second search is what the cut
      * costs, and the text it saves is nearly free beside a round trip.
+     *
+     * Which of the two that is moved when the corpus grew by
+     * `project/installation/booting-a-clone` — `D-KNW-095`. A term's weight is
+     * computed over the sections in front of the query, so eight more of them
+     * carried two sections of the first query over the coverage floor, one of
+     * them in a second page. That call is now the cut, and it hands over
+     * `Release Targets` among its three; the second call is the one whose
+     * matches all sit in one page. Both halves the entry bought are still
+     * bought, on the other call.
      */
     #[Test]
     public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
@@ -1065,22 +1103,25 @@ final class KnowledgeTest extends TestCase
             'targetVersion' => '15.0',
         ]);
 
-        self::assertSame(['Changelog Files'], $first->data['matchedHeadings']);
-        self::assertSame(1, $first->data['matchCount']);
-        self::assertSame('core/contribution/commit-messages', $first->data['matches'][0]['documentId']);
-        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $first->text);
-
+        self::assertSame(
+            ['core/contribution/commit-messages', 'core/contribution/gerrit-workflow'],
+            array_values(array_unique(array_column($first->data['matches'], 'documentId'))),
+        );
         // What the second call went for is in the answer to the first.
+        self::assertStringContainsString('## Release Targets', $first->text);
+
         $second = Registry::call('typo3_rule_lookup', [
             'query' => 'Releases trailer which branches take a patch today maintained versions',
             'targetVersion' => '15.0',
         ]);
         self::assertSame(['Release Targets'], $second->data['matchedHeadings']);
-        self::assertStringContainsString('## Release Targets', $first->text);
+        self::assertSame(1, $second->data['matchCount']);
+        self::assertSame('core/contribution/commit-messages', $second->data['matches'][0]['documentId']);
+        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $second->text);
 
         // The offer to read the page is what a cut answer owes, and there is
-        // no cut here to owe it.
-        self::assertStringNotContainsString('typo3_rule_lookup with documentId', $first->text);
+        // no cut in the answer that is a page.
+        self::assertStringNotContainsString('typo3_rule_lookup with documentId', $second->text);
     }
 
     /**

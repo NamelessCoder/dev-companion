@@ -93,3 +93,19 @@ What is removed here is the round trip rather than the sentence about it.
 - `KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage`
 - `KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft`
 - `KnowledgeTest::everyToolThatRendersASectionOffersThePageAsACall`
+
+## Since then
+
+The mechanism is untouched and which recorded call demonstrates it moved, on
+2026-08-18, when `project/installation/booting-a-clone` was added to the corpus
+— `D-KNW-095`. A term's weight is computed over the sections in front of the
+query, so eight more of them carried two sections of the first call over the
+coverage floor, one of them in a second page. The first call is the cut now and
+the second is the page, and the round trip is still saved: `Release Targets`,
+what the second search went for, is among the three sections the first answer
+returns.
+
+This is the fourth **Wrong if** arriving from the other side. What it names is a
+document growing until a page stops being an answer; what happened is the corpus
+growing until a query stops being concentrated. Neither caps anything yet, and
+the count in **How often it fires** is what a further document moves.

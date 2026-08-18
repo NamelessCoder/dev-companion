@@ -46,13 +46,18 @@ declared.
 
 ## Boot what the repository already declares
 
-- `typo3_hint_lookup` with `id=installation-boot` owns what a clone is missing
-  and in which order it is supplied: the schema the imported dump owes the code,
-  the caches that arrived inside that dump, the backend user whose password did
-  not, and the two things that make a booted clone answer nothing under the host
-  it is served on. Ask it before the declared steps are run, not after one of
-  them has failed — that entry is also where the second boot's failures are, and
-  they are not the first boot's.
+- The run is a guide and is not reconstructed here: `typo3_rule_lookup` with
+  `documentId="project/installation/booting-a-clone"` carries the order the
+  steps go in, why the environment is started twice, where the data comes from
+  when the repository declares no import, and what says the boot worked rather
+  than that a command exited. Read it before the declared steps are run, not
+  after one of them has failed.
+- `typo3_hint_lookup` with `id=installation-boot` owns what a clone is missing:
+  the schema the imported dump owes the code, the caches that arrived inside
+  that dump, the backend user whose password did not, and the two things that
+  make a booted clone answer nothing under the host it is served on. That entry
+  is also where the second boot's failures are, and they are not the first
+  boot's.
 - Read the environment configuration whole before running anything. The scope
   answer names the interpreter and the commands the manifests declare; the
   lifecycle the environment runs by itself — the tasks bound to each stage, the

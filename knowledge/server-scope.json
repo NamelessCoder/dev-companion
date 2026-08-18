@@ -100,6 +100,16 @@
       "scope": "project"
     },
     {
+      "topic": "Booting a cloned project repository into a running installation",
+      "depth": "The run in order, from a clone to a site that answers on both sides: what the clone does not carry, why the environment is started twice, where the data comes from when the repository declares no import, what makes the installation agree with the code in front of it, and what a login costs. It runs nothing and starts nothing. Creating an installation for a package that declares no procedure is the neighbouring task and begins a step earlier.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/project/installation/booting-a-clone",
+      "scope": "project"
+    },
+    {
       "topic": "Looking at a change in a real browser, against the installation that has the content",
       "depth": "Which installation can show the case at all, how a browser running in a container reaches a DDEV site — the router's network and its hostname aliases, the certificate it does not carry, the wildcard hostname it cannot answer — and where a harness and its screenshots go so neither reaches a commit. It runs nothing and starts no installation.",
       "tools": [

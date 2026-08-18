@@ -63,15 +63,11 @@ final class Typo3Cli
     /**
      * Where DDEV mounts the project inside its web container.
      *
-     * The invocation has to be absolute. `ddev exec` runs in the container's
+     * The invocation has to be absolute: `ddev exec` runs in the container's
      * configured working directory, which a project may point at its docroot,
-     * and a console named relative to the project root is then not there —
-     * `D-DIS-002` measured exit 127 for exactly that. `$DDEV_APPROOT` says the
-     * same thing without naming a directory, and it is not the safer form: DDEV
-     * sets that variable in the web container only from v1.24.5, and sets it to
-     * this literal string. Below that version it expands to nothing and the
-     * console is looked for at /bin/typo3, which fails where the relative path
-     * worked.
+     * and `D-DIS-002` measured exit 127 for exactly that. `$DDEV_APPROOT` is not
+     * the safer form — DDEV sets it in the web container only from v1.24.5, and
+     * below that it expands to nothing.
      */
     private const DDEV_APPROOT = '/var/www/html';
 
@@ -224,17 +220,9 @@ final class Typo3Cli
      *
      * Reachable is not one state: a project whose containers are stopped is
      * answered by an interpreter of this machine, which is not the runtime the
-     * project declares. Reporting that as reachable is what let five tools be
-     * presented as usable without a word about where the answer came from.
-     *
-     * What it says is what the boot cannot reach, never which lookups are lost.
-     * The list this used to carry was measured wrong: with
-     * `.environments/e-site-14.3` stopped on 2026-08-04 every installation-backed
-     * tool answered, and only `typo3_schema_lookup` asks the connection for
-     * anything at all — the platform, which `pdo_sqlite` supplies with no
-     * server and `pdo_mysql` fetches by connecting unless `serverVersion` is
-     * configured (`D-DIS-012`). So which answer a stopped project costs depends
-     * on the installation, and a sentence naming tools is wrong somewhere.
+     * project declares. What it says is what the boot cannot reach, never which
+     * lookups are lost — which answer a stopped project costs depends on the
+     * installation, so a sentence naming tools is wrong somewhere (`D-DIS-012`).
      */
     public static function caveat(): string
     {

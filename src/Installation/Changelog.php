@@ -9,24 +9,14 @@ use Symfony\Component\Finder\Finder;
 /**
  * The changelog entries of the installation this server was started in.
  *
- * Every TYPO3 package ships the core's own changelog — one RST file per
- * breaking change, deprecation, feature and important note, in the directory of
- * the version it was released in. It is the authoritative record of what
- * changed, it is on disk in every installation, and it is exactly what the
- * question "what did my version deprecate that affects my code" is asking for.
- *
- * Nothing is bundled here. A snapshot would answer for the version it was taken
- * from; the installation's own copy answers for the version the caller runs,
- * and it grows with a Composer update rather than with a release of this
- * server.
- *
- * The scan reads file names, not files: the type, the issue number and a
- * spelling of the title are all in the name, and only what a query matched is
- * opened. Two things the names do not carry are read out of the files
- * themselves, and both only where the names reached nothing at all — the title
- * as it is stated, by `titled()`, and the identifiers a removed method is asked
- * for by, by `identifiers()`. `D-ANS-041` holds the first and `D-ANS-042` the
- * second.
+ * Every TYPO3 package ships the core's own changelog, one RST file per breaking
+ * change, deprecation, feature and important note. Nothing is bundled here: a
+ * snapshot would answer for the version it was taken from, while the
+ * installation's own copy answers for the version the caller runs. The scan
+ * reads file names and not files, and what a name does not carry is read out of
+ * the file only where the names reached nothing — the stated title
+ * (`D-ANS-041`), and the identifiers a removed method is asked for by
+ * (`D-ANS-042`).
  */
 final class Changelog
 {
@@ -114,10 +104,9 @@ final class Changelog
     /**
      * The same entries, each carrying the title its file states.
      *
-     * A file name spells a title of its own and the two differ — `Deprecate
-     * LocalImageProcessor::getTemporaryImageWithText` against
-     * `LocalImageProcessorGraphicalFunctions`. This is a read per entry, which
-     * is why a search reaches for it only after the names — `D-ANS-041`.
+     * A file name spells a title of its own and the two differ. This is a read
+     * per entry, which is why a search reaches for it only after the names —
+     * `D-ANS-041`.
      *
      * @param array<int, array{type: string, issue: string, version: string, key: string, source: string, file: string}> $entries
      * @return array<int, array{type: string, issue: string, version: string, key: string, source: string, file: string, title: string}>
@@ -178,14 +167,9 @@ final class Changelog
      *
      * A caller after a removed method types the method name, and the name is in
      * the body rather than in the file name. Every inline literal is read
-     * whatever markup it is written in: the `:php:` role postdates 9.0, and the
-     * three entries naming `getTemporaryImageWithText` write it in two spellings
-     * between them.
-     *
+     * whatever markup it is written in, because the `:php:` role postdates 9.0.
      * Only a word carrying a hump or an underscore is one, which is what keeps
-     * the index free of the words a query is made of. `Request`, `Event` and
-     * `File` are class names spelled exactly like what a caller means by them,
-     * and a term is compared to this index whole — `D-ANS-042`.
+     * the index free of the words a query is made of — `D-ANS-042`.
      *
      * @param array{file: string} $entry
      * @return array<int, string>

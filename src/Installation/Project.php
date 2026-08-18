@@ -149,25 +149,12 @@ final class Project
      * configures one at all.
      *
      * A containerised project has two PHP versions — the one its manifest
-     * constrains and the one its container runs — and an answer that states
-     * only the first invites the review that reported "PHP version mismatch
-     * blocks all tests" over a host at 8.3.23 against a declared ^8.4, while
-     * the suite it meant had been running on 8.4 in the container all along
-     * (`feedback/2026-07-31-193611`). The commands below make that worse rather
-     * than better: they are the ones a task is sent to run, and a declared
-     * `composer test:unit` put on the caller's own shell is a different machine
-     * from the one the project is built for.
-     *
-     * Read from the environment's own files, so `R-PRJ-001` still holds and the
-     * answer arrives on a fresh clone. `ddev describe` would answer this too,
-     * and starting anything to find out is the whole of what `R-DIS-006`
-     * forbids — so a stopped project reads exactly like a running one here.
-     *
-     * The interpreter is half of it. What the environment runs by itself is the
-     * other half and is `R-PRJ-009`: a boot whose schema update, extension
-     * setup and backend user all sat in `.ddev/config.yaml` was carried out by
-     * reading that file by hand, beside an answer that had opened it for one
-     * PHP version (`feedback/2026-08-03-154501`).
+     * constrains and the one its container runs — and the commands below make
+     * that worse rather than better, being the ones a task is sent to run. Read
+     * from the environment's own files, so `R-PRJ-001` still holds on a fresh
+     * clone and nothing is started to find out (`R-DIS-006`): a stopped project
+     * reads exactly like a running one here. The interpreter is half of it, and
+     * what the environment runs by itself is `R-PRJ-009`.
      *
      * @return array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
      */
@@ -841,12 +828,8 @@ final class Project
      * A third number rather than a second reading of the first two: the project
      * states what it accepts, the environment states what it runs, and this is
      * the lowest a package installed beside this core may declare. It is not
-     * derivable from the major — `^8.1` on 12.4, `^8.2` on 13.4 and on 14.3,
-     * `^8.5` on main, read in `.checkouts/` and in the installed package alike
-     * on 2026-08-04 — so an extension given the container's PHP 8.4 as its
-     * minimum narrows its own range by two minors with every check still green
-     * (`D-KNW-055`). The manifest sits beside the `Typo3Version.php` that
-     * `Instance::typo3Version()` already resolves the directory for.
+     * derivable from the major, so an extension given the container's PHP as its
+     * minimum narrows its own range with every check still green (`D-KNW-055`).
      */
     private static function corePhpConstraint(): ?string
     {
@@ -858,22 +841,13 @@ final class Project
     /**
      * How the three PHP numbers beside it stand to each other.
      *
-     * They have been in one answer since `D-KNW-055`, each field's description
-     * naming the other two to say which number it is not, and the comparison
-     * between them was the caller's. A session that had all three declared
-     * `^8.3` against a core requiring `^8.2`, ran every command in a container
-     * at 8.4, and executed no line on the floor it claims to support
-     * (`feedback/2026-08-17-211157`) — a claim nothing tests and every check
-     * passes. `D-ANS-082`: the one place that holds all three values is the
-     * answer that already prints them.
-     *
-     * Two comparisons, both against what this project declares, because that is
-     * what a manifest can be rewritten to. Nothing was run to find either out:
-     * this is what the files say, never evidence that the floor works.
-     *
-     * Null where the declared constraint names no floor — a project that
-     * requires no PHP, or one spelled in a way `Versions::floor()` will not
-     * claim to read. That the project declares nothing is already `phpConstraint`.
+     * They have been in one answer since `D-KNW-055`, and the comparison between
+     * them was the caller's until `D-ANS-082`: the one place that holds all
+     * three values is the answer that already prints them. Two comparisons, both
+     * against what this project declares, because that is what a manifest can be
+     * rewritten to. Nothing was run to find either out — this is what the files
+     * say, never evidence that the floor works. Null where the declared
+     * constraint names no floor.
      *
      * @return array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null
      */

@@ -106,17 +106,11 @@ final class Instance
      * places it. Not always the installation being read, and not always an
      * installation at all.
      *
-     * `TYPO3_DEV_COMPANION_ROOT` names the one to read — its labels, its icons, its
-     * packages — and a core contributor sets it at a site installation for
-     * exactly that. Which repository the work is in is a different question,
-     * and the checkout the server was started in is its weakest signal.
-     * Reading both off one value let the variable move that boundary too,
-     * which is not what it was introduced to do (`D-SCO-005`).
-     *
-     * Where the walk-up reaches no installation, the named one is the only
-     * evidence there is and it answers: a client that starts this server away
-     * from the session's own directory has nothing else to say where the work
-     * is (`D-DIS-006`).
+     * `TYPO3_DEV_COMPANION_ROOT` names the one to read, and which repository the
+     * work is in is a different question — reading both off one value let the
+     * variable move that boundary too (`D-SCO-005`). Where the walk-up reaches
+     * no installation the named one is the only evidence there is and it answers
+     * (`D-DIS-006`).
      */
     public static function startedIn(): ?string
     {
@@ -150,14 +144,11 @@ final class Instance
      * its own root, or null where the walk up from the starting directory
      * reaches no such root.
      *
-     * A repository is not an installation. What the manifest says is enough to
-     * place the work and never enough to report one, so `describe()` answers as
-     * it did and nothing here starts speaking for a checkout with no console
-     * behind it (`D-DIS-001`).
-     *
-     * Only `typo3-cms-extension`. `typo3-cms-framework` is what every system
-     * extension of the core declares, so reading it too would place a
-     * contributor standing in `typo3/sysext/backend/` outside the core.
+     * A repository is not an installation: what the manifest says is enough to
+     * place the work and never enough to report one, so nothing here starts
+     * speaking for a checkout with no console behind it (`D-DIS-001`). Only
+     * `typo3-cms-extension` — `typo3-cms-framework` would place a contributor
+     * standing in `typo3/sysext/backend/` outside the core.
      */
     public static function startedInPackage(): ?string
     {
@@ -236,20 +227,12 @@ final class Instance
      * installed in it: the installation where there is one, and otherwise the
      * nearest root whose own composer.json declares TYPO3.
      *
-     * `typo3_project_describe` reads what a repository's files declare and only
-     * three of its fields come out of the installed tree, so gating the whole
-     * answer on installed metadata left a fresh clone — the state the
-     * installation workflow starts in — the one state it answered nothing in
-     * (`D-ANS-085`).
-     *
-     * Not an installation, and nothing else may read it as one: `describe()`
-     * stays what every other tool asks, so a repository with no packages below
-     * it still answers `cause: no-installation` rather than reporting an
-     * installation that holds nothing and has no console (`D-DIS-001`).
-     *
-     * Nothing is remembered here. What is found is one manifest read per
-     * directory walked, and the answer has to change the moment the install
-     * this state exists to prompt has run.
+     * Gating the whole answer on installed metadata left a fresh clone — the
+     * state the installation workflow starts in — the one state it answered
+     * nothing in (`D-ANS-085`). Not an installation, and nothing else may read
+     * it as one: `describe()` stays what every other tool asks (`D-DIS-001`).
+     * Nothing is remembered here, because the answer has to change the moment
+     * the install this state exists to prompt has run.
      *
      * @return array{root: string, kind: string, startedFrom: string, via: string}|null
      */

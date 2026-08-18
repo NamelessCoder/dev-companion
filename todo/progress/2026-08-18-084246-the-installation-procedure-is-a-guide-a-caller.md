@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070538-no-guide-covers-booting-an-installation-and-the.md
 **Priority:** normal
+**Branch:** todo/the-installation-procedure-is-a-guide-a-caller
+**Claimed:** 2026-08-18
 
 `D-KNW-095` judged this step 1b and took it on: every fact is written, and the
 procedure sits in the hint corpus while the guides list is what a caller chooses

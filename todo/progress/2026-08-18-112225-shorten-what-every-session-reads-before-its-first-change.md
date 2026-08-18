@@ -3,6 +3,8 @@
 **Serves:** documentation/, skills/
 **Priority:** normal
 **Run:** bin/cli prose:check
+**Branch:** todo/shorten-what-every-session-reads-before-its-first-change
+**Claimed:** 2026-08-18
 
 Cut AGENTS.md, `documentation/records/judging.rst` and `skills/base.md` to what
 a session actually needs before its first change — 6740, 3978 and 2125 words

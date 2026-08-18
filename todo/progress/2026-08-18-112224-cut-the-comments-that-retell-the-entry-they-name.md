@@ -3,6 +3,8 @@
 **Serves:** src/, tests/
 **Priority:** normal
 **Run:** bin/cli prose:check
+**Branch:** todo/cut-the-comments-that-retell-the-entry-they-name
+**Claimed:** 2026-08-18
 
 Read the comments the report names, longest first, and cut each one to what the
 code cannot say: `bin/cli prose:check` lists them under the comment measure,

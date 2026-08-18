@@ -1,7 +1,9 @@
-# four tools I loaded or was routed to and never called during a boot, and what each omission cost
+# installation-setup tags the --create-site statement "up to v13", which reads as removed in v14 wh...
 
-**Serves:** feedback/2026-08-18-070611-four-tools-i-loaded-or-was-routed-to-and-never.md
+**Serves:** feedback/2026-08-18-070632-installation-setup-tags-the-create-site.md
 **Priority:** low
+**Branch:** todo/installation-setup-tags-the-create-site
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

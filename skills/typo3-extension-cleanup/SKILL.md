@@ -59,7 +59,16 @@ versioned TYPO3 facts.
     item nothing here can prove goes back unassigned in the closing report
     instead. A finding no workflow owns and no check covers is a hole in the
     map, and changing it on judgement is what hides the hole.
-11. Commit per item, or per group of items in one owner's area, and say which
+11. Settle where the change lands before the first commit: which branch these
+    commits belong on, whether the pull request is squashed, and which released
+    lines the fix is carried to. That is the repository's own policy and nothing
+    here reads it. It is asked of the maintainer, before a branch is pushed and
+    before a pull request is opened. A branch listing and a tag scheme are not
+    that answer: they say which branches exist, never which are still supported.
+    What the core does — a fix on the main branch, cherry-picked down — is the
+    core's own process and the default nowhere else. Ask once and work from the
+    answer, keeping it in the session the way the list is kept.
+12. Commit per item, or per group of items in one owner's area, and say which
     item that commit closed — the message from `typo3_commit_message_guide` with
     `workflow="project"`. A session that ends halfway is read out of the log,
     which is why the state belongs in the commits rather than in the list alone,
@@ -68,14 +77,14 @@ versioned TYPO3 facts.
 
 ## What closes it
 
-12. Invoke `typo3-extension-conformance` on the worked list for the re-check. It
+13. Invoke `typo3-extension-conformance` on the worked list for the re-check. It
     kept responsibility for that when it handed the finding over, and a cleanup
     that grades its own work has no evidence the finding is gone. The re-check
     re-runs what the finding was about instead of re-reading the files it
     changed: a file that reads correctly can still be rewritten by the
     environment that owns it, and the difference only shows once that
     environment runs again.
-13. Report what is left: the items still open, the items dropped with what
+14. Report what is left: the items still open, the items dropped with what
     dropped them, the ones sent back unassigned, and every finding the audit
     reported as open or unassessed that this work did not settle. A finished
     list and an abandoned one read alike in a summary.

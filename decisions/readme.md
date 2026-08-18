@@ -548,6 +548,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-059`][D-SKL-059] — The installation that already answers is owned by the workflow that created it · 2026-08-18
 - [`D-SKL-060`][D-SKL-060] — A skill names a tool at the step that needs it, and a deferring client is answered in the instructions · 2026-08-18
 - [`D-SKL-061`][D-SKL-061] — The upgrade description is reachable from a defect inside the range it already declares · 2026-08-18
+- [`D-SKL-062`][D-SKL-062] — The workflow question is asked again where the work enters a new subject · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -607,6 +608,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-059]: task-skills/skl-059-the-installation-that-already-answers-is-owned-by-the-workflow-that-created-it.md
 [D-SKL-060]: task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md
 [D-SKL-061]: task-skills/skl-061-the-upgrade-description-is-reachable-from-a-defect-inside-the-range-it-already-declares.md
+[D-SKL-062]: task-skills/skl-062-the-workflow-question-is-asked-again-where-the-work-enters-a-new-subject.md
 [D-SKL-037]: task-skills/skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: task-skills/skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: task-skills/skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

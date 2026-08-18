@@ -91,6 +91,7 @@ final class Fixture
      * @param array<string, array<string, array<string, array<int, string>>>> $formDataGroups group => provider => depends/before
      * @param array<string, array<string, mixed>> $modules identifier => registration, in the shape the registry hands one back
      * @param array<string, string> $labels reference => what the installation's language service resolves it to
+     * @param array<string, mixed> $configuration merged into TYPO3_CONF_VARS, which is what the configuration topic is read out of
      */
     public static function bootsInto(
         string $root,
@@ -101,6 +102,7 @@ final class Fixture
         array $formDataGroups = [],
         array $modules = [],
         array $labels = [],
+        array $configuration = [],
     ): void {
         $items = [];
         foreach ($contentElements as $value => [$label, $icon]) {
@@ -115,6 +117,7 @@ final class Fixture
             'formDataGroups' => $formDataGroups,
             'modules' => $modules,
             'labels' => $labels,
+            'configuration' => $configuration,
         ], true);
 
         self::put($root . '/vendor/autoload.php', <<<PHP
@@ -127,8 +130,33 @@ final class Fixture
                 foreach (\$GLOBALS['FAKE']['tables'] as \$table => \$title) {
                     \$GLOBALS['TCA'][\$table] = ['ctrl' => ['title' => \$title]];
                 }
+                \$GLOBALS['TYPO3_CONF_VARS'] = \$GLOBALS['FAKE']['configuration'];
                 \$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']
                     = \$GLOBALS['FAKE']['formDataGroups'];
+            }
+            namespace TYPO3\\CMS\\Core\\Utility {
+                // Traversal and nothing else. The core's own is what runs
+                // against a real installation; a stand-in is honest here
+                // because there is no TYPO3 behaviour in walking a path, which
+                // is the difference from the ordering service above.
+                class ArrayUtility {
+                    public static function isValidPath(array \$array, string \$path, string \$delimiter = '/'): bool {
+                        foreach (explode(\$delimiter, trim(\$path, \$delimiter)) as \$segment) {
+                            if (!is_array(\$array) || !array_key_exists(\$segment, \$array)) {
+                                return false;
+                            }
+                            \$array = \$array[\$segment];
+                        }
+                        return true;
+                    }
+                    public static function getValueByPath(array \$array, string \$path, string \$delimiter = '/') {
+                        \$value = \$array;
+                        foreach (explode(\$delimiter, trim(\$path, \$delimiter)) as \$segment) {
+                            \$value = \$value[\$segment];
+                        }
+                        return \$value;
+                    }
+                }
             }
             namespace TYPO3\\CMS\\Core\\Service {
                 // Reverses rather than resolves. What the probe has to be held

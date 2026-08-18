@@ -14,7 +14,7 @@ use TYPO3\DevCompanion\Process\SystemRunner;
  * Asking TYPO3 beats reimplementing it. The registries this server is asked
  * about — which labels exist, which namespaces are registered — are assembled
  * at runtime from the active packages, and the console commands that expose
- * them (language:domain:list, fluid:namespaces, configuration:show) already
+ * them (language:domain:list, fluid:namespaces) already
  * know things no file scan can work out: which packages are active rather than
  * merely installed, and which language files an installation overrides through
  * resourceOverrides.

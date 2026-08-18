@@ -22,6 +22,11 @@ declare(strict_types=1);
  *   subprocess is started with the installation root as its working directory,
  *   and inside the container that same root is /var/www/html.
  *
+ * The configuration path is substituted the same way, and is the one topic that
+ * is not read unconditionally: TYPO3_CONF_VARS is around 50 kB of JSON before
+ * an extension has added to it, which every reading would otherwise carry for
+ * the sake of the one caller that asked about a path.
+ *
  * It prints one JSON object on stdout and nothing else. TYPO3's own output
  * buffer is discarded first, because an extension that echoes during boot would
  * otherwise sit in front of the payload.
@@ -32,6 +37,9 @@ try {
     // Replaced by Typo3Runtime before delivery; a literal so the file stays
     // valid PHP that can be linted and read on its own.
     $autoload = 'vendor/autoload.php';
+    // Empty unless a caller asked about one, and then the only reason this
+    // topic is read at all.
+    $configurationPath = '';
     if (!is_file($autoload)) {
         $answer['reason'] = 'no autoloader at ' . $autoload . ' below ' . getcwd();
         throw new RuntimeException('', 1);
@@ -56,6 +64,33 @@ try {
     }
 
     $answer['state'] = 'full';
+
+    // One path out of TYPO3_CONF_VARS as it stands after every extension has
+    // had its say. `ArrayUtility` is the core's own reading of such a path and
+    // is what `configuration:show --type=active` traverses with, so a caller
+    // gets the same value on a line that has that command and on the two that
+    // do not.
+    //
+    // In a try of its own: a failure here is one topic.
+    if ($configurationPath !== '') {
+        try {
+            $found = TYPO3\CMS\Core\Utility\ArrayUtility::isValidPath(
+                $GLOBALS['TYPO3_CONF_VARS'],
+                $configurationPath,
+            );
+            $answer['topics']['configuration'] = [
+                'found' => $found,
+                'value' => $found ? TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $configurationPath,
+                ) : null,
+            ];
+        } catch (Throwable $failure) {
+            $answer['topics']['configuration'] = [
+                'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
+            ];
+        }
+    }
 
     $registry = $container->get(TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $icons = [];

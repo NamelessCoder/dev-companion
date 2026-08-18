@@ -46,6 +46,9 @@ final class Typo3Runtime
     /** @var array{state: string, reason: string, topics: array<string, mixed>}|null */
     private static ?array $answer = null;
 
+    /** The path the `configuration` topic is read at; empty means it is not read. */
+    private static string $configurationPath = '';
+
     /**
      * What the running installation reports, or why it did not.
      *
@@ -79,6 +82,31 @@ final class Typo3Runtime
         return $answer['state'] === self::STATE_FULL ? ($answer['topics'][$name] ?? null) : null;
     }
 
+    /**
+     * One path out of TYPO3_CONF_VARS as the installation has it, or null where
+     * there was no full reading to take it from.
+     *
+     * The one topic the probe does not read unconditionally, because the whole
+     * of TYPO3_CONF_VARS is around 50 kB of JSON before an extension has added
+     * to it and every other reading would carry it for nothing. So the path is
+     * substituted into the payload, and a reading taken before this was asked
+     * does not carry the topic — which is what the discarded reading below is
+     * about, rather than any order the callers have to keep.
+     *
+     * @return array{found: bool, value: mixed}|array{unavailable: string}|null
+     */
+    public static function configuration(string $path): ?array
+    {
+        if (self::$configurationPath !== $path) {
+            self::$configurationPath = $path;
+            self::$answer = null;
+        }
+
+        $topic = self::topic('configuration');
+
+        return is_array($topic) ? $topic : null;
+    }
+
     /** Why there is no full reading. Empty when there is one. */
     public static function reason(): string
     {
@@ -97,6 +125,7 @@ final class Typo3Runtime
     public static function forget(): void
     {
         self::$answer = null;
+        self::$configurationPath = '';
     }
 
     /**
@@ -156,8 +185,11 @@ final class Typo3Runtime
         $probe = (string) preg_replace('/^<\?php\s/', '', $probe, 1);
 
         return str_replace(
-            "'vendor/autoload.php'",
-            var_export(Typo3Cli::autoloader($root), true),
+            ["'vendor/autoload.php'", '$configurationPath = \'\''],
+            [
+                var_export(Typo3Cli::autoloader($root), true),
+                '$configurationPath = ' . var_export(self::$configurationPath, true),
+            ],
             $probe
         );
     }

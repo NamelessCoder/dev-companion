@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
-use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
@@ -65,31 +64,42 @@ final class ConfigurationLookup extends ReadOnlyTool
     {
         $path = trim((string) ($args['path'] ?? ''), " \t/");
 
-        $answer = Typo3Cli::json(['configuration:show', $path, '--type=active', '--json']);
+        if ($path === '') {
+            return Unsupported::because('no path into TYPO3_CONF_VARS was named', ['path' => $path]);
+        }
 
-        // A path that does not exist is a legitimate answer, not a breakage,
-        // and the console says which of the two happened in its exit code.
-        if (!$answer['ok'] && $answer['exitCode'] === 1 && str_contains($answer['error'], 'No configuration found')) {
+        // The booted container rather than `configuration:show`, which arrived
+        // in TYPO3 14.2 and would leave the two LTS lines this server covers
+        // holding the console's "command is not defined" — D-ANS-077 is the
+        // same case decided for the backend modules, and its reading is why
+        // this has one source rather than a version-bound pair of them.
+        $read = Typo3Runtime::configuration($path);
+        if ($read === null || isset($read['unavailable'])) {
+            // found is absent rather than false: false is a statement about the
+            // installation — "it has no value at that path" — and nothing was
+            // consulted to make it.
+            return Unsupported::because(
+                is_array($read) ? (string) $read['unavailable'] : Typo3Runtime::reason(),
+                ['path' => $path],
+            );
+        }
+
+        // A path that does not exist is a legitimate answer, not a breakage.
+        if ($read['found'] !== true) {
             return ToolResult::create(
                 sprintf('The installation has no configuration at "%s".', $path),
                 ['path' => $path, 'found' => false, 'value' => null, 'answeredBy' => 'installation'],
             );
-        }
-        if (!$answer['ok']) {
-            // found is absent rather than false: false is a statement about the
-            // installation — "it has no value at that path" — and nothing was
-            // consulted to make it.
-            return Unsupported::because($answer['error'], ['path' => $path]);
         }
 
         $text = sprintf(
             "Effective value of TYPO3_CONF_VARS/%s in this installation:\n\n```json\n%s\n```\n\n"
             . 'This is the assembled runtime value, not the default the core ships.',
             $path,
-            json_encode($answer['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
+            json_encode($read['value'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
         );
 
-        $data = ['path' => $path, 'found' => true, 'value' => $answer['data'], 'answeredBy' => 'installation'];
+        $data = ['path' => $path, 'found' => true, 'value' => $read['value'], 'answeredBy' => 'installation'];
 
         $order = self::resolvedOrder($path);
         if ($order !== null) {

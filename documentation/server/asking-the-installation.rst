@@ -22,15 +22,21 @@ The order
 
 1. **The console, where a command exists.** ``Typo3Cli::run()`` invokes the
    installation's own ``bin/typo3`` — through DDEV where the project runs there
-   — for the registries TYPO3 exposes a command for: ``language:domain:search``,
-   ``fluid:namespaces``, ``configuration:show``.
+   — for the registries TYPO3 exposes a command for: ``language:domain:search``
+   and ``fluid:namespaces``.
 2. **The container, where none does, or where the command answers less than the
    registry.** ``Typo3Runtime::ask()`` boots the installation in a subprocess
    and reads the registry itself. This is the only source that knows what a
    package registers dynamically. The backend modules are the second case:
    ``debug:backend:modules`` exports neither the navigation component a module
    resolves to nor its routes, and it is TYPO3 v14 and up while this server
-   answers for two lines below that — ``D-ANS-077``.
+   answers for two lines below that — ``D-ANS-077``. The effective configuration
+   is the third: ``configuration:show`` arrived in TYPO3 14.2, so a console
+   answer would leave 12.4 and 13.4 holding the console's own "command is not
+   defined" — ``D-ANS-052``. It is also the one topic the probe does not read
+   unconditionally, because the whole of ``TYPO3_CONF_VARS`` is around 50 kB of
+   JSON and every other reading would carry it for nothing; the path asked for
+   is substituted into the payload the way the autoloader is.
 3. **The files, where neither can be reached.** The registration files the
    packages ship, parsed and never included. Exact for everything declared,
    silent about everything else — and an answer that came from here says so.

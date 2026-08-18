@@ -3,7 +3,9 @@
 **Environment:** `E-SITE` · **Contract:** `held`
 **Held by:** `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`,
 `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
-`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`
+`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
+`ConfigurationLookupTest` in full,
+`Typo3RuntimeTest::theConfigurationTopicIsReadOnlyWhereAPathWasAsked`
 
 > Editors report that a field in one of our record forms is suddenly read-only,
 > and I cannot find where that comes from. Nothing in our own configuration does
@@ -21,7 +23,10 @@
 **What has to come out of it**
 
 - The configuration value comes from this installation's runtime, and the answer
-  says it did.
+  says it did — on every covered line. This case runs on `E-SITE`, which unnamed
+  is the covered stable one, so the environment alone would never have shown
+  that the console command behind this answer exists on two of the four
+  (`D-ANS-052`).
 - The subsystem conventions explain the mechanism, and the agent then finds the
   concrete override in the checkout rather than being told which one it is.
 - Where the installation could not be asked, that is said — and is

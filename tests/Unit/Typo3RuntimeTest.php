@@ -255,6 +255,26 @@ final class Typo3RuntimeTest extends TestCase
         self::assertStringContainsString('no TYPO3 installation', Typo3Runtime::ask()['reason']);
     }
 
+    #[Test]
+    public function theConfigurationTopicIsReadOnlyWhereAPathWasAsked(): void
+    {
+        // What keeps the whole of TYPO3_CONF_VARS — around 50 kB of JSON on a
+        // 13.4 before an extension has added to it, measured on 2026-08-18
+        // against `.environments/e-site-13.4` — out of every reading taken for
+        // an icon or a module.
+        $root = $this->installationWithAConsole();
+        Fixture::bootsInto($root, configuration: ['SYS' => ['devIPmask' => '10.0.0.1']]);
+        $this->discover($root);
+
+        self::assertArrayNotHasKey('configuration', Typo3Runtime::ask()['topics']);
+        self::assertSame(
+            ['found' => true, 'value' => '10.0.0.1'],
+            Typo3Runtime::configuration('SYS/devIPmask'),
+            'asking discards the reading that did not carry the path and takes another',
+        );
+        self::assertSame(['found' => false, 'value' => null], Typo3Runtime::configuration('SYS/nothingHere'));
+    }
+
     /** @param array<string, mixed> $manifest */
     private function installation(array $manifest = []): string
     {

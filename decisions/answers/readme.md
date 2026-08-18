@@ -9,6 +9,7 @@ one is added.
 
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
+- [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository, not by the installation in it · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
@@ -89,6 +90,7 @@ one is added.
 
 [D-ANS-082]: ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-084]: ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md
+[D-ANS-085]: ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md
 [D-ANS-083]: ans-083-the-unsupported-answer-is-the-whole-diagnostic-and-the-orientation-tool-is-for-a-caller-who-has-none.md
 [D-ANS-079]: ans-079-a-change-answer-carries-the-votes-on-it-and-the-comments-nobody-answered.md
 [D-ANS-080]: ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md

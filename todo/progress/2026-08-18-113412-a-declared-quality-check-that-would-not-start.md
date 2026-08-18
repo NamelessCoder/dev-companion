@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113412-a-declared-quality-check-that-would-not-start.md
 **Priority:** low
+**Branch:** todo/a-declared-quality-check-that-would-not-start
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

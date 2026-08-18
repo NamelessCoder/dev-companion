@@ -1,7 +1,9 @@
-# the typo3:// guide resources were never listed by the client and the session ended without learni...
+# a project package's release and backport policy had to come from the human after work had already...
 
-**Serves:** feedback/2026-08-18-113425-the-typo3-guide-resources-were-never-listed-by.md
+**Serves:** feedback/2026-08-18-113441-a-project-package-s-release-and-backport-policy.md
 **Priority:** low
+**Branch:** todo/a-project-package-s-release-and-backport-policy
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

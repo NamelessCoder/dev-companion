@@ -29,6 +29,16 @@ confirms the surface the server already has —
 is a session the published skill's body would have carried, which never loaded
 it and went through Bash instead.
 
+The other thing the list has to work for is the knowledge. A session reports
+what it did, and what it did is call tools, so bullets weighted towards skills,
+calls and names come back describing skills, calls and names while the corpus
+the task actually turned on goes unmentioned. Three of them ask about it
+instead: the answer that stopped one step short, which is what the corpus fails
+at rather than absence; the wish, asked without the scope test the session would
+otherwise apply to it; and what was established elsewhere, asked for all of it
+and sorted here rather than there —
+`D-FBK-047 <../../decisions/feedback/fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md>`_.
+
 The documents are asked about on their own because the model never picks one. A
 resource is chosen by the host application or by the user rather than mid-task,
 so a client that lists none leaves the session nothing to find. What that
@@ -61,7 +71,8 @@ nobody rendered makes no call at all.
       many round trips each answer cost. Name the ones you would not make again: a
       lookup that returned nothing usable, one you had to repeat with different
       arguments to get an answer, one that only restated what the previous answer
-      already said.
+      already said. Where several of them went into one question, say which single
+      call would have settled it and what it would have had to return.
     - Which of the documents it offers as resources you read whole, and whether your
       client showed you that list at all. They are picked out of a list rather than
       called mid-task, so a session can finish without learning they exist. Where you
@@ -74,30 +85,57 @@ nobody rendered makes no call at all.
       else. Name what you assumed, and whether it held.
     - Where a name did not mean what it said: a tool whose name or description
       promised another answer, one you would not have found from its name, a word
-      you searched with that the server spells another way. Say how you found the
-      tools you did reach — from the list, from what the server told you at the
-      start, or from a guess that landed. A name is what a client installed months
-      ago still calls it by.
-    - Where something went wrong: an error, an answer that was incorrect, an
-      argument or a schema you had to guess at, a call you could not complete.
+      you searched with that the server spells another way. That holds for what it
+      answered as much as for what it is called — knowledge you took to be missing
+      may have been there under a term you did not try. Say how you found the tools
+      you did reach — from the list, from what the server told you at the start, or
+      from a guess that landed. A name is what a client installed months ago still
+      calls it by.
+    - Where something went wrong: an error, an answer that was incorrect, an answer
+      that did not hold on the TYPO3 version you were working against, an argument
+      or a schema you had to guess at, a call you could not complete.
     - What the server saved you from — a wrong path you did not take, a file you did
       not have to read, an assumption it corrected before you acted on it. Be as
       concrete here as about the failures; what worked is what must not be broken
       later.
     - What you had to establish elsewhere — from the checkout, from your own
-      knowledge, from the web — that this server should have answered.
+      knowledge, from the web. All of it, not only the part you take to be this
+      server's subject.
+    - Where an answer was right and stopped one step short: it named the API and not
+      how to register it, the file and not what has to stand in it, the rule and not
+      the case in front of you. Say which step you took yourself after reading it.
+      That is a different finding from an answer that was missing, and you are the
+      only one who can tell the two apart.
+    - What you would have wanted from it: the one answer, tool or page that would
+      have made this session shorter. Do not weigh it against what you take this
+      server to be for — where its boundary runs is a question for the people
+      maintaining it, and a wish dropped as out of scope is the one they never hear.
     - What this list did not ask you about, and you would report anyway.
 
     File what you find with that tool. What each of its parameters wants, it says
     itself — read them there and fill in every one you can, including the model you
     are running as.
 
-    Then tell me which feedback you filed and what each one says.
+    Then tell me which feedback you filed and what each one says, and what this
+    session cost: the tokens, the number of calls, the time it ran, whatever your
+    client reports. Read those where they are written down rather than estimating
+    them, name what your client does not report at all, and say whether the figure
+    covers this debrief as well.
 
 
 Paste it verbatim and add nothing — no tool names, no hint about what the last
 session reported. The summary the agent gives afterwards is not what was
 recorded; the feedback is, and ``typo3_feedback_list`` is where it is read back.
+
+The cost at the end is for whoever pasted the prompt, and it reaches no file.
+`D-FBK-020 <../../decisions/feedback/fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md>`_
+measured what a session costs from the transcripts of this repository's own
+worktree sessions, and the sessions this prompt is handed to are the ones
+nothing here can read. What comes back is one session's own figure, worth what
+the client behind it reports — which is why it is read rather than estimated,
+and why a client that reports none of it is named. It is asked last for the
+reason the tools are: an agent that knows its calls will be counted makes fewer
+of them, and what gets reported is then not the run that would have happened.
 
 The one qualification it carries is
 `R-FBK-012 <../../requirements/feedback/fbk-012-a-debrief-reports-the-window-the-session-could-see.md>`_.

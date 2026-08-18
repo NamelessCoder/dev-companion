@@ -11,6 +11,7 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out and what the session wanted · 2026-08-18
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
@@ -45,6 +46,7 @@ earns one.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-047]: fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md
 [D-FBK-045]: fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
 [D-FBK-046]: fbk-046-the-check-that-catches-a-duplicate-id-names-the-files-and-the-command.md
 [D-FBK-041]: fbk-041-what-nothing-answers-for-is-called-unresolved.md

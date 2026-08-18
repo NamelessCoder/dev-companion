@@ -33,4 +33,4 @@ The verbatim request that failed to activate any skill: "diese typoscript condit
 
 Widen typo3-extension-upgrade's description past the maintainer's intent to the reporter's symptom, so it is reachable from a bug report: something naming "code broken on a TYPO3 major the package already supports", "a global, class or method the version removed", "works on the old major, silently fails on the new one". The dropped/removed-API half of the skill is useful long before anyone decides to change a version constraint.
 
-Separately, the "proving every version it claims" step is the one worth making loud: where a package declares more than one TYPO3 major and only one is installed, say so and say what verifying the other actually requires, rather than letting a session end on a static compatibility argument. In this session the installed major was 14.3.6 and 13.4 was never executed.
+Trimmed on 2026-08-18 of what asked for the "proving every version it claims" step to be made loud: feedback/2026-08-18-081129 is the same session on that gap, with the procedure it would have needed, and keeps the card for it.

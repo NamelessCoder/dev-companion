@@ -2773,6 +2773,20 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('id=project-configuration-files', $skill);
         self::assertStringContainsString('knows only the services it provides itself', $flat);
 
+        // Step 1 names the two sources that answer before anything exists, and
+        // neither is the installation: the hint that owns the installer keys,
+        // and Composer for its own plugin allowance. What it named before was
+        // the manual, which carries none of the keys at 14.3, and the installer
+        // package the manifest is being written to pull in — D-SKL-047.
+        self::assertMatchesRegularExpression(
+            '/`id=extension-repository-installation` for \w/',
+            $flat,
+            'the Composer root step names no lookup for the installer keys',
+        );
+        self::assertNotNull(Hints::byId('extension-repository-installation'));
+        self::assertStringNotContainsString('installed installer package', $flat);
+        self::assertStringContainsString('the installation itself answers nothing at this step', $flat);
+
         // Step 2 is where the interpreter is decided and nothing later asks
         // again, so the step that declares the container carries the lookup
         // rather than leaving the number to whatever the machine has —

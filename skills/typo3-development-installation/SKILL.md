@@ -58,19 +58,16 @@ created for it.
 ## Create one where none is declared
 
 1. **Make the package's own manifest the Composer root package.** It has to be
-   able to install TYPO3 beneath itself, into a directory that is ignored. What
-   that takes is the `extra` block the TYPO3 Composer installer reads plus the
-   plugins the install has to be allowed to run: ask
-   `typo3_documentation_lookup` at the version being installed, and read the
-   installed installer package where the documentation is thinner than the
-   question. Three properties of that step survive any version: a layout key
-   that is no longer honoured is a warning rather than an error, so what the
-   install printed is the evidence that the layout took; a package the core
-   requires itself is not required again, because its own version line has
-   nothing to do with the TYPO3 version and stating one makes the resolver fail;
-   and a package that is its own Composer root is installed from the repository
-   root rather than into the extension directory below the document root, so an
-   empty directory there is not a broken installation.
+   able to install TYPO3 beneath itself, into a directory that is ignored.
+   `typo3_hint_lookup` owns what that takes:
+   `id=extension-repository-installation` for which keys move the installation
+   out of the way and where the console lands under them, which layout key is
+   accepted and then reported rather than honoured, which package the core
+   brings that a root constraint for it cannot resolve, and why the extension
+   directory below the document root is empty rather than broken. The plugins
+   the install has to be allowed to run are Composer's own configuration, and
+   Composer's documentation is where they are stated. Nothing is installed yet,
+   so the installation itself answers nothing at this step.
 2. **Declare the container.** Its project type and its document root follow from
    the layout decided above, not the other way round. Its interpreter is
    declared here too, and it is the number nothing later re-asks:

@@ -37,8 +37,8 @@ manifest being written is there to install.
 - **It is reachable and routed from nowhere.**
   `bin/cli hints:probe "extra block the TYPO3 Composer installer reads to install TYPO3 beneath the package"`
   returns that hint alone at `text only(405)` on 2026-08-18, and a search of
-  `skills/` for its id returns nothing on the same day. Steps 2 and 5 of the same
-  file name `php-versions`, `project-configuration-files` and
+  `skills/` for its id returns nothing on the same day. Steps 2 and 5 of the
+  same file name `php-versions`, `project-configuration-files` and
   `project-build-and-scripts`.
 - **The step keeps a paraphrase where the id would go.** Its "three properties
   of that step survive any version" are three statements of that hint: a layout
@@ -67,12 +67,12 @@ manifest being written is there to install.
   paths are answered, and the report says the second was filed as a card of its
   own.
 - **Rejected: making the `no-installation` answer say what can still be asked.**
-  `Result\Unsupported` is one class for every tool that reads an installation, so
-  a route written there is attached to every unanswerable answer rather than to
-  the moment before an install. `D-ANS-083` took the one pointer that answer
+  `Result\Unsupported` is one class for every tool that reads an installation,
+  so a route written there is attached to every unanswerable answer rather than
+  to the moment before an install. `D-ANS-083` took the one pointer that answer
   carried back out, and `D-ANS-061` decided on three sessions that naming a tool
-  in an answer is not the lever. What owns the moment is the workflow step, which
-  is where `R-KNW-072` put the interpreter and where this puts the keys.
+  in an answer is not the lever. What owns the moment is the workflow step,
+  which is where `R-KNW-072` put the interpreter and where this puts the keys.
 - **Not a new hint, and not a document.** What was missing is a route to one
   statement, not a statement and not an order of steps.
 - **Priority `normal`.** One session reported it, so not `high`; the file it
@@ -101,3 +101,31 @@ manifest being written is there to install.
 - A session follows the id and finds the manual carried something the hint does
   not. Then the step's first source was doing work and only its second was
   circular.
+
+## Covered by
+
+- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+
+## Since then
+
+The routing landed and the manual half came out with the circular half, because
+the third **Wrong if** was measured rather than assumed. Asked at 14.3 on
+2026-08-18, `typo3_documentation_lookup` reproduces what the report describes:
+three queries about the installer's `extra` block return six page titles and the
+best carries 37% of the query's weight. The one page whose title does cover the
+question, *Installing TYPO3 with Composer* at 78%, teaches
+`composer create-project typo3/cms-base-distribution` and contains none of
+`web-dir`, `vendor-dir`, `bin-dir`, `app-dir` or `typo3/cms-cli` — it documents
+the project shape, not the package that is its own Composer root. Asking for the
+keys by name returns nothing at all, because that index is page titles and
+section paths and no page is titled after one. So the manual was not the working
+half of the sentence, and the third **Wrong if** does not hold.
+
+Two things were found beside the step and left where they were. The manual's
+*composer.json* page carries `extra.typo3/cms.extension-key`, `.version` and
+`.Package.providesPackages`, which this hint does not — those are the manifest's
+extension metadata rather than the installation's layout, and
+`extension-manifest` already owns them for a caller who asks about them. And the
+plugin allowance the step also names is Composer's own configuration, which
+nothing here covers, so the step now says so instead of pointing at a source
+that would not answer it.

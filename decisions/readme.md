@@ -253,7 +253,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-095`][D-KNW-095] — The installation procedure is a document and the hints keep the facts · 2026-08-18
 - [`D-KNW-096`][D-KNW-096] — How a package fills a fresh instance is a gap this server owns · 2026-08-18
 - [`D-KNW-097`][D-KNW-097] — Which site a request matches when two bases collide is a gap this server owns · 2026-08-18
-- [`D-KNW-098`][D-KNW-098] — Where a site nobody wrote came from is a gap this server owns · 2026-08-18
+- [`D-KNW-098`][D-KNW-098] — Where a site nobody wrote came from is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-099`][D-KNW-099] — What a row handed to lib.contentElement owes is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed

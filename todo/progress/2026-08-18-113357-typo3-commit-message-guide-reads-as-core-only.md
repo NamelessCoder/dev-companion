@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113357-typo3-commit-message-guide-reads-as-core-only.md
 **Priority:** low
+**Branch:** todo/typo3-commit-message-guide-reads-as-core-only
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

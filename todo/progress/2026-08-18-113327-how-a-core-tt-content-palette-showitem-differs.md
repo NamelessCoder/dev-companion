@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113327-how-a-core-tt-content-palette-showitem-differs.md
 **Priority:** low
+**Branch:** todo/how-a-core-tt-content-palette-showitem-differs
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

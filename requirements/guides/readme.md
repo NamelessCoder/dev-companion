@@ -19,6 +19,7 @@ when it is added.
 - [`R-GUI-010`][R-GUI-010] — A review brief names what the change removes · held
 - [`R-GUI-011`][R-GUI-011] — A readiness answer names the classification it was not given · held
 - [`R-GUI-012`][R-GUI-012] — A brief names the hints it left behind · held
+- [`R-GUI-013`][R-GUI-013] — A brief names the guide the recognized work is written up in · held
 
 [R-GUI-001]: gui-001-a-guides-checks-describe-the-draft-it-returned.md
 [R-GUI-002]: gui-002-the-commit-rules-are-available-without-the-gerrit-trailers.md
@@ -32,3 +33,4 @@ when it is added.
 [R-GUI-010]: gui-010-a-review-brief-names-what-the-change-removes.md
 [R-GUI-011]: gui-011-a-readiness-answer-names-the-classification-it-was-not-given.md
 [R-GUI-012]: gui-012-a-brief-names-the-hints-it-left-behind.md
+[R-GUI-013]: gui-013-a-brief-names-the-guide-the-recognized-work-is-written-up-in.md

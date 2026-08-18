@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080604-how-an-extension-extends-typoscript-conditions.md
 **Priority:** normal
+**Branch:** todo/how-an-extension-extends-typoscript-conditions
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 1a and written up in `D-KNW-100`:
 nothing below `knowledge/` says what an extension may build behind

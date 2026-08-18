@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080532-nothing-says-what-is-reachable-at-typoscript.md
 **Priority:** normal
+**Branch:** todo/write-the-typoscript-condition-evaluation-hint
+**Claimed:** 2026-08-18
 
 Judged as `D-KNW-101`: step 1a, the knowledge is missing. That entry establishes
 the variable set, the ordering on 13.4, 14.3 and `main`, and the event that is

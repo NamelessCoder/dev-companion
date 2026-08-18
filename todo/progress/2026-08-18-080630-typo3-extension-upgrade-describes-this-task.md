@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080630-typo3-extension-upgrade-describes-this-task.md
 **Priority:** low
+**Branch:** todo/typo3-extension-upgrade-describes-this-task
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

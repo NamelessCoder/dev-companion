@@ -8,21 +8,23 @@ status: held
 **Work outside the core is recognised from structural evidence rather than from
 wording.**
 
-That evidence is the kind of installation, the shape of the paths, and a path
-the installation knows as somebody's extension.
+That evidence is the kind of repository the session stands in, the shape of the
+paths, and a path known as somebody's extension — to the installation, or to the
+root manifest, which declares it before anything is installed under it.
 
 Evidence of core work wins over the weaker signals, in this order: a
-`typo3/sysext/` path or the contribution workflow named outright, then an an
-extension or project marker, then the package the installation knows that path
-as, then the path shape, then the contribution workflow named in prose, and last
-which installation the session sits in. A `typo3/sysext/` path is the only
-marker that ends the question outright: prose that names the core in order to
-rule it out reads to a substring search exactly like claiming it.
+`typo3/sysext/` path or the contribution workflow named outright, then an
+extension or project marker, then the package that path is known as, then the
+path shape, then the contribution workflow named in prose, and last what the
+repository the session sits in is. A `typo3/sysext/` path is the only marker
+that ends the question outright: prose that names the core in order to rule it
+out reads to a substring search exactly like claiming it.
 
-That last signal is the installation the session is **standing in**, not the one
-`TYPO3_DEV_COMPANION_ROOT` names. The variable says which registry the icons and
-labels are read from and moves nothing else; only where the walk-up reaches no
-installation is it the sole evidence there is, and then it answers.
+That last signal is the repository the session is **standing in**, not the
+installation `TYPO3_DEV_COMPANION_ROOT` names. The variable says which registry
+the icons and labels are read from and moves nothing else; only where the
+walk-up reaches no installation is it the sole evidence there is, and then it
+answers.
 
 What a path carries is read before anything said about the call, which is what
 keeps two paths of one call apart
@@ -50,3 +52,6 @@ prose (2026-07-29).
 - `ScopeTest::aPackageShapedPathInACoreCheckoutIsCoreWork`
 - `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
 - `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`
+- `ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest`
+- `ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes`
+- `ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised`

@@ -73,6 +73,41 @@ trait TemporaryInstallation
         );
     }
 
+    /**
+     * The repository of a distributed extension: a root manifest declaring the
+     * key, the container setup beside it, and — where the caller asks for it —
+     * what `composer install` leaves behind.
+     */
+    private function extensionRepository(bool $installed = false): string
+    {
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 't3g/blog',
+            'type' => 'typo3-cms-extension',
+            'extra' => ['typo3/cms' => ['extension-key' => 'blog']],
+        ], JSON_THROW_ON_ERROR));
+        mkdir($root . '/.ddev', 0o777, true);
+        file_put_contents($root . '/.ddev/config.yaml', "name: blog\n");
+        if ($installed) {
+            $this->installPackagesInto($root);
+        }
+
+        return $root;
+    }
+
+    /** What Composer leaves behind at a root that carried only its manifest. */
+    private function installPackagesInto(string $root): void
+    {
+        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
+        mkdir($root . '/vendor/composer', 0o777, true);
+        file_put_contents($root . '/vendor/composer/installed.json', json_encode(['packages' => [[
+            'name' => 'typo3/cms-core',
+            'type' => 'typo3-cms-framework',
+            'install-path' => '../typo3/cms-core',
+            'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+        ]]], JSON_THROW_ON_ERROR));
+    }
+
     /** A Composer project with one system extension and one of its own. */
     private function composerProject(string $vendorDirectory = 'vendor', string $version = ''): string
     {

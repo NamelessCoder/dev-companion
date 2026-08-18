@@ -186,6 +186,90 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Core, Scope::of('', 'Add a content element with a backend preview'));
     }
 
+    /**
+     * The two states the same repository is in, so what places it is the
+     * manifest rather than the directory below it.
+     *
+     * @return iterable<string, array{0: bool}>
+     */
+    public static function theTwoStatesAnExtensionRepositoryIsIn(): iterable
+    {
+        yield 'as it is cloned' => [false];
+        yield 'once composer install has run' => [true];
+    }
+
+    /**
+     * `feedback/2026-08-18-070358`: every path of an extension repository came
+     * back `uncertain`, and the brief handed the core's own suites to a
+     * repository that has no `Build/Scripts/`. Three rungs were silent until
+     * `composer install` had run, and the root manifest answers all three
+     * before it (`D-SCO-012`).
+     */
+    #[Test]
+    #[DataProvider('theTwoStatesAnExtensionRepositoryIsIn')]
+    public function anExtensionRepositoryIsPlacedByItsRootManifest(bool $installed): void
+    {
+        Instance::discoverFrom($this->extensionRepository($installed));
+
+        self::assertSame(Scope::Extension, Scope::of('blog'), 'the key the manifest declares');
+        self::assertSame(Scope::Extension, Scope::of('composer.json'), 'the manifest that declares it');
+        self::assertSame(Scope::Project, Scope::of('.ddev/config.yaml'), 'the container setup around it');
+        // Build/Sources/ is the backend's own from the core root and this
+        // extension's build setup here, which the root manifest has settled.
+        self::assertSame(Scope::Extension, Scope::of('Build/Sources/Sass/theme.scss'));
+    }
+
+    #[Test]
+    public function theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes(): void
+    {
+        // The affordance the `paths` parameter documents — an extension key
+        // counts as a path — read off the manifest where there is no
+        // installation to know the key. It sits at the rung it did, so the
+        // contribution workflow in the task text is still weaker (`R-SCO-001`).
+        Instance::discoverFrom($this->extensionRepository());
+
+        self::assertSame(Scope::Extension, Scope::of('blog', 'Triage the core issue this was reported as'));
+    }
+
+    #[Test]
+    public function aDotfileKeepsItsDotWhenAPathIsNormalised(): void
+    {
+        // `ltrim($path, './')` took the dot of the dotfile with the "./" it was
+        // meant to strip, so nothing could reach the `.ddev/` entry at all.
+        Instance::discoverFrom(null);
+
+        self::assertSame(Scope::Project, Scope::of('.ddev/config.yaml'));
+        self::assertSame(Scope::Project, Scope::of('./.ddev/config.yaml'));
+        self::assertSame(Scope::Extension, Scope::of('./packages/my_sitepackage/Classes/Controller/Foo.php'));
+    }
+
+    /**
+     * The call the feedback recorded, in the arguments it was made with.
+     *
+     * What it got back was four `runTests.sh` suites and a
+     * `checkExtensionScannerRst`, into a repository whose `Build/` holds two
+     * phpunit configurations and a phpstan baseline.
+     */
+    #[Test]
+    public function aBriefInAnExtensionRepositoryHandsBackNoCoreSuite(): void
+    {
+        Instance::discoverFrom($this->extensionRepository());
+
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Boot the local DDEV development installation for the blog extension repository: '
+                . 'composer install, TYPO3 setup, site and demo content, so the backend and frontend answer',
+            'changeType' => 'operations',
+            'paths' => ['.ddev/config.yaml', 'composer.json', 'blog'],
+        ]);
+
+        self::assertSame(Scope::Extension->value, $result->data['scope']);
+        self::assertSame([], $result->data['checks']);
+        self::assertSame([], $result->data['testSuites']);
+        foreach ($result->data['checkoutDiscovery'] as $entry) {
+            self::assertFalse(Scope::isCoreOnly($entry['establish'] . ' ' . $entry['how']), $entry['establish']);
+        }
+    }
+
     #[Test]
     public function theScopeNamesWhatIsCoveredAndWhatIsNot(): void
     {

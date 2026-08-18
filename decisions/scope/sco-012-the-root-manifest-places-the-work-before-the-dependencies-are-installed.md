@@ -50,6 +50,17 @@ fire on.
   wrote rather than a directory that has to be populated: a root declaring
   `typo3-cms-extension` is not a core checkout, and that is answerable with no
   path argument at all.
+- The manifest is read whether or not anything is installed under it, so the
+  repository is placed the same way in both states. The vendor directory decides
+  what can be read from an installation and says nothing about which repository
+  this is, and a rung that turns as `composer install` runs is the blindness
+  this entry is about rather than a second reading of it. What moves with it: an
+  installed extension repository is `extension` where it was `project`, which is
+  what it was all along.
+- Only `typo3-cms-extension` at the root. `typo3-cms-framework` is what every
+  system extension of the core declares, so reading it would place a contributor
+  standing in `typo3/sysext/backend/` outside the core — the back half of
+  `D-SCO-005`'s first **Wrong if**, arrived at from the other side.
 - Failing closed on `uncertain` is not the lever, and the feedback's second
   suggestion is declined. `D-SCO-008` settled that `uncertain` still carries the
   core's own answer, because there is no second body of conventions to hand
@@ -79,6 +90,17 @@ fire on.
 - A monorepo whose root declares a TYPO3 package type while the work is in a
   package below it. The root then places every path that carries nothing of its
   own, and `D-DIS-001`'s **Wrong if** already names the shape as unseen here.
+- A path in an installed extension repository needs the project's answer rather
+  than the extension's. The root now places every path that carries nothing of
+  its own, and `.ddev/` is the only project marker such a repository has.
 - `uncertain` stays common once the rung is fixed. Then what places the work is
   not in the call at all and has to be asked for at initialize time, which is
   where `D-SCO-008` pointed and this entry does not go.
+
+## Covered by
+
+- `ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest`
+- `ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes`
+- `ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised`
+- `ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite`
+- `InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne`

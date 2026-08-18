@@ -22,6 +22,7 @@ suites for a repository that has no `Build/Scripts/` (2026-07-29).
 ## Held by
 
 - `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`
+- `ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite`
 - `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
 - `ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
 - `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`

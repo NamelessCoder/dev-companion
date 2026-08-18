@@ -31,6 +31,12 @@ final class Instance
     /** A Composer-installed project: packages live where Composer put them. */
     public const KIND_COMPOSER_PROJECT = 'composer-project';
 
+    /**
+     * A repository whose root manifest declares an extension. Says where the
+     * work is and never that there is an installation to read.
+     */
+    public const KIND_EXTENSION_REPOSITORY = 'extension-repository';
+
     /** Found by walking up from the directory the server was started in. */
     public const VIA_DISCOVERY = 'discovery';
 
@@ -55,6 +61,8 @@ final class Instance
 
     private static ?string $startedIn = null;
 
+    private static ?string $startedInPackage = null;
+
     /**
      * Hands the working directory the server was started in to the discovery.
      * Called by the stdio entrypoint and by nothing else.
@@ -64,6 +72,7 @@ final class Instance
         self::$startingDirectory = $directory === null || $directory === '' ? null : $directory;
         self::$resolved = false;
         self::$startedIn = null;
+        self::$startedInPackage = null;
     }
 
     /**
@@ -83,8 +92,9 @@ final class Instance
     }
 
     /**
-     * The kind of installation the session is standing in, or null where it is
-     * standing in none. Not always the installation being read.
+     * The kind of repository the session is standing in, or null where nothing
+     * places it. Not always the installation being read, and not always an
+     * installation at all.
      *
      * `TYPO3_DEV_COMPANION_ROOT` names the one to read — its labels, its icons, its
      * packages — and a core contributor sets it at a site installation for
@@ -104,6 +114,14 @@ final class Instance
             return self::$startedIn;
         }
 
+        // The root manifest before anything installed under it. It is a
+        // decision somebody wrote down rather than a directory that has to be
+        // populated, so it places an extension repository in the state it is
+        // cloned in, and it places it the same way once it is (`D-SCO-012`).
+        if (self::startedInPackage() !== null) {
+            return self::$startedIn = self::KIND_EXTENSION_REPOSITORY;
+        }
+
         $instance = self::describe();
         if (($instance['via'] ?? '') !== self::VIA_ENVIRONMENT) {
             return self::$startedIn = $instance['kind'] ?? null;
@@ -115,6 +133,43 @@ final class Instance
             : self::locate(self::$startingDirectory, $walked);
 
         return self::$startedIn = $located['kind'] ?? $instance['kind'];
+    }
+
+    /**
+     * The extension key the repository the session is standing in declares at
+     * its own root, or null where the walk up from the starting directory
+     * reaches no such root.
+     *
+     * A repository is not an installation. What the manifest says is enough to
+     * place the work and never enough to report one, so `describe()` answers as
+     * it did and nothing here starts speaking for a checkout with no console
+     * behind it (`D-DIS-001`).
+     *
+     * Only `typo3-cms-extension`. `typo3-cms-framework` is what every system
+     * extension of the core declares, so reading it too would place a
+     * contributor standing in `typo3/sysext/backend/` outside the core.
+     */
+    public static function startedInPackage(): ?string
+    {
+        if (self::$startedInPackage !== null) {
+            return self::$startedInPackage;
+        }
+
+        $directory = self::$startingDirectory === null ? false : realpath(self::$startingDirectory);
+        for ($depth = 0; $directory !== false && $depth < self::MAX_DEPTH; ++$depth) {
+            $manifest = self::readJson($directory . '/composer.json');
+            if (($manifest['type'] ?? '') === 'typo3-cms-extension') {
+                return self::$startedInPackage = self::extensionKey($manifest);
+            }
+
+            $parent = dirname($directory);
+            if ($parent === $directory) {
+                break;
+            }
+            $directory = $parent;
+        }
+
+        return null;
     }
 
     /** Whether an installation was found to read from. */
@@ -459,17 +514,10 @@ final class Instance
                 continue;
             }
 
-            $key = $entry['extra']['typo3/cms']['extension-key'] ?? null;
-            if (!is_string($key) || $key === '') {
-                // Without a declared key, Composer's TYPO3 installer derives one
-                // from the second half of the package name.
-                $name = (string) ($entry['name'] ?? '');
-                $key = str_replace('-', '_', substr($name, (int) strrpos($name, '/') + 1));
-            }
-
+            $key = self::extensionKey($entry);
             $relative = (string) ($entry['install-path'] ?? '');
             $path = $relative === '' ? false : realpath($vendor . '/composer/' . $relative);
-            if ($key !== '' && $path !== false) {
+            if ($key !== null && $path !== false) {
                 $packages[$key] = $path;
             }
         }
@@ -497,17 +545,30 @@ final class Instance
     private static function rootPackage(string $root): ?string
     {
         $manifest = self::readJson($root . '/composer.json');
-        if (!in_array($manifest['type'] ?? '', ['typo3-cms-framework', 'typo3-cms-extension'], true)) {
-            return null;
-        }
 
+        return in_array($manifest['type'] ?? '', ['typo3-cms-framework', 'typo3-cms-extension'], true)
+            ? self::extensionKey($manifest)
+            : null;
+    }
+
+    /**
+     * The extension key a TYPO3 package declares, wherever it was read: a root
+     * manifest, or one entry of Composer's installed metadata.
+     *
+     * @param array<string, mixed> $manifest
+     */
+    private static function extensionKey(array $manifest): ?string
+    {
         $key = $manifest['extra']['typo3/cms']['extension-key'] ?? null;
         if (is_string($key) && $key !== '') {
             return $key;
         }
 
+        // Without a declared key, Composer's TYPO3 installer derives one from
+        // the second half of the package name.
         $name = (string) ($manifest['name'] ?? '');
+        $derived = str_replace('-', '_', substr($name, (int) strrpos($name, '/') + 1));
 
-        return $name === '' ? null : str_replace('-', '_', substr($name, (int) strrpos($name, '/') + 1));
+        return $derived === '' ? null : $derived;
     }
 }

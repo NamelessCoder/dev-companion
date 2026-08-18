@@ -203,7 +203,10 @@ enum Scope: string
      */
     public static function of(string $path, string $text = ''): self
     {
-        $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
+        // The "./" a caller writes for "here", and nothing else: trimming the
+        // two characters as a class ate the dot of a dotfile, so no path could
+        // ever reach the `.ddev/` entry below (`D-SCO-012`).
+        $lowered = (string) preg_replace('#^(\./|/)+#', '', mb_strtolower(str_replace('\\', '/', $path)));
         $prose = mb_strtolower($text);
 
         // What this path says about itself. Nothing said about the call as a
@@ -255,7 +258,10 @@ enum Scope: string
             // which is most of them — a file inside a package was placed by the
             // markers above.
             $systemExtension = Instance::isSystemExtension($lowered);
-            if ($systemExtension === false) {
+            // The key the repository the session stands in declares for itself
+            // answers the same question from its own manifest, which is the one
+            // source there is before `composer install` has run (`D-SCO-012`).
+            if ($systemExtension === false || $lowered === Instance::startedInPackage()) {
                 return self::Extension;
             }
 
@@ -290,6 +296,7 @@ enum Scope: string
             // package, and the repository the session sits in is the site.
             Instance::KIND_COMPOSER_PROJECT => self::Project,
             Instance::KIND_CORE_CHECKOUT => self::Core,
+            Instance::KIND_EXTENSION_REPOSITORY => self::Extension,
             default => self::Uncertain,
         };
     }
@@ -307,8 +314,10 @@ enum Scope: string
      * The repository the session sits in, rather than the installation named
      * for reading — the two are the same until `TYPO3_DEV_COMPANION_ROOT` says otherwise.
      *
-     * Where the session sits in no installation, the shape is left standing —
-     * a `Build/Sources/` path is then the only evidence there is.
+     * Where nothing places the session at all, the shape is left standing — a
+     * `Build/Sources/` path is then the only evidence there is. A repository
+     * whose root manifest declares an extension is placed, and there that
+     * directory is the extension's own build setup.
      */
     private static function couldBeTheCore(): bool
     {

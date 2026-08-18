@@ -216,6 +216,13 @@ final class InstanceTest extends TestCase
         // nothing to answer from, and saying so beats reporting an
         // installation that holds a single package and no console.
         self::assertFalse(Instance::isAvailable());
+        self::assertSame([], Instance::packages());
+
+        // What the same manifest is enough for: saying which extension this
+        // repository is, which places the work and reports nothing
+        // (`D-SCO-012`). The key is derived, because this one declares none.
+        self::assertSame('bootstrap_package', Instance::startedInPackage());
+        self::assertSame(Instance::KIND_EXTENSION_REPOSITORY, Instance::startedIn());
     }
 
     #[Test]
@@ -295,17 +302,5 @@ final class InstanceTest extends TestCase
         $installed = json_decode((string) file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
         $installed['packages'][] = $package;
         file_put_contents($file, json_encode($installed, JSON_THROW_ON_ERROR));
-    }
-
-    private function installPackagesInto(string $root): void
-    {
-        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
-        mkdir($root . '/vendor/composer', 0o777, true);
-        file_put_contents($root . '/vendor/composer/installed.json', json_encode(['packages' => [[
-            'name' => 'typo3/cms-core',
-            'type' => 'typo3-cms-framework',
-            'install-path' => '../typo3/cms-core',
-            'extra' => ['typo3/cms' => ['extension-key' => 'core']],
-        ]]], JSON_THROW_ON_ERROR));
     }
 }

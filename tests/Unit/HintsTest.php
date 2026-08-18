@@ -289,6 +289,57 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-073`, `D-KNW-089`. The statement carries no version binding
+     * because the mechanism reads the same on all four checkouts: the TCA cache
+     * identifier is `PackageDependentCacheIdentifier` with the `tca_base`
+     * prefix on 12.4, 13.4, 14.3 and main alike, and the success message is
+     * unconditional in the setup command on all of them. What a stale entry
+     * hides differs by major and the two statements beside this one already
+     * carry that — whole tables where the migrator adds one per TCA name,
+     * the derived columns and MM tables where it enriches only what
+     * `ext_tables.sql` declared.
+     */
+    #[Test]
+    public function theSchemaStepIsSaidToMigrateFromTheCachedTca(): void
+    {
+        // The feedback's own query and the symptom it arrived as. Neither
+        // reached this hint before the statement was written: the first
+        // answered with FormEngine and the upgrade order, the second with the
+        // upgrade order and the shipped content.
+        foreach ([
+            'Add a new Configuration/TCA/tx_myext_thing.php to an installed extension, '
+            . 'then run `typo3 extension:setup` without flushing caches',
+            'table does not exist after extension:setup reported success',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('extension-schema-sql', $ids, $task);
+        }
+
+        $text = self::statementsOf('extension-schema-sql');
+
+        // What is read, and what does not invalidate it — the precondition,
+        // without which the rule reads as a habit.
+        self::assertStringContainsString('derives from the cached TCA', $text);
+        self::assertStringContainsString('keyed on the TYPO3 version, the project path and the active package list', $text);
+        self::assertStringContainsString('package rescan flushes nothing', $text);
+        self::assertStringContainsString('A fresh installation has no entry at all', $text);
+
+        // And the check, because the command answers the same either way.
+        self::assertStringContainsString('successfully set up', $text);
+        self::assertStringContainsString('cache:flush comes before it', $text);
+        self::assertStringContainsString('SHOW TABLES LIKE', $text);
+        self::assertStringContainsString('typo3_schema_lookup does not settle it', $text);
+
+        foreach (Versions::majors() as $major) {
+            self::assertStringContainsString(
+                'derives from the cached TCA',
+                implode("\n", array_column((array) Hints::byId('extension-schema-sql', $major)['hints'], 'text')),
+                'the mechanism holds on every covered major',
+            );
+        }
+    }
+
+    /**
      * Setting the analysis up is the extension author's question, and the core
      * is no answer to it: its configuration sits in a mono repository, half of
      * what it declares is its own rule set, and the paths are relative to a

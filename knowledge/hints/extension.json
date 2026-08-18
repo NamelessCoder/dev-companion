@@ -56,7 +56,12 @@
       "add a column",
       "new table",
       "schema analyzer",
-      "column is missing"
+      "column is missing",
+      "extension:setup",
+      "table does not exist",
+      "table was not created",
+      "successfully set up",
+      "cached TCA"
     ],
     "hints": [
       {
@@ -66,7 +71,9 @@
       {
         "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
         "until": 12
-      }
+      },
+      "Whatever the migration derives from TCA, it derives from the cached TCA: a Configuration/TCA/ file added or changed on a running installation contributes nothing to typo3 extension:setup until the caches are flushed. The entry that TCA is read from is keyed on the TYPO3 version, the project path and the active package list, so adding a file to a package that is already active does not invalidate it, and the command's own package rescan flushes nothing. A fresh installation has no entry at all and builds TCA from the files, which is why the same command creates everything in one pass there.",
+      "The command reports «[OK] Extension(s) ... successfully set up.» either way, so its success is not evidence that anything was created: the only failure it has is an extension key the system does not know, and what the setup itself returned is never read. So typo3 cache:flush comes before it whenever TCA changed, and what it did is checked against the database rather than against the command — SHOW TABLES LIKE 'tx_myext_thing' and SHOW COLUMNS FROM tx_myext_thing through the installation's own client, ddev mysql where DDEV runs it. typo3_schema_lookup does not settle it either, because it answers what TYPO3 would create rather than what the database has."
     ]
   },
   {

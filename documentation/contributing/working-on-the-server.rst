@@ -49,6 +49,11 @@ worktree per version, so four lines share one object store (under a gigabyte in
 total). Nothing at runtime reads them: they are how the knowledge is verified,
 not where the answers come from.
 
+One command here does answer from one: ``bin/cli tools:record`` records the tool
+pages against the newest released checkout. So a checkout carrying anything
+``checkouts:update`` did not put there — a ``composer install``, first of all —
+is refused rather than recorded from, and ``D-DOC-034`` is why.
+
 The same command keeps ``typo3/testing-framework`` there, because the harness a
 project extension tests in releases on its own cycle and the core repository
 does not contain it (``D-KNW-002``). Which release line belongs to which major

@@ -12,10 +12,10 @@ use TYPO3\DevCompanion\Process\SystemRunner;
  * Where the core checkouts live, and the git this repository reads them with.
  *
  * Two commands stand on this — `checkouts:update` creates them, `checkouts:status`
- * reports what is there — and a third, `catalog:check`, verifies against them.
- * What they share is the directory and the one way a command in here runs git:
- * captured rather than streamed, so a command decides what of it reaches its
- * caller.
+ * reports what is there — and two more read them: `catalog:check` verifies
+ * against one, `tools:record` answers from one. What they share is the
+ * directory and the one way a command in here runs git: captured rather than
+ * streamed, so a command decides what of it reaches its caller.
  */
 final class Checkouts
 {
@@ -32,6 +32,37 @@ final class Checkouts
         [$exitCode, $output] = self::run(['git', '-C', $path, 'log', '-1', '--format=%h %ci %s']);
 
         return $exitCode === 0 ? trim($output) : '';
+    }
+
+    /**
+     * What a checkout carries that `checkouts:update` did not put there, an
+     * ignored directory collapsed to the one entry git reports it as.
+     *
+     * `--ignored` is the whole of it: everything `composer install` writes into
+     * a core checkout is ignored by the core's own `.gitignore`, so a plain
+     * status calls such a tree clean while the console it installed answers.
+     * A git that cannot answer reports nothing rather than a difference — the
+     * question is what the tree carries, and "not a checkout at all" is not an
+     * answer to it.
+     *
+     * @return array<int, string>
+     */
+    public static function beyondIndex(string $path): array
+    {
+        [$exitCode, $said] = self::run(['git', '-C', $path, 'status', '--porcelain', '--ignored']);
+        if ($exitCode !== 0) {
+            return [];
+        }
+
+        $carried = [];
+        foreach (explode("\n", $said) as $line) {
+            // Two status letters and a space, and the path after them.
+            if (strlen($line) > 3) {
+                $carried[] = trim(substr($line, 3));
+            }
+        }
+
+        return $carried;
     }
 
     /**

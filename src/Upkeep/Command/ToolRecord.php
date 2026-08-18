@@ -32,7 +32,8 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  * checkouts:update` makes it, so the recording is repeatable by whoever reads
  * it. It has no reachable console, which is itself worth recording: those tools
  * answer from the packages or say they could not be asked, and both shapes are
- * ones a client meets.
+ * ones a client meets. So a checkout carrying anything that command did not put
+ * there is refused rather than recorded from — `D-DOC-034`.
  *
  * What it cannot show is the third: what a booted TYPO3 answers, which is the
  * ordinary case. So the installation-backed tools are recorded a second time,
@@ -79,6 +80,21 @@ final class ToolRecord
         $found = Instance::root();
         if ($found === null) {
             Cli::errors($output)->writeln(sprintf('No TYPO3 installation was found from %s, so there is nothing to record against.', $root));
+
+            return 2;
+        }
+
+        $carried = self::carriedBeyondTheIndex($found);
+        if ($carried !== []) {
+            Cli::errors($output)->writeln(sprintf(
+                "%s carries what bin/cli checkouts:update did not put there: %s.\n"
+                . 'A recording is evidence about the checkout that command makes, and this is no longer it — an '
+                . "installed console answers from a database nothing here creates.\n"
+                . 'Take it back with "git -C %s clean -xdff", or name an installation to record from.',
+                $found,
+                self::shortly($carried),
+                $found,
+            ));
 
             return 2;
         }
@@ -148,6 +164,50 @@ final class ToolRecord
         $output->writeln(sprintf('Answering the installation-backed tools a second time from %s', $path));
 
         return $path;
+    }
+
+    /**
+     * What a core checkout below `.checkouts/` carries beyond its index, and
+     * nothing at all for any other root.
+     *
+     * The first root is one of ours, and the recording is evidence about the
+     * checkout `checkouts:update` makes: it has no console, so five tools
+     * answer from the packages and two say they could not ask one. Run
+     * `composer install` in it and the same calls record a Doctrine exception
+     * about a database nothing here creates — an answer no reader can produce
+     * again, which is what the recording is for. Measured on 2026-08-18 against
+     * all four checkouts on this machine; `D-DOC-034` has it.
+     *
+     * A root somebody named is theirs, and this says nothing about it. What
+     * makes such a recording reproducible is a question for whoever commits it.
+     *
+     * @return array<int, string>
+     */
+    private static function carriedBeyondTheIndex(string $root): array
+    {
+        $checkouts = (string) realpath(Checkouts::directory());
+        $root = (string) (realpath($root) ?: $root);
+        // Resolved on both sides: a worktree reaches the checkouts through a
+        // symlink, so the recording made in one would otherwise ask nothing.
+        if ($checkouts === '' || !str_starts_with($root, $checkouts . '/')) {
+            return [];
+        }
+
+        return Checkouts::beyondIndex($root);
+    }
+
+    /**
+     * A list of paths, short enough to sit in one sentence. What it names is
+     * where to look, and a reader who wants all of it runs git.
+     *
+     * @param array<int, string> $carried
+     */
+    private static function shortly(array $carried): string
+    {
+        $shown = array_slice($carried, 0, 5);
+        $rest = count($carried) - count($shown);
+
+        return implode(', ', $shown) . ($rest > 0 ? sprintf(', and %d more', $rest) : '');
     }
 
     /**

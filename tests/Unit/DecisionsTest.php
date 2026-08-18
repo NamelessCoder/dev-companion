@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
 use TYPO3\DevCompanion\Upkeep\Requirements;
@@ -217,6 +218,50 @@ final class DecisionsTest extends TestCase
                 self::assertContains($named, $methods, $id . ' names ' . $named . ', which no test declares');
             }
         }
+    }
+
+    /**
+     * A decision nobody has been back to names no command the console lost.
+     *
+     * `Cli::knows()` answered this for a todo's `**Run:**` line and for nothing
+     * else, so a deleted command stayed written down as the way to do the thing.
+     * `D-FBK-012` still had `bin/cli feedback:next` at the head of it 16 days
+     * after `D-FBK-016` deleted the command and the sighting that ran it, and
+     * nothing failed, because nothing asks.
+     *
+     * The head only — the statement and the paragraphs above the first section.
+     * Below it an entry is an account of what was decided and what was rejected,
+     * and the entry that removes a command names it there of necessity:
+     * `D-FBK-045` says `bin/cli todo:sync` is deleted, which is the sentence
+     * doing its job.
+     *
+     * And only where no dated section stands. One of those is somebody having
+     * been back and written what changed, which is the mechanism this repository
+     * already has for an entry that aged; a head left standing under one is a
+     * question about how a record is kept rather than a name nothing holds.
+     */
+    #[Test]
+    public function anUnvisitedDecisionNamesNoCommandTheConsoleLost(): void
+    {
+        $lost = [];
+        foreach (Decisions::all() as $id => $decision) {
+            if ($decision['status'] === DecisionStatus::Revoked->value
+                || array_intersect(Decisions::laterFields(), $decision['fields']) !== []
+            ) {
+                continue;
+            }
+
+            $contents = (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']);
+            $head = (string) preg_split('/^## /m', (string) preg_replace('/^---\R.*?\R---\R/s', '', $contents), 2)[0];
+            preg_match_all('#bin/cli [a-z]+:[a-z]+#', $head, $matches);
+            foreach (array_unique($matches[0]) as $named) {
+                if (!Cli::knows($named)) {
+                    $lost[] = $id . ' opens by naming `' . $named . '`, which the console does not have';
+                }
+            }
+        }
+
+        self::assertSame([], $lost);
     }
 
     /**

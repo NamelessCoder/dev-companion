@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
@@ -223,6 +224,111 @@ final class InstanceTest extends TestCase
         // (`D-SCO-012`). The key is derived, because this one declares none.
         self::assertSame('bootstrap_package', Instance::startedInPackage());
         self::assertSame(Instance::KIND_EXTENSION_REPOSITORY, Instance::startedIn());
+    }
+
+    /**
+     * @param array<string, mixed> $manifest what the root's composer.json declares
+     */
+    #[Test]
+    #[DataProvider('manifests')]
+    public function aProjectRootIsRecognisedByWhatItsOwnManifestDeclares(array $manifest, bool $isProjectRoot): void
+    {
+        // The state the installation workflow starts in: a clone nobody has run
+        // composer install in. Everything the project answer reads is in these
+        // files, and the walk goes up twelve directories — so what identifies a
+        // root has to be a declaration of TYPO3 rather than the presence of a
+        // composer.json, or the answer reports a TYPO3 project for whatever PHP
+        // repository the caller happens to be standing below (`D-ANS-085`).
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode($manifest, JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        self::assertSame($isProjectRoot ? realpath($root) : null, Instance::project()['root'] ?? null);
+
+        // And in neither case is it an installation. Nothing is installed below
+        // it, so the icon, label and package answers keep saying so rather than
+        // speaking for a checkout with no packages and no console.
+        self::assertFalse(Instance::isAvailable());
+    }
+
+    /**
+     * @return array<string, array{0: array<string, mixed>, 1: bool}>
+     */
+    public static function manifests(): array
+    {
+        return [
+            'an extension repository' => [[
+                'name' => 't3g/blog',
+                'type' => 'typo3-cms-extension',
+                'require' => ['php' => '^8.2', 'typo3/cms-core' => '^13.4.15 || ^14.3'],
+                'extra' => ['typo3/cms' => ['extension-key' => 'blog']],
+            ], true],
+            // The base distribution every environment below .environments/ is
+            // built from: no package type and no extra block, and the packages
+            // it requires are the whole of what says TYPO3 at all.
+            'a site distribution' => [[
+                'name' => 'typo3/cms-base-distribution',
+                'type' => 'project',
+                'require' => ['typo3/cms-backend' => '^13.4', 'typo3/cms-core' => '^13.4'],
+            ], true],
+            'a package that installs TYPO3 for its tests alone' => [[
+                'name' => 'acme/fluid-components',
+                'type' => 'library',
+                'require-dev' => ['typo3/cms-core' => '^14.3'],
+            ], true],
+            'a project that declares only the installer keys' => [[
+                'name' => 'acme/site',
+                'type' => 'project',
+                'extra' => ['typo3/cms' => ['web-dir' => 'public']],
+            ], true],
+            'a PHP library' => [[
+                'name' => 'acme/toolkit',
+                'type' => 'library',
+                'require' => ['php' => '>=8.2', 'symfony/finder' => '^7.4'],
+            ], false],
+            // Requiring one of TYPO3's tools is not requiring TYPO3, and it is
+            // the shape a rule matching the vendor name alone would claim.
+            'a repository that requires TYPO3 tooling' => [[
+                'name' => 'acme/toolkit',
+                'type' => 'library',
+                'require-dev' => ['typo3/coding-standards' => '^0.8', 'typo3/tailor' => '^1.5'],
+            ], false],
+        ];
+    }
+
+    #[Test]
+    public function aPackageInsideAnInstalledProjectIsNotTheProjectRoot(): void
+    {
+        // The installation is looked for over the whole walk before any
+        // declaration is, so the project a session stands in stays the answer
+        // from inside one of its own packages — where the manifest declares a
+        // TYPO3 package type and the environment, the sites and the document
+        // root are one directory up.
+        $root = $this->composerProject();
+        file_put_contents($root . '/packages/my_sitepackage/composer.json', json_encode(
+            ['name' => 'acme/my-sitepackage', 'type' => 'typo3-cms-extension'],
+            JSON_THROW_ON_ERROR
+        ));
+        Instance::discoverFrom($root . '/packages/my_sitepackage');
+
+        self::assertSame(realpath($root), Instance::project()['root'] ?? null);
+    }
+
+    #[Test]
+    public function aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither(): void
+    {
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode(
+            ['name' => 't3g/blog', 'type' => 'typo3-cms-extension'],
+            JSON_THROW_ON_ERROR
+        ));
+        putenv(Instance::ROOT_VARIABLE . '=' . $root . '/nowhere');
+        Instance::discoverFrom($root);
+
+        // Describing the repository the walk finds would answer about something
+        // other than what the caller named, which is the failure the variable is
+        // reported through rather than searched past.
+        self::assertNull(Instance::project());
     }
 
     #[Test]

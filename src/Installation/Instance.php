@@ -49,6 +49,16 @@ final class Instance
     /** How far up from the starting directory to look before giving up. */
     private const MAX_DEPTH = 12;
 
+    /**
+     * The two package types TYPO3's Composer installer places.
+     *
+     * @var array<int, string>
+     */
+    private const PACKAGE_TYPES = ['typo3-cms-framework', 'typo3-cms-extension'];
+
+    /** How every package TYPO3 itself ships is named: typo3/cms-core, typo3/cms-fluid. */
+    private const CORE_PACKAGE_PREFIX = 'typo3/cms-';
+
     private static ?string $startingDirectory = null;
 
     /** @var array{root: string, kind: string, startedFrom: string, via: string}|null|false false = not resolved yet */
@@ -222,6 +232,89 @@ final class Instance
     }
 
     /**
+     * The repository the session is standing in, whether or not anything is
+     * installed in it: the installation where there is one, and otherwise the
+     * nearest root whose own composer.json declares TYPO3.
+     *
+     * `typo3_project_describe` reads what a repository's files declare and only
+     * three of its fields come out of the installed tree, so gating the whole
+     * answer on installed metadata left a fresh clone — the state the
+     * installation workflow starts in — the one state it answered nothing in
+     * (`D-ANS-085`).
+     *
+     * Not an installation, and nothing else may read it as one: `describe()`
+     * stays what every other tool asks, so a repository with no packages below
+     * it still answers `cause: no-installation` rather than reporting an
+     * installation that holds nothing and has no console (`D-DIS-001`).
+     *
+     * Nothing is remembered here. What is found is one manifest read per
+     * directory walked, and the answer has to change the moment the install
+     * this state exists to prompt has run.
+     *
+     * @return array{root: string, kind: string, startedFrom: string, via: string}|null
+     */
+    public static function project(): ?array
+    {
+        $instance = self::describe();
+        // A named root that cannot be used is not quietly replaced by a
+        // discovered one here either: the caller said which repository it means.
+        if ($instance !== null || self::$misconfiguration !== '') {
+            return $instance;
+        }
+        if (self::$startingDirectory === null) {
+            return null;
+        }
+
+        $walked = [];
+
+        return self::walkUp(
+            self::$startingDirectory,
+            $walked,
+            static fn(string $directory): ?string => self::declaresTypo3($directory) ? self::KIND_COMPOSER_PROJECT : null,
+        );
+    }
+
+    /**
+     * Whether this directory's own composer.json declares TYPO3, which is what
+     * identifies a project root before anything is installed in it.
+     *
+     * A declaration in all three shapes rather than a name or a layout: the root
+     * is a TYPO3 package itself, it requires one of TYPO3's own packages, or it
+     * carries the `extra.typo3/cms` block TYPO3's Composer installer reads. A
+     * rule admitting any composer.json would report a TYPO3 project for every
+     * PHP repository up to twelve directories above the caller.
+     *
+     * Read on 2026-08-18 against the two shapes it has to cover. The `t3g/blog`
+     * extension repository of `feedback/2026-08-18-070333` declares
+     * `typo3-cms-extension`, `extra.typo3/cms.extension-key` and a required
+     * `typo3/cms-core`; the site installations below `.environments/` declare
+     * `"type": "project"` and twenty-six required `typo3/cms-*` packages with no
+     * `extra` block at all, so the package types alone would walk past a site.
+     */
+    private static function declaresTypo3(string $directory): bool
+    {
+        $manifest = self::readJson($directory . '/composer.json');
+        if (in_array($manifest['type'] ?? '', self::PACKAGE_TYPES, true) || isset($manifest['extra']['typo3/cms'])) {
+            return true;
+        }
+
+        // What it needs of TYPO3 to be developed at all counts as much as what
+        // it needs to run: an extension that installs the core for its test
+        // setup alone is a TYPO3 repository, and requiring one of TYPO3's tools
+        // — typo3/coding-standards, typo3/tailor — is not requiring TYPO3.
+        foreach (['require', 'require-dev'] as $section) {
+            $required = $manifest[$section] ?? null;
+            foreach (is_array($required) ? array_keys($required) : [] as $package) {
+                if (str_starts_with((string) $package, self::CORE_PACKAGE_PREFIX)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * What is wrong with the configuration, if anything. Empty otherwise.
      *
      * A variable that was set and could not be used has to be said out loud.
@@ -381,15 +474,32 @@ final class Instance
      * every TYPO3 package in composer/installed.json below the vendor directory
      * it declares — the same source TYPO3's own PackageArtifactBuilder reads.
      *
+     * @param array<int, string> $walked the directories it looked in, in order
+     * @return array{root: string, kind: string, startedFrom: string, via: string}|null
+     */
+    private static function locate(string $startingDirectory, array &$walked): ?array
+    {
+        return self::walkUp($startingDirectory, $walked, static fn(string $directory): ?string => match (true) {
+            (self::readJson($directory . '/composer.json')['type'] ?? '') === 'typo3-cms-core' => self::KIND_CORE_CHECKOUT,
+            self::composerPackages($directory) !== [] => self::KIND_COMPOSER_PROJECT,
+            default => null,
+        });
+    }
+
+    /**
+     * The nearest directory up from the starting one that the caller's rule
+     * recognises, and what it recognised it as.
+     *
      * The walk is reported through $walked rather than into the diagnostic
      * itself, because startedIn() walks for a question of its own and the
      * directories the caller is shown have to stay the ones searched for the
      * installation being read.
      *
      * @param array<int, string> $walked the directories it looked in, in order
+     * @param callable(string): ?string $kindOf the kind that directory is, or null where it is none
      * @return array{root: string, kind: string, startedFrom: string, via: string}|null
      */
-    private static function locate(string $startingDirectory, array &$walked): ?array
+    private static function walkUp(string $startingDirectory, array &$walked, callable $kindOf): ?array
     {
         $directory = realpath($startingDirectory);
         if ($directory === false) {
@@ -399,18 +509,11 @@ final class Instance
 
         for ($depth = 0; $depth < self::MAX_DEPTH; ++$depth) {
             $walked[] = $directory;
-            if ((self::readJson($directory . '/composer.json')['type'] ?? '') === 'typo3-cms-core') {
+            $kind = $kindOf($directory);
+            if ($kind !== null) {
                 return [
                     'root' => $directory,
-                    'kind' => self::KIND_CORE_CHECKOUT,
-                    'startedFrom' => $startedFrom,
-                    'via' => self::VIA_DISCOVERY,
-                ];
-            }
-            if (self::composerPackages($directory) !== []) {
-                return [
-                    'root' => $directory,
-                    'kind' => self::KIND_COMPOSER_PROJECT,
+                    'kind' => $kind,
                     'startedFrom' => $startedFrom,
                     'via' => self::VIA_DISCOVERY,
                 ];
@@ -510,7 +613,7 @@ final class Instance
 
         $packages = [];
         foreach ($entries as $entry) {
-            if (!is_array($entry) || !in_array($entry['type'] ?? '', ['typo3-cms-framework', 'typo3-cms-extension'], true)) {
+            if (!is_array($entry) || !in_array($entry['type'] ?? '', self::PACKAGE_TYPES, true)) {
                 continue;
             }
 
@@ -546,7 +649,7 @@ final class Instance
     {
         $manifest = self::readJson($root . '/composer.json');
 
-        return in_array($manifest['type'] ?? '', ['typo3-cms-framework', 'typo3-cms-extension'], true)
+        return in_array($manifest['type'] ?? '', self::PACKAGE_TYPES, true)
             ? self::extensionKey($manifest)
             : null;
     }

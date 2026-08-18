@@ -12,19 +12,11 @@ use TYPO3\DevCompanion\Upkeep\Environments;
 /**
  * Every environment a scenario names, and where this checkout stands on it.
  *
- * The list is the whole of the answer to "which of these do I have". Four of
- * the five used to be a paragraph in `todo/reference/` naming somebody's home
- * directory, and a session that read it could not tell whether the machine it
- * was on had any of them.
- *
  * A made one is reported by what it is registered as rather than by whether its
  * directory exists, because the state that matters is the one a case turns on:
  * `E-STOPPED` is `E-SITE` with the project down, and the two are the same files.
- *
- * `E-SITE` is one installation per covered version (`D-EVI-006`), so it is a
- * row per version: which of them are installed here and which are missing.
- * Every covered line is made now, the development one included, so a row that
- * declines is a version argument this repository stopped covering.
+ * `E-SITE` is one installation per covered version, so it is a row per version —
+ * `D-EVI-006`.
  */
 #[AsCommand(
     name: 'environment:status',

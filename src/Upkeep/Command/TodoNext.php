@@ -194,25 +194,14 @@ final class TodoNext
     }
 
     /**
-     * One todo, as much of it as there is, how it is worked, and what it
-     * leaves behind.
+     * One todo, how it is worked, and what it leaves behind.
      *
-     * The closing block is the only thing here that is not the todo, and it is
-     * the two halves a session gets no second chance at: what happens before
-     * the first change — the reading, the research, and the question that has
-     * to be asked rather than guessed — and what has to be true of the file
-     * after the last one. Both are on one page; which of the three handovers
-     * applies is this command's answer, because the page cannot know whether
-     * the todo it is being read for is queued, standing or dated.
-     *
-     * It opens by naming the file the todo is, which is the one fact a session
-     * cannot read anywhere and needs before it can finish: the todo is deleted
-     * or trimmed on the way out, and its name carries a stamp nobody retypes.
-     * Left unsaid, it is looked for — the 82 sessions of 2026-08-02 spent 207
-     * directory listings on `todo/`, against a command that had just read the
-     * file. Every call costs the whole context again (`D-FBK-020`), and a line
-     * the command already holds is the cheapest of the three ways to end up
-     * with it.
+     * The closing block is the only thing here that is not the todo: the two
+     * halves a session gets no second chance at, and which of the three
+     * handovers applies, which the page itself cannot know. It opens by naming
+     * the file the todo is, because that is the one fact a session needs before
+     * it can finish and can read nowhere — left unsaid it is looked for, and
+     * every call costs the whole context again (`D-FBK-020`).
      *
      * @param array{title: string, kind: string, claimed: string, every: string, branch: string, path: string, serves: array<int, string>, body: string, ...} $todo
      */

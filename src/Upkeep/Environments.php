@@ -13,24 +13,14 @@ use TYPO3\DevCompanion\Process\SystemRunner;
  * The environments a scenario is run in, and which of them this checkout makes
  * for itself.
  *
- * `scenarios/readme.md` names five kinds of working directory and says what
- * each one is. What it could not say until now is where one comes from: all
- * five sat on one machine and were written down in `todo/reference/`, so a run
- * was reproducible for whoever owned that machine and for nobody else, and the
- * half of this server that reaches an installation through `ddev exec` was
- * exercised by no test at all.
- *
- * The line this draws is `D-EVI-004`. Where what a run needs from the directory
- * is a property this repository can state — a Composer installation under DDEV,
- * on a covered version, whose console answers — it is made here, below
- * `.environments/`, gitignored and re-creatable the way `.checkouts/` is. Where
- * what a run needs is a property of somebody else's repository — an extension
- * with real infrastructure at a real revision — it stays declared, because a
- * scaffold of it would be this repository grading itself against its own idea
- * of the thing.
- *
- * So each id carries how it is come by, and asking for one that is not made
- * here answers with the reason rather than with a directory.
+ * Where what a run needs from the directory is a property this repository can
+ * state — a Composer installation under DDEV, on a covered version, whose
+ * console answers — it is made here below `.environments/`, gitignored and
+ * re-creatable the way `.checkouts/` is. Where it is a property of somebody
+ * else's repository it stays declared, because a scaffold of it would be this
+ * repository grading itself against its own idea of the thing — `D-EVI-004`. So
+ * each id carries how it is come by, and asking for one that is not made here
+ * answers with the reason rather than with a directory.
  */
 final class Environments
 {
@@ -57,17 +47,9 @@ final class Environments
      *
      * The name is global to the machine — `ddev list` is one namespace — while
      * the directory is per checkout, so two checkouts asking for the same
-     * environment ask for one name. That is refused rather than taken over,
-     * naming the directory that already holds it. The version is in the name
-     * because it is in the installation: one name for all of them is one
-     * installation for all of them, which is what `D-EVI-006` is about.
-     *
-     * The database is in it for the same reason and only where it is not the
-     * default one. A name that carried `-sqlite` would rename every environment
-     * that exists and every path `todo/reference/` names, to say what asking for
-     * nothing already means; a name that carried nothing would make the MariaDB
-     * 13.4 and the sqlite 13.4 one project, which is the state this whole
-     * paragraph is about.
+     * environment ask for one name, which is refused rather than taken over. The
+     * version and a database that is not the default are in the name because
+     * they are in the installation — `D-EVI-006`.
      */
     public static function project(string $branch, string $driver = self::DEFAULT_DRIVER): string
     {
@@ -249,15 +231,10 @@ final class Environments
      * Every covered line an installation is made of, oldest first.
      *
      * One installation runs one version, so a client asking about another
-     * covered line is answered by nothing this repository has. `SITE-02` is
-     * the case that says so out loud — it names `E-SITE` on the previous major
-     * — and it is the reason this is a list rather than `branch()`.
-     *
-     * Every covered line, the development one included. It was declined while
-     * the only question about it was what it cost; what it buys is the one
-     * line on which this server's answers about the next major can be seen at
-     * all, and that is a judgement about what this repository is for rather
-     * than one its files hold — `D-EVI-006`.
+     * covered line is answered by nothing this repository has — `SITE-02` is the
+     * case that says so out loud, and it is the reason this is a list rather
+     * than `branch()`. Every covered line, the development one included, which
+     * is a judgement about what this repository is for — `D-EVI-006`.
      *
      * @return array<int, string>
      */
@@ -294,51 +271,23 @@ final class Environments
      * another.
      *
      * sqlite is a file below `var/sqlite/` in the project directory, so an
-     * environment is its directory and nothing else: no database container to
-     * start, no volume named after the project to outlive it, and `rm -rf` is
-     * the whole of taking one away. That is what `--omit-containers=db` in the
-     * build is paying for — the second container of every line, on a machine
-     * that holds four.
-     *
-     * What it costs is that an installation on sqlite answers what a console
-     * question asks and says nothing about what a database server does under
-     * the same schema. That is why it is a default rather than the only one —
-     * `self::DRIVERS` is what a case turning on the database is run against,
-     * and `D-EVI-006` carries both halves.
+     * environment is its directory and nothing else and `rm -rf` is the whole of
+     * taking one away — which is what `--omit-containers=db` in the build pays
+     * for. What it says nothing about is what a database server does under the
+     * same schema, so it is a default rather than the only one — `D-EVI-006`.
      */
     public const DEFAULT_DRIVER = 'sqlite';
 
     /**
-     * The databases an installation can be made on, and what each one is
-     * called by the two tools that have to agree about it.
+     * The databases an installation can be made on, and what each is called by
+     * the two tools that have to agree about it.
      *
-     * They disagree on every name, which is the whole reason this table exists
-     * rather than one string passed through. `ddev config --database` takes a
-     * `type:version` — a bare type is refused, and the version is checked at
-     * `ddev start` rather than at `config`, so a wrong one configures cleanly
-     * and fails minutes later. `vendor/bin/typo3 setup --driver` takes a
-     * connection *type* out of `SetupCommand::$connectionLabels`, which is not
-     * the DBAL driver it resolves to: `mysqli` becomes `mysqli`, `postgres`
-     * becomes `pdo_pgsql`, and `sqlite` becomes `pdo_sqlite`.
-     *
-     * The versions are the newest each covered line accepts, read off every
-     * `Build/Scripts/runTests.sh` in `.checkouts/` on 2026-08-04 and
-     * intersected: mariadb is 10.4 to 11.8 on the three newer lines and 10.3 to
-     * 11.4 on 12.4, mysql is 8.0 to 8.4 on all four, postgres is 10 to 18 above
-     * 12.4 and 10 to 16 there. So one version per driver covers every line, and
-     * it is the older branch that decides each of them.
-     *
-     * `port` is what the connection needs and `null` is what says there is no
-     * service to connect to. The rest of the connection is one set of values
-     * for both service drivers, measured on 2026-08-04 against DDEV v1.25.1 by
-     * building a project on each and reading it back: host `db`, database `db`,
-     * user `db`, password `db`, on 3306 for mariadb and 5432 for postgres.
-     *
-     * Every driver here can be installed on every covered line again. Forge
-     * #110258 put `introspectDatabaseNames()` into
-     * `SetupDatabaseService::getDatabaseList()` and broke the two MySQL-family
-     * drivers on `main`, `14.3` and `13.4`; #110381 fixed it on 2026-08-06 and
-     * v14.3.6 and v13.4.34 carry it. `D-EVI-006` carries that reading.
+     * They disagree on every name: `ddev config --database` takes a
+     * `type:version` and checks the version at `ddev start` rather than at
+     * `config`, so a wrong one configures cleanly and fails minutes later, while
+     * `setup --driver` takes a connection type that is not the DBAL driver it
+     * resolves to. `port` is `null` where there is no service to connect to. The
+     * versions and the connection values are `D-EVI-006`.
      *
      * @var array<string, array{setup: string, ddev: ?string, port: ?int}>
      */
@@ -611,17 +560,12 @@ final class Environments
     /**
      * One step of a build, with both its streams as one string.
      *
-     * `Checkouts::run` is the same shape and is not reused, for one reason:
-     * stdin. That one leaves it inherited, which is right for the git it was
-     * named for and wrong here — `ddev` and the TYPO3 console both read stdin
-     * where they think a person is there, and a step that blocks on a terminal
-     * nobody is watching is a build that never returns. `R-DIS-018` is the same
-     * failure from the server's side, found by a run rather than by a test.
-     * `SystemRunner` is where that is now got right once for both callers.
-     *
-     * No timeout, unlike the console: a step here is a `composer create-project`
-     * of a hundred packages, and the number that would not cut one short on a
-     * cold cache is not one anybody can name.
+     * `Checkouts::run` is the same shape and is not reused because of stdin: it
+     * leaves it inherited, which is right for git and wrong here — `ddev` and
+     * the TYPO3 console read stdin where they think a person is there, and
+     * `SystemRunner` is where that is got right for both (`R-DIS-018`). No
+     * timeout, unlike the console: a step here is a `composer create-project` of
+     * a hundred packages.
      *
      * @param array<int, string> $command
      *

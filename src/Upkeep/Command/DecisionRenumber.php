@@ -16,28 +16,14 @@ use TYPO3\DevCompanion\Upkeep\Renumber;
 /**
  * Giving a decision another number, and handing over the references it cannot.
  *
- * Ten sessions read one `main` and two of them write one id; the rebase fails on
- * *two decision files claim the same id* and the later entry moves. What used to
- * be dangerous is the move: a search and replace over the id is silently wrong
- * wherever the files naming it did not all mean one entry, and no check fails
- * afterwards because the entry it now points at exists.
- *
  * What moves is the file the caller named, never the first one carrying the id:
- * both files do carry it, and on 2026-08-18 two runs moved the entry already on
- * `main` instead of the branch's. An id that two files claim is refused with
- * both named, because the one that keeps its number is the one that merged
- * first and nothing here can read that.
- *
- * This settles the half a file can settle — the entry, its name, and every
- * reference whose link path says which entry is meant — and prints the rest,
- * which is the half that has gone wrong both times it went wrong. A person
- * reads those against `git diff main -- <file>`: a line this branch added means
- * this branch's entry. `D-DOC-015` is what that split was measured against.
- *
- * The generated listings are put back in order where they already carried the
- * entry, because the id is what a group sorts on. Where they did not — a branch
- * that added the entry and left the listing alone, which is what a worktree is
- * told to do — nothing here writes one either.
+ * both files carry it, and an id two files claim is refused with both named,
+ * because the one that keeps its number is the one that merged first and
+ * nothing here can read that. This settles the half a file can settle — the
+ * entry, its name, and every reference whose link path says which entry is meant
+ * — and prints the rest, which a person reads against `git diff main -- <file>`
+ * (`D-DOC-015`). A listing that already carried the entry is put back in order,
+ * and one a branch left alone is left alone.
  */
 #[AsCommand(
     name: 'decisions:renumber',

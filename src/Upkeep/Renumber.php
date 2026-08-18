@@ -9,23 +9,13 @@ use Symfony\Component\Finder\Finder;
 /**
  * Moving a decision to another number, and naming what nobody here can move.
  *
- * Two sessions reading one `main` hand out one id twice, and the rebase catches
- * it: `composer ci` in the second branch fails on *two decision files claim the
- * same id*. Renumbering the later one is the fix, and the renumbering is the
- * dangerous part rather than the collision. Twice the files naming the old
- * number did not all mean the same entry — `R-PRJ-008` rested on the
- * `D-ANS-013` that kept its number while five other files meant the one that
- * became `D-ANS-015` — so a search and replace over the id is silently wrong
- * there, and no check fails afterwards because the entry it now points at
- * exists.
- *
- * So a reference is moved only where the file itself says which entry is meant,
- * which is a link path, and every other one is reported. That is the split the
- * measurement asks for: both mis-pointings on record were bare references, and
- * the failure was not knowing which ones to read. Every occurrence is accounted
- * for — moved or named, never silently left — which is what
- * `RenumberTest::everyMentionIsEitherMovedOrNamed` holds. `D-DOC-015` is the
- * reasoning.
+ * The renumbering is the dangerous part rather than the collision: twice the
+ * files naming the old number did not all mean the same entry — `R-PRJ-008`
+ * rested on the `D-ANS-013` that kept its number while five other files meant
+ * the one that became `D-ANS-015` — so a search and replace over the id is
+ * silently wrong there. A reference is therefore moved only where the file
+ * itself says which entry is meant, which is a link path, and every other one is
+ * reported: moved or named, never silently left — `D-DOC-015`.
  */
 final class Renumber
 {

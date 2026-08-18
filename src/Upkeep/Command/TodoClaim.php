@@ -444,27 +444,13 @@ final class TodoClaim
     /**
      * What two of the claimed todos both stand on, in the three ways they can.
      *
-     * `Serves:` was the whole of this and it missed the collision that cost the
-     * most. On 2026-08-02 two todos with different `Serves:` lines each added a
-     * handler for the same token to one function; the rebase put them one after
-     * the other, each ending in `continue`, and the second was unreachable. The
-     * merge was textually clean and only a test said otherwise.
-     *
-     * Both of them named `R-ANS-012` in the body, and both named the class they
-     * were going to edit — one as `Extension::describe()`, the other as
-     * `src/Installation/Extension.php`. Neither is a declaration; both are a
-     * session saying where it is about to work, which is exactly what has to be
-     * compared before the worktrees exist.
-     *
-     * So three readings, reported apart because they are worth different
-     * things. Two claims answering for one entry are two sessions editing one
-     * file. Two naming one class are the same, one step less certainly. Two
-     * standing on one entry without serving it are working from a single
-     * judgement, which is where a pair of steps that have to agree comes from.
-     *
-     * None of it is a refusal. Nothing here can know which lines a step will
-     * touch, and a claim that guessed would stop work that was never going to
-     * collide.
+     * `Serves:` alone missed the collision that cost the most: two todos with
+     * different `Serves:` lines each added a handler for one token to one
+     * function, and both had named `R-ANS-012` and the class they were about to
+     * edit — a session saying where it is about to work, in the file the claim
+     * reads anyway. So three readings, reported apart because they are worth
+     * different things, and none of them a refusal: nothing here can know which
+     * lines a step will touch.
      *
      * @param array<int, array{title: string, serves: array<int, string>, body: string, ...}> $taken
      *

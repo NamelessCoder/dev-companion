@@ -7,24 +7,13 @@ namespace TYPO3\DevCompanion\Upkeep;
 /**
  * A core checkout this repository writes, holding nothing but what it is.
  *
- * Eight tools read nothing an installation contains. What reaches their answer
- * is `knowledge/` and two facts about the root the session stands in: that it
- * is the core monorepo rather than a project, and which TYPO3 major that is.
- * Both are declarations, so this writes them and nothing else — three files, no
- * packages, no console, no changelog.
- *
- * That emptiness is the point rather than a shortcut. A root with content would
- * put that content into an answer, and the pages derived from it would show
- * this fixture where a reader expects TYPO3 — the failure `D-DOC-012`'s first
- * **Wrong if** names, on pages that claim to be checked. What may be derived is
- * exactly what an empty root cannot colour, and `ToolAnswersTest` holds the set
- * to that by rendering it from two roots that share this identity and agree on
- * nothing else.
- *
- * `Fixture` is the other one and answers the opposite question: what a booted
- * TYPO3 says. Neither replaces the core checkout below `.checkouts/`, which is
- * what the recorded pages still answer from, because only a real one carries
- * what TYPO3 actually ships.
+ * Eight tools read nothing an installation contains: what reaches their answer
+ * is `knowledge/` and two declarations about the root — that it is the core
+ * monorepo rather than a project, and which TYPO3 major that is. So this writes
+ * those and nothing else, and the emptiness is the point: a root with content
+ * would put that content into a page claiming to be derived, which is
+ * `D-DOC-012`'s first **Wrong if**. `Fixture` answers the opposite question,
+ * and neither replaces the core checkout below `.checkouts/`.
  */
 final class CoreFixture
 {

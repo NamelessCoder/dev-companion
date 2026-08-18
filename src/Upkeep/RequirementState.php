@@ -8,14 +8,10 @@ namespace TYPO3\DevCompanion\Upkeep;
  * Whether a requirement is built, and whether anything holds it there.
  *
  * Two of the three are written in the front matter and the third is derived,
- * which is why this is not simply the `status` field: a requirement that says
- * it is `held` and names no test is not held by anything, and from a listing
- * it looks exactly like one that is. `Held` is the only state that promises a
- * reader something will fail if the sentence stops being true.
- *
- * None of the three is an error. `bin/cli unresolved:list` reads them out and
- * fails on none of them, because whether an entry is worth working off is a
- * judgement — see `D-FBK-001`.
+ * which is why this is not simply the `status` field: a requirement that says it
+ * is `held` and names no test is not held by anything, and from a listing it
+ * looks exactly like one that is. None of the three is an error, because whether
+ * an entry is worth working off is a judgement — `D-FBK-001`.
  */
 enum RequirementState: string
 {

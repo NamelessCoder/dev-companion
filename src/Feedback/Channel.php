@@ -14,32 +14,13 @@ use TYPO3\DevCompanion\Paths;
  * Stores improvement feedback left by agents using this server, so gaps in the
  * knowledge base can be worked off later.
  *
- * What this writes into is this repository, never the TYPO3 installation the
- * server was reading — those are the two kinds of writing D-FBK-042 keeps
- * apart, and "read-only" throughout this repository is about the second. The
- * server's posture is untouched by anything below here.
- *
- * A development tool for building this server rather than part of using it.
- * isAvailable() is what enforces that: the tools exist only where this package
- * is the Composer root package, so whoever can reach them owns the checkout
- * they write into. Installed as a dependency the package lives in vendor/,
- * where anything written is lost on the next composer install, and the two
- * tools are not offered at all. TYPO3_DEV_COMPANION_EXCLUDE_TOOLS does not reach them
- * either — R-SCO-009.
- *
- * One feedback per file: concurrent agents never touch the same file, so no
- * read-modify-write races and no merge conflicts on a shared log.
- *
- * What a session pasted and should not have — a key, a password, a token read
- * out of the installation it was standing in — is taken out on the way in and
- * replaced by a marker, because the file this writes is committed and pushed.
- * Redaction says what counts as one and why each threshold is where it is.
- *
- * A feedback that was worked off moves to feedback/archive/ rather than being
- * deleted. What a session reported about this server — which skill it reached
- * for, what it had to establish elsewhere, what the answer cost it — is
- * evidence about this server that nothing else in the repository holds, and it
- * stays worth reading long after the gap it named was closed.
+ * What this writes into is this repository and never the TYPO3 installation the
+ * server was reading, which is the line "read-only" is about here —
+ * `D-FBK-042`. isAvailable() is what makes it a development tool rather than
+ * part of using the server, and no exclusion reaches the two tools
+ * (`R-SCO-009`). One feedback per file, so concurrent agents never touch the
+ * same one, and what a session pasted and should not have is taken out on the
+ * way in by `Redaction`, because the file is committed and pushed.
  */
 final class Channel
 {
@@ -299,15 +280,13 @@ final class Channel
     }
 
     /**
-     * Runs one git command in the checkout the store belongs to, and returns
-     * its output — or null where git could not answer.
+     * One git command in the checkout the store belongs to, null where git could
+     * not answer.
      *
-     * The working directory is the store's own root rather than
-     * `Paths::root()`, which is the same directory in an installation and is
-     * not one in a test writing into a store of its own. There the temporary
-     * root carries no `.git`, this answers null before starting anything, and
-     * a unit test that only wanted to list feedback does not run `git log`
-     * — `R-COD-003`.
+     * The working directory is the store's own root rather than `Paths::root()`,
+     * so a test writing into a store of its own carries no `.git`, this answers
+     * null before starting anything, and no unit test runs `git log` —
+     * `R-COD-003`.
      *
      * @param array<int, string> $command
      */
@@ -672,18 +651,11 @@ final class Channel
     /**
      * A field that arrived carrying the call it was sent in is refused.
      *
-     * On 2026-08-04 one session filed fourteen feedback whose observation ended
-     * in `</observation>`, the whole `suggestion` parameter and `</invoke>`: the
-     * parameters had been closed with a tag named after themselves, so
-     * everything after the first bad close was folded into the first field and
-     * the arguments behind it never arrived. `suggestion` is optional, so
-     * nothing rejected the call, and fourteen reports were stored with their
-     * proposal buried in the middle of a paragraph — `D-FBK-044`.
-     *
-     * The two shapes are structural rather than topical: a field that ends in
-     * the closing tag of the call, and a parameter opening a line of its own. A
-     * session reporting *about* this failure quotes those markers inline and
-     * mid-sentence, which is why neither check is a search for the string.
+     * A parameter closed with a tag named after itself swallows everything
+     * behind it, so the arguments never arrive and the report is stored with its
+     * proposal buried mid-paragraph — `D-FBK-044`. The two shapes are structural
+     * rather than topical, because a session reporting *about* this failure
+     * quotes the markers inline.
      */
     private static function assertNoCallFrame(string $field, mixed $value): void
     {
@@ -737,31 +709,13 @@ final class Channel
     /**
      * The tools a feedback is about.
      *
-     * An observation is regularly about several tools at once — the four that
-     * go quiet together when the console cannot be reached, say. Stripping
-     * everything but [a-z0-9_] from one string ran their names together into
-     * one unsearchable word, which is what a growing pile is least able to afford:
-     * the obvious thing to want from the list is every feedback about one tool.
-     *
-     * A string is split on what separates names in one — a comma or a space —
-     * rather than having the separator deleted, and that is the form the schema
-     * declares. A list is still taken as a list for a caller standing in this
-     * package, but no longer for one on the wire: `D-ANS-017` traded the
-     * declared union away, and an array reaching `record()` from outside is
-     * refused by the validator before this is called.
-     *
-     * What is left of a name after the separators is kept as it was written,
-     * hyphen included: a skill is `typo3-extension-conformance` in the listing
-     * a session reads it from and in `skills/`, and stripping the hyphen stored
-     * an identifier the project carries nowhere — invisible to the grep that is
-     * the obvious way to ask what was reported about it (`R-FBK-013`).
-     *
-     * The case is kept for the same reason and was not, until 2026-08-04:
-     * everything this server registers is lower case, so the fold showed on the
-     * one kind of name that is not ours — a client's own tool, named because a
-     * session reached for it instead. `comparable()` is where two spellings
-     * meet, so folding there costs nothing and folding here cost the name
-     * (`D-FBK-039`).
+     * An observation is regularly about several tools at once, and one string
+     * with everything but [a-z0-9_] stripped ran their names together into one
+     * unsearchable word. So a string is split on what separates names in it, and
+     * what is left of a name is kept as it was written — the hyphen
+     * (`R-FBK-013`) and the case (`D-FBK-039`), because `comparable()` is where
+     * two spellings meet. A list is still taken for a caller standing in this
+     * package and no longer for one on the wire, which `D-ANS-017` traded away.
      *
      * @return array<int, string>
      */

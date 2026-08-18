@@ -12,16 +12,10 @@ use TYPO3\DevCompanion\Knowledge\Versions;
  *
  * The package has a release cycle of its own and `.checkouts/` does not contain
  * it, so a statement about it is verified against a tag rather than against a
- * branch — D-KNW-002. Which tag belongs to which major is not recorded here: the
- * core declares it per branch in its own `require-dev`, and that pin is also
- * what a project on that major installs, because each release line of the
- * package admits the major it was cut for and the one before it, and Composer
- * resolves to the newest release that admits the core in play.
- *
- * The line is what is paired, not the tag. A worktree per line, checked out at
- * that line's newest tag, is what `bin/cli checkouts:update` leaves behind and
- * what `bin/cli catalog:check` reads — so a release inside a line is picked up
- * by an update rather than by an entry somebody has to maintain.
+ * branch — `D-KNW-002`. Which tag belongs to which major is the core's own
+ * `require-dev` pin and is not recorded here. What is paired is the line and not
+ * the tag, so a release inside a line is picked up by `checkouts:update` rather
+ * than by an entry somebody has to maintain.
  */
 final class TestingFramework
 {

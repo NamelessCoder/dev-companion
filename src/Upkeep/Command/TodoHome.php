@@ -208,25 +208,12 @@ final class TodoHome
     /**
      * What the branch owes `main`, written into the branch's own commit.
      *
-     * Two things a session cannot get right and a rebased worktree can. The
-     * listing at the foot of a group readme is generated from every file in the
-     * group, so a session sees only its own new entry; `D-FBK-011` rejected
-     * letting a branch regenerate, and what it rejected was a session doing it
-     * mid-work, where the next rebase drops the conflict on whoever is second.
-     * After the rebase that objection is gone: the branch stands on what `main`
-     * has, nothing rebases onto it afterwards, and the fast-forward below is
-     * what carries the result.
-     *
-     * The claim in `progress/` is the same shape. That state is for as long as
-     * a branch is live, and this branch is about to be deleted.
-     *
-     * Amended rather than committed beside the work: a listing line and the
-     * entry it lists are one change, and 37 of the 200 commits before
-     * 2026-08-18 were the separate commit saying otherwise — `D-FBK-011`.
-     *
-     * Before `composer ci`, so the suite runs on the tree that merges. A red
-     * one leaves all of this on the branch and none of it on `main`, and the
-     * next run of this command finds nothing left to write.
+     * Two things a session cannot get right and a rebased worktree can: the
+     * generated listing at the foot of a group readme, which a session sees only
+     * its own entry of, and the claim in `progress/`, which is a state for as
+     * long as the branch is live. Amended rather than committed beside the work,
+     * because a listing line and the entry it lists are one change — `D-FBK-011`.
+     * Before `composer ci`, so the suite runs on the tree that merges.
      */
     private static function owed(OutputInterface $output, string $path, string $branch): void
     {

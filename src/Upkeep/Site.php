@@ -11,27 +11,13 @@ use TYPO3\DevCompanion\Paths;
  * The pages published, written out as the source a site generator publishes.
  *
  * What is published is `documentation/` and nothing besides, so the front page
- * is that directory's own page — `D-DOC-026`. The repository's `readme.md` is
- * the landing page of the checkout and stays out of the site, because one file
- * serving both places is what put the promise paragraphs where no section of
- * the manual could hold them.
- *
- * `documentation/` was written for a reader who has the whole checkout, and
- * something over a third of its relative links point at a decision, a
- * requirement, a todo or a class that no visitor of the site has. Published as
- * they stand, every one of those goes nowhere. So every link leaving the published pages is
- * rewritten here to the file on GitHub, and the sources keep the paths a reader
- * of the checkout follows — which is also what `links:check` goes on reading.
- *
- * The copy is what carries the changes a generator needs, rather than the
- * sources. `readme.rst` is what this repository calls a directory's own page
- * and `index.rst` is what a generator publishes as the directory itself, and a
- * rename in place would leave every convention here saying "readme" about a
- * file called something else.
- *
- * A link inside a literal block is rewritten like any other, because `Links` is
- * where this repository says what a link is and it reads them the same way. The
- * recorded tool answers hold none today.
+ * is that directory's own page and the repository's `readme.md` stays out of the
+ * site — `D-DOC-026`. Every link leaving the published pages is rewritten here
+ * to the file on GitHub, a literal block included, and the sources keep the
+ * paths a reader of the checkout follows — which is what `links:check` goes on
+ * reading. The copy carries the renames a generator needs: `readme.rst` is what
+ * this repository calls a directory's own page, `index.rst` is what a generator
+ * publishes as the directory itself.
  */
 final class Site
 {

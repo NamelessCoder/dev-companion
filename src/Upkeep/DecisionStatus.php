@@ -12,13 +12,9 @@ namespace TYPO3\DevCompanion\Upkeep;
  * question a reader has on opening a file that may be a year old — has anybody
  * been back to the **Wrong if**, and what did they find.
  *
- * `corrected` used to be the answer to both halves of that and to a third
- * thing besides. Read out of the twelve entries carrying it on 2026-08-02, it
- * meant "reversed and replaced" on three, "the Wrong if fired" on three, "one
- * named part of it is wrong and the rest holds" on three, and on `D-DIS-003` a
- * measurement where the Wrong if had explicitly not fired. A reader could not
- * tell from the status whether to rely on the entry, which is the only thing
- * the status is for.
+ * `corrected` used to answer that and three other things besides — on
+ * `D-DIS-003`, a measurement where the **Wrong if** had explicitly not fired —
+ * so a reader could not tell from the status whether to rely on the entry.
  */
 enum DecisionStatus: string
 {

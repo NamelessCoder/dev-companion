@@ -13,29 +13,14 @@ use TYPO3\DevCompanion\Upkeep\Environments;
 /**
  * Makes the working directory a scenario names, where this repository makes it.
  *
- * `E-SITE` is the one that costs something and the one that was missing. It is
- * a DDEV project with a TYPO3 installation in it, built from TYPO3's own base
- * distribution, set up against the database DDEV brings, with a site
- * configuration and a root page — which is to say a directory in which
- * `ddev exec vendor/bin/typo3 …` answers. That is the half of this server no
- * test reaches: `D-DIS-007` and `R-DIS-018` were both found by a real run, in
- * somebody's project, because there was no installation here to find them in.
- *
- * One of them per covered line, and the version is the second argument —
- * `D-EVI-006`. Named none it is the covered stable one, which is what a case
- * that says nothing about a version is run on. Asked for one that is already
- * installed it starts the containers and never builds again.
- *
- * What it is not is a repository to review. The site package, the extension
- * with real infrastructure, the extension a major behind — those are what a
- * forward review is about, and a scaffold of one would be this repository
- * writing the defects it then measures itself on finding (`D-EVI-001`). So this
- * makes the installation and stops there, and the ids it declines say where the
- * rest come from.
- *
- * Every step is a command a person could have typed, printed before it runs and
- * quoted in full when it fails. A build that takes minutes and dies on step
- * four has to say which four.
+ * `E-SITE` is a DDEV project with a TYPO3 installation in it, which is to say a
+ * directory in which `ddev exec vendor/bin/typo3 …` answers — the half of this
+ * server no test reaches, and where `D-DIS-007` and `R-DIS-018` were both found
+ * by a real run. One per covered line, with the version as the second argument
+ * (`D-EVI-006`). What it is not is a repository to review, because a scaffold of
+ * one would be this repository writing the defects it then measures itself on
+ * finding (`D-EVI-001`). Every step is printed before it runs and quoted in full
+ * when it fails, because a build that dies on step four has to say which four.
  */
 #[AsCommand(
     name: 'environment:create',

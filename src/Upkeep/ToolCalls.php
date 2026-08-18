@@ -7,25 +7,14 @@ namespace TYPO3\DevCompanion\Upkeep;
 /**
  * Every tool driven once on a hit and once on a miss, as arguments.
  *
- * Two things read this and they need the same table. `ToolContractTest` drives
- * it to hold every answer to the schema its tool declares, on both paths, and
- * `bin/cli tools:record` drives it to write down what a filled answer looks
- * like — which is the half no schema shows. A second table would drift from the
- * first, and the recording would then illustrate calls nothing validates.
- *
- * It lives in `Upkeep` rather than in `tests/` because a command may not depend
- * on a test class, and because that is what this is: neither the server nor its
- * knowledge, but the apparatus this repository is kept in order by.
- *
- * Two tools are deliberately absent, and `undriven()` below is where they say
- * so. The reason used to stand here in prose, which is the one place a reader
- * of the documentation never gets to.
- *
- * Two calls reach outside this repository, and no other tool can. They are here
- * rather than behind a skip list because a host that does not answer is
- * `source-not-answering`, which is an answer the schema declares: the contract
- * test goes red on the tool being wrong and not on the network being down.
- * `D-DOC-008` is the measurement and what would take them back out.
+ * Two things read this and they need the same table: `ToolContractTest` holds
+ * every answer to the schema its tool declares, and `bin/cli tools:record`
+ * writes down what a filled answer looks like. A second table would drift, and
+ * the recording would then illustrate calls nothing validates. It lives in
+ * `Upkeep` rather than in `tests/` because a command may not depend on a test
+ * class. The two calls that reach outside this repository are here rather than
+ * behind a skip list, because a host that does not answer is an answer the
+ * schema declares — `D-DOC-008`.
  */
 final class ToolCalls
 {

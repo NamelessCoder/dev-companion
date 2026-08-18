@@ -9,14 +9,10 @@ namespace TYPO3\DevCompanion\Upkeep;
  *
  * It was a table, and a table earns its border characters by letting a column
  * be scanned vertically — which holds only while every cell fits on one line. A
- * listing carries a title, and a title is a sentence, so the widest column was
- * always going to be one. Aligning the columns is what made it visible: the
- * decisions listing came to 237 characters a row. See D-DOC-001.
- *
- * The link is what made it worse, and a reference link is what fixes it. A
- * markdown link puts a file path in the middle of the line while the rendered
- * text is short; moved to the foot of the file, the path is read by nobody and
- * breaks nothing.
+ * listing carries a title, so the widest column was always going to be a
+ * sentence, and aligned it came to 237 characters a row (`D-DOC-001`). A
+ * reference link is what fixes the rest: the path moves to the foot of the
+ * file, where it is read by nobody and breaks nothing.
  */
 final class Listing
 {

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-113501-most-of-a-typo3-sitepackage-maintenance-session.md
 **Priority:** normal
+**Branch:** todo/most-of-a-typo3-sitepackage-maintenance-session
+**Claimed:** 2026-08-18
 
 Add the Node numbers to `typo3_project_describe`, beside the three PHP ones it
 already carries: what `package.json` declares in `engines.node` and what an

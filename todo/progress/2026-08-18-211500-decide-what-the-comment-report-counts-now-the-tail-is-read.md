@@ -3,6 +3,8 @@
 **Serves:** D-DOC-035
 **Priority:** low
 **Run:** bin/cli prose:check
+**Branch:** todo/decide-what-the-comment-report-counts-now-the-tail-is-read
+**Claimed:** 2026-08-18
 
 Both sweeps that entry queued are done, and its **Since then** of 2026-08-18
 carries what the second one found: of the 141 comments at 11 to 13 lines, 113

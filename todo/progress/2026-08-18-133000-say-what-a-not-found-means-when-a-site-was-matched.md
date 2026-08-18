@@ -2,6 +2,8 @@
 
 **Serves:** knowledge/
 **Priority:** low
+**Branch:** todo/say-what-a-not-found-means-when-a-site-was-matched
+**Claimed:** 2026-08-18
 
 A request that matched a site and then answered not-found has one documented
 cause here, and it sits where nobody diagnosing a failing request will reach it:

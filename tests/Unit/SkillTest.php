@@ -2871,6 +2871,25 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('DDEV where it declares one', self::description('typo3-development-installation'));
         self::assertStringNotContainsString('DDEV', substr($skill, (int) strpos($skill, "\n---\n") + 5));
 
+        // The boot branch routed to no hint of its own, which is `D-KNW-054`'s
+        // fourth **Wrong if** and how `212702` came to rule `installation-boot`
+        // out by its title while standing in exactly that case.
+        self::assertMatchesRegularExpression(
+            '/`id=installation-boot` owns \w/',
+            $flat,
+            'the boot branch names no lookup for what a declared clone is missing',
+        );
+        self::assertNotNull(Hints::byId('installation-boot'));
+
+        // Proving is where a session that has no browser stands when the site
+        // does not answer, and the same session scraped four rendered error
+        // pages for one line of message each — D-KNW-092.
+        $proving = (int) strpos($skill, '## Prove it,');
+        $exceptions = (int) strpos($skill, 'id=installation-exception-output');
+        self::assertGreaterThan($proving, $exceptions, 'the exception lookup is named before the site is proved');
+        self::assertNotNull(Hints::byId('installation-exception-output'));
+        self::assertStringContainsString('which codes are shown and never written at all', $flat);
+
         // Both directions of the crossing, because the feedback asked for both.
         self::assertStringContainsString('typo3-extension-testing', $skill);
         self::assertStringContainsString('stop before editing that owner\'s files, and activate it', $flat);

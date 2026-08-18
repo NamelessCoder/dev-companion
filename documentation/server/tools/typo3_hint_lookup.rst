@@ -263,6 +263,7 @@ Text:
     - content-element-shape — What a Content Element Owns (PHP)
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+    - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
@@ -758,6 +759,11 @@ Data:
             {
                 "id": "tca-datetime-storage",
                 "title": "What a Datetime Column Stores, and When It Is Null",
+                "category": "PHP"
+            },
+            {
+                "id": "installation-exception-output",
+                "title": "What a Failing Installation Writes Down and What It Only Displays",
                 "category": "PHP"
             },
             {
@@ -1451,6 +1457,7 @@ Text:
     - content-element-shape — What a Content Element Owns (PHP)
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
+    - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
@@ -1859,6 +1866,11 @@ Data:
             {
                 "id": "tca-datetime-storage",
                 "title": "What a Datetime Column Stores, and When It Is Null",
+                "category": "PHP"
+            },
+            {
+                "id": "installation-exception-output",
+                "title": "What a Failing Installation Writes Down and What It Only Displays",
                 "category": "PHP"
             },
             {

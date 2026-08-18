@@ -40,6 +40,13 @@ created for it.
 
 ## Boot what the repository already declares
 
+- `typo3_hint_lookup` with `id=installation-boot` owns what a clone is missing
+  and in which order it is supplied: the schema the imported dump owes the code,
+  the caches that arrived inside that dump, the backend user whose password did
+  not, and the two things that make a booted clone answer nothing under the host
+  it is served on. Ask it before the declared steps are run, not after one of
+  them has failed — that entry is also where the second boot's failures are, and
+  they are not the first boot's.
 - Read the environment configuration whole before running anything. The scope
   answer names the interpreter and the commands the manifests declare; the
   lifecycle the environment runs by itself — the tasks bound to each stage, the
@@ -131,6 +138,14 @@ answering: the backend, and the frontend on the URL the installation is
 configured for. Nothing here is torn down to establish that. Booting is not
 authoring, there is no new sequence to test, and an installation that was asked
 for and then destroyed is a change nobody asked for.
+
+Where a side does not answer, the failure is read from what the installation
+wrote down rather than out of the page it rendered. `typo3_hint_lookup` with
+`id=installation-exception-output` owns that: where an uncaught exception is
+written, which codes are shown and never written at all, and what decides
+whether the page carries the message. Fetching the rendered error page is the
+detour this replaces — it costs the whole document through the context and still
+holds nothing where the message was withheld.
 
 Where the sequence was written in this session, it is proved from the state it
 will be started in again, and every step below is part of the work:

@@ -127,3 +127,46 @@ error page in a terminal does not cheaply have.
 - The skill names the log at its proving step and a session reports scraping the
   page anyway. Then the lever is the wording rather than the placement, and this
   is step 4 of the ladder.
+
+## Covered by
+
+- `HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows`
+- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+
+## Since then
+
+`installation-exception-output` is the hint, in `knowledge/hints/project.json`
+beside `installation-boot`, and the skill names it where the site is proved and
+`installation-boot` where a declared clone is booted.
+
+The third **Assumed** is settled and no statement carries a binding.
+`IGNORED_EXCEPTION_CODES` is the same ten codes in the same order on
+`.checkouts/12.4`, `13.4`, `14.3` and `main`, and so is the default
+`LOG.writerConfiguration` — one `FileWriter` at `warning` with no options — and
+`FileWriter`'s `/log/typo3_%s.log` template. `IGNORED_HMAC_EXCEPTION_CODES`
+gained two entries in 13.4 for the core `HashService`, which is why the
+statement names that list rather than counting it.
+
+The display half turned out to be the sharper statement, and the entry did not
+have it. `SYS/displayErrors` is `-1` by default and the request's remote address
+against `SYS/devIPmask` then picks the handler, so a caller off the development
+address gets `ProductionExceptionHandler` and an empty message under "Oops, an
+error occurred!". That handler's `discloseExceptionInformation()` makes exactly
+three exceptions, and the first of them is 1396795884 — the code the logger
+refuses. So the trusted-hosts failure is shown whatever the configuration and
+written down nowhere, and every other uncaught exception is the other way round
+on a production page. The two halves invert, which is what the hint states.
+
+A PHP fatal is the boundary the reading added. `SYS/errorHandlerErrors` and
+`SYS/exceptionalErrors` both mask out `E_ERROR`, `E_PARSE`, `E_COMPILE_ERROR`
+and `E_CORE_ERROR`, so an exhausted memory limit reaches no exception handler
+and is in the web server's log rather than the installation's. A caller told to
+read `var/log` and finding nothing needs that case named, or the empty file
+reads as a broken instruction.
+
+`installation-boot` gets no pointer back, against what the last **Decided** left
+open. The reference that was missing runs from the symptom into the procedure,
+which is the direction the reporting session needed; a reader who has already
+reached `installation-boot` has its trusted-hosts statement in front of them.
+Its closing statement is one of the six `D-KNW-087` owns, and a fourth id
+appended to that formula is the change that entry is queued to make.

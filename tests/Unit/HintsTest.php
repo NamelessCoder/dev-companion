@@ -2204,6 +2204,45 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-092`. A session met HTTP 500 four times, fetched the rendered page
+     * each time and wrote three extractions to get one line of message out of
+     * it, because nothing named the file the same exception is in. The trap is
+     * the statement rather than an aside beside it: the failure that session hit
+     * is the first entry of `IGNORED_EXCEPTION_CODES`, so a caller sent to the
+     * log for it finds nothing and has to be told which half they are on.
+     */
+    #[Test]
+    public function aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows(): void
+    {
+        $statements = self::statementsOf('installation-exception-output');
+
+        self::assertStringContainsString('var/log/typo3_*.log', $statements);
+        self::assertStringContainsString('IGNORED_EXCEPTION_CODES', $statements);
+        self::assertStringContainsString('1396795884', $statements);
+        self::assertStringContainsString('SYS/displayErrors', $statements);
+
+        // The session's own two queries, neither of which reached anything.
+        $reached = static fn(string $query): array => array_column(
+            Hints::find([], $query, 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('installation-exception-output', $reached('site returns HTTP 500 where is the exception logged'));
+        self::assertContains('installation-exception-output', $reached('the site answers HTTP 500 and I cannot read the error'));
+
+        // A 500 is met in whatever layer the session was working in, which is
+        // the crossing `D-ANS-084` measured: the query names Fluid and the
+        // mechanism is PHP.
+        $crossed = Hints::find([], 'my Fluid template now returns HTTP 500 and the page shows no message', 6);
+        self::assertContains('installation-exception-output', array_column($crossed['matchedHints'], 'id'));
+        self::assertNotContains(Domains::PHP, $crossed['domains']);
+
+        // `D-KNW-054`'s subject is the boot and this one is the symptom. The
+        // hint that owns the procedure still leads where the query is the task.
+        $boot = $reached('boot the installation from a fresh clone');
+        self::assertSame('installation-boot', $boot[0]);
+    }
+
+    /**
      * `R-KNW-059`. The session this comes from ran `rm` on a cache directory
      * after a template edit, which is the one cache in the list that was
      * already correct: a compiled template is keyed on the file's modification

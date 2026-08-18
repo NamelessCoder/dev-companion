@@ -39,6 +39,40 @@
     ]
   },
   {
+    "id": "installation-exception-output",
+    "title": "What a Failing Installation Writes Down and What It Only Displays",
+    "domains": [
+      "php"
+    ],
+    "scope": "project",
+    "appliesTo": [
+      "site returns HTTP 500",
+      "the site answers HTTP 500",
+      "HTTP 500",
+      "internal server error",
+      "where is the exception logged",
+      "read the exception",
+      "where the error is written",
+      "nothing in the log",
+      "exception is not logged",
+      "uncaught TYPO3 exception",
+      "Oops an error occurred",
+      "500 error page",
+      "scrape the error page",
+      "var/log",
+      "typo3_*.log",
+      "displayErrors",
+      "devIPmask"
+    ],
+    "hints": [
+      "An uncaught exception is written down as well as displayed, and the file is the copy an agent without a browser can read. The default LOG.writerConfiguration binds one FileWriter at warning with no options and the exception handler logs at critical, so the entry carries the exception's class, code, file, line and message — the same text the page shows, with the stack trace folded in where the debug handler wrote it. FileWriter derives its name rather than being given one: Environment::getVarPath() and then /log/typo3_<ten characters>.log, those characters an HMAC keyed with this installation's encryption key. So the name is not guessable and var/log/typo3_*.log is how the file is found; the var path is var/ at the project root of a Composer installation and public/typo3temp/var where there is no separate project root. An installation whose encryption key is still empty gets no default log file at all.",
+      "A log with nothing in it is an answer rather than a missing file, because some exceptions are displayed and never written down. AbstractExceptionHandler::writeLogEntries() returns before it writes anything — to the file and to sys_log alike — for a code in IGNORED_EXCEPTION_CODES or IGNORED_HMAC_EXCEPTION_CODES: the trusted-hosts exception 1396795884 first among them, then the two login rate limits, an unsupported HTTP method, a header with an invalid name or value, the IP and maintenance locks, and the HMAC validation failures. Those lists are constants of the core and no configuration reaches them. The first entry is what a clone served under an unexpected host throws, so the HTTP 500 a fresh installation is likeliest to answer with is exactly the one the log will not have.",
+      "What decides whether the page carries the message is SYS/displayErrors. At 1 the DebugExceptionHandler renders the message and the backtrace; at 0 the ProductionExceptionHandler renders \"Oops, an error occurred!\" and an empty message; at -1, which is the default, the request's remote address is matched against SYS/devIPmask — the loopback addresses until an environment widens it — and that picks between the two. The production page discloses the message in three cases only: exception 1396795884, a 40x client error, and a request an authenticated backend user made. The two halves therefore invert: the one exception production shows whatever happens is the one nothing logs, and a page saying only Oops means the log is the only copy of the rest.",
+      "A PHP fatal reaches none of this. SYS/errorHandlerErrors and SYS/exceptionalErrors both mask out E_ERROR, E_PARSE, E_COMPILE_ERROR and E_CORE_ERROR, so an exhausted memory limit or a syntax error is not turned into an exception and no exception handler sees it. It is in PHP's own error log, which belongs to the web server or the container rather than to the installation.",
+      "Two mechanisms produce most of what a fresh installation answers HTTP 500 and HTTP 404 with, and both are stated where the procedure is. installation-boot carries the trusted-hosts exception this log will not have, and the site base that matches no host — which throws nothing at all, answers the project root with a page-not-found, and so leaves nothing to read anywhere. project-configuration-files carries why the first request after a clone throws the trusted-hosts exception while the install command reported success."
+    ]
+  },
+  {
     "id": "project-repository-layout",
     "title": "How a TYPO3 Project Repository Is Laid Out",
     "domains": [

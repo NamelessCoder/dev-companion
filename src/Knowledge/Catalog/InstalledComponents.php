@@ -10,14 +10,12 @@ use TYPO3\DevCompanion\Installation\Instance;
 /**
  * Re-reads the component contract from the packages of the active installation.
  *
- * The bundled catalog remains the curated index: it supplies names, summaries,
- * keywords, and the mapping from one component to its styleguide demo. The
+ * The bundled catalog remains the curated index — names, summaries, keywords,
+ * and the mapping from one component to its styleguide demo — while the
  * installed backend CSS decides whether that component and its recorded class
  * and custom-property names actually exist. Where the styleguide package is
- * installed, its first matching example replaces the snapshot markup too —
- * matching being the index's judgment rather than the root class alone, since
- * a demo page's opening example is as often its scaffolding as its component
- * (D-CAT-003, `demoSelector`). Where no example shows it copyably at all, the
+ * installed, the example the index selects replaces the snapshot markup
+ * (`D-CAT-003`, `demoSelector`), and where no example shows it copyably the
  * entry says so with `demoDerives` and the curated markup stays.
  */
 final class InstalledComponents

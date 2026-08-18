@@ -143,11 +143,9 @@ final class Domains
      *
      * One of these says which thing the task is about, not which half of TYPO3
      * it is in: an editor's content element is a Fluid template and a TCA
-     * definition at once, and a sitepackage owns both. So a task that names
-     * only the backend does not become Fluid and TypoScript work by carrying
-     * one, while a task that names the website half keeps both — which is the
-     * difference between `SITE-08` and `SITE-05`, and why the keyword stays in
-     * the lists above rather than being deleted from them (`D-KNW-006`).
+     * definition at once. So a task that names only the backend does not become
+     * Fluid and TypoScript work by carrying one, while a task that names the
+     * website half keeps both — `D-KNW-006`.
      *
      * @var array<int, string>
      */
@@ -158,14 +156,10 @@ final class Domains
      *
      * They are in the PHP list deliberately: that is how somebody with no suite
      * yet asks, and the domain was missing exactly those callers (`D-KNW-009`).
-     * What they cannot survive is a path that says which layer is meant — the
-     * core's JavaScript tests are `.ts` under Build/Sources/TypeScript, and a
-     * query about one was answered with UnitTestCase, CSV fixtures and
-     * createStub as the larger half (`D-KNW-067`).
-     *
-     * Only these seven, and only against paths. Every other PHP keyword names a
-     * PHP thing rather than a kind of work, so a `.ts` path beside the word
-     * `datahandler` is a task that really does touch both.
+     * What they cannot survive is a path that says which layer is meant, which
+     * is `D-KNW-067`. Only these seven, and only against paths: every other PHP
+     * keyword names a PHP thing rather than a kind of work, so a `.ts` path
+     * beside the word `datahandler` really does touch both.
      *
      * @var array<int, string>
      */

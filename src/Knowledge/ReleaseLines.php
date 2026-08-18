@@ -9,21 +9,13 @@ use TYPO3\DevCompanion\Paths;
 /**
  * Which TYPO3 branches take a patch today, and what each of the others is.
  *
- * The `Releases:` trailer is a required part of every core commit message and
- * names branches rather than versions, so a caller writing one needs a list
- * nothing in a core checkout supplies: `git branch -r` there reaches back to
- * `TYPO3_3-6` and says nothing about which of them is still maintained —
- * `D-ANS-058`.
- *
- * This is not knowledge/versions.json. That file declares which majors this
- * knowledge base is written for; this one says what the world does with them,
- * and the two lists are allowed to differ — a covered major can be out of
- * regular support, and a maintained line can be one nothing here is bound to.
- *
- * The windows are stored rather than the state they imply, so a line moving
- * from regular support into ELTS needs no re-read: only a branch that did not
- * exist when the file was written is unknown, which is the one case the caller
- * is told about as such.
+ * The `Releases:` trailer names branches rather than versions, and a core
+ * checkout supplies no list of them: `git branch -r` reaches back to `TYPO3_3-6`
+ * and says nothing about which of them is still maintained — `D-ANS-058`. This
+ * is not `knowledge/versions.json`, which declares which majors this knowledge
+ * base is written for, and the two lists are allowed to differ. The windows are
+ * stored rather than the state they imply, so only a branch that did not exist
+ * when the file was written is unknown.
  */
 final class ReleaseLines
 {
@@ -98,11 +90,10 @@ final class ReleaseLines
      * the one release line back from it.
      *
      * Not the same question as `releasable()`, and reading the two as one is
-     * what `D-ANS-073` corrects. A `[BUGFIX]` and a `[TASK]` go this far; an
-     * older maintained line takes priority bug fixes and grave or
-     * security-relevant defects, so it is earned by the severity rather than by
-     * the defect being present there. A trailer naming it anyway asks a merger
-     * to cherry-pick onto a line the change was never meant for.
+     * what `D-ANS-073` corrects: an older maintained line takes a patch the
+     * severity earns rather than one that is merely present there, and a trailer
+     * naming it anyway asks a merger to cherry-pick onto a line the change was
+     * never meant for.
      *
      * @return array<int, string>
      */

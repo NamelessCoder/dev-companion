@@ -488,25 +488,14 @@ final class Hints
     /**
      * The hints outside the selected domains a symptom reaches anyway.
      *
-     * The gate asks the query where the work belongs, and while planning that is
-     * the same question the caller answered: a task names the layer it is in.
-     * Debugging separates them. A symptom names the layer the failure showed in
-     * and the mechanism that explains it lives in another one — "the content
-     * elements render in reverse order" is Fluid and TypoScript by its words,
-     * and `datahandler-placement`, which carries "reverse order" as curated
-     * vocabulary, is PHP.
-     *
-     * So a hint crosses on a phrase somebody curated onto it, and only where no
-     * selected hint claims that phrase too: the query is then asking something
-     * the layers it named cannot answer, which is what makes the crossing
-     * evidence rather than noise. The claim check is not a refinement — without
-     * it "unit test", curated on the PHPUnit hints as well as on the JavaScript
-     * one, puts test doubles back into a query about a `.ts` test and undoes
-     * `D-KNW-067`. `D-ANS-084` carries the measurement, and the two wider rules
-     * it rules out.
-     *
-     * Only the task text is read. A path carries its own domain in its
-     * extension, so a pattern matching one says nothing the gate did not have.
+     * A task names the layer it is in, while a symptom names the layer the
+     * failure showed in and the mechanism that explains it lives in another. So
+     * a hint crosses on a phrase somebody curated onto it, and only where no
+     * selected hint claims that phrase too — without the claim check, "unit
+     * test" puts test doubles back into a query about a `.ts` test and undoes
+     * `D-KNW-067`. `D-ANS-084` carries the measurement and the wider rules it
+     * ruled out. Only the task text is read: a path carries its own domain in
+     * its extension.
      *
      * @param array<int, array<string, mixed>> $outside
      * @param array<int, array<string, mixed>> $inDomain
@@ -605,17 +594,13 @@ final class Hints
     /**
      * The candidates this query left over, closest first.
      *
-     * The rank is the matcher's own and exists at the moment the index is
-     * built, so nothing here computes an order: what the limit cut keeps the
-     * order it was cut in, and what the floor turned away follows by score. The
-     * index used to be a second read of the corpus in file order, which left
-     * the hint the matcher had ranked seventh three places from the bottom of
-     * 46 — `D-ANS-075`.
-     *
-     * The two tiers are not merged into one sort, because a refused hint can
-     * outscore an admitted one: admission is the floor's judgement and a score
-     * is not, and the seven the limit cut are the ones the matcher stands
-     * behind.
+     * The rank is the matcher's own and exists at the moment the index is built,
+     * so nothing here computes an order: what the limit cut keeps the order it
+     * was cut in, and what the floor turned away follows by score — the index
+     * used to be a second read of the corpus in file order (`D-ANS-075`). The
+     * two tiers are not merged into one sort, because a refused hint can
+     * outscore an admitted one: admission is the floor's judgement, a score is
+     * not.
      *
      * @param array<int, array{hint: array<string, mixed>, keywords: int, score: int}> $scored
      * @param array<int, array{hint: array<string, mixed>, score: int}> $refused
@@ -735,26 +720,13 @@ final class Hints
     /**
      * Whether the hint's own words cover the whole query rather than part of it.
      *
-     * MIN_COVERAGE asks what share of the query a hint accounts for, and the
+     * MIN_COVERAGE asks what share of the query a hint accounts for and the
      * dilution weight damps that share by how much other text the terms were
-     * found among. Where every term of the query is in the hint there is no
-     * share left to doubt — the query is inside the text whole — so damping it
-     * does not lower a fraction, it turns a full cover into a partial one.
-     *
-     * That is what a body past `UNDILUTED_WORDS * e` words did, and it did it at
-     * a stroke rather than by degrees: dilution passes 2 there, a single matched
-     * term covers less than half of a one-term query, and the hint stops being a
-     * candidate for queries it used to answer instead of ranking lower. Measured
-     * over every hint's own body vocabulary asked one term at a time, in the
-     * categories a wordless query selects at all: the hints under that length
-     * are reached by 2427 of their 2438 body terms, the ones over it by 30 of
-     * 2273. `showitem`, `allowProperties`, `sys_registry` and `PidInList` are
-     * each stated by exactly one hint in the corpus and reached none of them.
-     *
-     * Dilution stays where it earns its keep, which is the partial cover: «how
-     * do I write a good sonnet» is covered in part by a text long enough to
-     * contain writing and good, nothing in the corpus carries "sonnet", so this
-     * is false there and the floor still drops it. `D-ANS-025` is the sweep.
+     * found among. Where every term is in the hint there is no share left to
+     * doubt, so damping it turns a full cover into a partial one — which took a
+     * body past `UNDILUTED_WORDS * e` words out of queries it used to answer, at
+     * a stroke rather than by degrees. Dilution stays where it earns its keep,
+     * which is the partial cover — `D-ANS-025` is the sweep.
      *
      * @param array<string, string> $matchedTerms
      * @param array<string, float> $weights
@@ -770,21 +742,14 @@ final class Hints
     /**
      * How much of the curated vocabulary the query spells out.
      *
-     * This runs the other way round from the term scoring beside it: the
-     * pattern is searched in the query, not the query in the hint, because a
-     * pattern is a phrase or a path fragment — `Configuration/Services.yaml`,
-     * `/Service/` — and what makes it a match is the caller naming it. A longer
-     * pattern is the more specific claim and counts for more.
-     *
-     * The two halves of the query are asked differently, and that is the whole
-     * of what `D-ANS-050` left here. A sentence ends its words, so a bare
-     * pattern is held to being one: `boot`, which the extension's boot files are
-     * written down under, otherwise matched "Bootstrap transition in backend
-     * CSS". A path does not end anything — `ThumbnailViewHelper.php` is one run
-     * of letters once it is lowercased, and the `thumbnail` of the image
-     * processing hint reaches it only by running past its own end. So the
-     * sentence is asked for the word and the paths are asked for the prefix,
-     * and a pattern in both is still one match.
+     * This runs the other way round from the term scoring beside it: the pattern
+     * is searched in the query, not the query in the hint, because a pattern is
+     * a phrase or a path fragment and what makes it a match is the caller naming
+     * it. A longer pattern is the more specific claim and counts for more. The
+     * two halves of the query are asked differently, which is the whole of what
+     * `D-ANS-050` left here: a sentence ends its words and a path does not, so
+     * the task text is asked for the word and the paths for the prefix, and a
+     * pattern in both is still one match.
      *
      * @param array{appliesTo: array<int, string>} $hint
      */

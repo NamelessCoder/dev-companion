@@ -428,19 +428,13 @@ final class CommitMessage
      * What is wrong with one branch in the `Releases:` trailer, or null when
      * nothing is.
      *
-     * The check says the line takes a patch and no more than that. Whether the
-     * defect is on it stays the author's reading, verified by looking at the
-     * changed file on that branch — `D-ANS-058`.
-     *
-     * A branch nothing is known about is a warning rather than an error,
-     * because the list ages in one direction only: a line that ends does so on
-     * a date this already carries, and a line that opens is a branch created
-     * after the list was read.
-     *
-     * A maintained line further back than the ordinary reach is the third case
-     * and is neither of those: it is legitimate exactly where the severity
-     * earns it, so the check names what the trailer is then claiming rather
-     * than refusing it — `D-ANS-073`.
+     * The check says the line takes a patch and no more than that, and whether
+     * the defect is on it stays the author's reading — `D-ANS-058`. A branch
+     * nothing is known about is a warning rather than an error, because the list
+     * ages in one direction only. A maintained line further back than the
+     * ordinary reach is legitimate exactly where the severity earns it, so the
+     * check names what the trailer is then claiming rather than refusing it —
+     * `D-ANS-073`.
      *
      * @return array{level: string, code: string, message: string}|null
      */
@@ -699,13 +693,11 @@ final class CommitMessage
      * Wraps the body at 72 characters, the width the core rules ask for, and
      * says which runs of the caller's lines it joined to do it.
      *
-     * Only prose is reflowed. Fenced code, indented blocks, and list items keep
-     * their structure, and a word longer than the width — a URL, a class name,
-     * a command — is never broken: it goes on a line of its own and is reported
-     * by the checks instead.
-     *
-     * A block is recognised by its indentation alone, and what lines a `...:`
-     * lead-in gathers is deliberately not guessed — D-GUI-003.
+     * Only prose is reflowed: fenced code, indented blocks and list items keep
+     * their structure, and a word longer than the width goes on a line of its
+     * own and is reported by the checks instead. A block is recognised by its
+     * indentation alone, and what lines a `...:` lead-in gathers is deliberately
+     * not guessed — `D-GUI-003`.
      *
      * @return array{body: string, joined: array<int, array{first: int, last: int}>}
      */

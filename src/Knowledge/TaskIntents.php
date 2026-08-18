@@ -169,24 +169,12 @@ final class TaskIntents
      * order and deduplicated.
      *
      * This is the one route from an answer to the workflow the caller should be
-     * in. `skills/base.md` has told every task since 2026-07-31 that this call
-     * returns "the workflow this task belongs to" and the server has told every
-     * client at initialize that it "hands the parts that have their own
-     * workflow to the skill that owns them", while nothing here named one: a
-     * session that reached no skill got the brief and stayed where it was
-     * (`D-SKL-013`).
-     *
-     * Only confirmed intents route. A weak match is a word that named the
-     * subject without naming the work, and loading a whole workflow on one is
-     * the wrong answer rather than a partly wrong one — the same reason its
-     * checklist items are marked with their condition instead of stated.
-     *
-     * A brief that changes nothing routes only the intents that change nothing
-     * either (`D-SKL-039`). "Review core patch 95169 and say whether it is
-     * breaking" recognizes the kind of change under review, and the workflow
-     * for writing one is not the one that caller is in. What the intent knows
-     * still reaches them, because its checklist items are appended whichever
-     * way this goes; only the route is withheld.
+     * in, and nothing here named one until `D-SKL-013`. Only confirmed intents
+     * route: a weak match is a word that named the subject without naming the
+     * work, and loading a whole workflow on one is the wrong answer rather than
+     * a partly wrong one. A brief that changes nothing routes only the intents
+     * that change nothing either (`D-SKL-039`) — what the intent knows still
+     * reaches the caller in its checklist items, and only the route is withheld.
      *
      * @param array<int, array<string, mixed>> $intents
      * @return array<int, string>

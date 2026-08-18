@@ -220,18 +220,13 @@ final class Versions
      * null where it names none.
      *
      * `admits()` one level down, and for a subject that is not TYPO3: a PHP
-     * constraint is compared to another PHP constraint and to the interpreter
-     * an environment runs, and `^8.3` against `^8.2` is a difference the major
-     * does not carry. The minor is the whole of the depth — a floor is held
-     * against a DDEV `php_version`, which is major.minor and nothing more.
-     *
-     * Null rather than a number wherever the reading is not certain: a
-     * constraint with no lower bound, one alternative that states none, and a
-     * comparator this does not read — Composer's hyphen range `8.1 - 8.4`,
-     * which occurs nowhere in the corpus this was measured against and which
-     * read as its parts would answer 8.4. `D-ANS-082` is wrong if this states
-     * the wrong relation with the answer's authority, so a spelling it cannot
-     * read costs the caller a sentence rather than buying a wrong one.
+     * constraint is compared to another and to the interpreter an environment
+     * runs, and `^8.3` against `^8.2` is a difference the major does not carry.
+     * The minor is the whole of the depth, because a floor is held against a
+     * DDEV `php_version`. Null rather than a number wherever the reading is not
+     * certain — a constraint with no lower bound, an alternative that states
+     * none, a comparator this does not read — because `D-ANS-082` is wrong if
+     * this states the wrong relation with the answer's authority.
      */
     public static function floor(?string $constraint): ?string
     {

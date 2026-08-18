@@ -39,13 +39,10 @@ final class Coverage
      * known before the first tool call rather than after a fruitless one.
      *
      * The write sentence is appended rather than stored, because whether this
-     * server can write at all depends on the checkout it runs from — and a
-     * client that is told "read-only" must not then be offered a tool that
-     * creates a file.
-     *
-     * Everything assembled here has to fit what a client keeps: a sentence past
-     * the limit is a sentence nobody reads, and neither side says so. R-ANS-013
-     * holds the whole of it, prefix and suffix included, to that budget.
+     * server can write at all depends on the checkout it runs from, and a client
+     * told "read-only" must not then be offered a tool that creates a file.
+     * Everything assembled here has to fit what a client keeps, and `R-ANS-013`
+     * holds the whole of it — prefix and suffix included — to that budget.
      */
     /**
      * @param string $notice what is wrong with the project this server was

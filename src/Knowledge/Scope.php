@@ -9,17 +9,13 @@ use TYPO3\DevCompanion\Installation\Instance;
 /**
  * Which of the three kinds of work a path, or a statement about one, belongs to.
  *
- * One vocabulary for the whole server. It used to be four that nobody could
- * line up: `binding` on the hints, `provenance` on the covered topics,
- * `audience` on the answers, and an `outsideCore` boolean beside it — the first
- * three overlapping on `core` and disagreeing everywhere else, the fourth
- * saying only what the work is not.
- *
- * `Any` and `Uncertain` are the two that belong to one side each. A statement
- * can hold wherever TYPO3 is written; a path cannot, because a path is one
- * piece of work. A path can be one nothing placed, which R-AUD-002 asks to be
- * said rather than decided silently; a statement nobody could place is a
- * statement nobody should have written.
+ * One vocabulary for the whole server, where `binding`, `provenance`,
+ * `audience` and an `outsideCore` boolean were four that nobody could line up.
+ * `Any` and `Uncertain` belong to one side each: a statement can hold wherever
+ * TYPO3 is written and a path cannot, because a path is one piece of work; a
+ * path can be one nothing placed, which `R-AUD-002` asks to be said rather than
+ * decided silently, and a statement nobody could place is one nobody should
+ * have written.
  */
 enum Scope: string
 {
@@ -186,17 +182,13 @@ enum Scope: string
     /**
      * The scope of one path: which kind of work an answer about it is for.
      *
-     * The conventions here are the core's own, and several of them — the
-     * changelog, the Gerrit workflow, the runTests.sh suites — do not exist
-     * outside it. Answering a project-extension question with a core patch
-     * checklist is worse than saying so.
-     *
-     * The evidence is structural where structure exists, because wording is
-     * the weakest of the signals: "bootstrap_package" says everything about
-     * which repository this is and matches none of the phrases below. The
-     * order the signals are read in is R-SCO-001's, and what comes first is what
-     * the path says about itself — a call is not a path, and two of them in one
-     * session are two questions.
+     * The conventions here are the core's own and several of them do not exist
+     * outside it, so answering a project-extension question with a core patch
+     * checklist is worse than saying so. The evidence is structural where
+     * structure exists, because wording is the weakest of the signals:
+     * "bootstrap_package" says everything about which repository this is and
+     * matches none of the phrases below. The order they are read in is
+     * `R-SCO-001`'s.
      *
      * @param string $path one path, or '' where the call named none and only
      *                     what was said about it can decide
@@ -331,14 +323,11 @@ enum Scope: string
      *
      * The mirror of the gate above, for the other layout: `Classes/`,
      * `Configuration/` and `Resources/` are what a package is laid out as, and
-     * from the core root nothing is named that way — `typo3/sysext/<key>/` or
-     * `Build/` comes first. So inside a core checkout such a path is one a
-     * contributor typed from the system extension directory they were standing
-     * in, and reading it as somebody's extension is the back half of
-     * `D-SCO-005`'s first **Wrong if**.
-     *
-     * Where the session sits in no installation the shape stands, for the same
-     * reason it does there: it is then the only evidence in the call.
+     * from the core root nothing is named that way. So inside a core checkout
+     * such a path is one a contributor typed from the system extension directory
+     * they were standing in, and reading it as somebody's extension is the back
+     * half of `D-SCO-005`'s first **Wrong if**. Where the session sits in no
+     * installation the shape stands, being the only evidence in the call.
      */
     private static function isTheCoreCheckout(): bool
     {

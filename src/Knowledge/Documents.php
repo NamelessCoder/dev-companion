@@ -33,10 +33,7 @@ final class Documents
      * mentions them in passing is not.
      *
      * The document title sits between the two, and it is what a caller naming
-     * the subject before the question is matched on — `D-ANS-037`. It says what
-     * every section under it is about, so it is worth more than a passing
-     * mention and less than the section's own heading, which is the only field
-     * that separates one section of a document from the next.
+     * the subject before the question is matched on — `D-ANS-037`.
      *
      * @var array<string, int>
      */
@@ -235,10 +232,8 @@ final class Documents
      * The `##` headings of one document, in the order the page carries them.
      *
      * Deduplicated, because one subject bound to two ranges is two sections
-     * under one heading, and this is what the page is made of rather than how
-     * many variants of it there are. It is also what a count of it can be
-     * checked against — a reader counting the headings of `playwright.md` gets
-     * nine, and counting its `##` lines ten (`D-ANS-008`).
+     * under one heading, and a reader counting the headings of `playwright.md`
+     * gets nine where its `##` lines are ten (`D-ANS-008`).
      *
      * @return array<int, string>
      */

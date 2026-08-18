@@ -155,9 +155,7 @@ final class TestSuiteHints
      * many suites they hold on the target version.
      *
      * Counted rather than listed, because the list is what the narrowing exists
-     * to avoid — `D-ANS-074`. Nothing narrowed means nothing withheld, so a call
-     * that gave no path gets an empty answer here rather than every suite it
-     * already has.
+     * to avoid — `D-ANS-074`. Nothing narrowed means nothing withheld.
      *
      * @param array<int, string> $domains The domains the answer was narrowed to.
      * @return array{domains: array<int, string>, suites: int}

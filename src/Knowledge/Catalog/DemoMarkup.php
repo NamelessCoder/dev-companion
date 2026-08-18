@@ -22,20 +22,12 @@ final class DemoMarkup
      * answers with all of them; one that wraps nothing in `sg:example` answers
      * with none.
      *
-     * `$selector` is the curated index's say over which of them the component
-     * is actually shown in, and it exists because the root class does not
-     * decide that on its own. `Cards.fluid.html` opens with a card wrapped in a
-     * `<form>` and filled with switches — a page demonstrating a settings form,
-     * carrying `card` like every other example — and taking the first match
-     * handed that over as the installed usage contract. A selector of
-     * `card-title` names the sub-component the component's own examples spell
-     * and the settings form does not (D-CAT-003).
-     *
-     * Selecting is narrowing, never widening: where no example carries the
-     * selector, none is returned rather than the first match standing in. The
-     * caller then keeps the curated markup and says it is a fallback, which is
-     * the honest answer when the demo no longer shows what the index says it
-     * does — and `bin/cli catalog:check` reports the digest that moved.
+     * `$selector` is the curated index's say over which of them the component is
+     * actually shown in, because the root class does not decide that on its own
+     * — `D-CAT-003`. Selecting is narrowing, never widening: where no example
+     * carries the selector, none is returned rather than the first match
+     * standing in, and the caller keeps the curated markup and says it is a
+     * fallback.
      *
      * @return array<int, string>
      */

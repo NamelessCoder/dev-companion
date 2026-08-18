@@ -1,7 +1,9 @@
-# the hints name the TYPO3_SETUP_ variables but nothing says how they reach a console command insid...
+# the installation skill has two shapes and this repository was a third: declares an environment, d...
 
-**Serves:** feedback/2026-08-18-070423-the-hints-name-the-typo3-setup-variables-but.md
+**Serves:** feedback/2026-08-18-070448-the-installation-skill-has-two-shapes-and-this.md
 **Priority:** low
+**Branch:** todo/the-installation-skill-has-two-shapes-and-this
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

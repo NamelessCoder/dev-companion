@@ -1,7 +1,9 @@
-# the installation skill has two shapes and this repository was a third: declares an environment, d...
+# task_guide scoped every path "uncertain" in an extension repository and recommended core-only run...
 
-**Serves:** feedback/2026-08-18-070448-the-installation-skill-has-two-shapes-and-this.md
+**Serves:** feedback/2026-08-18-070358-task-guide-scoped-every-path-uncertain-in-an.md
 **Priority:** low
+**Branch:** todo/task-guide-scoped-every-path-uncertain-in-an
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

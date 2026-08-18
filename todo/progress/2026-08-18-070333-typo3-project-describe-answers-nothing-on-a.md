@@ -1,7 +1,9 @@
-# task_guide scoped every path "uncertain" in an extension repository and recommended core-only run...
+# typo3_project_describe answers nothing on a fresh clone although its description promises it does
 
-**Serves:** feedback/2026-08-18-070358-task-guide-scoped-every-path-uncertain-in-an.md
+**Serves:** feedback/2026-08-18-070333-typo3-project-describe-answers-nothing-on-a.md
 **Priority:** low
+**Branch:** todo/typo3-project-describe-answers-nothing-on-a
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

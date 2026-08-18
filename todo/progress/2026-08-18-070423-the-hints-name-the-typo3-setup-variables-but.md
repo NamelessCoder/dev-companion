@@ -1,7 +1,9 @@
-# typo3_project_describe answers nothing on a fresh clone although its description promises it does
+# the hints name the TYPO3_SETUP_ variables but nothing says how they reach a console command insid...
 
-**Serves:** feedback/2026-08-18-070333-typo3-project-describe-answers-nothing-on-a.md
+**Serves:** feedback/2026-08-18-070423-the-hints-name-the-typo3-setup-variables-but.md
 **Priority:** low
+**Branch:** todo/the-hints-name-the-typo3-setup-variables-but
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

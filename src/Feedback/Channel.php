@@ -28,7 +28,15 @@ final class Channel
 
     public const CATEGORIES = ['missing-knowledge', 'wrong-answer', 'tool-gap', 'bug', 'idea'];
 
-    private const MAX_FIELD_LENGTH = 4000;
+    /**
+     * What a stored field and a title are cut at. Public because
+     * `FeedbackRecord` states both numbers in the descriptions a caller writes
+     * to, and a cap stated in prose beside a constant goes stale — `D-FBK-049`.
+     */
+    public const MAX_FIELD_LENGTH = 4000;
+
+    public const MAX_SUBJECT_LENGTH = 100;
+
     private const MAX_SLUG_LENGTH = 48;
     private const MAX_MODEL_LENGTH = 80;
 
@@ -104,9 +112,15 @@ final class Channel
         }
 
         // The one field that is a name rather than a report, so it is redacted
-        // like the rest and never cut: a title with a marker in the middle of
-        // it is what a listing shows.
+        // like the rest and carries no marker where it was shortened: a title
+        // with a marker in the middle of it is what a listing shows. What it
+        // lost is still said back, because that half of `R-FBK-015` reaches the
+        // session still holding the line and the file's `...` does not —
+        // `D-FBK-049`.
         $subject = self::withoutSecrets('subject', trim((string) ($args['subject'] ?? '')), $redacted);
+        if (mb_strlen($subject) > self::MAX_SUBJECT_LENGTH) {
+            $cut[] = 'subject: ' . self::overrun(mb_strlen($subject), self::MAX_SUBJECT_LENGTH);
+        }
 
         $file = self::uniquePath($directory, $subject === '' ? $observation : $subject);
         $title = self::title($subject === '' ? $observation : $subject);
@@ -603,8 +617,14 @@ final class Channel
     private static function title(string $observation): string
     {
         $firstLine = trim((string) strtok($observation, "\n"));
+        if (mb_strlen($firstLine) <= self::MAX_SUBJECT_LENGTH) {
+            return $firstLine;
+        }
 
-        return mb_strlen($firstLine) > 100 ? mb_substr($firstLine, 0, 97) . '...' : $firstLine;
+        // The `...` stands inside the cap rather than past it, which is where
+        // text() puts its own marker: a title is read in a listing, where the
+        // three characters are what says it goes on.
+        return mb_substr($firstLine, 0, self::MAX_SUBJECT_LENGTH - 3) . '...';
     }
 
     /**
@@ -638,14 +658,18 @@ final class Channel
             return $text;
         }
 
-        $what = sprintf(
-            '%d characters past the %d-character limit',
-            $length - self::MAX_FIELD_LENGTH,
-            self::MAX_FIELD_LENGTH,
-        );
+        $what = self::overrun($length, self::MAX_FIELD_LENGTH);
         $cut[] = $field . ': ' . $what;
 
         return mb_substr($text, 0, self::MAX_FIELD_LENGTH) . ' ' . sprintf(self::CUT_MARKER, $what);
+    }
+
+    /**
+     * What a cut took, in the one wording the answer and the marker both use.
+     */
+    private static function overrun(int $length, int $cap): string
+    {
+        return sprintf('%d characters past the %d-character limit', $length - $cap, $cap);
     }
 
     /**

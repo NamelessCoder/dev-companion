@@ -48,11 +48,21 @@ final class FeedbackRecord implements Tool
 
     public static function inputSchema(): array
     {
+        // The cap each field is cut at, in the one place a caller reads before
+        // writing to it. A session that knows the budget writes to it; one that
+        // does not writes past it and finds out from the answer which sentences
+        // it cost — D-FBK-049. Interpolated rather than typed out, so the
+        // sentence cannot say one number while the channel applies another.
+        $storedCap = sprintf(
+            ' At most %d characters, and a longer text is cut there rather than refused.',
+            Channel::MAX_FIELD_LENGTH,
+        );
+
         return [
             'type' => 'object',
             'properties' => [
-                'subject' => ['type' => 'string', 'description' => 'One short line saying what only this feedback reports, in English — "a release branch\'s log answers about the history from before it was cut". It becomes the title and the file name, which is all a maintainer reads when deciding what to open. Left out, both are taken from the opening of the observation, and a session filing several at once then gets several that begin on the same words: the observation is asked to open with the task, so every feedback from one session opens alike. Say what this one says and nothing the others do.'],
-                'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful, specific enough to act on later, in English. Open with one line naming the task you were given, so the feedback can be traced back to what exposed it. A finding is the path a value was read at, the shape of what came back, and where it came from — never the value itself where the installation keeps it secret: an encryption key, a password, a token, the credentials in a connection string. This is committed and pushed into a checkout that installation\'s owner is not watching, so a secret pasted here as proof has left it for good. The finding is "the key at SYS/encryptionKey is the active one, hardcoded in config/system/settings.php"; the 96 characters after it establish nothing further.'],
+                'subject' => ['type' => 'string', 'description' => 'One short line saying what only this feedback reports, in English — "a release branch\'s log answers about the history from before it was cut". It becomes the title and the file name, which is all a maintainer reads when deciding what to open. Left out, both are taken from the opening of the observation, and a session filing several at once then gets several that begin on the same words: the observation is asked to open with the task, so every feedback from one session opens alike. Say what this one says and nothing the others do.' . sprintf(' At most %d characters, and a longer line is cut to fit rather than refused.', Channel::MAX_SUBJECT_LENGTH)],
+                'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful, specific enough to act on later, in English. Open with one line naming the task you were given, so the feedback can be traced back to what exposed it. A finding is the path a value was read at, the shape of what came back, and where it came from — never the value itself where the installation keeps it secret: an encryption key, a password, a token, the credentials in a connection string. This is committed and pushed into a checkout that installation\'s owner is not watching, so a secret pasted here as proof has left it for good. The finding is "the key at SYS/encryptionKey is the active one, hardcoded in config/system/settings.php"; the 96 characters after it establish nothing further.' . $storedCap],
                 'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this feedback, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your client reports for the current session, or the person running you — rather than from what you remember about yourself: a feedback is evidence about one model\'s behaviour, and one filed as "unknown" cannot be told apart from another model\'s. That fallback is for a session that looked and could not find out; an invented identifier is worse than none.'],
                 'category' => ['type' => 'string', 'enum' => Channel::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
                 // One declared type, not the string-or-array it was. That union
@@ -64,8 +74,8 @@ final class FeedbackRecord implements Tool
                 // feedback can say was given up, and a client that sends a list
                 // anyway is told which type was expected before the tool runs.
                 'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-conformance. Several are named in one string, separated by commas.'],
-                'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it, so somebody can re-run the feedback against a later version of the server instead of reading it. The rule from observation holds: the arguments and the path they named, never a value the installation keeps secret. A re-run needs to know that SYS/encryptionKey was asked for and that a key came back, not what the key was; a password or a token that was itself an argument is named rather than quoted.'],
-                'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.'],
+                'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it, so somebody can re-run the feedback against a later version of the server instead of reading it. The rule from observation holds: the arguments and the path they named, never a value the installation keeps secret. A re-run needs to know that SYS/encryptionKey was asked for and that a key came back, not what the key was; a password or a token that was itself an argument is named rather than quoted.' . $storedCap],
+                'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.' . $storedCap],
             ],
             'required' => ['observation', 'model'],
         ];
@@ -83,7 +93,7 @@ final class FeedbackRecord implements Tool
             ),
             'cut' => Schema::listOf(
                 Schema::string(),
-                'What was cut for length before the feedback was written, one entry per field, naming the field and how much of it went. Empty where nothing was cut, which is the ordinary case. Each cut stands in the file as a [cut: ...] marker where the field stops, so the report says of itself that it is short of what was written.',
+                'What was cut for length before the feedback was written, one entry per field, naming the field and how much of it went. Empty where nothing was cut, which is the ordinary case. A cut field stands in the file as a [cut: ...] marker where it stops, so the report says of itself that it is short of what was written; a cut subject stands as the ... its title ends in, because a marker inside a title is what a listing shows.',
             ),
         ], ['file', 'path', 'todo', 'redacted', 'cut']);
     }
@@ -165,8 +175,9 @@ final class FeedbackRecord implements Tool
         }
 
         return "\n\n" . sprintf(
-            '%s longer than a stored field and cut — %s. Each stands in the file as a `[cut: ...]` marker where '
-            . 'it stops, so a reader can see the report is short of what was written. Where what went carried the '
+            '%s longer than a stored field and cut — %s. A cut field stands in the file as a `[cut: ...]` marker '
+            . 'where it stops and a cut subject as the `...` its title ends in, so a reader can see the report is '
+            . 'short of what was written. Where what went carried the '
             . 'finding, it is worth recording again in fewer words: this answer is the last moment anything still '
             . 'has the rest of it.',
             count($cut) === 1 ? 'One field was' : sprintf('%d fields were', count($cut)),

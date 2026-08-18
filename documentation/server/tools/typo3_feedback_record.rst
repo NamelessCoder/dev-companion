@@ -26,7 +26,8 @@ Takes
     # observation, and a session filing several at once then gets several that begin
     # on the same words: the observation is asked to open with the task, so every
     # feedback from one session opens alike. Say what this one says and nothing the
-    # others do.
+    # others do. At most 100 characters, and a longer line is cut to fit rather than
+    # refused.
     subject: string  # optional
     # What was missing, wrong, or unhelpful, specific enough to act on later, in
     # English. Open with one line naming the task you were given, so the feedback
@@ -37,7 +38,8 @@ Takes
     # into a checkout that installation's owner is not watching, so a secret pasted
     # here as proof has left it for good. The finding is "the key at
     # SYS/encryptionKey is the active one, hardcoded in config/system/settings.php";
-    # the 96 characters after it establish nothing further.
+    # the 96 characters after it establish nothing further. At most 4000 characters,
+    # and a longer text is cut there rather than refused.
     observation: string
     # The model recording this feedback, as it identifies itself, for example
     # claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your
@@ -62,9 +64,11 @@ Takes
     # holds: the arguments and the path they named, never a value the installation
     # keeps secret. A re-run needs to know that SYS/encryptionKey was asked for and
     # that a key came back, not what the key was; a password or a token that was
-    # itself an argument is named rather than quoted.
+    # itself an argument is named rather than quoted. At most 4000 characters, and a
+    # longer text is cut there rather than refused.
     query: string  # optional
-    # What the server should have answered or should be able to do instead.
+    # What the server should have answered or should be able to do instead. At most
+    # 4000 characters, and a longer text is cut there rather than refused.
     suggestion: string  # optional
 
 Answers with
@@ -88,9 +92,10 @@ Answers with
     redacted: [string]
     # What was cut for length before the feedback was written, one entry per field,
     # naming the field and how much of it went. Empty where nothing was cut, which
-    # is the ordinary case. Each cut stands in the file as a [cut: ...] marker where
-    # the field stops, so the report says of itself that it is short of what was
-    # written.
+    # is the ordinary case. A cut field stands in the file as a [cut: ...] marker
+    # where it stops, so the report says of itself that it is short of what was
+    # written; a cut subject stands as the ... its title ends in, because a marker
+    # inside a title is what a listing shows.
     cut: [string]
 
 Not answered

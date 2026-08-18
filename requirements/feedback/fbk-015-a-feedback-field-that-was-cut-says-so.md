@@ -24,6 +24,11 @@ went, and can record it again in fewer words while it does.
 A field that is exactly as long as it may be is not marked. Nothing was taken
 from it, and a marker there says of the report something that is not true.
 
+The subject carries the `...` its title ends in instead of a marker, because a
+title is read in a listing — but it owes the answer half like every other field,
+which is the half that reaches the session still holding the line
+([`D-FBK-049`](../../decisions/feedback/fbk-049-a-stored-field-states-the-cap-it-is-cut-at.md)).
+
 ## From
 
 `feedback/2026-08-03-144316` (2026-08-03), whose observation is exactly 4000
@@ -38,3 +43,4 @@ in 235 recorded feedback sits on the cap, so this is rare rather than widespread
 
 - `FeedbackTest::aFieldCutForLengthSaysSoInTheFileAndInTheAnswer`
 - `FeedbackTest::aFieldExactlyOnTheCapIsNotMarked`
+- `FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile`

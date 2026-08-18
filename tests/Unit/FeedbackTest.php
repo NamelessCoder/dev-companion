@@ -481,6 +481,35 @@ final class FeedbackTest extends TestCase
     }
 
     /**
+     * The other cap, and the one the corpus hits: 115 of 440 recorded feedback
+     * were given a subject that was shortened, and nothing told any of them —
+     * `D-FBK-049`. The file cannot say it, because the `...` a listing shows is
+     * all a title may carry, so the answer is the only place it is said at all.
+     */
+    #[Test]
+    public function aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile(): void
+    {
+        $subject = mb_substr(self::MARKER . ' ' . str_repeat('a line saying what only this one reports. ', 4), 0, 120);
+        $this->ownFeedbackStore();
+
+        $result = Registry::call('typo3_feedback_record', [
+            'subject' => $subject,
+            'observation' => self::MARKER . ' the icon lookup found nothing for content-accordion',
+            'model' => 'claude-opus-5',
+        ]);
+
+        self::assertSame(['subject: 20 characters past the 100-character limit'], $result->data['cut']);
+        self::assertStringContainsString('One field was longer than a stored field and cut', $result->text);
+
+        // The title is shortened where it always was, and gains no marker.
+        $contents = (string) file_get_contents((string) $result->data['path']);
+        preg_match('/^# (.*)$/m', $contents, $heading);
+        self::assertStringEndsWith('...', $heading[1]);
+        self::assertSame(100, mb_strlen($heading[1]));
+        self::assertStringNotContainsString('[cut:', $contents);
+    }
+
+    /**
      * A fixture observation of exactly that many characters, in prose: a run of
      * one repeated character is what Redaction takes for a hexadecimal value,
      * and this case is about the length rule rather than that one.

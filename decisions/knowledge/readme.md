@@ -18,6 +18,7 @@ one is added.
 - [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state, and a TYPO3 version is not · 2026-08-18
 - [`D-KNW-092`][D-KNW-092] — What an installation that does not answer is diagnosed from is a gap this server owns · 2026-08-18
 - [`D-KNW-093`][D-KNW-093] — A command whose success is unconditional is followed by what a correct result looks like · 2026-08-18 · confirmed
+- [`D-KNW-094`][D-KNW-094] — How a variable reaches a console command in the container is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -103,6 +104,7 @@ one is added.
 [D-KNW-091]: knw-091-a-php-version-is-the-payload-a-hint-may-state-and-a-typo3-version-is-not.md
 [D-KNW-092]: knw-092-what-an-installation-that-does-not-answer-is-diagnosed-from-is-a-gap-this-server-owns.md
 [D-KNW-093]: knw-093-a-command-whose-success-is-unconditional-is-followed-by-what-a-correct-result-looks-like.md
+[D-KNW-094]: knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

@@ -132,3 +132,13 @@ The third **Wrong if** was measured rather than assumed. `bin/cli hints:probe`
 on the feedback's own query now returns `installation-setup`, and
 `typo3_task_guide` with the feedback's own task carries the hint beside the
 intent it already recognised.
+
+## Since then
+
+`feedback/2026-08-18-070423` was judged against this entry on 2026-08-18, and
+the third **Wrong if** holds no better from the other side. That session reached
+`installation-setup` and `environment-runtime-readers` from its own task and
+called both correct and useful, so the placement is not what cost it anything.
+What it paid for is one question further out: the line that carries those
+variables into the container the command runs in, which is
+[`D-KNW-094`](knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md).

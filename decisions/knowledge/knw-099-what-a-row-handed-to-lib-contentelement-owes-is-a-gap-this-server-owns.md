@@ -1,7 +1,7 @@
 ---
 id: D-KNW-099
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-KNW-099 — What a row handed to lib.contentElement owes is a gap this server owns
@@ -97,3 +97,53 @@ the changelog.
 - The core writes a changelog entry for this after all, in a 14.x still to come,
   which would make the gap a delivery question and put the answer back in
   `typo3_changelog_lookup`.
+
+## Covered by
+
+- `HintsTest::whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows`
+- `HintsTest::whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway`
+
+## Confirmed on 2026-08-18
+
+The gap is filled by `content-element-record-row` in
+`knowledge/hints/page-rendering.json`, bound `since: 14` and a hint of its own
+rather than a statement added to `page-content-element-rendering`: a caller
+holding the exception and a caller asking about template roots share the entry
+point and nothing else, and one `appliesTo` carrying both words answers each
+with the other's subject.
+
+The first **Wrong if** was read and does not hold. `record-transformation` is
+registered on 13.4 as well — `frontend/Configuration/Services.yaml` tags it —
+but `Helper/ContentElement.typoscript` has no `dataProcessing` block there at
+all, while 14.3 and `main` carry
+`dataProcessing.1770716912 = record-transformation`. So the boundary is the
+wiring rather than the processor, which is what the version binding says.
+
+The second holds and the statement was written to survive it. Which fields are
+required is derived from the installation's own `TCA[ctrl]` —
+`TcaSchema::hasCapability()` reads `crdate`, `sortby`, `descriptionColumn`,
+`enablecolumns` and the rest off it at each call — so a project that trims a
+`ctrl` key trims the requirement with it. The hint therefore states the rule as
+"every field `TCA[ctrl]` declares a capability for" and gives the core's
+`tt_content` list as what that comes to, rather than the list alone.
+
+Both **Assumed** hold. The field set is one bound statement: the three throw
+sites and the ten system capabilities are the same on 14.3 and `main`, and
+`tt_content` declares every one of them. The reported `fe_group` failure is a
+property of the transformation and not of that extension's row — `RecordFactory`
+hands the value to `GeneralUtility::intExplode()`, whose second parameter is
+`string`, under `declare(strict_types=1)`, so an int throws a `TypeError` where
+`'0'` passes. The date fields are the same trap the other way round:
+`DateTimeFactory::createFromTimestamp()` takes `int`, so a numeric string fails
+there.
+
+Two failures the judgement did not know about are in the hint, because both come
+before the exception the caller would arrive with. A row whose table nobody
+named — `f:cObject` without its `table` argument — reaches `RecordFactory` as an
+empty table name and throws `1715266929`; a row without `CType` throws
+`1715267513` in `createRawRecord()` before a field is looked at.
+
+What the binding cannot say: the change landed in v14.2.0, not with the major.
+`since` carries a major, the covered branch for 14 is `14.3`, and the two sprint
+releases before it are superseded — so `since: 14` is the closest the mechanism
+gets, and this is where the narrower fact is written down.

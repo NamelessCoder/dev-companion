@@ -278,6 +278,7 @@ Text:
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
+    - content-element-record-row — What a Row Handed to lib.contentElement Must Carry (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
@@ -793,6 +794,11 @@ Data:
             {
                 "id": "record-system-properties",
                 "title": "What a Record Object Carries, and What Moved Into _system",
+                "category": "PHP"
+            },
+            {
+                "id": "content-element-record-row",
+                "title": "What a Row Handed to lib.contentElement Must Carry",
                 "category": "PHP"
             },
             {
@@ -1492,6 +1498,7 @@ Text:
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
+    - content-element-record-row — What a Row Handed to lib.contentElement Must Carry (PHP)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
@@ -1920,6 +1927,11 @@ Data:
             {
                 "id": "record-system-properties",
                 "title": "What a Record Object Carries, and What Moved Into _system",
+                "category": "PHP"
+            },
+            {
+                "id": "content-element-record-row",
+                "title": "What a Row Handed to lib.contentElement Must Carry",
                 "category": "PHP"
             },
             {

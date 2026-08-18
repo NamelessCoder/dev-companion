@@ -1102,6 +1102,60 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-099`. The change reached no changelog entry — it rode along in
+     * `b0ee153010`, a commit about `f:render.text` — so the corpus is the only
+     * source that can carry it, and what a caller holds is the exception class,
+     * its code and the one field the message names.
+     *
+     * Read off `.checkouts/13.4` and `14.3`: `lib.contentElement` gained
+     * `dataProcessing.1770716912 = record-transformation` in
+     * `fluid_styled_content`'s `Helper/ContentElement.typoscript`, which on 13.4
+     * carries no `dataProcessing` block at all.
+     */
+    #[Test]
+    public function whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows(): void
+    {
+        // The query the reporting session says it would have made, in the words
+        // it had: the class, the code and the field the first message named.
+        $held = Hints::find([], 'IncompleteRecordException 1726046917 sys_language_uid lib.contentElement', 6);
+        self::assertSame('content-element-record-row', $held['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('content-element-record-row');
+
+        // The whole field list, which is the point of the statement: the three
+        // guards throw one field at a time, so an answer naming fewer of them
+        // buys the caller one more attempt each.
+        self::assertStringContainsString('sys_language_uid and l18n_parent', $text);
+        self::assertStringContainsString('t3ver_wsid, t3ver_oid, t3ver_state and t3ver_stage', $text);
+        self::assertStringContainsString(
+            'crdate, tstamp, starttime, endtime, deleted, hidden, editlock, sorting, fe_group and rowDescription',
+            $text,
+        );
+
+        // The two failures before that exception is reached at all: the table
+        // nobody named on the f:cObject call, and the typeField.
+        self::assertStringContainsString('Unable to create Record from non-TCA table', $text);
+        self::assertStringContainsString('CType for tt_content', $text);
+
+        // And the value shapes, which throw a TypeError instead and are what
+        // the reporting session spent its second and third attempt on.
+        self::assertStringContainsString('an integer passes where a numeric string fails', $text);
+        self::assertStringContainsString("'0' passes where 0 fails", $text);
+    }
+
+    /**
+     * `lib.contentElement` runs no data processor on the earlier branches, where
+     * the same partial row renders — so the statement would be an account of a
+     * failure the caller cannot have.
+     */
+    #[Test]
+    public function whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway(): void
+    {
+        self::assertNull(Hints::byId('content-element-record-row', 13));
+        self::assertNotNull(Hints::byId('content-element-record-row', 14));
+    }
+
+    /**
      * The two sinks arrive as different words — one caller asks about output
      * escaping, the other about a query — and what they need is the same
      * reading. A hint reachable only through the phrasing it was written for

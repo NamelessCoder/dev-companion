@@ -122,6 +122,58 @@
     ]
   },
   {
+    "id": "content-element-record-row",
+    "title": "What a Row Handed to lib.contentElement Must Carry",
+    "domains": [
+      "php",
+      "fluid",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "IncompleteRecordException",
+      "1726046917",
+      "1726046918",
+      "1726046919",
+      "1715266929",
+      "1715267513",
+      "record misses necessary fields",
+      "synthetic record",
+      "partial row",
+      "RecordTransformationProcessor",
+      "record-transformation",
+      "RecordFactory",
+      "lib.contentElement",
+      "f:cObject",
+      "cObject view helper"
+    ],
+    "hints": [
+      {
+        "text": "lib.contentElement runs the record-transformation data processor over its own data before it renders, so an array reaching it is built into a Record by RecordFactory and offered to the template as record, beside the untouched data. A row assembled in PHP and handed over with f:cObject — a view helper putting a handful of keys together for a plugin — therefore has to be a whole row now, and one that rendered before is refused outright.",
+        "since": 14
+      },
+      {
+        "text": "Name the table on the call. f:cObject hands its table argument to ContentObjectRenderer::start(), the processor falls back to that current table, and an empty one reaches RecordFactory as no table at all: InvalidArgumentException, exception 1715266929, \"Unable to create Record from non-TCA table\". The row also owes the typeField — CType for tt_content — or createRawRecord() throws exception 1715267513 before it looks at a single field. uid and pid are the only two it does without; both fall back to 0.",
+        "since": 14
+      },
+      {
+        "text": "What it does owe is every field TCA[ctrl] declares a capability for, guarded in three places that throw IncompleteRecordException one after the other: exception 1726046917 for the language fields, exception 1726046918 for the workspace fields, and exception 1726046919 for each system capability in turn. Every message names one field, so adding the field the message asks for buys exactly one more attempt — read the whole list instead.",
+        "since": 14
+      },
+      {
+        "text": "For tt_content that list is sys_language_uid and l18n_parent; t3ver_wsid, t3ver_oid, t3ver_state and t3ver_stage; and crdate, tstamp, starttime, endtime, deleted, hidden, editlock, sorting, fe_group and rowDescription. l10n_source is asked for with has() and may be left out; l18n_diffsource and l10n_state are stripped and never read. Another table's list is its own ctrl read the same way.",
+        "since": 14
+      },
+      {
+        "text": "The values are typed, and a wrong one throws TypeError rather than the exception above — which is what makes the last stretch of this look like a different bug. crdate, tstamp, starttime and endtime go to DateTimeFactory::createFromTimestamp(int), so an integer passes where a numeric string fails; fe_group goes through GeneralUtility::intExplode() and has to be a string, so '0' passes where 0 fails; rowDescription is typed as a string. The rest are cast and take any scalar — the language, workspace and sorting fields to int, deleted, hidden and editlock to bool.",
+        "since": 14
+      },
+      {
+        "text": "What such a Record then hands the template, and which fields it moves out of the row into _system, is record-system-properties. The template, partial and layout roots it renders through are page-content-element-rendering.",
+        "since": 14
+      }
+    ]
+  },
+  {
     "id": "page-cache-headers",
     "title": "What a Cacheable Page Template Answers With",
     "domains": [

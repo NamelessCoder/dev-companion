@@ -421,6 +421,48 @@ final class Instance
         return $matches[1];
     }
 
+    /**
+     * The lowest PHP the packages installed below this root accept, or null
+     * where nothing bounds them.
+     *
+     * `composer install` writes the lower bound over every package it installed
+     * into `composer/platform_check.php` below the vendor directory, and the
+     * autoloader includes it — so this is not a second opinion about which
+     * interpreter may run here, it is the code that stops one. No manifest
+     * field states it: a fixer required for development alone raises it in a
+     * repository whose own `require.php` says two minors less.
+     *
+     * Read against Composer 2.9.5 on 2026-08-04, in its own
+     * `AutoloadGenerator::getPlatformCheck()` and in the four installations
+     * under `.environments/`: the expression is `PHP_VERSION_ID >= 80500`, an
+     * integer of major*10000 + minor*100 + patch, with `>` where the bound is
+     * exclusive.
+     *
+     * Absent is a real answer and not a failure: Composer leaves the file out
+     * when nothing requires a PHP version, and deletes it where `platform-check`
+     * is off or the platform requirements were ignored. In none of those does a
+     * version stop anything, so nothing here may say one might.
+     */
+    public static function installedPhpBound(string $root): ?string
+    {
+        $path = self::vendorDirectory($root) . '/composer/platform_check.php';
+        if (!is_file($path)) {
+            return null;
+        }
+
+        $generated = (string) file_get_contents($path);
+        if (preg_match('/PHP_VERSION_ID\s*(>=|>)\s*(\d+)/', $generated, $matches) !== 1) {
+            return null;
+        }
+
+        // PHP_VERSION_ID is an integer, so "greater than 80500" is "at least
+        // 80501" exactly rather than approximately, and the operator does not
+        // have to be carried any further than this line.
+        $id = (int) $matches[2] + ($matches[1] === '>' ? 1 : 0);
+
+        return $id <= 0 ? null : sprintf('%d.%d.%d', intdiv($id, 10000), intdiv($id % 10000, 100), $id % 100);
+    }
+
     /** The major of that version as a number, for comparing it with another. */
     public static function typo3Major(): ?int
     {

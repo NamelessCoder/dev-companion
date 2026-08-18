@@ -13,6 +13,7 @@ earns one.
 
 - [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out and what the session wanted · 2026-08-18
 - [`D-FBK-048`][D-FBK-048] — The debrief is offered as a prompt where the channel is · 2026-08-18
+- [`D-FBK-049`][D-FBK-049] — A stored field states the cap it is cut at · 2026-08-18
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
@@ -49,6 +50,7 @@ earns one.
 
 [D-FBK-047]: fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md
 [D-FBK-048]: fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md
+[D-FBK-049]: fbk-049-a-stored-field-states-the-cap-it-is-cut-at.md
 [D-FBK-045]: fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
 [D-FBK-046]: fbk-046-the-check-that-catches-a-duplicate-id-names-the-files-and-the-command.md
 [D-FBK-041]: fbk-041-what-nothing-answers-for-is-called-unresolved.md

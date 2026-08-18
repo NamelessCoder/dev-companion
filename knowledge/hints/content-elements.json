@@ -116,11 +116,21 @@
       "lazy collection",
       "relational field in a template",
       "selectSingle",
-      "empty spot in the preview"
+      "empty spot in the preview",
+      "f:argument",
+      "typed template argument",
+      "what record is as a PHP type",
+      "RecordInterface",
+      "TypolinkParameter",
+      "is registered with type"
     ],
     "hints": [
       {
         "text": "{record.header} resolves through the record's container methods: the record is a PSR-11 container, and Fluid asks has() and get() for a path segment before it tries any getter. So every field is {record.<column>}, and {record.uid} and {record.pid} are there as well.",
+        "since": 13
+      },
+      {
+        "text": "The record is a TYPO3\\CMS\\Core\\Domain\\RecordInterface, built by RecordFactory::createResolvedRecordFromDatabaseRow(). The backend preview renderer and the frontend record transformation both call that, so a column carries the same value in a preview template as in a frontend partial.",
         "since": 13
       },
       {
@@ -132,8 +142,24 @@
         "since": 13
       },
       {
+        "text": "The classes those arrive as are TYPO3\\CMS\\Core\\Collection\\LazyRecordCollection and TYPO3\\CMS\\Core\\Resource\\Collection\\LazyFileReferenceCollection where the field relates to many, and the record interface itself or TYPO3\\CMS\\Core\\Resource\\FileReference where it relates to one.",
+        "since": 13
+      },
+      {
         "text": "type=select without a relation is a static list and stays values: an array of the selected values, or the single value where the renderType is selectSingle.",
         "since": 13
+      },
+      {
+        "text": "Beside the relations, resolving a record turns further columns into objects: type=link into a TYPO3\\CMS\\Core\\LinkHandling\\TypolinkParameter, type=datetime into a \\DateTimeImmutable, type=flex into a TYPO3\\CMS\\Core\\Domain\\FlexFormFieldValues, and type=folder into a TYPO3\\CMS\\Core\\Resource\\Folder or a TYPO3\\CMS\\Core\\Resource\\Collection\\LazyFolderCollection. A type=json column comes back decoded, a nullable link and a folder relating to one are null where nothing is there, and every other column — input, text, number, check — stays what the row stores.",
+        "since": 13
+      },
+      {
+        "text": "type=country is the other transformed column: a TYPO3\\CMS\\Core\\Country\\Country, or an empty string where the stored code matches none.",
+        "since": 14
+      },
+      {
+        "text": "f:argument declares those types, and what it declares is checked when the template or partial renders: nothing earlier catches a wrong one. The strict processor takes an interface name, so record is declared as TYPO3\\CMS\\Core\\Domain\\RecordInterface — array is refused, because a PSR-11 container is not one — and a link column as TypolinkParameter rather than string. Rendering a partial for one section skips the check altogether.",
+        "since": 14
       }
     ]
   }

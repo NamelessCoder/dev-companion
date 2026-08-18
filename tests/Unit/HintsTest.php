@@ -5467,6 +5467,56 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A typed f:argument is checked while the template renders and by nothing
+     * before it, so a class name guessed wrong costs a failed page rather than
+     * a failed build — which is why the corpus names the classes instead of
+     * leaving them to be read off an exception. Both halves come off the
+     * checkouts: RecordFieldTransformer decides what a column becomes, and
+     * StrictArgumentProcessor, which the fluid extension aliases the argument
+     * processor to, accepts an interface name for it — `D-KNW-090`.
+     */
+    #[Test]
+    public function theRecordAndItsTransformedColumnsAreNamedAsPhpTypes(): void
+    {
+        $onFourteen = implode("\n", array_column(
+            Hints::byId('preview-record-variable', 14)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('TYPO3\CMS\Core\Domain\RecordInterface', $onFourteen);
+        self::assertStringContainsString('TYPO3\CMS\Core\LinkHandling\TypolinkParameter', $onFourteen);
+        self::assertStringContainsString('TYPO3\CMS\Core\Resource\FileReference', $onFourteen);
+        self::assertStringContainsString('TYPO3\CMS\Core\Country\Country', $onFourteen);
+
+        // The record is the same object on both sides, which is what lets one
+        // statement answer a frontend partial and a backend preview at once.
+        self::assertStringContainsString('createResolvedRecordFromDatabaseRow', $onFourteen);
+        self::assertStringContainsString('as in a frontend partial', $onFourteen);
+
+        // What the reporting session declared, and why it was refused.
+        self::assertStringContainsString('f:argument', $onFourteen);
+        self::assertStringContainsString('array is refused', $onFourteen);
+
+        // The ViewHelper is Fluid 5's and the country transformation is not on
+        // the older branch, while the classes a column arrives as are.
+        $onThirteen = implode("\n", array_column(
+            Hints::byId('preview-record-variable', 13)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('TYPO3\CMS\Core\LinkHandling\TypolinkParameter', $onThirteen);
+        self::assertStringNotContainsString('f:argument', $onThirteen);
+        self::assertStringNotContainsString('type=country', $onThirteen);
+
+        // The subject is reachable from the exception the miss arrives as.
+        $reached = Hints::find(
+            [],
+            'the argument record is registered with type array, but the provided value is of '
+            . 'type TypolinkParameter',
+            6,
+        );
+        self::assertSame('preview-record-variable', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
+    /**
      * The reported miss is a template that repeats what is already on the page:
      * GridColumnItem::getPreview() renders the header before dispatching the
      * event FluidBasedContentPreviewRenderer listens on, and that listener sets

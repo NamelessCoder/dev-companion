@@ -1,7 +1,7 @@
 ---
 id: D-KNW-090
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-KNW-090 — The corpus names the PHP type a record and a transformed column arrive as
@@ -64,8 +64,8 @@ the class name instead, and no statement carries one.
 
 - The types belong on `preview-record-variable`, beside the resolution
   statements, rather than on a Fluid hint. What a column arrives as is a
-  property of the record transformation, and `fluid-object-access` already
-  sends the container branch to that hint.
+  property of the record transformation, and `fluid-object-access` already sends
+  the container branch to that hint.
 - A frontend partial and a backend preview meet the same transformed values. The
   reporting session declared one type in both and says it has no evidence for
   the preview side, which is why the todo settles that first.
@@ -81,3 +81,36 @@ the class name instead, and no statement carries one.
 - The set of columns that transform into a value object is open-ended enough
   that naming it dates on the next major — the way `D-KNW-020`'s five relational
   types can, and for the same reason.
+
+## Covered by
+
+- `HintsTest::theRecordAndItsTransformedColumnsAreNamedAsPhpTypes`
+
+## Confirmed on 2026-08-18
+
+Both assumptions held, and each was read rather than reasoned. The record a
+preview template is handed and the record a frontend partial is handed are the
+same object: `FluidBasedContentPreviewRenderer` and
+`RecordTransformationProcessor` both build it through
+`RecordFactory::createResolvedRecordFromDatabaseRow()`, which is where
+`RecordFieldTransformer` runs, on `.checkouts/13.4` and on `.checkouts/14.3`
+alike. So one statement answers both contexts and the reporting session's
+undecided half is decided: a link column is a `TypolinkParameter` in a backend
+preview too.
+
+`f:argument` is what raised the exception. `AbstractTemplateView::render()` and
+`renderPartial()` call `processAndValidateTemplateVariables()`, which throws
+`InvalidArgumentValueException` with the reported wording; `renderPartial()`
+skips it where a section is named, and nothing runs it before the render.
+`StrictArgumentProcessor::isValidType()` accepts an interface name, which is
+what makes `RecordInterface` declarable, and rejects an object for `array`
+unless it is `ArrayAccess` or `Traversable` — `RecordInterface` extends
+`Psr\Container\ContainerInterface` and is neither. Read from the release 14.3
+pins rather than from an installation, because
+`composer require typo3fluid/fluid:5.3.1` in an empty directory is a source the
+next session can produce, and somebody else's project is not.
+
+The third **Wrong if** is the one that moved. The set does grow: 13.4 transforms
+`link`, `datetime`, `flex`, `json`, `folder`, `file` and the relations, and 14.3
+adds `country`. That is what the bindings are for, so the statements carry
+`since` per column rather than one bound for the set.

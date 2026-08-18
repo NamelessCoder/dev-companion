@@ -241,7 +241,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-087`][D-KNW-087] — A listed neighbour says what it prevents · 2026-08-18
 - [`D-KNW-088`][D-KNW-088] — What a Composer installation generates below the document root is a gap this server owns · 2026-08-18
 - [`D-KNW-089`][D-KNW-089] — What a warm TCA cache hides from `extension:setup` is a gap this server owns · 2026-08-18
-- [`D-KNW-090`][D-KNW-090] — The corpus names the PHP type a record and a transformed column arrive as · 2026-08-18
+- [`D-KNW-090`][D-KNW-090] — The corpus names the PHP type a record and a transformed column arrive as · 2026-08-18 · confirmed
 - [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state, and a TYPO3 version is not · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed

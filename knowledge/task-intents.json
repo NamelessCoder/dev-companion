@@ -453,11 +453,13 @@
       "set up an installation",
       "install typo3",
       "fresh installation",
-      "bootstrap the installation"
+      "bootstrap the installation",
+      "site from scratch"
     ],
     "matchWeak": [
       "setup",
-      "installing typo3"
+      "installing typo3",
+      "development installation"
     ],
     "condition": "only if the task is setting an installation up rather than working on the code in one",
     "rulesQuery": "",

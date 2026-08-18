@@ -2166,6 +2166,36 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A brief is a task, not a subject, and a task names as many units as it
+     * names.
+     *
+     * The session behind `feedback/2026-08-17-212538` asked for three — a
+     * development installation, a sitepackage with custom content elements, and
+     * a distribution carrying the content — and was routed to the content
+     * element alone. It activated `typo3-development-installation` itself,
+     * because the directory was empty and it could see it needed one. Nothing in
+     * the answer shape was in the way: the skills of every confirmed intent are
+     * collected. What was in the way is that `installation-setup` matched on the
+     * act of setting one up and on no word a brief names the installation with
+     * (`D-SKL-051`).
+     *
+     * Two of the three, because the third has no intent yet: the workflow that
+     * produces a distribution's content is `D-SKL-050`'s card.
+     */
+    #[Test]
+    public function aBriefThatNamesSeveralUnitsRoutesToTheSkillOfEach(): void
+    {
+        $answer = Registry::call('typo3_task_guide', [
+            'task' => 'Build a TYPO3 site from scratch: development installation, a sitepackage extension '
+                . 'with custom content elements, and a distribution extension carrying the content',
+            'changeType' => 'feature',
+        ])->data;
+
+        self::assertContains('typo3-development-installation', $answer['skills']);
+        self::assertContains('typo3-content-element-development', $answer['skills']);
+    }
+
+    /**
      * The other direction, which is the one that fails without saying so.
      *
      * A client selects a skill on its description and `typo3_task_guide`

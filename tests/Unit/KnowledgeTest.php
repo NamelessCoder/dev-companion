@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -448,6 +449,77 @@ final class KnowledgeTest extends TestCase
 
         self::assertStringContainsString('Configuration/ExtensionScanner/Php/', $bodies);
         self::assertStringContainsString('FullyScanned', $bodies);
+    }
+
+    /**
+     * One brief per kind of work, each reaching its own kind and no other.
+     *
+     * A needle is widened to reach a task that named its work and nothing said,
+     * before this, what that cost the neighbouring intents — a word broad enough
+     * to reach one brief reaches several, and the second intent arrives stated as
+     * fact with a checklist and a skill behind it. `D-SKL-051` widened
+     * `installation-setup` against exactly this set.
+     *
+     * The briefs are written here rather than taken from `scenarios/`, because a
+     * scenario prompt is a whole task and half of them name two kinds of work on
+     * purpose. What this holds is the one-kind case: the sentence a caller writes
+     * when the work is one thing.
+     */
+    #[Test]
+    #[DataProvider('aBriefForEachKindOfWork')]
+    public function aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther(string $id, string $task): void
+    {
+        self::assertSame(
+            [$id],
+            array_column(TaskIntents::confirmed(TaskIntents::detect($task)), 'id'),
+            'the brief for ' . $id . ' is recognized as something else as well',
+        );
+    }
+
+    /**
+     * And the set is every intent, so an intent added without a brief is caught
+     * here rather than by the first widening that swallows it unmeasured.
+     */
+    #[Test]
+    public function everyKindOfWorkHasSuchABrief(): void
+    {
+        self::assertSame(
+            array_column(TaskIntents::load(), 'id'),
+            array_keys(self::aBriefForEachKindOfWork()),
+        );
+    }
+
+    /** @return array<string, array{0: string, 1: string}> */
+    public static function aBriefForEachKindOfWork(): array
+    {
+        $briefs = [
+            'deprecation' => 'Deprecate the public method Foo::bar() and migrate its callers',
+            'breaking' => 'Remove a public api method nothing outside the core calls',
+            'changelog' => 'Write the changelog entry for the feature that landed',
+            'labels' => 'Add the XLF trans-unit for the new label',
+            'backend-module' => 'Add a backend module for editing the newsletter records',
+            'backend-ui' => 'Style the new card component in the backend markup',
+            'icons' => 'Register an icon for the new record type',
+            'tests' => 'Add test coverage for the new validator',
+            'browser-tests' => 'Add a Playwright end-to-end spec for the login form',
+            'coding-standards' => 'Set up php-cs-fixer with the TYPO3 coding standards',
+            'submission' => 'Push the patch to Gerrit for review',
+            'patch-checkout' => 'Check out the patch from review and see whether it still applies',
+            'triage' => 'Triage an old open core bug report and say whether it still happens',
+            'audit' => 'Review this extension for TYPO3 conformance',
+            'cleanup' => 'Clean up the repository and work off the findings',
+            'installation-setup' => 'Set up a new TYPO3 installation for development',
+            'installation-upgrade' => 'Upgrade the installation to the new major',
+            'installation-operations' => 'Boot the local environment from a fresh clone',
+            'content-element' => 'Add a content element for an editor-owned carousel',
+        ];
+
+        $cases = [];
+        foreach ($briefs as $id => $task) {
+            $cases[$id] = [$id, $task];
+        }
+
+        return $cases;
     }
 
     #[Test]

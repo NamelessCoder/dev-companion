@@ -23,3 +23,13 @@ view unverified with the guide named at the step — is what starts the work, an
 its first question is a placement: whether the closing step re-reads
 `references/checklist.md`, which that skill already ships, or states its own
 list.
+
+The question now has more behind it than it was asked with. `D-SKL-049`'s second
+**Wrong if** fired on 2026-08-18: `feedback/2026-08-18-070611` and
+`feedback/2026-08-18-074327` report the same pattern from another task shape and
+another directory — an extension repository booted in DDEV — where every
+sighting this card was written from came from one sitepackage build. Both name a
+prescription of `skills/base.md` rather than of a build workflow, which widens
+where a gate would have to sit. The recommendation to wait is unchanged and its
+ground is unchanged: the three corrections are still unmet by any session, and
+none of the new sightings is about them.

@@ -113,3 +113,43 @@ day, and none of the corrections has been in front of a session yet.
 - A gate is written later and a session reports skipping it as a list. That is
   `D-SKL-010`'s **Wrong if** arriving here, and it would make the deferral right
   for a reason this entry does not give.
+
+## Since then
+
+**2026-08-18.** The second **Wrong if** fired. Two sessions from another task
+shape report the same pattern, and both come from `/home/benji/projects/blog` —
+an extension repository booted in DDEV, where every one of the thirteen feedback
+behind this entry came from one sitepackage build in
+`/home/benji/projects/site-demo`.
+
+`feedback/2026-08-18-070611` is the boot itself. What it reports partly executed
+is a prescription of [`base.md`](../../skills/base.md) rather than of a build
+workflow: *a report names the step it did not reach*, stated in step 2 and again
+in step 5, and complied with in neither. Its own reading is that the failure is
+placement rather than wording — the rule sits in the preamble and the report is
+written last, after a long tool-heavy session.
+
+`feedback/2026-08-18-074327` is the same directory later the same morning, and
+it names the mechanism in this entry's own terms: steps 2, 4 and 5 of the order
+skipped on a task that changed code, with nothing naming the skips, because "the
+order is walked once, at the start, against the task as it was first phrased"
+and nothing re-raised it when the task became something else.
+
+The same boot carries a third instance of the shape, and it is what a gate would
+have to route rather than restate. `feedback/2026-08-18-070611` found the
+deprecation log at 63 KB after the first request, read it out of the file, and
+reported it without putting it to the server, because the workflow was over. Two
+probes on 2026-08-18 say where such a gate would have to send it:
+`bin/cli hints:probe` on the symptom as the session would phrase it matches
+nothing, and on its subject it reaches `deprecated-apis` and `tca-formengine`,
+neither of which carries what `ctrl.searchFields` must declare. So the corpus
+does not answer it and `typo3_changelog_lookup` is the route — which is
+[`D-SKL-048`](skl-048-a-build-workflow-says-a-symptom-is-a-lookup-trigger.md)'s
+second **Wrong if** tested here and not firing.
+
+What this moves is the corpus and not the recommendation. The three corrections
+this entry weighs are still unmet by any session, and none of the three new
+sightings is about them, so the case against a fourth intervention against the
+same three stands. What is gone is the narrower half of it: a gate is no longer
+an intervention against one build, and the question the card carries is now
+asked with two task shapes and two directories behind it rather than one.

@@ -89,3 +89,23 @@ one moment a subject is what the session has. Debugging is where it does not.
 ## Covered by
 
 - `SkillTest::theBuildWorkflowSaysASymptomIsALookupTrigger`
+
+## Since then
+
+**2026-08-18.** The second **Wrong if** was tested against an installation
+session and did not fire. `feedback/2026-08-18-070611` is a boot of the t3g/blog
+DDEV installation on 14.3.6, and the symptom it ends on is a deprecation log at
+63 KB after the first request, traced to TCA fields the extension declares as
+searchable without naming them in `ctrl.searchFields`. Probed the same day,
+`bin/cli hints:probe` on the symptom as that session would phrase it matches
+nothing, and on its subject it reaches `deprecated-apis` and `tca-formengine`,
+neither of which states what `ctrl.searchFields` must carry.
+
+So the decision not to touch the installation workflow holds for the reason it
+was made: what an installation session stops on is answered by
+`typo3_changelog_lookup` at the major in play rather than by the hint index, and
+a line sending the symptom to `typo3_hint_lookup` would have sent this one to a
+miss. What the session reports instead is that nothing invited the question at
+all once the workflow ended, which is the closing form
+[`D-SKL-049`](skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md)
+carries.

@@ -14,6 +14,10 @@ use TYPO3\DevCompanion\Knowledge\Versions;
  * pin, an `actions/setup-node` step what CI installs, a DDEV project what its
  * container runs.
  *
+ * The first two are read wherever the repository keeps its manifest, and the
+ * answer names the file each came from — a core-shaped checkout declares both
+ * of them in `Build/` and nothing at its root.
+ *
  * Read outright or not at all — `R-PRJ-013`. A version a matrix or another
  * file decides is stated back as the workflow writes it, because the caller
  * reads that workflow in one call and a resolved wrong number would carry this
@@ -44,7 +48,9 @@ final class Node
      * @param ?string $environment what the environment states, where it does
      * @return array{
      *     engines: ?string,
+     *     enginesIn: ?string,
      *     nvmrc: ?string,
+     *     nvmrcIn: ?string,
      *     environment: ?string,
      *     ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>,
      *     relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null
@@ -52,23 +58,64 @@ final class Node
      */
     public static function describe(string $root, ?string $environment): ?array
     {
-        $manifest = $root . '/package.json';
-        $declared = self::json($manifest)['engines']['node'] ?? null;
-        $engines = is_string($declared) && trim($declared) !== '' ? trim($declared) : null;
-        $nvmrc = self::nvmrc($root);
+        $manifests = Project::npmManifests($root);
+        $engines = null;
+        $enginesIn = null;
+        $nvmrc = null;
+        $nvmrcIn = null;
+        foreach (self::directories($manifests) as $directory) {
+            $declared = self::json($root . '/' . $directory . 'package.json')['engines']['node'] ?? null;
+            if ($engines === null && is_string($declared) && trim($declared) !== '') {
+                $engines = trim($declared);
+                $enginesIn = $directory . 'package.json';
+            }
+            $stated = self::nvmrc($root . '/' . $directory . '.nvmrc');
+            if ($nvmrc === null && $stated !== null) {
+                $nvmrc = $stated;
+                $nvmrcIn = $directory . '.nvmrc';
+            }
+        }
         $ci = self::workflows($root);
 
-        if (!is_file($manifest) && $engines === null && $nvmrc === null && $ci === [] && $environment === null) {
+        if ($manifests === [] && $engines === null && $nvmrc === null && $ci === [] && $environment === null) {
             return null;
         }
 
         return [
             'engines' => $engines,
+            'enginesIn' => $enginesIn,
             'nvmrc' => $nvmrc,
+            'nvmrcIn' => $nvmrcIn,
             'environment' => $environment,
             'ci' => $ci,
-            'relation' => self::relation($engines, $nvmrc, $environment, $ci),
+            'relation' => self::relation($engines, $enginesIn, $nvmrc, $nvmrcIn, $environment, $ci),
         ];
+    }
+
+    /**
+     * The directories a declaration is read from, relative to the root and
+     * ending in a slash where it is not the root itself.
+     *
+     * The root always, because an `.nvmrc` is what a version manager here
+     * selects whether or not a manifest sits beside it, and the directory of
+     * every npm manifest after it. The first statement of each of the two
+     * files is the one that holds, so a root manifest answers for a repository
+     * that has one and `Build/` answers for the core's layout.
+     *
+     * @param array<int, string> $manifests
+     * @return array<int, string>
+     */
+    private static function directories(array $manifests): array
+    {
+        $directories = [''];
+        foreach ($manifests as $manifest) {
+            $directory = dirname($manifest);
+            if ($directory !== '.') {
+                $directories[] = $directory . '/';
+            }
+        }
+
+        return $directories;
     }
 
     /**
@@ -77,15 +124,22 @@ final class Node
      *
      * The pin is that number where there is one, because `.nvmrc` is what a
      * machine's own version manager reads and what a run is therefore executed
-     * on; the range's floor answers for it where there is none. Null where
-     * neither can be read — nothing declared is a state to say in words, not
-     * one to relate three numbers to.
+     * on; the range's floor answers for it where there is none. Whichever wins
+     * is named by the file it was read from, which is not the same file in
+     * every repository. Null where neither can be read — nothing declared is a
+     * state to say in words, not one to relate three numbers to.
      *
      * @param array<int, array{workflow: string, from: string, states: string, version: ?string}> $ci
      * @return array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null
      */
-    private static function relation(?string $engines, ?string $nvmrc, ?string $environment, array $ci): ?array
-    {
+    private static function relation(
+        ?string $engines,
+        ?string $enginesIn,
+        ?string $nvmrc,
+        ?string $nvmrcIn,
+        ?string $environment,
+        array $ci,
+    ): ?array {
         $pinned = self::version($nvmrc);
         $floor = Versions::floor($engines);
         $declared = $pinned ?? $floor;
@@ -100,7 +154,7 @@ final class Node
 
         return [
             'declared' => $declared,
-            'declaredBy' => $pinned === null ? 'package.json' : '.nvmrc',
+            'declaredBy' => (string) ($pinned === null ? $enginesIn : $nvmrcIn),
             'nvmrcAgainstEngines' => $pinned === null || $floor === null ? null : Project::sits($pinned, $floor),
             'inEnvironment' => $inEnvironment === null ? null : Project::sits($inEnvironment, $declared),
             'ci' => count($stated) === 1 ? $stated[0] : null,
@@ -116,9 +170,8 @@ final class Node
      * because what it resolves to is a list nvm downloads rather than anything
      * in this repository.
      */
-    private static function nvmrc(string $root): ?string
+    private static function nvmrc(string $file): ?string
     {
-        $file = $root . '/.nvmrc';
         if (!is_file($file)) {
             return null;
         }

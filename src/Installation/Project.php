@@ -106,7 +106,7 @@ final class Project
      *     corePhpConstraint: ?string,
      *     installedPhpBound: ?string,
      *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null,
-     *     node: array{engines: ?string, nvmrc: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null,
+     *     node: array{engines: ?string, enginesIn: ?string, nvmrc: ?string, nvmrcIn: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null,
      *     environment: array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
@@ -619,17 +619,57 @@ final class Project
             ];
         }
 
-        $packageScripts = self::json($root . '/package.json')['scripts'] ?? [];
-        foreach (is_array($packageScripts) ? $packageScripts : [] as $name => $declaration) {
-            $commands[] = [
-                'command' => 'npm run ' . $name,
-                'source' => 'package.json',
-                'declares' => self::declaration($declaration),
-                'runs' => self::runs($declaration, []),
-            ];
+        foreach (self::npmManifests($root) as $manifest) {
+            $packageScripts = self::json($root . '/' . $manifest)['scripts'] ?? [];
+            foreach (is_array($packageScripts) ? $packageScripts : [] as $name => $declaration) {
+                $commands[] = [
+                    'command' => self::npm($manifest) . $name,
+                    'source' => $manifest,
+                    'declares' => self::declaration($declaration),
+                    'runs' => self::runs($declaration, []),
+                ];
+            }
         }
 
         return $commands;
+    }
+
+    /**
+     * The npm manifests this repository has, relative to its root and in the
+     * order they are read.
+     *
+     * The root one, and the `Build/package.json` beside it: the TYPO3 layout
+     * keeps the frontend build one directory down, and the core has its
+     * manifest, its `.nvmrc` and its Gruntfile there on every covered branch
+     * and no root manifest at all. Reading the root alone left such a
+     * repository with no npm command in this list and no Node under it —
+     * `D-SCO-014`.
+     *
+     * @return array<int, string>
+     */
+    public static function npmManifests(string $root): array
+    {
+        return array_values(array_filter(
+            ['package.json', 'Build/package.json'],
+            static fn(string $manifest): bool => is_file($root . '/' . $manifest),
+        ));
+    }
+
+    /**
+     * What runs a script of one manifest, from the root the caller is standing
+     * in.
+     *
+     * `npm run` reads the manifest of the directory it is called in, so a
+     * script declared below the root carries the `--prefix` that points it
+     * there — which is what the core's own runTests.sh puts in front of its
+     * playwright scripts, and what makes two manifests declaring a `build`
+     * two commands a caller can tell apart.
+     */
+    private static function npm(string $manifest): string
+    {
+        $directory = dirname($manifest);
+
+        return $directory === '.' ? 'npm run ' : 'npm --prefix ' . $directory . ' run ';
     }
 
     /**

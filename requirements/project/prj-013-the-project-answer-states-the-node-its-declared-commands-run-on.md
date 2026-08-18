@@ -1,7 +1,7 @@
 ---
 id: R-PRJ-013
 status: held
-restsOn: [D-SCO-013]
+restsOn: [D-SCO-013, D-SCO-014]
 ---
 
 # R-PRJ-013 — The project answer states the Node its declared commands run on
@@ -48,9 +48,10 @@ machine ran 24.16 and CI ran 24.19.
 - `ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved`
 - `ProjectTest::aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone`
 - `ProjectTest::aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode`
+- `ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere`
 
-What is read is the root `package.json`, which is the one `Project::commands()`
-reads its npm scripts from. A repository keeping both in `Build/` has neither
-answered, `bootstrap_package` is such a repository, and
-`todo/open/2026-08-18-235000-read-the-second-package-json-a-repository-keeps.md`
-is that.
+What is read is every `package.json` `Project::commands()` reads its npm scripts
+from: the root one, and the `Build/package.json` beside it that a core checkout
+has instead of a root one. Each number is answered with the file it came from,
+because the same field means the root's manifest in one repository and the one
+below it in the next — `D-SCO-014`.

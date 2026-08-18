@@ -505,7 +505,9 @@ final class ProjectTest extends TestCase
 
         self::assertSame([
             'engines' => '^24.0.0',
+            'enginesIn' => 'package.json',
             'nvmrc' => '24',
+            'nvmrcIn' => '.nvmrc',
             'environment' => '20',
             // Two jobs setting the same version up are one fact about this
             // repository, and the second line saying it says nothing.
@@ -618,9 +620,10 @@ final class ProjectTest extends TestCase
 
         $node = Project::describe()['node'];
         self::assertNull($node['engines']);
+        self::assertNull($node['enginesIn']);
         self::assertNull($node['relation']);
         self::assertStringContainsString(
-            'Nothing here declares which Node those npm commands run on: package.json states no engines.node',
+            'Nothing here declares which Node those npm commands run on: no package.json here states an engines.node',
             Registry::call('typo3_project_describe', [])->text,
         );
 
@@ -647,6 +650,74 @@ final class ProjectTest extends TestCase
 
         self::assertNull(Project::describe()['node']);
         self::assertStringNotContainsString('Node', Registry::call('typo3_project_describe', [])->text);
+    }
+
+    #[Test]
+    public function theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere(): void
+    {
+        // The TYPO3 layout keeps the frontend build one directory down, and
+        // the core has no root package.json at all on any covered branch: read
+        // from the root alone, such a repository had no npm command in the
+        // list and no Node under it, and nothing said which of the two it was
+        // (D-SCO-014).
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/Build/package.json', json_encode([
+            'engines' => ['node' => '>=24.14.0 <25.0.0'],
+            'scripts' => ['build' => 'grunt build'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/Build/.nvmrc', "v24.14\n");
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        // npm run reads the manifest of the directory it is called in, so the
+        // command carries the prefix that points it at this one.
+        self::assertSame(
+            [['command' => 'npm --prefix Build run build', 'source' => 'Build/package.json',
+                'declares' => 'grunt build', 'runs' => Project::RUNS_AS_CHANGE]],
+            $project['commands'],
+        );
+        self::assertSame('>=24.14.0 <25.0.0', $project['node']['engines']);
+        self::assertSame('Build/package.json', $project['node']['enginesIn']);
+        self::assertSame('v24.14', $project['node']['nvmrc']);
+        self::assertSame('Build/.nvmrc', $project['node']['nvmrcIn']);
+        self::assertSame('Build/.nvmrc', $project['node']['relation']['declaredBy']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('- npm --prefix Build run build (Build/package.json)', $text);
+        self::assertStringContainsString('This repository declares 24.14, in Build/.nvmrc.', $text);
+        self::assertStringContainsString('Its Build/package.json admits >=24.14.0 <25.0.0', $text);
+    }
+
+    #[Test]
+    public function twoManifestsDeclaringOneNameAreTwoCommandsThatCanBeToldApart(): void
+    {
+        // What made the second location worth deciding rather than assuming: a
+        // repository declaring a build in both manifests would have had one
+        // name for two commands. The prefix is what settles which is meant,
+        // and it is what the core's own runTests.sh puts in front of its
+        // playwright scripts.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->declare($root . '/package.json', json_encode([
+            'scripts' => ['build' => 'vite build'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/Build/package.json', json_encode([
+            'engines' => ['node' => '^22.0.0'],
+            'scripts' => ['build' => 'grunt build'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertSame(
+            ['npm run build', 'npm --prefix Build run build'],
+            array_column($project['commands'], 'command'),
+        );
+        // The root manifest states no engines, so the one below it answers —
+        // and the answer names the file rather than leaving the caller to
+        // assume the root's.
+        self::assertSame('Build/package.json', $project['node']['enginesIn']);
+        self::assertSame('Build/package.json', $project['node']['relation']['declaredBy']);
     }
 
     #[Test]

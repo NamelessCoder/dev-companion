@@ -50,7 +50,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Where the repository declares npm commands it answers the same question for Node: what package.json admits in engines.node, what an .nvmrc pins, what an actions/setup-node step below .github/workflows/ sets up, what a DDEV project states as its nodejs_version, and how those stand to each other. A version one of them names outright is read; one a matrix or another file decides is handed back as the workflow states it, unresolved. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and in every package.json it has, the Build/package.json a repository keeps its frontend build in included — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Where the repository declares npm commands it answers the same question for Node: what the package.json declaring them admits in engines.node, what the .nvmrc beside it pins, what an actions/setup-node step below .github/workflows/ sets up, what a DDEV project states as its nodejs_version, and how those stand to each other. Each of the first two is named with the file it came from, because the manifest is in Build/ in a repository laid out the way the core is. A version one of them names outright is read; one a matrix or another file decides is handed back as the workflow states it, unresolved. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -84,10 +84,12 @@ final class ProjectDescribe extends ReadOnlyTool
             ],
             'node' => [
                 'type' => ['object', 'null'],
-                'description' => 'Which Node the npm commands below run on, from the four files that state one: engines.node in package.json, an .nvmrc beside it, the actions/setup-node steps below .github/workflows/, and the nodejs_version a DDEV project states. The composer half of that command list has had its interpreter in this answer all along and the npm half had none, while a version difference between the machine and CI is what a build breaks on. Null where this repository has no package.json and nothing states a Node anywhere, which is a repository with no npm surface to run.',
+                'description' => 'Which Node the npm commands below run on, from the four files that state one: engines.node in a package.json, an .nvmrc beside it, the actions/setup-node steps below .github/workflows/, and the nodejs_version a DDEV project states. The composer half of that command list has had its interpreter in this answer all along and the npm half had none, while a version difference between the machine and CI is what a build breaks on. The first two are read wherever this repository keeps its manifest — at the root, and in Build/ where the frontend build sits one directory down, which is the layout the core has — and enginesIn and nvmrcIn name the file each came from. Null where this repository has no package.json anywhere and nothing states a Node, which is a repository with no npm surface to run.',
                 'properties' => [
-                    'engines' => Schema::nullableString('What package.json requires of Node in engines.node, as spelled. A range: it says which versions are admitted, never which one a command is executed on. Null where the manifest states none, which is the ordinary case.'),
+                    'engines' => Schema::nullableString('What package.json requires of Node in engines.node, as spelled. A range: it says which versions are admitted, never which one a command is executed on. Null where no manifest here states one, which is the ordinary case.'),
+                    'enginesIn' => Schema::nullableString('The manifest that stated it, relative to the project root: package.json, or Build/package.json in a repository laid out the way the core is. Null where engines is.'),
                     'nvmrc' => Schema::nullableString('What the .nvmrc beside it says, as spelled. The closest thing here to what a developer actually runs, because a version manager reads that file and selects it. An alias like lts/iron is kept and not resolved — what it names is a list nvm downloads, not anything in this repository. Null where there is no such file.'),
+                    'nvmrcIn' => Schema::nullableString('The .nvmrc that said it, relative to the project root — .nvmrc, or Build/.nvmrc beside the manifest there. Null where nvmrc is.'),
                     'environment' => Schema::nullableString('The Node the environment states, which for DDEV is nodejs_version. Null is not "none": a project that states none gets the default of the installed DDEV, which is not in these files and changes from one release to the next. Also null where the environment is not DDEV, or where there is no environment at all.'),
                     'ci' => Schema::listOf(Schema::object([
                         'workflow' => Schema::string('The workflow file, relative to the project root.'),
@@ -100,7 +102,7 @@ final class ProjectDescribe extends ReadOnlyTool
                         'description' => 'How those numbers stand to each other, in the same three words phpRelation uses. Null where neither .nvmrc nor engines.node names a version this will read — there is then nothing this repository declares to hold the others against, and the numbers above still stand.',
                         'properties' => [
                             'declared' => Schema::string('The Node this repository declares for itself, and what the other two are held against.'),
-                            'declaredBy' => ['type' => 'string', 'enum' => ['.nvmrc', 'package.json'], 'description' => 'Which file that came from. .nvmrc wins where both state one: the pin is what a version manager selects and therefore what a run is executed on, while engines.node is a range and only its lowest version could be compared.'],
+                            'declaredBy' => Schema::string('Which file that came from, relative to the project root — the nvmrcIn or the enginesIn above. The .nvmrc wins where both state one: the pin is what a version manager selects and therefore what a run is executed on, while engines.node is a range and only its lowest version could be compared.'),
                             'nvmrcAgainstEngines' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the pin sits against the lowest version engines.node admits. below: the pinned Node is one this package says it does not run on. Null where either is absent or spelled in a way this will not read.'],
                             'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::BELOW, Project::SAME, Project::ABOVE, null], 'description' => 'Where the Node the environment states sits against declared. Null where no environment states one.'],
                             'ci' => Schema::nullableString('The Node the workflows set up, where they all state the same one. Null where none states a version outright, or where they disagree — which of them applies is then the workflow\'s own condition, and ci above carries each statement.'),
@@ -109,7 +111,7 @@ final class ProjectDescribe extends ReadOnlyTool
                         'required' => ['declared', 'declaredBy', 'nvmrcAgainstEngines', 'inEnvironment', 'ci', 'inCi'],
                     ],
                 ],
-                'required' => ['engines', 'nvmrc', 'environment', 'ci', 'relation'],
+                'required' => ['engines', 'enginesIn', 'nvmrc', 'nvmrcIn', 'environment', 'ci', 'relation'],
             ],
             'environment' => [
                 'type' => ['object', 'null'],
@@ -148,8 +150,8 @@ final class ProjectDescribe extends ReadOnlyTool
                 'languages' => Schema::listOf(Schema::string()),
             ], ['identifier', 'base', 'rootPageId', 'sets', 'languages'])),
             'commands' => Schema::listOf(Schema::object([
-                'command' => Schema::string('As this repository declares it. Where environment is not null, it is run inside that environment rather than in the caller\'s shell.'),
-                'source' => Schema::string('composer.json or package.json.'),
+                'command' => Schema::string('As this repository declares it, run from the project root. Where environment is not null, it is run inside that environment rather than in the caller\'s shell. An npm script declared below the root carries the --prefix that points npm at the manifest declaring it, so two manifests with a build script are two commands you can tell apart.'),
+                'source' => Schema::string('The manifest declaring it, relative to the project root: composer.json, package.json, or Build/package.json where the repository keeps its frontend build one directory down.'),
                 'declares' => Schema::string('The body the manifest declares for it, lines joined with &&.'),
                 'runs' => ['type' => 'string', 'enum' => ['check', 'change', 'unknown'], 'description' => 'What running it does to the sources, read off the body rather than by running it. check: it reports and hands the code back as it was, so a task told not to change files can run it — it may still write a cache of its own. change: it rewrites something. unknown: the body does not say, which is what a test suite is, because it runs the project\'s own code.'],
             ], ['command', 'source', 'declares', 'runs']), 'What this repository declares. A check that is not here does not exist here.'),
@@ -562,7 +564,7 @@ final class ProjectDescribe extends ReadOnlyTool
      * this repository has no npm surface at all, which is the one case where a
      * silence about Node says something rather than hiding it.
      *
-     * @param array{engines: ?string, nvmrc: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null $node
+     * @param array{engines: ?string, enginesIn: ?string, nvmrc: ?string, nvmrcIn: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null}|null $node
      * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      * @return array<int, string>
      */
@@ -574,25 +576,28 @@ final class ProjectDescribe extends ReadOnlyTool
 
         $relation = $node['relation'];
         $sentences = [$relation === null
-            ? self::undeclaredNode($node['engines'], $node['nvmrc'])
+            ? self::undeclaredNode($node)
             : sprintf(
                 'The Node those npm commands run on. This repository declares %s, in %s.',
                 $relation['declared'],
                 $relation['declaredBy'],
             )];
 
-        if ($relation !== null && $relation['declaredBy'] === '.nvmrc' && $node['engines'] !== null) {
+        if ($relation !== null && $relation['declaredBy'] === $node['nvmrcIn'] && $node['engines'] !== null) {
+            $manifest = (string) $node['enginesIn'];
             $sentences[] = match ($relation['nvmrcAgainstEngines']) {
-                Project::SAME => sprintf('Its package.json admits %s, which that pin is the lowest version of.', $node['engines']),
-                Project::ABOVE => sprintf('Its package.json admits %s, and the pin sits above the lowest version of that.', $node['engines']),
+                Project::SAME => sprintf('Its %s admits %s, which that pin is the lowest version of.', $manifest, $node['engines']),
+                Project::ABOVE => sprintf('Its %s admits %s, and the pin sits above the lowest version of that.', $manifest, $node['engines']),
                 Project::BELOW => sprintf(
-                    'Its package.json admits %s, which the pin is below — the version a machine here selects is one '
-                        . 'this package says it does not run on.',
+                    'Its %s admits %s, which the pin is below — the version a machine here selects is one this '
+                        . 'package says it does not run on.',
+                    $manifest,
                     $node['engines'],
                 ),
                 default => sprintf(
-                    'Its package.json admits %s, in a spelling this will not read a lowest version out of, so the two '
-                        . 'are not held against each other.',
+                    'Its %s admits %s, in a spelling this will not read a lowest version out of, so the two are not '
+                        . 'held against each other.',
+                    $manifest,
                     $node['engines'],
                 ),
             };
@@ -653,21 +658,24 @@ final class ProjectDescribe extends ReadOnlyTool
      *
      * Two states wear one sentence otherwise: a repository that states nothing,
      * and one that states `lts/iron` or a range whose lowest version this will
-     * not claim to read. The second is where the caller has something to open.
+     * not claim to read. The second is where the caller has something to open,
+     * so each file is named where it sits.
+     *
+     * @param array{engines: ?string, enginesIn: ?string, nvmrc: ?string, nvmrcIn: ?string, environment: ?string, ci: array<int, array{workflow: string, from: string, states: string, version: ?string}>, relation: array{declared: string, declaredBy: string, nvmrcAgainstEngines: ?string, inEnvironment: ?string, ci: ?string, inCi: ?string}|null} $node
      */
-    private static function undeclaredNode(?string $engines, ?string $nvmrc): string
+    private static function undeclaredNode(array $node): string
     {
         $stated = [];
-        if ($nvmrc !== null) {
-            $stated[] = 'its .nvmrc says ' . $nvmrc;
+        if ($node['nvmrc'] !== null) {
+            $stated[] = sprintf('its %s says %s', (string) $node['nvmrcIn'], $node['nvmrc']);
         }
-        if ($engines !== null) {
-            $stated[] = 'its package.json admits ' . $engines;
+        if ($node['engines'] !== null) {
+            $stated[] = sprintf('its %s admits %s', (string) $node['enginesIn'], $node['engines']);
         }
 
         return $stated === []
-            ? 'Nothing here declares which Node those npm commands run on: package.json states no engines.node and '
-                . 'there is no .nvmrc beside it, so what runs them is whatever node is on the path.'
+            ? 'Nothing here declares which Node those npm commands run on: no package.json here states an '
+                . 'engines.node and there is no .nvmrc beside one, so what runs them is whatever node is on the path.'
             : sprintf(
                 'Nothing here declares which Node those npm commands run on in a spelling this will read as a '
                     . 'version: %s, and what either of those resolves to is decided outside this repository.',

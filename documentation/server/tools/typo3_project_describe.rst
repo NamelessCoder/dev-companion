@@ -7,33 +7,37 @@ Describe the repository this server was started in and the TYPO3 installation it
 has made: its TYPO3 and PHP constraints, including the PHP floor the installed
 core requires and not only the one this project declares, the extensions that
 are its own rather than TYPO3's, the sites it configures with the site sets each
-depends on, and the commands it declares in composer.json and package.json —
-each marked a check that hands the code back as it was, a change that rewrites
-something, or unknown where the declared body does not say. Read from files
-only, no console and no database, so it answers on a fresh clone as well. Before
-composer install has run it says so in installed, and only four fields wait for
-that install: the TYPO3 version, the PHP floor the core requires, the PHP bound
-Composer wrote into the install, and the extension list. It states how those PHP
-numbers stand to each other, which none of them says alone: whether the floor
-this project declares clears what the installed core requires, and whether
-anything configured here ever runs that floor or only some higher version inside
-the range. It also says whether the interpreter that would run the commands
-below clears the bound at all. Under it every one of them aborts in Composer's
-platform check before its own tool starts, which is what marking a command a
-check never said. It also names the environment the repository configures to run
-itself in: a DDEV project states the PHP its container runs, which is a
-different interpreter from the caller's shell and where the commands below are
-run, plus what that environment runs without being asked — each hook as the
-stage it fires at and the command it runs, and the pull recipes its database and
-files come from. Where the repository declares npm commands it answers the same
-question for Node: what package.json admits in engines.node, what an .nvmrc
-pins, what an actions/setup-node step below .github/workflows/ sets up, what a
-DDEV project states as its nodejs_version, and how those stand to each other. A
-version one of them names outright is read; one a matrix or another file decides
-is handed back as the workflow states it, unresolved. Call it before booting
-such a project or before recommending or running a check — these are the
-commands that exist in this repository, and the ones marked check are what a
-task told not to change files may run. Answers from: packages.
+depends on, and the commands it declares in composer.json and in every
+package.json it has, the Build/package.json a repository keeps its frontend
+build in included — each marked a check that hands the code back as it was, a
+change that rewrites something, or unknown where the declared body does not say.
+Read from files only, no console and no database, so it answers on a fresh clone
+as well. Before composer install has run it says so in installed, and only four
+fields wait for that install: the TYPO3 version, the PHP floor the core
+requires, the PHP bound Composer wrote into the install, and the extension list.
+It states how those PHP numbers stand to each other, which none of them says
+alone: whether the floor this project declares clears what the installed core
+requires, and whether anything configured here ever runs that floor or only some
+higher version inside the range. It also says whether the interpreter that would
+run the commands below clears the bound at all. Under it every one of them
+aborts in Composer's platform check before its own tool starts, which is what
+marking a command a check never said. It also names the environment the
+repository configures to run itself in: a DDEV project states the PHP its
+container runs, which is a different interpreter from the caller's shell and
+where the commands below are run, plus what that environment runs without being
+asked — each hook as the stage it fires at and the command it runs, and the pull
+recipes its database and files come from. Where the repository declares npm
+commands it answers the same question for Node: what the package.json declaring
+them admits in engines.node, what the .nvmrc beside it pins, what an
+actions/setup-node step below .github/workflows/ sets up, what a DDEV project
+states as its nodejs_version, and how those stand to each other. Each of the
+first two is named with the file it came from, because the manifest is in Build/
+in a repository laid out the way the core is. A version one of them names
+outright is read; one a matrix or another file decides is handed back as the
+workflow states it, unresolved. Call it before booting such a project or before
+recommending or running a check — these are the commands that exist in this
+repository, and the ones marked check are what a task told not to change files
+may run. Answers from: packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -135,24 +139,34 @@ Answers with
       # is the interpreter and nothing here reads it.
       environmentAgainstBound: string or null
     # Which Node the npm commands below run on, from the four files that state one:
-    # engines.node in package.json, an .nvmrc beside it, the actions/setup-node
+    # engines.node in a package.json, an .nvmrc beside it, the actions/setup-node
     # steps below .github/workflows/, and the nodejs_version a DDEV project states.
     # The composer half of that command list has had its interpreter in this answer
     # all along and the npm half had none, while a version difference between the
-    # machine and CI is what a build breaks on. Null where this repository has no
-    # package.json and nothing states a Node anywhere, which is a repository with no
-    # npm surface to run.
+    # machine and CI is what a build breaks on. The first two are read wherever this
+    # repository keeps its manifest — at the root, and in Build/ where the
+    # frontend build sits one directory down, which is the layout the core has —
+    # and enginesIn and nvmrcIn name the file each came from. Null where this
+    # repository has no package.json anywhere and nothing states a Node, which is a
+    # repository with no npm surface to run.
     node:  # optional
       # What package.json requires of Node in engines.node, as spelled. A range: it
       # says which versions are admitted, never which one a command is executed on.
-      # Null where the manifest states none, which is the ordinary case.
+      # Null where no manifest here states one, which is the ordinary case.
       engines: string or null
+      # The manifest that stated it, relative to the project root: package.json, or
+      # Build/package.json in a repository laid out the way the core is. Null where
+      # engines is.
+      enginesIn: string or null
       # What the .nvmrc beside it says, as spelled. The closest thing here to what a
       # developer actually runs, because a version manager reads that file and
       # selects it. An alias like lts/iron is kept and not resolved — what it
       # names is a list nvm downloads, not anything in this repository. Null where
       # there is no such file.
       nvmrc: string or null
+      # The .nvmrc that said it, relative to the project root — .nvmrc, or
+      # Build/.nvmrc beside the manifest there. Null where nvmrc is.
+      nvmrcIn: string or null
       # The Node the environment states, which for DDEV is nodejs_version. Null is
       # not "none": a project that states none gets the default of the installed
       # DDEV, which is not in these files and changes from one release to the next.
@@ -186,10 +200,10 @@ Answers with
         # The Node this repository declares for itself, and what the other two are
         # held against.
         declared: string
-        # One of: .nvmrc, package.json. Which file that came from. .nvmrc wins where
-        # both state one: the pin is what a version manager selects and therefore
-        # what a run is executed on, while engines.node is a range and only its
-        # lowest version could be compared.
+        # Which file that came from, relative to the project root — the nvmrcIn or
+        # the enginesIn above. The .nvmrc wins where both state one: the pin is what
+        # a version manager selects and therefore what a run is executed on, while
+        # engines.node is a range and only its lowest version could be compared.
         declaredBy: string
         # One of: below, same, above, null. Where the pin sits against the lowest
         # version engines.node admits. below: the pinned Node is one this package
@@ -302,10 +316,15 @@ Answers with
         languages: [string]
     # What this repository declares. A check that is not here does not exist here.
     commands:  # optional
-      - # As this repository declares it. Where environment is not null, it is run
-        # inside that environment rather than in the caller's shell.
+      - # As this repository declares it, run from the project root. Where
+        # environment is not null, it is run inside that environment rather than in
+        # the caller's shell. An npm script declared below the root carries the
+        # --prefix that points npm at the manifest declaring it, so two manifests
+        # with a build script are two commands you can tell apart.
         command: string
-        # composer.json or package.json.
+        # The manifest declaring it, relative to the project root: composer.json,
+        # package.json, or Build/package.json where the repository keeps its
+        # frontend build one directory down.
         source: string
         # The body the manifest declares for it, lines joined with &&.
         declares: string

@@ -252,6 +252,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-094`][D-KNW-094] — How a variable reaches a console command in the container is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-095`][D-KNW-095] — The installation procedure is a document and the hints keep the facts · 2026-08-18
 - [`D-KNW-096`][D-KNW-096] — How a package fills a fresh instance is a gap this server owns · 2026-08-18
+- [`D-KNW-097`][D-KNW-097] — Which site a request matches when two bases collide is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -340,6 +341,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-094]: knowledge/knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md
 [D-KNW-095]: knowledge/knw-095-the-installation-procedure-is-a-document-and-the-hints-keep-the-facts.md
 [D-KNW-096]: knowledge/knw-096-how-a-package-fills-a-fresh-instance-is-a-gap-this-server-owns.md
+[D-KNW-097]: knowledge/knw-097-which-site-a-request-matches-when-two-bases-collide-is-a-gap-this-server-owns.md
 [D-KNW-080]: knowledge/knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knowledge/knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knowledge/knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

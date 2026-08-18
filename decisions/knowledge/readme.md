@@ -21,6 +21,7 @@ one is added.
 - [`D-KNW-094`][D-KNW-094] — How a variable reaches a console command in the container is a gap this server owns · 2026-08-18 · confirmed
 - [`D-KNW-095`][D-KNW-095] — The installation procedure is a document and the hints keep the facts · 2026-08-18
 - [`D-KNW-096`][D-KNW-096] — How a package fills a fresh instance is a gap this server owns · 2026-08-18
+- [`D-KNW-097`][D-KNW-097] — Which site a request matches when two bases collide is a gap this server owns · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
 - [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
@@ -109,6 +110,7 @@ one is added.
 [D-KNW-094]: knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md
 [D-KNW-095]: knw-095-the-installation-procedure-is-a-document-and-the-hints-keep-the-facts.md
 [D-KNW-096]: knw-096-how-a-package-fills-a-fresh-instance-is-a-gap-this-server-owns.md
+[D-KNW-097]: knw-097-which-site-a-request-matches-when-two-bases-collide-is-a-gap-this-server-owns.md
 [D-KNW-080]: knw-080-the-impexp-export-hint-is-corrected-against-a-run-of-the-command-it-prescribes.md
 [D-KNW-081]: knw-081-what-a-new-placeholder-may-contain-in-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-082]: knw-082-a-content-element-names-its-template-and-the-ctype-derivation-is-theme-caminos.md

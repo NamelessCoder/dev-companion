@@ -2,6 +2,8 @@
 
 **Serves:** tests/
 **Priority:** low
+**Branch:** todo/a-routing-assertion-accepts-the-sentence-that-disowns-the-tool
+**Claimed:** 2026-08-18
 
 `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder` asserts a
 routing by finding the tool's name anywhere in `SKILL.md`, with `strpos`. A

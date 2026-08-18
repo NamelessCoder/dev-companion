@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212538-no-skill-owns-the-project-as-a-deliverable-or.md
 **Priority:** normal
+**Branch:** todo/publish-the-distribution-content-skill
+**Claimed:** 2026-08-18
 
 `skills/typo3-distribution-content/` is written and declares itself a draft, so
 no client has it and the feedback it answers is still open. What publication

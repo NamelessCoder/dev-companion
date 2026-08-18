@@ -44,3 +44,13 @@ First, treat "a core checkout with several branches is present" as a first-class
 Second, the entry price. Since the deferred-schema mechanism is already reported, the point specific to this session is what a caller sees before paying it: nothing in the task text said "TYPO3 knowledge server". If the routing table's "Starting work on a TYPO3 major you have not built on recently ... before asking what a version changed → typo3_changelog_lookup" were reachable without a schema fetch, that one line would have caught this session — it describes it precisely.
 
 Concretely for the covered topics: typo3_changelog_lookup is the tool this task should have used and did not, and the reason is discoverability rather than capability.
+
+Trimmed on 2026-08-18 of the first suggestion. The reading it asks for was
+written the same day as `typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed`,
+which names the invocations rather than describing them — `git show <branch>:<path>`,
+`git grep` for a member, and the diff between the two branches — and says where
+the installed copy spells the path the other way; `knowledge/server-scope.json`
+routes a package writing against a major it does not have to it. Which branches
+are checked out stays outside, because `doesNotCover` says this server never
+runs git. What is left is the second suggestion, and
+`feedback/2026-08-18-113308` keeps the card for it.

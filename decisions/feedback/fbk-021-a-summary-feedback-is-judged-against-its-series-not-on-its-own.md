@@ -351,3 +351,66 @@ the instrument, and the pairs it names are the only measurement anybody has of
 which question yields what. Two of them are already
 [`D-FBK-047`](fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md)'s,
 which is why that entry carries the clauses and this one carries the mapping.
+
+## Since then
+
+An eighth summary was judged by the mapping on 2026-08-18, and its orphaned half
+leaves the series rather than staying in it. `feedback/2026-08-18-080710` is a
+whole session in `/home/benji/projects/blog` — the `[blog.isPost()]` TypoScript
+conditions of `ext:blog` repaired on TYPO3 v14 while they had to keep working on
+v13 — and the number it reports is zero: not one call to this server in the
+work, with `typo3_server_scope` and `typo3_feedback_list` called afterwards for
+the debrief. Seven of its eight halves land on reports from the same directory,
+five of them from the same twelve minutes:
+
+| Half of the summary                                             | Where it is                                              |
+| --------------------------------------------------------------- | --------------------------------------------------------- |
+| the checkout won on the merits, and `doesNotCover` "PHP source as code" says so | `080743`, the same session's strength report |
+| every tool arrived deferred, so a first call costs two round trips | `074627`, judged in [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md) |
+| nothing in the task named a subject the server advertises loudly  | `080630`, on the upgrade skill's description, and `081159` on when a skill is matched |
+| middleware order and the moment a superglobal is populated, assumed uncovered and never asked | `081228`, which asks for that document by stage and by major |
+| running the other declared major, and proving the verdict against a frontend | `081129` and `081100`                                     |
+| the guides list was never rendered to the session                 | archived `074226`                                          |
+| the report's own observation was cut at 4000 characters           | `080803`                                                   |
+| `typo3_changelog_lookup` is the call it would make next time, on discoverability | `113308`, in `/home/benji/projects/bootstrap_package` |
+
+**A session that made no call is evidence about the entry surface, and about no
+answer below it.** Every rung of the ladder under that surface needs a call to
+have been made, so a zero-call report leaves them untested rather than passed —
+which is what keeps this one from being read as a lookup that answered badly.
+The two halves it does carry are both above the line: the boundary the session
+read and agreed with, which is
+[`D-FBK-018`](fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)'s
+shape and `080743`'s subject, and the price of the first call.
+
+The orphan is the ladder's step 2. The line the feedback names as the one that
+would have caught it — `routing`, starting work on a major you have not built on
+recently, before asking what a version changed — has stood in
+`knowledge/server-scope.json` since `2acd8e4d` on 2026-07-29, and it is
+reachable only through `typo3_server_scope`, which is a call. The channel that
+survives schema deferral is the `instructions`, and `D-SKL-060` left the
+question of what they should name to `113308` on purpose. So the half travels
+there rather than to a card of its own, and the corpus behind that card is now
+two directories and two task shapes.
+
+The feedback's first suggestion is answered and was trimmed. It asks for the git
+invocation that settles a cross-major question to be named in an answer instead
+of described, which is what
+[`a-declared-major-that-is-not-installed`](../../knowledge/documents/extension/compatibility/a-declared-major-that-is-not-installed.md)
+does — written at 13:16 the same day, six hours after the session, and routed to
+from `knowledge/server-scope.json`. Which branches a caller has checked out
+stays outside, because `doesNotCover` says this server never runs git.
+
+Nothing is missing from the corpus either, and the probe is later than the
+session again. `bin/cli hints:probe` on the task's own words returns
+`typoscript-conditions` at `appliesTo(20) + text(180)`, a hint written on
+2026-08-18 in `899dbdbb` and `3b7a0939`.
+
+No todo is derived. The card in `todo/progress/` is deleted by this commit and
+`todo/open/2026-08-18-113308` names both feedback in its `Serves:` line, which
+is
+[`D-FBK-040`](fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md)
+rather than the `waiting/` the first three summaries went to. The feedback stays
+open behind it: what it reports is still there, and archiving is what tells its
+author otherwise —
+[`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md).

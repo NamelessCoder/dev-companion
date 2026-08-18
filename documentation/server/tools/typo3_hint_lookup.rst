@@ -42,6 +42,11 @@ Takes
     targetVersion: string  # optional
     # Maximum number of hints.
     limit: integer  # optional
+    # Ask for the index of neighbouring ids on a call that names an id. It is
+    # withheld there by default: a caller naming an id has already chosen, and the
+    # list was two thirds of what such an answer carried. A call that matches by
+    # paths or task carries it either way, and so does an id that matched nothing.
+    availableHints: boolean  # optional
 
 Answers with
 ------------
@@ -119,15 +124,21 @@ Answers with
             scope: string or null
     # The hints that exist in the searched domains, minus the ones returned above,
     # closest first: what the limit cut stands before what matched too little to
-    # return. Carried on every answer rather than on an empty one: a query that
-    # matched three hints about something else is where naming an id is worth most.
-    # An id lookup lists what stands beside the hint it returned.
+    # return. That order is the matcher's, so it holds where a query was matched —
+    # which is every call except one that names an id. An id that matched nothing
+    # lists every id there is, in corpus order. An id that matched carries this
+    # empty unless the call asked for it, and availableHintsWithheld says how many
+    # were left out.
     availableHints:
       - # Ask for this hint outright by passing it as id.
         id: string
         title: string
         # PHP, TypeScript, JavaScript, CSS, or General.
         category: string
+    # How many neighbouring ids were left out of availableHints. Non-zero only on a
+    # call that named an id and matched one without asking for the index; pass
+    # availableHints true to receive them.
+    availableHintsWithheld: integer
     # Knowledge documents declaring themselves the long form of a hint above. A hint
     # is the convention in short; the document is the same subject at length, and
     # where it hands over a file it is the file itself.
@@ -859,6 +870,7 @@ Data:
                 "category": "PHP"
             }
         ],
+        "availableHintsWithheld": 0,
         "documents": []
     }
 
@@ -1368,6 +1380,7 @@ Data:
                 "category": "Backend CSS"
             }
         ],
+        "availableHintsWithheld": 0,
         "documents": []
     }
 
@@ -1978,5 +1991,6 @@ Data:
                 "category": "PHP"
             }
         ],
+        "availableHintsWithheld": 0,
         "documents": []
     }

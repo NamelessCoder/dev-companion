@@ -178,7 +178,7 @@ final class MatchedHints
      * What the groups of one call found, as the one answer the payload is.
      *
      * @param array<int, array{scope: Scope, paths: array<int, string>, result: array<string, mixed>}> $found
-     * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, domains: array<int, string>, withheldCategories: array<int, string>}
+     * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, availableHintsWithheld: int, domains: array<int, string>, withheldCategories: array<int, string>}
      */
     public static function merged(array $found): array
     {
@@ -186,7 +186,9 @@ final class MatchedHints
         $available = [];
         $domains = [];
         $withheld = [];
+        $withheldIndex = 0;
         foreach ($found as $group) {
+            $withheldIndex = max($withheldIndex, (int) ($group['result']['availableHintsWithheld'] ?? 0));
             foreach ($group['result']['matchedHints'] as $hint) {
                 $matched[$hint['id']] ??= $hint;
             }
@@ -203,6 +205,10 @@ final class MatchedHints
             // core path matched is in the answer, and the extension path's
             // index would otherwise offer it as something still to ask for.
             'availableHints' => array_values(array_diff_key($available, $matched)),
+            // The largest of the groups rather than their sum: an id call
+            // withholds the same neighbours in every group it is asked in, so
+            // adding them up would count one list several times over.
+            'availableHintsWithheld' => $withheldIndex,
             'domains' => array_values(array_unique($domains)),
             'withheldCategories' => array_values(array_unique($withheld)),
         ];

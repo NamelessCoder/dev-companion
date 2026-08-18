@@ -53,6 +53,7 @@ final class HintLookup extends ReadOnlyTool
                 'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer lists the ids it did not return, so a subject a query missed can be requested by name rather than guessed at in other words.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". Statements that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration; where there is neither, nothing is filtered and every statement carries the versions it holds for.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::MAX_HINTS, 'default' => 6, 'description' => 'Maximum number of hints.'],
+                'availableHints' => ['type' => 'boolean', 'default' => false, 'description' => 'Ask for the index of neighbouring ids on a call that names an id. It is withheld there by default: a caller naming an id has already chosen, and the list was two thirds of what such an answer carried. A call that matches by paths or task carries it either way, and so does an id that matched nothing.'],
             ],
         ];
     }
@@ -68,12 +69,13 @@ final class HintLookup extends ReadOnlyTool
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are returned only where the task spells out a phrase one of them was indexed under and no hint inside them claims it, which is how a symptom reaches the layer that explains it.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
-            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above, closest first: what the limit cut stands before what matched too little to return. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
+            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above, closest first: what the limit cut stands before what matched too little to return. That order is the matcher\'s, so it holds where a query was matched — which is every call except one that names an id. An id that matched nothing lists every id there is, in corpus order. An id that matched carries this empty unless the call asked for it, and availableHintsWithheld says how many were left out.'),
+            'availableHintsWithheld' => ['type' => 'integer', 'description' => 'How many neighbouring ids were left out of availableHints. Non-zero only on a call that named an id and matched one without asking for the index; pass availableHints true to receive them.'],
             'documents' => Schema::listOf(Schema::object([
                 'uri' => Schema::string(),
                 'hint' => Schema::string('The returned hint this document is the long form of.'),
             ], ['uri', 'hint']), 'Knowledge documents declaring themselves the long form of a hint above. A hint is the convention in short; the document is the same subject at length, and where it hands over a file it is the file itself.'),
-        ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints', 'documents']);
+        ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints', 'availableHintsWithheld', 'documents']);
     }
 
     public static function answer(array $args): ToolResult
@@ -82,6 +84,7 @@ final class HintLookup extends ReadOnlyTool
         $task = isset($args['task']) ? (string) $args['task'] : null;
         $limit = (int) ($args['limit'] ?? 6);
         $id = isset($args['id']) ? trim((string) $args['id']) : '';
+        $index = (bool) ($args['availableHints'] ?? false);
         $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
         $target = Versions::target($stated);
         $targets = Versions::targets($stated);
@@ -97,7 +100,7 @@ final class HintLookup extends ReadOnlyTool
 
         $found = [];
         foreach ($groups as $group) {
-            $matched = Hints::find($group['paths'], $task ?? '', $limit, $id, $targets);
+            $matched = Hints::find($group['paths'], $task ?? '', $limit, $id, $targets, $index);
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $result = MatchedHints::merged($found);
@@ -224,6 +227,17 @@ final class HintLookup extends ReadOnlyTool
             }
         }
 
+        // What was left out is counted either way (`R-ANS-030`), because a
+        // caller cannot ask for a list it was never told about.
+        if ($result['availableHintsWithheld'] > 0) {
+            $lines[] = '';
+            $lines[] = sprintf(
+                '%d more hints stand beside this one in its domains. They are left out because you named an id '
+                . 'rather than searched; call again with availableHints true to list them.',
+                $result['availableHintsWithheld'],
+            );
+        }
+
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
@@ -234,6 +248,7 @@ final class HintLookup extends ReadOnlyTool
             'withheldCategories' => $result['withheldCategories'],
             'hints' => MatchedHints::records($result['matchedHints']),
             'availableHints' => $result['availableHints'],
+            'availableHintsWithheld' => $result['availableHintsWithheld'],
             'documents' => array_map(
                 static fn(string $documentId): array => [
                     'uri' => Documents::uri($documentId),

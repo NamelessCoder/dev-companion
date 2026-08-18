@@ -300,28 +300,44 @@ final class Hints
      *     matchedHints: array<int, array<string, mixed>>,
      *     domains: array<int, string>,
      *     withheldCategories: array<int, string>,
-     *     availableHints: array<int, array{id: string, title: string, category: string}>
+     *     availableHints: array<int, array{id: string, title: string, category: string}>,
+     *     availableHintsWithheld: int
      * }
      */
-    public static function find(array $paths, string $task, int $limit, ?string $id = null, int|array|null $target = null): array
+    public static function find(array $paths, string $task, int $limit, ?string $id = null, int|array|null $target = null, bool $index = true): array
     {
         $id = trim((string) $id);
         if ($id !== '') {
             $hint = self::byId($id, $target);
 
+            // A miss lists every id there is, because nothing narrows it and
+            // because a miss that says nothing cannot be told from a subject
+            // nobody wrote down — R-ANS-006, and not what the bound below is
+            // about.
+            if ($hint === null) {
+                return [
+                    'matchedHints' => [],
+                    'domains' => [],
+                    'withheldCategories' => [],
+                    'availableHints' => self::index(null, [], $target),
+                    'availableHintsWithheld' => 0,
+                ];
+            }
+
+            // A hit lists what stands beside the hint in its own domains, and
+            // that list is what 21 measured calls spent two thirds of their
+            // answer on. So it is withheld unless the caller asks, and the
+            // count is what says it was there — D-ANS-075.
+            $beside = self::index($hint['domains'], [$id], $target);
+
             return [
-                'matchedHints' => $hint === null ? [] : [$hint],
+                'matchedHints' => [$hint],
                 // Nothing was inferred from paths or a task, so nothing is
                 // claimed about them.
                 'domains' => [],
                 'withheldCategories' => [],
-                // A miss lists every id there is, because nothing narrows it.
-                // A hit lists what stands beside the hint in its own domains:
-                // an id is often the first id a caller learned, and the ones
-                // next to it are the rest of the subject it belongs to.
-                'availableHints' => $hint === null
-                    ? self::index(null, [], $target)
-                    : self::index($hint['domains'], [$id], $target),
+                'availableHints' => $index ? $beside : [],
+                'availableHintsWithheld' => $index ? 0 : count($beside),
             ];
         }
 
@@ -482,6 +498,10 @@ final class Hints
             // something else leaves it in exactly that position, without even
             // an empty result to read as an absence (`D-KNW-055`).
             'availableHints' => self::available($scored, $refused, $limit),
+            // Nothing is withheld from a query call: what it carries is the
+            // matcher's own ranking of what it just scored, which is the list
+            // D-ANS-075 was written for.
+            'availableHintsWithheld' => 0,
         ];
     }
 

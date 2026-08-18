@@ -157,3 +157,34 @@ which was a query call, and `2026-08-17-205945` names `typo3_task_guide`. The
 question goes up on
 `todo/waiting/2026-08-17-212300-availablehints-is-78-percent-of-everything-hint.md`,
 which prices four shapes and recommends one.
+
+**Answered on 2026-08-18** by the maintainer, and this entry's **Decided** is
+reversed on the id path: a call that names an id and matches one carries
+`availableHints` empty and `availableHintsWithheld` counting what was left out.
+A call that matches by paths or task is untouched, and so is an id that matched
+nothing — that list is `R-ANS-006`'s and was never what the measurement priced.
+
+The reading that produced the four shapes had one claim wrong, and the
+correction is in the feedback it was read from. This entry says nothing on
+record attributes a fetched id to an id call's index. `2026-08-17-212300` says
+in its own words that several of the ids it called with "came from
+availableHints arrays in earlier answers", and all 21 of that session's calls
+named an id — so the earlier answers were id calls, and the index did feed
+discovery there. What the same paragraph adds is the bound: "after the second or
+third, the caller has the list."
+
+So the suppression is not outright. `availableHints: true` is the way back,
+which is the fallback that report offered beside the suppression it asked for,
+and it leaves the route open for the session that used it. `R-ANS-030` is the
+shape it takes — a bound is asked for, and what was left out is counted either
+way — reflected: there the caller asks for less, here for more, and the count is
+what makes both askable.
+
+**Measured after the change**, on `id=events-extension-points` at
+`targetVersion=14.3`: the answer falls from 8,227 characters of text to 1,565
+and from 10,859 of structured payload to 1,843, with 93 neighbours counted
+rather than listed.
+
+**Wrong if** a session is handed the count, needs one of those 93, and does not
+ask — which would say the index had to be there rather than offered.
+

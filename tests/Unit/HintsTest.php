@@ -1837,6 +1837,42 @@ final class HintsTest extends TestCase
         self::assertContains('language-files', array_column($result['availableHints'], 'id'));
     }
 
+    /**
+     * The index an id call carried was two thirds of its answer, and the head
+     * of it was where the ids that session went around already stood.
+     *
+     * A miss is the other half of the same field and keeps everything: an id
+     * that matched nothing has to say what there would have been to find
+     * (`R-ANS-006`), and the bound below is not about that list.
+     */
+    #[Test]
+    public function anIdThatMatchedWithholdsItsNeighboursUntilTheyAreAskedFor(): void
+    {
+        $withheld = Registry::call('typo3_hint_lookup', ['id' => 'events-extension-points', 'targetVersion' => '14.3']);
+        self::assertSame([], $withheld->data['availableHints']);
+        self::assertGreaterThan(0, $withheld->data['availableHintsWithheld'], 'nothing was withheld to count');
+        // R-ANS-030: a caller cannot ask for a list it was never told about.
+        self::assertStringContainsString('availableHints true', $withheld->text);
+
+        $asked = Registry::call('typo3_hint_lookup', [
+            'id' => 'events-extension-points',
+            'targetVersion' => '14.3',
+            'availableHints' => true,
+        ]);
+        self::assertSame(0, $asked->data['availableHintsWithheld']);
+        self::assertCount($withheld->data['availableHintsWithheld'], $asked->data['availableHints']);
+        self::assertLessThan(
+            strlen($asked->text),
+            strlen($withheld->text),
+            'withholding the index did not make the answer smaller',
+        );
+
+        $miss = Registry::call('typo3_hint_lookup', ['id' => 'there-is-no-such-hint']);
+        self::assertSame([], $miss->data['hints']);
+        self::assertNotSame([], $miss->data['availableHints'], 'a miss stopped saying what there was to find');
+        self::assertSame(0, $miss->data['availableHintsWithheld']);
+    }
+
     #[Test]
     public function aMissNamesWhatThereWouldHaveBeenToFind(): void
     {

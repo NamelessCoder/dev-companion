@@ -100,13 +100,17 @@ declared.
    after such a command is for.
 3. **Install non-interactively.** The console's setup command answers its own
    questions from a fixed set of environment variables, and `typo3_hint_lookup`
-   with `id=environment-runtime-readers` names them. Ask
-   `typo3_documentation_lookup` for the options at the version installed, and
-   check two things in what it answers: the value a connection option accepts is
-   not necessarily the value written into the settings afterwards, and the
-   command refuses a database that already holds tables. The second is what
-   makes an install script re-runnable or not — it needs its own guard on what a
-   previous run left behind, and forcing the settings does not remove a schema.
+   with `id=environment-runtime-readers` names them. Its option set is read off
+   the installed console's own help, which is the binary the install runs
+   through. From 14 on that help reports an option as disabled where a package
+   it needs is inactive, and the one it reports that way is `--distribution`,
+   which step 4 reaches for. Ask `typo3_documentation_lookup` for what an option
+   means at the version installed, and check two things in what it answers: the
+   value a connection option accepts is not necessarily the value written into
+   the settings afterwards, and the command refuses a database that already
+   holds tables. The second is what makes an install script re-runnable or not —
+   it needs its own guard on what a previous run left behind, and forcing the
+   settings does not remove a schema.
 4. **Seed the content the package is to be developed against**, where the task
    needs one. `typo3_hint_lookup` owns this: `id=sitepackage-initial-content`
    for which of the two setup commands imports it and what makes a package count

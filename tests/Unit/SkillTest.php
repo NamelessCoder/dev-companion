@@ -3011,6 +3011,45 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * The install step asked the manual for the whole question, and a boot of a
+     * 14.3.6 installation ran the console's own help instead
+     * (`feedback/2026-08-18-070611`): `--distribution` came back marked as
+     * disabled, which
+     * `.checkouts/14.3/typo3/sysext/install/Classes/Command/SetupCommand.php:151`
+     * composes from whether the package that imports one is active, so it is a
+     * fact about that installation and no version-bound page carries it. Both
+     * halves are held here, because a step routed back to one source is what
+     * `D-SKL-057` split.
+     *
+     * The bound is held with them. `.checkouts/13.4` declares the option
+     * nowhere, so a caller there given it unbounded looks for an option its own
+     * help does not print.
+     */
+    #[Test]
+    public function theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-development-installation/SKILL.md',
+        ));
+
+        $console = strpos($skill, 'option set is read off the installed console');
+        self::assertNotFalse($console, 'the setup step reads its option set from somewhere other than the console');
+        self::assertStringContainsString('reports an option as disabled where a package it needs is inactive', $skill);
+        self::assertStringContainsString('From 14 on', $skill);
+        self::assertStringContainsString('`--distribution`', $skill);
+
+        // What the console's help does not print, kept where it was: the step
+        // that reads the option set off the binary still asks the manual what an
+        // option means.
+        self::assertNotFalse(
+            strpos($skill, 'typo3_documentation_lookup', $console),
+            'the setup step reads the option set off the console and asks the manual nothing',
+        );
+        self::assertStringContainsString('not necessarily the value written into the settings afterwards', $skill);
+        self::assertStringContainsString('refuses a database that already holds tables', $skill);
+    }
+
     #[Test]
     public function coreTestGuidanceIsGuardedByTheWorkAndNotByTheToolList(): void
     {

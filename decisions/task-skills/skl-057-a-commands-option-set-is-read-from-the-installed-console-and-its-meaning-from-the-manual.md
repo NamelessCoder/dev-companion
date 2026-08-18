@@ -104,3 +104,20 @@ differ by a package and no version-bound page can carry the difference.
   name the manual spells differently. The split would then be finer than two
   sources, and what the step owes is which one wins rather than which one is
   asked.
+
+## Covered by
+
+- `SkillTest::theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual`
+
+## Since then
+
+The sentence stands in step 3, and reading `.checkouts/13.4` while writing it
+made the version bound worth more than this entry states. That branch declares
+no `--distribution` on `setup` at all, so the option is missing there rather
+than merely unmarked, and a caller below 14 given it unbounded would look for
+one that is not in its help.
+
+That is also why the bound survives the authoring contract's ban on a version
+number in a skill body. What the ban keeps out is the version a step assumes
+about the installation, which is re-asked; a boundary in the past is the
+opposite, and `writing-a-skill.rst` now says so.

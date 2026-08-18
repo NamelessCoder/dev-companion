@@ -223,11 +223,18 @@ that drifts is always the one already published into somebody's project.
 dependency constraint, no backend markup, and no command the checkout has not
 been asked for. A version in a permanently loaded instruction is the one fact
 that cannot be re-asked when the installation turns out to be a different one,
-and no answer built on it ever says where it came from. The same holds for a
-package name: it is one word in a published file that no release of this server
-can correct, so it is written where a task reads it once — a reference — rather
-than where every task carries it. That one and an environment variable are the
-two kinds a body can be shown to carry, and
+and no answer built on it ever says where it came from. What that leaves is the
+version a step states as the **boundary of a property**, which the installation
+is not asked for: step 3 of ``typo3-development-installation`` says from which
+major the setup command reports an option as disabled, because unbounded that
+sentence sends a caller below it looking for an option that is not there
+(`D-SKL-057 <../../decisions/task-skills/skl-057-a-commands-option-set-is-read-from-the-installed-console-and-its-meaning-from-the-manual.md>`_).
+The guard reads a version out of ``TYPO3 <n>``, so which of the two a bare
+number is stays the author's, like a layout key. The same holds for a package
+name: it is one word in a published file that no release of this server can
+correct, so it is written where a task reads it once — a reference — rather than
+where every task carries it. That one and an environment variable are the two
+kinds a body can be shown to carry, and
 ``SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`` reads ``SKILL.md`` alone
 for them
 (`D-SKL-052 <../../decisions/task-skills/skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md>`_).

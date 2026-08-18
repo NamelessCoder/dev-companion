@@ -133,6 +133,9 @@ published skill nobody routes to is reachable by nobody.
 not why "prove a rendering change in the browser after fixing a frontend crash"
 named no document: measured on the same day, that task matches no intent at all,
 so no query is run over any corpus. `any/testing/browser-check` and
-`core/testing/proving-a-rendering` are the pages for it and no intent recognizes
-the work either belongs to, which is recognition rather than placement and is
-`todo/open/2026-08-18-092500-nothing-recognizes-looking-at-a-change-in-a-browser.md`.
+`core/testing/proving-a-rendering` are the pages for it and no intent recognized
+the work either belongs to, which is recognition rather than placement. That
+half was settled the same day:
+[`D-GUI-014`](gui-014-looking-at-a-change-is-an-intent-of-its-own.md) is the
+intent for looking, it names the browser page on both sides, and it leaves the
+probe page to the two skills that grant it.

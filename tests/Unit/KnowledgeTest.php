@@ -620,6 +620,7 @@ final class KnowledgeTest extends TestCase
             'icons' => 'Register an icon for the new record type',
             'tests' => 'Add test coverage for the new validator',
             'browser-tests' => 'Add a Playwright end-to-end spec for the login form',
+            'browser-check' => 'Look at the change in the browser on the installation that shows it',
             'coding-standards' => 'Set up php-cs-fixer with the TYPO3 coding standards',
             'submission' => 'Push the patch to Gerrit for review',
             'patch-checkout' => 'Check out the patch from review and see whether it still applies',

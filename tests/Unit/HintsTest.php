@@ -4896,6 +4896,57 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * Looking at a change is a kind of work of its own (`D-GUI-014`).
+     *
+     * Measured before the change: "prove a rendering change in the browser
+     * after fixing a frontend crash" — the task
+     * `feedback/2026-08-18-074226` finished without the page written for it —
+     * matched no intent at all, so the brief named no guide and no skill.
+     */
+    #[Test]
+    public function aBriefRecognizesLookingAtAChangeInABrowser(): void
+    {
+        $reported = Registry::call('typo3_task_guide', [
+            'task' => 'prove a rendering change in the browser after fixing a frontend crash',
+            'paths' => ['packages/blog/Resources/Private/Templates/Post/List.html'],
+        ]);
+
+        self::assertContains('browser-check', array_column($reported->data['intents'], 'id'));
+        self::assertSame(['any/testing/browser-check'], array_column($reported->data['guides'], 'id'));
+        // The page holds on both sides, so the core side names the same one:
+        // the session that wanted to see a backend CSS patch and told its
+        // reader five times that it could not was in a core checkout
+        // (`feedback/2026-08-10-182417`).
+        $core = Registry::call('typo3_task_guide', [
+            'task' => 'prove a rendering change in the browser after fixing a frontend crash',
+            'paths' => ['typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php'],
+        ]);
+
+        self::assertSame(['any/testing/browser-check'], array_column($core->data['guides'], 'id'));
+
+        // And a review is where that session was, so the intent changes nothing
+        // and keeps the page in a brief that changes nothing either.
+        $review = Registry::call('typo3_task_guide', [
+            'task' => 'review the backend css patch for sticky positioning, which I cannot judge visually',
+            'paths' => ['Build/Sources/Sass/component/module.scss'],
+            'changeType' => 'audit',
+        ]);
+
+        self::assertSame(['any/testing/browser-check'], array_column($review->data['guides'], 'id'));
+
+        // What it is not is the suite intent widened. Looking is the step
+        // before a spec, and the workflow that writes one is a whole test
+        // layer the session that only wants to see the change never asked for.
+        self::assertSame([], $reported->data['skills']);
+        $suite = Registry::call('typo3_task_guide', [
+            'task' => 'write playwright tests for the editor journey',
+            'paths' => ['packages/site/Tests/e2e/editor.spec.ts'],
+        ]);
+
+        self::assertNotContains('browser-check', array_column($suite->data['intents'], 'id'));
+    }
+
+    /**
      * A review request that names a change routes the review (`D-SKL-039`).
      *
      * Run on 2026-08-14, this named `typo3-core-patch-development`: "breaking"

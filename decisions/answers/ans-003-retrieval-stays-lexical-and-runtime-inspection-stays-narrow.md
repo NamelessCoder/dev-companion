@@ -222,3 +222,20 @@ which is what decides whether a forked `Login.html` overloads the core's
 `Login.fluid.html` at all. The **Wrong if** of that entry names the one thing
 that would bring this half back — a root path order that can only be read from
 the running installation.
+
+## Since then
+
+The runtime half was read a sixth time on 2026-08-18, and this is the first
+reading where the diagnosis was not completable from the caller's own checkout.
+`feedback/2026-08-18-074124` wrote against five core APIs in a package declaring
+`^13.4.15 || ^14.3 || 15.*.*@dev` with 14.3.6 installed, and the checkout it had
+was at the wrong major: it settled the 13.4 half by curling from
+raw.githubusercontent.com and then by installing a second core. So the **Wrong
+if** fired in the direction it names, and what the session supplies is not the
+boundary this entry refused. What was missing is a branch rather than a reader —
+another session the same day answered the same class of question at one
+`git show origin/13.4:<path>` per file from a checkout that carried it
+(`feedback/2026-08-18-080710`), and a third report of that session asks for the
+`doesNotCover` entry standing on this decision to stay exactly as firm as it is
+(`feedback/2026-08-18-080743`). The lever moved to `D-VER-007`, which is the
+procedure that names the reading and reads no core source here.

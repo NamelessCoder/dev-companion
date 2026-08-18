@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212702-an-agent-meeting-http-500-scrapes-the-exception.md
 **Priority:** normal
+**Branch:** todo/what-a-failing-installations-exception-is-read-from
+**Claimed:** 2026-08-18
 
 Establish what an agent whose site answers HTTP 500 can read the exception from,
 before a word of the hint is written: the default `LOG.writerConfiguration` and

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212800-four-commands-reported-success-while-doing.md
 **Priority:** normal
+**Branch:** todo/a-prescribed-command-carries-what-a-correct-result-looks-like
+**Claimed:** 2026-08-18
 
 Sweep `knowledge/hints/` for the statements that prescribe a command — 24 name a
 `typo3 <subject>:<verb>` one over 11 distinct commands, plus the `ddev`,

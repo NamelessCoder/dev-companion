@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-213027-three-published-skills-were-named-by-name-in-a.md
 **Priority:** normal
+**Branch:** todo/the-extension-crossings-are-written-at-the-moment-they-happen
+**Claimed:** 2026-08-18
 
 Write the crossings out of `typo3-content-element-development` as steps at the
 point each one happens, rather than as the closing sentence that names three

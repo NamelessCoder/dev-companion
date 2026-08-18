@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-213027-three-published-skills-were-named-by-name-in-a.md
 **Priority:** normal
+**Branch:** todo/the-absent-artifacts-name-the-skill-that-owns-them
+**Claimed:** 2026-08-18
 
 Name the owner beside each absence the `Ships:` line of `ExtensionDescribe`
 renders — `typo3-extension-documentation` where `manual` or `readme` is null,

@@ -124,6 +124,8 @@ The rules
   ``SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns``
 * It routes through the owners of its own facts, in the order it needs them —
   ``SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder``
+* A call it names in order not to make it is written as a discharge and routed
+  nowhere — ``SkillTest::everyDischargedCallIsWrittenAsOneAndRoutedNowhere``
 * Every reference is one hop away and loaded on demand —
   ``SkillTest::everyReferenceIsOneHopAwayAndLoadedOnDemand``
 * A skill that judges keeps its checklist beside it —
@@ -250,6 +252,18 @@ but this repository's own patterns.
 the order it needs them, recorded in the ``ROUTING_SKILLS`` map of
 ``SkillTest``. The four calls the base already fixes are deliberately absent
 from that list.
+
+**A call named in order not to make it is a discharge.** Where a step would
+prescribe a tool and something the session is already holding answers it, the
+step says so in one construct — the tool's own name, then ``is discharged by``,
+then what answers it instead — and the tool is recorded in ``DISCHARGED_TOOLS``
+rather than among the routings. A routing is asserted by finding the tool's name
+in the body, so any other wording of "you already have this" satisfies the
+routing rule while telling the caller the opposite; the construct is what the
+assertion skips and what the two lists are kept apart by
+(`D-SKL-055 <../../decisions/task-skills/skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md>`_).
+Discharging and routing are exclusive: a body that names the tool a second time
+is routing to what it has just discharged.
 
 **The page a step expects read whole.** Where a step describes a whole procedure
 and routes to a search for it, name the call that reads the page at that step:

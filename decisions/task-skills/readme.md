@@ -18,6 +18,7 @@ one is added.
 - [`D-SKL-052`][D-SKL-052] — The injected size of a skill is what the retention rule leaves · 2026-08-18
 - [`D-SKL-053`][D-SKL-053] — An absence in the extension answer names the skill that owns it · 2026-08-18
 - [`D-SKL-054`][D-SKL-054] — The listing budget is what a client reads, and a draft is not in it · 2026-08-18
+- [`D-SKL-055`][D-SKL-055] — A call a skill names in order not to make it is written as a discharge · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -70,6 +71,7 @@ one is added.
 [D-SKL-052]: skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md
 [D-SKL-053]: skl-053-an-absence-in-the-extension-answer-names-the-skill-that-owns-it.md
 [D-SKL-054]: skl-054-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md
+[D-SKL-055]: skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md
 [D-SKL-037]: skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

@@ -57,9 +57,7 @@ final class SkillTest extends TestCase
         ],
         // `typo3_server_scope` is not among them: the step that named it says
         // the call is discharged by the base's `typo3_project_describe`
-        // (`D-ANS-083`), and a routing listed here is asserted by finding the
-        // name in the file — which that sentence satisfies while telling the
-        // caller not to make the call.
+        // (`D-ANS-083`), which `DISCHARGED_TOOLS` below is where it is recorded.
         'typo3-development-installation' => [
             'typo3_documentation_lookup',
             'typo3_configuration_lookup',
@@ -128,6 +126,27 @@ final class SkillTest extends TestCase
             'typo3_configuration_lookup',
             'typo3_commit_message_guide',
         ],
+    ];
+
+    /**
+     * What a skill names in order *not* to call it, and the words it is written
+     * in. A routing is asserted by finding the tool's name in the body, so a
+     * sentence saying the call is already answered satisfies that assertion
+     * while telling the caller the opposite — which is why the discharge is a
+     * construct rather than a wording, and why a routing is the first mention
+     * outside one (`D-SKL-055`).
+     */
+    private const DISCHARGE = '` is discharged by';
+
+    /**
+     * Which tool each skill discharges, kept beside the routings because that
+     * is the list a mention cannot be on twice: a tool here is not among that
+     * skill's routings above, and is named nowhere else in its body.
+     *
+     * @var array<string, list<string>>
+     */
+    private const DISCHARGED_TOOLS = [
+        'typo3-development-installation' => ['typo3_server_scope'],
     ];
 
     /**
@@ -1702,13 +1721,20 @@ final class SkillTest extends TestCase
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
     {
         foreach (self::skills() as $name => $skill) {
-            $base = strpos($skill, '[references/base.md](references/base.md)');
+            $body = self::flat($skill);
+            $base = strpos($body, '[references/base.md](references/base.md)');
             self::assertNotFalse($base, $name . ' does not route through the base');
 
             $first = self::ROUTING_SKILLS[$name][0] ?? null;
             self::assertNotNull($first, $name . ' has no routing of its own recorded');
+            // The first routing and not the first mention: a step that
+            // discharges a call stands where a routing would, and taking it for
+            // one is what let the base be read as established by the sentence
+            // saying the base had already answered.
+            $routing = self::routing($body, $first);
+            self::assertNotFalse($routing, $name . ' routes to ' . $first . ' nowhere');
             self::assertLessThan(
-                strpos($skill, $first),
+                $routing,
                 $base,
                 $name . ' reaches for its own tools before the base is established',
             );
@@ -2372,11 +2398,14 @@ final class SkillTest extends TestCase
     public function everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder(): void
     {
         foreach (self::ROUTING_SKILLS as $name => $tools) {
-            $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
+            $skill = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
             $position = -1;
             foreach ($tools as $tool) {
-                $next = strpos($skill, $tool);
-                self::assertNotFalse($next, $tool . ' is not routed from ' . $name);
+                $next = self::routing($skill, $tool);
+                self::assertNotFalse(
+                    $next,
+                    $tool . ' is not routed from ' . $name . ', or is named there only to discharge the call',
+                );
                 self::assertGreaterThan($position, $next, $tool . ' is routed in the wrong order in ' . $name);
                 $position = $next;
             }
@@ -2384,29 +2413,49 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * The one tool a skill names in order not to call it, held as that rather
-     * than as a routing. `D-ANS-083` settled that a caller holding the
-     * unsupported answer already has what the orientation would add, and
-     * `73cff0ab` rewrote the step to say so — while the routing list went on
-     * naming the tool, which is asserted by finding its name in the file and so
-     * was satisfied by the very sentence telling the caller to skip it. Held on
-     * the count: routing it back is a second mention.
+     * A tool a skill names in order not to call it, held as that rather than as
+     * a routing — over the directory, so the next skill to discharge one is
+     * held without anybody having seen this.
+     *
+     * `D-ANS-083` settled that a caller holding the unsupported answer already
+     * has what the orientation would add, and `73cff0ab` rewrote
+     * `typo3-development-installation`'s step to say so — while `ROUTING_SKILLS`
+     * went on naming the tool, which is asserted by finding its name in the file
+     * and so was satisfied by the very sentence telling the caller to skip it.
+     * What separates the two is the construct and not the prose around it:
+     * a discharge names what answers instead, in the words `DISCHARGE` carries,
+     * and a routing is any other mention — `D-SKL-055`.
      */
     #[Test]
-    public function theInstallationSkillNamesTheScopeCallOnlyToDischargeIt(): void
+    public function everyDischargedCallIsWrittenAsOneAndRoutedNowhere(): void
     {
-        $skill = (string) file_get_contents(Paths::root() . '/skills/typo3-development-installation/SKILL.md');
+        foreach (self::skills() as $name => $skill) {
+            $body = self::flat($skill);
+            $discharged = self::DISCHARGED_TOOLS[$name] ?? [];
 
-        self::assertStringContainsString(
-            '`typo3_server_scope` is discharged by the base',
-            $skill,
-            'the step no longer says the orientation call is already answered',
-        );
-        self::assertSame(
-            1,
-            substr_count($skill, 'typo3_server_scope'),
-            'the tool is named a second time, which is a routing to what this step discharges',
-        );
+            // Both directions, so neither half can go stale on its own: a
+            // discharge nobody recorded is one the routing assertion can still
+            // be satisfied by, and a recorded one nobody wrote is a routing
+            // this test would then hold out of the skill for no reason.
+            preg_match_all('/`(typo3_\w+)' . preg_quote(self::DISCHARGE, '/') . '/', $body, $matches);
+            self::assertSame(
+                $discharged,
+                array_values(array_unique($matches[1])),
+                $name . ' discharges other calls than the ones recorded for it',
+            );
+
+            foreach ($discharged as $tool) {
+                self::assertNotContains(
+                    $tool,
+                    self::ROUTING_SKILLS[$name] ?? [],
+                    $name . ' routes to ' . $tool . ' and says in its body that the call is discharged',
+                );
+                self::assertFalse(
+                    self::routing($body, $tool),
+                    $name . ' names ' . $tool . ' a second time, which is a routing to what it discharges',
+                );
+            }
+        }
     }
 
     /**
@@ -3314,6 +3363,26 @@ final class SkillTest extends TestCase
         return (string) preg_replace('/\s+/', ' ', $skill);
     }
 
+
+    /**
+     * Where a skill routes to a tool: the first mention that is not the
+     * sentence discharging the call.
+     *
+     * The body is read flat, because what is skipped is a sentence and a rewrap
+     * moves its line break.
+     */
+    private static function routing(string $body, string $tool): int|false
+    {
+        $at = strpos($body, $tool);
+        while ($at !== false) {
+            if (!str_starts_with(substr($body, $at + strlen($tool)), self::DISCHARGE)) {
+                return $at;
+            }
+            $at = strpos($body, $tool, $at + 1);
+        }
+
+        return false;
+    }
 
     /**
      * Everything one skill installs into another project: its body and every

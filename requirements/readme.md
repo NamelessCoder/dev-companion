@@ -279,6 +279,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-GUI-011`][R-GUI-011] — A readiness answer names the classification it was not given · held
 - [`R-GUI-012`][R-GUI-012] — A brief names the hints it left behind · held
 - [`R-GUI-013`][R-GUI-013] — A brief names the guide the recognized work is written up in · held
+- [`R-GUI-014`][R-GUI-014] — A brief names the acts the workflow question is asked again at · held
 
 [R-GUI-001]: guides/gui-001-a-guides-checks-describe-the-draft-it-returned.md
 [R-GUI-002]: guides/gui-002-the-commit-rules-are-available-without-the-gerrit-trailers.md
@@ -293,6 +294,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-GUI-011]: guides/gui-011-a-readiness-answer-names-the-classification-it-was-not-given.md
 [R-GUI-012]: guides/gui-012-a-brief-names-the-hints-it-left-behind.md
 [R-GUI-013]: guides/gui-013-a-brief-names-the-guide-the-recognized-work-is-written-up-in.md
+[R-GUI-014]: guides/gui-014-a-brief-names-the-acts-the-workflow-question-is-asked-again-at.md
 
 ### feedback
 

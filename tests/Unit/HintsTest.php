@@ -5055,6 +5055,53 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * And the acts at which the same question is worth asking again
+     * (`D-SKL-062`).
+     *
+     * The reporting session opened with a German symptom report about two
+     * TypoScript conditions and went on to an API removal, two new test
+     * directories and the repository's own check suite, none of them named in
+     * that opening (`feedback/2026-08-18-081159`). Measured before the change,
+     * the brief for each of those sub-steps names the skill and the guide that
+     * own it — so what was missing is the moment, and the brief is where it is
+     * said, the `instructions` being 2038 characters of the 2048 a client keeps.
+     */
+    #[Test]
+    public function aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt(): void
+    {
+        $bugfix = Registry::call('typo3_task_guide', [
+            'task' => 'Fix the TypoScript conditions of the blog extension broken on TYPO3 v14',
+            'paths' => ['packages/blog/Classes/ExpressionLanguage/BlogVariableProvider.php'],
+            'changeType' => 'bugfix',
+        ]);
+
+        $when = array_column($bugfix->data['nextTools'], 'when', 'tool');
+        self::assertArrayHasKey('typo3_task_guide', $when);
+        foreach ([
+            'test directory',
+            'a check the repository declares',
+            'branch or commit',
+            'the documentation the package ships',
+        ] as $act) {
+            self::assertStringContainsString($act, $when['typo3_task_guide']);
+        }
+
+        // The session that reported it was in its own repository, and the acts
+        // are the caller's own rather than the core's, so the entry is not one
+        // of the steps a brief outside the core drops.
+        self::assertTrue(Scope::from($bugfix->data['scope'])->isOutsideTheCore());
+        self::assertStringContainsString('typo3_task_guide — again, where the work enters', $bugfix->text);
+
+        // And a brief for work that changes nothing keeps it: a review asked to
+        // make the change is the subject the opening did not name.
+        $review = Registry::call('typo3_task_guide', [
+            'task' => 'Review the blog extension for TYPO3 v14 readiness',
+            'changeType' => 'audit',
+        ]);
+        self::assertContains('typo3_task_guide', array_column($review->data['nextTools'], 'tool'));
+    }
+
+    /**
      * Looking at a change is a kind of work of its own (`D-GUI-014`).
      *
      * Measured before the change: "prove a rendering change in the browser

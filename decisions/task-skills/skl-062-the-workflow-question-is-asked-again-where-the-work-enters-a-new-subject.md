@@ -18,7 +18,7 @@ only one this server points at.
 
 - **The session.** `/home/benji/projects/blog` on 2026-08-18,
   `claude-opus-5[1m]`,
-  [`feedback/2026-08-18-081159`](../../feedback/2026-08-18-081159-skills-are-matched-once-against-the-opening.md).
+  [`feedback/2026-08-18-081159`](../../feedback/archive/2026-08-18-081159-skills-are-matched-once-against-the-opening.md).
   A German symptom report about two TypoScript conditions, one file selected in
   the editor. What followed was an API removal on a major, two new test
   directories, the repository's declared check suite, and a commit on a branch —
@@ -109,3 +109,33 @@ only one this server points at.
 - Sessions start calling the guide at every file they open. Then the moments
   were written as subjects after all, and what they cost is the round trips
   `D-FBK-027` weighs a tool against.
+
+## Covered by
+
+- `HintsTest::aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt`
+
+## Since then
+
+### 2026-08-18 — the placement is the brief, and the instructions are full
+
+**The sentence is a `nextTools` entry of `typo3_task_guide`, naming the tool
+again with the four acts as its `when`.** The three channels were weighed
+against what each costs and reaches today, and two of them lose:
+
+- The `instructions` are full. Measured in this worktree: 1830 characters
+  plain, 2038 in the case `ScopeTest::theInstructionsFitWhatAClientKeeps`
+  sizes them against — a caller that excluded every tool, in a project whose
+  skills are stale — of the 2048 a client keeps. A sentence there costs a
+  sentence that is already there, which is the trade `R-DIS-025` was the last
+  to make.
+- A `routing` entry reaches a session that called `typo3_server_scope`, and
+  that table is read at the opening if at all. `R-GUI-003` is the same finding
+  from the other side: the pointer to `typo3_commit_message_guide` stood in
+  the routing table, and the session wrote four commit messages hours later
+  out of the brief, which is why the brief carries it.
+
+**It is the same list the commit message pointer sits in**, unconditional and
+outside the core as readily as in it — the acts are the caller's own, so none of
+them is a step `Scope::isCoreOnly()` drops. What is not written is a second copy
+in the checklist: the checklist is the order of this task, and asking again is
+what happens when the task is no longer the one the brief was composed for.

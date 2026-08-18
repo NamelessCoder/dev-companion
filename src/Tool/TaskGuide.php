@@ -902,6 +902,13 @@ final class TaskGuide extends ReadOnlyTool
                 : 'typo3_commit_message_guide with workflow="core", before committing — the default is a '
                     . 'repository of your own and adds no Forge issue or release trailer';
         }
+        // This call again. It is made once, against the request, which is the
+        // moment least is known about the work — so what the brief adds is the
+        // acts to ask at, which are the caller's own and can be named without
+        // seeing the checkout (`D-SKL-062`).
+        $candidates[] = 'typo3_task_guide again, where the work enters a subject this task did not name — the '
+            . 'first file under a test directory, the first run of a check the repository declares, the first '
+            . 'branch or commit, the first edit to the documentation the package ships';
         if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }

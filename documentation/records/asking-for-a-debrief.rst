@@ -68,7 +68,9 @@ nobody rendered makes no call at all.
       so one that exists and stayed shut is a different finding from one that is
       not there.
     - Which tool calls the task actually needed, in the order you made them, and how
-      many round trips each answer cost. Name the ones you would not make again: a
+      many round trips each answer cost. Walk the whole list rather than the calls
+      you remember as notable; the ones that returned nothing are what memory drops.
+      Name the ones you would not make again: a
       lookup that returned nothing usable, one you had to repeat with different
       arguments to get an answer, one that only restated what the previous answer
       already said. Where several of them went into one question, say which single
@@ -105,7 +107,9 @@ nobody rendered makes no call at all.
       how to register it, the file and not what has to stand in it, the rule and not
       the case in front of you. Say which step you took yourself after reading it.
       That is a different finding from an answer that was missing, and you are the
-      only one who can tell the two apart.
+      only one who can tell the two apart. Read the answers again rather than
+      recalling them, and where one reported a gap about itself — a confidence it
+      qualified, a route it said it had none for — say whether you acted on it.
     - What you would have wanted from it: the one answer, tool or page that would
       have made this session shorter. Do not weigh it against what you take this
       server to be for — where its boundary runs is a question for the people

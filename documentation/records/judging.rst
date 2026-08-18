@@ -49,6 +49,12 @@ a report, and thirty out of one directory is a domain that has been asking for
 something since the first of them. ``D-FBK-025`` is the board that was judged
 card by card while the sideways reading nobody had made was the answer.
 
+What the counts are counting is sessions that were debriefed, not sessions that
+had something to report. A session files nothing unprompted
+(:doc:`asking-for-a-debrief`), so a subsystem with no feedback is a subsystem
+nobody was asked about as readily as one that works. Read the store for what a
+report says and for how many sessions say it; never for the silence around it.
+
 Strengths
 ---------
 

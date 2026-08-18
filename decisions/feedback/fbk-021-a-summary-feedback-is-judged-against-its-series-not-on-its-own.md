@@ -318,3 +318,36 @@ the reading the session drew across its three reports, and that reading is the
 one thing the siblings cannot carry, because each of them is one instance of it.
 The summary stays open behind it, which is `D-FBK-017`'s invariant with the card
 in `waiting/` rather than in `open/`.
+
+## Since then
+
+The first **Wrong if** fired on a seventh summary, and its orphaned half is a
+conclusion about the debrief rather than about the server.
+`feedback/2026-08-18-071603` is from a boot of the `t3g/blog` repository in
+`/home/benji/projects/blog`, and its subject is how its own siblings came to
+exist: which question of the debrief produced which finding. That makes the
+mapping unusually exact, because the feedback names the pairs itself:
+
+| Half of the summary                                              | Where it is                                               |
+| ---------------------------------------------------------------- | ---------------------------------------------------------- |
+| "which calls would you not make again" → the two `typo3_project_describe` answers | archived `070333`, judged in [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md) |
+| "which documents did you read whole" → the guides                  | archived `070538`, which names the page it wanted; its list-was-never-rendered half was trimmed on 2026-08-18 into [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md) and `074226` |
+| "what did you never put to it" → `typo3_extension_describe`       | archived `070611`, corrected and taken further by `071500`   |
+| "where did a name not mean what it said" → the `--create-site` tagging | archived `070632`                                        |
+| "what did it save you from" → the ddev restart for `additional.php` | archived `070515`                                          |
+| the undercount: five checkout calls, two of them empty, and the hint never fetched | `071500` and `071435`                       |
+| "are skills missing" → two installation intents, one skill         | `071526`                                                    |
+| "is documentation missing" → answered with nothing                 | nowhere, and deliberately: the session made no call it could report on |
+| feedback quality is a function of the debriefing, not of the session | nowhere else                                              |
+
+Eight of the nine rows land, five of them on siblings that were already
+archived. The ninth is the conclusion, and the ladder was walked over that row
+alone: it reaches step 1b, and it is
+[`D-FBK-048`](fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md).
+
+What this adds to the mechanism is that a summary can be evidence about the
+prompt that produced it. The other six report on the server; this one reports on
+the instrument, and the pairs it names are the only measurement anybody has of
+which question yields what. Two of them are already
+[`D-FBK-047`](fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md)'s,
+which is why that entry carries the clauses and this one carries the mapping.

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080630-typo3-extension-upgrade-describes-this-task.md
 **Priority:** normal
+**Branch:** todo/typo3-extension-upgrade-describes-this-task
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 as the ladder's step 3 and written up in `D-SKL-061`: the
 words that would have matched are in the description already, and the clause

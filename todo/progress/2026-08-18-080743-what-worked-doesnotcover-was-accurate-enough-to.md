@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080743-what-worked-doesnotcover-was-accurate-enough-to.md
 **Priority:** low
+**Branch:** todo/what-worked-doesnotcover-was-accurate-enough-to
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

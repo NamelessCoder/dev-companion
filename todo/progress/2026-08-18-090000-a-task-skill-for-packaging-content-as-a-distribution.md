@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212538-no-skill-owns-the-project-as-a-deliverable-or.md
 **Priority:** normal
+**Branch:** todo/a-task-skill-for-packaging-content-as-a-distribution
+**Claimed:** 2026-08-18
 
 Read the producing side of a distribution artifact before a line of the skill is
 written, because nothing here has established it: make an installation with

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212538-no-skill-owns-the-project-as-a-deliverable-or.md
 **Priority:** normal
+**Branch:** todo/a-compound-brief-routes-to-every-unit-it-names
+**Claimed:** 2026-08-18
 
 Establish why `typo3_task_guide`, given a brief whose three units are a
 development installation, a sitepackage with custom content elements and a

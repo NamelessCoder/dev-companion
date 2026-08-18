@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-17-212152-the-decisions-that-cannot-be-revised-are-all.md
 **Priority:** normal
+**Branch:** todo/the-decisions-that-cannot-be-revised-are-all
+**Claimed:** 2026-08-18
 
 Step 3 on `D-SKL-047`: step 1 of `typo3-development-installation` sends the
 caller to the manual and to the installer package the manifest has not installed

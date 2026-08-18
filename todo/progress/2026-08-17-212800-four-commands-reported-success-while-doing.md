@@ -1,7 +1,9 @@
-# both skills together cost 4,235 tokens and routed correctly — a counter-example in the same sessi...
+# four commands reported success while doing nothing in one session, so a procedural hint owes the ...
 
-**Serves:** feedback/2026-08-17-212600-both-skills-together-cost-4-235-tokens-and.md
+**Serves:** feedback/2026-08-17-212800-four-commands-reported-success-while-doing.md
 **Priority:** low
+**Branch:** todo/four-commands-reported-success-while-doing
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# four commands reported success while doing nothing in one session, so a procedural hint owes the ...
+# three published skills were named by name in a handoff I read and none activated, and a human the...
 
-**Serves:** feedback/2026-08-17-212800-four-commands-reported-success-while-doing.md
+**Serves:** feedback/2026-08-17-213027-three-published-skills-were-named-by-name-in-a.md
 **Priority:** low
+**Branch:** todo/three-published-skills-were-named-by-name-in-a
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

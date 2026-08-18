@@ -13,7 +13,7 @@ than TYPO3's, the sites it configures with the sets they depend on, and the
 commands it declares.
 
 No console, no database, so it answers on a fresh clone — before
-`composer install` as well, where the three fields that are read out of the
+`composer install` as well, where the four fields that are read out of the
 installed tree wait for it and the answer says which state it is in.
 
 ## From

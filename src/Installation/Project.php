@@ -20,10 +20,11 @@ use TYPO3\DevCompanion\Knowledge\Versions;
  * here is worse than no check.
  *
  * Files only. No console, no database, nothing started — the same rule the rest
- * of this server follows, and the reason this works on a fresh clone. Three
+ * of this server follows, and the reason this works on a fresh clone. Four
  * fields are the exception and wait for the install: the TYPO3 version, the PHP
- * the installed core requires, and the extensions, which are Composer's
- * metadata rather than anything the manifest declares.
+ * the installed core requires, the PHP the install as a whole is bounded at, and
+ * the extensions, which are Composer's metadata rather than anything the
+ * manifest declares.
  */
 final class Project
 {
@@ -103,7 +104,8 @@ final class Project
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
      *     corePhpConstraint: ?string,
-     *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null,
+     *     installedPhpBound: ?string,
+     *     phpRelation: array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null,
      *     environment: array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
@@ -122,12 +124,13 @@ final class Project
         $manifest = self::json($root . '/composer.json');
         $php = self::requirement($manifest, 'php');
         $corePhp = self::corePhpConstraint();
+        $bound = Instance::installedPhpBound($root);
         $environment = self::environment($root);
 
         return [
             'root' => $root,
             'kind' => $project['kind'],
-            // The three fields below that read the installed tree answer null
+            // The four fields below that read the installed tree answer null
             // and empty here, and none of them says on its own that nothing is
             // installed rather than that there was nothing to find (`D-ANS-085`).
             'installed' => Instance::packages() !== [],
@@ -135,7 +138,8 @@ final class Project
             'phpConstraint' => $php,
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),
             'corePhpConstraint' => $corePhp,
-            'phpRelation' => self::phpRelation($php, $corePhp, $environment['php'] ?? null),
+            'installedPhpBound' => $bound,
+            'phpRelation' => self::phpRelation($php, $corePhp, $environment['php'] ?? null, $bound),
             'environment' => $environment,
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
@@ -839,29 +843,53 @@ final class Project
     }
 
     /**
-     * How the three PHP numbers beside it stand to each other.
+     * How the four PHP numbers beside it stand to each other.
      *
-     * Two comparisons, both against what this project declares, because that is
-     * what a manifest can be rewritten to (`D-ANS-082`). Nothing was run to find
-     * either out — this is what the files say, never evidence that the floor
-     * works. Null where the declared constraint names no floor.
+     * The first two comparisons are against what this project declares, because
+     * that is what a manifest can be rewritten to (`D-ANS-082`). The third is
+     * against the bound instead, because that one is not a declaration at all:
+     * it is the line the declared commands abort on, and what decides whether
+     * they abort is the interpreter that would run them (`D-ANS-086`). Nothing
+     * was run to find any of it out — this is what the files say, never evidence
+     * that the floor works. Null where the declared constraint names no floor.
      *
-     * @return array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null
+     * @return array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null
      */
-    private static function phpRelation(?string $declared, ?string $core, ?string $environment): ?array
+    private static function phpRelation(?string $declared, ?string $core, ?string $environment, ?string $bound): ?array
     {
         $floor = Versions::floor($declared);
         if ($floor === null) {
             return null;
         }
         $coreFloor = Versions::floor($core);
+        // The bound is an exact version and a DDEV php_version is major.minor,
+        // so both are read to the depth the shallower one has.
+        $boundFloor = Versions::floor($bound);
 
         return [
             'floor' => $floor,
             'coreFloor' => $coreFloor,
             'againstCore' => $coreFloor === null ? null : self::sits($floor, $coreFloor),
             'inEnvironment' => $environment === null ? null : self::sits($environment, $floor),
+            'bound' => $boundFloor,
+            'environmentAgainstBound' => self::againstBound($environment, $bound),
         ];
+    }
+
+    /**
+     * Where the interpreter that would run the declared commands sits against
+     * the bound the install carries, or null where either is missing.
+     *
+     * Public because the answer states this twice and may compute it once: the
+     * relation belongs among the numbers, and whether a command starts belongs
+     * beside the commands — which is also stated where no declared floor left a
+     * `phpRelation` to carry it.
+     */
+    public static function againstBound(?string $environment, ?string $bound): ?string
+    {
+        $boundFloor = Versions::floor($bound);
+
+        return $boundFloor === null || $environment === null ? null : self::sits($environment, $boundFloor);
     }
 
     /** Where one `major.minor` sits against another. */

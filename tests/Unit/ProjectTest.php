@@ -265,6 +265,8 @@ final class ProjectTest extends TestCase
             'coreFloor' => '8.2',
             'againstCore' => Project::PHP_ABOVE,
             'inEnvironment' => Project::PHP_ABOVE,
+            'bound' => null,
+            'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
 
         $text = Registry::call('typo3_project_describe', [])->text;
@@ -297,6 +299,8 @@ final class ProjectTest extends TestCase
             'coreFloor' => '8.2',
             'againstCore' => Project::PHP_SAME,
             'inEnvironment' => Project::PHP_SAME,
+            'bound' => null,
+            'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
 
         $text = Registry::call('typo3_project_describe', [])->text;
@@ -324,6 +328,8 @@ final class ProjectTest extends TestCase
             'coreFloor' => '8.2',
             'againstCore' => Project::PHP_BELOW,
             'inEnvironment' => Project::PHP_BELOW,
+            'bound' => null,
+            'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
 
         $text = Registry::call('typo3_project_describe', [])->text;
@@ -362,11 +368,105 @@ final class ProjectTest extends TestCase
             'coreFloor' => null,
             'againstCore' => null,
             'inEnvironment' => null,
+            'bound' => null,
+            'environmentAgainstBound' => null,
         ], Project::describe()['phpRelation']);
 
         $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('no second floor to hold that against', $text);
         self::assertStringContainsString('No environment here states a PHP', $text);
+    }
+
+    #[Test]
+    public function aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt(): void
+    {
+        // The shape feedback/2026-08-18-113412 reported: a `cgl:ci` marked a
+        // check a review may run, aborting in the platform check before the
+        // fixer started, because a package installed for development alone
+        // requires a PHP the interpreter in front of it does not have. What
+        // runs says about the sources; this says whether it gets that far
+        // (D-ANS-086).
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->manifest($root, [
+            'require' => ['php' => '^8.2'],
+            'scripts' => ['cgl:ci' => 'php-cs-fixer fix --dry-run'],
+        ]);
+        $this->declare($root . '/.ddev/config.yaml', "name: sitepackage\ntype: typo3\nphp_version: \"8.3\"\n");
+        $this->installedRequiring($root, 80400);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertSame('8.4.0', $project['installedPhpBound']);
+        self::assertSame('8.4', $project['phpRelation']['bound']);
+        self::assertSame(Project::PHP_BELOW, $project['phpRelation']['environmentAgainstBound']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('The install itself is bounded at 8.4.0, over the 8.3', $text);
+        self::assertStringContainsString('They do not start there', $text);
+        self::assertStringContainsString('composer/platform_check.php', $text);
+    }
+
+    #[Test]
+    public function aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut(): void
+    {
+        // Stated for the reason every other number here is stated where nothing
+        // is wrong: an answer that goes quiet when the commands start cannot be
+        // told from one that never read the check.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->manifest($root, ['require' => ['php' => '^8.2'], 'scripts' => ['cgl:ci' => 'php-cs-fixer check']]);
+        $this->declare($root . '/.ddev/config.yaml', "name: sitepackage\ntype: typo3\nphp_version: \"8.4\"\n");
+        $this->installedRequiring($root, 80400);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            Project::PHP_SAME,
+            Project::describe()['phpRelation']['environmentAgainstBound'],
+        );
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('which the 8.4 the environment runs clears', $text);
+        self::assertStringContainsString('nothing in that check stops them', $text);
+    }
+
+    #[Test]
+    public function whereNothingConfiguresAnEnvironmentTheBoundIsStatedAndNoInterpreterIsGuessed(): void
+    {
+        // The commands run in the caller's shell, and this server does not read
+        // that shell: it is not the process this answer is composed in, and a
+        // version named from here would be the one failure the bound is
+        // reported against (D-ANS-086). So the bound is stated and the one
+        // command that settles it is named.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->manifest($root, ['require' => ['php' => '^8.2'], 'scripts' => ['cgl:ci' => 'php-cs-fixer check']]);
+        $this->installedRequiring($root, 80400);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertSame('8.4.0', $project['installedPhpBound']);
+        self::assertNull($project['phpRelation']['environmentAgainstBound']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('"php -v" there is what says whether it clears the bound', $text);
+        self::assertStringNotContainsString(PHP_VERSION, $text, 'no interpreter on this machine was read');
+    }
+
+    #[Test]
+    public function anInstallThatBoundsNothingIsSaidToBoundNothing(): void
+    {
+        // Composer leaves the file out where nothing requires a PHP version and
+        // deletes it where platform-check is off, so absent has to read as no
+        // bound rather than as none found.
+        $root = $this->composerProject('vendor', '14.3.6');
+        $this->manifest($root, ['require' => ['php' => '^8.2'], 'scripts' => ['cgl:ci' => 'php-cs-fixer check']]);
+        Instance::discoverFrom($root);
+
+        self::assertNull(Project::describe()['installedPhpBound']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('Nothing here bounds the interpreter', $text);
+        self::assertStringNotContainsString('They do not start', $text);
     }
 
     #[Test]

@@ -65,6 +65,13 @@ could be read for it.
 - Rejected: judging whether deferring a check to CI hides something, which the
   feedback also asks for. That is a judgement about one change, and what this
   server can supply is the fact the judgement is made on.
+- Where the repository configures no environment, the answer states the bound
+  and names `php -v` as what settles it against. No interpreter is discovered:
+  the shell a declared command runs in is the caller's own, and the process this
+  answer is composed in is not it — a version read from here would be the wrong
+  claim in exactly the case the bound is reported for. `Typo3Cli` does search
+  for one, for a boot this server performs itself, which is the other question.
+  It is also what `R-PRJ-001` asks, and the answer stays readable from files.
 
 ## Assumed
 
@@ -89,3 +96,8 @@ could be read for it.
   this did not read, or the binary carries a requirement Composer never wrote
   into the check. The claim would then be one the file cannot carry, and what is
   left is naming the bound without saying which commands clear it.
+- The repositories this happens in declare no PHP floor of their own. The bound
+  is stated either way and the text relates it to the environment either way,
+  but `phpRelation` is withheld whole where no floor was read (`R-PRJ-010`), so
+  a client reading the data alone would get the number and not the standing.
+  What is left then is relating the bound outside that object.

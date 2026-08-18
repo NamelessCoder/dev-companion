@@ -11,20 +11,24 @@ depends on, and the commands it declares in composer.json and package.json —
 each marked a check that hands the code back as it was, a change that rewrites
 something, or unknown where the declared body does not say. Read from files
 only, no console and no database, so it answers on a fresh clone as well. Before
-composer install has run it says so in installed, and only three fields wait for
-that install: the TYPO3 version, the PHP floor the core requires, and the
-extension list. It states how those PHP numbers stand to each other, which none
-of them says alone: whether the floor this project declares clears what the
-installed core requires, and whether anything configured here ever runs that
-floor or only some higher version inside the range. It also names the
-environment the repository configures to run itself in: a DDEV project states
-the PHP its container runs, which is a different interpreter from the caller's
-shell and where the commands below are run, plus what that environment runs
-without being asked — each hook as the stage it fires at and the command it
-runs, and the pull recipes its database and files come from. Call it before
-booting such a project or before recommending or running a check — these are the
-commands that exist in this repository, and the ones marked check are what a
-task told not to change files may run. Answers from: packages.
+composer install has run it says so in installed, and only four fields wait for
+that install: the TYPO3 version, the PHP floor the core requires, the PHP bound
+Composer wrote into the install, and the extension list. It states how those PHP
+numbers stand to each other, which none of them says alone: whether the floor
+this project declares clears what the installed core requires, and whether
+anything configured here ever runs that floor or only some higher version inside
+the range. It also says whether the interpreter that would run the commands
+below clears the bound at all. Under it every one of them aborts in Composer's
+platform check before its own tool starts, which is what marking a command a
+check never said. It also names the environment the repository configures to run
+itself in: a DDEV project states the PHP its container runs, which is a
+different interpreter from the caller's shell and where the commands below are
+run, plus what that environment runs without being asked — each hook as the
+stage it fires at and the command it runs, and the pull recipes its database and
+files come from. Call it before booting such a project or before recommending or
+running a check — these are the commands that exist in this repository, and the
+ones marked check are what a task told not to change files may run. Answers
+from: packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -49,10 +53,10 @@ Answers with
     # Whether the packages this repository declares are installed below it. False is
     # a clone nobody has run composer install in, which is the state a boot or an
     # installation task starts in — everything else here is read from the
-    # repository's own files and answers either way. What false costs is the three
-    # fields that come out of the installed tree: typo3Version and corePhpConstraint
-    # are null and extensions is empty, and none of the three tells you that on its
-    # own.
+    # repository's own files and answers either way. What false costs is the four
+    # fields that come out of the installed tree: typo3Version, corePhpConstraint
+    # and installedPhpBound are null and extensions is empty, and none of the four
+    # tells you that on its own.
     installed: boolean  # optional
     # The TYPO3 version installed here, read from the core package. Null where
     # nothing is installed yet, which installed is what says.
@@ -69,13 +73,26 @@ Answers with
     # v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was
     # found to read.
     corePhpConstraint: string or null  # optional
-    # How the three PHP numbers above stand to each other, which none of them says
-    # on its own. Derived from the constraints and the environment as the files
-    # spell them — nothing was executed on any of these versions, so this is what
-    # the project claims and not evidence that any of it works. Null where
+    # The lowest PHP the packages installed below this root accept, read out of
+    # composer/platform_check.php below the vendor directory this project declares.
+    # The one number here that is not a declaration: composer install writes it over
+    # every package it installed and the autoloader includes it, so an interpreter
+    # under it aborts there before any command's own tool starts — which is what
+    # the commands list, marking what each one does to the sources, says nothing
+    # about. No manifest field carries it, and a fixer required for development
+    # alone raises it above everything this project itself declares. Null means no
+    # bound: Composer leaves the file out where nothing requires a PHP version and
+    # deletes it where platform-check is off, and null is also what nothing
+    # installed yet answers, which installed is what says.
+    installedPhpBound: string or null  # optional
+    # How the four PHP numbers above stand to each other, which none of them says on
+    # its own. Derived from the constraints, the bound and the environment as the
+    # files spell them — nothing was executed on any of these versions, so this is
+    # what the project claims and not evidence that any of it works. Null where
     # phpConstraint names no floor: the project requires no PHP, or spells it in a
     # way this will not claim to read, and a constraint it cannot read costs this
-    # object rather than buying a wrong relation.
+    # object rather than buying a wrong relation. installedPhpBound stands on its
+    # own either way.
     phpRelation:  # optional
       # The lowest PHP phpConstraint admits, as major.minor. What the project
       # promises to run on, and the number its own commands are worth holding
@@ -99,6 +116,19 @@ Answers with
       # compared, so a version over what the constraint's own upper bound allows
       # reads here like one inside it.
       inEnvironment: string or null
+      # installedPhpBound as major.minor, which is the depth the environment states
+      # its own version at. Null where the install bounds nothing.
+      bound: string or null
+      # One of: below, same, above, null. Where the PHP environment.php states sits
+      # against bound — the only one of these three that says whether a command
+      # runs at all rather than what it would run on. below: every command in the
+      # list below aborts in Composer's platform check before its own tool starts,
+      # whatever runs says about it, and the check has to be run somewhere else.
+      # same or above: nothing in that file stops them. Null where there is no bound
+      # to clear, or no environment stating the version that would clear it — and
+      # where this repository configures no environment, the shell you run them in
+      # is the interpreter and nothing here reads it.
+      environmentAgainstBound: string or null
     # The environment this repository configures to run itself in, read from that
     # environment's own files. Null means nothing here configures one that this
     # server reads — .ddev/config.yaml and TYPO3_DEV_COMPANION_CONSOLE are what it
@@ -257,7 +287,7 @@ The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-19 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -288,7 +318,7 @@ Text:
 
     <installation> — core-checkout, TYPO3 14.3.7-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
-    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
+    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
     Extensions: none beyond TYPO3's own.
 
@@ -330,11 +360,14 @@ Data:
         "phpConstraint": "^8.2",
         "coreConstraint": null,
         "corePhpConstraint": "^8.2",
+        "installedPhpBound": null,
         "phpRelation": {
             "floor": "8.2",
             "coreFloor": "8.2",
             "againstCore": "same",
-            "inEnvironment": null
+            "inEnvironment": null,
+            "bound": null,
+            "environmentAgainstBound": null
         },
         "environment": null,
         "extensions": [],
@@ -440,7 +473,7 @@ Text:
 
     <installation> — composer-project, TYPO3 14.3.0, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
-    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
+    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
     Extensions that are not TYPO3's own:
     - acme_events (project) — packages/acme_events
@@ -483,11 +516,14 @@ Data:
         "phpConstraint": "^8.2",
         "coreConstraint": "^14.3",
         "corePhpConstraint": "^8.2",
+        "installedPhpBound": null,
         "phpRelation": {
             "floor": "8.2",
             "coreFloor": "8.2",
             "againstCore": "same",
-            "inEnvironment": null
+            "inEnvironment": null,
+            "bound": null,
+            "environmentAgainstBound": null
         },
         "environment": null,
         "extensions": [

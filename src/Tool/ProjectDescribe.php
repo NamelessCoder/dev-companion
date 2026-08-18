@@ -33,9 +33,9 @@ final class ProjectDescribe extends ReadOnlyTool
      */
     private const NOTHING_INSTALLED = 'Nothing is installed below this root yet: no Composer metadata under the '
         . 'vendor directory it declares. So this is what the repository declares and not what is running — the '
-        . 'TYPO3 version, the PHP floor the installed core requires and the extension list are read out of the '
-        . 'installed tree and arrive once composer install has run. Everything else here is read from the files as '
-        . 'they stand.';
+        . 'TYPO3 version, the PHP floor the installed core requires, the PHP the install is bounded at and the '
+        . 'extension list are read out of the installed tree and arrive once composer install has run. Everything '
+        . 'else here is read from the files as they stand.';
 
     public static function name(): string
     {
@@ -50,7 +50,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only three fields wait for that install: the TYPO3 version, the PHP floor the core requires, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -63,21 +63,24 @@ final class ProjectDescribe extends ReadOnlyTool
         return Schema::installationAnswer([
             'root' => Schema::nullableString('Absolute path of the repository this describes. Null when no project root was found to describe.'),
             'kind' => Schema::string('core-checkout or composer-project. What the root declares itself to be, not whether anything is installed in it — installed says that.'),
-            'installed' => ['type' => 'boolean', 'description' => 'Whether the packages this repository declares are installed below it. False is a clone nobody has run composer install in, which is the state a boot or an installation task starts in — everything else here is read from the repository\'s own files and answers either way. What false costs is the three fields that come out of the installed tree: typo3Version and corePhpConstraint are null and extensions is empty, and none of the three tells you that on its own.'],
+            'installed' => ['type' => 'boolean', 'description' => 'Whether the packages this repository declares are installed below it. False is a clone nobody has run composer install in, which is the state a boot or an installation task starts in — everything else here is read from the repository\'s own files and answers either way. What false costs is the four fields that come out of the installed tree: typo3Version, corePhpConstraint and installedPhpBound are null and extensions is empty, and none of the four tells you that on its own.'],
             'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package. Null where nothing is installed yet, which installed is what says.'),
             'phpConstraint' => Schema::nullableString('What composer.json requires of PHP. What the project declares, not what runs it — see environment.'),
             'coreConstraint' => Schema::nullableString('What it requires of typo3/cms-core.'),
             'corePhpConstraint' => Schema::nullableString('What the installed typo3/cms-core requires of PHP, out of that package\'s own composer.json — the lowest a package here may declare it supports. Neither of the other two PHP numbers: not what this project declares, and not what environment.php runs. Not derivable from the TYPO3 major either — v13.4 and v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was found to read.'),
+            'installedPhpBound' => Schema::nullableString('The lowest PHP the packages installed below this root accept, read out of composer/platform_check.php below the vendor directory this project declares. The one number here that is not a declaration: composer install writes it over every package it installed and the autoloader includes it, so an interpreter under it aborts there before any command\'s own tool starts — which is what the commands list, marking what each one does to the sources, says nothing about. No manifest field carries it, and a fixer required for development alone raises it above everything this project itself declares. Null means no bound: Composer leaves the file out where nothing requires a PHP version and deletes it where platform-check is off, and null is also what nothing installed yet answers, which installed is what says.'),
             'phpRelation' => [
                 'type' => ['object', 'null'],
-                'description' => 'How the three PHP numbers above stand to each other, which none of them says on its own. Derived from the constraints and the environment as the files spell them — nothing was executed on any of these versions, so this is what the project claims and not evidence that any of it works. Null where phpConstraint names no floor: the project requires no PHP, or spells it in a way this will not claim to read, and a constraint it cannot read costs this object rather than buying a wrong relation.',
+                'description' => 'How the four PHP numbers above stand to each other, which none of them says on its own. Derived from the constraints, the bound and the environment as the files spell them — nothing was executed on any of these versions, so this is what the project claims and not evidence that any of it works. Null where phpConstraint names no floor: the project requires no PHP, or spells it in a way this will not claim to read, and a constraint it cannot read costs this object rather than buying a wrong relation. installedPhpBound stands on its own either way.',
                 'properties' => [
                     'floor' => Schema::string('The lowest PHP phpConstraint admits, as major.minor. What the project promises to run on, and the number its own commands are worth holding against.'),
                     'coreFloor' => Schema::nullableString('The same, read off corePhpConstraint. Null where no core package was found to read one from.'),
                     'againstCore' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where floor sits against coreFloor. below: the project declares support for a PHP its own installed core refuses, so the promise cannot be kept. same: it declares what the core requires. above: it declares more than the core needs, which is a range the project narrowed itself and can widen without touching a dependency. Null where coreFloor is.'],
                     'inEnvironment' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where the PHP environment.php states sits against floor. same: the declared floor is the version the commands are run on. above: the environment runs higher, so the floor is a version nothing configured here ever executes — a claim no check tests. below: the environment runs a PHP the project says it does not support. Null where there is no environment or it states no version. Only the floors are compared, so a version over what the constraint\'s own upper bound allows reads here like one inside it.'],
+                    'bound' => Schema::nullableString('installedPhpBound as major.minor, which is the depth the environment states its own version at. Null where the install bounds nothing.'),
+                    'environmentAgainstBound' => ['type' => ['string', 'null'], 'enum' => [Project::PHP_BELOW, Project::PHP_SAME, Project::PHP_ABOVE, null], 'description' => 'Where the PHP environment.php states sits against bound — the only one of these three that says whether a command runs at all rather than what it would run on. below: every command in the list below aborts in Composer\'s platform check before its own tool starts, whatever runs says about it, and the check has to be run somewhere else. same or above: nothing in that file stops them. Null where there is no bound to clear, or no environment stating the version that would clear it — and where this repository configures no environment, the shell you run them in is the interpreter and nothing here reads it.'],
                 ],
-                'required' => ['floor', 'coreFloor', 'againstCore', 'inEnvironment'],
+                'required' => ['floor', 'coreFloor', 'againstCore', 'inEnvironment', 'bound', 'environmentAgainstBound'],
             ],
             'environment' => [
                 'type' => ['object', 'null'],
@@ -158,7 +161,7 @@ final class ProjectDescribe extends ReadOnlyTool
             $lines[] = self::NOTHING_INSTALLED;
         }
 
-        $relation = self::relation($project['phpRelation'], $project['environment']);
+        $relation = self::relation($project['phpRelation'], $project['environment'], $project['installedPhpBound']);
         if ($relation !== '') {
             $lines[] = '';
             $lines[] = $relation;
@@ -204,7 +207,7 @@ final class ProjectDescribe extends ReadOnlyTool
                 . 'not to change files can run the checks and nothing else. A check may still write a cache of '
                 . 'its own; what it does not do is hand the code back different.';
         if ($project['commands'] !== []) {
-            $lines[] = self::whereTheyRun($project['environment']);
+            $lines[] = self::whereTheyRun($project['environment'], $project['installedPhpBound']);
         }
         foreach ($project['commands'] as $command) {
             $lines[] = sprintf(
@@ -358,10 +361,10 @@ final class ProjectDescribe extends ReadOnlyTool
      * it repeats the project's own: a line the answer drops when nothing is
      * wrong cannot be told from one it never computed.
      *
-     * @param array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string}|null $relation
+     * @param array{floor: string, coreFloor: ?string, againstCore: ?string, inEnvironment: ?string, bound: ?string, environmentAgainstBound: ?string}|null $relation
      * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
-    private static function relation(?array $relation, ?array $environment): string
+    private static function relation(?array $relation, ?array $environment, ?string $bound): string
     {
         if ($relation === null) {
             return '';
@@ -402,6 +405,28 @@ final class ProjectDescribe extends ReadOnlyTool
             default => 'No environment here states a PHP, so there is nothing to say which of the versions in that '
                 . 'range gets run.',
         };
+        $sentences[] = match (true) {
+            // The fourth number, and the only one nobody declared: what the
+            // packages below the vendor directory came to require between them
+            // (`D-ANS-086`).
+            $bound === null => 'Nothing here bounds the interpreter — there is no composer/platform_check.php below '
+                . 'the vendor directory to read one out of — so no PHP version stops a command below from starting.',
+            $relation['environmentAgainstBound'] === Project::PHP_BELOW => sprintf(
+                'The install itself is bounded at %s, over the %s the environment runs.',
+                $bound,
+                (string) $environment['php'],
+            ),
+            $relation['environmentAgainstBound'] === null => sprintf(
+                'The install itself is bounded at %s, which is the one number here nobody declared, and nothing '
+                    . 'states the interpreter that would have to clear it.',
+                $bound,
+            ),
+            default => sprintf(
+                'The install itself is bounded at %s, which the %s the environment runs clears.',
+                $bound,
+                (string) $environment['php'],
+            ),
+        };
         $sentences[] = 'All of it read from these files. Nothing was executed on any of these versions, and only the '
             . 'floors were compared — a version over what a constraint\'s own upper bound allows reads here like one '
             . 'inside it.';
@@ -420,25 +445,27 @@ final class ProjectDescribe extends ReadOnlyTool
      *
      * @param array{via: string, php: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
-    private static function whereTheyRun(?array $environment): string
+    private static function whereTheyRun(?array $environment, ?string $bound): string
     {
         if ($environment === null) {
             // Said rather than left out. An answer that names no environment
             // reads as "there is none" whether this looked or not, so it says
             // what it looked at and the reader can tell the two apart.
             return 'Nothing in this repository configures an environment of its own — .ddev/config.yaml and '
-                . Typo3Cli::CONSOLE_VARIABLE . ' are what this reads — so these run wherever you run them.';
+                . Typo3Cli::CONSOLE_VARIABLE . ' are what this reads — so these run wherever you run them.'
+                . self::startable($bound, null, 'the shell you run them in');
         }
         if ($environment['via'] === Typo3Cli::VIA_OVERRIDE) {
             return sprintf(
                 'They are run in the environment %s names for this installation, not in the shell you have, and '
                     . 'nothing readable here says which PHP that is — typo3_server_scope names the command it was given.',
                 Typo3Cli::CONSOLE_VARIABLE,
-            );
+            ) . self::startable($bound, null, 'that environment');
         }
         if ($environment['entered']) {
             return 'They are run in the DDEV project this repository configures, and this server is already inside '
-                . 'it, so they are run as they are written here.';
+                . 'it, so they are run as they are written here.'
+                . self::startable($bound, $environment['php'], 'that project');
         }
 
         return sprintf(
@@ -446,7 +473,49 @@ final class ProjectDescribe extends ReadOnlyTool
                 . '<name>" for a composer script, "ddev exec <command>" for the rest. Run one directly and it runs on '
                 . 'whatever PHP this machine carries%s, which is not what the project is built for.',
             $environment['php'] === null ? '' : ' rather than on ' . $environment['php'],
-        );
+        ) . self::startable($bound, $environment['php'], 'that project');
+    }
+
+    /**
+     * Whether the commands about to be listed start on the interpreter that
+     * would run them, which what each one does to the sources never said.
+     *
+     * `R-PRJ-007` marks a command a check a task told not to change files may
+     * run, and a session offered one ran into `composer cgl:ci` aborting in the
+     * platform check before the fixer started — then went looking for another
+     * interpreter and gave the check to CI (`D-ANS-086`). Empty where nothing
+     * bounds them: the number and its absence belong among the numbers above,
+     * and here there is nothing to warn about.
+     */
+    private static function startable(?string $bound, ?string $interpreter, string $where): string
+    {
+        if ($bound === null) {
+            return '';
+        }
+
+        return match (Project::againstBound($interpreter, $bound)) {
+            Project::PHP_BELOW => sprintf(
+                ' They do not start there: the install is bounded at PHP %s and %s runs %s, so each of them aborts '
+                    . 'in composer/platform_check.php before its own tool does anything.',
+                $bound,
+                $where,
+                (string) $interpreter,
+            ),
+            null => sprintf(
+                ' What decides whether they start at all is the PHP %s has, which nothing here reads. The install is '
+                    . 'bounded at %s, in the composer/platform_check.php below the vendor directory that every tool '
+                    . 'installed there loads with the autoloader, and "php -v" there is what says whether it clears '
+                    . 'the bound.',
+                $where,
+                $bound,
+            ),
+            default => sprintf(
+                ' The install is bounded at PHP %s, which the %s %s runs clears, so nothing in that check stops them.',
+                $bound,
+                (string) $interpreter,
+                $where,
+            ),
+        };
     }
 
     /**

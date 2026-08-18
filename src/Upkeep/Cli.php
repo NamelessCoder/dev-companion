@@ -44,6 +44,7 @@ use TYPO3\DevCompanion\Upkeep\Command\TodoRelease;
 use TYPO3\DevCompanion\Upkeep\Command\TodoWaiting;
 use TYPO3\DevCompanion\Upkeep\Command\ToolCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ToolIndex;
+use TYPO3\DevCompanion\Upkeep\Command\ToolMeasure;
 use TYPO3\DevCompanion\Upkeep\Command\ToolRecord;
 use TYPO3\DevCompanion\Upkeep\Command\UnresolvedList;
 
@@ -101,6 +102,7 @@ final class Cli
         $application->addCommand(new DecisionRenumber());
         $application->addCommand(new ToolCheck());
         $application->addCommand(new ToolIndex());
+        $application->addCommand(new ToolMeasure());
         $application->addCommand(new ToolRecord());
         $application->addCommand(new ScenarioShow());
         $application->addCommand(new ScenarioContract());

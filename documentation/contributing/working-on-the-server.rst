@@ -54,6 +54,13 @@ pages against the newest released checkout. So a checkout carrying anything
 ``checkouts:update`` did not put there — a ``composer install``, first of all —
 is refused rather than recorded from, and ``D-DOC-034`` is why.
 
+Those recorded pages are also the only corpus that says what an answer costs the
+caller who asked for it. ``bin/cli tools:measure`` reads them and prints the
+text bytes and the data bytes per tool, worst first, so a trim starts at the top
+of a list rather than at whichever tool somebody noticed. It calls nothing and
+fails on nothing: a long answer can be the right one, and a counter that failed
+would be answered by splitting a tool in two.
+
 The same command keeps ``typo3/testing-framework`` there, because the harness a
 project extension tests in releases on its own cycle and the core repository
 does not contain it (``D-KNW-002``). Which release line belongs to which major

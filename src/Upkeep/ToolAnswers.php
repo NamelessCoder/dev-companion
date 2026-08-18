@@ -54,6 +54,96 @@ final class ToolAnswers
     }
 
     /**
+     * What each tool's recorded answers cost a caller, worst first.
+     *
+     * The corpus is the one `tools:record` and `tools:index` already write, so
+     * nothing is called to measure it. Bytes rather than tokens: a tokenizer is
+     * the client's and differs between them, while the byte count is the same
+     * number for everybody and moves the same way.
+     *
+     * Text and data are counted apart because they are paid for differently. A
+     * client renders the text and may never read the data, and a field nobody
+     * reads is the cheapest thing to take out.
+     *
+     * @return list<array{tool: string, calls: int, text: int, data: int, total: int}>
+     */
+    public static function measured(): array
+    {
+        $measured = [];
+        foreach (ToolSurface::written() as $file) {
+            $name = $file->getBasename('.rst');
+            if ($name === 'readme') {
+                continue;
+            }
+
+            $text = 0;
+            $data = 0;
+            $calls = 0;
+            foreach (self::blocksIn(self::recordedIn($file->getPathname())) as [$label, $bytes]) {
+                $calls += $label === 'Text' ? 1 : 0;
+                $text += $label === 'Text' ? $bytes : 0;
+                $data += $label === 'Data' ? $bytes : 0;
+            }
+
+            $measured[] = [
+                'tool' => $name,
+                'calls' => $calls,
+                'text' => $text,
+                'data' => $data,
+                'total' => $text + $data,
+            ];
+        }
+
+        usort($measured, static fn(array $a, array $b): int => $b['total'] <=> $a['total']);
+
+        return $measured;
+    }
+
+    /**
+     * The `Text:` and `Data:` blocks of a recorded section, each with what it
+     * weighs once the four spaces the directive indents it by are off.
+     *
+     * `Called with:` is left out: the arguments are the caller's own and cost
+     * this server nothing to answer with.
+     *
+     * @return list<array{0: string, 1: int}>
+     */
+    private static function blocksIn(string $section): array
+    {
+        $blocks = [];
+        $label = '';
+        $bytes = 0;
+        $inside = false;
+
+        foreach (preg_split('/\\R/', $section) ?: [] as $line) {
+            // Closing comes first: `Data:` ends the text block above it, and
+            // reading the label before the close threw those bytes away.
+            if ($inside && $line !== '' && !str_starts_with($line, '    ')) {
+                $blocks[] = [$label, $bytes];
+                $inside = false;
+                $label = '';
+            }
+            if ($line === 'Text:' || $line === 'Data:') {
+                $label = rtrim($line, ':');
+                continue;
+            }
+            if (str_starts_with($line, '.. code-block::')) {
+                $inside = $label !== '';
+                $bytes = 0;
+                continue;
+            }
+            if ($inside) {
+                $bytes += strlen(substr($line, 4)) + 1;
+            }
+        }
+        if ($inside) {
+            $blocks[] = [$label, $bytes];
+        }
+
+        return $blocks;
+    }
+
+    /**
      * Every page of the surface, the recorded halves rewritten.
      *
      * Every call is answered from `$primary`, and the calls of the

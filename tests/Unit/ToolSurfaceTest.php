@@ -97,4 +97,34 @@ final class ToolSurfaceTest extends TestCase
             );
         }
     }
+
+    /**
+     * The measurement reads the corpus that is already written, so a page whose
+     * shape changes takes the counter with it rather than reporting zero.
+     *
+     * The zero is the failure this holds against: the first parser read the
+     * `Data:` label before closing the text block above it, and every tool came
+     * back with no text at all and a total that still looked plausible.
+     */
+    #[Test]
+    public function whatAToolAnswersWithIsCountedInBothHalves(): void
+    {
+        $measured = ToolAnswers::measured();
+        $answering = array_values(array_filter(
+            $measured,
+            static fn(array $tool): bool => $tool['calls'] > 0,
+        ));
+
+        self::assertNotSame([], $answering, 'no tool page carries a recorded answer');
+        foreach ($answering as $tool) {
+            self::assertGreaterThan(0, $tool['text'], $tool['tool'] . ' answers with no text');
+            self::assertGreaterThan(0, $tool['data'], $tool['tool'] . ' answers with no data');
+            self::assertSame($tool['text'] + $tool['data'], $tool['total'], $tool['tool'] . ' does not add up');
+        }
+
+        $totals = array_column($measured, 'total');
+        $sorted = $totals;
+        rsort($sorted);
+        self::assertSame($sorted, $totals, 'the report does not open on what costs the most');
+    }
 }

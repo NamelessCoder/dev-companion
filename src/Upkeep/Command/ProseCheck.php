@@ -19,10 +19,14 @@ use TYPO3\DevCompanion\Upkeep\Prose;
  * a decision opens with, because that one has a job the rest of the file does
  * not — and reports the rest, in the shape `hints:coverage` already uses for a
  * corpus measured against a number: how many, where, and the worst one by name.
+ *
+ * The comments are counted for a different reason than the sentences: what
+ * grew there is the number of them rather than the length of any one, and a
+ * measure of sentence length is passed by writing two — `D-DOC-035`.
  */
 #[AsCommand(
     name: 'prose:check',
-    description: 'the sentences over ' . Prose::MEASURE . ' words, and the leads that may not be',
+    description: 'the sentences over ' . Prose::MEASURE . ' words, what the comments cost, and the leads that may not be',
 )]
 final class ProseCheck
 {
@@ -73,6 +77,29 @@ final class ProseCheck
         ));
         foreach (array_slice($payload, 0, self::NAMED) as $entry) {
             $output->writeln(sprintf('  %3d  %s', $entry['words'], $entry['where']));
+        }
+
+        // The third corpus, and the one the sentence measure cannot see: a
+        // comment that names its decision and retells it anyway is within the
+        // measure on every sentence and is the duplicate the rule forbids.
+        $weight = Prose::commentWeight();
+        $retold = Prose::retellings();
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '%d of %d lines of PHP are comment. %d comments name an entry and run past %d lines.',
+            $weight['comment'],
+            $weight['lines'],
+            count($retold),
+            Prose::RETOLD,
+        ));
+        foreach (array_slice($retold, 0, self::NAMED) as $comment) {
+            $output->writeln(sprintf(
+                '  %3d  %s:%d (%s)',
+                $comment['lines'],
+                $comment['file'],
+                $comment['line'],
+                implode(', ', $comment['names']),
+            ));
         }
 
         $leads = Prose::leadsOverTheMeasure();

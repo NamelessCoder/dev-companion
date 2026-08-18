@@ -259,6 +259,11 @@ what was settled. The rest is a report, since a long sentence can be the right
 one and a rewrite driven by a counter produces two short sentences saying what
 one said.
 
+It counts the comments too, and for the other reason: what grew there is how
+many there are rather than how long any one of them is, which a sentence measure
+cannot see. Reported are the share of the PHP that is comment and every comment
+that names a decision and retells it anyway, longest first — `D-DOC-035`.
+
 `bin/cli prose:format <path>` is the other half and rewrites rather than
 reports: the prose this repository writes about itself, rewrapped at the column
 it is already written at. What it is for is the paragraph a rename left ragged —

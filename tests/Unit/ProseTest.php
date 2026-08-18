@@ -70,6 +70,50 @@ final class ProseTest extends TestCase
     }
 
     /**
+     * `D-DOC-035`. The comments are reached, and what they cost is a share.
+     *
+     * The sentence measure reads markdown and no file in `src/`, so the third
+     * of the PHP that is comment was counted by nobody. What is held is that
+     * the reading happens over both halves of the corpus and that a retelling
+     * is a comment naming an entry, not that any number stays where it is.
+     */
+    #[Test]
+    public function whatTheCommentsCostIsMeasured(): void
+    {
+        $code = Prose::code();
+
+        self::assertContains('src/Upkeep/Prose.php', $code);
+        self::assertContains('tests/Unit/ProseTest.php', $code);
+        self::assertSame([], array_filter($code, static fn(string $file): bool => !str_ends_with($file, '.php')));
+
+        $weight = Prose::commentWeight();
+        self::assertGreaterThan(0, $weight['comment']);
+        self::assertGreaterThan($weight['comment'], $weight['lines']);
+    }
+
+    /**
+     * A comment resting on a decision names its id instead of repeating what
+     * it settled — AGENTS.md's rule, and the one the sentence measure cannot
+     * see: a retelling is within the measure on every sentence of it.
+     *
+     * Reported rather than failed on, so what is held is that the report finds
+     * the shape it claims to find.
+     */
+    #[Test]
+    public function aCommentThatNamesAnEntryAndRetellsItAnywayIsReported(): void
+    {
+        $retold = Prose::retellings();
+
+        self::assertNotEmpty($retold, 'the measure found nothing at all, which means it read nothing');
+        foreach ($retold as $comment) {
+            self::assertGreaterThan(Prose::RETOLD, $comment['lines']);
+            self::assertNotEmpty($comment['names']);
+            self::assertContains($comment['file'], Prose::code());
+            self::assertGreaterThan(0, $comment['line']);
+        }
+    }
+
+    /**
      * `feedback/` is what this deliberately leaves out. A feedback is written
      * by a session somewhere else, and measuring it against this repository's
      * rule would report on the wrong author.

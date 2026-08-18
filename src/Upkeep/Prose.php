@@ -38,6 +38,18 @@ final class Prose
     public const MEASURE = 30;
 
     /**
+     * Where a comment has stopped naming its reason and started retelling it.
+     *
+     * AGENTS.md asks a comment that rests on a decision to name its id instead
+     * of repeating what it settled. A summary line, a blank and the reason fit
+     * under ten lines; past that the id is beside the retelling rather than in
+     * place of it. The number is not tuned: 216 comments name an entry and run
+     * past four lines, 205 past eight and 172 past ten, so where the line is
+     * drawn moves the count and not the finding.
+     */
+    public const RETOLD = 10;
+
+    /**
      * The files this repository writes about itself.
      *
      * `feedback/` is deliberately absent. A feedback is a session's report
@@ -219,6 +231,113 @@ final class Prose
             static fn(array $entry): int => strlen($entry['text']),
             self::payload(),
         ));
+    }
+
+    /**
+     * The PHP this repository writes, which is where the comment rule applies.
+     *
+     * Both binaries are left out. They locate an autoloader and hand their
+     * arguments to a class, and neither carries the reasoning this counts.
+     *
+     * @return list<string>
+     */
+    public static function code(): array
+    {
+        $directories = array_values(array_filter(
+            array_map(static fn(string $directory): string => Paths::root() . '/' . $directory, ['src', 'tests']),
+            is_dir(...),
+        ));
+        if ($directories === []) {
+            return [];
+        }
+
+        $files = [];
+        foreach (Finder::create()->files()->in($directories)->name('*.php') as $file) {
+            $files[] = substr($file->getPathname(), strlen(Paths::root()) + 1);
+        }
+
+        sort($files);
+
+        return $files;
+    }
+
+    /**
+     * Every comment in that corpus, with the entries it names.
+     *
+     * The lexer rather than a pattern, because a `//` inside a string literal
+     * is not a comment and this repository writes regular expressions.
+     *
+     * @return list<array{file: string, line: int, lines: int, names: list<string>}>
+     */
+    public static function comments(): array
+    {
+        $comments = [];
+        foreach (self::code() as $file) {
+            $tokens = token_get_all((string) file_get_contents(Paths::root() . '/' . $file));
+            foreach ($tokens as $token) {
+                if (!is_array($token) || !in_array($token[0], [T_COMMENT, T_DOC_COMMENT], true)) {
+                    continue;
+                }
+
+                preg_match_all('/\b[DR]-[A-Z]{3}-\d{3}\b/', $token[1], $named);
+                $comments[] = [
+                    'file' => $file,
+                    'line' => $token[2],
+                    'lines' => substr_count($token[1], "\n") + 1,
+                    'names' => array_values(array_unique($named[0])),
+                ];
+            }
+        }
+
+        return $comments;
+    }
+
+    /**
+     * What the comments cost, against the lines of code they stand in.
+     *
+     * A share rather than a count, because the corpus grows and a count of
+     * something that grows is true on the day it is written. What it is for is
+     * the direction: nothing counted this until 2026-08-18, when 37% of the
+     * non-blank lines below `src/` were comment.
+     *
+     * @return array{comment: int, lines: int}
+     */
+    public static function commentWeight(): array
+    {
+        $lines = 0;
+        foreach (self::code() as $file) {
+            foreach (file(Paths::root() . '/' . $file) ?: [] as $line) {
+                if (trim($line) !== '') {
+                    $lines++;
+                }
+            }
+        }
+
+        return [
+            'comment' => array_sum(array_column(self::comments(), 'lines')),
+            'lines' => $lines,
+        ];
+    }
+
+    /**
+     * The comments that name an entry and retell it anyway, longest first.
+     *
+     * Reported and not failed on. A long comment naming an entry can be the
+     * right comment — it may rest on that decision while explaining something
+     * else — and only the reader of the block can tell the two apart.
+     *
+     * @return list<array{file: string, line: int, lines: int, names: list<string>}>
+     */
+    public static function retellings(): array
+    {
+        $retold = array_values(array_filter(
+            self::comments(),
+            static fn(array $comment): bool => $comment['names'] !== [] && $comment['lines'] > self::RETOLD,
+        ));
+
+        usort($retold, static fn(array $a, array $b): int => $b['lines'] <=> $a['lines']);
+
+        return $retold;
     }
 
     /**

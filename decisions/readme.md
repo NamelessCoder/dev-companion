@@ -514,6 +514,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-055`][D-SKL-055] — A call a skill names in order not to make it is written as a discharge · 2026-08-18
 - [`D-SKL-056`][D-SKL-056] — The installation workflow branches on the declared procedure and proves what the run wrote · 2026-08-18
 - [`D-SKL-057`][D-SKL-057] — A command's option set is read from the installed console and its meaning from the manual · 2026-08-18
+- [`D-SKL-058`][D-SKL-058] — A hint is routed by what the repository is rather than by how its installation came to exist · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -569,6 +570,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-055]: task-skills/skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md
 [D-SKL-056]: task-skills/skl-056-the-installation-workflow-branches-on-the-declared-procedure-and-proves-what-the-run-wrote.md
 [D-SKL-057]: task-skills/skl-057-a-commands-option-set-is-read-from-the-installed-console-and-its-meaning-from-the-manual.md
+[D-SKL-058]: task-skills/skl-058-a-hint-is-routed-by-what-the-repository-is-rather-than-by-how-its-installation-came-to-exist.md
 [D-SKL-037]: task-skills/skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: task-skills/skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: task-skills/skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

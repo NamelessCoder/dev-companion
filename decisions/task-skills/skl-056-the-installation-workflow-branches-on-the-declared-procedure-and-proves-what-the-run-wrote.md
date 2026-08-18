@@ -31,32 +31,34 @@ an environment and nothing else falls on the wrong side of each.
   dependencies, no installation, no container", a second start, and a commit
   message drafted with `typo3_commit_message_guide`. The reporting session wrote
   the sequence and committed nothing — `git status --short` was empty, because
-  `.build/`, `config/` and `var/` are ignored — so the message had no subject and
-  the re-run would have destroyed the installation that had just been asked for.
-  The boot branch states that case two paragraphs above: "an installation that
-  was asked for and then destroyed is a change nobody asked for".
+  `.build/`, `config/` and `var/` are ignored — so the message had no subject
+  and the re-run would have destroyed the installation that had just been asked
+  for. The boot branch states that case two paragraphs above: "an installation
+  that was asked for and then destroyed is a change nobody asked for".
 - The rung is not the corpus. `bin/cli hints:probe` on 2026-08-18, asked in the
   reported repository's own terms, returns `installation-setup`,
-  `project-build-and-scripts`, `project-configuration-files`, `installation-boot`
-  and `environment-variables`. The skill was reached on its description alone and
-  every hint id it names inline was fetchable and correct, which the feedback
-  states first. Delivery and routing worked; the wording is what is left.
-- `bin/cli feedback:list` on 2026-08-18 reports 35 open in two directories, 32 of
-  them in `/home/benji/projects/blog`. `074606` is a second task shape out of
-  that directory reaching the same edge from the other end — an installation that
-  is up and answers wrong, whose nearest section is this same closing one.
+  `project-build-and-scripts`, `project-configuration-files`,
+  `installation-boot` and `environment-variables`. The skill was reached on its
+  description alone and every hint id it names inline was fetchable and correct,
+  which the feedback states first. Delivery and routing worked; the wording is
+  what is left.
+- `bin/cli feedback:list` on 2026-08-18 reports 35 open in two directories, 32
+  of them in `/home/benji/projects/blog`. `074606` is a second task shape out of
+  that directory reaching the same edge from the other end — an installation
+  that is up and answers wrong, whose nearest section is this same closing one.
 - `D-SKL-012`'s third **Assumed** reads booting and creating as sharing the
-  install sequence and differing "in the first step". This is the first report of
-  one repository standing in both.
+  install sequence and differing "in the first step". This is the first report
+  of one repository standing in both.
 - `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
-  asserts both branch headings and `## Prove it, and how far depends on who wrote
-  the sequence` verbatim, so the wording and its guard move together.
+  asserts both branch headings and
+  `## Prove it, and how far depends on who wrote the sequence` verbatim, so the
+  wording and its guard move together.
 
 ## Decided
 
-- **Step 4 of the ladder, and queued rather than closed on the spot.** The change
-  is the structure of a published skill and the assertions that hold it, which is
-  reviewed rather than improvised.
+- **Step 4 of the ladder, and queued rather than closed on the spot.** The
+  change is the structure of a published skill and the assertions that hold it,
+  which is reviewed rather than improvised.
 - **The fork asks what procedure is declared.** A repository declaring one is
   booted from it. One declaring an environment and no procedure runs what it
   declares and takes the rest from the create branch, changing nothing that is
@@ -70,9 +72,9 @@ an environment and nothing else falls on the wrong side of each.
 - **Priority `normal`, set by two task shapes in one directory reaching the same
   fork** and by the file being a copy no release of this server corrects. Not
   `high`: one session series, one repository, and the task was finished.
-- **`074606` keeps its own card.** It asks whether an installation that is up and
-  answering wrong has an owner at all, which is rung 1b, and folding it in would
-  hide that question behind a rewrite.
+- **`074606` keeps its own card.** It asks whether an installation that is up
+  and answering wrong has an owner at all, which is rung 1b, and folding it in
+  would hide that question behind a rewrite.
 
 ## Assumed
 
@@ -95,3 +97,15 @@ an environment and nothing else falls on the wrong side of each.
 ## Covered by
 
 - `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+
+## Since then
+
+The third shape carries a second cost, found by reading the re-cut fork against
+`feedback/2026-08-18-071435` — the same reporting series, on the repository this
+entry was written from. What sends such a session into the create branch is also
+what skips its first two steps: they are the steps the repository already
+declares, and "change nothing that is declared" is the clause that passes over
+them. Step 1 is where `extension-repository-installation` is named, and the
+layout it answers for is what the session probed by hand. `D-SKL-058` routes the
+boot branch to that hint on what the repository is, which leaves the fork as
+this entry cut it.

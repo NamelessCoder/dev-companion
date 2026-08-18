@@ -191,6 +191,7 @@
         "text": "Activate the language before downloading its pack: set $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] to an array containing de in config/system/additional.php, then run typo3 language:update de.",
         "until": 13
       },
+      "typo3 language:update exits 0 whether or not a pack arrived: a download the server answered with nothing is a warning the progress bar hides, --no-progress prints one line per pack instead, and --fail-on-warnings is what turns a miss into a failure. What says it worked is the labels directory holding the extension's .xlf files under that iso code — var/labels/<iso>/<extension key>/ in a Composer installation — because a pack that never arrived leaves the English labels and looks exactly like the typo3Language mismatch above.",
       "A pack only translates labels that are translation references. EXT:form's standard submit button fallback is the literal Submit; set renderingOptions.submitButtonLabel in the form definition for the site's language."
     ]
   }

@@ -289,6 +289,52 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-074`, `D-KNW-093`. One assertion per hint the sweep of
+     * `knowledge/hints/` reached: the six that prescribe a `typo3` command
+     * whose success is unconditional. Two of them were written before the rule
+     * was — `impexp-artifact` and `extension-schema-sql` — and are held here so
+     * the form stays one form rather than three.
+     */
+    #[Test]
+    public function aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator(): void
+    {
+        // impexp:export answers [OK] whatever it left out of the artifact.
+        $text = self::statementsOf('impexp-artifact');
+        self::assertStringContainsString('answers [OK] whatever it left out', $text);
+        self::assertStringContainsString('files_fal section beside header and records', $text);
+
+        // extension:setup answers success having migrated from a cached TCA.
+        $text = self::statementsOf('extension-schema-sql');
+        self::assertStringContainsString('successfully set up', $text);
+        self::assertStringContainsString('SHOW TABLES LIKE', $text);
+
+        // language:update exits 0 with the failed download behind the progress
+        // bar: `$status` starts at SUCCESS and only --fail-on-warnings moves
+        // it, and the per-pack result prints under --no-progress alone.
+        $text = self::statementsOf('site-label-language');
+        self::assertStringContainsString('exits 0 whether or not a pack arrived', $text);
+        self::assertStringContainsString('--fail-on-warnings', $text);
+        self::assertStringContainsString('var/labels/<iso>/<extension key>/', $text);
+
+        // backend:user:create returns SUCCESS whatever DataHandler reported:
+        // createUser() never reads its errorLog.
+        $text = self::statementsOf('installation-boot');
+        self::assertStringContainsString('never reads that handler\'s errorLog', $text);
+        self::assertStringContainsString('the be_users row, or a login', $text);
+
+        // upgrade:run marks a wizard done where updateNecessary() said no, and
+        // the run-all path swallows the note that says so. Both hints that
+        // prescribe the command carry it, because neither points at the other.
+        $text = self::statementsOf('upgrade-wizards');
+        self::assertStringContainsString('also where updateNecessary() returned false', $text);
+        self::assertStringContainsString('upgrade:list --all', $text);
+
+        $text = self::statementsOf('installation-upgrade');
+        self::assertStringContainsString('not evidence that anything migrated', $text);
+        self::assertStringContainsString('upgrade:list --all', $text);
+    }
+
+    /**
      * `R-KNW-073`, `D-KNW-089`. The statement carries no version binding
      * because the mechanism reads the same on all four checkouts: the TCA cache
      * identifier is `PackageDependentCacheIdentifier` with the `tca_base`

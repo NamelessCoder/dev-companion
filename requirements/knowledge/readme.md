@@ -81,6 +81,7 @@ when it is added.
 - [`R-KNW-071`][R-KNW-071] — A clone is told when DDEV writes additional.php · held
 - [`R-KNW-072`][R-KNW-072] — Which interpreter a covered version needs is answerable before anything is installed · held
 - [`R-KNW-073`][R-KNW-073] — A step that reads from a cache says what invalidates it · held
+- [`R-KNW-074`][R-KNW-074] — A prescribed command whose success is unconditional carries its discriminator · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -155,3 +156,4 @@ when it is added.
 [R-KNW-071]: knw-071-a-clone-is-told-when-ddev-writes-additional-php.md
 [R-KNW-072]: knw-072-which-interpreter-a-covered-version-needs-is-answerable-before-anything-is-installed.md
 [R-KNW-073]: knw-073-a-step-that-reads-from-a-cache-says-what-invalidates-it.md
+[R-KNW-074]: knw-074-a-prescribed-command-whose-success-is-unconditional-carries-its-discriminator.md

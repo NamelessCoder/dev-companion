@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-081100-no-answer-for-proving-a-typoscript-condition.md
 **Priority:** normal
+**Branch:** todo/no-answer-for-proving-a-typoscript-condition
+**Claimed:** 2026-08-18
 
 Judged as step 1a on 2026-08-18 and taken on — `D-KNW-102` has the evidence, the
 boundary and why `core/testing/proving-a-rendering` is not rescoped to reach it.

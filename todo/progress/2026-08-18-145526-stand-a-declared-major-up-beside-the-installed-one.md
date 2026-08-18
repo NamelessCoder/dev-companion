@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-081129-nothing-says-how-to-execute-the-other-typo3.md
 **Priority:** normal
+**Branch:** todo/stand-a-declared-major-up-beside-the-installed-one
+**Claimed:** 2026-08-18
 
 `D-VER-008` is the judgement: step 1a, taken on, as a `knowledge/documents/`
 page in the extension scope beside

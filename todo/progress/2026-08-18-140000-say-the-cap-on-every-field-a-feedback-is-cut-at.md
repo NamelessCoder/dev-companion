@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-080803-the-4000-character-observation-limit-is-not-in.md, D-FBK-049
 **Priority:** normal
+**Branch:** todo/say-the-cap-on-every-field-a-feedback-is-cut-at
+**Claimed:** 2026-08-18
 
 Write the cap into the four descriptions `FeedbackRecord::inputSchema()`
 declares — 4000 characters on `observation`, `query` and `suggestion`, 100 on

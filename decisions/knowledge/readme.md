@@ -7,6 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-KNW-105`][D-KNW-105] — What a not-found means once a site answered is a gap this server owns · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
 - [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a gap this server owns · 2026-08-18 · confirmed
@@ -102,6 +103,7 @@ one is added.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
+[D-KNW-105]: knw-105-what-a-not-found-means-once-a-site-answered-is-a-gap-this-server-owns.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
 [D-KNW-085]: knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md

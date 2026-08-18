@@ -546,6 +546,83 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The half of the symptom cluster that had no owner: the request reached a
+     * site and the page under it did not come.
+     *
+     * The one place it was written down was `datahandler-seeding`, whose
+     * `appliesTo` is about writing a seeding script, so a session diagnosing a
+     * failing request never reached it. It is curated on the page — the message
+     * with its exclamation mark, a hidden or deleted root page, a tree that is
+     * hidden everywhere — because the site words are `site-base-collision`'s
+     * and a second hint claiming them would take its callers (`D-KNW-098`).
+     *
+     * Read on `.checkouts/12.4`, `13.4`, `14.3` and `main`, which agree on the
+     * messages and on the restrictions each query carries — `D-KNW-105`.
+     */
+    #[Test]
+    public function whatANotFoundMeansOnceASiteAnsweredIsStatedAndReachedFromTheSymptom(): void
+    {
+        // The message as a caller would paste it, the seeding case the fact was
+        // buried in, and the two records that produce it.
+        foreach ([
+            'the frontend answers The requested page does not exist! and the page is in the page tree',
+            'the seeded page tree answers 404 on every page',
+            'the site root is 404 and its root page is deleted',
+            'why does a hidden page answer 404 in the frontend',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('page-not-found-within-a-site', $ids[0] ?? null, $task);
+        }
+
+        $text = self::statementsOf('page-not-found-within-a-site');
+
+        // What separates the four not-founds from each other, and all of them
+        // from a request that reached no site.
+        self::assertStringContainsString('The requested page does not exist!', $text);
+        self::assertStringContainsString('No site configuration found.', $text);
+        self::assertStringContainsString('ID was not an accessible page', $text);
+
+        // Where that line is readable, which is the whole evidence a response
+        // leaves: nothing is thrown and the log stays empty.
+        self::assertStringContainsString('Reason: <the message>', $text);
+        self::assertStringContainsString('errorHandling', $text);
+
+        // Why the URL is right while the answer is a not-found, and the check a
+        // session can run without a second installation.
+        self::assertStringContainsString('deleted and workspace restrictions alone', $text);
+        self::assertStringContainsString('getPage_noCheck()', $text);
+        self::assertStringContainsString('private window', $text);
+
+        // Hidden and deleted reach different distances, which is what says
+        // whether one page or the whole tree is the subject.
+        self::assertStringContainsString('takes nothing below it with it', $text);
+        self::assertStringContainsString('SiteFinder::getSiteByPageId()', $text);
+
+        // The symptom stays where it was: which of two sites answered is the
+        // question before this one.
+        $collision = array_column(
+            Hints::find([], 'frontend returns 404 at the site root', 6)['matchedHints'],
+            'id',
+        );
+        self::assertSame('site-base-collision', $collision[0] ?? null);
+
+        // And the four neighbours name it back, so the caller who landed on one
+        // of them is not left to guess this one's name.
+        foreach ([
+            'site-base-collision',
+            'installation-boot',
+            'installation-exception-output',
+            'datahandler-seeding',
+        ] as $neighbour) {
+            self::assertStringContainsString(
+                'page-not-found-within-a-site',
+                self::statementsOf($neighbour),
+                $neighbour . ' does not name the hint that reads the message it produces',
+            );
+        }
+    }
+
+    /**
      * Setting the analysis up is the extension author's question, and the core
      * is no answer to it: its configuration sits in a mono repository, half of
      * what it declares is its own rule set, and the paths are relative to a

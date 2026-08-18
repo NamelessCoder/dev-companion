@@ -221,6 +221,14 @@ answered, and what it wrote down about it.
   some exceptions are never written down at all, and `typo3_hint_lookup` with
   `id=installation-exception-output` is what names them.
 
+Where the line says a site was reached and the page did not come, the subject is
+the page rather than the site configuration. `typo3_hint_lookup` with
+`id=page-not-found-within-a-site` owns that half: which of those lines is a path
+the router never resolved and which is a page it resolved and then withheld, how
+far up a tree a hidden or a deleted root page reaches, and where that line stops
+being readable at all. Read it before touching the site configuration, because a
+page this site holds and refuses is not a base that is wrong.
+
 Where the answer says the request reached the wrong site or none, the subject is
 the installation's own site configuration rather than the code in front of it.
 Five lookups own what it can be: `typo3_hint_lookup` with

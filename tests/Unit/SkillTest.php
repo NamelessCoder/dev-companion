@@ -2994,6 +2994,19 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('A log that stayed empty is itself the finding', $flat);
         self::assertStringContainsString('fetching it is right here where it was the detour above', $flat);
 
+        // The bullet above separates a request that matched a site from one
+        // that matched none, and only the second half had a lookup. The first
+        // is routed before the site configuration paragraph, because a page
+        // this site holds and refuses is not read off a base.
+        $page = (int) strpos($flat, '`id=page-not-found-within-a-site` owns that half');
+        self::assertGreaterThan(0, $page, 'the half where a site did answer is routed nowhere');
+        self::assertNotNull(Hints::byId('page-not-found-within-a-site'));
+        self::assertLessThan(
+            (int) strpos($flat, 'the request reached the wrong site or none'),
+            $page,
+            'the page lookup is named after the site configuration it comes before',
+        );
+
         // And the ownership sentence, which gave the same half away in the
         // clause `071526` quoted back at the server.
         self::assertStringContainsString('what a running one answers', $flat);

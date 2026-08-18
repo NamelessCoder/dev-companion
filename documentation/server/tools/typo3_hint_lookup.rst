@@ -279,6 +279,7 @@ Text:
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
+    - page-not-found-within-a-site — What a Not-Found Means When the Site Was Matched (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - content-element-record-row — What a Row Handed to lib.contentElement Must Carry (PHP)
     - typoscript-conditions — What a TypoScript Condition Is Handed (TypoScript)
@@ -802,6 +803,11 @@ Data:
             {
                 "id": "installation-exception-output",
                 "title": "What a Failing Installation Writes Down and What It Only Displays",
+                "category": "PHP"
+            },
+            {
+                "id": "page-not-found-within-a-site",
+                "title": "What a Not-Found Means When the Site Was Matched",
                 "category": "PHP"
             },
             {
@@ -1517,6 +1523,7 @@ Text:
     - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
     - tca-datetime-storage — What a Datetime Column Stores, and When It Is Null (PHP)
     - installation-exception-output — What a Failing Installation Writes Down and What It Only Displays (PHP)
+    - page-not-found-within-a-site — What a Not-Found Means When the Site Was Matched (PHP)
     - record-system-properties — What a Record Object Carries, and What Moved Into _system (PHP)
     - content-element-record-row — What a Row Handed to lib.contentElement Must Carry (PHP)
     - typoscript-conditions — What a TypoScript Condition Is Handed (TypoScript)
@@ -1953,6 +1960,11 @@ Data:
             {
                 "id": "installation-exception-output",
                 "title": "What a Failing Installation Writes Down and What It Only Displays",
+                "category": "PHP"
+            },
+            {
+                "id": "page-not-found-within-a-site",
+                "title": "What a Not-Found Means When the Site Was Matched",
                 "category": "PHP"
             },
             {

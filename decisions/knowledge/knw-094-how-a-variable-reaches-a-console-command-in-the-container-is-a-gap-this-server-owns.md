@@ -1,7 +1,7 @@
 ---
 id: D-KNW-094
 date: 2026-08-18
-status: open
+status: confirmed
 ---
 
 # D-KNW-094 — How a variable reaches a console command in the container is a gap this server owns
@@ -102,3 +102,44 @@ variables into the web container.
 - DDEV changes what `ddev exec` does with its arguments. An undated statement
   about somebody else's tool goes stale with nothing failing, which is the cost
   of the second assumption above.
+
+## Covered by
+
+- `HintsTest::theLineThatCarriesAVariableIntoTheContainerIsAnswered`
+
+## Confirmed on `2026-08-18`
+
+The gap was real and the statement is now in `installation-setup`. What the
+reading changed is what the statement says: the first **Wrong if** fired.
+Measured in an `E-SITE` on TYPO3 14.3 made here, against DDEV v1.25.1, an
+assignment prefix survives a plain `ddev exec` —
+`ddev exec TYPO3_CONTEXT=Development vendor/bin/typo3 --version` answers with
+the Development context, and `ddev exec MEASURE=one printenv MEASURE` prints
+`one`. So the caller was never missing a form. `ddev exec bash -c` earns its
+line for one case only, a value the join would quote, which is why it is in the
+second statement rather than the first.
+
+What the session paid for is `--raw`, and the flag is stranger than the feedback
+could tell from one attempt. `--raw`, `--raw=true` and `--raw=false` all take
+the same path: the arguments are handed to the container as they stand, and
+`MEASURE=one` is looked for as a program. Typing the flag is what switches, not
+the value given to it — and its own `--help` says it defaults to true while the
+default interprets with bash. That is why the feedback's
+`--raw=false "VAR=… typo3 setup"` was stat'ed as one binary name.
+
+The reading also confirms what `Typo3Cli::pastTheShell()` recorded rather than
+contradicting it. `ddev exec echo '/(save)/i'` still comes back with bash's
+syntax error, quoting the line it built — `set -eu && ( … )` — so there is a
+shell on that transport, and every argument is still spent through it.
+
+The third **Wrong if** does not hold: `bootstrap_package` carries the same four
+`typo3Database` variables against `t3func` under `web_environment` as the
+repository the feedback read, so that half is a habit rather than one project's.
+Two other DDEV projects on the same machine carry the `TYPO3_DB_` and
+`TYPO3_SETUP_` families there instead, which is why the statement says what
+those lines mean rather than what a `.ddev/config.yaml` always holds.
+
+The second **Wrong if** is untouched and stays the thing to watch:
+`ProjectDescribe::whereTheyRun()` still answers `ddev exec <command>`, which is
+now the right answer, and a boot session that still types the variables the
+wrong way after this would be a fault in that answer rather than in the hint.

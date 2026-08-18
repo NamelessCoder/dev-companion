@@ -5483,6 +5483,36 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theLineThatCarriesAVariableIntoTheContainerIsAnswered(): void
+    {
+        // Two failed round trips on syntax rather than on TYPO3 —
+        // `feedback/2026-08-18-070423` typed `-e`, then `--raw=false` with the
+        // whole line in one string. Measured in an `E-SITE` since: the prefix
+        // does survive a plain `ddev exec`, and `--raw` switches on being typed
+        // rather than on its value — `D-KNW-094`.
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'boot the local DDEV development installation of an extension repository, '
+                . 'running typo3 setup unattended inside the web container',
+        ]);
+        self::assertContains('installation-setup', array_column($result->data['hints'], 'id'));
+
+        $statements = self::statementsOf('installation-setup');
+        self::assertStringContainsString('ddev exec TYPO3_DB_DRIVER=mysqli', $statements, 'the form that works');
+        self::assertStringContainsString('There is no --env option', $statements, 'the flag that was reached for');
+        self::assertStringContainsString('--raw, --raw=true and --raw=false behave alike', $statements);
+        self::assertStringContainsString(
+            "ddev exec bash -c '",
+            $statements,
+            'what carries a value the join would quote',
+        );
+
+        // The other family, in the file the caller is reading anyway, and the
+        // hint that owns it.
+        self::assertStringContainsString('typo3DatabaseHost', $statements);
+        self::assertStringContainsString('project-extension-tests', $statements);
+    }
+
+    #[Test]
     public function aRepeatableContentElementIsRoutedThroughWhatItOwns(): void
     {
         // A session designed a hero carousel out of generic record references —

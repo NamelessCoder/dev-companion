@@ -126,7 +126,12 @@ ownership: load the skill by name and work from it.
    declare a version nobody has ever installed it on.
 3. Run the repository's own commands per cell, the checks first. A step that
    runs in only one cell leaves the others unproven, and that includes the ones
-   the repository's CI declares.
+   the repository's CI declares. The installation supplies one cell; for every
+   other one, `typo3_rule_lookup` with
+   `documentId="extension/compatibility/running-on-a-declared-major-that-is-not-installed"`
+   carries how that cell is made to exist beside it, what it costs the
+   installation, and how to tell a cell that could have failed from one that
+   could not.
 4. Report the work list with every entry closed or explicitly left open, the
    resolutions with what the solver printed, what changed and what deliberately
    did not, and the matrix cell by cell. A cell nobody ran is named as unrun

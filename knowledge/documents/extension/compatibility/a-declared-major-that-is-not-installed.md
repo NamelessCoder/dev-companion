@@ -77,9 +77,11 @@ smaller step: assembling the branch to answer them costs more than they do.
 ## What Reading Proves, and What It Does Not
 
 Reading settles the shape and not the behaviour. What a member does with the
-arguments it is passed is the run, and an installation on the other major with
-the package's own suite against it is what says so. That installation costs the
-download of that major, and it is what a change worth proving is proved on.
+arguments it is passed is the run, and the package's own suite resolved against
+the other major is what says so. That costs the download of that major and is
+what a change worth proving is proved on;
+`typo3://guides/extension/compatibility/running-on-a-declared-major-that-is-not-installed`
+is how it is stood up beside the installation.
 
 Where nothing can be run, the compatibility claim is an argument and is written
 as one. It owes what was read — the symbols, the branch, and the revision that

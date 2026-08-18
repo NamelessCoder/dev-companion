@@ -308,7 +308,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 110,
+                "score": 114,
                 "truncated": false
             },
             {
@@ -319,7 +319,7 @@ Data:
                 "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.\n  How the removed member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
                 "versions": "",
                 "coverage": 1,
-                "score": 28,
+                "score": 29,
                 "truncated": false
             },
             {
@@ -330,7 +330,7 @@ Data:
                 "body": "This is the changelog obligation per change type: which change types owe a\nchangelog entry, which owe none, and what the entry a review asks for has to be.\nA `BUGFIX` owes none, a `TASK` owes none, and the four types below are the whole\nlist.\n\n- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in\n  the directory of the minor version the change is released in. A backport goes\n  into the `<lts>.x` directory of the oldest branch it reaches, in every branch\n  that carries it.\n- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.\n- The type is the first of four that describes the change: `Breaking` where it\n  moves or removes core functionality that may break or affect third-party code,\n  `Deprecation` where it marks core functionality for a planned removal,\n  `Feature` where it adds functionality, and `Important` for anything else that\n  may require manual action. `Important` is the last resort, and the only one of\n  the four an LTS release may carry.\n- `Breaking` reaches past a moved PHP member. `affect` in that definition covers\n  a change in what an installation renders or is configured by, and which of\n  those the core files as breaking, and where the boundary against `Important`\n  runs, is `typo3_hint_lookup` with the id `breaking-without-a-moved-member`.\n- A casual bug fix owes no entry, because its commit message carries the\n  information. Demanding one of a `BUGFIX` that removes nothing public is a\n  review defect of its own.\n- `Task` is a commit message keyword and not a changelog type. Those four are\n  the whole list, and `checkRst` fails a title opening with anything else.\n- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on\n  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the\n  piece a file is missing.\n- The skeleton the file has to have, down to the tags it ends on, is\n  `typo3_hint_lookup` with the id `documentation-changelog`.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
                 "versions": "",
                 "coverage": 1,
-                "score": 28,
+                "score": 29,
                 "truncated": false
             },
             {
@@ -341,7 +341,7 @@ Data:
                 "body": "- `Releases:` names branches: `main` and the maintained release lines, comma\n  separated.\n- Which lines those are changes with every LTS release and every support window\n  that closes, so it is a lookup and not a rule to remember.\n  `typo3_commit_message_guide` names them where the trailer is left out, and\n  reports a branch that is out of regular support as an error.\n- A line out of regular support still has releases, and the ELTS partners make\n  them. A patch pushed to Gerrit is not one of them.\n- The branch list in a checkout does not answer this. `git branch -r` reaches\n  back to `TYPO3_3-6`, and counting `Releases:` trailers on recent commits\n  samples what other changes needed rather than what this one does.\n- Which of the maintained lines a change reaches is your reading of where the\n  defect is, and the trailer is the claim you verified it there — by reading the\n  changed file on each branch you name.\n- A feature, a deprecation and a breaking change go to `main`. A backport of one\n  happens and is the release managers' call: `origin/main..origin/13.4` carries\n  three `[FEATURE]` commits against 969 `[BUGFIX]` ones, and\n  `origin/main..origin/14.3` carries none at all.\n- A bug fix and a task go to `main` and to the one release line back from it.\n  That the defect is present on an older maintained line does not put that line\n  in the trailer: the older lines take priority bug fixes and grave or\n  security-relevant defects, and naming one for an ordinary fix asks a merger to\n  cherry-pick onto a line the change was never meant for.\n- So the trailer is two readings rather than one. Where the defect is, on each\n  line, is the first; whether its severity earns an older line is the second,\n  and it is a judgement you state rather than something that follows from the\n  first.\n- What a release branch carries since it was cut is `origin/main..origin/14.3`.\n  A plain log on that branch, or a `--since` window over it, answers about the\n  history shared with `main` and reports every change made before the branch\n  existed as if the branch had taken it: the same count that is 0 one way is 188\n  the other. The two differ by one operator and give opposite answers about\n  whether features reach a release line.",
                 "versions": "",
                 "coverage": 1,
-                "score": 28,
+                "score": 29,
                 "truncated": false
             },
             {
@@ -352,7 +352,7 @@ Data:
                 "body": "- The change should be reproducible from the issue or task description.\n- The patch should include a concise explanation of the problem and the chosen\n  fix.\n- Breaking changes, migrations, and deprecations need clear notes.\n- Security-sensitive behavior needs extra care and focused tests.",
                 "versions": "",
                 "coverage": 1,
-                "score": 28,
+                "score": 29,
                 "truncated": false
             },
             {
@@ -363,7 +363,7 @@ Data:
                 "body": "`typo3_changelog_lookup` answers with change events: what a version added,\ndeprecated, changed or removed. The entries of the older lines are on disk,\nbecause a core package ships the changelog of every line it has, so the\ndirection below the installed major is covered.\n\nAn entry saying an API arrived before the older declared major settles that the\nAPI is there, and nothing past that. Nothing writes an entry for what did not\nchange, so a member added later to a class that was already there leaves no\ntrace, and neither does a signature that was widened. The changelog narrows the\nquestion, and the branch closes it.",
                 "versions": "",
                 "coverage": 1,
-                "score": 28,
+                "score": 29,
                 "truncated": false
             }
         ],
@@ -406,6 +406,7 @@ Text:
     - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
     - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, The Pre-Commit Hook, Script Notes
     - Settling an API Question on a Declared Major That Is Not Installed: Which Majors the Question Is About, What the Changelog Settles and What It Does Not, Reading the Branch, What Reading Proves, and What It Does Not
+    - Running a Package on a Declared Major That Is Not Installed: Ask What CI Already Covers, Before Installing Anything, A Composer Root of Its Own, What It Writes, and What the Installation Keeps, What the Second Root Resolves Differently, Whether the Database Survives, Which Checks Are Worth Re-running There, What the Second Root Does Not Give, What Is Left Behind
     - Setting Up an Extension Manual: Documentation/guides.xml, Documentation/Index.rst, The two conventional files, Rendering it before it is published
     - Setting Up PHPUnit in a TYPO3 Extension: Build/UnitTests.xml, Build/FunctionalTests.xml, What was changed in the copied files, Running the suites, Database credentials for the functional suite, What is left after a run
     - Booting a Clone Into a Running Installation: What the Clone Does Not Carry, The Order the Steps Go In, Why the Environment Is Started Twice, Where the Data Comes From, Making the Installation Agree With the Code, The Login the Dump Did Not Bring, The Host the Site Is Served Under, What Says the Boot Worked
@@ -538,6 +539,20 @@ Data:
                     "What the Changelog Settles and What It Does Not",
                     "Reading the Branch",
                     "What Reading Proves, and What It Does Not"
+                ]
+            },
+            {
+                "id": "extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+                "title": "Running a Package on a Declared Major That Is Not Installed",
+                "topics": [
+                    "Ask What CI Already Covers, Before Installing Anything",
+                    "A Composer Root of Its Own",
+                    "What It Writes, and What the Installation Keeps",
+                    "What the Second Root Resolves Differently",
+                    "Whether the Database Survives",
+                    "Which Checks Are Worth Re-running There",
+                    "What the Second Root Does Not Give",
+                    "What Is Left Behind"
                 ]
             },
             {

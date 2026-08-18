@@ -100,6 +100,16 @@
       "scope": "extension"
     },
     {
+      "topic": "Running a package's own suite against a TYPO3 major it declares and the installation does not have",
+      "depth": "The procedure, as it was carried out: what the repository's CI already covers and what pushing proves, the Composer root of its own the other major is resolved into and the manifest that root carries, what the working installation keeps, what the second root resolves differently from it, whether the database survives, which checks are worth re-running there, and what a resolved tree is not. It installs nothing itself, and it says what a claim about what renders on the other major would additionally cost.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+      "scope": "extension"
+    },
+    {
       "topic": "The Playwright suite a project runs its browser tests from",
       "depth": "The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.",
       "tools": [
@@ -466,6 +476,10 @@
     {
       "when": "Writing against a core API in a package that declares a TYPO3 major the installation does not have — the installed copy answers for one of the declared majors, and the code has to run on all of them",
       "call": "typo3_project_describe for what the package requires of typo3/cms-core, then typo3_rule_lookup with documentId=\"extension/compatibility/a-declared-major-that-is-not-installed\" for the reading that settles the other major"
+    },
+    {
+      "when": "About to claim that a change holds on a declared TYPO3 major the installation does not have — reading settles the shape and the claim is worth what it ran on",
+      "call": "typo3_rule_lookup with documentId=\"extension/compatibility/running-on-a-declared-major-that-is-not-installed\" for standing that major up beside the installation and running the package's own suite there"
     },
     {
       "when": "Upgrading or maintaining an installation, and needing the order of operations",

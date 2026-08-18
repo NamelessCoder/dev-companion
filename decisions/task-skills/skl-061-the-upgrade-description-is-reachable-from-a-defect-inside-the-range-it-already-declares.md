@@ -82,7 +82,7 @@ carries the activation states a premise the task does not meet.
   workflow with the range decision taken out, so the skill owns the case and
   what failed is the way in.
 - The second half of the feedback goes to the card that already carries it.
-  [`feedback/2026-08-18-081129`](../../feedback/2026-08-18-081129-nothing-says-how-to-execute-the-other-typo3.md)
+  [`feedback/2026-08-18-081129`](../../feedback/archive/2026-08-18-081129-nothing-says-how-to-execute-the-other-typo3.md)
   reports the same gap — nothing says how to execute the other major a package
   claims — from the same session with the procedure it would have needed, so
   this feedback is trimmed to the description and that card stays the owner.

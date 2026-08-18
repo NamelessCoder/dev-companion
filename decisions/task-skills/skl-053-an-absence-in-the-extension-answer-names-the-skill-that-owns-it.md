@@ -193,5 +193,5 @@ The report is about this server rather than an older one: it was recorded at
 07:42 UTC, an hour after the pass, and quotes the paragraph as it still reads.
 Judged step 4 and queued at `normal` on the card that serves it, bounded to that
 one crossing — `typo3-extension-upgrade` staying shut in the same session is a
-description that reads from the maintainer's intent, and `feedback/2026-08-18-080630`
-carries it on a card of its own.
+description that reads from the maintainer's intent, and
+`feedback/2026-08-18-080630` carries it on a card of its own.

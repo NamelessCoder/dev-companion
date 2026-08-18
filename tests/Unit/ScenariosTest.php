@@ -6,9 +6,12 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
 final class ScenariosTest extends TestCase
@@ -151,6 +154,32 @@ final class ScenariosTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         Scenarios::skeleton('SKILL-07', 'testing', 'phpunit', '2026-07-30');
+    }
+
+    /**
+     * The exit code says whether the case still needs reading by hand, because
+     * that is what the recurring todo reading them is due on — `D-FBK-012`. A
+     * contract case claims its state on a test, so one whose `Held by` says
+     * `not guarded` is the part no test reaches and a session has to stand in
+     * for; one that is fully held stops asking without anybody editing the todo.
+     *
+     * Every case rather than two named ones, because a list of ids in a test is
+     * the same thing that went stale in the todo: it was written against the
+     * cases of its day and read for months afterwards as though it still named
+     * them.
+     */
+    #[Test]
+    public function aContractCaseNoTestHoldsSaysSoWithItsExitCode(): void
+    {
+        $application = Cli::application();
+        $answered = [];
+        $expected = [];
+        foreach (Scenarios::contracts() as $id => $case) {
+            $answered[$id] = $application->doRun(new StringInput('scenarios:contract ' . $id), new BufferedOutput());
+            $expected[$id] = str_contains($case['heldBy'], 'not guarded') ? 1 : 0;
+        }
+
+        self::assertSame($expected, $answered);
     }
 
     #[Test]

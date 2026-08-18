@@ -22,7 +22,7 @@ abstract class ScenarioReport
     /**
      * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string} $scenario
      */
-    protected function report(OutputInterface $output, array $scenario, string $label): int
+    protected function report(OutputInterface $output, array $scenario, string $label): void
     {
         $output->writeln(sprintf('%s — %s', $scenario['id'], $scenario['title']));
         $output->writeln($scenario['file']);
@@ -62,7 +62,5 @@ abstract class ScenarioReport
                 $output->writeln(sprintf('  %s %d  %s', $section === 'outcomes' ? 'met' : 'avoided', $index + 1, $criterion));
             }
         }
-
-        return 0;
     }
 }

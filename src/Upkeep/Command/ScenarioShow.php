@@ -37,6 +37,8 @@ final class ScenarioShow extends ScenarioReport
             return 2;
         }
 
-        return $this->report($output, $scenario, 'Status today');
+        $this->report($output, $scenario, 'Status today');
+
+        return 0;
     }
 }

@@ -146,3 +146,41 @@ So the first **Wrong if** has an instance the other way for the first time. Only
 the enumeration is read here; which surface produced the read is the session's
 own account, and it names the skill's step rather than the listing — the listing
 said what exists, and the skill said to open one of them.
+
+**Since then**, on 2026-08-19, the clause was displaced by the call it should
+have named. `feedback/2026-08-18-113425` is a sitepackage session under a client
+that lists the tools by name and defers their schemas. It quotes the clause
+back, called this server nothing at all, and finished without learning that any
+guide exists. It is the sixth feedback to quote that sentence, beside five in
+the archive from 2026-08-05 and 2026-08-07.
+
+What was wrong is where the sentence pointed rather than that it named the
+index. Every other surface had moved to the call: `Result\Prose` closes with
+`typo3_rule_lookup` and a `documentId`, `typo3_test_run_guide` names its two
+pages that way, and `typo3_project_describe` has enumerated the corpus at the
+foot of its answer since 2026-08-08 — measured on 2026-08-19 against a checkout
+of the reporting session's own shape, an extension repository with nothing
+installed, which answers with every id and title. The one statement every client
+receives was the last place routing through a resource scheme, and it warned
+about the client instead of naming what works.
+
+So the clause is gone and the index gained what it paid for: *the whole
+procedure, not one fact out of it: typo3_rule_lookup with a documentId
+typo3_project_describe lists*. The index rather than the sentence, because
+`Coverage::offered()` drops an entry naming a tool the caller excluded
+([`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md)),
+while a sentence in `then` naming `typo3_rule_lookup` would point at a tool that
+can be taken away. The longest assembly moves from 2021 characters to 2026 of
+the 2048
+[`R-ANS-013`](../../requirements/answers/ans-013-the-instructions-fit-what-a-client-keeps.md)
+holds, and `ScopeTest::theIndexNamesTheCallThatReadsAWholeProcedure` holds the
+entry and the exclusion.
+
+The feedback's own suggestion is refused on the same measurement. Naming the
+documents in the `instructions` cost 1153 characters on 2026-08-19, where 27
+were free, so this entry's second **Wrong if** is priced rather than argued.
+
+Neither **Wrong if** is satisfied by the session. The corpus has no document for
+what it wanted — reviewing an incoming pull request against an extension, and a
+project package's release and backport policy, each filed as its own feedback —
+so it is not a session that finished without opening a page that exists.

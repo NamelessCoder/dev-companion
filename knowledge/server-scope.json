@@ -22,10 +22,14 @@
       {
         "question": "the commit message, in your own repository as much as in the core",
         "call": "typo3_commit_message_guide"
+      },
+      {
+        "question": "the whole procedure, not one fact out of it",
+        "call": "typo3_rule_lookup with a documentId typo3_project_describe lists"
       }
     ],
     "note": "Guessed, a class, an icon or a label fails only at runtime.",
-    "then": "Answers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries its range.\n\nQuery this server in English whatever language you speak with the user: its matching is lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read — including the whole procedures served as typo3://guides resources, which your client may not list at all."
+    "then": "Answers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries its range.\n\nQuery this server in English whatever language you speak with the user: its matching is lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read."
   },
   "covers": [
     {

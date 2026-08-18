@@ -377,6 +377,33 @@ final class ScopeTest extends TestCase
     }
 
     /**
+     * `D-AUD-007`. The corpus is reached by a call, here as everywhere else.
+     *
+     * The clause this displaced named the resource scheme and warned that the
+     * client may not list it, which is the whole of what six sessions were
+     * given: `feedback/2026-08-18-113425` quotes it back and reports finishing
+     * without learning that any guide exists.
+     */
+    #[Test]
+    public function theIndexNamesTheCallThatReadsAWholeProcedure(): void
+    {
+        self::assertStringContainsString(
+            'the whole procedure, not one fact out of it: '
+            . 'typo3_rule_lookup with a documentId typo3_project_describe lists',
+            Coverage::instructions(),
+        );
+        // An address is delivery to a client that renders a resource list and
+        // to no other, which is `D-ANS-061`. Nothing in the one statement every
+        // client receives may rest on that.
+        self::assertStringNotContainsString('typo3://', Coverage::instructions());
+
+        // Both names carry the entry, so taking either away drops it rather
+        // than leaving half a route.
+        putenv(ExcludedTools::VARIABLE . '=typo3_project_describe');
+        self::assertStringNotContainsString('the whole procedure, not one fact', Coverage::instructions());
+    }
+
+    /**
      * The room that entry was paid out of, and the reason the index is data.
      *
      * A caller that had excluded most of the server was still told which four

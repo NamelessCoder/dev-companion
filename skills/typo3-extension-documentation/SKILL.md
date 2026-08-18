@@ -71,9 +71,19 @@ stable public API.
   `workflow="project"`. A manual ships from the repository it documents, which
   is the workflow that argument names.
 
+## Where the page stops and the code begins
+
+**When what a page would have to claim is not true of the code, invoke the skill
+that owns that code before writing either.** That is a step, not a note about
+ownership: load the skill by name and work from it. The finding at that moment
+is that the behaviour is missing rather than that the manual is, and writing the
+page anyway is how a manual comes to outrun the package it ships with. What
+crosses over is the surface, the behaviour the page was going to claim and the
+files it was read out of; the page is written from what comes back verified.
+
 This skill owns documentation and user-facing wording changes. Test
 implementation is `typo3-extension-testing`, conformance assessment is
 `typo3-extension-conformance`, backend-module code is
 `typo3-backend-module-development` and a content element is
-`typo3-content-element-development`. Activate the owner rather than making the
-change here, and document only the public behaviour it hands back verified.
+`typo3-content-element-development` — stop before editing that owner's files,
+and document only the public behaviour it hands back verified.

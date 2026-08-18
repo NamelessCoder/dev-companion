@@ -113,6 +113,12 @@ for a review-only request, report the defect without changing it.
 - Distinguish a broken runner, a missing environment prerequisite, and a failing
   assertion before changing production code.
 
+**Where the failing assertion is a defect in code another workflow owns, invoke
+the skill that owns it before the code is changed.** That is a step, not a note
+about ownership: load the skill by name and work from it. What crosses over is
+the failing test, what it establishes and the paths it runs over; the test
+itself stays here and runs again on what comes back.
+
 ## Prove the result
 
 1. Prove setup with a meaningful test at every layer established by the task. Do

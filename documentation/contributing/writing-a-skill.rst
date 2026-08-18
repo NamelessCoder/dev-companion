@@ -129,6 +129,9 @@ The rules
 * A skill that judges keeps its checklist beside it —
   ``SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem``
 * It says what it owns — ``SkillTest::everySkillStatesWhatItOwns``
+* A crossing into another skill is an instruction at the moment it happens, and
+  never only in the paragraph the workflow is left in —
+  ``SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor``
 * Every ``typo3://`` resource it names is one this server serves —
   ``SkillTest::everyResourceASkillNamesIsOneTheServerServes``
 * Every guide it names is handed over by the call that reads it —
@@ -277,6 +280,19 @@ and where its work runs into another skill's, the crossing is explicit: name the
 verified stopping point, stop before editing the other owner's files, activate
 that owner, carry across only the scope and verified behaviour it needs
 (`R-SKL-003 <../../requirements/task-skills/skl-003-crossing-into-another-skills-work-is-an-explicit-transition.md>`_).
+
+**And it is written where it happens.** That paragraph is where a reader learns
+the boundary, and it is the last thing in the file — read at the moment a
+workflow is being left, which is the moment of least appetite for opening
+another one. So the crossing itself stands as a step at the point it occurs,
+telling the session to invoke the successor by name and saying what crosses over
+(`R-SKL-018 <../../requirements/task-skills/skl-018-a-skill-that-hands-over-tells-the-session-to-invoke-the-next-one.md>`_).
+An imperative alone is not it: one skill closed on ``Activate`` and three
+skills' names, a session read that sentence and crossed none of them
+(`D-SKL-053 <../../decisions/task-skills/skl-053-an-absence-in-the-extension-answer-names-the-skill-that-owns-it.md>`_).
+Where the moment is something the reader says, the step names the sentence that
+fires it and the sentence that does not — and that half is the author's, like
+the sides a description names.
 
 **A workflow that ends in public stops once more before it gets there.** Where
 the last step publishes — a tracker entry, a pushed change, a release — the

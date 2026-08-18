@@ -99,11 +99,13 @@ is the answer — one package version cannot serve both, and choosing silently i
 how a supported version stops working without anyone noticing.
 
 Change what the work list justifies. An upgrade is not a modernization, a
-cleanup or a rewrite: anything the list did not produce goes to the workflow
-that owns it — `typo3-extension-conformance` for what else is wrong with the
-package, `typo3-extension-testing` for coverage the upgrade wants but does not
-have, `typo3-extension-documentation` for the manual that now describes a
-different range.
+cleanup or a rewrite. **Where the change in front of you is not on the list,
+invoke the workflow that owns it rather than making it here** —
+`typo3-extension-conformance` for what else is wrong with the package,
+`typo3-extension-testing` for coverage the upgrade wants but does not have,
+`typo3-extension-documentation` for the manual that now describes a different
+range. That is a step at the moment the reading turns it up, not a note about
+ownership: load the skill by name and work from it.
 
 ## Prove it on every version it claims
 

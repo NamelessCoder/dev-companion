@@ -15,7 +15,7 @@ versioned TYPO3 facts.
 1. Work through [references/base.md](references/base.md) — it fixes the order
    every task here starts in, and here it establishes the installation and the
    package the list is written about.
-2. Activate `typo3-extension-conformance` and let it run to its report. It owns
+2. Invoke `typo3-extension-conformance` and let it run to its report. It owns
    the surfaces, the evidence a finding rests on, the severity and who each
    finding belongs to, and nothing here re-derives any of that. A cleanup that
    opens the checkout looking for findings of its own has replaced an audit with
@@ -49,9 +49,9 @@ versioned TYPO3 facts.
 8. Take the items in the list's order, grouped by the workflow that owns them.
    One activation covering that owner's items costs less than one per finding,
    and the owner is what decides how its own area is changed.
-9. Activate the owning skill and carry across only the scope and the verified
-   behaviour it needs: the finding, the evidence under it, the paths. Stop
-   before editing files another owner has — the crossing is the transition
+9. Invoke the skill that owns them and carry across only the scope and the
+   verified behaviour it needs: the finding, the evidence under it, the paths.
+   Stop before editing files another owner has — the crossing is the transition
    itself, not a detail of the item.
 10. Where an item has no owning workflow, it is worked here only where the
     project's own suite, linter or static analysis proves the change: the
@@ -68,11 +68,11 @@ versioned TYPO3 facts.
 
 ## What closes it
 
-12. Hand the worked list back to `typo3-extension-conformance` for the re-check.
-    It kept responsibility for that when it handed the finding over, and a
-    cleanup that grades its own work has no evidence the finding is gone. The
-    re-check re-runs what the finding was about instead of re-reading the files
-    it changed: a file that reads correctly can still be rewritten by the
+12. Invoke `typo3-extension-conformance` on the worked list for the re-check. It
+    kept responsibility for that when it handed the finding over, and a cleanup
+    that grades its own work has no evidence the finding is gone. The re-check
+    re-runs what the finding was about instead of re-reading the files it
+    changed: a file that reads correctly can still be rewritten by the
     environment that owns it, and the difference only shows once that
     environment runs again.
 13. Report what is left: the items still open, the items dropped with what

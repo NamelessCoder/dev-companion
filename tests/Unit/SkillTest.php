@@ -2928,7 +2928,7 @@ final class SkillTest extends TestCase
         $flat = self::flat($skill);
         $verified = strpos($flat, 'implementation is verified');
         $stop = strpos($flat, 'stop this workflow');
-        $activate = strpos($flat, 'Activate `typo3-extension-documentation` before editing documentation');
+        $activate = strpos($flat, 'invoke `typo3-extension-documentation` before editing documentation');
         self::assertNotFalse($verified);
         self::assertNotFalse($stop);
         self::assertNotFalse($activate);
@@ -3169,33 +3169,89 @@ final class SkillTest extends TestCase
     /**
      * `R-SKL-018`. A crossing between two skills is a step, not a paragraph.
      *
-     * Each of these named its successor in prose about ownership, and each was
-     * read by a session that then did the successor's work itself: one wrote a
-     * whole patch over forty turns after a triage, one edited the patch it was
-     * reviewing, ran seven suites and amended the commit, and one finished a
-     * push-ready patch and handed it over unreviewed. No session reports a
-     * wrong outcome; all three reconstructed an order that was one call away
-     * (`D-SKL-022`).
+     * Each of the three core crossings named its successor in prose about
+     * ownership, and each was read by a session that then did the successor's
+     * work itself: one wrote a whole patch over forty turns after a triage, one
+     * edited the patch it was reviewing, ran seven suites and amended the
+     * commit, and one finished a push-ready patch and handed it over
+     * unreviewed. No session reports a wrong outcome; all three reconstructed
+     * an order that was one call away (`D-SKL-022`).
      *
-     * The last of them crosses the other way, out of the skill the first two
-     * cross into.
+     * The extension crossings came in on the report that falsified the reading
+     * which had left them out. `typo3-content-element-development` closed on an
+     * imperative naming three successors, a session followed that workflow to
+     * completion on a six-element sitepackage, and none of the three fired: no
+     * test at any layer, three README files written by hand, and the user
+     * auditing the delivery himself (`D-SKL-053`). So the imperative is not the
+     * property — what the two crossings that fired carry beside it is the
+     * moment, and every crossing here is written at the point it happens.
+     *
+     * What is read is still the imperative and the position. That the moment is
+     * the right one, and which sentences a reader-spoken trigger has to
+     * exclude, are readings of the workflow rather than properties of a file.
      */
     #[Test]
     public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void
     {
         $crossings = [
-            'typo3-core-issue-triage' => 'typo3-core-patch-development',
-            'typo3-core-patch-review' => 'typo3-core-patch-development',
-            'typo3-core-patch-development' => 'typo3-core-patch-review',
+            'typo3-core-issue-triage' => ['typo3-core-patch-development'],
+            'typo3-core-patch-review' => ['typo3-core-patch-development'],
+            'typo3-core-patch-development' => ['typo3-core-patch-review'],
+            'typo3-content-element-development' => [
+                'typo3-extension-testing',
+                'typo3-extension-documentation',
+                'typo3-extension-conformance',
+            ],
+            'typo3-backend-module-development' => [
+                'typo3-development-installation',
+                'typo3-extension-documentation',
+            ],
+            'typo3-extension-cleanup' => ['typo3-extension-conformance'],
         ];
 
-        foreach ($crossings as $name => $successor) {
+        foreach ($crossings as $name => $successors) {
             $body = self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md'));
 
-            self::assertStringContainsString(
-                'invoke `' . $successor . '`',
-                $body,
-                $name . ' names ' . $successor . ' without telling the session to invoke it',
+            foreach ($successors as $successor) {
+                self::assertMatchesRegularExpression(
+                    '/[Ii]nvoke `' . preg_quote($successor, '/') . '`/',
+                    $body,
+                    $name . ' names ' . $successor . ' without telling the session to invoke it',
+                );
+            }
+        }
+
+        // The crossing whose successor is decided per case is an instruction
+        // too. `typo3-extension-cleanup` picks the owner per item,
+        // `typo3-extension-conformance` per finding, and the other three per
+        // what the reading turned up — none of them can name one skill, and all
+        // of them can say what the session does.
+        foreach ([
+            'typo3-extension-cleanup',
+            'typo3-extension-conformance',
+            'typo3-extension-documentation',
+            'typo3-extension-testing',
+            'typo3-extension-upgrade',
+        ] as $name) {
+            self::assertMatchesRegularExpression(
+                '/[Ii]nvoke the (skill|workflow) that owns/',
+                self::flat((string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md')),
+                $name . ' hands over to an owner it decides per case and does not say to invoke it',
+            );
+        }
+
+        // And the position, which is the half the imperative alone did not
+        // hold: the closing paragraph is where a workflow is being left, and a
+        // crossing that stands only there is the sentence three sessions read
+        // and did not act on. The ownership paragraph stays — it is what tells
+        // a reader where the boundary is — and it carries no instruction.
+        foreach (self::skills() as $name => $skill) {
+            $paragraphs = preg_split('/\R{2,}/', trim($skill));
+            self::assertIsArray($paragraphs);
+            self::assertStringNotContainsString(
+                'nvoke',
+                (string) end($paragraphs),
+                $name . ' leaves a crossing in the paragraph the workflow is being left in',
             );
         }
 

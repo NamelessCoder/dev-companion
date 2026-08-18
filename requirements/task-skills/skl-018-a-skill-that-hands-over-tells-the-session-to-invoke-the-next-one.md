@@ -1,7 +1,7 @@
 ---
 id: R-SKL-018
 status: held
-restsOn: [D-SKL-022]
+restsOn: [D-SKL-022, D-SKL-053]
 ---
 
 # R-SKL-018 — A skill that hands over tells the session to invoke the next one
@@ -39,9 +39,18 @@ review crossing fired on "I think the tests should prove it", a reader
 reaffirming the session's own finding that the patch adds no test, and the
 session invoked `typo3-core-patch-development` before backing out — `D-SKL-022`.
 
+`feedback/2026-08-17-213027` is what carried this from the core skills to the
+extension ones. `typo3-content-element-development` closed on an imperative
+naming three successors and no moment; a session followed that workflow to
+completion on a six-element sitepackage, quotes the sentence, and crossed none
+of the three — no test at any layer, three README files by hand, and the user
+auditing the delivery himself afterwards. So the imperative is not what fires a
+crossing, and the moment it stands at is the other half — `D-SKL-053`.
+
 ## Held by
 
 - `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`, which reads the
-  imperative. That the crossing also names what does not fire it is not guarded:
-  which sentences a trigger has to exclude is a reading of the workflow rather
-  than a property of the file.
+  imperative and where it stands: a crossing may not live in the paragraph the
+  workflow is being left in. That the moment is the right one is not guarded,
+  and neither is what does not fire it: both are readings of the workflow rather
+  than properties of the file.

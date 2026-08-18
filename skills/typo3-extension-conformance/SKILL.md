@@ -127,15 +127,30 @@ into a chat, and rendered output is what does not survive being moved. Write it
 to a file only where the caller asks for one, at a path outside the checkout
 being assessed, which this workflow changes nothing in.
 
+## Where the audit ends and the fixing begins
+
+**When you are asked for the fixes, invoke the skill that owns each finding —
+the one the report named — before its files are edited.** That is a step, not a
+note about ownership: load the skill by name and work from it. What asks for it
+is an instruction to change the package — "fix it", "put that right", "do the
+first three" — and it arrives after the report, which is where this workflow is
+being left. What crosses over is the finding, the evidence under it and the
+paths; the re-check stays here.
+
+**A question about a finding is not that instruction.** "Is that really
+breaking", "why is that one high", "are you sure" — each asks the report to be
+defended, and what it wants is the evidence rather than a change. Where the
+sentence could be either, ask which was meant.
+
+What the sweep returned goes to `typo3-extension-upgrade` whole: it owns
+crossing the package to another supported range, and a review that hands over
+one deprecation at a time has decided the order that workflow exists to
+establish.
+
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to —
 `typo3-extension-testing`, `typo3-extension-documentation`,
 `typo3-backend-module-development`, `typo3-content-element-development` or
 `typo3-extension-upgrade` — in the result itself, whether or not fixes were
 requested: a reader deciding what to do next needs that as much as a session
-that was told to do it. When fixes are requested, hand over to that skill for
-the changes in its area and keep conformance responsible for re-checking the
-resulting finding. What the sweep returned goes to `typo3-extension-upgrade`
-whole: it owns crossing the package to another supported range, and a review
-that hands over one deprecation at a time has decided the order that workflow
-exists to establish.
+that was told to do it.

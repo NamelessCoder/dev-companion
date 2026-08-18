@@ -79,13 +79,22 @@ suite reports none of the five, and a registration file has no schema behind it
 to fail against.
 
 Opening it needs a backend that runs. Where this repository has none, that is a
-prerequisite of the task rather than a part of it, and it has an owner:
-`typo3-development-installation` brings one into existence or boots the one the
-repository declares. Cross to it at the verified point — the module is written
-and registered, and nothing has been opened — and come back to these five. Where
-that is not wanted, report the module as written and unproven and say which of
-the five is unestablished. Correcting a mistake from a test afterwards is what
-the lookups above are there to make unnecessary.
+prerequisite of the task rather than a part of it. **Invoke
+`typo3-development-installation` at the verified point — the module is written
+and registered, and nothing has been opened — and come back to these five.** It
+brings an installation into existence or boots the one the repository declares.
+Where that is not wanted, report the module as written and unproven and say
+which of the five is unestablished. Correcting a mistake from a test afterwards
+is what the lookups above are there to make unnecessary.
+
+## Where the module is written up
+
+**When implementation is verified and only documentation remains, stop this
+workflow and invoke `typo3-extension-documentation` before editing
+documentation.** Carry forward the extension key, target version, and verified
+public behavior; let that skill select the documentation surface. Documentation
+for functionality encapsulated in an extension belongs to that extension, not to
+the project around it.
 
 ## Commit it
 
@@ -95,16 +104,9 @@ a module in an extension, a sitepackage or a site project is committed in that
 repository, and only an actual core patch leaves the argument at its default.
 
 This skill owns backend module registration, controllers, routes, and backend UI
-implementation, up to the module being opened.
-
-When implementation is verified and only documentation remains, stop this
-workflow. Activate `typo3-extension-documentation` before editing documentation.
-Carry forward the extension key, target version, and verified public behavior;
-let that skill select the documentation surface. Documentation for functionality
-encapsulated in an extension belongs to that extension, not to the project
-around it.
-
-Stop and activate `typo3-extension-testing` before changing test infrastructure,
-`typo3-extension-conformance` before broadening into an audit, and
-`typo3-content-element-development` before implementing a content element or its
-backend preview.
+implementation, up to the module being opened. Test infrastructure is
+`typo3-extension-testing`'s, a broader audit is `typo3-extension-conformance`'s,
+and the element in the page module is `typo3-content-element-development`'s —
+stop before implementing a content element or its backend preview, stop before
+editing any of those owners' files, and carry across the extension key, the
+target version and the behaviour already verified.

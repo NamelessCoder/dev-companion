@@ -106,15 +106,50 @@ follows it.
 - Re-run `typo3_extension_describe` after the change and report parser blind
   spots separately from implementation defects.
 
+**Where the layer this element needs has no harness, invoke
+`typo3-extension-testing` before writing the test.** That is a step, not a note
+about ownership: load the skill by name and work from it. What crosses over is
+the extension key, the target version, the layer the behaviour needs and what is
+verified without it. It is written as a step because naming that skill at the
+end of this file did not fire as one: a session followed this workflow to the
+commit on six elements and wrote no test at any layer, having read the empty
+list step 2 returned.
+
+## Write the element up
+
+**When the element is verified and something has to describe it, invoke
+`typo3-extension-documentation` before editing a manual or a README.** What
+crosses over is the extension key, the target version and the public behaviour
+verified here; that skill selects the surface. The same session wrote three
+README files by hand, with step 2 reporting no manual and no README both times
+it was called.
+
 ## Commit the element
 
 `typo3_commit_message_guide` with `workflow="project"` drafts the message and
 checks it. The element lands in an extension or a sitepackage, which is the
 workflow that argument names; the default is the core's.
 
-This skill owns content-element architecture and implementation. Activate
-`typo3-extension-testing` for test infrastructure,
-`typo3-extension-documentation` for manuals, and `typo3-extension-conformance`
-for a broader extension audit — stop before editing that owner's files, and
+## Where this element ends and the package begins
+
+**When you are asked whether the package is sound, invoke
+`typo3-extension-conformance` and work from its report.** What asks for it is a
+request about the package rather than about this element — "review it", "what
+else is wrong with it", "is it ready" — and it arrives once the work here reads
+as finished, which is the moment with the least appetite for opening another
+workflow. What crosses over is the extension key, the target version and what
+this workflow verified. A package handed over unaudited is audited by whoever
+asked for it: that happened once, by hand and after delivery, and seven of the
+ten defects it turned up sit inside that skill's stated surfaces.
+
+**A question about this element is not that request.** "Does the preview
+render", "is the inline relation right", "why is the order wrong" — each is this
+skill's own work, and answering it is not an audit. Where the sentence could be
+either, ask which was meant.
+
+This skill owns content-element architecture and implementation. Test
+infrastructure is `typo3-extension-testing`'s, manuals are
+`typo3-extension-documentation`'s and a broader extension audit is
+`typo3-extension-conformance`'s — stop before editing that owner's files, and
 carry across the extension key, the target version and the behaviour already
 verified.

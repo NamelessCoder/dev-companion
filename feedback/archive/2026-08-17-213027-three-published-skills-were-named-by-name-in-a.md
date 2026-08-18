@@ -1,7 +1,8 @@
 ---
 date: 2026-08-17T21:30:27+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-18
 model: claude-opus-5
 tool: typo3-content-element-development, typo3-extension-testing, typo3-extension-documentation, typo3-extension-conformance, typo3_extension_describe
 directory: /home/benji/projects/site-demo

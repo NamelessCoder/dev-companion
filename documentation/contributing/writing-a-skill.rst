@@ -213,7 +213,12 @@ that cannot be re-asked when the installation turns out to be a different one,
 and no answer built on it ever says where it came from. The same holds for a
 package name: it is one word in a published file that no release of this server
 can correct, so it is written where a task reads it once — a reference — rather
-than where every task carries it.
+than where every task carries it. That one and an environment variable are the
+two kinds a body can be shown to carry, and
+``SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`` reads ``SKILL.md`` alone
+for them
+(`D-SKL-052 <../../decisions/task-skills/skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md>`_).
+A layout key and a command option have no such shape and stay the author's.
 
 **Which server it needs.** ``skills/`` is also read by whoever copies it, and a
 copied skill has no server. ``references/base.md`` is written at publication, so

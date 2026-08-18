@@ -15,6 +15,7 @@ one is added.
 - [`D-SKL-049`][D-SKL-049] — The gate at the end of a workflow waits for the corrections it would sit on · 2026-08-18
 - [`D-SKL-050`][D-SKL-050] — Producing a distribution's content earns a task skill, and the project repository is owned · 2026-08-18
 - [`D-SKL-051`][D-SKL-051] — A site built from scratch reaches the installation intent · 2026-08-18
+- [`D-SKL-052`][D-SKL-052] — The injected size of a skill is what the retention rule leaves · 2026-08-18
 - [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
@@ -64,6 +65,7 @@ one is added.
 [D-SKL-049]: skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md
 [D-SKL-050]: skl-050-producing-a-distributions-content-earns-a-task-skill.md
 [D-SKL-051]: skl-051-a-site-built-from-scratch-reaches-the-installation-intent.md
+[D-SKL-052]: skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md
 [D-SKL-037]: skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
 [D-SKL-038]: skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md

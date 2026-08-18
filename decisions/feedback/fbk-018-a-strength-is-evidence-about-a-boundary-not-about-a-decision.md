@@ -946,3 +946,35 @@ sentence, so the guard came first here as it did there.
 The feedback is closed by this commit and nothing is queued. The one statement
 about TYPO3 in it was verified in both covered majors and written into no
 `knowledge/` file, because the corpus already answers it from the installation.
+
+## Confirmed on 2026-08-18
+
+The 2026-08-03 section says an absence is a claim about a boundary nobody drew,
+and that the reader supplies both the set the praise is closed over and the
+conclusion. `feedback/2026-08-17-212600` is the strength where the file supplied
+the set itself, and that is what made the absence checkable.
+
+It measured the two skills that carried a build in
+`/home/benji/projects/site-demo` and praises them for what they do not say. The
+praise is not the reader's reading of an omission: it quotes the sentence that
+declares it,
+`never retain layout keys, environment defaults, command options or package names`.
+So the axis is written down, in four kinds, and the check is whether each of
+them holds and what says so. The sentence reproduces verbatim, and of the four,
+none was asserted — `SkillTest` held the routing phrase, a version number and
+backend markup. Two have a shape a file can be held to and both hold today; they
+are guarded now.
+
+The first **Wrong if** did not fire. Every counterfactual in the file is about a
+different skill's size rather than about a step this one had to take instead,
+and the failures it reports against these two are filed separately, judged
+elsewhere, and already worked into the files.
+
+The boundary is **what a workflow states against what it names a call for**.
+Everything the strength credits is on the second side: an order, an obligation,
+a lookup at the step that needs it. So is everything the same debrief reports as
+a cost, which is why answering six of them added 1,949 characters and no fact
+that can go stale. The judgement is
+[`D-SKL-052`](../task-skills/skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md),
+where the size the report asks be watched is read as what that rule leaves. The
+feedback is closed by this commit and nothing is queued.

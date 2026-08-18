@@ -2305,6 +2305,21 @@ final class SkillTest extends TestCase
             // one, and no answer says it came from here.
             self::assertDoesNotMatchRegularExpression('/TYPO3 v?\d+/', $skill, $name);
             self::assertStringNotContainsString('<core:', $skill, $name . ' carries backend markup');
+            // The other two kinds a body can be held to — D-SKL-052. An
+            // environment variable is what a session that has just looked the
+            // set up writes in beside the hint that names them, and a package
+            // name is one word no release of this server corrects. A reference
+            // is where either may stand, which is why this reads SKILL.md.
+            self::assertDoesNotMatchRegularExpression(
+                '/TYPO3_[A-Z_]+/',
+                $skill,
+                $name . ' names an environment variable rather than the hint that owns the set',
+            );
+            self::assertDoesNotMatchRegularExpression(
+                '#\btypo3/[a-z0-9-]+#',
+                $skill,
+                $name . ' names a package every task then carries',
+            );
         }
     }
 

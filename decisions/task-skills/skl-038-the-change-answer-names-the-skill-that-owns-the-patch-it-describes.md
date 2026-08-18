@@ -121,3 +121,11 @@ server corrects in somebody's project, so
 out, because `typo3_feedback_record` already named `typo3-extension-conformance`
 in its schema as the example a session reports a skill by. No session has read
 the tail yet, so all three **Wrong if** stand as they were.
+
+A second moment is named on 2026-08-18, and the bullet above it is what decides
+that it is one rather than a sweep. `feedback/2026-08-17-213027` read
+`manual: null`, `readme: null` and `tests: []` out of `typo3_extension_describe`
+twice, wrote the manuals by hand and shipped no test, and each of those three
+absences has a published skill that owns it. That is one tool and one moment
+again — the caller named the extension, asked, and is holding the object — and
+`D-SKL-053` carries the reading and the boundary.

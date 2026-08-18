@@ -188,3 +188,28 @@ rather than the trigger beside it, and a report is evidence about where the
 boundary runs rather than a confirmation — `D-FBK-018`. What it does settle is
 which half of the paragraph is doing the work: the concrete failure mode, not
 the ownership sentence above it.
+
+## Since then
+
+On 2026-08-17 the imperative was read and nothing crossed.
+`feedback/2026-08-17-213027` followed `typo3-content-element-development` to
+completion on a six-element sitepackage and quotes that skill's closing
+sentence, which tells the session to activate `typo3-extension-testing`,
+`typo3-extension-documentation` and `typo3-extension-conformance`. None of the
+three fired: no test was written at all, three README files were written by
+hand, and the user reviewed the result himself and listed ten defects, seven of
+them inside the conformance skill's own stated scope.
+
+That is the reading of 2026-08-09 above, and this is what it got wrong. It read
+across `skills/` and counted `Activate typo3-extension-documentation` and
+`Activate typo3-extension-conformance` as already an act, so `R-SKL-018` was
+applied to three core crossings and to none of the extension ones. An imperative
+is what that pass could see in a file; what the two crossings that fired carry
+beside it is the moment — "the verdict is 'still happens' and a fix is asked
+for", "once the checks pass and the commit is written". The sentence that failed
+names three successors, no moment, and sits after the commit section, which is
+where a workflow is being left.
+
+`D-SKL-053` is the judgement and carries the card. What it does not license is
+writing the closing paragraph out as a list of everything the workflow still
+owes: that is `D-SKL-049`'s gate, which is proposed and waiting on an answer.

@@ -66,15 +66,9 @@ final class Installer
      * table in `documentation/usage/installing.rst`. It is the whole of what
      * makes a shareable entry possible: a plain relative path would resolve
      * against the working directory the client spawns the process in, which the
-     * MCP specification does not define and only one of the eleven documents.
-     * The variable is named instead of that directory being depended on, which
-     * is also the advice the client this server is used with most gives.
-     *
-     * `.mcp.json` carries no such value even though Claude Code expands one:
-     * `${CLAUDE_PROJECT_DIR}` is set in the spawned server's environment rather
-     * than in the client's own, so an entry referring to it needs a
-     * `${CLAUDE_PROJECT_DIR:-.}` default — and the default is the working
-     * directory again. The file is read by more than one client besides.
+     * MCP specification does not define. `.mcp.json` carries no such value even
+     * though Claude Code expands one, because `${CLAUDE_PROJECT_DIR}` is set in
+     * the spawned server's environment rather than in the client's own.
      */
     private const WORKSPACE = '${workspaceFolder}';
     /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string, root?: string}}> */
@@ -300,17 +294,12 @@ final class Installer
      *
      * A published skill is a copy, so it goes stale the moment this package
      * moves and nothing on either side notices: the client loads the file it
-     * finds, the workflow it carries reads exactly as current, and a tool name
-     * that has since been renamed fails at the call rather than at the load.
-     * `update` was always the answer and nothing ever said it was due.
-     *
-     * The record is what this reads, so a project this package never installed
-     * into is silent rather than wrong. Two things make it speak: a skills
-     * directory that no longer holds what was published there — `R-DIS-024` has
-     * those ignoring themselves, which is also what `git clean -xdf` takes with
-     * it — and a digest that no longer matches. A record written before the
-     * digest existed counts as the second, because "not established" and
-     * "current" are what this exists to keep apart.
+     * finds, and a tool name that has since been renamed fails at the call
+     * rather than at the load. The record is what this reads, so a project this
+     * package never installed into is silent rather than wrong. Two things make
+     * it speak — a skills directory that no longer holds what was published
+     * there (`R-DIS-024` has those ignoring themselves) and a digest that no
+     * longer matches, which a record written before the digest existed counts as.
      */
     public static function outdated(string $project): ?string
     {
@@ -455,28 +444,14 @@ final class Installer
      * Bring the clients installed here up to date.
      *
      * Without an agent that is every client `.typo3-dev-companion/state.json`
-     * records, which is the case that matters: a project is usually worked on
-     * by more than one client, and naming them one at a time meant remembering
-     * which of them the project had — a list nobody keeps, so the second client
-     * silently kept the skills of the version it was installed with.
-     *
-     * The setup that named no client is one of them, so it is refreshed the
-     * same way and needs no case of its own.
-     *
-     * The drafts are the one thing an update does not carry over. They are a
+     * records, because a project is usually worked on by more than one and
+     * naming them one at a time meant remembering which of them the project had.
+     * The drafts are the one thing an update does not carry over: they are a
      * per-run choice on both commands, so an update that does not ask for them
-     * takes them out again and says so — which is the way back off a draft, and
-     * the reason there is no second flag for it. Sticky would be the more
-     * convenient reading and the wrong one: an unreviewed workflow that stays
-     * in a project because somebody once tried it is exactly what publishing is
-     * a deliberate edit to prevent.
-     *
-     * A project with nothing installed is told so and is not a failure. This is
-     * the command a project wires into Composer's `post-update-cmd`, a script
-     * that exits non-zero fails the whole Composer run, and the record ignores
-     * itself (`R-DIS-024`) — so every colleague who never ran `install` would
-     * have their `composer update` fail over a dev tool they do not use.
-     * `D-DIS-014` is what that was priced against.
+     * takes them out again and says so, which is the way back off a draft. A
+     * project with nothing installed is told so and is not a failure — this is
+     * the command a project wires into Composer's `post-update-cmd`, where a
+     * non-zero exit fails the whole run (`R-DIS-024`, `D-DIS-014`).
      */
     public function update(?string $agent, bool $drafts = false): string
     {
@@ -605,13 +580,11 @@ final class Installer
      * it is said rather than fixed, and said where the person who can act on it
      * is looking.
      *
-     * Two things spare a client the sentence, and both replace the host path
-     * with one the project can share: `ddev exec`, which runs in the container's
-     * project root, and a client that resolves `self::WORKSPACE`. Where neither
-     * is available nothing else can be written — a plain relative path resolves
-     * against the working directory the client spawns the process in, and the
-     * MCP specification defines none — so this is the answer rather than the
-     * fallback. `D-DIS-016` is the reading, per client.
+     * Two things spare a client the sentence, both replacing the host path with
+     * one the project can share: `ddev exec`, and a client that resolves
+     * `self::WORKSPACE`. Where neither is available nothing else can be written,
+     * so this is the answer rather than the fallback — `D-DIS-016` is the
+     * reading, per client.
      */
     private const HOST_SPECIFIC = 'The command in this entry is this checkout\'s absolute path, valid on '
         . 'this machine only, while the file it is in is the one that client documents as shared and '
@@ -695,11 +668,9 @@ final class Installer
      * write itself.
      *
      * The command and the shape around it are a property of the project and are
-     * rewritten on every run, which is what `update` is for. The rest is the
-     * caller's, and `env` is why this exists: a `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`
-     * written into the entry by hand was replaced away by the next install, and
-     * the tools it had taken out came back with nothing said on either side —
-     * `D-AUD-005`.
+     * rewritten on every run. The rest is the caller's, and `env` is why this
+     * exists: a `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` written into the entry by
+     * hand was replaced away by the next install — `D-AUD-005`.
      *
      * @return array<array-key, mixed>
      */
@@ -857,12 +828,11 @@ final class Installer
      * The section as it should read, with every line this package does not own
      * kept where the caller wrote it.
      *
-     * The two lines this package owns are `command` and `args`, which are a
-     * property of the project and are rewritten on every run. Everything else
+     * The two lines this package owns are `command` and `args`. Everything else
      * in the section is the caller's — `env` above all, since it is the only
-     * place a TOML client can carry `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`, and it was being
-     * deleted by the `install` that was supposed to keep the entry current
-     * (measured 2026-08-04 in a fixture project, `D-AUD-006`).
+     * place a TOML client can carry `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`, and it
+     * was being deleted by the `install` that was supposed to keep the entry
+     * current (`D-AUD-006`).
      *
      * @param int $number which line of the file the section header is, so a
      *     refusal can name the line in the file rather than in the section

@@ -36,14 +36,9 @@ final class Factory
      *
      * The index says what all the others are and is the one to take where only
      * one is taken. Below it, what holds whatever the caller is working on is
-     * worth more than what holds inside a core checkout alone, which most
-     * sessions are not in — `R-AUD-001`.
-     *
+     * worth more than what holds inside a core checkout alone — `R-AUD-001`.
      * That audience is the whole of the axis, so a document and a skill that
-     * both hold anywhere are offered at the same height. Which of the two a
-     * picker should take first is nothing this server knows: one is prose to
-     * read, the other an order to follow, and the descriptions say which is
-     * which.
+     * both hold anywhere are offered at the same height.
      */
     private const INDEX_PRIORITY = 1.0;
     private const TRANSFERABLE_PRIORITY = 0.8;
@@ -120,19 +115,14 @@ final class Factory
      *
      * A tool is called by the model in the middle of a task and can explain
      * itself in its answer; a resource is picked out of a list by the host
-     * application or by the user, who have the list and nothing else. So
-     * `description`, `annotations.priority` and `size` are what a resource is
-     * chosen by rather than decoration — `R-ANS-022`.
-     *
-     * Two families, because the knowledge documents are mostly the core's own
-     * process and the skills are mostly extension and site work. Offering both
-     * is what leaves all three audiences of `R-AUD-001` something to pick.
-     *
-     * Two fields the spec has stay absent. `annotations.audience` is the
-     * client's user or the model rather than the three audiences of
-     * `R-AUD-001`, and everything here is for both of them. And
-     * `annotations.lastModified` is carried by no `Mcp\Schema\Annotations` in
-     * mcp/sdk v0.7.0, which has `audience` and `priority` alone.
+     * application or by the user, so `description`, `annotations.priority` and
+     * `size` are what it is chosen by rather than decoration — `R-ANS-022`. Two
+     * families, because the knowledge documents are mostly the core's own
+     * process and the skills mostly extension and site work, which is what
+     * leaves all three audiences of `R-AUD-001` something to pick. Two fields of
+     * the spec stay absent: `annotations.audience` means the client's user
+     * rather than those three, and `lastModified` is in no
+     * `Mcp\Schema\Annotations` of mcp/sdk v0.7.0.
      *
      * @return array<int, ResourceDefinition>
      */

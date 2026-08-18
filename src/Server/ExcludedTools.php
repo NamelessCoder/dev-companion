@@ -9,20 +9,13 @@ use TYPO3\DevCompanion\Tool\Registry;
 /**
  * The tools a caller has asked not to be offered.
  *
- * The only subtraction this server makes, and the caller makes it. What was
- * here before decided per checkout instead: a Composer project was offered the
- * server without its core contribution surface, on the grounds that a
- * repository with no Build/Scripts/, no Gerrit remote and no Forge issue cannot
- * follow any of it. That reasoning holds for the repository and not for the
- * task, which is R-AUD-002, and the task is what an answer is shaped for — so a
- * core-shaped question asked from a site installation was answered as core work
- * and then routed to a tool that had been taken away.
- *
- * Which half of an answer is worth having is said in the answer, per topic and
- * per path, where the audience is actually known. The tool list is not the
- * place to say it: withholding a tool costs the caller the doorway and leaves
- * it the knowledge, because the documents behind these tools were never
- * filtered.
+ * The only subtraction this server makes, and the caller makes it. What was here
+ * before decided per checkout instead, which is reasoning that holds for the
+ * repository and not for the task — `R-AUD-002` — so a core-shaped question
+ * asked from a site installation was answered as core work and then routed to a
+ * tool that had been taken away. Which half of an answer is worth having is said
+ * in the answer, per topic and per path, because withholding a tool costs the
+ * caller the doorway and leaves it the knowledge.
  */
 final class ExcludedTools
 {
@@ -65,11 +58,10 @@ final class ExcludedTools
      * The tools that are really gone, so an answer can name them rather than
      * let a client wonder where a tool went.
      *
-     * What the caller wrote is not that list. A name reaches this variable that
-     * no tool answers to, and one that names a tool the filter does not reach,
-     * and both used to be reported here as excluded while the tool was in the
-     * list the same server had just handed over — a client told it has lost a
-     * capability it has, out of the instruction budget R-ANS-013 holds.
+     * What the caller wrote is not that list: a name no tool answers to and one
+     * that names a tool the filter does not reach were both reported here as
+     * excluded, telling a client it has lost a capability it has — out of the
+     * instruction budget `R-ANS-013` holds.
      *
      * @return array<int, string>
      */
@@ -97,11 +89,10 @@ final class ExcludedTools
     /**
      * The names in the list that this server offers anyway.
      *
-     * The three R-SCO-009 names as what a caller cannot take away, reached from
-     * the other side: `typo3_server_scope`, which is dropped here, and the two
-     * feedback tools, which `Registry::offered()` appends past the filter —
-     * D-FBK-042. Nothing is computed from that list, so an exception added
-     * there arrives here without this class being told.
+     * The three `R-SCO-009` names as what a caller cannot take away, reached
+     * from the other side: `typo3_server_scope`, which is dropped here, and the
+     * two feedback tools, which `Registry::offered()` appends past the filter
+     * (`D-FBK-042`). Nothing is computed from that list.
      *
      * @return array<int, string>
      */

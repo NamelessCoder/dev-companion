@@ -15,12 +15,10 @@ use TYPO3\DevCompanion\Installation\Instance;
  * transport for them would look like a hang — so every other word ends in a
  * message and an exit code.
  *
- * This is also the one place that hands a working directory to Instance. The
- * client starts this process inside the session it is working in, so the
- * working directory is the agent's own and an installation found from it is the
- * one being worked on. Nothing else may do this, which is what `R-DIS-001` holds:
- * a request-serving endpoint has no such relationship to its callers, and its
- * document root may itself sit inside a TYPO3 installation.
+ * This is also the one place that hands a working directory to `Instance`: the
+ * client starts this process inside the session it is working in, so an
+ * installation found from it is the one being worked on. Nothing else may do it
+ * — `R-DIS-001`.
  */
 final class Entrypoint
 {
@@ -56,22 +54,13 @@ final class Entrypoint
      * An excluded name that took no tool away, said on stderr before the
      * transport starts.
      *
-     * stdout is the protocol from the next line on, so stderr is the one
-     * channel a started server has left — which is where the stdio transport
-     * puts a server's own output, for a client to capture, forward or ignore.
-     * `src/bootstrap.php` says the other startup problem this binary has there
-     * too.
-     *
-     * It is a warning and the server starts: the list is read once, out of an
-     * environment nobody validates it against, and a name gone stale under a
-     * rename would otherwise take every tool down with it. What it costs
-     * meanwhile is one tool in the list that the caller did not want, which is
-     * context rather than harm — `D-AUD-005`.
-     *
-     * The two reasons are said apart because what somebody has to change
-     * differs: a name no tool answers to is corrected, a name this server keeps
-     * offering is dropped from the variable. `typo3_server_scope` says the same
-     * thing in-band, for the client that shows this stream to nobody.
+     * stdout is the protocol from the next line on, so stderr is the one channel
+     * a started server has left, and `src/bootstrap.php` says the other startup
+     * problem there too. It is a warning and the server starts: the list is read
+     * once out of an environment nobody validates it against, and a name gone
+     * stale under a rename would otherwise take every tool down with it —
+     * `D-AUD-005`. The two reasons are said apart because what somebody has to
+     * change differs, and `typo3_server_scope` says the same thing in-band.
      */
     private static function reportExclusionsThatTookNothingAway(): void
     {

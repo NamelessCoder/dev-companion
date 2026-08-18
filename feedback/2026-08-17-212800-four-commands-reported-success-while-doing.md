@@ -30,8 +30,23 @@ One pairing already does this well and is worth naming as the model: extension-s
 
 ## Query
 
-typo3_hint_lookup id=impexp-artifact / id=datahandler-relations / id=extension-schema-sql targetVersion=14 — then run the procedures they describe and compare what the command reports against what actually happened.
+typo3_hint_lookup on any hint that prescribes a console command — then run the procedure it describes and compare what the command reports against what actually happened.
 
 ## Suggestion
 
-Give every hint that tells a caller to run something a closing line naming what a correct result looks like, distinct from what the command prints. Not a new format — one sentence inside the existing prose, in the same voice as the consequences the best hints already carry. The candidates are already visible from this session: impexp-artifact (files_fal section present, .files directory non-empty), datahandler-relations and datahandler-seeding (read the parent's counter back), extension-schema-sql or installation-boot for the schema step (ask the database rather than the command). Where a lookup on this server can perform the check, name it there — schema_lookup for the derived columns is the existing example. The general rule this session earned: where a TYPO3 command can report success without having acted, the hint that recommends it owes the reader the discriminator.
+Give every hint that tells a caller to run something a closing line naming what a correct result looks like, distinct from what the command prints. Not a new format — one sentence inside the existing prose, in the same voice as the consequences the best hints already carry. Where a lookup on this server can perform the check, name it there — schema_lookup for the derived columns is the existing example. The general rule this session earned: where a TYPO3 command can report success without having acted, the hint that recommends it owes the reader the discriminator.
+
+## What is left of this
+
+Trimmed on 2026-08-18. The four sightings are answered, each by its own card:
+`D-KNW-080` corrected both impexp sentences and `impexp-artifact` now closes on
+the files_fal check this feedback proposed, `D-KNW-081` answered the `NEW`
+placeholder and `datahandler-relations` states what the parent's counter holds,
+`D-KNW-089` answered the warm TCA cache and `extension-schema-sql` now says its
+success is not evidence. `datahandler-seeding` and `installation-boot` are
+decided against as homes, in `D-KNW-093` and in `D-KNW-089`.
+
+What is left is the general rule and the corpus it has not been applied to. Two
+hints carry a discriminator and eleven console commands are prescribed
+elsewhere; `D-KNW-093` is the judgement and the card serving this feedback is
+the sweep.

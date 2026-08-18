@@ -58,6 +58,11 @@ declared.
   make a booted clone answer nothing under the host it is served on. That entry
   is also where the second boot's failures are, and they are not the first
   boot's.
+- Where the repository is an extension with TYPO3 installed beneath it,
+  `typo3_hint_lookup` with `id=extension-repository-installation` owns how that
+  is laid out. The root package is loaded from the Composer root itself, and the
+  `typo3conf/ext/` below the document root is empty on a Composer installation
+  rather than broken.
 - Read the environment configuration whole before running anything. The scope
   answer names the interpreter and the commands the manifests declare; the
   lifecycle the environment runs by itself — the tasks bound to each stage, the

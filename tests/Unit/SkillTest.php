@@ -2889,6 +2889,21 @@ final class SkillTest extends TestCase
         );
         self::assertNotNull(Hints::byId('installation-boot'));
 
+        // The layout hint is routed by what the repository is, so the branch
+        // that boots one names it too: `071435` took this branch, read the id
+        // filed under the other and probed `typo3conf/ext` by hand instead —
+        // `D-SKL-058`.
+        self::assertMatchesRegularExpression(
+            '/`id=extension-repository-installation` owns \w/',
+            $flat,
+            'the boot branch names no lookup for the layout it is looking at',
+        );
+        self::assertLessThan(
+            (int) strpos($flat, '## Create one where none is declared'),
+            (int) strpos($flat, '`id=extension-repository-installation` owns'),
+            'the layout lookup is named in the create branch alone',
+        );
+
         // Proving is where a session that has no browser stands when the site
         // does not answer, and the same session scraped four rendered error
         // pages for one line of message each — D-KNW-092.

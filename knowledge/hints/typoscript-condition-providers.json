@@ -1,0 +1,33 @@
+[
+  {
+    "id": "typoscript-condition-providers",
+    "title": "Registering a TypoScript Condition Provider",
+    "domains": [
+      "typoscript",
+      "php"
+    ],
+    "appliesTo": [
+      "Configuration/ExpressionLanguage.php",
+      "Classes/ExpressionLanguage/",
+      "ExpressionLanguage",
+      "expression language provider",
+      "condition provider",
+      "typoscript condition provider",
+      "AbstractProvider",
+      "getExpressionLanguageVariables",
+      "getExpressionLanguageProviders",
+      "ExpressionFunctionProviderInterface"
+    ],
+    "hints": [
+      "An extension adds conditions of its own through Configuration/ExpressionLanguage.php, which returns a map of context to provider classes. TypoScript conditions are the 'typoscript' context; the form framework evaluates its own under 'form'.",
+      "That map is cached in the core cache under an identifier keyed on the active packages, so installing the extension recomputes it and adding the file to an extension that is already installed does not — that is the case where the registration is only picked up after the system caches are flushed.",
+      "A provider extends TYPO3\\CMS\\Core\\ExpressionLanguage\\AbstractProvider, which offers two channels and no third: getExpressionLanguageVariables() puts variables in scope, and getExpressionLanguageProviders() names classes implementing Symfony's ExpressionFunctionProviderInterface.",
+      "Only the variable channel gives the dotted syntax [myext.isSomething()], which Symfony compiles into a method call on the object that variable holds.",
+      "That object sees no condition variable. The Resolver merges what the providers return before the caller's page, request, site and siteLanguage arrive, and hands the object itself nothing.",
+      "Only the function channel sees them: an evaluator is handed $arguments, which is the whole condition variable set, and that is how the core's own site(), siteLanguage() and session() read the request. A function name cannot carry a dot, so this channel cannot produce myext.isSomething() — adopting it renames every condition an integrator has written.",
+      "Keeping the dotted syntax and reading the condition variables are therefore mutually exclusive through what a provider does on its own. A variable object that needs request-time state has to be given it from outside: the provider is instantiated while the condition matcher builds its Resolver, so a service filled earlier in the request can be injected into the provider and read at that moment.",
+      "A provider with constructor arguments has to be a public service. The Resolver instantiates every provider through GeneralUtility::makeInstance(), which consults the container only for a class it is asked for without arguments and that the container has, and a private service is not one the container has — so the call falls through to new and fatals on the missing argument.",
+      "#[Autoconfigure(public: true)] on the provider class is the whole of that registration where autoconfiguration is on, which the Configuration/Services.yaml of an extension sets by convention. An entry for the class with public: true in that file is the other spelling."
+    ]
+  }
+]

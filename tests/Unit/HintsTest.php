@@ -429,6 +429,66 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-100`. Nothing here is bound: `AbstractProvider` is byte-identical
+     * on 12.4, 13.4, 14.3 and main, each of them builds the `Resolver` inside
+     * `IncludeTreeConditionMatcherVisitor` and instantiates every provider
+     * through `makeInstance()`, and the line that consults the container only
+     * for a class asked for without arguments reads the same on all four.
+     */
+    #[Test]
+    public function whatAnExtensionMayBuildBehindAConditionProviderIsStatedAndReached(): void
+    {
+        // The three queries `D-KNW-100` measured as reaching nothing.
+        foreach ([
+            'extension registers its own TypoScript condition ExpressionLanguage provider',
+            'TypoScript condition provider ExpressionLanguage extension registers',
+            'Configuration/ExpressionLanguage.php typoscript context provider',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('typoscript-condition-providers', $ids[0] ?? null, $task);
+        }
+
+        // And the files the reporting session had open, which carry no
+        // TypoScript signal at all.
+        $held = array_column(Hints::find(
+            ['Configuration/ExpressionLanguage.php', 'Classes/ExpressionLanguage/ConditionProvider.php'],
+            'the condition stopped matching',
+            6,
+        )['matchedHints'], 'id');
+        self::assertContains('typoscript-condition-providers', $held);
+
+        $text = self::statementsOf('typoscript-condition-providers');
+
+        // The choice that decides every such fix: what each channel can see,
+        // and that neither of them does both.
+        self::assertStringContainsString('two channels and no third', $text);
+        self::assertStringContainsString('That object sees no condition variable', $text);
+        self::assertStringContainsString('an evaluator is handed $arguments', $text);
+        self::assertStringContainsString('A function name cannot carry a dot', $text);
+        self::assertStringContainsString('mutually exclusive', $text);
+        self::assertStringContainsString('injected into the provider', $text);
+
+        // The two the reporting session read out of core rather than looked
+        // up: what a provider taking a dependency has to be, and why a
+        // registration added to an installed extension is not seen.
+        self::assertStringContainsString('has to be a public service', $text);
+        self::assertStringContainsString('#[Autoconfigure(public: true)]', $text);
+        self::assertStringContainsString('system caches are flushed', $text);
+
+        // The neighbour keeps the callers it already had and names this hint
+        // rather than restating it — `D-KNW-100`.
+        $container = array_column(
+            Hints::find([], 'condition provider constructor injection makeInstance public service Autoconfigure', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('di-service-not-found', $container);
+        self::assertStringContainsString(
+            'typoscript-condition-providers',
+            self::statementsOf('di-service-not-found'),
+        );
+    }
+
+    /**
      * The fifth cause of a root that answers nothing, and the one nothing
      * pointed at: a site the core wrote itself.
      *

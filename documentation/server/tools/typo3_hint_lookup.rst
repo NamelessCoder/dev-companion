@@ -241,6 +241,7 @@ Text:
     - persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
     - frontend-records — Records in the Frontend Without Extbase (TypoScript)
     - content-elements — Registering a Content Element (PHP)
+    - typoscript-condition-providers — Registering a TypoScript Condition Provider (TypoScript)
     - icon-usage — Rendering and Registering Icons (PHP)
     - record-routing — Routing a Record Detail View (PHP)
     - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
@@ -611,6 +612,11 @@ Data:
                 "id": "content-elements",
                 "title": "Registering a Content Element",
                 "category": "PHP"
+            },
+            {
+                "id": "typoscript-condition-providers",
+                "title": "Registering a TypoScript Condition Provider",
+                "category": "TypoScript"
             },
             {
                 "id": "icon-usage",
@@ -1465,6 +1471,7 @@ Text:
     - persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
     - frontend-records — Records in the Frontend Without Extbase (TypoScript)
     - content-elements — Registering a Content Element (PHP)
+    - typoscript-condition-providers — Registering a TypoScript Condition Provider (TypoScript)
     - icon-usage — Rendering and Registering Icons (PHP)
     - record-routing — Routing a Record Detail View (PHP)
     - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
@@ -1740,6 +1747,11 @@ Data:
                 "id": "content-elements",
                 "title": "Registering a Content Element",
                 "category": "PHP"
+            },
+            {
+                "id": "typoscript-condition-providers",
+                "title": "Registering a TypoScript Condition Provider",
+                "category": "TypoScript"
             },
             {
                 "id": "icon-usage",

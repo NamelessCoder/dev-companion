@@ -446,11 +446,13 @@ with it.
   to. All three are legitimate, so no check may fail on them, and
   `bin/cli unresolved:list` reads them out instead.
 
-How each of those is carried out — the debrief that gets a feedback out of a
-session this repository cannot read, judging one, what each of the three files
-holds, and what `bin/cli unresolved:list` reports:
-[documentation/records/readme.rst](documentation/records/readme.rst). What a
-requirement is and what its three states mean:
+How each of those is carried out — judging a feedback, what each of the three
+files holds, and what `bin/cli unresolved:list` reports:
+[documentation/records/readme.rst](documentation/records/readme.rst). The prompt
+that gets a feedback out of a session this repository cannot read, and why it
+asks what it asks:
+[documentation/records/asking-for-a-debrief.rst](documentation/records/asking-for-a-debrief.rst).
+What a requirement is and what its three states mean:
 [documentation/records/requirements.rst](documentation/records/requirements.rst),
 and the sections one is written in:
 [documentation/records/writing-a-requirement.rst](documentation/records/writing-a-requirement.rst).

@@ -121,8 +121,8 @@ repository, and file each answer where the recurring work already walks:
 Both of those are written by whoever judged the run, from the transcript. When
 the run happened in an agent whose transcript is not readable here, the session
 is the only thing that can report it, and it is asked for its own debrief after
-the work is finished — the generic prompt for that is in
-:doc:`the feedback pages <index>`. What comes back is weaker evidence than a
+the work is finished — the generic prompt for that is
+:doc:`asking-for-a-debrief`. What comes back is weaker evidence than a
 transcript and the run says so: it is what the session claims about itself, and
 the answer it gave is still judged the usual way.
 

@@ -52,12 +52,12 @@ subject the earlier notes were about.
   no longer evidence. If the skill was active, its Playwright half is a rule
   that was delivered and did not take, which is rung 4 rather than rung 3.
 - The lever is this repository's own debrief prompt, in
-  [readme.md](../../documentation/records/readme.rst). It asks for exactly the
-  fact the session could not see — "Report the session you just had from your
-  own transcript" — and offers the skill question two answers: name it, or "If
-  none activated, say so — that is a result". An agent whose context begins at a
-  compaction summary has no transcript for the first half of its own run, and
-  neither answer is the one it could give.
+  [asking-for-a-debrief.rst](../../documentation/records/asking-for-a-debrief.rst).
+  It asks for exactly the fact the session could not see — "Report the session
+  you just had from your own transcript" — and offers the skill question two
+  answers: name it, or "If none activated, say so — that is a result". An agent
+  whose context begins at a compaction summary has no transcript for the first
+  half of its own run, and neither answer is the one it could give.
 - The other four bullets ask for the same kind of fact: which calls, in which
   order, how many round trips each cost. So the qualification belongs on the
   lead sentence and not on the skill bullet.

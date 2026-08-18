@@ -109,8 +109,8 @@ Neither needs the feedback to ask for it, and it usually will not: the session
 reporting the cost does not know what this server could offer. What triggers 1b
 is **what the session did instead** — every "I had to read it by hand", every "I
 established this from my own knowledge", every call repeated with different
-arguments. The debrief prompt asks for those, so almost every feedback states
-them.
+arguments. The debrief prompt asks for those (:doc:`asking-for-a-debrief`), so
+almost every feedback states them.
 
 *Missing tool.* The six verbs in `AGENTS.md <../../AGENTS.md>`_ make the
 diagnosis precise, since the verb is what tells a caller the shape of an answer.

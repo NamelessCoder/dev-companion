@@ -15,8 +15,8 @@ You describe the task
 The server tells every client at connect where to start: with what the project
 is, and then with the workflow the task belongs to. So an ordinary request —
 *add a backend module to this extension*, *review this patch*, *find out why
-this label is not translated* — is enough to reach the right order of steps,
-and naming a tool yourself is not something you have to do.
+this label is not translated* — is enough to reach the right order of steps, and
+naming a tool yourself is not something you have to do.
 
 What you get back is your agent's work, not the server's answer. It reads what
 the checkout says, asks this server what it cannot see there, and the two are

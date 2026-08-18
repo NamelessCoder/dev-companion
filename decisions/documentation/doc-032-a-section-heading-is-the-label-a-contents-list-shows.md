@@ -10,8 +10,8 @@ status: open
 shows the heading itself and a section has no second name.**
 
 `D-DOC-031` gave the page a label and left the heading a sentence. It answered
-for the rail, the trail and the footer, which show a page; the list beside a page
-shows its sections, and nothing had been said about those.
+for the rail, the trail and the footer, which show a page; the list beside a
+page shows its sections, and nothing had been said about those.
 
 ## Evidence
 

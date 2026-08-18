@@ -314,17 +314,18 @@ The report above waited on somebody with a Forge account, and it never needed
 one. Garvin Hicking filed the defect as #110381 on 2026-08-05, out of
 `bmack/tryout` #9 by Simon Praetorius rather than out of anything measured here.
 Change 95117 and the two backports beside it were merged to `main`, `14.3` and
-`13.4` on 2026-08-06, and they fix it where this repository's report said it sits:
-`SetupDatabaseService` now names `information_schema` as the `dbname`, which
-satisfies Doctrine's precondition and leaves what `getAllDatabaseNames()` returns
-untouched. `typo3/cms-install` v14.3.6 and v13.4.34, both from 2026-08-11, carry
-it — read from packagist and from Gerrit on 2026-08-12.
+`13.4` on 2026-08-06, and they fix it where this repository's report said it
+sits: `SetupDatabaseService` now names `information_schema` as the `dbname`,
+which satisfies Doctrine's precondition and leaves what `getAllDatabaseNames()`
+returns untouched. `typo3/cms-install` v14.3.6 and v13.4.34, both from
+2026-08-11, carry it — read from packagist and from Gerrit on 2026-08-12.
 
 So mariadb and mysql can be installed on every covered line again, and the two
-places that said they could not are gone: the paragraph on `Environments::DRIVERS`
-and the message `environment:create` printed when a build on a service driver
-died. One sentence naming both issue numbers replaces them, because a driver
-that was unusable for four days is worth a line rather than a paragraph.
+places that said they could not are gone: the paragraph on
+`Environments::DRIVERS` and the message `environment:create` printed when a
+build on a service driver died. One sentence naming both issue numbers replaces
+them, because a driver that was unusable for four days is worth a line rather
+than a paragraph.
 
 The default does not move. sqlite is what every environment is built on, for the
 reasons `c27f8bd` had rather than for this defect, and nothing has been built on

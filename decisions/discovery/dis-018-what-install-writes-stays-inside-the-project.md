@@ -30,9 +30,9 @@ somewhere else is not.
 
 - The project directory is the boundary of what this command touches, and it
   stays a property of the command rather than of an argument.
-- Rejected: writing into the client's private per-project configuration. It moves
-  what `install` touches outside the project this server was pointed at, for one
-  client of eleven, and everything else the command does stays inside.
+- Rejected: writing into the client's private per-project configuration. It
+  moves what `install` touches outside the project this server was pointed at,
+  for one client of eleven, and everything else the command does stays inside.
 - Rejected: a `--scope` argument. It changes the behaviour of a command people
   have already run, to offer a choice one client documents.
 

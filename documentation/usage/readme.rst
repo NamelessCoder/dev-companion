@@ -26,10 +26,10 @@ answer is ``typo3_server_scope``, which a client is handed at connect.
 
 Two things arrive with the install and are worth knowing before it runs. The
 :doc:`task skills <task-skills/index>` are copied into the client's own skills
-directory, so they are files in your project from then on and a later release
-of this server does not correct them. And what the install writes into a
-client's configuration is guarded, so it can be written again without a second
-copy appearing beside the first.
+directory, so they are files in your project from then on and a later release of
+this server does not correct them. And what the install writes into a client's
+configuration is guarded, so it can be written again without a second copy
+appearing beside the first.
 
 What the server can then be asked is :doc:`the server <../server/index>`.
 

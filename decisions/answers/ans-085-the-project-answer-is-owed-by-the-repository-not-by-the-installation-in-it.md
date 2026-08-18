@@ -125,10 +125,10 @@ a discovery that looks for installed packages.
 
 ## Since then
 
-Built on 2026-08-18, at the seam this entry drew. What identifies a root
-without an installed tree is `D-DIS-019` and `R-PRJ-011`, and the state is said
-in a new `installed` field rather than in `kind`, so a caller can still tell a
-site project from an extension repository while it is being installed. The
+Built on 2026-08-18, at the seam this entry drew. What identifies a root without
+an installed tree is `D-DIS-019` and `R-PRJ-011`, and the state is said in a new
+`installed` field rather than in `kind`, so a caller can still tell a site
+project from an extension repository while it is being installed. The
 `typo3-development-installation` skill states both entry conditions now: an
 answer describing a repository with nothing installed in it, and the
 `no-installation` one where there was no repository to describe. Nothing here

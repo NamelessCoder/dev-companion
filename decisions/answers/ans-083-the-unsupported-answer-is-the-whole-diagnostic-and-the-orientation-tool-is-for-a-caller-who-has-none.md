@@ -25,9 +25,9 @@ the one field it was after.
   `typo3_server_scope` is 77,413 characters on the wire: 36,291 of text and
   40,366 of `structuredContent`. The feedback's 39,926 is one of those halves.
   `typo3_project_describe` in the same session is 566 characters whole.
-- **The `installation` block is 389 of those 40,366 characters**, under 1% of the
-  answer the step is prescribed for. `covers` alone is 19,265, `doesNotCover`
-  7,532 and `routing` 5,896.
+- **The `installation` block is 389 of those 40,366 characters**, under 1% of
+  the answer the step is prescribed for. `covers` alone is 19,265,
+  `doesNotCover` 7,532 and `routing` 5,896.
 - The 279 characters of the describe answer's `unsupported` object carry
   `cause: no-installation`, the reason, the same three `searched` directories,
   `misconfiguration` and both settings variables. What the scope block adds is
@@ -74,8 +74,8 @@ the one field it was after.
   pointer to something the caller already holds costs a round trip whatever the
   answer weighs, and the round trip is what `D-FBK-027` measures a tool by.
 - **Not decided here: what an always-attached block costs across the server.**
-  That is the series' question rather than this feedback's, `D-FBK-021` is why it
-  is judged with the series, and `feedback/2026-08-17-211826` carries it.
+  That is the series' question rather than this feedback's, `D-FBK-021` is why
+  it is judged with the series, and `feedback/2026-08-17-211826` carries it.
 
 ## Assumed
 

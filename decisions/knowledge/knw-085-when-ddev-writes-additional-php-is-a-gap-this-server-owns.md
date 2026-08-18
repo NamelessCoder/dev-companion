@@ -134,14 +134,13 @@ second start ends for good. So the statement names starting again as the way out
 and the committed project-owned file as the other, rather than presenting the
 takeover as the remedy.
 
-What the reading added beyond the report is the hooks. Both
-`CreateSettingsFile` calls in `Start()` run before `ProcessHooks("post-start")`,
-so the install hook `installation-operations` already discusses does not produce
-the file in the start that ran it — which is exactly the shape of setup that
-intent is briefing.
+What the reading added beyond the report is the hooks. Both `CreateSettingsFile`
+calls in `Start()` run before `ProcessHooks("post-start")`, so the install hook
+`installation-operations` already discusses does not produce the file in the
+start that ran it — which is exactly the shape of setup that intent is briefing.
 
 `R-KNW-071` holds both places, and `bin/cli hints:probe` on the reporting
-session's own subject —
-"DDEV additional.php trustedHostsPattern first start fresh clone" — reaches
-`project-configuration-files` first at `appliesTo(37) + text(366)`, against the
-`text(335)` this entry recorded before the statement landed.
+session's own subject — "DDEV additional.php trustedHostsPattern first start
+fresh clone" — reaches `project-configuration-files` first at
+`appliesTo(37) + text(366)`, against the `text(335)` this entry recorded before
+the statement landed.

@@ -25,8 +25,8 @@ the line from which tools happen to exist.
 - Nothing has arrived since the question was first put on 2026-08-04 to move it.
   The draft RFC read that day is a community proposal and settles nothing
   (`D-SCO-010`), and no session has asked for a record: what the archived
-  feedback asked for is DataHandler *knowledge* — how code that writes records is
-  written — which is the model side and is answered by a hint.
+  feedback asked for is DataHandler *knowledge* — how code that writes records
+  is written — which is the model side and is answered by a hint.
 - `R-AUD-001` counts three audiences because somebody chose three, and this is
   that choice made again with the record question named.
 
@@ -40,8 +40,8 @@ the line from which tools happen to exist.
 
 ## Assumed
 
-- That an agent acting on records is served by the backend and the console, which
-  is where the permissions are applied.
+- That an agent acting on records is served by the backend and the console,
+  which is where the permissions are applied.
 - That the model half stays enough for the three audiences. Extension and site
   work is written against the schema rather than against rows.
 

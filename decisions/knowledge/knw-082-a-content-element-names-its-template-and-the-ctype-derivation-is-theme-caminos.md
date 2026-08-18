@@ -35,7 +35,8 @@ sitepackage that trusted it would have named no template at all.
   `field = CType` and `case = uppercamelcase`; the theme's own
   `camino_textmedia_teaser_grid`, registered in
   `Configuration/TCA/Overrides/20_tt_content_textmedia_teaser_grid.php`, is
-  rendered by `Resources/Private/Templates/Content/CaminoTextmediaTeaserGrid.fluid.html`.
+  rendered by
+  `Resources/Private/Templates/Content/CaminoTextmediaTeaserGrid.fluid.html`.
   The set declares no dependency on `fluid_styled_content`.
 - The same file is where `tt_content = CASE` gets a `default` of
   `lib.contentElement`. The core's own default, in
@@ -45,10 +46,10 @@ sitepackage that trusted it would have named no template at all.
 - What the feedback expects of the failure is not what the tree says.
   `fluid_styled_content` ships no `Default` template on any covered branch —
   `Resources/Private/Templates/` holds `Text`, `Textmedia`, `Generic` and the
-  rest, and `Default` is a *layout*, `Resources/Private/Layouts/Default.html`
-  on 12.4 and 13.4, `Default.fluid.html` on 14.3. So the copied `Default`
-  resolves to no file rather than to a frame, and the statement says what was
-  read rather than what was predicted.
+  rest, and `Default` is a *layout*, `Resources/Private/Layouts/Default.html` on
+  12.4 and 13.4, `Default.fluid.html` on 14.3. So the copied `Default` resolves
+  to no file rather than to a frame, and the statement says what was read rather
+  than what was predicted.
 - Nothing else in the corpus rested on the derivation. `templateName`,
   `lib.contentElement` and `uppercamelcase` across `knowledge/` and `skills/`
   reach `content-element-preview`, which pointed at this statement for how the
@@ -58,8 +59,8 @@ sitepackage that trusted it would have named no template at all.
 ## Decided
 
 - Rewritten as two statements: what `fluid_styled_content` does, unbound, and
-  what `theme_camino` configures, `since: 14`. The consequence moved with it —
-  a `snake_case` CType is a requirement under the derivation and a habit without
+  what `theme_camino` configures, `since: 14`. The consequence moved with it — a
+  `snake_case` CType is a requirement under the derivation and a habit without
   it.
 - Closed in this run rather than queued. `documentation/records/judging.rst`
   puts a feedback that needs a TYPO3 lookup on the todo side of the line because
@@ -84,9 +85,9 @@ sitepackage that trusted it would have named no template at all.
 
 - That a project sitepackage is the reader of both halves. The hint's other
   statements are written for one, and the reporting session was building one.
-- That the derivation is worth stating at all now that it is somebody else's.
-  It is the convention the core's own theme is read for, and the sitepackage
-  layout hint already sends a reader there.
+- That the derivation is worth stating at all now that it is somebody else's. It
+  is the convention the core's own theme is read for, and the sitepackage layout
+  hint already sends a reader there.
 
 ## Wrong if
 

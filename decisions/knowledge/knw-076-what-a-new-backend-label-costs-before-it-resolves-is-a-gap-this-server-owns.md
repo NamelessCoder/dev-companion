@@ -107,12 +107,13 @@ both owed. `LocalizationFactory::getParsedData()` keys the `l10n` entry on
 — no modification time, no content hash — so a new unit is invisible until the
 cache is cleared, and `l10n` is a `SimpleFileBackend` in group `system`. And
 `PackageDependentCacheIdentifier` composes the `cacheBustInfix` out of the TYPO3
-version, `Environment::getProjectPath()` and `PackageManager::getCacheIdentifier()`,
-which is the composer artifact's own identifier or `PackageStates.php`'s mtime
-and size. No label file reaches either, so the URL under `max-age=31536000`
-stays the one the page already fetched. This is where the reading differs from
-`D-KNW-027`: the Fluid cache keyed on `filemtime()` and turned that command into
-a correction, and this one keys on neither half.
+version, `Environment::getProjectPath()` and
+`PackageManager::getCacheIdentifier()`, which is the composer artifact's own
+identifier or `PackageStates.php`'s mtime and size. No label file reaches
+either, so the URL under `max-age=31536000` stays the one the page already
+fetched. This is where the reading differs from `D-KNW-027`: the Fluid cache
+keyed on `filemtime()` and turned that command into a correction, and this one
+keys on neither half.
 
 Both **Assumed** resolved. The session's account holds — the stub is generated
 from the XLF by `generate-types:labels`, which `grunt scripts` runs, and

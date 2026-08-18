@@ -99,9 +99,10 @@ Nothing logs the drop, and the reading now covers every site rather than two.
 without a word and `writeForeignField()` says nothing about an item that is no
 longer there. `processRemapStack()`, `checkValue_inline_processDBdata()`,
 `checkValue_file_processDBdata()` and `checkValue_group_select_processDBdata()`
-make no `log()` call on this path. Nothing compares the list before the drop with
-the list after it, so there is nothing that could report it. What the log does
-hold is the ordinary entry for the parent's own update, with the counter at 0.
+make no `log()` call on this path. Nothing compares the list before the drop
+with the list after it, so there is nothing that could report it. What the log
+does hold is the ordinary entry for the parent's own update, with the counter at
+0.
 
 The first **Wrong if** stands: whether a session naming its datamap keys reaches
 the relation hint before it writes a relation field is not something reading the

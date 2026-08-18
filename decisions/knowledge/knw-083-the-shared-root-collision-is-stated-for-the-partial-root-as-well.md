@@ -10,8 +10,8 @@ status: open
 `layoutRootPaths`, and names `Header/Header` as the one a sitepackage hits.**
 
 `sitepackage-templates` warned about the layout root alone, so a reader who
-followed it subdivided `Layouts/` and put its own `Partials/Header/Header.fluid.html`
-beside the core's.
+followed it subdivided `Layouts/` and put its own
+`Partials/Header/Header.fluid.html` beside the core's.
 
 ## Evidence
 
@@ -32,7 +32,8 @@ beside the core's.
   12.4 and on 14.3, and every core element renders its header through it.
 - The root the extension outranks is the core's own.
   `Configuration/TypoScript/Helper/ContentElement.typoscript` gives
-  `lib.contentElement` `partialRootPaths.0 = EXT:fluid_styled_content/Resources/Private/Partials/`
+  `lib.contentElement`
+  `partialRootPaths.0 = EXT:fluid_styled_content/Resources/Private/Partials/`
   and `10 = {$styles.templates.partialRootPath}`, unchanged across the covered
   majors, so an extension adding `20` wins over both.
 - The general rule was already stated and does not answer this.
@@ -40,8 +41,8 @@ beside the core's.
   root paths backwards and that the highest integer key wins — `D-KNW-052`. That
   says which file renders once somebody suspects two; it does not say that the
   core ships a partial under the name a content element frame is written under.
-- Delivery and routing were not the failure. `bin/cli hints:probe "adding
-  partialRootPaths 20 to lib.contentElement for my sitepackage partials"`
+- Delivery and routing were not the failure.
+  `bin/cli hints:probe "adding partialRootPaths 20 to lib.contentElement for my sitepackage partials"`
   reaches `sitepackage-templates` on text alone, and the session read the hint
   by id before writing its TypoScript.
 

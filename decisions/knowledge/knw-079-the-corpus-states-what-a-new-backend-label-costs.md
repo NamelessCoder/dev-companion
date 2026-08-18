@@ -27,9 +27,10 @@ is the fourth thing done to a label rather than a second subject.
   `Label is not defined at runtime after adding a new label` and
   `my new label does not show up in the backend JavaScript module` both lead
   with it.
-- The neighbours keep their questions. `authoring a new XLF label file for my
-  extension` still returns `language-files` alone, and
-  `clear the caches after a TCA change` still leads with `page-cache-flushing`.
+- The neighbours keep their questions.
+  `authoring a new XLF label file for my extension` still returns
+  `language-files` alone, and `clear the caches after a TCA change` still leads
+  with `page-cache-flushing`.
 
 ## Decided
 
@@ -65,8 +66,8 @@ is the fourth thing done to a label rather than a second subject.
   statements are ordered for somebody holding a throw, and the import is stated
   as where the module comes from rather than as how to write one.
 - That the hard reload is the whole of the browser half. Nothing here drove a
-  browser: what was read is the `max-age` and the identifier the URL carries, and
-  a reload that a service worker or a proxy answers instead was not tested.
+  browser: what was read is the `max-age` and the identifier the URL carries,
+  and a reload that a service worker or a proxy answers instead was not tested.
 - That the `cacheBustInfix` is stated at the right altitude. It is named as the
   version, the project path and the package list, which is what
   `PackageDependentCacheIdentifier` composes, rather than as which of the two

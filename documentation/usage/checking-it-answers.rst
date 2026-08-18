@@ -92,9 +92,9 @@ The skills are files
 The install copied them into the client's own skills directory. From then on
 they are yours: a later release of this server does not reach them, so the
 server compares what it published against what is there every time a client
-connects and says so where they differ. ``update`` is what refreshes them.
-The :doc:`task-skill catalog <task-skills/index>` names the published set and
-opens each complete workflow.
+connects and says so where they differ. ``update`` is what refreshes them. The
+:doc:`task-skill catalog <task-skills/index>` names the published set and opens
+each complete workflow.
 
 A skill that never activates is the other half, and it is not a fault in the
 install. A client chooses a skill by its description before it loads anything of

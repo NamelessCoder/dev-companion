@@ -47,16 +47,10 @@ final class Prose
      *
      * A search whose hits all sit in one document has established which page
      * answers the task, and cutting it there buys nothing: the second search is
-     * the expensive part, not the text. `feedback/2026-08-10-182523` searched
-     * `core/contribution/commit-messages` twice within minutes for two of its
-     * ten headings — 2940 and 3346 bytes over two calls, against 11742 for the
-     * page in one — and had been told at the foot of the first answer which
-     * heading the second search then went looking for (`D-ANS-076`).
-     *
-     * The page is handed over as written, which is what `documentId` does and
-     * for the same reason: a section left out for a major it does not hold on
-     * is a hole in a page, and every bound section carries its own range under
-     * its heading.
+     * the expensive part, not the text (`D-ANS-076`). The page is handed over as
+     * written, which is what `documentId` does and for the same reason — a
+     * section left out for a major it does not hold on is a hole in a page, and
+     * every bound section carries its own range under its heading.
      *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
@@ -134,17 +128,11 @@ final class Prose
      * whole as.
      *
      * A search answers the section the query matched, and a procedure is several
-     * of them: the session that reported this had the Gerrit push page in three
-     * different answers and never learned it was one page — `D-AUD-007`. The
-     * `Source:` line above each excerpt carries the same uri and was read as
-     * attribution, which is what this says out loud instead.
-     *
-     * Each page says what the search left of it, because naming the page did
-     * not take on its own: the session in `feedback/2026-08-08-224406` had this
-     * line, read two of nine headings of one document and searched no further —
-     * the same sentence stands under an answer that matched most of a page and
-     * under one that matched a ninth of it (`D-ANS-070`). The headings rather
-     * than the share alone, because the next query is picked out of them.
+     * of them — `D-AUD-007`. The `Source:` line above each excerpt carries the
+     * same uri and was read as attribution, which is what this says out loud
+     * instead. Each page says what the search left of it, because naming the
+     * page did not take on its own (`D-ANS-070`), and the headings rather than
+     * the share alone, because the next query is picked out of them.
      *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */

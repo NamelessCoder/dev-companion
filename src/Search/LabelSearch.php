@@ -112,11 +112,9 @@ final class LabelSearch
      * The fields a search runs over, as one string.
      *
      * A label carries its trans-unit id and its source text. A changelog entry
-     * carries its file name and the words that name spells, and gains the title
-     * inside the file where the names alone reached nothing — `D-ANS-041`. What
-     * an entry's body names is not here: an identifier is reached whole, by
-     * `names()`, and a substring match over it is what that rule exists to
-     * refuse.
+     * carries its file name and gains the title inside the file where the names
+     * alone reached nothing — `D-ANS-041`. What an entry's body names is not
+     * here: an identifier is reached whole, by `names()`.
      *
      * @param array<string, string> $item
      */
@@ -205,11 +203,9 @@ final class LabelSearch
      * The most of a query a label or a changelog entry still carries, as a
      * query that can be asked.
      *
-     * The computation is `Subsets`, which the prose corpus reaches with its own
-     * matcher; what is this corpus's own is the field pair and the matching:
-     * the same `carries()` `carryingEvery()` and `perTermCounts()` answer with,
-     * identifier spellings included. 15 ms over the 3766 entries of 14.3
-     * against the 28 ms the peel it replaced costs (`D-ANS-016`).
+     * The computation is `Subsets`; what is this corpus's own is the field pair
+     * and the matching — the same `carries()` `carryingEvery()` and
+     * `perTermCounts()` answer with, identifier spellings included (`D-ANS-016`).
      *
      * @param array<int, array<string, string>> $items
      * @param array<int, string> $terms

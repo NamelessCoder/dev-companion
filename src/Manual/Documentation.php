@@ -26,13 +26,9 @@ final class Documentation
      * The table of contents of one manual, in the form its own builder writes.
      *
      * The rendered root was read for it until 2026-08-08, and what it gave was
-     * the link text of a navigation tree: the page the manual titles "Assets
-     * (CSS, JavaScript, Media)" was indexed as "Assets", and the ViewHelper
-     * reference indexed `Global/If.html` as "if" where the page is called "If
-     * ViewHelper <f:if>". Of the 1416 pages both index at 14.3, 505 carried a
-     * different title. The inventory carries the stated one, is a documented
-     * artefact rather than a theme's markup, and lists the pages the navigation
-     * omits — `D-ANS-065`.
+     * the link text of a navigation tree rather than the title a page states.
+     * The inventory carries the stated one, is a documented artefact rather than
+     * a theme's markup, and lists the pages the navigation omits — `D-ANS-065`.
      */
     private const INVENTORY = 'objects.inv';
 
@@ -81,24 +77,14 @@ final class Documentation
 
     /**
      * The ordinary field of this corpus, which is what a longer one is measured
-     * against. Over the 1431 pages the four manuals index at 14.3 a title is
-     * 4.02 words on the mean and 4 on the median, and a manual is 2 or 3; a
-     * path is 7.12, so a path is diluted against a title by design.
+     * against. A title runs to about four words over the pages the four manuals
+     * index and a path to seven, so a path is diluted against a title by design.
      *
-     * It was 12, longer than any title the rendered navigation carried — so no
-     * title was ever diluted and the field length did nothing. A page titled
-     * after its subject and a page whose title is a long event class name were
-     * worth the same for the one word they share, and the class name wins every
-     * tie it is in because it carries more words to be found by. Not below 3
+     * It was 12, longer than any title the rendered navigation carried, so no
+     * title was ever diluted and the field length did nothing. Not below 3
      * either: `Fluid ViewHelper Reference` is three words and the other three
      * books are two, so a smaller reference weighs the books by the length of
-     * their names.
-     *
-     * It is the same 3 against the stated titles, which are longer, and that is
-     * what settles the tie the link text left open: `f:if` reached
-     * `Global/If.html` and `Global/Security/IfAuthenticated.html` at the same
-     * score while both were titled in two words, and the stated titles separate
-     * them by their length — `D-ANS-065`.
+     * their names — `D-ANS-065`.
      */
     private const UNDILUTED_WORDS = 3;
 
@@ -408,19 +394,12 @@ final class Documentation
      *
      * The format is four comment lines and then everything else compressed with
      * zlib, one object per line: the name, its `domain:role`, a priority, the
-     * URI it resolves to and the name it is displayed under. A `-` stands for a
-     * display name equal to the object's own, which is the one abbreviation the
-     * writer applies to a document — the `$` for a URI ending in its own name
-     * belongs to the anchored roles, and occurs on no `std:doc` line of the
-     * sixteen inventories the four manuals publish for the covered versions.
-     *
-     * Only `std:doc` is read. The other roles are the addressable objects inside
-     * the pages — 748 TCA properties at 14.3, and every label and section title
-     * — and what this searches is a table of contents (`R-DOC-001`).
-     *
-     * Null is a body that is not an inventory, which is what bot protection and
-     * a portal answer with a 200 in front of it (`D-ANS-034`). A manual with no
-     * pages in it is an empty list and a book that answered.
+     * URI it resolves to and the name it is displayed under, where a `-` stands
+     * for a display name equal to the object's own. Only `std:doc` is read,
+     * because the other roles are the addressable objects inside the pages and
+     * what this searches is a table of contents (`R-DOC-001`). Null is a body
+     * that is not an inventory, which is what bot protection answers with a 200
+     * in front of it (`D-ANS-034`), and an empty list is a book that answered.
      *
      * @return list<array{title: string, path: string, url: string}>|null
      */
@@ -460,11 +439,7 @@ final class Documentation
      * `f:` is the Fluid namespace prefix, which a session reporting what a
      * template did writes instead of the word Fluid — a domain keyword for the
      * hints since `D-KNW-024` and read by nothing here. It selects the book
-     * rather than weighing it, and `D-ANS-036` is what measured the difference:
-     * naming the book as a query word lifts every page whose title carries
-     * "Fluid" by the title weight and the book's own pages by the smaller
-     * manual one.
-     *
+     * rather than weighing it, which is the difference `D-ANS-036` measured.
      * Only a book that answered, so a root that is down leaves the query the
      * whole index rather than no candidates at all.
      *

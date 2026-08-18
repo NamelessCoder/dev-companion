@@ -8,22 +8,12 @@ namespace TYPO3\DevCompanion\Search;
  * The most of a query a corpus still carries, as a query that can be asked.
  *
  * What a caller needs when the intersection is empty and the per-term counts
- * cannot say it: which words have to go. The term with the smallest reach is
- * the one to keep rather than the one to drop, and no marginal count says which
- * drop lets the intersection survive (`D-ANS-016`).
- *
- * Read as subsets that would be tried one level at a time, this is 15 filter
- * passes for a five-word query and a depth nobody has bounded. It is one pass
- * instead: a subset reaches an item exactly when that item carries every word
- * of it, so the largest subsets that reach anything are the largest sets of
- * words a single item carries. The count is exact — no item carries more than
- * the largest set, so the items carrying one of them are all a re-query
- * returns.
- *
- * The matcher is the caller's, because the answer is only true of the corpus it
- * was computed over: a label carries a term as a substring and in its
- * identifier spelling, a prose section carries it at a word boundary, and a
- * subset offered on the wrong one names items the re-query does not return.
+ * cannot say it: which words have to go (`D-ANS-016`). It is one pass rather
+ * than a subset lattice, because a subset reaches an item exactly when that item
+ * carries every word of it, so the largest subsets that reach anything are the
+ * largest sets of words a single item carries. The matcher is the caller's,
+ * because the answer is only true of the corpus it was computed over — a subset
+ * offered on the wrong one names items the re-query does not return.
  */
 final class Subsets
 {

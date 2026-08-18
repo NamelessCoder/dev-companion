@@ -8,16 +8,12 @@ namespace TYPO3\DevCompanion\Process;
  * The one place this server leaves its own process, as a seam a test can take.
  *
  * Everything here that reaches a console, a container or a checkout ends in one
- * `proc_open`, and for a long time it ended in one that no test could stand
- * between. So a unit test that had to say what `ddev describe` answers wrote a
- * `ddev` into a temporary directory, made it executable and put that directory
- * on the `PATH` — a mock, but one that still forks a shell and depends on
- * `chmod`, on how `PATH` is read, and on a `/tmp` that is not mounted `noexec`.
- *
- * A unit test tests a small part, and where it needs something from outside,
- * that is mocked rather than started (`R-COD-003`). This interface is what
- * makes the second half possible: `SystemRunner` is the real one, a test hands
- * in a fake, and nothing in the suite has to have anything running.
+ * `proc_open`, and for a long time it ended in one no test could stand between:
+ * a test that had to say what `ddev describe` answers wrote a `ddev` into a
+ * temporary directory and put that directory on the `PATH`. A unit test mocks
+ * what is outside it rather than starting it (`R-COD-003`), and this interface
+ * is what makes that possible — `SystemRunner` is the real one, a test hands in
+ * a fake, and nothing in the suite has to have anything running.
  */
 interface CommandRunner
 {

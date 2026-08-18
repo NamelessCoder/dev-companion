@@ -70,12 +70,9 @@ final class Paths
      *
      * `R-COD-003`: a unit test writes into no directory this repository keeps.
      * The cases that hold recording, filtering and archiving have to write a
-     * feedback to have one, and they used to write it into the real
-     * `feedback/` — carrying a marker in the name so it could be found again
-     * and removed, which holds while every run finishes and leaves a fixture
-     * in the corpus whenever one does not. The archive follows it, because the
-     * two are one store and a move between them is what half the cases are
-     * about.
+     * feedback to have one, and they used to write it into the real `feedback/`,
+     * which leaves a fixture in the corpus whenever a run does not finish. The
+     * archive follows it, because the two are one store.
      */
     private static ?string $feedback = null;
 

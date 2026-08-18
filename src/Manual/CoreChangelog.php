@@ -12,21 +12,12 @@ use TYPO3\DevCompanion\Installation\Changelog;
  * copy stops.
  *
  * A package ships every changelog down to 7.0 and nothing above its own major,
- * so the entries a caller is upgrading *to* are the ones its installation
- * cannot show it. `skills/typo3-extension-upgrade/SKILL.md` names that gap, and
- * for a 13.4 installation it is exactly 469 entries over six version
- * directories — 14.0 through 14.3.x and 15.0, measured 2026-08-08.
- *
- * There is one manual and it is not versioned. Every version in the URL of
- * `/c/typo3/cms-core/` redirects to `main`, `99.9` included, and what answers
- * carries the whole history: 55 version directories and 3855 entries on that
- * date. So the version a caller asks for is applied to the entry names here and
- * never to the URL, and nothing is read per version — `D-ANS-067`.
- *
- * What it costs is one inventory read, held under its entity tag and
- * revalidated for nothing afterwards, and one `_sources` read per entry an
- * answer actually shows. The bodies are what a version filter cannot avoid and
- * a limit does bound: 14.3 ms each over the connection `Fetch` now keeps open.
+ * so the entries a caller is upgrading *to* are the ones its installation cannot
+ * show it. There is one manual and it is not versioned — every version in the
+ * URL of `/c/typo3/cms-core/` redirects to `main` — so the version a caller asks
+ * for is applied to the entry names here and never to the URL, and nothing is
+ * read per version (`D-ANS-067`). What it costs is one inventory read, held
+ * under its entity tag, and one `_sources` read per entry an answer shows.
  */
 final class CoreChangelog
 {

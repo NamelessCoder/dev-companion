@@ -18,12 +18,9 @@ use TYPO3\DevCompanion\Server\Installer;
  * They are here rather than in `Knowledge\` because this is the only thing that
  * reads a skill body: `Server\Installer` copies the directory without opening
  * it, and no tool answers from one. What a client picks up is the workflow
- * itself — `bin/typo3-dev-companion install` writes the same file into that client's
- * own skills directory, and for a client that never ran it this resource is the
- * one route there is (`R-ANS-022`).
- *
- * What is offered is `Installer::skills()` and never the directory listing.
- * Publication is that list, so a skill the list leaves out is not served here
+ * itself, and for a client that never ran the install this resource is the one
+ * route there is (`R-ANS-022`). What is offered is `Installer::skills()` and
+ * never the directory listing, so a skill the list leaves out is not served here
  * either — `D-SKL-013`.
  */
 final class Skills
@@ -103,9 +100,7 @@ final class Skills
      * What a skill's body links to, at the paths it links to them by.
      *
      * `references/base.md` is in every one of them and is a file in no skill:
-     * `Installer` writes it at publication from `skills/base.md`, so that one
-     * order lands in each published directory rather than being shared out of a
-     * file a skill in somebody else's project could not reach (`D-SKL-001`).
+     * `Installer` writes it at publication from `skills/base.md` (`D-SKL-001`).
      * The same copy is what is served here, so the resource is the file the
      * client would have had if it had run the install.
      *

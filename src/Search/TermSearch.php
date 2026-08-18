@@ -23,22 +23,12 @@ final class TermSearch
     /**
      * Words that carry no topic signal.
      *
-     * The two-letter ones are here because MIN_LENGTH is two. Until it was,
-     * the floor did this list's work for every word that short and the list
-     * only ever had to name the ones somebody happened to write down —
-     * "set it up from scratch" then reached Setting Up Backend Groups in five
-     * of the 41 scenario prompts, on the word "up" alone.
-     *
-     * "if" is deliberately not one of them, and it is the reason the floor
-     * moved: it names a ViewHelper and a TypoScript function, so it is the
-     * word a caller asking about `f:if` has left. "be" is, and stays so
-     * against the same argument — it is the backend namespace on 17 pages of
-     * the ViewHelper reference, and it is also the English verb in every
-     * sentence saying what something should be.
-     *
-     * A word in this list is still a term where a query writes it behind a
-     * namespace prefix, so a tag named after one does not have to be kept out
-     * of it — `D-ANS-047`.
+     * The two-letter ones are here because MIN_LENGTH is two: until it was, the
+     * floor did this list's work for every word that short. "if" is deliberately
+     * not one of them, and it is the reason the floor moved — it names a
+     * ViewHelper and a TypoScript function, so it is the word a caller asking
+     * about `f:if` has left. A word in this list is still a term where a query
+     * writes it behind a namespace prefix — `D-ANS-047`.
      */
     private const STOPWORDS = [
         'am', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'can', 'do',
@@ -116,13 +106,10 @@ final class TermSearch
      * The words of a query that are searched for at all, as they were written.
      *
      * A word written behind a namespace prefix is never a stopword, because it
-     * is not prose there: the `or` of `f:or` is the name of a ViewHelper and
-     * the `core` of `EXT:core` is an extension key. Both are in the list for
-     * what they do in a sentence, and `f:or` and `f:then` had no term left at
-     * all — `D-ANS-047`.
-     *
-     * The prefix itself is dropped by MIN_LENGTH where it is one or two
-     * letters, which is every namespace the corpora carry.
+     * is not prose there: the `or` of `f:or` is the name of a ViewHelper and the
+     * `core` of `EXT:core` is an extension key, and `f:or` and `f:then` had no
+     * term left at all — `D-ANS-047`. The prefix itself is dropped by
+     * MIN_LENGTH, which is every namespace the corpora carry.
      *
      * @return array<int, string>
      */

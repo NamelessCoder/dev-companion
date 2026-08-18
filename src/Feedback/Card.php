@@ -8,24 +8,13 @@ namespace TYPO3\DevCompanion\Feedback;
  * The card a feedback brings with it: one todo in the queue, asking for the
  * judgement nobody has made yet.
  *
- * It is written when the feedback is recorded, so the pair is never apart. What
- * wrote it before was a command run from a pre-commit hook, which meant the
- * board was right on the checkout that committed and nowhere else — a session
- * that recorded a feedback and went on working had its report on disk and
- * nothing on the board until somebody else committed here. Both the command and
- * the hook are gone: the card is written where the feedback is, and there is
- * nothing left to run afterwards (`D-FBK-045`).
- *
- * It lives here rather than in `Upkeep/` because `Upkeep/` already reads this
- * channel, and the card written from there would make that a cycle. What the
- * queue is stays `Upkeep\Todo`'s; this is one file a feedback writes beside
- * itself, in the checkout it was stored in.
- *
- * The card points and does not copy. `**Serves:**` names the file, the heading
- * is the feedback's own so that a listing says which one it is, and the step is
- * the same on every card because it is the same step: judge it. What the
- * feedback reports is read in the feedback, where it cannot drift away from a
- * second copy of itself.
+ * It is written when the feedback is recorded, so the pair is never apart and
+ * there is nothing left to run afterwards (`D-FBK-045`). It lives here rather
+ * than in `Upkeep/` because `Upkeep/` already reads this channel, and a card
+ * written from there would make that a cycle. The card points and does not copy:
+ * `**Serves:**` names the file, the heading is the feedback's own so that a
+ * listing says which one it is, and the step is the same on every card because
+ * it is the same step.
  */
 final class Card
 {

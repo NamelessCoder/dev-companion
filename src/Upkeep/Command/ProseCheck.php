@@ -79,7 +79,7 @@ final class ProseCheck
         $retold = Prose::retellings();
         $output->writeln('');
         $output->writeln(sprintf(
-            '%d of %d lines of PHP are comment. %d comments name an entry and run past %d lines.',
+            '%d of %d lines of PHP are comment. %d comments name an entry and write past %d lines of prose.',
             $weight['comment'],
             $weight['lines'],
             count($retold),
@@ -88,7 +88,7 @@ final class ProseCheck
         foreach (array_slice($retold, 0, self::NAMED) as $comment) {
             $output->writeln(sprintf(
                 '  %3d  %s:%d (%s)',
-                $comment['lines'],
+                $comment['prose'],
                 $comment['file'],
                 $comment['line'],
                 implode(', ', $comment['names']),

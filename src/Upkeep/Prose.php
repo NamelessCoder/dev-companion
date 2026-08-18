@@ -41,11 +41,9 @@ final class Prose
      * Where a comment has stopped naming its reason and started retelling it.
      *
      * AGENTS.md asks a comment that rests on a decision to name its id instead
-     * of repeating what it settled. A summary line, a blank and the reason fit
-     * under ten lines; past that the id is beside the retelling rather than in
-     * place of it. The number is not tuned: 216 comments name an entry and run
-     * past four lines, 205 past eight and 172 past ten, so where the line is
-     * drawn moves the count and not the finding.
+     * of repeating what it settled, and ten lines of prose is more than saying
+     * which claim this line carries. Ten lines of a comment is not, which is
+     * what this used to count — `D-DOC-035`.
      */
     public const RETOLD = 10;
 
@@ -255,7 +253,7 @@ final class Prose
      * The lexer rather than a pattern, because a `//` inside a string literal
      * is not a comment and this repository writes regular expressions.
      *
-     * @return list<array{file: string, line: int, lines: int, names: list<string>}>
+     * @return list<array{file: string, line: int, lines: int, prose: int, names: list<string>}>
      */
     public static function comments(): array
     {
@@ -272,12 +270,43 @@ final class Prose
                     'file' => $file,
                     'line' => $token[2],
                     'lines' => substr_count($token[1], "\n") + 1,
+                    'prose' => self::proseLines($token[1]),
                     'names' => array_values(array_unique($named[0])),
                 ];
             }
         }
 
         return $comments;
+    }
+
+    /**
+     * The lines of a comment somebody wrote, without the ones the markup costs.
+     *
+     * A docblock spends its two delimiters, the blank line under its summary
+     * and every annotation on being a docblock, so an annotated one had seven
+     * of ten lines gone before a sentence was written — the floor the count
+     * could not see past, and what `D-DOC-035` replaced. An annotation runs to
+     * the next blank line, because a `@return` naming an array shape wraps.
+     */
+    public static function proseLines(string $comment): int
+    {
+        $lines = 0;
+        $annotation = false;
+        foreach (preg_split('/\R/', $comment) ?: [] as $line) {
+            $line = trim((string) preg_replace('#^(/\*\*?|//|\*/|\*)#', '', trim($line)));
+            $line = trim((string) preg_replace('#\*/$#', '', $line));
+            if ($line === '') {
+                $annotation = false;
+                continue;
+            }
+            if ($annotation || str_starts_with($line, '@')) {
+                $annotation = true;
+                continue;
+            }
+            $lines++;
+        }
+
+        return $lines;
     }
 
     /**
@@ -314,16 +343,16 @@ final class Prose
      * right comment — it may rest on that decision while explaining something
      * else — and only the reader of the block can tell the two apart.
      *
-     * @return list<array{file: string, line: int, lines: int, names: list<string>}>
+     * @return list<array{file: string, line: int, lines: int, prose: int, names: list<string>}>
      */
     public static function retellings(): array
     {
         $retold = array_values(array_filter(
             self::comments(),
-            static fn(array $comment): bool => $comment['names'] !== [] && $comment['lines'] > self::RETOLD,
+            static fn(array $comment): bool => $comment['names'] !== [] && $comment['prose'] > self::RETOLD,
         ));
 
-        usort($retold, static fn(array $a, array $b): int => $b['lines'] <=> $a['lines']);
+        usort($retold, static fn(array $a, array $b): int => $b['prose'] <=> $a['prose']);
 
         return $retold;
     }

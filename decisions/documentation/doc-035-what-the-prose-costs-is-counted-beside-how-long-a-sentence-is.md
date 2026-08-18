@@ -78,6 +78,7 @@ passed by writing two, and it read no file in `src/` at all.
 
 - `ProseTest::whatTheCommentsCostIsMeasured`
 - `ProseTest::aCommentThatNamesAnEntryAndRetellsItAnywayIsReported`
+- `ProseTest::whatTheMarkupCostsIsNotCountedAsProse`
 
 ## Since then
 
@@ -212,3 +213,31 @@ a session that had read the shortened file.
 rule, so it stands on what it is; what it does not buy is shorter prose from the
 sessions that read it, and shortening a file every session reads is not a way to
 move what a session writes.
+
+**2026-08-19** — the count is against a comment's prose lines rather than its
+lines. What the markup costs does not count: the two delimiters, the blank lines
+and the annotations. Everything else is a line somebody wrote, and ten of those
+is more than saying which of an entry's claims this line carries.
+
+**The floor is gone rather than worked around.** Raising the line to 13 or 14
+was the other answer priced, and what it gives up is the retelling written
+inside an annotated docblock — seven of the 28 the band above cut were exactly
+that, still at 11 lines with nothing retold left in them. Leaving it was priced
+too, and costs a list of 158 naming work nobody has to do.
+
+**The summary line counts, against how this was priced in the card.** It is a
+sentence somebody wrote, and taking it out would need a rule that holds for a
+docblock and not for the other markup — one more concept for one line. The
+annotations are the opposite case and run to the next blank line, because a
+`@return` naming an array shape wraps over five of them.
+
+**The numbers before this date are not the same measure.** The 240, the 166 and
+the 158 above are comments naming an entry and running past ten lines, and this
+one is comments writing past ten lines of prose. On the same corpus at this
+commit the two are 164 and 11, of 748 comments that name an entry at all.
+
+**The list starts holding no work, and that is what makes it readable.** Every
+one of the 11 runs to 14 lines or more, so each was read by the sweep of
+2026-08-18, longest first, and kept. What the second **Wrong if** watches from
+here is the number rising off 11 — a comment somebody wrote a retelling into —
+rather than a count sitting at the shape of a docblock.

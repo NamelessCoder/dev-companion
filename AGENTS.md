@@ -249,8 +249,9 @@ one said.
 
 It counts the comments too, where what grew is how many there are rather than
 how long any one of them is: the share of the PHP that is comment, and every
-comment that names a decision and retells it anyway, longest first —
-`D-DOC-035`.
+comment that names a decision and retells it anyway, most prose first. The
+delimiters, the blank lines and the annotations are not counted, so ten means
+ten lines somebody wrote — `D-DOC-035`.
 
 `bin/cli prose:format <path>` is the other half and rewrites rather than
 reports: the prose this repository writes about itself, rewrapped at the column

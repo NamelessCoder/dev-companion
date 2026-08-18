@@ -100,11 +100,53 @@ final class ProseTest extends TestCase
 
         self::assertNotEmpty($retold, 'the measure found nothing at all, which means it read nothing');
         foreach ($retold as $comment) {
-            self::assertGreaterThan(Prose::RETOLD, $comment['lines']);
+            self::assertGreaterThan(Prose::RETOLD, $comment['prose']);
+            // Two delimiters at least, so what the markup costs is never zero
+            // where there is this much prose above it.
+            self::assertLessThan($comment['lines'], $comment['prose']);
             self::assertNotEmpty($comment['names']);
             self::assertContains($comment['file'], Prose::code());
             self::assertGreaterThan(0, $comment['line']);
         }
+    }
+
+    /**
+     * `D-DOC-035`. What the markup costs is not what somebody wrote.
+     *
+     * The count ran delimiter to delimiter until 2026-08-19, so an annotated
+     * docblock had seven of ten lines gone before a sentence was written and
+     * the report named the shape of a docblock rather than a retelling.
+     */
+    #[Test]
+    #[DataProvider('comments')]
+    public function whatTheMarkupCostsIsNotCountedAsProse(string $comment, int $prose): void
+    {
+        self::assertSame($prose, Prose::proseLines($comment));
+    }
+
+    /** @return array<string, array{string, int}> */
+    public static function comments(): array
+    {
+        return [
+            'a line comment' => ['// One point, and the id for the rest.', 1],
+            'a docblock on one line' => ['/** One point, and the id for the rest. */', 1],
+            'a summary, a blank line and a reason' => [
+                "/**\n * What it is.\n *\n * Why this and not the obvious one.\n */",
+                2,
+            ],
+            'the annotations of an annotated docblock' => [
+                "/**\n * What it is.\n *\n * @param string \$file\n * @return list<string>\n */",
+                1,
+            ],
+            'a wrapped array shape' => [
+                "/**\n * What it is.\n *\n * @return array{\n *     file: string,\n *     line: int,\n * }\n */",
+                1,
+            ],
+            'a paragraph after the annotations' => [
+                "/**\n * What it is.\n *\n * @return list<string>\n *\n * Why this and not the obvious one.\n */",
+                2,
+            ],
+        ];
     }
 
     /**

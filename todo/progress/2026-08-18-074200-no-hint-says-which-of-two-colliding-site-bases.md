@@ -2,6 +2,8 @@
 
 **Serves:** D-KNW-097, feedback/2026-08-18-074200-no-hint-says-which-of-two-colliding-site-bases.md
 **Priority:** normal
+**Branch:** todo/no-hint-says-which-of-two-colliding-site-bases
+**Claimed:** 2026-08-18
 
 Step 1a with a curation half: no statement says a base carrying a host beats a
 hostless one, and the mechanism's other direction sits in `installation-boot`

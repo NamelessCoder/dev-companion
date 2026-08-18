@@ -1,7 +1,9 @@
-# The installation skill's handoff to the testing and upgrade skills sits in closing prose and stay...
+# What worked: project_describe as the first call, the operations brief, and the commit message guide
 
-**Serves:** feedback/2026-08-18-074245-the-installation-skill-s-handoff-to-the-testing.md
+**Serves:** feedback/2026-08-18-074305-what-worked-project-describe-as-the-first-call.md
 **Priority:** low
+**Branch:** todo/what-worked-project-describe-as-the-first-call
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

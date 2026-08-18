@@ -1,7 +1,9 @@
-# Steps 2 and 5 of the base order were skipped and nothing noticed, on a task that changed code
+# The guides list is only visible inside typo3_project_describe, so a session can finish without re...
 
-**Serves:** feedback/2026-08-18-074327-steps-2-and-5-of-the-base-order-were-skipped.md
+**Serves:** feedback/2026-08-18-074226-the-guides-list-is-only-visible-inside-typo3.md
 **Priority:** low
+**Branch:** todo/the-guides-list-is-only-visible-inside-typo3
+**Claimed:** 2026-08-18
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

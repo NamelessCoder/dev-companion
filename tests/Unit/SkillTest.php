@@ -2834,13 +2834,12 @@ final class SkillTest extends TestCase
         $flat = self::flat($skill);
 
         // The entry condition, and the one place this skill contradicts the
-        // base's first instruction: `typo3_project_describe` in a repository with
-        // no installation answers `unsupported: no-installation`, which reads
-        // like the disconnected server the base stops for and is the task.
-        self::assertStringContainsString(
-            'no installation to describe is the task, not the disconnected server',
-            $flat,
-        );
+        // base's first instruction: `typo3_project_describe` answers `installed:
+        // false` in a repository nobody has installed and `unsupported:
+        // no-installation` where there is no repository either, and both read
+        // like the disconnected server the base stops for while being the task.
+        self::assertStringContainsString('reports nothing installed in it is the task', $flat);
+        self::assertStringContainsString('Neither is the disconnected server', $flat);
 
         $order = [
             '[references/base.md](references/base.md)',

@@ -3,26 +3,28 @@
 ``typo3_project_describe``
 ==========================
 
-Describe the project around the TYPO3 installation this server was started in:
-its TYPO3 and PHP constraints, including the PHP floor the installed core
-requires and not only the one this project declares, the extensions that are its
-own rather than TYPO3's, the sites it configures with the site sets each depends
-on, and the commands it declares in composer.json and package.json — each marked
-a check that hands the code back as it was, a change that rewrites something, or
-unknown where the declared body does not say. Read from files only, no console
-and no database, so it answers on a fresh clone. It states how those PHP numbers
-stand to each other, which none of them says alone: whether the floor this
-project declares clears what the installed core requires, and whether anything
-configured here ever runs that floor or only some higher version inside the
-range. It also names the environment the repository configures to run itself in:
-a DDEV project states the PHP its container runs, which is a different
-interpreter from the caller's shell and where the commands below are run, plus
-what that environment runs without being asked — each hook as the stage it fires
-at and the command it runs, and the pull recipes its database and files come
-from. Call it before booting such a project or before recommending or running a
-check — these are the commands that exist in this repository, and the ones
-marked check are what a task told not to change files may run. Answers from:
-packages.
+Describe the repository this server was started in and the TYPO3 installation it
+has made: its TYPO3 and PHP constraints, including the PHP floor the installed
+core requires and not only the one this project declares, the extensions that
+are its own rather than TYPO3's, the sites it configures with the site sets each
+depends on, and the commands it declares in composer.json and package.json —
+each marked a check that hands the code back as it was, a change that rewrites
+something, or unknown where the declared body does not say. Read from files
+only, no console and no database, so it answers on a fresh clone as well. Before
+composer install has run it says so in installed, and only three fields wait for
+that install: the TYPO3 version, the PHP floor the core requires, and the
+extension list. It states how those PHP numbers stand to each other, which none
+of them says alone: whether the floor this project declares clears what the
+installed core requires, and whether anything configured here ever runs that
+floor or only some higher version inside the range. It also names the
+environment the repository configures to run itself in: a DDEV project states
+the PHP its container runs, which is a different interpreter from the caller's
+shell and where the commands below are run, plus what that environment runs
+without being asked — each hook as the stage it fires at and the command it
+runs, and the pull recipes its database and files come from. Call it before
+booting such a project or before recommending or running a check — these are the
+commands that exist in this repository, and the ones marked check are what a
+task told not to change files may run. Answers from: packages.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -38,11 +40,22 @@ Answers with
 
 .. code-block:: yaml
 
-    # Absolute path of the project. Null when there is no installation to describe.
+    # Absolute path of the repository this describes. Null when no project root was
+    # found to describe.
     root: string or null  # optional
-    # core-checkout or composer-project.
+    # core-checkout or composer-project. What the root declares itself to be, not
+    # whether anything is installed in it — installed says that.
     kind: string  # optional
-    # The TYPO3 version installed here, read from the core package.
+    # Whether the packages this repository declares are installed below it. False is
+    # a clone nobody has run composer install in, which is the state a boot or an
+    # installation task starts in — everything else here is read from the
+    # repository's own files and answers either way. What false costs is the three
+    # fields that come out of the installed tree: typo3Version and corePhpConstraint
+    # are null and extensions is empty, and none of the three tells you that on its
+    # own.
+    installed: boolean  # optional
+    # The TYPO3 version installed here, read from the core package. Null where
+    # nothing is installed yet, which installed is what says.
     typo3Version: string or null  # optional
     # What composer.json requires of PHP. What the project declares, not what runs
     # it — see environment.
@@ -152,7 +165,9 @@ Answers with
           # for. A recipe with no push commands is one you cannot push upstream
           # with.
           operations: [string]
-    # Extensions that are not TYPO3 system extensions.
+    # Extensions that are not TYPO3 system extensions. Read from Composer's
+    # installed metadata, so where installed is false this is empty because nothing
+    # has been installed rather than because the repository has none.
     extensions:  # optional
       - key: string
         # Relative to the project root.
@@ -235,7 +250,7 @@ Answers with
         # Environment variable that names the console command.
         console: string
 
-The answer carries exactly one of these sets of fields: ``root``,
+The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 ``phpRelation``, ``environment``, ``extensions``, ``sites``, ``commands``,
 ``patches``, ``guides``, ``answeredBy`` — or ``unsupported``.
 
@@ -304,6 +319,7 @@ Data:
     {
         "root": "<installation>",
         "kind": "core-checkout",
+        "installed": true,
         "typo3Version": "14.3.7-dev",
         "phpConstraint": "^8.2",
         "coreConstraint": null,
@@ -436,6 +452,7 @@ Data:
     {
         "root": "<installation>",
         "kind": "composer-project",
+        "installed": true,
         "typo3Version": "14.3.0",
         "phpConstraint": "^8.2",
         "coreConstraint": "^14.3",

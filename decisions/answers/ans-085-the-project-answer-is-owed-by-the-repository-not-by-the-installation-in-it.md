@@ -122,3 +122,15 @@ a discovery that looks for installed packages.
 - The three withheld fields turn out to be what the workflow needed, and a
   session on a fresh clone stops on the missing `typo3Version` anyway. Then the
   seam is in the wrong place and the answer owed there is a different one.
+
+## Since then
+
+Built on 2026-08-18, at the seam this entry drew. What identifies a root
+without an installed tree is `D-DIS-019` and `R-PRJ-011`, and the state is said
+in a new `installed` field rather than in `kind`, so a caller can still tell a
+site project from an extension repository while it is being installed. The
+`typo3-development-installation` skill states both entry conditions now: an
+answer describing a repository with nothing installed in it, and the
+`no-installation` one where there was no repository to describe. Nothing here
+has been read back from a session on a real clone, which is what the four
+**Wrong if** above are still waiting for.

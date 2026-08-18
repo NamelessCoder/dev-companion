@@ -168,8 +168,8 @@ at all in the state the machine is in.
         :label: Describe
         :action: Open reference
 
-        Describe the project around the TYPO3 installation this server was
-        started in.
+        Describe the repository this server was started in and the TYPO3
+        installation it has made.
 
     .. card:: :doc:`typo3_reference_list <typo3_reference_list>`
         :label: List

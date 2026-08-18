@@ -24,9 +24,9 @@ carries a condition for skipping it, that condition is narrow on purpose: a
 prescription that gets skipped teaches the next reader to skip the ones that
 matter too.
 
-1. **`typo3_project_describe`** — the installation, its TYPO3 and PHP version,
-   the extensions that are the project's own, its sites, and the commands this
-   repository actually declares. Every later answer is filtered by that version,
+1. **`typo3_project_describe`** — the repository and whether anything is
+   installed in it yet, its TYPO3 and PHP version, the extensions that are the
+   project's own, its sites, and the commands this repository actually declares. Every later answer is filtered by that version,
    and a check the repository does not declare is a wrong answer however
    sensible it sounds. It ends with the whole procedures this server carries, as
    ids: that list is the only place they are named to a client that renders no

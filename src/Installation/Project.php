@@ -9,8 +9,8 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
- * What the project around the discovered installation consists of, read from
- * its files.
+ * What the repository the session is standing in consists of, read from its
+ * files, whether or not an installation has been made below it.
  *
  * The knowledge base describes TYPO3; this describes the repository the caller
  * is standing in — which extensions are its own, which sites it configures,
@@ -20,7 +20,10 @@ use TYPO3\DevCompanion\Knowledge\Versions;
  * here is worse than no check.
  *
  * Files only. No console, no database, nothing started — the same rule the rest
- * of this server follows, and the reason this works on a fresh clone.
+ * of this server follows, and the reason this works on a fresh clone. Three
+ * fields are the exception and wait for the install: the TYPO3 version, the PHP
+ * the installed core requires, and the extensions, which are Composer's
+ * metadata rather than anything the manifest declares.
  */
 final class Project
 {
@@ -95,6 +98,7 @@ final class Project
      * @return array{
      *     root: string,
      *     kind: string,
+     *     installed: bool,
      *     typo3Version: ?string,
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
@@ -109,12 +113,12 @@ final class Project
      */
     public static function describe(): ?array
     {
-        $instance = Instance::describe();
-        if ($instance === null) {
+        $project = Instance::project();
+        if ($project === null) {
             return null;
         }
 
-        $root = $instance['root'];
+        $root = $project['root'];
         $manifest = self::json($root . '/composer.json');
         $php = self::requirement($manifest, 'php');
         $corePhp = self::corePhpConstraint();
@@ -122,7 +126,11 @@ final class Project
 
         return [
             'root' => $root,
-            'kind' => $instance['kind'],
+            'kind' => $project['kind'],
+            // The three fields below that read the installed tree answer null
+            // and empty here, and none of them says on its own that nothing is
+            // installed rather than that there was nothing to find (`D-ANS-085`).
+            'installed' => Instance::packages() !== [],
             'typo3Version' => Instance::typo3Version(),
             'phpConstraint' => $php,
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),

@@ -16,17 +16,19 @@ and none of them can be re-asked from here.
 
 Work through [references/base.md](references/base.md) first. One of its answers
 is this workflow's entry condition rather than a failure: an installation lookup
-that reports there is no installation to describe is the task, not the
+that describes the repository and reports nothing installed in it is the task,
+and so is one that finds no repository to describe at all. Neither is the
 disconnected server the base tells you to stop for. Stop for an error, continue
-for that answer, and say which of the two came back.
+for either of those, and say which of the three came back.
 
 Then, before anything is created:
 
 - `typo3_server_scope` is discharged by the base's `typo3_project_describe`,
   whatever it answered. What this step asks — whether an installation and a
-  console can be reached at all — is what that answer's `cause` states, and it
-  states it where there is no installation as well. The orientation tool is for
-  a caller who does not know whether this server can answer at all, which is not
+  console can be reached at all — is what that answer already states: whether
+  anything is installed below the repository it describes, and where it could
+  describe none, the cause it gives instead. The orientation tool is for a
+  caller who does not know whether this server can answer at all, which is not
   this workflow's question.
 - The calls in the base that read the installation are asked again once it
   exists. Asked before, they are unanswerable; asked after, they are what says
@@ -36,9 +38,11 @@ The repository decides where this task starts, and what decides it is the boot
 procedure it declares rather than the traces an installation has left in it: a
 script its manifest declares, a task its environment runs at start, a sequence
 its own instructions write down. A repository that declares one is booted from
-it. One that declares none has an installation created for it. One that declares
-an environment and no procedure is both: run what it declares, take every step
-after that from the create branch, and change nothing that is declared.
+it, and the describe answer carries what it declares before any of it is
+installed. One that declares none has an installation created for it. One that
+declares an environment and no procedure is both: run what it declares, take
+every step after that from the create branch, and change nothing that is
+declared.
 
 ## Boot what the repository already declares
 

@@ -21,6 +21,22 @@ use TYPO3\DevCompanion\Result\Unsupported;
  */
 final class ProjectDescribe extends ReadOnlyTool
 {
+    /**
+     * What the answer says where nothing has been installed below the root yet.
+     *
+     * Said rather than left to the three fields that go quiet: `typo3Version:
+     * null` is what a root with no readable core answers and `extensions: []`
+     * is what a project with no extensions of its own answers, so neither of
+     * them tells a caller that the install has not happened (`D-ANS-085`). It
+     * is also the state the installation workflow is entered in, which is why
+     * the rest of the answer is composed for it rather than withheld.
+     */
+    private const NOTHING_INSTALLED = 'Nothing is installed below this root yet: no Composer metadata under the '
+        . 'vendor directory it declares. So this is what the repository declares and not what is running — the '
+        . 'TYPO3 version, the PHP floor the installed core requires and the extension list are read out of the '
+        . 'installed tree and arrive once composer install has run. Everything else here is read from the files as '
+        . 'they stand.';
+
     public static function name(): string
     {
         return 'typo3_project_describe';
@@ -34,7 +50,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only three fields wait for that install: the TYPO3 version, the PHP floor the core requires, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -45,9 +61,10 @@ final class ProjectDescribe extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::installationAnswer([
-            'root' => Schema::nullableString('Absolute path of the project. Null when there is no installation to describe.'),
-            'kind' => Schema::string('core-checkout or composer-project.'),
-            'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package.'),
+            'root' => Schema::nullableString('Absolute path of the repository this describes. Null when no project root was found to describe.'),
+            'kind' => Schema::string('core-checkout or composer-project. What the root declares itself to be, not whether anything is installed in it — installed says that.'),
+            'installed' => ['type' => 'boolean', 'description' => 'Whether the packages this repository declares are installed below it. False is a clone nobody has run composer install in, which is the state a boot or an installation task starts in — everything else here is read from the repository\'s own files and answers either way. What false costs is the three fields that come out of the installed tree: typo3Version and corePhpConstraint are null and extensions is empty, and none of the three tells you that on its own.'],
+            'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package. Null where nothing is installed yet, which installed is what says.'),
             'phpConstraint' => Schema::nullableString('What composer.json requires of PHP. What the project declares, not what runs it — see environment.'),
             'coreConstraint' => Schema::nullableString('What it requires of typo3/cms-core.'),
             'corePhpConstraint' => Schema::nullableString('What the installed typo3/cms-core requires of PHP, out of that package\'s own composer.json — the lowest a package here may declare it supports. Neither of the other two PHP numbers: not what this project declares, and not what environment.php runs. Not derivable from the TYPO3 major either — v13.4 and v14.3 both require ^8.2, v12.4 requires ^8.1. Null where no core package was found to read.'),
@@ -89,7 +106,7 @@ final class ProjectDescribe extends ReadOnlyTool
                 'key' => Schema::string(),
                 'path' => Schema::string('Relative to the project root.'),
                 'origin' => ['type' => 'string', 'enum' => ['project', 'third-party', 'fixture'], 'description' => 'project: inside the repository, so what it is working on. third-party: installed as a dependency. fixture: shipped by the repository\'s test setup, below a Tests/ directory, so it exists to be loaded by a suite rather than developed.'],
-            ], ['key', 'path', 'origin']), 'Extensions that are not TYPO3 system extensions.'),
+            ], ['key', 'path', 'origin']), 'Extensions that are not TYPO3 system extensions. Read from Composer\'s installed metadata, so where installed is false this is empty because nothing has been installed rather than because the repository has none.'),
             'sites' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'base' => Schema::string(),
@@ -113,7 +130,7 @@ final class ProjectDescribe extends ReadOnlyTool
                 'title' => Schema::string(),
             ], ['id', 'title']), 'The whole procedures this server carries, named here because this is the call every task starts with. They are also served as typo3://guides resources, and a client that lists no resources renders none of them — four sessions in one week finished without learning they exist. Each is one typo3_rule_lookup call by documentId, which needs no resource list; a search over sections answers a question and never hands one of these over whole.'),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-        ], ['root', 'phpRelation', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
+        ], ['root', 'installed', 'phpRelation', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -121,7 +138,7 @@ final class ProjectDescribe extends ReadOnlyTool
         $project = Project::describe();
         if ($project === null) {
             return Unsupported::because(
-                'no TYPO3 installation was found to describe',
+                'no repository declaring TYPO3 was found to describe',
             );
         }
 
@@ -129,11 +146,20 @@ final class ProjectDescribe extends ReadOnlyTool
             '%s — %s, TYPO3 %s, PHP %s%s%s',
             $project['root'],
             $project['kind'],
-            $project['typo3Version'] ?? 'version unknown',
+            match (true) {
+                !$project['installed'] => 'not installed here yet',
+                $project['typo3Version'] === null => 'version unknown',
+                default => $project['typo3Version'],
+            },
             $project['phpConstraint'] ?? 'unconstrained',
             self::runtime($project['environment']),
             self::floor($project['corePhpConstraint']),
         )];
+
+        if (!$project['installed']) {
+            $lines[] = '';
+            $lines[] = self::NOTHING_INSTALLED;
+        }
 
         $relation = self::relation($project['phpRelation'], $project['environment']);
         if ($relation !== '') {
@@ -142,9 +168,15 @@ final class ProjectDescribe extends ReadOnlyTool
         }
 
         $lines[] = '';
-        $lines[] = $project['extensions'] === []
-            ? 'Extensions: none beyond TYPO3\'s own.'
-            : 'Extensions that are not TYPO3\'s own:';
+        $lines[] = match (true) {
+            // The list is Composer's metadata rather than anything the manifest
+            // declares, so an empty one here would read as a repository with no
+            // extensions where it is a repository with nothing installed.
+            !$project['installed'] => 'Extensions: not readable until the install has run — which extensions are '
+                . 'here is what Composer wrote, not what composer.json requires.',
+            $project['extensions'] === [] => 'Extensions: none beyond TYPO3\'s own.',
+            default => 'Extensions that are not TYPO3\'s own:',
+        };
         foreach ($project['extensions'] as $extension) {
             $lines[] = sprintf('- %s (%s) — %s', $extension['key'], $extension['origin'], $extension['path']);
         }

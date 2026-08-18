@@ -619,6 +619,75 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theRepositoryIsDescribedBeforeAnythingIsInstalledInIt(): void
+    {
+        // The clone of `github.com/TYPO3GmbH/blog` feedback/2026-08-18-070333
+        // was recorded in: no vendor directory, no .build/, no config/. The
+        // whole answer was gated on Composer's installed metadata, so the one
+        // call this server prescribes first came back with `no-installation`
+        // and nothing else — and the session read composer.json, package.json
+        // and .ddev/config.yaml out of the checkout by hand, in the state the
+        // installation workflow declares as its entry condition (`D-ANS-085`).
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 't3g/blog',
+            'type' => 'typo3-cms-extension',
+            'require' => ['php' => '^8.2', 'typo3/cms-core' => '^13.4.15 || ^14.3'],
+            'extra' => ['typo3/cms' => ['extension-key' => 'blog']],
+            'scripts' => ['ci' => ['@cgl:ci'], 'cgl:ci' => 'php-cs-fixer fix --dry-run'],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($root . '/package.json', json_encode([
+            'scripts' => ['build' => 'vite build'],
+        ], JSON_THROW_ON_ERROR));
+        $this->declare($root . '/.ddev/config.yaml', "name: blog\ntype: typo3\nphp_version: \"8.2\"\n");
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertFalse($project['installed']);
+        self::assertSame('^8.2', $project['phpConstraint']);
+        self::assertSame('^13.4.15 || ^14.3', $project['coreConstraint']);
+        self::assertSame('8.2', $project['environment']['php']);
+        self::assertSame('blog', $project['environment']['project']);
+        self::assertSame(
+            ['composer ci', 'composer cgl:ci', 'npm run build'],
+            array_column($project['commands'], 'command'),
+        );
+
+        // What the installed tree owns stays withheld, and the answer says
+        // which state it is in rather than leaving a null and an empty list to
+        // read as an installation that has neither.
+        self::assertNull($project['typo3Version']);
+        self::assertNull($project['corePhpConstraint']);
+        self::assertSame([], $project['extensions']);
+
+        $result = Registry::call('typo3_project_describe', []);
+        self::assertArrayNotHasKey('unsupported', $result->data);
+        self::assertStringContainsString('not installed here yet', $result->text);
+        self::assertStringContainsString('Nothing is installed below this root yet', $result->text);
+        self::assertStringContainsString('Extensions: not readable until the install has run', $result->text);
+    }
+
+    #[Test]
+    public function aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne(): void
+    {
+        // The other half of the same rule. The walk goes up twelve directories,
+        // so admitting any composer.json would answer for whatever PHP
+        // repository a session happens to be standing below — and this tool is
+        // the one every task opens with.
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/toolkit',
+            'type' => 'library',
+            'require' => ['symfony/finder' => '^7.4'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        self::assertNull(Project::describe());
+        self::assertSame(['unsupported'], array_keys(Registry::call('typo3_project_describe', [])->data));
+    }
+
+    #[Test]
     public function theAnswerNamesTheCommandsThatExistHere(): void
     {
         $root = $this->composerProject();

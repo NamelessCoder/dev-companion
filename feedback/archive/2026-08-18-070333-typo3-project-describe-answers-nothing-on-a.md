@@ -1,7 +1,8 @@
 ---
 date: 2026-08-18T07:03:33+00:00
 category: bug
-status: open
+status: closed
+closed: 2026-08-18
 model: claude-opus-5[1m]
 tool: typo3_project_describe
 directory: /home/benji/projects/blog

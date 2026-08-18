@@ -16,6 +16,7 @@ when it is added.
 - [`R-PRJ-008`][R-PRJ-008] — The project answer says what runs it, not only what it declares · held
 - [`R-PRJ-009`][R-PRJ-009] — The project answer states the lifecycle its environment declares · held
 - [`R-PRJ-010`][R-PRJ-010] — The project answer relates its PHP numbers rather than listing them · held
+- [`R-PRJ-011`][R-PRJ-011] — A project root is a repository that declares TYPO3 · held
 
 [R-PRJ-001]: prj-001-the-project-is-describable-from-its-files-alone.md
 [R-PRJ-002]: prj-002-one-unreadable-site-costs-that-site-and-no-other.md
@@ -27,3 +28,4 @@ when it is added.
 [R-PRJ-008]: prj-008-the-project-answer-says-what-runs-it.md
 [R-PRJ-009]: prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md
 [R-PRJ-010]: prj-010-the-project-answer-relates-its-php-numbers-rather-than-listing-them.md
+[R-PRJ-011]: prj-011-a-project-root-is-a-repository-that-declares-typo3.md

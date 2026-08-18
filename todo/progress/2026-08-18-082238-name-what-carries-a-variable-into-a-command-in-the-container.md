@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070423-the-hints-name-the-typo3-setup-variables-but.md
 **Priority:** normal
+**Branch:** todo/name-what-carries-a-variable-into-a-command-in-the-container
+**Claimed:** 2026-08-18
 
 Judged as step 1a on 2026-08-18 —
 [`D-KNW-094`](../../decisions/knowledge/knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md)

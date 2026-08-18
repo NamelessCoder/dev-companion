@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070358-task-guide-scoped-every-path-uncertain-in-an.md
 **Priority:** high
+**Branch:** todo/task-guide-scoped-every-path-uncertain-in-an
+**Claimed:** 2026-08-18
 
 Judged on 2026-08-18 and queued: the scoping is the defect, and the suppression
 `R-SCO-002` performs had nothing to fire on. `D-SCO-012` carries the reading and

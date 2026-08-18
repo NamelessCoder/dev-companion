@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070333-typo3-project-describe-answers-nothing-on-a.md
 **Priority:** normal
+**Branch:** todo/the-project-answer-covers-a-clone-nobody-has-installed
+**Claimed:** 2026-08-18
 
 `D-ANS-085` judged this step 1b and decided the seam: `typo3_project_describe`
 answers what the repository's own files declare wherever a project root is

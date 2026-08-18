@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-18-070448-the-installation-skill-has-two-shapes-and-this.md
 **Priority:** normal
+**Branch:** todo/re-cut-the-installation-skills-fork-and-its
+**Claimed:** 2026-08-18
 
 Rewrite two places in `skills/typo3-development-installation/SKILL.md` on
 `D-SKL-056`, and move the assertions in

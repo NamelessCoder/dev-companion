@@ -110,3 +110,15 @@ names were all delivered, in order, before the calls that needed them.
   first use, so a workflow whose steps name ten tools pays ten, and a session
   reporting that is reporting a different order of cost than the one judged
   here.
+
+## Since then
+
+The candidate this entry named was taken up on the same day.
+`feedback/2026-08-18-113308` was judged as the ladder's step 2 and the
+`instructions` now index the question each tool answers, one entry of which is
+`typo3_changelog_lookup` — the line a second session says would have caught it.
+[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md)
+carries what it cost: a hard budget of 2048 characters that was at 2038, so one
+entry was bought by tightening the sentences around it and the rest of the list
+was not bought at all. That moves the first **Wrong if** above from something
+nobody could measure to something the next debrief under such a client answers.

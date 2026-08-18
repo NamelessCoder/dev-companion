@@ -19,9 +19,9 @@ Nothing is built until the question comes back. The reading behind it is in
 if**: a session that read the `instructions` and still paid a fetch per first
 call, or one that reports batching off a list at the top of a skill.
 
-The other half of the client property is not this card's. `D-AUD-003` decided
-that the `instructions` carry what the tool descriptions cannot deliver, and
-`feedback/2026-08-18-113308` reports a session that called nothing at all under
-the same deferral and asks for what to call for what in that block. Whether the
-`instructions` gain such an index is that feedback's judgement, and it was
-deliberately not made here.
+The other half of the client property is not this card's, and it has since been
+answered. `feedback/2026-08-18-113308` was judged on 2026-08-18 as the ladder's
+step 2 and the `instructions` gained the index it asked for — `D-AUD-011`, which
+paid for one entry by tightening the sentences around it and left the rest of
+the list unbought. So the question here is asked against a session that now
+reads what to call for what before its first call.

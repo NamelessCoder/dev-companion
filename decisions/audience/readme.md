@@ -8,6 +8,7 @@ client is told to start.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers, because a name is all a deferring client shows · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
 - [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
 - [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06 · confirmed
@@ -18,6 +19,7 @@ one is added.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-011]: aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md
 [D-AUD-010]: aud-010-the-content-model-is-answered-and-the-records-stay-with-the-installation.md
 [D-AUD-009]: aud-009-the-entry-point-claims-patch-work-and-a-task-that-ends-before-one-reads-itself-out.md
 [D-AUD-008]: aud-008-the-server-is-called-dev-companion-under-the-tooling-vendor.md

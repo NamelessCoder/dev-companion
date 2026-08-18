@@ -24,7 +24,7 @@ only one this server points at.
   directories, the repository's declared check suite, and a commit on a branch —
   three subjects with an owner here, none of them named in the opening line. No
   skill activated, and the same session called nothing at all
-  ([`feedback/2026-08-18-080710`](../../feedback/2026-08-18-080710-a-whole-session-ran-with-zero-calls-because-a.md)).
+  ([`feedback/2026-08-18-080710`](../../feedback/archive/2026-08-18-080710-a-whole-session-ran-with-zero-calls-because-a.md)).
 - **The brief answers the sub-step and not the opening.** Measured in this
   worktree on 2026-08-18, through `TaskGuide::answer()`. "Add unit tests for a
   TypoScript condition provider in an extension" with the test path is

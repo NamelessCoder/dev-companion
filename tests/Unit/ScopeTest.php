@@ -339,9 +339,25 @@ final class ScopeTest extends TestCase
     #[Test]
     public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
     {
-        self::assertStringContainsString('Before writing backend markup', Coverage::instructions());
-        self::assertStringContainsString('Before choosing or emitting a backend icon', Coverage::instructions());
-        self::assertStringContainsString('Before adding or rewording a label', Coverage::instructions());
+        self::assertStringContainsString('backend markup or a CSS class: typo3_component_lookup', Coverage::instructions());
+        self::assertStringContainsString('a backend icon identifier: typo3_icon_lookup', Coverage::instructions());
+        self::assertStringContainsString('a label, added or reworded: typo3_label_lookup', Coverage::instructions());
+    }
+
+    /**
+     * `R-ANS-032`, `D-AUD-011`. The question is what the client cannot show.
+     *
+     * Two sessions in two projects called nothing at all under a client that
+     * lists the tools by name and defers their schemas, so a name was the whole
+     * of what either of them had to choose on.
+     */
+    #[Test]
+    public function theInstructionsIndexTheQuestionEachToolAnswers(): void
+    {
+        $instructions = Coverage::instructions();
+
+        self::assertStringContainsString('What to call for what:', $instructions);
+        self::assertStringContainsString('typo3_changelog_lookup', $instructions);
     }
 
     /**

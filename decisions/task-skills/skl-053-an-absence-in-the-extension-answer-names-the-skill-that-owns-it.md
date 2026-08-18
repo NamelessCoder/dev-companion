@@ -195,3 +195,14 @@ Judged step 4 and queued at `normal` on the card that serves it, bounded to that
 one crossing — `typo3-extension-upgrade` staying shut in the same session is a
 description that reads from the maintainer's intent, and
 `feedback/2026-08-18-080630` carries it on a card of its own.
+
+**That crossing is now a step, and both halves of the guard reach it.**
+`typo3-development-installation` carries **When the task turns to a suite**: the
+moment the task grows a test, invoke `typo3-extension-testing`, before a test
+file is edited or the installation a suite boots is built. What fires it is
+named beside what does not — a sentence asking for proof against a question
+about what the site answers — because the report's trigger was a user turn. The
+ownership paragraph keeps both directions of the boundary and carries no
+instruction. In the guard, the `$crossings` map names that successor for this
+skill, and the position half now reads the last paragraph for `ctivate` as well
+as `nvoke`, which is the word "activate it" stood there under.

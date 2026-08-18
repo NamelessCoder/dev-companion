@@ -2926,8 +2926,12 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('the report names the two and says why', $flat);
 
         // Both directions of the crossing, because the feedback asked for both.
+        // Going out stands at the moment it happens rather than in the closing
+        // section: `074245` read that section while it held a 404 and no test,
+        // and wrote the tests here forty minutes later — `R-SKL-018`.
         self::assertStringContainsString('typo3-extension-testing', $skill);
-        self::assertStringContainsString('stop before editing that owner\'s files, and activate it', $flat);
+        self::assertStringContainsString('The moment this task grows a test, invoke', $flat);
+        self::assertStringContainsString('stops before editing that owner\'s files', $flat);
         self::assertStringContainsString(
             'a suite that needs a served site and has none is this workflow first',
             $flat,
@@ -3319,8 +3323,14 @@ final class SkillTest extends TestCase
             'typo3-extension-cleanup' => ['typo3-extension-conformance'],
             // The deprecation log a first boot writes is about the package's
             // code and not about the installation, and `071526` read it,
-            // reported it and stopped there because no workflow owned it.
-            'typo3-development-installation' => ['typo3-extension-conformance'],
+            // reported it and stopped there because no workflow owned it. The
+            // testing crossing was listed nowhere here, which is how it stayed
+            // in the closing paragraph through the pass that rewrote the other
+            // seven — `074245` then read that paragraph and wrote tests anyway.
+            'typo3-development-installation' => [
+                'typo3-extension-conformance',
+                'typo3-extension-testing',
+            ],
         ];
 
         foreach ($crossings as $name => $successors) {
@@ -3359,14 +3369,22 @@ final class SkillTest extends TestCase
         // crossing that stands only there is the sentence three sessions read
         // and did not act on. The ownership paragraph stays — it is what tells
         // a reader where the boundary is — and it carries no instruction.
+        //
+        // Both verbs, because reading for one held the crossing where its
+        // author happened to pick that word: `typo3-development-installation`
+        // closed on "activate it" and passed this until `074245` reported the
+        // paragraph unacted on.
         foreach (self::skills() as $name => $skill) {
             $paragraphs = preg_split('/\R{2,}/', trim($skill));
             self::assertIsArray($paragraphs);
-            self::assertStringNotContainsString(
-                'nvoke',
-                (string) end($paragraphs),
-                $name . ' leaves a crossing in the paragraph the workflow is being left in',
-            );
+
+            foreach (['nvoke', 'ctivate'] as $imperative) {
+                self::assertStringNotContainsString(
+                    $imperative,
+                    (string) end($paragraphs),
+                    $name . ' leaves a crossing in the paragraph the workflow is being left in',
+                );
+            }
         }
 
         // And the one that reads as somebody else's patch says where a commit

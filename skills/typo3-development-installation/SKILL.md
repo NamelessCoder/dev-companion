@@ -252,6 +252,24 @@ log and the package whose code fills it, change nothing in that package here,
 and invoke `typo3-extension-conformance` with those lines as the evidence it
 starts from.
 
+## When the task turns to a suite
+
+**The moment this task grows a test, invoke `typo3-extension-testing` before
+editing a test file or building the installation a suite boots.** That is a
+step, not a note about ownership: load the skill by name and work from it. What
+crosses over is the verified point this workflow reached — the document root,
+the console that reaches it, the URL that answered, the database it is on — and
+the defect the diagnosis here landed on. It is written as a step because naming
+that skill at the end of this file did not fire as one: a session read a 404 out
+of the log, fixed the exception behind it, and forty minutes later extended
+`Tests/Functional/` without loading the workflow that owns it.
+
+**What fires it is a sentence about proof rather than about the site.** "There
+is no test for it", "prove it", "add a functional test" — each turns the task
+over, whether or not the installation work here is finished. "The frontend is
+still a 404", "the backend does not come up", "which site did the request reach"
+are this workflow's own, and reading a log is not a suite.
+
 ## Where this stops
 
 This skill owns the installation a package is developed in, from before it
@@ -272,9 +290,8 @@ directory, with the package linked in and no site to visit, is a test fixture
 and belongs to `typo3-extension-testing` — a repository can have both, and
 asking which one the task needs is the first thing that decides the layout.
 
-Tests and static checks are `typo3-extension-testing`, and the crossing is
-explicit in both directions. Going out: state the verified point — the document
-root, the console command, the URL that answered, the database — stop before
-editing that owner's files, and activate it. Coming in: a suite that needs a
-served site and has none is this workflow first, up to that same verified point,
-and then back.
+Tests and static checks are `typo3-extension-testing`'s, and the boundary runs
+in both directions. Going out is **When the task turns to a suite** above, which
+states the verified point and stops before editing that owner's files. Coming
+in: a suite that needs a served site and has none is this workflow first, up to
+that same verified point, and then back.

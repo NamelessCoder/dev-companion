@@ -497,6 +497,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### guides
 
 - [`D-GUI-015`][D-GUI-015] — A case's own prompt reaches less than the brief that stands in for it · 2026-08-19
+- [`D-GUI-016`][D-GUI-016] — The brief carries its hints whether or not it names a skill · 2026-08-19
 - [`D-GUI-012`][D-GUI-012] — The brief names the guide the recognized work belongs to · 2026-08-18
 - [`D-GUI-013`][D-GUI-013] — The brief names the sweep a change owes · 2026-08-18
 - [`D-GUI-014`][D-GUI-014] — Looking at a change is an intent of its own · 2026-08-18
@@ -512,6 +513,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
 [D-GUI-015]: guides/gui-015-a-cases-own-prompt-reaches-less-than-the-brief-that-stands-in-for-it.md
+[D-GUI-016]: guides/gui-016-the-brief-carries-its-hints-whether-or-not-it-names-a-skill.md
 [D-GUI-012]: guides/gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md
 [D-GUI-013]: guides/gui-013-the-brief-names-the-sweep-a-change-owes.md
 [D-GUI-014]: guides/gui-014-looking-at-a-change-is-an-intent-of-its-own.md

@@ -5078,6 +5078,54 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * And it carries its hints anyway (`D-GUI-016`).
+     *
+     * The one measured run where a brief named a skill worked from the hints and
+     * loaded nothing, which reads as the block standing in for the route. What
+     * the block actually stands in for is step 4 of `skills/base.md`, which is
+     * discharged by what the brief says about it — so withholding on a name this
+     * server cannot verify takes the hints off every session that has no such
+     * skill installed.
+     */
+    #[Test]
+    public function theSkillABriefNamesTakesNoHintOutOfIt(): void
+    {
+        $paths = [
+            'packages/sitepackage/Configuration/TCA/Overrides/tt_content.php',
+            'packages/sitepackage/Resources/Private/Templates/ContentElements/Teaser.html',
+        ];
+        $task = 'Register a new content element with a custom backend preview and a Fluid template';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'targetVersion' => '14',
+            'paths' => $paths,
+        ]);
+        $lookup = Registry::call('typo3_hint_lookup', [
+            'task' => $task,
+            'targetVersion' => '14',
+            'paths' => $paths,
+            'limit' => HintLookup::MAX_HINTS,
+        ]);
+
+        self::assertSame(['typo3-content-element-development'], $brief->data['skills']);
+        // The two halves are the lookup's own answer, whole: the name subtracts
+        // nothing from the block and nothing from the pointer to the rest.
+        self::assertSame(
+            array_column($lookup->data['hints'], 'id'),
+            array_merge(
+                array_column($brief->data['hints'], 'id'),
+                array_column($brief->data['omittedHints'], 'id'),
+            ),
+        );
+        // What step 4 of the skill is owed, in the sentence that step reads.
+        self::assertStringContainsString(
+            sprintf(TaskGuide::HINTS_TRUNCATED, TaskGuide::HINTS_PER_GROUP),
+            $brief->text,
+        );
+    }
+
+    /**
      * And the page that kind of work is written up in (`D-GUI-012`).
      *
      * The reporting session learned the corpus exists from one place — the

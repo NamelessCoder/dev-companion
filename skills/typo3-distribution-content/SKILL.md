@@ -2,8 +2,6 @@
 name: typo3-distribution-content
 description: Ship the content of a TYPO3 site inside an extension, as a distribution — the initial content a package carries, the export artifact and the files beside it, and the site configuration that travels with them. Use for initial content, data.xml, Initialisation, seeding a page tree, and a distribution that has to come up on a fresh installation.
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
-metadata:
-  typo3-dev-companion-status: draft
 ---
 
 # TYPO3 Distribution Content

@@ -766,7 +766,7 @@ final class Channel
      * One name in the form two spellings of it can be compared in.
      *
      * A tool is `typo3_documentation_lookup` and a skill is
-     * `typo3-extension-conformance`, and a session names either with whichever
+     * `typo3-extension-health`, and a session names either with whichever
      * separator it has in front of it. What is stored is what was written, so
      * the filter is where the spellings meet — the rule `D-ANS-006` already
      * applies to an identifier a caller looks up, applied to the one thing this

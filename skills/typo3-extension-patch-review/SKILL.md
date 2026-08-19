@@ -1,9 +1,7 @@
 ---
 name: typo3-extension-patch-review
-description: 'Judge one incoming change against a TYPO3 extension, sitepackage or project package — a GitHub pull request, a patch, a branch somebody proposes — and say what stops it being merged, from its versions to its commit message and its checks. It stops at the verdict; the whole repository is typo3-extension-conformance''s.'
+description: 'Judge one incoming change against a TYPO3 extension, sitepackage or project package — a GitHub pull request, a patch, a branch somebody proposes — and say what stops it being merged, from its versions to its commit message and its checks. It stops at the verdict; the whole repository is typo3-extension-health''s.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
-metadata:
-  typo3-dev-companion-status: draft
 ---
 
 # TYPO3 Extension Patch Review
@@ -152,23 +150,22 @@ review reports on.
 
 ## Where the review ends
 
-**When you are asked to make the change, invoke `typo3-extension-cleanup` and
+**When you are asked to make the change, invoke `typo3-extension-health` and
 work from it.** That includes the commit. What asks for it is an instruction to
 change the package — "fix it", "do the first three", "push that" — and it
 arrives in the middle of a session that is going well, which is what makes it
 easy to carry on under review rules while rewriting what the review was about.
+The same skill is where the request goes when it widens past this change —
+"audit the package", "what else is wrong in here" — because it owns the surface
+list a whole repository is read against, and running that list on one diff is
+what this workflow exists not to do. What crosses over either way is the paths
+and what was already established about them.
 
 **A remark about a finding's weight is not that instruction.** "That one blocks
 it", "are you sure", "I would reject it for that" — each reaffirms a finding and
 commissions nothing. Where the sentence could be either, ask which was meant.
 
-**When the request widens past this change — "audit the package", "what else is
-wrong in here" — invoke `typo3-extension-conformance`.** It owns the surface
-list a whole repository is read against, and running that list on one diff is
-what this workflow exists not to do. What crosses over is the paths and what was
-already established about them.
-
 This skill owns judging one change proposed against a package that is not the
-core, and it stops at the verdict. The whole repository belongs to
-`typo3-extension-conformance`, and the committed changes that answer a finding
-to `typo3-extension-cleanup`.
+core, and it stops at the verdict. The repository around that change — what else
+is wrong with it, and the committed changes that answer a finding — belongs to
+`typo3-extension-health`.

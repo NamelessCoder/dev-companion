@@ -10,7 +10,7 @@ that a session actually hands over at that point is not guarded, and this case
 read by hand is what stands in for it (`D-EVI-002`)
 
 **Read 2026-08-19:** the prompt below is answered with
-`typo3-extension-conformance`, because `audit` fires on `reviewing` inside the
+`typo3-extension-health`, because `audit` fires on `reviewing` inside the
 subject the module is built for, and the documentation half reaches no
 documentation intent. That is a wrong answer rather than a silence, which is why
 `D-GUI-015` takes this case first.

@@ -2,15 +2,17 @@
 
 **Environment:** `E-SITE`, with the site package in the repository beside it and
 a second installation of the same version that has never had the package ·
-**Contract:** `open` — `D-SKL-050`, `D-SKL-035`
+**Contract:** `held` — `D-SKL-050`, `D-SKL-035`, `D-SKL-064`
 **Held by:** `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
 and `SkillTest::everySkillStatesWhatItOwns`, which read back the order the
 workflow asks its three lookups in and that it says where it stops, and
 `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`, because the
 artifact and the site configuration are that repository's own files. That the
-task reaches the workflow at all is **not guarded** and cannot be: the skill
-declares itself a draft, so no client has it and no intent names it. The
-contract turns `held` in the commit that publishes it.
+task reaches the workflow at all is **not guarded** and cannot be: no assertion
+can hold that a request in somebody's own words reaches a workflow, and only a
+run measures it. The skill was published on 2026-08-19 — the draft declaration
+is gone, `distribution-content` in `knowledge/task-intents.json` routes to it,
+and `SkillTest::everyPublishedSkillIsNamedByAnIntent` holds that route.
 
 > The pages and the content on them are built in my development installation,
 > and the site package sits in the repository beside it. I want that content to

@@ -136,3 +136,11 @@ line. 9500 characters arrived in a `claude-opus-5` session, where this entry
 computes 6000 for a 200k one on that generation. Either the window was larger or
 a default has moved since 2026-08-08; nothing was established, and the
 measurement stands as one client on one day the way the original does.
+
+The ceiling moved on 2026-08-19, from 3600 to 3970. What moved it is that a
+thirteenth skill does not fit a ratchet set to what twelve cost, at any wording:
+two step clauses and one section list came out for 206 characters and the two
+skills published cost 558. `D-SKL-064` carries the arithmetic and what the merge
+of two of the twelve bought. The last bullet above is still the open one — which
+skills a session on 200k should be able to see — and it is what the next
+publication runs into again.

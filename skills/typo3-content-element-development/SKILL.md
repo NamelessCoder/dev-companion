@@ -133,7 +133,7 @@ workflow that argument names; the default is the core's.
 ## Where this element ends and the package begins
 
 **When you are asked whether the package is sound, invoke
-`typo3-extension-conformance` and work from its report.** What asks for it is a
+`typo3-extension-health` and work from its report.** What asks for it is a
 request about the package rather than about this element — "review it", "what
 else is wrong with it", "is it ready" — and it arrives once the work here reads
 as finished, which is the moment with the least appetite for opening another
@@ -150,6 +150,6 @@ either, ask which was meant.
 This skill owns content-element architecture and implementation. Test
 infrastructure is `typo3-extension-testing`'s, manuals are
 `typo3-extension-documentation`'s and a broader extension audit is
-`typo3-extension-conformance`'s — stop before editing that owner's files, and
+`typo3-extension-health`'s — stop before editing that owner's files, and
 carry across the extension key, the target version and the behaviour already
 verified.

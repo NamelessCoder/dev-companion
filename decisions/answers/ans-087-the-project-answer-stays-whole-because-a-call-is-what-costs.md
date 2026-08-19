@@ -35,15 +35,16 @@ recorded answers `bin/cli tools:measure` reads.
 
 - **No selection parameter.** This is the first call of a session, so a caller
   choosing sections chooses them in its least informed moment — the failure
-  `D-GUI-015` measured four times the same day, where the wording that reaches an
-  answer is the wording somebody already has the answer for.
+  `D-GUI-015` measured four times the same day, where the wording that reaches
+  an answer is the wording somebody already has the answer for.
 - **The guides listing stays, though it is the largest single part.**
   `D-ANS-061` put it here because three core sessions held a resource list and
-  read none of it, and `D-AUD-011`'s index entry now routes to this answer rather
-  than to `typo3://guides`. Cutting it undoes both.
+  read none of it, and `D-AUD-011`'s index entry now routes to this answer
+  rather than to `typo3://guides`. Cutting it undoes both.
 - **The weight question moves to `typo3_server_scope`**, where a selection is
   also the honest shape: an orientation answer has topics, and a caller asking
-  for one of them knows which. `todo/open/2026-08-19-014500-weigh-the-scope-answer-against-what-a-caller-asks-it-for.md`
+  for one of them knows which.
+  `todo/open/2026-08-19-014500-weigh-the-scope-answer-against-what-a-caller-asks-it-for.md`
   carries it.
 - **Nothing is measured against a client's context window here.** What was
   measured is bytes and the call model; whether any client truncates this answer
@@ -60,8 +61,8 @@ recorded answers `bin/cli tools:measure` reads.
 ## Wrong if
 
 - A filed session reports this answer crowding out its task, or a client
-  truncating it. Then the size is a client property rather than a byte count, and
-  the first candidate is the guides listing this entry keeps.
+  truncating it. Then the size is a client property rather than a byte count,
+  and the first candidate is the guides listing this entry keeps.
 - The guides half turns out to be read by nobody. Then `D-ANS-061`'s own **Wrong
   if** fires first, and the listing moves rather than shrinking.
 - A session asks for one part of the project answer by name. Then the selection

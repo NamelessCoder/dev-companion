@@ -55,8 +55,8 @@ Takes
     # misbehaved. idea: anything else.
     category: string  # optional
     # The tool the observation is about, for example typo3_component_lookup, or the
-    # skill it activated, for example typo3-extension-conformance. Several are named
-    # in one string, separated by commas.
+    # skill it activated, for example typo3-extension-health. Several are named in
+    # one string, separated by commas.
     tool: string  # optional
     # The arguments that produced the unsatisfying result, or the task text where a
     # whole session is what produced it, so somebody can re-run the feedback against

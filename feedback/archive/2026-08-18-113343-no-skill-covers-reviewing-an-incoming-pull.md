@@ -1,7 +1,8 @@
 ---
 date: 2026-08-18T11:33:43+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-19
 model: claude-opus-5[1m]
 tool: typo3-extension-conformance, typo3-core-patch-review, typo3-extension-cleanup
 directory: /home/benji/projects/bootstrap_package

@@ -73,7 +73,7 @@ final class FeedbackRecord implements Tool
                 // recorder splits on commas and spaces, so nothing about what a
                 // feedback can say was given up, and a client that sends a list
                 // anyway is told which type was expected before the tool runs.
-                'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-conformance. Several are named in one string, separated by commas.'],
+                'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-health. Several are named in one string, separated by commas.'],
                 'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it, so somebody can re-run the feedback against a later version of the server instead of reading it. The rule from observation holds: the arguments and the path they named, never a value the installation keeps secret. A re-run needs to know that SYS/encryptionKey was asked for and that a key came back, not what the key was; a password or a token that was itself an argument is named rather than quoted.' . $storedCap],
                 'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.' . $storedCap],
             ],

@@ -147,3 +147,13 @@ change words that reached nothing.
 does — `D-SKL-015`. The entry stays open on the first **Wrong if**: what it was
 written against is behaviour, and nothing has watched a session commit in an
 extension with these bodies in front of it. That run is what would answer it.
+
+## Since then
+
+The last bullet — which of the seven get the commit step is read, not decided
+here — was read once more on 2026-08-19, and the answer changed because the file
+did. `typo3-extension-cleanup` and `typo3-extension-conformance` became one
+skill, so the workflow that ended in a review and the one that ended in a change
+are the same one: `D-SKL-064`. The step is in it, after the gate its report half
+closes on, and what holds the placement is an order rather than the absence that
+held it in the audit.

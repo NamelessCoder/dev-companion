@@ -97,9 +97,13 @@ final class SkillTest extends TestCase
             'typo3_script_lookup',
             'typo3_commit_message_guide',
         ],
-        'typo3-extension-conformance' => [
+        // The commit is the last of them because the audit half routes to
+        // neither: what is left for this workflow to route to once the owners
+        // have their items is the message each commit carries — `D-SKL-016`.
+        'typo3-extension-health' => [
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
         // The order the research behind `D-SKL-063` put the five checks in: the
         // conventions for the paths the diff touches, then the two whole
@@ -118,14 +122,6 @@ final class SkillTest extends TestCase
             'typo3_documentation_lookup',
             'typo3_label_lookup',
             'typo3_translation_domain_lookup',
-            'typo3_commit_message_guide',
-        ],
-        // One tool of its own, because what this skill contributes is an order
-        // rather than evidence: the findings are the audit's and every change
-        // is made in the workflow that owns it. What is left for it to route to
-        // is the commit, and the commit is the whole of the checkpoint the
-        // order turns on — `D-SKL-016`.
-        'typo3-extension-cleanup' => [
             'typo3_commit_message_guide',
         ],
         'typo3-extension-upgrade' => [
@@ -171,9 +167,11 @@ final class SkillTest extends TestCase
      * The skills whose workflow ends in a change to a repository that is not the
      * core's, read off each body — `D-SKL-014`. The two core skills are not among
      * them: both name the guide already and both commit in the core, where the
-     * argument's default is the right one. `typo3-extension-conformance` is not
+     * argument's default is the right one. `typo3-extension-patch-review` is not
      * either, because it is pure analysis and a commit line in a review's answer
-     * is what `R-GUI-006` exists to keep out of one.
+     * is what `R-GUI-006` exists to keep out of one. Its own half of that fork
+     * is the one skill that carries both: `typo3-extension-health` reports
+     * before it changes anything, and the commit belongs to the second half.
      */
     private const COMMITTING_SKILLS = [
         'typo3-backend-module-development',
@@ -181,7 +179,7 @@ final class SkillTest extends TestCase
         'typo3-development-installation',
         'typo3-distribution-content',
         'typo3-extension-documentation',
-        'typo3-extension-cleanup',
+        'typo3-extension-health',
         'typo3-extension-testing',
         'typo3-extension-upgrade',
     ];
@@ -198,7 +196,7 @@ final class SkillTest extends TestCase
      */
     private const REPORTING_SKILLS = [
         'typo3-core-patch-review',
-        'typo3-extension-conformance',
+        'typo3-extension-health',
         'typo3-core-issue-triage',
         // The fourth closes on a document for the same reason the first does,
         // and the place it is carried into is a pull request thread.
@@ -586,24 +584,25 @@ final class SkillTest extends TestCase
         );
         self::assertStringNotContainsString('workflow="project"', self::flat($review));
 
-        // Conformance is the case the second **Wrong if** describes, and it
-        // fired: the step went into the branch its body kept for requested
-        // improvements, and the maintainer's reading is that the skill makes no
-        // change at all. The branch is gone with it, so what holds here is the
-        // absence — a review that names the guide is naming the step
-        // `R-GUI-006` keeps out of a review's answer.
-        $conformance = self::flat((string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        // The audit was that absence until 2026-08-19, when it and the work
+        // that answers it became one skill — `D-SKL-064`. What holds in its
+        // place is the order: the report half says where a review ends, and the
+        // commit stands after that gate rather than in the review's answer,
+        // which is what `R-GUI-006` keeps out of one.
+        $health = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         ));
-        self::assertStringNotContainsString('typo3_commit_message_guide', $conformance);
-        self::assertStringContainsString(
-            'Stop after findings. This skill changes nothing, whatever the request asked for',
-            $conformance,
+        $gate = '**A request that asked for a review ends here.**';
+        self::assertStringContainsString($gate, $health);
+        self::assertGreaterThan(
+            (int) mb_strpos($health, $gate),
+            (int) mb_strpos($health, 'typo3_commit_message_guide'),
+            'the commit step stands before the gate a review ends at',
         );
         // And the description it is chosen on, which is the half a body cannot
         // correct: while it offered to improve a repository, the skill was
         // loaded for change requests whatever the body said.
-        self::assertStringNotContainsString('improve', self::description('typo3-extension-conformance'));
+        self::assertStringNotContainsString('improve', self::description('typo3-extension-health'));
     }
 
     #[Test]
@@ -663,7 +662,7 @@ final class SkillTest extends TestCase
         // the escape hatch that run took: nothing had put a deprecated API in
         // scope, so nothing swept.
         $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
         self::assertStringNotContainsString('typo3_changelog_lookup', $skill);
 
@@ -817,7 +816,7 @@ final class SkillTest extends TestCase
         // configuration detail decides the finding — which a session holding a
         // behaviour question does not match itself against.
         $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
         self::assertStringContainsString('does this still work here', $skill);
         self::assertStringNotContainsString('A changelog records change events', $skill);
@@ -904,7 +903,7 @@ final class SkillTest extends TestCase
         // Read with the line breaks collapsed: what is asserted is that the
         // sentence is there, and where it wraps is the formatter's business.
         $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+            Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
         ));
 
         self::assertStringContainsString(
@@ -962,7 +961,7 @@ final class SkillTest extends TestCase
         // with nothing asking for them, which is a section a reader sits
         // through and not the flood the narrower scope was written against.
         $audit = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+            Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
         ));
 
         self::assertStringContainsString('## What a dropped candidate owes', $audit);
@@ -984,7 +983,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('the bar is not that subject\'s', $audit);
 
         $auditSkill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         ));
         self::assertStringContainsString(
             'what was raised while reading and dropped, with what dropped it',
@@ -2099,11 +2098,14 @@ final class SkillTest extends TestCase
     #[Test]
     public function everyDescriptionIsWrittenToTheBudgetTheyShare(): void
     {
-        // What the trim of 2026-08-08 left, with room for a rename. It is a
+        // What the listing costs today, with room for a rename. It is a
         // ratchet rather than a limit read off a client: how much of the budget
         // is left over is decided by the client's own bundled skills, which
-        // took 5997 characters of the 6000 a 200k session had that day.
-        $ceiling = 3600;
+        // took 5997 characters of the 6000 a 200k session had on 2026-08-08.
+        // It was 3600 until the thirteenth and fourteenth skills were
+        // published, which no fixed total can absorb — `D-SKL-064` is what
+        // moved it and what it costs.
+        $ceiling = 3970;
 
         // What a client reads, which is `Installer::skills()` and not the
         // directory. A draft is published to nobody and costs no listing
@@ -2197,7 +2199,7 @@ final class SkillTest extends TestCase
     /**
      * The call the hole was found on, with the session's own arguments.
      *
-     * Two things had to be true for it to answer `typo3-extension-conformance`:
+     * Two things had to be true for it to answer `typo3-extension-health`:
      * no intent named `typo3-core-issue-triage`, and the task carried none of
      * the markers that say core, so every intent that did match answered with
      * its extension side (`D-SKL-023`). The task names the core as a tracker
@@ -2215,7 +2217,7 @@ final class SkillTest extends TestCase
 
         self::assertSame('core', $answer['scope']);
         self::assertContains('typo3-core-issue-triage', $answer['skills']);
-        self::assertNotContains('typo3-extension-conformance', $answer['skills']);
+        self::assertNotContains('typo3-extension-health', $answer['skills']);
     }
 
     /**
@@ -2476,7 +2478,6 @@ final class SkillTest extends TestCase
                 'typo3-extension-upgrade',
                 'typo3-core-patch-development',
                 'typo3-development-installation',
-                'typo3-extension-cleanup',
                 'typo3-distribution-content',
             ],
         );
@@ -2775,7 +2776,7 @@ final class SkillTest extends TestCase
         // What it does not own, and the skill that hands it the sweep whole.
         self::assertStringContainsString('This skill owns what a package owes the TYPO3 majors', $skill);
         foreach ([
-            'typo3-extension-conformance',
+            'typo3-extension-health',
             'typo3-extension-testing',
             'typo3-extension-documentation',
         ] as $owner) {
@@ -2786,7 +2787,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString(
             'What the sweep returned goes to `typo3-extension-upgrade` whole',
             self::flat((string) file_get_contents(
-                Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+                Paths::root() . '/skills/typo3-extension-health/SKILL.md',
             )),
         );
     }
@@ -3131,7 +3132,7 @@ final class SkillTest extends TestCase
         // and the surface list come first here, in one block, and the sentence
         // that sends the session into the files comes after all of them.
         $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
 
         $base = [
@@ -3171,7 +3172,7 @@ final class SkillTest extends TestCase
         // never asked what governs them — so the rule that calls a non-English
         // source file a defect was in the corpus, one query away, unread.
         $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
 
         $ask = strpos($skill, 'asked for **before** a view of the subsystem is formed');
@@ -3223,7 +3224,7 @@ final class SkillTest extends TestCase
         // whole list and answer every entry on it anyway. The narrowing is
         // stated where the list is built now, and it reaches the reading only.
         $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
 
         $list = strpos($skill, 'Write the surface list down before opening a single file');
@@ -3260,7 +3261,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString(
             'the surface list below is written whole',
             (string) file_get_contents(
-                Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+                Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
             ),
         );
     }
@@ -3275,7 +3276,7 @@ final class SkillTest extends TestCase
         // "declared validation commands", so what the repository does not
         // declare was not a surface and its absence could not be a finding.
         $checklist = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+            Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
         );
 
         self::assertStringNotContainsString('declared validation commands', $checklist);
@@ -3370,21 +3371,17 @@ final class SkillTest extends TestCase
             'typo3-content-element-development' => [
                 'typo3-extension-testing',
                 'typo3-extension-documentation',
-                'typo3-extension-conformance',
+                'typo3-extension-health',
             ],
             'typo3-backend-module-development' => [
                 'typo3-development-installation',
                 'typo3-extension-documentation',
             ],
-            'typo3-extension-cleanup' => ['typo3-extension-conformance'],
             // A change against the core arrives on Gerrit rather than as a
             // pull request against a package, so this workflow has no case
             // that reaches `typo3-core-patch-review` — the reviewer of
             // 2026-08-19 could name none, and the crossing came out.
-            'typo3-extension-patch-review' => [
-                'typo3-extension-cleanup',
-                'typo3-extension-conformance',
-            ],
+            'typo3-extension-patch-review' => ['typo3-extension-health'],
             // The deprecation log a first boot writes is about the package's
             // code and not about the installation, and `071526` read it,
             // reported it and stopped there because no workflow owned it. The
@@ -3392,7 +3389,7 @@ final class SkillTest extends TestCase
             // in the closing paragraph through the pass that rewrote the other
             // seven — `074245` then read that paragraph and wrote tests anyway.
             'typo3-development-installation' => [
-                'typo3-extension-conformance',
+                'typo3-extension-health',
                 'typo3-extension-testing',
             ],
         ];
@@ -3410,13 +3407,12 @@ final class SkillTest extends TestCase
         }
 
         // The crossing whose successor is decided per case is an instruction
-        // too. `typo3-extension-cleanup` picks the owner per item,
-        // `typo3-extension-conformance` per finding, and the other three per
-        // what the reading turned up — none of them can name one skill, and all
-        // of them can say what the session does.
+        // too. `typo3-extension-health` picks the owner per finding and
+        // then per item, and the other three per what the reading turned up —
+        // none of them can name one skill, and all of them can say what the
+        // session does.
         foreach ([
-            'typo3-extension-cleanup',
-            'typo3-extension-conformance',
+            'typo3-extension-health',
             'typo3-extension-documentation',
             'typo3-extension-testing',
             'typo3-extension-upgrade',

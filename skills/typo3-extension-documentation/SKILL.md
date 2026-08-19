@@ -83,7 +83,7 @@ files it was read out of; the page is written from what comes back verified.
 
 This skill owns documentation and user-facing wording changes. Test
 implementation is `typo3-extension-testing`, conformance assessment is
-`typo3-extension-conformance`, backend-module code is
+`typo3-extension-health`, backend-module code is
 `typo3-backend-module-development` and a content element is
 `typo3-content-element-development` — stop before editing that owner's files,
 and document only the public behaviour it hands back verified.

@@ -80,3 +80,12 @@ charged for room in a listing it does not appear in.
 
 - `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
 - `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
+
+## Since then
+
+The room was found on 2026-08-19 and both drafts were published. The trade this
+entry says is asked at publication was asked there: of the two readings it
+named, the maintainer took the merge of `typo3-extension-cleanup` and
+`typo3-extension-conformance` over trimming further, and the ratchet moved as
+well because the merge frees 232 of the 350 one description costs —
+`D-SKL-064`.

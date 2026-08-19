@@ -53,7 +53,7 @@ only one this server points at.
   listing characters for more request shapes, and mid-task entry points written
   into a description are more of them.
 - **The second session of the shape.**
-  [`feedback/2026-08-18-113343`](../../feedback/2026-08-18-113343-no-skill-covers-reviewing-an-incoming-pull.md)
+  [`feedback/2026-08-18-113343`](../../feedback/archive/2026-08-18-113343-no-skill-covers-reviewing-an-incoming-pull.md)
   reports it from another checkout and another task: "a skill is chosen before
   any of them are read: only the PR URL", everything else found during the work.
   Its own subject is a missing owner, and this half of it is not that.

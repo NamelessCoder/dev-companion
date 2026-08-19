@@ -111,7 +111,7 @@ how a supported version stops working without anyone noticing.
 Change what the work list justifies. An upgrade is not a modernization, a
 cleanup or a rewrite. **Where the change in front of you is not on the list,
 invoke the workflow that owns it rather than making it here** —
-`typo3-extension-conformance` for what else is wrong with the package,
+`typo3-extension-health` for what else is wrong with the package,
 `typo3-extension-testing` for coverage the upgrade wants but does not have,
 `typo3-extension-documentation` for the manual that now describes a different
 range. That is a step at the moment the reading turns it up, not a note about

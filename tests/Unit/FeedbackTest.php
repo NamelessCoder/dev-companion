@@ -799,9 +799,9 @@ final class FeedbackTest extends TestCase
     }
 
     /**
-     * A skill is spelled `typo3-extension-conformance` in the listing a session
+     * A skill is spelled `typo3-extension-health` in the listing a session
      * reads it from, in `skills/`, and in the description that invites naming
-     * one here. Stored as `typo3extensionconformance` it was an identifier the
+     * one here. Stored as `typo3extensionhealth` it was an identifier the
      * project carries nowhere, and the grep that answers "what has been
      * reported about this skill" found none of the seven feedback about it.
      */
@@ -810,17 +810,17 @@ final class FeedbackTest extends TestCase
     {
         $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the skill was read and its lookups were not run',
-            'tool' => 'typo3-extension-conformance',
+            'tool' => 'typo3-extension-health',
         ]);
 
         self::assertStringContainsString(
-            'tool: typo3-extension-conformance',
+            'tool: typo3-extension-health',
             (string) file_get_contents($this->inStore($file))
         );
-        self::assertSame(['typo3-extension-conformance'], self::noteFor($file)['tools']);
+        self::assertSame(['typo3-extension-health'], self::noteFor($file)['tools']);
         self::assertContains(
             $file,
-            array_column(Channel::all('open', null, 200, 'typo3-extension-conformance'), 'file'),
+            array_column(Channel::all('open', null, 200, 'typo3-extension-health'), 'file'),
         );
     }
 
@@ -908,7 +908,7 @@ final class FeedbackTest extends TestCase
         // applied to the one thing this store is filtered by.
         $file = $this->recordFeedback([
             'observation' => self::MARKER . ' named the skill with hyphens',
-            'tool' => 'typo3-extension-conformance',
+            'tool' => 'typo3-extension-health',
         ]);
 
         self::assertContains(
@@ -921,9 +921,9 @@ final class FeedbackTest extends TestCase
     public static function theSpellingsOneNameArrivesIn(): array
     {
         return [
-            'underscores, which is how this project writes it' => ['typo3_extension_conformance'],
-            'no separator at all' => ['typo3extensionconformance'],
-            'shouted, which is neither' => ['TYPO3_Extension_Conformance'],
+            'underscores, which is how this project writes it' => ['typo3_extension_health'],
+            'no separator at all' => ['typo3extensionhealth'],
+            'shouted, which is neither' => ['TYPO3_Extension_Health'],
         ];
     }
 

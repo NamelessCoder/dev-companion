@@ -4250,7 +4250,7 @@ final class HintsTest extends TestCase
     public function anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange(): void
     {
         $checklist = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+            Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
         );
         preg_match('/^- Quality: (.+?)\.$/ms', $checklist, $surface);
         self::assertNotSame([], $surface, 'the checklist still writes a quality surface down');
@@ -5061,7 +5061,7 @@ final class HintsTest extends TestCase
             'paths' => ['typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php'],
         ]);
 
-        self::assertSame(['typo3-extension-conformance'], $package->data['skills']);
+        self::assertSame(['typo3-extension-health'], $package->data['skills']);
         self::assertSame(['typo3-core-patch-review'], $patch->data['skills']);
 
         // A weak match routes nothing. The word named the subject without

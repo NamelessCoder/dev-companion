@@ -105,7 +105,7 @@ repository, and only an actual core patch leaves the argument at its default.
 
 This skill owns backend module registration, controllers, routes, and backend UI
 implementation, up to the module being opened. Test infrastructure is
-`typo3-extension-testing`'s, a broader audit is `typo3-extension-conformance`'s,
+`typo3-extension-testing`'s, a broader audit is `typo3-extension-health`'s,
 and the element in the page module is `typo3-content-element-development`'s —
 stop before implementing a content element or its backend preview, stop before
 editing any of those owners' files, and carry across the extension key, the

@@ -262,5 +262,5 @@ the answer is that the patch needs work, name it and stop.
 
 This skill owns the review of a core patch and the order its findings are
 reported in. Reviewing an extension, a sitepackage or a site project belongs to
-`typo3-extension-conformance` and its checklist, which reads different surfaces
+`typo3-extension-health` and its checklist, which reads different surfaces
 against different rules.

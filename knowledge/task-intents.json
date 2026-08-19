@@ -399,7 +399,7 @@
   {
     "id": "audit",
     "title": "Review or audit",
-    "skill": "typo3-extension-conformance",
+    "skill": "typo3-extension-health",
     "skillCore": "typo3-core-patch-review",
     "changesNothing": true,
     "match": [
@@ -432,7 +432,7 @@
   {
     "id": "cleanup",
     "title": "Putting a repository right",
-    "skill": "typo3-extension-cleanup",
+    "skill": "typo3-extension-health",
     "match": [
       "put it right",
       "put the repository right",
@@ -455,11 +455,11 @@
     "condition": "only if the task asks for the repository as a whole to be changed rather than reviewed, or for the findings of a review to be worked off",
     "rulesQuery": "",
     "checklist": [
-      "Run the audit before writing the list, and let it own the findings: what a surface is, what evidence a finding rests on, what it is worth and who fixes it are the conformance workflow's answers. A list built from a reading of the checkout instead is an impression, and the items in it are not the ones the report would have given.",
+      "Run the audit before writing the list, and let it own the findings: what a surface is, what evidence a finding rests on, what it is worth and who fixes it are the audit's answers. A list built from a reading of the checkout instead is an impression, and the items in it are not the ones the report would have given.",
       "Show the list whole and let the maintainer cut items, reorder them or stop, before a single file is changed. That agreement is the one step nothing downstream recovers, and a list arriving with the changes it produced is one nobody had the chance to disagree with.",
       "Keep the list in the reply rather than committing it into the repository. A worklist committed into somebody's history is a file nobody asked for that has to be taken out again; what the history keeps is the commits the items produced, each saying which item it closed.",
       "Work an item in the workflow that owns it, and stop before editing files another owner has. An item no workflow owns is worked here only where the project's own suite, linter or static analysis proves the change — anything else goes back unassigned, because a finding nobody owns and no check covers is a hole in the workflow map and quietly filling it hides the hole.",
-      "Hand the worked list back for the re-check rather than grading it. A cleanup that declares its own findings gone has no evidence for it, and the audit kept that responsibility when it handed each finding over.",
+      "Re-run the audit on the worked list rather than grading it off the diff. Work that declares its own findings gone has no evidence for it, and a file that reads correctly can still be rewritten by the environment that owns it.",
       "Report the items still open, the ones dropped with what dropped them, and the ones sent back unassigned. A finished list and an abandoned one read alike in a summary."
     ],
     "checks": [],
@@ -467,6 +467,76 @@
       "typo3_project_describe, for what the repository is before anything in it is changed",
       "typo3_extension_describe, for what each extension in scope registers",
       "typo3_commit_message_guide with workflow=\"project\", for the message each item's commit carries"
+    ]
+  },
+  {
+    "id": "patch-review",
+    "title": "Judging one incoming change",
+    "skill": "typo3-extension-patch-review",
+    "changesNothing": true,
+    "match": [
+      "pull request",
+      "merge request",
+      "review the pr",
+      "review this pr",
+      "incoming change",
+      "proposed change",
+      "somebody proposed",
+      "review the branch"
+    ],
+    "matchWeak": [
+      "the patch",
+      "contribution"
+    ],
+    "condition": "only if what is judged is one change proposed against a package that is not the core — a pull request, a patch, a branch — rather than the repository as a whole",
+    "rulesQuery": "",
+    "checklist": [
+      "Establish the change before any lookup: the changed paths, the diff, the branch it targets, the commit messages, and whether it merges and what the repository's own pipeline said. Every lookup below takes one of them as its argument, and this server reads neither your git state nor the forge the change arrived on.",
+      "Enumerate what the diff removes or renames before judging what it adds. A package's public surface is not only PHP — a TCA field, a TypoScript path, a Fluid partial or section, a ViewHelper argument, a label key, a signature somebody else's override calls — and that finding class is the one a reading of the new code does not surface, because the evidence is in what is gone.",
+      "Judge it on every major the package's Composer constraint declares and not only on the installed one. The installation supplies one point in that range, and a finding established there is established for that point.",
+      "Say which convention the commit message was judged against. The repository's own log decides it, and reporting a subject as an error because it carries no TYPO3 keyword is a finding about a repository nobody is reviewing.",
+      "Order the report by what stops the change being merged, and close on the review surfaces with each marked assessed, unassessed or not applicable to this diff. A review that reports only findings cannot be told apart from one that looked at less.",
+      "Every finding names the changed path it is about. A statement about the package that does not tie to a line in this diff belongs in an issue rather than in a review of one change."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_describe, for the TYPO3 and PHP versions the package declares and which of its commands are checks",
+      "typo3_hint_lookup with the changed paths, one call per subsystem the diff touches",
+      "typo3_documentation_lookup with targetVersion per declared major, for the surfaces a changelog's silence cannot answer for",
+      "typo3_commit_message_guide with workflow=\"project\", for the convention the message is held to where the repository writes TYPO3 keywords"
+    ]
+  },
+  {
+    "id": "distribution-content",
+    "title": "Shipping a site's content in a package",
+    "skill": "typo3-distribution-content",
+    "match": [
+      "distribution",
+      "initial content",
+      "seed the page tree",
+      "ship the content",
+      "starter content",
+      "import the page tree"
+    ],
+    "matchWeak": [
+      "export the content",
+      "data.xml"
+    ],
+    "condition": "only if the content of a site is to travel inside a package rather than to be produced in the installation it is edited in",
+    "rulesQuery": "",
+    "checklist": [
+      "Read the seed back out of the installation before exporting it. A record takes the defaults its configuration gives it rather than the ones its columns carry, and one of those decides whether a page is delivered to a visitor at all; where it is wrong, correct the script rather than the records, because the script is what the next version of the artifact comes out of.",
+      "The export command reporting success is not evidence the export worked. It reports the same success for an artifact that left every image out and for one that left a whole table out, and both are invisible until somebody installs the package, so what is checked is the artifact.",
+      "Put the artifact and the directory of files beside it into the extension under the names the import looks for. Neither arrives there by being asked for: the export keeps only the last segment of the name it was given.",
+      "Ship the site configuration as the whole directory the site keeps it in, not the one file that is obviously configuration. What the installation put beside it is part of the site, and left behind the receiving installation resolves the site, finds every page and renders nothing.",
+      "Prove it on an installation that has never had this package, with the package active before the install runs: the records arrived, the site answers on that installation's address and renders, and every page answers rather than only the one at the root. The import is remembered, so re-importing where it came from proves nothing."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup with id=sitepackage-initial-content, for what an extension ships content as",
+      "typo3_documentation_lookup at the version being shipped, for which records belong in the artifact and which are the receiving installation's own",
+      "typo3_configuration_lookup, for what the receiving installation actually merged rather than what it was given",
+      "typo3_commit_message_guide with workflow=\"project\", for the message the artifact and the site configuration are committed with"
     ]
   },
   {

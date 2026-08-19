@@ -4,7 +4,13 @@
 **Held by:**
 `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`,
 `SkillTest::everySkillStatesWhatItOwns`,
-`SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`
+`SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`,
+`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout`
+
+**Read 2026-08-19:** the prompt confirmed `changelog`, so the right skill
+arrived behind a checklist about the core's `Documentation/Changelog/`
+directory. The `documentation` needle moved to the intent of that name —
+`D-SKL-066` — and the prompt confirms `documentation` alone.
 
 > Review and improve our site package's documentation for integrators and
 > editors. Make it match what the package really implements, remove unsafe

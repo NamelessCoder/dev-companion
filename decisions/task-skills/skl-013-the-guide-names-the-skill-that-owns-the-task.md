@@ -211,3 +211,19 @@ that loaded the skill would have done the work differently. Nothing here has a
 run of that shape, and a route nobody follows and a route into the wrong
 workflow leave the same trace.
 
+### 2026-08-19 — the third Wrong if gained a row, and it was not invented
+
+`documentation` is an intent of its own, and it answers the bullet rather than
+being an exception to it. The workflow it routes to is published, describes this
+work in its own front matter and is what two written contract cases ask for; the
+row is the route to a workflow that was already there, which is the opposite of
+a name invented to fill the table.
+
+What the row corrected is the other direction of the same warning. The mapping
+did not grow to fill the table, it grew because one intent carried two kinds of
+work: `changelog` reached `typo3-extension-documentation` and stated the core's
+release artifact while doing it, so a request to document a package arrived at
+the right workflow behind the wrong checklist. `D-SKL-066` has the measurement,
+including what the eight needles cost the neighbouring intents, which is
+nothing.
+

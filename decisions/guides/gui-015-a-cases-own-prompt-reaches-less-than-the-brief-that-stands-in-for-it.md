@@ -95,7 +95,19 @@ case's own prompt no longer fixes a miss into the suite, and
 `ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` is what holds
 the arrival for all four.
 
-What is left is the half `SKILL-07` was not taken for: "document the public
-workflow ... in the right place" still reaches no documentation intent, so the
-crossing that case exists for is measured on one side only.
+The half `SKILL-07` was not taken for was closed the same day. "Document the
+public workflow ... in the right place" reached no documentation intent because
+the only intent naming `typo3-extension-documentation` was `changelog`, and
+widening that one would have handed a manual the core's release artifact;
+`documentation` is an intent of its own since
+[`D-SKL-066`](../task-skills/skl-066-documenting-a-package-for-its-readers-is-an-intent-of-its-own.md),
+which carries the measurement. So the crossing is measured on both sides, and
+`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` holds one row
+per half.
+
+What that reading found beside it: `SKILL-03` reached the documentation skill
+all along and every checklist item it was handed was about
+`typo3/sysext/core/Documentation/Changelog/`. A brief naming the right workflow
+is not evidence that what it states is the right work, which is the same
+distinction this entry opens with.
 

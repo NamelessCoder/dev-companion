@@ -9,6 +9,7 @@ one is added.
 
 - [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
 - [`D-SKL-065`][D-SKL-065] — A defect reported by its symptom is routed to the workflow that owns the cause · 2026-08-19
+- [`D-SKL-066`][D-SKL-066] — Documenting a package for its readers is an intent of its own · 2026-08-19
 - [`D-SKL-044`][D-SKL-044] — A step that names two hint ids says what each one alone answers · 2026-08-18
 - [`D-SKL-045`][D-SKL-045] — A build workflow names the guide at the step that needs it · 2026-08-18
 - [`D-SKL-046`][D-SKL-046] — A precondition is restated in the workflow that writes the file it guards · 2026-08-18
@@ -72,6 +73,7 @@ one is added.
 
 [D-SKL-064]: skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md
 [D-SKL-065]: skl-065-a-defect-reported-by-its-symptom-is-routed-to-the-workflow-that-owns-the-cause.md
+[D-SKL-066]: skl-066-documenting-a-package-for-its-readers-is-an-intent-of-its-own.md
 [D-SKL-044]: skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md
 [D-SKL-045]: skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md
 [D-SKL-046]: skl-046-a-precondition-is-restated-in-the-workflow-that-writes-the-file-it-guards.md

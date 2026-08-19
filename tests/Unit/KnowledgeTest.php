@@ -614,6 +614,7 @@ final class KnowledgeTest extends TestCase
             'deprecation' => 'Deprecate the public method Foo::bar() and migrate its callers',
             'breaking' => 'Remove a public api method nothing outside the core calls',
             'changelog' => 'Write the changelog entry for the feature that landed',
+            'documentation' => 'Document the public workflow this extension ships, for the people who install it',
             'labels' => 'Add the XLF trans-unit for the new label',
             'backend-module' => 'Add a backend module for editing the newsletter records',
             'backend-ui' => 'Style the new card component in the backend markup',

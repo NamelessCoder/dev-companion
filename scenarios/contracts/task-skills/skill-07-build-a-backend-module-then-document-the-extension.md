@@ -15,9 +15,15 @@ read by hand is what stands in for it (`D-EVI-002`)
 with the audit workflow, because `audit` fired on `reviewing` inside the subject
 the module is built for. The gerund is three needles now — `reviewing the`,
 `reviewing this`, `reviewing my` — so the word reaches the intent only where the
-thing being reviewed follows it, and the prompt confirms `backend-module` alone.
-The documentation half still reaches no documentation intent, which is what is
-left of `D-GUI-015` here.
+thing being reviewed follows it.
+
+**And the second half the same day:** "document the public workflow" reached no
+documentation intent, because the only intent naming
+`typo3-extension-documentation` was `changelog`, whose checklist is the core's
+release artifact. `documentation` is an intent of its own since `D-SKL-066`, so
+the prompt confirms `backend-module` and `documentation`, and the brief names
+both workflows in the order the catalog holds them rather than in the order the
+task does them.
 
 > Add a backend module for reviewing imported records, including the module
 > shell, status list and refresh action. Once it works, document the public

@@ -60,15 +60,13 @@
   },
   {
     "id": "changelog",
-    "title": "Changelog or ReST documentation",
+    "title": "Changelog entry",
     "skill": "typo3-extension-documentation",
     "skillCore": "typo3-core-patch-development",
-    "guide": "extension/documentation/manual",
     "match": [
       "changelog",
       "rst",
-      "release note",
-      "documentation"
+      "release note"
     ],
     "rulesQuery": "changelog rst documentation",
     "checklist": [
@@ -81,6 +79,37 @@
     ],
     "tools": [
       "typo3_hint_lookup with id=documentation-changelog, for that skeleton and the tags the file ends on"
+    ]
+  },
+  {
+    "id": "documentation",
+    "title": "Documenting a package for its readers",
+    "skill": "typo3-extension-documentation",
+    "skillCore": "typo3-core-patch-development",
+    "guide": "extension/documentation/manual",
+    "match": [
+      "documentation",
+      "document the",
+      "document our",
+      "document this",
+      "document how",
+      "documenting the",
+      "documenting our",
+      "readme"
+    ],
+    "rulesQuery": "",
+    "checklist": [
+      "Document what the checkout implements rather than what the task described. A configuration key, a ViewHelper argument, a label or a command that is documented and not registered is a defect nobody finds until a reader follows it, and typo3_extension_describe reports what the package registers and whether it has a manual and a README at all.",
+      "Write it where that package keeps its documentation. An extension's manual is Documentation/ inside the extension, with Index.rst as its entry point and guides.xml as the renderer configuration; the README of the project around it documents the project, so a workflow written there is documentation the package's own readers never receive.",
+      "Separate what an integrator installs and configures from what an editor does in the backend. One page for both is where the setup steps end up in front of the editors.",
+      "Document the public surface and leave the rest out. A controller, a service or a method the package never promised is implementation detail, and describing it as behaviour is a promise the next release has to keep.",
+      "Bind a version claim to what the package declares rather than to the installation it was read in. The Composer constraint says which majors it serves, and a claim about TYPO3 itself is answered by typo3_documentation_lookup at the version being documented."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_extension_describe, for what the package registers, whether it has a manual and a README, and which XLF files declare its labels",
+      "typo3_hint_lookup with id=extension-documentation, for where an extension's manual lives and what a release makes public",
+      "typo3_documentation_lookup with the target version, for the TYPO3 API or workflow a claim rests on"
     ]
   },
   {

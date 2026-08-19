@@ -122,11 +122,15 @@ final class ScenariosTest extends TestCase
     }
 
     /**
-     * The four cases `D-GUI-015` measured, each held by the words it is written
-     * in rather than by a brief that names the answer. Adding this before the
+     * The cases `D-GUI-015` measured, each held by the words it is written in
+     * rather than by a brief that names the answer. Adding this before the
      * needles were curated would have fixed the miss into the suite, which is
      * why the entry deferred it; the needles are curated, so the arrival is
      * what is asserted from here.
+     *
+     * One case may claim two rows. `SKILL-07` is a task that crosses from one
+     * workflow to another, and a row per half is what says the second one
+     * arrives too — `D-SKL-066`.
      */
     #[Test]
     #[DataProvider('theCasesWhoseOwnWordsHaveToReachAnIntent')]
@@ -147,6 +151,8 @@ final class ScenariosTest extends TestCase
     {
         return [
             'a backend module, and not the audit its subject spells' => ['SKILL-07', 'backend-module'],
+            'and the documentation half of the same sentence' => ['SKILL-07', 'documentation'],
+            'a manual held to the package it describes' => ['SKILL-03', 'documentation'],
             'a security review in a maintainer\'s words' => ['SKILL-11', 'audit'],
             'the goal, where the needles were the mechanism' => ['EXT-08', 'event-listener'],
             'a setting a site set defines' => ['SITE-09', 'site-setting'],

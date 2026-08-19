@@ -150,3 +150,16 @@ for a different reason than it was untried: not that nothing had met the third
 **Wrong if**, but that the run which met it also showed the channel beside it
 working.
 
+### 2026-08-19 — the placement was weighed, and the mood is what moved
+
+What the section above queued is
+[`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md).
+The sentence stays where it is and becomes an imperative, because the position
+is `skills/base.md`'s own order and the mood is the difference the eleven to one
+holds everything else constant across. It cost two characters of the twenty-two
+the budget had left, so nothing was displaced for it.
+
+Nothing about this entry changes. The eleven to one is one run, a second of the
+same shape is what would settle it, and `D-AUD-012` carries that as its first
+**Wrong if**.
+

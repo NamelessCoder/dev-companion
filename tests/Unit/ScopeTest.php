@@ -299,10 +299,10 @@ final class ScopeTest extends TestCase
         // 2048 characters, and the half that fell off ended with "in English".
         self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
-        // The largest assembly, measured on 2026-08-18: nothing excluded, in a
-        // project whose task skills nobody has updated. 2021 characters, of
+        // The largest assembly, re-measured on 2026-08-19: nothing excluded, in
+        // a project whose task skills nobody has updated. 2028 characters, of
         // which the index entry for typo3_commit_message_guide is 96 and the
-        // sentence under the entries 13 more than the one that counted them.
+        // imperative `D-AUD-012` put on the second call 2.
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen(Coverage::instructions(Installer::NOTICE)),
@@ -313,9 +313,9 @@ final class ScopeTest extends TestCase
         // with the list and a caller may exclude most of the server. Both cases
         // below used to be the worst one: the index was prose and named four
         // tools whatever the caller had left. Now it is data, the entries of an
-        // excluded tool go with it, and what is longest is a prefix that names
-        // 23 tools rather than counting them — 2018 characters, against 1598
-        // where the notice pushes the same prefix onto the count.
+        // excluded tool go with it, and the index it drops is longer than the
+        // prefix naming every tool that replaces it — 1913 characters, and 1998
+        // where the notice comes too.
         putenv(ExcludedTools::VARIABLE . '=' . implode(',', array_column(Registry::definitions(), 'name')));
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
@@ -455,6 +455,23 @@ final class ScopeTest extends TestCase
         // What it says instead of who writes the patch, in the place where it
         // is about reading rather than about the subject.
         self::assertStringContainsString('yours to read in the checkout', $instructions);
+    }
+
+    /**
+     * `D-AUD-012`. Both calls of the order are told, not described.
+     *
+     * Seventeen project tasks in one client called `typo3_project_describe`
+     * eleven times and `typo3_task_guide` once, out of the same paragraph of the
+     * same context window. What differed between the two was the mood, and step
+     * 3 of `skills/base.md` has said "Run it in every session" all along.
+     */
+    #[Test]
+    public function bothCallsOfTheEntryPointAreToldInTheImperative(): void
+    {
+        $instructions = Coverage::instructions();
+
+        self::assertStringContainsString('Start every task with typo3_project_describe', $instructions);
+        self::assertStringContainsString('Then call typo3_task_guide', $instructions);
     }
 
     #[Test]

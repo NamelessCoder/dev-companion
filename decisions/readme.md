@@ -18,6 +18,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### audience
 
+- [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative of its own · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers, because a name is all a deferring client shows · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
 - [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
@@ -29,6 +30,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-012]: audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md
 [D-AUD-011]: audience/aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md
 [D-AUD-010]: audience/aud-010-the-content-model-is-answered-and-the-records-stay-with-the-installation.md
 [D-AUD-009]: audience/aud-009-the-entry-point-claims-patch-work-and-a-task-that-ends-before-one-reads-itself-out.md
@@ -546,6 +548,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
 - [`D-SKL-044`][D-SKL-044] — A step that names two hint ids says what each one alone answers · 2026-08-18
 - [`D-SKL-045`][D-SKL-045] — A build workflow names the guide at the step that needs it · 2026-08-18
 - [`D-SKL-046`][D-SKL-046] — A precondition is restated in the workflow that writes the file it guards · 2026-08-18
@@ -607,6 +610,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-064]: task-skills/skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md
 [D-SKL-044]: task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md
 [D-SKL-045]: task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md
 [D-SKL-046]: task-skills/skl-046-a-precondition-is-restated-in-the-workflow-that-writes-the-file-it-guards.md

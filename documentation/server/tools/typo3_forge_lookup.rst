@@ -20,15 +20,20 @@ assignedTo take a person's name and answer what they filed and what they are on
 the hook for, which is the one question query cannot be made to answer: it
 matches text, so a name reaches the issues that mention the person and not the
 issues that are theirs. status widens that enumeration past the unresolved ones,
-which is what a person's history needs. Each entry carries its number, subject,
-tracker, status and URL, and an enumerated one also carries the issues it is
-filed against with their subjects, the files hanging off it, and the changes on
-review.typo3.org whose commit message names it — the three that say a row was
-answered elsewhere or already attempted, without reading it whole. A call
-carries issue, query or open, never two of them. An issue that does not exist is
-answered as such, and so is a tracker that could not be reached. Reading only,
-and no credential: commenting, assigning and closing stay yours. Answers from:
-network.
+which is what a person's history needs, and involving answers both sides of a
+person at once — the tracker ANDs its filters, so what somebody filed or holds
+cannot be asked of it directly. Or pass breakdown with any of those to be
+answered how the matched set is distributed — per status, per tracker, per area,
+per year — instead of a page of it, which is what a set of hundreds is answered
+by: limit stops at 50 and nothing pages past it. Each entry carries its number,
+subject, tracker, status and URL, and an enumerated one also carries the issues
+it is filed against with their subjects, the files hanging off it, and the
+changes on review.typo3.org whose commit message names it — the three that say a
+row was answered elsewhere or already attempted, without reading it whole. A
+call carries issue, query or open, never two of them. An issue that does not
+exist is answered as such, and so is a tracker that could not be reached.
+Reading only, and no credential: commenting, assigning and closing stay yours.
+Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -110,14 +115,36 @@ Takes
     # name reaching several people resolves to none of them and the answer says
     # which they were, because merging two people into one backlog is a set nothing
     # about it says is wrong. Pair it with status "all" for everything somebody has
-    # ever filed. Narrows open and is ignored by issue and query.
+    # ever filed, and with breakdown for the shape of it rather than the first page.
+    # What they filed is not everything of theirs: involving is the union of this
+    # and assignedTo. Narrows open and is ignored by issue and query.
     reportedBy: string  # optional
     # Only issues this person holds, by their name, resolved the same way as
     # reportedBy. The two answer different questions — what somebody reported is
     # their history, what they are assigned is what they are on the hook for — and
     # an assignee on an old issue is usually who last touched it rather than who is
-    # working on it. Narrows open and is ignored by issue and query.
+    # working on it. For both at once ask involving, which is their union; passing
+    # both of these is the issues somebody filed and holds. Narrows open and is
+    # ignored by issue and query.
     assignedTo: string  # optional
+    # Only issues this person is on either side of — what they filed and what they
+    # hold, as one set. This is "issues von X" the way somebody says it out loud,
+    # and it is the one the tracker cannot be asked: it ANDs its filters, so
+    # reportedBy and assignedTo together mean issues somebody filed AND holds, which
+    # is a set nobody wants. Passed instead of those two, not beside them. Every row
+    # still says which side it came in on, so a union is read without asking twice
+    # and without merging by hand. Narrows open and is ignored by issue and query.
+    involving: string  # optional
+    # Answer how the matched set is distributed instead of the rows of it: how many
+    # issues per status, per tracker, per area and per year. For a person this is
+    # the answer rather than a summary of it — "621 filed, 617 closed, 4 open,
+    # concentrated 2014-2016, mostly Backend User Interface" says what a page of 50
+    # out of 621 cannot, and limit caps at 50 with nothing reaching past it. Ask for
+    # it whenever the question is what somebody or some area has been about, and ask
+    # for the rows once it is which issue to read. It costs a read per hundred
+    # issues and stops at a thousand, saying so where it did. Narrows open and is
+    # ignored by issue and query.
+    breakdown: boolean  # optional
     # One of: open, closed, all. Which statuses the enumeration covers. "open", the
     # default, is what open is named for: the tracker's own unresolved set. "closed"
     # is what it has marked closed, Rejected included. "all" is both, which is what
@@ -127,7 +154,9 @@ Takes
     status: string  # optional
     # How many entries come back. A search answers with at most 25 whatever is asked
     # for, because a set that has to be paged through is answered by other words
-    # rather than by more of these.
+    # rather than by more of these. Nothing reaches past 50 and there is no offset:
+    # what answers a matched set larger than that is breakdown, which says how the
+    # whole of it is distributed.
     limit: integer  # optional
 
 The call carries exactly one of these sets of arguments: ``issue`` — or
@@ -142,7 +171,8 @@ Answers with
     status: string
     # The tracker the answer came from.
     source: string
-    # What was read, so the same question can be asked again by hand.
+    # What was read, so the same question can be asked again by hand. A union is two
+    # reads and both are named, separated by a space.
     url: string
     # The words the tracker was searched for, so a set that looks too narrow can be
     # asked again in other words. Empty where an issue was read by number and where
@@ -153,22 +183,26 @@ Answers with
     # of it is a narrower filter rather than a bigger limit. Zero where an issue was
     # read by number.
     total: integer
-    # Every area the core files its issues under, read from the project itself.
-    # Answered on every enumeration, so a category word that matched none is
-    # corrected from the answer rather than from a second call. Empty where an issue
-    # was read by number and where words were searched for.
+    # Every area the core files its issues under, read from the project itself, so a
+    # category word that matched none or several is corrected from the answer rather
+    # than from a second call. Answered where a category word was passed and did not
+    # resolve to exactly one area, which is the only call it does that work on.
+    # Empty otherwise, which is not a statement about the project —
+    # typo3_server_scope carries the vocabulary for a caller that wants it without a
+    # question.
     categories: [string]
     # The categories the category word resolved to, in the tracker's own spelling.
     # Empty where none was asked for — and empty where the word matched none,
     # which is answered as no issues and is a statement about the word rather than
     # about the backlog.
     categoriesUsed: [string]
-    # What reportedBy and assignedTo resolved to, one entry per name the call
-    # carried, in that order. A name is resolved against the core project's members
-    # and, where they hold no membership, against the people the issues carrying
-    # that name were filed by or handed to. Empty where no name was passed.
+    # What reportedBy, assignedTo and involving resolved to, one entry per name the
+    # call carried, in that order. A name is resolved against the core project's
+    # members and, where they hold no membership, against the people the issues
+    # carrying that name were filed by or handed to. Empty where no name was passed.
     people:
-      - # One of: reportedBy, assignedTo. Which of the two the entry answers for.
+      - # One of: reportedBy, assignedTo, involving. Which argument the entry
+        # answers for.
         filter: string
         # The name that was passed, as it was passed.
         asked: string
@@ -186,6 +220,35 @@ Answers with
         # where nothing here carries it — which is a name this server cannot place
         # rather than a person who has filed nothing.
         candidates: [string]
+    # How the matched set is distributed, where breakdown was asked for. Null
+    # otherwise, and null where nothing matched.
+    breakdown:
+      # How many issues the counts are over. Equal to total where the whole set was
+      # read.
+      read: integer
+      # Whether that is the whole matched set. False where the bound cut the read,
+      # and then the counts are of the first read issues in the order asked for —
+      # the oldest of them, or the longest untouched — which is a shape of that
+      # end and not of the set. Narrow the filters for the whole one.
+      complete: boolean
+      # One entry per dimension, always the four.
+      counts:
+        - # One of: status, tracker, category, year. What the issues are counted by.
+          # year is the year they were filed in.
+          dimension: string
+          # The largest buckets first, and by name where two are the same size.
+          buckets:
+            - # The value, or "none" for the issues that carry none — an issue
+              # filed under no area is a bucket rather than a row left out, so the
+              # buckets add up to read.
+              name: string
+              count: integer
+          # How many further buckets this dimension has, zero where it has none. The
+          # tail of an area count is subsystems holding one issue each.
+          withheldBuckets: integer
+          # How many issues those hold together, so the listed buckets and this add
+          # up to read.
+          withheldCount: integer
     # The issue, where status says answered and a number was asked for. Null
     # otherwise.
     issue:
@@ -438,6 +501,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": {
             "id": 110348,
             "subject": "Rework AdminPanel \"imagesOnPage\" feature",
@@ -804,6 +868,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": {
             "id": 88556,
             "subject": "One line break in DB field causes 3 rendered p-tags in CKEditor",
@@ -1084,6 +1149,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": {
             "id": 14858,
             "subject": "extended clipboard: setCopyMode can`t be set to copy by default",
@@ -1212,6 +1278,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [],
         "unavailable": null
@@ -1259,6 +1326,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [
             {
@@ -1341,6 +1409,7 @@ Data:
         "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [],
         "unavailable": null
@@ -1362,8 +1431,8 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2481 open issues of the TYPO3 Core project, oldest filed first
-    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
+    TYPO3 issue tracker: 3 of 2482 open issues of the TYPO3 Core project, oldest filed first
+    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
@@ -1398,68 +1467,13 @@ Data:
     {
         "status": "answered",
         "source": "https://forge.typo3.org",
-        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2481,
-        "categories": [
-            "AdminPanel",
-            "Authentication",
-            "Backend API",
-            "Backend JavaScript",
-            "Backend User Interface",
-            "Caching",
-            "Categorization API",
-            "CLI",
-            "Code Cleanup",
-            "composer / dependencies / third-party",
-            "Content Rendering",
-            "Content Security Policy",
-            "Dashboard",
-            "Database API (Doctrine DBAL)",
-            "DataHandler aka TCEmain",
-            "Documentation",
-            "Extbase",
-            "Extbase + l10n",
-            "Extension Manager",
-            "felogin",
-            "File Abstraction Layer (FAL)",
-            "Fluid",
-            "Fluid Styled Content",
-            "Form Framework",
-            "FormEngine aka TCEforms",
-            "Frontend",
-            "Image Cropping",
-            "Image Generation / GIFBUILDER",
-            "Import/Export (T3D)",
-            "Indexed Search",
-            "Install Tool",
-            "Language Manager (backend)",
-            "Link Handling & Redirect Handling",
-            "Linkvalidator",
-            "Localization",
-            "Locking / Session Handling",
-            "Logging",
-            "Mailer API",
-            "Miscellaneous",
-            "Pagetree",
-            "Performance",
-            "Recycler",
-            "Reports",
-            "RTE (rtehtmlarea + ckeditor)",
-            "scheduler",
-            "Security",
-            "SEO",
-            "Site Handling, Site Sets & Routing",
-            "System/Bootstrap/Configuration",
-            "t3editor",
-            "Tests",
-            "Themes",
-            "TypoScript",
-            "WebHooks - Incoming = Reactions + Outgoing",
-            "Workspaces"
-        ],
+        "total": 2482,
+        "categories": [],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [
             {
@@ -1632,7 +1646,7 @@ Text:
 .. code-block:: text
 
     TYPO3 issue tracker: 3 of 22 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
-    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
+    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
     An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
@@ -1661,70 +1675,15 @@ Data:
     {
         "status": "answered",
         "source": "https://forge.typo3.org",
-        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=updated_on%3Aasc&limit=3&include=relations%2Cattachments&tracker_id=1&category_id=1001",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=updated_on%3Aasc&tracker_id=1&category_id=1001",
         "query": "",
         "total": 22,
-        "categories": [
-            "AdminPanel",
-            "Authentication",
-            "Backend API",
-            "Backend JavaScript",
-            "Backend User Interface",
-            "Caching",
-            "Categorization API",
-            "CLI",
-            "Code Cleanup",
-            "composer / dependencies / third-party",
-            "Content Rendering",
-            "Content Security Policy",
-            "Dashboard",
-            "Database API (Doctrine DBAL)",
-            "DataHandler aka TCEmain",
-            "Documentation",
-            "Extbase",
-            "Extbase + l10n",
-            "Extension Manager",
-            "felogin",
-            "File Abstraction Layer (FAL)",
-            "Fluid",
-            "Fluid Styled Content",
-            "Form Framework",
-            "FormEngine aka TCEforms",
-            "Frontend",
-            "Image Cropping",
-            "Image Generation / GIFBUILDER",
-            "Import/Export (T3D)",
-            "Indexed Search",
-            "Install Tool",
-            "Language Manager (backend)",
-            "Link Handling & Redirect Handling",
-            "Linkvalidator",
-            "Localization",
-            "Locking / Session Handling",
-            "Logging",
-            "Mailer API",
-            "Miscellaneous",
-            "Pagetree",
-            "Performance",
-            "Recycler",
-            "Reports",
-            "RTE (rtehtmlarea + ckeditor)",
-            "scheduler",
-            "Security",
-            "SEO",
-            "Site Handling, Site Sets & Routing",
-            "System/Bootstrap/Configuration",
-            "t3editor",
-            "Tests",
-            "Themes",
-            "TypoScript",
-            "WebHooks - Incoming = Reactions + Outgoing",
-            "Workspaces"
-        ],
+        "categories": [],
         "categoriesUsed": [
             "RTE (rtehtmlarea + ckeditor)"
         ],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [
             {
@@ -1868,7 +1827,7 @@ Data:
     {
         "status": "empty",
         "source": "https://forge.typo3.org",
-        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=15&include=relations%2Cattachments",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
         "total": 0,
         "categories": [
@@ -1930,6 +1889,7 @@ Data:
         ],
         "categoriesUsed": [],
         "people": [],
+        "breakdown": null,
         "issue": null,
         "results": [],
         "unavailable": null
@@ -1954,7 +1914,7 @@ Text:
 .. code-block:: text
 
     TYPO3 issue tracker: 3 of 621 issues of the TYPO3 Core project whatever their status, filed by Frank Nägler, oldest filed first
-    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
+    This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which answers how the whole set is distributed — there are no other words to narrow a person by, and a tracker or a date answers a smaller question than the one asked.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
@@ -1977,66 +1937,10 @@ Data:
     {
         "status": "answered",
         "source": "https://forge.typo3.org",
-        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=%2A&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments&author_id=52",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=%2A&sort=created_on%3Aasc&author_id=52",
         "query": "",
         "total": 621,
-        "categories": [
-            "AdminPanel",
-            "Authentication",
-            "Backend API",
-            "Backend JavaScript",
-            "Backend User Interface",
-            "Caching",
-            "Categorization API",
-            "CLI",
-            "Code Cleanup",
-            "composer / dependencies / third-party",
-            "Content Rendering",
-            "Content Security Policy",
-            "Dashboard",
-            "Database API (Doctrine DBAL)",
-            "DataHandler aka TCEmain",
-            "Documentation",
-            "Extbase",
-            "Extbase + l10n",
-            "Extension Manager",
-            "felogin",
-            "File Abstraction Layer (FAL)",
-            "Fluid",
-            "Fluid Styled Content",
-            "Form Framework",
-            "FormEngine aka TCEforms",
-            "Frontend",
-            "Image Cropping",
-            "Image Generation / GIFBUILDER",
-            "Import/Export (T3D)",
-            "Indexed Search",
-            "Install Tool",
-            "Language Manager (backend)",
-            "Link Handling & Redirect Handling",
-            "Linkvalidator",
-            "Localization",
-            "Locking / Session Handling",
-            "Logging",
-            "Mailer API",
-            "Miscellaneous",
-            "Pagetree",
-            "Performance",
-            "Recycler",
-            "Reports",
-            "RTE (rtehtmlarea + ckeditor)",
-            "scheduler",
-            "Security",
-            "SEO",
-            "Site Handling, Site Sets & Routing",
-            "System/Bootstrap/Configuration",
-            "t3editor",
-            "Tests",
-            "Themes",
-            "TypoScript",
-            "WebHooks - Incoming = Reactions + Outgoing",
-            "Workspaces"
-        ],
+        "categories": [],
         "categoriesUsed": [],
         "people": [
             {
@@ -2047,6 +1951,7 @@ Data:
                 "candidates": []
             }
         ],
+        "breakdown": null,
         "issue": null,
         "results": [
             {
@@ -2156,66 +2061,10 @@ Data:
     {
         "status": "empty",
         "source": "https://forge.typo3.org",
-        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=15&include=relations%2Cattachments",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
         "total": 0,
-        "categories": [
-            "AdminPanel",
-            "Authentication",
-            "Backend API",
-            "Backend JavaScript",
-            "Backend User Interface",
-            "Caching",
-            "Categorization API",
-            "CLI",
-            "Code Cleanup",
-            "composer / dependencies / third-party",
-            "Content Rendering",
-            "Content Security Policy",
-            "Dashboard",
-            "Database API (Doctrine DBAL)",
-            "DataHandler aka TCEmain",
-            "Documentation",
-            "Extbase",
-            "Extbase + l10n",
-            "Extension Manager",
-            "felogin",
-            "File Abstraction Layer (FAL)",
-            "Fluid",
-            "Fluid Styled Content",
-            "Form Framework",
-            "FormEngine aka TCEforms",
-            "Frontend",
-            "Image Cropping",
-            "Image Generation / GIFBUILDER",
-            "Import/Export (T3D)",
-            "Indexed Search",
-            "Install Tool",
-            "Language Manager (backend)",
-            "Link Handling & Redirect Handling",
-            "Linkvalidator",
-            "Localization",
-            "Locking / Session Handling",
-            "Logging",
-            "Mailer API",
-            "Miscellaneous",
-            "Pagetree",
-            "Performance",
-            "Recycler",
-            "Reports",
-            "RTE (rtehtmlarea + ckeditor)",
-            "scheduler",
-            "Security",
-            "SEO",
-            "Site Handling, Site Sets & Routing",
-            "System/Bootstrap/Configuration",
-            "t3editor",
-            "Tests",
-            "Themes",
-            "TypoScript",
-            "WebHooks - Incoming = Reactions + Outgoing",
-            "Workspaces"
-        ],
+        "categories": [],
         "categoriesUsed": [],
         "people": [
             {
@@ -2234,6 +2083,408 @@ Data:
                 ]
             }
         ],
+        "breakdown": null,
+        "issue": null,
+        "results": [],
+        "unavailable": null
+    }
+
+forge: everything one person has touched
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "open": "stale",
+        "involving": "Frank Nägler",
+        "limit": 3
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 issue tracker: 3 of 5 open issues of the TYPO3 Core project, filed by or assigned to Frank Nägler, longest untouched first
+    This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which answers how the whole set is distributed — there are no other words to narrow a person by, and a tracker or a date answers a smaller question than the one asked.
+    Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+
+    ## #89259 Create new icons and replace icons for "Page enabled in menus" context menu
+    Task · Accepted · Backend User Interface · filed by Frank Nägler · assigned to Benjamin Kott · filed 2019-09-25 · last touched 2019-09-25 · https://forge.typo3.org/issues/89259
+    Relation: relates #85918 — Feature · Closed · Show "Page enabled in menus" in ContextMenu for pages
+    Relation: relates #102497 — Task · New · Unify display and grouping of context menus
+    Files (1): image.png
+
+    ## #89326 Prevent duplicate redirects in auto redirects
+    Bug · Accepted · Link Handling & Redirect Handling · filed by Guido Schmechel · assigned to Frank Nägler · filed 2019-10-01 · last touched 2023-11-09 · https://forge.typo3.org/issues/89326
+    Relation: relates #89325 — Task · New · Prevent duplicate redirects in backend module
+    Relation: relates #89301 — Task · Accepted · Streamline automatic slug & redirects handling
+    Relation: relates #92448 — Bug · New · changing slug again after reverting an auto update causes wrong URLs on sub pages
+
+    ## #104918 Drag & Drop to create pages in pagetree is not usable anymore
+    Bug · Accepted · Pagetree · filed by Frank Nägler · unassigned · filed 2024-09-11 · last touched 2024-10-15 · https://forge.typo3.org/issues/104918
+    Relation: relates #104697 — Bug · Accepted · Unexpected behaviour - placing new items in the page tree. Safari Desktop
+    Relation: duplicates #106028 — Bug · Closed · Cannot create/move page at end of tree using d&d
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "answered",
+        "source": "https://forge.typo3.org",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&author_id=52&status_id=open&sort=updated_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&assigned_to_id=52&status_id=open&sort=updated_on%3Aasc",
+        "query": "",
+        "total": 5,
+        "categories": [],
+        "categoriesUsed": [],
+        "people": [
+            {
+                "filter": "involving",
+                "asked": "Frank Nägler",
+                "name": "Frank Nägler",
+                "id": 52,
+                "candidates": []
+            }
+        ],
+        "breakdown": null,
+        "issue": null,
+        "results": [
+            {
+                "issue": 89259,
+                "subject": "Create new icons and replace icons for \"Page enabled in menus\" context menu",
+                "tracker": "Task",
+                "status": "Accepted",
+                "category": "Backend User Interface",
+                "reportedBy": "Frank Nägler",
+                "assignedTo": "Benjamin Kott",
+                "createdOn": "2019-09-25T09:39:35Z",
+                "updatedOn": "2019-09-25T09:39:35Z",
+                "url": "https://forge.typo3.org/issues/89259",
+                "relations": [
+                    {
+                        "issue": 85918,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/85918",
+                        "subject": "Show \"Page enabled in menus\" in ContextMenu for pages",
+                        "tracker": "Feature",
+                        "status": "Closed"
+                    },
+                    {
+                        "issue": 102497,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/102497",
+                        "subject": "Unify display and grouping of context menus",
+                        "tracker": "Task",
+                        "status": "New"
+                    }
+                ],
+                "attachments": [
+                    {
+                        "filename": "image.png",
+                        "contentType": "image/png",
+                        "size": 50552,
+                        "on": "2019-09-25T09:39:07Z",
+                        "url": "https://forge.typo3.org/attachments/download/34579/image.png"
+                    }
+                ],
+                "reviews": []
+            },
+            {
+                "issue": 89326,
+                "subject": "Prevent duplicate redirects in auto redirects",
+                "tracker": "Bug",
+                "status": "Accepted",
+                "category": "Link Handling & Redirect Handling",
+                "reportedBy": "Guido Schmechel",
+                "assignedTo": "Frank Nägler",
+                "createdOn": "2019-10-01T21:04:28Z",
+                "updatedOn": "2023-11-09T13:26:17Z",
+                "url": "https://forge.typo3.org/issues/89326",
+                "relations": [
+                    {
+                        "issue": 89325,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/89325",
+                        "subject": "Prevent duplicate redirects in backend module",
+                        "tracker": "Task",
+                        "status": "New"
+                    },
+                    {
+                        "issue": 89301,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/89301",
+                        "subject": "Streamline automatic slug & redirects handling",
+                        "tracker": "Task",
+                        "status": "Accepted"
+                    },
+                    {
+                        "issue": 92448,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/92448",
+                        "subject": "changing slug again after reverting an auto update causes wrong URLs on sub pages",
+                        "tracker": "Bug",
+                        "status": "New"
+                    }
+                ],
+                "attachments": [],
+                "reviews": []
+            },
+            {
+                "issue": 104918,
+                "subject": "Drag & Drop to create pages in pagetree is not usable anymore",
+                "tracker": "Bug",
+                "status": "Accepted",
+                "category": "Pagetree",
+                "reportedBy": "Frank Nägler",
+                "assignedTo": "",
+                "createdOn": "2024-09-11T19:40:39Z",
+                "updatedOn": "2024-10-15T09:46:22Z",
+                "url": "https://forge.typo3.org/issues/104918",
+                "relations": [
+                    {
+                        "issue": 104697,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/104697",
+                        "subject": "Unexpected behaviour - placing new items in the page tree. Safari Desktop",
+                        "tracker": "Bug",
+                        "status": "Accepted"
+                    },
+                    {
+                        "issue": 106028,
+                        "relation": "duplicates",
+                        "url": "https://forge.typo3.org/issues/106028",
+                        "subject": "Cannot create/move page at end of tree using d&d",
+                        "tracker": "Bug",
+                        "status": "Closed"
+                    }
+                ],
+                "attachments": [],
+                "reviews": []
+            }
+        ],
+        "unavailable": null
+    }
+
+forge: the shape of one person's history
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "open": "oldest",
+        "involving": "Frank Nägler",
+        "status": "all",
+        "breakdown": true
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 issue tracker: 764 issues of the TYPO3 Core project whatever their status, filed by or assigned to Frank Nägler, oldest filed first
+    Counted over all 764 of them, as the shape of the set rather than its rows.
+    Ask again without breakdown, narrowed to the part this points at, for the issues themselves.
+    Status: Closed 725 · Rejected 34 · Accepted 3 · Needs Feedback 1 · Under Review 1
+    Tracker: Task 401 · Bug 301 · Feature 54 · Epic 4 · Story 4
+    Area: none 178 · Backend User Interface 163 · Backend API 126 · Backend JavaScript 109 · FormEngine aka TCEforms 29 · Install Tool 26 · Documentation 13 · Code Cleanup 12 · TypoScript 10 · Frontend 9 · Site Handling, Site Sets & Routing 8 · Fluid 7 · and 29 more holding 74
+    Filed in: 2015 200 · 2014 124 · 2016 113 · 2018 104 · 2017 89 · 2019 62 · 2024 18 · 2022 12 · 2020 11 · 2023 5 · 2021 4 · 2006 3 · and 9 more holding 19
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "answered",
+        "source": "https://forge.typo3.org",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&author_id=52&status_id=%2A&sort=created_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&assigned_to_id=52&status_id=%2A&sort=created_on%3Aasc",
+        "query": "",
+        "total": 764,
+        "categories": [],
+        "categoriesUsed": [],
+        "people": [
+            {
+                "filter": "involving",
+                "asked": "Frank Nägler",
+                "name": "Frank Nägler",
+                "id": 52,
+                "candidates": []
+            }
+        ],
+        "breakdown": {
+            "read": 764,
+            "complete": true,
+            "counts": [
+                {
+                    "dimension": "status",
+                    "buckets": [
+                        {
+                            "name": "Closed",
+                            "count": 725
+                        },
+                        {
+                            "name": "Rejected",
+                            "count": 34
+                        },
+                        {
+                            "name": "Accepted",
+                            "count": 3
+                        },
+                        {
+                            "name": "Needs Feedback",
+                            "count": 1
+                        },
+                        {
+                            "name": "Under Review",
+                            "count": 1
+                        }
+                    ],
+                    "withheldBuckets": 0,
+                    "withheldCount": 0
+                },
+                {
+                    "dimension": "tracker",
+                    "buckets": [
+                        {
+                            "name": "Task",
+                            "count": 401
+                        },
+                        {
+                            "name": "Bug",
+                            "count": 301
+                        },
+                        {
+                            "name": "Feature",
+                            "count": 54
+                        },
+                        {
+                            "name": "Epic",
+                            "count": 4
+                        },
+                        {
+                            "name": "Story",
+                            "count": 4
+                        }
+                    ],
+                    "withheldBuckets": 0,
+                    "withheldCount": 0
+                },
+                {
+                    "dimension": "category",
+                    "buckets": [
+                        {
+                            "name": "none",
+                            "count": 178
+                        },
+                        {
+                            "name": "Backend User Interface",
+                            "count": 163
+                        },
+                        {
+                            "name": "Backend API",
+                            "count": 126
+                        },
+                        {
+                            "name": "Backend JavaScript",
+                            "count": 109
+                        },
+                        {
+                            "name": "FormEngine aka TCEforms",
+                            "count": 29
+                        },
+                        {
+                            "name": "Install Tool",
+                            "count": 26
+                        },
+                        {
+                            "name": "Documentation",
+                            "count": 13
+                        },
+                        {
+                            "name": "Code Cleanup",
+                            "count": 12
+                        },
+                        {
+                            "name": "TypoScript",
+                            "count": 10
+                        },
+                        {
+                            "name": "Frontend",
+                            "count": 9
+                        },
+                        {
+                            "name": "Site Handling, Site Sets & Routing",
+                            "count": 8
+                        },
+                        {
+                            "name": "Fluid",
+                            "count": 7
+                        }
+                    ],
+                    "withheldBuckets": 29,
+                    "withheldCount": 74
+                },
+                {
+                    "dimension": "year",
+                    "buckets": [
+                        {
+                            "name": "2015",
+                            "count": 200
+                        },
+                        {
+                            "name": "2014",
+                            "count": 124
+                        },
+                        {
+                            "name": "2016",
+                            "count": 113
+                        },
+                        {
+                            "name": "2018",
+                            "count": 104
+                        },
+                        {
+                            "name": "2017",
+                            "count": 89
+                        },
+                        {
+                            "name": "2019",
+                            "count": 62
+                        },
+                        {
+                            "name": "2024",
+                            "count": 18
+                        },
+                        {
+                            "name": "2022",
+                            "count": 12
+                        },
+                        {
+                            "name": "2020",
+                            "count": 11
+                        },
+                        {
+                            "name": "2023",
+                            "count": 5
+                        },
+                        {
+                            "name": "2021",
+                            "count": 4
+                        },
+                        {
+                            "name": "2006",
+                            "count": 3
+                        }
+                    ],
+                    "withheldBuckets": 9,
+                    "withheldCount": 19
+                }
+            ]
+        },
         "issue": null,
         "results": [],
         "unavailable": null

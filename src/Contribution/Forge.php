@@ -83,6 +83,25 @@ final class Forge
     /** The most memberships one page of them holds, which is Redmine's own cap. */
     private const MEMBERS = 100;
 
+    /** The most issues one page of a counted read holds, the same cap. */
+    private const COUNTED = 100;
+
+    /**
+     * The most pages of them a shape is counted over. Ten reads take about
+     * seven seconds against forge.typo3.org, measured on 2026-08-19, and what
+     * a set larger than a thousand owes the caller is the bound rather than
+     * the wait.
+     */
+    private const COUNTED_PAGES = 10;
+
+    /**
+     * The most buckets a dimension answers with. The tail of an area count is
+     * twenty subsystems holding one issue each: 38 areas over the 621 issues
+     * one person had filed on 2026-08-19, of which the largest four held two
+     * thirds.
+     */
+    private const BUCKETS = 12;
+
     /**
      * The most pages of them read, whatever the project says it has. The count
      * comes from the tracker and the loop ends on it; this is what keeps a
@@ -363,7 +382,7 @@ final class Forge
     }
 
     /**
-     * The open issues of the core project, oldest or stalest first.
+     * The issues of the core project, oldest or stalest first.
      *
      * What this answers is the question a triage starts from and neither of the
      * two above reaches: an issue nobody has looked at since 2015 is found by
@@ -379,9 +398,12 @@ final class Forge
      * The person filters are the other way in and the one a status widens for:
      * what somebody still has open is a question about the backlog, what they
      * have filed over the years is a question about a person, and only the
-     * second needs the closed issues in the set.
+     * second needs the closed issues in the set. `involving` is that question
+     * asked the way somebody says it out loud, which the tracker cannot be
+     * asked at all — it ANDs its filters, so a union is two reads and a merge
+     * (`D-ANS-090`).
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', url: string, total: int, categories: list<string>, categoriesUsed: list<string>, people: list<array{filter: string, asked: string, name: string, id: int, candidates: list<string>}>, results: list<array<string, mixed>>, cause: ?string}
+     * @return array{status: 'answered'|'empty'|'unavailable', url: string, total: int, categories: list<string>, categoriesUsed: list<string>, people: list<array{filter: string, asked: string, name: string, id: int, candidates: list<string>}>, breakdown: ?array<string, mixed>, results: list<array<string, mixed>>, cause: ?string}
      */
     public function open(
         string $order = 'oldest',
@@ -393,6 +415,8 @@ final class Forge
         string $status = 'open',
         string $reportedBy = '',
         string $assignedTo = '',
+        string $involving = '',
+        bool $breakdown = false,
     ): array {
         $categories = $this->categories();
         $used = $category === '' ? [] : self::named($categories, $category);
@@ -406,11 +430,6 @@ final class Forge
                 default => 'open',
             },
             'sort' => $order === 'stale' ? 'updated_on:asc' : 'created_on:asc',
-            'limit' => (string) max(1, min(self::LISTED, $limit)),
-            // What the index answers for nothing where it is asked for. The
-            // journal is the one thing it will not serve however it is asked,
-            // which is why the review server is a call of its own below.
-            'include' => 'relations,attachments',
         ];
         if (isset(self::TRACKERS[$tracker])) {
             $filters['tracker_id'] = (string) self::TRACKERS[$tracker];
@@ -424,13 +443,24 @@ final class Forge
             ));
         }
         $people = [];
-        foreach (['reportedBy' => $reportedBy, 'assignedTo' => $assignedTo] as $filter => $word) {
+        // `involving` is the same person on either side, so it takes the place
+        // of the two that name one side each.
+        $roles = $involving !== ''
+            ? ['involving' => $involving]
+            : ['reportedBy' => $reportedBy, 'assignedTo' => $assignedTo];
+        $sides = [];
+        foreach ($roles as $filter => $word) {
             if ($word === '') {
                 continue;
             }
             $person = $this->person($word);
             $people[] = ['filter' => $filter, 'asked' => $word] + $person;
-            if ($person['id'] > 0) {
+            if ($person['id'] === 0) {
+                continue;
+            }
+            if ($filter === 'involving') {
+                $sides = [['author_id' => (string) $person['id']], ['assigned_to_id' => (string) $person['id']]];
+            } else {
                 $filters[$filter === 'reportedBy' ? 'author_id' : 'assigned_to_id'] = (string) $person['id'];
             }
         }
@@ -445,28 +475,65 @@ final class Forge
             $filters['updated_on'] = '<=' . $updatedBefore;
         }
 
-        $known = array_keys($categories);
-        $url = self::HOST . '/projects/' . self::PROJECT . '/issues.json?' . http_build_query($filters);
+        // Only where it can do the work it is answered for: correcting a word
+        // that named no area or several. On every other call it is 54 names the
+        // caller did not ask for, three times over in one session
+        // (`feedback/2026-08-19-134717`).
+        $known = $category !== '' && count($used) !== 1 ? array_keys($categories) : [];
+
+        // What the index answers for nothing where it is asked for: the
+        // journal is the one thing it will not serve however it is asked, which
+        // is why the review server is a call of its own below. A counted read
+        // wants none of it — it is reading a thousand rows for four fields.
+        $page = $breakdown
+            ? ['limit' => (string) self::COUNTED]
+            : ['limit' => (string) max(1, min(self::LISTED, $limit)), 'include' => 'relations,attachments'];
+        $reads = array_map(
+            static fn(array $side): string => self::HOST . '/projects/' . self::PROJECT . '/issues.json?'
+                . http_build_query($page + $side + $filters),
+            $sides === [] ? [[]] : $sides,
+        );
+        $url = implode(' ', $reads);
 
         // A word matching no category, and a name matching no person, would
         // otherwise be answered with the unfiltered backlog — a set about
         // everything wearing the shape of a set about one thing.
         $unresolved = array_filter($people, static fn(array $person): bool => $person['id'] === 0);
         if (($category !== '' && $used === []) || $unresolved !== []) {
-            return ['status' => 'empty', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $category !== '' ? $used : [], 'people' => $people, 'results' => [], 'cause' => null];
+            return ['status' => 'empty', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $category !== '' ? $used : [], 'people' => $people, 'breakdown' => null, 'results' => [], 'cause' => null];
         }
 
-        $answer = $this->api($url, 'issues');
-        if ($answer['part'] === null) {
-            return ['status' => 'unavailable', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $used, 'people' => $people, 'results' => [], 'cause' => $answer['cause']];
+        $answer = $breakdown ? $this->shape($reads) : $this->page($reads, max(1, min(self::LISTED, $limit)), $filters['sort']);
+        // Two reads answer one question, and their counts overlap by the issues
+        // this person both filed and holds. The tracker ANDs its filters, so
+        // that overlap is a third read of one row and the only thing that makes
+        // the union countable at all.
+        if ($answer['rows'] !== null && count($reads) > 1) {
+            $answer['total'] -= $this->overlap($sides, $filters);
+        }
+        if ($answer['rows'] === null) {
+            return ['status' => 'unavailable', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $used, 'people' => $people, 'breakdown' => null, 'results' => [], 'cause' => $answer['cause']];
         }
 
-        $results = [];
-        foreach ($answer['part'] as $entry) {
-            if (is_array($entry)) {
-                $results[] = self::entry($entry);
-            }
+        if ($breakdown) {
+            return [
+                'status' => $answer['rows'] === [] ? 'empty' : 'answered',
+                'url' => $url,
+                'total' => $answer['total'],
+                'categories' => $known,
+                'categoriesUsed' => $used,
+                'people' => $people,
+                'breakdown' => [
+                    'read' => count($answer['rows']),
+                    'complete' => $answer['complete'],
+                    'counts' => self::counts($answer['rows']),
+                ],
+                'results' => [],
+                'cause' => null,
+            ];
         }
+
+        $results = array_map(self::entry(...), $answer['rows']);
 
         return [
             'status' => $results === [] ? 'empty' : 'answered',
@@ -475,9 +542,185 @@ final class Forge
             'categories' => $known,
             'categoriesUsed' => $used,
             'people' => $people,
+            'breakdown' => null,
             'results' => $this->reviewed($this->related($results)),
             'cause' => null,
         ];
+    }
+
+    /**
+     * One page of each read, as one page of the union.
+     *
+     * Where two reads answer one question, taking the first `limit` of each and
+     * the first `limit` of what they merge to is the first `limit` of the
+     * union: both come back in the same order, so nothing dropped from either
+     * page can sort ahead of what was kept.
+     *
+     * @param list<string> $reads
+     * @return array{rows: ?list<array<string, mixed>>, total: int, complete: bool, cause: ?string}
+     */
+    private function page(array $reads, int $limit, string $sort): array
+    {
+        $rows = [];
+        $total = 0;
+        foreach ($reads as $read) {
+            $answer = $this->api($read, 'issues');
+            if ($answer['part'] === null) {
+                return ['rows' => null, 'total' => 0, 'complete' => false, 'cause' => $answer['cause']];
+            }
+            $total += $answer['total'];
+            $rows = self::merged($rows, $answer['part']);
+        }
+
+        return [
+            'rows' => count($reads) === 1 ? array_values($rows) : array_slice(self::inOrder($rows, $sort), 0, $limit),
+            'total' => $total,
+            'complete' => true,
+            'cause' => null,
+        ];
+    }
+
+    /**
+     * Every issue the reads match, for the shape of the set rather than a page
+     * of it.
+     *
+     * A person's history is one well-defined set with no other words to narrow
+     * it by, so a page of 50 out of 621 leaves the rest reachable by nothing
+     * (`feedback/2026-08-19-134651`). What answers that question is how the set
+     * is distributed, and what that costs is reading it — a hundred rows to a
+     * request, bounded, and the answer says where the bound cut it.
+     *
+     * @param list<string> $reads
+     * @return array{rows: ?list<array<string, mixed>>, total: int, complete: bool, cause: ?string}
+     */
+    private function shape(array $reads): array
+    {
+        $rows = [];
+        $total = 0;
+        $complete = true;
+        foreach ($reads as $read) {
+            $offset = 0;
+            do {
+                $answer = $this->api($read . '&offset=' . $offset, 'issues');
+                if ($answer['part'] === null) {
+                    return ['rows' => null, 'total' => 0, 'complete' => false, 'cause' => $answer['cause']];
+                }
+                $rows = self::merged($rows, $answer['part']);
+                $offset += self::COUNTED;
+                $bounded = $offset >= self::COUNTED * self::COUNTED_PAGES;
+            } while ($offset < $answer['total'] && !$bounded);
+            $total += $answer['total'];
+            $complete = $complete && $offset >= $answer['total'];
+        }
+
+        return ['rows' => array_values($rows), 'total' => $total, 'complete' => $complete, 'cause' => null];
+    }
+
+    /**
+     * How many issues both reads of a union carry, which is what its two counts
+     * count twice.
+     *
+     * @param list<array<string, string>> $sides
+     * @param array<string, string>       $filters
+     */
+    private function overlap(array $sides, array $filters): int
+    {
+        $answer = $this->api(
+            self::HOST . '/projects/' . self::PROJECT . '/issues.json?'
+                . http_build_query(['limit' => '1'] + array_merge(...$sides) + $filters),
+            'issues',
+        );
+
+        return $answer['total'];
+    }
+
+    /**
+     * The rows of an answer, added to what the reads before it carried, each
+     * issue once.
+     *
+     * @param array<int, array<string, mixed>> $rows
+     * @param array<mixed>                     $answered
+     * @return array<int, array<string, mixed>>
+     */
+    private static function merged(array $rows, array $answered): array
+    {
+        foreach ($answered as $entry) {
+            if (is_array($entry) && isset($entry['id']) && is_numeric($entry['id'])) {
+                $rows[(int) $entry['id']] = $entry;
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * The rows in the order the tracker was asked for them, which a merge of
+     * two answers no longer carries.
+     *
+     * @param array<int, array<string, mixed>> $rows
+     * @return list<array<string, mixed>>
+     */
+    private static function inOrder(array $rows, string $sort): array
+    {
+        $field = str_starts_with($sort, 'updated_on') ? 'updated_on' : 'created_on';
+        $sorted = array_values($rows);
+        usort($sorted, static fn(array $one, array $other): int => strcmp(
+            is_string($one[$field] ?? null) ? $one[$field] : '',
+            is_string($other[$field] ?? null) ? $other[$field] : '',
+        ));
+
+        return $sorted;
+    }
+
+    /**
+     * How a set of issues is distributed, one list per dimension.
+     *
+     * The four a person's history is read by: what came of them, what kind of
+     * work they were, which part of the core, and when. Ordered by size and
+     * bounded, because the tail of an area count is twenty subsystems holding
+     * one issue each and what it says is already said by the head.
+     *
+     * @param list<array<string, mixed>> $rows
+     * @return list<array{dimension: string, buckets: list<array{name: string, count: int}>, withheldBuckets: int, withheldCount: int}>
+     */
+    private static function counts(array $rows): array
+    {
+        $counts = ['status' => [], 'tracker' => [], 'category' => [], 'year' => []];
+        foreach ($rows as $row) {
+            foreach (['status', 'tracker', 'category'] as $dimension) {
+                // An issue nobody filed under an area is a bucket of its own,
+                // because leaving it out makes the areas add up to less than
+                // the set and nothing says why.
+                $name = self::name($row[$dimension] ?? null);
+                $counts[$dimension][$name === '' ? 'none' : $name] ??= 0;
+                $counts[$dimension][$name === '' ? 'none' : $name]++;
+            }
+            $year = substr(is_string($row['created_on'] ?? null) ? $row['created_on'] : '', 0, 4);
+            if ($year !== '') {
+                $counts['year'][$year] ??= 0;
+                $counts['year'][$year]++;
+            }
+        }
+
+        $answer = [];
+        foreach ($counts as $dimension => $buckets) {
+            // By size, and by name where two are the same size: an answer that
+            // reorders between two identical calls is one nobody can diff.
+            uksort($buckets, static fn(string $one, string $other): int => [$buckets[$other], $one] <=> [$buckets[$one], $other]);
+            $shown = array_slice($buckets, 0, self::BUCKETS, true);
+            $answer[] = [
+                'dimension' => $dimension,
+                'buckets' => array_map(
+                    static fn(string $name, int $count): array => ['name' => $name, 'count' => $count],
+                    array_keys($shown),
+                    array_values($shown),
+                ),
+                'withheldBuckets' => count($buckets) - count($shown),
+                'withheldCount' => array_sum($buckets) - array_sum($shown),
+            ];
+        }
+
+        return $answer;
     }
 
     /** A day the tracker can filter on, and nothing else. */

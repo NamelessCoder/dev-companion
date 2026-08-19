@@ -1144,4 +1144,226 @@ final class ForgeTest extends TestCase
 
         self::assertSame(1, $calls, 'the memberships were read again for a list that changes between releases');
     }
+
+    /**
+     * The tracker ANDs its filters, so the question somebody actually says —
+     * everything of this person's — is two reads and a merge here or two calls
+     * and a merge in the caller (`feedback/2026-08-19-134706`).
+     */
+    #[Test]
+    public function aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (str_contains($url, 'review.typo3.org') || str_contains($url, 'issue_id=')) {
+                return (string) json_encode(['issues' => [], 'total_count' => 0]);
+            }
+            if (str_contains($url, 'author_id=52&assigned_to_id=52') || str_contains($url, 'assigned_to_id=52&author_id=52')) {
+                return (string) json_encode(['issues' => [], 'total_count' => 3]);
+            }
+
+            return (string) json_encode(str_contains($url, 'author_id=') ? self::FILED : self::HELD);
+        });
+
+        $answer = $forge->open(involving: 'Frank Nägler', limit: 5);
+
+        $reads = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        self::assertCount(3, $reads, 'the union was not two reads and the count of what they share');
+        // The issue both reads carry is one row and counted once.
+        self::assertSame([14858, 23633, 89326], array_column($answer['results'], 'issue'));
+        self::assertSame(9, $answer['total'], '6 and 6 less the 3 both carry');
+        self::assertSame('involving', $answer['people'][0]['filter']);
+    }
+
+    /** What the author read answers, one row of it shared with the other. */
+    private const FILED = [
+        'issues' => [
+            ['id' => 14858, 'subject' => 'One', 'created_on' => '2005-07-11T10:22:33Z', 'updated_on' => '2026-01-23T08:11:00Z'],
+            ['id' => 23633, 'subject' => 'Two', 'created_on' => '2010-09-28T11:00:00Z', 'updated_on' => '2023-07-04T09:00:00Z'],
+        ],
+        'total_count' => 6,
+    ];
+
+    /** What the assignee read answers. */
+    private const HELD = [
+        'issues' => [
+            ['id' => 23633, 'subject' => 'Two', 'created_on' => '2010-09-28T11:00:00Z', 'updated_on' => '2023-07-04T09:00:00Z'],
+            ['id' => 89326, 'subject' => 'Three', 'created_on' => '2019-10-01T07:00:00Z', 'updated_on' => '2023-11-09T10:00:00Z'],
+        ],
+        'total_count' => 6,
+    ];
+
+    /**
+     * A person's history has no other words to narrow it by, so a page of 50
+     * out of 621 leaves the rest reachable by nothing — what answers it is how
+     * the set is distributed (`feedback/2026-08-19-134651`).
+     */
+    #[Test]
+    public function aBreakdownCountsTheWholeSetRatherThanAPageOfIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (!str_contains($url, '/issues.json')) {
+                return (string) json_encode(self::PROJECT);
+            }
+
+            return (string) json_encode(self::COUNTED);
+        });
+
+        $answer = $forge->open(status: 'all', reportedBy: 'Frank Nägler', breakdown: true);
+
+        $reads = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        // Nothing that decides which row to read, because no row comes back.
+        self::assertStringNotContainsString('include=', $reads[0]);
+        self::assertSame([], $answer['results']);
+        self::assertSame(3, $answer['breakdown']['read']);
+        self::assertTrue($answer['breakdown']['complete']);
+        self::assertSame(
+            [
+                ['dimension' => 'status', 'buckets' => [['name' => 'Closed', 'count' => 2], ['name' => 'New', 'count' => 1]], 'withheldBuckets' => 0, 'withheldCount' => 0],
+                ['dimension' => 'tracker', 'buckets' => [['name' => 'Bug', 'count' => 2], ['name' => 'Task', 'count' => 1]], 'withheldBuckets' => 0, 'withheldCount' => 0],
+                // An issue filed under no area is a bucket rather than a row
+                // left out, so the areas add up to what was read.
+                ['dimension' => 'category', 'buckets' => [['name' => 'Backend API', 'count' => 1], ['name' => 'Fluid', 'count' => 1], ['name' => 'none', 'count' => 1]], 'withheldBuckets' => 0, 'withheldCount' => 0],
+                ['dimension' => 'year', 'buckets' => [['name' => '2015', 'count' => 2], ['name' => '2024', 'count' => 1]], 'withheldBuckets' => 0, 'withheldCount' => 0],
+            ],
+            $answer['breakdown']['counts'],
+        );
+    }
+
+    /** What a counted read answers: the fields the four dimensions are read off. */
+    private const COUNTED = [
+        'issues' => [
+            [
+                'id' => 1,
+                'status' => ['name' => 'Closed'],
+                'tracker' => ['name' => 'Bug'],
+                'category' => ['name' => 'Fluid'],
+                'created_on' => '2015-03-01T10:00:00Z',
+            ],
+            [
+                'id' => 2,
+                'status' => ['name' => 'Closed'],
+                'tracker' => ['name' => 'Task'],
+                'created_on' => '2015-06-01T10:00:00Z',
+            ],
+            [
+                'id' => 3,
+                'status' => ['name' => 'New'],
+                'tracker' => ['name' => 'Bug'],
+                'category' => ['name' => 'Backend API'],
+                'created_on' => '2024-01-01T10:00:00Z',
+            ],
+        ],
+        'total_count' => 3,
+    ];
+
+    /**
+     * A hundred rows is what one request answers, and a set larger than that is
+     * read page by page rather than counted off the first of them.
+     */
+    #[Test]
+    public function theCountedReadPagesUntilTheWholeMatchedSetIsRead(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            if (str_contains($url, '/issues.json')) {
+                $asked[] = $url;
+
+                return (string) json_encode(['issues' => [], 'total_count' => 150]);
+            }
+
+            return (string) json_encode(self::PROJECT);
+        });
+
+        $forge->open(breakdown: true);
+
+        self::assertCount(2, $asked);
+        self::assertStringContainsString('limit=100', $asked[0]);
+        self::assertStringContainsString('offset=100', $asked[1]);
+    }
+
+    /**
+     * A read that stops is a shape of one end of the set, and a caller reading
+     * proportions off it would be reading them off the oldest thousand.
+     */
+    #[Test]
+    public function aBreakdownSaysWhereTheBoundCutTheRead(): void
+    {
+        $reads = 0;
+        $forge = new Forge(function (string $url) use (&$reads): string {
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (!str_contains($url, '/issues.json')) {
+                return (string) json_encode(self::PROJECT);
+            }
+            $reads++;
+
+            return (string) json_encode([
+                'issues' => [['id' => $reads, 'status' => ['name' => 'Closed'], 'created_on' => '2015-01-01T00:00:00Z']],
+                'total_count' => 5000,
+            ]);
+        });
+
+        $answer = $forge->open(status: 'all', reportedBy: 'Frank Nägler', breakdown: true);
+
+        self::assertSame(10, $reads, 'the read is not bounded');
+        self::assertFalse($answer['breakdown']['complete']);
+        self::assertSame(5000, $answer['total']);
+        self::assertSame(10, $answer['breakdown']['read']);
+    }
+
+    /**
+     * The tail of an area count is subsystems holding one issue each, and what
+     * it says is already said by the head. What it is not is silently dropped.
+     */
+    #[Test]
+    public function theLargestBucketsAreAnsweredAndTheTailIsCounted(): void
+    {
+        $issues = [];
+        foreach (range(1, 20) as $number) {
+            $issues[] = [
+                'id' => $number,
+                'category' => ['name' => 'Area ' . $number],
+                'created_on' => '2015-01-01T00:00:00Z',
+            ];
+        }
+        $forge = new Forge(static fn(string $url): string => (string) json_encode(
+            str_contains($url, '/issues.json') ? ['issues' => $issues, 'total_count' => 20] : self::PROJECT,
+        ));
+
+        $areas = $forge->open(breakdown: true)['breakdown']['counts'][2];
+
+        self::assertCount(12, $areas['buckets']);
+        self::assertSame(8, $areas['withheldBuckets']);
+        self::assertSame(8, $areas['withheldCount']);
+    }
+
+    /**
+     * The areas are 54 names, and on a call that passed no category they are 54
+     * names nobody asked for — three times over in one session
+     * (`feedback/2026-08-19-134717`).
+     */
+    #[Test]
+    public function theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        self::assertSame([], $forge->open('oldest', '', '', '', '', 2)['categories']);
+        self::assertSame([], $forge->open('oldest', '', 'rte', '', '', 2)['categories'], 'a word that resolved to one area');
+        // The two it does the work on: a word naming none, and a word naming
+        // several, where what to ask instead is what the list answers.
+        self::assertContains('Frontend', $forge->open('oldest', '', 'quantumflux', '', '', 2)['categories']);
+        self::assertContains('Frontend', $forge->open('oldest', '', 'backend', '', '', 2)['categories']);
+    }
 }

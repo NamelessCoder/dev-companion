@@ -34,7 +34,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -96,12 +96,22 @@ final class ForgeLookup extends ReadOnlyTool
                 'reportedBy' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Only issues this person filed, by their name rather than by a tracker id: "Frank Nägler", or "nägler". This is what answers "what has this person reported" — query cannot, because it matches the text of an issue and a name in the text is as often somebody else writing it. The name is resolved here: against the core project\'s members, and against the people the issues carrying that name were filed by or handed to where the project holds no membership. A name reaching several people resolves to none of them and the answer says which they were, because merging two people into one backlog is a set nothing about it says is wrong. Pair it with status "all" for everything somebody has ever filed. Narrows open and is ignored by issue and query.',
+                    'description' => 'Only issues this person filed, by their name rather than by a tracker id: "Frank Nägler", or "nägler". This is what answers "what has this person reported" — query cannot, because it matches the text of an issue and a name in the text is as often somebody else writing it. The name is resolved here: against the core project\'s members, and against the people the issues carrying that name were filed by or handed to where the project holds no membership. A name reaching several people resolves to none of them and the answer says which they were, because merging two people into one backlog is a set nothing about it says is wrong. Pair it with status "all" for everything somebody has ever filed, and with breakdown for the shape of it rather than the first page. What they filed is not everything of theirs: involving is the union of this and assignedTo. Narrows open and is ignored by issue and query.',
                 ],
                 'assignedTo' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Only issues this person holds, by their name, resolved the same way as reportedBy. The two answer different questions — what somebody reported is their history, what they are assigned is what they are on the hook for — and an assignee on an old issue is usually who last touched it rather than who is working on it. Narrows open and is ignored by issue and query.',
+                    'description' => 'Only issues this person holds, by their name, resolved the same way as reportedBy. The two answer different questions — what somebody reported is their history, what they are assigned is what they are on the hook for — and an assignee on an old issue is usually who last touched it rather than who is working on it. For both at once ask involving, which is their union; passing both of these is the issues somebody filed and holds. Narrows open and is ignored by issue and query.',
+                ],
+                'involving' => [
+                    'type' => 'string',
+                    'minLength' => 1,
+                    'description' => 'Only issues this person is on either side of — what they filed and what they hold, as one set. This is "issues von X" the way somebody says it out loud, and it is the one the tracker cannot be asked: it ANDs its filters, so reportedBy and assignedTo together mean issues somebody filed AND holds, which is a set nobody wants. Passed instead of those two, not beside them. Every row still says which side it came in on, so a union is read without asking twice and without merging by hand. Narrows open and is ignored by issue and query.',
+                ],
+                'breakdown' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'description' => 'Answer how the matched set is distributed instead of the rows of it: how many issues per status, per tracker, per area and per year. For a person this is the answer rather than a summary of it — "621 filed, 617 closed, 4 open, concentrated 2014-2016, mostly Backend User Interface" says what a page of 50 out of 621 cannot, and limit caps at 50 with nothing reaching past it. Ask for it whenever the question is what somebody or some area has been about, and ask for the rows once it is which issue to read. It costs a read per hundred issues and stops at a thousand, saying so where it did. Narrows open and is ignored by issue and query.',
                 ],
                 'status' => [
                     'type' => 'string',
@@ -114,7 +124,7 @@ final class ForgeLookup extends ReadOnlyTool
                     'minimum' => 1,
                     'maximum' => 50,
                     'default' => 15,
-                    'description' => 'How many entries come back. A search answers with at most 25 whatever is asked for, because a set that has to be paged through is answered by other words rather than by more of these.',
+                    'description' => 'How many entries come back. A search answers with at most 25 whatever is asked for, because a set that has to be paged through is answered by other words rather than by more of these. Nothing reaches past 50 and there is no offset: what answers a matched set larger than that is breakdown, which says how the whole of it is distributed.',
                 ],
             ],
             'oneOf' => [
@@ -130,18 +140,36 @@ final class ForgeLookup extends ReadOnlyTool
         return Schema::object([
             'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
             'source' => Schema::string('The tracker the answer came from.'),
-            'url' => Schema::string('What was read, so the same question can be asked again by hand.'),
+            'url' => Schema::string('What was read, so the same question can be asked again by hand. A union is two reads and both are named, separated by a space.'),
             'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number and where the open issues were enumerated.'),
             'total' => Schema::integer('How many issues matched in total, of which results carries at most limit. Where the two differ the answer is a page and not the set, and asking for more of it is a narrower filter rather than a bigger limit. Zero where an issue was read by number.'),
-            'categories' => Schema::listOf(Schema::string(), 'Every area the core files its issues under, read from the project itself. Answered on every enumeration, so a category word that matched none is corrected from the answer rather than from a second call. Empty where an issue was read by number and where words were searched for.'),
+            'categories' => Schema::listOf(Schema::string(), 'Every area the core files its issues under, read from the project itself, so a category word that matched none or several is corrected from the answer rather than from a second call. Answered where a category word was passed and did not resolve to exactly one area, which is the only call it does that work on. Empty otherwise, which is not a statement about the project — typo3_server_scope carries the vocabulary for a caller that wants it without a question.'),
             'categoriesUsed' => Schema::listOf(Schema::string(), 'The categories the category word resolved to, in the tracker\'s own spelling. Empty where none was asked for — and empty where the word matched none, which is answered as no issues and is a statement about the word rather than about the backlog.'),
             'people' => Schema::listOf(Schema::object([
-                'filter' => ['type' => 'string', 'enum' => ['reportedBy', 'assignedTo'], 'description' => 'Which of the two the entry answers for.'],
+                'filter' => ['type' => 'string', 'enum' => ['reportedBy', 'assignedTo', 'involving'], 'description' => 'Which argument the entry answers for.'],
                 'asked' => Schema::string('The name that was passed, as it was passed.'),
                 'name' => Schema::string('The person it resolved to, in the tracker\'s own spelling. Empty where it resolved to nobody, which is answered as no issues and is a statement about the name rather than about the backlog.'),
                 'id' => Schema::integer('The tracker\'s own user id, which is what it filters by and the only thing it takes. Zero where the name resolved to nobody.'),
                 'candidates' => Schema::listOf(Schema::string(), 'The people the name could have meant, where it reached more than one. A name reaching two resolves to neither and nothing is read: merging two people into one backlog is a wrong answer nothing about it says is wrong. Ask again with one of these. Empty where the name resolved, and empty where nothing here carries it — which is a name this server cannot place rather than a person who has filed nothing.'),
-            ], ['filter', 'asked', 'name', 'id', 'candidates']), 'What reportedBy and assignedTo resolved to, one entry per name the call carried, in that order. A name is resolved against the core project\'s members and, where they hold no membership, against the people the issues carrying that name were filed by or handed to. Empty where no name was passed.'),
+            ], ['filter', 'asked', 'name', 'id', 'candidates']), 'What reportedBy, assignedTo and involving resolved to, one entry per name the call carried, in that order. A name is resolved against the core project\'s members and, where they hold no membership, against the people the issues carrying that name were filed by or handed to. Empty where no name was passed.'),
+            'breakdown' => [
+                'type' => ['object', 'null'],
+                'description' => 'How the matched set is distributed, where breakdown was asked for. Null otherwise, and null where nothing matched.',
+                'properties' => [
+                    'read' => Schema::integer('How many issues the counts are over. Equal to total where the whole set was read.'),
+                    'complete' => ['type' => 'boolean', 'description' => 'Whether that is the whole matched set. False where the bound cut the read, and then the counts are of the first read issues in the order asked for — the oldest of them, or the longest untouched — which is a shape of that end and not of the set. Narrow the filters for the whole one.'],
+                    'counts' => Schema::listOf(Schema::object([
+                        'dimension' => ['type' => 'string', 'enum' => ['status', 'tracker', 'category', 'year'], 'description' => 'What the issues are counted by. year is the year they were filed in.'],
+                        'buckets' => Schema::listOf(Schema::object([
+                            'name' => Schema::string('The value, or "none" for the issues that carry none — an issue filed under no area is a bucket rather than a row left out, so the buckets add up to read.'),
+                            'count' => Schema::integer(),
+                        ], ['name', 'count']), 'The largest buckets first, and by name where two are the same size.'),
+                        'withheldBuckets' => Schema::integer('How many further buckets this dimension has, zero where it has none. The tail of an area count is subsystems holding one issue each.'),
+                        'withheldCount' => Schema::integer('How many issues those hold together, so the listed buckets and this add up to read.'),
+                    ], ['dimension', 'buckets', 'withheldBuckets', 'withheldCount']), 'One entry per dimension, always the four.'),
+                ],
+                'required' => ['read', 'complete', 'counts'],
+            ],
             'issue' => [
                 'type' => ['object', 'null'],
                 'description' => 'The issue, where status says answered and a number was asked for. Null otherwise.',
@@ -211,7 +239,7 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 'required' => ['cause', 'reason'],
             ],
-        ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'people', 'issue', 'results', 'unavailable']);
+        ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
     }
 
     /**
@@ -259,6 +287,7 @@ final class ForgeLookup extends ReadOnlyTool
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 15;
         $reportedBy = is_string($args['reportedBy'] ?? null) ? trim($args['reportedBy']) : '';
         $assignedTo = is_string($args['assignedTo'] ?? null) ? trim($args['assignedTo']) : '';
+        $involving = is_string($args['involving'] ?? null) ? trim($args['involving']) : '';
 
         if ($issue !== '') {
             return self::read($issue, is_string($args['notes'] ?? null) ? trim($args['notes']) : 'all');
@@ -267,7 +296,7 @@ final class ForgeLookup extends ReadOnlyTool
         // so. Passing one without `open` is a call no schema allows, and what a
         // client that validates nothing would otherwise reach is a search for
         // the empty string rather than the question it plainly asked.
-        if ($open !== '' || $reportedBy !== '' || $assignedTo !== '') {
+        if ($open !== '' || $reportedBy !== '' || $assignedTo !== '' || $involving !== '') {
             return self::enumerated(
                 $open !== '' ? $open : 'oldest',
                 is_string($args['tracker'] ?? null) ? trim($args['tracker']) : '',
@@ -278,6 +307,8 @@ final class ForgeLookup extends ReadOnlyTool
                 is_string($args['status'] ?? null) ? trim($args['status']) : 'open',
                 $reportedBy,
                 $assignedTo,
+                $involving,
+                ($args['breakdown'] ?? false) === true,
             );
         }
 
@@ -319,6 +350,7 @@ final class ForgeLookup extends ReadOnlyTool
             'categories' => [],
             'categoriesUsed' => [],
             'people' => [],
+            'breakdown' => null,
             'issue' => $answer['issue'],
             'results' => [],
             'unavailable' => self::unreachable($answer['cause']),
@@ -449,6 +481,7 @@ final class ForgeLookup extends ReadOnlyTool
             'categories' => [],
             'categoriesUsed' => [],
             'people' => [],
+            'breakdown' => null,
             'issue' => null,
             'results' => $answer['results'],
             'unavailable' => self::unreachable($answer['cause']),
@@ -502,6 +535,54 @@ final class ForgeLookup extends ReadOnlyTool
     }
 
     /**
+     * The shape of a set rather than a page of it, which for a person is the
+     * answer and not a summary of one.
+     *
+     * A page of 50 out of 621 leaves the rest reachable by nothing: there are
+     * no other words to narrow a person's history by, and every filter that
+     * would make it fit answers a smaller question than the one asked
+     * (`feedback/2026-08-19-134651`).
+     *
+     * @param array<string, mixed> $breakdown
+     */
+    private static function shaped(array $breakdown, int $total, string $selection): string
+    {
+        $lines = [
+            sprintf('TYPO3 issue tracker: %d %s', $total, $selection),
+            $breakdown['complete']
+                ? sprintf('Counted over all %d of them, as the shape of the set rather than its rows.', $breakdown['read'])
+                : sprintf(
+                    'Counted over %d of %d — the read stops there. That is one end of the set and not a shape of the'
+                        . ' whole of it, so narrow the filters before reading anything off the proportions.',
+                    $breakdown['read'],
+                    $total,
+                ),
+            'Ask again without breakdown, narrowed to the part this points at, for the issues themselves.',
+        ];
+        foreach ($breakdown['counts'] as $counted) {
+            $named = implode(' · ', array_map(
+                static fn(array $bucket): string => $bucket['name'] . ' ' . $bucket['count'],
+                $counted['buckets'],
+            ));
+            $lines[] = sprintf(
+                '%s: %s%s',
+                match ($counted['dimension']) {
+                    'status' => 'Status',
+                    'tracker' => 'Tracker',
+                    'category' => 'Area',
+                    default => 'Filed in',
+                },
+                $named !== '' ? $named : 'nothing',
+                $counted['withheldBuckets'] > 0
+                    ? sprintf(' · and %d more holding %d', $counted['withheldBuckets'], $counted['withheldCount'])
+                    : '',
+            );
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
      * How the selection names the person one of the two filters resolved to.
      *
      * @param list<array<string, mixed>> $people
@@ -510,7 +591,11 @@ final class ForgeLookup extends ReadOnlyTool
     {
         foreach ($people as $person) {
             if ($person['filter'] === $filter && $person['name'] !== '') {
-                return ($filter === 'reportedBy' ? 'filed by ' : 'assigned to ') . $person['name'];
+                return match ($filter) {
+                    'reportedBy' => 'filed by ',
+                    'assignedTo' => 'assigned to ',
+                    default => 'filed by or assigned to ',
+                } . $person['name'];
             }
         }
 
@@ -539,6 +624,8 @@ final class ForgeLookup extends ReadOnlyTool
         string $status,
         string $reportedBy,
         string $assignedTo,
+        string $involving,
+        bool $breakdown,
     ): ToolResult {
         $answer = (new Forge())->open(
             order: $order,
@@ -550,6 +637,8 @@ final class ForgeLookup extends ReadOnlyTool
             status: $status,
             reportedBy: $reportedBy,
             assignedTo: $assignedTo,
+            involving: $involving,
+            breakdown: $breakdown,
         );
 
         $data = [
@@ -561,6 +650,7 @@ final class ForgeLookup extends ReadOnlyTool
             'categories' => $answer['categories'],
             'categoriesUsed' => $answer['categoriesUsed'],
             'people' => $answer['people'],
+            'breakdown' => $answer['breakdown'],
             'issue' => null,
             'results' => $answer['results'],
             'unavailable' => self::unreachable($answer['cause']),
@@ -571,6 +661,7 @@ final class ForgeLookup extends ReadOnlyTool
             $answer['categoriesUsed'] !== [] ? 'in ' . implode(' and ', $answer['categoriesUsed']) : '',
             self::filedBy($answer['people'], 'reportedBy'),
             self::filedBy($answer['people'], 'assignedTo'),
+            self::filedBy($answer['people'], 'involving'),
             $createdBefore !== '' ? 'filed before ' . $createdBefore : '',
             $updatedBefore !== '' ? 'untouched since ' . $updatedBefore : '',
         ]));
@@ -628,15 +719,28 @@ final class ForgeLookup extends ReadOnlyTool
             );
         }
 
+        if ($answer['breakdown'] !== null) {
+            return ToolResult::create(self::shaped($answer['breakdown'], $answer['total'], $selection), $data);
+        }
+
         $shown = count($answer['results']);
         $lines = [
             sprintf('TYPO3 issue tracker: %d of %d %s', $shown, $answer['total'], $selection),
         ];
-        $lines[] = $shown < $answer['total']
-            ? 'This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one'
-                . ' tracker — rather than by a larger limit, because the order is the tracker\'s own and more of it is more'
-                . ' of the same end.'
-            : 'That is the whole set on these filters.';
+        if ($shown >= $answer['total']) {
+            $lines[] = 'That is the whole set on these filters.';
+        } elseif ($answer['people'] !== []) {
+            // A backlog is narrowed by other words and a person's history is
+            // not: every filter that would make it fit answers a smaller
+            // question than the one asked (`feedback/2026-08-19-134651`).
+            $lines[] = 'This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which'
+                . ' answers how the whole set is distributed — there are no other words to narrow a person by, and a'
+                . ' tracker or a date answers a smaller question than the one asked.';
+        } else {
+            $lines[] = 'This is a page and not the set. What comes after it is reached by a narrower filter — an earlier'
+                . ' date, one tracker — rather than by a larger limit, because the order is the tracker\'s own and more of'
+                . ' it is more of the same end. breakdown answers how the whole of it is distributed.';
+        }
         $lines[] = 'Age is a candidate and never a finding: read one whole by passing its number as issue, and what it'
             . ' still claims is established in the checkout rather than off this list.';
         $lines[] = 'A row carries what the page came back with: the issues it is filed against, the files hanging off'

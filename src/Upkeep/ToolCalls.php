@@ -179,6 +179,21 @@ final class ToolCalls
                 'open' => 'oldest',
                 'assignedTo' => 'daniel',
             ]],
+            // What somebody says out loud, which the tracker cannot be asked:
+            // it ANDs its filters, so the union is two reads and a merge.
+            'forge: everything one person has touched' => ['typo3_forge_lookup', [
+                'open' => 'stale',
+                'involving' => 'Frank Nägler',
+                'limit' => 3,
+            ]],
+            // The answer to a set of 621 that no page and no other word
+            // reaches.
+            'forge: the shape of one person\'s history' => ['typo3_forge_lookup', [
+                'open' => 'oldest',
+                'involving' => 'Frank Nägler',
+                'status' => 'all',
+                'breakdown' => true,
+            ]],
             'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
                 'issue' => '110348',
                 'limit' => 3,

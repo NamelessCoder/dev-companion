@@ -1,7 +1,7 @@
 ---
 id: D-ANS-089
 date: 2026-08-19
-status: open
+status: confirmed
 ---
 
 # D-ANS-089 — A person is a filter on the backlog, and a name is resolved here
@@ -111,3 +111,19 @@ different question with the same shape.
 - `ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog`
 - `ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach`
 - `ForgeTest::aRowSaysWhoFiledIt`
+
+## Confirmed on 2026-08-19
+
+The first session to use it resolved a name on its first call and said which
+three things carried the answer — `feedback/archive/2026-08-19-134731`. The
+`people` block told it who the name resolved to and that nobody else was in the
+running, and it reports the empty `candidates` as what made it state the count
+as fact rather than hedge it; the umlaut round-tripped. `total` beside a capped
+page let it report 621 honestly. The sentence in `status` saying an enumeration
+that hides the closed ones "answers 4 where the number is 621" is what made it
+pass `all` — it names the number the session then got, and it asks that the
+wording be kept rather than abstracted.
+
+That answers the third **Wrong if** in the other direction: the filters were
+used the day after they were built. What the same session found missing is
+`D-ANS-090`, which is about the size of the set rather than about the name.

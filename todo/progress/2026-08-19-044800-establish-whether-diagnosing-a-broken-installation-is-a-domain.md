@@ -2,6 +2,8 @@
 
 **Serves:** skills/, D-SKL-005
 **Priority:** normal
+**Branch:** todo/establish-whether-diagnosing-a-broken-installation-is-a-domain
+**Claimed:** 2026-08-19
 
 Three of the seventeen tasks in the same benchmark were one shape — a page
 answers with an error or renders the wrong thing, and the request is the file

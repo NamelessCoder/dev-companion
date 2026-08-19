@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-033
 **Priority:** normal
+**Branch:** todo/weigh-where-the-task-guide-sentence-sits-in-the-instructions
+**Claimed:** 2026-08-19
 
 The benchmark of 2026-08-19 called `typo3_project_describe` eleven times and
 `typo3_task_guide` once across seventeen project tasks in one client. Both are

@@ -2,6 +2,8 @@
 
 **Serves:** scenarios/contracts/, D-GUI-015
 **Priority:** normal
+**Branch:** todo/reach-the-documentation-half-of-a-two-workflow-task
+**Claimed:** 2026-08-19
 
 `SKILL-07` is a task that crosses from one workflow to another — build the
 backend module, then document the extension — and only the first half arrives.

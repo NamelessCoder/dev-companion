@@ -2,6 +2,8 @@
 
 **Serves:** D-ANS-087
 **Priority:** normal
+**Branch:** todo/weigh-the-scope-answer-against-what-a-caller-asks-it-for
+**Claimed:** 2026-08-19
 
 `typo3_server_scope` answers 86,061 characters in one call — twelve times
 `typo3_project_describe`, and the heaviest thing this server hands over.

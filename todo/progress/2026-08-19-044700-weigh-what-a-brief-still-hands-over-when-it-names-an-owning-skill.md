@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-018, D-SKL-013
 **Priority:** normal
+**Branch:** todo/weigh-what-a-brief-still-hands-over-when-it-names-an-owning-skill
+**Claimed:** 2026-08-19
 
 In the one measured run where `typo3_task_guide` named an owning skill, the same
 answer carried the whole hint block for the intents it confirmed — registering a

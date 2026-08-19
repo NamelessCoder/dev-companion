@@ -94,6 +94,10 @@ final class ToolCalls
     {
         return [
             'scope' => ['typo3_server_scope', []],
+            // The two forms side by side, because what the second one is for is
+            // the difference between them: the same call asking only whether an
+            // installation and its console can be reached.
+            'scope: one section' => ['typo3_server_scope', ['sections' => ['installation']]],
             'rules: hit' => ['typo3_rule_lookup', ['query' => 'deprecation']],
             'rules: miss' => ['typo3_rule_lookup', ['query' => 'quantum entanglement pineapple']],
             'scripts: hit' => ['typo3_script_lookup', ['task' => 'functional tests']],

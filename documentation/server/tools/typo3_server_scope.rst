@@ -6,7 +6,9 @@
 Orientation for this server: what it covers and at which depth, what it
 deliberately does not cover, and which tool to call when. Start here when it is
 unclear whether this server can answer a question at all, or which of the
-lookups is the right one. Answers from: knowledge, installation.
+lookups is the right one. It answers whole, which is the largest answer here.
+Where you know which part you need — whether an installation and its console can
+be reached, say — name it in sections. Answers from: knowledge, installation.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -16,7 +18,14 @@ Answers from :ref:`knowledge <answer-sources-knowledge>`,
 Takes
 -----
 
-Nothing.
+.. code-block:: yaml
+
+    # The parts of the answer to return, named by the fields they arrive in. Omit it
+    # for all of them, which is the answer for a caller that does not yet know what
+    # this server can be asked. Whatever you name, the answer keeps the purpose, the
+    # instructions clients receive at initialize time, and the tools your list is
+    # missing. The withheld field says what each part left out would have held.
+    sections: [string]  # optional
 
 Answers with
 ------------
@@ -27,7 +36,7 @@ Answers with
     purpose: string
     # The boundary statement clients receive at initialize time.
     instructions: string  # optional
-    covers:
+    covers:  # optional
       - topic: string
         # How deeply the topic is covered.
         depth: string
@@ -38,7 +47,7 @@ Answers with
         # for. core: the contribution process and the scripts of that repository.
         # any: a convention that holds wherever TYPO3 is written.
         scope: string
-    doesNotCover:
+    doesNotCover:  # optional
       - topic: string
         why: string
         # What to do instead of asking this server.
@@ -46,12 +55,12 @@ Answers with
     checkoutDiscovery:  # optional
       - establish: string
         how: string
-    routing:
+    routing:  # optional
       - when: string
         call: string
     # The TYPO3 versions the knowledge is bound to. A statement outside a range is
     # left out when a target version is known.
-    versions:
+    versions:  # optional
       - major: integer
         # The branch that line is verified against.
         branch: string
@@ -60,7 +69,7 @@ Answers with
     # Which tools are worth calling in the state this machine is in — nothing
     # running answers from knowledge and packages alone. Every tool states its own
     # sources at the foot of its description; this groups them the other way round.
-    answersFrom:
+    answersFrom:  # optional
       - # installation, packages, knowledge, network or checkout.
         source: string
         # What that source is, and what it cannot answer.
@@ -79,7 +88,7 @@ Answers with
       ignored: [string]  # optional
       # Environment variable that names them.
       variable: string
-    installation:
+    installation:  # optional
       # Whether there is an installation to read at all.
       found: boolean
       # Absolute path of the installation.
@@ -121,11 +130,18 @@ Answers with
         root: string
         # Environment variable that names the console command.
         console: string
+    # The parts this call did not ask for. A field named here is absent from this
+    # answer rather than empty, so a narrowed answer cannot be read as the whole
+    # one. Empty where sections was not passed, which is the whole orientation.
+    withheld:
+      - section: string
+        # What that part of the answer would have carried.
+        holds: string
 
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-19 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -220,7 +236,7 @@ Text:
     Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.
     Tools: typo3_hint_lookup, typo3_task_guide
     Source: knowledge/hints/ (any)
-    ## Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version
+    ## Task workflows for extension, sitepackage and project work: backend modules, content elements, the state of a whole package from the audit through to committed changes, judging one incoming change proposed against it, the content a distribution ships, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, and repairing what a TYPO3 major removed in a package or carrying it to another version
     The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-dev-companion install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.
     Tools: typo3_task_guide
     Source: typo3://skill/typo3-backend-module-development/SKILL.md, typo3://skill/typo3-content-element-development/SKILL.md, typo3://skill/typo3-development-installation/SKILL.md, typo3://skill/typo3-distribution-content/SKILL.md, typo3://skill/typo3-extension-documentation/SKILL.md, typo3://skill/typo3-extension-health/SKILL.md, typo3://skill/typo3-extension-patch-review/SKILL.md, typo3://skill/typo3-extension-testing/SKILL.md, typo3://skill/typo3-extension-upgrade/SKILL.md (any)
@@ -550,7 +566,7 @@ Data:
                 "scope": "any"
             },
             {
-                "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, working a review off into committed changes, and repairing what a TYPO3 major removed in a package or carrying it to another version",
+                "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, the state of a whole package from the audit through to committed changes, judging one incoming change proposed against it, the content a distribution ships, documentation, tests and static analysis, bringing the local development installation into existence and running the one that already answers, and repairing what a TYPO3 major removed in a package or carrying it to another version",
                 "depth": "The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-dev-companion install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.",
                 "tools": [
                     "typo3_task_guide"
@@ -986,5 +1002,99 @@ Data:
                 "root": "TYPO3_DEV_COMPANION_ROOT",
                 "console": "TYPO3_DEV_COMPANION_CONSOLE"
             }
-        }
+        },
+        "withheld": []
+    }
+
+scope: one section
+~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "sections": [
+            "installation"
+        ]
+    }
+
+Text:
+
+.. code-block:: text
+
+    A development companion for coding agents working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It establishes the project and installation the agent is working in, supplies current, version-bound TYPO3 knowledge, and hands task-specific workflows to the skills that own them so the agent can implement, review, and verify the work. Scope answers describe what is present without treating it as correct; the knowledge and skills supply the conventions that apply, so code found in one installation is not repeated as a pattern merely because it runs. They cover how TYPO3's subsystems are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. The server also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Where that installation does not boot, or does not exist yet, the bundled knowledge and the installed packages answer instead, and the answer says which of them it came from and what that leaves out. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.
+
+    Query this server in English, whatever language you are speaking with the user. Its knowledge is written in English and its matching is lexical, so a query in another language reaches only the words the two happen to share and otherwise comes back empty.
+
+    Found the TYPO3 installation at <installation> (core-checkout, found by walking up, from <installation>), which holds 36 packages. If that is not the installation you are working on, this server was started in the wrong directory — or set TYPO3_DEV_COMPANION_ROOT to the one you mean.
+    Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
+
+    Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, executed, or looked up online.
+    The one exception is typo3_feedback_record, this server's only write: it creates a new markdown feedback under feedback/ and touches nothing else. Missing something that belongs here? Leave feedback about it.
+
+    Left out, because this call named sections: covers, doesNotCover, checkoutDiscovery, routing, versions, answersFrom. Ask again naming those, or call this tool with no arguments for the whole orientation.
+
+Data:
+
+.. code-block:: json
+
+    {
+        "purpose": "A development companion for coding agents working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It establishes the project and installation the agent is working in, supplies current, version-bound TYPO3 knowledge, and hands task-specific workflows to the skills that own them so the agent can implement, review, and verify the work. Scope answers describe what is present without treating it as correct; the knowledge and skills supply the conventions that apply, so code found in one installation is not repeated as a pattern merely because it runs. They cover how TYPO3's subsystems are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. The server also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Where that installation does not boot, or does not exist yet, the bundled knowledge and the installed packages answer instead, and the answer says which of them it came from and what that leaves out. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.",
+        "instructions": "Start every task with typo3_project_describe: the installation's TYPO3 version, the extensions that are the project's own, the sites it configures, and the commands the repository actually declares — a check you recommend that the repository does not declare is a wrong answer however sensible it sounds. typo3_task_guide then gives the workflow the task belongs to, and hands the parts that have their own workflow to the skill that owns them. Not every task ends in a patch: triaging the backlog, whether a report still reproduces, and what a fix would cost are answered here. What changed, which branch you are on, and whether a path still exists are yours to read in the checkout.\n\nWhat to call for what:\n- backend markup or a CSS class: typo3_component_lookup with the targetVersion\n- a backend icon identifier: typo3_icon_lookup\n- a label, added or reworded: typo3_label_lookup with the XLF resource the consuming code uses; a match in another is not reusable\n- what a version broke, deprecated or added, on a major you have not built on lately: typo3_changelog_lookup\n- the commit message, in your own repository as much as in the core: typo3_commit_message_guide\n- the whole procedure, not one fact out of it: typo3_rule_lookup with a documentId typo3_project_describe lists\nGuessed, a class, an icon or a label fails only at runtime.\n\nAnswers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries its range.\n\nQuery this server in English whatever language you speak with the user: its matching is lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read.",
+        "excludedTools": {
+            "names": [],
+            "ignored": [],
+            "variable": "TYPO3_DEV_COMPANION_EXCLUDE_TOOLS"
+        },
+        "installation": {
+            "found": true,
+            "root": "<installation>",
+            "kind": "core-checkout",
+            "via": "discovery",
+            "startedFrom": "<installation>",
+            "searched": [
+                "<installation>"
+            ],
+            "packageCount": 36,
+            "misconfiguration": null,
+            "console": {
+                "reachable": false,
+                "via": null,
+                "php": null,
+                "command": null,
+                "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+                "caveat": null
+            },
+            "settings": {
+                "root": "TYPO3_DEV_COMPANION_ROOT",
+                "console": "TYPO3_DEV_COMPANION_CONSOLE"
+            }
+        },
+        "withheld": [
+            {
+                "section": "covers",
+                "holds": "what is covered, at which depth, and by which tool"
+            },
+            {
+                "section": "doesNotCover",
+                "holds": "what this server deliberately does not answer, and what to do instead"
+            },
+            {
+                "section": "checkoutDiscovery",
+                "holds": "what to establish in the checkout before the work, and how"
+            },
+            {
+                "section": "routing",
+                "holds": "which tool to call when"
+            },
+            {
+                "section": "versions",
+                "holds": "the TYPO3 versions this knowledge is bound to"
+            },
+            {
+                "section": "answersFrom",
+                "holds": "which source answers which tool, in the state this machine is in"
+            }
+        ]
     }

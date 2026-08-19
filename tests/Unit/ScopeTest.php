@@ -1769,6 +1769,84 @@ final class ScopeTest extends TestCase
         }
     }
 
+    /**
+     * `D-ANS-088`. The narrow form of the orientation answer, in the call
+     * `feedback/2026-08-17-205904` made and paid 11,000 tokens for.
+     *
+     * What that session was after is the binary question at the top of a build:
+     * is there an installation, and does its console answer. It got the whole
+     * catalogue, and reported the size as the cost rather than the answer as
+     * wrong.
+     */
+    #[Test]
+    public function aCallThatNamesOneSectionIsAnsweredWithThatSectionAlone(): void
+    {
+        Instance::discoverFrom(null);
+
+        $narrow = Registry::call('typo3_server_scope', ['sections' => ['installation']]);
+
+        self::assertArrayHasKey('installation', $narrow->data);
+        foreach (['covers', 'doesNotCover', 'checkoutDiscovery', 'routing', 'versions', 'answersFrom'] as $section) {
+            // Absent rather than empty: an empty covers reads as a server that
+            // covers nothing, and a caller cannot tell that from a narrowing.
+            self::assertArrayNotHasKey($section, $narrow->data, $section . ' came back on a call that did not ask');
+        }
+
+        // And it is legibly a part rather than the whole, in both halves.
+        self::assertSame(
+            ['covers', 'doesNotCover', 'checkoutDiscovery', 'routing', 'versions', 'answersFrom'],
+            array_column($narrow->data['withheld'], 'section'),
+        );
+        self::assertStringContainsString('Left out, because this call named sections', $narrow->text);
+
+        // The whole answer stays the whole answer, and says it withheld nothing.
+        $whole = Registry::call('typo3_server_scope', []);
+        self::assertSame([], $whole->data['withheld']);
+        self::assertLessThan(strlen($whole->text) / 10, strlen($narrow->text));
+    }
+
+    /**
+     * What no selection may take away.
+     *
+     * `R-SCO-009` keeps this tool out of the exclusion list because it is what
+     * tells a client why its tool list is shorter than the documentation says.
+     * A selection that could hide the same thing would be that hole reopened
+     * through the arguments, so the exclusion report is not one of the sections.
+     */
+    #[Test]
+    public function noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor(): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=typo3_icon_lookup');
+
+        $narrow = Registry::call('typo3_server_scope', ['sections' => ['versions']]);
+
+        self::assertSame(['typo3_icon_lookup'], $narrow->data['excludedTools']['names']);
+        self::assertStringContainsString('typo3_icon_lookup', $narrow->text);
+        // The purpose and the statement every client is handed at initialize
+        // time: the smallest complete account of the boundary there is.
+        self::assertNotSame('', $narrow->data['purpose']);
+        self::assertStringContainsString('What to call for what:', $narrow->data['instructions']);
+        // And the one mitigation for a corpus nothing else can answer for.
+        self::assertStringContainsString('in English', $narrow->text);
+    }
+
+    /**
+     * Naming none is the whole answer, which is the default because a caller
+     * that does not know what this server covers cannot name the part it wants
+     * — `D-ANS-087`.
+     */
+    #[Test]
+    public function namingNoSectionAnswersEverythingTheToolHas(): void
+    {
+        $whole = Registry::call('typo3_server_scope', []);
+        $named = Registry::call('typo3_server_scope', ['sections' => [
+            'covers', 'doesNotCover', 'checkoutDiscovery', 'routing', 'versions', 'answersFrom', 'installation',
+        ]]);
+
+        self::assertSame($whole->text, $named->text);
+        self::assertSame(array_keys($whole->data), array_keys($named->data));
+    }
+
     /** @return array<int, string> */
     private function toolNames(): array
     {

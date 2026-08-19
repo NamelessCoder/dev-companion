@@ -17,8 +17,8 @@ every task here starts in and why that order is not interchangeable.
 
 Then, for this workflow:
 
-- `typo3_server_scope` for the knowledge depth available and any tool the caller
-  excluded.
+- `typo3_server_scope` with `sections: ["covers"]` for the knowledge depth
+  available. What the caller excluded comes back whatever you name.
 - Decide whether this is a core patch, extension, or site task from the task and
   the affected paths. If the signals disagree, state the uncertainty; do not
   attach core-only checks to project work.
@@ -105,8 +105,8 @@ repository, and only an actual core patch leaves the argument at its default.
 
 This skill owns backend module registration, controllers, routes, and backend UI
 implementation, up to the module being opened. Test infrastructure is
-`typo3-extension-testing`'s, a broader audit is `typo3-extension-health`'s,
-and the element in the page module is `typo3-content-element-development`'s —
-stop before implementing a content element or its backend preview, stop before
+`typo3-extension-testing`'s, a broader audit is `typo3-extension-health`'s, and
+the element in the page module is `typo3-content-element-development`'s — stop
+before implementing a content element or its backend preview, stop before
 editing any of those owners' files, and carry across the extension key, the
 target version and the behaviour already verified.

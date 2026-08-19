@@ -19,6 +19,28 @@ use TYPO3\DevCompanion\Server\ExcludedTools;
  */
 final class ServerScope extends ReadOnlyTool
 {
+    /**
+     * The parts of this answer a caller can ask for by name, each with what it
+     * holds, in the order the payload carries them.
+     *
+     * The names are the payload's own field names, so a caller asking again for
+     * one of them names the field it is already holding rather than a word
+     * invented for the parameter. What is not here is never withheld: the
+     * purpose, the initialize instructions and what the caller excluded —
+     * `R-SCO-009`.
+     *
+     * @var array<string, string>
+     */
+    private const SECTIONS = [
+        'covers' => 'what is covered, at which depth, and by which tool',
+        'doesNotCover' => 'what this server deliberately does not answer, and what to do instead',
+        'checkoutDiscovery' => 'what to establish in the checkout before the work, and how',
+        'routing' => 'which tool to call when',
+        'versions' => 'the TYPO3 versions this knowledge is bound to',
+        'answersFrom' => 'which source answers which tool, in the state this machine is in',
+        'installation' => 'which installation is being read, and whether its console answers',
+    ];
+
     public static function name(): string
     {
         return 'typo3_server_scope';
@@ -32,12 +54,31 @@ final class ServerScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Orientation for this server: what it covers and at which depth, what it deliberately does not cover, and which tool to call when. Start here when it is unclear whether this server can answer a question at all, or which of the lookups is the right one.';
+        return 'Orientation for this server: what it covers and at which depth, what it deliberately does not cover, and which tool to call when. Start here when it is unclear whether this server can answer a question at all, or which of the lookups is the right one. It answers whole, which is the largest answer here. Where you know which part you need — whether an installation and its console can be reached, say — name it in sections.';
     }
 
     public static function inputSchema(): array
     {
-        return self::noArguments();
+        return [
+            'type' => 'object',
+            'properties' => [
+                'sections' => [
+                    'type' => 'array',
+                    // The field names rather than a vocabulary of its own, and
+                    // without repeating what each one holds: the output schema
+                    // says that per field, and every answer says it again under
+                    // withheld for the parts that are not in it.
+                    'items' => ['type' => 'string', 'enum' => array_keys(self::SECTIONS)],
+                    'minItems' => 1,
+                    'description' => 'The parts of the answer to return, named by the fields they arrive in. '
+                        . 'Omit it for all of them, which is the answer for a caller that does not yet know what '
+                        . 'this server can be asked. Whatever you name, the answer keeps the purpose, the '
+                        . 'instructions clients receive at initialize time, and the tools your list is missing. '
+                        . 'The withheld field says what each part left out would have held.',
+                ],
+            ],
+            'additionalProperties' => false,
+        ];
     }
 
     public static function outputSchema(): array
@@ -102,11 +143,16 @@ final class ServerScope extends ReadOnlyTool
                     'console' => Schema::string('Environment variable that names the console command.'),
                 ], ['root', 'console']),
             ], ['found', 'searched', 'packageCount', 'console']),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'answersFrom', 'excludedTools', 'installation']);
+            'withheld' => Schema::listOf(Schema::object([
+                'section' => Schema::string(),
+                'holds' => Schema::string('What that part of the answer would have carried.'),
+            ], ['section', 'holds']), 'The parts this call did not ask for. A field named here is absent from this answer rather than empty, so a narrowed answer cannot be read as the whole one. Empty where sections was not passed, which is the whole orientation.'),
+        ], ['purpose', 'excludedTools', 'withheld']);
     }
 
     public static function answer(array $args): ToolResult
     {
+        $sections = self::selected($args);
         $coverage = Coverage::offered();
 
         $lines = [];
@@ -122,20 +168,20 @@ final class ServerScope extends ReadOnlyTool
             $lines[] = '';
         }
 
-        array_push(
-            $lines,
-            $coverage['purpose'],
-            '',
-            'Covered, and how deeply. Each topic says which kind of work its answers are for: core is the '
-            . 'contribution process and the scripts that belong to that repository, any is a convention that '
-            . 'holds wherever TYPO3 is written. Where the source names the installation, the answer is read '
-            . 'from the one this server was started in rather than from any snapshot.',
-        );
-        foreach ($coverage['covers'] as $entry) {
-            $lines[] = '## ' . $entry['topic'];
-            $lines[] = $entry['depth'];
-            $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
-            $lines[] = 'Source: ' . $entry['source'] . ' (' . $entry['scope']->value . ')';
+        $lines[] = $coverage['purpose'];
+
+        if (in_array('covers', $sections, true)) {
+            $lines[] = '';
+            $lines[] = 'Covered, and how deeply. Each topic says which kind of work its answers are for: core is the '
+                . 'contribution process and the scripts that belong to that repository, any is a convention that '
+                . 'holds wherever TYPO3 is written. Where the source names the installation, the answer is read '
+                . 'from the one this server was started in rather than from any snapshot.';
+            foreach ($coverage['covers'] as $entry) {
+                $lines[] = '## ' . $entry['topic'];
+                $lines[] = $entry['depth'];
+                $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
+                $lines[] = 'Source: ' . $entry['source'] . ' (' . $entry['scope']->value . ')';
+            }
         }
 
         $lines[] = '';
@@ -146,39 +192,116 @@ final class ServerScope extends ReadOnlyTool
             . 'knowledge is written in English and its matching is lexical, so a query in another language '
             . 'reaches only the words the two happen to share and otherwise comes back empty.';
 
-        $lines[] = '';
-        $lines[] = 'Versions this knowledge is bound to:';
-        foreach (Versions::covered() as $version) {
-            $lines[] = '- TYPO3 v' . $version['major'] . ' (' . $version['branch'] . ', ' . $version['status'] . ')';
-        }
-        $lines[] = 'A statement that does not hold on all of them carries the range it holds on. Pass targetVersion '
-            . 'to have the ones that do not apply left out; without it, the version of the installation being read '
-            . 'decides, and where there is none nothing is filtered.';
-
-        $lines[] = '';
-        // What the list is worth read from the other side. A caller cannot tell
-        // a boundary from a gap by the size of an answer, and the two ask for
-        // opposite reactions: leave, or say what was missing.
-        $lines[] = 'Deliberately not covered — and this list is the boundary: a subject that is not on it is in '
-            . 'scope, so a thin answer to it is a gap in the knowledge base rather than a limit of it.'
-            . (Channel::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
-        foreach ($coverage['doesNotCover'] as $entry) {
-            $lines[] = '## ' . $entry['topic'];
-            $lines[] = $entry['why'];
-            $lines[] = 'Instead: ' . $entry['instead'];
+        if (in_array('versions', $sections, true)) {
+            $lines[] = '';
+            $lines[] = 'Versions this knowledge is bound to:';
+            foreach (Versions::covered() as $version) {
+                $lines[] = '- TYPO3 v' . $version['major'] . ' (' . $version['branch'] . ', ' . $version['status'] . ')';
+            }
+            $lines[] = 'A statement that does not hold on all of them carries the range it holds on. Pass targetVersion '
+                . 'to have the ones that do not apply left out; without it, the version of the installation being read '
+                . 'decides, and where there is none nothing is filtered.';
         }
 
-        $lines[] = '';
-        $lines[] = 'Which tool to call when:';
-        foreach ($coverage['routing'] as $entry) {
-            $lines[] = '- ' . $entry['when'] . ' → ' . $entry['call'];
+        if (in_array('doesNotCover', $sections, true)) {
+            $lines[] = '';
+            // What the list is worth read from the other side. A caller cannot
+            // tell a boundary from a gap by the size of an answer, and the two
+            // ask for opposite reactions: leave, or say what was missing.
+            $lines[] = 'Deliberately not covered — and this list is the boundary: a subject that is not on it is in '
+                . 'scope, so a thin answer to it is a gap in the knowledge base rather than a limit of it.'
+                . (Channel::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
+            foreach ($coverage['doesNotCover'] as $entry) {
+                $lines[] = '## ' . $entry['topic'];
+                $lines[] = $entry['why'];
+                $lines[] = 'Instead: ' . $entry['instead'];
+            }
         }
 
-        // Which installation is being read is the one thing a caller cannot
-        // check for itself, and reading the wrong one would be worse than
-        // reading none — so it is stated, with where the search started.
+        if (in_array('routing', $sections, true)) {
+            $lines[] = '';
+            $lines[] = 'Which tool to call when:';
+            foreach ($coverage['routing'] as $entry) {
+                $lines[] = '- ' . $entry['when'] . ' → ' . $entry['call'];
+            }
+        }
+
+        // What the installation can be asked is a different question from
+        // whether one was found, and the answer is actionable often enough to
+        // belong here rather than in a failing tool call.
+        //
+        // Read once, and both halves of the answer are written from these
+        // locals. `reason()` and `caveat()` each re-enter `resolve()`, which no
+        // longer remembers a failed or caveated resolution (`R-DIS-009`), so
+        // every read of the console state pays a `ddev describe -j` of its own
+        // while the project is stopped. This answer made six of them, 2.648s
+        // against `.environments/e-site-13.4` with its project down on
+        // 2026-08-04. Two are left, 0.869s there: a failed resolution carries no
+        // caveat and a successful one carries no reason, so only one of the two
+        // is asked, and neither can be had from outside `Typo3Cli` without
+        // resolving again. Nothing changes where the resolution is remembered —
+        // one describe, 0.002s on the second call.
+        //
+        // Not resolved at all where the caller did not ask for this section:
+        // the two describes are the one part of this answer that costs seconds
+        // rather than bytes.
+        $wanted = in_array('installation', $sections, true);
+        $console = $wanted ? Typo3Cli::resolve() : null;
+        $reason = $wanted && $console === null ? Typo3Cli::reason() : '';
+        $caveat = $wanted && $console !== null ? Typo3Cli::caveat() : '';
+        if ($wanted) {
+            $lines[] = '';
+            array_push($lines, ...self::installationLines($console, $reason, $caveat));
+        }
+
+        $lines[] = '';
+        $lines[] = 'Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned '
+            . 'manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, '
+            . 'executed, or looked up online.';
+        if (Channel::isAvailable()) {
+            // Naming the one write next to the read-only claim, not after it:
+            // a blanket "everything is read-only" followed by a tool that
+            // creates a file contradicts both the annotations and the behaviour.
+            $lines[] = 'The one exception is typo3_feedback_record, this server\'s only write: '
+                . 'it creates a new markdown feedback under feedback/ and touches nothing else. '
+                . 'Missing something that belongs here? Leave feedback about it.';
+        }
+
+        if (in_array('answersFrom', $sections, true)) {
+            $lines[] = '';
+            $lines[] = 'Where the answers come from, which is what says whether a question can be asked at all right '
+                . 'now. Every tool states the same thing at the foot of its own description.';
+            foreach (self::answersFromReport() as $entry) {
+                $lines[] = '## Answers from ' . $entry['source'];
+                $lines[] = $entry['meaning'];
+                $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
+            }
+        }
+
+        $withheld = self::withheld($sections);
+        if ($withheld !== []) {
+            $lines[] = '';
+            $lines[] = 'Left out, because this call named sections: ' . implode(', ', array_column($withheld, 'section'))
+                . '. Ask again naming those, or call this tool with no arguments for the whole orientation.';
+        }
+
+        return ToolResult::create(implode("\n", $lines), self::payload($coverage, $sections, $console, $reason, $caveat));
+    }
+
+    /**
+     * Which installation is being read, and what it can be asked.
+     *
+     * It is the one thing a caller cannot check for itself, and reading the
+     * wrong one would be worse than reading none — so it is stated, with where
+     * the search started.
+     *
+     * @param array{command: array<int, string>, via: string, php: string}|null $console
+     * @return list<string>
+     */
+    private static function installationLines(?array $console, string $reason, string $caveat): array
+    {
+        $lines = [];
         $instance = Instance::describe();
-        $lines[] = '';
         if ($instance === null) {
             $lines[] = 'No TYPO3 installation was found from the directory this server was started in, so every answer '
                 . 'comes from the bundled knowledge base alone. Questions about what is registered in an '
@@ -216,24 +339,6 @@ final class ServerScope extends ReadOnlyTool
                 . Instance::misconfiguration() . '.';
         }
 
-        // What the installation can be asked is a different question from
-        // whether one was found, and the answer is actionable often enough to
-        // belong here rather than in a failing tool call.
-        //
-        // Read once, and both halves of the answer are written from these
-        // locals. `reason()` and `caveat()` each re-enter `resolve()`, which no
-        // longer remembers a failed or caveated resolution (`R-DIS-009`), so
-        // every read of the console state pays a `ddev describe -j` of its own
-        // while the project is stopped. This answer made six of them, 2.648s
-        // against `.environments/e-site-13.4` with its project down on
-        // 2026-08-04. Two are left, 0.869s there: a failed resolution carries no
-        // caveat and a successful one carries no reason, so only one of the two
-        // is asked, and neither can be had from outside `Typo3Cli` without
-        // resolving again. Nothing changes where the resolution is remembered —
-        // one describe, 0.002s on the second call.
-        $console = Typo3Cli::resolve();
-        $reason = $console === null ? Typo3Cli::reason() : '';
-        $caveat = $console === null ? '' : Typo3Cli::caveat();
         if ($instance !== null && $console === null) {
             $lines[] = 'Its console cannot be run right now, so questions that only the installation can answer — which '
                 . 'labels exist, which backend modules are registered — have no answer here: ' . $reason . '. '
@@ -260,38 +365,96 @@ final class ServerScope extends ReadOnlyTool
             $lines[] = 'Reachable is not the same as ready here: ' . $caveat . '.';
         }
 
-        $lines[] = '';
-        $lines[] = 'Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned '
-            . 'manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, '
-            . 'executed, or looked up online.';
-        if (Channel::isAvailable()) {
-            // Naming the one write next to the read-only claim, not after it:
-            // a blanket "everything is read-only" followed by a tool that
-            // creates a file contradicts both the annotations and the behaviour.
-            $lines[] = 'The one exception is typo3_feedback_record, this server\'s only write: '
-                . 'it creates a new markdown feedback under feedback/ and touches nothing else. '
-                . 'Missing something that belongs here? Leave feedback about it.';
-        }
+        return $lines;
+    }
 
-        $lines[] = '';
-        $lines[] = 'Where the answers come from, which is what says whether a question can be asked at all right '
-            . 'now. Every tool states the same thing at the foot of its own description.';
-        foreach (self::answersFromReport() as $entry) {
-            $lines[] = '## Answers from ' . $entry['source'];
-            $lines[] = $entry['meaning'];
-            $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
-        }
+    /**
+     * The answer as data, carrying the sections this call asked for.
+     *
+     * A section left out is absent rather than empty: an empty `covers` reads
+     * as a server that covers nothing, which is the failure
+     * `installationReport()` below was written for in its own field. What names
+     * the difference is `withheld`, which every answer carries.
+     *
+     * @param array{purpose: string, instructions: string, covers: array<int, mixed>, doesNotCover: array<int, mixed>, checkoutDiscovery: array<int, mixed>, routing: array<int, mixed>} $coverage
+     * @param list<string> $sections
+     * @param array{command: array<int, string>, via: string, php: string}|null $console
+     * @return array<string, mixed>
+     */
+    private static function payload(
+        array $coverage,
+        array $sections,
+        ?array $console,
+        string $reason,
+        string $caveat,
+    ): array {
+        $wanted = array_flip($sections);
 
-        return ToolResult::create(implode("\n", $lines), $coverage + [
-            'versions' => Versions::covered(),
+        return [
+            'purpose' => $coverage['purpose'],
+            'instructions' => $coverage['instructions'],
+            ...array_intersect_key([
+                'covers' => $coverage['covers'],
+                'doesNotCover' => $coverage['doesNotCover'],
+                'checkoutDiscovery' => $coverage['checkoutDiscovery'],
+                'routing' => $coverage['routing'],
+                'versions' => Versions::covered(),
+            ], $wanted),
             'excludedTools' => [
                 'names' => ExcludedTools::all(),
                 'ignored' => self::ignored(),
                 'variable' => ExcludedTools::VARIABLE,
             ],
-            'answersFrom' => self::answersFromReport(),
-            'installation' => self::installationReport($console, $reason, $caveat),
-        ]);
+            ...isset($wanted['answersFrom']) ? ['answersFrom' => self::answersFromReport()] : [],
+            ...isset($wanted['installation'])
+                ? ['installation' => self::installationReport($console, $reason, $caveat)]
+                : [],
+            'withheld' => self::withheld($sections),
+        ];
+    }
+
+    /**
+     * The sections this call asked for, in the order the answer carries them.
+     *
+     * Naming none is the whole answer, and that is the default because this is
+     * the tool for a caller who does not yet know what the server covers — one
+     * that cannot name the part it wants is choosing in its least informed
+     * moment, which is `D-ANS-087`. A caller that can name one has the question
+     * this tool was too large for.
+     *
+     * @param array<string, mixed> $args
+     * @return list<string>
+     */
+    private static function selected(array $args): array
+    {
+        $named = is_array($args['sections'] ?? null) ? $args['sections'] : [];
+        if ($named === []) {
+            return array_keys(self::SECTIONS);
+        }
+
+        return array_values(array_filter(
+            array_keys(self::SECTIONS),
+            static fn(string $section): bool => in_array($section, $named, true),
+        ));
+    }
+
+    /**
+     * What this call did not ask for, so a narrowed answer cannot be read as
+     * the whole one.
+     *
+     * @param list<string> $sections
+     * @return list<array{section: string, holds: string}>
+     */
+    private static function withheld(array $sections): array
+    {
+        $withheld = [];
+        foreach (self::SECTIONS as $section => $holds) {
+            if (!in_array($section, $sections, true)) {
+                $withheld[] = ['section' => $section, 'holds' => $holds];
+            }
+        }
+
+        return $withheld;
     }
 
     /**

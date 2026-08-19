@@ -14,11 +14,17 @@
     in the sense of `R-SKL-020`, which the author read as no, like
     `typo3-core-patch-review` and unlike the two skills that publish.
 
-    Asked on 2026-08-19 whether the review would be given now, and the answer
-    was yes. The first of the two questions of its own was answered in the same
-    breath — `typo3-extension-patch-review` is the name — and the second was
-    not, so where a review of a public pull request stands against `R-SKL-020`
-    is still to be asked.
+    The review was given on 2026-08-19 and is worked in, so what is left is
+    not it. The name was confirmed in the same breath, and the finding was the
+    crossing to `typo3-core-patch-review`: it never fires, because a change
+    against the core arrives on Gerrit rather than as a pull request against a
+    package, and the reviewer could name no case that would reach it. It is out
+    of the body, out of the description and out of the crossing map in
+    `SkillTest`. What the card waits on now is the baseline run `D-SKL-035` asks
+    of a new skill, which needs a client session in an environment the skills
+    are not installed into, and the room in the listing below. The second of the
+    two questions of its own was put again and not answered: where a review of a
+    public pull request stands against `R-SKL-020`.
 
 What the research established is at the foot of `D-SKL-063` rather than here,
 because it outlives this card. The queue behind the answer: work the review in,
@@ -26,6 +32,24 @@ delete the `metadata` declaration, write the intent that routes to it into
 `knowledge/task-intents.json` and the workflow into
 `knowledge/server-scope.json` in the same commit, check the listing budget
 `D-SKL-026` measures, and buy the baseline run `D-SKL-035` asks of a new skill.
+
+What the room costs, measured on 2026-08-19. The twelve published descriptions
+came to 3570 characters against a ceiling of 3600, and this entry cost 394. Two
+of the three step clauses `D-SKL-054` priced are out —
+`typo3-core-patch- development` and `typo3-core-issue-triage`, which keep their
+triggers and gave up 162 between them — and the third was left alone
+deliberately, because `D-SKL-026` records a session that did not activate
+`typo3-core-patch-checkout` after that very clause was cut. This skill's own
+description gave up its list of the body's five sections and now costs 350. So
+the twelve stand at 3408 and publishing would put the listing at 3759.
+
+**The gap is structural rather than a wording**: a ratchet set to what twelve
+descriptions cost forbids a thirteenth at any length. Put to the maintainer on
+2026-08-19 against raising the ratchet to 3760 and against trimming further, and
+the answer was to merge `typo3-extension-cleanup` and
+`typo3-extension- conformance` into one skill. That frees the room the way
+`D-SKL-054` named it, and it is its own work: `D-SKL-014` reads the two as two
+workflows, so what has to be read before anything is merged is why.
 
 Judged on 2026-08-18 as the ladder's step 1b and written up in `D-SKL-063`:
 nothing owns judging one change proposed against a package that is not the core,

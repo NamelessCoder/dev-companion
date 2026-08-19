@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-patch-review
-description: 'Judge one incoming change against a TYPO3 extension, sitepackage or project package — a GitHub pull request, a patch, a branch somebody proposes — and say what stops it being merged: the diff, the versions the package declares, the API it hand-rolls, its commit message, its checks. It stops at the verdict; the whole repository is typo3-extension-conformance''s, and a core patch on review.typo3.org is typo3-core-patch-review''s.'
+description: 'Judge one incoming change against a TYPO3 extension, sitepackage or project package — a GitHub pull request, a patch, a branch somebody proposes — and say what stops it being merged, from its versions to its commit message and its checks. It stops at the verdict; the whole repository is typo3-extension-conformance''s.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 metadata:
   typo3-dev-companion-status: draft
@@ -168,13 +168,7 @@ list a whole repository is read against, and running that list on one diff is
 what this workflow exists not to do. What crosses over is the paths and what was
 already established about them.
 
-**When the change turns out to be against the core, invoke
-`typo3-core-patch-review`.** A change on the core's review server is judged by
-the changelog entry, the issue reference and the target branch, and none of them
-is a property this workflow reads.
-
 This skill owns judging one change proposed against a package that is not the
 core, and it stops at the verdict. The whole repository belongs to
-`typo3-extension-conformance`, the committed changes that answer a finding to
-`typo3-extension-cleanup`, and anything on the core's review server to
-`typo3-core-patch-review`.
+`typo3-extension-conformance`, and the committed changes that answer a finding
+to `typo3-extension-cleanup`.

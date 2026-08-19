@@ -17,10 +17,14 @@
     `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer` asserts
     that a contract id has no skeleton at all.
 
-    Asked on 2026-08-19 whether the review would be given now, and the answer
-    was yes: `SKILL.md` was put to the maintainer whole, with the three
-    questions asked by name. What comes back is worked in before publication.
-    The run is untouched by that answer and is what the card still waits on.
+    The review was given on 2026-08-19 and returned nothing to work in.
+    `SKILL.md` was put to the maintainer whole, the three questions were asked
+    by name, and the four claims most likely to be untrue in an installation
+    were named with them — where the export puts the file, that only the whole
+    site configuration directory travels intact, that the import is remembered,
+    and that only the root page is rewritten. The answer was to start with it as
+    it stands, and no step was named missing or wrong. So what the card waits on
+    is the run alone.
 
 The contract case is written: `SKILL-14`, stating the task in a user's words and
 holding the four steps that report success while failing. It is `open` and turns

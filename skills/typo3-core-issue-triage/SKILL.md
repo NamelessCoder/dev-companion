@@ -1,6 +1,6 @@
 ---
 name: typo3-core-issue-triage
-description: 'Say what is still true about an open issue on forge.typo3.org: find candidates in the backlog, read what the report claims, and establish against the core checkout whether it still happens, was fixed, or was never a defect. Writing or reviewing a patch is other work.'
+description: 'Say what is still true about an open issue on forge.typo3.org: whether it still happens against the core checkout, was fixed, or was never a defect. Writing or reviewing a patch is other work.'
 compatibility: Needs the typo3-dev-companion MCP server, which owns every lookup this workflow routes to and publishes this skill together with the references/base.md it opens on. Install it from github.com/TYPO3/dev-companion and run typo3-dev-companion install in the project. A copy taken out of that repository's skills directory alone has neither the tools nor that base file.
 ---
 

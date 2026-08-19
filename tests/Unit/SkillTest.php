@@ -3377,10 +3377,13 @@ final class SkillTest extends TestCase
                 'typo3-extension-documentation',
             ],
             'typo3-extension-cleanup' => ['typo3-extension-conformance'],
+            // A change against the core arrives on Gerrit rather than as a
+            // pull request against a package, so this workflow has no case
+            // that reaches `typo3-core-patch-review` — the reviewer of
+            // 2026-08-19 could name none, and the crossing came out.
             'typo3-extension-patch-review' => [
                 'typo3-extension-cleanup',
                 'typo3-extension-conformance',
-                'typo3-core-patch-review',
             ],
             // The deprecation log a first boot writes is about the package's
             // code and not about the installation, and `071526` read it,

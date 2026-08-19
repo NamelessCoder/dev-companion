@@ -190,3 +190,24 @@ the same commit, which is what the paragraph above about `installation-setup`
 and `installation-operations` was waiting for. Both take `skill` and neither
 takes `skillCore`: setting a development installation up and putting a
 repository right are not core work.
+
+### 2026-08-19 — the first Wrong if, in another project and the same client
+
+The benchmark
+[`D-SKL-033`](skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md)
+records for that date carries one `typo3_task_guide` call among seventeen
+project tasks. It answered `skills: ["typo3-content-element-development"]` with
+the line this entry put above the payload, and the session went on through
+`typo3_schema_lookup`, `typo3_changelog_lookup` and Bash without a `Skill` call.
+
+That is this entry's first **Wrong if** in everything but the project: the same
+client and model, the line read, and no skill loaded. So the route is not the
+obstacle — the mapping is data, the intent matched, and the name arrived in the
+turn that asked for it. What is left to suspect is the channel, which the entry
+already said, and which `D-SKL-033` weighs on the same run.
+
+What is not established is the other half of the same bullet: whether a session
+that loaded the skill would have done the work differently. Nothing here has a
+run of that shape, and a route nobody follows and a route into the wrong
+workflow leave the same trace.
+

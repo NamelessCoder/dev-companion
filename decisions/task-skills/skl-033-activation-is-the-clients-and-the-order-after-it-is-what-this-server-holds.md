@@ -111,3 +111,42 @@ the tool the session did call, which is
 [`D-SKL-038`](skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md).
 The project's own instruction file is untried still, and stays what the third
 **Wrong if** watches for.
+
+### 2026-08-19 — the third Wrong if fired, and the channel it named is weighed
+
+A benchmark outside this repository, read on 2026-08-19: an equipped arm ran
+seventeen project tasks in Claude Code 2.1.234 on `claude-opus-5`, the client's
+own init event lists all twelve published skills beside the connected server,
+and `skills_used` is empty on every row of all four recorded sweeps — eighty-two
+runs. So the shape this entry counts to three arrived eighty-two times over, and
+what it counted is settled: the listing is delivered, described, and no skill is
+loaded.
+
+One of the seventeen called `typo3_task_guide`. It answered
+`skills: ["typo3-content-element-development"]` and the line `D-SKL-013` put
+above the payload, and the session went on through `typo3_schema_lookup`,
+`typo3_changelog_lookup` and Bash without a `Skill` call. A name delivered in a
+tool's own answer, in the turn that asked for it, is the shortest channel this
+server has, and it did not fire either.
+
+**The project's own agent instruction file is weighed here and not taken.** The
+same run called `typo3_project_describe` eleven times against `typo3_task_guide`
+once, so the `instructions` reached the model and its first imperative was acted
+on eleven times: the channel delivers. What would go into the instruction file
+is the sentence that rode after it in the same paragraph, written a second time
+on a channel that is already carrying it — and the run that would show it
+working is one where the instructions did not arrive at all, which is not this
+one.
+
+What the eleven to one names instead is the placement inside the `instructions`:
+`typo3_project_describe` is the imperative the paragraph opens on and
+`typo3_task_guide` follows it after a clause about declared commands. That is a
+sentence this server can move, where the instruction file is a file it would
+add, and it is queued rather than done here.
+
+The **Decided** bullet naming the channel as untried stands as the record of why
+it was untried, and this section is what it was waiting for. It stays untaken
+for a different reason than it was untried: not that nothing had met the third
+**Wrong if**, but that the run which met it also showed the channel beside it
+working.
+

@@ -5,15 +5,19 @@
 **Held by:**
 `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
 `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
-`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`;
+`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder` and
+`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout`, which holds
+the prompt below to the intent it is about rather than to a brief that names it;
 that a session actually hands over at that point is not guarded, and this case
 read by hand is what stands in for it (`D-EVI-002`)
 
-**Read 2026-08-19:** the prompt below is answered with
-`typo3-extension-health`, because `audit` fires on `reviewing` inside the
-subject the module is built for, and the documentation half reaches no
-documentation intent. That is a wrong answer rather than a silence, which is why
-`D-GUI-015` takes this case first.
+**Read 2026-08-19, and repaired the same day:** the prompt below was answered
+with the audit workflow, because `audit` fired on `reviewing` inside the subject
+the module is built for. The gerund is three needles now — `reviewing the`,
+`reviewing this`, `reviewing my` — so the word reaches the intent only where the
+thing being reviewed follows it, and the prompt confirms `backend-module` alone.
+The documentation half still reaches no documentation intent, which is what is
+left of `D-GUI-015` here.
 
 > Add a backend module for reviewing imported records, including the module
 > shell, status list and refresh action. Once it works, document the public

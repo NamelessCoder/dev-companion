@@ -4,12 +4,16 @@
 their own · **Contract:** `open` — `R-SKL-004`, `D-SKL-002`
 **Held by:** `SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList`
 and `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`, which
-read back the wording that builds the list and the wording that closes on it;
-that a session given a focused prompt actually writes the whole list and reads
-only part of it is **not guarded**, because no recorded run has ever been given
-a focused prompt. This case is what measures it.
+read back the wording that builds the list and the wording that closes on it,
+and `ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` for the
+arrival; that a session given a focused prompt actually writes the whole list
+and reads only part of it is **not guarded**, because no recorded run has ever
+been given a focused prompt. This case is what measures it.
 
-**Read 2026-08-19:** the prompt below reaches no skill at all, with `Classes/`
+**Read 2026-08-19, and repaired the same day:** `review only` and
+`security review` are needles of the `audit` intent now, so the prompt below
+confirms it and the guide names the workflow this case is written about. What
+was measured before that: the prompt reached no skill at all, with `Classes/`
 and a template path, so the narrowing this case is written about is measured
 after a route that does not happen. `D-GUI-015` carries the measurement.
 

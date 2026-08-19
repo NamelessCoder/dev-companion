@@ -13,9 +13,9 @@ sentence and a lookup are the kind of hold a reorganization satisfies while the
 behavior goes. This case is what measures the rest.
 
 **Read 2026-08-19:** the finding gate in
-`typo3-extension-health/references/checklist.md` still carries every clause
-this case is written against — the sink named and its code read, a ViewHelper
-handing its children on as path rather than end, the opt-out that prevents double
+`typo3-extension-health/references/checklist.md` still carries every clause this
+case is written against — the sink named and its code read, a ViewHelper handing
+its children on as path rather than end, the opt-out that prevents double
 encoding, the unverified finding naming the unread class. Whether a review
 follows the value is unguarded as before.
 

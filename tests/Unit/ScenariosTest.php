@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Cli;
@@ -117,6 +119,38 @@ final class ScenariosTest extends TestCase
         }
 
         return $methods;
+    }
+
+    /**
+     * The four cases `D-GUI-015` measured, each held by the words it is written
+     * in rather than by a brief that names the answer. Adding this before the
+     * needles were curated would have fixed the miss into the suite, which is
+     * why the entry deferred it; the needles are curated, so the arrival is
+     * what is asserted from here.
+     */
+    #[Test]
+    #[DataProvider('theCasesWhoseOwnWordsHaveToReachAnIntent')]
+    public function aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout(string $id, string $intent): void
+    {
+        $case = Scenarios::contracts()[$id] ?? null;
+        self::assertNotNull($case, $id . ' is not a contract case');
+
+        self::assertContains(
+            $intent,
+            array_column(TaskIntents::confirmed(TaskIntents::detect($case['prompt'])), 'id'),
+            $id . ' is written in words that do not reach ' . $intent,
+        );
+    }
+
+    /** @return array<string, array{0: string, 1: string}> */
+    public static function theCasesWhoseOwnWordsHaveToReachAnIntent(): array
+    {
+        return [
+            'a backend module, and not the audit its subject spells' => ['SKILL-07', 'backend-module'],
+            'a security review in a maintainer\'s words' => ['SKILL-11', 'audit'],
+            'the goal, where the needles were the mechanism' => ['EXT-08', 'event-listener'],
+            'a setting a site set defines' => ['SITE-09', 'site-setting'],
+        ];
     }
 
     /**

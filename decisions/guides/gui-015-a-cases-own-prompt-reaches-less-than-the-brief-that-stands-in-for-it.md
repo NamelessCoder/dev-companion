@@ -69,3 +69,33 @@ carries and paths a session would plausibly stand in.
 - `SKILL-07`'s conformance answer turns out to be the wanted one. Then `audit`
   is right to fire on `reviewing`, and what is missing is the documentation half
   alone.
+
+## Since then
+
+All four were repaired on 2026-08-19, each measured on its own prompt and
+against the neighbours it could steal from.
+
+- `audit` no longer sees a bare `reviewing`. The gerund is `reviewing the`,
+  `reviewing this` and `reviewing my`, so it reaches the intent only where the
+  thing under review follows the word, and `SKILL-07` confirms `backend-module`
+  alone. `review only` and `security review` went in with it, which is what
+  `SKILL-11` is written in.
+- `event-listener` gained the goal beside the mechanism — `without overriding`,
+  `instead of overriding`, `do not want to override` — and `EXT-08` confirms it
+  with no path passed.
+- `site-setting` gained `add a setting`, `add the setting` and `per site`, and
+  `SITE-09` confirms it rather than detecting it weakly.
+
+What the reading corrected in this entry: `SITE-09` names no skill either way,
+because `site-setting` routes to none. What confirming it buys is the checklist
+stated as fact rather than under a condition, and the same holds for `EXT-08`.
+
+The fourth **Decided** is spent. The needles are curated, so a test feeding each
+case's own prompt no longer fixes a miss into the suite, and
+`ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout` is what holds
+the arrival for all four.
+
+What is left is the half `SKILL-07` was not taken for: "document the public
+workflow ... in the right place" still reaches no documentation intent, so the
+crossing that case exists for is measured on one side only.
+

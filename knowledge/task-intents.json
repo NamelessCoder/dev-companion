@@ -412,7 +412,11 @@
       "review patch",
       "review core patch",
       "review change",
-      "reviewing"
+      "review only",
+      "security review",
+      "reviewing the",
+      "reviewing this",
+      "reviewing my"
     ],
     "rulesQuery": "",
     "checklist": [
@@ -728,7 +732,10 @@
       "site set",
       "settings.definitions.yaml",
       "site setting",
-      "settings.yaml"
+      "settings.yaml",
+      "add a setting",
+      "add the setting",
+      "per site"
     ],
     "matchWeak": [
       "setting",
@@ -757,7 +764,10 @@
       "aseventlistener",
       "psr-14",
       "psr 14",
-      "event dispatcher"
+      "event dispatcher",
+      "without overriding",
+      "instead of overriding",
+      "do not want to override"
     ],
     "matchWeak": [
       "listener",

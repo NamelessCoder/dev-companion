@@ -9,8 +9,8 @@ that a release-branch patch changes trailer and refspec is not guarded
 
 **Read 2026-08-19:** `R-AUD-004` is `held` today, so the `open` beside it above
 is stale, and the push itself is answered by the corpus `R-KNW-057` holds. What
-stays unguarded is that a session changes trailer and refspec when the patch goes
-to the branch directly.
+stays unguarded is that a session changes trailer and refspec when the patch
+goes to the branch directly.
 
 > This bug only exists on 13.4, on main the code was rewritten and the problem is
 > gone. Prepare the patch for 13.4 and tell me what is different about pushing it

@@ -11,7 +11,9 @@
     use the day after it was filed and no session has met any of them yet — a
     gate now would be the fourth intervention against the same three sightings.
     What is asked is whether to wait for that or to write the gate on the
-    evidence there is.
+    evidence there is. Put to the maintainer on 2026-08-19 with waiting
+    recommended, and the answer was to wait: so the two triggers below are still
+    what starts the work, and nothing about the gate itself was settled.
 
 Nothing is built until the question comes back, and the priority stays `low`
 because the three examples behind it are answered: `D-SKL-044` gave step 5 of

@@ -17,6 +17,11 @@
     `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer` asserts
     that a contract id has no skeleton at all.
 
+    Asked on 2026-08-19 whether the review would be given now, and the answer
+    was yes: `SKILL.md` was put to the maintainer whole, with the three
+    questions asked by name. What comes back is worked in before publication.
+    The run is untouched by that answer and is what the card still waits on.
+
 The contract case is written: `SKILL-14`, stating the task in a user's words and
 holding the four steps that report success while failing. It is `open` and turns
 `held` in the commit that publishes the skill, because no assertion can guard

@@ -9,10 +9,11 @@
     maintainer runs is on no `PATH` a session here has. That is why the run
     below is written as a sheet to paste rather than as a step to carry out.
 
-    Asked on 2026-08-12 whether the run would be made: *bitte suche selbst einen
-    case*. So which change the session is pointed at is settled here and is not
-    a question to put again — it is re-measured below rather than assumed, and
-    what is left waiting is the run itself.
+    Asked on 2026-08-12 whether the run would be made: *bitte suche selbst
+    einen case*. Asked again on 2026-08-19, and this time the maintainer named
+    the change: 87873. So which change the session is pointed at is settled and
+    is not a question to put again — it is re-measured below rather than
+    assumed, and what is left waiting is the run itself.
 
 `SKILL-12` was run on 2026-08-07 in `E-CORE` and five of its six surfaces hold;
 what it found is written into the case itself. `SKILL-13` is what is left, and
@@ -21,32 +22,35 @@ written against no conflict anybody has hit — so the case needs a change from
 review that **really** conflicts with the branch. One arranged to conflict
 measures the arrangement.
 
-**Change 84998 still is that change.**
-`[BUGFIX] Properly evaluate preview requirements for rootline`, re-measured on
-2026-08-12 against `E-CORE` `main` at `fffa6b2a475`, with `origin/main` at
-`3a9f0b5e3cb`. It is still `NEW`, still targets `main`, and patch set 5 is still
-the current one, at `refs/changes/98/84998/5` and commit `efa352f9b56`,
-untouched on review since 2025-05-19. `git merge-tree` reports one file changed
-in both and three conflict hunks in it, which is what it reported on 2026-08-08.
-It conflicts in the one file it touches,
-`typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php`, in three hunks:
-the constructor, where the branch takes `PageRepository` and the patch takes
-`RecordAccessVoter`; the body of `checkIfRootlineRequiresPreview()`, which the
-branch has since rewritten over the same lines; and one word in a comment. The
-first two are the checklist's *both sides changed the same lines with different
-intent* and *the branch already fixed what the patch fixes, differently*, and
-the third is transcription. Both kinds in one file is the judgement the case
-exists for.
+**Change 87873 is that change**, named by the maintainer on 2026-08-19.
+`[WIP][BUGFIX] Make Dropdown Toggle Buttons more accessible`, still `NEW`, still
+targeting `main`, patch set 11 at `refs/changes/73/87873/11` and commit
+`703d4cb6444`, untouched on review since 2026-04-02. Measured the same day
+against `origin/main` at `3cbdea24dd`: 13 of the 29 files it touches conflict,
+in 15 hunks, and `FileList.php` and `DatabaseRecordList.php` carry two each.
+
+It conflicts the way the case needs rather than by being old. The patch moves
+every backend dropdown off `data-bs-toggle` onto the `popover` API, and the
+branch has since rewritten the same markup for its own reasons, so the hunks are
+the checklist's *both sides changed the same lines with different intent* and
+*the branch already changed what the patch changes, differently*. One judgement
+comes with it that change 84998 could not have produced: the conflicts run in
+pairs across generated code — a `Build/Sources/TypeScript` file beside the
+`Resources/Public/JavaScript` file built from it — so the session has to decide
+whether it resolves the source and rebuilds or resolves both sides by hand.
 
 Check it again before pasting, because it stops conflicting the day somebody
-rebases it. The recipe in the previous head does not run here:
+rebases it. It was measured in this repository's own `.checkouts/main` rather
+than in `E-CORE`, which is where any session here may measure it; a run in
+`E-CORE` meets that checkout's own `main`, which is not `origin/main`.
 `git merge-tree --write-tree` wants git 2.38 and this machine has 2.34.1, so the
 three-argument form is what answers, and it exits 0 either way — the conflict is
 read off its output.
 
-    cd /home/benji/projects/typo3-cms
-    git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/98/84998/5
-    git merge-tree FETCH_HEAD^ main FETCH_HEAD | grep -c '<<<<<<<'
+    cd /home/benji/projects/typo3-cms-mcp/.checkouts/main
+    git fetch origin main:refs/mcp/mainnow
+    git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/73/87873/11
+    git merge-tree FETCH_HEAD^ refs/mcp/mainnow FETCH_HEAD | grep -c '<<<<<<<'
 
 Where it has moved, another candidate is found among the stale changes and
 measured the same way, never assumed: of twelve tested on 2026-08-08, nine
@@ -71,7 +75,7 @@ than the server.
 `bin/cli scenarios:contract SKILL-13` prints the prompt. It is pasted with the
 change named and nothing else:
 
-    https://review.typo3.org/c/Packages/TYPO3.CMS/+/84998
+    https://review.typo3.org/c/Packages/TYPO3.CMS/+/87873
 
     Pull down that patch from review and get it onto current main so I can run
     the tests against it.

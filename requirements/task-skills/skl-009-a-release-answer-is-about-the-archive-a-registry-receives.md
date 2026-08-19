@@ -36,9 +36,12 @@ Extension release is intended to come back, and what it comes back as is open.
 `typo3/tailor` setup was worked first and turned out not to be the piece: what
 it asks of an extension is four facts, carried by `extension-ter-release` in
 `knowledge/hints/extension.json`, and nothing in them is an order a workflow
-would keep. What
-[the card](../../todo/waiting/2026-08-04-140100-work-out-how-typo3-tailor-is-installed-and-set-up-for-an-extension.md)
-waits on is whether the release run earns one instead.
+would keep. The card that carried the question was put to the maintainer on
+2026-08-04, 2026-08-12 and 2026-08-19, and the third answer deleted it. Whether
+the release run earns a skill instead is open and nothing queues it: the run
+stops short of `ter:publish`, which needs a TER token nothing here holds, so
+what would revive the question is a filed session bringing the wording or
+somebody wanting the release driven end to end.
 
 ## From
 

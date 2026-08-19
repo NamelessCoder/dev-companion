@@ -122,3 +122,10 @@ carries what it cost: a hard budget of 2048 characters that was at 2038, so one
 entry was bought by tightening the sentences around it and the rest of the list
 was not bought at all. That moves the first **Wrong if** above from something
 nobody could measure to something the next debrief under such a client answers.
+
+The question this entry recommended against was put to the maintainer on
+2026-08-19 — pay for the list at the top of every skill, or not — and the answer
+was not to. So no skill carries such a line, the feedback is archived, and what
+is left is the measurement rather than the choice: the first two **Wrong if**
+above are what would reopen it, and both are a debrief from a deferring client
+away.

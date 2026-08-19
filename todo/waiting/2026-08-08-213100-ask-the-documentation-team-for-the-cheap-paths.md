@@ -12,6 +12,12 @@
     nothing, or wait — and the answer was that it waits. Still nobody asked, and
     the five are unchanged since they were measured.
 
+    Put a third time on 2026-08-19, with sending all five under the maintainer's
+    own name recommended against the same three alternatives, and the answer was
+    again that it waits. So the question that is left is only the second half of
+    the one above: not which of the five to send, but whether this server's
+    maintainer is who approaches the documentation team at all.
+
 Ordered by what it costs them, cheapest first.
 
 1. **Name the cheap paths in `llms.txt`** — `objects.inv`, `objects.inv.json`,

@@ -14,6 +14,12 @@
     in the sense of `R-SKL-020`, which the author read as no, like
     `typo3-core-patch-review` and unlike the two skills that publish.
 
+    Asked on 2026-08-19 whether the review would be given now, and the answer
+    was yes. The first of the two questions of its own was answered in the same
+    breath — `typo3-extension-patch-review` is the name — and the second was
+    not, so where a review of a public pull request stands against `R-SKL-020`
+    is still to be asked.
+
 What the research established is at the foot of `D-SKL-063` rather than here,
 because it outlives this card. The queue behind the answer: work the review in,
 delete the `metadata` declaration, write the intent that routes to it into

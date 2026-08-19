@@ -64,6 +64,7 @@ final class ForgeTest extends TestCase
                 'tracker' => ['name' => 'Bug'],
                 'status' => ['name' => 'Under Review'],
                 'category' => ['name' => 'Fluid'],
+                'author' => ['id' => 2737, 'name' => 'Nicole Zingg'],
                 'assigned_to' => ['name' => 'Andreas Kienast'],
                 'created_on' => '2024-10-23T08:42:11Z',
                 'updated_on' => '2026-08-02T17:24:18Z',
@@ -485,6 +486,7 @@ final class ForgeTest extends TestCase
         self::assertStringContainsString('status_id=%2A', $asked[1]);
 
         self::assertSame('Fluid', $results[0]['category']);
+        self::assertSame('Nicole Zingg', $results[0]['reportedBy']);
         self::assertSame('Andreas Kienast', $results[0]['assignedTo']);
         self::assertSame('2024-10-23T08:42:11Z', $results[0]['createdOn']);
         self::assertSame('2026-08-02T17:24:18Z', $results[0]['updatedOn']);
@@ -586,6 +588,9 @@ final class ForgeTest extends TestCase
             if (str_contains($url, 'issue_id=')) {
                 return (string) json_encode(self::RELATED_ROWS);
             }
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
 
             return (string) json_encode(str_contains($url, '/issues.json') ? self::PAGE : self::PROJECT);
         };
@@ -643,6 +648,7 @@ final class ForgeTest extends TestCase
                 'tracker' => ['name' => 'Bug'],
                 'status' => ['name' => 'New', 'is_closed' => false],
                 'category' => ['name' => 'Backend User Interface'],
+                'author' => ['id' => 52, 'name' => 'Frank Nägler'],
                 'assigned_to' => ['name' => 'Sacha Vorbeck'],
                 'created_on' => '2005-07-11T10:22:33Z',
                 'updated_on' => '2026-01-23T08:11:00Z',
@@ -924,5 +930,218 @@ final class ForgeTest extends TestCase
         $forge->categories();
 
         self::assertSame(1, $calls, 'the project was read again for a list that changes between releases');
+    }
+
+    /**
+     * The two pages of memberships the project answers with, in the shape
+     * measured on 2026-08-19: 185 members, a hundred to a page.
+     */
+    private const MEMBERS = [
+        'memberships' => [
+            ['id' => 193, 'user' => ['id' => 320, 'name' => 'Benni Mack'], 'roles' => [['id' => 7, 'name' => 'Leader']]],
+            ['id' => 210, 'user' => ['id' => 52, 'name' => 'Frank Nägler'], 'roles' => [['id' => 4, 'name' => 'Member']]],
+            ['id' => 244, 'user' => ['id' => 61, 'name' => 'Daniel Goerz'], 'roles' => [['id' => 4, 'name' => 'Member']]],
+            ['id' => 245, 'user' => ['id' => 77, 'name' => 'Daniel Siepmann'], 'roles' => [['id' => 4, 'name' => 'Member']]],
+            // A group holds no issues, and reading its name as a person's is a
+            // filter that answers nothing.
+            ['id' => 300, 'group' => ['id' => 9, 'name' => 'Security Team'], 'roles' => [['id' => 4, 'name' => 'Member']]],
+        ],
+        'total_count' => 4,
+    ];
+
+    /**
+     * The tracker takes a numeric user id and answers no public user list, so
+     * the name a caller holds is resolved here or the question cannot be asked
+     * at all.
+     */
+    #[Test]
+    public function aPersonIsResolvedAgainstTheProjectsOwnMembersAndFiltersByTheIdTheTrackerTakes(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open(reportedBy: 'Frank Nägler', assignedTo: 'Benni Mack', limit: 2);
+
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        self::assertStringContainsString('author_id=52', $issues[0]);
+        self::assertStringContainsString('assigned_to_id=320', $issues[0]);
+        self::assertSame(
+            [
+                ['filter' => 'reportedBy', 'asked' => 'Frank Nägler', 'name' => 'Frank Nägler', 'id' => 52, 'candidates' => []],
+                ['filter' => 'assignedTo', 'asked' => 'Benni Mack', 'name' => 'Benni Mack', 'id' => 320, 'candidates' => []],
+            ],
+            $answer['people'],
+        );
+    }
+
+    /**
+     * Half a name is not a person. Merging two people into one backlog is a
+     * wrong answer nothing about it says is wrong, so neither is chosen and
+     * both are named — which is what a caller asks again with.
+     */
+    #[Test]
+    public function aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open(reportedBy: 'daniel', limit: 2);
+
+        self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, 'author_id=')));
+        self::assertSame('empty', $answer['status']);
+        self::assertSame(['Daniel Goerz', 'Daniel Siepmann'], $answer['people'][0]['candidates']);
+    }
+
+    /**
+     * A quarter of the reporters hold no membership — 24 of the 100 most
+     * recently filed issues on 2026-08-19 — so the members alone would answer
+     * "no such person" about people who have filed dozens.
+     */
+    #[Test]
+    public function aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (str_contains($url, '/search.json')) {
+                return (string) json_encode(self::HITS);
+            }
+            if (str_contains($url, 'issue_id=')) {
+                return (string) json_encode(self::FIELDS_BY_A_REPORTER);
+            }
+
+            return (string) json_encode(self::PAGE);
+        });
+
+        $answer = $forge->open(reportedBy: 'Nicole Zingg', limit: 2);
+
+        self::assertSame('Nicole Zingg', $answer['people'][0]['name']);
+        self::assertSame(2737, $answer['people'][0]['id']);
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        self::assertStringContainsString('author_id=2737', $issues[0]);
+    }
+
+    /** The issues a search for a name matched, filed by the person named. */
+    private const FIELDS_BY_A_REPORTER = [
+        'issues' => [
+            [
+                'id' => 105403,
+                'subject' => 'f:image and cache busting issue',
+                'tracker' => ['name' => 'Bug'],
+                'status' => ['name' => 'Under Review'],
+                'author' => ['id' => 2737, 'name' => 'Nicole Zingg'],
+            ],
+        ],
+        'total_count' => 1,
+    ];
+
+    /**
+     * A name nothing here carries is an answer about the name. Sent on
+     * unfiltered it would be the backlog of everybody, which is the mistake the
+     * word naming no area is guarded against making.
+     */
+    #[Test]
+    public function aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+            if (str_contains($url, '/memberships.json')) {
+                return (string) json_encode(self::MEMBERS);
+            }
+            if (str_contains($url, '/search.json')) {
+                return (string) json_encode(['results' => [], 'total_count' => 0]);
+            }
+
+            return (string) json_encode(self::PROJECT);
+        });
+
+        $answer = $forge->open(reportedBy: 'Konrad Michalik', limit: 2);
+
+        self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        self::assertSame('empty', $answer['status']);
+        self::assertSame([], $answer['people'][0]['candidates']);
+        self::assertSame(0, $answer['people'][0]['id']);
+    }
+
+    /**
+     * What somebody has filed over the years is mostly closed, and the
+     * enumeration the tracker answers by default hides all of it.
+     */
+    #[Test]
+    public function theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $forge->open(status: 'all', reportedBy: 'Frank Nägler', limit: 2);
+        $forge->open(status: 'closed', reportedBy: 'Frank Nägler', limit: 2);
+
+        $issues = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/projects/typo3cms-core/issues.json')));
+        self::assertStringContainsString('status_id=%2A', $issues[0]);
+        self::assertStringContainsString('status_id=closed', $issues[1]);
+    }
+
+    /**
+     * The dimension the filter selects on is answered on the row as well, so a
+     * page says who is reporting it without a call per row.
+     */
+    #[Test]
+    public function aRowSaysWhoFiledIt(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $results = $forge->open('oldest', '', '', '', '', 2)['results'];
+
+        self::assertSame('Frank Nägler', $results[0]['reportedBy']);
+        // A row the tracker named nobody on carries none, which is the answer
+        // it gave rather than a call that was not made.
+        self::assertSame('', $results[1]['reportedBy']);
+    }
+
+    /**
+     * A page holds a hundred and the project has more, so a member on the
+     * second page would otherwise be a person nobody can name.
+     */
+    #[Test]
+    public function theMembersAreReadUntilTheProjectsOwnCountIsCovered(): void
+    {
+        $asked = [];
+        $forge = new Forge(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return (string) json_encode(['memberships' => [], 'total_count' => 185]);
+        });
+
+        $forge->people();
+
+        self::assertCount(2, $asked);
+        self::assertStringContainsString('offset=0', $asked[0]);
+        self::assertStringContainsString('offset=100', $asked[1]);
+    }
+
+    /**
+     * The members are read once and held: a membership is added when somebody
+     * joins, and a session filtering by person asks for the same names on every
+     * call it makes.
+     */
+    #[Test]
+    public function theMembersAreHeldRatherThanReadPerCall(): void
+    {
+        $calls = 0;
+        $forge = new Forge(function (string $url) use (&$calls): string {
+            $calls++;
+
+            return (string) json_encode(self::MEMBERS);
+        });
+
+        $forge->people();
+        $forge->people();
+
+        self::assertSame(1, $calls, 'the memberships were read again for a list that changes between releases');
     }
 }

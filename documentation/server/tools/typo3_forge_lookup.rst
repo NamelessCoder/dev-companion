@@ -13,17 +13,22 @@ description never says. Or pass query with words to find out which other issues
 describe the same thing, which the relations of one issue only answer for what
 somebody linked by hand. Or pass open to enumerate the core project's unresolved
 issues without holding a number or a wording — oldest filed or longest
-untouched, narrowed by tracker and by date, which is where a triage of the
-backlog starts; the count of everything that matched comes back with the page,
-so a limited answer says whether it is the whole set. Each entry carries its
-number, subject, tracker, status and URL, and an enumerated one also carries the
-issues it is filed against with their subjects, the files hanging off it, and
-the changes on review.typo3.org whose commit message names it — the three that
-say a row was answered elsewhere or already attempted, without reading it whole.
-A call carries issue, query or open, never two of them. An issue that does not
-exist is answered as such, and so is a tracker that could not be reached.
-Reading only, and no credential: commenting, assigning and closing stay yours.
-Answers from: network.
+untouched, narrowed by tracker, by date and by person, which is where a triage
+of the backlog starts; the count of everything that matched comes back with the
+page, so a limited answer says whether it is the whole set. reportedBy and
+assignedTo take a person's name and answer what they filed and what they are on
+the hook for, which is the one question query cannot be made to answer: it
+matches text, so a name reaches the issues that mention the person and not the
+issues that are theirs. status widens that enumeration past the unresolved ones,
+which is what a person's history needs. Each entry carries its number, subject,
+tracker, status and URL, and an enumerated one also carries the issues it is
+filed against with their subjects, the files hanging off it, and the changes on
+review.typo3.org whose commit message names it — the three that say a row was
+answered elsewhere or already attempted, without reading it whole. A call
+carries issue, query or open, never two of them. An issue that does not exist is
+answered as such, and so is a tracker that could not be reached. Reading only,
+and no credential: commenting, assigning and closing stay yours. Answers from:
+network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -38,13 +43,17 @@ Takes
     # that one issue whole, comments included — narrow those with notes when
     # reading many. A call carries issue, query or open, never two of them.
     issue: string  # optional
-    # Words to search the tracker for, for example "image cache busting". Answers
-    # the issues whose text matches them — which is how a duplicate nobody has
-    # linked is found at all, since the relations of an issue only carry what
-    # somebody linked by hand. Nothing is ranked and one wording does not settle it:
-    # ask again in the reporter's words as well as your own, because an issue worded
-    # differently is invisible to this. A call carries issue, query or open, never
-    # two of them.
+    # Words to search the tracker for, for example "image cache busting". A
+    # full-text search over subject, description and comments: it answers the issues
+    # whose text matches them — which is how a duplicate nobody has linked is
+    # found at all, since the relations of an issue only carry what somebody linked
+    # by hand. That also says what it cannot do: a person's name matches only where
+    # somebody wrote it, so it mixes the issues they filed with the issues a third
+    # party mentioned them in and misses the rest — pass the name as reportedBy or
+    # assignedTo with open to enumerate a person's issues. Nothing is ranked and one
+    # wording does not settle it: ask again in the reporter's words as well as your
+    # own, because an issue worded differently is invisible to this. A call carries
+    # issue, query or open, never two of them.
     query: string  # optional
     # One of: oldest, stale. Enumerate the core project's unresolved issues instead
     # of reading one or matching words: "oldest" orders them by when they were
@@ -53,8 +62,9 @@ Takes
     # for years is about the attention it got — and an issue that is both is the
     # candidate a triage is looking for. Unresolved is the tracker's own set of open
     # statuses, so New, Accepted, Under Review, Needs Feedback, On Hold and
-    # Postponed are all in it. Narrow with tracker, createdBefore and updatedBefore.
-    # A call carries issue, query or open, never two of them.
+    # Postponed are all in it. Narrow with tracker, category, createdBefore,
+    # updatedBefore, reportedBy and assignedTo, and reach past the unresolved ones
+    # with status. A call carries issue, query or open, never two of them.
     open: string  # optional
     # One of: all, people. Which comments come back with an issue. "all" is every
     # one of them and is what you want when reading a single issue — the comments
@@ -91,6 +101,30 @@ Takes
     # issue filed in 2009 and commented on last month is being worked. Narrows open
     # and is ignored by issue and query.
     updatedBefore: string  # optional
+    # Only issues this person filed, by their name rather than by a tracker id:
+    # "Frank Nägler", or "nägler". This is what answers "what has this person
+    # reported" — query cannot, because it matches the text of an issue and a name
+    # in the text is as often somebody else writing it. The name is resolved here:
+    # against the core project's members, and against the people the issues carrying
+    # that name were filed by or handed to where the project holds no membership. A
+    # name reaching several people resolves to none of them and the answer says
+    # which they were, because merging two people into one backlog is a set nothing
+    # about it says is wrong. Pair it with status "all" for everything somebody has
+    # ever filed. Narrows open and is ignored by issue and query.
+    reportedBy: string  # optional
+    # Only issues this person holds, by their name, resolved the same way as
+    # reportedBy. The two answer different questions — what somebody reported is
+    # their history, what they are assigned is what they are on the hook for — and
+    # an assignee on an old issue is usually who last touched it rather than who is
+    # working on it. Narrows open and is ignored by issue and query.
+    assignedTo: string  # optional
+    # One of: open, closed, all. Which statuses the enumeration covers. "open", the
+    # default, is what open is named for: the tracker's own unresolved set. "closed"
+    # is what it has marked closed, Rejected included. "all" is both, which is what
+    # a question about a person needs — what somebody has filed over the years is
+    # mostly closed, and an enumeration that hides those answers 4 where the number
+    # is 621. Widens open and is ignored by issue and query.
+    status: string  # optional
     # How many entries come back. A search answers with at most 25 whatever is asked
     # for, because a set that has to be paged through is answered by other words
     # rather than by more of these.
@@ -129,6 +163,29 @@ Answers with
     # which is answered as no issues and is a statement about the word rather than
     # about the backlog.
     categoriesUsed: [string]
+    # What reportedBy and assignedTo resolved to, one entry per name the call
+    # carried, in that order. A name is resolved against the core project's members
+    # and, where they hold no membership, against the people the issues carrying
+    # that name were filed by or handed to. Empty where no name was passed.
+    people:
+      - # One of: reportedBy, assignedTo. Which of the two the entry answers for.
+        filter: string
+        # The name that was passed, as it was passed.
+        asked: string
+        # The person it resolved to, in the tracker's own spelling. Empty where it
+        # resolved to nobody, which is answered as no issues and is a statement
+        # about the name rather than about the backlog.
+        name: string
+        # The tracker's own user id, which is what it filters by and the only thing
+        # it takes. Zero where the name resolved to nobody.
+        id: integer
+        # The people the name could have meant, where it reached more than one. A
+        # name reaching two resolves to neither and nothing is read: merging two
+        # people into one backlog is a wrong answer nothing about it says is wrong.
+        # Ask again with one of these. Empty where the name resolved, and empty
+        # where nothing here carries it — which is a name this server cannot place
+        # rather than a person who has filed nothing.
+        candidates: [string]
     # The issue, where status says answered and a number was asked for. Null
     # otherwise.
     issue:
@@ -238,10 +295,14 @@ Answers with
         # Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.
         status: string
         # The area the core files it under, empty where none is set. A search hit is
-        # a title and carries none of the four fields below, so they are read for
+        # a title and carries none of the five fields below, so they are read for
         # the whole page in one further call — and empty here means that call did
         # not reach the tracker rather than that the issue has no area.
         category: string
+        # Who filed it. This is the dimension reportedBy selects on, and reading it
+        # off a set answers who a backlog is being reported by without a call per
+        # row.
+        reportedBy: string
         # Who the tracker says holds this, empty where nobody does. What it decides
         # for a triage is whether the issue is free to take, and on an old one it is
         # usually who last touched it rather than who is on it.
@@ -315,7 +376,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-19 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -376,6 +437,7 @@ Data:
         "total": 0,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": {
             "id": 110348,
             "subject": "Rework AdminPanel \"imagesOnPage\" feature",
@@ -741,6 +803,7 @@ Data:
         "total": 0,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": {
             "id": 88556,
             "subject": "One line break in DB field causes 3 rendered p-tags in CKEditor",
@@ -1020,6 +1083,7 @@ Data:
         "total": 0,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": {
             "id": 14858,
             "subject": "extended clipboard: setCopyMode can`t be set to copy by default",
@@ -1147,6 +1211,7 @@ Data:
         "total": 0,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": null,
         "results": [],
         "unavailable": null
@@ -1169,16 +1234,17 @@ Text:
 .. code-block:: text
 
     TYPO3 issue tracker: 3 issues match "cache busting"
-    These words, in the tracker's own order and unranked. Another wording finds another set, so this is which issues mention it rather than which one it duplicates. Read one whole by passing its number as issue.
+    A full-text match over subject, description and comments, in the tracker's own order and unranked. Another wording finds another set, so this is which issues mention it rather than which one it duplicates. Read one whole by passing its number as issue.
+    Where those words are a person's name, this is the issues that mention them and not the issues that are theirs: pass the name as reportedBy or assignedTo with open for that, which is a different set and regularly two orders of magnitude larger.
 
     ## #107904 Cache-busting applied to folder paths
-    Bug · Closed · Frontend · filed 2025-10-29 · last touched 2025-12-02 · https://forge.typo3.org/issues/107904
+    Bug · Closed · Frontend · filed by Simon Praetorius · filed 2025-10-29 · last touched 2025-12-02 · https://forge.typo3.org/issues/107904
 
     ## #107869 Add option to not add cache busting to generated URIs
-    Bug · Closed · filed 2025-10-27 · last touched 2025-12-02 · https://forge.typo3.org/issues/107869
+    Bug · Closed · filed by Helmut Hummel · filed 2025-10-27 · last touched 2025-12-02 · https://forge.typo3.org/issues/107869
 
     ## #105953 f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled
-    Bug · Closed · Fluid · filed 2025-01-16 · last touched 2025-08-12 · https://forge.typo3.org/issues/105953
+    Bug · Closed · Fluid · filed by Christian Ludwig · filed 2025-01-16 · last touched 2025-08-12 · https://forge.typo3.org/issues/105953
 
 Data:
 
@@ -1192,6 +1258,7 @@ Data:
         "total": 15,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": null,
         "results": [
             {
@@ -1200,6 +1267,7 @@ Data:
                 "tracker": "Bug",
                 "status": "Closed",
                 "category": "Frontend",
+                "reportedBy": "Simon Praetorius",
                 "assignedTo": "",
                 "createdOn": "2025-10-29T11:00:18Z",
                 "updatedOn": "2025-12-02T12:04:43Z",
@@ -1214,6 +1282,7 @@ Data:
                 "tracker": "Bug",
                 "status": "Closed",
                 "category": "",
+                "reportedBy": "Helmut Hummel",
                 "assignedTo": "",
                 "createdOn": "2025-10-27T19:48:27Z",
                 "updatedOn": "2025-12-02T12:04:41Z",
@@ -1228,6 +1297,7 @@ Data:
                 "tracker": "Bug",
                 "status": "Closed",
                 "category": "Fluid",
+                "reportedBy": "Christian Ludwig",
                 "assignedTo": "",
                 "createdOn": "2025-01-16T20:23:02Z",
                 "updatedOn": "2025-08-12T14:36:32Z",
@@ -1256,7 +1326,7 @@ Text:
 .. code-block:: text
 
     TYPO3 issue tracker: no issue matches "quantumflux transponder" at https://forge.typo3.org.
-    These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a word search. Ask again in the words a reporter would have used.
+    These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search. Ask again in the words a reporter would have used — or, where the words are a person, as reportedBy or assignedTo with open.
 
 Data:
 
@@ -1270,6 +1340,7 @@ Data:
         "total": 0,
         "categories": [],
         "categoriesUsed": [],
+        "people": [],
         "issue": null,
         "results": [],
         "unavailable": null
@@ -1291,26 +1362,26 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2478 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2481 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
     ## #14277 Start/Stop time for pages is ignored in standard menu objects
-    Feature · Accepted · Frontend · unassigned · filed 2004-08-20 · last touched 2025-04-04 · https://forge.typo3.org/issues/14277
+    Feature · Accepted · Frontend · filed by Michael Stucki · unassigned · filed 2004-08-20 · last touched 2025-04-04 · https://forge.typo3.org/issues/14277
     Relation: relates #16815 — Bug · Closed · Sitemap ignoring "Start" and "End" flags
     Relation: relates #98964 — Bug · Closed · Menu object caching creates too many records resulting in huge cache_hash table
     Review: change 61395 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395
 
     ## #14858 extended clipboard: setCopyMode can`t be set to copy by default
-    Bug · New · Backend User Interface · unassigned · filed 2005-07-11 · last touched 2026-01-23 · https://forge.typo3.org/issues/14858
+    Bug · New · Backend User Interface · filed by Sacha Vorbeck · unassigned · filed 2005-07-11 · last touched 2026-01-23 · https://forge.typo3.org/issues/14858
     Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features
     Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements"
     Review: change 70962 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962
     Review: change 38419 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419
 
     ## #15984 menu.showAccessRestrictedPages doesn't replace link for  "include subpages"
-    Bug · Accepted · Frontend · unassigned · filed 2006-04-05 · last touched 2026-04-15 · https://forge.typo3.org/issues/15984
+    Bug · Accepted · Frontend · filed by Wolfgang Sassik · unassigned · filed 2006-04-05 · last touched 2026-04-15 · https://forge.typo3.org/issues/15984
     Relation: relates #22860 — Bug · Closed · typolinkLinkAccessRestrictedPages_addParams doesn't work on restricted subpages
     Relation: relates #26484 — Bug · Closed · extend to subpages in page properties in access tab does not work correctly
     Relation: relates #78825 — Bug · Closed · Wrong pid determination when opening a nested access restriced page
@@ -1329,7 +1400,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments",
         "query": "",
-        "total": 2478,
+        "total": 2481,
         "categories": [
             "AdminPanel",
             "Authentication",
@@ -1388,6 +1459,7 @@ Data:
             "Workspaces"
         ],
         "categoriesUsed": [],
+        "people": [],
         "issue": null,
         "results": [
             {
@@ -1396,6 +1468,7 @@ Data:
                 "tracker": "Feature",
                 "status": "Accepted",
                 "category": "Frontend",
+                "reportedBy": "Michael Stucki",
                 "assignedTo": "",
                 "createdOn": "2004-08-20T08:45:13Z",
                 "updatedOn": "2025-04-04T06:59:33Z",
@@ -1432,6 +1505,7 @@ Data:
                 "tracker": "Bug",
                 "status": "New",
                 "category": "Backend User Interface",
+                "reportedBy": "Sacha Vorbeck",
                 "assignedTo": "",
                 "createdOn": "2005-07-11T23:31:03Z",
                 "updatedOn": "2026-01-23T08:30:36Z",
@@ -1472,6 +1546,7 @@ Data:
                 "tracker": "Bug",
                 "status": "Accepted",
                 "category": "Frontend",
+                "reportedBy": "Wolfgang Sassik",
                 "assignedTo": "",
                 "createdOn": "2006-04-05T03:07:50Z",
                 "updatedOn": "2026-04-15T09:44:14Z",
@@ -1563,16 +1638,16 @@ Text:
     An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
 
     ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
-    Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400
+    Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Benedikt Imminger · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400
     Relation: relates #87314 — Feature · New · allowedAttribs / allowAttributes usage in config
     Relation: relates #92943 — Bug · Closed · RTE ckeditor does not respect YAML configuration
     Files (1): RTE Bug.mov
 
     ## #97817 RTE removes line with empty, allowed tags when saving
-    Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2022-06-28 · last touched 2022-06-28 · https://forge.typo3.org/issues/97817
+    Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Jigal van Hemert · unassigned · filed 2022-06-28 · last touched 2022-06-28 · https://forge.typo3.org/issues/97817
 
     ## #88690 Translated content elements are not available in linkbrowser of the ckeditor in free mode
-    Bug · New · RTE (rtehtmlarea + ckeditor) · unassigned · filed 2019-07-05 · last touched 2023-03-05 · https://forge.typo3.org/issues/88690
+    Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Ronny Hauptvogel · unassigned · filed 2019-07-05 · last touched 2023-03-05 · https://forge.typo3.org/issues/88690
     Relation: relates #89701 — Bug · Closed · Link wizard lists only content elements of the default language
     Relation: relates #90138 — Feature · Closed · Language and mode (free or connected) should be handled in the links module when creating an anchor to content
     Relation: relates #91160 — Bug · Closed · Links to content element (anchor) in link wizard not possible when not in default language
@@ -1649,6 +1724,7 @@ Data:
         "categoriesUsed": [
             "RTE (rtehtmlarea + ckeditor)"
         ],
+        "people": [],
         "issue": null,
         "results": [
             {
@@ -1657,6 +1733,7 @@ Data:
                 "tracker": "Bug",
                 "status": "New",
                 "category": "RTE (rtehtmlarea + ckeditor)",
+                "reportedBy": "Benedikt Imminger",
                 "assignedTo": "",
                 "createdOn": "2019-01-11T11:07:13Z",
                 "updatedOn": "2019-01-11T11:07:13Z",
@@ -1696,6 +1773,7 @@ Data:
                 "tracker": "Bug",
                 "status": "New",
                 "category": "RTE (rtehtmlarea + ckeditor)",
+                "reportedBy": "Jigal van Hemert",
                 "assignedTo": "",
                 "createdOn": "2022-06-28T07:46:04Z",
                 "updatedOn": "2022-06-28T07:46:04Z",
@@ -1710,6 +1788,7 @@ Data:
                 "tracker": "Bug",
                 "status": "New",
                 "category": "RTE (rtehtmlarea + ckeditor)",
+                "reportedBy": "Ronny Hauptvogel",
                 "assignedTo": "",
                 "createdOn": "2019-07-05T11:01:00Z",
                 "updatedOn": "2023-03-05T17:47:02Z",
@@ -1850,6 +1929,311 @@ Data:
             "Workspaces"
         ],
         "categoriesUsed": [],
+        "people": [],
+        "issue": null,
+        "results": [],
+        "unavailable": null
+    }
+
+forge: what one person has filed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "open": "oldest",
+        "reportedBy": "Frank Nägler",
+        "status": "all",
+        "limit": 3
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 issue tracker: 3 of 621 issues of the TYPO3 Core project whatever their status, filed by Frank Nägler, oldest filed first
+    This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end.
+    Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+
+    ## #15488 miscellaneous extensions dont work
+    Bug · Closed · filed by Frank Nägler · unassigned · filed 2006-01-23 · last touched 2006-01-24 · https://forge.typo3.org/issues/15488
+
+    ## #15890 PHP erros after search
+    Bug · Closed · Indexed Search · filed by Frank Nägler · assigned to Dmitry Dulepov · filed 2006-03-23 · last touched 2018-10-02 · https://forge.typo3.org/issues/15890
+
+    ## #18374 XCLASSing USER_INT objects does not work
+    Bug · Closed · Communication · filed by Frank Nägler · assigned to Oliver Hader · filed 2008-03-05 · last touched 2010-08-06 · https://forge.typo3.org/issues/18374
+    Relation: relates #17883 — Bug · Closed · Nested USER_INT, COA_INT, etc. objects are not rendered
+    Relation: relates #18504 — Bug · Closed · XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline
+    Files (2): 0007759_41.patch, 0007759_42.patch
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "answered",
+        "source": "https://forge.typo3.org",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=%2A&sort=created_on%3Aasc&limit=3&include=relations%2Cattachments&author_id=52",
+        "query": "",
+        "total": 621,
+        "categories": [
+            "AdminPanel",
+            "Authentication",
+            "Backend API",
+            "Backend JavaScript",
+            "Backend User Interface",
+            "Caching",
+            "Categorization API",
+            "CLI",
+            "Code Cleanup",
+            "composer / dependencies / third-party",
+            "Content Rendering",
+            "Content Security Policy",
+            "Dashboard",
+            "Database API (Doctrine DBAL)",
+            "DataHandler aka TCEmain",
+            "Documentation",
+            "Extbase",
+            "Extbase + l10n",
+            "Extension Manager",
+            "felogin",
+            "File Abstraction Layer (FAL)",
+            "Fluid",
+            "Fluid Styled Content",
+            "Form Framework",
+            "FormEngine aka TCEforms",
+            "Frontend",
+            "Image Cropping",
+            "Image Generation / GIFBUILDER",
+            "Import/Export (T3D)",
+            "Indexed Search",
+            "Install Tool",
+            "Language Manager (backend)",
+            "Link Handling & Redirect Handling",
+            "Linkvalidator",
+            "Localization",
+            "Locking / Session Handling",
+            "Logging",
+            "Mailer API",
+            "Miscellaneous",
+            "Pagetree",
+            "Performance",
+            "Recycler",
+            "Reports",
+            "RTE (rtehtmlarea + ckeditor)",
+            "scheduler",
+            "Security",
+            "SEO",
+            "Site Handling, Site Sets & Routing",
+            "System/Bootstrap/Configuration",
+            "t3editor",
+            "Tests",
+            "Themes",
+            "TypoScript",
+            "WebHooks - Incoming = Reactions + Outgoing",
+            "Workspaces"
+        ],
+        "categoriesUsed": [],
+        "people": [
+            {
+                "filter": "reportedBy",
+                "asked": "Frank Nägler",
+                "name": "Frank Nägler",
+                "id": 52,
+                "candidates": []
+            }
+        ],
+        "issue": null,
+        "results": [
+            {
+                "issue": 15488,
+                "subject": "miscellaneous extensions dont work",
+                "tracker": "Bug",
+                "status": "Closed",
+                "category": "",
+                "reportedBy": "Frank Nägler",
+                "assignedTo": "",
+                "createdOn": "2006-01-23T11:36:05Z",
+                "updatedOn": "2006-01-24T17:37:26Z",
+                "url": "https://forge.typo3.org/issues/15488",
+                "relations": [],
+                "attachments": [],
+                "reviews": []
+            },
+            {
+                "issue": 15890,
+                "subject": "PHP erros after search",
+                "tracker": "Bug",
+                "status": "Closed",
+                "category": "Indexed Search",
+                "reportedBy": "Frank Nägler",
+                "assignedTo": "Dmitry Dulepov",
+                "createdOn": "2006-03-23T23:48:50Z",
+                "updatedOn": "2018-10-02T12:33:16Z",
+                "url": "https://forge.typo3.org/issues/15890",
+                "relations": [],
+                "attachments": [],
+                "reviews": []
+            },
+            {
+                "issue": 18374,
+                "subject": "XCLASSing USER_INT objects does not work",
+                "tracker": "Bug",
+                "status": "Closed",
+                "category": "Communication",
+                "reportedBy": "Frank Nägler",
+                "assignedTo": "Oliver Hader",
+                "createdOn": "2008-03-05T10:30:08Z",
+                "updatedOn": "2010-08-06T13:20:14Z",
+                "url": "https://forge.typo3.org/issues/18374",
+                "relations": [
+                    {
+                        "issue": 17883,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/17883",
+                        "subject": "Nested USER_INT, COA_INT, etc. objects are not rendered",
+                        "tracker": "Bug",
+                        "status": "Closed"
+                    },
+                    {
+                        "issue": 18504,
+                        "relation": "relates",
+                        "url": "https://forge.typo3.org/issues/18504",
+                        "subject": "XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline",
+                        "tracker": "Bug",
+                        "status": "Closed"
+                    }
+                ],
+                "attachments": [
+                    {
+                        "filename": "0007759_41.patch",
+                        "contentType": "text/x-patch",
+                        "size": 514,
+                        "on": "2008-03-31T11:44:07Z",
+                        "url": "https://forge.typo3.org/attachments/download/9069/0007759_41.patch"
+                    },
+                    {
+                        "filename": "0007759_42.patch",
+                        "contentType": "text/x-patch",
+                        "size": 524,
+                        "on": "2008-03-31T11:44:16Z",
+                        "url": "https://forge.typo3.org/attachments/download/9068/0007759_42.patch"
+                    }
+                ],
+                "reviews": []
+            }
+        ],
+        "unavailable": null
+    }
+
+forge: a name naming more than one person
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "open": "oldest",
+        "assignedTo": "daniel"
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 issue tracker: "daniel" as assignedTo names more than one person, so nothing was read. That is about the name and not about the backlog.
+    Ask again with one of: Daniel Siepmann, Daniel Goerz, Daniel Lorenz, Daniel Gohlke, Daniel Windloff, Daniel Maier, Daniel Sattler
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "empty",
+        "source": "https://forge.typo3.org",
+        "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?status_id=open&sort=created_on%3Aasc&limit=15&include=relations%2Cattachments",
+        "query": "",
+        "total": 0,
+        "categories": [
+            "AdminPanel",
+            "Authentication",
+            "Backend API",
+            "Backend JavaScript",
+            "Backend User Interface",
+            "Caching",
+            "Categorization API",
+            "CLI",
+            "Code Cleanup",
+            "composer / dependencies / third-party",
+            "Content Rendering",
+            "Content Security Policy",
+            "Dashboard",
+            "Database API (Doctrine DBAL)",
+            "DataHandler aka TCEmain",
+            "Documentation",
+            "Extbase",
+            "Extbase + l10n",
+            "Extension Manager",
+            "felogin",
+            "File Abstraction Layer (FAL)",
+            "Fluid",
+            "Fluid Styled Content",
+            "Form Framework",
+            "FormEngine aka TCEforms",
+            "Frontend",
+            "Image Cropping",
+            "Image Generation / GIFBUILDER",
+            "Import/Export (T3D)",
+            "Indexed Search",
+            "Install Tool",
+            "Language Manager (backend)",
+            "Link Handling & Redirect Handling",
+            "Linkvalidator",
+            "Localization",
+            "Locking / Session Handling",
+            "Logging",
+            "Mailer API",
+            "Miscellaneous",
+            "Pagetree",
+            "Performance",
+            "Recycler",
+            "Reports",
+            "RTE (rtehtmlarea + ckeditor)",
+            "scheduler",
+            "Security",
+            "SEO",
+            "Site Handling, Site Sets & Routing",
+            "System/Bootstrap/Configuration",
+            "t3editor",
+            "Tests",
+            "Themes",
+            "TypoScript",
+            "WebHooks - Incoming = Reactions + Outgoing",
+            "Workspaces"
+        ],
+        "categoriesUsed": [],
+        "people": [
+            {
+                "filter": "assignedTo",
+                "asked": "daniel",
+                "name": "",
+                "id": 0,
+                "candidates": [
+                    "Daniel Siepmann",
+                    "Daniel Goerz",
+                    "Daniel Lorenz",
+                    "Daniel Gohlke",
+                    "Daniel Windloff",
+                    "Daniel Maier",
+                    "Daniel Sattler"
+                ]
+            }
+        ],
         "issue": null,
         "results": [],
         "unavailable": null

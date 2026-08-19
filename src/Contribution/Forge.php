@@ -37,15 +37,16 @@ final class Forge
     public const HELD_FOR = 300;
 
     /**
-     * Seconds the project's own category list is held for.
+     * Seconds the project's own lists — its categories and its members — are
+     * held for.
      *
-     * Two orders of magnitude longer than an issue's, because it answers how
-     * the core files its issues rather than what happened to one of them. A
-     * category is added when a subsystem is, which is a thing that happens
-     * between releases, while a session filtering by area asks for the same
-     * names on every call it makes.
+     * Two orders of magnitude longer than an issue's, because they answer how
+     * the core is organised rather than what happened to one issue. A category
+     * is added when a subsystem is and a membership when somebody joins, which
+     * are things that happen between releases, while a session filtering by
+     * area or by person asks for the same names on every call it makes.
      */
-    public const CATEGORIES_HELD_FOR = 86400;
+    public const LISTS_HELD_FOR = 86400;
 
     /**
      * How many journal entries come back. The decision is usually in the last
@@ -78,6 +79,17 @@ final class Forge
      * that has to be paged through is one nobody sees the shape of.
      */
     private const LISTED = 50;
+
+    /** The most memberships one page of them holds, which is Redmine's own cap. */
+    private const MEMBERS = 100;
+
+    /**
+     * The most pages of them read, whatever the project says it has. The count
+     * comes from the tracker and the loop ends on it; this is what keeps a
+     * count that is wrong from turning one call into a thousand. The core
+     * project had 185 members on 2026-08-19.
+     */
+    private const MEMBER_PAGES = 5;
 
     /**
      * The tracker ids `/trackers.json` answered with on 2026-08-05.
@@ -245,8 +257,8 @@ final class Forge
     /**
      * The fields a search hit is not made of, read for the whole page at once.
      *
-     * `/search.json` answers with a title and a URL, so the area, the assignee
-     * and the two dates are absent from every hit — and a record carrying them
+     * `/search.json` answers with a title and a URL, so the area, the reporter,
+     * the assignee and the two dates are absent from every hit — and a record carrying them
      * empty is a false statement rather than a missing one: it reads as an
      * issue nobody has categorised, nobody holds and nothing has moved on. A
      * session took 50 of 50 rows that way on 2026-08-05
@@ -272,6 +284,7 @@ final class Forge
                 continue;
             }
             $results[$at]['category'] = $read['category'];
+            $results[$at]['reportedBy'] = $read['reportedBy'];
             $results[$at]['assignedTo'] = $read['assignedTo'];
             $results[$at]['createdOn'] = $read['createdOn'];
             $results[$at]['updatedOn'] = $read['updatedOn'];
@@ -288,12 +301,8 @@ final class Forge
     /**
      * The fields of a set of issues, read in one request.
      *
-     * `/issues.json` filtered by an id list answers subject, tracker, status,
-     * area, assignee and both dates for the whole set at once, which is what
-     * makes filling a search page and an issue's relations cheaper than
-     * explaining why they are bare. `status_id=*` is what keeps a closed one in
-     * it — both callers ask about issues that are usually closed, and the
-     * default of that endpoint is open ones.
+     * What makes filling a search page and an issue's relations cheaper than
+     * explaining why they are bare.
      *
      * An empty answer is what could not be reached, and every caller here reads
      * it as "leave what came back alone".
@@ -302,6 +311,29 @@ final class Forge
      * @return array<int, array<string, mixed>>
      */
     private function fields(array $numbers): array
+    {
+        $fields = [];
+        foreach ($this->issuesOf($numbers) as $entry) {
+            $read = self::entry($entry);
+            $fields[$read['issue']] = $read;
+        }
+
+        return $fields;
+    }
+
+    /**
+     * The rows a set of issue numbers are, as the tracker sends them.
+     *
+     * `/issues.json` filtered by an id list answers subject, tracker, status,
+     * area, author, assignee and both dates for the whole set in one request.
+     * `status_id=*` is what keeps a closed one in it — every caller here asks
+     * about issues that are usually closed, and the default of that endpoint is
+     * open ones.
+     *
+     * @param list<mixed> $numbers
+     * @return list<array<string, mixed>>
+     */
+    private function issuesOf(array $numbers): array
     {
         $wanted = [];
         foreach ($numbers as $number) {
@@ -319,19 +351,15 @@ final class Forge
             'limit' => count($wanted),
         ]);
         $answer = $this->api($url, 'issues');
-        if ($answer['part'] === null) {
-            return [];
-        }
 
-        $fields = [];
-        foreach ($answer['part'] as $entry) {
+        $rows = [];
+        foreach ($answer['part'] ?? [] as $entry) {
             if (is_array($entry)) {
-                $read = self::entry($entry);
-                $fields[$read['issue']] = $read;
+                $rows[] = $entry;
             }
         }
 
-        return $fields;
+        return $rows;
     }
 
     /**
@@ -348,7 +376,12 @@ final class Forge
      * has to be able to see whether 30 was the set or the first screenful of
      * it.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', url: string, total: int, categories: list<string>, categoriesUsed: list<string>, results: list<array<string, mixed>>, cause: ?string}
+     * The person filters are the other way in and the one a status widens for:
+     * what somebody still has open is a question about the backlog, what they
+     * have filed over the years is a question about a person, and only the
+     * second needs the closed issues in the set.
+     *
+     * @return array{status: 'answered'|'empty'|'unavailable', url: string, total: int, categories: list<string>, categoriesUsed: list<string>, people: list<array{filter: string, asked: string, name: string, id: int, candidates: list<string>}>, results: list<array<string, mixed>>, cause: ?string}
      */
     public function open(
         string $order = 'oldest',
@@ -357,12 +390,21 @@ final class Forge
         string $createdBefore = '',
         string $updatedBefore = '',
         int $limit = 15,
+        string $status = 'open',
+        string $reportedBy = '',
+        string $assignedTo = '',
     ): array {
         $categories = $this->categories();
         $used = $category === '' ? [] : self::named($categories, $category);
 
         $filters = [
-            'status_id' => 'open',
+            // The tracker's own three: `open` is every status it has not marked
+            // closed, and `*` is what puts a person's whole history in reach.
+            'status_id' => match ($status) {
+                'closed' => 'closed',
+                'all' => '*',
+                default => 'open',
+            },
             'sort' => $order === 'stale' ? 'updated_on:asc' : 'created_on:asc',
             'limit' => (string) max(1, min(self::LISTED, $limit)),
             // What the index answers for nothing where it is asked for. The
@@ -381,6 +423,18 @@ final class Forge
                 $used,
             ));
         }
+        $people = [];
+        foreach (['reportedBy' => $reportedBy, 'assignedTo' => $assignedTo] as $filter => $word) {
+            if ($word === '') {
+                continue;
+            }
+            $person = $this->person($word);
+            $people[] = ['filter' => $filter, 'asked' => $word] + $person;
+            if ($person['id'] > 0) {
+                $filters[$filter === 'reportedBy' ? 'author_id' : 'assigned_to_id'] = (string) $person['id'];
+            }
+        }
+
         // A date the tracker cannot read is answered with the unfiltered set,
         // which is the wrong answer wearing a right one's shape. Only a date
         // reaches the query.
@@ -394,16 +448,17 @@ final class Forge
         $known = array_keys($categories);
         $url = self::HOST . '/projects/' . self::PROJECT . '/issues.json?' . http_build_query($filters);
 
-        // A word matching no category would otherwise be answered with the
-        // unfiltered backlog, which is a set about everything wearing the shape
-        // of a set about one thing.
-        if ($category !== '' && $used === []) {
-            return ['status' => 'empty', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => [], 'results' => [], 'cause' => null];
+        // A word matching no category, and a name matching no person, would
+        // otherwise be answered with the unfiltered backlog — a set about
+        // everything wearing the shape of a set about one thing.
+        $unresolved = array_filter($people, static fn(array $person): bool => $person['id'] === 0);
+        if (($category !== '' && $used === []) || $unresolved !== []) {
+            return ['status' => 'empty', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $category !== '' ? $used : [], 'people' => $people, 'results' => [], 'cause' => null];
         }
 
         $answer = $this->api($url, 'issues');
         if ($answer['part'] === null) {
-            return ['status' => 'unavailable', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $used, 'results' => [], 'cause' => $answer['cause']];
+            return ['status' => 'unavailable', 'url' => $url, 'total' => 0, 'categories' => $known, 'categoriesUsed' => $used, 'people' => $people, 'results' => [], 'cause' => $answer['cause']];
         }
 
         $results = [];
@@ -419,6 +474,7 @@ final class Forge
             'total' => $answer['total'],
             'categories' => $known,
             'categoriesUsed' => $used,
+            'people' => $people,
             'results' => $this->reviewed($this->related($results)),
             'cause' => null,
         ];
@@ -445,7 +501,7 @@ final class Forge
     public function categories(): array
     {
         $url = self::HOST . '/projects/' . self::PROJECT . '.json?include=issue_categories';
-        $answer = $this->api($url, 'project', self::CATEGORIES_HELD_FOR);
+        $answer = $this->api($url, 'project', self::LISTS_HELD_FOR);
 
         $categories = [];
         $listed = $answer['part']['issue_categories'] ?? null;
@@ -459,34 +515,156 @@ final class Forge
     }
 
     /**
-     * The categories a caller's words name, in the tracker's own spelling.
+     * The people the core project is worked by, name to id.
+     *
+     * The tracker filters by a numeric user id, and it serves no public user
+     * list: `/users.json` answers 401 without an administrator's credential. So
+     * a caller holding a name and nothing else cannot ask a question about a
+     * person at all, and the memberships of the project are the one place it
+     * answers names and ids together for nobody in particular.
+     *
+     * It is who the project is worked by rather than everybody who has ever
+     * filed something — 24 of the 100 most recently filed issues were reported
+     * from outside it, measured on 2026-08-19, which is what `found()` is the
+     * fallback for.
+     *
+     * @return array<string, int>
+     */
+    public function people(): array
+    {
+        $people = [];
+        $offset = 0;
+        do {
+            $url = self::HOST . '/projects/' . self::PROJECT . '/memberships.json?'
+                . http_build_query(['limit' => self::MEMBERS, 'offset' => $offset]);
+            $answer = $this->api($url, 'memberships', self::LISTS_HELD_FOR);
+            foreach ($answer['part'] ?? [] as $membership) {
+                // A membership is a person or a group, and only a person files
+                // and is assigned issues.
+                $user = is_array($membership) ? $membership['user'] ?? null : null;
+                if (is_array($user) && is_string($user['name'] ?? null) && is_numeric($user['id'] ?? null)) {
+                    $people[$user['name']] = (int) $user['id'];
+                }
+            }
+            $offset += self::MEMBERS;
+        } while ($answer['part'] !== null && $offset < min($answer['total'], self::MEMBERS * self::MEMBER_PAGES));
+
+        return $people;
+    }
+
+    /**
+     * The person a name means, as the id the tracker filters by.
+     *
+     * Only a name carried whole decides, which is where this parts from the way
+     * an area is named: half of "backend ui" is still the backend, and half of
+     * "Andreas Kießling" is four other people called Andreas. A name reaching
+     * two of them resolves to neither and answers with both, because merging
+     * two people into one backlog is a wrong answer nothing about it says is
+     * wrong.
+     *
+     * @return array{name: string, id: int, candidates: list<string>}
+     */
+    public function person(string $name): array
+    {
+        $members = $this->people();
+        [$carried] = self::matching($members, $name);
+        if (count($carried) === 1) {
+            return ['name' => $carried[0], 'id' => $members[$carried[0]], 'candidates' => []];
+        }
+        if ($carried !== []) {
+            return ['name' => '', 'id' => 0, 'candidates' => $carried];
+        }
+
+        $others = $this->found($name);
+        [$filed] = self::matching($others, $name);
+        if (count($filed) === 1) {
+            return ['name' => $filed[0], 'id' => $others[$filed[0]], 'candidates' => []];
+        }
+
+        return ['name' => '', 'id' => 0, 'candidates' => $filed];
+    }
+
+    /**
+     * The people named by the issues whose text carries a name, name to id.
+     *
+     * What resolves somebody the project holds no membership for, which is a
+     * quarter of the reporters. It is the step the session that asked for this
+     * filter took by hand: read an issue that person touched, and lift the id
+     * out of its author. Best effort and no more — a reporter nobody has
+     * written the name of stays unresolved, which is answered as such rather
+     * than as an empty backlog.
+     *
+     * @return array<string, int>
+     */
+    private function found(string $name): array
+    {
+        $url = self::HOST . '/search.json?q=' . rawurlencode($name) . '&issues=1&limit=' . self::HITS;
+        $answer = $this->api($url, 'results');
+
+        $numbers = [];
+        foreach ($answer['part'] ?? [] as $hit) {
+            if (is_array($hit) && is_numeric($hit['id'] ?? null)) {
+                $numbers[] = (int) $hit['id'];
+            }
+        }
+
+        $people = [];
+        foreach ($this->issuesOf($numbers) as $row) {
+            // Both sides of a row, because a name in an issue's text is as often
+            // the person it was handed to as the person who filed it.
+            foreach ([$row['author'] ?? null, $row['assigned_to'] ?? null] as $party) {
+                if (is_array($party) && is_string($party['name'] ?? null) && is_numeric($party['id'] ?? null)) {
+                    $people[$party['name']] = (int) $party['id'];
+                }
+            }
+        }
+
+        return $people;
+    }
+
+    /**
+     * The entries of a name-to-id list a caller's words name, in the tracker's
+     * own spelling. Its areas and its people are both such a list.
      *
      * Nobody types "RTE (rtehtmlarea + ckeditor)". They type "rte", and they
      * type "backend ui" for a name that carries neither word whole, so the
      * words are matched one at a time and at a word boundary — a substring
      * match answers "rte" with every category whose name contains "reporte" or
-     * "Renderer".
+     * "Renderer", and "kai" with everybody called Kaiser.
      *
      * Carrying every word is preferred and carrying one is the fallback,
      * because the first is what an exact name does and the second is what a
-     * half-remembered one does. Which categories that produced is answered back,
+     * half-remembered one does. Which entries that produced is answered back,
      * since "backend ui" reaching three of them is a set the caller may want to
      * narrow and cannot see from the issues alone.
      *
-     * @param array<string, int> $categories
+     * @param array<string, int> $entries
      * @return list<string>
      */
-    public static function named(array $categories, string $words): array
+    public static function named(array $entries, string $words): array
+    {
+        [$all, $any] = self::matching($entries, $words);
+
+        return $all !== [] ? $all : $any;
+    }
+
+    /**
+     * The entries carrying every word, and the entries carrying some of them.
+     *
+     * @param array<string, int> $entries
+     * @return array{list<string>, list<string>}
+     */
+    private static function matching(array $entries, string $words): array
     {
         $terms = preg_split('/\s+/', trim($words)) ?: [];
         $terms = array_values(array_filter($terms, static fn(string $term): bool => $term !== ''));
         if ($terms === []) {
-            return [];
+            return [[], []];
         }
 
         $all = [];
         $any = [];
-        foreach (array_keys($categories) as $name) {
+        foreach (array_keys($entries) as $name) {
             $carried = 0;
             foreach ($terms as $term) {
                 $carried += Text::containsWord($name, $term) ? 1 : 0;
@@ -498,7 +676,7 @@ final class Forge
             }
         }
 
-        return $all !== [] ? $all : $any;
+        return [$all, $any];
     }
 
     /**
@@ -602,10 +780,11 @@ final class Forge
             'subject' => $subject,
             'tracker' => $tracker,
             'status' => $status,
-            // A search hit is a title and a URL. The four below are fields of
+            // A search hit is a title and a URL. The five below are fields of
             // the issue, and `filled()` is what reads them for the whole page —
             // what is left empty here is what that call could not reach.
             'category' => '',
+            'reportedBy' => '',
             'assignedTo' => '',
             'createdOn' => '',
             'updatedOn' => '',
@@ -641,6 +820,7 @@ final class Forge
             'tracker' => self::name($raw['tracker'] ?? null),
             'status' => self::name($raw['status'] ?? null),
             'category' => self::name($raw['category'] ?? null),
+            'reportedBy' => self::name($raw['author'] ?? null),
             'assignedTo' => self::name($raw['assigned_to'] ?? null),
             'createdOn' => is_string($raw['created_on'] ?? null) ? $raw['created_on'] : '',
             'updatedOn' => is_string($raw['updated_on'] ?? null) ? $raw['updated_on'] : '',

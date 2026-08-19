@@ -167,6 +167,18 @@ final class ToolCalls
                 'open' => 'oldest',
                 'category' => 'quantumflux',
             ]],
+            // The question the full-text search reads as nine issues and the
+            // tracker answers with six hundred.
+            'forge: what one person has filed' => ['typo3_forge_lookup', [
+                'open' => 'oldest',
+                'reportedBy' => 'Frank Nägler',
+                'status' => 'all',
+                'limit' => 3,
+            ]],
+            'forge: a name naming more than one person' => ['typo3_forge_lookup', [
+                'open' => 'oldest',
+                'assignedTo' => 'daniel',
+            ]],
             'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
                 'issue' => '110348',
                 'limit' => 3,

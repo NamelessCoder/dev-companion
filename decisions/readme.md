@@ -81,6 +81,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-087`][D-ANS-087] — The project answer stays whole because a call is what costs · 2026-08-19
 - [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section, and names what it left out · 2026-08-19
+- [`D-ANS-089`][D-ANS-089] — A person is a filter on the backlog, and a name is resolved here · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository, not by the installation in it · 2026-08-18
@@ -165,6 +166,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-086]: answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md
 [D-ANS-087]: answers/ans-087-the-project-answer-stays-whole-because-a-call-is-what-costs.md
 [D-ANS-088]: answers/ans-088-the-orientation-answer-is-asked-for-by-section-and-names-what-it-left-out.md
+[D-ANS-089]: answers/ans-089-a-person-is-a-filter-on-the-backlog-and-a-name-is-resolved-here.md
 [D-ANS-082]: answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-084]: answers/ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md
 [D-ANS-085]: answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md

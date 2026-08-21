@@ -607,12 +607,34 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    /**
+     * A site saying which major it is on is not a package declaring a range.
+     *
+     * The two are described in the same ordinary words, and the brief above
+     * cannot catch the crossing because the text that breaks it matches
+     * `installation-upgrade` on nothing: measured while `compatibility` was
+     * written, a strong "runs on typo3" made the compatibility brief the whole
+     * answer to a site upgrade rather than a second one beside it. The subject
+     * inside the needle is what separates them (`D-GUI-012`).
+     */
+    #[Test]
+    public function anInstallationSayingWhichMajorItIsOnIsNotCompatibilityWork(): void
+    {
+        self::assertNotContains(
+            'compatibility',
+            array_column(TaskIntents::confirmed(TaskIntents::detect(
+                'this site runs on TYPO3 12 and we need to be on 13 before support ends',
+            )), 'id'),
+        );
+    }
+
     /** @return array<string, array{0: string, 1: string}> */
     public static function aBriefForEachKindOfWork(): array
     {
         $briefs = [
             'deprecation' => 'Deprecate the public method Foo::bar() and migrate its callers',
             'breaking' => 'Remove a public api method nothing outside the core calls',
+            'compatibility' => 'Make the package compatible with a TYPO3 major it does not declare yet',
             'changelog' => 'Write the changelog entry for the feature that landed',
             'documentation' => 'Document the public workflow this extension ships, for the people who install it',
             'labels' => 'Add the XLF trans-unit for the new label',

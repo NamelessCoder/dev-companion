@@ -59,6 +59,47 @@
     ]
   },
   {
+    "id": "compatibility",
+    "title": "Keeping a package running on the majors it declares",
+    "skill": "typo3-extension-upgrade",
+    "guide": "extension/compatibility/running-on-a-declared-major-that-is-not-installed",
+    "match": [
+      "compatible with",
+      "compatibility",
+      "package runs on",
+      "package run on",
+      "extension runs on",
+      "extension run on",
+      "still work on",
+      "still works on",
+      "supports typo3",
+      "support typo3"
+    ],
+    "matchWeak": [
+      "compatible",
+      "runs on",
+      "run on",
+      "support for"
+    ],
+    "condition": "only if the work is what a package owes the TYPO3 majors it declares — adding one, dropping one, or proving it runs on each — rather than carrying one installation from the major it is on to the next",
+    "rulesQuery": "",
+    "checklist": [
+      "Read the range the package declares before naming a target. The Composer manifest and ext_emconf.php both declare it and a difference between the two is itself a finding, because for a non-Composer installation ext_emconf.php is the only constraint that governs.",
+      "The installed major is one point in that range. A judgement made against it alone holds for that point, and every other declared major is a question about a branch this installation does not have.",
+      "Ask it per symbol rather than per package. A class that stands on both branches can have gained a method on the newer one, a return type can be nullable on one side, and a constant can hold a different set of entries.",
+      "The lowest declared major decides every shape in the package. A registration form, attribute or API introduced later cannot replace one that still has to work there, so a runtime branch on the version is what the declared range requires rather than debt to clean up.",
+      "Prove every combination the declaration claims rather than the one the installation supplies. A cell that will not resolve is the finding, and a cell nobody ran is named as unrun — the matrix is the claim the package makes about itself.",
+      "Dropping a major is the user's decision and never one taken to make the code simpler. Widening to a new one keeps every version currently declared unless the request says otherwise."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_describe, for the range the package declares against the version the installation supplies — the pair every judgement here is made about",
+      "typo3_changelog_lookup with type=\"breaking\" or \"deprecation\" and the target version, for what the package's own call sites owe it",
+      "typo3_system_extension_lookup, for whether a system extension the package requires is still part of the target major",
+      "typo3_documentation_lookup with the target version, where the official API decides the shape and the installed core cannot answer for it"
+    ]
+  },
+  {
     "id": "changelog",
     "title": "Changelog entry",
     "skill": "typo3-extension-documentation",

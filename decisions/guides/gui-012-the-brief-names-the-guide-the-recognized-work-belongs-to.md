@@ -235,3 +235,21 @@ the running page already, and nothing routes a caller to it from the task text.
 That is recognition rather than placement, the same split as `D-GUI-014`, and it
 is queued as
 `todo/open/2026-08-21-143000-no-intent-recognizes-compatibility-work.md`.
+
+### 2026-08-21 — the queued half is written, and it is a sixth guide
+
+**The recognition half above is
+[`D-GUI-018`](gui-018-keeping-a-package-on-the-majors-it-declares-is-an-intent-of-its-own.md),
+the same split as `D-GUI-014` and settled the same way.** `compatibility` is the
+sixth intent to name a guide, it names
+`extension/compatibility/running-on-a-declared-major-that-is-not-installed` and
+routes `typo3-extension-upgrade`, and the three task texts the entry above
+measured as reaching nothing now reach it and nothing else. So does `EXT-01`,
+which reached no intent at all before.
+
+**The third Wrong if is answered rather than triggered.** The guide names the
+page the skill's own step 3 also names, which is a repetition on the face of it;
+it is the right page anyway, because that page's second paragraph hands the
+reader on to the sibling `a-declared-major-that-is-not-installed` for the
+question it does not answer. Naming the running page reaches both, and naming
+the reading page would reach one.

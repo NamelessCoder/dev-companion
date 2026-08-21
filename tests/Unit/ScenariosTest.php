@@ -156,6 +156,7 @@ final class ScenariosTest extends TestCase
             'a security review in a maintainer\'s words' => ['SKILL-11', 'audit'],
             'the goal, where the needles were the mechanism' => ['EXT-08', 'event-listener'],
             'a setting a site set defines' => ['SITE-09', 'site-setting'],
+            'the majors a package declares, in the words a maintainer states them' => ['EXT-01', 'compatibility'],
         ];
     }
 

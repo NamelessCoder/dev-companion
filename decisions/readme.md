@@ -515,6 +515,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### guides
 
 - [`D-GUI-017`][D-GUI-017] — An issue the caller passed is written in either workflow · 2026-08-21
+- [`D-GUI-018`][D-GUI-018] — Keeping a package on the majors it declares is an intent of its own · 2026-08-21
 - [`D-GUI-015`][D-GUI-015] — A case's own prompt reaches less than the brief that stands in for it · 2026-08-19
 - [`D-GUI-016`][D-GUI-016] — The brief carries its hints whether or not it names a skill · 2026-08-19
 - [`D-GUI-012`][D-GUI-012] — The brief names the guide the recognized work belongs to · 2026-08-18
@@ -532,6 +533,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
 [D-GUI-017]: guides/gui-017-an-issue-the-caller-passed-is-written-in-either-workflow.md
+[D-GUI-018]: guides/gui-018-keeping-a-package-on-the-majors-it-declares-is-an-intent-of-its-own.md
 [D-GUI-015]: guides/gui-015-a-cases-own-prompt-reaches-less-than-the-brief-that-stands-in-for-it.md
 [D-GUI-016]: guides/gui-016-the-brief-carries-its-hints-whether-or-not-it-names-a-skill.md
 [D-GUI-012]: guides/gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md

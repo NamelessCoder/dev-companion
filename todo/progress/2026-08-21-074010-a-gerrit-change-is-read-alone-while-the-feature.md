@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-21-074010-a-gerrit-change-is-read-alone-while-the-feature.md
 **Priority:** normal
+**Branch:** todo/a-gerrit-change-is-read-alone-while-the-feature
+**Claimed:** 2026-08-21
 
 Carry the relation chain in `typo3_gerrit_lookup`'s answer for every change the
 `change` form returns, the Change-Id siblings included. The source is

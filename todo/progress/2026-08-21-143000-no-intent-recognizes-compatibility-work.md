@@ -2,6 +2,8 @@
 
 **Serves:** D-GUI-012
 **Priority:** normal
+**Branch:** todo/no-intent-recognizes-compatibility-work
+**Claimed:** 2026-08-21
 
 Measured on 2026-08-21 while placing the two `extension/compatibility/` pages:
 "make the extension compatible with v14", "prove the package runs on TYPO3 13

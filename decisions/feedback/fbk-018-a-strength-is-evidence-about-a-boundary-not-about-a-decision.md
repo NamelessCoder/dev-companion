@@ -1263,3 +1263,128 @@ enough. Its card carries that.
 The feedback is closed by this commit and nothing is queued. No statement about
 TYPO3 was established: the re-run read this server's own answers, and what the
 exclusion claims about this server was settled against `src/`.
+
+## Confirmed on 2026-08-21
+
+The 2026-08-03 section says a strength that proposes a feature is read against
+the feature, and that an ask for something already there is evidence the answer
+does not say so. `feedback/2026-08-19-094315` makes that same ask about the same
+field, and this time the feature is genuinely absent. The lever is elsewhere,
+and it is in one of the four saves the report counts as a save.
+
+It audited `t3g/blog` before an official v14 release, in
+`/home/benji/projects/blog`, and credits four answers plus two failure modes it
+would not change. The reporting checkout is another session's work, so the three
+hint calls were re-run on 2026-08-21 through `bin/typo3-dev-companion` from this
+repository's own `.checkouts/14.3`, with the feedback's own arguments:
+
+- `typo3_hint_lookup id=typoscript-conditions targetVersion=14` returns every
+  sentence the report acts on verbatim: the variable list with `page` in it,
+  `AfterPageAndLanguageIsResolvedEvent`, and the clause refusing
+  `$GLOBALS['TYPO3_REQUEST']` because conditions are matched while the frontend
+  request handler has not yet assigned it.
+- `typo3_hint_lookup id=extbase-plugin-registration targetVersion=14` returns
+  the constraint word for word.
+- The paths-and-task call returns `security-sinks` first, with both directions
+  the report used — the sink claim, and the hop that hands a value on.
+- `typo3_extension_describe extension=blog` was not re-run. It answers from that
+  installation and no extension here is one it would answer for; the
+  `deprecatedFiles` half reproduced on 2026-08-03 in the section above.
+
+**The first Wrong if fired, in the save the report is proudest of.** Item 3 is
+not the corroboration of a right answer that `2026-07-31-194823` established is
+outside the ladder. The session says the hint alone would have produced a wrong
+finding. It states the constraint on the literal `"CType"` and says anything
+else throws; the extension passes
+`ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT` everywhere; reading the core is
+what told the session those are one thing. What the report calls a pair is a
+statement plus the round trip the statement costs.
+
+Step 4, wording. Not 1a, because the constraint is here and it is correct; not
+step 2, because it was delivered by id; not step 3, because the lookup fired.
+The literal is what the exception quotes —
+`Fifth parameter $pluginType has to be omitted or set to "CType"` — and
+`PLUGIN_TYPE_CONTENT_ELEMENT` is `'CType'` in `.checkouts/12.4`, `13.4`, `14.3`
+and `main`. The hint gains that, and the half beside it that a dual-major
+package needs: `PLUGIN_TYPE_PLUGIN` was deprecated at 13.4 by #105076 and
+removed at 14.0 by #105377, so a call still passing it is an undefined-constant
+fatal rather than the throw the hint describes. The same line is valid on one
+declared major and fatal on the other, which is what this audit spent its
+session on.
+
+That is closed here rather than queued, against the rule in judging.rst that
+sends a TYPO3 lookup to a todo. The reason that rule gives is that the judging
+run has read nothing but this repository. `.checkouts/` is step 2 of the
+ladder's own cost table and is owed to any feedback claiming something about
+TYPO3, which this one does in as many words — *I checked the constant in the
+installed core*. Having paid it, the statement is verified on both sides of its
+boundary, which is what writing into `knowledge/` requires. Nothing in `src/`,
+no schema and no skill moved.
+
+The boundary is **what an answer states about the code as it stands against what
+it states about the version that produced it**. Everything this strength credits
+is the first kind: a file that is there with the condition beside it, the
+variables a matcher was initialised with, the argument a method accepts, the
+place a value leaves PHP. Each is a property of the artifact in front of the
+session, and each is testable there. The cost side is the same debrief, and all
+four of its audit halves ask about history — `2026-08-19-094221` since when a
+migration target exists, `094403` what changed at a major tag by tag, `094528`
+what has already been published to the TER, `094341` what has already been fixed
+on a branch nobody merged. One session filed both directions within three
+minutes.
+
+That is the axis the opening section of this entry read from the other side. It
+found the changelog precise about what **changed** at a version and silent about
+what still **holds** at one, and credited the change half. Here the state half
+is what is credited and the history half is what everything cost. So the axis
+reproduces across two corpora and which side reads as the strength is decided by
+which tool the session reached, not by which side is better served.
+
+The keep-requests are answered against the files as they are now, and two of the
+four rested on nobody rewriting them. `security-sinks` was in no assertion at
+all — `aSecurityFindingIsHeldToItsSinkAndToWhatIsOnlyOnThePath` now holds the
+sink claim, the unverified-report alternative, and the two clauses the report's
+second direction lives in, which is the half a summarising rewrite drops. The
+plugin-type statement was in no assertion either and is held by the test named
+below. The conditions hint was guarded for the variable list, the event and the
+silent failure, and not for the clause that refuses the obvious substitution;
+that clause is added to
+`whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem`. The two
+failure modes the report would not change are guarded already —
+`PackageSourcesTest::theTagListTravelsWithAHitAsWellAsWithAMiss` for the tag
+list, and `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre` for the miss
+that lists every document id.
+
+`aPluginTypeArgumentIsAnsweredWithTheConstantThatSatisfiesIt` holds what was
+added, on both sides of the boundary: the constant on every covered major, and
+the removed one named at 14 and absent at 13.
+
+The corpus repeats the delivery point one day back.
+`feedback/archive/2026-08-18-080743` is a session that fixed these same
+`[blog.isPost()]` conditions on v14, in this same project, and called this
+server no times. The hint this report calls the most useful single answer of its
+session is the one that session never asked for, and the code was identical.
+Nothing changes here on that: it is the same statement reaching one session and
+not the other, which is what a delivery finding already is.
+
+**The ask is queued, and what makes it different from the one refused in the
+2026-08-03 section is that no answer covers it.** `Extension::deprecatedFiles()`
+carries `ext_tables.php` and `ext_emconf.php` and no third file, and the
+criterion for a third is written in its own docblock: a deprecation whose
+predicate is the file being there, which no changelog sweep of an extension's
+vocabulary reaches. Two sessions have now asked for the extension and neither
+named an instance, so the question is whether the set is bigger than two. It is
+— `.checkouts/main` carries
+`Documentation/Changelog/12.4/Deprecation-98093-Ext_iconAsExtensionIconFileLocation.rst`,
+whose subject is `ext_icon.png`, `ext_icon.svg` and `ext_icon.gif` at the
+extension root, and whose stated impact is a deprecation log entry that becomes
+a silent stop. What each candidate actually says is the todo's reading and is
+not named here. The feedback is trimmed to that half and stays open behind its
+card, which is rewritten from the judging card and titled after the work.
+
+The priority is `normal` rather than `low`, and what set it is the corpus: the
+same field asked about by two sessions from two task shapes, and named by this
+one as the highest-value answer of a whole audit.
+
+The third **Wrong if** is what this run bears on. What the closed half leaves
+behind is three assertions and a test rather than a commit message.

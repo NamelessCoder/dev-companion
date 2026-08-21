@@ -31,6 +31,8 @@
       "plugin registration",
       "register a plugin",
       "CType",
+      "PLUGIN_TYPE_CONTENT_ELEMENT",
+      "PLUGIN_TYPE_PLUGIN",
       "list_type",
       "flexform",
       "FlexForm",
@@ -49,6 +51,11 @@
         "text": "configurePlugin() still takes \"list_type\" as its last argument and warns about it. New code omits the argument or passes \"CType\", because that is the shape that survives the next major.",
         "since": 13,
         "until": 13
+      },
+      "ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT is the constant whose value is \"CType\", so a call passing the constant is passing the accepted value. The exception message quotes the literal, which is what makes a call written with the constant read as a violation of it.",
+      {
+        "text": "ExtensionUtility::PLUGIN_TYPE_PLUGIN went with the plugin subtype it named, so a call still passing it fails on the undefined constant before configurePlugin() is entered rather than on the check inside it.",
+        "since": 14
       }
     ]
   },

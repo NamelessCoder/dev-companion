@@ -1051,6 +1051,78 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('$event->getController()->page', $on(12));
         self::assertStringContainsString('$event->getPageInformation()->getPageRecord()', $on(13));
         self::assertStringContainsString('$event->getPageInformation()->getPageRecord()', $on(14));
+
+        // Why the obvious substitution is refused, rather than only that it
+        // answers null. `feedback/2026-08-19-094315` reports proposing exactly
+        // that swap until this clause stopped it, and a summarising rewrite
+        // drops the reason before it drops the verdict.
+        self::assertStringContainsString('assigned by the frontend request handler', $on(14));
+        self::assertStringContainsString('matched while that global is still unset', $on(14));
+    }
+
+    /**
+     * The constant a caller has in front of them, beside the literal the
+     * exception quotes.
+     *
+     * `feedback/2026-08-19-094315` read the constraint, saw
+     * `ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT` passed throughout the
+     * extension it was auditing, and says it would have reported that as a
+     * finding on the statement alone. The core is where it settled the value
+     * instead, which is the round trip a hint stating a constraint on a literal
+     * costs every reader of code written with the constant.
+     */
+    #[Test]
+    public function aPluginTypeArgumentIsAnsweredWithTheConstantThatSatisfiesIt(): void
+    {
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('extbase-plugin-registration', $major)['hints'], 'text'),
+        );
+
+        // The constraint, and the constant that already meets it. Both are read
+        // in `.checkouts/`: the literal is the exception message of
+        // ExtensionUtility::configurePlugin(), and PLUGIN_TYPE_CONTENT_ELEMENT
+        // is 'CType' on every covered major.
+        self::assertStringContainsString('omitted or given as "CType"', $on(14));
+        self::assertStringContainsString('PLUGIN_TYPE_CONTENT_ELEMENT', $on(12));
+        self::assertStringContainsString('PLUGIN_TYPE_CONTENT_ELEMENT', $on(14));
+
+        // The other constant is not a wrong argument, it is a missing one, and
+        // that is the half a dual-major package needs: the same line is valid
+        // where the constant exists and fatal where it does not.
+        self::assertStringContainsString('PLUGIN_TYPE_PLUGIN', $on(14));
+        self::assertStringContainsString('undefined constant', $on(14));
+        self::assertStringNotContainsString('PLUGIN_TYPE_PLUGIN', $on(13));
+    }
+
+    /**
+     * The rule that decides which class a security verdict has to be read in.
+     *
+     * `feedback/2026-08-19-094315` credits it with both directions of one audit
+     * — following ViewHelpers on to the template that emits, and refusing a
+     * ViewHelper whose `escapeOutput=false` looked damning — and asks that it
+     * not be shortened, because the second direction lives in the clause about
+     * what is only on the path. Nothing held either sentence.
+     */
+    #[Test]
+    public function aSecurityFindingIsHeldToItsSinkAndToWhatIsOnlyOnThePath(): void
+    {
+        $text = self::statementsOf('security-sinks');
+
+        // The claim a finding actually makes, and the two ways of discharging
+        // it — read the sink, or say which class went unread.
+        self::assertStringContainsString('a claim about its sink', $text);
+        self::assertStringContainsString('report the finding as unverified', $text);
+
+        // The half that drops a candidate rather than raising one: a component
+        // on the path emits nothing, and an apparent opt-out on it is often
+        // what stops a protected value being encoded twice.
+        self::assertStringContainsString('hands it on emits nothing', $text);
+        self::assertStringContainsString('looks like an opt-out', $text);
+
+        // And that the last hop is usually not in the code under review, which
+        // is what makes the reading worth pricing at all.
+        self::assertStringContainsString('inside an installed package', $text);
     }
 
     #[Test]

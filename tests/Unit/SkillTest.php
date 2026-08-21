@@ -58,12 +58,14 @@ final class SkillTest extends TestCase
         // What the build's output owes the backend, in the order it is read:
         // the module contract the manual states, then the core surface the
         // output borrows — the class first, because it is answered per declared
-        // major, and the identifier after it, which is answered for the
-        // installed one alone.
+        // major, the identifier after it, which is answered for the installed
+        // one alone, and the changelog last, for the surface the change drops
+        // rather than takes on.
         'typo3-extension-asset-build' => [
             'typo3_documentation_lookup',
             'typo3_component_lookup',
             'typo3_icon_lookup',
+            'typo3_changelog_lookup',
             'typo3_commit_message_guide',
         ],
         // `typo3_server_scope` is not among them: the step that named it says

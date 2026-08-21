@@ -121,3 +121,27 @@ the workflow says about a withholding is part of the writing rather than a
 detail left to the reader. A miss here means "not in this snapshot" and sends
 the caller to a Sass path in the core checkout, which is a step the workflow can
 name.
+
+The draft was then read against that session's account, call by call, on
+2026-08-21. Its description carries the two words the task arrived with — a
+dependency update and a Dependabot pull request — so the second **Wrong if**
+does not hold on the file as written, and whether a client fires on it is a run
+rather than a reading. The order reaches two of the three decisions the session
+shipped unverified: the declared majors arrive with the first step, and the
+bullet on what an extension may assume is already loaded is the dropped jQuery
+import.
+
+The third was not reached. The same session also deleted stylesheet rules
+because it believed the backend no longer ships the icon font they name, and a
+core surface the output stops relying on is neither a class the catalog holds
+nor an identifier the installation answers for. `typo3_changelog_lookup`
+restricted to a declared major owns that question, and the workflow now routes
+to it.
+
+What the class bullet said about a withholding was written before `D-CAT-006`
+and is corrected with this reading. A class the query names outright is now
+answered on a target its own entry is withheld for, so "comes back withheld" was
+the whole of the answer only until then. Read on 2026-08-21: `table-fit` at v13
+comes back under `coveredClasses` as the class, its range and its Sass file,
+with the entry withheld above it; at v12 the class list does not reach and the
+withholding names that file alone.

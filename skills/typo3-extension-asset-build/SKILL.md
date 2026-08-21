@@ -105,14 +105,21 @@ checked against the file the build actually wrote.
 - **A CSS class or an icon identifier the output borrows from the core is
   verified against every declared major, one call each, and never read off its
   name.** `typo3_component_lookup` with the `targetVersion` of a major answers
-  what the class provides there; an entry the catalog holds but never verified
-  on that major comes back withheld, naming the core source to check it against,
-  and that withholding is the answer rather than a miss. A class the package's
-  own stylesheet only adds a rule to is one of these, and reads in the diff
-  exactly like one the package owns.
+  what the class provides there, and the query names the class itself rather
+  than the component around it. Where the component was never verified on that
+  major its entry comes back withheld and the class is answered beside it, under
+  `coveredClasses`, as the name and the versions it holds on with nothing to
+  paste. Where the class is not there either, the withholding names the core
+  Sass file, and reading that file on that branch is the next step rather than
+  the end of one. A class the package's own stylesheet only adds a rule to is
+  one of these, and reads in the diff exactly like one the package owns.
 - `typo3_icon_lookup` for a borrowed icon identifier. It answers from the
   installation, so it settles the major installed and says nothing about the
   others the package declares.
+- `typo3_changelog_lookup`, restricted to each declared major, for a core asset
+  the output stops relying on. Deleting a rule because the core no longer ships
+  the icon font it names is the same unverified decision as attaching a class
+  because the core does, and the build goes green either way.
 
 Each of those answers is about one major. Where the package declares several,
 the finding is the range the borrowed class or identifier holds on, and a

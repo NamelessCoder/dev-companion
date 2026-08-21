@@ -30,7 +30,7 @@ final class ComponentLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Look up TYPO3 backend UI components by name or topic. The searchable index is a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss therefore means uncurated rather than outside the subject — the module chrome and other layout classes are candidates as much as badges and cards. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used.';
+        return 'Look up TYPO3 backend UI components by name or topic. The searchable index is a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss therefore means uncurated rather than outside the subject — the module chrome and other layout classes are candidates as much as badges and cards. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used. A class the query names outright is answered even where the entry it belongs to was withheld for the target version — as a name and the versions it holds on, never as markup.';
     }
 
     public static function inputSchema(): array
@@ -39,7 +39,7 @@ final class ComponentLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'query' => ['type' => 'string', 'description' => 'Component name, class, or topic, for example badge, card, search box, or input-group. Omit to list the catalog.'],
-                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the markup has to hold for, for example "13.4" or "14". Components not verified there are withheld. Defaults to the version of the installation this server was started in; where there is none, the whole catalog is returned and every entry carries the versions it was verified on.'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the markup has to hold for, for example "13.4" or "14". Components not verified there are withheld, and a class the query names is still answered where the class list alone was verified there. Defaults to the version of the installation this server was started in; where there is none, the whole catalog is returned and every entry carries the versions it was verified on.'],
             ],
         ];
     }
@@ -72,6 +72,12 @@ final class ComponentLookup extends ReadOnlyTool
                 'describesVersion' => Schema::string('TYPO3 version whose markup this entry describes. It can differ from contractVersion when the installed styleguide has no matching example and bundled markup is the fallback.'),
             ] + Schema::verifiedOn(), ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'classes', 'sourceFiles', 'markupSource', 'contractVersion', 'describesVersion', 'verifiedOn'])),
             'withheld' => Schema::withheldComponents(),
+            'coveredClasses' => Schema::listOf(Schema::object([
+                'class' => Schema::string('A class the query named outright.'),
+                'component' => Schema::string('The withheld entry it belongs to.'),
+                'title' => Schema::string(),
+                'sassPaths' => Schema::listOf(Schema::string(), 'Where the core writes it.'),
+            ] + Schema::verifiedOn(), ['class', 'component', 'title', 'sassPaths', 'verifiedOn']), 'Classes the query named that were verified on the target version although their entry was not. The class name is all of it — no markup and no custom properties, because those are what withheld the entry.'),
             'checklist' => Schema::object([
                 'title' => Schema::string(),
                 'intro' => Schema::string(),
@@ -79,7 +85,41 @@ final class ComponentLookup extends ReadOnlyTool
             ], ['title', 'items']),
             'componentSource' => ['type' => 'string', 'enum' => ['installation', 'catalog'], 'description' => 'installation when the class and custom-property contract was read from the active TYPO3 packages; catalog when the bundled snapshot answered.'],
             'catalog' => Schema::catalogProvenance(),
-        ], ['matchCount', 'components', 'withheld', 'componentSource', 'catalog']);
+        ], ['matchCount', 'components', 'withheld', 'coveredClasses', 'componentSource', 'catalog']);
+    }
+
+    /**
+     * What a withheld entry still answers about a class the query named.
+     *
+     * Written as its own block rather than beside the component, and carrying the
+     * name and nothing else, so a caller cannot read a covered class as a covered
+     * component — `D-CAT-006`.
+     *
+     * @param array<int, array{
+     *     class: string, component: string, title: string,
+     *     sassPaths: array<int, string>, since: ?int, until: ?int, verifiedOn: string
+     * }> $covered
+     */
+    private static function coveredClassNote(array $covered, int $target): string
+    {
+        $lines = [sprintf('Still answered for TYPO3 v%d, one class at a time:', $target)];
+        foreach ($covered as $class) {
+            $lines[] = sprintf(
+                '- `%s` — a class of the %s component (%s), verified on %s%s.',
+                $class['class'],
+                $class['component'],
+                $class['title'],
+                $class['verifiedOn'] === '' ? 'every version this catalog covers' : $class['verifiedOn'],
+                $class['sassPaths'] === [] ? '' : ', in ' . implode(', ', $class['sassPaths']),
+            );
+        }
+        $lines[] = sprintf(
+            'The class name is the whole answer. Its entry is withheld above, so the markup and the custom '
+                . 'properties around it were never verified on TYPO3 v%d and none of them is handed over here.',
+            $target,
+        );
+
+        return implode("\n", $lines);
     }
 
     public static function answer(array $args): ToolResult
@@ -92,17 +132,20 @@ final class ComponentLookup extends ReadOnlyTool
         $withheld = $split['withheld'];
         $withheldNote = Provenance::withheldNote($withheld, $target);
         $sourceNote = Provenance::sourceNote($installed);
+        $covered = Components::coveredClasses($withheld, $query, $target);
+        $coveredNote = $covered === [] ? '' : self::coveredClassNote($covered, (int) $target);
 
         if ($components === []) {
             return ToolResult::create(
                 sprintf(
-                    "No TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s",
+                    "No TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s%s",
                     $withheld === [] ? '' : sprintf(' verified on TYPO3 v%d', (int) $target),
                     (string) $query,
                     $installed
                         ? 'The installed packages were checked, but the searchable component index remains curated; inspect the installed backend CSS for an uncatalogued class.'
                         : Provenance::MISS_NOTE,
                     $withheldNote === '' ? '' : $withheldNote . "\n",
+                    $coveredNote === '' ? '' : "\n" . $coveredNote . "\n\n",
                     $sourceNote,
                 ),
                 [
@@ -111,6 +154,7 @@ final class ComponentLookup extends ReadOnlyTool
                     'matchCount' => 0,
                     'components' => [],
                     'withheld' => Provenance::withheldRecords($withheld),
+                    'coveredClasses' => $covered,
                     'componentSource' => $installed ? 'installation' : 'catalog',
                     'catalog' => Provenance::catalogRecord($installed),
                 ],
@@ -144,6 +188,7 @@ final class ComponentLookup extends ReadOnlyTool
                         'demoPath' => $c['demoPath'],
                     ] + Provenance::sourceRecord($c) + Provenance::verifiedRecord($c), $components),
                     'withheld' => Provenance::withheldRecords($withheld),
+                    'coveredClasses' => $covered,
                     'componentSource' => $installed ? 'installation' : 'catalog',
                     'catalog' => Provenance::catalogRecord($installed),
                 ],
@@ -230,6 +275,9 @@ final class ComponentLookup extends ReadOnlyTool
         if ($withheldNote !== '') {
             $blocks[] = $withheldNote;
         }
+        if ($coveredNote !== '') {
+            $blocks[] = $coveredNote;
+        }
 
         $checklist = Components::checklist();
         $checklistLines = ['## ' . $checklist['title']];
@@ -276,6 +324,7 @@ final class ComponentLookup extends ReadOnlyTool
                 'matchedIn' => $c['matchedIn'] ?? [],
             ] + Provenance::sourceRecord($c) + Provenance::verifiedRecord($c), $described),
             'withheld' => Provenance::withheldRecords($withheld),
+            'coveredClasses' => $covered,
             'checklist' => $checklist,
             'componentSource' => $installed ? 'installation' : 'catalog',
             'catalog' => Provenance::catalogRecord($installed),

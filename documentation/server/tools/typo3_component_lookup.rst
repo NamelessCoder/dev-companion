@@ -12,8 +12,10 @@ Where the target is the active installation, its backend CSS, JavaScript, and
 installed styleguide templates supply the component contract; the curated
 catalog supplies the searchable names and fallback markup. Without usable
 installed sources, the bundled version-bound snapshot answers. Returns markup,
-classes, custom properties, and every source used. Answers from: packages,
-knowledge.
+classes, custom properties, and every source used. A class the query names
+outright is answered even where the entry it belongs to was withheld for the
+target version — as a name and the versions it holds on, never as markup.
+Answers from: packages, knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -29,9 +31,11 @@ Takes
     # input-group. Omit to list the catalog.
     query: string  # optional
     # The TYPO3 version the markup has to hold for, for example "13.4" or "14".
-    # Components not verified there are withheld. Defaults to the version of the
-    # installation this server was started in; where there is none, the whole
-    # catalog is returned and every entry carries the versions it was verified on.
+    # Components not verified there are withheld, and a class the query names is
+    # still answered where the class list alone was verified there. Defaults to the
+    # version of the installation this server was started in; where there is none,
+    # the whole catalog is returned and every entry carries the versions it was
+    # verified on.
     targetVersion: string  # optional
 
 Answers with
@@ -112,6 +116,26 @@ Answers with
         # The same range as a sentence, empty when the entry holds on every covered
         # version.
         verifiedOn: string
+    # Classes the query named that were verified on the target version although
+    # their entry was not. The class name is all of it — no markup and no custom
+    # properties, because those are what withheld the entry.
+    coveredClasses:
+      - # A class the query named outright.
+        class: string
+        # The withheld entry it belongs to.
+        component: string
+        title: string
+        # Where the core writes it.
+        sassPaths: [string]
+        # The TYPO3 major this entry starts holding at, or null when it holds on
+        # every covered version.
+        since: integer or null  # optional
+        # The TYPO3 major it stops holding after, or null when nothing has replaced
+        # it.
+        until: integer or null  # optional
+        # The same range as a sentence, empty when the entry holds on every covered
+        # version.
+        verifiedOn: string
     checklist:  # optional
       title: string
       intro: string  # optional
@@ -140,7 +164,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -1265,6 +1289,7 @@ Data:
             }
         ],
         "withheld": [],
+        "coveredClasses": [],
         "componentSource": "installation",
         "catalog": {
             "repository": "https://github.com/TYPO3/typo3",
@@ -1453,6 +1478,7 @@ Data:
             }
         ],
         "withheld": [],
+        "coveredClasses": [],
         "checklist": {
             "title": "Component Definition of Done",
             "intro": "Applies to every backend component. Verify each item before a component change is complete.",
@@ -1512,6 +1538,7 @@ Data:
         "matchCount": 0,
         "components": [],
         "withheld": [],
+        "coveredClasses": [],
         "componentSource": "installation",
         "catalog": {
             "repository": "https://github.com/TYPO3/typo3",

@@ -48,7 +48,8 @@ final class Components
      *     markup: string, examples: array<int, string>,
      *     sassPath: ?string, sassPaths: array<int, string>, demoPath: ?string,
      *     demoSelector: ?string, demoDerives: bool,
-     *     keywords: array<int, string>, since: ?int, until: ?int
+     *     keywords: array<int, string>, since: ?int, until: ?int,
+     *     classesSince: ?int, classesUntil: ?int
      * }>
      */
     public static function load(): array
@@ -92,6 +93,11 @@ final class Components
                 'keywords' => array_map('strval', $entry['keywords'] ?? []),
                 'since' => isset($entry['since']) ? (int) $entry['since'] : null,
                 'until' => isset($entry['until']) ? (int) $entry['until'] : null,
+                // The class list alone, which reaches further back than the
+                // entry does wherever a custom property arrived after the
+                // classes did (D-CAT-006).
+                'classesSince' => isset($entry['classesSince']) ? (int) $entry['classesSince'] : null,
+                'classesUntil' => isset($entry['classesUntil']) ? (int) $entry['classesUntil'] : null,
             ];
         }, $decoded);
     }
@@ -117,6 +123,62 @@ final class Components
         }
 
         return $split;
+    }
+
+    /**
+     * The classes a withheld entry still covers on the target version.
+     *
+     * A caller that names a class is asking whether that class is there, not for
+     * the component to paste, and the two questions have different answers below
+     * an entry's binding — `D-CAT-006`. Only what the query named outright comes
+     * back: handing over the whole class list would be the entry again, minus the
+     * custom properties that withheld it.
+     *
+     * Nothing here for an entry whose contract came from the installation. That
+     * reading is the installed packages themselves, so a class they do not carry
+     * is absent rather than unverified, and there is no second range to consult.
+     *
+     * @param array<int, array<string, mixed>> $withheld
+     * @return array<int, array{
+     *     class: string, component: string, title: string,
+     *     sassPaths: array<int, string>, since: ?int, until: ?int, verifiedOn: string
+     * }>
+     */
+    public static function coveredClasses(array $withheld, ?string $query, ?int $target): array
+    {
+        $named = self::meaningfulTerms(trim($query ?? ''));
+        if ($target === null || $named === []) {
+            return [];
+        }
+
+        $covered = [];
+        foreach ($withheld as $component) {
+            if (($component['_installed'] ?? false) === true
+                || !Versions::holds($component['classesSince'], $component['classesUntil'], $target)
+            ) {
+                continue;
+            }
+
+            $classes = array_merge(
+                [(string) $component['rootClass']],
+                $component['variants'],
+                $component['modifiers'],
+                $component['subComponents'],
+            );
+            foreach (array_intersect($classes, $named) as $class) {
+                $covered[] = [
+                    'class' => $class,
+                    'component' => (string) $component['name'],
+                    'title' => (string) $component['title'],
+                    'sassPaths' => $component['sassPaths'],
+                    'since' => $component['classesSince'],
+                    'until' => $component['classesUntil'],
+                    'verifiedOn' => Versions::label($component['classesSince'], $component['classesUntil']),
+                ];
+            }
+        }
+
+        return $covered;
     }
 
     /**

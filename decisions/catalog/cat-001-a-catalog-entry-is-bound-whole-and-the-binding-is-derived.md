@@ -97,5 +97,10 @@ out of a stylesheet it does not own, and wanted only to know whether it was
 still there.
 
 The question that raises — whether a class-shaped query may be answered below
-the entry's binding, and at what cost — is recorded on the card serving that
-feedback, with the options and a recommendation.
+the entry's binding, and at what cost — was answered on 2026-08-21 by
+`D-CAT-006`: an entry carries a second derived range for its class list and
+answers a class the query names outright, while what is decided here holds for
+everything that is pasted. That did not reach the caller above. Over the class
+list alone the table entry binds at v13 rather than v12, because the core's own
+Sass does not spell out `table-striped`, `table-hover`, `table-sm` and
+`table-selected` on 12.4.

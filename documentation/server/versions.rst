@@ -91,6 +91,14 @@ runtime, and the failure is silent. The rules below follow from it.
   reads as unchanged — the entry records a digest of what each covered demo
   said, and the same command fails on a rewrite no name would show
   (``D-CAT-001``).
+* **A class the query names is a second question, and carries a second range.**
+  What withholds an entry is usually a custom property that arrived after the
+  classes beside it, and a caller that borrowed one backend class is asking
+  whether that class is there rather than for something to paste. So an entry
+  records ``classesSince``/``classesUntil`` for its class list, derived by the
+  same command from the same checkouts, and a class named outright is answered
+  below the entry's own binding — as a name, its range and the Sass file it is
+  written in, never as markup (``D-CAT-006``).
 * **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in ``files``, and the range is derived

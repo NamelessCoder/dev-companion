@@ -385,12 +385,67 @@ final class CatalogTest extends TestCase
         // holds the numbers to the checkouts, this holds them to versions.json.
         $majors = Versions::majors();
         foreach (Components::load() as $component) {
-            foreach (['since', 'until'] as $bound) {
+            foreach (['since', 'until', 'classesSince', 'classesUntil'] as $bound) {
                 if ($component[$bound] !== null) {
                     self::assertContains($component[$bound], $majors, $component['name'] . ' is bound to a version this knowledge base does not cover');
                 }
             }
         }
+    }
+
+    #[Test]
+    public function theClassListReachesAtLeastAsFarBackAsTheEntryItBelongsTo(): void
+    {
+        // The class list is what the entry names minus its custom properties, so
+        // it cannot start later than the entry does. A recorded range that says
+        // otherwise is a derivation nobody re-ran, and it would withhold a class
+        // on a version the entry itself is handed over on.
+        foreach (Components::load() as $component) {
+            if ($component['classesSince'] === null || $component['since'] === null) {
+                continue;
+            }
+            self::assertLessThanOrEqual(
+                $component['since'],
+                $component['classesSince'],
+                $component['name'] . ' binds its classes later than the whole entry',
+            );
+        }
+    }
+
+    #[Test]
+    public function aClassIsAnsweredOnAVersionItsOwnEntryIsWithheldOn(): void
+    {
+        // What `feedback/2026-08-19-090231` shipped unverified: a backend class
+        // borrowed by an extension's asset build. The entry is withheld because
+        // one of its eleven custom properties arrived later, and the caller was
+        // asking about the class rather than about the component.
+        $result = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '13.4']);
+
+        self::assertSame(0, $result->data['matchCount'], 'the component itself is still not handed over');
+        self::assertSame(['table'], array_column($result->data['withheld'], 'name'));
+        self::assertSame(['table-fit'], array_column($result->data['coveredClasses'], 'class'));
+        self::assertSame('TYPO3 v13 and newer', $result->data['coveredClasses'][0]['verifiedOn']);
+        self::assertStringContainsString('Still answered for TYPO3 v13, one class at a time', $result->text);
+
+        // And the two cannot be read as one another: what comes back is the name
+        // and where the core writes it, never something to paste.
+        self::assertStringNotContainsString('--typo3-table', $result->text);
+        self::assertStringNotContainsString('<table', $result->text);
+    }
+
+    #[Test]
+    public function aQueryThatNamesNoClassOfAWithheldEntryIsAnsweredWithNothing(): void
+    {
+        // The whole class list is not the answer to a question about one class:
+        // handing it over would be the entry again, minus what withheld it.
+        $topic = Registry::call('typo3_component_lookup', ['query' => 'table', 'targetVersion' => '13.4']);
+        self::assertSame(['table'], array_column($topic->data['coveredClasses'], 'class'), 'only the root class was named');
+
+        $below = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '12.4']);
+        self::assertSame([], $below->data['coveredClasses'], 'the class list itself was never verified on 12.4');
+
+        $unstated = Registry::call('typo3_component_lookup', ['query' => 'table-fit']);
+        self::assertSame([], $unstated->data['coveredClasses'], 'nothing is withheld, so the entry answers');
     }
 
     #[Test]

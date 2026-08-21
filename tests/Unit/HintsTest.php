@@ -2705,6 +2705,37 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * A session read `SYS/caching/cacheConfigurations` and took it for a
+     * registration file with a resolved registry behind it, which is what
+     * `D-ANS-003`'s seventh reading found there is not: the array is the whole
+     * of what CacheManager holds, and what it hides is the defaults filling the
+     * keys an entry omits.
+     */
+    #[Test]
+    public function theCacheRegistryIsTheConfiguredArrayAndTheDefaultsThatFillIt(): void
+    {
+        foreach ([
+            'which caches does this installation actually have',
+            'what frontend class does a cache entry run with',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('caching', $ids, $task);
+        }
+
+        $text = self::statementsOf('caching');
+
+        // The identifier the array does not carry, which is what makes the
+        // array complete rather than nearly so.
+        self::assertStringContainsString("'di'", $text);
+
+        // Every default, because an entry omitting a key runs on it and the
+        // group is the one that decides when the cache is flushed.
+        self::assertStringContainsString('VariableFrontend', $text);
+        self::assertStringContainsString('Typo3DatabaseBackend', $text);
+        self::assertStringContainsString("group 'all'", $text);
+    }
+
     #[Test]
     public function anExtbasePluginHasAHintOfItsOwn(): void
     {

@@ -14,6 +14,8 @@
     ],
     "hints": [
       "Caches are declared in $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] in typo3/sysext/core/Configuration/DefaultConfiguration.php: one entry per cache with a frontend class, a backend class, options and groups. Adding a cache means adding an entry there.",
+      "Reading that array back is reading the whole registry: CacheManager is configured from it at boot and registers nothing else. The one exception is 'di', which the container hands it and no entry declares.",
+      "A key an entry leaves out is filled from CacheManager's own default: VariableFrontend, Typo3DatabaseBackend, no options, and group 'all'. An entry naming only a backend is therefore flushed with group 'all' rather than with nothing.",
       "Inject a cache as a service with #[Autowire(service: 'cache.<name>')] on the constructor parameter rather than asking CacheManager for it at call time.",
       "The 'core' cache is reserved for core PHP code. Pick or add a cache with the right frontend for the payload — VariableFrontend for data, PhpFrontend for generated code — and put it in the group whose flush semantics it belongs to.",
       "Anything cached has to survive being flushed at any time; a cache is never the only place a value exists.",

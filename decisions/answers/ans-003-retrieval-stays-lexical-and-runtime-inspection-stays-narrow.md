@@ -239,3 +239,42 @@ another session the same day answered the same class of question at one
 `doesNotCover` entry standing on this decision to stay exactly as firm as it is
 (`feedback/2026-08-18-080743`). The lever moved to `D-VER-007`, which is the
 procedure that names the reading and reads no core source here.
+
+## Confirmed on 2026-08-21
+
+The runtime half was read a seventh time and did not fire.
+`feedback/2026-08-21-074351-cache-configuration-is-answerable-but-the` asks for
+the CacheManager beside the configuration array: per identifier, whether it is
+registered as well as configured, whether it has been initialized, and the
+frontend class in effect rather than the one the entry names. Its argument is
+that the two identifier sets differ, so the gap between them is a diagnostic no
+configuration read can produce.
+
+They differ by one identifier, and by the same one on every covered line.
+`ServiceProvider::getCacheManager()` sets the configured array and then
+registers the container's own caches — `core`, `assets` and `di` on 12.4, those
+plus `runtime` above it — and all of them but `di` have a
+`DefaultConfiguration.php` entry. Nothing else can register at boot: the same
+method throws while `boot.state` is incomplete, so an `ext_localconf.php` has no
+CacheManager to call `registerCache()` on. What is left of the union is `di`,
+which `D-KNW-027`'s reading already found and put into `page-cache-flushing`.
+
+The other half of the diagnostic is laziness rather than health. `createCache()`
+runs on the first `getCache()`, so after a boot the registered set is the
+container's caches and nothing more, in every installation — configured but not
+registered is where every entry stands until somebody asks for it.
+
+So the **Wrong if** is answered the other way again, and by the cheapest of
+these readings: the session was comparing this server with another one rather
+than failing a task, which is the case the second **Decided** bullet names. It
+reports no round trips, and `D-FBK-027` is what would have counted them.
+
+What is missing is a sentence and not a shape. `createCache()` fills each key an
+entry omits from `CacheManager::$defaultCacheConfiguration` —
+`VariableFrontend`, `Typo3DatabaseBackend`, no options, group `all` — so a
+project entry naming only a backend runs in group `all` and the array does not
+say so. That and the completeness of the array are two statements on the
+`caching` hint, held by
+`HintsTest::theCacheRegistryIsTheConfiguredArrayAndTheDefaultsThatFillIt`, and
+the feedback is archived with them. Read at `31f881a212`, `fccbd407d8`,
+`627949e9dd` and `3a9f0b5e3c`, where the defaulting is identical.

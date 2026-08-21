@@ -230,9 +230,9 @@ final class ProjectDescribe extends ReadOnlyTool
         $lines[] = '';
         $lines[] = $project['commands'] === []
             ? 'This repository declares no commands of its own in composer.json or package.json. What to run is '
-                . 'then whatever its CI configuration does.' . self::suites($project['kind'])
+                . 'then whatever its CI configuration does.' . self::suites($project['kind'], $project['commands'])
             : 'Commands this repository declares — these exist here, the core\'s testing suites do not.'
-                . self::suites($project['kind'])
+                . self::suites($project['kind'], $project['commands'])
                 . ' What each one does to the sources is read off its body, never by running it: a check reports '
                 . 'and leaves them as they are, a change rewrites something, and unknown is a body that does not '
                 . 'say — a test suite runs the project\'s own code, and no declaration covers that. A task told '
@@ -317,21 +317,39 @@ final class ProjectDescribe extends ReadOnlyTool
     }
 
     /**
-     * Where the suites this list says are absent are run.
+     * Where the suites this list says are absent are run, and what the ones it
+     * does list need before their first assertion.
      *
-     * The sentence named an absence and nothing that has it, and a session read
-     * it and reached for a `Build/bin/phpunit` the checkout does not contain —
-     * `D-ANS-031`. Only in a core checkout: everywhere else there are no core
-     * suites to point at, and runTests.sh is not in that repository.
+     * The core arm came first: the sentence named an absence and nothing that
+     * has it, and a session read it and reached for a `Build/bin/phpunit` the
+     * checkout does not contain — `D-ANS-031`. Everywhere else there is no
+     * runTests.sh to point at and the suites are the repository's own, and the
+     * answer said nothing about running them while a session spent eight round
+     * trips working it out by hand — `D-ANS-092`.
+     *
+     * @param array<int, array{command: string, source: string, declares: string, runs: string}> $commands
      */
-    private static function suites(string $kind): string
+    private static function suites(string $kind, array $commands): string
     {
-        if ($kind !== Instance::KIND_CORE_CHECKOUT) {
-            return '';
+        if ($kind === Instance::KIND_CORE_CHECKOUT) {
+            return ' The core\'s suites are run by Build/Scripts/runTests.sh, which no manifest here declares. '
+                . 'typo3_test_run_guide names the ones a change needs, with the invocation.';
         }
 
-        return ' The core\'s suites are run by Build/Scripts/runTests.sh, which no manifest here declares. '
-            . 'typo3_test_run_guide names the ones a change needs, with the invocation.';
+        // PHPUnit is what runs a suite outside the core, so a body that names
+        // it is the whole of what this recognises. A repository that runs its
+        // tests some other way gets no pointer rather than a guessed one.
+        foreach ($commands as $command) {
+            if (stripos($command['declares'], 'phpunit') !== false) {
+                return ' One of them runs PHPUnit, and its functional half stops before the first assertion where '
+                    . 'nothing gave it database credentials — an error that reads like a broken suite rather than '
+                    . 'like a missing setting. typo3_hint_lookup with id=project-extension-tests is what such a run '
+                    . 'needs: the variables, an account allowed to create one database per test class, and the '
+                    . 'interpreter it is run on.';
+            }
+        }
+
+        return '';
     }
 
     /**

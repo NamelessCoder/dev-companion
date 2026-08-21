@@ -1106,6 +1106,44 @@ final class ProjectTest extends TestCase
         );
     }
 
+    /**
+     * The same sentence for every repository that is not the core, which it
+     * had for none of them. A session in an extension repository spent eight
+     * round trips working out what `composer test:php:functional` needed —
+     * credentials, an account that may create a database per test class, and
+     * which PHP the run is on — while this answer listed the command and said
+     * none of it (`D-ANS-092`).
+     */
+    #[Test]
+    public function aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst(): void
+    {
+        $root = $this->composerProject('vendor', '13.4.33');
+        $this->manifest($root, ['scripts' => [
+            'test:php:functional' => 'phpunit -c Build/FunctionalTests.xml',
+            'cgl' => 'php-cs-fixer fix',
+        ]]);
+        Instance::discoverFrom($root);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+
+        self::assertStringContainsString('id=project-extension-tests', $text);
+        // Not the core's pointer: runTests.sh is in the core repository, and
+        // handing it over here is the widening `D-ANS-086` rejected.
+        self::assertStringNotContainsString('typo3_test_run_guide', $text);
+
+        // And a repository declaring no suite is told nothing, because the
+        // pointer answers a command that is there rather than a kind of
+        // checkout.
+        $without = $this->composerProject('vendor', '13.4.33');
+        $this->manifest($without, ['scripts' => ['cgl' => 'php-cs-fixer fix']]);
+        Instance::discoverFrom($without);
+
+        self::assertStringNotContainsString(
+            'project-extension-tests',
+            Registry::call('typo3_project_describe', [])->text,
+        );
+    }
+
     #[Test]
     public function aDeclaredCommandSaysWhetherRunningItChangesTheSources(): void
     {

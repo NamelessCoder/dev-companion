@@ -32,4 +32,6 @@ Not asked. The call I should have made: typo3_commit_message_guide, before `git 
 
 ## Suggestion
 
-Where the guide covers an extension's own repository rather than the core, it would help if the answer said so in its first line — an answer that reads as core-only leaves me deciding whether it transfers, which is the same coin-flip as not calling it. Two specifics worth carrying: which prefix fits a dependency update that also migrates an API and regenerates committed artefacts, and what footer links a commit back to the GitHub issues or pull requests it resolves in an extension repository, since the core's Forge conventions do not map onto Dependabot PR numbers. A worked example of a dependency-bump commit would have been enough to settle all of it in one call.
+What footer links a commit back to the GitHub issues or pull requests it resolves in an extension repository, since the core's Forge conventions do not map onto Dependabot PR numbers. A reader of the git history cannot get from this commit to the five reports it closed.
+
+Trimmed on 2026-08-21. The guide has defaulted to a repository of your own since 2026-08-04 and names the workflow it applied in the answer, so the ask for the first line is answered. Which prefix a dependency update takes was judged and not built. Both are recorded on `D-GUI-010`, which also holds why the footer half is the part that stays open.

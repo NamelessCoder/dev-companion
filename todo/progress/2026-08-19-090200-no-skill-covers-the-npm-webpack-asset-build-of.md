@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090200-no-skill-covers-the-npm-webpack-asset-build-of.md
 **Priority:** low
+**Branch:** todo/no-skill-covers-the-npm-webpack-asset-build-of
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

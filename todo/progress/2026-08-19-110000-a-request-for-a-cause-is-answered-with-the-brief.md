@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-065
 **Priority:** normal
+**Branch:** todo/a-request-for-a-cause-is-answered-with-the-brief
+**Claimed:** 2026-08-21
 
 Give `knowledge/task-intents.json` the fourth entry that changes nothing, beside
 `audit`, `triage` and `installation-operations`: a defect reported by its

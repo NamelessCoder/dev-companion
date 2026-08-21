@@ -2,6 +2,8 @@
 
 **Serves:** D-AUD-012
 **Priority:** normal
+**Branch:** todo/weigh-whether-the-project-answer-hands-on-to-the-task-guide
+**Claimed:** 2026-08-21
 
 The benchmark of 2026-08-19 called `typo3_project_describe` eleven times across
 seventeen project tasks and `typo3_task_guide` once. Read on the same day,

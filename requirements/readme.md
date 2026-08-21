@@ -192,6 +192,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SKL-022`][R-SKL-022] — A review surface names the lookup that can answer it · held
 - [`R-SKL-023`][R-SKL-023] — A skill whose product is a report says the report is copyable markdown · held
 - [`R-SKL-024`][R-SKL-024] — A build step a guide answers names the call that fetches it · held
+- [`R-SKL-025`][R-SKL-025] — An audit's list says what the repository already carries unmerged · **open**
 
 [R-SKL-001]: task-skills/skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: task-skills/skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -217,6 +218,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SKL-022]: task-skills/skl-022-a-review-surface-names-the-lookup-that-can-answer-it.md
 [R-SKL-023]: task-skills/skl-023-a-skill-whose-product-is-a-report-says-the-report-is-copyable-markdown.md
 [R-SKL-024]: task-skills/skl-024-a-build-step-a-guide-answers-names-the-call-that-fetches-it.md
+[R-SKL-025]: task-skills/skl-025-an-audits-list-says-what-the-repository-already-carries-unmerged.md
 
 ### project
 

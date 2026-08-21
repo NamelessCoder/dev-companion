@@ -31,6 +31,7 @@ when it is added.
 - [`R-SKL-022`][R-SKL-022] — A review surface names the lookup that can answer it · held
 - [`R-SKL-023`][R-SKL-023] — A skill whose product is a report says the report is copyable markdown · held
 - [`R-SKL-024`][R-SKL-024] — A build step a guide answers names the call that fetches it · held
+- [`R-SKL-025`][R-SKL-025] — An audit's list says what the repository already carries unmerged · **open**
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -56,3 +57,4 @@ when it is added.
 [R-SKL-022]: skl-022-a-review-surface-names-the-lookup-that-can-answer-it.md
 [R-SKL-023]: skl-023-a-skill-whose-product-is-a-report-says-the-report-is-copyable-markdown.md
 [R-SKL-024]: skl-024-a-build-step-a-guide-answers-names-the-call-that-fetches-it.md
+[R-SKL-025]: skl-025-an-audits-list-says-what-the-repository-already-carries-unmerged.md

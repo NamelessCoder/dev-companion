@@ -144,7 +144,7 @@ final class Extension
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript', '*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => $files,
-            'deprecatedFiles' => self::deprecatedFiles($manifest, $files),
+            'deprecatedFiles' => self::deprecatedFiles($path, $manifest, $files),
             'notReadStatically' => self::notReadStatically($path),
             'artifacts' => self::artifacts($path),
         ];
@@ -168,25 +168,11 @@ final class Extension
      */
     private static function artifacts(string $path): array
     {
-        $manual = null;
-        foreach (['Documentation/Index.rst', 'Documentation/index.rst'] as $entry) {
-            if (is_file($path . '/' . $entry)) {
-                $manual = $entry;
-                break;
-            }
-        }
+        $manual = self::firstFile($path, ['Documentation/Index.rst', 'Documentation/index.rst']);
         if ($manual === null && is_dir($path . '/Documentation')) {
             // A manual whose entry point is missing is not the same as no
             // manual, and the difference is the finding.
             $manual = 'Documentation/';
-        }
-
-        $readme = null;
-        foreach (['README.rst', 'README.md', 'readme.md', 'README.txt'] as $entry) {
-            if (is_file($path . '/' . $entry)) {
-                $readme = $entry;
-                break;
-            }
         }
 
         $tests = [];
@@ -198,7 +184,7 @@ final class Extension
 
         return [
             'manual' => $manual,
-            'readme' => $readme,
+            'readme' => self::firstFile($path, ['README.rst', 'README.md', 'readme.md', 'README.txt']),
             'tests' => $tests,
             'languageFiles' => self::languageFiles($path),
         ];
@@ -1188,22 +1174,22 @@ final class Extension
     }
 
     /**
-     * The registration files it ships that core deprecates, and what each costs.
+     * The files it ships that core has stopped reading, or is stopping, and what
+     * each costs.
      *
-     * `files` names both of them already and says nothing about either, which is
-     * what a reviewer had to find out by running a functional suite instead —
-     * `D-ANS-009`. Neither deprecation turns on what an extension calls, so no
-     * changelog sweep reaches them: the predicate is the file being there plus
-     * what composer.json declares beside it. What the file costs is stated with
-     * the version it starts at rather than filtered by the installation's,
-     * because an extension supporting two majors is read from both. A framework
-     * package is exempt from both.
+     * The predicate is the file being there, plus what stands beside it that
+     * core reads first — `D-ANS-009`, which has the four and where each was
+     * read. Two are registration files `files` names already; the rest are read
+     * by nothing now, so they are a registration point nowhere and are checked
+     * here alone. A cost is stated with the version it starts at rather than
+     * filtered by the installation's, because an extension supporting two
+     * majors is read from both. A framework package is exempt from all four.
      *
      * @param array<string, mixed> $manifest
      * @param array<int, string> $files
      * @return array<int, array{file: string, changelog: string, predicate: string, cost: string}>
      */
-    private static function deprecatedFiles(array $manifest, array $files): array
+    private static function deprecatedFiles(string $path, array $manifest, array $files): array
     {
         if (($manifest['type'] ?? null) === 'typo3-cms-framework') {
             return [];
@@ -1247,7 +1233,64 @@ final class Extension
             ];
         }
 
+        // getExtensionIcon() takes the first of six locations that is there and
+        // reads Resources/Public/Icons/Extension.* before the root file, so an
+        // extension shipping both never reaches the deprecated one and pays
+        // nothing for leaving it behind.
+        $icon = self::firstFile($path, ['ext_icon.svg', 'ext_icon.png', 'ext_icon.gif']);
+        $outranks = self::firstFile($path, [
+            'Resources/Public/Icons/Extension.svg',
+            'Resources/Public/Icons/Extension.png',
+            'Resources/Public/Icons/Extension.gif',
+        ]);
+        if ($icon !== null && $outranks === null) {
+            $deprecated[] = [
+                'file' => $icon,
+                'changelog' => '#98093',
+                'predicate' => 'The file is there and the extension ships no Resources/Public/Icons/Extension.svg, '
+                    . '.png or .gif, which core reads first.',
+                'cost' => 'Deprecated in v12.4. ExtensionManagementUtility::getExtensionIcon() falls back to the '
+                    . 'file and raises an E_USER_DEPRECATED wherever the backend draws the extension icon: the '
+                    . 'extension manager list, the new record wizard, the language pack list. From v13.0 nothing '
+                    . 'reads it — Package::getPackageIcon() looks below Resources/Public/Icons/ alone and returns '
+                    . 'null — so the extension is drawn without an icon and nothing is logged.',
+            ];
+        }
+
+        foreach (['setup', 'constants'] as $kind) {
+            $file = 'ext_typoscript_' . $kind . '.txt';
+            if (!is_file($path . '/' . $file) || is_file($path . '/ext_typoscript_' . $kind . '.typoscript')) {
+                continue;
+            }
+            $deprecated[] = [
+                'file' => $file,
+                'changelog' => '#96518',
+                'predicate' => 'The file is there and no ext_typoscript_' . $kind . '.typoscript stands beside it.',
+                'cost' => 'Dropped in v12.0, so no version this server covers reads it. Core builds an extension\'s '
+                    . 'static TypoScript from ext_typoscript_setup.typoscript and '
+                    . 'ext_typoscript_constants.typoscript alone, so what stands in this file reaches no template '
+                    . 'and nothing reports it missing. Renaming it to .typoscript is the whole migration, and core '
+                    . 'has read that name since v8.',
+            ];
+        }
+
         return $deprecated;
+    }
+
+    /**
+     * The first of these files that is there, named relative to the extension.
+     *
+     * @param array<int, string> $candidates in the order they are preferred
+     */
+    private static function firstFile(string $path, array $candidates): ?string
+    {
+        foreach ($candidates as $candidate) {
+            if (is_file($path . '/' . $candidate)) {
+                return $candidate;
+            }
+        }
+
+        return null;
     }
 
     /**

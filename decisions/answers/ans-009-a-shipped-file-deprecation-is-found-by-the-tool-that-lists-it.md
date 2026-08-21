@@ -83,7 +83,9 @@ line beside four files nothing is wrong with, and says nothing about either.
 - `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
 - `ExtensionTest::aFrameworkPackageIsExemptFromBoth`
 - `ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile`
-- `ProjectTest::theDeprecatedFilesBlockNamesBothFilesItLookedAt`
+- `ExtensionTest::anIconBelowResourcesIsWhatSilencesTheRootOne`
+- `ExtensionTest::theRenamedFileBesideItIsWhatSilencesTheOldOne`
+- `ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt`
 
 ## Since then
 
@@ -218,15 +220,73 @@ The pointer that followed lost its count: *these two entries whole* is now
 not fire is in no rendered entry, and the number was what did not match what
 stood above it.
 
-`ProjectTest::theDeprecatedFilesBlockNamesBothFilesItLookedAt` holds it, on the
-reported case — an extension shipping `ext_emconf.php` and no `ext_tables.php`,
-so one entry renders and the sentence names two files. It is the first assertion
-on this block at all; the three that existed cover `deprecatedFiles` as data,
-and the rendered text, which `ToolResult` makes the primary answer, was held by
-nothing. That is how a sentence saying *two* survived beside an answer rendering
-one.
+`ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt` holds it, on
+the reported case — an extension shipping `ext_emconf.php` and no
+`ext_tables.php`, so one entry renders and the sentence names two files. It is
+the first assertion on this block at all; the three that existed cover
+`deprecatedFiles` as data, and the rendered text, which `ToolResult` makes the
+primary answer, was held by nothing. That is how a sentence saying *two*
+survived beside an answer rendering one.
 
 The feedback is archived by this. Its suggestion asks for the other file-level
 predicates as well as for the covered set, and the first half was already true
 when it was written — `ext_tables.php` has been checked by the same call since
 `a886a2d`, which is what the judging session trimmed the report to.
+
+## Since then
+
+The set is four, and the two that were missing were found by sweeping the
+changelogs of the covered majors for a file name rather than for an API. Every
+`:file:` role in `12.0` through `15.0` was listed and read against what the
+checkouts do with the name today: 213 distinct names on 2026-08-21, two hits.
+
+`#98093` deprecates `ext_icon.svg`, `ext_icon.png` and `ext_icon.gif` at the
+extension root. On `.checkouts/12.4`,
+`ExtensionManagementUtility::getExtensionIcon()` takes the first of six
+locations that exists and raises an `E_USER_DEPRECATED` for the last three; it
+is called from the extension manager list, the new record wizard and the install
+tool's language pack list. On `.checkouts/13.4` and `.checkouts/main` the string
+`ext_icon` occurs in no PHP file at all, and `Package::getPackageIcon()` looks
+below `Resources/Public/Icons/` alone and returns null — so the extension is
+drawn without an icon and nothing is logged.
+
+`#96518` stopped `ext_typoscript_setup.txt` and `ext_typoscript_constants.txt`
+being included in v12.0, which is before the covered range starts rather than
+inside it. Both sides were still read: `TemplateService::addExtensionStatics()`
+on `.checkouts/12.4` lists the two `.typoscript` names and nothing else, and
+`SysTemplateTreeBuilder` on `.checkouts/main` composes the one name it opens out
+of `'ext_typoscript_' . $this->type . '.typoscript'`. The file is therefore
+inert on every version this server covers, and inertly so — no message, no log
+entry, the TypoScript simply in no template.
+
+Both predicates carry a second half the first two do not, and leaving it out
+would have produced the wrong finding. Core reads another file first in each
+case: `Resources/Public/Icons/Extension.*` before `ext_icon.*`, and
+`ext_typoscript_<kind>.typoscript` instead of the `.txt`. Where that file is
+there the deprecated one is never reached and costs nothing, so it is a leftover
+to delete rather than a migration to do, and reporting it would be a finding
+with nothing behind it. The `ext_typoscript` half is checked per file, because
+an extension can have renamed one of the two and not the other.
+
+`#96518` is a breaking change in a field named `deprecatedFiles`, and that is
+deliberate. The field name is the contract clients validate against, so it stays
+what it was; what widened is what the entries are. The rendered heading is now
+*Files core has stopped reading, or is stopping*, which is what all four have in
+common and what the field was always about — the file being the predicate. The
+feedback asking for this named the case in its own words: *a Configuration/ file
+a version now expects, one it no longer reads*.
+
+`#108310` was read and left out. It requires a `composer.json` in classic mode,
+so its predicate is a file being **absent**, and an extension this tool can
+describe at all has one — `Instance::packages()` reads the installed packages.
+An entry that can never fire is worse than no entry.
+
+Two things the sweep surfaced are not this change and are not done.
+`ext_typoscript_setup.typoscript` is read on every covered version and is in no
+`ROOT_FILES`, so an extension shipping one has that static TypoScript in no part
+of the answer — a live registration point missing from a listing, which is a
+different question from a dead file. And `knowledge/` still carries this rule
+only for `ext_tables.php` and `ext_emconf.php`, in `extension-boot-files` and
+`extension-manifest`. Neither new statement was written there, because the two
+spellings of one rule are what this entry already names as the thing most likely
+to go wrong, and nothing reported a caller looking for either.

@@ -20,12 +20,14 @@ this extension by the EXT: reference each entry carries, so a list built in a
 loop or a table added by a PHP call is in the answer; everything else is parsed
 from that extension's own files, never executed, so it answers on a fresh clone
 and for a third-party extension as well as for the project's own. answeredBy
-says which of the two answered, and names what packages leaves out. A
-registration file it ships that a core deprecation turns on — ext_tables.php, or
+says which of the two answered, and names what packages leaves out. A file it
+ships that core has stopped reading, or is stopping, is reported with what it
+costs, because that predicate is the file rather than anything the extension
+calls and no changelog search over its code reaches it: ext_tables.php,
 ext_emconf.php beside a composer.json declaring neither providesPackages nor a
-version — is reported with what it costs, because that predicate is the file
-rather than anything the extension calls and no changelog search over its code
-reaches it. That is those two files and nothing else, so it is not an upgrade
+version, ext_icon.* where no Resources/Public/Icons/Extension.* stands to be
+read first, and an ext_typoscript_*.txt with no .typoscript file of the same
+name beside it. That is those four and nothing else, so it is not an upgrade
 check. typo3_project_describe names the extensions this can be called for.
 Answers from: installation, packages.
 
@@ -185,21 +187,26 @@ Answers with
     # Registration files it ships, from ext_localconf.php to
     # Initialisation/data.t3d.
     files: [string]  # optional
-    # The files above that a core deprecation names, each with what shipping it
-    # costs. Read from the files this extension ships and from its composer.json,
-    # which is where both predicates live — no changelog sweep over what its code
-    # calls reaches either. An empty list says none of the registration files above
-    # is one of those, not that the extension is ready for the next major: nothing
-    # else here is checked for a deprecation, and typo3_changelog_lookup is what
-    # answers that question.
+    # The files this extension ships that core has stopped reading, or is stopping,
+    # each with what shipping it costs. Four predicates are checked: ext_tables.php,
+    # ext_emconf.php, ext_icon.svg/.png/.gif and the two ext_typoscript_*.txt. Each
+    # is read from the extension's own tree — the file, whatever core reads before
+    # it, and for ext_emconf.php what composer.json declares — which is where
+    # every one of these predicates lives, so no changelog sweep over what its code
+    # calls reaches any of them. An empty list says none of the four holds here, not
+    # that the extension is ready for the next major: nothing else here is checked
+    # for a deprecation, and typo3_changelog_lookup is what answers that question.
     deprecatedFiles:  # optional
-      - # One of the files above.
+      - # The file, relative to the extension. Not always one of the files above:
+        # ext_icon.* and ext_typoscript_*.txt are read by nothing now, so they are a
+        # registration point nowhere and are checked here alone.
         file: string
         # The changelog entry, for typo3_changelog_lookup, which has the description
         # and the migration whole.
         changelog: string
-        # What the deprecation turns on, which is what holds here — shipping the
-        # file, and what composer.json declares beside it.
+        # What the entry turns on, which is what holds here — shipping the file,
+        # and what stands beside it: what composer.json declares, or the file core
+        # reads before this one.
         predicate: string
         # What it raises, from which version, and what the removal does instead.
         cost: string

@@ -12,14 +12,12 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 
 /**
- * What the extension answer says about the registration files it lists.
+ * What the extension answer says about the files core has stopped reading.
  *
- * Both deprecations behind this turn on a file the extension ships rather than
- * on anything its code calls, so nothing a caller would search for reaches
- * them and the tool that lists the file is the only thing that can — D-ANS-009.
- * The predicates are read at their trigger sites in .checkouts/14.3:
- * `Configuration\Extension\ExtTablesFactory` for #109438 and
- * `Package\PackageManager::getComposerManifest()` for #108345.
+ * Every predicate behind this turns on a file the extension ships rather than
+ * on anything its code calls, so nothing a caller would search for reaches one
+ * and the tool that reads the tree is the only thing that can — D-ANS-009,
+ * which names each trigger site and the checkout it was read in.
  */
 final class ExtensionTest extends TestCase
 {
@@ -103,6 +101,57 @@ final class ExtensionTest extends TestCase
         self::assertSame([], $found);
     }
 
+    #[Test]
+    public function theExtensionIconAtTheRootIsReportedWhereNothingOutranksIt(): void
+    {
+        $found = $this->deprecatedFilesOf(['ext_icon.png'], []);
+
+        self::assertSame(['ext_icon.png'], array_column($found, 'file'));
+        self::assertSame(['#98093'], array_column($found, 'changelog'));
+    }
+
+    #[Test]
+    public function anIconBelowResourcesIsWhatSilencesTheRootOne(): void
+    {
+        $found = $this->deprecatedFilesOf(
+            ['ext_icon.png', 'Resources/Public/Icons/Extension.svg'],
+            [],
+        );
+
+        // getExtensionIcon() takes the first location that exists and reads the
+        // Resources one first, so the root file is never reached and costs
+        // nothing — reporting it would be a finding with no migration behind it.
+        self::assertSame([], $found);
+    }
+
+    #[Test]
+    public function theStaticTypoScriptWithTheOldFileExtensionIsReadByNothing(): void
+    {
+        $found = $this->deprecatedFilesOf(
+            ['ext_typoscript_setup.txt', 'ext_typoscript_constants.txt'],
+            [],
+        );
+
+        self::assertSame(
+            ['ext_typoscript_setup.txt', 'ext_typoscript_constants.txt'],
+            array_column($found, 'file'),
+        );
+        self::assertSame(['#96518', '#96518'], array_column($found, 'changelog'));
+    }
+
+    #[Test]
+    public function theRenamedFileBesideItIsWhatSilencesTheOldOne(): void
+    {
+        $found = $this->deprecatedFilesOf(
+            ['ext_typoscript_setup.txt', 'ext_typoscript_setup.typoscript', 'ext_typoscript_constants.txt'],
+            [],
+        );
+
+        // Per file rather than per extension: the setup half is migrated and
+        // the constants half is still lost.
+        self::assertSame(['ext_typoscript_constants.txt'], array_column($found, 'file'));
+    }
+
     /**
      * An extension shipping exactly those files, described.
      *
@@ -119,13 +168,15 @@ final class ExtensionTest extends TestCase
             JSON_THROW_ON_ERROR,
         ));
         foreach ($files as $file) {
+            if (!is_dir(dirname($path . '/' . $file))) {
+                mkdir(dirname($path . '/' . $file), 0777, true);
+            }
             file_put_contents($path . '/' . $file, "<?php\n");
         }
         Instance::discoverFrom($root);
 
         $extension = Extension::describe('my_sitepackage');
         self::assertNotNull($extension);
-        self::assertSame($files, array_intersect($files, $extension['files']));
 
         return $extension['deprecatedFiles'];
     }

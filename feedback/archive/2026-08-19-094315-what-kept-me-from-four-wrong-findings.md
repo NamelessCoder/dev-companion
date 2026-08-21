@@ -1,7 +1,8 @@
 ---
 date: 2026-08-19T09:43:15+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-21
 model: claude-opus-5[1m]
 tool: typo3_extension_describe, typo3_hint_lookup, typo3-extension-health
 directory: /home/benji/projects/blog
@@ -36,6 +37,11 @@ the constraint on the literal `"CType"`, the extension passes
 told the session those are one thing. The hint names the constant now, and the
 removal of `PLUGIN_TYPE_PLUGIN` beside it — `D-FBK-018`.
 
-What is open is the ask above. `Extension::deprecatedFiles()` carries two files
-and the criterion for a third; whether the set is bigger than two is settled and
-what each candidate says is not.
+The ask above is answered and the field is unchanged in the way it was asked to
+be kept: predicate plus cost, per file that is present. The set is four.
+`ext_icon.svg`, `.png` and `.gif` join it as `#98093`, and
+`ext_typoscript_setup.txt` beside `ext_typoscript_constants.txt` as `#96518` —
+the second being the case this report named in its own words, a file a version
+no longer reads. Each carries the half a listing cannot see: what core reads
+first, and what that leaves the file costing. `D-ANS-009` has the sweep, both
+boundaries and what was read and left out.

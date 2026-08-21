@@ -68,7 +68,7 @@ final class ExtensionDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets with the files each carries, the form configurations it registers and the form definitions they store, its service tags, middlewares, which of the three Fluid root directories it ships and the namespaces it registers globally, and the shape of its Classes/ directory — and beside all that: its manual, its README, its test layers, and its XLF files with the source language each declares. Those four are answered when they are absent too, which a file listing cannot show. A content element that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>: it renders through the dispatcher and has no templateName to be missing. Tables, content elements and icons come from the booted installation where there is one, attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is parsed from that extension\'s own files, never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and names what packages leaves out. A registration file it ships that a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — is reported with what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_describe names the extensions this can be called for.';
+        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets with the files each carries, the form configurations it registers and the form definitions they store, its service tags, middlewares, which of the three Fluid root directories it ships and the namespaces it registers globally, and the shape of its Classes/ directory — and beside all that: its manual, its README, its test layers, and its XLF files with the source language each declares. Those four are answered when they are absent too, which a file listing cannot show. A content element that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>: it renders through the dispatcher and has no templateName to be missing. Tables, content elements and icons come from the booted installation where there is one, attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is parsed from that extension\'s own files, never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and names what packages leaves out. A file it ships that core has stopped reading, or is stopping, is reported with what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it: ext_tables.php, ext_emconf.php beside a composer.json declaring neither providesPackages nor a version, ext_icon.* where no Resources/Public/Icons/Extension.* stands to be read first, and an ext_typoscript_*.txt with no .typoscript file of the same name beside it. That is those four and nothing else, so it is not an upgrade check. typo3_project_describe names the extensions this can be called for.';
     }
 
     public static function inputSchema(): array
@@ -138,11 +138,11 @@ final class ExtensionDescribe extends ReadOnlyTool
             ], ['directories', 'looseFiles', 'total'], 'The shape of its Classes/ directory, read off the file tree rather than off a registration.'),
             'files' => Schema::listOf(Schema::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
             'deprecatedFiles' => Schema::listOf(Schema::object([
-                'file' => Schema::string('One of the files above.'),
+                'file' => Schema::string('The file, relative to the extension. Not always one of the files above: ext_icon.* and ext_typoscript_*.txt are read by nothing now, so they are a registration point nowhere and are checked here alone.'),
                 'changelog' => Schema::string('The changelog entry, for typo3_changelog_lookup, which has the description and the migration whole.'),
-                'predicate' => Schema::string('What the deprecation turns on, which is what holds here — shipping the file, and what composer.json declares beside it.'),
+                'predicate' => Schema::string('What the entry turns on, which is what holds here — shipping the file, and what stands beside it: what composer.json declares, or the file core reads before this one.'),
                 'cost' => Schema::string('What it raises, from which version, and what the removal does instead.'),
-            ], ['file', 'changelog', 'predicate', 'cost']), 'The files above that a core deprecation names, each with what shipping it costs. Read from the files this extension ships and from its composer.json, which is where both predicates live — no changelog sweep over what its code calls reaches either. An empty list says none of the registration files above is one of those, not that the extension is ready for the next major: nothing else here is checked for a deprecation, and typo3_changelog_lookup is what answers that question.'),
+            ], ['file', 'changelog', 'predicate', 'cost']), 'The files this extension ships that core has stopped reading, or is stopping, each with what shipping it costs. Four predicates are checked: ext_tables.php, ext_emconf.php, ext_icon.svg/.png/.gif and the two ext_typoscript_*.txt. Each is read from the extension\'s own tree — the file, whatever core reads before it, and for ext_emconf.php what composer.json declares — which is where every one of these predicates lives, so no changelog sweep over what its code calls reaches any of them. An empty list says none of the four holds here, not that the extension is ready for the next major: nothing else here is checked for a deprecation, and typo3_changelog_lookup is what answers that question.'),
             'notReadStatically' => Schema::listOf(Schema::string(), 'Declaration files that are there but whose entries do not stand in their own text: each assembles its list while it runs, so what it registers is missing from the lists above rather than absent. The booted installation is what answers for them. An empty list says each declaration file that exists stood in its own text, not that everything the extension ships was read: ext_localconf.php and ext_tables.php register by running and are read by nothing here.'),
             'artifacts' => Schema::object([
                 'manual' => Schema::nullableString('Its manual entry point, "Documentation/" where the directory exists without one, null where the extension ships no manual at all.'),
@@ -205,19 +205,20 @@ final class ExtensionDescribe extends ReadOnlyTool
                 . 'by TypoScript or by a call while the request runs, and neither of those is in this list.';
         }
 
-        // Directly under the file listing, because that listing is the finding:
-        // both predicates are a file the extension ships, and neither is
-        // reachable by a changelog sweep over what its code calls — D-ANS-009.
-        // Nothing is rendered where there is none. "No deprecated registration
-        // files" is one line away from being read as a compatibility verdict,
-        // and this answer checks nothing else for one. Which two files were
-        // checked is the closing sentence rather than a line per file that did
-        // not fire, for the same reason: a clean line under this heading is
-        // that verdict at file granularity, and a reviewer confirmed the absent
-        // sibling by hand for want of the sentence, not for want of a bullet.
+        // Directly under the file listing, because that listing is where two of
+        // the four are the finding: every predicate is a file the extension
+        // ships, and none is reachable by a changelog sweep over what its code
+        // calls — D-ANS-009. Nothing is rendered where there is none. "No
+        // deprecated files" is one line away from being read as a compatibility
+        // verdict, and this answer checks nothing else for one. Which
+        // predicates were checked is the closing sentence rather than a line per
+        // file that did not fire, for the same reason: a clean line under this
+        // heading is that verdict at file granularity, and a reviewer confirmed
+        // the absent sibling by hand for want of the sentence, not for want of
+        // a bullet.
         if ($extension['deprecatedFiles'] !== []) {
             $lines[] = '';
-            $lines[] = 'Deprecated registration files:';
+            $lines[] = 'Files core has stopped reading, or is stopping:';
             foreach ($extension['deprecatedFiles'] as $deprecated) {
                 $lines[] = sprintf(
                     '- %s (%s) — %s %s',
@@ -227,12 +228,15 @@ final class ExtensionDescribe extends ReadOnlyTool
                     $deprecated['cost'],
                 );
             }
-            $lines[] = 'That is what shipping each file turns on, read from the files themselves. Two files are '
-                . 'checked, ext_tables.php and ext_emconf.php, so one of them missing from this block was looked '
-                . 'at rather than skipped: the extension does not ship it, or, for ext_emconf.php, its '
-                . 'composer.json declares the providesPackages and the version that exempt it. It is not an '
-                . 'upgrade check: nothing else above was looked at for a deprecation, and typo3_changelog_lookup '
-                . 'is what answers that — #109438 and #108345 whole, and everything they leave out.';
+            $lines[] = 'That is what shipping each file turns on, read from the files themselves. Four predicates '
+                . 'are checked: ext_tables.php, ext_emconf.php, ext_icon.svg/.png/.gif, and ext_typoscript_setup.txt '
+                . 'beside ext_typoscript_constants.txt. One of them missing from this block was looked at rather '
+                . 'than skipped: the extension ships no such file, or what core reads first stands beside it — '
+                . 'for ext_emconf.php a composer.json declaring the providesPackages and the version, for '
+                . 'ext_icon.* a Resources/Public/Icons/Extension.*, for an ext_typoscript_*.txt the .typoscript '
+                . 'file of the same name. It is not an upgrade check: nothing else above was looked at for a '
+                . 'deprecation, and typo3_changelog_lookup is what answers that — #109438, #108345, #98093 and '
+                . '#96518 whole, and everything they leave out.';
         }
 
         if ($extension['contentElements'] !== []) {

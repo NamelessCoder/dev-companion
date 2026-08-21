@@ -287,9 +287,9 @@ for the ViewHelpers of the running installation — identifier, class, what each
 one is for, and the argument definitions with their types and which are required
 — searched and batch-validated the way `typo3_icon_lookup` validates an icon.
 
-Its own **Query** names the case the second **Decided** bullet refuses:
-*compare this server against another TYPO3 MCP server. No failing call.* It
-counts no round trips, and `D-FBK-027` is what would have counted them.
+Its own **Query** names the case the second **Decided** bullet refuses: *compare
+this server against another TYPO3 MCP server. No failing call.* It counts no
+round trips, and `D-FBK-027` is what would have counted them.
 
 The core half already answers in the shape that was asked for, out of the book
 [`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md)
@@ -320,3 +320,18 @@ written for somebody authoring one, and `fluid-templates` routes an icon and a
 backend component without routing an argument list. So a session writing a
 template is told nowhere where that list comes from. The feedback is trimmed to
 that half and keeps a todo.
+
+## Since then
+
+That sentence is written, as two statements on `fluid-templates`, and neither
+carries a version bound. The identifier-to-class mapping is the same on every
+covered line: explode the identifier on the dot, `ucfirst` each segment, append
+`ViewHelper`, and look below the PHP namespaces the prefix stands for, last
+registered first. It is `ViewHelperResolver::resolveViewHelperName()` in Fluid
+2.15 and `ViewHelperCollection::resolveViewHelperClassName()` in 4.6.1 and
+5.3.1, which is what 12.4, 13.4 and 14.3 with `main` require; TYPO3's own
+subclass overrides `createViewHelperInstanceFromClassName()` for the container
+and leaves the naming alone on all four branches. Read in an installed `vendor/`
+and in the Composer cache, because `typo3fluid/fluid` is in no checkout.
+`HintsTest::whereAViewHelpersArgumentsComeFromIsStatedOnTheTemplateHint` holds
+both statements, and the feedback is archived with them.

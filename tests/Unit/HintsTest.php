@@ -914,6 +914,50 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-ANS-003`, read an eighth time: the index of installed ViewHelpers it
+     * was asked for is refused, and what was missing is where the two argument
+     * lists live. The core half is one `typo3_documentation_lookup` call into
+     * the ViewHelper Reference, the other half a class in the caller's own tree.
+     *
+     * The mapping carries no version boundary. It is the same explode, ucfirst
+     * and `ViewHelper` suffix in Fluid 2.15, 4.6.1 and 5.3.1 — the three lines
+     * 12.4, 13.4 and 14.3/main require — and the core's own resolver subclass
+     * overrides instantiation rather than naming on all four branches.
+     */
+    #[Test]
+    public function whereAViewHelpersArgumentsComeFromIsStatedOnTheTemplateHint(): void
+    {
+        foreach ([
+            'what arguments a viewhelper takes',
+            'viewhelper argument list',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('fluid-templates', $ids, $task);
+        }
+
+        $text = self::statementsOf('fluid-templates');
+
+        // The core half, which is a manual page rather than anything here.
+        self::assertStringContainsString('Fluid ViewHelper Reference', $text);
+        self::assertStringContainsString('typo3_documentation_lookup', $text);
+        self::assertStringContainsString('Arguments section', $text);
+
+        // The other half, spelled out far enough that the class is found rather
+        // than guessed at: the prefix, the casing, and which namespace wins.
+        self::assertStringContainsString('every dot-separated segment uppercased', $text);
+        self::assertStringContainsString('My\\Package\\ViewHelpers\\Foo\\BarViewHelper', $text);
+        self::assertStringContainsString('last one registered is tried first', $text);
+        self::assertStringContainsString('registerArgument()', $text);
+
+        foreach (Versions::majors() as $major) {
+            $on = implode("\n", array_column((array) Hints::byId('fluid-templates', $major)['hints'], 'text'));
+
+            self::assertStringContainsString('Fluid ViewHelper Reference', $on, (string) $major);
+            self::assertStringContainsString('BarViewHelper', $on, (string) $major);
+        }
+    }
+
+    /**
      * `D-KNW-075`. The reported query was written in the mechanism's words and
      * reached nothing, while what a session is actually holding is an error
      * naming the ViewHelper and not the method that produced the value, so both

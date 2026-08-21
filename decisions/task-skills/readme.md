@@ -9,6 +9,7 @@ one is added.
 
 - [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain · 2026-08-21
 - [`D-SKL-068`][D-SKL-068] — An audit's list is established against the work already in flight · 2026-08-21
+- [`D-SKL-069`][D-SKL-069] — Each runtime lookup says what it adds after the extension answer · 2026-08-21
 - [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
 - [`D-SKL-065`][D-SKL-065] — A defect reported by its symptom is routed to the workflow that owns the cause · 2026-08-19
 - [`D-SKL-066`][D-SKL-066] — Documenting a package for its readers is an intent of its own · 2026-08-19
@@ -75,6 +76,7 @@ one is added.
 
 [D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill-and-the-typo3-half-is-the-domain.md
 [D-SKL-068]: skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md
+[D-SKL-069]: skl-069-each-runtime-lookup-says-what-it-adds-after-the-extension-answer.md
 [D-SKL-064]: skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md
 [D-SKL-065]: skl-065-a-defect-reported-by-its-symptom-is-routed-to-the-workflow-that-owns-the-cause.md
 [D-SKL-066]: skl-066-documenting-a-package-for-its-readers-is-an-intent-of-its-own.md

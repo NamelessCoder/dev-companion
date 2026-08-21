@@ -512,6 +512,10 @@
       "call": "typo3_project_describe for what the package requires of typo3/cms-core, then typo3_rule_lookup with documentId=\"extension/compatibility/a-declared-major-that-is-not-installed\" for the reading that settles the other major"
     },
     {
+      "when": "Sweeping deprecations in a package that declares more than one TYPO3 major — every entry the sweep returns raises whether the replacement is on the lower one",
+      "call": "typo3_changelog_lookup with the deprecation's own issue number as the query, which returns the sibling entries the replacement was announced in and the version each was released in"
+    },
+    {
       "when": "About to claim that a change holds on a declared TYPO3 major the installation does not have — reading settles the shape and the claim is worth what it ran on",
       "call": "typo3_rule_lookup with documentId=\"extension/compatibility/running-on-a-declared-major-that-is-not-installed\" for standing that major up beside the installation and running the package's own suite there"
     },

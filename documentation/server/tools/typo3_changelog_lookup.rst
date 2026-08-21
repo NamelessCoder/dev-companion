@@ -35,9 +35,12 @@ Takes
     # leaves out; and a class, method or constant name reaches the entries that
     # write it in their text, so a removed API can be asked for by the identifier
     # you have, in any spelling of it: bare, qualified by its class, or fully
-    # qualified. When nothing carries all of them there either, the answer names the
-    # largest part of the query that does reach entries, which is what to ask again
-    # with. Omit to list a version or a type as a whole.
+    # qualified. The issue number is among the words a file name carries, so a
+    # deprecation's own number reaches every entry filed under it — the Feature
+    # the replacement was announced in, with the version it was released in. When
+    # nothing carries all of them there either, the answer names the largest part of
+    # the query that does reach entries, which is what to ask again with. Omit to
+    # list a version or a type as a whole.
     query: string  # optional
     # One of: breaking, deprecation, feature, important. Restrict to one kind of
     # change. Breaking and deprecation are what affects existing code.

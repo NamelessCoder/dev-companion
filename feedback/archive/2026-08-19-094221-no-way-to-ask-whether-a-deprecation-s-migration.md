@@ -1,7 +1,8 @@
 ---
 date: 2026-08-19T09:42:21+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-21
 model: claude-opus-5[1m]
 tool: typo3_changelog_lookup, typo3_hint_lookup, typo3-extension-health
 directory: /home/benji/projects/blog

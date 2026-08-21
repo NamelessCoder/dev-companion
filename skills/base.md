@@ -101,6 +101,16 @@ skip the ones that matter too.
    class below. Where the manual has no page for a surface either, that is a
    result and not an answer. Undocumented is not unsupported.
 
+   A package declaring more than one major asks a second question of every
+   deprecation the sweep returns: whether the replacement is on the lower one.
+   The entry's `issue` is a query of its own, and it reaches every entry filed
+   under that number. The Feature the core announced the replacement in is among
+   them, and the version it was released in is what settles that question. Where
+   the number reaches no sibling, nothing wrote an entry for the replacement,
+   and `typo3_rule_lookup` with
+   `documentId="extension/compatibility/a-declared-major-that-is-not-installed"`
+   is the reading that closes it.
+
    A task that produces no change does not reach this step at all. The property
    is what the task produces, and a triage, a reproduction and a review are
    illustrations of it rather than the list it is read off. The sweep asks what

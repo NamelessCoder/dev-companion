@@ -14,11 +14,13 @@ use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
 /**
- * Reaching a changelog entry by the identifier its body names.
+ * Reaching a changelog entry by what a caller holds rather than by its title:
+ * the identifier its body names, and the issue number it was filed under.
  *
- * The corpus is three entries written in the two markups the core's own
- * changelog uses for an identifier, because what this holds is a rule about
- * markup — `D-ANS-042`.
+ * The identifier corpus is three entries written in the two markups the core's
+ * own changelog uses for one, because what that holds is a rule about markup —
+ * `D-ANS-042`. The number is read off the file name, and `D-VER-009` is what a
+ * sweep asks it for.
  */
 final class ChangelogLookupTest extends TestCase
 {
@@ -106,13 +108,6 @@ final class ChangelogLookupTest extends TestCase
     }
 
     /**
-     * A project whose core ships the three entries around one removed method.
-     *
-     * Each is an excerpt of the entry it is named after, kept in the markup
-     * that entry writes: the `:php:` role of 13.0, the single backticks of 7.1,
-     * and a feature that only mentions the class in passing.
-     */
-    /**
      * The only entry that carries the word is in a system extension the query
      * never mentioned, and the answer says so.
      *
@@ -156,6 +151,69 @@ final class ChangelogLookupTest extends TestCase
         self::assertStringNotContainsString('Every one of these is in', $result->text);
     }
 
+    /**
+     * The second question a dual-major sweep asks of every deprecation it got
+     * back, and the call that answers it — `D-VER-009`.
+     *
+     * The number is a word of every file name filed under it, so the siblings
+     * come back off the names and the version each carries is what says whether
+     * the replacement is on the lower declared major.
+     */
+    #[Test]
+    public function anIssueNumberReachesEveryEntryFiledUnderIt(): void
+    {
+        Instance::discoverFrom($this->installationWithTheEntriesOfTwoIssues());
+
+        $result = Registry::call('typo3_changelog_lookup', ['query' => '108557']);
+
+        self::assertSame(3, $result->data['matchCount']);
+        self::assertSame(
+            ['Deprecation', 'Feature', 'Important'],
+            array_column($result->data['entries'], 'type'),
+        );
+        self::assertSame(['14.2', '14.2', '14.2'], array_column($result->data['entries'], 'version'));
+        // Off the names, so nothing was opened to answer it.
+        self::assertSame('name', $result->data['matchedIn']);
+    }
+
+    /**
+     * What the core filed under two issue numbers, each with the entry that
+     * announced the replacement beside the deprecation.
+     *
+     * The five are read off `.checkouts/14.3` on 2026-08-21, as excerpts: the
+     * three of #108557 in 14.2 and the two of #108524 in 14.1, which is what
+     * keeps the count above a corpus that only holds one number.
+     */
+    private function installationWithTheEntriesOfTwoIssues(): string
+    {
+        $root = $this->composerProject();
+        $changelog = $root . '/vendor/typo3/cms-core/Documentation/Changelog';
+        foreach ([
+            '14.2/Deprecation-108557-TCAOptionAllowedRecordTypesForPageTypes.rst' => 'Deprecation: #108557 - TCA '
+                . "option allowedRecordTypes for page types\n\nDescription\n===========\n\n"
+                . "The registry option is deprecated and will be removed in TYPO3 v15.0.\n",
+            '14.2/Feature-108557-TCAOptionAllowedRecordTypesForPageTypes.rst' => 'Feature: #108557 - TCA option '
+                . "allowedRecordTypes for page types\n\nDescription\n===========\n\n"
+                . "Page types now declare the record types they allow in TCA.\n",
+            '14.2/Important-108557-DropPageDoktypeRegistryOnlyAllowedTablesOption.rst' => 'Important: #108557 - Drop '
+                . "PageDoktypeRegistry option allowedTables\n\nDescription\n===========\n\n"
+                . "The option is gone from the registry.\n",
+            '14.1/Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst' => 'Deprecation: #108524 - Fluid '
+                . "namespaces in TYPO3_CONF_VARS\n\nDescription\n===========\n\n"
+                . "Registering namespaces in TYPO3_CONF_VARS is deprecated.\n",
+            '14.1/Feature-108524-ConfigurationFileToRegisterGlobalFluidNamespaces.rst' => 'Feature: #108524 - '
+                . "Configuration file to register global Fluid namespaces\n\nDescription\n===========\n\n"
+                . "Configuration/Fluid/Namespaces.php registers them instead.\n",
+        ] as $path => $contents) {
+            if (!is_dir($changelog . '/' . dirname($path))) {
+                mkdir($changelog . '/' . dirname($path), 0o777, true);
+            }
+            file_put_contents($changelog . '/' . $path, $contents);
+        }
+
+        return $root;
+    }
+
     private function installationWithTheIndexedSearchEntry(): string
     {
         $root = $this->composerProject();
@@ -171,6 +229,13 @@ final class ChangelogLookupTest extends TestCase
         return $root;
     }
 
+    /**
+     * A project whose core ships the three entries around one removed method.
+     *
+     * Each is an excerpt of the entry it is named after, kept in the markup
+     * that entry writes: the `:php:` role of 13.0, the single backticks of 7.1,
+     * and a feature that only mentions the class in passing.
+     */
     private function installationWithTheImageGenerationEntries(): string
     {
         $root = $this->composerProject();

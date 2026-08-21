@@ -79,6 +79,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
+- [`D-ANS-092`][D-ANS-092] — The project answer says how the declared suites are run outside the core too · 2026-08-21
 - [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-087`][D-ANS-087] — The project answer stays whole because a call is what costs · 2026-08-19
 - [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section, and names what it left out · 2026-08-19
@@ -166,6 +167,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
+[D-ANS-092]: answers/ans-092-the-project-answer-says-how-the-declared-suites-are-run-outside-the-core-too.md
 [D-ANS-086]: answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md
 [D-ANS-087]: answers/ans-087-the-project-answer-stays-whole-because-a-call-is-what-costs.md
 [D-ANS-088]: answers/ans-088-the-orientation-answer-is-asked-for-by-section-and-names-what-it-left-out.md

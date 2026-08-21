@@ -36,10 +36,20 @@ Never called: typo3_test_run_guide. The task text that should have reached it: "
 
 ## Suggestion
 
-Two things.
-
-First, the name and the one-liner. Make it say whose tests and what it covers — something like "how to run this repository's declared test suites, and what makes them fail before the first assertion". If it is extension- and project-scoped rather than core-scoped, that word belongs in the description, because "test run guide" beside a core script guide reads as the core's.
-
-Second, route to it. typo3_task_guide with changeType=audit returned a brief whose checklist says "Run the checks this repository declares rather than recommending them" — that is exactly the moment this tool is needed, and the brief does not name it. Its nextTools list names typo3_hint_lookup, typo3_changelog_lookup and typo3_project_describe but not typo3_test_run_guide. Adding it there, conditioned on the repository declaring test commands (which typo3_project_describe already reports, marking them "unknown"), would have caught me.
+Route to the answer. typo3_task_guide with changeType=audit returned a brief whose checklist says "Run the checks this repository declares rather than recommending them" — that is exactly the moment the answer is needed, and the brief names none.
 
 The content I would have wanted, in one page: which database user the functional suite needs and why the project user is not enough; that ddev exec is bound to the project directory and what to use from a worktree; that the PHP in the declared container and the PHP the lockfile resolves for PHPUnit can disagree, with the port-mapped database as the way out; and that missing credentials produce an error that reads like a broken test suite.
+
+## Answered
+
+The half about typo3_test_run_guide. Its suites are Build/Scripts/runTests.sh
+invocations and that script is in the core repository, so a project or extension
+path already gets a decline rather than commands that cannot run there. It was
+passed over correctly, and neither renaming it nor adding it to the audit brief
+is the lever — `D-ANS-086` and `D-ANS-092`.
+
+Two of the four facts asked for are already here, in the
+`project-extension-tests` hint and in the extension PHPUnit document beside it:
+the account has to be allowed to create a database per test class, and the
+message a missing credential stops with does not name what it is missing. What
+is open is reaching them, and the two DDEV facts beside them.

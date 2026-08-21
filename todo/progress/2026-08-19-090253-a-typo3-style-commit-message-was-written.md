@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090253-a-typo3-style-commit-message-was-written.md
 **Priority:** normal
+**Branch:** todo/a-typo3-style-commit-message-was-written
+**Claimed:** 2026-08-21
 
 Judged step 4 on 2026-08-21 — the wording, and it disagrees with the answer.
 `typo3_commit_message_guide` writes `Resolves:` and `Related:` from `issue` and

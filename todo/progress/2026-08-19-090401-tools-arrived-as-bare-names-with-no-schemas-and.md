@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090401-tools-arrived-as-bare-names-with-no-schemas-and.md
 **Priority:** low
+**Branch:** todo/tools-arrived-as-bare-names-with-no-schemas-and
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

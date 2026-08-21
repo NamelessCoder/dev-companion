@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090231-a-borrowed-backend-css-class-shipped-unverified.md
 **Priority:** normal
+**Branch:** todo/a-borrowed-backend-css-class-shipped-unverified
+**Claimed:** 2026-08-21
 
 Answered by the maintainer on 2026-08-21: a catalog entry may answer a
 class-shaped query below the version the entry is bound on, by carrying a second

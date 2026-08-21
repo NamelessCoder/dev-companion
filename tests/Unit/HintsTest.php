@@ -3672,6 +3672,39 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A declared suite that will not start is answered before the harness is.
+     *
+     * The entry opened on writing one, so a caller whose harness exists read
+     * past three statements that were not theirs — the risk `D-ANS-092` wrote
+     * down and the reason `typo3_project_describe` may now hand this id over.
+     * That entry also carries how the two DDEV facts asserted below were
+     * measured, and against which release.
+     */
+    #[Test]
+    public function aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs(): void
+    {
+        $reaches = static fn(string $task): array => array_column(
+            Hints::find([], $task, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertSame('project-extension-tests', $reaches('run the functional suite from a git worktree')[0] ?? '');
+        self::assertSame(
+            'project-extension-tests',
+            $reaches('composer test:php:functional fails with database credentials')[0] ?? '',
+        );
+
+        $text = self::statementsOf('project-extension-tests');
+
+        self::assertStringContainsString('.ddev/config.yaml is tracked', $text);
+        self::assertStringContainsString('in running state already exists', $text);
+        self::assertStringContainsString('raw.dbinfo.published_port', $text);
+        self::assertStringContainsString('typo3DatabasePort', $text);
+        self::assertStringContainsString('This version of PHPUnit requires PHP', $text);
+        self::assertStringContainsString('composer/platform_check.php', $text);
+    }
+
+    /**
      * The chain a patch review read seven core classes for, because nothing
      * below `knowledge/` said how a file becomes a processed one (`D-KNW-028`).
      * What decides it is the order the registry asks in and the first `yes`,

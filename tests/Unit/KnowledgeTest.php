@@ -627,6 +627,7 @@ final class KnowledgeTest extends TestCase
             'patch-checkout' => 'Check out the patch from review and see whether it still applies',
             'triage' => 'Triage an old open core bug report and say whether it still happens',
             'audit' => 'Review this extension for TYPO3 conformance',
+            'diagnosis' => 'Find out what is causing the error one page answers with, and change nothing',
             'cleanup' => 'Clean up the repository and work off the findings',
             'patch-review' => 'Say what stops this pull request being merged',
             'distribution-content' => 'Ship the page tree of this site as initial content in the package',

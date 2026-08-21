@@ -156,6 +156,20 @@ final class TaskGuide extends ReadOnlyTool
      */
     private const TRIAGE = 'triage';
 
+    /**
+     * The fourth, and the id of the intent it reaches (`D-SKL-065`).
+     *
+     * A defect reported by its symptom, where the request is the file and the
+     * cause and nothing is to be changed yet. It is the shape that was answered
+     * worst of the four: measured on 2026-08-19, a content element rendering
+     * wrong handed over the workflow for adding one, and a page answering with
+     * an error was recognized as nothing at all and came back with the steps a
+     * patch owes. The value exists for the same reason `triage` does — a caller
+     * classifying rather than describing reaches for the one documented as
+     * writing no file, and `audit` is what they picked last time (`D-GUI-011`).
+     */
+    private const DIAGNOSIS = 'diagnosis';
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -186,6 +200,10 @@ final class TaskGuide extends ReadOnlyTool
         // triage owes, and this value is how a caller reaches it by classifying
         // rather than by describing.
         self::TRIAGE => [],
+        // The fourth, and the same arrangement again: what looking for a cause
+        // owes is the diagnosis intent's, and this value is how a caller
+        // reaches it by classifying rather than by describing.
+        self::DIAGNOSIS => [],
         'unknown' => [],
     ];
 
@@ -207,6 +225,7 @@ final class TaskGuide extends ReadOnlyTool
         // writes backend markup rather than what boots an installation.
         self::OPERATIONS => '',
         self::TRIAGE => '',
+        self::DIAGNOSIS => '',
         'unknown' => '',
     ];
 
@@ -238,7 +257,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", and bringing an installation up is "operations" — all three get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does, beside the guide the work is written up in where this server carries one. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Not only for work that ends in a patch: deciding whether an open bug report still holds is changeType "triage", reviewing a body of code is "audit", bringing an installation up is "operations", and finding out why something is broken before anybody changes it is "diagnosis" — all four get a brief of their own rather than the steps a patch owes. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does, beside the guide the work is written up in where this server carries one. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array
@@ -249,7 +268,7 @@ final class TaskGuide extends ReadOnlyTool
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task, in English.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. An extension key counts as a path. A subsystem no path can be named for belongs in task, because every entry here is answered as a file.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
-                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::TRIAGE, self::OPERATIONS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Three of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what reviewing a body of code needs, triage for what deciding an open bug report needs — whether it still happens, what a previous attempt cost, what a maintainer would need before it can move — and operations for what running an installation needs, booting the environment a repository declares, importing its data, building its assets. Reviewing a report against code and reviewing a diff are not the same brief. A task that describes any of the three gets that shape without stating the type.'],
+                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::TRIAGE, self::OPERATIONS, self::DIAGNOSIS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Four of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what reviewing a body of code needs, triage for what deciding an open bug report needs — whether it still happens, what a previous attempt cost, what a maintainer would need before it can move — operations for what running an installation needs, booting the environment a repository declares, importing its data, building its assets, and diagnosis for what finding the cause of a reported defect needs, before anybody has agreed what to change. Reviewing a report against code, reviewing a diff and saying why something is broken are three briefs and not one. A task that describes any of the four gets that shape without stating the type.'],
             ],
             'required' => ['task'],
         ];
@@ -272,7 +291,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
-            'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage and a boot name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
+            'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage, a boot and a diagnosis name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
             'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures the recognized work is written up in, the same corpus typo3_project_describe lists at orientation and this server serves as typo3://guides resources. Named rather than carried: a brief is one call inside a procedure, and the page is one typo3_rule_lookup call by documentId. Empty means no page here is the write-up of what was recognized, which is not a statement that none of them is worth reading — the whole list is in that orientation call.'),
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
             'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
@@ -343,7 +362,7 @@ final class TaskGuide extends ReadOnlyTool
         // states the type of the patch under review rather than of their own
         // work — and appending is what costs neither of them a step
         // (`D-GUI-009`).
-        $stated = !in_array($changeType, [self::AUDIT, self::TRIAGE, self::OPERATIONS, 'unknown'], true);
+        $stated = !in_array($changeType, [self::AUDIT, self::TRIAGE, self::OPERATIONS, self::DIAGNOSIS, 'unknown'], true);
         $confirmed = TaskIntents::confirmed($intents);
         $confirmedIds = array_column($confirmed, 'id');
         $triages = !$stated && in_array(self::TRIAGE, $confirmedIds, true);
@@ -353,7 +372,11 @@ final class TaskGuide extends ReadOnlyTool
         // that was wrong.
         $reviews = !$stated && !$triages && in_array(self::AUDIT, $confirmedIds, true);
         $operates = !$stated && in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
-        $changesNothing = $reviews || $triages || $operates;
+        // Last of the four, so a task that reads as a boot and as a diagnosis is
+        // a boot: booting is what makes the cause readable, and the diagnosis
+        // intent's own items arrive in that brief anyway.
+        $diagnoses = !$stated && !$operates && in_array(self::DIAGNOSIS, $confirmedIds, true);
+        $changesNothing = $reviews || $triages || $operates || $diagnoses;
         $conditional = array_values(array_filter(
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
@@ -586,10 +609,11 @@ final class TaskGuide extends ReadOnlyTool
         // and handing them to one was the whole of R-GUI-006. What replaces
         // them is the reading a finding rests on rather than a second copy of an
         // audit workflow: what the review is about is the audit intent's
-        // checklist. The two before it are each other's counterpart — a review
-        // owes the gaps it left, a boot owes what it produced — and neither owes
-        // the other's, which is why the two shapes that write no file are two
-        // arms rather than one (D-GUI-008).
+        // checklist. The arms before it are each other's counterparts — a review
+        // owes the gaps it left, a boot owes what it produced, a diagnosis owes
+        // the reading each half of its answer came from — and none owes the
+        // others', which is why the shapes that write no file are four arms
+        // rather than one (D-GUI-008, D-SKL-065).
         //
         // Each arm carries only what its intent does not: this is the skeleton
         // the intent's own items are appended to, and the arm is chosen by that
@@ -629,6 +653,20 @@ final class TaskGuide extends ReadOnlyTool
                 'Report what nobody else can see afterwards: the URL the installation answers on, the backend '
                     . 'user that now exists with the values you chose for it, and every step you had to correct '
                     . 'by hand. What is not written down is derived again by the next session.',
+            ];
+        } elseif ($diagnoses) {
+            $checklist = [
+                self::PRODUCT_PREMISE,
+                'Establish what this installation is before opening a file: the TYPO3 and PHP it runs, which '
+                    . 'extensions are active in it, and which of them are this project\'s own. Whether a cause '
+                    . 'is even reachable is a property of those three.',
+                'Name the file and the reason together, each with the reading it was established from. A cause '
+                    . 'that can name neither is a hypothesis, and reporting it as one is the answer rather than '
+                    . 'a weaker version of it.',
+                'Stop at the finding. The fix is the next task and owes what a patch owes, so say what it would '
+                    . 'change and what would prove it — and change nothing here.',
+                'Report what the diagnosis did not reach: a reading that was not available, a half the evidence '
+                    . 'does not settle. Silence there reads as the cause being established.',
             ];
         } else {
             $checklist = [

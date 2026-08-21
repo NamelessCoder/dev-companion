@@ -115,3 +115,31 @@ absence of a workflow behind it.
 - The no-write brief is built and a diagnosis request still comes back with the
   patch checklist, because it was recognized by its subject first. Then the fork
   is in the wrong place and the intent alone does not reach it.
+
+## Covered by
+
+- `HintsTest::aRequestForACauseIsAnsweredWithWhatFindingOneNeeds`
+
+## Since then
+
+**2026-08-21**, the intent was built as `diagnosis` and `TaskGuide` gained the
+fourth arm. What settled the needles is that two words carry the shape and no
+sentence has to be enumerated, which is what `D-SKL-039`'s second **Wrong if**
+asks for: `cause` and `causing` reach all three calls measured above and
+`SKILL-15`, and across the 46 scenario prompts and the 26 one-kind briefs
+`KnowledgeTest` held that day, neither reaches anything else. `why` was measured
+on the same corpus, reaches one of the three and nothing else, and is in because
+it is the other word the question is asked with. `diagnose` and `diagnosis` are
+in as the change type, which exists for the reason `triage` does — a caller who
+classifies rather than describes reaches for the value documented as writing no
+file, and `D-GUI-011` is where they picked `audit`. `what is wrong` was measured
+and rejected: it reaches `REVIEW-03`, which is a review.
+
+The entry names no skill, and the needles are why. The same two words reach a
+content element rendering wrong and an installation answering wrong, so an
+unconditional route would hand the first of those the workflow that boots
+something; what the installation half owns is stated as a step instead. The
+other cost is stated rather than guarded: a request naming a cause and a fix in
+one sentence — "find out why the frontend throws and fix it" — is answered as a
+diagnosis unless the caller states the change type. That is `D-GUI-009`'s fork,
+and the same exposure `audit` has carried since `R-GUI-006`.

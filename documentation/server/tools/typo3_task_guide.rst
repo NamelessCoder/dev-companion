@@ -5,10 +5,11 @@
 
 Build a task checklist enriched with matching hints and relevant core checks.
 Not only for work that ends in a patch: deciding whether an open bug report
-still holds is changeType "triage", reviewing a body of code is "audit", and
-bringing an installation up is "operations" — all three get a brief of their own
-rather than the steps a patch owes. Built from bundled conventions only: it does
-not read your checkout, so it also names what you have to establish there
+still holds is changeType "triage", reviewing a body of code is "audit",
+bringing an installation up is "operations", and finding out why something is
+broken before anybody changes it is "diagnosis" — all four get a brief of their
+own rather than the steps a patch owes. Built from bundled conventions only: it
+does not read your checkout, so it also names what you have to establish there
 yourself, routes to the lookups that fit the task, and names the task skill that
 owns the work where a published one does, beside the guide the work is written
 up in where this server carries one. Work that reads as a project or third-party
@@ -40,15 +41,17 @@ Takes
     # there is no declaration.
     targetVersion: string  # optional
     # One of: bugfix, feature, cleanup, test, documentation, deprecation, audit,
-    # triage, operations, unknown. What kind of change the task is. Three of them
-    # write no file and get a brief of their own instead of the steps a patch owes:
-    # audit asks for what reviewing a body of code needs, triage for what deciding
-    # an open bug report needs — whether it still happens, what a previous attempt
-    # cost, what a maintainer would need before it can move — and operations for
-    # what running an installation needs, booting the environment a repository
-    # declares, importing its data, building its assets. Reviewing a report against
-    # code and reviewing a diff are not the same brief. A task that describes any of
-    # the three gets that shape without stating the type.
+    # triage, operations, diagnosis, unknown. What kind of change the task is. Four
+    # of them write no file and get a brief of their own instead of the steps a
+    # patch owes: audit asks for what reviewing a body of code needs, triage for
+    # what deciding an open bug report needs — whether it still happens, what a
+    # previous attempt cost, what a maintainer would need before it can move —
+    # operations for what running an installation needs, booting the environment a
+    # repository declares, importing its data, building its assets, and diagnosis
+    # for what finding the cause of a reported defect needs, before anybody has
+    # agreed what to change. Reviewing a report against code, reviewing a diff and
+    # saying why something is broken are three briefs and not one. A task that
+    # describes any of the four gets that shape without stating the type.
     changeType: string  # optional
 
 Answers with
@@ -101,11 +104,11 @@ Answers with
     # The task skills that own the recognized work, named so that a caller who
     # reached this server without one can load it. A skill is a file in your own
     # project rather than something this server can see, so a name here is not a
-    # promise that it is installed. A review, a triage and a boot name only the
-    # workflows that change nothing either: the kind of change under review is still
-    # recognized in intents, and the workflow for writing one is not the one you are
-    # in. Empty means no published skill owns what was recognized, which is not a
-    # statement that the work has no workflow.
+    # promise that it is installed. A review, a triage, a boot and a diagnosis name
+    # only the workflows that change nothing either: the kind of change under review
+    # is still recognized in intents, and the workflow for writing one is not the
+    # one you are in. Empty means no published skill owns what was recognized, which
+    # is not a statement that the work has no workflow.
     skills: [string]
     # The whole procedures the recognized work is written up in, the same corpus
     # typo3_project_describe lists at orientation and this server serves as

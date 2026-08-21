@@ -1,18 +1,22 @@
 # SKILL-15 — Say why the page is broken before anybody touches it
 
 **Environment:** `E-SITE`, one page of the site answering with an error while
-the rest of it renders · **Contract:** `open` — `D-SKL-065`
+the rest of it renders · **Contract:** `held`
 **Held by:** `HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows`
 holds that both halves of a failing installation are stated and reached from the
-symptom's own words, and
+symptom's own words,
 `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
 that the workflow which owns a running installation names that lookup before it
-proves anything. That a request asking for a cause and no change reaches either
-of them is **not guarded** — measured on 2026-08-19, such a request is
-recognized by the subject it names and handed the workflow that builds one.
+proves anything, and
+`HintsTest::aRequestForACauseIsAnsweredWithWhatFindingOneNeeds` that a request
+asking for a cause and no change is answered with what finding one needs rather
+than with the workflow that writes a patch. That the session then reaches the
+cause is **not guarded**, because nothing short of a run on `E-SITE` reads it.
 
-**Read 2026-08-19:** written with `D-SKL-065`, which declines the skill and
-queues the intent that would route this. Nothing has been run against it yet.
+**Read 2026-08-21:** the `diagnosis` intent and the brief behind it were built,
+so the request is recognized as the shape it is instead of by the subject it
+names. What is still owed is the run — `D-SKL-065`'s first **Wrong if** is a
+session that has the route and hand-reads its way past both owners anyway.
 
 > One page on our site answers with an error instead of rendering, and the rest
 > of it is fine. Work out what is causing it and where. Don't change anything

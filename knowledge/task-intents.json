@@ -463,6 +463,31 @@
     ]
   },
   {
+    "id": "diagnosis",
+    "title": "Finding the cause of a defect",
+    "changesNothing": true,
+    "match": [
+      "cause",
+      "causing",
+      "why",
+      "diagnose",
+      "diagnosis"
+    ],
+    "rulesQuery": "",
+    "checklist": [
+      "Read what the installation wrote down before what it rendered. The page a symptom is reported from is the weakest of the readings there are: typo3_hint_lookup with id=installation-exception-output says where the log is, which exceptions are never written to it at all, and what decides whether the page carries the message.",
+      "An empty log is a finding rather than a missing file. It separates something that was thrown from a response TYPO3 returned on purpose, and the two are read in different places — so name what decided it instead of reporting the installation as having nothing to say.",
+      "Place the symptom in a subsystem before opening a file, with typo3_hint_lookup on the words it was reported in. What that subsystem's conventions say about where such behaviour can come from is what turns one guess into a list of candidates.",
+      "Name the workflow that owns the cause once it is placed. An installation answering wrong is typo3-development-installation's — its site configuration, its boot, the base it answers on. A cause in this package's own code has no workflow before the fix is agreed, and agreeing it is the next task rather than a step of this one."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup, twice: with id=installation-exception-output for where an uncaught exception is written, which codes are only ever displayed and what decides whether the page carries the message, then with the symptom in the words it was reported in for the subsystem that owns it — the placement the rest of the diagnosis stands on",
+      "typo3_configuration_lookup, for what this installation has configured where the shipped default says otherwise",
+      "typo3_changelog_lookup with type=\"breaking\", where the symptom arrived with an upgrade rather than with a change of your own"
+    ]
+  },
+  {
     "id": "cleanup",
     "title": "Putting a repository right",
     "skill": "typo3-extension-health",

@@ -5399,6 +5399,108 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A request for a cause is answered with what finding one needs, not with
+     * the brief for writing a patch.
+     *
+     * `D-SKL-065`, and the three calls are the ones it measured on 2026-08-19:
+     * the content element handed over the workflow for adding one, the backend
+     * module the one for building one, and the page answering with an error was
+     * recognized as nothing at all and came back with keep the change focused,
+     * add coverage, draft the commit message. `SKILL-15` is the case.
+     */
+    #[Test]
+    public function aRequestForACauseIsAnsweredWithWhatFindingOneNeeds(): void
+    {
+        self::assertContains('diagnosis', TaskGuide::inputSchema()['properties']['changeType']['enum']);
+
+        $element = Registry::call('typo3_task_guide', [
+            'task' => 'A content element renders the wrong markup on the page, find the cause',
+        ]);
+        $module = Registry::call('typo3_task_guide', [
+            'task' => 'The backend module shows a blank page since the upgrade, find out why and report the '
+                . 'file and the cause, change nothing',
+        ]);
+        $page = Registry::call('typo3_task_guide', [
+            'task' => 'The frontend page answers with an error and I need to find which file causes it, '
+                . 'without changing anything',
+        ]);
+        // And the caller who classifies rather than describes, which is the
+        // trap `D-GUI-011` recorded: before this value existed, `audit` was the
+        // one documented as writing no file.
+        $stated = Registry::call('typo3_task_guide', [
+            'task' => 'One page on our site answers with an error and the rest of it is fine',
+            'changeType' => 'diagnosis',
+        ]);
+
+        foreach ([$element, $module, $page, $stated] as $brief) {
+            self::assertSame(
+                'strong',
+                array_column($brief->data['intents'], 'confidence', 'id')['diagnosis'] ?? null,
+            );
+
+            $checklist = implode("\n", $brief->data['checklist']);
+            // None of what a patch owes, which is what all three came back
+            // with: the element and the module through the workflow that
+            // writes one, the page through the skeleton nothing had placed.
+            self::assertStringNotContainsString('Keep the patch focused', $checklist);
+            self::assertStringNotContainsString('test coverage', $checklist);
+            self::assertStringNotContainsString('Sweep the deprecations', $checklist);
+            self::assertStringNotContainsString('typo3_commit_message_guide', $checklist);
+            self::assertNotContains(
+                'typo3_commit_message_guide',
+                array_column($brief->data['nextTools'], 'tool'),
+            );
+            // Nor the other three arms', each of which owes something a
+            // diagnosis does not.
+            self::assertStringNotContainsString('Report what the review did not reach', $checklist);
+            self::assertStringNotContainsString('Report what the triage did not reach', $checklist);
+            self::assertStringNotContainsString('the URL the installation answers on', $checklist);
+
+            // What it owes instead: the reading each half of the answer came
+            // from, the log before the page, and the stop before the fix.
+            self::assertStringContainsString('Name the file and the reason together', $checklist);
+            self::assertStringContainsString('Stop at the finding', $checklist);
+            self::assertStringContainsString('Report what the diagnosis did not reach', $checklist);
+            self::assertStringContainsString('installation-exception-output', $checklist);
+            self::assertStringContainsString('An empty log is a finding rather than a missing file', $checklist);
+        }
+
+        // The workflow that owns the installation half is named, and no route
+        // is taken for the caller: the same needles reach a cause in the
+        // package's own code, which has no workflow before the fix is agreed.
+        self::assertStringContainsString(
+            'typo3-development-installation',
+            implode("\n", $page->data['checklist']),
+        );
+        self::assertSame([], $page->data['skills']);
+
+        // The element is the case the todo names: recognized beside
+        // `content-element`, it still loses the workflow for adding one.
+        self::assertContains('content-element', array_column($element->data['intents'], 'id'));
+        self::assertSame([], $element->data['skills']);
+        // What that intent knows still arrives — only the route is withheld
+        // (`D-SKL-039`).
+        self::assertStringContainsString(
+            'Describe the editor workflow before naming a single field',
+            implode("\n", $element->data['checklist']),
+        );
+
+        // A stated change type that does change something keeps the skeleton,
+        // so "find out why it broke and fix it" is answered as the patch it is
+        // (`D-GUI-009`).
+        $patch = Registry::call('typo3_task_guide', [
+            'task' => 'Find out why the frontend throws and fix it',
+            'changeType' => 'bugfix',
+        ]);
+
+        self::assertContains('Keep the patch focused on the stated task.', $patch->data['checklist']);
+        self::assertStringContainsString(
+            'An empty log is a finding rather than a missing file',
+            implode("\n", $patch->data['checklist']),
+        );
+    }
+
+    /**
      * Work that operates an installation is answered as a boot, not as a patch
      * and not as a review.
      *

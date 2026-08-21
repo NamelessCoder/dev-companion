@@ -150,3 +150,56 @@ excluded every tool it can reads 2018, where the room freed is spent naming all
 23 rather than counting them, and 1598 where the notice pushes that prefix back
 onto the count. So the budget bought the entry and is no longer what blocks the
 next one — the third **Wrong if** above is what to argue with instead.
+
+**The first Wrong if fired**, on 2026-08-19. `feedback/2026-08-19-090401` is a
+JavaScript dependency update in `blog` under Claude Code's VSCode extension:
+every tool arrived as a bare name with its schema deferred, the block arrived
+whole, and the session counted the index inside it. It called nothing, and the
+block is what it names as the only thing it read from this server. Two feedback
+from the same debrief carry what that cost — a backend CSS class borrowed
+unverified (`feedback/2026-08-19-090231`) and a commit message derived from
+`git log` (`feedback/2026-08-19-090253`).
+
+The index was current. Its sixth entry, the call that reads a whole procedure,
+landed in `d8acbbf0` ten hours before the feedback was filed, and the session
+still reports finishing without learning the corpus can be enumerated. So the
+entry
+[`D-AUD-007`](aud-007-the-prose-documents-are-named-where-a-session-already-looks.md)
+bought was delivered and read and did not reach this one either.
+
+What separates it from the two feedback this entry was built on is that those
+sessions did not know what to call and this one had decided. Its own account: it
+was never unclear whether the server could answer, it was confident it could
+not, and confidence does not trigger a scope check. That confidence was right
+about the third-party library it was upgrading and wrong about the TYPO3 half of
+the same task, which is where both costs above came from.
+
+An index answers a session looking for a tool. Nothing in the block answers one
+that has stopped looking, and what the feedback asks for instead is the boundary
+— three lines of covered and not covered, so a session sure it is off-topic
+reads something that contradicts it.
+
+That is this entry's third **Wrong if** rather than the first's remedy. Measured
+on 2026-08-21, the longest assembly stands at 2028 characters of the 2048, so
+twenty are free against about seventy for one bullet and the 1153 `D-AUD-007`
+priced for naming the documents. And the lever this entry named as what is left
+to try is closed: `D-SKL-060`'s fetch line was put to the maintainer on
+2026-08-19 and the answer was not to.
+
+Two of the feedback's own suggestions are refused on their own ground rather
+than on the room. `typo3_reference_list` is not the document list — re-run on
+2026-08-21 it enumerates the core's worked examples, `theme_camino` and
+`styleguide` — so naming it would not have shown the session the shelf it
+wanted. The other is the name, which the paragraph above already answers; re-run
+with the session's own subject, `npm build scripts webpack in an extension`,
+`typo3_script_lookup` answers with the four topics of the core script notes and
+routes elsewhere, so the call the name cost would have returned nothing about
+the task.
+
+What goes up is the budget, because every lever left is instruction-block
+characters that do not exist. That is
+[`D-ANS-004`](../answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md),
+which measured one client on 2026-07-31 and has not been re-measured; the client
+reporting here is another one, it delivered the block whole, and where it
+truncates only a session inside it can say. `todo/progress/2026-08-19-090401`
+carries the question.

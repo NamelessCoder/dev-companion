@@ -139,3 +139,58 @@ half was settled the same day:
 [`D-GUI-014`](gui-014-looking-at-a-change-is-an-intent-of-its-own.md) is the
 intent for looking, it names the browser page on both sides, and it leaves the
 probe page to the two skills that grant it.
+
+### 2026-08-21 — the placement carries five documents, and an audit reaches none
+
+**`feedback/2026-08-19-094457` is the first report from after this was built,
+and it is the same step of the ladder one rung in: the placement works and the
+page the session needed is outside it.** The session audited an extension before
+a v14 release, improvised the procedure
+`extension/compatibility/running-on-a-declared-major-that-is-not-installed`
+writes up, and saw that page named only in the `guides` tail of
+`typo3_project_describe` at orientation. Re-run in this worktree on 2026-08-21:
+
+- `typo3_task_guide`, task "full audit of the blog extension before its v14
+  release", `changeType="audit"`, `targetVersion="14"`, one extension path:
+  `skills` is `typo3-extension-health` and `guides` is empty, as the session
+  reported. The `audit` intent carries no `guide`, and `TaskIntents::owned()`
+  lets only an intent carrying `changesNothing` name one in that brief.
+- Five intents name a guide today — `documentation`, `tests`, `browser-tests`,
+  `browser-check`, `installation-operations` — against fifteen documents.
+  Neither `extension/compatibility/` page is among them, and no intent
+  recognizes compatibility work at all. That is the other direction this entry
+  already noted nothing checks, measured as a cost.
+- Delivery rather than a gap: `typo3_rule_lookup` with the session's own subject
+  as a query returns six sections, four of them from the page it needed and the
+  page first. The corpus answers the question; nothing named the call at the
+  moment the work needed it.
+- Two files name that corpus to a session, and an audit reaches neither.
+  `skills/base.md` step 5 names the sibling page
+  `extension/compatibility/a-declared-major-that-is-not-installed`, inside the
+  deprecation sweep and under a condition of it — and the sweep exempts a task
+  that produces no change, which is what an audit is. The page the session
+  needed is named in `skills/typo3-extension-upgrade`, and the session was in
+  `typo3-extension-health`, which names neither.
+
+**The suggestion cannot be taken where the feedback puts it.** It asks
+`typo3_task_guide` to name the page for any repository whose declared major is
+not installed. That brief reads no checkout, and the pair the condition is
+computed from — `coreConstraint` against the installed version — is
+`typo3_project_describe`'s. A condition over the caller's own state is written
+where the state is already reported, which is the audit order of a skill; an
+intent recognizes the work from the task text instead, and needs no state. Which
+of the two carries it is the todo's first step, read against what each owns, the
+way the shape above was.
+
+**Queued at `normal` rather than made on the spot**, because both candidates are
+contracts: `knowledge/task-intents.json` is what every brief is recognized
+through, and a skill is a file in somebody else's project.
+
+**The second half of that feedback is already answered and is trimmed off it.**
+It asks that a `documentId` naming no document say so explicitly. Re-run with
+the mis-transcribed id the session used, the answer opens *No knowledge document
+is called "…"* and lists all fifteen ids with their titles, and `documents` is
+declared in `Schema::knowledgeLookup()` rather than arriving undeclared. That
+wording is in `RuleLookup::wholeDocument()` since 2026-08-07 and the session ran
+on 2026-08-19: it asked for what it had been given and read past it, which is
+the same finding as the half above and not a second lever.

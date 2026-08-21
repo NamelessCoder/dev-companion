@@ -32,5 +32,3 @@ typo3_project_describe (guides array, 16 ids) at session start; typo3_rule_looku
 ## Suggestion
 
 Surface the relevant guides at the moment the task is known rather than only at orientation. typo3_task_guide already returns a guides array and, for my call (changeType=audit, targetVersion=14), it came back empty — while at least two documents in the catalogue were about steps that audit went on to need. If the guide brief named "running-on-a-declared-major-that-is-not-installed" for any task whose repository declares a major that typo3_project_describe reports as not installed, it would have reached me at the right moment. That condition is already computable from project_describe's own output: it reports coreConstraint ^13.4.15 || ^14.3 || 15.*@dev against typoVersion 14.3.6.
-
-Second, smaller: when typo3_rule_lookup is given a documentId that does not exist, it already returns the full list. Consider saying so explicitly in that answer — "no document with this id; the ids are:" — because I read the empty matches first and nearly moved on before noticing the catalogue underneath.

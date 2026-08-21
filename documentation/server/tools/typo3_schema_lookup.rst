@@ -101,13 +101,14 @@ because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
-installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-``bin/cli tools:check`` holds it.
+vendor/bin/typo3 exists. Its dependencies are not installed —
+vendor/autoload.php is not there either, and composer install writes both.
+Answered against composer-project, TYPO3 14.3.0, the installation this
+repository writes below .fixtures/, whose console answers. The tools that
+declare ``answeredBy`` carry an answer from each, under a heading naming which;
+every other answer is from the first alone, because nothing in it would differ.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 schema: one table
 ~~~~~~~~~~~~~~~~~
@@ -127,7 +128,7 @@ Text:
 
 .. code-block:: text
 
-    This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
+    This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both.
 
 Data:
 
@@ -137,7 +138,7 @@ Data:
         "table": "tt_content",
         "unsupported": {
             "cause": "installation-not-answering",
-            "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+            "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
             "diagnosis": "",
             "searched": [
                 "<installation>"
@@ -221,7 +222,7 @@ Text:
 
 .. code-block:: text
 
-    This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
+    This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both.
 
 Data:
 
@@ -231,7 +232,7 @@ Data:
         "table": null,
         "unsupported": {
             "cause": "installation-not-answering",
-            "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+            "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
             "diagnosis": "",
             "searched": [
                 "<installation>"

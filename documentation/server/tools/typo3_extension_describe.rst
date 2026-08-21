@@ -287,13 +287,14 @@ because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
-installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-``bin/cli tools:check`` holds it.
+vendor/bin/typo3 exists. Its dependencies are not installed —
+vendor/autoload.php is not there either, and composer install writes both.
+Answered against composer-project, TYPO3 14.3.0, the installation this
+repository writes below .fixtures/, whose console answers. The tools that
+declare ``answeredBy`` carry an answer from each, under a heading naming which;
+every other answer is from the first alone, because nothing in it would differ.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 extension
 ~~~~~~~~~
@@ -387,7 +388,7 @@ Text:
     The source language is what each file declares, not what it should declare — typo3_hint_lookup owns that rule.
     It ships no manual: `typo3-extension-documentation` is the workflow that writes one.
 
-    Read from the files, so this is what the extension declares — not what it does at runtime. A table or an icon list built in a loop, and anything a hook or an event listener changes, are not in this list; the files that could hold them are named above. The installation itself was not asked: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
+    Read from the files, so this is what the extension declares — not what it does at runtime. A table or an icon list built in a loop, and anything a hook or an event listener changes, are not in this list; the files that could hold them are named above. The installation itself was not asked: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both.
     ext_localconf.php is named above and read by nothing here. Each registers by running, so a hook, an RTE preset or a global Fluid namespace it sets is in none of the lists above. The booted installation answers the tables, content elements and icons it adds, and none of the rest.
 
 Data:

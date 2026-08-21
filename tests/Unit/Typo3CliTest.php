@@ -65,6 +65,35 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
+    public function aCheckoutThatWasNeverInstalledSaysThatRatherThanNamingEmptyPaths(): void
+    {
+        // The core checkouts below .checkouts/ are worktrees nothing was
+        // installed in, and the core monorepo declares `bin-dir: bin` — so the
+        // paths the reason lists are exactly the ones composer install writes.
+        // Naming only them reads as "a core checkout cannot answer this".
+        $root = $this->installation();
+        $this->discover($root);
+
+        self::assertStringContainsString('dependencies are not installed', Typo3Cli::reason());
+        self::assertStringContainsString('vendor/autoload.php', Typo3Cli::reason());
+    }
+
+    #[Test]
+    public function anInstalledCheckoutWhoseConsoleSitsElsewhereIsNotBlamedOnItsDependencies(): void
+    {
+        // The other half: the autoloader is there, so the console is somewhere
+        // this did not look, and the caller is told that and nothing else.
+        $root = $this->installation();
+        mkdir($root . '/vendor', 0o777, true);
+        file_put_contents($root . '/vendor/autoload.php', '<?php
+');
+        $this->discover($root);
+
+        self::assertStringContainsString('has no TYPO3 console', Typo3Cli::reason());
+        self::assertStringNotContainsString('dependencies are not installed', Typo3Cli::reason());
+    }
+
+    #[Test]
     public function aConsoleInTheDeclaredBinDirectoryIsFound(): void
     {
         // What the TYPO3 extension testing setup produces: the console exists

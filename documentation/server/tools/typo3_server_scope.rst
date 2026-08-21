@@ -144,9 +144,10 @@ Answered
 Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and ``bin/cli tools:check`` holds it.
+none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
+— vendor/autoload.php is not there either, and composer install writes both.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 scope
 ~~~~~
@@ -368,7 +369,7 @@ Text:
     - Writing or reading a FlexForm — a plugin's settings, a content element's own sheet, or the values a Fluid template reads out of one. The file the registration names is not what the backend resolves. → typo3_flexform_lookup with the table, the flex column and the record values that decide which structure applies, CType for a content element
 
     Found the TYPO3 installation at <installation> (core-checkout, found by walking up, from <installation>), which holds 36 packages. If that is not the installation you are working on, this server was started in the wrong directory — or set TYPO3_DEV_COMPANION_ROOT to the one you mean.
-    Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
+    Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
 
     Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, executed, or looked up online.
     The one exception is typo3_feedback_record, this server's only write: it creates a new markdown feedback under feedback/ and touches nothing else. Missing something that belongs here? Leave feedback about it.
@@ -1031,7 +1032,7 @@ Data:
                 "via": null,
                 "php": null,
                 "command": null,
-                "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+                "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
                 "caveat": null
             },
             "settings": {
@@ -1064,7 +1065,7 @@ Text:
     Query this server in English, whatever language you are speaking with the user. Its knowledge is written in English and its matching is lexical, so a query in another language reaches only the words the two happen to share and otherwise comes back empty.
 
     Found the TYPO3 installation at <installation> (core-checkout, found by walking up, from <installation>), which holds 36 packages. If that is not the installation you are working on, this server was started in the wrong directory — or set TYPO3_DEV_COMPANION_ROOT to the one you mean.
-    Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
+    Its console cannot be run right now, so questions that only the installation can answer — which labels exist, which backend modules are registered — have no answer here: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both. Where the command that would work is known, TYPO3_DEV_COMPANION_CONSOLE states it, for example "ddev exec .build/bin/typo3".
 
     Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, executed, or looked up online.
     The one exception is typo3_feedback_record, this server's only write: it creates a new markdown feedback under feedback/ and touches nothing else. Missing something that belongs here? Leave feedback about it.
@@ -1099,7 +1100,7 @@ Data:
                 "via": null,
                 "php": null,
                 "command": null,
-                "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+                "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
                 "caveat": null
             },
             "settings": {

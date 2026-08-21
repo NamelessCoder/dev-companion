@@ -84,3 +84,16 @@ repository can recreate, which is what makes the recording repeatable
 - `CheckoutsTest::everyEntryGitReportsIsCarried`
 - `CheckoutsTest::bothKindsOfChangeAreCarried`
 - `CheckoutsTest::aGitThatCannotAnswerReportsNoDifference`
+
+## Since then
+
+- 2026-08-21: the recording's own sentence said what the uninstalled checkout
+  costs but not why, and it read as a property of core checkouts. `.checkouts`
+  is a worktree nothing was installed in, and the core monorepo declares
+  `bin-dir: bin` — so the two paths the reason listed as absent are exactly the
+  ones `composer install` would write. `Typo3Cli::reason()` now says the
+  dependencies are not installed and names the missing autoloader wherever the
+  console is absent and no autoloader stands beside it, which the preamble of
+  every recorded page carries. Held by
+  `Typo3CliTest::aCheckoutThatWasNeverInstalledSaysThatRatherThanNamingEmptyPaths`
+  and its counterpart for an installed root whose console sits elsewhere.

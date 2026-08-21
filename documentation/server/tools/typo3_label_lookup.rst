@@ -105,13 +105,14 @@ because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
-installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-``bin/cli tools:check`` holds it.
+vendor/bin/typo3 exists. Its dependencies are not installed —
+vendor/autoload.php is not there either, and composer install writes both.
+Answered against composer-project, TYPO3 14.3.0, the installation this
+repository writes below .fixtures/, whose console answers. The tools that
+declare ``answeredBy`` carry an answer from each, under a heading naming which;
+every other answer is from the first alone, because nothing in it would differ.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 labels: hit
 ~~~~~~~~~~~
@@ -214,7 +215,7 @@ Text:
 
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 
-    Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
+    Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
 
 Data:
 
@@ -498,7 +499,7 @@ Text:
 
     Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 
-    Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
+    Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
 
 Data:
 

@@ -126,9 +126,10 @@ final class Typo3Cli
             // that sits somewhere else is the likely case here, and a reason
             // that lists where this looked is one the caller can act on.
             self::$reason = sprintf(
-                '%s has no TYPO3 console — none of %s exists%s',
+                '%s has no TYPO3 console — none of %s exists%s%s',
                 $root,
                 implode(', ', self::consoleCandidates($root)),
+                self::withoutDependencies($root),
                 self::unreachableBinDirectory($root)
             );
 
@@ -664,6 +665,27 @@ final class Typo3Cli
         return $binDir === null || !str_starts_with($binDir, '/')
             ? $binDir
             : self::belowRoot($root, $binDir);
+    }
+
+    /**
+     * What to add where nothing was installed rather than installed elsewhere.
+     *
+     * A checkout whose dependencies were never installed has no autoloader
+     * either, and a reason naming only the empty paths reads as a property of
+     * the checkout: the core monorepo declares `bin-dir: bin` and answers every
+     * installation-backed tool once `composer install` has run in it.
+     */
+    private static function withoutDependencies(string $root): string
+    {
+        $autoloader = self::autoloader($root);
+        if (is_file($root . '/' . $autoloader)) {
+            return '';
+        }
+
+        return sprintf(
+            '. Its dependencies are not installed — %s is not there either, and composer install writes both',
+            $autoloader
+        );
     }
 
     /**

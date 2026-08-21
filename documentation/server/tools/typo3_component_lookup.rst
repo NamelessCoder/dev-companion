@@ -167,9 +167,10 @@ Answered
 Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and ``bin/cli tools:check`` holds it.
+none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
+— vendor/autoload.php is not there either, and composer install writes both.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 components: list
 ~~~~~~~~~~~~~~~~

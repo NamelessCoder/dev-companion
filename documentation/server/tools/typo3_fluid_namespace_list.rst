@@ -74,13 +74,14 @@ because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
-installation this repository writes below .fixtures/, whose console answers.
-The tools that declare ``answeredBy`` carry an answer from each, under a
-heading naming which; every other answer is from the first alone, because
-nothing in it would differ. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-``bin/cli tools:check`` holds it.
+vendor/bin/typo3 exists. Its dependencies are not installed —
+vendor/autoload.php is not there either, and composer install writes both.
+Answered against composer-project, TYPO3 14.3.0, the installation this
+repository writes below .fixtures/, whose console answers. The tools that
+declare ``answeredBy`` carry an answer from each, under a heading naming which;
+every other answer is from the first alone, because nothing in it would differ.
+Nothing checks what is below this heading; everything above it is derived from
+the class that answers the call, and ``bin/cli tools:check`` holds it.
 
 namespaces
 ~~~~~~~~~~
@@ -105,7 +106,7 @@ Text:
 
     These prefixes work in any template without being declared. Every other namespace is declared in the template itself — xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" on the root element, together with data-namespace-typo3-fluid="true" so the declaration is stripped from the output.
 
-    Read from the Configuration/Fluid/Namespaces.php of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). That is what the packages declare, not what the container assembled from them.
+    Read from the Configuration/Fluid/Namespaces.php of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both). That is what the packages declare, not what the container assembled from them.
 
 Data:
 

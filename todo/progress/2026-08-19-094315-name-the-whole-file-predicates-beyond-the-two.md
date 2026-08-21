@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094315-what-kept-me-from-four-wrong-findings.md
 **Priority:** normal
+**Branch:** todo/name-the-whole-file-predicates-beyond-the-two
+**Claimed:** 2026-08-21
 
 Judged step 4 and step 1a: the report's three hint items were wording and are
 closed, and this half is the one thing no answer covers — `D-FBK-018` has the

@@ -309,13 +309,18 @@ final class CatalogCheck
     }
 
     /**
-     * Re-derives which majors each entry holds on, and reports where that differs
-     * from what it records.
+     * Re-derives which majors each entry holds on and which its class list alone
+     * holds on, and reports where either differs from what it records.
      *
      * An entry holds on a version when everything it describes is there: its Sass
      * sources, and every class and custom property it names that the newest covered
      * version has. Missing a custom property is not a detail — a caller pasting one
      * that does not exist gets CSS that silently does nothing.
+     *
+     * The class list is derived a second time without the custom properties, because
+     * a caller asking about one class is not asking to paste the component
+     * (`D-CAT-006`). It is the same reading over fewer names, so the two cannot
+     * drift apart on what a checkout says.
      *
      * @param array<int, array<string, mixed>> $components
      */
@@ -344,21 +349,16 @@ final class CatalogCheck
         $problems = 0;
         foreach ($components as $component) {
             $holds = [];
+            $classesHold = [];
             foreach ($covered as $version) {
-                $holds[$version['major']] = self::describesTheSame($component, $sources, $version, $newest, $checkouts);
+                $sourced = self::isSourcedOn($component, $sources, $version, $checkouts);
+                $major = $version['major'];
+                $holds[$major] = $sourced && self::writesEvery(self::contractOf($component), $sources, $major, $newest);
+                $classesHold[$major] = $sourced && self::writesEvery(self::classesOf($component), $sources, $major, $newest);
             }
 
-            $found = self::derivedSince($holds);
-            $recorded = isset($component['since']) ? (int) $component['since'] : null;
-            if ($found !== $recorded) {
-                $output->writeln(sprintf(
-                    '  %s: records %s, holds %s',
-                    $component['name'],
-                    $recorded === null ? 'no binding' : 'since v' . $recorded,
-                    $found === null ? 'on every covered version' : 'from v' . $found,
-                ));
-                ++$problems;
-            }
+            $problems += self::reportBinding($output, $component, 'since', self::derivedSince($holds));
+            $problems += self::reportBinding($output, $component, 'classesSince', self::derivedSince($classesHold));
         }
         $output->writeln(sprintf('  %d components against %s', count($components), implode(', ', array_column($covered, 'branch'))));
         $output->writeln('');
@@ -396,44 +396,99 @@ final class CatalogCheck
     }
 
     /**
+     * One derived range against the one the entry records.
+     *
+     * @param array<string, mixed> $component
+     */
+    private static function reportBinding(OutputInterface $output, array $component, string $field, ?int $found): int
+    {
+        $recorded = isset($component[$field]) ? (int) $component[$field] : null;
+        if ($found === $recorded) {
+            return 0;
+        }
+
+        $output->writeln(sprintf(
+            '  %s: records %s%s, holds %s',
+            $component['name'],
+            $recorded === null ? 'no binding' : 'since v' . $recorded,
+            $field === 'since' ? '' : ' for its class list',
+            $found === null ? 'on every covered version' : 'from v' . $found,
+        ));
+
+        return 1;
+    }
+
+    /**
+     * Whether the sources an entry was read off are on this version at all: its
+     * Sass partials, or — for a custom element, which has none — the TypeScript
+     * that defines its tag.
+     *
      * @param array<string, mixed> $component
      * @param array<int, array{scss: string, ts: string}> $sources
      * @param array{major: int, branch: string, status: string} $version
      */
-    private static function describesTheSame(array $component, array $sources, array $version, int $newest, string $checkouts): bool
+    private static function isSourcedOn(array $component, array $sources, array $version, string $checkouts): bool
     {
-        $major = $version['major'];
         foreach ($component['sassPaths'] ?? [] as $path) {
             if (!file_exists($checkouts . '/' . $version['branch'] . '/' . $path)) {
                 return false;
             }
         }
 
-        // An entry with no Sass source is a custom element, and what it is called
-        // is in the TypeScript that defines it rather than in any stylesheet.
-        if (($component['sassPaths'] ?? []) === []
-            && !self::carries($sources[$major]['ts'], (string) $component['rootClass'])
-        ) {
-            return false;
-        }
+        return ($component['sassPaths'] ?? []) !== []
+            || self::carries($sources[$version['major']]['ts'], (string) $component['rootClass']);
+    }
 
-        $named = array_merge(
-            $component['customProperties'] ?? [],
-            $component['variants'] ?? [],
-            $component['modifiers'] ?? [],
-            $component['subComponents'] ?? [],
-        );
+    /**
+     * Whether this version's Sass writes every name the newest covered version
+     * writes.
+     *
+     * Only what the newest covered version actually writes is asked about. A
+     * Bootstrap class the core never spells out — btn-secondary comes from a state
+     * map loop — is absent on every version and says nothing about which ones an
+     * entry holds on.
+     *
+     * @param array<int, string> $named
+     * @param array<int, array{scss: string, ts: string}> $sources
+     */
+    private static function writesEvery(array $named, array $sources, int $major, int $newest): bool
+    {
         foreach ($named as $token) {
-            // Only what the newest covered version actually writes in its Sass. A
-            // Bootstrap class the core never spells out — btn-secondary comes from
-            // a state map loop — is absent on every version and says nothing about
-            // which ones this entry holds on.
             if (self::carries($sources[$newest]['scss'], $token) && !self::carries($sources[$major]['scss'], $token)) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Everything an entry describes, which is what a caller pastes: the custom
+     * properties beside the classes.
+     *
+     * @param array<string, mixed> $component
+     * @return array<int, string>
+     */
+    private static function contractOf(array $component): array
+    {
+        return array_merge($component['customProperties'] ?? [], self::classesOf($component));
+    }
+
+    /**
+     * The class names an entry hands over, root class included — a class-shaped
+     * query can name that one too.
+     *
+     * @param array<string, mixed> $component
+     * @return array<int, string>
+     */
+    private static function classesOf(array $component): array
+    {
+        return array_merge(
+            [(string) $component['rootClass']],
+            $component['variants'] ?? [],
+            $component['modifiers'] ?? [],
+            $component['subComponents'] ?? [],
+        );
     }
 
     private static function carries(string $haystack, string $token): bool

@@ -54,7 +54,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_alert.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "avatar",
@@ -154,7 +155,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_badges.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "breadcrumb",
@@ -195,7 +197,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_breadcrumb.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "button",
@@ -258,7 +261,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_buttons.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "button-group",
@@ -296,7 +300,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_button-group.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "callout",
@@ -349,7 +354,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_callout.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "card",
@@ -463,7 +469,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_dropdown.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "dropzone",
@@ -516,7 +523,8 @@
       "file upload",
       "upload"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "form-check",
@@ -567,7 +575,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/forms/_form-check.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "infobox",
@@ -653,7 +662,8 @@
       "Build/Sources/Sass/component/forms/_form-text.scss",
       "Build/Sources/Sass/component/forms/_input-group.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "list-group",
@@ -699,7 +709,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_list-group.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "modal",
@@ -756,7 +767,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_modal.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "module",
@@ -822,7 +834,8 @@
       "module layout",
       "backend module"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "nav",
@@ -871,7 +884,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_nav.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "note",
@@ -933,7 +947,8 @@
       "annotation",
       "memo"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "pagination",
@@ -1041,7 +1056,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_panel.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 13
   },
   {
     "name": "popover",
@@ -1075,7 +1091,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_popover.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "progress-bar",
@@ -1104,7 +1121,8 @@
       "loading"
     ],
     "sassPaths": [],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "recordsearchbox",
@@ -1195,7 +1213,8 @@
       "loading",
       "indicator"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "table",
@@ -1249,7 +1268,8 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_table.scss"
     ],
-    "since": 14
+    "since": 14,
+    "classesSince": 13
   },
   {
     "name": "tree",
@@ -1298,6 +1318,7 @@
     "sassPaths": [
       "Build/Sources/Sass/component/_tree.scss"
     ],
-    "since": 13
+    "since": 13,
+    "classesSince": 13
   }
 ]

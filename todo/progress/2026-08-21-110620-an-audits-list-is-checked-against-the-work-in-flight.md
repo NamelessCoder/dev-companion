@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094341-nothing-covers-checking-audit-findings-against.md, R-SKL-025, D-SKL-068
 **Priority:** normal
+**Branch:** todo/an-audits-list-is-checked-against-the-work-in-flight
+**Claimed:** 2026-08-21
 
 Judged as a gap in the shape rather than in the knowledge: the skill owns the
 gate where a list is agreed and asks nothing about what the repository already

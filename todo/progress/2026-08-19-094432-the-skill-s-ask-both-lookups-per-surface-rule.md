@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094432-the-skill-s-ask-both-lookups-per-surface-rule.md
 **Priority:** low
+**Branch:** todo/the-skill-s-ask-both-lookups-per-surface-rule
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

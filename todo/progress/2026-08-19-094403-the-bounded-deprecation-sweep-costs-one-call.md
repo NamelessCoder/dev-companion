@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094403-the-bounded-deprecation-sweep-costs-one-call.md
 **Priority:** normal
+**Branch:** todo/the-bounded-deprecation-sweep-costs-one-call
+**Claimed:** 2026-08-21
 
 Judged on 2026-08-21 as the ladder's step 1b and written up in `D-ANS-093`: the
 sweep of one major is one call `typo3_changelog_lookup` cannot return, because

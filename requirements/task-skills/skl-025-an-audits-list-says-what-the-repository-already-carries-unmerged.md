@@ -1,6 +1,6 @@
 ---
 id: R-SKL-025
-status: open
+status: held
 restsOn: [D-SKL-068]
 ---
 
@@ -36,6 +36,9 @@ defects the audit had not found at all.
 
 ## Held by
 
-Nothing. The step is not written: `typo3-extension-health` goes from writing the
-list to showing it with no question in between, and no test reads the skill for
-one.
+- `SkillTest::anAuditsListSaysWhatTheRepositoryAlreadyCarriesUnmerged`
+
+The step is step 6 of `typo3-extension-health`, between writing the list and
+showing it. The assertion reads it for its position, for the three surfaces, for
+the one answer per item, and for the method under it — including the sentence
+that says the empty diff is the only reading the command settles.

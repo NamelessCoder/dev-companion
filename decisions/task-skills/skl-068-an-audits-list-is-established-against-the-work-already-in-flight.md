@@ -95,3 +95,36 @@ nothing between writing the list and showing it asks the question.
 - The same omission is reported next from `typo3-core-patch-review` or
   `typo3-extension-patch-review`. Then the rule belongs in `skills/base.md`,
   where every workflow reads it, rather than in the one skill that was asked.
+
+## Since then
+
+The step is written, as step 6, and everything the **Evidence** above numbers
+from 6 up has moved one down with it. `R-SKL-025` names the assertion that reads
+it.
+
+The method was measured before it was written, on 2026-08-21, against a fixture
+repository carrying an outstanding branch, a squash-merged one, a rebase-merged
+one whose commit is a different object, a partly landed one, and two where the
+base edited the branch's own file afterwards — and against this repository's own
+merged and unmerged branches. The run's report holds: `git cherry` calls the
+squash-merged branch's two commits outstanding, and an unrestricted two-dot diff
+against the base is dominated by the files the branch is behind on. The two-dot
+diff restricted to the files the branch touches answers both of those correctly,
+and the file list is taken with `git diff --name-only <base>...<branch>`.
+
+**What the run did not report is that only its empty answer settles anything.**
+The restricted diff is symmetric, so a branch whose fix is already in the base
+and one of whose files the base edited afterwards produces exactly the diff an
+outstanding branch produces — measured twice, once on a rebase-merged branch and
+once on a cherry-picked one. So the skill states the empty reading as the
+mechanical half and sends the non-empty one back to the finding. It also states
+that an empty file list is the answer already: run with no pathspec the second
+command compares the whole tree, which is a large diff reading as outstanding
+work.
+
+`gh` is not assumed. It is a separate installation, it needs authentication, and
+it answers only where the remote is GitHub — three conditions none of which a
+skill in somebody else's project can check for the reader. What it buys is the
+pull request opened from a fork, which stands in no branch listing; the branches
+and the release lines are git's, so the git half is the floor and the forge half
+is asked of the maintainer where the tool does not answer.

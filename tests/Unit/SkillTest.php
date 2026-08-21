@@ -3287,6 +3287,64 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * `R-SKL-025`. A v14 release audit mapped 23 open pull requests against its
+     * 17 items and told the maintainer that item 2 was untouched; thirteen
+     * branches had been pushed without a pull request, and one of them carried
+     * item 2 already fixed. The list is the thing that gets agreed, so the
+     * answer sits on the item and before it is shown.
+     */
+    #[Test]
+    public function anAuditsListSaysWhatTheRepositoryAlreadyCarriesUnmerged(): void
+    {
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
+        );
+        $flat = self::flat($skill);
+
+        $write = strpos($skill, 'Write one item per finding');
+        $flight = strpos($skill, 'Establish what the repository already carries against each item');
+        $show = strpos($skill, 'Show that list whole');
+        self::assertNotFalse($flight, 'the conformance skill never asks what is already in flight');
+        self::assertGreaterThan((int) $write, $flight, 'the question is asked before the list it annotates exists');
+        self::assertLessThan((int) $show, $flight, 'the list is shown before what is in flight against it is known');
+
+        // The surface, because the obvious reading is a third of it. The branch
+        // with no pull request is the one that was missed.
+        self::assertStringContainsString('wider than the open pull requests', $flat);
+        self::assertStringContainsString('branches pushed without one, and the maintained release lines', $flat);
+
+        // One answer per item, beside the state step 5 already gives it.
+        foreach (['**untouched**', '**carried**', '**colliding**'] as $state) {
+            self::assertStringContainsString($state, $skill, 'the item cannot come back ' . $state);
+        }
+
+        // The method, measured on 2026-08-21 against a fixture carrying a
+        // squash-merged, a rebase-merged and a partly landed branch. Only the
+        // empty answer settles anything: a branch whose fix landed and whose
+        // files the base edited afterwards diffs exactly like an outstanding
+        // one, which is the reading the run that reported this got to in four
+        // attempts and the next one would repeat.
+        self::assertStringContainsString('git diff --name-only <base>...<branch>', $skill);
+        self::assertStringContainsString('git diff <base> <branch> -- <those files>', $skill);
+        self::assertStringContainsString('the base already holds what the branch has in those files', $flat);
+        self::assertStringContainsString('Non-empty is not the opposite of that', $flat);
+        self::assertStringContainsString(
+            '`git cherry` compares patch ids and calls a squash-merged branch fully outstanding',
+            $flat,
+        );
+
+        // The forge half is not assumable, and the git half does not stand in
+        // for it: a pull request from a fork is in no branch listing.
+        self::assertStringContainsString('reachable only through the forge', $flat);
+        self::assertStringContainsString('Assume none of the three', $flat);
+        self::assertStringContainsString('say the pull requests were not read and ask the maintainer', $flat);
+
+        // And an item a branch claims is not thereby off the list.
+        self::assertStringContainsString('An unmerged branch holds a claim about the finding rather than the fix', $flat);
+        self::assertStringContainsString('*What a dropped candidate owes* is', $flat);
+    }
+
     #[Test]
     public function theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared(): void
     {

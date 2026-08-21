@@ -126,7 +126,7 @@ to a file only where the caller asks for one, at a path outside the checkout
 being assessed.
 
 **A request that asked for a review ends here.** Report, name the owning
-workflow per finding as step 9 says, and stop. What asks for the rest is an
+workflow per finding as step 10 says, and stop. What asks for the rest is an
 instruction to change the package — "fix it", "put that right", "do the first
 three" — and it arrives after the report, which is where a review is being left.
 **A question about a finding is not that instruction.** "Is that really
@@ -145,16 +145,52 @@ audit told not to change files runs them and reports what they printed.
    workflow that owns it, and a state. A finding the report left open, and a
    surface it reported unassessed, are items too: their work is establishing
    what the audit could not.
-6. Show that list whole and let the maintainer cut items, reorder them or stop,
+6. Establish what the repository already carries against each item, and write it
+   on the item before the list is shown. A finding already fixed on a branch
+   nobody merged reads on the list exactly like one nothing has touched, and the
+   maintainer is then the only party who can tell them apart. The surface is
+   wider than the open pull requests: branches pushed without one, and the
+   maintained release lines. The branch with no pull request is the one that
+   gets missed, and it is where a maintainer's own unfinished work sits. What
+   the item carries beside its own state is one of three: **untouched**,
+   **carried** by a named branch or pull request, or **colliding** with an
+   unmerged change that reaches those places without settling the finding.
+7. Show that list whole and let the maintainer cut items, reorder them or stop,
    before a single change is made. That is what the whole order exists for, and
    it is the one step nothing downstream recovers. Do not begin the work while
    the list is being shown: a list arriving together with the changes it
    produced is one nobody had the chance to disagree with.
-7. Keep the list in the session rather than in the repository. A worklist
+8. Keep the list in the session rather than in the repository. A worklist
     committed into somebody's history is a file nobody asked for, in a project
     this workflow is a guest in, and it has to be taken out again afterwards. So
     each item's state is reported as the work goes, and what the history keeps
     is the commits the items produced.
+
+What answers step 6 is git, per branch, against the base that branch targets
+rather than the one the audit ran on, and after a `git fetch --prune` — the
+remote-tracking branches otherwise answer for a state that has moved.
+`git diff --name-only <base>...<branch>` names the files the branch touches, and
+a branch that names none holds nothing the base does not already have. Then
+`git diff <base> <branch> -- <those files>`, whose empty answer is the one
+reading it settles: **the base already holds what the branch has in those
+files**. Non-empty is not the opposite of that, which is where this gets
+mis-read — a fix that landed and a file the base edited afterwards produce the
+same non-empty diff — so read it against the finding rather than counting it.
+Two shortcuts do not answer this at all: `git cherry` compares patch ids and
+calls a squash-merged branch fully outstanding, and an unrestricted two-dot diff
+reports how far behind the branch is.
+
+The branch listing covers the pull requests opened from the repository itself,
+and one opened from a fork is reachable only through the forge. That reading is
+`gh pr list --json number,title,headRefName,files`, where the remote is GitHub
+and the tool is installed and authenticated. Assume none of the three: where it
+does not answer, say the pull requests were not read and ask the maintainer,
+rather than reporting the branches as the whole surface.
+
+An item found already carried is not thereby dropped. An unmerged branch holds a
+claim about the finding rather than the fix, so it is read against the finding
+the way the checkout was, and the checklist's *What a dropped candidate owes* is
+the bar it has to clear before the item leaves the list.
 
 Where the request arrives carrying a report from an earlier session, read it
 whole rather than running the audit again, and say which of the two the list was
@@ -163,22 +199,22 @@ it stood then.
 
 ## The list is worked off item by item
 
-8. Take the items in the list's order, grouped by the workflow that owns them.
+9. Take the items in the list's order, grouped by the workflow that owns them.
     One activation covering that owner's items costs less than one per finding,
     and the owner is what decides how its own area is changed.
-9. **Invoke the skill that owns them** and carry across only the scope and the
+10. **Invoke the skill that owns them** and carry across only the scope and the
     verified behaviour it needs: the finding, the evidence under it, the paths.
     Stop before editing files another owner has — the crossing is the transition
     itself, not a detail of the item. Which workflow that is is named in the
     report whether or not fixes were requested, because a reader deciding what
     to do next needs it as much as a session that was told to do it.
-10. Where an item has no owning workflow, it is worked here only where the
+11. Where an item has no owning workflow, it is worked here only where the
     project's own suite, linter or static analysis proves the change: the
     change, the check that covers it, and nothing wider than the finding. An
     item nothing here can prove goes back unassigned in the closing report
     instead. A finding no workflow owns and no check covers is a hole in the
     map, and changing it on judgement is what hides the hole.
-11. Settle where the change lands before the first commit: which branch these
+12. Settle where the change lands before the first commit: which branch these
     commits belong on, whether the pull request is squashed, and which released
     lines the fix is carried to. That is the repository's own policy and nothing
     here reads it. It is asked of the maintainer, before a branch is pushed and
@@ -187,7 +223,7 @@ it stood then.
     What the core does — a fix on the main branch, cherry-picked down — is the
     core's own process and the default nowhere else. Ask once and work from the
     answer, keeping it in the session the way the list is kept.
-12. Commit per item, or per group of items in one owner's area, and say which
+13. Commit per item, or per group of items in one owner's area, and say which
     item that commit closed — the message from `typo3_commit_message_guide` with
     `workflow="project"`. A session that ends halfway is read out of the log,
     which is why the state belongs in the commits rather than in the list alone,
@@ -196,12 +232,12 @@ it stood then.
 
 ## What closes it
 
-13. Re-run the audit above on the worked list rather than re-reading the files
+14. Re-run the audit above on the worked list rather than re-reading the files
     it changed: a file that reads correctly can still be rewritten by the
     environment that owns it, and the difference only shows once that
     environment runs again. Work that grades itself off its own diff has no
     evidence the finding is gone.
-14. Report what is left: the items still open, the items dropped with what
+15. Report what is left: the items still open, the items dropped with what
     dropped them, the ones sent back unassigned, and every finding the audit
     reported as open or unassessed that this work did not settle. A finished
     list and an abandoned one read alike in a summary.

@@ -31,7 +31,7 @@ when it is added.
 - [`R-SKL-022`][R-SKL-022] — A review surface names the lookup that can answer it · held
 - [`R-SKL-023`][R-SKL-023] — A skill whose product is a report says the report is copyable markdown · held
 - [`R-SKL-024`][R-SKL-024] — A build step a guide answers names the call that fetches it · held
-- [`R-SKL-025`][R-SKL-025] — An audit's list says what the repository already carries unmerged · **open**
+- [`R-SKL-025`][R-SKL-025] — An audit's list says what the repository already carries unmerged · held
 - [`R-SKL-026`][R-SKL-026] — A runtime lookup a step names says what it adds after the extension answer · **open**
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md

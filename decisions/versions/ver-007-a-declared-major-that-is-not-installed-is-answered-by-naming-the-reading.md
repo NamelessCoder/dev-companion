@@ -127,3 +127,11 @@ announces it, a `routing` entry from writing against a core API under a
 constraint the installation does not cover, and the `hints:` crossing to
 `extension-repository-layout`, which keeps the policy the page hands back to.
 The `doesNotCover` entry on PHP source as code is untouched.
+
+A day later a dual-major audit asked the page's question of every deprecation a
+sweep returned and never reached it (`feedback/2026-08-19-094221`). None of the
+three routes covers a session that is reading rather than writing, and the
+section *What the Changelog Settles and What It Does Not* is where that audit
+would have stopped. The first **Wrong if** is therefore not what happened: the
+procedure was not followed and failed, it was not delivered. `D-VER-009` carries
+that judgement and the call that answers the sweep's half of the question.

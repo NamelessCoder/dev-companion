@@ -8,6 +8,7 @@ in.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-VER-009`][D-VER-009] — A deprecation's migration target is asked for by its own issue number · 2026-08-21
 - [`D-VER-006`][D-VER-006] — A narrowed statement is split before it is bound · 2026-08-18 · confirmed
 - [`D-VER-007`][D-VER-007] — A declared major that is not installed is answered by naming the reading that settles it · 2026-08-18
 - [`D-VER-008`][D-VER-008] — A declared major that is not installed is proved on a second installation of its own · 2026-08-18 · confirmed
@@ -16,6 +17,7 @@ one is added.
 - [`D-VER-003`][D-VER-003] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · confirmed
 - [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
 
+[D-VER-009]: ver-009-a-deprecations-migration-target-is-asked-for-by-its-own-issue-number.md
 [D-VER-006]: ver-006-a-narrowed-statement-is-split-before-it-is-bound.md
 [D-VER-007]: ver-007-a-declared-major-that-is-not-installed-is-answered-by-naming-the-reading.md
 [D-VER-008]: ver-008-a-declared-major-that-is-not-installed-is-proved-on-a-second-installation-of-its-own.md

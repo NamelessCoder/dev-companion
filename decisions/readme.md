@@ -558,6 +558,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain · 2026-08-21
 - [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
 - [`D-SKL-065`][D-SKL-065] — A defect reported by its symptom is routed to the workflow that owns the cause · 2026-08-19
 - [`D-SKL-066`][D-SKL-066] — Documenting a package for its readers is an intent of its own · 2026-08-19
@@ -622,6 +623,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
+[D-SKL-067]: task-skills/skl-067-maintaining-a-packages-asset-build-earns-a-task-skill-and-the-typo3-half-is-the-domain.md
 [D-SKL-064]: task-skills/skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md
 [D-SKL-065]: task-skills/skl-065-a-defect-reported-by-its-symptom-is-routed-to-the-workflow-that-owns-the-cause.md
 [D-SKL-066]: task-skills/skl-066-documenting-a-package-for-its-readers-is-an-intent-of-its-own.md

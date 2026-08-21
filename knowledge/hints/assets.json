@@ -90,7 +90,13 @@
       ".scss",
       ".ts",
       "sass build",
-      "typescript build"
+      "typescript build",
+      "npm",
+      "package.json",
+      "webpack",
+      "vite",
+      "build artefacts",
+      "rebuild the assets"
     ],
     "hints": [
       "An extension owns its asset source, build tool and generated output; installing it into TYPO3 does not attach its Sass or TypeScript to the core's Build/Sources pipelines. Put only browser-consumable output below Resources/Public/ and keep the source where the extension's own package scripts name it.",

@@ -72,7 +72,9 @@ these decided a step of the draft:
 3. The publishing commit, and all of it in that one commit: delete the
    `metadata` declaration, write the intent that routes to it in
    `knowledge/task-intents.json`, and name the workflow in
-   `knowledge/server-scope.json`, or `ScopeTest` fails.
+   `knowledge/server-scope.json`, or `ScopeTest` fails. That commit also
+   archives `feedback/2026-08-19-090231`, whose entry-point half this workflow
+   is the answer to and whose card waits beside this one.
 4. The listing budget, which is not there. Measured on 2026-08-21: the thirteen
    published descriptions cost 3966 characters against the 3970 ceiling in
    `SkillTest`, and this description costs 462 more. So publishing means either

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-21-074351-the-viewhelpers-an-installation-has-are-not.md
 **Priority:** low
+**Branch:** todo/the-viewhelpers-an-installation-has-are-not
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

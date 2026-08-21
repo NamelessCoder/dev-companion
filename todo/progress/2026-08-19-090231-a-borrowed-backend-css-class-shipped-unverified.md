@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090231-a-borrowed-backend-css-class-shipped-unverified.md
 **Priority:** normal
+**Branch:** todo/a-borrowed-backend-css-class-shipped-unverified
+**Claimed:** 2026-08-21
 
 The catalog half is built and settled. `classesSince` is derived on every entry,
 `coveredClasses` answers a class the query named outright on a target its entry

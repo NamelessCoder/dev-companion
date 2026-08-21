@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094248-typo3-test-run-guide-stayed-shut-through-eight.md
 **Priority:** low
+**Branch:** todo/typo3-test-run-guide-stayed-shut-through-eight
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

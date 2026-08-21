@@ -31,6 +31,7 @@ at all where it cannot be reached.
 :doc:`typo3_backend_module_lookup <tools/typo3_backend_module_lookup>`,
 :doc:`typo3_configuration_lookup <tools/typo3_configuration_lookup>`,
 :doc:`typo3_extension_describe <tools/typo3_extension_describe>`,
+:doc:`typo3_flexform_lookup <tools/typo3_flexform_lookup>`,
 :doc:`typo3_fluid_namespace_list <tools/typo3_fluid_namespace_list>`,
 :doc:`typo3_icon_lookup <tools/typo3_icon_lookup>`,
 :doc:`typo3_label_lookup <tools/typo3_label_lookup>`,

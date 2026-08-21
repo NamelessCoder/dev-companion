@@ -249,6 +249,17 @@ final class ToolCalls
             'configuration' => ['typo3_configuration_lookup', ['path' => 'SYS/fluid']],
             'schema: one table' => ['typo3_schema_lookup', ['table' => 'tt_content']],
             'schema: every table' => ['typo3_schema_lookup', []],
+            // The record is what decides which structure applies, so the two
+            // calls are one with it and one about a column that is not flex.
+            'flexform: the structure a content element resolves to' => ['typo3_flexform_lookup', [
+                'table' => 'tt_content',
+                'field' => 'pi_flexform',
+                'record' => ['CType' => 'acme_events_teaser'],
+            ]],
+            'flexform: a column that is not one' => ['typo3_flexform_lookup', [
+                'table' => 'tt_content',
+                'field' => 'bodytext',
+            ]],
             'changelog: hit' => ['typo3_changelog_lookup', ['query' => 'ext_tables.php']],
             'changelog: swept by tag' => ['typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'FullyScanned']],
             'changelog: miss' => ['typo3_changelog_lookup', ['query' => 'quantumflux']],

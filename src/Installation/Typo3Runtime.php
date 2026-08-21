@@ -46,8 +46,13 @@ final class Typo3Runtime
     /** @var array{state: string, reason: string, topics: array<string, mixed>}|null */
     private static ?array $answer = null;
 
-    /** The path the `configuration` topic is read at; empty means it is not read. */
-    private static string $configurationPath = '';
+    /**
+     * What the topics that take an argument were asked with; empty means none
+     * of them is read at all.
+     *
+     * @var array<string, mixed>
+     */
+    private static array $parameters = [];
 
     /**
      * What the running installation reports, or why it did not.
@@ -86,25 +91,40 @@ final class Typo3Runtime
      * One path out of TYPO3_CONF_VARS as the installation has it, or null where
      * there was no full reading to take it from.
      *
-     * The one topic the probe does not read unconditionally, because the whole
-     * of TYPO3_CONF_VARS is around 50 kB of JSON before an extension has added
-     * to it and every other reading would carry it for nothing. So the path is
-     * substituted into the payload, and a reading taken before this was asked
-     * does not carry the topic — which is what the discarded reading below is
-     * about, rather than any order the callers have to keep.
+     * Asked for rather than read with everything else, because the whole of
+     * TYPO3_CONF_VARS is around 50 kB of JSON before an extension has added to
+     * it and every other reading would carry it for nothing.
      *
      * @return array{found: bool, value: mixed}|array{unavailable: string}|null
      */
     public static function configuration(string $path): ?array
     {
-        if (self::$configurationPath !== $path) {
-            self::$configurationPath = $path;
-            self::$answer = null;
-        }
+        /** @var array{found: bool, value: mixed}|array{unavailable: string}|null $read */
+        $read = self::asked('configuration', ['configurationPath' => $path]);
 
-        $topic = self::topic('configuration');
+        return $read;
+    }
 
-        return is_array($topic) ? $topic : null;
+    /**
+     * What one `type=flex` column of this installation resolves to, or null
+     * where there was no full reading to take it from.
+     *
+     * Asked for, because the resolution costs the events, the file reads and
+     * the preparation behind one column, and no reading taken for anything else
+     * has a use for it.
+     *
+     * @param array<string, mixed> $record the values the row is emulated from,
+     *     since which structure it is can depend on them and nothing here loads
+     *     one
+     * @return array<string, mixed>|null
+     */
+    public static function flexForm(string $table, string $field, array $record): ?array
+    {
+        return self::asked('flexForm', ['flexForm' => [
+            'table' => $table,
+            'field' => $field,
+            'record' => $record,
+        ]]);
     }
 
     /** Why there is no full reading. Empty when there is one. */
@@ -125,7 +145,31 @@ final class Typo3Runtime
     public static function forget(): void
     {
         self::$answer = null;
-        self::$configurationPath = '';
+        self::$parameters = [];
+    }
+
+    /**
+     * One topic the probe reads only where a caller asked for it, with what it
+     * was asked with.
+     *
+     * A reading taken before this was asked does not carry the topic, so asking
+     * discards it and takes another. That is the whole of the ordering: no
+     * caller has to ask its parameterized topic first, and two of them in one
+     * call cost two boots rather than a wrong answer.
+     *
+     * @param array<string, mixed> $parameters
+     * @return array<string, mixed>|null
+     */
+    private static function asked(string $topic, array $parameters): ?array
+    {
+        if (self::$parameters !== $parameters) {
+            self::$parameters = $parameters;
+            self::$answer = null;
+        }
+
+        $read = self::topic($topic);
+
+        return is_array($read) ? $read : null;
     }
 
     /**
@@ -174,7 +218,8 @@ final class Typo3Runtime
     }
 
     /**
-     * The probe with the autoloader of this installation written into it.
+     * The probe with the autoloader of this installation and what this call
+     * asked for written into it.
      *
      * The opening tag goes because the body is delivered through `php -r`,
      * which supplies its own.
@@ -185,10 +230,10 @@ final class Typo3Runtime
         $probe = (string) preg_replace('/^<\?php\s/', '', $probe, 1);
 
         return str_replace(
-            ["'vendor/autoload.php'", '$configurationPath = \'\''],
+            ["'vendor/autoload.php'", '$parameters = []'],
             [
                 var_export(Typo3Cli::autoloader($root), true),
-                '$configurationPath = ' . var_export(self::$configurationPath, true),
+                '$parameters = ' . var_export(self::$parameters, true),
             ],
             $probe
         );

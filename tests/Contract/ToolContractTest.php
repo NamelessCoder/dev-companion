@@ -182,6 +182,7 @@ final class ToolContractTest extends TestCase
         'typo3_changelog_lookup' => ['query' => 'deprecation'],
         'typo3_fluid_namespace_list' => [],
         'typo3_schema_lookup' => ['table' => 'tt_content'],
+        'typo3_flexform_lookup' => ['table' => 'tt_content', 'field' => 'pi_flexform'],
         'typo3_project_describe' => [],
         'typo3_extension_describe' => ['extension' => 'news'],
     ];

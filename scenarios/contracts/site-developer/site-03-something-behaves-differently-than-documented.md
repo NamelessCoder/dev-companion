@@ -5,7 +5,7 @@
 `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
 `Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
 `ConfigurationLookupTest` in full,
-`Typo3RuntimeTest::theConfigurationTopicIsReadOnlyWhereAPathWasAsked`
+`Typo3RuntimeTest::aTopicWithAnArgumentIsReadOnlyWhereACallerAskedForIt`
 
 > Editors report that a field in one of our record forms is suddenly read-only,
 > and I cannot find where that comes from. Nothing in our own configuration does

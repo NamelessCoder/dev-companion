@@ -33,10 +33,14 @@ The order
    answers for two lines below that — ``D-ANS-077``. The effective configuration
    is the third: ``configuration:show`` arrived in TYPO3 14.2, so a console
    answer would leave 12.4 and 13.4 holding the console's own "command is not
-   defined" — ``D-ANS-052``. It is also the one topic the probe does not read
-   unconditionally, because the whole of ``TYPO3_CONF_VARS`` is around 50 kB of
-   JSON and every other reading would carry it for nothing; the path asked for
-   is substituted into the payload the way the autoloader is.
+   defined" — ``D-ANS-052``.
+
+   Two topics are read only where a caller asked for them, because each costs
+   what no other reading wants: the whole of ``TYPO3_CONF_VARS`` is around 50 kB
+   of JSON, and resolving one ``type=flex`` column runs four events, a file read
+   and the TCA preparation behind it. What they were asked with is substituted
+   into the payload the way the autoloader is, as one array; a reading taken
+   before is discarded, so no caller has to ask its topic first.
 3. **The files, where neither can be reached.** The registration files the
    packages ship, parsed and never included. Exact for everything declared,
    silent about everything else — and an answer that came from here says so.

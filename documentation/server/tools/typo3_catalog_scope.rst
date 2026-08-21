@@ -79,7 +79,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -111,7 +111,7 @@ Text:
     - Re-check with: `bin/cli catalog:paths /path/to/typo3-core-checkout`
 
     Scope
-    - components: The bundled fallback and curated search index for backend UI components, with markup, Sass source paths, and the TYPO3 majors each entry was verified on. When the target is the active installation, its backend CSS and JavaScript replace the class and custom-property contract, and an installed styleguide example replaces fallback markup where available. The index remains a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss means uncurated rather than outside the subject.
+    - components: The bundled fallback and curated search index for backend UI components, with markup, Sass source paths, the TYPO3 majors each entry was verified on, and the majors its class list alone was verified on. When the target is the active installation, its backend CSS and JavaScript replace the class and custom-property contract, and an installed styleguide example replaces fallback markup where available. The index remains a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss means uncurated rather than outside the subject.
     - systemExtensions: Every system extension of every covered TYPO3 line, read off one checkout per version: the extension key, the Composer package name to require it by, what it is for, and the majors that ship it. Complete rather than curated — `bin/cli catalog:check` re-derives it, so a release that adds or drops one is reported.
 
     Counts
@@ -136,7 +136,7 @@ Data:
         },
         "verifyCommand": "bin/cli catalog:paths /path/to/typo3-core-checkout",
         "scope": {
-            "components": "The bundled fallback and curated search index for backend UI components, with markup, Sass source paths, and the TYPO3 majors each entry was verified on. When the target is the active installation, its backend CSS and JavaScript replace the class and custom-property contract, and an installed styleguide example replaces fallback markup where available. The index remains a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss means uncurated rather than outside the subject.",
+            "components": "The bundled fallback and curated search index for backend UI components, with markup, Sass source paths, the TYPO3 majors each entry was verified on, and the majors its class list alone was verified on. When the target is the active installation, its backend CSS and JavaScript replace the class and custom-property contract, and an installed styleguide example replaces fallback markup where available. The index remains a curated subset of what the core itself files as a component: the Sass partials under Build/Sources/Sass/component/ and the custom elements under element/. A miss means uncurated rather than outside the subject.",
             "systemExtensions": "Every system extension of every covered TYPO3 line, read off one checkout per version: the extension key, the Composer package name to require it by, what it is for, and the majors that ship it. Complete rather than curated — `bin/cli catalog:check` re-derives it, so a release that adds or drops one is reported."
         },
         "counts": {

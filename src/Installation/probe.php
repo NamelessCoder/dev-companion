@@ -22,10 +22,10 @@ declare(strict_types=1);
  *   subprocess is started with the installation root as its working directory,
  *   and inside the container that same root is /var/www/html.
  *
- * The configuration path is substituted the same way, and is the one topic that
- * is not read unconditionally: TYPO3_CONF_VARS is around 50 kB of JSON before
- * an extension has added to it, which every reading would otherwise carry for
- * the sake of the one caller that asked about a path.
+ * What a caller asked for is substituted the same way, as one array. The topics
+ * that read it are the ones no other reading wants: TYPO3_CONF_VARS is around
+ * 50 kB of JSON before an extension has added to it, and a flex field costs a
+ * resolution nobody who asked about an icon has a use for.
  *
  * It prints one JSON object on stdout and nothing else. TYPO3's own output
  * buffer is discarded first, because an extension that echoes during boot would
@@ -37,9 +37,12 @@ try {
     // Replaced by Typo3Runtime before delivery; a literal so the file stays
     // valid PHP that can be linted and read on its own.
     $autoload = 'vendor/autoload.php';
-    // Empty unless a caller asked about one, and then the only reason this
-    // topic is read at all.
-    $configurationPath = '';
+    // What the call asked for, substituted the same way. Empty unless a caller
+    // asked a topic that takes an argument, and then the only reason that topic
+    // is read at all.
+    $parameters = [];
+    $configurationPath = (string) ($parameters['configurationPath'] ?? '');
+    $flexForm = is_array($parameters['flexForm'] ?? null) ? $parameters['flexForm'] : null;
     if (!is_file($autoload)) {
         $answer['reason'] = 'no autoloader at ' . $autoload . ' below ' . getcwd();
         throw new RuntimeException('', 1);
@@ -145,6 +148,166 @@ try {
         ];
     }
     $answer['topics']['contentElements'] = $contentElements;
+
+    // One type=flex column resolved the way FormEngine resolves it, which is
+    // the two calls TcaFlexPrepare makes and nothing else: the identifier, and
+    // the structure that identifier parses to. Everything between them is the
+    // installation's — the events a package listens to, the file a sheet is
+    // held in, the migration and the preparation — and none of it is in the
+    // file the TCA points at.
+    //
+    // The row is the caller's. FlexFormTools needs one to find the key with,
+    // and nothing here loads one.
+    //
+    // Read only where a caller asked, for the reason the configuration path is.
+    if ($flexForm !== null) {
+        $table = (string) ($flexForm['table'] ?? '');
+        $field = (string) ($flexForm['field'] ?? '');
+        $record = is_array($flexForm['record'] ?? null) ? $flexForm['record'] : [];
+        $tableTca = is_array($tca[$table] ?? null) ? $tca[$table] : null;
+        $columnTca = is_array($tableTca['columns'][$field] ?? null) ? $tableTca['columns'][$field] : null;
+        $configuration = is_array($columnTca['config'] ?? null) ? $columnTca['config'] : [];
+        $declared = $configuration['ds'] ?? null;
+
+        $flexColumns = [];
+        foreach ($tableTca['columns'] ?? [] as $column => $other) {
+            if (($other['config']['type'] ?? '') === 'flex') {
+                $flexColumns[] = (string) $column;
+            }
+        }
+
+        // What a caller can put in the record to reach another structure, read
+        // off the declaration in the shape this installation writes it in. An
+        // array of structures is keyed by the pointer fields; a single one is
+        // overridden per record type. Those are the two mechanisms the covered
+        // majors differ by, and the core's own resolution branches on the same
+        // shape rather than on a version.
+        $keys = [];
+        $pointerFields = [];
+        if (is_array($declared)) {
+            $keys = array_map('strval', array_keys($declared));
+            $pointerFields = array_values(array_filter(array_map(
+                'trim',
+                explode(',', (string) ($configuration['ds_pointerField'] ?? '')),
+            )));
+        } elseif (is_string($declared) && $declared !== '') {
+            $keys = ['default'];
+            foreach ($tableTca['types'] ?? [] as $type => $override) {
+                if (is_string($override['columnsOverrides'][$field]['config']['ds'] ?? null)) {
+                    $keys[] = (string) $type;
+                }
+            }
+        }
+
+        $topic = [
+            'table' => $table,
+            'field' => $field,
+            'tableFound' => $tableTca !== null,
+            'type' => (string) ($configuration['type'] ?? ''),
+            'flexFields' => $flexColumns,
+            'recordTypeField' => (string) ($tableTca['ctrl']['type'] ?? ''),
+            'keys' => array_values(array_unique($keys)),
+            'pointerFields' => $pointerFields,
+            'identifier' => '',
+            'decoded' => null,
+            'sheets' => [],
+            'failure' => '',
+        ];
+
+        // What a caller writing or reading a FlexForm needs of an element,
+        // rather than the prepared TCA of it: the same fields the backend form
+        // labels an input with, and not the rest of what the preparation left
+        // on it.
+        $summarize = static function (array $elements) use (&$summarize): array {
+            $fields = [];
+            foreach ($elements as $name => $element) {
+                if (!is_array($element)) {
+                    continue;
+                }
+                $config = is_array($element['config'] ?? null) ? $element['config'] : [];
+                $items = [];
+                foreach ($config['items'] ?? [] as $item) {
+                    if (is_array($item)) {
+                        $items[] = [
+                            'value' => (string) ($item['value'] ?? ($item[1] ?? '')),
+                            'label' => (string) ($item['label'] ?? ($item[0] ?? '')),
+                        ];
+                    }
+                }
+                // A section holds container types and each of those holds
+                // fields, which is the one nesting a data structure has.
+                $section = ($element['section'] ?? '') === '1';
+                $containers = [];
+                $inContainers = $section && is_array($element['el'] ?? null) ? $element['el'] : [];
+                foreach ($inContainers as $container => $inside) {
+                    $containers[] = [
+                        'container' => (string) $container,
+                        'title' => (string) ($inside['title'] ?? ''),
+                        'fields' => $summarize(is_array($inside['el'] ?? null) ? $inside['el'] : []),
+                    ];
+                }
+                $default = $config['default'] ?? null;
+                $fields[] = [
+                    'field' => (string) $name,
+                    // A field carries a label and a section carries a title,
+                    // which is the same line to a reader of the answer.
+                    'label' => (string) ($element['label'] ?? ($element['title'] ?? '')),
+                    'description' => (string) ($element['description'] ?? ''),
+                    'type' => $section ? 'section' : (string) ($config['type'] ?? ''),
+                    'renderType' => (string) ($config['renderType'] ?? ''),
+                    'required' => (bool) ($config['required'] ?? false),
+                    'default' => is_scalar($default) ? $default : null,
+                    'items' => $items,
+                    'containers' => $containers,
+                ];
+            }
+
+            return $fields;
+        };
+
+        // In a try of its own, and its failure is the answer rather than a
+        // missing topic: an empty ds, a column that is not type=flex and a
+        // record type nothing is registered for are all reported by throwing,
+        // and what they throw is what the caller has to read.
+        try {
+            $tools = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class,
+            );
+            // The installation is asked what its own signature is rather than
+            // told from a version number. TYPO3 v14 resolves against a TcaSchema
+            // handed in and throws where it is null; v12 and v13 read the global
+            // TCA and have no such parameter.
+            $wantsSchema = (new ReflectionMethod($tools, 'getDataStructureIdentifier'))->getNumberOfParameters() > 4;
+            $schema = null;
+            if ($wantsSchema) {
+                $factory = $container->get(TYPO3\CMS\Core\Schema\TcaSchemaFactory::class);
+                $schema = $factory->has($table) ? $factory->get($table) : null;
+            }
+
+            $identifier = $wantsSchema
+                ? $tools->getDataStructureIdentifier($columnTca ?? [], $table, $field, $record, $schema)
+                : $tools->getDataStructureIdentifier($columnTca ?? [], $table, $field, $record);
+            $parsed = $wantsSchema
+                ? $tools->parseDataStructureByIdentifier($identifier, $schema)
+                : $tools->parseDataStructureByIdentifier($identifier);
+
+            $topic['identifier'] = (string) $identifier;
+            $topic['decoded'] = json_decode((string) $identifier, true);
+            foreach ($parsed['sheets'] ?? [] as $sheet => $definition) {
+                $root = is_array($definition['ROOT'] ?? null) ? $definition['ROOT'] : [];
+                $topic['sheets'][] = [
+                    'sheet' => (string) $sheet,
+                    'title' => (string) ($root['sheetTitle'] ?? ''),
+                    'description' => (string) ($root['sheetDescription'] ?? ''),
+                    'fields' => $summarize(is_array($root['el'] ?? null) ? $root['el'] : []),
+                ];
+            }
+        } catch (Throwable $failure) {
+            $topic['failure'] = get_class($failure) . ' (' . $failure->getCode() . '): ' . $failure->getMessage();
+        }
+
+        $answer['topics']['flexForm'] = $topic;
+    }
 
     // The columns TYPO3 adds to a table by itself, which is what an
     // ext_tables.sql may leave out. DefaultTcaSchema is handed one empty table

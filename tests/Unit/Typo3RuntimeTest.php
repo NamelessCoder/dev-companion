@@ -256,23 +256,44 @@ final class Typo3RuntimeTest extends TestCase
     }
 
     #[Test]
-    public function theConfigurationTopicIsReadOnlyWhereAPathWasAsked(): void
+    public function aTopicWithAnArgumentIsReadOnlyWhereACallerAskedForIt(): void
     {
         // What keeps the whole of TYPO3_CONF_VARS — around 50 kB of JSON on a
         // 13.4 before an extension has added to it, measured on 2026-08-18
         // against `.environments/e-site-13.4` — out of every reading taken for
-        // an icon or a module.
+        // an icon or a module, and the resolution of one flex column out of the
+        // same readings.
         $root = $this->installationWithAConsole();
-        Fixture::bootsInto($root, configuration: ['SYS' => ['devIPmask' => '10.0.0.1']]);
+        Fixture::bootsInto(
+            $root,
+            configuration: ['SYS' => ['devIPmask' => '10.0.0.1']],
+            tca: ['tt_content' => ['columns' => ['pi_flexform' => ['config' => [
+                'type' => 'flex',
+                'ds' => 'FILE:EXT:acme/Configuration/FlexForms/Default.xml',
+            ]]]]],
+            flexForm: ['structures' => ['default' => ['sheets' => ['sDEF' => ['ROOT' => ['el' => []]]]]]],
+        );
         $this->discover($root);
 
-        self::assertArrayNotHasKey('configuration', Typo3Runtime::ask()['topics']);
+        $topics = Typo3Runtime::ask()['topics'];
+        self::assertArrayNotHasKey('configuration', $topics);
+        self::assertArrayNotHasKey('flexForm', $topics);
+
         self::assertSame(
             ['found' => true, 'value' => '10.0.0.1'],
             Typo3Runtime::configuration('SYS/devIPmask'),
             'asking discards the reading that did not carry the path and takes another',
         );
         self::assertSame(['found' => false, 'value' => null], Typo3Runtime::configuration('SYS/nothingHere'));
+
+        // The second one is asked after the first, which is the ordering no
+        // caller has to keep: the reading taken for the path is discarded again
+        // rather than answered out of.
+        $flexForm = Typo3Runtime::flexForm('tt_content', 'pi_flexform', []);
+        self::assertIsArray($flexForm);
+        self::assertSame('', $flexForm['failure']);
+        self::assertSame(['default'], $flexForm['keys']);
+        self::assertNull(Typo3Runtime::topic('configuration'), 'the path went with the reading it was asked in');
     }
 
     /** @param array<string, mixed> $manifest */

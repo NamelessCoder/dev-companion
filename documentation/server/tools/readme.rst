@@ -123,6 +123,13 @@ at all in the state the machine is in.
         Leave feedback about a gap, wrong answer, or missing capability of this
         knowledge server.
 
+    .. card:: :doc:`typo3_flexform_lookup <typo3_flexform_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Resolve one TCA field of type=flex to the data structure the
+        installation would actually use.
+
     .. card:: :doc:`typo3_fluid_namespace_list <typo3_fluid_namespace_list>`
         :label: List
         :action: Open reference
@@ -249,6 +256,7 @@ at all in the state the machine is in.
     typo3_extension_describe
     typo3_feedback_list
     typo3_feedback_record
+    typo3_flexform_lookup
     typo3_fluid_namespace_list
     typo3_forge_lookup
     typo3_gerrit_lookup

@@ -66,6 +66,11 @@ final class Fixture
             self::CONTENT_ELEMENTS,
             modules: self::MODULES,
             labels: self::LABELS,
+            tca: self::FLEX_TCA,
+            flexForm: self::FLEX_FORM,
+            // The version this installation states it is, which is the stable
+            // line — so its FlexFormTools has the signature that line's has.
+            flexFormTakesTheSchema: true,
         );
 
         return $root;
@@ -92,6 +97,9 @@ final class Fixture
      * @param array<string, array<string, mixed>> $modules identifier => registration, in the shape the registry hands one back
      * @param array<string, string> $labels reference => what the installation's language service resolves it to
      * @param array<string, mixed> $configuration merged into TYPO3_CONF_VARS, which is what the configuration topic is read out of
+     * @param array<string, mixed> $tca merged over the TCA above, for the declarations a topic reads off a table
+     * @param array{pointer?: string, structures?: array<string, mixed>, schemaTables?: array<int, string>} $flexForm what its FlexFormTools answers: the column of the record the key is taken from, one parsed structure per key, and which tables its schema factory has where that is not every table with TCA
+     * @param bool $flexFormTakesTheSchema whether its FlexFormTools has the TYPO3 v14 signature, which wants a TcaSchema and throws without one
      */
     public static function bootsInto(
         string $root,
@@ -103,6 +111,9 @@ final class Fixture
         array $modules = [],
         array $labels = [],
         array $configuration = [],
+        array $tca = [],
+        array $flexForm = [],
+        bool $flexFormTakesTheSchema = false,
     ): void {
         $items = [];
         foreach ($contentElements as $value => [$label, $icon]) {
@@ -118,7 +129,36 @@ final class Fixture
             'modules' => $modules,
             'labels' => $labels,
             'configuration' => $configuration,
+            'tca' => $tca,
+            'flexForm' => $flexForm,
         ], true);
+
+        // TYPO3 v14 wants a TcaSchema handed to both calls and throws where it
+        // is null; v12 and v13 have no such parameter and read the global TCA.
+        // The probe reads which of the two it is off the signature, so the
+        // fixture has to have one signature or the other rather than a flag.
+        $schemaArgument = $flexFormTakesTheSchema ? ', $schema = null' : '';
+        $withoutSchema = $flexFormTakesTheSchema
+            ? 'if ($schema === null) { throw new \\RuntimeException('
+                . '\'Can not resolve default data structure without TCA.\', 1753182123); }'
+            : '';
+        // Declared only beside that signature, so a probe that asks for a
+        // schema where none is wanted reaches a class this installation does
+        // not have.
+        $schemaFactory = $flexFormTakesTheSchema ? <<<PHP
+            namespace TYPO3\\CMS\\Core\\Schema {
+                class TcaSchema {
+                    public function __construct(public string \$name) {}
+                }
+                class TcaSchemaFactory {
+                    public function has(string \$name): bool {
+                        \$declared = \$GLOBALS['FAKE']['flexForm']['schemaTables'] ?? null;
+                        return \$declared === null ? isset(\$GLOBALS['TCA'][\$name]) : in_array(\$name, \$declared, true);
+                    }
+                    public function get(string \$name): TcaSchema { return new TcaSchema(\$name); }
+                }
+            }
+            PHP : '';
 
         self::put($root . '/vendor/autoload.php', <<<PHP
             <?php
@@ -130,6 +170,7 @@ final class Fixture
                 foreach (\$GLOBALS['FAKE']['tables'] as \$table => \$title) {
                     \$GLOBALS['TCA'][\$table] = ['ctrl' => ['title' => \$title]];
                 }
+                \$GLOBALS['TCA'] = array_replace_recursive(\$GLOBALS['TCA'], \$GLOBALS['FAKE']['tca']);
                 \$GLOBALS['TYPO3_CONF_VARS'] = \$GLOBALS['FAKE']['configuration'];
                 \$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']
                     = \$GLOBALS['FAKE']['formDataGroups'];
@@ -314,6 +355,41 @@ final class Fixture
                     }
                 }
             }
+            {$schemaFactory}
+            namespace TYPO3\\CMS\\Core\\Configuration\\FlexForm {
+                // A spy with a canned answer, not a resolution. What the probe
+                // has to be held to is that it hands this installation the
+                // record it was given and reports what came back — TYPO3's own
+                // resolution is hundreds of lines across four events, and a
+                // second one written here is the thing the probe exists to
+                // avoid. What it does do is take the key out of the row, which
+                // is what shows the caller's values reaching the resolution.
+                class FlexFormTools {
+                    public function getDataStructureIdentifier(array \$fieldTca, string \$table, string \$field, array \$row{$schemaArgument}): string {
+                        {$withoutSchema}
+                        \$flex = \$GLOBALS['FAKE']['flexForm'];
+                        \$pointer = (string)(\$flex['pointer'] ?? '');
+                        \$key = \$pointer === '' ? 'default' : (string)(\$row[\$pointer] ?? 'default');
+                        if (!isset(\$flex['structures'][\$key])) {
+                            throw new \\RuntimeException(
+                                'TCA misconfiguration in table "' . \$table . '" field "' . \$field . '" config section:'
+                                . ' The field is either not configured as type="flex" or no valid data structure is defined.',
+                                1732198004
+                            );
+                        }
+                        return json_encode([
+                            'type' => 'tca',
+                            'tableName' => \$table,
+                            'fieldName' => \$field,
+                            'dataStructureKey' => \$key,
+                        ]);
+                    }
+                    public function parseDataStructureByIdentifier(string \$identifier{$schemaArgument}): array {
+                        \$key = (string)(json_decode(\$identifier, true)['dataStructureKey'] ?? '');
+                        return \$GLOBALS['FAKE']['flexForm']['structures'][\$key] ?? [];
+                    }
+                }
+            }
             namespace Fake {
                 class Container {
                     public function get(string \$id) {
@@ -478,6 +554,108 @@ final class Fixture
         'acme_events_teaser' => [
             'LLL:EXT:acme_events/Resources/Private/Language/locallang_db.xlf:CType.teaser',
             'acme-events-teaser',
+        ],
+    ];
+
+    /**
+     * The flex column the fixture's content element carries.
+     *
+     * Written in the shape the stable line uses, because that is the version
+     * this installation states it is: one `ds` string on the column and a
+     * record type overriding it through `columnsOverrides`. `Breaking-107047`
+     * removed the keyed `ds` array and `ds_pointerField` the two LTS lines
+     * still resolve by. `bodytext` is here so a call about a column that is not
+     * flex has one to name.
+     *
+     * @var array<string, mixed>
+     */
+    private const FLEX_TCA = [
+        'tt_content' => [
+            'ctrl' => ['type' => 'CType'],
+            'columns' => [
+                'bodytext' => [
+                    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext',
+                    'config' => ['type' => 'text'],
+                ],
+                'pi_flexform' => [
+                    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pi_flexform',
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'FILE:EXT:' . self::EXTENSION . '/Configuration/FlexForms/Default.xml',
+                    ],
+                ],
+            ],
+            'types' => [
+                'acme_events_teaser' => [
+                    'showitem' => 'CType, header, pi_flexform',
+                    'columnsOverrides' => [
+                        'pi_flexform' => ['config' => [
+                            'ds' => 'FILE:EXT:' . self::EXTENSION . '/Configuration/FlexForms/Teaser.xml',
+                        ]],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    /**
+     * What its FlexFormTools answers: the column the key is taken out of the
+     * record by, and one parsed structure per key.
+     *
+     * Parsed rather than declared. This stands where the installation does, and
+     * what an installation hands back is what its own migration, preparation
+     * and listeners have already been through.
+     *
+     * @var array{pointer: string, structures: array<string, mixed>}
+     */
+    private const FLEX_FORM = [
+        'pointer' => 'CType',
+        'structures' => [
+            'acme_events_teaser' => ['sheets' => ['sDEF' => ['ROOT' => [
+                'sheetTitle' => 'LLL:EXT:' . self::EXTENSION
+                    . '/Resources/Private/Language/locallang_db.xlf:flexform.teaser',
+                'type' => 'array',
+                'el' => [
+                    'settings.headline' => [
+                        'label' => 'LLL:EXT:' . self::EXTENSION
+                            . '/Resources/Private/Language/locallang_db.xlf:flexform.headline',
+                        'config' => ['type' => 'input', 'required' => true],
+                    ],
+                    'settings.layout' => [
+                        'label' => 'LLL:EXT:' . self::EXTENSION
+                            . '/Resources/Private/Language/locallang_db.xlf:flexform.layout',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'default' => 'wide',
+                            'items' => [
+                                ['label' => 'Wide', 'value' => 'wide'],
+                                ['label' => 'Narrow', 'value' => 'narrow'],
+                            ],
+                        ],
+                    ],
+                    'settings.slides' => [
+                        'type' => 'array',
+                        'section' => '1',
+                        'title' => 'LLL:EXT:' . self::EXTENSION
+                            . '/Resources/Private/Language/locallang_db.xlf:flexform.slides',
+                        'el' => [
+                            'slide' => [
+                                'type' => 'array',
+                                'title' => 'LLL:EXT:' . self::EXTENSION
+                                    . '/Resources/Private/Language/locallang_db.xlf:flexform.slide',
+                                'el' => [
+                                    'settings.slide.title' => [
+                                        'label' => 'LLL:EXT:' . self::EXTENSION
+                                            . '/Resources/Private/Language/locallang_db.xlf:flexform.slide.title',
+                                        'config' => ['type' => 'input'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]]]],
         ],
     ];
 

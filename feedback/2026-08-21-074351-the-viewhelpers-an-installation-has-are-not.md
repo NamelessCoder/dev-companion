@@ -10,11 +10,7 @@ tool: typo3_fluid_namespace_list
 
 ## Observation
 
-typo3_fluid_namespace_list answers which Fluid namespaces are globally registered, so a template knows which prefixes it may use undeclared. What it does not answer is what is in them: which ViewHelpers this installation actually has, what arguments each takes, which are required, and what the class says it is for. typo3_documentation_lookup reaches the official ViewHelper Reference, but that is the documented core set for a version rather than what is installed — a third-party ViewHelper is in neither answer.
-
-This is the same shape as typo3_icon_lookup and typo3_label_lookup, both of which exist because the identifier fails only at runtime and no bundled answer could be right for one installation. A ViewHelper argument name is exactly that: wrong, it throws when the template renders.
-
-The other implementation lists them by class and by namespace, resolves which registration wins where several PHP namespaces share one Fluid namespace, searches identifier, class and PHPdoc, and returns prepared argument definitions per ViewHelper.
+typo3_fluid_namespace_list answers which Fluid namespaces are globally registered, so a template knows which prefixes it may use undeclared. What it does not say is where the ViewHelpers behind a prefix are described: what arguments one takes, which of them are required, and what it is for. A ViewHelper argument name fails only at runtime — wrong, it throws when the template renders.
 
 ## Query
 
@@ -22,4 +18,14 @@ Task: compare this server against another TYPO3 MCP server. No failing call — 
 
 ## Suggestion
 
-Answer the installed ViewHelpers from the running installation: identifier, class, what it is for, and the argument definitions with names, types and which are required. Search by identifier, class or description, and validate a batch of identifiers the way typo3_icon_lookup validates icons — that is the call a session makes when it has just read a template. Where the console cannot be reached, the registered namespaces of the installed packages are the fallback, and the answer says what that leaves out.
+Say it in the hints a template task already reaches. fluid-viewhelpers is written for somebody authoring a ViewHelper, and fluid-templates routes an icon and a backend component but not an argument list. Neither says that a core ViewHelper's arguments come from the Fluid ViewHelper Reference through typo3_documentation_lookup, or that one outside the core is read from the class its identifier resolves to in the installed package.
+
+## What is left of this
+
+Trimmed on 2026-08-21. The tool this asked for is refused and the reading is in
+`D-ANS-003`: the argument list of a core ViewHelper comes back from the
+ViewHelper Reference in one call, and one outside the core is a class in the
+caller's own tree, which the namespace list already resolves the prefix half of.
+
+What is left is the routing above. Nothing in the corpus tells a session writing
+a template where either of those two lives.

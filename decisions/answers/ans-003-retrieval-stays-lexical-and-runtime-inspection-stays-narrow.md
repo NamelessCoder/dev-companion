@@ -278,3 +278,45 @@ say so. That and the completeness of the array are two statements on the
 `HintsTest::theCacheRegistryIsTheConfiguredArrayAndTheDefaultsThatFillIt`, and
 the feedback is archived with them. Read at `31f881a212`, `fccbd407d8`,
 `627949e9dd` and `3a9f0b5e3c`, where the defaulting is identical.
+
+## Confirmed on 2026-08-21
+
+The runtime half was read an eighth time and did not fire.
+`feedback/2026-08-21-074351-the-viewhelpers-an-installation-has-are-not` asks
+for the ViewHelpers of the running installation — identifier, class, what each
+one is for, and the argument definitions with their types and which are required
+— searched and batch-validated the way `typo3_icon_lookup` validates an icon.
+
+Its own **Query** names the case the second **Decided** bullet refuses:
+*compare this server against another TYPO3 MCP server. No failing call.* It
+counts no round trips, and `D-FBK-027` is what would have counted them.
+
+The core half already answers in the shape that was asked for, out of the book
+[`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md)
+indexed. `typo3_documentation_lookup` puts `Global/For.html` first for
+`f:for each ViewHelper` at 14.3, and that URL passed back as `page` reads out an
+**Arguments** section: `as` string required, `each` array required, `iteration`
+and `key` string, `reverse` boolean defaulting to false. Measured twice today.
+An argument list costs one call rather than a tool.
+
+The half that is not core is a file the caller already has open. A Fluid
+identifier resolves to a class by convention — `be:avatar` is
+`backend/Classes/ViewHelpers/AvatarViewHelper.php` in `.checkouts/main`, and
+`be:link.editRecord` the `Link/` directory beside it — and
+`typo3_fluid_namespace_list` answers the prefix-to-PHP-namespace half the
+convention starts from. That is the single read in an open tree where
+`D-FBK-027` draws its line. It is also what separates this from an icon: an icon
+identifier is registered in PHP across packages and derives no path at all,
+which is why `typo3_icon_lookup` has to ask the container.
+
+Nothing in the corpus failed on which arguments a ViewHelper takes. The two
+Fluid render failures it carries are about the value passed rather than the
+argument set — `2026-07-29-234410` on the missing empty array literal,
+`2026-08-13-215637` on `hasItems()` shadowing `items` — and an index of the
+installed ViewHelpers would have prevented neither.
+
+What is missing is a sentence, and it is a placement. `fluid-viewhelpers` is
+written for somebody authoring one, and `fluid-templates` routes an icon and a
+backend component without routing an argument list. So a session writing a
+template is told nowhere where that list comes from. The feedback is trimmed to
+that half and keeps a todo.

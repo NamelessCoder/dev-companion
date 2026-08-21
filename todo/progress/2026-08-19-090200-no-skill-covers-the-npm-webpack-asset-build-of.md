@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-090200-no-skill-covers-the-npm-webpack-asset-build-of.md
 **Priority:** normal
+**Branch:** todo/no-skill-covers-the-npm-webpack-asset-build-of
+**Claimed:** 2026-08-21
 
 Judged 1b on 2026-08-21 — the shape is missing. Two sessions in two repositories
 worked a TYPO3 package's frontend build unassisted, one of them shipping a

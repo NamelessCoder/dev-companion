@@ -77,3 +77,13 @@ do and one a sentence about a tool, and a run counted them eleven to one.
 
 - `ScopeTest::bothCallsOfTheEntryPointAreToldInTheImperative`
 - `ScopeTest::theInstructionsFitWhatAClientKeeps`
+
+## Since then
+
+The last **Decided** bullet is settled the way it was left. The project answer
+does not name the guide, and the reason is no longer that this was the sentence's
+turn: the foot of that answer is where its guides listing already stands, and
+four sessions have now held that listing without it routing one of them.
+[`D-ANS-091`](../answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)
+is the reading, with what would make the answer the lever after all — which is
+this entry's first **Wrong if**, still uncounted.

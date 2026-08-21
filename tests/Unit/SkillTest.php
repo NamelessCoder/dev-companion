@@ -55,6 +55,17 @@ final class SkillTest extends TestCase
             'typo3_documentation_lookup',
             'typo3_commit_message_guide',
         ],
+        // What the build's output owes the backend, in the order it is read:
+        // the module contract the manual states, then the core surface the
+        // output borrows — the class first, because it is answered per declared
+        // major, and the identifier after it, which is answered for the
+        // installed one alone.
+        'typo3-extension-asset-build' => [
+            'typo3_documentation_lookup',
+            'typo3_component_lookup',
+            'typo3_icon_lookup',
+            'typo3_commit_message_guide',
+        ],
         // `typo3_server_scope` is not among them: the step that named it says
         // the call is discharged by the base's `typo3_project_describe`
         // (`D-ANS-083`), which `DISCHARGED_TOOLS` below is where it is recorded.
@@ -161,6 +172,10 @@ final class SkillTest extends TestCase
         // that review turns on, and it comes back with the base's first step
         // rather than from a call the skill makes.
         'typo3-extension-patch-review' => ['typo3_project_describe'],
+        // The manifests, the commands each one declares and the Node they are
+        // run on come back with the base's first step, and reading package.json
+        // by hand is the first act of a session that does not know it.
+        'typo3-extension-asset-build' => ['typo3_project_describe'],
     ];
 
     /**
@@ -175,6 +190,7 @@ final class SkillTest extends TestCase
      */
     private const COMMITTING_SKILLS = [
         'typo3-backend-module-development',
+        'typo3-extension-asset-build',
         'typo3-content-element-development',
         'typo3-development-installation',
         'typo3-distribution-content',
@@ -2461,12 +2477,11 @@ final class SkillTest extends TestCase
      * grows a body around: the ones that carry it keep it beside them rather
      * than in the instruction every session pays for.
      *
-     * The six without one are construction, and each hands what it would
+     * The ones without one are construction, and each hands what it would
      * otherwise judge to the evidence or to the checklist one directory away:
      * the registries a backend module needs, the sweep an upgrade produces, the
      * findings a review hands a patch, the cold start an installation answers
-     * to, the conformance report a remediation may not re-derive (`D-SKL-016`),
-     * and the install that says whether a distribution is complete.
+     * to, and the install that says whether a distribution is complete.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
@@ -2479,6 +2494,10 @@ final class SkillTest extends TestCase
                 'typo3-core-patch-development',
                 'typo3-development-installation',
                 'typo3-distribution-content',
+                // The seventh is construction too: what it would otherwise
+                // judge is answered by the build it runs and by the lookups
+                // that say which majors a borrowed surface holds on.
+                'typo3-extension-asset-build',
             ],
         );
 
@@ -3391,6 +3410,15 @@ final class SkillTest extends TestCase
             'typo3-development-installation' => [
                 'typo3-extension-health',
                 'typo3-extension-testing',
+            ],
+            // The build workflow reaches all three, and each at a different
+            // moment: the harness where nothing asserts the build, the range
+            // where the change is a major being added or dropped, and the audit
+            // where the request was never one agreed change.
+            'typo3-extension-asset-build' => [
+                'typo3-extension-testing',
+                'typo3-extension-upgrade',
+                'typo3-extension-health',
             ],
         ];
 

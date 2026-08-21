@@ -84,6 +84,28 @@ covered. A sweep that is only visible when it produces a finding cannot be told
 apart from one that never ran, and the surface it covers is the one whose
 silence reads as a clean bill for the next major.
 
+A finding that depends on a version is established on the installed one, and the
+package declares a range. The base's first step reports `coreConstraint` beside
+`typo3Version`, so where the constraint names a major the installation does not
+supply, that gap is on every such finding — and closing it is a whole procedure
+this skill does not repeat:
+
+- `typo3_rule_lookup` with
+  `documentId="extension/compatibility/a-declared-major-that-is-not-installed"`
+  — whether the API the code calls is there on the other major. It is a reading
+  of that branch, and the question is per symbol rather than per package.
+- `typo3_rule_lookup` with
+  `documentId="extension/compatibility/running-on-a-declared-major-that-is-not-installed"`
+  — where the claim has to be run instead of read: what the repository's own
+  pipeline already covers, read before anything is installed, and the Composer
+  root of its own that stands the other major up beside the installation rather
+  than repinning it.
+
+An audit that runs neither reports the gap rather than the range: the finding
+holds where it was established, and the majors it was not established on are
+named. Where the constraint names the installed major alone, this is one line on
+the coverage list and no call.
+
 ## Report
 
 Order findings by severity and include:

@@ -113,9 +113,14 @@ final class SkillTest extends TestCase
         // The commit is the last of them because the audit half routes to
         // neither: what is left for this workflow to route to once the owners
         // have their items is the message each commit carries — `D-SKL-016`.
+        // The rule lookup stands after the two that answer a surface, because
+        // what it reads is a whole procedure and only where the constraint the
+        // base reported names a major the installation does not supply
+        // (`D-GUI-012`).
         'typo3-extension-health' => [
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
+            'typo3_rule_lookup',
             'typo3_commit_message_guide',
         ],
         // The order the research behind `D-SKL-063` put the five checks in: the

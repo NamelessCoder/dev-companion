@@ -194,3 +194,44 @@ declared in `Schema::knowledgeLookup()` rather than arriving undeclared. That
 wording is in `RuleLookup::wholeDocument()` since 2026-08-07 and the session ran
 on 2026-08-19: it asked for what it had been given and read past it, which is
 the same finding as the half above and not a second lever.
+
+### 2026-08-21 — the audit carries them, because the condition is state
+
+**The two `extension/compatibility/` pages are named in
+`skills/typo3-extension-health`, not by an intent.** Both candidates were run
+against what each owns today, and the intent loses on the case that was
+reported: the condition is the checkout's state, and an intent matches task
+text. Measured in this worktree the same day, with an extension path and
+`targetVersion="14"`:
+
+- The reporting session's own task, "full audit of the blog extension before its
+  v14 release" with `changeType="audit"`, matches `audit` and nothing else. So
+  does "audit the extension and check whether it still runs on every TYPO3 major
+  it declares", which names the work outright. Neither text carries a needle a
+  compatibility intent could take without taking "release" or "major" with it,
+  and that is the mapping written as a lexical match this entry already rejected
+  for `installation-operations`.
+- An intent names its guide on every brief it matches, and the feedback asks for
+  the page where the declared major is not installed. A package declaring the
+  installed major alone would get it anyway, which is this entry's first **Wrong
+  if** — a brief naming a guide that does not fit the work.
+- The skill can state that condition because it already holds the answer.
+  `coreConstraint` and `typo3Version` are one `typo3_project_describe` away and
+  the base's first step makes that call, so the step costs no round trip.
+
+**The step sits in the audit half, after the surface lookups.** It names both
+pages as the `typo3_rule_lookup` calls that read them, splits them by what each
+settles — the reading for whether a symbol is there, the run for a claim that
+has to be run — and says what an audit that runs neither owes instead: the gap
+named on the finding rather than the range claimed. `typo3_rule_lookup` joins
+that skill's `ROUTING_SKILLS` entry third, which is what holds the step in place
+and in order.
+
+**No intent recognizes compatibility work at all, which is the other half and is
+queued.** "Make the extension compatible with v14", "prove the package runs on
+TYPO3 13 and 14" and "does this still work on v13?" match no intent, so they
+reach no skill and no guide — `typo3-extension-upgrade` owns that work and names
+the running page already, and nothing routes a caller to it from the task text.
+That is recognition rather than placement, the same split as `D-GUI-014`, and it
+is queued as
+`todo/open/2026-08-21-143000-no-intent-recognizes-compatibility-work.md`.

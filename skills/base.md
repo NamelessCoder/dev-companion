@@ -150,15 +150,35 @@ What it settles is what this installation does and never what TYPO3 supports. So
 a finding says the question could not be settled beyond the version installed,
 and an answer built on the reading names the version it holds for.
 
-## Two kinds of lookup, and neither stands in for the other
+## What each runtime lookup adds after the extension answer
 
-`typo3_backend_module_lookup`, `typo3_icon_lookup`, `typo3_label_lookup`,
-`typo3_fluid_namespace_list` and `typo3_configuration_lookup` report what is
-registered, what a path resolves to, what a value really is at runtime. They
-establish the facts of this installation and they are never a verdict on it.
-`typo3_hint_lookup` and `typo3_documentation_lookup` say whether those facts are
-right. A subsystem confirmed by its own runtime lookup can still break every
-rule that governs it, so it is not established until both were asked.
+`typo3_extension_describe` in step 2 says what one package registers. The five
+below say what the installation resolved, which is a different fact even where
+the words are the same, so step 2 has made none of these calls:
+
+- `typo3_backend_module_lookup` — the tree position, the labels, the access
+  level, the routes and the navigation component the parent module supplies.
+  Step 2 lists the modules the package declares, and that inheritance is what a
+  declaration cannot show.
+- `typo3_icon_lookup` — whether an identifier is registered, across every
+  installed package, which is what validates the ones a template actually uses.
+  Step 2 lists the identifiers this package contributes.
+- `typo3_label_lookup` — the labels as the installation resolves them, its
+  overrides applied. Step 2 lists the package's XLF files and the source
+  language each declares, never what a unit says here.
+- `typo3_fluid_namespace_list` — the prefixes any template may use without
+  declaring them, from every package at once. Step 2 lists the package's own
+  declarations, so an empty list there is no evidence that nothing is registered
+  globally.
+- `typo3_configuration_lookup` — the resolved configuration value, after every
+  extension has had its say, and for a form data group the order the providers
+  really run in. Step 2 answers nothing about that surface at all, and what a
+  registration declares is not what the installation resolves.
+
+None of the five says whether what it reports is right. `typo3_hint_lookup` and
+`typo3_documentation_lookup` do, and a subsystem confirmed by its own runtime
+lookup can still break every rule that governs it, so it is not established
+until both were asked.
 
 ## A rule is read in both directions
 

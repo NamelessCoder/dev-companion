@@ -53,22 +53,14 @@ one that already exists:
   subsystem evidence. A surface the checkout has no files for is asked by its
   hint id instead, because that is the surface whose absence is the finding and
   the one whose paths cannot be passed.
-- The lookup that owns that surface's runtime facts, where one exists:
-  `typo3_backend_module_lookup` for registered modules and routes,
-  `typo3_icon_lookup` for icon identifiers, `typo3_label_lookup` for labels and
-  overrides, `typo3_fluid_namespace_list` for globally available Fluid prefixes,
-  `typo3_configuration_lookup` for effective runtime configuration.
+- The runtime lookup that owns the surface, where one exists. The base names the
+  five and what each adds after the extension answer; an audit makes that call
+  per surface in scope, because a surface answered off what the package declares
+  is answered about the package rather than about this installation.
 - `typo3_documentation_lookup` with several short English queries and the target
   version where an official API or configuration detail decides the finding, and
   for every "does this still work here" a surface raises — the base says why the
   changelog cannot answer that one.
-
-The first two answer different questions and neither stands in for the other. A
-runtime lookup reports what is registered, what a path resolves to, what a value
-really is — the facts of this installation. The conventions lookup reports
-whether those facts are right. A surface can be confirmed by its own runtime
-lookup and still break every rule that governs it, so a surface is not assessed
-until both have been asked.
 
 Read the checkout for what none of those can know: the files themselves, the
 registrations, the tests, the documentation, and the conventions the project has

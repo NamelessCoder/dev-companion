@@ -928,6 +928,95 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * `R-SKL-026`. The pairing the section drew was runtime against
+     * conventions, and read in the order the base fixes it describes a call the
+     * session has already made: a v14 release audit of a blog extension called
+     * none of the five and says why — `typo3_extension_describe` had returned
+     * the four backend modules, 24 icon identifiers, the XLF files with their
+     * source languages and the site sets, and the run "treated the describe
+     * output as the runtime half for every one of those surfaces"
+     * (`feedback/2026-08-19-094432`, `D-SKL-069`). So each of them says what it
+     * adds after step 2 rather than what kind of lookup it is.
+     */
+    #[Test]
+    public function everyRuntimeLookupTheBaseNamesSaysWhatItAddsAfterTheExtensionAnswer(): void
+    {
+        $base = self::flat((string) file_get_contents(Paths::root() . '/skills/base.md'));
+
+        $section = mb_strpos($base, '## What each runtime lookup adds after the extension answer');
+        self::assertNotFalse($section, 'the base distinguishes the runtime lookups from nothing');
+        self::assertGreaterThan(
+            (int) mb_strpos($base, 'typo3_extension_describe'),
+            $section,
+            'the five are measured against an answer the order has not reached yet',
+        );
+
+        // What each adds, read off the tool's own declaration rather than off
+        // the kind of lookup it is: the inheritance a declaration cannot show,
+        // the identifiers of every package at once, the overrides applied, what
+        // is global rather than this package's own, and the value step 2 is not
+        // about at all — which is the one the run says it could have settled in
+        // a call and judged off `ext_localconf.php` instead.
+        $adds = [
+            'typo3_backend_module_lookup' => 'the navigation component the parent module supplies',
+            'typo3_icon_lookup' => 'across every installed package',
+            'typo3_label_lookup' => 'the labels as the installation resolves them',
+            'typo3_fluid_namespace_list' => 'from every package at once',
+            'typo3_configuration_lookup' => 'after every extension has had its say',
+        ];
+
+        $lines = [];
+        foreach (array_keys($adds) as $tool) {
+            $at = mb_strpos($base, '- `' . $tool . '`', $section);
+            self::assertNotFalse($at, $tool . ' has no line of its own in the section that distinguishes it');
+            $lines[] = $at;
+        }
+        // The five were skipped together because one sentence covered all of
+        // them, so what each adds is held on its own line and not on the set.
+        $ends = array_slice($lines, 1);
+        $ends[] = (int) mb_strpos($base, 'None of the five says whether', $section);
+
+        foreach (array_values($adds) as $index => $sentence) {
+            $line = mb_substr($base, $lines[$index], $ends[$index] - $lines[$index]);
+            $tool = array_keys($adds)[$index];
+            self::assertStringContainsString(
+                $sentence,
+                $line,
+                $tool . ' is named without what it adds after the extension answer',
+            );
+            self::assertStringContainsString(
+                'Step 2',
+                $line,
+                $tool . ' says what it adds without saying what the caller already has',
+            );
+        }
+
+        // The half that survives the correction: what is registered is not a
+        // verdict on it, whichever call established it.
+        self::assertStringContainsString(
+            'None of the five says whether what it reports is right',
+            $base,
+        );
+
+        // Written once. The audit skill carried the same sentence in the same
+        // words, and that is the copy the run was reading — so what it states
+        // is what an audit adds, which is the call per surface in scope.
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-health/SKILL.md',
+        ));
+        self::assertStringNotContainsString('runtime lookup reports what is registered', $skill);
+        foreach (array_keys($adds) as $tool) {
+            self::assertStringNotContainsString(
+                $tool,
+                $skill,
+                'the audit names ' . $tool . ' beside a surface the base already pairs it with',
+            );
+        }
+        self::assertStringContainsString('The runtime lookup that owns the surface, where one exists', $skill);
+        self::assertStringContainsString('per surface in scope', $skill);
+    }
+
     #[Test]
     public function aSecurityFindingIsNotEstablishedUntilItsSinkIs(): void
     {
@@ -3233,9 +3322,11 @@ final class SkillTest extends TestCase
 
         // The runtime lookup is the near miss, not the omission: the third run
         // reached for a translation tool and picked the one that reports what a
-        // path resolves to, then filed the surface as clean.
+        // path resolves to, then filed the surface as clean. What each of the
+        // five adds is the base's since `D-SKL-069`, so what this skill states
+        // is the call an audit makes on top of it.
         self::assertStringContainsString(
-            'confirmed by its own runtime lookup and still break every rule that governs it',
+            'The runtime lookup that owns the surface, where one exists',
             self::flat($skill),
         );
 

@@ -1,6 +1,6 @@
 ---
 id: R-SKL-026
-status: open
+status: held
 restsOn: [D-SKL-069]
 ---
 
@@ -38,4 +38,4 @@ resolved. `D-SKL-069` is the judgement, and it puts the wording in
 
 ## Held by
 
-- not guarded
+- `SkillTest::everyRuntimeLookupTheBaseNamesSaysWhatItAddsAfterTheExtensionAnswer`

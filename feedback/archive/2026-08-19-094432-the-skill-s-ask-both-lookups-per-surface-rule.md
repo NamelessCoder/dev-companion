@@ -1,7 +1,8 @@
 ---
 date: 2026-08-19T09:44:32+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-21
 model: claude-opus-5[1m]
 tool: typo3-extension-health, typo3_icon_lookup, typo3_label_lookup, typo3_backend_module_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_documentation_lookup
 directory: /home/benji/projects/blog

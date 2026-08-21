@@ -262,8 +262,8 @@ A first boot that writes a deprecation log is a finding about the package's own
 code rather than about the installation, and the installation is finished at
 that point rather than broken. State that it is up and what it answers, name the
 log and the package whose code fills it, change nothing in that package here,
-and invoke `typo3-extension-health` with those lines as the evidence it
-starts from.
+and invoke `typo3-extension-health` with those lines as the evidence it starts
+from.
 
 ## When the task turns to a suite
 

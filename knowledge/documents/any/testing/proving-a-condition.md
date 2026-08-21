@@ -60,8 +60,8 @@ page.headerData.9999.value = <meta name="x-verdict" content="isPost">
 comparison settle the verdict, with nothing to discriminate. Copy the line
 rather than retyping it: an expression carrying a constant is evaluated after
 substitution, and a differently spelled constant is a different condition.
-Delete the block when the question is answered, and check with `git status`
-that the file is back as it was.
+Delete the block when the question is answered, and check with `git status` that
+the file is back as it was.
 
 ## Which URL Is Requested
 

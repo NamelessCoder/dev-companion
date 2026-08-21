@@ -41,9 +41,9 @@ the sentence rather than the answer of the call that fired.
   [`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md).
 - **The `instructions` are the one channel this run recorded being acted on.**
   Eleven of the seventeen tasks did what the paragraph's first imperative says,
-  so the channel reaches the model and the sentence is obeyed —
-  `D-SKL-033` reads the eleven that way when it weighs the project's own agent
-  instruction file and leaves it untaken.
+  so the channel reaches the model and the sentence is obeyed — `D-SKL-033`
+  reads the eleven that way when it weighs the project's own agent instruction
+  file and leaves it untaken.
 - **The rewrite on that channel is two days old and unread.**
   [`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md)
   turned the second sentence into an imperative on 2026-08-19 for two characters

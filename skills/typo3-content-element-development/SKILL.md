@@ -150,6 +150,5 @@ either, ask which was meant.
 This skill owns content-element architecture and implementation. Test
 infrastructure is `typo3-extension-testing`'s, manuals are
 `typo3-extension-documentation`'s and a broader extension audit is
-`typo3-extension-health`'s — stop before editing that owner's files, and
-carry across the extension key, the target version and the behaviour already
-verified.
+`typo3-extension-health`'s — stop before editing that owner's files, and carry
+across the extension key, the target version and the behaviour already verified.

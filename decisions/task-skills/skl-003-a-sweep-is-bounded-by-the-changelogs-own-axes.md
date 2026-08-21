@@ -144,8 +144,8 @@ else reads it as somebody else's step — `D-SKL-029`.
 
 The second **Assumed** was measured in practice on 2026-08-21, and the
 composition costs more than the enumeration it replaces.
-`feedback/2026-08-19-094403` reports the step run over an extension declaring one
-major: eleven tags, eleven calls, four of them returning nothing the session
+`feedback/2026-08-19-094403` reports the step run over an extension declaring
+one major: eleven tags, eleven calls, four of them returning nothing the session
 used. Re-run against `.checkouts/14.3` those eleven reach 72 of the 75
 deprecations of 14 and cost 69,426 characters, where the same version and type
 with no tag matches all 75 in one call and would cost about 41,600 once the cap

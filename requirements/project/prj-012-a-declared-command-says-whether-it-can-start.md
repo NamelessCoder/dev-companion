@@ -10,8 +10,8 @@ restsOn: [D-ANS-086]
 where the interpreter that would run the declared commands stands against it.**
 
 `R-PRJ-007` says what running a command does to the sources. Whether it gets
-that far is the second question, and the bound is what answers it: `composer
-install` writes the lowest PHP every package it installed accepts into
+that far is the second question, and the bound is what answers it:
+`composer install` writes the lowest PHP every package it installed accepts into
 `composer/platform_check.php` below the vendor directory, the autoloader
 includes it, and under it a command aborts there before its own tool starts.
 

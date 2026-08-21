@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094248-typo3-test-run-guide-stayed-shut-through-eight.md, D-ANS-092
 **Priority:** normal
+**Branch:** todo/typo3-test-run-guide-stayed-shut-through-eight
+**Claimed:** 2026-08-21
 
 Give `ProjectDescribe::suites()` its arm for the other kinds of instance: where
 the repository is not a core checkout and the declared commands include a test

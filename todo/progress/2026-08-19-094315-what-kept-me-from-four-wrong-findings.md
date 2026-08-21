@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094315-what-kept-me-from-four-wrong-findings.md
 **Priority:** low
+**Branch:** todo/what-kept-me-from-four-wrong-findings
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

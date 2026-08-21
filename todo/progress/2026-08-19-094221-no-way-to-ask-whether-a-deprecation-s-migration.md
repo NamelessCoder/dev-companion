@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094221-no-way-to-ask-whether-a-deprecation-s-migration.md, D-VER-009
 **Priority:** normal
+**Branch:** todo/no-way-to-ask-whether-a-deprecation-s-migration
+**Claimed:** 2026-08-21
 
 Judged as step 2, delivery: the call that answers this is one
 `typo3_changelog_lookup` on the deprecation's own issue number, and nothing says

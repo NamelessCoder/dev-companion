@@ -68,3 +68,34 @@ read off one revision together, and a caller pastes them together.
   names, not structure, and would call that unchanged. Also a range with a hole
   in it, which `derivedSince()` reports as no binding at all, on the grounds
   that such an entry needs splitting rather than a number.
+
+## Since then
+
+`feedback/2026-08-19-090231` is a reader this entry did not have in view. A
+session migrating an extension's DataTables build re-attached the backend class
+`table-fit` and shipped the assumption unverified, and the call it names as the
+one it should have made is `typo3_component_lookup` for that class, bound to the
+majors the extension declares.
+
+Both halves were run on 2026-08-21. Unbound, the lookup answers: the `table`
+entry, matched in keywords, "Wrap in .table-fit for horizontal overflow", with
+the markup and the note that it is verified on v14 and newer. Bound to `12.4` it
+withholds the entry and reports the class as never verified there.
+
+`.table-fit` is written in `Build/Sources/Sass/component/_table.scss` on `12.4`,
+`13.4`, `14.3` and `main`, and carries `overflow-x: auto` on the oldest of them.
+So the class the caller asked about is present on its major and means what the
+session assumed. What bound the entry to v14 is `--typo3-table-border-radius`,
+absent from that partial on `12.4` and `13.4` and present on `14.3`.
+
+That is the design working rather than failing. One custom property in an
+eleven-name contract holds the whole entry back, which is what **Decided** chose
+so that a paste cannot carry a property that does not exist. The price is
+visible now: the reader this entry has in view wants to know whether it can
+paste the component, and this one had already pasted a single long-stable class
+out of a stylesheet it does not own, and wanted only to know whether it was
+still there.
+
+The question that raises — whether a class-shaped query may be answered below
+the entry's binding, and at what cost — is recorded on the card serving that
+feedback, with the options and a recommendation.

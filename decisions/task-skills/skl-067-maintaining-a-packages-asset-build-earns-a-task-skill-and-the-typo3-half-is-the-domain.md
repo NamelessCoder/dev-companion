@@ -100,3 +100,24 @@ is here; nothing carries a word either session typed, so nothing fired.
 - The thirteenth description costs the twelve more than it buys, measured at
   publication against the arithmetic in
   [`D-SKL-026`](skl-026-the-descriptions-are-written-to-the-listing-budget-they-share.md).
+
+## Since then
+
+The borrowed class this entry cites as its second piece of evidence was read on
+2026-08-21, judging `feedback/2026-08-19-090231`. `.table-fit` is written in
+`Build/Sources/Sass/component/_table.scss` on `12.4`, `13.4`, `14.3` and `main`,
+with `overflow-x: auto` on the oldest, so the session's unverified assumption
+was right and the comment it never checked was true.
+
+What **Decided** gives the workflow includes verifying such a class against the
+majors the package declares. On this example that verification does not answer.
+`typo3_component_lookup` bound to `12.4` withholds the `table` entry, because
+one custom property in it arrived in v14 and a catalog entry is bound whole —
+[`D-CAT-001`](../catalog/cat-001-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md),
+where the reading and the question it raised are written.
+
+So the instruction has a miss behind it on the case that produced it, and what
+the workflow says about a withholding is part of the writing rather than a
+detail left to the reader. A miss here means "not in this snapshot" and sends
+the caller to a Sass path in the core checkout, which is a step the workflow can
+name.

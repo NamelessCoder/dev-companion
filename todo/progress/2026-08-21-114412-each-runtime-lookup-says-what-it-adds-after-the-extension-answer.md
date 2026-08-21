@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094432-the-skill-s-ask-both-lookups-per-surface-rule.md, R-SKL-026, D-SKL-069
 **Priority:** normal
+**Branch:** todo/each-runtime-lookup-says-what-it-adds-after-the-extension-answer
+**Claimed:** 2026-08-21
 
 Judged as wording rather than a gap: the base's *Two kinds of lookup* section
 pairs runtime against conventions, and its own step 2 has already answered the

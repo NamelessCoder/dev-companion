@@ -1,7 +1,9 @@
-# A release audit turns on what is already published in the TER, and nothing here can see it
+# The guides list reached me only as ids in project_describe, and I read none of them until too late
 
-**Serves:** feedback/2026-08-19-094528-a-release-audit-turns-on-what-is-already.md
+**Serves:** feedback/2026-08-19-094457-the-guides-list-reached-me-only-as-ids-in.md
 **Priority:** low
+**Branch:** todo/the-guides-list-reached-me-only-as-ids-in
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

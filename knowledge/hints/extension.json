@@ -288,12 +288,16 @@
       "artefact",
       "release artefact",
       "upload a new version",
+      "already published",
+      "release audit",
       "TYPO3_API_TOKEN",
       "ExcludeFromPackaging"
     ],
     "hints": [
       "typo3/tailor is the CLI that talks to the TER REST API, and where it is installed decides where it reads its .env from: bin/tailor looks beside itself, at the project root above its vendor directory, and one level above that. Installed as the extension's own dev dependency, an .env at the extension root is read; installed globally, which is what its own CI examples do at job time, that file is never seen and the token and extension key come from environment variables instead. The file holds the API token either way, so it belongs in .gitignore.",
       "Tailor refuses to package an extension that has no ext_emconf.php, and refuses again unless its version equals the version being released and it declares constraints.depends.typo3. That holds on every TYPO3 version and set-version fails the same way, so an extension published to the TER keeps the file and keeps its version in step, whatever composer.json declares. The extension key itself is resolved from the command argument, then TYPO3_EXTENSION_KEY, then extra.typo3/cms.extension-key — and the last is already required for a typo3-cms-extension package to install at all.",
+      "ext_emconf.php names the released version after the release as much as before it, so a published repository and an unreleased one read alike. set-version writes the number into composer.json and into ext_emconf.php, create-artefact refuses to package unless the file matches the version being released, and nothing puts it back afterwards. What tells the two apart is the registry rather than the checkout: typo3_ter_lookup with the extension key answers which versions are published, and a git tag is the release you meant to make rather than the one that is out.",
+      "The TER does not refuse a version it already holds — it replaces it. The upload endpoint answers HTTP 201 for a number that was new and HTTP 200 for one it overwrote, and Tailor posts the artefact without asking what is published, so releasing a number that is already out succeeds and silently replaces the artefact people are installing. That is why the registry is asked before the release rather than relied on to reject it.",
       "create-artefact writes the zip into a tailor-version-artefact directory below the current working directory, which is the extension root in the ordinary case, so that name belongs in .gitignore beside the .env.",
       "What the artefact contains is decided by Tailor's own conf/ExcludeFromPackaging.php and never by .gitattributes, so one commit hands the TER and a git archive different file sets: an export-ignore attribute takes a file out of the export and leaves it in the artefact. The list's entries are also interpolated into patterns unquoted — directories matched against the head of the path relative to the extension root, files against the filename — so a top-level directory whose name merely begins with a listed one is dropped while the same name nested deeper survives, and a regular-expression character in an entry keeps its meaning. TYPO3_EXCLUDE_FROM_PACKAGING names a replacement file returning directories and files."
     ]

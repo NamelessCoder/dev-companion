@@ -87,7 +87,8 @@ answered as empty.
 :doc:`typo3_changelog_lookup <tools/typo3_changelog_lookup>`,
 :doc:`typo3_documentation_lookup <tools/typo3_documentation_lookup>`,
 :doc:`typo3_forge_lookup <tools/typo3_forge_lookup>`,
-:doc:`typo3_gerrit_lookup <tools/typo3_gerrit_lookup>`.
+:doc:`typo3_gerrit_lookup <tools/typo3_gerrit_lookup>`,
+:doc:`typo3_ter_lookup <tools/typo3_ter_lookup>`.
 
 .. _answer-sources-checkout:
 

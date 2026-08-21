@@ -216,6 +216,13 @@ at all in the state the machine is in.
         Build a task checklist enriched with matching hints and relevant core
         checks.
 
+    .. card:: :doc:`typo3_ter_lookup <typo3_ter_lookup>`
+        :label: Lookup
+        :action: Open reference
+
+        Read what the TYPO3 Extension Repository has published under an
+        extension key, live from extensions.typo3.org.
+
     .. card:: :doc:`typo3_test_run_guide <typo3_test_run_guide>`
         :label: Guide
         :action: Open reference
@@ -256,5 +263,6 @@ at all in the state the machine is in.
     typo3_server_scope
     typo3_system_extension_lookup
     typo3_task_guide
+    typo3_ter_lookup
     typo3_test_run_guide
     typo3_translation_domain_lookup

@@ -247,6 +247,25 @@ final class ToolCalls
             'changelog: hit' => ['typo3_changelog_lookup', ['query' => 'ext_tables.php']],
             'changelog: swept by tag' => ['typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'FullyScanned']],
             'changelog: miss' => ['typo3_changelog_lookup', ['query' => 'quantumflux']],
+            'ter: what is published under a key' => ['typo3_ter_lookup', [
+                'extension' => 'blog',
+                'limit' => 3,
+            ]],
+            // The release audit's own question, in the form it is asked: the
+            // number ext_emconf.php names, held against what is published.
+            'ter: is this version already out' => ['typo3_ter_lookup', [
+                'extension' => 'blog',
+                'version' => '14.0.1',
+                'limit' => 3,
+            ]],
+            'ter: nothing is published under this key' => ['typo3_ter_lookup', [
+                'extension' => 'quantumflux_transponder',
+            ]],
+            // The name of the wrong kind, which the registry answers 400 to and
+            // this answers without a read.
+            'ter: a composer package name' => ['typo3_ter_lookup', [
+                'extension' => 'georgringer/news',
+            ]],
             'project' => ['typo3_project_describe', []],
             'extension' => ['typo3_extension_describe', ['extension' => 'backend']],
             'catalog scope' => ['typo3_catalog_scope', []],

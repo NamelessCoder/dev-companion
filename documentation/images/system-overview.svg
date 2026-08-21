@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="726" viewBox="0 0 1200 726" role="img" aria-labelledby="ov-t ov-d">
 <title id="ov-t">One line leaves the machine</title>
-<desc id="ov-d">The MCP client asks the TYPO3 Dev Companion subprocess, which draws its answers from bundled knowledge and from the project's own packages and installation — all inside the developer's machine. One read-only path crosses the boundary to fetch from official documentation and core services; nothing is written back across it.</desc>
+<desc id="ov-d">The MCP client asks the TYPO3 Dev Companion subprocess, which draws its answers from bundled knowledge and from the project's own packages and installation — all inside the developer's machine. One read-only path crosses the boundary to fetch from official documentation and the TYPO3 project’s own services; nothing is written back across it.</desc>
 <rect width="1200" height="726" fill="#FBFAF7"></rect>
 <text x="60" y="60" fill="#FF8700" font-family="'Source Code Pro',ui-monospace,monospace" font-size="13" font-weight="600" letter-spacing="1.6">LOCAL · READ-ONLY · VERSION-AWARE</text>
 <text x="60" y="108" fill="#1C1A17" font-family="'Source Sans 3',system-ui,sans-serif" font-size="36" font-weight="700" letter-spacing="-0.5">One line leaves the machine</text>
@@ -43,7 +43,7 @@
 <text x="940" y="388" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Canonical documentation.</text>
 <path d="M920 373 H904" stroke="#FF8700" stroke-width="2" fill="none"></path>
 <rect x="920" y="440" width="220" height="86" rx="6" fill="#FBFAF7" stroke="#E3DFD6" stroke-width="1" stroke-dasharray="5 4"></rect>
-<text x="940" y="474" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="14" font-weight="600">core services</text>
+<text x="940" y="474" fill="#1C1A17" font-family="'Source Code Pro',ui-monospace,monospace" font-size="14" font-weight="600">TYPO3 services</text>
 <text x="940" y="498" fill="#8A8378" font-family="'Source Sans 3',system-ui,sans-serif" font-size="13">Live registries and APIs.</text>
 <path d="M920 483 H904" stroke="#FF8700" stroke-width="2" fill="none"></path>
 

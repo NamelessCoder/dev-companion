@@ -26,6 +26,7 @@ src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its conta
 src/Installation/probe.php  # what runs over there; never included here
 src/Manual/        # the third source: the versioned TYPO3 manuals, and the core changelog above what an installation ships
 src/Contribution/  # the fourth source: the services the core's own process runs through
+src/Publication/   # the fifth source: the registry a TYPO3 extension is published to, and what it already holds
 src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent
 src/Search/        # the lexical matching every prose and label lookup goes through
 src/Feedback/      # the feedback channel; a development tool, offered from a standalone checkout alone
@@ -70,10 +71,10 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 
 Every class below `src/` sits in the group it belongs to, and one that fits none
 of them is a group nobody has named yet rather than a file at the root. An
-answer comes from four of them — `Knowledge/`, `Installation/`, `Manual/` and
-`Contribution/` — and the last two reach outside this process, which is what
-their tools' `openWorldHint` says. `Paths` sits loose because the server and the
-upkeep both stand on it.
+answer comes from five of them — `Knowledge/`, `Installation/`, `Manual/`,
+`Contribution/` and `Publication/` — and the last three reach outside this
+process, which is what their tools' `openWorldHint` says. `Paths` sits loose
+because the server and the upkeep both stand on it.
 
 Both binaries are the same shape: locate the autoloader, hand the arguments to
 the class that owns them — `Server\Entrypoint`, and `Upkeep\Cli` by way of the

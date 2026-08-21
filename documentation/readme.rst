@@ -173,7 +173,7 @@ never handed a rule only the core has.
                   local subprocess, which reads bundled knowledge and the
                   project's own packages and installation. Exactly one
                   read-only path crosses the boundary, to official
-                  documentation and core services.
+                  documentation and the TYPO3 project's own services.
 
 .. band:: What it will not do
     :quiet:

@@ -49,6 +49,9 @@ final class ToolContractTest extends TestCase
                     // The versions above the installed major, which the
                     // installation cannot ship — `D-ANS-067`.
                     'typo3_changelog_lookup',
+                    // What the extension registry has published, which the
+                    // repository being audited cannot say — `D-FBK-051`.
+                    'typo3_ter_lookup',
                 ], true),
                 $definition['annotations']['openWorldHint'],
                 $name . ' has the wrong open-world annotation',

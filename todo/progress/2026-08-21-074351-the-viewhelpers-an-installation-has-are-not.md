@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-21-074351-the-viewhelpers-an-installation-has-are-not.md
 **Priority:** normal
+**Branch:** todo/the-viewhelpers-an-installation-has-are-not
+**Claimed:** 2026-08-21
 
 Judged into `D-ANS-003`: the tool it asked for is refused, and what is left is
 two sentences on the `fluid-templates` hint, beside the two that already route

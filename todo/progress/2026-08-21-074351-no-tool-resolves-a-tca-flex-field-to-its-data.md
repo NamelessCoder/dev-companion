@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-21-074351-no-tool-resolves-a-tca-flex-field-to-its-data.md
 **Priority:** normal
+**Branch:** todo/no-tool-resolves-a-tca-flex-field-to-its-data
+**Claimed:** 2026-08-21
 
 Build `typo3_flexform_lookup`: a table and a field go in, and what comes back is
 the identifier `FlexFormTools::getDataStructureIdentifier()` produces, its

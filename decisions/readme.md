@@ -704,6 +704,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### feedback
 
+- [`D-FBK-051`][D-FBK-051] — What the TER already holds is a lookup of its own · 2026-08-21
 - [`D-FBK-050`][D-FBK-050] — A package's release policy is asked rather than derived · 2026-08-19
 - [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out and what the session wanted · 2026-08-18
 - [`D-FBK-048`][D-FBK-048] — The debrief is offered as a prompt where the channel is · 2026-08-18
@@ -742,6 +743,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-051]: feedback/fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: feedback/fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md
 [D-FBK-047]: feedback/fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md
 [D-FBK-048]: feedback/fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md

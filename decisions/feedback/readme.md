@@ -11,6 +11,7 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-051`][D-FBK-051] — What the TER already holds is a lookup of its own · 2026-08-21
 - [`D-FBK-050`][D-FBK-050] — A package's release policy is asked rather than derived · 2026-08-19
 - [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out and what the session wanted · 2026-08-18
 - [`D-FBK-048`][D-FBK-048] — The debrief is offered as a prompt where the channel is · 2026-08-18
@@ -49,6 +50,7 @@ earns one.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-051]: fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md
 [D-FBK-047]: fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md
 [D-FBK-048]: fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md

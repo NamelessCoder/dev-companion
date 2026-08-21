@@ -15,7 +15,10 @@
     here is another one, which delivered the block whole. What is asked is
     whether to have that measured before designing further against 2048, or to
     accept the boundary statement as unaffordable and leave this feedback on the
-    design's price.
+    design's price. Put to the maintainer on 2026-08-21, and the answer was to
+    measure first: nothing is designed against 2048 until one session reports
+    the length of the `instructions` its client actually kept, which is the
+    hand-started run described at the foot of this card.
 
 Nothing is built until the question comes back, and the priority stays `low`
 because the two costs the session's wrong boundary judgement actually produced

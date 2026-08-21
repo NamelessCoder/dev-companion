@@ -139,3 +139,21 @@ query-omitted mode, places it in this step, and says it did not apply it to
 `type: important` because that is where it was taught. So the mode is stated
 once, as a property of the sweep, and a task needing a listing for something
 else reads it as somebody else's step — `D-SKL-029`.
+
+## Since then
+
+The second **Assumed** was measured in practice on 2026-08-21, and the
+composition costs more than the enumeration it replaces.
+`feedback/2026-08-19-094403` reports the step run over an extension declaring one
+major: eleven tags, eleven calls, four of them returning nothing the session
+used. Re-run against `.checkouts/14.3` those eleven reach 72 of the 75
+deprecations of 14 and cost 69,426 characters, where the same version and type
+with no tag matches all 75 in one call and would cost about 41,600 once the cap
+can carry them. The tags being dense enough to bound a sweep with — what this
+entry established — is also what makes a sweep composed of them converge on the
+major.
+
+The statement above stands: the axes a sweep is bounded by are still the
+changelog's own, and the version and the type are two of the three. What changes
+is the third, the "one call per declared major per tag" half of step 5, and
+`D-ANS-093` is where that is decided.

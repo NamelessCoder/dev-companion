@@ -12,17 +12,22 @@ Answers with the change number, its Change-Id, subject, status, target branch,
 review URL, and the patch set that is current on the server with the commit it
 is — which is what says whether a checkout is the revision under review. A
 change is answered together with the changes sharing its Change-Id, whichever
-handle named it — that is how a backport on a release branch is reached. Each
-change also carries the ref that patch set is fetchable by and the review server
-to fetch it over, so getting it into a checkout takes no second lookup. A change
-read by name carries the review it is in as well: the value every voter holds
-per label and whether the submit rule is satisfied, and every comment left on it
-with its patch set, its file and line, whether the thread is unresolved and
-which comment it replies to. That is where a comment somebody left on an earlier
-patch set and nobody answered is read. Why a vote is gone is in the review log
-instead, which messages asks for. A call carries issue or change, never both.
-This reaches the network, and it reads: reviewing, voting and uploading stay
-yours. Answers from: network.
+handle named it — that is how a backport on a release branch is reached. It also
+carries the relation chain it sits in: the changes stacked on it and the changes
+it is built on, each with its number, its status and its subject, which is what
+says whether the change is one part of a larger feature and how far that feature
+has got. The two relations are different — a chain is changes built on one
+another, a shared Change-Id is one patch on several branches. Each change also
+carries the ref that patch set is fetchable by and the review server to fetch it
+over, so getting it into a checkout takes no second lookup. A change read by
+name carries the review it is in as well: the value every voter holds per label
+and whether the submit rule is satisfied, and every comment left on it with its
+patch set, its file and line, whether the thread is unresolved and which comment
+it replies to. That is where a comment somebody left on an earlier patch set and
+nobody answered is read. Why a vote is gone is in the review log instead, which
+messages asks for. A call carries issue or change, never both. This reaches the
+network, and it reads: reviewing, voting and uploading stay yours. Answers from:
+network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -124,6 +129,15 @@ Answers with
         # change lookup whose comment call did not answer says so here rather than
         # with an empty list — hold it against commentCount.
         comments: array or null  # optional
+        # The relation chain this change sits in, child first: above it the changes
+        # stacked on it, then itself, then the changes it is built on. This is the
+        # other relation and not the Change-Id one — a chain is different changes
+        # built on one another, a shared Change-Id is one patch on several branches,
+        # and reading the two as one set overstates both. Empty means the change
+        # stands alone, which is the ordinary case. Null means the chain was not
+        # read: an issue search asks for none, and a change lookup whose call did
+        # not answer says so here rather than with an empty list.
+        chain: array or null  # optional
         # The review log, oldest first, where messages asked for it. Null otherwise,
         # which is the default and every hit of an issue search.
         messages: array or null  # optional
@@ -150,7 +164,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-18 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
@@ -214,6 +228,7 @@ Data:
                 "labels": null,
                 "commentCount": 0,
                 "comments": null,
+                "chain": null,
                 "messages": null,
                 "botMessageCount": null
             }
@@ -368,6 +383,7 @@ Data:
                         "message": "temp -1: backport pushed, will run nightly on both."
                     }
                 ],
+                "chain": [],
                 "messages": null,
                 "botMessageCount": null
             },
@@ -422,6 +438,244 @@ Data:
                 ],
                 "commentCount": 0,
                 "comments": [],
+                "chain": [],
+                "messages": null,
+                "botMessageCount": null
+            }
+        ],
+        "indistinguishable": null,
+        "unavailable": null
+    }
+
+gerrit: a change that is one part of a stack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "change": "91563"
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 core review server: https://review.typo3.org
+    Query: change:I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2
+
+    ## [WIP][FEATURE] Introduce Action API (NEW)
+    Change 91563 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563
+    Change-Id: I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2
+    Patch set 46 · ad7dc9be5e9bda8ecaa1d2dedb5c946eedfbe251
+    Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/63/91563/46
+    Last moved: 2026-06-29 13:41:27.000000000
+    Verified: not satisfied · core-ci +1
+    Code-Review: not satisfied · core-ci 0
+
+    ### Relation chain (15 changes, 13 stacked on this one and 1 under it)
+    - 92197 · NEW · [WIP][FEATURE] Provide Record Actions
+    - 92196 · NEW · [WIP][TASK] Add record serializer
+    - 88507 · NEW · [WIP][FEATURE] AI suggest demo using tools API
+    - 93599 · NEW · [WIP][TASK] Migrate resource endpoints to Actions API
+    - 92191 · NEW · [TASK] Migrate PageTree to Action API
+    - 92322 · NEW · [TASK] Migrate dashboard to Actions API
+    - 92724 · ABANDONED · [WIP][FEATURE] Implement OAuth authorization server
+    - 92323 · MERGED · [TASK] Avoid `json_encode()` workarounds in Settings API · chained at patch set 8, now at 10
+    - 92224 · NEW · [WIP][FEATURE] Add MCP Server demo based on Actions API
+    - 92223 · NEW · [WIP][FEATURE] Provide AI Tool provider based on Actions API
+    - 91486 · NEW · [WIP][FEATURE] Implement API Hub
+    - 93423 · NEW · [TASK] Implement standalone redirect route option
+    - 91666 · NEW · [WIP][FEATURE] Provide OpenAPI spec w/ Swagger UI for Actions API
+    - 91563 · NEW · [WIP][FEATURE] Introduce Action API · this change
+    - 93064 · NEW · [TASK] Introduce JSON SchemaBuilder and Schema based Hydrator
+
+    A relation chain is a stack of different changes built on one another, listed child first: what stands above a change is stacked on it, and what stands below it is what it is built on. Each entry's status is that entry's own, so a MERGED entry says that change landed and says nothing about the change you asked for. Gerrit relates a chain by the commits, which is not the Change-Id relation a backport keeps, and neither set contains the other.
+
+    An entry chained at an earlier patch set than it stands at now has moved on since the stack was built on it. Read it by its number rather than acting on the patch set the chain names.
+
+    A vote a later patch set dropped is absent here rather than zero, and the copy condition that dropped it is written in the review log alone — ask again with `messages: "people"` where a label stands at nothing and you need to know whether it ever stood elsewhere.
+
+    Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
+
+    The fetch goes to the review server rather than to `origin`: a core clone fetches from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach FETCH_HEAD` is what puts the checkout on the patch set afterwards.
+
+    A patch set in front of you opens one of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff.
+    Both start at `typo3_project_describe`: which installation this checkout is, what it runs, and which whole procedures this server carries.
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "answered",
+        "source": "https://review.typo3.org",
+        "query": "change:I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
+        "changes": [
+            {
+                "number": 91563,
+                "changeId": "I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
+                "subject": "[WIP][FEATURE] Introduce Action API",
+                "status": "NEW",
+                "branch": "main",
+                "patchSet": 46,
+                "commit": "ad7dc9be5e9bda8ecaa1d2dedb5c946eedfbe251",
+                "project": "Packages/TYPO3.CMS",
+                "updated": "2026-06-29 13:41:27.000000000",
+                "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563",
+                "fetch": {
+                    "ref": "refs/changes/63/91563/46",
+                    "remote": "https://review.typo3.org/Packages/TYPO3.CMS"
+                },
+                "labels": [
+                    {
+                        "label": "Verified",
+                        "satisfied": false,
+                        "votes": [
+                            {
+                                "voter": "core-ci",
+                                "value": 1,
+                                "on": "2026-06-29 13:41:27.000000000"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Code-Review",
+                        "satisfied": false,
+                        "votes": [
+                            {
+                                "voter": "core-ci",
+                                "value": 0,
+                                "on": ""
+                            }
+                        ]
+                    }
+                ],
+                "commentCount": 0,
+                "comments": [],
+                "chain": [
+                    {
+                        "number": 92197,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Provide Record Actions",
+                        "thisChange": false,
+                        "patchSet": 9,
+                        "chainedAt": 9
+                    },
+                    {
+                        "number": 92196,
+                        "status": "NEW",
+                        "subject": "[WIP][TASK] Add record serializer",
+                        "thisChange": false,
+                        "patchSet": 9,
+                        "chainedAt": 9
+                    },
+                    {
+                        "number": 88507,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] AI suggest demo using tools API",
+                        "thisChange": false,
+                        "patchSet": 13,
+                        "chainedAt": 13
+                    },
+                    {
+                        "number": 93599,
+                        "status": "NEW",
+                        "subject": "[WIP][TASK] Migrate resource endpoints to Actions API",
+                        "thisChange": false,
+                        "patchSet": 2,
+                        "chainedAt": 2
+                    },
+                    {
+                        "number": 92191,
+                        "status": "NEW",
+                        "subject": "[TASK] Migrate PageTree to Action API",
+                        "thisChange": false,
+                        "patchSet": 18,
+                        "chainedAt": 18
+                    },
+                    {
+                        "number": 92322,
+                        "status": "NEW",
+                        "subject": "[TASK] Migrate dashboard to Actions API",
+                        "thisChange": false,
+                        "patchSet": 11,
+                        "chainedAt": 11
+                    },
+                    {
+                        "number": 92724,
+                        "status": "ABANDONED",
+                        "subject": "[WIP][FEATURE] Implement OAuth authorization server",
+                        "thisChange": false,
+                        "patchSet": 6,
+                        "chainedAt": 6
+                    },
+                    {
+                        "number": 92323,
+                        "status": "MERGED",
+                        "subject": "[TASK] Avoid `json_encode()` workarounds in Settings API",
+                        "thisChange": false,
+                        "patchSet": 10,
+                        "chainedAt": 8
+                    },
+                    {
+                        "number": 92224,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Add MCP Server demo based on Actions API",
+                        "thisChange": false,
+                        "patchSet": 19,
+                        "chainedAt": 19
+                    },
+                    {
+                        "number": 92223,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Provide AI Tool provider based on Actions API",
+                        "thisChange": false,
+                        "patchSet": 16,
+                        "chainedAt": 16
+                    },
+                    {
+                        "number": 91486,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Implement API Hub",
+                        "thisChange": false,
+                        "patchSet": 29,
+                        "chainedAt": 29
+                    },
+                    {
+                        "number": 93423,
+                        "status": "NEW",
+                        "subject": "[TASK] Implement standalone redirect route option",
+                        "thisChange": false,
+                        "patchSet": 7,
+                        "chainedAt": 7
+                    },
+                    {
+                        "number": 91666,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Provide OpenAPI spec w/ Swagger UI for Actions API",
+                        "thisChange": false,
+                        "patchSet": 23,
+                        "chainedAt": 23
+                    },
+                    {
+                        "number": 91563,
+                        "status": "NEW",
+                        "subject": "[WIP][FEATURE] Introduce Action API",
+                        "thisChange": true,
+                        "patchSet": 46,
+                        "chainedAt": 46
+                    },
+                    {
+                        "number": 93064,
+                        "status": "NEW",
+                        "subject": "[TASK] Introduce JSON SchemaBuilder and Schema based Hydrator",
+                        "thisChange": false,
+                        "patchSet": 16,
+                        "chainedAt": 16
+                    }
+                ],
                 "messages": null,
                 "botMessageCount": null
             }

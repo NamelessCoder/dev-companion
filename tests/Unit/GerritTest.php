@@ -277,16 +277,16 @@ final class GerritTest extends TestCase
     #[Test]
     public function theAnswerCarriesThePatchSetACheckoutIsHeldAgainst(): void
     {
-        $asked = '';
+        $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {
-            $asked = $url;
+            $asked[] = $url;
 
             return self::RESPONSE;
         });
 
         $change = $gerrit->change('95040')['changes'][0];
 
-        self::assertStringContainsString('o=CURRENT_REVISION', $asked);
+        self::assertStringContainsString('o=CURRENT_REVISION', $asked[0]);
         self::assertSame(3, $change['patchSet']);
         self::assertSame('e82b930e6e0587842427496c5ce01f625b27fb66', $change['commit']);
     }
@@ -333,10 +333,11 @@ final class GerritTest extends TestCase
 
         $answer = $gerrit->change('95169', 10);
 
-        self::assertStringContainsString('q=change%3A95169', $asked[0]);
+        $queries = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '?q=')));
+        self::assertStringContainsString('q=change%3A95169', $queries[0]);
         // The id the first response carried, asked for as a query of its own.
-        self::assertStringContainsString('q=change%3AI4b0290760f14296feec6ab30ad49595899ca08f4', $asked[1]);
-        self::assertCount(2, $asked);
+        self::assertStringContainsString('q=change%3AI4b0290760f14296feec6ab30ad49595899ca08f4', $queries[1]);
+        self::assertCount(2, $queries);
         self::assertSame([95169, 93202], array_column($answer['changes'], 'number'));
         self::assertSame(['main', '13.4'], array_column($answer['changes'], 'branch'));
         self::assertSame(
@@ -356,13 +357,13 @@ final class GerritTest extends TestCase
     public function aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed(): void
     {
         $asked = 0;
-        $shared = new Gerrit(function () use (&$asked): string {
-            $asked++;
+        $shared = new Gerrit(function (string $url) use (&$asked): string {
+            $asked += str_contains($url, '?q=') ? 1 : 0;
 
             return self::SHARED;
         });
-        $alone = new Gerrit(function () use (&$asked): string {
-            $asked++;
+        $alone = new Gerrit(function (string $url) use (&$asked): string {
+            $asked += str_contains($url, '?q=') ? 1 : 0;
 
             return self::NUMBERED;
         });
@@ -435,6 +436,214 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * Change 91563, the head of the stack `feedback/2026-08-21-074010` read as
+     * one change.
+     */
+    private const STACKED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[WIP][FEATURE] Introduce Action API",'
+        . '"status":"NEW","updated":"2026-08-19 09:12:41.000000000","_number":91563,'
+        . '"change_id":"I8ca1a6d0d3d5e0c02c1d3a2b7e6f5a4c3b2a1908","current_revision_number":46,'
+        . '"current_revision":"ad7dc9be0e8a2c4f6b8d0a2c4e6f8a0b2c4d6e80"}]';
+
+    /**
+     * What `/changes/91563/revisions/current/related` answered on 2026-08-21,
+     * four of its fifteen entries: the top of the stack, the one merged part,
+     * the change that was asked about, and what it is built on.
+     *
+     * 92323 is the entry the two revision numbers are two facts on — the chain
+     * holds patch set 8 while the change stands at 10.
+     */
+    private const RELATED = ")]}'\n"
+        . '{"changes":['
+        . '{"project":"Packages/TYPO3.CMS","change_id":"I455266664387f5bb28c7518fb962a13d90b75ff0",'
+        . '"commit":{"commit":"e02be2c6672f09e8ca570924e13aff37efc89ff2",'
+        . '"parents":[{"commit":"9ada9785fe1c8ff22b3f9ccf4d431c70e735bdf4"}],'
+        . '"subject":"[WIP][FEATURE] Provide Record Actions"},'
+        . '"_change_number":92197,"_revision_number":9,"_current_revision_number":9,"status":"NEW"},'
+        . '{"project":"Packages/TYPO3.CMS","change_id":"I3b8c1e6a5d4f2c0b9a8e7d6c5b4a39281706f5e4",'
+        . '"commit":{"commit":"b4c6d8e0f2a4c6e80a2c4e6f8a0b2c4d6e8f0a2c",'
+        . '"parents":[{"commit":"ad7dc9be0e8a2c4f6b8d0a2c4e6f8a0b2c4d6e80"}],'
+        . '"subject":"[TASK] Avoid `json_encode()` workarounds in Settings API"},'
+        . '"_change_number":92323,"_revision_number":8,"_current_revision_number":10,"status":"MERGED"},'
+        . '{"project":"Packages/TYPO3.CMS","change_id":"I8ca1a6d0d3d5e0c02c1d3a2b7e6f5a4c3b2a1908",'
+        . '"commit":{"commit":"ad7dc9be0e8a2c4f6b8d0a2c4e6f8a0b2c4d6e80",'
+        . '"parents":[{"commit":"c4e6f8a0b2c4d6e8f0a2c4e6f8a0b2c4d6e8f0a2"}],'
+        . '"subject":"[WIP][FEATURE] Introduce Action API"},'
+        . '"_change_number":91563,"_revision_number":46,"_current_revision_number":46,"status":"NEW"},'
+        . '{"project":"Packages/TYPO3.CMS","change_id":"Ie6f8a0b2c4d6e8f0a2c4e6f8a0b2c4d6e8f0a2c4",'
+        . '"commit":{"commit":"c4e6f8a0b2c4d6e8f0a2c4e6f8a0b2c4d6e8f0a2","parents":[],'
+        . '"subject":"[TASK] Introduce JSON SchemaBuilder"},'
+        . '"_change_number":93064,"_revision_number":16,"_current_revision_number":16,"status":"NEW"}]}';
+
+    /** The stacked change, with its chain where that is what was asked for. */
+    private static function stacked(string $url): string
+    {
+        return str_contains($url, '/related') ? self::RELATED : self::STACKED;
+    }
+
+    /**
+     * A change read alone says a feature exists; the stack under it says what
+     * the feature consists of and how far it has got — `D-ANS-094`.
+     *
+     * `feedback/2026-08-21-074010` read 91563 and was handed the head of a
+     * fifteen-change stack with nothing saying there was more to read. The
+     * order is git parentage, child first, so the place of the change in the
+     * list is what says how much is stacked on it and how much it is built on.
+     */
+    #[Test]
+    public function aChangeCarriesTheStackOfChangesItIsOnePartOf(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::stacked($url);
+        });
+
+        $change = $gerrit->change('91563')['changes'][0];
+
+        self::assertContains(
+            'https://review.typo3.org/changes/91563/revisions/current/related',
+            $asked,
+        );
+        self::assertSame([92197, 92323, 91563, 93064], array_column($change['chain'], 'number'));
+        // The entry's own state, which is what says that one part of the
+        // feature landed and one is still open.
+        self::assertSame(['NEW', 'MERGED', 'NEW', 'NEW'], array_column($change['chain'], 'status'));
+        self::assertSame([false, false, true, false], array_column($change['chain'], 'thisChange'));
+        self::assertSame('[TASK] Introduce JSON SchemaBuilder', $change['chain'][3]['subject']);
+    }
+
+    /**
+     * The two revision numbers per entry are two facts, and the merged entry is
+     * where they come apart: the stack holds patch set 8 of change 92323 while
+     * that change stands at 10.
+     *
+     * Acting on the patch set the chain names is the mistake carrying only that
+     * number would make possible, which is `D-ANS-094`'s second **Wrong if**.
+     */
+    #[Test]
+    public function aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => self::stacked($url));
+
+        $chain = $gerrit->change('91563')['changes'][0]['chain'];
+
+        self::assertSame(['chainedAt' => 8, 'patchSet' => 10], [
+            'chainedAt' => $chain[1]['chainedAt'],
+            'patchSet' => $chain[1]['patchSet'],
+        ]);
+        // The ordinary entry, where the chain holds what the change stands at.
+        self::assertSame([46, 46], [$chain[2]['chainedAt'], $chain[2]['patchSet']]);
+    }
+
+    /**
+     * By the number and not by the Change-Id. `/changes/<Change-Id>/…/related`
+     * answered 404 `Multiple changes found` on 2026-08-21 for the backport pair
+     * `D-ANS-080` puts in this answer, so the handle the caller passed is not
+     * the handle this call can be made with.
+     */
+    #[Test]
+    public function theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return str_contains($url, 'q=change%3A95169') ? self::NUMBERED : self::SHARED;
+        });
+
+        $gerrit->change('95169', 10);
+
+        self::assertSame([
+            'https://review.typo3.org/changes/95169/revisions/current/related',
+            'https://review.typo3.org/changes/93202/revisions/current/related',
+        ], array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '/related'))));
+    }
+
+    /**
+     * A change nothing is stacked on and that is stacked on nothing. The review
+     * server answers `{"changes":[]}` for it — 20 bytes measured on 2026-08-21
+     * — and that is the ordinary case rather than a failure, so it is an empty
+     * chain and not a null one.
+     */
+    #[Test]
+    public function aChangeStandingAloneHasAnEmptyChainRatherThanNone(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => str_contains($url, '/related')
+            ? ")]}'\n" . '{"changes":[]}'
+            : self::RESPONSE);
+
+        $change = $gerrit->change('95040')['changes'][0];
+
+        self::assertSame([], $change['chain']);
+    }
+
+    /**
+     * A chain that could not be read is not a change standing alone. Nothing in
+     * the change payload says whether there is one, so an empty list here would
+     * be this side inventing the answer the call failed to bring back.
+     */
+    #[Test]
+    public function aChainCallThatDidNotAnswerIsNotAChangeStandingAlone(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): ?string => str_contains($url, '/related')
+            ? null
+            : self::RESPONSE);
+
+        $answer = $gerrit->change('95040');
+
+        self::assertSame('answered', $answer['status']);
+        self::assertNull($answer['changes'][0]['chain']);
+    }
+
+    /**
+     * The stack is what the caller reads, so the text half says where the
+     * change sits in it and which entries have moved on.
+     */
+    #[Test]
+    public function theTextHalfSaysWhereInTheStackTheChangeSits(): void
+    {
+        $chain = (new Gerrit(static fn(string $url): string => self::stacked($url)))
+            ->change('91563')['changes'][0];
+
+        $said = implode("\n", GerritLookup::chain($chain, true));
+
+        self::assertStringContainsString('4 changes, 2 stacked on this one and 1 under it', $said);
+        self::assertStringContainsString('91563 · NEW · [WIP][FEATURE] Introduce Action API · this change', $said);
+        self::assertStringContainsString('chained at patch set 8, now at 10', $said);
+        // Nothing to print for a change standing alone: that is the ordinary
+        // case rather than a finding.
+        self::assertSame([], GerritLookup::chain(['chain' => []], true));
+        // And an issue search asked for none of it, so silence there is not a
+        // claim that it could not be read.
+        self::assertSame([], GerritLookup::chain(['chain' => null], false));
+        self::assertStringContainsString('could not be read', implode("\n", GerritLookup::chain(['chain' => null], true)));
+    }
+
+    /**
+     * The two relations are told apart where both are in one answer. A stack is
+     * different changes built on one another; a shared Change-Id is one patch
+     * on several branches, and reading the first as the second would say the
+     * label was the whole of the work — `D-ANS-094`.
+     */
+    #[Test]
+    public function theTwoRelationsAChangeStandsInAreToldApart(): void
+    {
+        $said = implode("\n", GerritLookup::relations(false));
+
+        self::assertStringContainsString('built on one another', $said);
+        self::assertStringContainsString('Change-Id', $said);
+        // The entry's status is the entry's, which is the first way a chain is
+        // misread.
+        self::assertStringContainsString('MERGED entry says that change landed', $said);
+        // Said only where an entry in this answer is behind, because it is a
+        // warning about those entries rather than a property of chains.
+        self::assertStringNotContainsString('moved on since', $said);
+        self::assertStringContainsString('moved on since', implode("\n", GerritLookup::relations(true)));
+    }
+
+    /**
      * The review half of change 93319, as review.typo3.org answered it on
      * 2026-08-14 with the labels, the accounts and the messages asked for.
      *
@@ -484,17 +693,17 @@ final class GerritTest extends TestCase
     #[Test]
     public function aChangeCarriesTheVoteEachLabelStandsAt(): void
     {
-        $asked = '';
+        $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {
-            $asked = $url;
+            $asked[] = $url;
 
             return self::reviewed($url);
         });
 
         $change = $gerrit->change('93319')['changes'][0];
 
-        self::assertStringContainsString('o=DETAILED_LABELS', $asked);
-        self::assertStringContainsString('o=DETAILED_ACCOUNTS', $asked);
+        self::assertStringContainsString('o=DETAILED_LABELS', $asked[0]);
+        self::assertStringContainsString('o=DETAILED_ACCOUNTS', $asked[0]);
         self::assertSame('I4924af7ec012e7b12771d64c75687f194952e703', $change['changeId']);
         self::assertSame([
             [

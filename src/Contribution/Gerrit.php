@@ -183,6 +183,10 @@ final class Gerrit
      * only where the change says it carries one (`D-ANS-079`). The review log is
      * what `$messages` asks for, on every change the answer carries.
      *
+     * The relation chain comes with them, on every change the answer carries,
+     * because a change read alone says a feature exists where the stack under
+     * it says what the feature consists of (`D-ANS-094`).
+     *
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     public function change(string $change, int $limit = 1, string $messages = 'none'): array
@@ -216,6 +220,7 @@ final class Gerrit
 
         foreach ($answer['changes'] as $index => $found) {
             $answer['changes'][$index]['comments'] = $this->comments($found['number'], $found['commentCount']);
+            $answer['changes'][$index]['chain'] = $this->chain($found['number']);
             if (!is_array($found['messages'])) {
                 continue;
             }
@@ -301,6 +306,71 @@ final class Gerrit
         Recent::hold($url, $comments);
 
         return $comments;
+    }
+
+    /**
+     * The changes this one is stacked on and the changes stacked on it, child
+     * first.
+     *
+     * Its own endpoint, because no query option carries the relation, and asked
+     * by the change number: `/changes/<Change-Id>/…/related` answered 404
+     * `Multiple changes found` on 2026-08-21 for the backport pair `D-ANS-080`
+     * put in this answer. Nothing in the change payload says beforehand whether
+     * there is a chain, so this is paid on every change and an empty one is the
+     * ordinary answer rather than a failure — which is where it differs from
+     * the comments beside it.
+     *
+     * The two revision numbers per entry are two facts. Gerrit names the patch
+     * set that is in the chain and the patch set that change stands at now, and
+     * they are one apart on a merged entry already, so acting on a chain entry
+     * without holding the two against each other reads the stack as more
+     * current than it is (`D-ANS-094`).
+     *
+     * @return list<array<string, mixed>>|null null where it could not be read
+     */
+    private function chain(int $number): ?array
+    {
+        if ($number < 1) {
+            return null;
+        }
+
+        $url = self::HOST . '/changes/' . $number . '/revisions/current/related';
+        $held = Recent::held($url, self::HELD_FOR);
+        if (is_array($held)) {
+            return $held;
+        }
+
+        $decoded = Fetch::decode($this->fetch->get($url, ['Accept: application/json']));
+        if (!is_array($decoded['changes'] ?? null)) {
+            return null;
+        }
+
+        $chain = [];
+        foreach ($decoded['changes'] as $entry) {
+            if (!is_array($entry)) {
+                continue;
+            }
+            $commit = is_array($entry['commit'] ?? null) ? $entry['commit'] : [];
+            $related = isset($entry['_change_number']) && is_numeric($entry['_change_number'])
+                ? (int) $entry['_change_number']
+                : 0;
+            $chain[] = [
+                'number' => $related,
+                'status' => is_string($entry['status'] ?? null) ? $entry['status'] : '',
+                'subject' => is_string($commit['subject'] ?? null) ? $commit['subject'] : '',
+                'thisChange' => $related === $number,
+                'patchSet' => isset($entry['_current_revision_number']) && is_numeric($entry['_current_revision_number'])
+                    ? (int) $entry['_current_revision_number']
+                    : 0,
+                'chainedAt' => isset($entry['_revision_number']) && is_numeric($entry['_revision_number'])
+                    ? (int) $entry['_revision_number']
+                    : 0,
+            ];
+        }
+
+        Recent::hold($url, $chain);
+
+        return $chain;
     }
 
     /**
@@ -482,8 +552,9 @@ final class Gerrit
             'commentCount' => isset($entry['total_comment_count']) && is_numeric($entry['total_comment_count'])
                 ? (int) $entry['total_comment_count']
                 : 0,
-            // Filled by `change()`, from an endpoint of its own.
+            // Filled by `change()`, each from an endpoint of its own.
             'comments' => null,
+            'chain' => null,
             'messages' => is_array($entry['messages'] ?? null) ? self::messages($entry['messages']) : null,
             // Counted by `change()`, before the filter it is the measure of.
             'botMessageCount' => null,

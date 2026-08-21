@@ -129,3 +129,53 @@ alone, and nothing in the answer says there is more to read.
 - A session that receives the Change-Id siblings and the chain in one answer
   reads them as one set, which would say the label was the whole of the work and
   the two relations should never have shared a paragraph.
+
+## Covered by
+
+- `GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf`
+- `GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt`
+- `GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer`
+- `GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone`
+- `GerritTest::aChainCallThatDidNotAnswerIsNotAChangeStandingAlone`
+- `GerritTest::theTextHalfSaysWhereInTheStackTheChangeSits`
+- `GerritTest::theTwoRelationsAChangeStandsInAreToldApart`
+
+## Since then
+
+Built on 2026-08-21. `chain` is a field of each change entry, filled from
+`/changes/<number>/revisions/current/related` by `Gerrit::chain()` — one call
+per change the answer carries, by the number, because the Change-Id form still
+answers 404 `Multiple changes found` for the pair `D-ANS-080` puts in the same
+answer. Every response shape the **Evidence** was measured from reproduced on
+the day it was built.
+
+Empty and null are two answers, the shape `comments` beside it already has. `[]`
+is a change standing alone and is the ordinary case; `null` is a chain nobody
+read, which is every hit of an issue search and a call that did not come back.
+An empty list on a failed call would be this side inventing the answer, and
+nothing in the change payload could correct it.
+
+The patch set is carried, and as two numbers rather than one. `chainedAt` is
+what the stack holds and `patchSet` is what that change stands at now, which is
+the only place either fact is available: the chain names a revision no other
+response does, and the entry's current one is in the same payload and costs
+nothing. The one number on its own is the second **Wrong if** written as a field
+— a reader handed `8` for change 92323 and nothing else acts on a patch set two
+behind. The text half prints the pair only where they differ, so the ordinary
+entry stays one line.
+
+What is not carried is the commit and the fetch ref, as decided, and the entry's
+Change-Id with them. The chain relates commits, so an id there would put the
+relation this answer is about beside the one it is being told apart from, on the
+same entry.
+
+The recorded answer is the report's own change. `bin/cli tools:record` on
+2026-08-21 answered `change: "91563"` with all fifteen entries, 92323 MERGED at
+patch set 8 against the 10 it stands at, 92724 ABANDONED, and 91563 marked as
+the change that was asked about, thirteen from the top of the stack. The two
+changes recorded beside it — the backport pair 89011 and 89012 — both answer
+`[]`, which is what a chain reads as on a change nobody built on.
+
+The skills are unchanged. `typo3-core-patch-review` and
+`typo3-core-patch-checkout` name what the lookup answers in their own words, and
+what a chain is is stated by the answer itself.

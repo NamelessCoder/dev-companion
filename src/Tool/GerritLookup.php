@@ -32,7 +32,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
     public static function annotations(): array
@@ -141,6 +141,28 @@ final class GerritLookup extends ReadOnlyTool
                         'inReplyTo' => ['type' => ['string', 'null'], 'description' => 'The id of the comment this answers, null where it starts a thread.'],
                         'message' => Schema::string('The comment as it was written.'),
                     ], ['id', 'author', 'on', 'patchSet', 'file', 'line', 'unresolved', 'inReplyTo', 'message']),
+                ],
+                'chain' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'The relation chain this change sits in, child first: above it the changes '
+                        . 'stacked on it, then itself, then the changes it is built on. This is the other relation '
+                        . 'and not the Change-Id one — a chain is different changes built on one another, a shared '
+                        . 'Change-Id is one patch on several branches, and reading the two as one set overstates '
+                        . 'both. Empty means the change stands alone, which is the ordinary case. Null means the '
+                        . 'chain was not read: an issue search asks for none, and a change lookup whose call did '
+                        . 'not answer says so here rather than with an empty list.',
+                    'items' => Schema::object([
+                        'number' => Schema::integer('The entry\'s change number, which reads it by passing it back as change.'),
+                        'status' => Schema::string('NEW, MERGED or ABANDONED — the entry\'s own state, not the state of the change this answer is about. A MERGED entry says that part of the stack landed.'),
+                        'subject' => Schema::string('The commit subject of the patch set the chain names.'),
+                        'thisChange' => [
+                            'type' => 'boolean',
+                            'description' => 'Whether this entry is the change the answer is about. Its place in '
+                                . 'the list is what says how much is stacked on it and how much it is built on.',
+                        ],
+                        'patchSet' => Schema::integer('The patch set the entry stands at now.'),
+                        'chainedAt' => Schema::integer('The patch set of the entry that the chain is built on. Lower than patchSet means the stack holds the older one and that change has moved on since, so act on the entry by its number rather than on the patch set named here.'),
+                    ], ['number', 'status', 'subject', 'thisChange', 'patchSet', 'chainedAt']),
                 ],
                 'messages' => [
                     'type' => ['array', 'null'],
@@ -371,6 +393,8 @@ final class GerritLookup extends ReadOnlyTool
             $ids = [];
             $commented = false;
             $voted = false;
+            $stacked = false;
+            $moved = false;
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
                 $lines[] = sprintf('## %s (%s)', $entry['subject'], $entry['status']);
@@ -397,7 +421,19 @@ final class GerritLookup extends ReadOnlyTool
                     $lines[] = self::vote($label);
                 }
                 $commented = $commented || ($entry['comments'] ?? []) !== [];
-                $lines = [...$lines, ...self::comments($entry, $issue === ''), ...self::log($entry, $messages)];
+                $stacked = $stacked || ($entry['chain'] ?? []) !== [];
+                foreach ($entry['chain'] ?? [] as $related) {
+                    $moved = $moved || self::behind($related);
+                }
+                $lines = [
+                    ...$lines,
+                    ...self::chain($entry, $issue === ''),
+                    ...self::comments($entry, $issue === ''),
+                    ...self::log($entry, $messages),
+                ];
+            }
+            if ($stacked) {
+                $lines = [...$lines, ...self::relations($moved)];
             }
             if ($commented) {
                 $lines[] = '';
@@ -482,6 +518,96 @@ final class GerritLookup extends ReadOnlyTool
             },
             $held === [] ? ' · nobody has been asked' : ' · ' . implode(' · ', $held),
         );
+    }
+
+    /**
+     * What a relation chain is, and which of the two relations in this answer
+     * it is.
+     *
+     * Read as the other one, a chain would say the Change-Id was the whole of
+     * the work — so the paragraph the pair gets under `D-ANS-080` is what this
+     * one sits beside, and neither says what the other says. The staleness
+     * sentence is printed only where an entry is behind, because it is a
+     * warning about entries in this answer rather than a property of chains.
+     * Separated from `answer()` so it can be held without a review server.
+     *
+     * @return list<string>
+     */
+    public static function relations(bool $moved): array
+    {
+        $lines = ['', 'A relation chain is a stack of different changes built on one another, listed child first: '
+            . 'what stands above a change is stacked on it, and what stands below it is what it is built on. Each '
+            . 'entry\'s status is that entry\'s own, so a MERGED entry says that change landed and says nothing '
+            . 'about the change you asked for. Gerrit relates a chain by the commits, which is not the Change-Id '
+            . 'relation a backport keeps, and neither set contains the other.'];
+        if ($moved) {
+            $lines[] = '';
+            $lines[] = 'An entry chained at an earlier patch set than it stands at now has moved on since the '
+                . 'stack was built on it. Read it by its number rather than acting on the patch set the chain '
+                . 'names.';
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Whether the stack holds an earlier patch set of this entry than the one
+     * it stands at now.
+     *
+     * @param array<string, mixed> $related
+     */
+    private static function behind(array $related): bool
+    {
+        return $related['chainedAt'] > 0 && $related['chainedAt'] < $related['patchSet'];
+    }
+
+    /**
+     * The stack the change sits in, where there is one.
+     *
+     * A change read alone says a feature exists; the stack under it says what
+     * the feature consists of, which parts landed and which were given up
+     * (`D-ANS-094`). Nothing is printed for a change standing alone, which is
+     * the ordinary case rather than a finding. Separated from `answer()` so it
+     * can be held without a review server.
+     *
+     * @param array<string, mixed> $entry
+     * @param bool $read whether the chain was asked for, which an issue search
+     *                   does for no change
+     * @return list<string>
+     */
+    public static function chain(array $entry, bool $read): array
+    {
+        if ($entry['chain'] === null) {
+            return $read
+                ? ['', 'The relation chain of this change could not be read: the review server answered the change '
+                    . 'and not what it is stacked on, so this says nothing about whether there is a stack.']
+                : [];
+        }
+        if ($entry['chain'] === []) {
+            return [];
+        }
+
+        $place = array_search(true, array_column($entry['chain'], 'thisChange'), true);
+        $lines = ['', $place === false
+            ? sprintf('### Relation chain (%d changes)', count($entry['chain']))
+            : sprintf(
+                '### Relation chain (%d changes, %d stacked on this one and %d under it)',
+                count($entry['chain']),
+                $place,
+                count($entry['chain']) - $place - 1,
+            )];
+        foreach ($entry['chain'] as $related) {
+            $said = [sprintf('%d · %s · %s', $related['number'], $related['status'], $related['subject'])];
+            if ($related['thisChange']) {
+                $said[] = 'this change';
+            }
+            if (self::behind($related)) {
+                $said[] = sprintf('chained at patch set %d, now at %d', $related['chainedAt'], $related['patchSet']);
+            }
+            $lines[] = '- ' . implode(' · ', $said);
+        }
+
+        return $lines;
     }
 
     /**

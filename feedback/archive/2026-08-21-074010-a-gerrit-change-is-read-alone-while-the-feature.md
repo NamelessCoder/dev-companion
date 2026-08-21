@@ -1,7 +1,8 @@
 ---
 date: 2026-08-21T07:40:10+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-21
 model: claude-opus-5[1m]
 tool: typo3_gerrit_lookup
 ---

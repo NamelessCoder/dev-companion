@@ -201,6 +201,11 @@ final class ToolCalls
             'gerrit: one change by number' => ['typo3_gerrit_lookup', [
                 'change' => '89011',
             ]],
+            // The head of a stack, which answers like a change standing alone
+            // until the relation chain is in it — `D-ANS-094`.
+            'gerrit: a change that is one part of a stack' => ['typo3_gerrit_lookup', [
+                'change' => '91563',
+            ]],
             'documentation: search' => ['typo3_documentation_lookup', [
                 'queries' => ['page title event', 'page title provider'],
                 'targetVersion' => '14.3',

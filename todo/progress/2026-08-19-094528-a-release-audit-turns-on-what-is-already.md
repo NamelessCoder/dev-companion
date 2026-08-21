@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094528-a-release-audit-turns-on-what-is-already.md
 **Priority:** normal
+**Branch:** todo/a-release-audit-turns-on-what-is-already
+**Claimed:** 2026-08-21
 
 Build `typo3_ter_lookup`: an extension key goes in, and what the TER holds under
 it comes out, one entry per published version with the number, the state, the

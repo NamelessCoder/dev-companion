@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-19-094457-the-guides-list-reached-me-only-as-ids-in.md
 **Priority:** normal
+**Branch:** todo/the-guides-list-reached-me-only-as-ids-in
+**Claimed:** 2026-08-21
 
 Judged on 2026-08-21 as the ladder's step 2, delivery, and written up in
 `D-GUI-012`: the two `extension/compatibility/` documents are named by no

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-21-074010-a-gerrit-change-is-read-alone-while-the-feature.md
 **Priority:** low
+**Branch:** todo/a-gerrit-change-is-read-alone-while-the-feature
+**Claimed:** 2026-08-21
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

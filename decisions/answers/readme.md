@@ -10,6 +10,7 @@ one is added.
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how the declared suites are run outside the core too · 2026-08-21
 - [`D-ANS-093`][D-ANS-093] — A major's deprecations come back in one call and the tag bounds a question · 2026-08-21
+- [`D-ANS-094`][D-ANS-094] — A change answer names the relation chain the change sits in · 2026-08-21
 - [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-087`][D-ANS-087] — The project answer stays whole because a call is what costs · 2026-08-19
 - [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section, and names what it left out · 2026-08-19
@@ -99,6 +100,7 @@ one is added.
 [D-ANS-091]: ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: ans-092-the-project-answer-says-how-the-declared-suites-are-run-outside-the-core-too.md
 [D-ANS-093]: ans-093-a-majors-deprecations-come-back-in-one-call-and-the-tag-bounds-a-question.md
+[D-ANS-094]: ans-094-a-change-answer-names-the-relation-chain-the-change-sits-in.md
 [D-ANS-086]: ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md
 [D-ANS-087]: ans-087-the-project-answer-stays-whole-because-a-call-is-what-costs.md
 [D-ANS-088]: ans-088-the-orientation-answer-is-asked-for-by-section-and-names-what-it-left-out.md

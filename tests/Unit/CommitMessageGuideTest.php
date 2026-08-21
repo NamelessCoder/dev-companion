@@ -49,6 +49,25 @@ final class CommitMessageGuideTest extends TestCase
         self::assertContains('breaking-not-assessed', $codes);
     }
 
+    /**
+     * The line under the draft and the draft itself say the same thing: the
+     * project workflow demands no trailer, and writes the one the call passed —
+     * `D-GUI-017`.
+     */
+    #[Test]
+    public function theProjectAnswerSaysTheIssueItWroteIsTheOneThatWasPassed(): void
+    {
+        $result = CommitMessageGuide::answer([
+            'changeType' => 'TASK',
+            'summary' => 'Update the frontend build to current dependencies',
+            'issue' => '348',
+        ]);
+
+        self::assertSame('project', $result->data['workflow']);
+        self::assertStringContainsString("\nResolves: #348", $result->data['message']);
+        self::assertStringContainsString('Resolves: and Related: lines carry the issues this call passed', $result->text);
+    }
+
     /** An answer the caller gave in the call wins over the one the subject withholds. */
     #[Test]
     public function anIsBreakingTheCallerPassedAnswersItEvenWhenItIsFalse(): void

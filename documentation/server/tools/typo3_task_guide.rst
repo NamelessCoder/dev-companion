@@ -956,7 +956,7 @@ Text:
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
     - typo3_hint_lookup — with the concrete file paths, once they are known
     - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
-    - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and adds no Forge issue or release trailer
+    - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and demands no Forge issue or release trailer
     - typo3_task_guide — again, where the work enters a subject this task did not name — the first file under a test directory, the first run of a check the repository declares, the first branch or commit, the first edit to the documentation the package ships
     - typo3_feedback_record — when one of these answers was wrong or incomplete
 
@@ -1079,7 +1079,7 @@ Data:
             },
             {
                 "tool": "typo3_commit_message_guide",
-                "when": "with workflow=\"core\", before committing — the default is a repository of your own and adds no Forge issue or release trailer"
+                "when": "with workflow=\"core\", before committing — the default is a repository of your own and demands no Forge issue or release trailer"
             },
             {
                 "tool": "typo3_task_guide",
@@ -1206,7 +1206,7 @@ Text:
     - typo3_extension_describe — for what the extension dispatching the event already registers
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
     - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
-    - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and adds no Forge issue or release trailer
+    - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and demands no Forge issue or release trailer
     - typo3_task_guide — again, where the work enters a subject this task did not name — the first file under a test directory, the first run of a check the repository declares, the first branch or commit, the first edit to the documentation the package ships
     - typo3_feedback_record — when one of these answers was wrong or incomplete
 
@@ -1479,7 +1479,7 @@ Data:
             },
             {
                 "tool": "typo3_commit_message_guide",
-                "when": "with workflow=\"core\", before committing — the default is a repository of your own and adds no Forge issue or release trailer"
+                "when": "with workflow=\"core\", before committing — the default is a repository of your own and demands no Forge issue or release trailer"
             },
             {
                 "tool": "typo3_task_guide",

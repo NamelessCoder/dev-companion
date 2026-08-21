@@ -10,10 +10,13 @@ parts (changeType plus summary) or pass an existing message to check and correct
 it. The returned draft is ready to commit: the body is wrapped at 72 characters,
 and the checks name every run of lines the wrapping joined and every line it
 could not bring under the width. Defaults to a repository of your own, where the
-subject and body conventions apply but the Forge issue, the Releases: trailer
-and the changelog do not; pass workflow="core" for a patch against the TYPO3
-core, where the Releases: trailer is also held against the branches that take a
-patch today. Answers from: knowledge.
+subject and body conventions apply and no Forge issue, Releases: trailer or
+changelog is demanded. The issues you pass are still written as Resolves: and
+Related: trailers there — the same form a TYPO3 repository on GitHub links a
+commit to what it closes by. Pass workflow="core" for a patch against the TYPO3
+core, where the Forge issue and the Releases: trailer are required and the
+trailer is also held against the branches that take a patch today. Answers from:
+knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -30,9 +33,10 @@ Takes
     message: string  # optional
     # One of: core, project. Which rules to apply. "project", the default: any
     # repository of your own — the keyword, the 52/72 character limits and the
-    # wrapping are checked, no trailer is added or demanded, and [SECURITY] is
-    # allowed. "core": a patch against the TYPO3 core, with the Forge issue and the
-    # Releases: trailer required.
+    # wrapping are checked, no trailer is demanded or invented, the issues you pass
+    # are written out all the same, and [SECURITY] is allowed. "core": a patch
+    # against the TYPO3 core, with the Forge issue and the Releases: trailer
+    # required.
     workflow: string  # optional
     # One of: BUGFIX, FEATURE, TASK, DOCS, SECURITY. TYPO3 commit message keyword.
     # [SECURITY] is reserved for the TYPO3 Security Team and is only accepted with
@@ -41,9 +45,14 @@ Takes
     # Summary text without the TYPO3 keyword prefix. Say what the commit did, in
     # words a reader understands from the log alone.
     summary: string  # optional
-    # Forge issue number, with or without leading #.
+    # The issue this commit resolves, with or without leading #: the Forge issue
+    # number for a core patch, the number in your own tracker otherwise. It is
+    # written as a Resolves: trailer in either workflow. Resolving more than one is
+    # written out in a message and passed as message, which keeps every trailer it
+    # carries.
     issue: string  # optional
-    # Optional related Forge issue numbers.
+    # Issues this commit relates to without resolving, read as issue is and written
+    # as Related: trailers.
     relatedIssues: [string]  # optional
     # Target releases, for example main or 13.4. Left out, the draft carries a
     # RELEASE_TARGET placeholder and the checks name the lines taking a patch today
@@ -80,7 +89,8 @@ Answers with
         message: string
     # One of: core, project. Which rules the draft was written and checked against.
     # "core" adds the Forge issue and the Releases: trailer and demands them;
-    # "project" applies the subject and body rules alone.
+    # "project" applies the subject and body rules and writes only the trailers the
+    # call carried.
     workflow: string
 
 Answered
@@ -120,7 +130,7 @@ Text:
     Checks:
     - INFO: No commit message readiness issues found by the local checks.
 
-    Checked without the core workflow: keyword, 52/72 limits and wrapping apply, the Forge issue and the Releases: trailer do not. workflow="core" for a patch against the TYPO3 core.
+    Checked without the core workflow: keyword, 52/72 limits and wrapping apply, no Forge issue and no Releases: trailer are demanded, and the Resolves: and Related: lines carry the issues this call passed. workflow="core" for a patch against the TYPO3 core.
 
 Data:
 
@@ -166,7 +176,7 @@ Text:
     Checks:
     - INFO: No commit message readiness issues found by the local checks.
 
-    Checked without the core workflow: keyword, 52/72 limits and wrapping apply, the Forge issue and the Releases: trailer do not. workflow="core" for a patch against the TYPO3 core.
+    Checked without the core workflow: keyword, 52/72 limits and wrapping apply, no Forge issue and no Releases: trailer are demanded, and the Resolves: and Related: lines carry the issues this call passed. workflow="core" for a patch against the TYPO3 core.
 
 Data:
 

@@ -938,7 +938,7 @@ final class TaskGuide extends ReadOnlyTool
                 ? 'typo3_commit_message_guide, before committing — its default is this repository\'s case and '
                     . 'demands neither an issue number nor a release trailer'
                 : 'typo3_commit_message_guide with workflow="core", before committing — the default is a '
-                    . 'repository of your own and adds no Forge issue or release trailer';
+                    . 'repository of your own and demands no Forge issue or release trailer';
         }
         // This call again. It is made once, against the request, which is the
         // moment least is known about the work — so what the brief adds is the

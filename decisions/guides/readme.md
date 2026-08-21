@@ -7,6 +7,7 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-GUI-017`][D-GUI-017] — An issue the caller passed is written in either workflow · 2026-08-21
 - [`D-GUI-015`][D-GUI-015] — A case's own prompt reaches less than the brief that stands in for it · 2026-08-19
 - [`D-GUI-016`][D-GUI-016] — The brief carries its hints whether or not it names a skill · 2026-08-19
 - [`D-GUI-012`][D-GUI-012] — The brief names the guide the recognized work belongs to · 2026-08-18
@@ -23,6 +24,7 @@ one is added.
 - [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
+[D-GUI-017]: gui-017-an-issue-the-caller-passed-is-written-in-either-workflow.md
 [D-GUI-015]: gui-015-a-cases-own-prompt-reaches-less-than-the-brief-that-stands-in-for-it.md
 [D-GUI-016]: gui-016-the-brief-carries-its-hints-whether-or-not-it-names-a-skill.md
 [D-GUI-012]: gui-012-the-brief-names-the-guide-the-recognized-work-belongs-to.md

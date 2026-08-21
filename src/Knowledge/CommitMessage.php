@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Knowledge;
 
 /**
- * Drafts a TYPO3 core commit message and checks it against the contribution
- * rules. Touches no checkout, and the one thing it reads is the release lines a
- * `Releases:` trailer is held against.
+ * Drafts a TYPO3 commit message and checks it against the rules of the workflow
+ * it was written for. Touches no checkout, and the one thing it reads is the
+ * release lines a `Releases:` trailer is held against.
  *
  * The draft is emitted ready to use, so everything the rules demand of a commit
  * message has to hold for what this class returns: an agent copies the block
@@ -43,13 +43,14 @@ final class CommitMessage
      *
      * What a commit message looks like and what a commit message has to be
      * accompanied by are two different rules, and only the first one travels.
-     * The subject keyword, the 52/72 limits and the wrapping are used in
-     * TYPO3 projects and extensions throughout; `Resolves:`, `Releases:` and
-     * the Forge issue behind them exist in the core repository alone.
+     * The subject keyword, the 52/72 limits and the wrapping are used in TYPO3
+     * projects and extensions throughout, and so are `Resolves:` and
+     * `Related:`. What the core owns is the Forge issue behind them, the
+     * `Releases:` trailer and the changelog — `D-GUI-017`.
      */
     public const WORKFLOW_CORE = 'core';
 
-    /** Any other repository: the same message rules, none of the trailers. */
+    /** Any other repository: the same message rules, and only the trailers the caller passed. */
     public const WORKFLOW_PROJECT = 'project';
 
     /** Keywords a contributor may use; [SECURITY] belongs to the Security Team. */

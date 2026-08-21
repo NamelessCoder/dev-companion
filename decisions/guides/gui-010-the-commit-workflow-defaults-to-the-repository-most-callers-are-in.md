@@ -106,7 +106,9 @@ The behaviour is the half `R-AUD-003` leaves unstated. That requirement holds
 the guide to adding no trailer that means nothing outside the core, and says
 nothing about the one a caller passed on purpose. Which form an extension
 repository wants is a reading rather than a recall, so the repair is queued on
-the card serving that feedback rather than made here.
+the card serving that feedback rather than made here. That card was worked the
+same day: the form is `Resolves:` outside the core too, so what changed is the
+wording alone, and `D-GUI-017` carries what the reading found.
 
 The same feedback asked which keyword a dependency update takes that also
 migrates an API and regenerates committed build artefacts. Nothing is built for

@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
+use TYPO3\DevCompanion\Tool\ChangelogLookup;
 use TYPO3\DevCompanion\Tool\Registry;
 
 /**
@@ -174,6 +175,75 @@ final class ChangelogLookupTest extends TestCase
         self::assertSame(['14.2', '14.2', '14.2'], array_column($result->data['entries'], 'version'));
         // Off the names, so nothing was opened to answer it.
         self::assertSame('name', $result->data['matchedIn']);
+    }
+
+    /**
+     * The deprecations of one major come back in one call, carrying the tags a
+     * sweep used to spend a call apiece on — `D-ANS-093`.
+     *
+     * `feedback/2026-08-19-094403` composed that sweep out of eleven tag calls
+     * and reached 72 of the 75 deprecations of 14, at 1.7 times the payload of
+     * the one call that lists them. So `limit` carries the largest set the
+     * covered majors put under a version and a type, which is the 128
+     * deprecations of 12 counted in `.checkouts/12.4` on 2026-08-21.
+     */
+    #[Test]
+    public function aMajorsDeprecationsComeBackInOneCall(): void
+    {
+        $maximum = ChangelogLookup::inputSchema()['properties']['limit']['maximum'];
+        self::assertGreaterThanOrEqual(128, $maximum, 'the largest covered major does not fit in one answer');
+
+        Instance::discoverFrom($this->installationWithSixtyDeprecationsOfOneMajor());
+
+        $result = Registry::call('typo3_changelog_lookup', [
+            'type' => 'deprecation',
+            'version' => '14',
+            'limit' => $maximum,
+        ]);
+
+        self::assertSame(60, $result->data['matchCount']);
+        self::assertCount(60, $result->data['entries']);
+        self::assertStringNotContainsString('showing the first', $result->text);
+
+        // The surfaces a package ships pick its entries out of this answer,
+        // which is what the tag calls were for.
+        $tags = array_column($result->data['entries'], 'tags');
+        self::assertCount(
+            30,
+            array_filter($tags, static fn(array $carried): bool => in_array('ext:form', $carried, true)),
+        );
+    }
+
+    /**
+     * Sixty deprecations across two minors of one major, which is over the fifty
+     * a single answer used to carry.
+     *
+     * Half of them are tagged `ext:form` and half `ext:core`, because what the
+     * answer has to carry per entry is the tag the sweep is read by.
+     */
+    private function installationWithSixtyDeprecationsOfOneMajor(): string
+    {
+        $root = $this->composerProject();
+        $changelog = $root . '/vendor/typo3/cms-core/Documentation/Changelog';
+        foreach (['14.0', '14.3'] as $minor => $version) {
+            mkdir($changelog . '/' . $version, 0o777, true);
+            for ($entry = 1; $entry <= 30; $entry++) {
+                $issue = 108000 + $minor * 30 + $entry;
+                file_put_contents(
+                    sprintf('%s/%s/Deprecation-%d-DeprecatedApi%d.rst', $changelog, $version, $issue, $entry),
+                    sprintf(
+                        "Deprecation: #%d - Deprecated API %d\n\nDescription\n===========\n\n"
+                        . "The API is deprecated and will be removed in TYPO3 v15.0.\n\n"
+                        . ".. index:: PHP-API, FullyScanned, %s\n",
+                        $issue,
+                        $entry,
+                        $entry % 2 === 0 ? 'ext:form' : 'ext:core',
+                    ),
+                );
+            }
+        }
+
+        return $root;
     }
 
     /**

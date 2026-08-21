@@ -105,8 +105,8 @@ Ask the owner of each obligation rather than recalling it:
   backported to or a major before that. A released line publishes few entries
   per type, so the listing is the whole of what the core did of that kind and
   its titles are what a precedent is picked out of. A major still collecting
-  entries holds more of a type than one answer carries, so bound that one by
-  `tag` as well.
+  entries holds more of a type than the default answer carries, so raise `limit`
+  there.
 
   **Ask it in the words the entry is titled in, not in the identifier the diff
   removes.** What the enumeration above leaves you holding is a class and a

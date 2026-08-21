@@ -63,19 +63,21 @@ skip the ones that matter too.
    apart. `omittedHints` is that sentence as data: empty where the brief carried
    everything, and the ids it left where it stopped short.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
-   package declares, bounded by `tag` and with the query omitted. Those three
-   are the changelog's own axes, and the extension's vocabulary is not among
-   them: an entry carries a query only when its title carries every word of it
-   at once, and the core titled those entries about its own code.
+   package declares, with the query omitted and `limit` raised to carry that
+   major whole. Those two are the changelog's own axes, and the extension's
+   vocabulary is not among them: an entry carries a query only when its title
+   carries every word of it at once, and the core titled those entries about its
+   own code.
 
-   Step 2 picks the tags instead. `ext:core`, `ext:frontend`, `ext:form` and the
-   rest name the system extension a change is **in** — one call for each one the
-   package requires, renders through or registers into, which is more than its
-   manifest lists — and `TCA`, `TypoScript`, `Fluid`, `YAML`, `Backend`,
-   `Frontend` name the surface, one for each kind of file it ships. An extension
-   key of your own is not among them and matches nothing. Every call also
-   returns every tag that version and type carry, so the second call onwards is
-   read off the first rather than guessed at.
+   That is one call per declared major, and what comes back is the major. Every
+   entry carries its own index tags: `ext:core`, `ext:frontend`, `ext:form` and
+   the rest name the system extension a change is **in**, and `TCA`,
+   `TypoScript`, `Fluid`, `YAML`, `Backend`, `Frontend` name the surface. Step 2
+   picks the package's entries out of that answer by those tags — the system
+   extensions it requires, renders through or registers into, and the kinds of
+   file it ships — which costs no further call. An extension key of your own is
+   not among them and matches nothing, and `tag` narrows one question inside a
+   major rather than composing the sweep out of eleven.
 
    Step 2 is what the answers are checked against, which is the other half the
    words were doing. Verify each identifier that comes back in the checkout — a
@@ -125,11 +127,11 @@ skip the ones that matter too.
    fixer, a CI file, an `.editorconfig`. A deprecation is a statement about API
    the package calls, so a change that calls none has nothing for the sweep to
    land on and it is empty before it is run. That condition is worth stating
-   because this is the most expensive step of the order: one call per declared
-   major per tag. Which side a change falls on is read off the files it touches
-   and never off the task it started as — one PHP file edited along the way puts
-   it back among the ordinary ones, and a skip there costs the deprecation no
-   finding would have walked into.
+   because this step is the largest answer the order asks for: one call per
+   declared major, carrying that major's deprecations whole. Which side a change
+   falls on is read off the files it touches and never off the task it started
+   as — one PHP file edited along the way puts it back among the ordinary ones,
+   and a skip there costs the deprecation no finding would have walked into.
 
    A report names the step it did not reach, under either exemption, which is
    what step 2 already asks of itself.

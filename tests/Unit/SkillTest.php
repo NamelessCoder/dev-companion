@@ -642,8 +642,14 @@ final class SkillTest extends TestCase
         // got nothing; re-run on 2026-08-02, type: deprecation with version 14
         // and no query returns all 75, and tag: ext:form returns the 6 that
         // carry #109412, which the words missed at 39th place — past the
-        // default limit of 20, and the tag is what makes the sweep small enough
-        // to be read at all.
+        // default limit of 20.
+        //
+        // What bounds the sweep is those two axes and not the tag. The session
+        // that composed it out of one call per tag paid eleven of them to reach
+        // 72 of those 75, at 1.7 times the payload of the one call that lists
+        // the major (`feedback/2026-08-19-094403`, `D-ANS-093`), so `limit`
+        // carries the largest covered set — 128 — and the tags are read off the
+        // entries the one answer returns.
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $sweep = strpos($base, 'typo3_changelog_lookup');
@@ -656,12 +662,19 @@ final class SkillTest extends TestCase
         );
         self::assertStringContainsString('`type: deprecation`', $base);
         self::assertStringContainsString(
-            'bounded by `tag` and with the query omitted',
+            'with the query omitted and `limit` raised to carry that major whole',
             self::flat($base),
         );
-        // The extension's surface picks the tags and nothing else, which is the
-        // half of "from the extension's surface" that survives.
-        self::assertStringContainsString('Step 2 picks the tags instead', $base);
+        // One call per major, and the round trips the tag composition cost are
+        // gone rather than reordered.
+        self::assertStringContainsString('That is one call per declared major', self::flat($base));
+        self::assertStringNotContainsString('per declared major per tag', self::flat($base));
+        // The extension's surface picks the entries out of that answer, which
+        // is the half of "from the extension's surface" that survives.
+        self::assertStringContainsString(
+            "Step 2 picks the package's entries out of that answer by those tags",
+            self::flat($base),
+        );
         self::assertStringContainsString('name the system extension a change is **in**', $base);
         self::assertStringContainsString(
             'An extension key of your own is not among them',
@@ -697,8 +710,9 @@ final class SkillTest extends TestCase
         // prescribed and skipped on a change that added a fixer, an
         // `.editorconfig` and two CI commands. A deprecation is a statement
         // about API the package calls, so that sweep was empty before it ran —
-        // at one call per declared major per tag, which is what makes this step
-        // the expensive one to leave prescribed and unrun. It is the one
+        // at one call per declared major carrying that major whole, which is
+        // the largest answer the order asks for and what makes this step the
+        // expensive one to leave prescribed and unrun. It is the one
         // condition the order carries since step 3's came off, and it survives
         // for the reason that one did not: what a change touches is in front of
         // the session, and how the skill was activated is not (`D-SKL-034`).
@@ -716,6 +730,12 @@ final class SkillTest extends TestCase
         // whole of what makes the call skippable.
         self::assertStringContainsString(
             'a change that calls none has nothing for the sweep to land on',
+            self::flat($base),
+        );
+        // And what the condition is worth stating against, now that the cost is
+        // one answer rather than eleven calls (`D-ANS-093`).
+        self::assertStringContainsString(
+            'this step is the largest answer the order asks for',
             self::flat($base),
         );
         // And what keeps a tooling task that ends up editing one PHP file from
@@ -1121,10 +1141,12 @@ final class SkillTest extends TestCase
         // the one the paragraph below forbids.
         self::assertStringContainsString('the line the precedent would sit on', $skill);
         // And the second bound, without which a major still collecting entries
-        // answers with a page of its own cap. Read in `.checkouts/14.3` on
-        // 2026-08-09: 14.0 through 14.3.x hold 99 breaking and 34 important
-        // entries against a `limit` that caps at 50.
-        self::assertStringContainsString('holds more of a type than one answer carries', $skill);
+        // answers with a page of the default. Read in `.checkouts/14.3` on
+        // 2026-08-21: 14.0 through 14.3.x hold 99 breaking and 36 important
+        // entries, which one answer carries since the cap moved to 200
+        // (`D-ANS-093`) and the default of 20 does not.
+        self::assertStringContainsString('holds more of a type than the default answer carries', $skill);
+        self::assertStringContainsString('so raise `limit` there', $skill);
         self::assertStringContainsString(
             '**Ask it in the words the entry is titled in, not in the identifier the diff removes.**',
             $skill,

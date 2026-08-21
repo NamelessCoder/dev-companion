@@ -61,7 +61,7 @@ final class ChangelogLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Search the TYPO3 changelog: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". This is the first stop when building on a major you have not built on recently: what separates a current answer from a two-major-old one is written down here and almost nowhere else. A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. The versions the installation ships are read from the core package on disk; the ones above its own major are read from docs.typo3.org, which is what an upgrade to a version you have not installed is asking for. Every word of the query has to be carried by an entry; narrow further with type and version. A method or class you found in the code is a query of its own: an identifier reaches the entries naming it, whether or not the change was titled after it — inside the installed versions, which are the ones whose text is on disk.';
+        return 'Search the TYPO3 changelog: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". This is the first stop when building on a major you have not built on recently: what separates a current answer from a two-major-old one is written down here and almost nowhere else. A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. The versions the installation ships are read from the core package on disk; the ones above its own major are read from docs.typo3.org, which is what an upgrade to a version you have not installed is asking for. Every word of the query has to be carried by an entry; narrow further with type and version. A version and a type with the query omitted list whole under a raised limit, which is the deprecation sweep of one major in a single call. A method or class you found in the code is a query of its own: an identifier reaches the entries naming it, whether or not the change was titled after it — inside the installed versions, which are the ones whose text is on disk.';
     }
 
     public static function inputSchema(): array
@@ -72,8 +72,8 @@ final class ChangelogLookup extends ReadOnlyTool
                 'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its file name and the words that name spells. Where no entry carries all of them by name, the title stated inside the file is searched as well, which reaches a method name the file name leaves out; and a class, method or constant name reaches the entries that write it in their text, so a removed API can be asked for by the identifier you have, in any spelling of it: bare, qualified by its class, or fully qualified. The issue number is among the words a file name carries, so a deprecation\'s own number reaches every entry filed under it — the Feature the replacement was announced in, with the version it was released in. When nothing carries all of them there either, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
                 'type' => ['type' => 'string', 'enum' => ['breaking', 'deprecation', 'feature', 'important'], 'description' => 'Restrict to one kind of change. Breaking and deprecation are what affects existing code.'],
                 'version' => ['type' => 'string', 'description' => 'Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4" covers 13.4 and 13.4.x.'],
-                'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded by where words are not: every entry of a version and type is read for its tags. The changelog says nothing about which third-party extension a change affects, so an extension key of your own matches no tag.'],
-                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 50, 'default' => 20, 'description' => 'Maximum number of entries.'],
+                'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This bounds one question inside a version and a type. The sweep of a major does not need it: that version and type come back whole under a raised limit, and every entry carries its own tags to be read by. The changelog says nothing about which third-party extension a change affects, so an extension key of your own matches no tag.'],
+                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 200, 'default' => 20, 'description' => 'Maximum number of entries. Raise it to list a version and a type whole: the largest covered major holds 128 deprecations, and that sweep is one call rather than one per tag.'],
             ],
         ];
     }
@@ -256,8 +256,10 @@ final class ChangelogLookup extends ReadOnlyTool
         // The tags are inside the file, so narrowing by one costs a read of
         // every entry that survived the type and the version — 23 ms for the
         // deprecations of one major, six hundred for the whole changelog. That
-        // is the sweep this exists for, and it is why the filter is a field of
-        // its own rather than more words in the query.
+        // read is why it is a field of its own rather than more words in the
+        // query, and it bounds one question rather than a sweep: a major comes
+        // back whole from the version and the type under a raised `limit`,
+        // which `D-ANS-093` measured against eleven tag calls.
         $tags = [];
         if ($tag !== '') {
             $carrying = [];

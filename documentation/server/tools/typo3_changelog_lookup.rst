@@ -13,11 +13,12 @@ the entry states one, and the rule that answers the rest beside it. The versions
 the installation ships are read from the core package on disk; the ones above
 its own major are read from docs.typo3.org, which is what an upgrade to a
 version you have not installed is asking for. Every word of the query has to be
-carried by an entry; narrow further with type and version. A method or class you
-found in the code is a query of its own: an identifier reaches the entries
-naming it, whether or not the change was titled after it — inside the installed
-versions, which are the ones whose text is on disk. Answers from: packages,
-network.
+carried by an entry; narrow further with type and version. A version and a type
+with the query omitted list whole under a raised limit, which is the deprecation
+sweep of one major in a single call. A method or class you found in the code is
+a query of its own: an identifier reaches the entries naming it, whether or not
+the change was titled after it — inside the installed versions, which are the
+ones whose text is on disk. Answers from: packages, network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -51,12 +52,15 @@ Takes
     # Restrict to entries carrying this index tag: "ext:form" for the system
     # extension a change is in, "FullyScanned" or "NotScanned" for what the
     # Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend"
-    # for the surface. This is what a sweep is bounded by where words are not: every
-    # entry of a version and type is read for its tags. The changelog says nothing
-    # about which third-party extension a change affects, so an extension key of
-    # your own matches no tag.
+    # for the surface. This bounds one question inside a version and a type. The
+    # sweep of a major does not need it: that version and type come back whole under
+    # a raised limit, and every entry carries its own tags to be read by. The
+    # changelog says nothing about which third-party extension a change affects, so
+    # an extension key of your own matches no tag.
     tag: string  # optional
-    # Maximum number of entries.
+    # Maximum number of entries. Raise it to list a version and a type whole: the
+    # largest covered major holds 128 deprecations, and that sweep is one call
+    # rather than one per tag.
     limit: integer  # optional
 
 Answers with

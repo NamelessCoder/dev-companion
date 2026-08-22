@@ -1,7 +1,7 @@
 ---
 id: D-COD-003
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-COD-003 — A directory is read through symfony/finder
@@ -51,3 +51,24 @@ directory removal copied between test classes.
   else. The failure is loud — `rmdir` on a directory that still has something in
   it — and the fallback is the explicit sort by depth, which does not depend on
   the traversal order at all.
+
+## Confirmed on 2026-08-22
+
+The one idiom held. `glob()`, `scandir()` and `RecursiveDirectoryIterator`
+appear nowhere in `src/`, `bin/` or `tests/`, and
+`StructureTest::everyDirectoryIsReadThroughTheFinder` has widened to `opendir`,
+`readdir` and `FilesystemIterator` since — the three ways of asking the same
+question that were not in the tree when this was written and would have read as
+compliant.
+
+The **Wrong if** has not fired and one of the two names it uses has gone.
+`Directory::remove()` is no class this repository declares; what removes a tree
+today is `Installer::removeDirectory()`, `Site` and `Fixture`, and all three
+walk with `reverseSorting()` on a `SELF_FIRST` traversal. Nothing has reported
+an `rmdir` on a directory that still held something, which is the loud failure
+the entry priced.
+
+The **Assumed** is what moved. Four call sites now turn `ignoreDotFiles(false)`
+on rather than the one removal the entry anticipated, because a published copy
+carries dot files a session writes — the assumption is not that there are none
+but that a reader of a corpus does not want them, and the sites that do say so.

@@ -1,7 +1,7 @@
 ---
 id: D-COD-001
 date: 2026-08-01
-status: open
+status: confirmed
 ---
 
 # D-COD-001 — One file declares one class
@@ -25,8 +25,8 @@ there.
 
 - One file, one class, held by `StructureTest::everyFileDeclaresOneClass` rather
   than by review. Two exceptions are named in the test and are not classes at
-  all: `bootstrap.php`, which locates the autoloader, and `Runtime/probe.php`,
-  which runs inside somebody else's installation.
+  all: `bootstrap.php`, which locates the autoloader, and `probe.php`, which
+  runs inside somebody else's installation.
 
 ## Assumed
 
@@ -40,3 +40,21 @@ there.
   exactly one class, say — and splitting it makes both harder to read. Then the
   rule needs an allowed list rather than a flat ban, and the test is where it
   goes.
+
+## Confirmed on 2026-08-22
+
+The rule holds and the **Wrong if** has not fired. Four enums stand below `src/`
+and the smallest of them, `RequirementState`, is read by three files, so none is
+the backed enum used by exactly one class that would have asked for an allowed
+list. `StructureTest::everyFileDeclaresOneClass` runs over every `*.php` below
+`src/` and tokenises rather than greps, so `Foo::class` and an anonymous
+`new class` are not counted as declarations.
+
+One path in **Decided** is corrected here: the second exception is
+`src/Installation/probe.php` rather than `Runtime/probe.php`, and the test
+excludes it by base name. What it is excluded for is unchanged — it runs inside
+somebody else's installation and is never loaded here.
+
+The **Assumed** held both times it could have been tested. The renderer that
+prompted the entry is still one class, and the two enums added since are read
+from five and 22 files.

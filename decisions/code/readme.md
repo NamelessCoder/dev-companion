@@ -7,8 +7,8 @@ allowed to live.
 See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
-- [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
-- [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
+- [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02 · confirmed
+- [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01 · confirmed
 - [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
 
 [D-COD-004]: cod-004-what-leaves-this-process-goes-through-one-seam.md

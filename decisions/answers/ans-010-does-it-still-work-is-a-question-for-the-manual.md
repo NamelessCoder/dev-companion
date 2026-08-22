@@ -75,17 +75,28 @@ correct answer is "still supported".
 
 ## Wrong if
 
-- A session follows the new routing entry, calls `typo3_documentation_lookup` at
-  the target version, and still has to read the installed core by hand. Then the
-  manual is not the answer for this shape and the feedback's own proposal — a
-  capability that resolves behaviour rather than change — is what was missing
-  after all.
-- The skill half lands and a later conformance review reports the same "I had to
-  read installed vendor core" ending. Then the order was not what kept the tool
-  from firing.
-- A feedback disputes the changelog's silence the other way — an entry that
+- ~~A session follows the new routing entry, calls `typo3_documentation_lookup`
+  at the target version, and still has to read the installed core by hand. Then
+  the manual is not the answer for this shape and the feedback's own proposal —
+  a capability that resolves behaviour rather than change — is what was missing
+  after all.~~ Fired in half on 2026-08-03, and the subject narrowed instead:
+  the manual answers a documented surface, and for a PHP identifier the routing
+  terminates at the class. The capability stays unbuilt.
+- ~~The skill half lands and a later conformance review reports the same "I had
+  to read installed vendor core" ending. Then the order was not what kept the
+  tool from firing.~~ Fired on 2026-08-03 from a core patch review, which quoted
+  the sentence back. What it showed is where the sentence stands rather than
+  what it says: the miss is where the caller is standing when the changelog
+  comes back empty.
+- ~~A feedback disputes the changelog's silence the other way — an entry that
   exists and was not reached — which would make this a matching problem rather
-  than a routing one.
+  than a routing one.~~ Fired on 2026-08-02 and again on 2026-08-03. The
+  matching was sound both times and the query shape was not, which is
+  `D-SKL-003`, and the miss is what tells a genuine silence from one asked for.
+- A session has both — the statement in reach and the identifier named in the
+  changelog — and still no way to tell whether the thing exists in the version
+  it runs on. That is what would trigger the capability the first bullet
+  reserves. Written on 2026-08-03, from the third reading below.
 
 ## Covered by
 
@@ -219,65 +230,31 @@ breaks at v15, which is the severity the session went to the source for. Step 4
 is the sentence telling a documented surface from a PHP identifier before the
 manual is called, on `skills/base.md` or on the conformance skill.
 
-What would trigger the reservation after all is a session that has both: the
-statement in reach and the identifier named in the changelog, and still no way
-to tell whether the thing exists in the version it runs on.
+What would trigger the reservation after all is the fourth **Wrong if** above,
+which this reading wrote.
 
 ## Since then
 
-### Step 4, which corpus a question has
+Two readings built what the reading above queued and established nothing beyond
+it, so each is a line here rather than a section of its own. Judged on
+2026-08-22.
 
-Step 4 landed on 2026-08-03, in `skills/base.md` and not in the conformance
-skill. Both carried the routing and only one carries it once. The conformance
-skill states its own condition and then defers — "the base says why the
-changelog cannot answer that one" — so a bound written there would leave the
-sentence it bounds standing unqualified in the file every published skill is
-given. `typo3-extension-upgrade` starts from the same sweep, which is why step 5
-is in the base at all, and a second copy of an order is what `D-SKL-001` exists
-to prevent. It cost 79 words, 1452 to 1531, and that entry keeps the arithmetic.
-
-The readings were re-run from `/home/benji/projects/ext-guidedtour` through this
-checkout's `bin/typo3-dev-companion` before the sentence was written, and the
-two shapes still come apart. `Infobox ViewHelper state` at `targetVersion: "14"`
-returns `be.infobox` from the ViewHelper reference first, carrying *Deprecated
-since version 14.0 … use the enum ContextualFeedbackSeverity instead*.
-`addInlineLanguageLabelFile` and `inline language labels` return the label
-reference, a TCA renderType and the `addRecord` field control — pages matched on
-`label` and `add` in their titles, naming the method nowhere.
-`typo3_changelog_lookup` with the same identifier returns the 7.5 Feature entry
-that introduced it and no deprecation, which is the answer the filing session
-went to `PageRenderer.php` for.
-
-So what the base now says at the point of the call is which corpus a question
-has. A documented surface goes to the manual, an identifier to the changelog
-under its own name and then to the class, and the miss-is-a-result sentence
-stands for the surface it was written about. The feedback keeps its other half:
-what a deprecation carrying the docblock alone raises is a todo of its own.
-### Step 1a, what a docblock alone raises
-
-Step 1a landed on 2026-08-03, and what makes a reading of `@deprecated` alone
-conclusive is the kind of member rather than the file it sits in. A class
-constant and an enum case are read without anything in the declaring class
-running, so no `trigger_error` can be attached to one anywhere; PHP's
-`#[\Deprecated]` attribute is the only other thing that would raise, and the
-measurement above is that the core carries none. For a method, a property or a
-class the same absence says nothing. `AbstractTypolinkBuilder::build()` is
-announced from `LinkFactory`, and `BackendUserAuthentication::$errorMsg` is
-declared protected and raises from `PublicPropertyDeprecationTrait::__get()` two
-files away. Read in `.checkouts/14.3`: 58 of the 98 files carrying `@deprecated`
-hold no `trigger_error` at all, 22 of those markers being on methods.
-
-So the severity is a property of the declaration, and the entry that announces
-it can be wrong about it. `Deprecation-107648` states *Using these constants
-will trigger a PHP deprecation warning*, which nothing does — and the constants
-are gone from `InfoboxViewHelper` on `main`, so a call site that never saw a
-deprecation fails at v15. What carries such a case is the extension scanner
-instead: `ClassConstantMatcher` keys all five constants against that entry.
-`deprecated-apis` now states both halves, and
-`HintsTest::whatADeprecationCarryingTheDocblockAloneRaisesIsStated` holds them.
-
-The opening sentence of that hint went with it, because it was false where this
-entry's own subject is. "This server does not know your branch" holds for the
-bundled corpus, not for the server: `typo3_project_describe` reads the installed
-version off the core package, and `typo3_changelog_lookup` answers from the
-changelog that package ships.
+- Step 4 on 2026-08-03, in `skills/base.md` and not in the conformance skill:
+  what the base now says at the point of the call is which corpus a question
+  has. A documented surface goes to the manual, an identifier to the changelog
+  under its own name and then to the class, and the miss-is-a-result sentence
+  stands for the surface it was written about. The conformance skill defers to
+  the base for why the changelog cannot answer, so a bound written there would
+  leave the sentence it bounds unqualified in every published copy. It cost 79
+  words, and `D-SKL-001` keeps that arithmetic.
+- Step 1a on 2026-08-03: what makes a reading of `@deprecated` alone conclusive
+  is the kind of member. A class constant and an enum case are read without
+  anything in the declaring class running, and PHP's `#[\Deprecated]` attribute
+  occurs nowhere in `typo3/sysext` on any covered line; for a method, a property
+  or a class the same absence says nothing, and 58 of the 98 files carrying
+  `@deprecated` in `.checkouts/14.3` hold no `trigger_error`. So the entry that
+  announces a deprecation can be wrong about what it raises, which
+  `Deprecation-107648` is. `deprecated-apis` states both halves and
+  `HintsTest::whatADeprecationCarryingTheDocblockAloneRaisesIsStated` holds
+  them; its opening sentence went with the change, because "this server does not
+  know your branch" is true of the bundled corpus and not of the server.

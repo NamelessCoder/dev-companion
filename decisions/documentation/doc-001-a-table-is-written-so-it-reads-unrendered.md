@@ -54,3 +54,24 @@ words with pipes in it, and which cell a value belongs to has to be counted out.
   something genuinely tabular turns up whose cells cannot be shortened, in which
   case a list will read worse than the table did and the exception has to say so
   where it is taken.
+
+## Since then
+
+Both halves of the **Wrong if** fired, and the reading is a sweep of 2026-08-22
+over every markdown file this repository keeps. Of 19 tables, 18 carry a row
+whose pipes stand in a different column from the separator's — the alignment
+drifted wherever a cell was edited, which is every table anybody has been back
+to.
+
+The other half is in the same corpus. The widest rows are in `D-FBK-021`, at 312
+characters, and its cells are the mapping of one summary onto its siblings: a
+clause naming what a report said against a clause naming where it landed. Those
+are the cells that cannot be shortened, and by this entry's second **Decided**
+bullet the content is a list rather than a table. Nothing said so where it was
+taken.
+
+So the rule is right and nobody can follow it by hand, which is the first
+**Wrong if** in its own words. What it asks for is a check in `bin/cli` rather
+than a decision, and that is the todo this leaves. The entry stays `open` until
+the check is there: a rule with 18 breaches and no reader is not confirmed by
+being reread.

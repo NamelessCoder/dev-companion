@@ -92,9 +92,11 @@ final class ToolNamingTest extends TestCase
      * Two corpora stay out, and neither is an oversight. `feedback/` is a
      * session's own report and `scenarios/runs/` is a trace of the calls one
      * made, both on a date — a rename there would edit the evidence, so each
-     * run carries a line naming the current spelling instead. `decisions/`
-     * stays out because it names tools that were proposed and rejected, and
-     * nothing here can tell one of those from a name that went stale.
+     * run carries a line naming the current spelling instead.
+     *
+     * `decisions/` is read by the test below rather than by this one, because
+     * it is the one corpus where a superseded name is sometimes the subject of
+     * the sentence.
      */
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
@@ -112,6 +114,60 @@ final class ToolNamingTest extends TestCase
         }
 
         self::assertSame([], $unknown, 'named where the name is a claim about today, but not registered');
+    }
+
+    /**
+     * The entries where a superseded tool name is what the sentence is about,
+     * with what it is doing there. Nothing else in `decisions/` may spell a
+     * name shaped like a tool that no tool has.
+     *
+     * A proposal that was declined is not one of these. It used to be written
+     * `typo3_debrief_guide`, in the backticks a callable tool wears, which is
+     * the same deception a stale name is: a reader goes and calls it. Those are
+     * prose now — "a debrief guide tool" — and the sentence never wanted the
+     * identifier.
+     *
+     * @var array<string, string>
+     */
+    private const SUPERSEDED_IS_THE_SUBJECT = [
+        'sco-011' => 'the entry that renames the two, so both spellings are its subject',
+        'aud-005' => 'its finding is an exclusion variable set to a name no tool has',
+        'aud-003' => 'names what a commit put into the instructions, and both spellings',
+        'fbk-018' => 'quotes a shipped file at a named commit, and records the rename',
+        'doc-040' => 'its evidence is the stale names themselves, as they were counted',
+    ];
+
+    /**
+     * A decision names a tool a reader can call, or is about the name itself.
+     *
+     * The corpus went stale unwatched: 157 mentions of three tools renamed
+     * weeks earlier, across 56 entries, while this file read the knowledge base
+     * and the skills alone. What is matched is the tool shape — a subject and
+     * one of the verbs above — so the TER's own `typo3_versions` field and a
+     * `typo3_logo.png` in a Fluid example are not tool names and are not read
+     * as any.
+     */
+    #[Test]
+    public function everyToolNameADecisionSpellsIsRegisteredOrIsTheSubject(): void
+    {
+        $known = array_column(Registry::definitions(), 'name');
+        $verbs = implode('|', array_keys(self::VERBS));
+
+        $stale = [];
+        foreach (Finder::create()->files()->in(dirname(__DIR__, 2) . '/decisions')->name('*.md')->sortByName() as $file) {
+            $id = substr($file->getBasename('.md'), 0, 7);
+            if (isset(self::SUPERSEDED_IS_THE_SUBJECT[$id])) {
+                continue;
+            }
+            preg_match_all('/typo3_[a-z]+(?:_[a-z]+)*_(?:' . $verbs . ')\b/', (string) file_get_contents($file->getPathname()), $matches);
+            foreach (array_unique($matches[0]) as $name) {
+                if (!in_array($name, $known, true)) {
+                    $stale[] = $file->getBasename() . ': ' . $name;
+                }
+            }
+        }
+
+        self::assertSame([], $stale, 'spelled like a tool in decisions/, and no tool has the name');
     }
 
     /** @param array<string, mixed> $arguments */

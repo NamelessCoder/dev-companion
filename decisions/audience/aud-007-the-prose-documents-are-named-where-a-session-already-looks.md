@@ -45,7 +45,7 @@ tool list and finished without learning whether there was anything to read.
   never calls a scope tool still reads it.
 - The instructions name the index and not the documents one by one. A list that
   grows is a line that goes stale, and this one grows with the corpus.
-- Whether a `typo3_document_list` tool follows is left open. The verb is the one
+- Whether a document list tool follows is left open. The verb would be the one
   `typo3_reference_list` already uses, and what decides it is whether a session
   holding the instructions still ends without reading the page it needed.
 
@@ -92,7 +92,7 @@ procedure, which exists whole at
 `typo3_rule_lookup` for the same subject — so what it would have got is the
 section a search matched, with nothing saying the rest of the page is there.
 
-What follows is not a `typo3_document_list`. The session named the lever itself:
+What follows is not a document list tool. The session named the lever itself:
 a skill names the resource it expects read whole, at the step that needs it, and
 a lookup answer that is one section of a procedure says which procedure. Both
 are contracts.

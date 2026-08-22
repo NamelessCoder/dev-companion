@@ -49,10 +49,11 @@ nothing else, so every other corpus went stale unwatched.
 - `feedback/` and `scenarios/runs/` stay out. Both are a session's own account
   of a date, and rewriting one edits the evidence. The run's closing line is the
   form that reconciles them, and it costs one sentence per file.
-- `decisions/` stays out of the guard too, and this is the trade: the corpus
+- ~~`decisions/` stays out of the guard too, and this is the trade: the corpus
   legitimately names tools that were proposed and rejected, so nothing can tell
   one of those from a name that went stale without a list of every rename ever
-  made. Three renames did not earn that list.
+  made. Three renames did not earn that list.~~ Reversed the same day, see
+  **Since then**.
 - The illustration in `interface-contract.rst` names `typo3_rule_lookup` rather
   than an invented tool. The sentence is about a name with an underscore in it,
   which a real one shows as well and the guard can then read.
@@ -69,9 +70,10 @@ nothing else, so every other corpus went stale unwatched.
 
 ## Wrong if
 
-- The next rename goes stale in `decisions/` anyway, because nothing guards it
+- ~~The next rename goes stale in `decisions/` anyway, because nothing guards it
   and this correction was a sweep rather than a habit. That is the known hole,
-  and what would close it is the list of renames this declined to start.
+  and what would close it is the list of renames this declined to start.~~
+  Closed the same day, see **Since then**.
 - A corrected sentence turns out to have been about the old name after all. The
   four exceptions were found by reading every line the sweep changed that sat
   beside a date, a commit or the word "renamed"; a fifth would show up as an
@@ -80,3 +82,27 @@ nothing else, so every other corpus went stale unwatched.
 ## Covered by
 
 - `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
+
+## Since then
+
+The maintainer asked the same day whether a tool that does not exist can be
+legitimate, and it cannot. What `decisions/` holds is not a tool but a
+**proposal** that was declined, and writing one in the backticks a callable tool
+wears is the deception a stale name is: a reader goes and calls it, and nothing
+can tell the two apart. The five were prose all along — "a debrief guide tool",
+"a skeleton lookup was drafted and dropped" — and none of those sentences wanted
+the identifier.
+
+With them written as what they are, the reason this entry gave for leaving
+`decisions/` unguarded is gone, and the list of every rename it declined to
+start is not needed either.
+`ToolNamingTest::everyToolNameADecisionSpellsIsRegisteredOrIsTheSubject` reads
+the corpus for the **tool shape** — a subject and one of the six verbs — so the
+TER's own `typo3_versions` field and a `typo3_logo.png` in a Fluid example are
+not read as names at all, and no exception is owed to either.
+
+What is owed an exception is the passage where a superseded name is the subject
+of the sentence, and there are five: this entry, whose evidence is the names as
+they were counted, and the four **Decided** already names. They are listed in
+the test with the reason each one is there, and that list shrinks as those
+entries stop being about a rename rather than growing with every rename made.

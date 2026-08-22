@@ -403,31 +403,23 @@ final class Decisions
     public static function read(string $path): array
     {
         $contents = (string) file_get_contents($path);
-
-        preg_match('/^---\R(.*?)\R---\R/s', $contents, $matches);
-        $frontMatter = $matches[1] ?? '';
-
-        preg_match('/^# (\S+) — (.*)$/m', $contents, $heading);
-
-        // The first paragraph after the heading, which is what was decided.
-        // Everything below it is the evidence it was decided on.
-        $body = (string) preg_replace('/^---\n.*?\n---\n\n# [^\n]*\n\n/s', '', $contents);
-        $statement = (string) preg_split('/\R\R/', $body, 2)[0];
+        $head = Entry::head($contents);
+        $frontMatter = $head['frontMatter'];
 
         return [
-            'id' => self::frontMatterValue($frontMatter, 'id'),
+            'id' => Entry::frontMatterValue($frontMatter, 'id'),
             'group' => basename(dirname($path)),
             'file' => basename($path),
-            'heading' => $heading[1] ?? '',
-            'title' => $heading[2] ?? '',
-            'date' => self::frontMatterValue($frontMatter, 'date'),
-            'status' => self::frontMatterValue($frontMatter, 'status'),
+            'heading' => $head['heading'],
+            'title' => $head['title'],
+            'date' => Entry::frontMatterValue($frontMatter, 'date'),
+            'status' => Entry::frontMatterValue($frontMatter, 'status'),
             // What replaced it, where a revoked entry has a successor. A reader
             // who reaches a dead entry needs somewhere to go next, and prose
             // said it on four of them and nowhere a listing could see.
-            'revokedBy' => self::frontMatterValue($frontMatter, 'revokedBy'),
+            'revokedBy' => Entry::frontMatterValue($frontMatter, 'revokedBy'),
             'revisited' => self::revisited($contents),
-            'statement' => trim(str_replace('**', '', $statement)),
+            'statement' => $head['statement'],
             'fields' => self::fields($contents),
         ];
     }
@@ -495,8 +487,4 @@ final class Decisions
         return DecisionStatus::tryFrom($status)?->line() ?? '';
     }
 
-    private static function frontMatterValue(string $frontMatter, string $key): string
-    {
-        return preg_match('/^' . $key . ':\s*(.*)$/m', $frontMatter, $matches) === 1 ? trim($matches[1]) : '';
-    }
 }

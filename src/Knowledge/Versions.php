@@ -35,12 +35,17 @@ final class Versions
     private const COMPARATOR = '/^(\^|~|>=|<=|>|<|=|v)?\s*v?(\d+)(?:\.(\d+|\*|x))?/i';
 
     /**
-     * @return array<int, array{major: int, branch: string, status: string}>
+     * Never empty: a server that covers no version has no answer to give, and
+     * every reading that asks for the newest or the oldest would be reading
+     * `false`. The file is where that is settled, so the failure is the file
+     * being wrong rather than an answer built on nothing.
+     *
+     * @return non-empty-list<array{major: int, branch: string, status: string}>
      */
     public static function covered(): array
     {
         $decoded = json_decode((string) file_get_contents(Paths::knowledgeFile('versions.json')), true);
-        if (!is_array($decoded) || !isset($decoded['covers']) || !is_array($decoded['covers'])) {
+        if (!is_array($decoded) || !isset($decoded['covers']) || !is_array($decoded['covers']) || $decoded['covers'] === []) {
             throw new \RuntimeException('Invalid versions.json');
         }
 

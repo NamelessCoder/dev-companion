@@ -249,16 +249,8 @@ final class Requirements
     public static function read(string $path): array
     {
         $contents = (string) file_get_contents($path);
-
-        preg_match('/^---\R(.*?)\R---\R/s', $contents, $matches);
-        $frontMatter = $matches[1] ?? '';
-
-        preg_match('/^# (\S+) — (.*)$/m', $contents, $heading);
-
-        // The first paragraph after the heading, which is the sentence that has
-        // to hold. Everything below it is why it is one.
-        $body = (string) preg_replace('/^---\n.*?\n---\n\n# [^\n]*\n\n/s', '', $contents);
-        $statement = (string) preg_split('/\R\R/', $body, 2)[0];
+        $head = Entry::head($contents);
+        $frontMatter = $head['frontMatter'];
 
         // A test method where one holds it, a whole test class where the class
         // is the answer — `VersionsTest` in full is a claim about every method
@@ -268,23 +260,23 @@ final class Requirements
         preg_match_all('/`(\w+Test(?:::\w+)?)`/', $heldBy, $tests);
 
         return [
-            'id' => self::frontMatterValue($frontMatter, 'id'),
+            'id' => Entry::frontMatterValue($frontMatter, 'id'),
             'group' => basename(dirname($path)),
             'file' => basename($path),
-            'heading' => $heading[1] ?? '',
-            'title' => $heading[2] ?? '',
-            'status' => self::frontMatterValue($frontMatter, 'status'),
+            'heading' => $head['heading'],
+            'title' => $head['title'],
+            'status' => Entry::frontMatterValue($frontMatter, 'status'),
             // The day a session read this entry, found nothing holds it, and
             // decided it stays that way. `bin/cli unresolved:list` names what
             // nobody has answered for, and a todo naming the id was the only
             // answer it could see — so a requirement no test can hold, which is
             // a legitimate state, could never leave the reading.
-            'judged' => self::frontMatterValue($frontMatter, 'judged'),
+            'judged' => Entry::frontMatterValue($frontMatter, 'judged'),
             // The decisions this requirement stands on. A decision can be
             // revoked without anything noticing that a requirement was resting
             // on it, which is the silent case decisions/ exists to prevent.
             'restsOn' => self::idList($frontMatter, 'restsOn'),
-            'statement' => trim(str_replace('**', '', $statement)),
+            'statement' => $head['statement'],
             'heldBy' => $heldBy,
             'tests' => $tests[1],
         ];
@@ -297,7 +289,7 @@ final class Requirements
      */
     private static function idList(string $frontMatter, string $key): array
     {
-        $value = self::frontMatterValue($frontMatter, $key);
+        $value = Entry::frontMatterValue($frontMatter, $key);
         if ($value === '') {
             return [];
         }
@@ -307,12 +299,6 @@ final class Requirements
         return array_values(array_unique($matches[0]));
     }
 
-    private static function frontMatterValue(string $frontMatter, string $key): string
-    {
-        return preg_match('/^' . $key . ':\s*(.*)$/m', $frontMatter, $matches) === 1 ? trim($matches[1]) : '';
-    }
-
-    /** The paragraph under a bold label, wrapped lines folded back together. */
     /**
      * A section's body, to the next heading or the end of the file.
      *

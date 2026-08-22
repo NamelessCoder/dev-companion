@@ -217,7 +217,7 @@ final class Scenarios
             return '';
         }
 
-        $paragraph = (string) preg_split('/\R\R/', substr($section, $start + strlen($marker)), 2)[0];
+        $paragraph = Entry::firstParagraph(substr($section, $start + strlen($marker)));
 
         return trim((string) preg_replace('/\s+/', ' ', $paragraph));
     }
@@ -246,7 +246,7 @@ final class Scenarios
 
         // Only that paragraph: the same code appears in prose further down, and
         // what is wanted here is what this scenario holds itself to.
-        $paragraph = (string) preg_split('/\R\R/', substr($section, $start), 2)[0];
+        $paragraph = Entry::firstParagraph(substr($section, $start));
         preg_match_all('/`(R-[A-Z]+-\d+)`/', $paragraph, $matches);
 
         return $matches[1];

@@ -42,9 +42,11 @@ downstream can tell apart from prose that was thought through.
 
 ## Assumed
 
-- That the counts move down. The report is a number nobody is obliged to act on,
-  which is the same shape as the three states `bin/cli unresolved:list` names,
-  and those sat unread until something printed them.
+- ~~That the counts move down. The report is a number nobody is obliged to act
+  on, which is the same shape as the three states `bin/cli unresolved:list`
+  names, and those sat unread until something printed them.~~ Read on
+  2026-08-22: the share held while the corpus grew sevenfold, so what the report
+  moved is nothing.
 
 ## Wrong if
 
@@ -53,3 +55,21 @@ downstream can tell apart from prose that was thought through.
   than a line in a check. Or a lead genuinely needs more than 30 words and the
   split makes it worse, in which case the number is measuring the wrong thing
   and the exception has to say so where it is taken.
+
+## Since then
+
+The half that fails works and the half that reports did not move. Read on
+2026-08-22: every requirement and decision opens within the measure, so no lead
+has run past 30 words since the check was written, and the corpus stands at 5777
+sentences over of 27046 against the 805 of 3944 this entry recorded — 21.4%
+against 20.4%, three weeks and about seven times the prose later.
+
+What the numbers also show is that the concentration went. Six files carried a
+fifth of the long sentences on 2026-08-01; the ten worst carry 454 of 5777
+today, which is 8%. So the file nobody has reread since it was written is no
+longer where they are, and the count reads as a property of how this repository
+writes rather than as a backlog.
+
+The first **Wrong if** is not due until 2026-09-01 and this is what it will be
+read against. What would answer it either way is a month with the number moving,
+and nothing here can make that happen while judging.

@@ -81,11 +81,16 @@ preamble names: a gap with a fourth entry written next to three that exist.
 
 ## Wrong if
 
-- A half turns out to have no sibling. The mapping is then wrong, the summary is
-  the only report of that subject, and the ladder is owed after all.
-- Every sibling lands and the summary is still open, because each closing commit
-  archives only the feedback it worked off. The summary would then need an owner
-  rather than a mapping.
+- ~~A half turns out to have no sibling. The mapping is then wrong, the summary
+  is the only report of that subject, and the ladder is owed after all.~~ Fired
+  from the fourth summary on, and the mapping was right each time. An orphaned
+  half is what the summary adds, and the ladder was walked over that row rather
+  than over the file.
+- ~~Every sibling lands and the summary is still open, because each closing
+  commit archives only the feedback it worked off. The summary would then need
+  an owner rather than a mapping.~~ Fired on 2026-08-03 on the first three
+  summaries, and what they needed was a reading of where their siblings had
+  landed. The ninth was closed by the mapping itself.
 - A session judges a summary by walking the ladder anyway, and writes the entry
   that a sibling's todo writes again a week later. That is the failure this is
   written against, and nothing checks for it.
@@ -460,3 +465,22 @@ the first three open was that each closing commit archives only the feedback it
 worked off; here the judgement of the summary is the commit that reads the
 siblings' landings against it. The card in `todo/progress/` goes with it, and no
 todo is derived.
+
+## Since then
+
+The nine readings above were judged on 2026-08-22 against `D-DOC-041`, and none
+of them is collapsed. Each carries the mapping of one summary, which is what the
+first **Decided** bullet says this file is for — a mapping written down once, so
+that a second judgement of the same session does not derive it again. What a
+reader pays for the history here is what that bullet bought.
+
+Two of the three **Wrong if** are struck above, and what the readings after the
+third added instead is where an orphaned half goes. A transcript orphans a
+subject, a measurement orphans a number, a prescription orphans the reading
+drawn across three reports, a debrief report orphans a conclusion about the
+instrument, and a session that made no call orphans the entry surface.
+
+One observation recurs and is owned elsewhere. That a summary's own query
+reaches fewer hints than its halves do was measured four times, the last of them
+on the fifth summary, and every one of them landed on `D-ANS-021`. A tenth
+summary need not measure it again.

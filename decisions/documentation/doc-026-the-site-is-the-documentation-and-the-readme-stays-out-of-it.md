@@ -18,7 +18,7 @@ page of the checkout alone.**
 
 What the site owed a visitor arriving at it was in one file that also had to
 work as a GitHub landing page, and
-[`D-DOC-018`](doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md)
+[`D-DOC-018`](doc-018-the-site-opens-on-the-readme.md)
 published that file rather than writing the manual it was missing.
 
 ## Evidence

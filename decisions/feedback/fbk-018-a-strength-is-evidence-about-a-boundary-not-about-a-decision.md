@@ -374,7 +374,7 @@ Its suggestion has landed. `1b61d5d` put the review row into `routing` —
 `typo3_rule_lookup` per obligation, `typo3_changelog_lookup` for the precedent,
 `typo3_test_run_guide` with the changed paths, then `typo3_commit_message_guide`
 — and published
-[`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)'s
+[`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-two-task-skills.md)'s
 `typo3-core-patch-review`, which states this feedback's boundary in the working
 form. The companion note it points at is `feedback/archive/2026-08-01-121847`,
 from the same review and closed on 2026-08-02.

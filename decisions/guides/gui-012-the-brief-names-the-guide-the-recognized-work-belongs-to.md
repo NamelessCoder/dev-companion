@@ -239,7 +239,7 @@ is queued as
 ### 2026-08-21 — the queued half is written, and it is a sixth guide
 
 **The recognition half above is
-[`D-GUI-018`](gui-018-keeping-a-package-on-the-majors-it-declares-is-an-intent-of-its-own.md),
+[`D-GUI-018`](gui-018-keeping-a-package-on-the-majors-it-declares-is-an-intent.md),
 the same split as `D-GUI-014` and settled the same way.** `compatibility` is the
 sixth intent to name a guide, it names
 `extension/compatibility/running-on-a-declared-major-that-is-not-installed` and

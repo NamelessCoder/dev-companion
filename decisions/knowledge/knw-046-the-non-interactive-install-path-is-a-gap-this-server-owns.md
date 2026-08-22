@@ -140,4 +140,4 @@ the third **Wrong if** holds no better from the other side. That session reached
 called both correct and useful, so the placement is not what cost it anything.
 What it paid for is one question further out: the line that carries those
 variables into the container the command runs in, which is
-[`D-KNW-094`](knw-094-how-a-variable-reaches-a-console-command-in-the-container-is-a-gap-this-server-owns.md).
+[`D-KNW-094`](knw-094-how-a-variable-reaches-a-console-command-is-a-gap.md).

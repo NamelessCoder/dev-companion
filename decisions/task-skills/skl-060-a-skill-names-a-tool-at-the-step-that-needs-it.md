@@ -37,7 +37,7 @@ names were all delivered, in order, before the calls that needed them.
   put a guide id on the step that reaches the moment,
   [`D-SKL-030`](skl-030-a-review-surface-names-the-lookup-that-can-answer-it.md)
   the lookup on the surface that can be answered by it, and
-  [`D-SKL-014`](skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md)
+  [`D-SKL-014`](skl-014-the-commit-step-is-named-where-a-workflow-ends-in-a-change.md)
   the commit guide where a workflow ends in a change.
   [`writing-a-skill.rst`](../../documentation/contributing/writing-a-skill.rst)
   states the same rule for the call that reads a whole procedure: name it once,
@@ -46,7 +46,7 @@ names were all delivered, in order, before the calls that needed them.
   discharged by the installation workflow, and
   `SkillTest::everyDischargedCallIsWrittenAsOneAndRoutedNowhere` fails on a
   skill that names a discharged tool again —
-  [`D-SKL-055`](skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md).
+  [`D-SKL-055`](skl-055-a-call-named-in-order-not-to-make-it-is-a-discharge.md).
   A fetch line listing that workflow's tools therefore either fails the suite or
   is a fetch line that deliberately leaves one out.
 - The channel that survives deferral is the `instructions`, which is what
@@ -118,7 +118,7 @@ The candidate this entry named was taken up on the same day.
 `feedback/2026-08-18-113308` was judged as the ladder's step 2 and the
 `instructions` now index the question each tool answers, one entry of which is
 `typo3_changelog_lookup` — the line a second session says would have caught it.
-[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md)
+[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers.md)
 carries what it cost: a hard budget of 2048 characters that was at 2038, so one
 entry was bought by tightening the sentences around it and the rest of the list
 was not bought at all. That moves the first **Wrong if** above from something

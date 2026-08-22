@@ -77,7 +77,7 @@ one this one guessed at.
   are
   `feedback/2026-08-01-003216-lacked-datahandler-knowledge-and-worked-around.md`
   and
-  [`D-KNW-018`](knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md).
+  [`D-KNW-018`](knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap.md).
   This entry adds only where a record may be put.
 
 ## Assumed

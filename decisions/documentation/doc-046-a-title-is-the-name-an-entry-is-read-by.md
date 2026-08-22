@@ -72,3 +72,21 @@ measure at all, so it grew into the sentence below it.
   failure has already happened once.
 - Titles start being written to the measure and stop saying what was settled.
   Twelve words is where a name fits, not a budget to spend.
+
+## Since then
+
+The pass went on the same day, once the file name became the title's and a long
+title started producing a name nobody reads at a glance. 123 more titles were
+shortened, and what the measure counts fell from 227 to 55: the 23 that join two
+claims and stay short, and about 19 that run a word or two long and say one
+thing.
+
+Those are where it stopped, and the shape is the reason. "A supported range is a
+property of the package, not of the checkout" is the affirmative "A is B, not C"
+that `writing-a-decision.rst` asks for, and cutting the second half takes the
+half that tells it from its neighbours. What a shorter title would buy there is
+a character count; what it costs is the reader guessing which entry is meant.
+
+The file names moved with them: mean 68 characters to 63, longest 118 to 98, and
+the 128 over eighty are 37. That is the pressure `D-DOC-047` assumed and it
+worked in the direction it was meant to.

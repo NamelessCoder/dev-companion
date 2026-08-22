@@ -53,7 +53,7 @@ corrections before the developer asked whether it had actually looked.
   cost a session on the same day.
 - The other half of the report — pointing a browser at the developer's own
   installation, where the data that shows the defect actually is — is
-  [`D-KNW-069`](knw-069-a-browser-in-a-container-reaches-a-ddev-site-on-the-routers-own-network.md).
+  [`D-KNW-069`](knw-069-a-browser-in-a-container-reaches-a-site-on-the-router.md).
   The prepared instance is a styleguide with one language and no scrolling, so
   it could not have shown this bug either.
 

@@ -12,7 +12,7 @@ coveredBy:
 **A skill that tells a caller how many subjects one rule query carries states a
 count the corpus was measured to bear, and that count is two.**
 
-[`D-SKL-011`](skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md)
+[`D-SKL-011`](skl-011-the-call-plan-a-skill-writes-down-is-measured.md)
 replaced a count with *length is the limit rather than the count*, and its
 second **Wrong if** described what would follow: a review asking four
 obligations in one query and reporting what came back missing. That happened on
@@ -58,7 +58,7 @@ obligations in one query and reporting what came back missing. That happened on
 - The tool already offers the one-call recovery.
   `Documents::largestReachingSubsets()` named two three-word subsets that return
   sections, which is
-  [`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit-not-only-the-reach-of-each-word.md)'s
+  [`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)'s
   computation on this corpus. The report names only the topic listing as what
   the miss did right, and nothing records whether the subsets line was read.
 - The tool's own schema asks for one. `RuleLookup::inputSchema()` describes

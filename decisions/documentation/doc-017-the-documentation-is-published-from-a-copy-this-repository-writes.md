@@ -121,7 +121,7 @@ Two of the bullets under **Decided** no longer describe the site. `readme.md` is
 published as well, as the page it opens on, and the map of `documentation/` is
 served below it — a visitor arriving is deciding whether this server is for
 them, and the map answers a different question.
-[`D-DOC-018`](doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md)
+[`D-DOC-018`](doc-018-the-site-opens-on-the-readme.md)
 is what settled that, and what remains true here is everything about how the
 copy is written and rendered.
 

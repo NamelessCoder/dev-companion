@@ -154,7 +154,7 @@ working.
 ### 2026-08-19 — the placement was weighed, and the mood is what moved
 
 What the section above queued is
-[`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md).
+[`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative.md).
 The sentence stays where it is and becomes an imperative, because the position
 is `skills/base.md`'s own order and the mood is the difference the eleven to one
 holds everything else constant across. It cost two characters of the twenty-two

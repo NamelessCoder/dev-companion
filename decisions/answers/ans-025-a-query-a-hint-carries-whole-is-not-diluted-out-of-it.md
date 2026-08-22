@@ -46,14 +46,14 @@ used to answer.
   written before this, so the repository already held that the answer is there
   and that nobody could ask for it by name.
 - The shape
-  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md) used,
-  over the queries a caller writes: the 208 multi-word bare `appliesTo` patterns
-  and the 41 scenario prompts, taken apart into 1360 one-term queries against
-  the hint they belong to. 419 reached before, 572 after, none lost. All 153
-  gains fall on the 8 hints over the line, and **not one on a curated pattern's
-  own words** — an `appliesTo` field is a dozen words and is never diluted,
-  which is why curating `list_type` and `mod.web_layout` repaired the reported
-  case, and why the curated half of a sweep cannot see this gate.
+  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md)
+  used, over the queries a caller writes: the 208 multi-word bare `appliesTo`
+  patterns and the 41 scenario prompts, taken apart into 1360 one-term queries
+  against the hint they belong to. 419 reached before, 572 after, none lost. All
+  153 gains fall on the 8 hints over the line, and **not one on a curated
+  pattern's own words** — an `appliesTo` field is a dozen words and is never
+  diluted, which is why curating `list_type` and `mod.web_layout` repaired the
+  reported case, and why the curated half of a sweep cannot see this gate.
 - What it moves, over the same 302 whole queries — 41 prompts, 66 titles, 208
   patterns: **0 changed their first hit and 0 entries left a top-6 answer**; 71
   gained entries below what was already there. The 12 recoverable queries of the

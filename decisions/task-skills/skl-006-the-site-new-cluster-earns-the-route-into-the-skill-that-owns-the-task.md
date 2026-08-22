@@ -10,7 +10,7 @@ status: open
 **The seventeen open `site-new` feedback say what reaches a skill rather than
 what a skill says, so the cluster earns the route and no second skill.**
 
-[`D-SKL-005`](skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)
+[`D-SKL-005`](skl-005-core-contribution-earns-two-task-skills.md)
 read the other cluster the same way and turned 35 feedback into two skills. This
 one arrives at the opposite answer, and the answer is worth as much: a domain
 that already has its skill, a session that never loaded it, and fourteen

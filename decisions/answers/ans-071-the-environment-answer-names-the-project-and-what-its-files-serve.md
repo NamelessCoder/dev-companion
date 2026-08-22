@@ -47,7 +47,7 @@ caller reach the site it describes.
   environment serves is not a fact about commands.
 - What to do with the hostname is not repeated here. Reaching the site from a
   container is
-  [`D-KNW-069`](../knowledge/knw-069-a-browser-in-a-container-reaches-a-ddev-site-on-the-routers-own-network.md)
+  [`D-KNW-069`](../knowledge/knw-069-a-browser-in-a-container-reaches-a-site-on-the-router.md)
   and the document it decided.
 
 ## Assumed

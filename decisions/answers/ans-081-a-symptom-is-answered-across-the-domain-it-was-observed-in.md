@@ -120,7 +120,7 @@ for a description of today. The evidence stays, because it is what the shape of
 the change was read off.
 
 What holds from here is
-[`D-ANS-084`](ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md)
+[`D-ANS-084`](ans-084-a-curated-phrase-crosses-the-domain-gate.md)
 — the rule, the two wider ones it was measured against, and what each of those
 cost — and what must keep holding is
 [`R-ANS-031`](../../requirements/answers/ans-031-a-symptom-reaches-the-hint-that-explains-it.md).

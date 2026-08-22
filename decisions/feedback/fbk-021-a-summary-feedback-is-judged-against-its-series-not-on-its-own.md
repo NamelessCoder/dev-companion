@@ -32,7 +32,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
 
 - Two of those four are already judged, and by another card than this one. The
   record variable is
-  [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md),
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md),
   step 1a, with `todo/progress/2026-08-02-133246` serving `002745`. The Fluid
   half and the functional-test half are unjudged, with their own cards in
   `todo/open/`.
@@ -45,7 +45,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
   `fluid-templates`, `content-elements`, `frontend-records` with
   `tca-schema-api`, and `project-extension-tests` — so the joined query misses
   three of the four hints its own parts find. That is
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
   measured on a hint probe rather than on the manual.
 - Nothing about TYPO3 was established here, deliberately. Whether an `f:else`
   really forces an explicit `f:then`, and what `project-extension-tests` already
@@ -106,10 +106,10 @@ lands on something:
 - **what a v14 preview template receives, and how a field resolves** —
   [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md),
   from
-  [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
 - **`typo3_documentation_lookup` reaching the Record objects page** — `002928`,
   whose premise
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
   rejected
 - **the Fluid conditional, and object access on the record** — `003448` and
   `003000`; the record half is `R-KNW-041`
@@ -174,7 +174,7 @@ skill's words.
   `D-KNW-017` records the withdrawal and reads the trigger out
 
 Its own query reaches less than its halves do, which is the pattern
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
 names and `002951` already showed on a probe. Re-run in this checkout on
 2026-08-02, `bin/cli hints:probe` matches nothing for the feedback's own `Query`
 line, nothing for either clause of its **Suggestion** in the words it wrote them
@@ -298,7 +298,7 @@ which is where this repository already keeps a per-run cost reading.
 The summary's own query reaches less than its halves do, for the fourth time.
 `bin/cli hints:probe` on it matches `content-elements` and `sitepackage-layout`
 and nothing else, against the 21 hints the session fetched by id — the dilution
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
 names, measured on a probe as it was on `002951`.
 
 This feedback is archived by the commit that writes the measurement, and that
@@ -319,7 +319,7 @@ finding:
 
 - **step 5 of `typo3-development-installation` named two ids under one clause**
   — archived `211118`, judged in
-  [`D-SKL-044`](../task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md)
+  [`D-SKL-044`](../task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-answers.md)
 - **the closing neighbour sentence read at the moment the answer lands** —
   archived `211306`, judged in
   [`D-KNW-087`](../knowledge/knw-087-a-listed-neighbour-says-what-it-prevents.md)
@@ -336,7 +336,7 @@ mapping is what dates the summary rather than what closes it: every example in
 it describes a file that has since changed at the step it names.
 
 The fourth is the ladder's step 5 and it is
-[`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md).
+[`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-its-corrections.md).
 What that adds to the mechanism is where a summary's own conclusion goes. A
 roundup orphans a subject and a measurement orphans a number; this one orphans
 the reading the session drew across its three reports, and that reading is the
@@ -355,11 +355,11 @@ mapping unusually exact, because the feedback names the pairs itself:
 
 - **"which calls would you not make again" → the two `typo3_project_describe`
   answers** — archived `070333`, judged in
-  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md)
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository.md)
 - **"which documents did you read whole" → the guides** — archived `070538`,
   which names the page it wanted; its list-was-never-rendered half was trimmed
   on 2026-08-18 into
-  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md)
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository.md)
   and `074226`
 - **"what did you never put to it" → `typo3_extension_describe`** — archived
   `070611`, corrected and taken further by `071500`
@@ -384,8 +384,8 @@ What this adds to the mechanism is that a summary can be evidence about the
 prompt that produced it. The other six report on the server; this one reports on
 the instrument, and the pairs it names are the only measurement anybody has of
 which question yields what. Two of them are already
-[`D-FBK-047`](fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md)'s,
-which is why that entry carries the clauses and this one carries the mapping.
+[`D-FBK-047`](fbk-047-the-debrief-asks-what-an-answer-left-out.md)'s, which is
+why that entry carries the clauses and this one carries the mapping.
 
 ## Since then
 
@@ -451,7 +451,7 @@ session again. `bin/cli hints:probe` on the task's own words returns
 No todo is derived. The card in `todo/progress/` is deleted by this commit and
 `todo/open/2026-08-18-113308` names both feedback in its `Serves:` line, which
 is
-[`D-FBK-040`](fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md)
+[`D-FBK-040`](fbk-040-a-card-a-judgement-folds-into-another-goes-with-it.md)
 rather than the `waiting/` the first three summaries went to. The feedback stays
 open behind it: what it reports is still there, and archiving is what tells its
 author otherwise —
@@ -467,13 +467,13 @@ summary handed it is the one that had not landed yet. It has since.
 
 - **13 round trips: what a condition can see, which global is populated when,
   and the event ahead of matching** — archived `080532`, judged in
-  [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md)
+  [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-is-a-gap.md)
 - **1 of those 13 ruling out a request-scoped service, and 2 on constructor
   injection through `makeInstance`** — archived `080604`, judged in
-  [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md)
+  [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap.md)
 - **7 round trips proving the verdict against the running frontend, filed
   separately by the session itself** — archived `081100`, judged in
-  [`D-KNW-102`](../knowledge/knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md)
+  [`D-KNW-102`](../knowledge/knw-102-proving-a-condition-verdict-against-an-installation-is-a-gap.md)
 - **2 locating changelog entries by listing a directory, where
   `typo3_changelog_lookup` would have searched by words** — `113308`, which the
   eighth summary already sent its discoverability half to

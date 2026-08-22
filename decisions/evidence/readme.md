@@ -12,7 +12,7 @@ one is added.
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
 - [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared with its database · 2026-08-02
-- [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
+- [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review · 2026-07-31 · confirmed
 - [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
 - [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed
 
@@ -21,6 +21,6 @@ one is added.
 [D-EVI-006]: evi-006-one-installation-per-covered-version-kept-and-started.md
 [D-EVI-004]: evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
 [D-EVI-005]: evi-005-a-registration-nothing-can-reach-is-cleared-with-its-database.md
-[D-EVI-001]: evi-001-forward-evidence-comes-from-a-review-not-from-a-prompt-that-knows-the-answer.md
+[D-EVI-001]: evi-001-forward-evidence-comes-from-a-review.md
 [D-EVI-002]: evi-002-a-skill-crossing-is-read-rather-than-run.md
 [D-EVI-003]: evi-003-a-review-runs-the-checks-that-cannot-change-the-code.md

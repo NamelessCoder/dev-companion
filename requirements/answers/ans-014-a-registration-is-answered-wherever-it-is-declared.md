@@ -28,7 +28,7 @@ reachable from a file the answer already opens or already names:
 Which of those hold across the covered majors was established against
 `.checkouts/` at 12.4, 13.4 and 14.3 before anything was written, and each of
 the three moved inside that range:
-[`D-ANS-019`](../../decisions/answers/ans-019-a-flexform-a-site-set-and-a-form-set-are-read-from-the-file-names-and-call-shapes-core-itself-reads-them-by.md)
+[`D-ANS-019`](../../decisions/answers/ans-019-three-registration-kinds-are-read-the-way-core-reads-them.md)
 carries the four call shapes, the eight file names and the two registration
 ways, with what would show each wrong.
 

@@ -46,7 +46,7 @@ sits inside the step the reader has just exempted itself from.
   `feedback/2026-08-18-081159` reports skill selection made once against the
   opening framing, from another task shape in the same checkout, and the **Since
   then** of
-  [`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md)
+  [`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-its-corrections.md)
   already reads three sightings of the shape across two directories.
 
 ## Decided
@@ -82,7 +82,7 @@ sits inside the step the reader has just exempted itself from.
 
 - A session with the obligation in its brief skips the sweep anyway. The
   placement was then not the lever, and what is left is the closing gate
-  [`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md)
+  [`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-its-corrections.md)
   waits on.
 - A session whose change touches no TYPO3 API reports the line as noise.
   `base.md` exempts that case on the files a change touches, and a brief cannot

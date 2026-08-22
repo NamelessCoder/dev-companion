@@ -13,11 +13,11 @@ earns one.
 
 - [`D-FBK-051`][D-FBK-051] — What the TER already holds is a lookup of its own · 2026-08-21
 - [`D-FBK-050`][D-FBK-050] — A package's release policy is asked rather than derived · 2026-08-19
-- [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out and what the session wanted · 2026-08-18
+- [`D-FBK-047`][D-FBK-047] — The debrief asks what an answer left out · 2026-08-18
 - [`D-FBK-048`][D-FBK-048] — The debrief is offered as a prompt where the channel is · 2026-08-18
 - [`D-FBK-049`][D-FBK-049] — A stored field states the cap it is cut at · 2026-08-18
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
-- [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
+- [`D-FBK-046`][D-FBK-046] — The duplicate-id check names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
 - [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
@@ -27,7 +27,7 @@ earns one.
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
 - [`D-FBK-038`][D-FBK-038] — What decides a breaking removal is the caller, not the marker · 2026-08-03
 - [`D-FBK-039`][D-FBK-039] — A mangled name is rewritten once, and the comparison carries the rest · 2026-08-03
-- [`D-FBK-040`][D-FBK-040] — The card a judgement folds into another is deleted by the same commit · 2026-08-03
+- [`D-FBK-040`][D-FBK-040] — A card a judgement folds into another goes with it · 2026-08-03
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02 · confirmed
@@ -52,11 +52,11 @@ earns one.
 
 [D-FBK-051]: fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md
-[D-FBK-047]: fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md
+[D-FBK-047]: fbk-047-the-debrief-asks-what-an-answer-left-out.md
 [D-FBK-048]: fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md
 [D-FBK-049]: fbk-049-a-stored-field-states-the-cap-it-is-cut-at.md
 [D-FBK-045]: fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
-[D-FBK-046]: fbk-046-the-check-that-catches-a-duplicate-id-names-the-files-and-the-command.md
+[D-FBK-046]: fbk-046-the-duplicate-id-check-names-the-files-and-the-command.md
 [D-FBK-041]: fbk-041-what-nothing-answers-for-is-called-unresolved.md
 [D-FBK-042]: fbk-042-the-read-only-boundary-is-the-installation.md
 [D-FBK-043]: fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md
@@ -66,7 +66,7 @@ earns one.
 [D-FBK-027]: fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
 [D-FBK-038]: fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md
 [D-FBK-039]: fbk-039-a-mangled-name-is-rewritten-once-and-the-comparison-carries-the-rest.md
-[D-FBK-040]: fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md
+[D-FBK-040]: fbk-040-a-card-a-judgement-folds-into-another-goes-with-it.md
 [D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: fbk-013-an-empty-queue-is-a-state-not-a-failure.md

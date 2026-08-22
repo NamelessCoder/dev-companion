@@ -48,7 +48,7 @@ begun.
   `audit` intent alone, whose needles are "review the", "review this", "review
   of" and "reviewing", and neither brief contains one of them.
 - **The same shape one level down is already decided.**
-  [`D-ANS-061`](../answers/ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md):
+  [`D-ANS-061`](../answers/ans-061-an-answer-that-names-a-document-hands-it-over.md):
   a `uri` in an answer is not delivery, and the lever is the tool the session
   does call rather than the one it should have called.
   `TestRunGuide::SCRIPTS_GUIDE` and `BROWSER_CHECK_GUIDE` are what came of it,

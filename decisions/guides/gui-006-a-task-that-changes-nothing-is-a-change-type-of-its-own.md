@@ -94,7 +94,7 @@ The second **Assumed** met its instance on 2026-08-04 and is now half true. A
 caller who states a type and describes a review can also be a reviewer naming
 the type of the patch under review, which is what `feedback/2026-08-01-115711`
 was. What follows from that is
-[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md):
+[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton.md):
 the stated type still decides the skeleton, which is what this entry rests on,
 and the intent it used to filter out is appended instead of dropped, because
 nothing in a call tells the two callers apart.

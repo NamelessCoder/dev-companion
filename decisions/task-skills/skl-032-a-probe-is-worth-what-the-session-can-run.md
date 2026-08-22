@@ -33,7 +33,7 @@ four failures.
   whether the component sits where it should while scrolling
   ([`D-KNW-068`](../knowledge/knw-068-looking-at-a-backend-change-is-a-suite-the-core-already-carries.md)),
   how to reach the installation that has the content
-  ([`D-KNW-069`](../knowledge/knw-069-a-browser-in-a-container-reaches-a-ddev-site-on-the-routers-own-network.md))
+  ([`D-KNW-069`](../knowledge/knw-069-a-browser-in-a-container-reaches-a-site-on-the-router.md))
   — none of them can be answered by running a suite and reading its output, and
   the session shipped three blind corrections into the first two before the
   developer stopped it.

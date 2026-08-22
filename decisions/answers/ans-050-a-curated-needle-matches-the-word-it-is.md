@@ -92,10 +92,10 @@ task is the case.
   [`D-ANS-006`](ans-006-an-identifier-is-found-however-it-is-spelled.md)'s side
   of the same question.
 - **The corpus was not edited.** The check
-  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md) made —
-  whether the cheaper half is the vocabulary — comes out the same way here: one
-  needle in the whole of it is a stem, and marking the other 1231 as words would
-  have to be kept in step with every one written afterwards.
+  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md)
+  made — whether the cheaper half is the vocabulary — comes out the same way
+  here: one needle in the whole of it is a stem, and marking the other 1231 as
+  words would have to be kept in step with every one written afterwards.
 
 ## Assumed
 

@@ -46,7 +46,7 @@ The number has become what blocks rather than what was spent. Measured on
 2026-08-21, the longest assembly stands at 2028 characters of the 2048, and
 `feedback/2026-08-19-090401` asks for a statement of the boundary that does not
 fit in the twenty left —
-[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md)
+[`D-AUD-011`](../audience/aud-011-the-instructions-index-the-question-each-tool-answers.md)
 is the reading, and the third card in a row to end at this constant.
 
 Nothing has re-measured it. This entry took 2048 from one client's release runs

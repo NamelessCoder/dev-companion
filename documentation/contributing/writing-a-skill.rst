@@ -186,7 +186,7 @@ after it is read as a case of it. ``typo3-extension-upgrade`` listed replacing
 what a major removed among its shapes and opened on carrying a package to
 another set of versions, so a bug report whose cause is such a removal read as a
 premise the task did not meet and the skill stayed shut for a whole session
-(`D-SKL-061 <../../decisions/task-skills/skl-061-the-upgrade-description-is-reachable-from-a-defect-inside-the-range-it-already-declares.md>`_).
+(`D-SKL-061 <../../decisions/task-skills/skl-061-the-upgrade-description-is-reachable-from-a-defect.md>`_).
 A premise is rewritten with the body it governs, and
 ``SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval``
 holds that pair.
@@ -238,7 +238,7 @@ version a step states as the **boundary of a property**, which the installation
 is not asked for: step 3 of ``typo3-development-installation`` says from which
 major the setup command reports an option as disabled, because unbounded that
 sentence sends a caller below it looking for an option that is not there
-(`D-SKL-057 <../../decisions/task-skills/skl-057-a-commands-option-set-is-read-from-the-installed-console-and-its-meaning-from-the-manual.md>`_).
+(`D-SKL-057 <../../decisions/task-skills/skl-057-a-commands-options-are-read-from-the-installed-console.md>`_).
 The guard reads a version out of ``TYPO3 <n>``, so which of the two a bare
 number is stays the author's, like a layout key. The same holds for a package
 name: it is one word in a published file that no release of this server can
@@ -278,7 +278,7 @@ rather than among the routings. A routing is asserted by finding the tool's name
 in the body, so any other wording of "you already have this" satisfies the
 routing rule while telling the caller the opposite; the construct is what the
 assertion skips and what the two lists are kept apart by
-(`D-SKL-055 <../../decisions/task-skills/skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md>`_).
+(`D-SKL-055 <../../decisions/task-skills/skl-055-a-call-named-in-order-not-to-make-it-is-a-discharge.md>`_).
 Discharging and routing are exclusive: a body that names the tool a second time
 is routing to what it has just discharged.
 
@@ -292,7 +292,7 @@ session did with the Gerrit push page
 The ``typo3://guides`` address may stand beside the call and is not the
 handover: it is delivery to a client that renders a resource list, and the
 session this was last read off had none, held the ids anyway and searched
-(`D-ANS-070 <../../decisions/answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md>`_).
+(`D-ANS-070 <../../decisions/answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it.md>`_).
 Name it once, where it is needed, and not at every mention. This is not a
 licence to restate the page — the call is the routing, and what is behind it
 stays there.
@@ -397,7 +397,7 @@ leave it present while the behaviour goes. One gap narrower than behaviour is
 checkable and is checked — a skill does not only name a tool, it says what to
 read out of the answer, and for the four calls the base fixes those keys are
 asserted on the answer the tool really returns
-(`D-SKL-025 <../../decisions/task-skills/skl-025-a-routed-tool-is-called-and-held-to-what-the-skill-sends-the-session-to-read.md>`_).
+(`D-SKL-025 <../../decisions/task-skills/skl-025-a-routed-tool-is-called-and-held-to-what-it-reads.md>`_).
 What that leaves is prose going stale against a tool that kept every key.
 `D-EVI-002 <../../decisions/evidence/evi-002-a-skill-crossing-is-read-rather-than-run.md>`_
 accepts that proxy for the skill crossing and says why no forward run will

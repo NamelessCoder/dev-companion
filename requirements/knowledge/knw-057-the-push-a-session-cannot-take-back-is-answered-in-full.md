@@ -33,7 +33,7 @@ report asks reviewers to reverse a decision nothing in the change mentions.
 A core patch session on Forge #105403, pushing to Gerrit as a private change and
 establishing every mechanical fact of the push from the checkout or from its own
 knowledge — `feedback/2026-08-02-144848`, which
-[`D-SKL-005`](../../decisions/task-skills/skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)
+[`D-SKL-005`](../../decisions/task-skills/skl-005-core-contribution-earns-two-task-skills.md)
 trimmed to these four on 2026-08-03 after re-running the rest against the server
 (2026-08-02).
 

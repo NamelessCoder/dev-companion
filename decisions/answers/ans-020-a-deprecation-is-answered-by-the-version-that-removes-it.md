@@ -88,8 +88,8 @@ the rule that would cover the rest has an exception inside the same corpus.
   `@deprecated` annotation at the trigger site is a fourth source and is more
   exact than the prose in the one case checked above.
 - Recorded against a new entry rather than against
-  [`D-SKL-003`](../task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes-not-by-the-extensions-vocabulary.md)
-  or [`D-ANS-016`](ans-016-a-miss-names-the-query-that-would-have-hit-not-only-the-reach-of-each-word.md). Those
+  [`D-SKL-003`](../task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md)
+  or [`D-ANS-016`](ans-016-a-miss-names-the-query-that-would-have-hit.md). Those
   two are about reaching the entry — the bounds a sweep is written with, and
   what a miss owes the caller. This one is about what the entry says once it has
   been reached, and the call that produced it hit.

@@ -47,7 +47,7 @@ reference is, and the lookup does not carry it.
   beside it does to that.
 - The claim the feedback makes about TYPO3 holds. Read in `typo3fluid/fluid`
   5.3.1 — the engine 14.3 pins,
-  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own-because-the-core-pins-it.md)
+  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md)
   — in a local installation's `vendor/`, because no core checkout has one.
   Uncached, `AbstractConditionViewHelper::renderThenChild()` walks the child
   nodes and returns `null` where it finds an `ElseViewHelper` and no
@@ -73,7 +73,7 @@ reference is, and the lookup does not carry it.
   and so the statement it queues is written once.
 - Not queued a second time: what a v14 preview template is handed, and whether a
   relation field is iterable, are already
-  [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
   and the todo in hand for it. This feedback reports both and neither is worked
   again here.
 - Not step 3, and not step 4. The query reaches the hint it should reach, and

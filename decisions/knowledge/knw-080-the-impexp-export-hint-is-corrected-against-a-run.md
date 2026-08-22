@@ -1,0 +1,163 @@
+---
+id: D-KNW-080
+title: 'The impexp export hint is corrected against a run'
+date: 2026-08-17
+status: confirmed
+---
+
+# D-KNW-080 — The impexp export hint is corrected against a run
+
+**Both sentences `impexp-artifact` states about the console are wrong on all
+four covered versions, so the two feedback reporting them are one card at
+`normal`.**
+
+The hint describes what `Export` can do and prescribes the command as the way to
+get it. What the command does with the two arguments in between — the tables it
+follows relations into, and the filename — is where both errors sit, and neither
+was ever read off `ExportCommand`.
+
+## Evidence
+
+- Re-run on 2026-08-17 against the corpus as it is now.
+  `bin/cli hints:probe "impexp:export sys_file_reference images export file distribution"`
+  reaches `impexp-artifact` first at `appliesTo(19) + text(401)`, ahead of
+  `fal-reading`, `sitepackage-initial-content` and `fal-testing`. The hint is
+  found, is delivered, and says the wrong thing — so no rung above 1a applies.
+- Nothing else covers it. `--include-related` and `files_fal` appear nowhere
+  below `knowledge/` or `skills/`, and `getFileAbsFileName` appears once: in the
+  sentence the second feedback reports.
+- A related record is added only where its table was named.
+  `Export::exportAddRecordsFromRelationsPushRelation()` guards on
+  `inclRelation()`, which is true only for a table in `relOnlyTables` or for
+  `_ALL`, and `ExportCommand` fills `relOnlyTables` from `--include-related`
+  alone. So naming `sys_file_reference` under `--table` reaches the reference
+  rows and stops there.
+- The bytes hang off those records rather than off the references.
+  `exportAddFilesFromSysFilesRecords()` iterates `header.records.sys_file`, so
+  with no `sys_file` record added there is no `files_fal` part to write and
+  nothing to put in the `.files` directory — which is what the feedback observed
+  and what makes its proposed check the right one.
+- The filename argument keeps its basename and loses its path. `ExportCommand`
+  calls `setExportFileName(PathUtility::basename(...))`, so
+  `EXT:site_distribution/Initialisation/data` becomes `data` and the export
+  lands in the default import-export folder. The `EXT:` form the hint recommends
+  is neither honoured nor rejected, and the success message names where the file
+  actually went.
+- The half the hint gets right is the other direction. `Import::loadFile()`
+  resolves its argument through `GeneralUtility::getFileAbsFileName()`, so
+  `EXT:<key>/Initialisation/data.xml` is the form that works for
+  `impexp:import`.
+- None of it is version-bound. `inclRelation()` reads the same on
+  `.checkouts/12.4` at `31f881a212`, `.checkouts/13.4` at `fccbd407d8`,
+  `.checkouts/14.3` at `627949e9dd` and `.checkouts/main` at `3a9f0b5e3c` — the
+  TCA lookup moved to `TcaSchemaFactory` after 12.4 and the relation condition
+  did not — and the `basename()` call stands in `ExportCommand` on all four. So
+  the correction carries no `since` or `until`.
+- The reporting session paid for both. It shipped an export with no image bytes
+  and a package with no `data.xml`, in a domain where the command answered
+  `[OK]` each time.
+
+## Decided
+
+- Step 1a for both, and queued rather than closed on the spot. What the
+  corrected sentences say about the minimal invocation and about the shape of a
+  correct artifact is established by running the command, which
+  [`judging.rst`](../../documentation/records/judging.rst) puts on the other
+  side of the line from a wording fix.
+- One card for the two, carrying both feedback in its `**Serves:**` line, and
+  `todo/open/2026-08-17-211418` deleted by the same commit. Both sentences are
+  the same procedure in the same hint, corrected in one file from one run, and
+  two cards would spin up an installation twice for one reading.
+- `normal` rather than the `low` both cards arrived at. Two sessions reported
+  one hint as wrong within half an hour, and the failure mode is a distribution
+  that ships without its images or without its content at all while every
+  command reports success.
+- Not `high`. Both workarounds are one argument and one `mv`, the session found
+  them itself, and nothing else is blocked on the hint.
+- Neither archived nor trimmed. No part of either observation is answered
+  anywhere below `knowledge/` or `skills/` today.
+- The `EXT:` sentence is corrected rather than dropped: it holds for
+  `impexp:import`, which is the direction a distribution is read back in, and
+  saying which direction it applies to is what the second feedback asks for.
+- The discriminator the corrected hint carries is left to the todo to word, not
+  to invent. `feedback/2026-08-17-212800` asks for one on every procedural hint
+  and names this one as its first example; this correction is that proposal's
+  worked case, and judging it stays its own card.
+
+## Assumed
+
+- That one session wrote both feedback and the twenty-three beside them. They
+  share a directory, a model, a subject and three quarters of an hour, and
+  nothing in a feedback records a session. The second one says so in its own
+  first paragraph, which is as close as the corpus gets.
+- That `--include-related=sys_file` is the whole of the missing invocation.
+  `inclRelation()` says it is what admits the record, and whether
+  `sys_file_metadata` has to be named beside it is what the run establishes.
+- That the backend module reaches the same wall. `ExportController` fills
+  `relOnlyTables` from a form field that starts empty, so the hint's claim is
+  not a module behaviour written up as a console one — but nobody has exported
+  through the module to check.
+
+## Wrong if
+
+- The run finds that `--table=sys_file` alone brings the bytes along. The
+  relation path would then be one route of two, and the corrected sentence would
+  be about which of them a distribution wants rather than about a missing
+  argument.
+- A later release resolves the export filename through
+  `GeneralUtility::getFileAbsFileName()` like the import does. The correction
+  would become version-bound at that release, and the sentence the hint carries
+  today would have been right about the intent all along.
+- A third feedback lands on `impexp-artifact` from a route neither of these two
+  took. The hint would be a subject that has outgrown one entry rather than a
+  file with two wrong sentences in it, and the card would be a rewrite instead
+  of a correction.
+- The corrected hint is delivered and a session still ships an export without
+  its files. The gap would be in the wording or in the delivery, and this entry
+  would have answered the expensive rung for a cheap problem.
+
+## Confirmed on 2026-08-18
+
+Both sentences were run against the command they describe and both are wrong as
+reported. The installation is an `E-SITE` on 14.3.6 — the version both feedback
+came from — built on mariadb below this worktree and seeded through DataHandler
+with a page carrying one content element and nine image references. Seven
+exports of that tree, read back as XML.
+
+The hint's own prescription,
+`--table=tt_content --table=sys_file_reference --save-files-outside-export-file`,
+wrote a document with two parts: nine `sys_file_reference` rows under `records`,
+no `sys_file` row, no `files_fal`, and a `.files` directory created and left
+empty. Adding `--include-related=sys_file` to the same invocation wrote
+`files_fal` as a third part beside `header` and `records`, nine `sys_file` rows,
+and nine files under their sha1 — 43106 bytes against 22135. That is the
+feedback's observation reproduced, including that both runs answered `[OK]`.
+
+`--table=sys_file` in place of it produced the first result byte for byte, which
+settles the **Wrong if** that would have made this a correction about which of
+two routes to take: a page tree holds no `sys_file` rows, so there is one route.
+The reference table has to be named as well, and either option names it —
+`--include-related=sys_file_reference` without `--table=sys_file_reference`
+exported the same nine files, while `--include-related=sys_file` with the
+reference table named nowhere exported no reference and no file.
+
+The assumption about the invocation holds, with a second option beside it.
+`--include-related=sys_file_metadata` is what brings the nine
+`sys_file_metadata` rows, and `_ALL` adds `sys_file_storage` on top of them; the
+bytes need neither.
+
+The filename argument behaved as read. `EXT:some_ext/Initialisation/runD`
+answered
+`[OK] Exporting to fileadmin/user_upload/_temp_/importexport/runD.xml succeeded.`
+The other direction resolves the same form: `impexp:import` on a missing
+`EXT:impexp/…` path failed naming the absolute path below `vendor/`, and the
+correct artifact imported through that form with its `.files` directory beside
+it.
+
+Building the installation found one defect of this repository's own.
+`Environments::build()` asked DDEV for the project name of the default driver
+whatever driver it was building, so an environment on a second database was
+refused by `ddev config` for a project root it does not own — which is how a
+worktree gets an installation of its own while another checkout holds the sqlite
+one. Fixed on this branch, with the driver added to the test that holds the
+build's project name.

@@ -67,7 +67,7 @@ is here; nothing carries a word either session typed, so nothing fired.
 - Rejected: folding it into `typo3-extension-upgrade` or
   `typo3-extension-health`. The first opens on the TYPO3 and PHP versions a
   package declares, and an opening clause is what narrows hardest —
-  [`D-SKL-061`](skl-061-the-upgrade-description-is-reachable-from-a-defect-inside-the-range-it-already-declares.md).
+  [`D-SKL-061`](skl-061-the-upgrade-description-is-reachable-from-a-defect.md).
   The second gates on an audit whose list is agreed first, which is what the
   `EXT:blog` session named as the reason it did not fit a change already asked
   for.

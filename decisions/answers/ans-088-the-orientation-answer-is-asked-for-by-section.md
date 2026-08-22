@@ -46,7 +46,7 @@ of the orientation it is missing.
   `checkoutDiscovery`, `routing`, `versions`, `answersFrom`, `installation`. A
   caller asking again names the field it is already holding, so there is no
   second vocabulary to guess at, which is what
-  [`D-GUI-015`](../guides/gui-015-a-cases-own-prompt-reaches-less-than-the-brief-that-stands-in-for-it.md)
+  [`D-GUI-015`](../guides/gui-015-a-cases-own-prompt-reaches-less-than-the-brief.md)
   measured the cost of.
 - **Naming none is the whole answer.**
   [`D-ANS-087`](ans-087-the-project-answer-stays-whole-because-a-call-is-what-costs.md)

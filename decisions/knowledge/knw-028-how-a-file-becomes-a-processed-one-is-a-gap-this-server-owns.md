@@ -151,5 +151,5 @@ that had asserted twice that image processing requires a FAL object filed
 the processor and nothing after it — `LocalImageProcessor` unwraps to a local
 path and `GraphicalFunctions` takes path strings, neither of which the corpus
 says anywhere.
-[`D-KNW-042`](knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap-this-server-owns.md)
+[`D-KNW-042`](knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap.md)
 takes that half on, and this entry keeps the dispatch it decided.

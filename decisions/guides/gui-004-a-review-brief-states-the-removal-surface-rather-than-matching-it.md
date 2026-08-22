@@ -134,7 +134,7 @@ question about what is wanted rather than about this code, and the card that
 served this feedback carries it.
 
 Answered on 2026-08-04 by
-[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md),
+[`D-GUI-009`](gui-009-a-stated-change-type-keeps-the-skeleton.md),
 and this feedback's own call now reaches the surface. It is answered as both:
 the stated type keeps the patch skeleton and the words append the removal
 surface, because which of the two callers made the call cannot be read off it.

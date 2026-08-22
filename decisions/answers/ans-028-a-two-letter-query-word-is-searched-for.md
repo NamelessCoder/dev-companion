@@ -120,7 +120,7 @@ every word that short. Moving it means the list has to do its own.
 ## Since then
 
 The half this entry left to the todo is settled, and it is
-[`D-ANS-032`](ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md):
+[`D-ANS-032`](ans-032-the-manual-ranking-is-diluted-by-an-ordinary-titles-length.md):
 `Documentation::UNDILUTED_WORDS` is 3, picked against the 41 scenario prompts
 and the seven queries this repository already asserts an answer for rather than
 against `f:if`. Both numbers this entry recorded from that measurement held —

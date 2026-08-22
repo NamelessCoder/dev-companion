@@ -8,11 +8,11 @@ client is told to start.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative of its own · 2026-08-19
-- [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers, because a name is all a deferring client shows · 2026-08-18
+- [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative · 2026-08-19
+- [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
 - [`D-AUD-009`][D-AUD-009] — The entry point claims patch work · 2026-08-08
-- [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06 · confirmed
+- [`D-AUD-008`][D-AUD-008] — The server is called dev-companion · 2026-08-06 · confirmed
 - [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported and the server starts · 2026-08-04
 - [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened · 2026-08-04
 - [`D-AUD-007`][D-AUD-007] — The prose documents are named where a session already looks · 2026-08-04
@@ -20,11 +20,11 @@ one is added.
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
-[D-AUD-012]: aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md
-[D-AUD-011]: aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md
+[D-AUD-012]: aud-012-the-second-call-of-the-entry-point-is-an-imperative.md
+[D-AUD-011]: aud-011-the-instructions-index-the-question-each-tool-answers.md
 [D-AUD-010]: aud-010-the-content-model-is-answered-and-the-records-stay-with-the-installation.md
 [D-AUD-009]: aud-009-the-entry-point-claims-patch-work.md
-[D-AUD-008]: aud-008-the-server-is-called-dev-companion-under-the-vendor-typo3s-own-tooling-uses.md
+[D-AUD-008]: aud-008-the-server-is-called-dev-companion.md
 [D-AUD-005]: aud-005-an-exclusion-naming-no-tool-is-reported-and-the-server-starts.md
 [D-AUD-006]: aud-006-the-server-reports-the-exclusion-that-happened.md
 [D-AUD-007]: aud-007-the-prose-documents-are-named-where-a-session-already-looks.md

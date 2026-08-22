@@ -55,7 +55,7 @@ for.
   `appliesTo` patterns go through it.
 - Not the reason the feedback was filed. The hint the query missed carries no
   answer to it either — that is
-  [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md).
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md).
   This is what the same query would still have cost after that gap is closed.
 
 ## Assumed

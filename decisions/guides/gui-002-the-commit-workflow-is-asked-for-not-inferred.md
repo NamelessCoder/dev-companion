@@ -123,7 +123,7 @@ about is a session that reaches the commit guide in a project repository at all.
 
 That feedback was judged on 2026-08-04 as a delivery failure rather than a wrong
 default, and
-[`D-SKL-014`](../task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md)
+[`D-SKL-014`](../task-skills/skl-014-the-commit-step-is-named-where-a-workflow-ends-in-a-change.md)
 is where the placement it asks for is decided.
 
 ## Revoked on 2026-08-04

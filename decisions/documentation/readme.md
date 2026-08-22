@@ -12,12 +12,12 @@ earns one.
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
 - [`D-DOC-046`][D-DOC-046] — A title is the name an entry is read by · 2026-08-23
 - [`D-DOC-047`][D-DOC-047] — An entry is filed under the title it has · 2026-08-23
-- [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged to stay as it is · 2026-08-22
+- [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
-- [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
+- [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
 - [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22
 - [`D-DOC-042`][D-DOC-042] — A backticked name is a claim that the thing exists now · 2026-08-22
-- [`D-DOC-043`][D-DOC-043] — A test is what holds an entry to the code it points at · 2026-08-22
+- [`D-DOC-043`][D-DOC-043] — A test is what holds an entry to the code · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
 - [`D-DOC-035`][D-DOC-035] — What the prose costs is counted beside how long a sentence is · 2026-08-18
 - [`D-DOC-036`][D-DOC-036] — A todo serves a decision by its id · 2026-08-18
@@ -35,7 +35,7 @@ earns one.
 - [`D-DOC-022`][D-DOC-022] — The reader picks the colours and the page remembers it · 2026-08-09
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
-- [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked like the fields above it · 2026-08-04
+- [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked · 2026-08-04
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
@@ -55,12 +55,12 @@ earns one.
 [D-DOC-045]: doc-045-what-a-listing-reads-is-front-matter.md
 [D-DOC-046]: doc-046-a-title-is-the-name-an-entry-is-read-by.md
 [D-DOC-047]: doc-047-an-entry-is-filed-under-the-title-it-has.md
-[D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged-to-stay-as-it-is.md
+[D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
-[D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
+[D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md
 [D-DOC-041]: doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-DOC-042]: doc-042-a-backticked-name-is-a-claim-that-the-thing-exists-now.md
-[D-DOC-043]: doc-043-a-test-is-what-holds-an-entry-to-the-code-it-points-at.md
+[D-DOC-043]: doc-043-a-test-is-what-holds-an-entry-to-the-code.md
 [D-DOC-034]: doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
 [D-DOC-035]: doc-035-what-the-prose-costs-is-counted-beside-how-long-a-sentence-is.md
 [D-DOC-036]: doc-036-a-todo-serves-a-decision-by-its-id.md
@@ -78,7 +78,7 @@ earns one.
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
-[D-DOC-016]: doc-016-an-answer-that-reads-no-installation-is-derived-and-checked-like-the-fields-above-it.md
+[D-DOC-016]: doc-016-an-answer-that-reads-no-installation-is-derived-and-checked.md
 [D-DOC-009]: doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-011]: doc-011-a-schema-is-written-as-the-shape-it-validates.md
@@ -96,13 +96,13 @@ earns one.
 
 ### Revoked, and kept as the record
 
-- [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
+- [`D-DOC-018`][D-DOC-018] — The site opens on the readme · 2026-08-09 → D-DOC-026
 - [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files · 2026-08-09 → D-DOC-024
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09 → D-DOC-028
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09 → D-DOC-024
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 
-[D-DOC-018]: doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
+[D-DOC-018]: doc-018-the-site-opens-on-the-readme.md
 [D-DOC-019]: doc-019-the-sites-stylesheet-and-script-are-built-files.md
 [D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-021]: doc-021-the-site-is-searched-in-a-dialog-opened-with-ctrl-k.md

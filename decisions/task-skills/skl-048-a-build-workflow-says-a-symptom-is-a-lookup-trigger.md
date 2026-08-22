@@ -28,7 +28,7 @@ one moment a subject is what the session has. Debugging is where it does not.
   left this half undecided and said why: a sentence sending a caller with a
   symptom to the index sent it to a miss, because the domain gate dropped the
   hint that explained the failure. That gate was closed the same week —
-  [`D-ANS-084`](../answers/ans-084-a-curated-phrase-crosses-the-domain-gate-where-the-selected-layers-do-not-claim-it.md)
+  [`D-ANS-084`](../answers/ans-084-a-curated-phrase-crosses-the-domain-gate.md)
   is the rule and
   [`R-ANS-031`](../../requirements/answers/ans-031-a-symptom-reaches-the-hint-that-explains-it.md)
   is what must keep holding.
@@ -106,5 +106,5 @@ was made: what an installation session stops on is answered by
 a line sending the symptom to `typo3_hint_lookup` would have sent this one to a
 miss. What the session reports instead is that nothing invited the question at
 all once the workflow ended, which is the closing form
-[`D-SKL-049`](skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md)
+[`D-SKL-049`](skl-049-the-gate-at-the-end-of-a-workflow-waits-for-its-corrections.md)
 carries.

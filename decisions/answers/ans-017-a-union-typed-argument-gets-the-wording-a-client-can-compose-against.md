@@ -83,10 +83,10 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
   renamed `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares` —
   stays green, because that test calls `Channel::record` directly. `R-FBK-001`
   is what either has to keep held.
-- [`D-ANS-005`](ans-005-a-question-that-is-not-supported-here-is-answered-in-a-shape-of-its-own.md) and
-  `D-ANS-012` both bet that a client reading less of a schema than it declares
-  gets a weaker promise and nothing worse. This is the counter-example: the
-  degradation was an argument that could not be sent at all.
+- [`D-ANS-005`](ans-005-an-unsupported-question-is-answered-in-a-shape-of-its-own.md)
+  and `D-ANS-012` both bet that a client reading less of a schema than it
+  declares gets a weaker promise and nothing worse. This is the counter-example:
+  the degradation was an argument that could not be sent at all.
 
 ## Assumed
 

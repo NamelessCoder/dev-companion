@@ -20,7 +20,7 @@ is the fourth thing done to a label rather than a second subject.
 ## Evidence
 
 - The reading is
-  [`D-KNW-076`](knw-076-what-a-new-backend-label-costs-before-it-resolves-is-a-gap-this-server-owns.md)'s
+  [`D-KNW-076`](knw-076-what-a-new-backend-label-costs-is-a-gap.md)'s
   **Confirmed on**, taken on `.checkouts/14.3` and `main` on the same day.
   Neither of its two **Wrong if** fired, so the report's two steps are both real
   and the statement is a procedure rather than a correction.

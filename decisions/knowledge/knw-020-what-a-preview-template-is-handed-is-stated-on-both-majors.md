@@ -12,7 +12,7 @@ coveredBy:
 **The corpus states what a preview template is handed on each major, and what a
 field read off the record resolves to.**
 
-[`D-KNW-014`](knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
+[`D-KNW-014`](knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
 is the finding: a session arrived at a template with one variable in it and
 nothing here said what that variable was. This entry is what took its place —
 the statements are on `content-elements`, and what they can now be wrong about
@@ -93,7 +93,7 @@ A second question about the same variable was judged on 2026-08-18 and is queued
 beside this one: these statements say how a field is read off the record and
 never what the record or the field is as a PHP type, which is what a typed
 `f:argument` declares —
-[`D-KNW-090`](knw-090-the-corpus-names-the-php-type-a-record-and-a-transformed-column-arrive-as.md).
+[`D-KNW-090`](knw-090-the-corpus-names-the-php-type-a-record-arrives-as.md).
 Both land on `preview-record-variable`, so whichever is written second reads the
 statements this one put there rather than adding beside them.
 

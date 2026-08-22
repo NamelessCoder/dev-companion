@@ -32,10 +32,10 @@ tool list and finished without learning whether there was anything to read.
   resource is chosen by the host application or by the user rather than by the
   model mid-task. So a client that renders no list leaves the session nothing to
   find, and that is the half this side is blindest to.
-- [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md) is the same
-  shape one surface over: a session whose every criterion the conformance
-  skill's body would have met never loaded it, and all thirty-five of its calls
-  went through Bash.
+- [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
+  is the same shape one surface over: a session whose every criterion the
+  conformance skill's body would have met never loaded it, and all thirty-five
+  of its calls went through Bash.
 
 ## Decided
 
@@ -97,7 +97,7 @@ page. The naming reached it on both surfaces this entry asked for, so what is
 missing is beside them rather than instead of them: the two skills name a
 `typo3://guides` address where the session needs the call, and a cut answer says
 it cut a page without saying how much of it it left. That is
-[`D-ANS-070`](../answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md),
+[`D-ANS-070`](../answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it.md),
 and the enumeration this entry decided against is still not what follows.
 
 ## Since then
@@ -145,7 +145,7 @@ So the clause is gone and the index gained what it paid for: *the whole
 procedure, not one fact out of it: typo3_rule_lookup with a documentId
 typo3_project_describe lists*. The index rather than the sentence, because
 `Coverage::offered()` drops an entry naming a tool the caller excluded
-([`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md)),
+([`D-AUD-011`](aud-011-the-instructions-index-the-question-each-tool-answers.md)),
 while a sentence in `then` naming `typo3_rule_lookup` would point at a tool that
 can be taken away. The longest assembly moves from 2021 characters to 2026 of
 the 2048

@@ -96,7 +96,7 @@ two declarations — which is where the third **Wrong if** expects the other
 feedback to land, arrived at independently. Nothing here changed: the runtime
 half stays with `feedback/2026-07-31-193611`, and answering it from this reading
 would be the copy-down that entry already declines. The rest of that feedback is
-[`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary-not-evidence-about-where-it-runs.md).
+[`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md).
 
 The first **Wrong if** arrived on 2026-08-17. `feedback/2026-08-17-211157` is a
 session holding the numbers and not taking them, which is what it describes. It

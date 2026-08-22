@@ -37,7 +37,7 @@ instead: the answer that stopped one step short, which is what the corpus fails
 at rather than absence; the wish, asked without the scope test the session would
 otherwise apply to it; and what was established elsewhere, asked for all of it
 and sorted here rather than there —
-`D-FBK-047 <../../decisions/feedback/fbk-047-the-debrief-asks-what-an-answer-left-out-and-what-the-session-wanted.md>`_.
+`D-FBK-047 <../../decisions/feedback/fbk-047-the-debrief-asks-what-an-answer-left-out.md>`_.
 
 The documents are asked about on their own because the model never picks one. A
 resource is chosen by the host application or by the user rather than mid-task,

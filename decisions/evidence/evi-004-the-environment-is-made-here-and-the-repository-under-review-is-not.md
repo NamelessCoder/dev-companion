@@ -70,7 +70,7 @@ stays named in `todo/reference/`.
   repository's own idea of all three.
 - A made `E-SITE` is the environment and never the subject of a recorded forward
   review. Its defects would be the ones this repository wrote, which is
-  [`D-EVI-001`](evi-001-forward-evidence-comes-from-a-review-not-from-a-prompt-that-knows-the-answer.md) from the other
+  [`D-EVI-001`](evi-001-forward-evidence-comes-from-a-review.md) from the other
   side. What it is for is the contract cases, and a real installation for the
   half of this server that has never had one.
 - No site package is scaffolded, for the same reason. `scenarios/readme.md`

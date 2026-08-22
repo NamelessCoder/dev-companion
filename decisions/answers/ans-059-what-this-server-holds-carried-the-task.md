@@ -30,7 +30,7 @@ repository does not own.
   before the fix.
 - The four failures are `typo3_forge_lookup` three times and
   `typo3_gerrit_lookup` once —
-  [`D-ANS-055`](ans-055-a-change-answers-for-an-issue-only-where-its-commit-message-names-it.md),
+  [`D-ANS-055`](ans-055-a-change-answers-for-an-issue-its-commit-message-names.md),
   [`D-ANS-056`](ans-056-a-search-hit-is-filled-from-the-issue-it-is.md),
   [`D-ANS-057`](ans-057-what-hangs-off-an-issue-is-named.md)
   and the backlog interface that had landed an hour before the session ran.

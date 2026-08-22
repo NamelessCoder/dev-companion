@@ -51,7 +51,7 @@ is the first thing an editor sees.
   `renderPageModulePreviewHeader()` at line 78, the event after it and
   `wrapPageModulePreview()` at line 96, and the 13.4 renderer builds the same
   four header parts. So one statement holds on both majors — unlike the one
-  [`D-KNW-014`](knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
+  [`D-KNW-014`](knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
   queues, which is `since 14`.
 - Nothing below `knowledge/` or `skills/` says it. `bin/cli hints:probe` reaches
   nothing on "backend preview element header already rendered default renderer"

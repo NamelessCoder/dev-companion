@@ -85,7 +85,7 @@ was pointed at. Neither **Wrong if** covers it: the classification was right,
 and the checkout came back unmodified because nothing ran at all. What it shows
 is that the property answers what a command does to the sources and never
 whether it can start here, which is the second question
-[D-ANS-086](../answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md)
+[D-ANS-086](../answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-command.md)
 puts into the same answer. The decision stands; what was missing is a number
 beside the property rather than a different reading of it.
 

@@ -25,7 +25,7 @@ the sentence rather than the answer of the call that fired.
   line of its text.
 - **The position the sentence would take has four sessions on record and routed
   none of them.**
-  [`D-ANS-061`](ans-061-an-answer-that-names-a-document-hands-it-over-rather-than-pointing-at-it.md)
+  [`D-ANS-061`](ans-061-an-answer-that-names-a-document-hands-it-over.md)
   is where they are read, and its second **Assumed** — that naming a thing in an
   answer is enough — has been unmet since 2026-08-07. Three of the four held
   this same answer's guides listing, which is an onward name at the foot of it
@@ -46,7 +46,7 @@ the sentence rather than the answer of the call that fired.
   reads the eleven that way when it weighs the project's own agent instruction
   file and leaves it untaken.
 - **The rewrite on that channel is two days old and unread.**
-  [`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md)
+  [`D-AUD-012`](../audience/aud-012-the-second-call-of-the-entry-point-is-an-imperative.md)
   turned the second sentence into an imperative on 2026-08-19 for two characters
   of the twenty-two the budget had left, and no run has counted the two calls
   since.

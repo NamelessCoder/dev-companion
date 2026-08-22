@@ -48,7 +48,7 @@ route.
   built a content element with a custom backend preview and guessed at facts
   that skill's own description covers.
 - **The general form is already decided.**
-  [`D-SKL-034`](../task-skills/skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md)
+  [`D-SKL-034`](../task-skills/skl-034-a-step-is-skippable-on-what-the-session-holds.md)
   took the condition off step 3 because a step is skippable on what the session
   holds and never on how it arrived. Withholding hints on a routed name is that
   condition again, moved from the skill into the answer, where the session

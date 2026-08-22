@@ -94,7 +94,7 @@ involved, and that caller lands on `content-elements` instead.
 
 - The crossing is written and a rendered-verification query still reaches only
   `content-elements`. Then it is ranking rather than routing, and
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
   and
   [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md)
   are where it belongs.

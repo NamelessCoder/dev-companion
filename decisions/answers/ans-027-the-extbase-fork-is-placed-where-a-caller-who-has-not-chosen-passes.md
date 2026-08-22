@@ -57,11 +57,11 @@ before it was filed.
   already orders. `typo3_extension_describe` reports each content element with a
   `kind` of `element` or `plugin`, where `plugin` is an Extbase plugin
   registered by `ExtensionUtility::registerPlugin()`
-  ([`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md)),
-  and `skills/base.md` puts that call at step 2, before the checkout is read.
-  Both places that name it frame the answer as where an element renders: the
-  intent asks for it "for the content elements this extension already registers
-  and the templates they render through".
+  ([`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element.md)), and
+  `skills/base.md` puts that call at step 2, before the checkout is read. Both
+  places that name it frame the answer as where an element renders: the intent
+  asks for it "for the content elements this extension already registers and the
+  templates they render through".
 
 ## Decided
 

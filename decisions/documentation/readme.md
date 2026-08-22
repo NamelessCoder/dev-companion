@@ -13,6 +13,7 @@ earns one.
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
 - [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22
 - [`D-DOC-042`][D-DOC-042] — A backticked name is a claim that the thing exists now · 2026-08-22
+- [`D-DOC-043`][D-DOC-043] — A test is what holds an entry to the code it points at · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
 - [`D-DOC-035`][D-DOC-035] — What the prose costs is counted beside how long a sentence is · 2026-08-18
 - [`D-DOC-036`][D-DOC-036] — A todo serves a decision by its id · 2026-08-18
@@ -51,6 +52,7 @@ earns one.
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
 [D-DOC-041]: doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
 [D-DOC-042]: doc-042-a-backticked-name-is-a-claim-that-the-thing-exists-now.md
+[D-DOC-043]: doc-043-a-test-is-what-holds-an-entry-to-the-code-it-points-at.md
 [D-DOC-034]: doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
 [D-DOC-035]: doc-035-what-the-prose-costs-is-counted-beside-how-long-a-sentence-is.md
 [D-DOC-036]: doc-036-a-todo-serves-a-decision-by-its-id.md

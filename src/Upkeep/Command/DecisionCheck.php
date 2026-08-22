@@ -169,6 +169,26 @@ final class DecisionCheck
             $output->writeln('');
         }
 
+        // The other report, and the one that says which entries can go stale
+        // without anything noticing: a test named under **Covered by** is the
+        // only thing that fails when the behaviour an entry describes moves.
+        $uncovered = Decisions::uncovered();
+        if ($uncovered !== []) {
+            $output->writeln(sprintf(
+                '%d entries point at this code and name no test that would catch it moving:',
+                count($uncovered),
+            ));
+            foreach (array_slice($uncovered, 0, 3) as $entry) {
+                $output->writeln(sprintf(
+                    '  %-11s %-10s names %d of our classes',
+                    $entry['id'],
+                    $entry['status'],
+                    $entry['names'],
+                ));
+            }
+            $output->writeln('');
+        }
+
         $errors = Cli::errors($output);
         foreach ($problems as $problem) {
             $errors->writeln($problem);

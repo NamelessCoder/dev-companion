@@ -139,6 +139,52 @@ final class Decisions
     }
 
     /**
+     * Entries pointing at this repository's code that no test holds, most
+     * references first.
+     *
+     * Not a defect and nothing fails on it. Most entries here are about process
+     * and nothing runs over them, so an entry may name `Scope::of()` in its
+     * evidence while deciding something no test could keep — and a check that
+     * demanded **Covered by** would be answered with a test name chosen to
+     * satisfy it.
+     *
+     * What it reports is the one coupling that actually holds an entry to the
+     * code: a test named under **Covered by** fails when the behaviour moves,
+     * and `DecisionsTest::everyTestADecisionNamesExists` fails when the test
+     * goes with it. Read on 2026-08-22, the three entries found stale that day
+     * carried no such name and the two whose code had moved under them carried
+     * one and were right.
+     *
+     * @return array<int, array{id: string, names: int, status: string}>
+     */
+    public static function uncovered(): array
+    {
+        $classes = Sources::classes();
+
+        $uncovered = [];
+        foreach (self::all() as $decision) {
+            if (in_array('Covered by', $decision['fields'], true)) {
+                continue;
+            }
+            $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
+            preg_match_all('/`(\w+)::\w+/', $body, $matches);
+            $named = array_filter(array_unique($matches[1]), static fn(string $class): bool => isset($classes[$class]));
+            if ($named === []) {
+                continue;
+            }
+            $uncovered[] = [
+                'id' => $decision['id'],
+                'names' => count($named),
+                'status' => $decision['status'],
+            ];
+        }
+
+        usort($uncovered, static fn(array $a, array $b): int => [$b['names'], $a['id']] <=> [$a['names'], $b['id']]);
+
+        return $uncovered;
+    }
+
+    /**
      * A later label opening a line in bold, which is a section written as a
      * paragraph.
      *

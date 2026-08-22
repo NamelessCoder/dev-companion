@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
 use TYPO3\DevCompanion\Upkeep\Requirements;
+use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
  * The shape of decisions/, as far as one branch can be right about it.
@@ -191,6 +192,46 @@ final class DecisionsTest extends TestCase
                 $entry['id'] . ' is reported as outgrown and its decision is the longer half',
             );
             self::assertGreaterThan(0, $entry['dated'], $entry['id'] . ' has later reading and no dated section');
+        }
+    }
+
+    /**
+     * What an entry pointing at this code owes is read out, never failed on.
+     *
+     * A test named under **Covered by** is the one coupling that holds: it
+     * fails when the behaviour moves, and `everyTestADecisionNamesExists`
+     * fails when the test goes with the code. The three entries found stale on
+     * 2026-08-22 named no such test, and the two whose code had moved under
+     * them named one and were right — so the reading is the absence of a test
+     * and not the age of the entry.
+     *
+     * Most entries here decide something about process and no test could keep
+     * them, which is why nothing may fail on this: a demand for **Covered by**
+     * would be answered with a name chosen to satisfy it.
+     */
+    #[Test]
+    public function anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn(): void
+    {
+        $uncovered = Decisions::uncovered();
+
+        self::assertNotSame([], $uncovered, 'every entry naming this code names a test, which the report would have to say instead');
+
+        $named = array_column($uncovered, 'names');
+        $sorted = $named;
+        rsort($sorted);
+        self::assertSame($sorted, $named, 'the entry naming the most of our classes is not first');
+
+        $classes = Sources::classes();
+        foreach ($uncovered as $entry) {
+            $decision = Decisions::all()[$entry['id']];
+            $body = (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']);
+            self::assertNotContains('Covered by', $decision['fields'], $entry['id'] . ' names a test and is reported as naming none');
+            preg_match_all('/`(\w+)::\w+/', $body, $matches);
+            self::assertNotSame(
+                [],
+                array_filter(array_unique($matches[1]), static fn(string $class): bool => isset($classes[$class])),
+                $entry['id'] . ' is reported as pointing at this code and points at none',
+            );
         }
     }
 

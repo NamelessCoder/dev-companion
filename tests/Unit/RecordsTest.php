@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
  * What the records claim about the code they name.
@@ -47,7 +48,8 @@ final class RecordsTest extends TestCase
     #[Test]
     public function everyMemberTheRecordsNameInBackticksExists(): void
     {
-        [$classes, $members] = $this->declared();
+        $classes = Sources::classes();
+        $members = Sources::members();
 
         $missing = [];
         foreach ($this->recordFiles() as $path) {
@@ -65,36 +67,6 @@ final class RecordsTest extends TestCase
         }
 
         self::assertSame([], array_values(array_unique($missing)), 'named in backticks by a record, and the class has no such member');
-    }
-
-    /**
-     * Every class this repository declares, and every member it declares on
-     * one, read from the files rather than from reflection — the corpus names
-     * private members as readily as public ones.
-     *
-     * @return array{0: array<string, true>, 1: array<string, true>}
-     */
-    private function declared(): array
-    {
-        $classes = [];
-        $members = [];
-        foreach (['src', 'tests'] as $tree) {
-            foreach (Finder::create()->files()->in(Paths::root() . '/' . $tree)->name('*.php')->sortByName() as $file) {
-                $code = (string) file_get_contents($file->getPathname());
-                if (preg_match('/^(?:final |abstract |readonly )*(?:class|enum|interface|trait) (\w+)/m', $code, $named) !== 1) {
-                    continue;
-                }
-                $classes[$named[1]] = true;
-                foreach (['/function (\w+)\s*\(/', '/const (\w+)/', '/(?:public|private|protected)[^;{]*\$(\w+)/', '/case (\w+)/'] as $pattern) {
-                    preg_match_all($pattern, $code, $found);
-                    foreach ($found[1] as $member) {
-                        $members[$named[1] . '::' . $member] = true;
-                    }
-                }
-            }
-        }
-
-        return [$classes, $members];
     }
 
     /** @return array<int, string> */

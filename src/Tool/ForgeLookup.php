@@ -21,6 +21,9 @@ use TYPO3\DevCompanion\Result\ToolResult;
  */
 final class ForgeLookup extends ReadOnlyTool
 {
+    /** The issue is read from the tracker at forge.typo3.org. */
+    protected const OPEN_WORLD = true;
+
     public static function name(): string
     {
         return 'typo3_forge_lookup';
@@ -37,15 +40,6 @@ final class ForgeLookup extends ReadOnlyTool
         return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, the related issues with their subjects, the review changes its comments name, the files hanging off it — which on a report about rendering is where the evidence usually is — and the comments, where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand. Or pass open to enumerate the core project\'s unresolved issues without holding a number or a wording — oldest filed or longest untouched, narrowed by tracker, by date and by person, which is where a triage of the backlog starts; the count of everything that matched comes back with the page, so a limited answer says whether it is the whole set. reportedBy and assignedTo take a person\'s name and answer what they filed and what they are on the hook for, which is the one question query cannot be made to answer: it matches text, so a name reaches the issues that mention the person and not the issues that are theirs. status widens that enumeration past the unresolved ones, which is what a person\'s history needs, and involving answers both sides of a person at once — the tracker ANDs its filters, so what somebody filed or holds cannot be asked of it directly. Or pass breakdown with any of those to be answered how the matched set is distributed — per status, per tracker, per area, per year — instead of a page of it, which is what a set of hundreds is answered by: limit stops at 50 and nothing pages past it. Each entry carries its number, subject, tracker, status and URL, and an enumerated one also carries the issues it is filed against with their subjects, the files hanging off it, and the changes on review.typo3.org whose commit message names it — the three that say a row was answered elsewhere or already attempted, without reading it whole. A call carries issue, query or open, never two of them. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
-    public static function annotations(): array
-    {
-        return [
-            'readOnlyHint' => true,
-            'destructiveHint' => false,
-            'idempotentHint' => true,
-            'openWorldHint' => true,
-        ];
-    }
 
     public static function inputSchema(): array
     {

@@ -21,6 +21,9 @@ use TYPO3\DevCompanion\Search\LabelSearch;
  */
 final class ChangelogLookup extends ReadOnlyTool
 {
+    /** The versions above the installed major are read from docs.typo3.org. */
+    protected const OPEN_WORLD = true;
+
     /**
      * What an entry that states no removal leaves to be said.
      *
@@ -47,17 +50,6 @@ final class ChangelogLookup extends ReadOnlyTool
         return [Source::Packages, Source::Network];
     }
 
-    public static function annotations(): array
-    {
-        return [
-            'readOnlyHint' => true,
-            'destructiveHint' => false,
-            'idempotentHint' => true,
-            // The versions above the installed major are read from
-            // docs.typo3.org, so this tool reaches a host it does not own.
-            'openWorldHint' => true,
-        ];
-    }
 
     public static function description(): string
     {

@@ -15,6 +15,9 @@ use TYPO3\DevCompanion\Result\ToolResult;
  */
 final class DocumentationLookup extends ReadOnlyTool
 {
+    /** The manuals are read from docs.typo3.org. */
+    protected const OPEN_WORLD = true;
+
     /**
      * The share of a query a result carries before the answer warns about it.
      * It is the value `Documents::search()` drops a section below, so the two
@@ -43,15 +46,6 @@ final class DocumentationLookup extends ReadOnlyTool
         return 'Search or read the official live TYPO3 documentation for a covered TYPO3 line. Four manuals are searched: TYPO3 Explained, TypoScript Explained, the TCA Reference and the Fluid ViewHelper Reference. Search with several short English queries; every result carries a canonical URL. Pass one of those URLs back as page with the same targetVersion to receive that page as text, including headings and code examples. A query naming a Fluid tag such as f:if is answered from the ViewHelper reference alone; ask without the prefix for the other manuals\' Fluid chapters. This reaches docs.typo3.org, unlike the bundled convention lookups.';
     }
 
-    public static function annotations(): array
-    {
-        return [
-            'readOnlyHint' => true,
-            'destructiveHint' => false,
-            'idempotentHint' => true,
-            'openWorldHint' => true,
-        ];
-    }
 
     public static function inputSchema(): array
     {

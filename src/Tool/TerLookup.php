@@ -19,6 +19,9 @@ use TYPO3\DevCompanion\Result\ToolResult;
  */
 final class TerLookup extends ReadOnlyTool
 {
+    /** The releases are read from the registry at extensions.typo3.org. */
+    protected const OPEN_WORLD = true;
+
     public static function name(): string
     {
         return 'typo3_ter_lookup';
@@ -35,15 +38,6 @@ final class TerLookup extends ReadOnlyTool
         return 'Read what the TYPO3 Extension Repository has published under an extension key, live from extensions.typo3.org. Pass extension with the key — the one extra.typo3/cms.extension-key declares, not the Composer package name — and every published version comes back, highest number first: the number, the state, the day it was uploaded, the TYPO3 majors it declares and the constraints.depends.typo3 it was released with. This is the question a release audit cannot answer from the repository it is auditing: Tailor refuses to package unless ext_emconf.php names the version being released, so that file still names it after the upload and a checkout that has been published reads exactly like one that has not. Pass version as well to be told whether the registry already holds that number; it reports what is published and judges no version free, and comparing it against the working tree is yours. A key nothing is published under is answered as such, which is not a statement that no such package exists — an extension distributed through Composer alone is never registered here. What publishing requires of the extension itself is typo3_hint_lookup with id="extension-ter-release". Reading only, and no credential: registering a key, uploading a version and transferring an extension stay yours, through Tailor and the token it carries.';
     }
 
-    public static function annotations(): array
-    {
-        return [
-            'readOnlyHint' => true,
-            'destructiveHint' => false,
-            'idempotentHint' => true,
-            'openWorldHint' => true,
-        ];
-    }
 
     public static function inputSchema(): array
     {

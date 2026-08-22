@@ -11,18 +11,25 @@ namespace TYPO3\DevCompanion\Tool;
  *
  * That is every tool but typo3_feedback_record, which is why the annotations
  * are stated once here rather than twenty-one times. A tool that reaches
- * outside — typo3_documentation_lookup does — overrides the one hint that
- * changes and keeps the rest.
+ * outside says so in the one hint that changes and inherits the rest.
  */
 abstract class ReadOnlyTool implements Tool
 {
+    /**
+     * Whether the answer is read from a host this package does not own, which
+     * is the one annotation that varies. Five tools reach one — the manuals,
+     * the tracker, the review server, the registry, and the changelog above
+     * the installed major.
+     */
+    protected const OPEN_WORLD = false;
+
     public static function annotations(): array
     {
         return [
             'readOnlyHint' => true,
             'destructiveHint' => false,
             'idempotentHint' => true,
-            'openWorldHint' => false,
+            'openWorldHint' => static::OPEN_WORLD,
         ];
     }
 

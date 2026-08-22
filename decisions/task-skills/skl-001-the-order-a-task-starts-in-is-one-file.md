@@ -46,12 +46,17 @@ the checkout sat relative to everything else.
 
 ## Wrong if
 
-- `REVIEW-02` in an extension repository shows the base being outrun again,
+- ~~`REVIEW-02` in an extension repository shows the base being outrun again,
   which would mean the order is followed only where a checklist reinforces it
-  and the conformance skill was carrying it rather than the base. Or the base
-  grows: it is load-bearing because it is short enough to be read before the
-  first call, and every sentence added to it is one the reading can swallow. It
-  is also unproven for four of the five skills — their order was corrected on
+  and the conformance skill was carrying it rather than the base.~~ Fired on
+  2026-08-02 in a self-reported call log rather than in a recorded run, and the
+  checklist is what did not help. The `REVIEW-02` that would settle it was
+  declined.
+- ~~Or the base grows: it is load-bearing because it is short enough to be read
+  before the first call, and every sentence added to it is one the reading can
+  swallow.~~ Fired six times, from 496 words to 1531, and what each growth
+  bought is the ledger below.
+- It is also unproven for four of the five skills — their order was corrected on
   the strength of a defect measured in the fifth, and no forward run has touched
   them.
 
@@ -67,85 +72,9 @@ short.
 
 ## Since then
 
-The base grew, on 2026-07-31, by one section on what a finding rests on. The
-three `REVIEW-02` runs that tested this decision are the same ones that showed
-the base saying nothing about the evidence behind an answer, and the section
-costs eight lines against a whole class of findings that read as established
-when they were derived. It is the first addition since the file was written, and
-the budget it spends is real: the next one is measured against a base a fifth
-longer than the one this decision called short.
-
-## Since then
-
-The base grew a second time, on 2026-07-31, by a fifth step — the deprecation
-sweep of the installed core over what the extension was reported to ship. The
-`REVIEW-02` run that earned it is the one this decision's **Wrong if** asks
-about, and the answer is the other one: the base was not outrun, it was silent,
-and the run swept nothing because nothing told it to. The step is in the base
-rather than in the conformance checklist because the upgrade skill that is
-queued behind it starts with the same sweep, and a second hand-written copy of
-an order is what this file exists to prevent. It pays for itself twice over by
-deleting the weaker copy the conformance skill already carried — the sweep "when
-an upgrade or a deprecated API is in scope", which is the escape hatch that run
-took. The sink half of the same run went the other way and stayed out of the
-base: an escaping finding is a claim about a sink, a finding gate for one
-surface, and it sits in the checklist beside the gate it qualifies, where only
-the skills that judge pay for it.
-
-## Since then
-
-The base grew a third time, on 2026-07-31, by the precondition that now stands
-above the order: no `typo3_` tool in the session means stop and say so, and
-never answer from what the model knows instead (`1960e50`, `R-SKL-008`). It is
-the growth this decision's **Wrong if** watches. The arithmetic is the worst so
-far: 496 words when the file was written, 960 after the sweep, 1099 now. It
-costs no call, because the first step of the order is the check, and it buys the
-one failure the order cannot see — an order followed perfectly against nothing.
-
-`feedback/2026-07-31-185553` is that failure from the other side, and judging it
-is what brought this entry the numbers above. A session in `site-new` activated
-`typo3-extension-conformance`, read `references/base.md`, and found none of the
-eleven tools it names callable. It audited the site package from its own
-knowledge anyway, and filed at 18:55:53 UTC — eleven minutes before `1960e50`
-landed. So it is archived as answered rather than turned into work, and what the
-re-run showed is this: the server starts and serves 24 tools over stdio, every
-one of the eleven among them, so nothing was ever missing here. The gap was the
-client's connection. That is why the feedback's own suggestion — expose the
-tools in the agent environment — is not a change this server makes at runtime.
-In `site-new` itself the installer has since written the precondition into all
-six published skills under both `.claude/skills` and `.agents/skills`, beside an
-`.mcp.json` that names this server.
-
-One half of that session is still open and lands elsewhere.
-`feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` is the
-same report four minutes later, and it carries what this one does not: the
-session reached the tools afterwards by driving the stdio binary by hand. The
-precondition answers what to do when the tools are absent and says nothing about
-that. So whoever judges the duplicate is judging a different question: not
-whether to stop, but whether stopping is still right when the server is one
-process away.
-
-## Since then
-
-The **Wrong if** got an answer from outside the recorded runs. A session on
-`opencode/ling-3.0-flash-free` left a feedback on 2026-07-31 at 18:36, in a
-checkout this repository has never seen. It names "the base to scope to lookup
-to reading order" as what "prevented premature conclusions" — the property this
-decision claims, from a run nobody here wrote the prompt for. It is weaker
-evidence than a `REVIEW-02`. The checkout, the prompt and the finding list are
-unreadable from here, and what came back is a session's account of its own work
-rather than a transcript. It is also the first evidence about the order from a
-model this repository has never measured, and it says the same thing the four
-runs said. The base was not outrun and it has not grown since. The four skills
-whose order was corrected without a forward run are still unproven. Judged in
-[`D-SKL-002`](skl-002-a-focused-audit-narrows-what-is-assessed.md), which is
-what the other half of the same feedback asked for.
-
-## Since then
-
-The **Wrong if** got its other answer, from the same project and one day later.
-A strength this time, and it lands in both halves: the base was outrun, and one
-of its steps was read past.
+The **Wrong if** got a second answer, from the same project and one day later. A
+strength this time, and it lands in both halves: the base was outrun, and one of
+its steps was read past.
 
 `feedback/2026-07-31-192945` names the conformance skill's workflow as
 "project_scope → extension_scope → architecture_lookup → changelog_lookup → read
@@ -243,9 +172,9 @@ carries in `todo/waiting/`.
 ## Confirmed on 2026-08-02
 
 **Stopping is still right when the server is one process away, and the base does
-not learn the way round.** That is the question the **Evidence** above hands to
-whoever judges the duplicate — not whether to stop, but whether stopping holds
-when the binary can be driven by hand. It was judged against
+not learn the way round.** That is the question the duplicate of
+`feedback/2026-07-31-185553` left behind — not whether to stop, but whether
+stopping holds when the binary can be driven by hand. It was judged against
 `feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` on
 2026-08-02. The base is unchanged by it, which is the point: the growth this
 decision's **Wrong if** watches did not happen, and the answer cost it nothing.
@@ -271,34 +200,6 @@ the install writes the entry, reports nine successes, and never says that a
 callable tool is one step further on. The precondition is what a session does
 when the tools are absent. Keeping them from being absent is the install's, and
 that half stays open.
-
-## Since then
-
-`feedback/2026-07-31-194826` was judged on 2026-08-02, and it did not follow its
-two siblings into `todo/waiting/`. The entry above already reads it as the other
-side of `192945` — one session skipped step 3 and reported no loss, this one ran
-it and reported no gain. What the judging run adds is that the second half of
-that sentence stands without the first.
-
-Re-run in this checkout on 2026-08-02: `typo3_task_guide` with
-`task="review the TYPO3 project and site package"` and `changeType=unknown`
-matches no intent, and the checklist it answers with is keep the patch focused,
-add the narrowest useful test coverage, write the commit message. Its two other
-next lookups are `typo3_hint_lookup` and `typo3_changelog_lookup`, which is the
-half of the complaint about restating the skill. The other half is sharper than
-the report: the enum offers five kinds of change and `unknown`, and
-`knowledge/task-intents.json` holds eleven intents of which none is an audit, so
-nothing a caller can pass says that this task changes nothing.
-
-That is ladder step 1b, and it is why the question above does not gate it. Both
-open answers leave the gap standing — drop step 3 from the base and a caller
-reaching the tool directly still gets a patch checklist; make `typo3_task_guide`
-name the workflow and the checklist under it is the same one.
-[`R-GUI-006`](../../requirements/guides/gui-006-a-review-is-not-answered-with-a-checklist-for-changing-something.md)
-is what must hold, and the todo behind it starts with research rather than the
-enum: what a review brief carries that a change brief does not. The feedback
-stays open until that lands, so this decision's question keeps the two cards it
-already had and loses the third.
 
 ## Since then
 
@@ -350,34 +251,6 @@ own.
 
 ## Since then
 
-The base grew twice more, and the arithmetic this entry keeps is 1367 words
-before 2026-08-03 and 1452 after it. The first of the two is `0fac7c6`, which
-spent 179 words replacing the deprecation sweep's query set with the changelog's
-own axes — the bound two models had already swept a sitepackage with and got
-nothing back from. The second is
-[`D-SKL-004`](skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md),
-which named the installed source as the step after the lookups and paid for part
-of it by displacing the review-only sentence it found on step 5. Both are what
-this decision's **Wrong if** watches, and the file is now nearly three times the
-length that made it short.
-
-## Since then
-
-The base grew again on 2026-08-03, from 1452 words to 1531, and the 79 it spent
-bound a route it already ordered rather than adding one. Step 5 sent "does this
-still work in version N" to the manual, and the manual matches page titles and
-section paths and never the text of a page — so a PHP identifier was being sent
-at a corpus that cannot carry it, which `D-ANS-010` re-ran from
-`/home/benji/projects/ext-guidedtour` and this file now says before the call.
-The alternative was the conformance skill, and it is the one this entry keeps
-refusing: the upgrade skill starts from the same sweep, and the conformance
-skill's own sentence defers to the base for why the changelog cannot answer.
-Half of what it bought is a reading the base was already sending sessions into —
-the class in `## When the lookups run out` is where an identifier now terminates
-— so the growth buys the step after it as well.
-
-## Since then
-
 The question this entry opened on 2026-08-02 — what step 3 is for once a task
 skill is loaded — was answered on 2026-08-03 by the person who was asked, and it
 is the second of the two: `typo3_task_guide` names the workflow step 3 says it
@@ -394,3 +267,44 @@ in `src/`. Both cards that carried the question are closed and both feedback are
 archived. `feedback/2026-07-31-193005` asked the neighbouring question about a
 self-reported call log, and it is archived too. Measuring that log needs a
 forward `REVIEW-02` on the model that filed it, and that run was declined.
+
+## Confirmed on 2026-08-22
+
+Seven readings held the rule above and changed nothing in it, so each is a line
+here rather than a section of its own. Five are the growth this decision's
+**Wrong if** watches, and what each one bought is what its line says.
+
+- 2026-07-31, the first addition since the file was written: a section on what a
+  finding rests on, against a whole class of findings that read as established
+  when they were derived.
+- 2026-07-31, to 960 words: the fifth step, a deprecation sweep of the installed
+  core over what the extension is reported to ship. It stands in the base rather
+  than in a checklist because the upgrade skill starts from the same sweep, and
+  it deleted the weaker copy the conformance skill carried.
+- 2026-07-31, to 1099 words: the precondition above the order — no `typo3_` tool
+  in the session means stop and say so, and never answer from what the model
+  knows instead (`1960e50`, `R-SKL-008`). It costs no call and buys the one
+  failure the order cannot see, an order followed perfectly against nothing.
+  `feedback/2026-07-31-185553` was judged with it and archived as answered: all
+  eleven tools that session could not reach were being served over stdio, and
+  the gap was the client's connection.
+- 2026-08-03, from 1367 words to 1452: `0fac7c6` put the changelog's own axes in
+  place of the sweep's query set, which two models had swept a sitepackage with
+  and got nothing back from, and `D-SKL-004` named the installed source as the
+  step after the lookups.
+- 2026-08-03, to 1531 words: step 5 stopped sending a PHP identifier at the
+  manual, which matches page titles and section paths and never the text of a
+  page — `D-ANS-010`.
+- `feedback/2026-07-31` at 18:36, from `opencode/ling-3.0-flash-free` in a
+  checkout this repository has never seen. It names the order as what prevented
+  premature conclusions, which is the property claimed above from a model
+  nothing here has measured. Judged in `D-SKL-002`.
+- `feedback/2026-07-31-194826` on 2026-08-02, which ran step 3 and reported no
+  gain. What stands without the question above is the other half: nothing a
+  caller can pass says that a task changes nothing, and `R-GUI-006` is what must
+  hold.
+
+On 2026-08-22 two of the fifteen published skills carry a recorded forward run —
+`typo3-extension-conformance` in `REVIEW-01` and `REVIEW-02`, and
+`typo3-core-patch-review` in `REVIEW-03`. The third **Wrong if** above is what
+that bears on, and it stands.

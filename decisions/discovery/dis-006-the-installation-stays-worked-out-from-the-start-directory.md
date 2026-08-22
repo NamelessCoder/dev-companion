@@ -46,3 +46,22 @@ in the specification twelve months before it may be removed at all.
   the session's directory, which would break the walk-up without breaking
   anything the specification promises: `R-DIS-022` is what would fail, and
   `TYPO3_DEV_COMPANION_ROOT` is what such a setup would have to state.
+
+## Since then
+
+Nothing settled it, and what was looked at is the half this checkout holds. The
+bundled `mcp/sdk` is v0.7.1 at protocol revision `2025-11-25`, and
+`ClientGateway::request()` is still private with `sample()` and `elicit()` as
+the only server-to-client calls it exposes — so the third **Assumed** stands and
+the request this entry declined to make is still one the SDK cannot send.
+
+The other half of the **Wrong if** is the corpus, and it is silent. No feedback
+of the archive reports the server started anywhere but the session's directory,
+and none reports the root being worked out wrongly; `typo3_server_scope` reports
+the root and the walk either way, which is what would make such a session say
+so.
+
+What is not read here is the deprecation registry. A revision that adds a
+mechanism not deprecated on arrival is an outside event, and `bin/cli todo:list`
+carries the recurring reading of what `mcp/sdk` has released, which is where a
+new revision arrives first.

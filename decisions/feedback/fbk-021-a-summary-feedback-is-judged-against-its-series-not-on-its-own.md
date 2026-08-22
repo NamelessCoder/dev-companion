@@ -102,13 +102,19 @@ mapping rather than by the ladder, and the first **Wrong if** did not fire. Its
 **Suggestion** has five clauses where `002951` had four, and every one of them
 lands on something:
 
-| Half of the summary                                            | Where it is                                                                                                                                                                                                                                   |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| what a v14 preview template receives, and how a field resolves | [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md), from [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md) |
-| `typo3_documentation_lookup` reaching *Record objects*         | `002928`, whose premise [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md) rejected                                                                                                                                  |
-| the Fluid conditional, and object access on the record         | `003448` and `003000`; the record half is `R-KNW-041`                                                                                                                                                                                         |
-| a debug script the container could not see                     | `003938`, with `003933` for what to do instead                                                                                                                                                                                                |
-| one cache command instead of `rm` on the cache directory       | `003937`                                                                                                                                                                                                                                      |
+- **what a v14 preview template receives, and how a field resolves** —
+  [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md),
+  from
+  [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
+- **`typo3_documentation_lookup` reaching the Record objects page** — `002928`,
+  whose premise
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  rejected
+- **the Fluid conditional, and object access on the record** — `003448` and
+  `003000`; the record half is `R-KNW-041`
+- **a debug script the container could not see** — `003938`, with `003933` for
+  what to do instead
+- **one cache command instead of `rm` on the cache directory** — `003937`
 
 Two of the five are answered rather than carried, which is what makes this
 summary a different case from `002951`. The preview statements are on the
@@ -150,13 +156,21 @@ whose headings are the workflow of `skills/typo3-extension-testing/SKILL.md`.
 The mapping still holds, because the sections are the same subjects under the
 skill's words.
 
-| Half of the self-rating                                                                                                            | Where it is                                                                                                                                          |
-| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| §1 `references/base.md` unread, neither scope call made, remembered `composer test:*` in place of the declared commands            | `003356`, judged in [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md)                                                  |
-| §2, §3, §5 rendered frontend and backend preview established by curl, the project's own `Tests/E2E` harness untouched, no spec run | `003533`, judged in [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md), with a card in `todo/open/` |
-| §4 tests written against core ViewHelpers to find out what they do                                                                 | `003933`, which reports the same substitution of experiment for reading                                                                              |
-| §4 `fwrite` and `extract` debug left in the regression test, and a throwaway `LinkDebugTest`                                       | `003938`, whose **Suggestion** asks for the safe way to introspect an installed class                                                                |
-| the premise that the skill was never activated                                                                                     | withdrawn by `003736`; `D-KNW-017` records the withdrawal and reads the trigger out                                                                  |
+- **§1 `references/base.md` unread, neither scope call made, remembered
+  `composer test:*` in place of the declared commands** — `003356`, judged in
+  [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md)
+- **§2, §3, §5 rendered frontend and backend preview established by curl, the
+  project's own `Tests/E2E` harness untouched, no spec run** — `003533`, judged
+  in
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),
+  with a card in `todo/open/`
+- **§4 tests written against core ViewHelpers to find out what they do** —
+  `003933`, which reports the same substitution of experiment for reading
+- **§4 `fwrite` and `extract` debug left in the regression test, and a throwaway
+  `LinkDebugTest`** — `003938`, whose **Suggestion** asks for the safe way to
+  introspect an installed class
+- **the premise that the skill was never activated** — withdrawn by `003736`;
+  `D-KNW-017` records the withdrawal and reads the trigger out
 
 Its own query reaches less than its halves do, which is the pattern
 [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
@@ -263,12 +277,11 @@ one report per subject and twenty of them are still open:
 | three hints carrying an incorrect statement, and the partial collision   | archived: `205817`, `204536`, `211418`, `205759`, `205830`         |
 | the whole-session profile                                                | nowhere else                                                       |
 
-One row of the ten is answered rather than carried, and five archived siblings
-are what answered it. `c595d790`, `fde155a9`, `30ba620d` and `f3219aba`
-corrected the four hints between the report and this judgement, each leaving an
-assertion in `HintsTest` behind it. So the sentence in the profile that counts
-three hints as carrying an incorrect statement was already out of date when it
-was read.
+One of the ten is answered rather than carried, and five archived siblings are
+what answered it. `c595d790`, `fde155a9`, `30ba620d` and `f3219aba` corrected
+the four hints between the report and this judgement, each leaving an assertion
+in `HintsTest` behind it. So the sentence in the profile that counts three hints
+as carrying an incorrect statement was already out of date when it was read.
 
 **The orphaned half of a measured summary is the measurement.** The ladder's
 five steps each name something missing, misplaced or misworded, and a number is
@@ -303,19 +316,25 @@ naming two hint ids, the closing sentence naming a hint's neighbours, and the
 five bullets of *Verify at the right layers* — with the repetition stated as the
 finding:
 
-| Half of the summary                                                                            | Where it is                                                                                                                                            |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| step 5 of `typo3-development-installation` named two ids under one clause                      | archived `211118`, judged in [`D-SKL-044`](../task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md)                  |
-| the closing neighbour sentence read at the moment the answer lands                             | archived `211306`, judged in [`D-KNW-087`](../knowledge/knw-087-a-listed-neighbour-says-what-it-prevents.md)                                           |
-| the browser bullet of the verification section named no lookup                                 | `205945` case four, judged in [`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md), held by `R-SKL-024` |
-| a multi-item prescription in prose has nothing at the end asking whether the list was finished | nowhere else                                                                                                                                           |
+- **step 5 of `typo3-development-installation` named two ids under one clause**
+  — archived `211118`, judged in
+  [`D-SKL-044`](../task-skills/skl-044-a-step-that-names-two-hint-ids-says-what-each-one-alone-answers.md)
+- **the closing neighbour sentence read at the moment the answer lands** —
+  archived `211306`, judged in
+  [`D-KNW-087`](../knowledge/knw-087-a-listed-neighbour-says-what-it-prevents.md)
+- **the browser bullet of the verification section named no lookup** — `205945`
+  case four, judged in
+  [`D-SKL-045`](../task-skills/skl-045-a-build-workflow-names-the-guide-at-the-step-that-needs-it.md),
+  held by `R-SKL-024`
+- **a multi-item prescription in prose has nothing at the end asking whether the
+  list was finished** — nowhere else
 
-Three of the four rows are answered rather than carried, and each was corrected
-on 2026-08-18 — `7dab8ef8`, `9111d6a8` with `1f189b5f`, and `4ec22687`. So the
+Three of the four are answered rather than carried, and each was corrected on
+2026-08-18 — `7dab8ef8`, `9111d6a8` with `1f189b5f`, and `4ec22687`. So the
 mapping is what dates the summary rather than what closes it: every example in
 it describes a file that has since changed at the step it names.
 
-The fourth row is the ladder's step 5 and it is
+The fourth is the ladder's step 5 and it is
 [`D-SKL-049`](../task-skills/skl-049-the-gate-at-the-end-of-a-workflow-waits-for-the-corrections-it-would-sit-on.md).
 What that adds to the mechanism is where a summary's own conclusion goes. A
 roundup orphans a subject and a measurement orphans a number; this one orphans
@@ -333,21 +352,31 @@ conclusion about the debrief rather than about the server.
 exist: which question of the debrief produced which finding. That makes the
 mapping unusually exact, because the feedback names the pairs itself:
 
-| Half of the summary                                                                | Where it is                                                                                                                                                                                                                                     |
-| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "which calls would you not make again" → the two `typo3_project_describe` answers  | archived `070333`, judged in [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md)                                                                                                    |
-| "which documents did you read whole" → the guides                                  | archived `070538`, which names the page it wanted; its list-was-never-rendered half was trimmed on 2026-08-18 into [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md) and `074226` |
-| "what did you never put to it" → `typo3_extension_describe`                        | archived `070611`, corrected and taken further by `071500`                                                                                                                                                                                      |
-| "where did a name not mean what it said" → the `--create-site` tagging             | archived `070632`                                                                                                                                                                                                                               |
-| "what did it save you from" → the ddev restart for `additional.php`                | archived `070515`                                                                                                                                                                                                                               |
-| the undercount: five checkout calls, two of them empty, and the hint never fetched | `071500` and `071435`                                                                                                                                                                                                                           |
-| "are skills missing" → two installation intents, one skill                         | `071526`                                                                                                                                                                                                                                        |
-| "is documentation missing" → answered with nothing                                 | nowhere, and deliberately: the session made no call it could report on                                                                                                                                                                          |
-| feedback quality is a function of the debriefing, not of the session               | nowhere else                                                                                                                                                                                                                                    |
+- **"which calls would you not make again" → the two `typo3_project_describe`
+  answers** — archived `070333`, judged in
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md)
+- **"which documents did you read whole" → the guides** — archived `070538`,
+  which names the page it wanted; its list-was-never-rendered half was trimmed
+  on 2026-08-18 into
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository-not-by-the-installation-in-it.md)
+  and `074226`
+- **"what did you never put to it" → `typo3_extension_describe`** — archived
+  `070611`, corrected and taken further by `071500`
+- **"where did a name not mean what it said" → the `--create-site` tagging** —
+  archived `070632`
+- **"what did it save you from" → the ddev restart for `additional.php`** —
+  archived `070515`
+- **the undercount: five checkout calls, two of them empty, and the hint never
+  fetched** — `071500` and `071435`
+- **"are skills missing" → two installation intents, one skill** — `071526`
+- **"is documentation missing" → answered with nothing** — nowhere, and
+  deliberately: the session made no call it could report on
+- **feedback quality is a function of the debriefing, not of the session** —
+  nowhere else
 
-Eight of the nine rows land, five of them on siblings that were already
-archived. The ninth is the conclusion, and the ladder was walked over that row
-alone: it reaches step 1b, and it is
+Eight of the nine land, five of them on siblings that were already archived. The
+ninth is the conclusion, and the ladder was walked over that one alone: it
+reaches step 1b, and it is
 [`D-FBK-048`](fbk-048-the-debrief-is-offered-as-a-prompt-where-the-channel-is.md).
 
 What this adds to the mechanism is that a summary can be evidence about the
@@ -368,16 +397,23 @@ work, with `typo3_server_scope` and `typo3_feedback_list` called afterwards for
 the debrief. Seven of its eight halves land on reports from the same directory,
 five of them from the same twelve minutes:
 
-| Half of the summary                                                                           | Where it is                                                                                                                                                        |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| the checkout won on the merits, and `doesNotCover` "PHP source as code" says so               | `080743`, the same session's strength report                                                                                                                       |
-| every tool arrived deferred, so a first call costs two round trips                            | `074627`, judged in [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md) |
-| nothing in the task named a subject the server advertises loudly                              | `080630`, on the upgrade skill's description, and `081159` on when a skill is matched                                                                              |
-| middleware order and the moment a superglobal is populated, assumed uncovered and never asked | `081228`, which asks for that document by stage and by major                                                                                                       |
-| running the other declared major, and proving the verdict against a frontend                  | `081129` and `081100`                                                                                                                                              |
-| the guides list was never rendered to the session                                             | archived `074226`                                                                                                                                                  |
-| the report's own observation was cut at 4000 characters                                       | `080803`                                                                                                                                                           |
-| `typo3_changelog_lookup` is the call it would make next time, on discoverability              | `113308`, in `/home/benji/projects/bootstrap_package`                                                                                                              |
+- **the checkout won on the merits, and `doesNotCover` "PHP source as code" says
+  so** — `080743`, the same session's strength report
+- **every tool arrived deferred, so a first call costs two round trips** —
+  `074627`, judged in
+  [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md)
+- **nothing in the task named a subject the server advertises loudly** —
+  `080630`, on the upgrade skill's description, and `081159` on when a skill is
+  matched
+- **middleware order and the moment a superglobal is populated, assumed
+  uncovered and never asked** — `081228`, which asks for that document by stage
+  and by major
+- **running the other declared major, and proving the verdict against a
+  frontend** — `081129` and `081100`
+- **the guides list was never rendered to the session** — archived `074226`
+- **the report's own observation was cut at 4000 characters** — `080803`
+- **`typo3_changelog_lookup` is the call it would make next time, on
+  discoverability** — `113308`, in `/home/benji/projects/bootstrap_package`
 
 **A session that made no call is evidence about the entry surface, and about no
 answer below it.** Every rung of the ladder under that surface needs a call to
@@ -425,28 +461,38 @@ author otherwise —
 A ninth summary was judged by the mapping on 2026-08-18, and it is the first one
 the mapping **closes**. `feedback/2026-08-18-081228` is the round-trip
 accounting of the session above — roughly 30 calls, all Bash, counted from the
-transcript and grouped by what they established — and the row the eighth summary
-handed it is the one that had not landed yet. It has since.
+transcript and grouped by what they established — and the half the eighth
+summary handed it is the one that had not landed yet. It has since.
 
-| Half of the summary                                                                                              | Where it is                                                                                                                                                         |
-| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 13 round trips: what a condition can see, which global is populated when, and the event ahead of matching        | archived `080532`, judged in [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md)              |
-| 1 of those 13 ruling out a request-scoped service, and 2 on constructor injection through `makeInstance`         | archived `080604`, judged in [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md)                       |
-| 7 round trips proving the verdict against the running frontend, filed separately by the session itself           | archived `081100`, judged in [`D-KNW-102`](../knowledge/knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md) |
-| 2 locating changelog entries by listing a directory, where `typo3_changelog_lookup` would have searched by words | `113308`, which the eighth summary already sent its discoverability half to                                                                                         |
-| 2 on the caller's own conventions — `Services.yaml`, a `Listener` directory, the existing test style             | its own repository, which `doesNotCover` puts outside                                                                                                               |
-| the two core directories asked for as `typo3_reference_list` entries                                             | [`D-CAT-005`](../catalog/cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md)                                                     |
-| the measurement: 13 of roughly 30 on one uncovered subject                                                       | [`D-FBK-020`](fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md)                                                                           |
+- **13 round trips: what a condition can see, which global is populated when,
+  and the event ahead of matching** — archived `080532`, judged in
+  [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-at-evaluation-time-is-a-gap-this-server-owns.md)
+- **1 of those 13 ruling out a request-scoped service, and 2 on constructor
+  injection through `makeInstance`** — archived `080604`, judged in
+  [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap-this-server-owns.md)
+- **7 round trips proving the verdict against the running frontend, filed
+  separately by the session itself** — archived `081100`, judged in
+  [`D-KNW-102`](../knowledge/knw-102-proving-a-typoscript-condition-verdict-against-a-running-installation-is-a-gap-this-server-owns.md)
+- **2 locating changelog entries by listing a directory, where
+  `typo3_changelog_lookup` would have searched by words** — `113308`, which the
+  eighth summary already sent its discoverability half to
+- **2 on the caller's own conventions — `Services.yaml`, a `Listener` directory,
+  the existing test style** — its own repository, which `doesNotCover` puts
+  outside
+- **the two core directories asked for as `typo3_reference_list` entries** —
+  [`D-CAT-005`](../catalog/cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md)
+- **the measurement: 13 of roughly 30 on one uncovered subject** —
+  [`D-FBK-020`](fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md)
 
-Four of the seven rows are answered rather than carried, and the three hints
-behind them were written between 16:22 and 17:15 the same day — six hours after
-the session filed at 10:12 local. So the mapping dates this summary the way it
-dated the sixth, except that here the dating is the whole judgement: the
-feedback asks for the frontend lifecycle "by stage and by major" and names the
-questions it must answer directly, and every one of them now reaches a hint.
-Probed in this checkout, "what does a TypoScript condition see at evaluation
-time" returns `typoscript-conditions` at `appliesTo(20) + text(193)`, "is
-TYPO3_REQUEST populated before TypoScript conditions are matched on v14" at
+Four of the seven are answered rather than carried, and the three hints behind
+them were written between 16:22 and 17:15 the same day — six hours after the
+session filed at 10:12 local. So the mapping dates this summary the way it dated
+the sixth, except that here the dating is the whole judgement: the feedback asks
+for the frontend lifecycle "by stage and by major" and names the questions it
+must answer directly, and every one of them now reaches a hint. Probed in this
+checkout, "what does a TypoScript condition see at evaluation time" returns
+`typoscript-conditions` at `appliesTo(20) + text(193)`, "is TYPO3_REQUEST
+populated before TypoScript conditions are matched on v14" at
 `appliesTo(33) + text(240)`, and "which PSR-14 event fires before TypoScript
 condition matching" at `appliesTo(20) + text(133)`.
 

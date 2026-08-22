@@ -23,16 +23,19 @@ not there. It did not say where they were.
   in `/home/benji/projects/typo3-cms`, and it filed three feedback in seven
   minutes:
 
-  | Half of the transcript                                          | The sibling that owns it                                                                                           |
-  | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-  | `typo3_project_describe` fits the task and should be kept       | `114526`, in hand elsewhere; `115115` from the other session                                                       |
-  | `processingTaskTypes` and `SYS.fal.processors` into that output | `114526`, whose **Suggestion** is the same sentence; `115220`, under *Requested changes to existing MCP endpoints* |
-  | seven core classes read by hand to confirm the code paths       | `114526`, under *What I had to establish from elsewhere*                                                           |
-  | a `grep_search` timeout and a relative-path `read_file`         | the caller's own editor, which `doesNotCover` places outside                                                       |
-  | `runTests` answered "No tests found", and what to run instead   | nothing                                                                                                            |
+  - **`typo3_project_describe` fits the task and should be kept** — `114526`, in
+    hand elsewhere; `115115` from the other session
+  - **`processingTaskTypes` and `SYS.fal.processors` into that output** —
+    `114526`, whose **Suggestion** is the same sentence; `115220`, under
+    *Requested changes to existing MCP endpoints*
+  - **seven core classes read by hand to confirm the code paths** — `114526`,
+    under *What I had to establish from elsewhere*
+  - **a `grep_search` timeout and a relative-path `read_file`** — the caller's
+    own editor, which `doesNotCover` places outside
+  - **`runTests` answered "No tests found", and what to run instead** — nothing
 
-- The last row is the first **Wrong if** of `D-FBK-021` firing. No sibling of
-  this session owns it. `114526` mentions the same failure in one clause and
+- The last of them is the first **Wrong if** of `D-FBK-021` firing. No sibling
+  of this session owns it. `114526` mentions the same failure in one clause and
   files it under "not MCP issues"; the debrief here is the only place the
   session says what it concluded from it.
 - What it concluded is wrong about the checkout. It reports preferring

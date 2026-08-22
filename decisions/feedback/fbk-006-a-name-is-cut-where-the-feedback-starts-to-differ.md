@@ -1,7 +1,7 @@
 ---
 id: D-FBK-006
 date: 2026-08-01
-status: open
+status: confirmed
 ---
 
 # D-FBK-006 — A name is cut where the feedback starts to differ
@@ -55,3 +55,24 @@ it says anything.
   shared words changes nothing and the counter is doing the work again. Or a
   series turns out to differ only in its middle, so the first difference is a
   word like "second" and every name in the group is a numeral.
+
+## Confirmed on 2026-08-22
+
+Neither **Wrong if** fired over 457 archived feedback. 456 slugs are distinct,
+the one pair that shares a slug shares its opening as well — two `REVIEW-03`
+reports of 2026-08-02, 83 minutes apart — and no name in the corpus is a numeral
+except the three the first **Assumed** predicted: `5-recommended-`,
+`16-suggested-` and `19-suggested-`, each of which still says what it is about
+after the number.
+
+That pair is the limit of the statement rather than a breach of it.
+`Channel::uniquePath()` reads the directory it writes into and not
+`feedback/archive/`, and the first of the two was closed the day it was filed,
+so by the time the second arrived there was nothing to collide with. The names
+stay distinct by timestamp, which is what the counter is for, and reading the
+archive as well would cost every recording a second directory listing to
+separate two files in 457.
+
+The **Decided** holds where it is measurable: recording still costs one
+directory listing, because the Finder call is narrowed to the slug the name
+would take.

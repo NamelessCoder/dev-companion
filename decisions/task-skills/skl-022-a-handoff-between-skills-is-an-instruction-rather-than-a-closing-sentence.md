@@ -77,37 +77,11 @@ it.**
   description apart for a reason.
 - A session with no client-side skill invocation at all reports the same
   crossing, which would say the lever is in the tools rather than in the skills.
-
-The `typo3-core-patch-checkout` question was put to the maintainer with both
-answers priced, and the answer was both with a pointer.
-`typo3-core-patch-development` gains a rebase-before-push step carrying the two
-parts a session worked out for itself — a running `runTests.sh` suite reads the
-mounted tree, so it is stopped and its containers cleared before rebasing, and
-the `Change-Id` is confirmed afterwards because losing it opens a second change.
-`typo3-core-patch-checkout` keeps its subject, a change fetched from review, and
-its description now names where a commit of your own belongs. So the stopping
-rules are written once and the boundary is stated from the side a caller reads
-first.
-
-## Since then
-
-, on 2026-08-07, it was built and the open question was answered.
-`typo3-core-issue-triage` and `typo3-core-patch-review` each end in a section
-that says to invoke `typo3-core-patch-development` at the point the crossing
-happens, with the moment named — the verdict is "still happens" and a fix is
-asked for; the reader accepts the findings and asks for the change. Both keep
-the ownership paragraph, which is what tells a reader where the boundary is.
-`R-SKL-018` holds it.
-
-## Since then
-
-, that crossing is written as a step too. `typo3-core-patch-development` ends in
-a section that says to invoke `typo3-core-patch-review` on the diff once the
-checks pass and the commit is written, before the patch is pushed or handed
-over, and it keeps the ownership paragraph beneath it.
-`SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` reads a successor per
-skill rather than one name for all of them, which is what a crossing running the
-other way needs.
+- A session reports switching on a sentence that reaffirmed a finding, after the
+  counter-case is in the skill. That would say the boundary cannot be drawn in
+  prose at all, and that the crossing has to be a question the session asks
+  rather than a trigger it recognises. Written on 2026-08-11, from the reading
+  below.
 
 ## Confirmed on 2026-08-09
 
@@ -169,12 +143,8 @@ a turn under the wrong rules and asking costs one sentence. `R-SKL-018` carries
 that half; nothing holds it, because which sentences a trigger has to exclude is
 a reading of the workflow rather than a property of the file.
 
-The **Wrong if** this would satisfy has not been written until now, and it is
-this: a session reports switching on a sentence that reaffirmed a finding after
-the counter-case is in the skill, which would say the boundary cannot be drawn
-in prose at all and that the crossing has to be a question the session asks
-rather than a trigger it recognises.
-
+What would satisfy this reading is the fourth **Wrong if** above, which it
+wrote.
 ## Since then
 
 On 2026-08-14 the rule the crossing guards held under the pressure it was
@@ -217,3 +187,29 @@ where a workflow is being left.
 `D-SKL-053` is the judgement and carries the card. What it does not license is
 writing the closing paragraph out as a list of everything the workflow still
 owes: that is `D-SKL-049`'s gate, which is proposed and waiting on an answer.
+
+## Confirmed on 2026-08-22
+
+Two readings held this decision and changed nothing in it, so each is a line
+here rather than a section of its own. Both are the crossing being built, and
+the second sits after the 2026-08-09 reading that asked for it rather than
+before it.
+
+- 2026-08-07: `typo3-core-issue-triage` and `typo3-core-patch-review` each end
+  in a section saying to invoke `typo3-core-patch-development` at the point the
+  crossing happens, with the moment named, and both keep the ownership
+  paragraph. `R-SKL-018` holds it. The question the third **Decided** bullet
+  left open was put to the maintainer with both answers priced, and the answer
+  was both with a pointer: `typo3-core-patch-development` gains a
+  rebase-before-push step carrying the two parts a session worked out for itself
+  — a running `runTests.sh` suite reads the mounted tree, so it is stopped and
+  its containers cleared before rebasing, and the `Change-Id` is confirmed
+  afterwards because losing it opens a second change.
+  `typo3-core-patch-checkout` keeps its subject, a change fetched from review,
+  and its description now names where a commit of your own belongs.
+- 2026-08-09, the crossing running the other way: `typo3-core-patch-development`
+  ends in a section saying to invoke `typo3-core-patch-review` on the diff once
+  the checks pass and the commit is written, before the patch is pushed or
+  handed over, with the ownership paragraph beneath it.
+  `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` reads a successor per
+  skill rather than one name for all of them.

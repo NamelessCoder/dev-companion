@@ -65,9 +65,10 @@ final class HintsTest extends TestCase
      * larger half of it. The path says which layer is meant.
      *
      * It is also the other half of `D-ANS-081`, where a curated phrase crosses
-     * the domain gate: "unit test" is curated on all three of these hints and on
-     * the JavaScript one, so the layer the path names answers the query itself
-     * and nothing crosses. A phrase let past on its own puts them back.
+     * the domain gate: "unit test" is curated on all three of these hints and
+     * on the JavaScript one, so the layer the path names answers the query
+     * itself and nothing crosses. A phrase let past on its own puts them back —
+     * `D-ANS-084`.
      */
     #[Test]
     public function aTypeScriptTestPathIsNotAnsweredWithPhpunit(): void
@@ -238,7 +239,7 @@ final class HintsTest extends TestCase
      * `app-dir` is accepted where it is written and ignored where it is used,
      * and the `cms-cli` failure blames a version line that looks wrong and is
      * not. A hint that named the keys and not their two failures would leave a
-     * session exactly where the report found it.
+     * session exactly where the report found it — `D-KNW-053`.
      */
     #[Test]
     public function installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing(): void
@@ -694,7 +695,7 @@ final class HintsTest extends TestCase
     /**
      * The other half of the same gap: the guide answered the task with
      * `intents: []` and the core patch checklist, so nothing named the skill
-     * that owns the work.
+     * that owns the work — `D-KNW-055`.
      */
     #[Test]
     public function aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt(): void
@@ -839,7 +840,7 @@ final class HintsTest extends TestCase
     /**
      * `R-KNW-063`, read out of an installed vendor tree because
      * `typo3fluid/fluid` is in no checkout: the whole file-name chain runs
-     * inside one root path before the next is tried.
+     * inside one root path before the next is tried — `D-KNW-052`.
      */
     #[Test]
     public function aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath(): void
@@ -889,7 +890,7 @@ final class HintsTest extends TestCase
      * `.environments/`, try the format and then the bare name and nothing else,
      * and the action name is capitalised before the lookup rather than after
      * it. A caller on 13 told about `.fluid.html` would go looking for a file
-     * the resolver there never asks for.
+     * the resolver there never asks for — `D-KNW-052`.
      */
     #[Test]
     public function theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt(): void
@@ -1069,10 +1070,10 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * The half that decides whether a fix works: the globals a provider behind a
-     * condition may read are populated on the older majors and not on the newer
-     * ones, so an unbound statement would be wrong on half the corpus either
-     * way.
+     * The half that decides whether a fix works: the globals a provider behind
+     * a condition may read are populated on the older majors and not on the
+     * newer ones, so an unbound statement would be wrong on half the corpus
+     * either way — `D-KNW-101`.
      */
     #[Test]
     public function whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem(): void
@@ -1172,6 +1173,9 @@ final class HintsTest extends TestCase
     #[Test]
     public function aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions(): void
     {
+        // The theme is the frontend's and the CSS hints are the backend's own
+        // conventions, so the whole category is withheld on the domains the
+        // paths name rather than on the words of the query — `D-KNW-033`.
         $result = Hints::find(
             ['Resources/Public/Scss/bootstrap.scss', 'Build/Sources/Sass/_variables.scss'],
             'Sass architecture, variables and build pipeline for a Bootstrap 5 based frontend theme',
@@ -1345,7 +1349,8 @@ final class HintsTest extends TestCase
      *
      * Read off `.checkouts/13.4`, `14.3` and `main`, where `SystemProperties`
      * and its `toArray()` are the same file on all three, so the key list and
-     * the types are one statement rather than a table of versions.
+     * the types are one statement rather than a table of versions —
+     * `D-KNW-078`.
      */
     #[Test]
     public function theShapeOfARecordSourcedRowNamesTheFieldsThatMovedAndTheSilentRead(): void
@@ -1387,7 +1392,7 @@ final class HintsTest extends TestCase
     /**
      * The subject does not exist on 12, which has no `Domain/Record.php` at
      * all, and the `pages` exception arrives with 14: on 13.4 `Page` is no
-     * `Record` and `RecordFactory` builds none.
+     * `Record` and `RecordFactory` builds none — `D-KNW-078`.
      */
     #[Test]
     public function theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi(): void
@@ -1447,9 +1452,9 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `lib.contentElement` runs no data processor on the earlier branches, where
-     * the same partial row renders — so the statement would be an account of a
-     * failure the caller cannot have.
+     * `lib.contentElement` runs no data processor on the earlier branches,
+     * where the same partial row renders — so the statement would be an account
+     * of a failure the caller cannot have — `D-KNW-099`.
      */
     #[Test]
     public function whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway(): void
@@ -1495,7 +1500,8 @@ final class HintsTest extends TestCase
      * that changes nothing — D-KNW-011. So the correction is named too, and it
      * is an authoring procedure rather than a v14 mechanism: the unit shape is
      * the same on 12.4, 13.4 and 14.3, and so is the fallback that makes an
-     * en.-prefixed file useless, so no answer this server gives may omit it.
+     * en.-prefixed file useless, so no answer this server gives may omit it —
+     * `D-KNW-032`.
      */
     #[Test]
     #[TestWith(['12'])]
@@ -1544,7 +1550,8 @@ final class HintsTest extends TestCase
     /**
      * The same file was read by the language that was asked for rather than by
      * an attribute of the file, so it kept its translations. A caller told
-     * otherwise would go looking for a defect the branch does not have.
+     * otherwise would go looking for a defect the branch does not have —
+     * `D-KNW-050`.
      */
     #[Test]
     #[TestWith(['12'])]
@@ -1579,8 +1586,9 @@ final class HintsTest extends TestCase
      * `R-KNW-069`. The corpus answered how a label is authored and how the
      * core's generated JavaScript goes stale, and the label bundle is neither:
      * it is an HTTP response with a year on it, built from a cache that keys on
-     * nothing about the file. Both steps are owed and the build passes over both
-     * — `D-KNW-076`'s reading of `.checkouts/14.3` and `main`.
+     * nothing about the file. Both steps are owed and the build passes over
+     * both — `D-KNW-076`'s reading of `.checkouts/14.3` and `main` —
+     * `D-KNW-079`.
      */
     #[Test]
     public function aNewBackendLabelIsToldWhatItCostsBeforeItResolves(): void
@@ -1629,10 +1637,10 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * The subject does not exist below 14: `JavaScriptLanguageDomainProvider` is
-     * in neither LTS checkout, which `D-KNW-067` read from the test side. The
-     * pointers go with it, because a neighbour naming a hint the caller cannot
-     * ask for is worse than no neighbour.
+     * The subject does not exist below 14: `JavaScriptLanguageDomainProvider`
+     * is in neither LTS checkout, which `D-KNW-067` read from the test side.
+     * The pointers go with it, because a neighbour naming a hint the caller
+     * cannot ask for is worse than no neighbour — `D-KNW-079`.
      */
     #[Test]
     public function theLabelModuleIsWithheldFromTheMajorsThatHaveNone(): void
@@ -1688,7 +1696,7 @@ final class HintsTest extends TestCase
      * `config.platform.php` in the root manifest for what it resolves against,
      * and the `-p` option of `Build/Scripts/runTests.sh` for the suites. The
      * two LTS lines and the stable one share a constraint; `main` has already
-     * left every interpreter a released line runs on.
+     * left every interpreter a released line runs on — `D-KNW-091`.
      */
     #[Test]
     public function eachCoveredLineCarriesItsOwnFloorAndTestedRange(): void
@@ -1920,7 +1928,7 @@ final class HintsTest extends TestCase
      * subject was reachable through the handful of keywords whoever wrote it
      * happened to think of. Most of these reached nothing at all before the
      * hint text was scored, and each is answered by a hint that says the thing
-     * in so many words.
+     * in so many words — `D-ANS-081`, `D-ANS-084`, `D-ANS-025`, `D-KNW-024`.
      */
     #[Test]
     #[DataProvider('theSweep')]
@@ -1976,7 +1984,8 @@ final class HintsTest extends TestCase
         // domain fell back to PHP, and the hint's own category was then never a
         // candidate. Scoring had nothing to do with it — the hint never reached
         // the matcher. This holds the gate rather than the ranking, so it is
-        // about candidacy: the hint has to be somewhere in the answer.
+        // about candidacy: the hint has to be somewhere in the answer —
+        // `D-KNW-032`, `D-KNW-038`.
         foreach (Hints::load() as $hint) {
             $reached = array_column(Hints::find([], $hint['title'], 6)['matchedHints'], 'id');
 
@@ -2013,7 +2022,7 @@ final class HintsTest extends TestCase
         // The API is the same one the core tests are written with, so the two
         // testing hints both answer here — but a test in a package of this
         // repository runs in a harness the core hint knows nothing about, and
-        // that hint is the one that has to come first.
+        // that hint is the one that has to come first — `D-KNW-008`.
         $result = Hints::find(
             ['packages/my_sitepackage/Tests/Functional/HeroCarouselTest.php'],
             'FunctionalTestCase executeFrontendSubRequest CSV fixture for my content element',
@@ -2065,7 +2074,8 @@ final class HintsTest extends TestCase
         // used to miss all of them at once. The first query is the sentence a
         // reporting session wrote its own task down in, and it reached nothing:
         // the domain fell back to PHP, and the `content element` pattern was
-        // searched for verbatim in a query that spells it with a hyphen.
+        // searched for verbatim in a query that spells it with a hyphen —
+        // `D-ANS-050`.
         $reached = static fn(string $query): array => array_column(
             Hints::find([], $query, 6)['matchedHints'],
             'id',
@@ -2106,7 +2116,7 @@ final class HintsTest extends TestCase
      * are the ones the symptom was reported on and two are the far end of the
      * corpus at 981 and 1147 words. `showitem` is a second hint's keyword now,
      * and what this holds is unchanged: the long body is reached, not that it
-     * is the only one.
+     * is the only one — `D-ANS-025`.
      */
     #[Test]
     #[TestWith(['showitem', 'content-elements'])]
@@ -2134,7 +2144,7 @@ final class HintsTest extends TestCase
      *
      * The negative controls of the sweep assert the outcome; this asserts the
      * reason, which is the part a change to the floor would take away without
-     * moving them.
+     * moving them — `D-ANS-025`.
      */
     #[Test]
     public function aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt(): void
@@ -2172,7 +2182,7 @@ final class HintsTest extends TestCase
      * What keeps the crossing to that case is that no selected hint claims the
      * phrase: where one does, the layers the query named can answer it
      * themselves, and aTypeScriptTestPathIsNotAnsweredWithPhpunit is where that
-     * half is held.
+     * half is held — `D-ANS-084`.
      */
     #[Test]
     public function aSymptomReachesTheHintThatExplainsItFromAnotherDomain(): void
@@ -2232,7 +2242,7 @@ final class HintsTest extends TestCase
      * was read without the target, so the same answer said there is no such
      * hint and then listed it. Seven hints are in that position on 12 and three
      * on 13, and none on the two majors above them, which is why it turned
-     * quietly.
+     * quietly — `D-ANS-075`.
      */
     #[Test]
     public function theIdsOfferedAreTheOnesThatMajorHas(): void
@@ -2292,6 +2302,9 @@ final class HintsTest extends TestCase
     #[Test]
     public function aMissNamesWhatThereWouldHaveBeenToFind(): void
     {
+        // The index is read off the candidates the scoring has just ranked, so
+        // a hit offers what it did not return and a miss offers the closest
+        // thing there is — `D-ANS-075`.
         $hit = Hints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);
         $matched = array_column($hit['matchedHints'], 'id');
         $available = array_column($hit['availableHints'], 'id');
@@ -2313,7 +2326,7 @@ final class HintsTest extends TestCase
      *
      * The whole domain index rather than the categories the matched hints are
      * in, because narrowing to those drops hints and none of the length: a near
-     * miss is at most as long as the miss beside it.
+     * miss is at most as long as the miss beside it — `D-ANS-075`.
      */
     #[Test]
     public function anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn(): void
@@ -2383,10 +2396,10 @@ final class HintsTest extends TestCase
      * An answer that says a category is inverted advice for this task used to
      * list 19 of its hints by id underneath the sentence.
      *
-     * The index was a read of the domains while the matcher had already
-     * refused those candidates, so the two halves of one answer disagreed.
-     * Built from the candidates, the index cannot offer what the same call
-     * withheld.
+     * The index was a read of the domains while the matcher had already refused
+     * those candidates, so the two halves of one answer disagreed. Built from
+     * the candidates, the index cannot offer what the same call withheld —
+     * `D-ANS-075`.
      */
     #[Test]
     public function theIndexIsNotOfferingWhatTheSameAnswerWithheld(): void
@@ -2414,7 +2427,7 @@ final class HintsTest extends TestCase
      * filed removals of `@internal` members both ways — `Breaking-110319`
      * because non-Composer bootstraps called them, `Important-108796` because
      * nothing did — so a tool answering the marker would answer beside the
-     * question. What was missing is the rule.
+     * question. What was missing is the rule — `D-FBK-038`.
      */
     #[Test]
     public function whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt(): void
@@ -2535,12 +2548,12 @@ final class HintsTest extends TestCase
     /**
      * D-KNW-072. The move that is not a move, which every statement above misses.
      *
-     * A review had to say whether a patch changing rendered markup was breaking,
-     * and every statement the corpus carried was keyed on a member being
-     * removed, narrowed or widened. The question outranks the signature one on
-     * its own words rather than by construction, so it is measured here:
+     * A review had to say whether a patch changing rendered markup was
+     * breaking, and every statement the corpus carried was keyed on a member
+     * being removed, narrowed or widened. The question outranks the signature
+     * one on its own words rather than by construction, so it is measured here:
      * `public-api-surface` shares its `appliesTo` phrases and would otherwise
-     * answer the wrong half.
+     * answer the wrong half — `D-KNW-073`.
      */
     #[Test]
     public function aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember(): void
@@ -2688,7 +2701,7 @@ final class HintsTest extends TestCase
      * after a template edit, which is the one cache in the list that was
      * already correct: a compiled template is keyed on the file's modification
      * time, so the edit rewrote it. What kept answering with the old page was
-     * the page cache, in another group and in the database.
+     * the page cache, in another group and in the database — `D-KNW-027`.
      */
     #[Test]
     public function aChangeIsToldWhichCacheGroupHoldsItsOldOutput(): void
@@ -2784,7 +2797,8 @@ final class HintsTest extends TestCase
     public function anExtbasePluginHasAHintOfItsOwn(): void
     {
         // There was none at all: the task returned datahandler-persistence,
-        // which is about DataHandler, and asking by id returned the index.
+        // which is about DataHandler, and asking by id returned the index —
+        // `D-KNW-038`.
         $result = Hints::find(
             [],
             'Extbase plugin in a project extension: domain model, repository, controller, plugin registration, '
@@ -2959,10 +2973,10 @@ final class HintsTest extends TestCase
     /**
      * The corpus named the database settings alone, which made the two ways out
      * of the generated file look interchangeable: a session took the file over,
-     * wrote that half back, and the installation answered every request with the
-     * trusted hosts exception nobody had named — `R-KNW-060`. The database-less
-     * half is the same omission read the other way, because DDEV's generator
-     * writes the DB block unconditionally.
+     * wrote that half back, and the installation answered every request with
+     * the trusted hosts exception nobody had named — `R-KNW-060`. The database-
+     * less half is the same omission read the other way, because DDEV's
+     * generator writes the DB block unconditionally — `D-KNW-049`.
      */
     #[Test]
     public function theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes(): void
@@ -2998,7 +3012,8 @@ final class HintsTest extends TestCase
      * the console reports success.
      *
      * Two places state what DDEV does with that file, so both are held here —
-     * the hint that owns it and the checklist a boot is briefed with.
+     * the hint that owns it and the checklist a boot is briefed with —
+     * `D-KNW-085`.
      */
     #[Test]
     public function theDdevSettingsAnswerSaysWhenThatFileIsWritten(): void
@@ -3089,7 +3104,7 @@ final class HintsTest extends TestCase
      * the four cards `D-SKL-012` put first landed the install rather than the
      * boot. What the task asks for is the second run of each step — a database
      * from elsewhere, a user that is already taken, a base that names another
-     * host — and every one of those fails quietly.
+     * host — and every one of those fails quietly — `D-KNW-054`.
      */
     #[Test]
     public function bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback(): void
@@ -3138,7 +3153,8 @@ final class HintsTest extends TestCase
         // The corpus placed such a script — Build/, and not var/ because var/
         // is ignored — and named no place that is served. A session debugging
         // the Record class wrote check_record.php into the root of a DDEV
-        // project and ran it there, and this query reached nothing at all.
+        // project and ran it there, and this query reached nothing at all —
+        // `D-KNW-045`.
         $result = Hints::find(
             [],
             'writing and executing a PHP script in the live webroot to introspect core classes',
@@ -3404,7 +3420,7 @@ final class HintsTest extends TestCase
      * first relation it reached: it wrote the child's pointer column by hand
      * and read the parent's int column as one that rejects a comma list. That
      * column is a counter DataHandler maintains, and the same holds on every
-     * covered major, so the statement carries no range.
+     * covered major, so the statement carries no range — `D-KNW-030`.
      */
     #[Test]
     public function aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding(): void
@@ -3445,7 +3461,7 @@ final class HintsTest extends TestCase
      * A session that named its children `NEW_card1` lost every relation and got
      * a clean run for it — `R-KNW-070`. The split is the one place a NEW value
      * is read as two fields, and it is the same block on every covered major,
-     * so the statement carries no range.
+     * so the statement carries no range — `D-KNW-084`.
      */
     #[Test]
     public function aRelationValueSaysWhichPlaceholderSpellingSurvivesIt(): void
@@ -3489,8 +3505,8 @@ final class HintsTest extends TestCase
      * Picking the pid is the first question and the corpus answered only the
      * second one, so a session seeding a table of its own guessed at both the
      * page and the storage folder's role — `R-KNW-058`. What the doktype allows
-     * is the same on every covered major; only where the list is declared moved,
-     * which is the one statement carrying a range.
+     * is the same on every covered major; only where the list is declared
+     * moved, which is the one statement carrying a range — `D-KNW-023`.
      */
     #[Test]
     public function thePlacementAnswerSaysWhichPageMayHoldTheRecord(): void
@@ -3606,7 +3622,7 @@ final class HintsTest extends TestCase
         // The backend's design system is a condition of a core patch and of
         // nothing in a project — which does not make it useless there, so it is
         // marked rather than dropped. Inside the core the marker would be on
-        // every line and say nothing.
+        // every line and say nothing — `D-KNW-007`.
         $project = Registry::call('typo3_hint_lookup', [
             'id' => 'css-class-naming',
             'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
@@ -3849,10 +3865,11 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * The gap the umbrella hid: `datahandler-persistence` carried `querybuilder`,
-     * `restriction`, `enablecolumns`, `hidden record` and `deleted record` in its
-     * vocabulary and not one statement about reading a record. The whole corpus
-     * held one sentence naming any of the reading APIs, and it was about a menu.
+     * The gap the umbrella hid: `datahandler-persistence` carried
+     * `querybuilder`, `restriction`, `enablecolumns`, `hidden record` and
+     * `deleted record` in its vocabulary and not one statement about reading a
+     * record. The whole corpus held one sentence naming any of the reading
+     * APIs, and it was about a menu — `D-KNW-030`.
      */
     #[Test]
     public function readingRecordsIsAnsweredAsWellAsWritingThem(): void
@@ -3877,7 +3894,7 @@ final class HintsTest extends TestCase
      * impexp is how a site or a page tree is established again — the export is
      * the artifact a distribution ships and re-imports, not the leftover of a
      * seeding run. The corpus said "seed with DataHandler, then export", which
-     * reads as the other way round.
+     * reads as the other way round — `D-KNW-030`.
      */
     #[Test]
     public function theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain(): void
@@ -3924,8 +3941,9 @@ final class HintsTest extends TestCase
 
     /**
      * The tag is the selector, so a domain nobody selects by is a hint nobody
-     * reaches — and it fails silently, because an unknown tag reads exactly like
-     * a narrow one. `Domains::hintDomains()` is the whole vocabulary there is.
+     * reaches — and it fails silently, because an unknown tag reads exactly
+     * like a narrow one. `Domains::hintDomains()` is the whole vocabulary there
+     * is — `D-KNW-029`, `D-KNW-034`.
      */
     #[Test]
     public function everyHintIsTaggedWithADomainSomeQuerySelects(): void
@@ -3980,10 +3998,11 @@ final class HintsTest extends TestCase
     /**
      * What the file a hint sits in is allowed to mean: nothing.
      *
-     * It used to be the domain, which is why a hint belonging to two of them had
-     * to be filed as `general` — the one domain every query selects. The tag
-     * carries it now, so the file is free to be the subject, and this fails the
-     * moment somebody re-derives the domain from the file name.
+     * It used to be the domain, which is why a hint belonging to two of them
+     * had to be filed as `general` — the one domain every query selects. The
+     * tag carries it now, so the file is free to be the subject, and this fails
+     * the moment somebody re-derives the domain from the file name —
+     * `D-KNW-029`, `D-KNW-034`.
      */
     #[Test]
     public function theFileAHintSitsInDoesNotDecideWhatSelectsIt(): void
@@ -4091,7 +4110,7 @@ final class HintsTest extends TestCase
      * The document root is the half that moved: the backend and install entry
      * points are written on both LTS branches and on neither newer one, and
      * `DefaultSystemResourcePublisher` — which is what publishes
-     * `_assets_install/` — exists in neither LTS checkout.
+     * `_assets_install/` — exists in neither LTS checkout — `D-KNW-088`.
      */
     #[Test]
     public function theGeneratedDocumentRootIsStatedPerMajorOnBothHints(): void
@@ -4326,11 +4345,11 @@ final class HintsTest extends TestCase
      * `R-KNW-055`. The question is "I am changing rendered output, what asserts
      * it", and before this statement existed the corpus answered a different one.
      *
-     * The two halves are asserted separately because either one alone leaves the
-     * search wrong: searching around the value reaches the fixtures that hold
-     * the expectations, and searching for the value itself reaches almost none
-     * of them. The ratio holds on every covered line, so the statement carries
-     * no version range.
+     * The two halves are asserted separately because either one alone leaves
+     * the search wrong: searching around the value reaches the fixtures that
+     * hold the expectations, and searching for the value itself reaches almost
+     * none of them. The ratio holds on every covered line, so the statement
+     * carries no version range — `D-KNW-044`.
      */
     #[Test]
     public function aRenderedOutputChangeIsToldWhereTheExpectationsHide(): void
@@ -4362,8 +4381,9 @@ final class HintsTest extends TestCase
      * and "tests" separated nothing — `R-ANS-007` working as designed on a
      * corpus where the word naming the subject is the weaker signal. The
      * vocabulary is what moved, not the corpus: `add tests` was measured with
-     * these three phrasings and left out, because it puts the project hint ahead
-     * of `core-tests` for a question about the DataHandler.
+     * these three phrasings and left out, because it puts the project hint
+     * ahead of `core-tests` for a question about the DataHandler — `D-KNW-032`,
+     * `D-KNW-009`, `D-KNW-013`.
      */
     #[Test]
     public function settingTestsUpInAPackageReachesTheHintAboutThat(): void
@@ -4477,10 +4497,10 @@ final class HintsTest extends TestCase
     #[Test]
     public function aProjectExtensionIsToldHowToGetASuiteAtAll(): void
     {
-        // core-tests describes how a test is written inside the mono repository,
-        // where the harness already exists. In a project everything between
-        // "composer require" and the first green run is the work, and none of it
-        // was written down.
+        // core-tests describes how a test is written inside the mono
+        // repository, where the harness already exists. In a project everything
+        // between "composer require" and the first green run is the work, and
+        // none of it was written down — `D-KNW-008`.
         $result = Hints::find(
             [],
             'Add automated tests for a project sitepackage extension: unit and functional tests for an Extbase '
@@ -4735,11 +4755,12 @@ final class HintsTest extends TestCase
     #[Test]
     public function noHintStatesSomethingThatOnlyHoldsOnOneBranch(): void
     {
-        // The server does not know the caller's branch, so a hint has to hold on
-        // every one of them. A version number, a concrete changelog file, or a
-        // count taken from a single checkout is a snapshot: it reads as a fact
-        // long after it stopped being one. Where the answer really is
-        // branch-specific, the hint says how to look it up in the checkout.
+        // The server does not know the caller's branch, so a hint has to hold
+        // on every one of them. A version number, a concrete changelog file, or
+        // a count taken from a single checkout is a snapshot: it reads as a
+        // fact long after it stopped being one. Where the answer really is
+        // branch-specific, the hint says how to look it up in the checkout —
+        // `D-KNW-091`, `D-ANS-009`.
         $snapshots = [
             'a version number' => '/\bv\d+\b|\b\d+\.\d+\b|\bsince \d/i',
             'a concrete changelog file' => '/\b(Breaking|Deprecation|Feature|Important|Task)-\d+/i',
@@ -4802,9 +4823,10 @@ final class HintsTest extends TestCase
      * is not a weaker answer than none — it sends them to debug their checkout
      * for something this server invented for another branch.
      *
-     * Verified against this repository's own checkouts: no suite matching xlf or
-     * xliff exists in Build/Scripts/runTests.sh on 12.4 or 13.4 under any name,
-     * while 14.3 and main have checkIntegrityXliff and normalizeXliff.
+     * Verified against this repository's own checkouts: no suite matching xlf
+     * or xliff exists in Build/Scripts/runTests.sh on 12.4 or 13.4 under any
+     * name, while 14.3 and main have checkIntegrityXliff and normalizeXliff —
+     * `D-KNW-031`.
      */
     #[Test]
     public function theSuiteListItselfIsFilteredByTheBranchItIsAskedFor(): void
@@ -5010,7 +5032,7 @@ final class HintsTest extends TestCase
      * Both notes are asserted together because the exception is only readable
      * next to the rule: on its own it says run the whole suite, and what makes
      * that cheap is the search before the run, so the note points at the
-     * statement that says where to aim it.
+     * statement that says where to aim it — `D-KNW-044`.
      */
     #[Test]
     public function theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor(): void
@@ -5088,7 +5110,7 @@ final class HintsTest extends TestCase
      * conformance review of a site package, classified as nothing because the
      * enum had no value for it. The three items asserted away are what came
      * back for it — a focused patch, test coverage, and a commit message for a
-     * session that commits nothing.
+     * session that commits nothing — `D-GUI-009`, `D-GUI-006`.
      */
     #[Test]
     public function aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist(): void
@@ -5201,12 +5223,12 @@ final class HintsTest extends TestCase
     /**
      * A brief names the task skill that owns the work.
      *
-     * `D-SKL-013`. `skills/base.md` and the `instructions` every client receives
-     * at initialize both say this call returns the workflow a task belongs to,
-     * while `TaskGuide` named no skill at all. It is named alone, which is the
-     * half `D-ANS-050` closed: an assertion that the right name is among them
-     * holds just as well when a whole workflow the task has nothing to do with
-     * is loaded first.
+     * `D-SKL-013`. `skills/base.md` and the `instructions` every client
+     * receives at initialize both say this call returns the workflow a task
+     * belongs to, while `TaskGuide` named no skill at all. It is named alone,
+     * which is the half `D-ANS-050` closed: an assertion that the right name is
+     * among them holds just as well when a whole workflow the task has nothing
+     * to do with is loaded first — `D-SKL-039`.
      */
     #[Test]
     public function aBriefNamesTheSkillThatOwnsTheWork(): void
@@ -5688,7 +5710,7 @@ final class HintsTest extends TestCase
      * booting a Composer project from a fresh clone had no change type of its
      * own, so `unknown` handed it the patch skeleton, and the one intent it
      * reached was `installation-setup` — matched on `install dependencies`,
-     * which is Composer's install and not TYPO3's.
+     * which is Composer's install and not TYPO3's — `D-GUI-009`.
      */
     #[Test]
     public function workThatOperatesAnInstallationIsAnsweredWithABootBrief(): void
@@ -5988,7 +6010,7 @@ final class HintsTest extends TestCase
     {
         // R-ANS-017. "Consider an extension scanner matcher" was the whole of
         // what a removal was told, and the reviewer of one asked the rules and
-        // was answered without it at all.
+        // was answered without it at all — `D-ANS-035`.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Remove public method GifBuilder::getTemporaryImageWithText()',
         ]);
@@ -6004,7 +6026,7 @@ final class HintsTest extends TestCase
      * still read a report about f:image as an API question — is the value
      * passed of the type the argument accepts — where the product asks what the
      * editor and the visitor get once the image is replaced
-     * (`feedback/2026-08-02-145043`).
+     * (`feedback/2026-08-02-145043`) — `D-GUI-005`.
      */
     #[Test]
     public function everyBriefOpensOnThePremiseADefectIsJudgedBy(): void
@@ -6040,10 +6062,10 @@ final class HintsTest extends TestCase
 
     /**
      * R-GUI-009. The fifth recorded `REVIEW-03` run quoted `fluid-viewhelpers`
-     * and `core-tests` as `typo3_hint_lookup` and never called it: the brief had
-     * carried them, correctly and without saying whose they were, and the
+     * and `core-tests` as `typo3_hint_lookup` and never called it: the brief
+     * had carried them, correctly and without saying whose they were, and the
      * report's reader was sent to a tool that had not answered
-     * (`scenarios/runs/REVIEW-03.json`, `D-SKL-009`).
+     * (`scenarios/runs/REVIEW-03.json`, `D-SKL-009`) — `D-GUI-007`.
      */
     #[Test]
     public function theHintsABriefCarriesNameTheLookupTheyCameFrom(): void
@@ -6206,7 +6228,7 @@ final class HintsTest extends TestCase
      * new service dependency by grepping three call sites out of the checkout —
      * `dependency-injection` is the seventh hint the lookup holds for those
      * paths, and the brief had stated a count rather than the subjects
-     * (`feedback/2026-08-03-144410`).
+     * (`feedback/2026-08-03-144410`) — `D-ANS-050`.
      */
     #[Test]
     public function aBriefNamesTheHintsItLeftBehind(): void
@@ -6259,7 +6281,8 @@ final class HintsTest extends TestCase
     {
         // The question a site maintainer asks first — "what do I do, in which
         // order" — used to be answered with how to author a deprecation, which
-        // is the same subject seen from the core's side and useless here.
+        // is the same subject seen from the core's side and useless here —
+        // `D-KNW-032`.
         $result = Registry::call('typo3_task_guide', ['task' => 'upgrade this composer site project to TYPO3 v14']);
 
         self::assertContains('installation-upgrade', array_column($result->data['intents'], 'id'));
@@ -6287,7 +6310,8 @@ final class HintsTest extends TestCase
     {
         // The script was written from the command's own --help, which names
         // neither the connection type the option takes nor the driver it
-        // persists, and says nothing about a second run. Four failed runs.
+        // persists, and says nothing about a second run. Four failed runs —
+        // `D-KNW-046`.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'install TYPO3 unattended from a shell script so that "ddev start" sets the instance up on its own',
         ]);
@@ -6409,11 +6433,11 @@ final class HintsTest extends TestCase
      * with Extbase never considered. The fork is written on the extbase and the
      * frontend-records hint, and both open on a word this task has no reason to
      * use — which is asserted here, because it is what the checklist delivers
-     * instead of. The wording is read off `.checkouts/14.3`:
-     * `registerPlugin()` hands `addPlugin()` a `SelectItem` for the CType
-     * column, the same column `addRecordType()` writes, and
-     * `configurePlugin()` generates `tt_content.<signature> =< lib.contentElement`
-     * with `20 = EXTBASEPLUGIN`. So the fork is not element or plugin.
+     * instead of. The wording is read off `.checkouts/14.3`: `registerPlugin()`
+     * hands `addPlugin()` a `SelectItem` for the CType column, the same column
+     * `addRecordType()` writes, and `configurePlugin()` generates
+     * `tt_content.<signature> =< lib.contentElement` with `20 = EXTBASEPLUGIN`.
+     * So the fork is not element or plugin — `D-ANS-039`.
      */
     #[Test]
     public function aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt(): void
@@ -6459,7 +6483,8 @@ final class HintsTest extends TestCase
      * FluidBasedContentPreviewRenderer assigns the row's columns and record on
      * 13.4 and record alone on 14.3, and what a field off it resolves to is
      * decided by the TCA type of that field — which is why the types that come
-     * back as records are named rather than a single rule for "a relation".
+     * back as records are named rather than a single rule for "a relation" —
+     * `D-KNW-020`.
      */
     #[Test]
     public function aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo(): void
@@ -6565,7 +6590,7 @@ final class HintsTest extends TestCase
      * the content alone. The header parts are asserted by field, because a
      * session told only that "the header" exists repeats subheader or date
      * instead. Both majors draw the same four, so the statement carries no
-     * version binding and has to reach a caller on either.
+     * version binding and has to reach a caller on either — `D-KNW-021`.
      */
     #[Test]
     #[DataProvider('theMajorsThePreviewAnswerIsBoundFor')]
@@ -6615,7 +6640,8 @@ final class HintsTest extends TestCase
      * field kinds are asserted one at a time, because "show a summary" changes
      * no line of the template somebody writes. It holds on every covered major:
      * the evidence is a 14 package, and what a preview owes the editor is not a
-     * property of a major — how a field is reached carries the binding instead.
+     * property of a major — how a field is reached carries the binding instead
+     * — `D-KNW-037`.
      */
     #[Test]
     public function aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom(): void
@@ -6650,10 +6676,11 @@ final class HintsTest extends TestCase
      * The reported bug was a one-line TCA override that had worked for years:
      * an extension appended to a core palette with `.=`, and on the next major
      * the field and its line break left the backend form with nothing logged —
-     * `D-KNW-103`. Both halves are read off the checkouts. `addFieldsToPalette()`
-     * is byte for byte the same on all four, and it is the half that survives a
-     * reshaping, so the statement of it carries no binding; what the reshaping
-     * did is bound, because that is what a caller upgrading arrives with.
+     * `D-KNW-103`. Both halves are read off the checkouts.
+     * `addFieldsToPalette()` is byte for byte the same on all four, and it is
+     * the half that survives a reshaping, so the statement of it carries no
+     * binding; what the reshaping did is bound, because that is what a caller
+     * upgrading arrives with — `D-KNW-104`.
      */
     #[Test]
     public function addingToACorePaletteIsStatedAsTheCallAndNotAsTheString(): void

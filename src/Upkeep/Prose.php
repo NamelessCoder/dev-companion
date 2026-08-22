@@ -106,6 +106,75 @@ final class Prose
     }
 
     /**
+     * Every markdown table this repository writes, widest cell first.
+     *
+     * The cell is what `D-DOC-001` measures — one that will not fit on a line
+     * means the content is a list rather than a table, because what a table
+     * buys over a list is a column that can be scanned and a cell nobody can
+     * read on one line takes exactly that away. The row width is what the
+     * table takes once `bin/cli prose:format` has padded it.
+     *
+     * Reported and never failed on: whether a cell can be shortened is a
+     * judgement, and the exception has to say so where it is taken.
+     *
+     * Markdown alone. A table in reStructuredText is drawn rather than piped,
+     * and the two lines in `documentation/` that open with a pipe are a shell
+     * continuation and a line block.
+     *
+     * @return list<array{file: string, line: int, rows: int, width: int, cell: int}>
+     */
+    public static function tables(): array
+    {
+        $tables = [];
+        foreach (self::documents() as $file) {
+            if (!str_ends_with($file, '.md')) {
+                continue;
+            }
+
+            $lines = explode("\n", (string) file_get_contents(Paths::root() . '/' . $file));
+            $fence = null;
+            $at = null;
+            $rows = [];
+            foreach ([...$lines, ''] as $index => $line) {
+                if ($fence !== null) {
+                    if (preg_match('/^\s{0,3}' . preg_quote($fence, '/') . '/', $line) === 1) {
+                        $fence = null;
+                    }
+
+                    continue;
+                }
+                if (preg_match('/^\s{0,3}(```+|~~~+)/', $line, $match) === 1) {
+                    $fence = $match[1];
+
+                    continue;
+                }
+                if (str_starts_with(trim($line), '|')) {
+                    $at ??= $index + 1;
+                    $rows[] = $line;
+
+                    continue;
+                }
+                if ($rows !== [] && count($rows) > 1 && preg_match('/^\s*\|[\s:|-]+\|\s*$/', $rows[1]) === 1) {
+                    $cells = array_merge(...array_map(Wrap::cells(...), $rows));
+                    $tables[] = [
+                        'file' => $file,
+                        'line' => (int) $at,
+                        'rows' => count($rows) - 1,
+                        'width' => max(array_map(mb_strlen(...), Wrap::padded($rows))),
+                        'cell' => max(array_map(mb_strlen(...), $cells)),
+                    ];
+                }
+                $at = null;
+                $rows = [];
+            }
+        }
+
+        usort($tables, static fn(array $a, array $b): int => $b['cell'] <=> $a['cell']);
+
+        return $tables;
+    }
+
+    /**
      * The bold opening of every requirement and decision, split into sentences.
      *
      * Two sentences there are legitimate — a decision that removes something

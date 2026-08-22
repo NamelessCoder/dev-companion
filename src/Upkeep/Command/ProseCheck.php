@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Upkeep\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Upkeep\Prose;
+use TYPO3\DevCompanion\Upkeep\Wrap;
 
 /**
  * What the prose rule in AGENTS.md costs when nothing reads it.
@@ -92,6 +93,33 @@ final class ProseCheck
                 $comment['file'],
                 $comment['line'],
                 implode(', ', $comment['names']),
+            ));
+        }
+
+        // The fourth corpus, and the one a formatter owns half of. Padding is
+        // mechanical and `bin/cli prose:format` does it; what is reported is
+        // the width that leaves, because a cell nobody can shorten is a list
+        // rather than a table and only a reader can say which — `D-DOC-001`.
+        $tables = Prose::tables();
+        $wide = array_values(array_filter(
+            $tables,
+            static fn(array $table): bool => $table['cell'] > Wrap::COLUMN,
+        ));
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '%d of %d tables hold a cell no line of %d columns fits.',
+            count($wide),
+            count($tables),
+            Wrap::COLUMN,
+        ));
+        foreach (array_slice($wide, 0, self::NAMED) as $table) {
+            $output->writeln(sprintf(
+                '  %3d  %s:%d (%d rows, %d wide)',
+                $table['cell'],
+                $table['file'],
+                $table['line'],
+                $table['rows'],
+                $table['width'],
             ));
         }
 

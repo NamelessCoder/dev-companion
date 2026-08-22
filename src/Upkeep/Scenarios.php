@@ -69,17 +69,24 @@ final class Scenarios
 
             $inTable = false;
             foreach (preg_split('/\R/', (string) file_get_contents($path)) ?: [] as $line) {
-                if (str_starts_with($line, '| ' . $column . ' |')) {
-                    $inTable = true;
+                if (!str_starts_with(trim($line), '|')) {
+                    if ($inTable) {
+                        break;
+                    }
+
                     continue;
                 }
+
+                // Read as cells rather than as the text of a row: a table is
+                // padded to the width of its widest cell, so where the column
+                // stands is not where its name ends — `D-DOC-001`.
+                $first = Wrap::cells($line)[0] ?? '';
                 if (!$inTable) {
+                    $inTable = $first === $column;
+
                     continue;
                 }
-                if (!str_starts_with($line, '|')) {
-                    break;
-                }
-                if (preg_match('/^\|\s*`([^`]+)`/', $line, $matches) === 1) {
+                if (preg_match('/^`([^`]+)`$/', $first, $matches) === 1) {
                     $codes[] = $matches[1];
                 }
             }

@@ -90,6 +90,8 @@ final class Wrap
         $fence = null;
         $verbatim = false;
         $blank = true;
+        /** @var list<string> the rows of the table being read, none of which is wrapped */
+        $table = [];
 
         // The front matter is data in a markdown file's clothing: its lines are
         // neither prose nor a code block, and joining two of them would lose a
@@ -109,6 +111,25 @@ final class Wrap
                 if (preg_match('/^\s{0,3}' . preg_quote($fence, '/') . '/', $line) === 1) {
                     $fence = null;
                 }
+
+                continue;
+            }
+
+            // A table is padded rather than left as it stands. Both forms
+            // render the same, and the compact one is read many times in the
+            // state it was written in — where an unaligned row is a run of
+            // words with pipes in it and which cell a value belongs to has to
+            // be counted out (`D-DOC-001`).
+            $row = str_starts_with(trim($line), '|');
+            if ($table !== [] && !$row) {
+                $out = [...$out, ...self::padded($table)];
+                $table = [];
+            }
+            if ($row) {
+                $out = [...$out, ...self::flush($paragraph, $open !== null)];
+                $paragraph = [];
+                $table[] = $line;
+                $blank = false;
 
                 continue;
             }
@@ -184,7 +205,64 @@ final class Wrap
             $blank = false;
         }
 
-        return implode("\n", [...$out, ...self::flush($paragraph, $open !== null)]);
+        return implode("\n", [...$out, ...self::padded($table), ...self::flush($paragraph, $open !== null)]);
+    }
+
+    /**
+     * One markdown table, padded to the width of each column's widest cell.
+     *
+     * A row is only a row of a table where a separator stands under the head,
+     * so anything else opening with a pipe comes back as it was: a line of a
+     * drawn diagram, a quotation of a table, a row somebody has half written.
+     *
+     * @param list<string> $rows
+     * @return list<string>
+     */
+    public static function padded(array $rows): array
+    {
+        if (count($rows) < 2 || preg_match('/^\s*\|[\s:|-]+\|\s*$/', $rows[1]) !== 1) {
+            return $rows;
+        }
+
+        $cells = array_map(self::cells(...), $rows);
+        $columns = max(array_map('count', $cells));
+        $written = $cells;
+        unset($written[1]);
+
+        $widths = [];
+        foreach (range(0, $columns - 1) as $column) {
+            // Three at the least, so the separator row is still a rule where a
+            // column holds one letter.
+            $widths[$column] = max(3, ...array_map(
+                static fn(array $row): int => mb_strlen($row[$column] ?? ''),
+                $written,
+            ));
+        }
+
+        $indent = str_repeat(' ', self::indent($rows[0]));
+        $padded = [];
+        foreach ($cells as $index => $row) {
+            $line = [];
+            foreach ($widths as $column => $width) {
+                $cell = $row[$column] ?? '';
+                $line[] = $index === 1 ? str_repeat('-', $width) : $cell . str_repeat(' ', $width - mb_strlen($cell));
+            }
+            $padded[] = $indent . '| ' . implode(' | ', $line) . ' |';
+        }
+
+        return $padded;
+    }
+
+    /**
+     * What one row holds, by the pipes that are not part of a cell.
+     *
+     * @return list<string>
+     */
+    public static function cells(string $row): array
+    {
+        $trimmed = trim($row);
+
+        return array_map(trim(...), preg_split('/(?<!\\\\)\|/', trim($trimmed, '|')) ?: []);
     }
 
     /**

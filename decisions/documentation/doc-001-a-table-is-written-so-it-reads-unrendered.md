@@ -75,3 +75,26 @@ So the rule is right and nobody can follow it by hand, which is the first
 than a decision, and that is the todo this leaves. The entry stays `open` until
 the check is there: a rule with 18 breaches and no reader is not confirmed by
 being reread.
+
+## Since then
+
+The alignment is the formatter's, which is what the first **Wrong if** asked
+for. `bin/cli prose:format` pads a markdown table to the width of each column's
+widest cell, the way it rewraps a paragraph, and `Wrap::padded()` is the reading
+both halves share. What is padded is a block whose second row is a separator —
+so a table inside a fence, a row with nothing under it and a drawn diagram come
+back as they stand, which `ProseTest::whatIsNotATableIsNotPadded` holds beside
+`ProseTest::aTableComesBackPaddedToItsWidestCell`.
+
+Padding the 19 tables in the corpus broke one reader, which is the finding this
+run did not expect: `Scenarios::vocabulary()` matched the head of a table by the
+text of its row, so `| Id |` stopped being found the moment the column was
+padded. It reads cells now — `Wrap::cells()`, the second caller the method
+earned — and what it compares is the cell rather than where the cell ends.
+
+The second half is a report, because no formatter can make the judgement.
+`bin/cli prose:check` counts the tables holding a cell no line of 80 columns
+fits: 9 of 19 on 2026-08-22, six of them the mapping tables of `D-FBK-021`,
+whose widest cell is 239 characters. What each of those becomes is one reading
+at a time and the exception has to say so where it is taken, which is what this
+entry has said since it was written.

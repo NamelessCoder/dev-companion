@@ -8,21 +8,21 @@ evidence.
 See [the scenario readme](../readme.md) for the audiences and the environments,
 and [contracts/](../contracts/readme.md) for the targeted cases these are not.
 
-| Review | Working context |
-| --- | --- |
-| [`REVIEW-01`](review-01-site-project.md) | A TYPO3 site project and its site package |
-| [`REVIEW-02`](review-02-reusable-extension.md) | A reusable TYPO3 extension |
-| [`REVIEW-03`](review-03-core-patch.md) | A TYPO3 core patch |
+| Review                                         | Working context                           |
+| ---------------------------------------------- | ----------------------------------------- |
+| [`REVIEW-01`](review-01-site-project.md)       | A TYPO3 site project and its site package |
+| [`REVIEW-02`](review-02-reusable-extension.md) | A reusable TYPO3 extension                |
+| [`REVIEW-03`](review-03-core-patch.md)         | A TYPO3 core patch                        |
 
 ## Status of a forward review
 
-| Mark | Meaning | What a run is for |
-| --- | --- | --- |
-| `unrun` | No session has established a result yet. | Run it without predicting what the repository will reveal. |
-| `covered` | The server should answer this well today. | A bad answer is a regression; fix it. |
-| `boundary` | Deliberately outside scope. | The right answer is a clean decline plus where to go instead. A confident invented answer is the failure. |
-| `partial` | Answered, but not for every audience or not to the depth the task needs. | Record which half was missing. |
-| `gap` | An accepted requirement that is not met yet, or knowledge that does not exist. | Expected to fall short. Record what the task actually needed, not that it fell short. |
+| Mark       | Meaning                                                                        | What a run is for                                                                                         |
+| ---------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `unrun`    | No session has established a result yet.                                       | Run it without predicting what the repository will reveal.                                                |
+| `covered`  | The server should answer this well today.                                      | A bad answer is a regression; fix it.                                                                     |
+| `boundary` | Deliberately outside scope.                                                    | The right answer is a clean decline plus where to go instead. A confident invented answer is the failure. |
+| `partial`  | Answered, but not for every audience or not to the depth the task needs.       | Record which half was missing.                                                                            |
+| `gap`      | An accepted requirement that is not met yet, or knowledge that does not exist. | Expected to fall short. Record what the task actually needed, not that it fell short.                     |
 
 `boundary` and `gap` are not the same thing. A boundary is an answer — "this
 server does not cover it, the documentation does" — and it can be given

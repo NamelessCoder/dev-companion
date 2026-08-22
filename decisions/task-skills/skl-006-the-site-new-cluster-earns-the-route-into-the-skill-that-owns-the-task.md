@@ -43,17 +43,17 @@ judgements of which not one reached the rung where a skill is built.
   holds the pair. No run has been through the new wording.
 - **Fourteen independent judgements, and not one landed on 1b for a skill.**
 
-  | Feedback                        | Rung                  | Where it was judged                       |
-  | ------------------------------- | --------------------- | ----------------------------------------- |
-  | `003929`, `003927`, `003937`    | 1a                    | `D-KNW-022`, `D-KNW-023`, `D-KNW-027`     |
-  | `003938`, `003313`, `003925`    | 2                     | `D-KNW-026`, `D-ANS-024`, `D-ANS-027`     |
-  | `003533`, `003356`              | 3                     | `D-KNW-017`, `D-SKL-001`                  |
-  | `003933`                        | 4                     | `D-SKL-004`                               |
-  | `192945`, `193005`              | 5                     | `D-SKL-001`, `D-FBK-018`                  |
-  | `002951`, `003103`, `003634`    | mapped, not walked    | `D-FBK-021`                               |
-  | `003931`                        | no rung               | `D-FBK-024`                               |
-  | `003000`                        | a query word too short | `R-DOC-003`                              |
-  | `194826`                        | 1b                    | `R-GUI-006`                               |
+  | Feedback                     | Rung                   | Where it was judged                   |
+  | ---------------------------- | ---------------------- | ------------------------------------- |
+  | `003929`, `003927`, `003937` | 1a                     | `D-KNW-022`, `D-KNW-023`, `D-KNW-027` |
+  | `003938`, `003313`, `003925` | 2                      | `D-KNW-026`, `D-ANS-024`, `D-ANS-027` |
+  | `003533`, `003356`           | 3                      | `D-KNW-017`, `D-SKL-001`              |
+  | `003933`                     | 4                      | `D-SKL-004`                           |
+  | `192945`, `193005`           | 5                      | `D-SKL-001`, `D-FBK-018`              |
+  | `002951`, `003103`, `003634` | mapped, not walked     | `D-FBK-021`                           |
+  | `003931`                     | no rung                | `D-FBK-024`                           |
+  | `003000`                     | a query word too short | `R-DOC-003`                           |
+  | `194826`                     | 1b                     | `R-GUI-006`                           |
 
   The single 1b is a tool's answer shape — the brief `typo3_task_guide` hands a
   task that changes nothing — and it is in hand on another branch.

@@ -254,14 +254,25 @@ comment that names a decision and retells it anyway, most prose first. The
 delimiters, the blank lines and the annotations are not counted, so ten means
 ten lines somebody wrote — `D-DOC-035`.
 
+The last thing it counts is the tables that hold a cell no line fits. A cell
+that will not fit on a line means the content is a list rather than a table,
+because what a table buys over a list is a column that can be scanned —
+`D-DOC-001`. It is a report because only a reader can say whether a cell can be
+shortened, and the exception has to say so where it is taken.
+
 `bin/cli prose:format <path>` is the other half and rewrites rather than
 reports: the prose this repository writes about itself, rewrapped at the column
 it is already written at. What it is for is the paragraph a rename left ragged.
-It moves the line breaks and nothing else, which `ProseTest` asserts over the
-whole corpus rather than trusts, and it leaves alone everything a break means
-something in — which those are is what the two markups disagree about, so the
-file is asked which it is. Named no path it rewraps the corpus, which is a diff
-to look at before it is a diff to make.
+It moves the line breaks and the padding of a table and nothing else, which
+`ProseTest` asserts over the whole corpus rather than trusts, and it leaves
+alone everything a break means something in — which those are is what the two
+markups disagree about, so the file is asked which it is. Named no path it
+rewraps the corpus, which is a diff to look at before it is a diff to make.
+
+A table is padded to the width of each column's widest cell, so a column can be
+scanned in the state the file is written in rather than only where something
+renders it. Both forms render the same, which is what made the compact one look
+like the cheaper choice.
 
 ## Tool names
 

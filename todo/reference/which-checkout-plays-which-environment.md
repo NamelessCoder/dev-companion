@@ -104,20 +104,20 @@ works in, which is where a patch to review comes from.
     || ^13.4.15` on PHP `>= 8.1 < 8.5` while 14 is out, so the declared range
     does real work in a run instead of being quoted. It owns
     `Build/Scripts/runTests.sh`, two per-major workflows, 30 test classes and a
-    `Documentation/` tree, and at 132 classes it is the only checkout here
-    large enough that a review has to choose what to open. Cloned
-    `--single-branch` **on purpose**: `origin/main` carries the finished v14
-    migration, and the checkout that plays this environment for `EXT-01` must
-    not hand that answer over with one `git log` — fetching another branch into
-    it ends its usefulness for that scenario. It is also the one checkout here
-    that carries a **correct escaping opt-out**: six
-    `<f:format.htmlentitiesDecode>` around `{newsItem.title}` and
-    `{newsItem.alternativeTitle}` in `Detail.html` and its two `Styles/`
-    copies, all inside `<n:titleTag>`, whose `TitleTagViewHelper` returns
-    nothing and hands the rendered children to `NewsTitleProvider`; the
-    installed 13.4.33 core puts the resolved title through `htmlspecialchars()`
-    into `<title>|</title>` in `PageRenderer`. That shape is what `SKILL-09`
-    needs, so it is the checkout that case is read in. `REVIEW-02` ran here on
-    2026-07-31, `partial` at 14:23; a first attempt at 14:02 on the `12-13`
-    branch was discarded rather than judged, because that branch is 185 commits
-    behind `13.x` and 0 ahead, and the run spent its top finding saying so.
+    `Documentation/` tree, and at 132 classes it is the only checkout here large
+    enough that a review has to choose what to open. Cloned `--single-branch`
+    **on purpose**: `origin/main` carries the finished v14 migration, and the
+    checkout that plays this environment for `EXT-01` must not hand that answer
+    over with one `git log` — fetching another branch into it ends its
+    usefulness for that scenario. It is also the one checkout here that carries
+    a **correct escaping opt-out**: six `<f:format.htmlentitiesDecode>` around
+    `{newsItem.title}` and `{newsItem.alternativeTitle}` in `Detail.html` and
+    its two `Styles/` copies, all inside `<n:titleTag>`, whose
+    `TitleTagViewHelper` returns nothing and hands the rendered children to
+    `NewsTitleProvider`; the installed 13.4.33 core puts the resolved title
+    through `htmlspecialchars()` into `<title>|</title>` in `PageRenderer`. That
+    shape is what `SKILL-09` needs, so it is the checkout that case is read in.
+    `REVIEW-02` ran here on 2026-07-31, `partial` at 14:23; a first attempt at
+    14:02 on the `12-13` branch was discarded rather than judged, because that
+    branch is 185 commits behind `13.x` and 0 ahead, and the run spent its top
+    finding saying so.

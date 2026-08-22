@@ -193,13 +193,13 @@ measured itself off its own client transcript deduplicated on `requestId`.
 Everything above is a session working in this repository; this one is a session
 using the server.
 
-| Measure                     | The build session                                        |
-| --------------------------- | -------------------------------------------------------- |
-| Tool calls / requests       | 215 / 148, so 1.45 calls per request                       |
-| Cached input read           | 38.06M, or 257k per request                                |
-| Cache written / output      | 620k / 174k                                                |
-| Cost at Opus 5 list rates   | $29.59, and $39.04 including the debrief                    |
-| Calls against this server   | 36 of 215, 17%                                             |
+| Measure                   | The build session                        |
+| ------------------------- | ---------------------------------------- |
+| Tool calls / requests     | 215 / 148, so 1.45 calls per request     |
+| Cached input read         | 38.06M, or 257k per request              |
+| Cache written / output    | 620k / 174k                              |
+| Cost at Opus 5 list rates | $29.59, and $39.04 including the debrief |
+| Calls against this server | 36 of 215, 17%                           |
 
 **The statement holds where it is stated.** The server's 17% of the calls is
 about 17% of the cost — roughly $4.98 amortised over the turns each answer
@@ -242,13 +242,13 @@ TypoScript conditions on v14 while keeping them working on v13, counted from its
 own transcript. Roughly 30 round trips, every one of them `bash`, and none
 against this server.
 
-| What the round trips established                              | How many |
-| ------------------------------------------------------------- | -------- |
-| what a TypoScript condition can see, per major                  | 13       |
-| proving the verdict against the running frontend                | 7        |
-| constructor injection through `GeneralUtility::makeInstance`    | 2        |
-| the caller's own repository conventions                         | 2        |
-| locating changelog entries by listing a directory               | 2        |
+| What the round trips established                             | How many |
+| ------------------------------------------------------------ | -------- |
+| what a TypoScript condition can see, per major               | 13       |
+| proving the verdict against the running frontend             | 7        |
+| constructor injection through `GeneralUtility::makeInstance` | 2        |
+| the caller's own repository conventions                      | 2        |
+| locating changelog entries by listing a directory            | 2        |
 
 What came out was one modified class, two new ones and two test files, so about
 43 percent of the session went on a single subject nothing here covered. The

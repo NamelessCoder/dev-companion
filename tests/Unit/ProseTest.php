@@ -297,15 +297,55 @@ final class ProseTest extends TestCase
 
     /**
      * Everything a line break means something in comes back untouched: the
-     * front matter of a requirement, a fenced block, a table, an indented
-     * command.
+     * front matter of a requirement, a fenced block, an indented command, a
+     * quote.
+     *
+     * A table is the one thing here the formatter does change, and it changes
+     * only the padding — which is the next case.
      */
     #[Test]
     public function whatIsNotProseComesBackUnchanged(): void
     {
-        $document = "---\nid: D-KNW-035\nstatus: open\n---\n\n# A heading that is long enough to be wrapped if anything wrapped a heading at all\n\n```php\n\$a = 'one very long line of code that no formatter here is allowed to touch at all';\n```\n\n    bin/cli todo:next\n\n| a | b |\n| - | - |\n\n> quoted material that is left where it stands even when it runs past the column\n";
+        $document = "---\nid: D-KNW-035\nstatus: open\n---\n\n# A heading that is long enough to be wrapped if anything wrapped a heading at all\n\n```php\n\$a = 'one very long line of code that no formatter here is allowed to touch at all';\n```\n\n    bin/cli todo:next\n\n> quoted material that is left where it stands even when it runs past the column\n";
 
         self::assertSame($document, Wrap::document($document));
+    }
+
+    /**
+     * A table comes back padded to the width of each column's widest cell, so
+     * a column can be scanned in the state the file is written in — `D-DOC-001`.
+     *
+     * The compact form and the padded one render identically, which is what
+     * made the compact one look like the cheaper choice: it is cheaper for
+     * whoever writes it once, against every reading of it in a diff, in a
+     * terminal and by a model that receives it as text.
+     */
+    #[Test]
+    public function aTableComesBackPaddedToItsWidestCell(): void
+    {
+        $padded = Wrap::document("| a | bbbb |\n| --- | --- |\n| cc | d |\n");
+
+        // Three dashes at the least, which is what the corpus writes and what
+        // keeps the separator a rule where a column holds one letter.
+        self::assertSame("| a   | bbbb |\n| --- | ---- |\n| cc  | d    |\n", $padded);
+        self::assertSame($padded, Wrap::document($padded), 'a padded table does not settle');
+    }
+
+    /**
+     * What opens with a pipe and is not a table is left where it stands: a
+     * table inside a fence, one row with nothing under it, a drawn diagram.
+     *
+     * A separator row under the head is what says the rest are cells. Without
+     * it, padding would put a line break's meaning where the author did not.
+     */
+    #[Test]
+    public function whatIsNotATableIsNotPadded(): void
+    {
+        $fenced = "```\n| not | a table |\n| --- | --- |\n```\n";
+        $alone = "| one row and nothing under it |\n";
+
+        self::assertSame($fenced, Wrap::document($fenced));
+        self::assertSame($alone, Wrap::document($alone));
     }
 
     /**

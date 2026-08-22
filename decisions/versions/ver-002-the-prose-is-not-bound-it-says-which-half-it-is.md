@@ -8,7 +8,7 @@ revokedBy: D-VER-005
 # D-VER-002 — The prose is not bound; it says which half it is
 
 **The prose carries no version binding and says so in every answer, naming
-`typo3_architecture_lookup` with `targetVersion` as where the bound form is.**
+`typo3_hint_lookup` with `targetVersion` as where the bound form is.**
 
 The architecture hints now carry `since`/`until` on every statement that changed
 inside the covered range. The markdown documents below `knowledge/` are the long
@@ -23,7 +23,7 @@ described there as the shape, with no range.
   filtered, and the same statements are already bound where a caller acts on
   them.
 - Every prose answer says so instead, in one sentence from
-  `Tools::renderSections()`, and names `typo3_architecture_lookup` with
+  `Tools::renderSections()`, and names `typo3_hint_lookup` with
   `targetVersion` as where the bound form is. One sentence in one place, so a
   caller who learns it in a rule answer finds it unchanged in a script answer.
 
@@ -62,7 +62,7 @@ on the suite in `test-suite-hints.json`, so the sections lost the commands and
 gained a sentence sending the reader to `typo3_test_run_guide` with the
 `targetVersion`; `build` gained `since: 13`, and 12.4's two halves were added
 beside it. What did not hold is the second half of the sentence in
-`Prose::NOT_VERSION_BOUND`: it named `typo3_architecture_lookup` alone, and a
+`Prose::NOT_VERSION_BOUND`: it named `typo3_hint_lookup` alone, and a
 12.4 reader who followed it would have found nothing there about which suites
 that branch has. It now names the test run guide for a command, and the
 architecture lookup for a convention. That is still one sentence in one place.

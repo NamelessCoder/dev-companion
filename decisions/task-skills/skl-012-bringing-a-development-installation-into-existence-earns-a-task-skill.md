@@ -71,7 +71,7 @@ answers the task with a core patch checklist.
   console commands of `installation-upgrade` inside it. The DDEV file this
   cluster turns on is one this server already reads: `D-DIS-007` names the
   console by its mount, `R-DIS-015` holds the DDEV client entry, and
-  `typo3_project_scope` reports DDEV as the declared environment — which is what
+  `typo3_project_describe` reports DDEV as the declared environment — which is what
   `154501` asks to be widened rather than introduced.
 
 ## Decided

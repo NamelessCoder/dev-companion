@@ -17,10 +17,10 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 
 - Re-run on 2026-08-02 against the server as it is now —
   `bin/typo3-dev-companion` over stdio from this worktree.
-  `tool: "typo3_extension_scope"` is written as
-  `tool: typo3_extension_scope`;
-  `tool: ["typo3_extension_scope", "typo3_feedback_record"]` is written as
-  `tool: typo3_extension_scope, typo3_feedback_record`. Both forms are accepted
+  `tool: "typo3_extension_describe"` is written as
+  `tool: typo3_extension_describe`;
+  `tool: ["typo3_extension_describe", "typo3_feedback_record"]` is written as
+  `tool: typo3_extension_describe, typo3_feedback_record`. Both forms are accepted
   and both are stored as names. The server does not drop the value, on either
   branch of the union.
 - The message the feedback quotes has no producer in this checkout. A `tool` the

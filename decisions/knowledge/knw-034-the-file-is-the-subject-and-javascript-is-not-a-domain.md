@@ -50,7 +50,7 @@ stopped meaning anything the moment every entry named its own domains.
 - 34 files is the granularity a maintainer wants. Some hold one hint, which is
   what a subject nobody has written a second question for looks like.
 - Nothing outside this repository reads a hint file by name. The ids did not
-  move and they are what `typo3_architecture_lookup` takes.
+  move and they are what `typo3_hint_lookup` takes.
 
 ## Wrong if
 

@@ -20,7 +20,7 @@ since 2026-08-01, unjudged.
   and no steering, judged `partial` in `scenarios/runs/REVIEW-03.json`. Not a
   delivery failure: the transcript's attachments carry the
   `mcp_instructions_delta` in full, first sentence
-  `Start every task with typo3_project_scope`, and the `skill_listing` with all
+  `Start every task with typo3_project_describe`, and the `skill_listing` with all
   seven descriptions; only the 22 tools arrived deferred, as names without
   descriptions.
 - The nearest skill matches the shape and excludes the checkout.
@@ -52,7 +52,7 @@ since 2026-08-01, unjudged.
   are candidates and none matches.
 - Where the entry point did fire it was answered thinly.
   `feedback/2026-08-02-144350` is a core session that called
-  `typo3_project_scope` and got four `gerrit:setup` commands and no
+  `typo3_project_describe` and got four `gerrit:setup` commands and no
   `Build/Scripts/runTests.sh`; it ran that script about thirty times and took
   its invocation syntax from elsewhere.
 
@@ -107,8 +107,8 @@ independently. `feedback/2026-08-01-115716` states the chain that worked —
 `typo3_test_run_guide` for the exact `runTests.sh` suites, then
 `typo3_commit_message_guide` — and asks for it to be named. `2026-08-01-121847`
 reaches the same steps from the other end, by finding no entry point at all:
-`typo3_server_scope` routes "review, audit or assess" to `typo3_project_scope`,
-`typo3_task_guide` and `typo3_extension_scope`, which author changes and read
+`typo3_server_scope` routes "review, audit or assess" to `typo3_project_describe`,
+`typo3_task_guide` and `typo3_extension_describe`, which author changes and read
 extensions. What the order has to force is in `2026-08-01-115711` and `115525`:
 enumerate what the diff removes or renames, and require an ExtensionScanner
 matcher plus a Breaking or Deprecation `.rst` per removal, with method-level
@@ -127,7 +127,7 @@ functional test, because a ViewHelper needs a rendering context (`144456`);
 implement; decide the changelog from its own tree, with the directory named for
 the upcoming version and the file `<Type>-<issue>-<CamelCaseSummary>.rst`
 (`145315`); run the suites through `Build/Scripts/runTests.sh`, which
-`typo3_project_scope` does not name (`144350`) and which needs its own
+`typo3_project_describe` does not name (`144350`) and which needs its own
 dependencies inside a worktree (`144950`) and passes falsely there for `cglGit`
 (`144326`); then the delivery half — the asymmetric `origin`, the `Change-Id`
 hook, and the Gerrit REST query that says whether a patch already exists
@@ -364,7 +364,7 @@ Read from either end of the same task, the two judgements asked for one step,
 which is the evidence this decision was made on rather than a collision.
 
 The placement the feedback asked for is not taken, for the reason the section
-above gives. `typo3_project_scope` in a core checkout answers with the four
+above gives. `typo3_project_describe` in a core checkout answers with the four
 `composer gerrit:setup` scripts and nothing about the review server, and the
 order belongs in the skill.
 

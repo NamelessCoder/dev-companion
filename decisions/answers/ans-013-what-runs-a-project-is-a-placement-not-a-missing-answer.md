@@ -7,7 +7,7 @@ status: open
 # D-ANS-013 — What runs a project is a placement, not a missing answer
 
 **The PHP a DDEV project actually runs is readable here twice over, and neither
-reading reaches `typo3_project_scope`, so `feedback/2026-07-31-193611` is step 2
+reading reaches `typo3_project_describe`, so `feedback/2026-07-31-193611` is step 2
 of the ladder and is queued as
 [`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
 
@@ -19,7 +19,7 @@ for. This is the entry it said the card would produce.
 
 - The feedback re-run on 2026-08-02 through `bin/typo3-dev-companion` from
   `/home/benji/projects/site-new`, the directory it was written in.
-  `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4"
+  `typo3_project_describe` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4"
   and lists "composer test:unit (composer.json) — unknown: phpunit -c
   Build/phpunit/UnitTests.xml". Nothing in the answer names DDEV.
 - The three numbers, measured in that project the same day. The host interpreter
@@ -36,13 +36,13 @@ for. This is the entry it said the card would produce.
   `console.php` "8.4" and `console.command` "ddev exec --
   /var/www/html/vendor/bin/typo3".
 - Neither reaches the tool the task is sent to. The `instructions` returned at
-  initialize open with "Start every task with typo3_project_scope", and the
+  initialize open with "Start every task with typo3_project_describe", and the
   routing line for a review names it first as well. `typo3_server_scope` is
   described there as what says which installation is read, not as what says
   which PHP runs it.
 - This server asked for the run that went wrong. `skills/base.md` says "Where
   one of the project's own commands would settle it, run it", pointed at the
-  list `typo3_project_scope` returns — and that list says of each command what
+  list `typo3_project_describe` returns — and that list says of each command what
   it does to the sources, never where it runs. `ddev composer` runs one in the
   web container, on DDEV v1.25.1 here; the shell the agent has runs it on
   8.3.23.
@@ -54,7 +54,7 @@ for. This is the entry it said the card would produce.
   already opens; not 1b, because no verb is missing — `describe` is the verb and
   it is the one being called.
 - Queued rather than closed on the spot. It changes `Project::describe()` and
-  the declared output schema of `typo3_project_scope`, and
+  the declared output schema of `typo3_project_describe`, and
   [judging.md](../../documentation/records/judging.rst) puts a schema beyond a
   run that has read only this repository.
 - The runtime is to be read from `.ddev/config.yaml` rather than from

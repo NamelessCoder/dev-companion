@@ -9,7 +9,7 @@ status: confirmed
 **A deprecation whose predicate is a file the extension ships is found by the
 tool that lists that file, not by a changelog sweep over what the code calls.**
 
-`typo3_extension_scope` prints both file names this feedback is about, in one
+`typo3_extension_describe` prints both file names this feedback is about, in one
 line beside four files nothing is wrong with, and says nothing about either.
 
 ## Evidence
@@ -48,14 +48,14 @@ line beside four files nothing is wrong with, and says nothing about either.
 
 ## Decided
 
-- Queued rather than closed on the spot. The lever is `typo3_extension_scope`,
+- Queued rather than closed on the spot. The lever is `typo3_extension_describe`,
   so the change touches `src/` and a declared `outputSchema`, and establishing
   the predicates needed the checkouts — both of the two things
   `documentation/records/judging.rst` puts on the far side of that line.
 - Step 2 for the `ext_emconf.php` half: the rule is here, complete and bound,
   and the answer naming the file does not carry it. Step 1a then step 2 for the
   `ext_tables.php` half, since the statement it would deliver does not exist.
-- Not step 1b. No verb is missing and no skill is: `typo3_extension_scope`
+- Not step 1b. No verb is missing and no skill is: `typo3_extension_describe`
   already reads every file both predicates turn on, and
   `typo3-extension-conformance` is the skill the review ran under.
 - No requirement yet, and the todo names no field. Whether this is a hint, a
@@ -113,7 +113,7 @@ during bootstrap, so a registration left there is lost without a report. The
 migration targets in the statement are the four the deprecation changelog names.
 
 What stays open is the delivery half for both files — what
-`typo3_extension_scope` says about the two it already lists — and the feedback
+`typo3_extension_describe` says about the two it already lists — and the feedback
 is archived by that, not by this.
 
 Step 2 is done and the open question was the shape: a field of its own, or the
@@ -167,7 +167,7 @@ it could not have derived from a file listing, for the reason the entry was
 written on: the trigger is the file being there rather than anything the
 extension calls, so no changelog search over its code reaches it. It reproduces.
 Re-run on 2026-08-03 through this package from that directory,
-`typo3_extension_scope` with `guidedtour` renders the predicate, `#108345` and
+`typo3_extension_describe` with `guidedtour` renders the predicate, `#108345` and
 the sentence saying a Composer installation is unaffected — verbatim, in the
 text and in `deprecatedFiles`.
 

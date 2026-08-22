@@ -29,7 +29,7 @@ What it does not do is answer twice.
 ## Decided
 
 - The hints are matched per group and rendered per group under a `# For <path>`
-  heading, which is the shape `typo3_architecture_lookup` already answers in.
+  heading, which is the shape `typo3_hint_lookup` already answers in.
   The payload merges them, as it does there.
 - Everything else stays one list. Where every path is outside the core the brief
   drops the checks, the core-only checklist items and the discovery steps as

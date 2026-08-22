@@ -82,6 +82,19 @@ final class ToolNamingTest extends TestCase
      * nothing but tool names in an order, they are installed into somebody
      * else's project, and there a stale name is not corrected by the next
      * release of this server.
+     *
+     * The records join them where a name is a claim about today: what
+     * `documentation/` publishes, what a requirement demands, what the queue
+     * says the next step is, and what a scenario says has to come out of a
+     * prompt. All four were clean when this was widened, so it holds a boundary
+     * rather than reporting a breach.
+     *
+     * Two corpora stay out, and neither is an oversight. `feedback/` is a
+     * session's own report and `scenarios/runs/` is a trace of the calls one
+     * made, both on a date — a rename there would edit the evidence, so each
+     * run carries a line naming the current spelling instead. `decisions/`
+     * stays out because it names tools that were proposed and rejected, and
+     * nothing here can tell one of those from a name that went stale.
      */
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
@@ -89,7 +102,7 @@ final class ToolNamingTest extends TestCase
         $known = array_column(Registry::definitions(), 'name');
 
         $unknown = [];
-        foreach ([...$this->knowledgeFiles(), ...$this->skillFiles()] as $file) {
+        foreach ([...$this->knowledgeFiles(), ...$this->skillFiles(), ...$this->recordFiles()] as $file) {
             preg_match_all('/typo3_[a-z_]+/', (string) file_get_contents($file), $matches);
             foreach (array_unique($matches[0]) as $name) {
                 if (!in_array($name, $known, true)) {
@@ -98,7 +111,7 @@ final class ToolNamingTest extends TestCase
             }
         }
 
-        self::assertSame([], $unknown, 'named in the knowledge base or in a skill, but not registered');
+        self::assertSame([], $unknown, 'named where the name is a claim about today, but not registered');
     }
 
     /** @param array<string, mixed> $arguments */
@@ -146,6 +159,29 @@ final class ToolNamingTest extends TestCase
         $files = [];
         foreach (Finder::create()->append($skills)->append($references)->sortByName() as $file) {
             $files[] = $file->getPathname();
+        }
+
+        return $files;
+    }
+
+    /**
+     * The records that state what is true now rather than what was called once.
+     *
+     * @return array<int, string>
+     */
+    private function recordFiles(): array
+    {
+        $root = dirname(__DIR__, 2);
+
+        $files = [];
+        foreach (['documentation', 'requirements', 'todo', 'scenarios'] as $directory) {
+            $found = Finder::create()->files()->in($root . '/' . $directory)->sortByName();
+            if ($directory === 'scenarios') {
+                $found->notPath('runs');
+            }
+            foreach ($found as $file) {
+                $files[] = $file->getPathname();
+            }
         }
 
         return $files;

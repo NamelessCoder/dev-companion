@@ -17,8 +17,8 @@ with a correct entry beside it and found no tool they could call.
 - Nothing was missing on this server's side. Re-run on 2026-08-02, driving
   `bin/typo3-dev-companion` over stdio from this checkout: `tools/list` returned
   24 tools, every one of the five the feedback names among them —
-  `typo3_project_scope`, `typo3_extension_scope`, `typo3_task_guide`,
-  `typo3_architecture_lookup`, `typo3_changelog_lookup`.
+  `typo3_project_describe`, `typo3_extension_describe`, `typo3_task_guide`,
+  `typo3_hint_lookup`, `typo3_changelog_lookup`.
 - The entry in the reported project is correct and was written by this
   installer. `/home/benji/projects/site-new/.mcp.json` names `php` with the
   absolute path to the binary above, and `typo3-dev-companion.json` records

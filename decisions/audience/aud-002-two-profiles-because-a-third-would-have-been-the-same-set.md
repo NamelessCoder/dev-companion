@@ -36,7 +36,7 @@ contribution surface. The item written from it named three profiles — `core`,
 - What the three omitted tools also carried and what does transfer is reachable
   without them — the commit conventions through `typo3_commit_message_guide`
   with `workflow="project"`, the backend CSS and subsystem conventions through
-  `typo3_architecture_lookup`, and every prose document verbatim through its
+  `typo3_hint_lookup`, and every prose document verbatim through its
   `typo3://core` resource.
 - Deriving the profile from the kind of installation is right more often than it
   is wrong, and being wrong costs one environment variable. It does sit against
@@ -64,7 +64,7 @@ returned the Gerrit workflow prose, four `runTests.sh` checks and the core
 checklist. Every route the **Assumed** named held: `typo3_commit_message_guide`
 answered `workflow="core"` with the `Resolves:` and `Releases:` trailers, all
 five `typo3://core` documents read including `typo3-core-rules` and
-`typo3-core-scripts`, and `typo3_architecture_lookup` named no omitted tool.
+`typo3-core-scripts`, and `typo3_hint_lookup` named no omitted tool.
 What costs more than one environment variable is the answer itself. It routes to
 `typo3_test_run_guide`, which this client cannot call — twice on the
 patch-shaped task and six times on a test-shaped one, out of
@@ -108,14 +108,14 @@ Every layer says where it stands. The `installation` block of
 `typo3_server_scope` reports `found: false`, the seven directories the search
 walked, and a console that is `reachable: false` with the reason; its closing
 prose names what cannot be answered here and both environment variables as the
-way out. `typo3_project_scope`, `typo3_icon_lookup` and `typo3_label_lookup`
+way out. `typo3_project_describe`, `typo3_icon_lookup` and `typo3_label_lookup`
 each answer with the `unsupported` shape — `cause: no-installation`, the same
 searched list, and text that opens "This is not answerable here, which is not
 the same as an empty answer" and routes to `typo3_server_scope`. Nothing is
 withheld and nothing pretends.
 
 The one thing that does not know where it is, is the `instructions`: they open
-with "Start every task with typo3_project_scope", which here answers
+with "Start every task with typo3_project_describe", which here answers
 `unsupported`. That is left as it is. The string is the same for every session
 by `D-AUD-003`, the tool it names is what reports the state, and a client that
 follows it learns in one call what it has and how to name an installation —

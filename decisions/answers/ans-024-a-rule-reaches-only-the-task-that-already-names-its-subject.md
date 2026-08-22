@@ -43,7 +43,7 @@ it was filed, so what it reports is not that the answer is missing.
   exists and is about to write one — adds the reuse boundary and nothing else.
 - A neighbouring tool states the attribute and declines the rule on purpose.
   `ExtensionScope` prints the `source-language` each file declares, then adds
-  that this is "not what it should declare — typo3_architecture_lookup owns that
+  that this is "not what it should declare — typo3_hint_lookup owns that
   rule".
 
 ## Decided
@@ -61,7 +61,7 @@ it was filed, so what it reports is not that the answer is missing.
   about who a rule belongs to, and a judgement ends at the diagnosis.
 - [`D-KNW-011`](../knowledge/knw-011-a-rule-that-names-a-defect-names-its-correction.md)
   is not what fired. Its second **Wrong if** asks for a run that called
-  `typo3_architecture_lookup` without naming a language file; this run called it
+  `typo3_hint_lookup` without naming a language file; this run called it
   not at all. That is the same gap one step further out, so it is recorded here
   rather than read as evidence against that entry.
 - The feedback's own suggestion is not adopted as written. It asks for the

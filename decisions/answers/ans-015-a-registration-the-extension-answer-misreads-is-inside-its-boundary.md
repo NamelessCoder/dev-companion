@@ -6,7 +6,7 @@ status: open
 
 # D-ANS-015 — A registration the extension answer misreads is inside its boundary, not evidence about where it runs
 
-**`typo3_extension_scope` answers the registrations an extension carries, and
+**`typo3_extension_describe` answers the registrations an extension carries, and
 one it reports wrongly or never reaches is a defect inside that boundary rather
 than an argument about where the boundary runs.**
 
@@ -29,7 +29,7 @@ registrations.
 - The `PageTitleProvider` rule was delivered.
   `knowledge/architecture-hints/general.json`, hint `frontend-records`, states
   that the `<title>` of such a detail view is a `PageTitleProvider` and nothing
-  else, and `feedback/2026-07-31-193005` records `typo3_architecture_lookup`
+  else, and `feedback/2026-07-31-193005` records `typo3_hint_lookup`
   returning that hint on both of the session's calls. What no lookup states is
   that this extension has none, which is the audit's.
 - The PHP number is

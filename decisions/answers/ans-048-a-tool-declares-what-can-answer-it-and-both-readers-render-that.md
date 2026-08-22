@@ -23,7 +23,7 @@ so the schema promised a fallback that was never going to arrive.
   tool said so.
 - `typo3_configuration_lookup`, `typo3_schema_lookup` and
   `typo3_backend_module_lookup` emit `'installation'` on every path and declared
-  both cases. `typo3_project_scope` and `typo3_changelog_lookup` emit
+  both cases. `typo3_project_describe` and `typo3_changelog_lookup` emit
   `'packages'` on every path and declared both.
 - Four descriptions restated their own path in prose, in four different
   wordings, and one of them named `answeredBy` from inside the sentence that was

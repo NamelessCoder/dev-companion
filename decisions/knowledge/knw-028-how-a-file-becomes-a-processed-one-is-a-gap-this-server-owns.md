@@ -10,7 +10,7 @@ status: open
 boundary and missing from it, so the feedback is trimmed to that half and
 queued.**
 
-The feedback asks for the answer in `typo3_project_scope`, which is the one
+The feedback asks for the answer in `typo3_project_describe`, which is the one
 place it cannot go. The value is assembled at runtime and that answer reads
 files. What is actually missing is a statement in `knowledge/`.
 
@@ -18,7 +18,7 @@ files. What is actually missing is a statement in `knowledge/`.
 
 - The strength reproduces, except the half it credits. Re-run on 2026-08-02 over
   stdio through `bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`,
-  the directory it was written in. `typo3_project_scope` opens with
+  the directory it was written in. `typo3_project_describe` opens with
   "core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", then no
   extensions, no sites, and four `gerrit:setup` commands that all answer
   `runs: unknown`. Neither the text nor the data names a processor or a task
@@ -34,14 +34,14 @@ files. What is actually missing is a statement in `knowledge/`.
   `feedback/2026-08-01-114807` was filed two minutes and forty-one seconds
   later, same model and same directory, and its suggestion reads "Consider
   adding `processingTaskTypes` and `SYS.fal.processors` to the
-  `typo3_project_scope` output". Its transcript names the seven files it opened
+  `typo3_project_describe` output". Its transcript names the seven files it opened
   instead — `GraphicalFunctions`, `LocalImageProcessor`, `SvgImageProcessor`,
   `ThumbnailViewHelper`, `PreviewNotAvailable.svg`,
   `DeferredBackendImageProcessor` and `PreviewProcessing` — over about ten
   `read_file` calls. That feedback has a card of its own, in hand elsewhere.
 - The value is not a project fact, and no manifest declares it. Both keys live
   under `TYPO3_CONF_VARS`, assembled from `DefaultConfiguration.php` and every
-  extension's `ext_localconf.php`. `typo3_project_scope` reads `composer.json`,
+  extension's `ext_localconf.php`. `typo3_project_describe` reads `composer.json`,
   `package.json`, `config/sites/` and `.ddev/config.yaml`, and its own
   description says it reads files only, so it answers on a fresh clone.
 - It is also a constant of the core. Both keys are identical on

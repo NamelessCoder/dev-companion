@@ -113,7 +113,7 @@ message — for work that writes no file.
   a shell script — is the task to measure it against.
 - The booting intent's checklist turns out to be Composer's and DDEV's own
   documentation restated, with nothing about TYPO3 in it. Then what was missing
-  was the environment's lifecycle in `typo3_project_scope`, which
+  was the environment's lifecycle in `typo3_project_describe`, which
   `feedback/2026-08-03-154501` reports, and not a shape in this brief.
 
 ## Covered by

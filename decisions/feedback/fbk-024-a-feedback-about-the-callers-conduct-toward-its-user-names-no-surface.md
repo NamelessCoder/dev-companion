@@ -85,7 +85,7 @@ project.
   ([`D-ANS-004`](../answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md)),
   and `skills/base.md`, read at the start of a task. A turn-taking rule on
   either is paid for by every caller in every project, and it competes for the
-  budget with "Start every task with typo3_project_scope" — the entry point
+  budget with "Start every task with typo3_project_describe" — the entry point
   [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
   says the instructions exist to carry, because the tool descriptions never
   arrive.

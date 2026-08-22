@@ -17,7 +17,7 @@ one this one guessed at.
 
 - The positioning half is answered, in the words the feedback's own query is
   asked in. Called over stdio with that query as `task` and
-  `targetVersion: "14.3"`, `typo3_architecture_lookup` returns
+  `targetVersion: "14.3"`, `typo3_hint_lookup` returns
   `datahandler-persistence` and `frontend-records`. The first carries "A new
   record is placed at the TOP of its page: the pid field is the positioning pid"
   and the negative form `-<uid>` for placing records in order.

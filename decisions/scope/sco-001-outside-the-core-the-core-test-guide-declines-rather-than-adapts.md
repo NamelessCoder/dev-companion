@@ -7,7 +7,7 @@ status: revoked
 # D-SCO-001 — Outside the core the core test guide declines rather than adapts
 
 **Outside the core `typo3_test_run_guide` returns no suite at all, while
-`typo3_architecture_lookup` keeps its hints and drops only their check
+`typo3_hint_lookup` keeps its hints and drops only their check
 commands.**
 
 `typo3_test_run_guide` recognises work outside the core, and the question was

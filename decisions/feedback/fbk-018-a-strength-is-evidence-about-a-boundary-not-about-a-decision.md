@@ -28,11 +28,11 @@ other side: what is the strength evidence of?
   the 14.0 deprecation of the moved interfaces (#106947), `addPiFlexFormValue`
   reaches its 14.0 deprecation (#107047), and all three `.rst` files are in
   `.checkouts/main`.
-- Two of its claims are looser than the answer. `typo3_project_scope` classifies
+- Two of its claims are looser than the answer. `typo3_project_describe` classifies
   six of ten declared commands as `check` or `change` and three as `unknown` —
   the phpunit suites, which the answer's own prose says it will not classify —
   rather than "every repo command"; and the platform reality it credits to that
-  tool comes from `typo3_extension_scope`, whose footer reports that the
+  tool comes from `typo3_extension_describe`, whose footer reports that the
   installation was not asked because the host runs PHP 8.3.23 against a
   `>= 8.4.0` requirement.
 - Nothing here can say which `base.md` that session read. Both installed copies
@@ -84,7 +84,7 @@ other side: what is the strength evidence of?
   point at afterwards. This entry and its commit are the whole record; if
   neither is cited again, the run was a cost with no return.
 - The line a strength's praise implies turns out not to be worth saying —
-  `typo3_extension_scope` naming a missing translation on every extension that
+  `typo3_extension_describe` naming a missing translation on every extension that
   ships none costs more than it buys. Reading what the praise implies would then
   be right about the asymmetry and wrong about it mattering, and `R-PRJ-006` is
   what would need the sentence instead.
@@ -141,7 +141,7 @@ the board with a card of its own.
 The pairing is wider than the one above, which is what makes it a property of
 the corpus rather than a reading of one debrief. Two more feedback from the same
 evening, and two other models, sit on the same line in the same project:
-`2026-07-31-194825` reports the absences `typo3_extension_scope` answers as
+`2026-07-31-194825` reports the absences `typo3_extension_describe` answers as
 first-class results, and `2026-07-31-194510` reports that the same tool says
 what an extension registers and not what it ships. Both directions are reported
 about one tool, by sessions that never saw each other's runs.
@@ -158,9 +158,9 @@ version. `R-PRJ-005` states the first half as what is answered; neither it nor
 `D-ANS-003` states the second half as the boundary it is.
 
 The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-dev-companion`
-from that directory: `typo3_project_scope` answers TYPO3 14.3.5, the project
+from that directory: `typo3_project_describe` answers TYPO3 14.3.5, the project
 extension, `main at https://site-new.ddev.site/` with set `bk2k/printworks`, and
-six declared commands; `typo3_extension_scope` answers seven content elements of
+six declared commands; `typo3_extension_describe` answers seven content elements of
 which five carry a `templateName` and two do not, three icons, and three XLF
 files declaring `source-language de`; `typo3_changelog_lookup` with
 `type=deprecation, version=14, limit=30` answers 75 entries and shows 30, with
@@ -168,7 +168,7 @@ the `FullyScanned` and `PartiallyScanned` tags on them. The extension has grown
 two tables since the report, and the answer is now read off a booted
 installation, so it says more than it did rather than less.
 
-So does the lever behind the *wrong path avoided*. `typo3_architecture_lookup`
+So does the lever behind the *wrong path avoided*. `typo3_hint_lookup`
 with the task *content element with inline children* returns **Registering a
 Content Element**, whose hints say that a plugin is a CType like any other and
 that the list_type detour is gone at v14, and that the rendering definition is
@@ -182,7 +182,7 @@ records the removal of the `list_type` field and of the plugin subtype with it.
 
 **A strength is not evidence about which tool answered.** This is the second
 corpus in which the credit is misplaced, and both times on the same fact. The
-report has `typo3_project_scope` giving *PHP ^8.4 (actual 8.3.23)*; the tool
+report has `typo3_project_describe` giving *PHP ^8.4 (actual 8.3.23)*; the tool
 answers `PHP ^8.4` and nothing else, and its own cost sibling says the runtime
 version was found with `bash`. That number was also wrong, which
 `2026-07-31-193611` reports: the tests run in DDEV and the host is not where the
@@ -227,8 +227,8 @@ entry rather than as one account continued.
 
 The reading held a fourth time, and this is the first strength whose quotation
 could be checked against the file it credits. `2026-07-31-194823` comes from the
-debrief of the section above, two seconds before the `typo3_extension_scope` one
-and in the same project. It reports that `typo3_architecture_lookup` said only
+debrief of the section above, two seconds before the `typo3_extension_describe` one
+and in the same project. It reports that `typo3_hint_lookup` said only
 `rootPageId` is remapped when a shipped site configuration is imported, and that
 other uid references are not. The session credits that with turning a wrong
 finding into the right one, about a hardcoded `t3://page?uid=2` error target.
@@ -245,7 +245,7 @@ The quotation is evidence about a file, and the file holds it.
 import "remaps the root page id to the page that was actually imported, and
 nothing else", with an error handler naming `t3://page?uid=...` as the example
 that ships stale. Re-run on 2026-08-02 through `bin/typo3-dev-companion` from
-`/home/benji/projects/site-new`: `typo3_architecture_lookup` with the task the
+`/home/benji/projects/site-new`: `typo3_hint_lookup` with the task the
 feedback names returns *Shipping Initial Content with an Extension* whole,
 answered for TYPO3 v14. The core confirms the statement.
 `ImportSiteConfigurationsOnPackageInitialization` loads the configuration,
@@ -298,13 +298,13 @@ Four of them are here, re-run on 2026-08-02 through `bin/typo3-dev-companion`
 from `/home/benji/projects/site-new`, the directory it was written in:
 
 - *no manual, no README, which test layers exist and which do not* reproduces.
-  `typo3_extension_scope` with `printworks_sitepackage` answers
+  `typo3_extension_describe` with `printworks_sitepackage` answers
   `Ships: manual none, readme none, tests Functional+Unit`.
 - *read the XLF source languages* reproduces: three files below
   `Resources/Private/Language/`, each at
   `source-language de, no translations beside it`.
 - *the answeredBy attribution* reproduces. That answer says `installation`;
-  `typo3_project_scope`, which reads files and asks nothing, says `packages`.
+  `typo3_project_describe`, which reads files and asks nothing, says `packages`.
 - *the commands the repository actually declares, with what each does to the
   sources* reproduces by half. The six commands are there, and every one of them
   answers `runs: unknown`. All six are test suites, and
@@ -314,7 +314,7 @@ from `/home/benji/projects/site-new`, the directory it was written in:
 
 That fourth one is the mechanism the section above saw twice and left unnamed.
 What is recited is the answer's own explanatory prose rather than the answer.
-`typo3_project_scope` spends a paragraph on what a check is and what a change
+`typo3_project_describe` spends a paragraph on what a check is and what a change
 is, ahead of the six `unknown`s, and the report hands that paragraph back as a
 result it received. Its conclusion — that the repository declares no check
 scripts — is right, and it is read off the list rather than off the
@@ -388,7 +388,7 @@ this repository wrote for the domain the task was actually in.
 `/home/benji/projects/typo3-cms`, and reports a fix in the Fluid image
 ViewHelpers for Forge #105403. It credits three answers: that ViewHelpers are
 covered by functional tests and why, that a ViewHelper is public API and owes a
-changelog entry, and `typo3_project_scope` reporting `15.0.0-dev`.
+changelog entry, and `typo3_project_describe` reporting `15.0.0-dev`.
 
 The quotations are checked before the boundary is. Re-run on 2026-08-03 through
 `bin/typo3-dev-companion` from that directory with the feedback's own arguments
@@ -396,7 +396,7 @@ The quotations are checked before the boundary is. Re-run on 2026-08-03 through
 contains a cache busting query string produced by f:uri.resource*,
 `changeType=bugfix`, `area=fluid`, `targetVersion=15.0` — and both sentences
 come back verbatim in the `fluid-viewhelpers` block. The third reproduces by
-half. `typo3_project_scope` answers
+half. `typo3_project_describe` answers
 `core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV`, and names
 neither `Changelog/15.0/` nor a `Releases: main` trailer; the session derived
 both from the version. The derivation was right — `.checkouts/main` carries
@@ -460,7 +460,7 @@ name — `typo3_architecture_lookup` was renamed to `typo3_hint_lookup` at
 `7553cb3` afterwards.
 
 That sentence was false when it was praised, and `f8be448` deleted it two days
-later. `typo3_project_scope`, started in the very checkout this review was
+later. `typo3_project_describe`, started in the very checkout this review was
 written in, answers
 `core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV` with the
 four `composer gerrit:setup` scripts it read there. The boundary that holds is
@@ -478,7 +478,7 @@ is also the one that could not notice it was untrue.
 
 The corpus reports both sides on one day. `feedback/2026-08-01-115115` comes
 from the same checkout and the same review week, and its strength is that
-`typo3_project_scope` "correctly identified the checkout as a TYPO3 core
+`typo3_project_describe` "correctly identified the checkout as a TYPO3 core
 (15.0.0-dev, PHP ^8.5, no project extensions, no sites)" — the reading the other
 strength praises this server for never doing. Neither session saw the other, and
 both were right about what they received.
@@ -534,7 +534,7 @@ The feedback is closed by this commit and nothing is queued.
 
 The first **Wrong if** fired again, and this time the lever is a clause the
 strength appends to its own praise. `feedback/2026-08-01-115115` credits
-`typo3_project_scope`, `typo3_rule_lookup` and `typo3_commit_message_guide` from
+`typo3_project_describe`, `typo3_rule_lookup` and `typo3_commit_message_guide` from
 a core patch review in `/home/benji/projects/typo3-cms`, asks that all three
 stay as they are, and ends: *the compound rule_lookup queries failed but the
 single-term ones worked*. That names no workaround and quotes no file, so it is
@@ -652,7 +652,7 @@ The first **Wrong if** fired again, in a shape none of the readings above
 carries: the lever is a **request for something the answer already does**.
 `feedback/2026-08-03-164818` reports a conformance audit of `EXT:guidedtour` in
 `/home/benji/projects/ext-guidedtour` and credits three answers, then asks that
-`typo3_extension_scope`'s `deprecatedFiles` be extended to the other file-level
+`typo3_extension_describe`'s `deprecatedFiles` be extended to the other file-level
 predicates an extension can trip — naming `ext_tables.php`, `#109438`, which the
 same call has checked since `a886a2d`.
 

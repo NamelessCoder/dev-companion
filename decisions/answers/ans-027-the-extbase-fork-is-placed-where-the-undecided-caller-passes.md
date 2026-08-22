@@ -53,7 +53,7 @@ before it was filed.
   "Choose the content model first" and lists `tt_content` fields, an inline
   child table, references and a container.
 - What the feedback asks to be checked is already answered, by a call the base
-  already orders. `typo3_extension_scope` reports each content element with a
+  already orders. `typo3_extension_describe` reports each content element with a
   `kind` of `element` or `plugin`, where `plugin` is an Extbase plugin
   registered by `ExtensionUtility::registerPlugin()`
   ([`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md)),
@@ -109,7 +109,7 @@ before it was filed.
   session that read it as a rule about plugins rather than about the element it
   was building. The hint would then be the wrong owner, and the intent or the
   skill is where the fork belongs.
-- `typo3_extension_scope` is called at base step 2 and a session still does not
+- `typo3_extension_describe` is called at base step 2 and a session still does not
   read a `kind` of `plugin` as the convention the extension already has. The gap
   would then be in that answer's own words rather than in what leads to it.
 

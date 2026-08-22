@@ -6,7 +6,7 @@ status: open
 
 # D-ANS-031 — The core answer names the tool that runs the suites
 
-**`typo3_project_scope` tells a core checkout that the core's testing suites are
+**`typo3_project_describe` tells a core checkout that the core's testing suites are
 not among its declared commands, and never that `typo3_test_run_guide` has
 them.**
 
@@ -25,7 +25,7 @@ not there. It did not say where they were.
 
   | Half of the transcript                                        | The sibling that owns it                          |
   | ------------------------------------------------------------- | ------------------------------------------------- |
-  | `typo3_project_scope` fits the task and should be kept          | `114526`, in hand elsewhere; `115115` from the other session |
+  | `typo3_project_describe` fits the task and should be kept          | `114526`, in hand elsewhere; `115115` from the other session |
   | `processingTaskTypes` and `SYS.fal.processors` into that output | `114526`, whose **Suggestion** is the same sentence; `115220`, under *Requested changes to existing MCP endpoints* |
   | seven core classes read by hand to confirm the code paths       | `114526`, under *What I had to establish from elsewhere* |
   | a `grep_search` timeout and a relative-path `read_file`         | the caller's own editor, which `doesNotCover` places outside |
@@ -55,11 +55,11 @@ not there. It did not say where they were.
   other core check" — is in the `routing` block of
   `knowledge/server-scope.json`, which a caller sees only by calling
   `typo3_server_scope`. The `instructions` returned at initialize name two
-  tools: `typo3_project_scope` in the imperative ("Start every task with"), and
+  tools: `typo3_project_describe` in the imperative ("Start every task with"), and
   `typo3_task_guide` in a sentence describing what it gives. The session called
   the first and reports that no other lookup was activated.
 - The answer it did hold is where the question came up. Re-run on 2026-08-02
-  from the same directory, `typo3_project_scope` opens "core-checkout, TYPO3
+  from the same directory, `typo3_project_describe` opens "core-checkout, TYPO3
   15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", and its commands paragraph
   opens "Commands this repository declares — these exist here, the core's
   testing suites do not". Four `gerrit:setup` scripts follow it. No sentence in
@@ -71,7 +71,7 @@ not there. It did not say where they were.
   corpus and the routing are not what failed.
 - The strength half credits the wrong tool, which is the pattern
   [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
-  names. It reports that `typo3_project_scope` "listed processors in the default
+  names. It reports that `typo3_project_describe` "listed processors in the default
   configuration"; the re-run above lists no processor, and the sibling `114526`
   makes the stronger version of the same claim.
 - Nothing about TYPO3 was established here beyond two file listings in the

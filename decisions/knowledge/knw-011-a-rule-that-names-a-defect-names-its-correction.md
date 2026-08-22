@@ -18,7 +18,7 @@ consistent with the rule.
 
 ## Evidence
 
-- The rule is delivered and the correction is not. `typo3_architecture_lookup`,
+- The rule is delivered and the correction is not. `typo3_hint_lookup`,
   run against this branch with the task "TYPO3 extension conformance audit: the
   sitepackage XLF files declare source-language=\"de\"; what is the correct
   source language convention and how is it corrected?", returns the Language
@@ -44,9 +44,9 @@ consistent with the rule.
   `source-language="en" target-language="de"`, and each unit carries the English
   `<source>` beside the German `<target>` under the id the source file already
   uses.
-- `typo3_extension_scope` is not the gap. It reports the `source-language` each
+- `typo3_extension_describe` is not the gap. It reports the `source-language` each
   file declares and says in the same answer that the rule for what it should
-  declare belongs to `typo3_architecture_lookup`.
+  declare belongs to `typo3_hint_lookup`.
 
 ## Decided
 
@@ -76,7 +76,7 @@ consistent with the rule.
   reaches `sitepackage-layout` and not `language-files` today, so a session that
   never phrases its task around labels is not offered the rule at all. A second
   feedback of this shape, from a run that demonstrably called
-  `typo3_architecture_lookup` without naming a language file, would move the
+  `typo3_hint_lookup` without naming a language file, would move the
   answer to step 2.
 
 ## Since then

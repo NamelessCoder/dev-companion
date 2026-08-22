@@ -73,7 +73,7 @@ had already computed returns the one entry its review turned on.
   what to ask once that comes back empty too.
 - **No new requirement.** `R-ANS-002` already says the reason is in the data and
   `R-ANS-018` that an answer names the tool for what it says is absent. Both are
-  `held`, by cases over `typo3_server_scope` and `typo3_project_scope`. What is
+  `held`, by cases over `typo3_server_scope` and `typo3_project_describe`. What is
   missing is the path, not the rule.
 
 ## Assumed

@@ -154,7 +154,7 @@ file minus step 3. The same session's tool log, filed twenty seconds later as
 `feedback/2026-07-31-193005`, lists thirteen numbered round trips with no
 `typo3_task_guide` among them. It also puts a `glob` of the extension and
 fifteen file reads at positions 5 and 6, ahead of the first
-`typo3_architecture_lookup` at 7. So a session whose own account is that the
+`typo3_hint_lookup` at 7. So a session whose own account is that the
 order fit perfectly followed neither the step nor the placement.
 
 The copy does not explain it. `references/base.md` under both `.claude/skills`
@@ -166,7 +166,7 @@ recited with the sweep in it is a base that carried step 3.
 What the step is worth was re-run on 2026-08-02, from `site-new` through
 `bin/typo3-dev-companion`. `typo3_task_guide` with the audit task, area
 `extension`, version 14 and change type `unknown` answers in 1,937 words. Under
-"Next lookups" it names `typo3_architecture_lookup` and
+"Next lookups" it names `typo3_hint_lookup` and
 `typo3_changelog_lookup`, which are steps 4 and 5 the caller has just read. Its
 checklist is six items about the target branch, the issue context and keeping a
 patch focused. And it names no workflow: `src/Tool/TaskGuide.php` has no skill
@@ -201,10 +201,10 @@ the account above was still being written.
 `feedback/2026-07-31-193005` is a session's own log of its tool calls, filed in
 `site-new` on `nemotron-3-ultra-free`, and what it records is the base outrun at
 the one step the base exists for. The first two steps of the order ran in place:
-`typo3_project_scope`, then `typo3_extension_scope` on the site package. Step 3
+`typo3_project_describe`, then `typo3_extension_describe` on the site package. Step 3
 never ran at all. Then a glob listed 46 files of the extension and fifteen
 `read()` calls went through the ones it picked — and only behind that reading
-came the two `typo3_architecture_lookup` calls, the deprecation sweep, the two
+came the two `typo3_hint_lookup` calls, the deprecation sweep, the two
 runtime lookups and another two or three round trips of files. That is Run 3's
 shape exactly, from a session that had the base and read it in its second step.
 
@@ -225,7 +225,7 @@ another way — the session's step 2 names `base.md`, the file was created by
 Not before" since that commit. There is no version of it that lacked the rule.
 
 The server's half of the run reproduces. From `site-new` on 2026-08-02 through
-`bin/typo3-dev-companion`, `typo3_project_scope` answers 14.3.5 with the five
+`bin/typo3-dev-companion`, `typo3_project_describe` answers 14.3.5 with the five
 declared commands, and `typo3_changelog_lookup` with
 `type=deprecation, version=14, limit=30` returns the first 30 of 75 entries —
 the 30 the session reported. Step 3 is the one that would not have paid.
@@ -285,7 +285,7 @@ Re-run in this checkout on 2026-08-02: `typo3_task_guide` with
 `task="review the TYPO3 project and site package"` and `changeType=unknown`
 matches no intent, and the checklist it answers with is keep the patch focused,
 add the narrowest useful test coverage, write the commit message. Its two other
-next lookups are `typo3_architecture_lookup` and `typo3_changelog_lookup`, which
+next lookups are `typo3_hint_lookup` and `typo3_changelog_lookup`, which
 is the half of the complaint about restating the skill. The other half is
 sharper than the report: the enum offers five kinds of change and `unknown`, and
 `knowledge/task-intents.json` holds eleven intents of which none is an audit, so

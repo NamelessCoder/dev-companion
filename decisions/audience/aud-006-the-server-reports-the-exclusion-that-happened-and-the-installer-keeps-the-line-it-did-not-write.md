@@ -16,9 +16,9 @@ described a capability the same server had just offered.
 ## Evidence
 
 - Measured on 2026-08-04 in this checkout, over one stdio session per case.
-  `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope, typo3_icon_lookup`: 25
+  `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_describe, typo3_icon_lookup`: 25
   tools offered including `typo3_project_describe`, the initialize instructions
-  opening "typo3_project_scope, typo3_icon_lookup are left out of your tool
+  opening "typo3_project_describe, typo3_icon_lookup are left out of your tool
   list" at 1940 characters, and `excludedTools.names` carrying both.
   `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered
   including it, the instructions opening "typo3_feedback_record is left out of

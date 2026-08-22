@@ -16,8 +16,8 @@ recording that is committed from wherever it was last run.
 ## Evidence
 
 - The `E-SITE` recording of 2026-08-02 was undone by a re-record on 2026-08-03
-  from a checkout without one. `typo3_changelog_lookup`, `typo3_extension_scope`
-  and `typo3_project_scope` went back to one answer per call, and the only thing
+  from a checkout without one. `typo3_changelog_lookup`, `typo3_extension_describe`
+  and `typo3_project_describe` went back to one answer per call, and the only thing
   that noticed was a todo somebody wrote by hand.
 - Those three answers were invalid against the schemas their own classes
   declare: `removal`, `unlistedFlexForms` and `environment` are required and
@@ -29,15 +29,15 @@ recording that is committed from wherever it was last run.
   and `debug:backend:modules`; the real probe boots its `vendor/autoload.php`
   and comes back `full` with every topic, `derivedColumns` included. Eight say
   `answeredBy: "installation"`. `typo3_changelog_lookup` and
-  `typo3_project_scope` say `packages`, there as against a checkout, because
+  `typo3_project_describe` say `packages`, there as against a checkout, because
   both read files and neither asks the console.
 - What the exchange costs, per page: `typo3_schema_lookup` 897 → 279 lines,
   `typo3_backend_module_lookup` 755 → 192, `typo3_icon_lookup` 1,021 → 723,
   `typo3_label_lookup` 747 → 527. A site installation has a real TCA and a real
   module tree behind it and the fixture has what it was written with.
 - What it buys is the three pages that had no second answer at all:
-  `typo3_changelog_lookup` 765 → 892, `typo3_extension_scope` 870 → 969,
-  `typo3_project_scope` 212 → 296.
+  `typo3_changelog_lookup` 765 → 892, `typo3_extension_describe` 870 → 969,
+  `typo3_project_describe` 212 → 296.
 - The directory goes 13,933 → 12,721 lines, and not all of that is this: the
   same run brought pages current that still called `typo3_hint_lookup` by the
   name it had before `7553cb3`, and `typo3_server_scope` still listed a coverage

@@ -41,7 +41,7 @@ nothing and the silence reads as a clean bill for the next major.
   version or a type as a whole". `D-ANS-006` established that reading when it
   added the field.
 - The feedback's own proposal was tested and does not hold.
-  `typo3_architecture_lookup` for the sitepackage's YAML path on 14 returns the
+  `typo3_hint_lookup` for the sitepackage's YAML path on 14 returns the
   site-set, page-rendering and layout hints and no statement about `#109412`.
   The hints answer conventions; the entry the sweep is for was reached by the
   tag and by nothing else.

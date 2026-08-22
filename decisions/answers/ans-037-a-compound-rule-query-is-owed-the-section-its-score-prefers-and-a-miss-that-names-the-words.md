@@ -25,7 +25,7 @@ task sentence is not one.
 
 - The strength reproduces whole, re-run on 2026-08-03 through
   `bin/typo3-dev-companion` from `/home/benji/projects/typo3-cms`, the directory
-  it was written in. `typo3_project_scope` answers
+  it was written in. `typo3_project_describe` answers
   `core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV`, with
   `Extensions: none beyond TYPO3's own.` and
   `Sites: none configured below config/sites/.` — the report's four claims, in

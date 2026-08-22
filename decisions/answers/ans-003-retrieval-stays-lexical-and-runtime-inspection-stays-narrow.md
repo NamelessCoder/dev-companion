@@ -108,12 +108,12 @@ current across four branches. It would state a fact that has not moved since
 the entry dead is that the path it names is gone.
 
 The cheap lever is where the session's own question already lands.
-`typo3_architecture_lookup` with `paths: ["ext_localconf.php"]` and that
+`typo3_hint_lookup` with `paths: ["ext_localconf.php"]` and that
 question as the task returns `extension-files`, whose hints say nothing about
 this key, and `bin/cli hints:probe` reaches nothing for
 `contentRenderingTemplates`. The placement works and the sentence is missing,
 which is step 1a of the ladder rather than a tool boundary. Re-running
-`typo3_extension_scope` for `bootstrap_package` also showed the answer telling
+`typo3_extension_describe` for `bootstrap_package` also showed the answer telling
 the session there was nothing more to read: `notReadStatically` is `[]` because
 `ext_localconf.php` is not among the five files it is drawn from. Both are
 queued as todos of their own and the feedback stays open behind them.
@@ -163,7 +163,7 @@ The runtime half was read a fourth time and did not fire.
 `feedback/2026-08-03-144457` asks for an idiom-precedent lookup: given an
 attribute, a class or a call — `#[Autowire(lazy: true)]`, `SingletonInterface`,
 `#[AsEventListener]` — return the core call sites with their paths and lines,
-read from the installed core package the way `typo3_extension_scope` reads an
+read from the installed core package the way `typo3_extension_describe` reads an
 installed extension. What a review buys with it is a proposed alternative that
 carries precedent instead of taste.
 
@@ -209,7 +209,7 @@ mapping. `diff` against `Login.html` failed, a `find` produced
 with the fact that a bare `.html` still resolves is in `fluid-templates` with
 `since: 14`, written the day before this feedback and returned first for the
 audited path. With that in hand the mapping is the Fluid roots
-`typo3_extension_scope` already reports plus the per-root-path fallback chain,
+`typo3_extension_describe` already reports plus the per-root-path fallback chain,
 and the diff is one command in a tree the auditor has open — which is where
 `D-FBK-027` draws the line, and the same counting as the precedent sweep above.
 So the **Wrong if** is answered the other way a second time: the diagnosis

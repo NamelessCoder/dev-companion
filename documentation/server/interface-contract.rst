@@ -75,7 +75,7 @@ schemes the rule it gives tool names, or fixing an authority segment such as
 
 The tool prefix is the cheaper half. ``typo3.`` reads as reserving names that
 literally begin with ``typo3.``, dot included, and therefore as not reaching a
-tool named ``typo3_page_read``; on that reading the 26 tools here are
+tool named ``typo3_rule_lookup``; on that reading the 26 tools here are
 unaffected. It is a reading of one sentence — the draft states the prefix once
 and never gives the separator a rule.
 

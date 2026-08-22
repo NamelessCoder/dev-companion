@@ -9,7 +9,7 @@ status: confirmed
 **A task told not to change files runs the project's own commands that are
 declared to hand the code back as it was, and no others.**
 
-The property is reported by `typo3_project_scope` per command, read off the
+The property is reported by `typo3_project_describe` per command, read off the
 declared body.
 
 Three recorded `REVIEW-02` runs read "do not change files" as "run nothing" and
@@ -52,7 +52,7 @@ reading, not that the declaration can be read.
   all of them. Rejected: running everything, which breaks the instruction the
   user gave; running nothing, which is what was measured; and asking the user
   per command, which is a question the answer could not have been formed against
-  before `typo3_project_scope` carried `runs`.
+  before `typo3_project_describe` carried `runs`.
 
 ## Assumed
 
@@ -96,5 +96,5 @@ command that would not start, in the section above — is neither of them.
 
 The tool is `typo3_project_describe` now, renamed by `D-SCO-011` after this was
 written, and the paragraph under the statement still calls it
-`typo3_project_scope`. The record is left as it read; this line is where a
+`typo3_project_describe`. The record is left as it read; this line is where a
 reader finds out.

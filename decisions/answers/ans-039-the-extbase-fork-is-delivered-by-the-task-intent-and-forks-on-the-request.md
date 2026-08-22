@@ -49,7 +49,7 @@ demands.
   described its work as.
 - The intent already carried the wrong categories in the two places this
   feedback is about: its condition read "rather than the page or the plugin
-  around it", and its `typo3_extension_scope` line described that answer as the
+  around it", and its `typo3_extension_describe` line described that answer as the
   templates elements render through.
 - The route to the two hints is in the checklist item rather than in the
   intent's `tools` list, because `TaskGuide::nextTools()` keeps one entry per
@@ -77,7 +77,7 @@ demands.
 - The condition is reworded with it. An intent conditioned "rather than the
   plugin around it" excludes the caller whose answer is a plugin, which is the
   one this fork exists for.
-- The `typo3_extension_scope` line now says what that answer is evidence about —
+- The `typo3_extension_describe` line now says what that answer is evidence about —
   the architecture the extension already has — with where the templates are kept
   as the second half rather than the whole. That is what the feedback needed and
   did not name.

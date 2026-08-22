@@ -94,7 +94,7 @@ scores on body text or not at all. "does the test suite cover every supported
 TYPO3 version" ranks the harness hint first at `appliesTo(10) + text(173)`, over
 `text only(209)`; "test the extension on TYPO3 12 and 13" puts it seventh of
 ten. Asked through the tool the skill actually calls, the split is total:
-`typo3_architecture_lookup` for an extension's quality surface returns
+`typo3_hint_lookup` for an extension's quality surface returns
 `installation-upgrade`, `deprecated-apis` and `project-repository-layout` — the
 last of them `scope: project`, which is not even the unit under audit.
 

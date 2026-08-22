@@ -17,7 +17,7 @@ field, which is where this one reached for SQL.
 
 - Two of the three things the **Suggestion** asks for are already answered, at
   more depth than it asks for. Called over stdio with the feedback's own query
-  and `targetVersion: "14.3"`, `typo3_architecture_lookup` returns
+  and `targetVersion: "14.3"`, `typo3_hint_lookup` returns
   `datahandler-persistence` and `sitepackage-initial-content`. The first ends on
   "DataHandler acts as a backend user … which is what makes DataHandler the
   right way to seed and a direct INSERT the wrong one". The second carries the

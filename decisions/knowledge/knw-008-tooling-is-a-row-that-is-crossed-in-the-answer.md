@@ -20,7 +20,7 @@ was asked is whether it should become a dimension crossing the audience one.
 ## Evidence
 
 - The crossing already happens, by name. `typo3_test_run_guide` on an extension
-  path declines the suites and routes to `typo3_architecture_lookup` with
+  path declines the suites and routes to `typo3_hint_lookup` with
   `id=project-extension-tests` and `id=browser-tests` — the two cells of the
   same row for the other column — and says why `runTests.sh` is not one of them.
 - The third cell was named on 2026-08-02, after this entry was written. Asked

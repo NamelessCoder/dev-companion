@@ -67,7 +67,7 @@ instead.
   the container and the webserver: `installation-upgrade` already states two of
   the core's own console commands under scope `project`.
 - The category is not the answer. It arrived as `tool-gap` and needs no tool —
-  `typo3_architecture_lookup` would answer it from a hint that does not exist.
+  `typo3_hint_lookup` would answer it from a hint that does not exist.
 - The feedback's **Suggestion** is not copied down. It asks for "the one correct
   way", and whether there is one way or one per kind of change is what the
   reading settles.

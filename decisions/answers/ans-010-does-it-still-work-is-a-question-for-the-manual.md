@@ -278,6 +278,6 @@ instead: `ClassConstantMatcher` keys all five constants against that entry.
 
 The opening sentence of that hint went with it, because it was false where this
 entry's own subject is. "This server does not know your branch" holds for the
-bundled corpus, not for the server: `typo3_project_scope` reads the installed
+bundled corpus, not for the server: `typo3_project_describe` reads the installed
 version off the core package, and `typo3_changelog_lookup` answers from the
 changelog that package ships.

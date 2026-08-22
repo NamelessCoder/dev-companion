@@ -90,7 +90,7 @@ analyser and nothing else in that layer.
   to read `Classes/Information/Typo3Version.php` out of it, so the floor is one
   further read at a path the server has resolved.
 - **The strength and the cost are the same boundary.** `055658` credits
-  `typo3_project_scope` for two things: the environment block naming the
+  `typo3_project_describe` for two things: the environment block naming the
   container's interpreter against the caller's shell, which sent every command
   through DDEV, and the explicit empty answers — `commands: []`,
   `artifacts.tests: []` — which turned "add a fixer" into "establish the first

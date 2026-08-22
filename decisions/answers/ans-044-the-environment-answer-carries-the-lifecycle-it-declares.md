@@ -6,7 +6,7 @@ status: open
 
 # D-ANS-044 — The environment answer carries the lifecycle it declares, beside the interpreter it runs
 
-**`typo3_project_scope` says what its declared environment runs commands on and
+**`typo3_project_describe` says what its declared environment runs commands on and
 nothing of what that environment runs by itself, so `feedback/2026-08-03-154501`
 is queued as
 [`R-PRJ-009`](../../requirements/project/prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md).**
@@ -20,7 +20,7 @@ it was read from. The rest of that file is how the project boots.
 
 - The feedback re-run on 2026-08-03 through this branch's
   `bin/typo3-dev-companion`, from `/home/benji/projects/site-demo-typo3-org`,
-  the directory it was written in. `typo3_project_scope` opens with
+  the directory it was written in. `typo3_project_describe` opens with
   "composer-project, TYPO3 14.3.5, PHP ^8.3 declared and 8.3 in DDEV", its
   `environment` is
   `{"via":"ddev","php":"8.3","source":".ddev/config.yaml","entered":false}`, and
@@ -59,7 +59,7 @@ it was read from. The rest of that file is how the project boots.
 ## Decided
 
 - Queued rather than closed on the spot. It changes `Project::describe()` and
-  the declared `outputSchema` of `typo3_project_scope`, and
+  the declared `outputSchema` of `typo3_project_describe`, and
   [judging.md](../../documentation/records/judging.rst) puts a schema beyond a
   run that has read only this repository.
 - The rung is 1b in kind and neither of the two instances that page names. Not

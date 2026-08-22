@@ -90,7 +90,7 @@ resolver out of a vendor tree.
 - Not step 1b, and the lookup the feedback asks for is not built. A tool that
   takes an extension-relative template path and returns the core file it shadows
   is the fifth reading of the `D-ANS-003` runtime **Wrong if**, recorded there:
-  `typo3_extension_scope` already reports the Fluid roots, and with the chain
+  `typo3_extension_describe` already reports the Fluid roots, and with the chain
   stated, which core file a fork shadows is those roots plus that chain, after
   which the diff is one command in a tree the auditor already has open. What the
   session actually paid three round trips for was the file name, which the
@@ -100,7 +100,7 @@ resolver out of a vendor tree.
   here, is it deprecated, docblock or attribute. Its card carries it and it is
   not folded in here: a different question with a different answer, and neither
   one would have told this session which of two files renders.
-- Whether `typo3_extension_scope` should say that a Fluid root was read off the
+- Whether `typo3_extension_describe` should say that a Fluid root was read off the
   directory rather than off a declaration is already queued as
   `todo/say-that-the-fluid-roots-were-read-off-the-directory`, from the same
   audit. It is the provenance of the roots and this is the order they are walked

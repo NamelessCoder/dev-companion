@@ -18,9 +18,9 @@ phpstan-phpunit include an extension's configuration actually has.
 
 - `feedback/2026-07-31-193626`, judged on 2026-08-02. It reports a session's own
   recommendation — "Add phpstan.neon with includes: [extension.neon] from TYPO3
-  testing-framework" — as outdated, and asks that `typo3_architecture_lookup`
+  testing-framework" — as outdated, and asks that `typo3_hint_lookup`
   reflect the current PHPStan configuration for an extension.
-- Re-run from this checkout on 2026-08-02: `typo3_architecture_lookup` with the
+- Re-run from this checkout on 2026-08-02: `typo3_hint_lookup` with the
   feedback's own query,
   `extension.neon recommendation outdated - no longer needed for TYPO3 PHPStan`,
   returns `extension-static-analysis` and nothing else. It puts the

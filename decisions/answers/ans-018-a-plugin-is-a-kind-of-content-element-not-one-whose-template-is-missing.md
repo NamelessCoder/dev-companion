@@ -6,7 +6,7 @@ status: open
 
 # D-ANS-018 — A plugin is a kind of content element, not one whose template is missing
 
-**`typo3_extension_scope` says which kind of registration a content element is,
+**`typo3_extension_describe` says which kind of registration a content element is,
 and an Extbase plugin points at `plugin.tx_<identifier>` where an element points
 at a `templateName`.**
 

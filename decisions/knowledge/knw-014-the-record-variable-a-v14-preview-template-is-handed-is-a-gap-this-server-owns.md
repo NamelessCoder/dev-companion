@@ -17,7 +17,7 @@ nothing here says what that variable is or what comes back from a field on it.
 ## Evidence
 
 - The miss reproduces. Called over stdio with the feedback's own query and
-  `targetVersion: "14"`, `typo3_architecture_lookup` returns one hint —
+  `targetVersion: "14"`, `typo3_hint_lookup` returns one hint —
   `fluid-templates` — and no statement in it names a record variable.
   `bin/cli hints:probe` on the same query reaches the same single hint.
 - Nothing below `knowledge/` or `skills/` contains `RecordInterface`, `{record.`

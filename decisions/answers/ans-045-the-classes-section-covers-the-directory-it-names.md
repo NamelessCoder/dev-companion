@@ -6,7 +6,7 @@ status: open
 
 # D-ANS-045 — The Classes section covers the directory it names, and a value read off the tree says so
 
-**`typo3_extension_scope` reports every directory below `Classes/` and every PHP
+**`typo3_extension_describe` reports every directory below `Classes/` and every PHP
 file under it, and a value it derives from a directory existing is not presented
 as a registration.**
 
@@ -30,7 +30,7 @@ a caller who trusts the promise never learns there was more to open.
   those directories and 106 of those files are on the list. `extbase` reports 27
   of 284, `frontend` 53 of 144, `install` 48 of 158.
 - One instance is in this repository already.
-  `documentation/server/tools/typo3_extension_scope.md` records
+  `documentation/server/tools/typo3_extension_describe.md` records
   `Classes: Command (8), Controller (90), … ViewHelpers (15)` for `backend`.
   Those counts sum to 343, against 671 PHP files below that extension's
   `Classes/`.

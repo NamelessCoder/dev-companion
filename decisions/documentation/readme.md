@@ -10,6 +10,7 @@ earns one.
 
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged to stay as it is · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
+- [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
 - [`D-DOC-035`][D-DOC-035] — What the prose costs is counted beside how long a sentence is · 2026-08-18
 - [`D-DOC-036`][D-DOC-036] — A todo serves a decision by its id · 2026-08-18
@@ -45,6 +46,7 @@ earns one.
 
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged-to-stay-as-it-is.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
+[D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
 [D-DOC-034]: doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
 [D-DOC-035]: doc-035-what-the-prose-costs-is-counted-beside-how-long-a-sentence-is.md
 [D-DOC-036]: doc-036-a-todo-serves-a-decision-by-its-id.md

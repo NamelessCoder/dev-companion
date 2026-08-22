@@ -163,6 +163,38 @@ final class DecisionsTest extends TestCase
      * date on it. This is the one field every entry owes the next reader.
      */
     /**
+     * An entry whose history has outgrown it is read out and never failed on.
+     *
+     * `Confirmed on` is what a reading that held leaves behind, so an entry
+     * stating a rule the repository applies often collects one per
+     * application — `D-FBK-018` carries nineteen. None of that is a defect,
+     * which is exactly why nothing had ever counted it: the cost is a reader
+     * who pays more for the history than for the decision, and only a reading
+     * says which entries those are.
+     */
+    #[Test]
+    public function anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn(): void
+    {
+        $outgrown = Decisions::outgrown();
+
+        self::assertNotSame([], $outgrown, 'no entry carries more later reading than decision, which the report would have to say instead');
+
+        $lengths = array_column($outgrown, 'later');
+        $sorted = $lengths;
+        rsort($sorted);
+        self::assertSame($sorted, $lengths, 'the longest history is not first');
+
+        foreach ($outgrown as $entry) {
+            self::assertGreaterThan(
+                $entry['entry'],
+                $entry['later'],
+                $entry['id'] . ' is reported as outgrown and its decision is the longer half',
+            );
+            self::assertGreaterThan(0, $entry['dated'], $entry['id'] . ' has later reading and no dated section');
+        }
+    }
+
+    /**
      * A dated label is a section, and the spelling it had before `D-DOC-003` is
      * what nothing could read. 51 bold labels in 37 entries survived that move
      * because no check saw them: the field order could not place one, so it sat

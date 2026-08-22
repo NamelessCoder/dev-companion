@@ -147,6 +147,28 @@ final class DecisionCheck
             }
         }
 
+        // A report rather than a problem: a rule the repository applies often
+        // collects a `Confirmed on` per application, and nothing about that is
+        // wrong. What it costs is a reader who pays more for the history than
+        // for the decision, and only the reading says which entries those are.
+        $outgrown = Decisions::outgrown();
+        if ($outgrown !== []) {
+            $output->writeln(sprintf(
+                '%d entries carry more later reading than decision, the longest being:',
+                count($outgrown),
+            ));
+            foreach (array_slice($outgrown, 0, 3) as $entry) {
+                $output->writeln(sprintf(
+                    '  %-11s %4d lines of entry, %4d of later reading in %d sections',
+                    $entry['id'],
+                    $entry['entry'],
+                    $entry['later'],
+                    $entry['dated'],
+                ));
+            }
+            $output->writeln('');
+        }
+
         $errors = Cli::errors($output);
         foreach ($problems as $problem) {
             $errors->writeln($problem);

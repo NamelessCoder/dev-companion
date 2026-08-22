@@ -142,7 +142,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched for as the name it is · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
-- [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
+- [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02 · confirmed
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02

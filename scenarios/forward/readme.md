@@ -16,13 +16,13 @@ and [contracts/](../contracts/readme.md) for the targeted cases these are not.
 
 ## Status of a forward review
 
-| Mark       | Meaning                                                                        | What a run is for                                                                                         |
-| ---------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| `unrun`    | No session has established a result yet.                                       | Run it without predicting what the repository will reveal.                                                |
-| `covered`  | The server should answer this well today.                                      | A bad answer is a regression; fix it.                                                                     |
-| `boundary` | Deliberately outside scope.                                                    | The right answer is a clean decline plus where to go instead. A confident invented answer is the failure. |
-| `partial`  | Answered, but not for every audience or not to the depth the task needs.       | Record which half was missing.                                                                            |
-| `gap`      | An accepted requirement that is not met yet, or knowledge that does not exist. | Expected to fall short. Record what the task actually needed, not that it fell short.                     |
+| Mark       | Meaning                                                                        | What a run is for                                                           |
+| ---------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| `unrun`    | No session has established a result yet.                                       | Run it without predicting what the repository will reveal.                  |
+| `covered`  | The server should answer this well today.                                      | A bad answer is a regression; fix it.                                       |
+| `boundary` | Deliberately outside scope.                                                    | A clean decline and where to go instead. An invented answer is the failure. |
+| `partial`  | Answered, but not for every audience or not to the depth the task needs.       | Record which half was missing.                                              |
+| `gap`      | An accepted requirement that is not met yet, or knowledge that does not exist. | Record what the task needed, not that it fell short.                        |
 
 `boundary` and `gap` are not the same thing. A boundary is an answer — "this
 server does not cover it, the documentation does" — and it can be given

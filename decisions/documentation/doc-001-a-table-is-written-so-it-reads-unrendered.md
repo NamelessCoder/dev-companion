@@ -1,7 +1,7 @@
 ---
 id: D-DOC-001
 date: 2026-08-01
-status: open
+status: confirmed
 ---
 
 # D-DOC-001 — A table is written so it reads unrendered
@@ -98,3 +98,23 @@ fits: 9 of 19 on 2026-08-22, six of them the mapping tables of `D-FBK-021`,
 whose widest cell is 239 characters. What each of those becomes is one reading
 at a time and the exception has to say so where it is taken, which is what this
 entry has said since it was written.
+
+## Confirmed on 2026-08-22
+
+The nine tables holding a cell no line fits were judged one at a time, and the
+count is zero.
+
+Seven were mappings and are lists: six in `D-FBK-021` and one in `D-ANS-031`,
+where the widest cell was 239 characters because it holds a markdown link with a
+path in it. Nothing was lost — both halves of every mapping are still there and
+now wrap like prose — and what the entries say about them moved with the shape.
+
+Two are read as data by `Scenarios::vocabulary()` and stayed tables, because the
+cells could be shortened. The `E-SITE` line lost the console command it named,
+which is a version question and now stands in the paragraph under the table; the
+two long cells of the forward review's marks lost a sentence each without losing
+a point.
+
+So the second **Decided** bullet decided all nine, and the exception it reserves
+— a table whose cells cannot be shortened and whose content is not a list — has
+not been taken yet. `bin/cli prose:check` is what would say when one arrives.

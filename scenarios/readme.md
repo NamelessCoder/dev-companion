@@ -41,13 +41,17 @@ A case is only meaningful in the working directory it names, because instance
 discovery starts where the MCP client launched the server. Start the client in
 that directory, then paste the prompt.
 
-| Id          | What it is                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------------------- |
-| `E-CORE`    | A TYPO3 core checkout (`typo3/typo3`), dependencies installed.                                                |
-| `E-SITE`    | A Composer site installation, ideally under DDEV and on a version whose console has `language:domain:search`. |
-| `E-EXT`     | A standalone extension repository with its dependencies installed, TYPO3 among them.                          |
-| `E-NONE`    | A directory with no TYPO3 installation anywhere above it.                                                     |
-| `E-STOPPED` | `E-SITE` with the DDEV project stopped.                                                                       |
+| Id          | What it is                                                     |
+| ----------- | -------------------------------------------------------------- |
+| `E-CORE`    | A TYPO3 core checkout (`typo3/typo3`), dependencies installed. |
+| `E-SITE`    | A Composer site installation, ideally under DDEV.              |
+| `E-EXT`     | A standalone extension repository, dependencies installed.     |
+| `E-NONE`    | A directory with no TYPO3 installation anywhere above it.      |
+| `E-STOPPED` | `E-SITE` with the DDEV project stopped.                        |
+
+A case that needs a console command names it. `E-SITE` is the environment
+`language:domain:search` is asked of, which is a version question rather than a
+property of the directory.
 
 An environment is a kind of working directory, never one particular
 installation. Which checkout on this machine plays one of them belongs in

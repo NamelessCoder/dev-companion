@@ -102,7 +102,7 @@ final class Decisions
      * Every decision, keyed by id and newest first — which is the order the
      * file this replaces claimed to be in.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function all(): array
     {
@@ -166,7 +166,7 @@ final class Decisions
     /**
      * The decisions of one group, or every one of them where no group is named.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -248,7 +248,7 @@ final class Decisions
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}
      */
     public static function read(string $path): array
     {
@@ -276,9 +276,29 @@ final class Decisions
             // who reaches a dead entry needs somewhere to go next, and prose
             // said it on four of them and nowhere a listing could see.
             'revokedBy' => self::frontMatterValue($frontMatter, 'revokedBy'),
+            'revisited' => self::revisited($contents),
             'statement' => trim(str_replace('**', '', $statement)),
             'fields' => self::fields($contents),
         ];
+    }
+
+    /**
+     * Whether somebody has been back to this entry since it was written.
+     *
+     * `status` cannot answer it. `confirmed` and `revoked` are the two readings
+     * that settle a **Wrong if**, and a reading that settles neither leaves the
+     * entry `open` — indistinguishable from one nobody has opened. What tells
+     * the two apart is a **Since then**, which the format already carries for
+     * what followed without a date of its own.
+     *
+     * Two forms are matched, because the corpus has two. The section is the one
+     * `writing-a-decision.rst` describes; the bold paragraph is what entries
+     * written before `D-DOC-003` moved the labels into sections still carry, and
+     * counting only the section reports 28 read entries as never read.
+     */
+    private static function revisited(string $contents): bool
+    {
+        return preg_match('/^(## |\*\*)Since then\b/m', $contents) === 1;
     }
 
     /**

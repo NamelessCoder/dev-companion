@@ -36,8 +36,10 @@ final class UnresolvedList
      * a session decided it stays as it is. The decisions are counted
      * rather than listed — most of them are standing because they are still
      * true, and a report that prints all of them every time is one nobody
-     * reads twice. The oldest is named because it is the one the repository
-     * has moved furthest away from.
+     * reads twice. The count is split, because half the open ones have been
+     * read and could be neither confirmed nor revoked, and reported as one
+     * number they read as a pile nobody has touched. The oldest named is the
+     * oldest nobody has opened.
      *
      * Nonzero says there is something to do, which is how `bin/cli todo:next` knows
      * the todo that starts here is still the next thing. Not a failure: a
@@ -84,19 +86,21 @@ final class UnresolvedList
 
         $standing = Unresolved::decisions();
         $total = count(Decisions::all());
-        if ($standing === []) {
+        $unread = array_values(array_filter($standing, static fn(array $d): bool => !$d['revisited']));
+        if ($unread === []) {
             $output->writeln(sprintf('All %d decisions have been back-checked.', $total));
 
             return $unjudged === [] ? 0 : 1;
         }
 
         $output->writeln(sprintf(
-            "%d of %d decisions are open: nobody has been back to their \"Wrong if\".\n"
-            . 'The oldest is %s (%s). bin/cli decisions:list has them all.',
+            "%d of %d decisions are open, and %d of those nobody has been back to.\n"
+            . 'The oldest of them is %s (%s). bin/cli decisions:list has them all.',
             count($standing),
             $total,
-            $standing[0]['id'],
-            $standing[0]['date'],
+            count($unread),
+            $unread[0]['id'],
+            $unread[0]['date'],
         ));
 
         return $unjudged === [] && $sorting ? 0 : 1;

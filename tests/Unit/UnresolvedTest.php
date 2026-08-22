@@ -96,6 +96,39 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
+     * `open` is two states and the report separates them, so the flag that
+     * separates them has to be the file's own. A **Since then** is what a
+     * reading that settles the **Wrong if** neither way leaves behind, and half
+     * the open entries carry one — counted as unread, the pile reads as
+     * untouched and the oldest named is one somebody has already been back to.
+     *
+     * Both spellings count. The section is the format
+     * `writing-a-decision.rst` describes; the bold paragraph is what entries
+     * written before `D-DOC-003` carry, and there are enough of those to move
+     * the number.
+     */
+    #[Test]
+    public function anOpenDecisionSomebodyHasBeenBackToIsToldApart(): void
+    {
+        $open = Unresolved::decisions();
+        $decisions = Decisions::all();
+
+        $revisited = array_filter($open, static fn(array $d): bool => $d['revisited']);
+        self::assertNotSame([], $revisited, 'no open decision carries a Since then, which the report would have to say instead');
+        self::assertNotSame($open, array_values($revisited), 'every open decision has been back-checked, which the report would have to say instead');
+
+        foreach ($open as $decision) {
+            $path = Decisions::directory() . '/' . $decisions[$decision['id']]['group']
+                . '/' . $decisions[$decision['id']]['file'];
+            self::assertSame(
+                preg_match('/^(## |\*\*)Since then\b/m', (string) file_get_contents($path)) === 1,
+                $decision['revisited'],
+                $decision['id'] . ' is reported as ' . ($decision['revisited'] ? 'read' : 'unread') . ', and its file says otherwise',
+            );
+        }
+    }
+
+    /**
      * The oldest open decision is the one the repository has moved furthest
      * away from, so it is the candidate the report names. Decisions::all() is
      * newest first for the listings, and this is the one caller that wants the

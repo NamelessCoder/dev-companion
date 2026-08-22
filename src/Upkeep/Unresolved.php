@@ -101,7 +101,7 @@ final class Unresolved
     }
 
     /**
-     * The decisions nobody has been back to, oldest first.
+     * Every open decision, oldest first, and whether somebody has been back.
      *
      * An open decision is not a defect the way an open requirement is —
      * most of them are simply still true, and some name a "Wrong if" only a
@@ -110,7 +110,14 @@ final class Unresolved
      * so it is where a decision has most likely been overtaken without anyone
      * noticing.
      *
-     * @return array<int, array{id: string, date: string, title: string}>
+     * `open` is two states, though, and reporting them as one made the pile
+     * look untouched: a reading that settles the **Wrong if** either way
+     * changes the status, and one that settles neither leaves it open with a
+     * **Since then** to show for it. Half of what this returns is of the second
+     * kind. So the reading carries both and the caller names the oldest nobody
+     * has opened, which is the one a session can still do something about.
+     *
+     * @return array<int, array{id: string, date: string, title: string, revisited: bool}>
      */
     public static function decisions(): array
     {
@@ -124,6 +131,7 @@ final class Unresolved
                 'id' => $decision['id'],
                 'date' => $decision['date'],
                 'title' => $decision['title'],
+                'revisited' => $decision['revisited'],
             ];
         }
 

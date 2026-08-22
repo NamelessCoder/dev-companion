@@ -214,10 +214,17 @@ Going back to one
 Most decisions are open and stay that way, which is what makes the state easy to
 stop seeing: a **Wrong if** written and never read is a promise, and nothing
 says when to keep it. ``bin/cli unresolved:list`` counts them and names the
-oldest — not because age disproves anything, but because that is the entry the
-repository has moved furthest away from since. Going back to one and adding
-**Confirmed on** or **Revoked on** is a legitimate task with no feature behind
-it.
+oldest nobody has been back to — not because age disproves anything, but because
+that is the entry the repository has moved furthest away from since. Going back
+to one and adding **Confirmed on** or **Revoked on** is a legitimate task with
+no feature behind it.
+
+Going back and settling nothing is one too, and it is the ordinary outcome: a
+**Wrong if** that only a forward run, an installation or an outside event could
+answer stays unanswered however carefully it is read. What that reading leaves
+is a **Since then** saying what was looked at and what would still settle it.
+The entry stays ``open``, and it is no longer indistinguishable from one nobody
+has opened — which is the difference the listing counts.
 
 ``bin/cli decisions:check`` holds every file to the shape above, and
 ``composer test`` runs the same check through ``DecisionsTest``, except the

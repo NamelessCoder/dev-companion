@@ -32,10 +32,16 @@ the only one. A decision has a history: ``D-KNW-003`` was confirmed by a run on
 the morning of 2026-08-02 and revoked by the evidence that arrived the same day,
 and both are in the file. What a reader relies on is the latest.
 
-The status is not a workflow. ``open`` does not mean unbuilt — it means nobody
-has been back to the **Wrong if** yet. Most decisions are open and stay that
-way, which is what makes the state easy to stop seeing, and
+The status is not a workflow. ``open`` does not mean unbuilt — it means the
+**Wrong if** has not been settled either way. Most decisions are open and stay
+that way, which is what makes the state easy to stop seeing, and
 :doc:`bin/cli unresolved:list <index>` is what reads them out.
+
+It covers two cases, and only one of them is work. A reading that settles the
+**Wrong if** changes the status; a reading that settles neither leaves it open
+and adds a **Since then**, which is the whole of what separates an entry
+somebody has been back to from one nobody has opened. So the listing counts them
+apart and names the oldest of the second kind.
 
 ``revokedBy`` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

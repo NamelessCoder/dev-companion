@@ -94,6 +94,49 @@ final class Decisions
     }
 
     /**
+     * The entries a test holds, by what their **Covered by** names.
+     *
+     * Read the other way round from `unnamedByItsTests()`: that one asks what a
+     * test says about its entry, this one asks which entries a failing test was
+     * holding. A session changing a behaviour stands in the test, so that is
+     * where the entry has to be named — and a docblock is not where a failure
+     * prints.
+     *
+     * A whole class counts for every method in it: an entry naming
+     * `VersionsTest` rests on all of it, which is what the format already
+     * allows.
+     *
+     * @return list<array{id: string, title: string, file: string}>
+     */
+    public static function restingOn(string $class, string $method): array
+    {
+        $held = [];
+        foreach (self::all() as $decision) {
+            $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
+            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
+                continue;
+            }
+
+            preg_match_all('/`(\w+Test)(?:::(\w+))?`/', $section[1], $matches, PREG_SET_ORDER);
+            foreach ($matches as $named) {
+                if ($named[1] !== $class || (($named[2] ?? '') !== '' && $named[2] !== $method)) {
+                    continue;
+                }
+
+                $held[] = [
+                    'id' => $decision['id'],
+                    'title' => $decision['title'],
+                    'file' => 'decisions/' . $decision['group'] . '/' . $decision['file'],
+                ];
+
+                break;
+            }
+        }
+
+        return $held;
+    }
+
+    /**
      * Entries a reader pays more for the history of than for the decision,
      * longest history first.
      *

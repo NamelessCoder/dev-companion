@@ -21,7 +21,7 @@ final class StructureTest extends TestCase
      * the first class's name, so the second one loads only where something has
      * already loaded the first. It works in the file that wrote it and fails as
      * a missing class from anywhere else, which is the kind of failure that
-     * arrives long after the commit.
+     * arrives long after the commit — `D-COD-001`.
      */
     #[Test]
     public function everyFileDeclaresOneClass(): void
@@ -116,6 +116,11 @@ final class StructureTest extends TestCase
         }
     }
 
+    /**
+     * One idiom for reading a directory, so a flat listing and a deep one are
+     * the same call and a tolerance is written where it is relied on —
+     * `D-COD-003`.
+     */
     #[Test]
     public function everyDirectoryIsReadThroughTheFinder(): void
     {

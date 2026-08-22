@@ -457,6 +457,10 @@ final class VersionsTest extends TestCase
         yield 'an operator with a space after it, the way that manifest writes php' => ['>= 12.4.37 < 14', [12, 13]];
     }
 
+    /**
+     * A supported range is a property of the package, so every spelling a real
+     * manifest writes answers for the majors it serves — `D-VER-004`.
+     */
     /** @param array<int, int> $majors */
     #[Test]
     #[DataProvider('rangeSpellingsFromTheWild')]

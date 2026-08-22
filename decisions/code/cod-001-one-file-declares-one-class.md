@@ -41,6 +41,10 @@ there.
   rule needs an allowed list rather than a flat ban, and the test is where it
   goes.
 
+## Covered by
+
+- `StructureTest::everyFileDeclaresOneClass`
+
 ## Confirmed on 2026-08-22
 
 The rule holds and the **Wrong if** has not fired. Four enums stand below `src/`

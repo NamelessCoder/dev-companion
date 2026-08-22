@@ -238,6 +238,41 @@ final class DecisionsTest extends TestCase
     }
 
     /**
+     * The naming read from the failing end: which entries a test was holding.
+     *
+     * This is what a session that made a test red is sent to, so it has to
+     * answer for every entry that names one — the method where **Covered by**
+     * names a method, and every method of the class where it names the class.
+     * A test nothing names answers with nothing, which is the ordinary case and
+     * the one that must stay quiet — `D-DOC-043`, and `D-DOC-044` is what
+     * prints it when a test fails.
+     */
+    #[Test]
+    public function everyEntryATestHoldsIsNamedFromTheFailingEnd(): void
+    {
+        $missed = [];
+        foreach (Decisions::all() as $decision) {
+            $body = (string) file_get_contents(
+                Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file'],
+            );
+            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
+                continue;
+            }
+
+            preg_match_all('/`(\w+Test)(?:::(\w+))?`/', $section[1], $named, PREG_SET_ORDER);
+            foreach ($named as $test) {
+                $held = array_column(Decisions::restingOn($test[1], $test[2] ?? 'anyMethodAtAll'), 'id');
+                if (!in_array($decision['id'], $held, true)) {
+                    $missed[] = $decision['id'] . ' names ' . $test[0] . ' and is not held from it';
+                }
+            }
+        }
+
+        self::assertSame([], $missed);
+        self::assertSame([], Decisions::restingOn('NoSuchTest', 'noSuchMethod'), 'a test nothing names holds nothing');
+    }
+
+    /**
      * The other degree of the coupling, and the one that runs the other way.
      *
      * An entry names the test that would catch its **Wrong if**, and the test

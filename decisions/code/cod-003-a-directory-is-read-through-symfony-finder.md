@@ -52,6 +52,10 @@ directory removal copied between test classes.
   it — and the fallback is the explicit sort by depth, which does not depend on
   the traversal order at all.
 
+## Covered by
+
+- `StructureTest::everyDirectoryIsReadThroughTheFinder`
+
 ## Confirmed on 2026-08-22
 
 The one idiom held. `glob()`, `scandir()` and `RecursiveDirectoryIterator`

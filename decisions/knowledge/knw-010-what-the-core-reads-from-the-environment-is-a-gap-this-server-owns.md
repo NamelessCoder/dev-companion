@@ -1,7 +1,7 @@
 ---
 id: D-KNW-010
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-KNW-010 — What the core reads from the environment is a gap this server owns
@@ -74,3 +74,20 @@ already read from it.
 - The 15.0 boundary moves again before the statement is written, which is what a
   development branch is. The `since` on the statement is then read off the
   branch rather than off this entry.
+
+## Confirmed on 2026-08-23
+
+The statement was written and it is not the Site Handling page restated, which
+is what the first **Wrong if** reserved. `knowledge/hints/configuration.json`
+names the three variables that reach TYPO3 with no project code behind them —
+`TYPO3_CONTEXT`, `TYPO3_PATH_ROOT` and `TYPO3_PATH_APP` — says
+`SystemEnvironmentBuilder` is the only thing that reads them, names the
+`REDIRECT_` prefix a web server forwards into FastCGI and the
+`HTTP_TYPO3_CONTEXT` Apache suexec uses, and closes on the sentence that decides
+the subject: no other key of `TYPO3_CONF_VARS` has an environment variable
+behind it. None of that is on a manual page about site handling.
+
+So the judgement holds: the question was inside the boundary and the answer is a
+statement of this server's own rather than a pointer. The second **Wrong if**
+watches a `since` that was never needed — the statement carries no version bound
+at all, because the three are the same on every covered line.

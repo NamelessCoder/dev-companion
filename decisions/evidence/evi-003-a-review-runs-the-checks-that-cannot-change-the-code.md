@@ -59,6 +59,10 @@ quoted the commands as subjects of findings instead.
   files, in which case the runs cost time and settled nothing, and the base's
   three-way distinction was doing all the work by itself.
 
+## Covered by
+
+- `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`
+
 ## Since then
 
 The first **Wrong if** was gone looking for instead of waited for, on

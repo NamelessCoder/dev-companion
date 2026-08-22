@@ -52,6 +52,10 @@ that file is for — was removed before the answer was composed.
   statements for majors nobody is maintaining. The second one is worth watching:
   the declaration is a promise, and this now treats it as one.
 
+## Covered by
+
+- `VersionsTest::aSpellingFromTheWildAnswersForEveryMajorItServes`
+
 ## Confirmed on 2026-08-02
 
 The first half of **Wrong if** did not happen. Every range spelling the three

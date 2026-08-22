@@ -336,7 +336,8 @@ final class ProseTest extends TestCase
      * table inside a fence, one row with nothing under it, a drawn diagram.
      *
      * A separator row under the head is what says the rest are cells. Without
-     * it, padding would put a line break's meaning where the author did not.
+     * it, padding would put a line break's meaning where the author did not —
+     * `D-DOC-001`.
      */
     #[Test]
     public function whatIsNotATableIsNotPadded(): void

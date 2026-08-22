@@ -55,6 +55,11 @@ words with pipes in it, and which cell a value belongs to has to be counted out.
   case a list will read worse than the table did and the exception has to say so
   where it is taken.
 
+## Covered by
+
+- `ProseTest::aTableComesBackPaddedToItsWidestCell`
+- `ProseTest::whatIsNotATableIsNotPadded`
+
 ## Since then
 
 Both halves of the **Wrong if** fired, and the reading is a sweep of 2026-08-22

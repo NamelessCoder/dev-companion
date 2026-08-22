@@ -10,6 +10,14 @@
          beStrictAboutOutputDuringTests="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerErrors="true">
+    <!--
+        A failing test names the decisions it holds, so a session that made it
+        red is sent to the entry rather than left to make it green — the
+        docblock carries the id and a failure does not print docblocks.
+    -->
+    <extensions>
+        <bootstrap class="TYPO3\DevCompanion\Tests\Support\HeldDecisions"/>
+    </extensions>
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>

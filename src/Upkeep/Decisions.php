@@ -212,7 +212,7 @@ final class Decisions
             $tests = array_unique($matches[1]);
             $silent = array_filter(
                 $tests,
-                static fn(string $test): bool => !str_contains(Sources::saidAbove($test), $decision['id']),
+                static fn(string $test): bool => !str_contains(Sources::saidAt($test), $decision['id']),
             );
             if ($silent === []) {
                 continue;

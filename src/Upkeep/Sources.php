@@ -48,14 +48,21 @@ final class Sources
     }
 
     /**
-     * What stands above a test method: its own docblock, or the file where the
-     * entry names a whole class.
+     * What a test method says: its docblock and its body, or the whole file
+     * where the entry names a class rather than a member.
      *
      * Found by walking back from the declaration rather than by splitting the
      * file on an indented `/**`, which is what a run of `composer cgl` moves.
      * A reading that changes with the formatter is a reading nobody can quote.
+     *
+     * The body is in it because that is where this corpus writes half its
+     * reasons: 38 of the 346 names a docblock-only reading called silent on
+     * 2026-08-22 carry the id in a comment beside the assertion it explains,
+     * and a docblock repeating it is the second copy `AGENTS.md` sends to the
+     * id instead. The member ends at the first `}` in the column a method
+     * closes in, which nothing nested reaches.
      */
-    public static function saidAbove(string $test): string
+    public static function saidAt(string $test): string
     {
         [$class, $method] = array_pad(explode('::', $test), 2, '');
         $file = self::files()[$class] ?? null;
@@ -74,8 +81,13 @@ final class Sources
         }
 
         $opens = strrpos(substr($code, 0, $at), '/**');
+        if ($opens === false) {
+            return '';
+        }
 
-        return $opens === false ? '' : substr($code, $opens, $at - $opens);
+        $ends = strpos($code, "\n    }\n", $at);
+
+        return substr($code, $opens, ($ends === false ? strlen($code) : $ends) - $opens);
     }
 
     /**

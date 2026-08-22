@@ -92,3 +92,16 @@ It is reported as the second degree of the same coupling rather than as a
 reading of its own, and nothing fails on it: **Covered by** has never asked for
 the return naming, so the corpus was written under the older rule. The six
 entries of 2026-08-22 were the newest instance and are corrected.
+
+## Since then
+
+The proxy read the docblock alone, and this corpus writes half its reasons in
+the body. Of the 346 names it called silent on 2026-08-22, 38 carry the entry's
+id in a comment beside the assertion it explains — the naming a session standing
+in the test already gets, and the one a docblock repeating it would say twice.
+`Sources::saidAt()` is that reading now: the docblock and the member, ending at
+the first `}` in the column a method closes in.
+
+What that does not license is reading the count down. The reading was widened to
+what the naming is for rather than to make the number smaller, and the 308 names
+left are the work the todo carries.

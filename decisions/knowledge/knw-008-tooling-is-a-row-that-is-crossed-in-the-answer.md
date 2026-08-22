@@ -71,9 +71,8 @@ was asked is whether it should become a dimension crossing the audience one.
 
 ## Wrong if
 
-- ~~A cell is added that no answer routes to, so a caller reaches it only by
-  guessing its words — the failure `hints:probe` exists to make visible.~~ Fired
-  on 2026-08-22 on three cells added since, see the reading below.
+- A cell is added that no answer routes to, so a caller reaches it only by
+  guessing its words — the failure `hints:probe` exists to make visible.
 - Two cells of the row start disagreeing about the same fact for the same
   audience, which is what a single stored dimension would have prevented and six
   places cannot.
@@ -87,23 +86,24 @@ was asked is whether it should become a dimension crossing the audience one.
 
 ## Since then
 
-The ranking miss this entry queued is fixed and the first **Wrong if** fired.
-Re-run on 2026-08-22, "Set up tests for our site package extension" returns
-`project-extension-tests` first, where it came back with `sitepackage-layout`
-and `sitepackage-initial-content` when this was written.
+The ranking miss this entry queued is fixed. Re-run on 2026-08-22, "Set up tests
+for our site package extension" returns `project-extension-tests` first, where
+it came back with `sitepackage-layout` and `sitepackage-initial-content` when
+this was written.
 
-The row is fourteen cells now rather than six, and three of them are named by
-nothing outside their own hint file: `extension-test-extensions`,
-`extension-test-site` and `extension-repository-tests`. All three are extension
-scope and all three sit beside `project-extension-tests`, which is named from
-seven places. A probe reaches each of them third, on text alone, which is
-exactly the state the **Wrong if** describes — a caller finds them by writing
-the right words rather than by being sent.
+The row is fourteen cells now rather than six, and every one of them is routed
+to. This section first said three were not — `extension-test-extensions`,
+`extension-test-site` and `extension-repository-tests` — and the sweep behind
+that had excluded `knowledge/hints/`, which is the one place a hint routes to
+another hint. Read again the same day: `project-extension-tests` closes on *what
+a functional test then needs from the installation around it is three more
+questions*, naming the first two and `extension-test-frontend-request`, and
+`extension-repository-layout` names the third where it stops at what a
+repository commits.
 
-What that asks for is the routing sentence the second **Decided** bullet makes a
-condition of a new cell, and it is the todo this leaves. Nothing is written
-here: which cell names which is a reading of what each one answers, and this run
-read the ids rather than the statements.
+So the first **Wrong if** has not fired, and the crossing is reached rather than
+only written: a caller asking which extensions a functional test loads gets
+`project-extension-tests` first, and that sentence is its last.
 
 The second **Wrong if** is unread. Whether two cells disagree about the same
 fact for the same audience is a comparison of fourteen bodies, and the sweep

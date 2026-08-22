@@ -80,11 +80,7 @@ final class Sources
             return '';
         }
 
-        $opens = strrpos(substr($code, 0, $at), '/**');
-        if ($opens === false) {
-            return '';
-        }
-
+        $opens = self::whereTheRunAboveStarts(substr($code, 0, $at));
         $ends = strpos($code, "\n    }\n", $at);
 
         return substr($code, $opens, ($ends === false ? strlen($code) : $ends) - $opens);
@@ -98,6 +94,29 @@ final class Sources
     public static function files(): array
     {
         return self::read()[2];
+    }
+
+    /**
+     * Where the run of comments and attributes above a declaration begins.
+     *
+     * The last `/**` is not it: a method carrying both a prose docblock and a
+     * `/** @param ... *\/` line has its reason in the first of the two, and a
+     * reading that starts at the second says the entry is unnamed while the
+     * name is two lines above.
+     */
+    private static function whereTheRunAboveStarts(string $head): int
+    {
+        $lines = explode("\n", $head);
+        $opens = strlen($head) - strlen($lines[count($lines) - 1]);
+        for ($index = count($lines) - 2; $index >= 0; $index--) {
+            $line = trim($lines[$index]);
+            if ($line !== '' && !str_starts_with($line, '#[') && !str_starts_with($line, '*') && !str_starts_with($line, '/*') && !str_starts_with($line, '//')) {
+                break;
+            }
+            $opens -= strlen($lines[$index]) + 1;
+        }
+
+        return $opens;
     }
 
     /**

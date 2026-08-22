@@ -57,24 +57,10 @@ used the console six, and was right to.
 - The `env` map is built and the six-run shape does not recur. Then this was one
   audit's convenience.
 
-**Since then**, on 2026-08-04, the maintainer answered the half this entry put
-up: no `env` map. What the tool reports is the running instance and what is in
-it, and a value that only exists under another environment is not a
-configuration this server has been asked about.
-
 So the description states that positively rather than as a limitation, and the
 console keeps the conditional half because it is the project's own. The second
 **Wrong if** above is settled with it: the shape does not have to recur for the
 map to be wrong, since what it would answer is not what this lookup is for.
-
-**Since then**, on 2026-08-18, the source was read against the covered lines and
-it answered on two of the four. `configuration:show` arrived in TYPO3 14.2 with
-`Feature-108815-CLICommandsForSystemConfiguration`; `.checkouts/12.4` and
-`.checkouts/13.4` have no such command, so both LTS lines were handed the
-console's own "command is not defined" as `unsupported`. That is the answer
-`D-ANS-077` rules out in as many words, and its reading is the one this follows:
-the booted container answers instead, on every covered line, and the tool has
-one source rather than a version-bound pair of them.
 
 What the modules did not have to decide is the payload. The whole of
 `TYPO3_CONF_VARS` is 49,676 bytes of JSON on 13.4 and 54,793 on 14.3 — the
@@ -87,3 +73,21 @@ so the value is the same one either way.
 
 **Wrong if** a caller needs two paths in one session often enough that a boot
 per path costs more than carrying the whole of it once would.
+
+## Since then
+
+, on 2026-08-04, the maintainer answered the half this entry put up: no `env`
+map. What the tool reports is the running instance and what is in it, and a
+value that only exists under another environment is not a configuration this
+server has been asked about.
+
+## Since then
+
+, on 2026-08-18, the source was read against the covered lines and it answered
+on two of the four. `configuration:show` arrived in TYPO3 14.2 with
+`Feature-108815-CLICommandsForSystemConfiguration`; `.checkouts/12.4` and
+`.checkouts/13.4` have no such command, so both LTS lines were handed the
+console's own "command is not defined" as `unsupported`. That is the answer
+`D-ANS-077` rules out in as many words, and its reading is the one this follows:
+the booted container answers instead, on every covered line, and the tool has
+one source rather than a version-bound pair of them.

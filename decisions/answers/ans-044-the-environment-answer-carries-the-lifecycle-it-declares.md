@@ -6,9 +6,9 @@ status: open
 
 # D-ANS-044 — The environment answer carries the lifecycle it declares, beside the interpreter it runs
 
-**`typo3_project_describe` says what its declared environment runs commands on and
-nothing of what that environment runs by itself, so `feedback/2026-08-03-154501`
-is queued as
+**`typo3_project_describe` says what its declared environment runs commands on
+and nothing of what that environment runs by itself, so
+`feedback/2026-08-03-154501` is queued as
 [`R-PRJ-009`](../../requirements/project/prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md).**
 
 What is missing is the shape rather than the knowledge.

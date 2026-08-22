@@ -76,11 +76,6 @@ it.
 - Forge 109572 is fixed in a way that changes the storage rule, which would date
   the statement before it is written.
 
-**Since then**, on 2026-08-07, the reading was done against `.checkouts/` at
-12.4, 13.4, 14.3 and `main`, and `tca-datetime-storage` is what came of it. All
-four places the feedback named hold, and two things it did not know are now part
-of the statement.
-
 The first is a version boundary. `DateTimeFactory` and `DateTimeFieldType`
 arrived in 13 and are absent from 12.4 — but `DateTimeFieldType::isNullable()`
 arrived a major later still, in 14, with
@@ -104,3 +99,10 @@ different phrasings, reaches nothing about `QueryInterface` constraints against
 null. Best coverage 0.344, on the Doctrine `QueryBuilder` page and a TypoScript
 data processor. So `feedback/2026-08-07-065342` is a corpus gap and not a
 routing failure, which is what this entry's first **Wrong if** was watching for.
+
+## Since then
+
+, on 2026-08-07, the reading was done against `.checkouts/` at 12.4, 13.4, 14.3
+and `main`, and `tca-datetime-storage` is what came of it. All four places the
+feedback named hold, and two things it did not know are now part of the
+statement.

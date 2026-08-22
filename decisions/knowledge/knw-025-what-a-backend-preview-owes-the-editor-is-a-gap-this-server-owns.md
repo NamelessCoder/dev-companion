@@ -19,8 +19,8 @@ of one element apart by.
 ## Evidence
 
 - The miss reproduces. Called over stdio with the feedback's own query as `task`
-  and `targetVersion: "14"`, `typo3_hint_lookup` returns no hint at all
-  and lists the 40 ids instead. `bin/cli hints:probe` on the same query reaches
+  and `targetVersion: "14"`, `typo3_hint_lookup` returns no hint at all and
+  lists the 40 ids instead. `bin/cli hints:probe` on the same query reaches
   nothing from the same candidates.
 - Spelled the way the corpus spells it, the subject is reached and still silent.
   `task: "backend preview template for a content element"` returns

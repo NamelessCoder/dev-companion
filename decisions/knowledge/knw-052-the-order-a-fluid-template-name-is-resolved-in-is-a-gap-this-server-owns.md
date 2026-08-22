@@ -100,8 +100,8 @@ resolver out of a vendor tree.
   here, is it deprecated, docblock or attribute. Its card carries it and it is
   not folded in here: a different question with a different answer, and neither
   one would have told this session which of two files renders.
-- Whether `typo3_extension_describe` should say that a Fluid root was read off the
-  directory rather than off a declaration is already queued as
+- Whether `typo3_extension_describe` should say that a Fluid root was read off
+  the directory rather than off a declaration is already queued as
   `todo/say-that-the-fluid-roots-were-read-off-the-directory`, from the same
   audit. It is the provenance of the roots and this is the order they are walked
   in; neither answers the other.

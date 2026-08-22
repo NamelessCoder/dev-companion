@@ -45,8 +45,8 @@ clients handle it. `REVIEW-01` ran in `E-SITE` and `REVIEW-02` in `E-EXT`, and
 every feedback since `8152bf6` came from a directory whose installation was
 reachable. The shape never appeared, so nothing had the chance to misread it.
 The nearest thing the corpus holds is a note of 2026-07-31 asking that absences
-keep being answered explicitly. That one is `typo3_extension_describe` reporting a
-real miss, not an unanswerable one. The server still answers as this entry
+keep being answered explicitly. That one is `typo3_extension_describe` reporting
+a real miss, not an unanswerable one. The server still answers as this entry
 decided. Driven over stdio from an empty directory today, `typo3_icon_lookup`
 returns `answeredBy: "nothing"` with the `unavailable` object beside it, and
 `typo3_configuration_lookup` returns `found: null`. What would settle the
@@ -65,8 +65,8 @@ identical to the miss it emits against a reachable installation, with
 and said why; nothing carried that reasoning to the counts and the booleans, so
 `typo3_configuration_lookup` was the only tool of eight it ever reached.
 
-`typo3_extension_describe` failed the other way round, and the line above about it
-reporting a real miss is what missed it: the answer is a real miss and it is
+`typo3_extension_describe` failed the other way round, and the line above about
+it reporting a real miss is what missed it: the answer is a real miss and it is
 labelled `answeredBy: "nothing"`, against an installation that had just listed
 27 packages, with no `unavailable` object beside it — which the schema says is
 present exactly then. A correct negative wearing the unanswerable shape is the

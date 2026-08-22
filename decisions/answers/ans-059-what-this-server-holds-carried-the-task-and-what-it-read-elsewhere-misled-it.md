@@ -76,18 +76,6 @@ repository does not own.
 - Somebody drops one of the named strengths and the next session reports the
   cost the note was carrying.
 
-**Since then**, on 2026-08-05, the next debrief landed the same way, which the
-first **Assumed** said this could not promise. `feedback/2026-08-05-221232` and
-`feedback/2026-08-05-221256` come from a later triage session in the same
-checkout and name only computed answers as load-bearing: the refusal
-`typo3_configuration_lookup` gives while DDEV is stopped, carrying the cause,
-the directory and the command that fixes it; the `entered: false` of
-`typo3_project_describe`, which is why a coding-guideline failure printed by the
-host interpreter was read as an environment artifact rather than as a finding;
-the same `typo3_test_run_guide` line the first debrief named; and
-`typo3_changelog_lookup` reaching `Breaking-81460` from the bare identifier
-`getByTag`, which turned an empty grep into a named mechanism (`D-ANS-042`).
-
 One of them cuts across the split rather than along it. `typo3_forge_lookup` is
 the tool behind three of the four costs above, and this session names it as a
 strength: `total: 39` beside a 25-row page is what stopped it triaging a page as
@@ -102,3 +90,17 @@ calls a template is `R-ANS-001`, already held over every installation-backed
 tool by `ToolContractTest`. The cost this session did report is
 `feedback/2026-08-05-221104`, the raw form data group, which is on the
 installation side rather than the network one and was closed by `e917c17`.
+
+## Since then
+
+, on 2026-08-05, the next debrief landed the same way, which the first
+**Assumed** said this could not promise. `feedback/2026-08-05-221232` and
+`feedback/2026-08-05-221256` come from a later triage session in the same
+checkout and name only computed answers as load-bearing: the refusal
+`typo3_configuration_lookup` gives while DDEV is stopped, carrying the cause,
+the directory and the command that fixes it; the `entered: false` of
+`typo3_project_describe`, which is why a coding-guideline failure printed by the
+host interpreter was read as an environment artifact rather than as a finding;
+the same `typo3_test_run_guide` line the first debrief named; and
+`typo3_changelog_lookup` reaching `Breaking-81460` from the bare identifier
+`getByTag`, which turned an empty grep into a named mechanism (`D-ANS-042`).

@@ -18,7 +18,7 @@ one is added.
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
-- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29 · confirmed
+- [`D-SCO-006`][D-SCO-006] — Every surface says who this server answers for · 2026-07-29 · confirmed
 
 [D-SCO-013]: sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
 [D-SCO-014]: sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it.md
@@ -30,7 +30,7 @@ one is added.
 [D-SCO-002]: sco-002-a-core-only-intent-asks-for-evidence-not-for-silence.md
 [D-SCO-003]: sco-003-what-is-core-only-is-decided-per-line-by-what-it-names.md
 [D-SCO-005]: sco-005-the-installation-is-evidence-about-the-task-and-the-weakest-kind.md
-[D-SCO-006]: sco-006-why-project-work-is-out-of-scope-kept-coming-back.md
+[D-SCO-006]: sco-006-every-surface-says-who-this-server-answers-for.md
 
 ### Revoked, and kept as the record
 

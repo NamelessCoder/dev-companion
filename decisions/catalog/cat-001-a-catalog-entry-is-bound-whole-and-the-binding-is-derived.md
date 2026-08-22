@@ -16,23 +16,6 @@ The architecture hints bind one statement at a time. A component entry has no
 statements: it is markup, a class list and a custom-property contract that were
 read off one revision together, and a caller pastes them together.
 
-
-- **Since then** the first half of **Wrong if** is closed by the command that
-  derives the binding. Each entry records in `markupDigests` what its demo said
-  on every covered checkout that has one, and `bin/cli catalog:check` re-reads
-  them: the styleguide examples carrying the component, or the whole file where
-  a demo wraps none — `Panels.fluid.html` and `RecordSearchBox.fluid.html` are
-  pages about one component rather than galleries. A demo rewritten around
-  identical class names passes the binding and fails the digest, which is the
-  case this could not see. Nothing is written by the check, because the new
-  digest is only true once somebody has reread the entry against that demo.
-  Seven demos render the component through a ViewHelper and name it nowhere, and
-  three entries name no demo at all: for those ten the digest holds the demo
-  rather than the markup, and the command counts them so the number stays
-  visible. The second half is untouched — no entry has a hole today, and
-  `derivedSince()` answers such a range with its newest unbroken run rather than
-  with nothing.
-
 ## Evidence
 
 - Run against 12.4, 13.4, 14.3 and main. 22 of 25 entries bind: 13 from v13,
@@ -68,6 +51,23 @@ read off one revision together, and a caller pastes them together.
   names, not structure, and would call that unchanged. Also a range with a hole
   in it, which `derivedSince()` reports as no binding at all, on the grounds
   that such an entry needs splitting rather than a number.
+
+## Since then
+
+The first half of **Wrong if** is closed by the command that derives the
+binding. Each entry records in `markupDigests` what its demo said on every
+covered checkout that has one, and `bin/cli catalog:check` re-reads them: the
+styleguide examples carrying the component, or the whole file where a demo wraps
+none — `Panels.fluid.html` and `RecordSearchBox.fluid.html` are pages about one
+component rather than galleries. A demo rewritten around identical class names
+passes the binding and fails the digest, which is the case this could not see.
+Nothing is written by the check, because the new digest is only true once
+somebody has reread the entry against that demo. Seven demos render the
+component through a ViewHelper and name it nowhere, and three entries name no
+demo at all: for those ten the digest holds the demo rather than the markup, and
+the command counts them so the number stays visible. The second half is
+untouched — no entry has a hole today, and `derivedSince()` answers such a range
+with its newest unbroken run rather than with nothing.
 
 ## Since then
 

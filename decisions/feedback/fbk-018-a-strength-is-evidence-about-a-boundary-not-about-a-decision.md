@@ -28,13 +28,13 @@ other side: what is the strength evidence of?
   the 14.0 deprecation of the moved interfaces (#106947), `addPiFlexFormValue`
   reaches its 14.0 deprecation (#107047), and all three `.rst` files are in
   `.checkouts/main`.
-- Two of its claims are looser than the answer. `typo3_project_describe` classifies
-  six of ten declared commands as `check` or `change` and three as `unknown` —
-  the phpunit suites, which the answer's own prose says it will not classify —
-  rather than "every repo command"; and the platform reality it credits to that
-  tool comes from `typo3_extension_describe`, whose footer reports that the
-  installation was not asked because the host runs PHP 8.3.23 against a
-  `>= 8.4.0` requirement.
+- Two of its claims are looser than the answer. `typo3_project_describe`
+  classifies six of ten declared commands as `check` or `change` and three as
+  `unknown` — the phpunit suites, which the answer's own prose says it will not
+  classify — rather than "every repo command"; and the platform reality it
+  credits to that tool comes from `typo3_extension_describe`, whose footer
+  reports that the installation was not asked because the host runs PHP 8.3.23
+  against a `>= 8.4.0` requirement.
 - Nothing here can say which `base.md` that session read. Both installed copies
   of the skill in that repository were rewritten after the report — `.claude/`
   at 18:01 and `.agents/` at 20:04 against a 17:45 feedback — and the step 5
@@ -84,10 +84,10 @@ other side: what is the strength evidence of?
   point at afterwards. This entry and its commit are the whole record; if
   neither is cited again, the run was a cost with no return.
 - The line a strength's praise implies turns out not to be worth saying —
-  `typo3_extension_describe` naming a missing translation on every extension that
-  ships none costs more than it buys. Reading what the praise implies would then
-  be right about the asymmetry and wrong about it mattering, and `R-PRJ-006` is
-  what would need the sentence instead.
+  `typo3_extension_describe` naming a missing translation on every extension
+  that ships none costs more than it buys. Reading what the praise implies would
+  then be right about the asymmetry and wrong about it mattering, and
+  `R-PRJ-006` is what would need the sentence instead.
 - A strength is found whose praise implies a property the answer does not have,
   and checking its quotations reaches that property anyway. The step added below
   — read what the praise implies, not only what it quotes — would then be one
@@ -160,18 +160,18 @@ version. `R-PRJ-005` states the first half as what is answered; neither it nor
 The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-dev-companion`
 from that directory: `typo3_project_describe` answers TYPO3 14.3.5, the project
 extension, `main at https://site-new.ddev.site/` with set `bk2k/printworks`, and
-six declared commands; `typo3_extension_describe` answers seven content elements of
-which five carry a `templateName` and two do not, three icons, and three XLF
+six declared commands; `typo3_extension_describe` answers seven content elements
+of which five carry a `templateName` and two do not, three icons, and three XLF
 files declaring `source-language de`; `typo3_changelog_lookup` with
 `type=deprecation, version=14, limit=30` answers 75 entries and shows 30, with
 the `FullyScanned` and `PartiallyScanned` tags on them. The extension has grown
 two tables since the report, and the answer is now read off a booted
 installation, so it says more than it did rather than less.
 
-So does the lever behind the *wrong path avoided*. `typo3_hint_lookup`
-with the task *content element with inline children* returns **Registering a
-Content Element**, whose hints say that a plugin is a CType like any other and
-that the list_type detour is gone at v14, and that the rendering definition is
+So does the lever behind the *wrong path avoided*. `typo3_hint_lookup` with the
+task *content element with inline children* returns **Registering a Content
+Element**, whose hints say that a plugin is a CType like any other and that the
+list_type detour is gone at v14, and that the rendering definition is
 `tt_content.<CType>` on top of `lib.contentElement`. The task *Extbase plugin
 registration and cHash* returns **Extbase Plugins**, **Registering a Content
 Element** and **Records in the Frontend Without Extbase**. `site-sets` and
@@ -227,8 +227,8 @@ entry rather than as one account continued.
 
 The reading held a fourth time, and this is the first strength whose quotation
 could be checked against the file it credits. `2026-07-31-194823` comes from the
-debrief of the section above, two seconds before the `typo3_extension_describe` one
-and in the same project. It reports that `typo3_hint_lookup` said only
+debrief of the section above, two seconds before the `typo3_extension_describe`
+one and in the same project. It reports that `typo3_hint_lookup` said only
 `rootPageId` is remapped when a shipped site configuration is imported, and that
 other uid references are not. The session credits that with turning a wrong
 finding into the right one, about a hardcoded `t3://page?uid=2` error target.
@@ -245,9 +245,9 @@ The quotation is evidence about a file, and the file holds it.
 import "remaps the root page id to the page that was actually imported, and
 nothing else", with an error handler naming `t3://page?uid=...` as the example
 that ships stale. Re-run on 2026-08-02 through `bin/typo3-dev-companion` from
-`/home/benji/projects/site-new`: `typo3_hint_lookup` with the task the
-feedback names returns *Shipping Initial Content with an Extension* whole,
-answered for TYPO3 v14. The core confirms the statement.
+`/home/benji/projects/site-new`: `typo3_hint_lookup` with the task the feedback
+names returns *Shipping Initial Content with an Extension* whole, answered for
+TYPO3 v14. The core confirms the statement.
 `ImportSiteConfigurationsOnPackageInitialization` loads the configuration,
 assigns `$configuration['rootPageId']` and writes it back, and touches no other
 key. The file is byte-identical in `.checkouts/14.3` and `.checkouts/main`.
@@ -534,12 +534,12 @@ The feedback is closed by this commit and nothing is queued.
 
 The first **Wrong if** fired again, and this time the lever is a clause the
 strength appends to its own praise. `feedback/2026-08-01-115115` credits
-`typo3_project_describe`, `typo3_rule_lookup` and `typo3_commit_message_guide` from
-a core patch review in `/home/benji/projects/typo3-cms`, asks that all three
-stay as they are, and ends: *the compound rule_lookup queries failed but the
-single-term ones worked*. That names no workaround and quotes no file, so it is
-neither of the two shapes above — it is the report's own qualification of what
-it is praising, and it is the only sentence in the file nothing else in its
+`typo3_project_describe`, `typo3_rule_lookup` and `typo3_commit_message_guide`
+from a core patch review in `/home/benji/projects/typo3-cms`, asks that all
+three stay as they are, and ends: *the compound rule_lookup queries failed but
+the single-term ones worked*. That names no workaround and quotes no file, so it
+is neither of the two shapes above — it is the report's own qualification of
+what it is praising, and it is the only sentence in the file nothing else in its
 session states.
 
 The **Since then** holds: the quotations were checked before the boundary was,
@@ -652,9 +652,9 @@ The first **Wrong if** fired again, in a shape none of the readings above
 carries: the lever is a **request for something the answer already does**.
 `feedback/2026-08-03-164818` reports a conformance audit of `EXT:guidedtour` in
 `/home/benji/projects/ext-guidedtour` and credits three answers, then asks that
-`typo3_extension_describe`'s `deprecatedFiles` be extended to the other file-level
-predicates an extension can trip — naming `ext_tables.php`, `#109438`, which the
-same call has checked since `a886a2d`.
+`typo3_extension_describe`'s `deprecatedFiles` be extended to the other
+file-level predicates an extension can trip — naming `ext_tables.php`,
+`#109438`, which the same call has checked since `a886a2d`.
 
 The quotations are checked before the boundary is, re-run on 2026-08-03 through
 this package from that directory:

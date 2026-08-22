@@ -54,6 +54,15 @@ whether the check has to fail until an entry is queued.
   rule, and the shape to reach for is the one rejected here:
   `bin/cli requirements:check` fails while an `open` entry is unqueued.
 
+## Since then
+
+The command was renamed. What this entry calls the backlog is read out by
+`bin/cli unresolved:list` from 2026-08-04, and the word itself was retired
+because it named three different sets at once —
+[`D-FBK-041`](fbk-041-what-nothing-answers-for-is-called-unresolved.md). What
+was decided here is untouched: the reading still reports and still fails
+nothing.
+
 ## Confirmed on 2026-08-02
 
 Neither half of the **Wrong if**. No id is reported with `no todo names it` at
@@ -69,10 +78,3 @@ came back `tested` rather than `corrected`, so the entries were standing because
 they were still true, and the summary was not hiding a queue. Four is a day
 rather than a trend, and the oldest standing entry is still older than this
 reading.
-
-**Since then** the command was renamed. What this entry calls the backlog is
-read out by `bin/cli unresolved:list` from 2026-08-04, and the word itself was
-retired because it named three different sets at once —
-[`D-FBK-041`](fbk-041-what-nothing-answers-for-is-called-unresolved.md). What
-was decided here is untouched: the reading still reports and still fails
-nothing.

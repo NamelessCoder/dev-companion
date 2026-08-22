@@ -34,16 +34,16 @@ files. What is actually missing is a statement in `knowledge/`.
   `feedback/2026-08-01-114807` was filed two minutes and forty-one seconds
   later, same model and same directory, and its suggestion reads "Consider
   adding `processingTaskTypes` and `SYS.fal.processors` to the
-  `typo3_project_describe` output". Its transcript names the seven files it opened
-  instead — `GraphicalFunctions`, `LocalImageProcessor`, `SvgImageProcessor`,
-  `ThumbnailViewHelper`, `PreviewNotAvailable.svg`,
+  `typo3_project_describe` output". Its transcript names the seven files it
+  opened instead — `GraphicalFunctions`, `LocalImageProcessor`,
+  `SvgImageProcessor`, `ThumbnailViewHelper`, `PreviewNotAvailable.svg`,
   `DeferredBackendImageProcessor` and `PreviewProcessing` — over about ten
   `read_file` calls. That feedback has a card of its own, in hand elsewhere.
 - The value is not a project fact, and no manifest declares it. Both keys live
   under `TYPO3_CONF_VARS`, assembled from `DefaultConfiguration.php` and every
-  extension's `ext_localconf.php`. `typo3_project_describe` reads `composer.json`,
-  `package.json`, `config/sites/` and `.ddev/config.yaml`, and its own
-  description says it reads files only, so it answers on a fresh clone.
+  extension's `ext_localconf.php`. `typo3_project_describe` reads
+  `composer.json`, `package.json`, `config/sites/` and `.ddev/config.yaml`, and
+  its own description says it reads files only, so it answers on a fresh clone.
 - It is also a constant of the core. Both keys are identical on
   `.checkouts/12.4`, `13.4`, `14.3` and `main`: four processors —
   `SvgImageProcessor`, `DeferredBackendImageProcessor`, the OnlineMedia

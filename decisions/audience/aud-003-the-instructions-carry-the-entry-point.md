@@ -60,14 +60,14 @@ that one fix would have been the wrong fix.
 The second `REVIEW-01` run did not reach for Bash alone. It ran against
 `b85036b`, the commit that wrote this entry and applied it. The skill activated
 as the session's first action, `typo3_project_describe` was the second call, and
-`typo3_extension_describe` followed. Both channels this entry changed carried, so
-the wording was part of the obstacle after all. What the run did not do is
+`typo3_extension_describe` followed. Both channels this entry changed carried,
+so the wording was part of the obstacle after all. What the run did not do is
 follow the skill past step 2. Thirty-eight of its 45 calls were still Bash, and
-`typo3_task_guide`, `typo3_hint_lookup` and `typo3_documentation_lookup`
-were loaded through `ToolSearch` and never called. That is the order rather than
-the entry point, and `D-SKL-001` owns it. The second suspicion falls with the
-first: run 4 called eight tools fifteen times and was judged `covered`, and the
-two findings three runs had missed came from those calls. A repository review
+`typo3_task_guide`, `typo3_hint_lookup` and `typo3_documentation_lookup` were
+loaded through `ToolSearch` and never called. That is the order rather than the
+entry point, and `D-SKL-001` owns it. The second suspicion falls with the first:
+run 4 called eight tools fifteen times and was judged `covered`, and the two
+findings three runs had missed came from those calls. A repository review
 therefore needs more of this server than the version, the registries and the
 component contract. The run stands in commit `021eac8`, the two runs after it
 having overwritten the file.
@@ -80,10 +80,10 @@ element and called nothing — no tool, no skill, the work done by reading vendo
 code
 (`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
 It ran on 2026-08-01, a day after `b85036b` put `typo3_project_describe` — then
-spelled `typo3_project_scope` — at the head of the `instructions`, so the entry point this entry added was in the text
-and did not fire. That is not the **Wrong if**: it was a different client and a
-much smaller model — `opencode` with `deepseek-v4-flash-free` — and neither has
-been measured here.
+spelled `typo3_project_scope` — at the head of the `instructions`, so the entry
+point this entry added was in the text and did not fire. That is not the **Wrong
+if**: it was a different client and a much smaller model — `opencode` with
+`deepseek-v4-flash-free` — and neither has been measured here.
 
 What the sighting adds is a cause this entry did not name. The skill
 descriptions arrived in full, as they did for `REVIEW-01`, and

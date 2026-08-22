@@ -30,10 +30,10 @@ asks what applies to each. Read against `Scope`, the question was which half of
   can tell which path contributed which marker, so no caller of the flag could
   draw the distinction even if it wanted to. `D-SCO-003` already draws the
   payload distinction per line; the audience it draws it from is per call.
-- Of the four call sites, two can receive two paths at all —
-  `typo3_hint_lookup` and `typo3_test_run_guide` take a `paths` array.
-  `typo3_task_guide` takes one `area` string, so the prompt `META-03` is written
-  in cannot be put to it in the first place.
+- Of the four call sites, two can receive two paths at all — `typo3_hint_lookup`
+  and `typo3_test_run_guide` take a `paths` array. `typo3_task_guide` takes one
+  `area` string, so the prompt `META-03` is written in cannot be put to it in
+  the first place.
 
 ## Decided
 

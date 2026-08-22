@@ -48,10 +48,11 @@ line beside four files nothing is wrong with, and says nothing about either.
 
 ## Decided
 
-- Queued rather than closed on the spot. The lever is `typo3_extension_describe`,
-  so the change touches `src/` and a declared `outputSchema`, and establishing
-  the predicates needed the checkouts — both of the two things
-  `documentation/records/judging.rst` puts on the far side of that line.
+- Queued rather than closed on the spot. The lever is
+  `typo3_extension_describe`, so the change touches `src/` and a declared
+  `outputSchema`, and establishing the predicates needed the checkouts — both of
+  the two things `documentation/records/judging.rst` puts on the far side of
+  that line.
 - Step 2 for the `ext_emconf.php` half: the rule is here, complete and bound,
   and the answer naming the file does not carry it. Step 1a then step 2 for the
   `ext_tables.php` half, since the statement it would deliver does not exist.
@@ -113,8 +114,8 @@ during bootstrap, so a registration left there is lost without a report. The
 migration targets in the statement are the four the deprecation changelog names.
 
 What stays open is the delivery half for both files — what
-`typo3_extension_describe` says about the two it already lists — and the feedback
-is archived by that, not by this.
+`typo3_extension_describe` says about the two it already lists — and the
+feedback is archived by that, not by this.
 
 Step 2 is done and the open question was the shape: a field of its own, or the
 hint carried beside the answer. It is a field, `deprecatedFiles`, one entry per
@@ -167,8 +168,8 @@ it could not have derived from a file listing, for the reason the entry was
 written on: the trigger is the file being there rather than anything the
 extension calls, so no changelog search over its code reaches it. It reproduces.
 Re-run on 2026-08-03 through this package from that directory,
-`typo3_extension_describe` with `guidedtour` renders the predicate, `#108345` and
-the sentence saying a Composer installation is unaffected — verbatim, in the
+`typo3_extension_describe` with `guidedtour` renders the predicate, `#108345`
+and the sentence saying a Composer installation is unaffected — verbatim, in the
 text and in `deprecatedFiles`.
 
 The second **Wrong if** did not fire, and what arrived instead is its opposite.

@@ -59,9 +59,9 @@ cross-version testing", a package no covered line ships.
   with the vocabulary in place, the original wording still returns `docs` and no
   testing hint. Reworded to "the test suite and the supported TYPO3 versions it
   runs on", the same query resolves to `php, docs` and leads with
-  `extension-repository-layout` at `appliesTo(23)`. Through
-  `typo3_hint_lookup` with an extension's paths it returns that hint
-  first, ahead of the `scope: project` layout hint it answered with before.
+  `extension-repository-layout` at `appliesTo(23)`. Through `typo3_hint_lookup`
+  with an extension's paths it returns that hint first, ahead of the
+  `scope: project` layout hint it answered with before.
 
 ## Decided
 

@@ -18,9 +18,9 @@ already read from it.
 
 ## Evidence
 
-- The miss reproduces. `typo3_hint_lookup` with the feedback's own task
-  still answers "No architecture hint matched" and falls back to the index of 39
-  ids; `bin/cli hints:probe` on the same query reaches nothing.
+- The miss reproduces. `typo3_hint_lookup` with the feedback's own task still
+  answers "No architecture hint matched" and falls back to the index of 39 ids;
+  `bin/cli hints:probe` on the same query reaches nothing.
 - `configuration-reach`, the entry this subject belongs to, chooses a
   configuration owner by where a value may differ and never mentions the
   environment. What does match is `project-repository-layout` — "read deployment

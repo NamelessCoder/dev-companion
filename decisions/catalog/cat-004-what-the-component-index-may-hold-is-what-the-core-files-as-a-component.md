@@ -80,15 +80,6 @@ checkout instead, and said so in
   no caller would look for as a component. Then the candidate set is not the
   directory, and the rule has to name what inside it is one.
 
-**Since then**, on 2026-08-14, a second session decided against the tool before
-calling it, and a re-run says the skip cost it two hits.
-`feedback/2026-08-13-214927` reviewed a Playwright diff asserting on six backend
-selectors — `.wizard-loader`, `.form-check-type-card`, `.node-name`,
-`#tracker-details`, `[role="treeitem"]` and `.wizard-actions button` — and
-grepped `Build/Sources/TypeScript` for each of them. Its reasoning: the index
-answers what the right class to use is, and a diff asks whether the class exists
-in the element the spec drives, which is a source question.
-
 Re-run on 2026-08-14 against the bundled snapshot (TYPO3 15.0 @ `4c8b38b2dd07`,
 verified 2026-07-28), each with `targetVersion` 15.0: `wizard-loader` and
 `wizard-actions` miss, `form-check-type-card` returns `form-check`, which
@@ -113,3 +104,14 @@ Considered and not taken: routing a review of backend markup to the lookup the
 way the instructions route authoring to it. Here that would have reported one
 asserted class as a documented variant, which is worth a call and is not a
 finding.
+
+## Since then
+
+, on 2026-08-14, a second session decided against the tool before calling it,
+and a re-run says the skip cost it two hits. `feedback/2026-08-13-214927`
+reviewed a Playwright diff asserting on six backend selectors —
+`.wizard-loader`, `.form-check-type-card`, `.node-name`, `#tracker-details`,
+`[role="treeitem"]` and `.wizard-actions button` — and grepped
+`Build/Sources/TypeScript` for each of them. Its reasoning: the index answers
+what the right class to use is, and a diff asks whether the class exists in the
+element the spec drives, which is a source question.

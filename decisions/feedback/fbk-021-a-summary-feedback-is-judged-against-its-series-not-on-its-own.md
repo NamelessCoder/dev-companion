@@ -184,10 +184,10 @@ The first **Wrong if** fired on the fourth summary judged this way, and the
 mapping is what found it rather than what missed it.
 `feedback/2026-08-01-114807` is a numbered transcript of a GPT-5 mini session
 reviewing one core patch in `/home/benji/projects/typo3-cms`. Five of its halves
-map: the `typo3_project_describe` strength and the `processingTaskTypes` suggestion
-onto `114526` and `115220` from the same session, the seven classes read by hand
-onto `114526`, and an editor's `grep_search` timeout onto the boundary
-`doesNotCover` already draws. The sixth maps onto nothing.
+map: the `typo3_project_describe` strength and the `processingTaskTypes`
+suggestion onto `114526` and `115220` from the same session, the seven classes
+read by hand onto `114526`, and an editor's `grep_search` timeout onto the
+boundary `doesNotCover` already draws. The sixth maps onto nothing.
 
 That sixth is a failed test run and what the session concluded from it, and it
 is the one thing in the file no sibling states. `114526` mentions the same

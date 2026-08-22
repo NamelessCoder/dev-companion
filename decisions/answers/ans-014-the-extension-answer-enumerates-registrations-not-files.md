@@ -6,8 +6,9 @@ status: open
 
 # D-ANS-014 — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared
 
-**`typo3_extension_describe` lists what an extension registers and never the files
-it ships, and a registration belongs in that list wherever it is declared.**
+**`typo3_extension_describe` lists what an extension registers and never the
+files it ships, and a registration belongs in that list wherever it is
+declared.**
 
 A conformance audit asks for a ships section that names test files by path,
 FlexForms, form definitions, route enhancers and the Configuration
@@ -22,8 +23,8 @@ anybody chose.
   `bin/typo3-dev-companion` from this worktree, standing in
   `/home/benji/projects/site-new` — the directory it was written in, whose
   `opencode.json` and `.mcp.json` both name this repository's entrypoint.
-  `typo3_extension_describe` with `printworks_sitepackage` answers from the booted
-  installation.
+  `typo3_extension_describe` with `printworks_sitepackage` answers from the
+  booted installation.
 - The XLF half is in that answer: "Ships: manual none, readme none, tests
   Functional+Unit", then `Resources/Private/Language/backend_fields.xlf`,
   `backend_layouts.xlf` and `messages.xlf`, each with "source-language de, no
@@ -41,8 +42,8 @@ anybody chose.
   `skills/typo3-extension-conformance/SKILL.md` says a surface is in scope
   because the checklist names it and not because the file tree shows it, that
   listing the files first inverts that, and to derive the list from the
-  checklist and `typo3_extension_describe` and then let reading answer it. "I had
-  to use glob and read to discover the full file tree" is that reading.
+  checklist and `typo3_extension_describe` and then let reading answer it. "I
+  had to use glob and read to discover the full file tree" is that reading.
   `Extension::artifacts()` states the same line from this side: everything above
   it is what a caller can find more of by reading further, and the four below it
   are the ones whose absence has no file to stumble over.

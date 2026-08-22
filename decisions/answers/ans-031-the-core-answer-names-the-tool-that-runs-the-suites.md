@@ -6,8 +6,8 @@ status: open
 
 # D-ANS-031 — The core answer names the tool that runs the suites
 
-**`typo3_project_describe` tells a core checkout that the core's testing suites are
-not among its declared commands, and never that `typo3_test_run_guide` has
+**`typo3_project_describe` tells a core checkout that the core's testing suites
+are not among its declared commands, and never that `typo3_test_run_guide` has
 them.**
 
 So the orphaned half of `feedback/2026-08-01-114807` is step 2 of the ladder and
@@ -55,9 +55,9 @@ not there. It did not say where they were.
   other core check" — is in the `routing` block of
   `knowledge/server-scope.json`, which a caller sees only by calling
   `typo3_server_scope`. The `instructions` returned at initialize name two
-  tools: `typo3_project_describe` in the imperative ("Start every task with"), and
-  `typo3_task_guide` in a sentence describing what it gives. The session called
-  the first and reports that no other lookup was activated.
+  tools: `typo3_project_describe` in the imperative ("Start every task with"),
+  and `typo3_task_guide` in a sentence describing what it gives. The session
+  called the first and reports that no other lookup was activated.
 - The answer it did hold is where the question came up. Re-run on 2026-08-02
   from the same directory, `typo3_project_describe` opens "core-checkout, TYPO3
   15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", and its commands paragraph
@@ -71,9 +71,9 @@ not there. It did not say where they were.
   corpus and the routing are not what failed.
 - The strength half credits the wrong tool, which is the pattern
   [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
-  names. It reports that `typo3_project_describe` "listed processors in the default
-  configuration"; the re-run above lists no processor, and the sibling `114526`
-  makes the stronger version of the same claim.
+  names. It reports that `typo3_project_describe` "listed processors in the
+  default configuration"; the re-run above lists no processor, and the sibling
+  `114526` makes the stronger version of the same claim.
 - Nothing about TYPO3 was established here beyond two file listings in the
   checkout the feedback was written in.
 

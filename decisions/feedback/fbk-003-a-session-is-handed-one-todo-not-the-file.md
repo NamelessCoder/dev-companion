@@ -18,27 +18,6 @@ to hand an agent context it did not ask for is not zero, and the file it read
 from had grown to match: items that carried three moves each, with the move
 behind the paragraph explaining why the order is what it is.
 
-- **Since then** the first **Wrong if** has been measured and did not happen, on
-  the three sessions run in parallel on 2026-08-02. It is not a **Tested on**
-  because the entry already carries a **Corrected on**, and the status names one
-  line only — what a second **Wrong if** coming back clean is called is a gap in
-  that vocabulary, not a claim about this one. Each session opened with the
-  check it was asked for and then called `bin/cli todo:next --worktree` exactly
-  once; across 146 shell calls between them, `bin/cli todo:list` was run zero
-  times. None asked for context beyond the todo, and none recorded a
-  `**Waiting on:**`, so no session was blocked on something the one todo
-  withheld. Read from the session transcripts rather than from what the sessions
-  reported about themselves, which is what the caller-chosen session id in
-  [driving-a-session.md](../../documentation/contributing/driving-a-session.rst)
-  is for. Two things it does not settle: all three were handed a message naming
-  `todo:next --worktree` as where the work is, so they were steered to the
-  command rather than choosing it, and a worktree session is not the plain
-  `bin/cli todo:next` case this entry was written for. The third **Wrong if**
-  was measured the same day under
-  [`D-FBK-002`](fbk-002-the-order-of-the-work-is-declared-not-inferred.md): the
-  todos have not grown back into packages, and one of these sessions split a
-  second step out into its own todo rather than doing it.
-
 ## Evidence
 
 - The output on the day it was changed — 62 lines, of which the one item at the
@@ -85,6 +64,29 @@ behind the paragraph explaining why the order is what it is.
   can finish. Or the todos grow back into packages, because splitting them is a
   habit and nothing checks it: the paragraph is prose by design, and no check
   can tell one step from three.
+
+## Since then
+
+The first **Wrong if** has been measured and did not happen, on the three
+sessions run in parallel on 2026-08-02. It is not a **Tested on** because the
+entry already carries a **Corrected on**, and the status names one line only —
+what a second **Wrong if** coming back clean is called is a gap in that
+vocabulary, not a claim about this one. Each session opened with the check it
+was asked for and then called `bin/cli todo:next --worktree` exactly once;
+across 146 shell calls between them, `bin/cli todo:list` was run zero times.
+None asked for context beyond the todo, and none recorded a `**Waiting on:**`,
+so no session was blocked on something the one todo withheld. Read from the
+session transcripts rather than from what the sessions reported about
+themselves, which is what the caller-chosen session id in
+[driving-a-session.md](../../documentation/contributing/driving-a-session.rst)
+is for. Two things it does not settle: all three were handed a message naming
+`todo:next --worktree` as where the work is, so they were steered to the command
+rather than choosing it, and a worktree session is not the plain
+`bin/cli todo:next` case this entry was written for. The third **Wrong if** was
+measured the same day under
+[`D-FBK-002`](fbk-002-the-order-of-the-work-is-declared-not-inferred.md): the
+todos have not grown back into packages, and one of these sessions split a
+second step out into its own todo rather than doing it.
 
 ## Revoked on 2026-08-01
 

@@ -85,8 +85,10 @@ Read as a boundary rather than as a confirmation
 - A debrief names a computed answer as the one that misled it, which is the
   first **Wrong if** of `D-ANS-059` and would be the same event here.
 
-**Since then**, the same day, `feedback/2026-08-07-132416` is the counter-case
-inside this boundary: `typo3_gerrit_lookup` is a network reader whose answer
-misled a review, and `D-ANS-062` is what came of it. The split holds — what the
-server computes was not reported wrong in any of the three — and the network
-side has now been reported on twice more.
+## Since then
+
+, the same day, `feedback/2026-08-07-132416` is the counter-case inside this
+boundary: `typo3_gerrit_lookup` is a network reader whose answer misled a
+review, and `D-ANS-062` is what came of it. The split holds — what the server
+computes was not reported wrong in any of the three — and the network side has
+now been reported on twice more.

@@ -16,9 +16,10 @@ recording that is committed from wherever it was last run.
 ## Evidence
 
 - The `E-SITE` recording of 2026-08-02 was undone by a re-record on 2026-08-03
-  from a checkout without one. `typo3_changelog_lookup`, `typo3_extension_describe`
-  and `typo3_project_describe` went back to one answer per call, and the only thing
-  that noticed was a todo somebody wrote by hand.
+  from a checkout without one. `typo3_changelog_lookup`,
+  `typo3_extension_describe` and `typo3_project_describe` went back to one
+  answer per call, and the only thing that noticed was a todo somebody wrote by
+  hand.
 - Those three answers were invalid against the schemas their own classes
   declare: `removal`, `unlistedFlexForms` and `environment` are required and
   were in none of them. That is what a recording nothing checks does, and it is

@@ -13,9 +13,9 @@ say so.**
 `REVIEW-02` reported three things as accumulated debt that are the cost of one
 codebase serving TYPO3 13.4 and 14.3: a deprecated upgrade-wizard interface, an
 `ext_emconf.php`, and 73 suppressed deprecations. Reading the tool trace back
-showed the session was never told: `typo3_hint_lookup` filtered every
-statement to the installed major, so the rule bound `until: 13` — the one that
-says what that file is for — was removed before the answer was composed.
+showed the session was never told: `typo3_hint_lookup` filtered every statement
+to the installed major, so the rule bound `until: 13` — the one that says what
+that file is for — was removed before the answer was composed.
 
 ## Evidence
 

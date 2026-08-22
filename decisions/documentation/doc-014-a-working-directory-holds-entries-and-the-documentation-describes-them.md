@@ -56,8 +56,10 @@ again a directory away.
 - The page stops being read whole, because it now carries where an entry is
   filed and how it is written at once.
 
-**Since then** that last one fired, on 2026-08-04 and one day after this entry
-was written. Each kind now has two pages rather than one: what it is, with its
-states and what it stands on, beside where an entry goes and how it is written.
-The statement above is unaffected — both pages are documentation, and the
-working directories still hold only what a command writes into them.
+## Since then
+
+That last one fired, on 2026-08-04 and one day after this entry was written.
+Each kind now has two pages rather than one: what it is, with its states and
+what it stands on, beside where an entry goes and how it is written. The
+statement above is unaffected — both pages are documentation, and the working
+directories still hold only what a command writes into them.

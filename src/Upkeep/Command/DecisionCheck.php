@@ -93,6 +93,9 @@ final class DecisionCheck
             if (!in_array('Wrong if', $decision['fields'], true)) {
                 $problems[] = $id . ' does not say what would show it to be wrong';
             }
+            if (preg_match(Decisions::labelAsAParagraph(), (string) file_get_contents($path)) === 1) {
+                $problems[] = $id . ' opens a line with a dated label in bold, and a dated label is a section';
+            }
 
             // The status names the last dated line, not the only one: an entry
             // may be confirmed by one run and revoked by the next, and both

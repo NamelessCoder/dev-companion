@@ -16,16 +16,6 @@ neither — the environment table, the list of what is deliberately not queued. 
 command that says what to do next has to tell them apart, and the question was
 whether to declare it or derive it.
 
-
-
-**Since then** the one line became a head of several, and the three kinds became
-two: a todo that recurs carries `**Every:**` and a todo that does not is the
-queue. The file then became a directory, where the kind is what the todo sits in
-and the head carries the rest. What this entry settled survived both, which is
-the point of declaring it: each was an edit rather than a rewrite. See
-[`D-FBK-003`](fbk-003-a-session-is-handed-one-todo-not-the-file.md) and
-[`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md).
-
 ## Evidence
 
 - The file on the day the line was added. Eleven sections: three standing, six
@@ -70,6 +60,16 @@ the point of declaring it: each was an edit rather than a rewrite. See
   a heading thins out while the `Serves:` line grows, which is the same file
   becoming a fourth backlog by another route: what a session cannot start from
   is a list of ids.
+
+## Since then
+
+The one line became a head of several, and the three kinds became two: a todo
+that recurs carries `**Every:**` and a todo that does not is the queue. The file
+then became a directory, where the kind is what the todo sits in and the head
+carries the rest. What this entry settled survived both, which is the point of
+declaring it: each was an edit rather than a rewrite. See
+[`D-FBK-003`](fbk-003-a-session-is-handed-one-todo-not-the-file.md) and
+[`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md).
 
 ## Confirmed on 2026-08-02
 

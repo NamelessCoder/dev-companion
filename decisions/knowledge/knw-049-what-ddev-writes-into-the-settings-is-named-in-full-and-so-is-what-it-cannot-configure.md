@@ -108,6 +108,31 @@ the ladder, on a hint that already exists, and it is queued as
 
 - `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`
 
+## Since then
+
+, on 2026-08-04, the generated file was read in a repository of the other shape.
+`/home/benji/projects/syntax` is an extension whose own `composer.json` is the
+Composer root, with TYPO3 14.3 below `.build/vendor` and the docroot at
+`.build/public`, and DDEV writes the same `#ddev-generated`
+`config/system/additional.php` there — the file sits at the repository root,
+because `typo3/cms-composer-installers` keeps the application directory at the
+Composer root whatever the web directory is (`Plugin/Config.php:37`, and the
+warning at 222 that no other value is supported).
+
+## Since then
+
+, on 2026-08-18, a session disputed one sentence of the reading above.
+`feedback/2026-08-17-205850` reports that DDEV writes the file only once it
+recognises an installation, so the first start of a clone with no `vendor/`
+writes nothing and the site answers 1396795884 until the project is started
+again after the dependencies are installed. That is a second thing stopping the
+file being written, where this entry's confirmation found only
+`disable_settings_management`. The reading was of the writer rather than of what
+calls it, and nothing here settles which of the two is right, so the statement
+of this entry stands and
+[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
+carries the question.
+
 ## Confirmed on 2026-08-03
 
 Read in DDEV v1.25.1 itself, which is what the first and third **Wrong if**
@@ -170,29 +195,8 @@ and prints that intent's six items under their condition, the
 now reaches `project-configuration-files` at `appliesTo(47) + text(808)`,
 against the `appliesTo(32) + text(467)` this entry recorded before the rewrite.
 
-**Since then**, on 2026-08-04, the generated file was read in a repository of
-the other shape. `/home/benji/projects/syntax` is an extension whose own
-`composer.json` is the Composer root, with TYPO3 14.3 below `.build/vendor` and
-the docroot at `.build/public`, and DDEV writes the same `#ddev-generated`
-`config/system/additional.php` there — the file sits at the repository root,
-because `typo3/cms-composer-installers` keeps the application directory at the
-Composer root whatever the web directory is (`Plugin/Config.php:37`, and the
-warning at 222 that no other value is supported).
-
 So the layout does not decide whether the file appears, and a card that claimed
 it did was wrong when it was worked off.
-
-**Since then**, on 2026-08-18, a session disputed one sentence of the reading
-above. `feedback/2026-08-17-205850` reports that DDEV writes the file only once
-it recognises an installation, so the first start of a clone with no `vendor/`
-writes nothing and the site answers 1396795884 until the project is started
-again after the dependencies are installed. That is a second thing stopping the
-file being written, where this entry's confirmation found only
-`disable_settings_management`. The reading was of the writer rather than of what
-calls it, and nothing here settles which of the two is right, so the statement
-of this entry stands and
-[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
-carries the question.
 
 That entry has since been read against DDEV v1.25.1's own source and the
 reporting session was right. `disable_settings_management` is what stops the

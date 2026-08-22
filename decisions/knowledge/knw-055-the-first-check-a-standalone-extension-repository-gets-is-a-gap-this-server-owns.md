@@ -217,6 +217,26 @@ analyser and nothing else in that layer.
 
 ## Since then
 
+, on 2026-08-11, the fourth **Wrong if** fired. The measurement disproves the
+remedy it names rather than confirming it.
+
+## Since then
+
+, on 2026-08-18, the third **Wrong if** fired, in a variant it did not name.
+`feedback/2026-08-17-211157` is a session that read `corePhpConstraint: ^8.2` in
+the answer and declared `^8.3` — neither the core's floor nor the container's
+8.4, but a third number above the one it could have declared and below the only
+interpreter it ever ran. The failure the entry described is the floor being
+wrong; what it is, is the floor being unrelated to anything. So the premise
+holds — the number alone did not take — and the remedy the **Wrong if** names, a
+workflow that says where to look, is not what was decided.
+[`D-ANS-082`](../answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md)
+carries it instead: the one place that holds all three values states how they
+stand to each other, because comparing them is the work and a caller charged one
+context per call should not pay a round trip for it.
+
+## Since then
+
 The reading the corpus todo was queued for was done on 2026-08-04, out of a
 `typo3/coding-standards` v0.9.0 installed into a scratch Composer project — the
 package is in no checkout, in no environment and in no lock file here. Two of
@@ -236,9 +256,6 @@ no correction for it. What does need one is a build directory or document root
 that is neither hidden nor one of those names, and the match is case-sensitive,
 so `Vendor/` is not excluded. Measured against a fixture tree with the installed
 package, and the hint states the reading rather than the account.
-
-**Since then**, on 2026-08-11, the fourth **Wrong if** fired. The measurement
-disproves the remedy it names rather than confirming it.
 
 `feedback/2026-08-10-182451` is a session that stopped reading the index. It
 names two ids it was shown and never asked for, and counts six calls spent
@@ -274,17 +291,3 @@ then refuse. Nothing is wrong today, all 134 hints holding on 15.
 What goes up is which of the two the index becomes — ordered by the rank the
 matcher already has, or withdrawn to the miss it was built for. Both change
 `src/` and what every answer of this tool carries, so neither is made here.
-
-**Since then**, on 2026-08-18, the third **Wrong if** fired, in a variant it did
-not name. `feedback/2026-08-17-211157` is a session that read
-`corePhpConstraint: ^8.2` in the answer and declared `^8.3` — neither the core's
-floor nor the container's 8.4, but a third number above the one it could have
-declared and below the only interpreter it ever ran. The failure the entry
-described is the floor being wrong; what it is, is the floor being unrelated to
-anything. So the premise holds — the number alone did not take — and the remedy
-the **Wrong if** names, a workflow that says where to look, is not what was
-decided.
-[`D-ANS-082`](../answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md)
-carries it instead: the one place that holds all three values states how they
-stand to each other, because comparing them is the work and a caller charged one
-context per call should not pay a round trip for it.

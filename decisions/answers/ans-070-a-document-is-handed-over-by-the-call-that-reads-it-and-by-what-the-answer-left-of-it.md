@@ -92,6 +92,13 @@ named the document, the session read the name, and it searched anyway.
 
 ## Since then
 
+, on 2026-08-11, that answer came back: the second of the three, recorded as
+[`D-ANS-076`](ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md).
+A third wording was priced against it and refused, because it would have rested
+on one session's own phrasing of a line two sessions had already been handed.
+
+## Since then
+
 The answer half is built, and what it says is both: the share and the headings
 the search did not return, one line per page under the offer to read it. The
 feedback's own call now closes with *core/contribution/commit-messages — TYPO3
@@ -141,12 +148,6 @@ still did not read the page. What follows — a third attempt at the answer, a
 search that hands over the document where its matches concentrate in one, or a
 cost to accept — is with whoever maintains this repository, on the todo serving
 that feedback.
-
-**Since then**, on 2026-08-11, that answer came back: the second of the three,
-recorded as
-[`D-ANS-076`](ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md).
-A third wording was priced against it and refused, because it would have rested
-on one session's own phrasing of a line two sessions had already been handed.
 
 What this entry decided is untouched where it still applies, which is the two
 thirds of queries that reach more than one page: those are cut, and the cut says

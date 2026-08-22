@@ -15,19 +15,6 @@ declared body.
 Three recorded `REVIEW-02` runs read "do not change files" as "run nothing" and
 quoted the commands as subjects of findings instead.
 
-
-**Since then** the first **Wrong if** was gone looking for instead of waited
-for, on 2026-08-02, and the classification did carry it: a declared line was
-read as the tool in front of it, so `phpstan analyse && php-cs-fixer fix` and
-four shapes like it answered `check` while rewriting the sources. The
-**Assumed** held per tool and broke on the line — chaining is the convention in
-a `package.json`, where `tsc --noEmit && vite build` is one script. Every
-command on a line is read now, and
-`ProjectTest::aCommandThatWritesIsNeverReportedAsACheck` holds the writers to
-never getting that answer, which is what makes waiting for a run to report a
-modified checkout unnecessary. The decision stands: what was wrong was the
-reading, not that the declaration can be read.
-
 ## Evidence
 
 - The three runs — bootstrap_package at 02:55 and 08:15, syntax at 12:21 —
@@ -72,8 +59,22 @@ reading, not that the declaration can be read.
   files, in which case the runs cost time and settled nothing, and the base's
   three-way distinction was doing all the work by itself.
 
+## Since then
 
-**Since then** a review did run one of those checks and it would not start.
+The first **Wrong if** was gone looking for instead of waited for, on
+2026-08-02, and the classification did carry it: a declared line was read as the
+tool in front of it, so `phpstan analyse && php-cs-fixer fix` and four shapes
+like it answered `check` while rewriting the sources. The **Assumed** held per
+tool and broke on the line — chaining is the convention in a `package.json`,
+where `tsc --noEmit && vite build` is one script. Every command on a line is
+read now, and `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck` holds the
+writers to never getting that answer, which is what makes waiting for a run to
+report a modified checkout unnecessary. The decision stands: what was wrong was
+the reading, not that the declaration can be read.
+
+## Since then
+
+A review did run one of those checks and it would not start.
 `feedback/2026-08-18-113412` reports `composer cgl:ci` aborting in the vendor
 tree's `platform_check.php` on an interpreter a minor below what the installed
 packages require, so a command offered as safe to run never reached the code it

@@ -107,8 +107,6 @@ begun.
   Then the answering side is not the channel either, and what is left untried is
   the project's own agent instruction file, which `D-SKL-033` recorded.
 
-**Since then**
-
 Built on 2026-08-14. `GerritLookup::workflow()` is the tail, on the `change`
 form and where something came back, and
 `GerritTest::aNamedChangeIsHandedTheWorkflowsThatOwnIt` holds what it names and
@@ -129,3 +127,5 @@ twice, wrote the manuals by hand and shipped no test, and each of those three
 absences has a published skill that owns it. That is one tool and one moment
 again — the caller named the extension, asked, and is holding the object — and
 `D-SKL-053` carries the reading and the boundary.
+
+## Since then

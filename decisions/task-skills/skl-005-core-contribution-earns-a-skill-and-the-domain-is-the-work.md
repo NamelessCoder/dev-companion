@@ -20,8 +20,8 @@ since 2026-08-01, unjudged.
   and no steering, judged `partial` in `scenarios/runs/REVIEW-03.json`. Not a
   delivery failure: the transcript's attachments carry the
   `mcp_instructions_delta` in full, first sentence
-  `Start every task with typo3_project_describe`, and the `skill_listing` with all
-  seven descriptions; only the 22 tools arrived deferred, as names without
+  `Start every task with typo3_project_describe`, and the `skill_listing` with
+  all seven descriptions; only the 22 tools arrived deferred, as names without
   descriptions.
 - The nearest skill matches the shape and excludes the checkout.
   `typo3-extension-conformance` is "Review, audit, or improve a TYPO3 project,
@@ -107,16 +107,16 @@ independently. `feedback/2026-08-01-115716` states the chain that worked —
 `typo3_test_run_guide` for the exact `runTests.sh` suites, then
 `typo3_commit_message_guide` — and asks for it to be named. `2026-08-01-121847`
 reaches the same steps from the other end, by finding no entry point at all:
-`typo3_server_scope` routes "review, audit or assess" to `typo3_project_describe`,
-`typo3_task_guide` and `typo3_extension_describe`, which author changes and read
-extensions. What the order has to force is in `2026-08-01-115711` and `115525`:
-enumerate what the diff removes or renames, and require an ExtensionScanner
-matcher plus a Breaking or Deprecation `.rst` per removal, with method-level
-`@internal` waiving the `[!!!]` marker and nothing else. Two findings were
-under-stated until a user pushed back, both for want of that step.
-`2026-08-01-121852` carries the boundary the order sits on and calls it the most
-useful answer of the review: this server never reads the checkout, so the diff
-is read here and passed in.
+`typo3_server_scope` routes "review, audit or assess" to
+`typo3_project_describe`, `typo3_task_guide` and `typo3_extension_describe`,
+which author changes and read extensions. What the order has to force is in
+`2026-08-01-115711` and `115525`: enumerate what the diff removes or renames,
+and require an ExtensionScanner matcher plus a Breaking or Deprecation `.rst`
+per removal, with method-level `@internal` waiving the `[!!!]` marker and
+nothing else. Two findings were under-stated until a user pushed back, both for
+want of that step. `2026-08-01-121852` carries the boundary the order sits on
+and calls it the most useful answer of the review: this server never reads the
+checkout, so the diff is read here and passed in.
 
 The creation order is one session's whole task, filed in nineteen parts on
 2026-08-02 and explicitly offered as a skill body in `2026-08-02-145315`. It

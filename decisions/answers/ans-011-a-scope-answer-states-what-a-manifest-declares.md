@@ -6,9 +6,9 @@ status: open
 
 # D-ANS-011 — A scope answer states what a manifest declares, and the comparison is the audit's
 
-**`typo3_project_describe` and `typo3_extension_describe` each state what one manifest
-declares; comparing two of them is the audit's work, and no tool here judges
-whether they agree.**
+**`typo3_project_describe` and `typo3_extension_describe` each state what one
+manifest declares; comparing two of them is the audit's work, and no tool here
+judges whether they agree.**
 
 A conformance review reports a version mismatch, and both numbers come from
 answers this server already gives. What it does not give is the verdict that the
@@ -18,10 +18,11 @@ two disagree.
 
 - `feedback/2026-07-31-190653`, re-run on 2026-08-02 through
   `bin/typo3-dev-companion` from `/home/benji/projects/site-new`, the directory
-  it was written in. `typo3_project_describe` opens with "composer-project, TYPO3
-  14.3.5, PHP ^8.4". `typo3_extension_describe` with `printworks_sitepackage`
-  carries "Requires: php ^8.3, typo3/cms-core ^14.3" and, on its own line,
-  "Ships: manual none, readme none, tests Functional+Unit".
+  it was written in. `typo3_project_describe` opens with "composer-project,
+  TYPO3 14.3.5, PHP ^8.4". `typo3_extension_describe` with
+  `printworks_sitepackage` carries "Requires: php ^8.3, typo3/cms-core ^14.3"
+  and, on its own line, "Ships: manual none, readme none, tests
+  Functional+Unit".
 - Both things the feedback records as established elsewhere were in answers it
   says it already had. It lists both calls as made, then reports reading
   composer.json for the PHP constraint and being surprised by the absent manual
@@ -88,12 +89,12 @@ two disagree.
 
 `feedback/2026-07-31-193109` was judged on 2026-08-02 and is a second sighting
 of the same pairing from the same directory 25 minutes later. Its fourth cost
-credits `typo3_project_describe` with `^8.4` and reports 8.3.23 as read by bash, so
-what it compares is a declaration against an effective runtime rather than two
-declarations — which is where the third **Wrong if** expects the other feedback
-to land, arrived at independently. Nothing here changed: the runtime half stays
-with `feedback/2026-07-31-193611`, and answering it from this reading would be
-the copy-down that entry already declines. The rest of that feedback is
+credits `typo3_project_describe` with `^8.4` and reports 8.3.23 as read by bash,
+so what it compares is a declaration against an effective runtime rather than
+two declarations — which is where the third **Wrong if** expects the other
+feedback to land, arrived at independently. Nothing here changed: the runtime
+half stays with `feedback/2026-07-31-193611`, and answering it from this reading
+would be the copy-down that entry already declines. The rest of that feedback is
 [`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md).
 
 The first **Wrong if** arrived on 2026-08-17. `feedback/2026-08-17-211157` is a
@@ -105,10 +106,10 @@ reviewer rather than the session asked why they diverged.
 moves the boundary this entry drew, and moves it only as far as that evidence
 reaches. The line is **one answer, not two**. Comparing what two calls returned
 is still the caller's audit and no tool here does it — this entry's subject was
-`typo3_project_describe` against `typo3_extension_describe`, two manifests read by two
-calls, and that stands. What changed is the case where one tool already read
-every number, already printed them side by side, and already described each one
-against the other two: there the relation is arithmetic on values the answer
+`typo3_project_describe` against `typo3_extension_describe`, two manifests read
+by two calls, and that stands. What changed is the case where one tool already
+read every number, already printed them side by side, and already described each
+one against the other two: there the relation is arithmetic on values the answer
 holds, and withholding it makes the caller pay a round trip to compare numbers
 it was just handed (`D-FBK-020`).
 

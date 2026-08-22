@@ -66,9 +66,25 @@ reported as untouched.
 - The unread count stops falling because the read half absorbs the attention.
   171 today, and what would show it is the number standing still while **Since
   then** sections accumulate.
-- The bold-paragraph form spreads to new entries, because nothing fails on it
-  and it now counts the same as the section.
+- ~~The bold-paragraph form spreads to new entries, because nothing fails on it
+  and it now counts the same as the section.~~ Closed the same day, see **Since
+  then**.
 
 ## Covered by
 
 - `UnresolvedTest::anOpenDecisionSomebodyHasBeenBackToIsToldApart`
+
+## Since then
+
+The 51 bold labels were converted the same day and the corpus is on one
+spelling, so `revisited()` matches one pattern rather than two. Four of them
+were bullets, which the two-form match had not read either: one open entry was
+being reported as never read while carrying a **Since then** since 2026-08-02.
+
+What kept the form alive is that no check could see it. The field order is read
+off the `##` headings, so a bold label sat wherever it was written — twelve of
+them above the section they belonged under. `Decisions::labelAsAParagraph()` is
+what fails on it now, in `bin/cli decisions:check` and in
+`DecisionsTest::noDatedLabelIsWrittenAsABoldParagraph`, anchored to the start of
+a line because a **Since then** named inside a sentence is a reference to one
+rather than one.

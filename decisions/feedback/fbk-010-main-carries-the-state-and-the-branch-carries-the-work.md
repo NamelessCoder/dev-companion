@@ -15,27 +15,6 @@ the same file — and the case it was decided for was two sessions doing that on
 after the other. The same property carries them doing it at once: each session
 touches its own file in `todo/` and no other, so the claims never conflict.
 
-
-**Since then** the boundary the fourth **Decided** drew has moved, and only that
-one. `bin/cli todo:claim` now commits the claims onto `main`, cuts a worktree
-per claim, installs in each and starts a session in each — it carries the
-arrangement out instead of naming it. What held for as long as the rest was done
-by somebody reading a page stopped holding when it was done by a session: three
-steps that must happen in one order are one step, and the run that got the order
-wrong paid for it hours later, in a worktree, as a refusal nobody there could
-place. The page is still where the merge and the mid-work question live, because
-neither is a step this command could take.
-
-**Since then** the launch has moved across too, on 2026-08-02 and for the same
-argument one step further out. The command printed the message and left the
-starting to whoever read the output, and a step left over for somebody to carry
-out by reading is the one that breaks: every session of that day was started in
-the directory that was already open, and three worktrees stood untouched while
-the sessions read a queue belonging to somebody else. What the client is called
-is still not this repository's business, so `.session-command` is the machine's
-and gitignored, and the three things a person gets wrong are the command's — the
-working directory, the message, and a session id apiece.
-
 ## Evidence
 
 - The queue on the day this was written — 29 items, nearly all in the shape
@@ -90,6 +69,30 @@ working directory, the message, and a session id apiece.
   being taken two at a time on work that turns out to share a file, in which
   case the overlap warning is reading the wrong signal: it counts entries a todo
   serves, and most of this queue serves a directory.
+
+## Since then
+
+The boundary the fourth **Decided** drew has moved, and only that one.
+`bin/cli todo:claim` now commits the claims onto `main`, cuts a worktree per
+claim, installs in each and starts a session in each — it carries the
+arrangement out instead of naming it. What held for as long as the rest was done
+by somebody reading a page stopped holding when it was done by a session: three
+steps that must happen in one order are one step, and the run that got the order
+wrong paid for it hours later, in a worktree, as a refusal nobody there could
+place. The page is still where the merge and the mid-work question live, because
+neither is a step this command could take.
+
+## Since then
+
+The launch has moved across too, on 2026-08-02 and for the same argument one
+step further out. The command printed the message and left the starting to
+whoever read the output, and a step left over for somebody to carry out by
+reading is the one that breaks: every session of that day was started in the
+directory that was already open, and three worktrees stood untouched while the
+sessions read a queue belonging to somebody else. What the client is called is
+still not this repository's business, so `.session-command` is the machine's and
+gitignored, and the three things a person gets wrong are the command's — the
+working directory, the message, and a session id apiece.
 
 ## Since then
 

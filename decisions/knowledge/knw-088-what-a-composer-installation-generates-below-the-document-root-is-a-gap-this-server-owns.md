@@ -93,8 +93,6 @@ ends on "the .gitignore is where the answer is read off" and names no path.
 - `HintsTest::whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff`
 - `HintsTest::theGeneratedDocumentRootIsStatedPerMajorOnBothHints`
 
-**Since then**
-
 Step 1a was carried out on 2026-08-18 and the enumeration is not what the
 statement leads with. `typo3/cms-base-distribution` ships one ignore file on
 every covered major and it enumerates nothing: `/vendor`, `/var/*` with
@@ -123,3 +121,5 @@ Only 13 and 14 were installed. Composer refuses to resolve
 on that line is blocked by its security-advisory audit — so 12's shape was read
 from `.checkouts/12.4`, where `typo3/cms-frontend` writes `index.php` and the
 backend and install entry points are registered as on 13.
+
+## Since then

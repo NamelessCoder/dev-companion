@@ -64,8 +64,8 @@ returned the Gerrit workflow prose, four `runTests.sh` checks and the core
 checklist. Every route the **Assumed** named held: `typo3_commit_message_guide`
 answered `workflow="core"` with the `Resolves:` and `Releases:` trailers, all
 five `typo3://core` documents read including `typo3-core-rules` and
-`typo3-core-scripts`, and `typo3_hint_lookup` named no omitted tool.
-What costs more than one environment variable is the answer itself. It routes to
+`typo3-core-scripts`, and `typo3_hint_lookup` named no omitted tool. What costs
+more than one environment variable is the answer itself. It routes to
 `typo3_test_run_guide`, which this client cannot call — twice on the
 patch-shaped task and six times on a test-shaped one, out of
 `knowledge/architecture-hints/php.json`, two entries in

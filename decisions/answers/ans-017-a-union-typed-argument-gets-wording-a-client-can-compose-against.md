@@ -20,9 +20,9 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
   `tool: "typo3_extension_describe"` is written as
   `tool: typo3_extension_describe`;
   `tool: ["typo3_extension_describe", "typo3_feedback_record"]` is written as
-  `tool: typo3_extension_describe, typo3_feedback_record`. Both forms are accepted
-  and both are stored as names. The server does not drop the value, on either
-  branch of the union.
+  `tool: typo3_extension_describe, typo3_feedback_record`. Both forms are
+  accepted and both are stored as names. The server does not drop the value, on
+  either branch of the union.
 - The message the feedback quotes has no producer in this checkout. A `tool` the
   schema refuses comes back as JSON-RPC `-32602`,
   `Property '/tool': Invalid type. Expected `string|array`, but received `integer`.`

@@ -66,9 +66,6 @@ out what to put in the directory.
   Then what was missing is a template the server hands over, not a description
   of one.
 
-**Since then**, on 2026-08-04, the scaffold was established and written as
-`knowledge/documents/extension/documentation/manual.md`.
-
 The minimal set is two files, and the official reference says so: an entry point
 `Documentation/Index.rst` and a `Documentation/guides.xml`. `Includes.rst.txt`
 is optional and conventional, `Sitemap.rst` is filled by the renderer. What the
@@ -92,3 +89,8 @@ copying from a real published extension can land on the replaced renderer.
 
 The document is announced in `knowledge/server-scope.json`, which
 `ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope` requires.
+
+## Since then
+
+, on 2026-08-04, the scaffold was established and written as
+`knowledge/documents/extension/documentation/manual.md`.

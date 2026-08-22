@@ -29,9 +29,9 @@ registrations.
 - The `PageTitleProvider` rule was delivered.
   `knowledge/architecture-hints/general.json`, hint `frontend-records`, states
   that the `<title>` of such a detail view is a `PageTitleProvider` and nothing
-  else, and `feedback/2026-07-31-193005` records `typo3_hint_lookup`
-  returning that hint on both of the session's calls. What no lookup states is
-  that this extension has none, which is the audit's.
+  else, and `feedback/2026-07-31-193005` records `typo3_hint_lookup` returning
+  that hint on both of the session's calls. What no lookup states is that this
+  extension has none, which is the audit's.
 - The PHP number is
   [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md), from
   the same directory 25 minutes earlier. This one pairs the project's declared

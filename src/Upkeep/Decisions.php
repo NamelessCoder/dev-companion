@@ -93,6 +93,20 @@ final class Decisions
         ));
     }
 
+    /**
+     * A later label opening a line in bold, which is a section written as a
+     * paragraph.
+     *
+     * Derived from `laterFields()` rather than spelled out, so a fourth label
+     * is covered by being added there. Anchored to the start of a line: a
+     * **Since then** named inside a sentence is a reference to a section and
+     * not one.
+     */
+    public static function labelAsAParagraph(): string
+    {
+        return '/^(- )?\*\*(' . implode('|', array_map(preg_quote(...), self::laterFields())) . ')\*\*/m';
+    }
+
     public static function directory(): string
     {
         return Paths::root() . '/decisions';
@@ -291,14 +305,14 @@ final class Decisions
      * the two apart is a **Since then**, which the format already carries for
      * what followed without a date of its own.
      *
-     * Two forms are matched, because the corpus has two. The section is the one
-     * `writing-a-decision.rst` describes; the bold paragraph is what entries
-     * written before `D-DOC-003` moved the labels into sections still carry, and
-     * counting only the section reports 28 read entries as never read.
+     * One form, since the 51 labels still written as a bold paragraph were
+     * converted and `bin/cli decisions:check` began failing on that spelling.
+     * A **Since then** named inside a sentence is a reference to one and not
+     * one, which is why the heading is what this matches.
      */
     private static function revisited(string $contents): bool
     {
-        return preg_match('/^(## |\*\*)Since then\b/m', $contents) === 1;
+        return preg_match('/^## Since then\b/m', $contents) === 1;
     }
 
     /**

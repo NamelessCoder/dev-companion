@@ -6,9 +6,9 @@ status: open
 
 # D-ANS-045 — The Classes section covers the directory it names, and a value read off the tree says so
 
-**`typo3_extension_describe` reports every directory below `Classes/` and every PHP
-file under it, and a value it derives from a directory existing is not presented
-as a registration.**
+**`typo3_extension_describe` reports every directory below `Classes/` and every
+PHP file under it, and a value it derives from a directory existing is not
+presented as a registration.**
 
 The answer promises "the shape of its Classes/ directory" and describes a
 whitelist of thirteen names. What falls outside is dropped without a trace, and

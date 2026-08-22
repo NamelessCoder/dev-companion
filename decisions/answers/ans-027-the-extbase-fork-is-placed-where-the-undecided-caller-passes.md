@@ -109,9 +109,9 @@ before it was filed.
   session that read it as a rule about plugins rather than about the element it
   was building. The hint would then be the wrong owner, and the intent or the
   skill is where the fork belongs.
-- `typo3_extension_describe` is called at base step 2 and a session still does not
-  read a `kind` of `plugin` as the convention the extension already has. The gap
-  would then be in that answer's own words rather than in what leads to it.
+- `typo3_extension_describe` is called at base step 2 and a session still does
+  not read a `kind` of `plugin` as the convention the extension already has. The
+  gap would then be in that answer's own words rather than in what leads to it.
 
 ## Revoked on 2026-08-03
 

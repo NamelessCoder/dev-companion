@@ -162,6 +162,26 @@ final class DecisionsTest extends TestCase
      * A decision that cannot say what would falsify it is an opinion with a
      * date on it. This is the one field every entry owes the next reader.
      */
+    /**
+     * A dated label is a section, and the spelling it had before `D-DOC-003` is
+     * what nothing could read. 51 bold labels in 37 entries survived that move
+     * because no check saw them: the field order could not place one, so it sat
+     * wherever it was written, and four of them were bullets that
+     * `Unresolved::decisions()` did not count as a reading at all.
+     */
+    #[Test]
+    public function noDatedLabelIsWrittenAsABoldParagraph(): void
+    {
+        $written = [];
+        foreach (Decisions::files() as $path) {
+            if (preg_match(Decisions::labelAsAParagraph(), (string) file_get_contents($path), $matches) === 1) {
+                $written[] = basename($path) . ': ' . trim($matches[0]);
+            }
+        }
+
+        self::assertSame([], $written, 'a dated label opens a line in bold, and a dated label is a section');
+    }
+
     #[Test]
     public function everyDecisionSaysWhatWouldShowItToBeWrong(): void
     {

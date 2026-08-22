@@ -7,8 +7,8 @@ status: open
 # D-ANS-013 — What runs a project is a placement, not a missing answer
 
 **The PHP a DDEV project actually runs is readable here twice over, and neither
-reading reaches `typo3_project_describe`, so `feedback/2026-07-31-193611` is step 2
-of the ladder and is queued as
+reading reaches `typo3_project_describe`, so `feedback/2026-07-31-193611` is
+step 2 of the ladder and is queued as
 [`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
 
 [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) named
@@ -42,9 +42,9 @@ for. This is the entry it said the card would produce.
   which PHP runs it.
 - This server asked for the run that went wrong. `skills/base.md` says "Where
   one of the project's own commands would settle it, run it", pointed at the
-  list `typo3_project_describe` returns — and that list says of each command what
-  it does to the sources, never where it runs. `ddev composer` runs one in the
-  web container, on DDEV v1.25.1 here; the shell the agent has runs it on
+  list `typo3_project_describe` returns — and that list says of each command
+  what it does to the sources, never where it runs. `ddev composer` runs one in
+  the web container, on DDEV v1.25.1 here; the shell the agent has runs it on
   8.3.23.
 
 ## Decided

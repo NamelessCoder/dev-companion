@@ -4,7 +4,7 @@ date: 2026-07-29
 status: confirmed
 ---
 
-# D-SCO-006 — Why "project work is out of scope" kept coming back
+# D-SCO-006 — Every surface says who this server answers for
 
 **All three prose sources now say what is actually true about who this server
 answers for, and the contradiction is held shut by a test rather than by
@@ -14,17 +14,6 @@ It has been settled several times that the extension author and the site
 developer are audiences of this server, and the claim that they are not kept
 reappearing. Where it came from, found by reading every place that states a
 boundary:
-
-- **Since then** the three places **Wrong if** names are read too, by
-  `ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor`. Its corpus
-  is every tool description, `readme.md`, every architecture hint, and the
-  scope's own purpose, routing and instructions. It matches the claim in both
-  the wordings it was found in. One names who it turns away — "out of this
-  server's scope" beside an extension, a project, an installation. The other
-  names nobody and confines the server instead, which is what "scoped to
-  contributing to the core" and "only knows the core's own conventions" were.
-  All three surfaces were already clean on 2026-08-01, so the guard holds a
-  boundary rather than reporting a breach.
 
   What it matches is wording, and that is the weakest thing there is to match.
   So the three sentences recorded above are run through the matcher first, and
@@ -70,6 +59,19 @@ boundary:
   description, the readme, a hint. Then the flag has to be renamed to what it
   decides (`coreRepositoryOnly`, or the audience of R-AUD-002), rather than the
   sentences being corrected one at a time.
+
+## Since then
+
+The three places **Wrong if** names are read too, by
+`ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor`. Its corpus
+is every tool description, `readme.md`, every architecture hint, and the scope's
+own purpose, routing and instructions. It matches the claim in both the wordings
+it was found in. One names who it turns away — "out of this server's scope"
+beside an extension, a project, an installation. The other names nobody and
+confines the server instead, which is what "scoped to contributing to the core"
+and "only knows the core's own conventions" were. All three surfaces were
+already clean on 2026-08-01, so the guard holds a boundary rather than reporting
+a breach.
 
 ## Since then
 

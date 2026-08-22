@@ -84,8 +84,8 @@ hint half of `feedback/2026-08-03-154508` was open behind that.
 - That a boot is asked in this vocabulary. The patterns are one session's
   wording plus the `installation-operations` match list, and no second report of
   this task shape has been read against them.
-- That the DDEV half belongs to `typo3_project_describe` rather than here. The hint
-  names the hooks as the procedure and points at that tool for them, on
+- That the DDEV half belongs to `typo3_project_describe` rather than here. The
+  hint names the hooks as the procedure and points at that tool for them, on
   `R-PRJ-009`, so nothing about a stage or a provider is stated twice.
 - That `scope: project` costs nothing where the installation is an extension's.
   A hint's scope is a notice rather than a filter, so the statements still

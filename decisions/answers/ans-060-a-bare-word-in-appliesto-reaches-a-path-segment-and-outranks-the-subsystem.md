@@ -78,9 +78,6 @@ named FAL hints returned for Extbase persistence paths.
 - The same shape turns up for a hint with no bare-word pattern at all, which
   would say the tier order is the whole of it and `appliesTo` is innocent.
 
-**Since then**, on 2026-08-07, the third **Wrong if** fired within the hour, and
-two things above are corrected in place.
-
 The first is that the false positive was never one hint. `datahandler-basics`
 outranked the FAL hint at `keywords: 24`, on `/Persistence/` and `persistence`,
 and its own words answered the query no better — `score: 0` for the pattern
@@ -113,11 +110,6 @@ own subsystem is the principled fix and it is a change to the matcher, which
 this run measured for but did not make; the Extbase persistence hint that does
 not exist needs a core checkout, and all four are missing here.
 
-**Since then**, on 2026-08-07, the matcher half landed and it is not what that
-paragraph proposed. Subsystem detection was never built, because measuring first
-showed the failure has a simpler shape and a worse offender than either reported
-hint.
-
 `system-extension-boundaries` claims `typo3/sysext/` and `sysext`, which every
 core path carries. It matched 19 characters' worth on all five calls measured
 and scored **0** on all five, and it stood second on a FAL question — above
@@ -136,12 +128,6 @@ unreachable.
 The corpus pruning of `c722c95` stays and is not made redundant by this. Ranking
 a false positive last is not the same as not making it, and both patterns still
 claim paths belonging to somebody else.
-
-**Since then**, on 2026-08-08, the shape turned up on a third subsystem and the
-fix this entry has been queuing turned out not to be warranted. Three core
-frontend `Classes/` paths drew `frontend-records` and
-`page-variables-and-processors`, both sitepackage authoring hints, on `record`
-matching `RecordAccessVoter.php` and `menu` matching `ContentObject/Menu/`.
 
 The corpus prune was tried and the sweep disproved it, which is this entry's
 first **Wrong if** firing. Dropping the bare `record` and `records` costs
@@ -171,3 +157,21 @@ on `PAGEVIEW` — and `MatchedHints::scopeNotice()` already turns that into "no
 condition of a patch" beside them. `bin/cli hints:coverage` is byte-identical
 before and after, so no hint became unreachable, and the order is unchanged.
 
+## Since then
+
+, on 2026-08-07, the third **Wrong if** fired within the hour, and two things
+above are corrected in place.
+
+## Since then
+
+, on 2026-08-07, the matcher half landed and it is not what that paragraph
+proposed. Subsystem detection was never built, because measuring first showed
+the failure has a simpler shape and a worse offender than either reported hint.
+
+## Since then
+
+, on 2026-08-08, the shape turned up on a third subsystem and the fix this entry
+has been queuing turned out not to be warranted. Three core frontend `Classes/`
+paths drew `frontend-records` and `page-variables-and-processors`, both
+sitepackage authoring hints, on `record` matching `RecordAccessVoter.php` and
+`menu` matching `ContentObject/Menu/`.

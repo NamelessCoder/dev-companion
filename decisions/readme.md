@@ -818,7 +818,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
 - [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
-- [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
+- [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02

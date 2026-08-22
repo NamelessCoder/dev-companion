@@ -1,7 +1,7 @@
 ---
 id: D-DOC-003
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-DOC-003 — A decision says what came back, and a requirement says what it rests on
@@ -103,3 +103,24 @@ than silent.
 - `DecisionsTest::aStatusNamesTheLastDatedLineInTheFile`
 - `DecisionsTest::everyTestADecisionNamesExists`
 - `UnresolvedTest::theOpenDecisionsAreReadOldestFirst`
+
+## Confirmed on 2026-08-22
+
+The second **Wrong if** is answered and the crossing is maintained. `restsOn`
+stood on eleven entries when this was written and stands on 108 of the 222
+requirements today, so the report is a reading of what is recorded rather than
+one that is always empty — `R-AUD-002` was corrected on the strength of it the
+same day this was read.
+
+The three states carry the corpus: 339 open, 66 confirmed and 39 revoked over
+444 entries, and 33 of the 39 name a successor in `revokedBy`. The sections held
+too — `bin/cli decisions:check` fails on any other shape, and the dated sections
+have since been given the same standing, which is what `D-DOC-038` and
+`D-DOC-039` are.
+
+The first **Wrong if** is not settled here. Whether an entry has appeared whose
+outcome is none of the three is a judgement per entry rather than a sweep, and
+what would show it is a session reaching for a fourth word — nobody has, and the
+six revoked entries naming no successor are the nearest thing to the shape,
+because a revocation with nowhere to send the reader is the one this format
+cannot express.

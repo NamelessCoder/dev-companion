@@ -185,6 +185,51 @@ final class Decisions
     }
 
     /**
+     * Entries whose **Covered by** names a test that says nothing about them,
+     * most such tests first.
+     *
+     * The naming runs one way today. An entry names the test that would catch
+     * its **Wrong if**, and the test is where somebody stands when the code
+     * moves — so a session that changes the behaviour, fixes the test and never
+     * learns which entry rested on it is how `D-ANS-045` came to describe the
+     * opposite of what its method does.
+     *
+     * What is read is the docblock over the method, or the file where the entry
+     * names a whole class. Nothing fails on it: `Covered by` has never asked for
+     * the return naming, so this reports a corpus written under the older rule.
+     *
+     * @return array<int, array{id: string, silent: int, tests: int}>
+     */
+    public static function unnamedByItsTests(): array
+    {
+        $loose = [];
+        foreach (self::all() as $decision) {
+            $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
+            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
+                continue;
+            }
+            preg_match_all('/`(\w+Test(?:::\w+)?)`/', $section[1], $matches);
+            $tests = array_unique($matches[1]);
+            $silent = array_filter(
+                $tests,
+                static fn(string $test): bool => !str_contains(Sources::saidAbove($test), $decision['id']),
+            );
+            if ($silent === []) {
+                continue;
+            }
+            $loose[] = [
+                'id' => $decision['id'],
+                'silent' => count($silent),
+                'tests' => count($tests),
+            ];
+        }
+
+        usort($loose, static fn(array $a, array $b): int => [$b['silent'], $a['id']] <=> [$a['silent'], $b['id']]);
+
+        return $loose;
+    }
+
+    /**
      * A later label opening a line in bold, which is a section written as a
      * paragraph.
      *

@@ -171,7 +171,7 @@ final class DecisionsTest extends TestCase
      * application — `D-FBK-018` carries nineteen. None of that is a defect,
      * which is exactly why nothing had ever counted it: the cost is a reader
      * who pays more for the history than for the decision, and only a reading
-     * says which entries those are.
+     * says which entries those are — `D-DOC-041`.
      */
     #[Test]
     public function anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn(): void
@@ -207,7 +207,7 @@ final class DecisionsTest extends TestCase
      *
      * Most entries here decide something about process and no test could keep
      * them, which is why nothing may fail on this: a demand for **Covered by**
-     * would be answered with a name chosen to satisfy it.
+     * would be answered with a name chosen to satisfy it — `D-DOC-043`.
      */
     #[Test]
     public function anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn(): void
@@ -231,6 +231,38 @@ final class DecisionsTest extends TestCase
                 [],
                 array_filter(array_unique($matches[1]), static fn(string $class): bool => isset($classes[$class])),
                 $entry['id'] . ' is reported as pointing at this code and points at none',
+            );
+        }
+    }
+
+    /**
+     * The other degree of the coupling, read out and never failed on.
+     *
+     * An entry names the test that would catch its **Wrong if**, and the test
+     * is where somebody stands when the code moves — so a session that changes
+     * the behaviour, fixes the test and never learns which entry rested on it
+     * is how `D-ANS-045` came to describe the opposite of what its method does.
+     * `Covered by` has never asked for the return naming, so what this reports
+     * is a corpus written under the older rule — `D-DOC-043`.
+     */
+    #[Test]
+    public function anEntryItsOwnTestsSayNothingAboutIsReadOutRatherThanFailedOn(): void
+    {
+        $loose = Decisions::unnamedByItsTests();
+
+        self::assertNotSame([], $loose, 'every test names the entry resting on it, which the report would have to say instead');
+
+        $silent = array_column($loose, 'silent');
+        $sorted = $silent;
+        rsort($sorted);
+        self::assertSame($sorted, $silent, 'the entry with the most silent tests is not first');
+
+        foreach ($loose as $entry) {
+            self::assertGreaterThan(0, $entry['silent'], $entry['id'] . ' is reported with no silent test');
+            self::assertLessThanOrEqual(
+                $entry['tests'],
+                $entry['silent'],
+                $entry['id'] . ' has more silent tests than tests',
             );
         }
     }

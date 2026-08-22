@@ -76,3 +76,19 @@ Nothing else couples the two.
 ## Covered by
 
 - `DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn`
+- `DecisionsTest::anEntryItsOwnTestsSayNothingAboutIsReadOutRatherThanFailedOn`
+
+## Since then
+
+The **Assumed** above is not measurable and its proxy is: whether the test says
+anything about the entry resting on it. Read the same day over 555 test names
+under **Covered by**, 150 do and 405 do not, across 187 entries. The naming runs
+one way, and the way it does not run is the one where somebody is standing when
+the code moves — a session that changes the behaviour, fixes the test and never
+learns which entry rested on it is how `D-ANS-045` came to describe the opposite
+of what its method does.
+
+It is reported as the second degree of the same coupling rather than as a
+reading of its own, and nothing fails on it: **Covered by** has never asked for
+the return naming, so the corpus was written under the older rule. The six
+entries of 2026-08-22 were the newest instance and are corrected.

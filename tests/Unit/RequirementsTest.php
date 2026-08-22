@@ -124,7 +124,8 @@ final class RequirementsTest extends TestCase
      * A judgement is what takes an unguarded entry out of
      * `bin/cli unresolved:list` without anything being built for it, so what it
      * says has to be the day it was made: the entry can be rewritten under a
-     * stamp, and the date is the only thing that lets a reader notice.
+     * stamp, and the date is the only thing that lets a reader notice —
+     * `D-DOC-038`.
      */
     #[Test]
     public function aJudgementIsTheDateItWasMadeOn(): void

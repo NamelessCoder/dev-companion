@@ -81,6 +81,7 @@ nothing else, so every other corpus went stale unwatched.
 ## Covered by
 
 - `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
+- `ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered`
 
 ## Since then
 

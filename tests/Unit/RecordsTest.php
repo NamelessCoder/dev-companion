@@ -43,7 +43,7 @@ final class RecordsTest extends TestCase
      * ours and is not: a magic method, and a class this repository shares a name
      * with — `Site::__construct()` in `D-KNW-097` is TYPO3's `Site` and not the
      * one below `src/Upkeep/`. Nothing tells those apart from the name, so a
-     * class we share is a hole this states rather than closes.
+     * class we share is a hole `D-DOC-042` states rather than closes.
      */
     #[Test]
     public function everyMemberTheRecordsNameInBackticksExists(): void

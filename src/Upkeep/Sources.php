@@ -22,7 +22,7 @@ use TYPO3\DevCompanion\Paths;
  */
 final class Sources
 {
-    /** @var array{0: array<string, true>, 1: array<string, true>}|null */
+    /** @var array{0: array<string, true>, 1: array<string, true>, 2: array<string, string>}|null */
     private static ?array $declared = null;
 
     /**
@@ -48,10 +48,51 @@ final class Sources
     }
 
     /**
+     * What stands above a test method: its own docblock, or the file where the
+     * entry names a whole class.
+     *
+     * Found by walking back from the declaration rather than by splitting the
+     * file on an indented `/**`, which is what a run of `composer cgl` moves.
+     * A reading that changes with the formatter is a reading nobody can quote.
+     */
+    public static function saidAbove(string $test): string
+    {
+        [$class, $method] = array_pad(explode('::', $test), 2, '');
+        $file = self::files()[$class] ?? null;
+        if ($file === null) {
+            return '';
+        }
+
+        $code = (string) file_get_contents($file);
+        if ($method === '') {
+            return $code;
+        }
+
+        $at = strpos($code, 'function ' . $method . '(');
+        if ($at === false) {
+            return '';
+        }
+
+        $opens = strrpos(substr($code, 0, $at), '/**');
+
+        return $opens === false ? '' : substr($code, $opens, $at - $opens);
+    }
+
+    /**
+     * The file each class is declared in.
+     *
+     * @return array<string, string>
+     */
+    public static function files(): array
+    {
+        return self::read()[2];
+    }
+
+    /**
      * The scan, once per process. Both callers run over the whole corpus, so
      * reading the tree twice is the difference between one pass and two.
      *
-     * @return array{0: array<string, true>, 1: array<string, true>}
+     * @return array{0: array<string, true>, 1: array<string, true>, 2: array<string, string>}
      */
     private static function read(): array
     {
@@ -61,6 +102,7 @@ final class Sources
 
         $classes = [];
         $members = [];
+        $files = [];
         foreach (['src', 'tests'] as $tree) {
             foreach (Finder::create()->files()->in(Paths::root() . '/' . $tree)->name('*.php')->sortByName() as $file) {
                 $code = (string) file_get_contents($file->getPathname());
@@ -68,6 +110,7 @@ final class Sources
                     continue;
                 }
                 $classes[$named[1]] = true;
+                $files[$named[1]] = $file->getPathname();
                 foreach (['/function (\w+)\s*\(/', '/const (\w+)/', '/(?:public|private|protected)[^;{]*\$(\w+)/', '/case (\w+)/'] as $pattern) {
                     preg_match_all($pattern, $code, $found);
                     foreach ($found[1] as $member) {
@@ -77,6 +120,6 @@ final class Sources
             }
         }
 
-        return self::$declared = [$classes, $members];
+        return self::$declared = [$classes, $members, $files];
     }
 }

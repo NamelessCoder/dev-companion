@@ -75,7 +75,7 @@ final class UnresolvedTest extends TestCase
      *
      * The date is carried through rather than folded into a flag, because the
      * entry can be rewritten under the stamp and nothing catches that: what the
-     * reading can do is print the day the judgement was made.
+     * reading can do is print the day the judgement was made — `D-DOC-038`.
      */
     #[Test]
     public function aJudgedEntryCarriesTheDayItWasDecidedOn(): void
@@ -102,10 +102,8 @@ final class UnresolvedTest extends TestCase
      * the open entries carry one — counted as unread, the pile reads as
      * untouched and the oldest named is one somebody has already been back to.
      *
-     * Both spellings count. The section is the format
-     * `writing-a-decision.rst` describes; the bold paragraph is what entries
-     * written before `D-DOC-003` carry, and there are enough of those to move
-     * the number.
+     * Both spellings counted while the corpus had two. It has one since
+     * `D-DOC-039`, which is the entry this holds and where the numbers are.
      */
     #[Test]
     public function anOpenDecisionSomebodyHasBeenBackToIsToldApart(): void

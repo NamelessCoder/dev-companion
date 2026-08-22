@@ -189,6 +189,18 @@ final class DecisionCheck
             $output->writeln('');
         }
 
+        // The second degree of the same coupling. A test that says nothing about
+        // the entry resting on it leaves the session that fixes it no way to
+        // learn the entry is now wrong.
+        $loose = Decisions::unnamedByItsTests();
+        if ($loose !== []) {
+            $output->writeln(sprintf(
+                "%d more name a test that says nothing about them, %d test names in all.\n",
+                count($loose),
+                array_sum(array_column($loose, 'silent')),
+            ));
+        }
+
         $errors = Cli::errors($output);
         foreach ($problems as $problem) {
             $errors->writeln($problem);

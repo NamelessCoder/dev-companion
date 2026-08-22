@@ -168,7 +168,8 @@ final class DecisionsTest extends TestCase
      *
      * `Confirmed on` is what a reading that held leaves behind, so an entry
      * stating a rule the repository applies often collects one per
-     * application — `D-FBK-018` carries nineteen. None of that is a defect,
+     * application, which `bin/cli decisions:check` counts. None of that is a
+     * defect,
      * which is exactly why nothing had ever counted it: the cost is a reader
      * who pays more for the history than for the decision, and only a reading
      * says which entries those are — `D-DOC-041`.

@@ -74,20 +74,24 @@ other side: what is the strength evidence of?
 
 ## Wrong if
 
-- A positive feedback turns out to carry a lever nothing else does — praise that
-  names what the session did instead. The ladder would then apply after all, and
-  reading a strength as boundary-evidence only would have skipped it.
+- ~~A positive feedback turns out to carry a lever nothing else does — praise
+  that names what the session did instead. The ladder would then apply after
+  all, and reading a strength as boundary-evidence only would have skipped it.~~
+  Fired in **Since then** below and in four readings after it.
 - The two cost cards are judged and land somewhere other than the change/state
   boundary. The pairing above would then be a reading of three files rather than
   a property of the corpus.
-- Strengths accumulate unread, because closing one leaves nothing anybody can
+- ~~Strengths accumulate unread, because closing one leaves nothing anybody can
   point at afterwards. This entry and its commit are the whole record; if
-  neither is cited again, the run was a cost with no return.
-- The line a strength's praise implies turns out not to be worth saying —
+  neither is cited again, the run was a cost with no return.~~ Answered by the
+  readings below: each leaves a guard or a judgement on another entry rather
+  than a commit message.
+- ~~The line a strength's praise implies turns out not to be worth saying —
   `typo3_extension_describe` naming a missing translation on every extension
   that ships none costs more than it buys. Reading what the praise implies would
   then be right about the asymmetry and wrong about it mattering, and
-  `R-PRJ-006` is what would need the sentence instead.
+  `R-PRJ-006` is what would need the sentence instead.~~ Answered on 2026-08-02:
+  the line costs a word, and `Ships:` says it.
 - A strength is found whose praise implies a property the answer does not have,
   and checking its quotations reaches that property anyway. The step added below
   — read what the praise implies, not only what it quotes — would then be one
@@ -225,65 +229,6 @@ entry rather than as one account continued.
 
 ## Confirmed on 2026-08-02
 
-The reading held a fourth time, and this is the first strength whose quotation
-could be checked against the file it credits. `2026-07-31-194823` comes from the
-debrief of the section above, two seconds before the `typo3_extension_describe`
-one and in the same project. It reports that `typo3_hint_lookup` said only
-`rootPageId` is remapped when a shipped site configuration is imported, and that
-other uid references are not. The session credits that with turning a wrong
-finding into the right one, about a hardcoded `t3://page?uid=2` error target.
-
-The first **Wrong if** did not fire. The strength names one thing the session
-did besides calling the tool: it confirmed the answer against the vendor source.
-It reports no cost for doing so, and a corroboration of an answer that was right
-is not the *did instead* the ladder is walked from. Nothing else in the file
-names a workaround, a repeated call or a fact established elsewhere.
-
-The quotation is evidence about a file, and the file holds it.
-`bin/cli hints:probe` on the feedback's own query reaches
-`sitepackage-initial-content`, and the sentence is in that hint verbatim — the
-import "remaps the root page id to the page that was actually imported, and
-nothing else", with an error handler naming `t3://page?uid=...` as the example
-that ships stale. Re-run on 2026-08-02 through `bin/typo3-dev-companion` from
-`/home/benji/projects/site-new`: `typo3_hint_lookup` with the task the feedback
-names returns *Shipping Initial Content with an Extension* whole, answered for
-TYPO3 v14. The core confirms the statement.
-`ImportSiteConfigurationsOnPackageInitialization` loads the configuration,
-assigns `$configuration['rootPageId']` and writes it back, and touches no other
-key. The file is byte-identical in `.checkouts/14.3` and `.checkouts/main`.
-
-The boundary is what an answer carries where somebody wrote it, against what it
-carries where it indexes something. The other side is from the same debrief:
-`2026-07-31-194821` reports that the removal version of a deprecation sat in the
-`.rst` body, and that the session had to open the file to read it.
-`typo3_changelog_lookup` returns the type, the version, the issue, the title,
-the tags and an `EXT:` path, and
-[`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)
-priced its peel on the observation that it "reads file names and never opens an
-entry". So the deciding fact is inside the answer where the corpus is prose this
-repository authored, and behind a pointer where the answer indexes files it did
-not write. One session reported both directions, having seen neither
-implementation.
-
-One change was made, and it is the keep-request in the only form this repository
-has for one. `R-KNW-005` holds the general property that a silent failure is
-named rather than left to the rule, and
-`HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists` already
-names the sibling sentence about `ReferenceIndex::getRelations()`. The
-site-configuration sentence was in no assertion, so what the feedback asks be
-kept rested on nobody rewriting the hint. That test names it now. No statement
-about TYPO3 was established to do it: the sentence was already in `knowledge/`,
-and what was added is that it stays.
-
-The feedback is closed by this commit and nothing is queued. What the changelog
-side of the boundary owes belongs to its own card, which is in hand elsewhere,
-and naming its answer from here is the copy-down judging.md warns about. The
-third **Wrong if** is the one this run bears on: a guard is the first thing a
-closed strength has left behind that something other than a commit message can
-point at.
-
-## Confirmed on 2026-08-02
-
 `feedback/2026-07-31-194825` is the strength this entry and
 [`D-ANS-014`](../answers/ans-014-the-extension-answer-enumerates-registrations-not-files.md)
 both cite without judging. Read as boundary-evidence it says what that entry
@@ -312,14 +257,15 @@ from `/home/benji/projects/site-new`, the directory it was written in:
   says a manifest does not cover what the project's own code writes. The
   classification the strength credits classified nothing here.
 
-That fourth one is the mechanism the section above saw twice and left unnamed.
-What is recited is the answer's own explanatory prose rather than the answer.
-`typo3_project_describe` spends a paragraph on what a check is and what a change
-is, ahead of the six `unknown`s, and the report hands that paragraph back as a
-result it received. Its conclusion — that the repository declares no check
-scripts — is right, and it is read off the list rather than off the
-classification. So a recitation is evidence about the file where the file is a
-rule, and evidence about nothing where the file is an answer explaining itself.
+That fourth one is the mechanism the misplaced-credit reading above saw twice
+and left unnamed. What is recited is the answer's own explanatory prose rather
+than the answer. `typo3_project_describe` spends a paragraph on what a check is
+and what a change is, ahead of the six `unknown`s, and the report hands that
+paragraph back as a result it received. Its conclusion — that the repository
+declares no check scripts — is right, and it is read off the list rather than
+off the classification. So a recitation is evidence about the file where the
+file is a rule, and evidence about nothing where the file is an answer
+explaining itself.
 
 The lever is in the first two, and it is what the praise implies rather than
 what it quotes. An absence answered rather than left to be found holds for three
@@ -359,89 +305,6 @@ is not a special case. It is the one extension in
 found in the only place this machine offers it. Both are written into the
 **Wrong if** above.
 
-## Confirmed on 2026-08-02
-
-The fourth **Wrong if** is what the todo above turned on, and it did not fire.
-The reading it proposes is a line only where a caller could mistake the absence
-for a gap. That needs a predicate — whether this extension is one that would
-ordinarily carry labels — and nothing in the files answers it. Everything else
-in this answer is a fact read from a file, and `R-PRJ-006` names the four
-artifacts without conditioning any of them: the `Ships:` line already says
-`manual none` on extensions where no manual is normal.
-
-So the cost is what the **Wrong if** was actually about, and it is a term rather
-than a sentence. `Ships:` renders the fourth the way it renders the other three
-— `language files none`, or their number where there are some, with the per-file
-list unchanged below it. Saying it on every answer costs a word.
-`ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut` asserts both
-halves of both cases now, which is what `R-PRJ-006` required all along and the
-test covered in the data alone.
-
-The last **Wrong if** is untouched by this. Which half of the answer a client
-renders is still unrecorded, and this change writes the absence into both.
-
-## Confirmed on 2026-08-03
-
-The reading held a fifth time, on the first strength whose quotations are hints
-this repository wrote for the domain the task was actually in.
-`feedback/2026-08-02-144456` comes from a core checkout,
-`/home/benji/projects/typo3-cms`, and reports a fix in the Fluid image
-ViewHelpers for Forge #105403. It credits three answers: that ViewHelpers are
-covered by functional tests and why, that a ViewHelper is public API and owes a
-changelog entry, and `typo3_project_describe` reporting `15.0.0-dev`.
-
-The quotations are checked before the boundary is. Re-run on 2026-08-03 through
-`bin/typo3-dev-companion` from that directory with the feedback's own arguments
-— `typo3_task_guide` with the task *Fix f:image ViewHelper failing when src
-contains a cache busting query string produced by f:uri.resource*,
-`changeType=bugfix`, `area=fluid`, `targetVersion=15.0` — and both sentences
-come back verbatim in the `fluid-viewhelpers` block. The third reproduces by
-half. `typo3_project_describe` answers
-`core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV`, and names
-neither `Changelog/15.0/` nor a `Releases: main` trailer; the session derived
-both from the version. The derivation was right — `.checkouts/main` carries
-`Documentation/Changelog/15.0/` — which is why nothing in the report reads as
-one. That is the third corpus in which a strength misplaces its credit, and the
-first where what is credited is the reader's own inference rather than another
-tool.
-
-The lever is what the session did instead, and it is one sentence at the end: it
-read neighbouring changelog files to decide which of Breaking, Deprecation,
-Feature or Important its entry was. Step 2, delivery. The rule is here twice —
-the `changelog` intent in `knowledge/task-intents.json` carries the
-discrimination, and the `documentation-changelog` hint carries the filename and
-the version directory — and neither reached a task about a ViewHelper bug.
-`TaskIntents::detect()` matches an intent against the task text, and that text
-is about the bug; the sentence saying a changelog is owed arrives from a hint,
-after the matching that would have delivered the rest.
-
-The boundary is between an obligation and the rule that discharges it. A hint
-states what a change owes because the caller is working in that domain, while
-what it takes to discharge it belongs to the domain of the artifact and is
-reachable only from a query already about that artifact. Nothing crossed between
-the two, and the reading the feedback reports is what that cost.
-
-Three changes, all of them placement and wording of rules already here. The
-`fluid-viewhelpers` statement now names the minor-version directory and sends
-the type decision to `documentation-changelog`. That hint gains the sentence
-which decides the type, read off `Documentation/Changelog/Howto.rst` in
-`.checkouts/main` rather than moved on trust: the four types are defined there,
-with Important as the last resort and the only one an LTS release may carry.
-`HintsTest::aViewHelperPatchIsToldWhichTestItOwesAndWhichChangelogType` holds
-the two sentences the feedback asks be kept, which is the keep-request in the
-only form this repository has for one.
-
-One thing was rejected. An intent that fires because a delivered hint says a
-changelog is owed, rather than because the task text says "changelog", would
-answer the crossing itself instead of pointing across it — and it touches
-`src/`, which is queued rather than closed on the spot. A pointer costs the
-caller one call and this is the one report of the crossing; a second report is
-what would make it worth the schema.
-
-What the change rests on is that the discrimination now stands in
-`task-intents.json` and in the hint corpus at once. It is wrong if one is
-rewritten and the other keeps the old wording, because then this run bought a
-delivery and paid for it with two statements of one rule.
 ## Confirmed on 2026-08-03
 
 The **Since then** above says a quotation is evidence about the file rather than
@@ -456,8 +319,8 @@ against a TYPO3 core checkout; determine the changed paths yourself and pass
 them to typo3_architecture_lookup and typo3_task_guide". The quotation is exact.
 It is the first `doesNotCover` entry of `knowledge/server-scope.json` at
 `18a371a`, which is the version that was in play on 2026-08-01, down to the tool
-name — typo3_architecture_lookup was renamed to `typo3_hint_lookup` at
-`7553cb3` afterwards.
+name — typo3_architecture_lookup was renamed to `typo3_hint_lookup` at `7553cb3`
+afterwards.
 
 That sentence was false when it was praised, and `f8be448` deleted it two days
 later. `typo3_project_describe`, started in the very checkout this review was
@@ -713,92 +576,6 @@ server's answers, and the covered set was read in
 
 ## Confirmed on 2026-08-09
 
-The reading held a sixth time, on the first strength whose keep-request names
-sentences a second session asked to keep as well. `feedback/2026-08-08-224455`
-reviewed Gerrit change 95179 in a git worktree of a core checkout,
-`/home/benji/projects/typo3-cms`, and credits four answers plus a fifth it calls
-worth keeping. Its suggestion is *nothing to change*, and it names the
-load-bearing sentences so a later rewrite can recognise what it is dropping.
-
-The quotations are checked before the boundary is. Re-run on 2026-08-09 through
-`bin/typo3-dev-companion` from that directory, with the feedback's own
-arguments, and all five reproduce:
-
-- `typo3_test_run_guide` prints the preconditions above the suites, with both
-  worktree sentences and the literal
-  `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`.
-  Its `cglGit` entry carries the caveat: git fails, the list is empty, and the
-  suite reports SUCCESS having read nothing.
-- `typo3_rule_lookup` with the session's compound query returns
-  `Changelog Files` at 80% and `Release Targets` at 66%. All three sides of the
-  changelog answer are in the first — `A BUGFIX owes none`, `Important` as the
-  last resort and the only one of the four an LTS release may carry, and
-  demanding an entry of a `BUGFIX` that removes nothing public as a review
-  defect of its own.
-- The second section refuses the branch list in the checkout, says
-  `git branch -r` reaches back to `TYPO3_3-6`, and calls a branch out of regular
-  support an error.
-- `typo3_forge_lookup` on 81619 answers the 2017 report whole, the sentence the
-  finding turned on included: the override is needed *if a result of TypoScript
-  condition should be overriden*.
-- `typo3_hint_lookup` on the two changed paths returns `core-tests` with the
-  paragraph on where output expectations hide.
-
-The first **Wrong if** did not fire. Every counterfactual in the file is an
-action the answer pre-empted — `composerInstall` run first, `cgl -n` instead of
-`cglGit`, 12.4 left out as correctly excluded ELTS — and the only thing it did
-besides calling a tool is probing the TypoScript-condition path to confirm a
-finding. `2026-07-31-194823` is where a corroboration was established not to be
-the *did instead* the ladder is walked from.
-
-The keep-request is answered against the file as it is now, and two of the five
-answers rested on nobody rewriting them. The preconditions were held for the
-symptom string, the container and `composerInstall`, and not for the worktree
-that is the checkout nobody expects to be missing `vendor/`. `Changelog Files`
-was held for the obligation and the last resort, and not for the exception the
-session says stopped it writing an `Important` entry to be safe.
-`Release Targets` was held by nothing at all: the ELTS error exists as
-behaviour, with `unmaintained-release-line` under test, while the sentence that
-refuses `git branch -r` was in no assertion. The other two were guarded already
-— `KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold` for the
-`cglGit` caveat, and `HintsTest` for the expectations paragraph.
-
-Three assertions and one test now name them:
-`KnowledgeTest::theReleaseTargetsAnswerRefusesTheBranchListInTheCheckout`, and
-the sentences added to `theInvocationNotesNameTheInstallAFreshCheckoutOwes` and
-`aQueryForTheChangelogObligationReachesTheSectionThatStatesIt`. The second
-session is `feedback/2026-08-08-224426`, from a triage rather than a review,
-which names the same two sentences and had run `git branch -r` one turn before
-the answer arrived. Its card is in hand elsewhere and this run neither closes it
-nor takes it over; what the guards cover is the request both make.
-
-The boundary is **a rule against an instance, and what an instance is keyed
-by**. Everything this strength credits is a rule: a precondition of the
-environment, an obligation with the counter-rule beside it, a release-target
-reading with the source it refuses. Each is reached from the domain the task is
-already in — the changed paths, the words of the question — and arrives whole
-without being asked for precisely. The fourth is an instance and arrives whole
-too, because the caller held its number. The cost side is from the same debrief:
-`2026-08-08-224429` wanted an instance it could only describe by shape, a
-`BUGFIX` that changed 0-is-empty semantics and got an `Important` entry on an
-LTS branch. `typo3_changelog_lookup` answered `matchCount 0` for
-`stdWrap override`, and `ls` over `13.4.x` produced the entry. So an instance is
-reachable by an identifier the caller holds or by the words written in it, and a
-caller holding neither has nothing to ask with.
-
-What would show that reading wrong is where the changelog card lands: a scoring
-defect in the matcher rather than a key nobody can supply. That card is in hand
-elsewhere, and naming its answer from here is the copy-down judging.md warns
-about.
-
-No statement about TYPO3 was established. The re-runs read this server's own
-answers, the guarded sentences were already in `knowledge/`, and what was added
-is that they stay. The feedback is closed by this commit and nothing is queued.
-The third **Wrong if** is what it bears on: what a closed strength leaves behind
-here is four assertions rather than a commit message.
-
-## Confirmed on 2026-08-09
-
 `feedback/2026-08-08-224426` is a keep-request for four answers, from a triage
 and fix of Forge #58705 in `/home/benji/projects/typo3-cms`. The first **Wrong
 if** did not fire. It names no workaround and no fact established elsewhere, and
@@ -856,7 +633,7 @@ be shown red. Five reports credit that block — this one and `2026-08-05-033954
 `2026-08-07-065401`, `2026-08-07-130037` and `2026-08-07-233418` in the archive
 — and its third bullet is itself the answer to the last of those, so a rewrite
 could have taken out four sentences the corpus asks for without a failure. What
-that costs is now the fifth **Wrong if** above.
+that costs is now the last **Wrong if** above.
 
 Two of these sentences are asked for twice in one debrief.
 `feedback/2026-08-08-224455` reviewed Gerrit 95179 in a worktree of the same
@@ -869,83 +646,6 @@ belong to its judgement.
 The feedback is closed by this commit and nothing is queued. No statement about
 TYPO3 was established here: the re-runs read this server's answers, and the
 attribution was settled by comparing two files on this machine.
-
-## Confirmed on 2026-08-14
-
-`feedback/2026-08-13-214838` reviewed Gerrit change 93319, a Playwright e2e
-diff, in `/home/benji/projects/typo3-cms`. It is a keep-request for three
-answers, and the first **Wrong if** did not fire: every counterfactual in it is
-an action an answer pre-empted — the `git fetch origin refs/changes/…` it did
-not run, the `typo3_extension_describe` it did not need, the `typo3_hint_lookup`
-a coverage sentence had already answered.
-
-The quotations are checked before the boundary is, and the one about TYPO3 is
-checked in `.checkouts/` rather than taken on trust. The reporting checkout is
-worked by another session, so the re-run was made from this repository's own
-`.checkouts/main` on 2026-08-14, with the feedback's own arguments:
-
-- `typo3_label_lookup` with query `newPage` and extension `backend` answers six
-  labels across two resources, which is the report's own count. The two the
-  review turned on are `backend.pages_new:newPage` at "Page" and
-  `backend.layout:newPage` at "Create new page", byte for byte in
-  `.checkouts/14.3` as in `.checkouts/main`. No console runs here — that
-  installation requires PHP 8.5 and this machine has 8.3 — so the answer came
-  from the packages, and the resource travelled with every hit on that path too.
-- `typo3_rule_lookup` with documentId `core/contribution/gerrit-workflow` hands
-  the document over as one section, the fetch paragraph in it: the ref is on
-  Gerrit and not on GitHub, and what to fetch from is `remote.origin.pushurl`.
-- `typo3_task_guide` states its coverage in `omittedHints`, a required key of
-  its own schema, with `HINTS_COMPLETE` saying the same thing in the text.
-
-**One implication is refused, and it is the one the strength argues from.** It
-credits the skill with sending it to read the document whole rather than search
-it, "the section I needed was not the one my words would have matched". Both
-*fetch a gerrit change into this checkout* and *fetch patch set refs/changes
-remote* return **Fetch a Change Into This Checkout** first. What the instruction
-bought is one call instead of a search and a read, not a miss avoided — and the
-same corpus asked in four subjects at once did miss, which is the cost side
-below.
-
-The third keep-request is the one that asks for something the answer already
-has. The report quotes `"omittedHints": []` and then asks for a machine-readable
-equivalent of the sentence beside it. It read the field and did not recognise it
-as the answer to its own ask, which is the shape `2026-08-03-164818` established
-and no rewrite here would change.
-
-The boundary is **what this corpus answers to a handle the caller holds against
-what it answers to a description of what is wanted**. Every answer this strength
-credits was asked for by a handle: a trans-unit id read out of the core source,
-a documentId the skill named, a Forge number off the commit message, the changed
-paths. The cost side is from the same session, seconds earlier —
-`feedback/2026-08-13-214857`, whose four-subject query returned `matchCount: 0`
-and was recovered by picking a documentId out of the miss listing. So the
-session that paid nothing for four handles paid a round trip for the one call it
-phrased as a description. That card is in hand elsewhere and naming its answer
-from here is the copy-down judging.rst warns about.
-
-Two keep-requests rested on nobody rewriting the file, and both are held now.
-The resource on a label hit was in no assertion in either half of the answer,
-and it is what separates two labels of one key in one extension —
-`LabelSearchTest::twoLabelsOfOneKeyAreToldApartByTheResourceEachIsIn` holds the
-console path in the text and in the data, and the packages path is asserted
-where that fallback already was. The fetch asymmetry was held in
-`typo3_gerrit_lookup`'s answer by `GerritTest` and nowhere in the document the
-skill sends a session to;
-`KnowledgeTest::theFetchDirectionNamesTheRemoteTheChangeRefIsOn` names it beside
-the write direction that was guarded already. The third is guarded twice over by
-`R-GUI-009` and needed nothing.
-
-One thing was found and left. `resource` is not among the keys
-`LabelLookup::outputSchema()` requires, which is where `tags` stood when
-`2026-08-03-164818` was judged. Requiring it would touch a declared schema,
-which judging.rst reviews rather than improvises, and it would promise less than
-it looks: the console path renders `''` where an item carries no resource, and
-an empty string satisfies a required key. The assertion is what holds the
-sentence, so the guard came first here as it did there.
-
-The feedback is closed by this commit and nothing is queued. The one statement
-about TYPO3 in it was verified in both covered majors and written into no
-`knowledge/` file, because the corpus already answers it from the installation.
 
 ## Confirmed on 2026-08-18
 
@@ -978,291 +678,6 @@ that can go stale. The judgement is
 [`D-SKL-052`](../task-skills/skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md),
 where the size the report asks be watched is read as what that rule leaves. The
 feedback is closed by this commit and nothing is queued.
-
-## Confirmed on 2026-08-18
-
-The 2026-08-03 section says the check on a praised absence is not whether the
-words are still there but whether the enumeration is exhaustive over the axis
-the praise reads into it, and that only the domain answers that.
-`feedback/2026-08-18-070515` is the first strength that was **handed** that axis
-rather than supplying it: the sentence it credits states its own test, the
-session ran the test, and the branch it took was the one the test decided.
-
-It booted a clone of the `t3g/blog` extension repository in
-`/home/benji/projects/blog` on four calls and credits five things. The first
-**Wrong if** did not fire. Every counterfactual in the file is an action an
-answer pre-empted — the `ddev restart` it would not have run, the wrong
-distribution branch it would have inherited, the database connection it was
-about to hand-write, the install-tool password it says it would not have
-reported. The one command it ran beside a call,
-`find .build/vendor -maxdepth 3 -type d -name Initialisation`, is the test the
-answer handed it, which is not the *did instead* the ladder is walked from —
-`2026-07-31-194823`. Its second `typo3_project_describe` is a repeated call, and
-what caused it is `feedback/2026-08-18-070333`, filed 102 seconds earlier with a
-card of its own.
-
-The quotations are checked before the boundary is. Re-run on 2026-08-18 through
-`bin/typo3-dev-companion` with the feedback's own arguments —
-`typo3_hint_lookup` with `id=installation-boot`, then `typo3_task_guide` with
-`changeType=operations` and `paths=[".ddev/config.yaml","composer.json","blog"]`
-— and all five come back verbatim. Four of them arrive in that one
-`typo3_task_guide` answer, whose `intents` are `installation-setup` and
-`installation-operations`, so the brief the report calls "the checklist" is both
-of their checklists in one call.
-
-The praised absence is exhaustive, and this is the first keep-request whose axis
-could be read straight off the core. `SetupService::getAvailableDistributions()`
-walks `getAvailablePackages()` and skips every package that has neither
-`Initialisation/data.xml` nor `Initialisation/data.t3d` in its package path.
-There is no second predicate — not the Composer type, not a manifest key — so
-*shipping one of the two files is the whole test* is closed over the axis the
-session read into it. The method is byte-identical in `.checkouts/14.3` and
-`.checkouts/main` but for a blank line, and `SetupCommand` honours
-`--create-site` in both wherever `$distributions['active'] === []`.
-
-The boundary is **what an answer hands the caller to check against what it asks
-the caller to believe**. Everything this strength credits is on the first side,
-and each is a different kind of handle: a file path the environment reads
-(`Typo3Version.php`), a file whose presence decides a branch
-(`Initialisation/data.xml`), an exception number that tells two refusals apart
-(1669747685 against 1669747200), a settings key a value silently becomes
-(`BE/installToolPassword`), a command that recovers what is not stored
-reversibly (`backend:resetpassword`). None of them is a conclusion; each is
-something the session could put to its own machine.
-
-The cost side is the same debrief, seven files in three minutes, and every one
-of them is a conclusion with no test attached. `2026-08-18-070632` is the exact
-inverse of the strength's item 2: `--create-site` carries `until: 13`, which
-reads as removed at v14, and the clause that decides it — *read only where no
-distribution is active yet* — sits mid-paragraph in the statement beside it, so
-the session reconciled two statements and then verified empirically.
-`2026-08-18-070423` names the variables `typo3 setup` reads and not the
-invocation that carries them into the container, and two round trips went on
-`ddev exec -e` and `--raw=false`. `2026-08-18-070358` answers `scope: uncertain`
-for an extension key the parameter documentation says counts as a path.
-`2026-08-18-070333` promises in a tool description that the answer holds on a
-fresh clone, which is the one state it does not. Four cards, four conclusions
-the caller had no way to check; five sentences, five tests it could run. One
-session reported both directions without seeing them as one line.
-
-What the report proposes generalising — *state the decidable test alongside the
-conclusion* — is the same reading, and it is not written as a requirement here.
-One debrief is where the shape was found, `070632` is the single instance of the
-absence and has a card of its own, and naming its answer from here is the
-copy-down judging.rst warns about. What would establish it is a second debrief
-reporting the same split from a different task shape.
-
-Four of the five keep-requests rested on nobody rewriting the file. The
-additional.php paragraph was held for the timing and not for the path the
-detection reads, which is the half the session acted on;
-`aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict` names that
-path, the `Initialisation/data.xml` clause and the sentence that leaves the file
-to DDEV, all three in the brief the report received. The four password lines
-were in no assertion at all —
-`theAdminPasswordIsAnsweredWithWhatItAlsoBecomesAndHowItIsRecovered` holds the
-report obligation, the generated password, the install-tool half and the reset.
-The two exception numbers and what `--force` moves were held by their wording
-alone, and the distribution predicate by neither, so both are added to
-`anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses`. The fifth, the
-`Typo3Version.php` sentence in the hint that owns it, was guarded already by
-`theDdevSettingsAnswerSaysWhenThatFileIsWritten`.
-
-One statement about TYPO3 was checked and none was established: the predicate
-was read in `.checkouts/`, and everything else is this server's own answers
-re-run. The feedback is closed by this commit and nothing is queued. What it
-asks be kept is now asserted rather than left standing, which is the third
-**Wrong if** asked of a closed strength.
-
-## Confirmed on 2026-08-18
-
-`feedback/2026-08-18-074305` is the first strength that prices a construction
-this repository chose knowing it would cost something, and the price it reports
-is the one the choice assumed.
-
-It credits three answers from a session that repaired a frontend 404 on a DDEV
-installation of `t3g/blog` in `/home/benji/projects/blog` and then wrote three
-commits: `typo3_project_describe` as the first call, the `operations` brief, and
-`typo3_commit_message_guide`. The first **Wrong if** did not fire. Every
-counterfactual in it is an action an answer pre-empted — the generated
-`config/system/additional.php` it did not touch, the TypoScript and caches it
-did not chase, the round trip it did not spend guessing a commit convention —
-and the two commands it ran, it ran *because* of an answer rather than instead
-of one.
-
-The quotations are checked before the boundary is. The reporting checkout is
-another session's work, so the re-runs were made on 2026-08-18 from this
-worktree, with the feedback's own arguments, and from `.checkouts/14.3` where
-the answer needs an installation:
-
-- `typo3_task_guide` with the feedback's task, `changeType=operations`,
-  `targetVersion=14.3` and its three paths answers `installation-operations`
-  strong and `installation-setup` weak. Both credited items come back: the
-  `additional.php` ownership paragraph in the hints and again as a checklist
-  item, and the seeded installation answering 404 at its own root because
-  `Import::processSiteConfigurations()` overwrote the base.
-- `typo3_commit_message_guide` with `workflow=project` returns the wrapped
-  message and one check, `summary-length-preferred`, which is the code the
-  report names.
-- `typo3_project_describe` from `.checkouts/14.3` renders the marking and the
-  paragraph that explains it, and classifies that checkout's four `gerrit:setup`
-  scripts as `unknown`.
-
-**The credit is not misplaced, which is worth saying after five corpora in which
-it was.** The report says it ran `composer test:php:lint` and `composer phpstan`
-unasked because both were marked `check`, and those two declarations are the two
-`ProjectTest`'s own asserted table answers `RUNS_AS_CHECK` for. Its count is
-exact where it can be checked and stale by one where it cannot: six guarded
-items reproduce as six, and the seventeen it counted are eighteen, because
-`94765545` added the fresh-instance item to `installation-operations` five and a
-half hours after the report — on the unguarded side.
-
-The caveat is the whole of what this strength adds, and it is the report's own
-qualification of what it is praising: six of the items were guarded
-`only if the task is setting an installation up rather than working on the code in one`,
-which did not hold, "so the guard worked; it is just a lot of answer to read
-past". `TaskIntents::confirmed()` never promotes a weak match and states the
-condition instead, and `ScopeTest`'s
-`aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules` calls that cost
-"a prefix rather than a lookup" over two items. This is the same price paid at
-six items in eighteen, by a session that read them, skipped them and calls the
-prefix worth keeping. So it prices `D-SKL-051`'s weak `development installation`
-rather than contradicting it, and there is nothing to queue: its second **Wrong
-if** is about a weak match arriving alone, and here `installation-operations`
-matched strongly and carried `typo3-development-installation` in.
-
-The boundary is **what a session can settle when the answer arrives against what
-it would have to be reminded of later**. Everything credited is on the first
-side: the sites and the command marking arrived at orientation and were acted on
-in the same minute, the `additional.php` paragraph and the base item answered
-the question the session was holding, the length check answered a message it had
-just written. So are the six guarded items, from the other end — their condition
-is one the reader settles on arrival, which is why reading past them costs a
-prefix. The cost side is the same debrief, and it is everything whose condition
-could only become true later: `074226`'s guides list, delivered at orientation
-and wanted three user turns afterwards; `074245`'s hand-off, read once before
-the work that triggers it existed; `074327`'s five-step order, walked against
-the task as first phrased and never re-raised when it became a patch. This
-server answers a call and never sees the session again. Each of the three has a
-card of its own, and naming what fills that half from here is the copy-down
-judging.rst warns about.
-
-Two keep-requests rested on nobody rewriting the file, and both are held now.
-The marking was guarded twice over already —
-`ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources` holds the
-sentence the report acts on, and `SkillTest` the three values — but nothing held
-the guard on the setup items for the case that produced this report:
-`theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists` names the
-confidences, the prefix on every one of the six, and that the password
-instruction reaches no other item. The other is the site line the diagnosis
-turned on. `base` and `rootPageId` are required keys of
-`ProjectDescribe::outputSchema()`, so the data was held and the sentence
-rendering them was in no assertion —
-`ProjectTest::everySiteIsNamedWithTheBaseAndTheRootPageItCarries` builds the two
-sites `074200` describes, one on a host and one on `/`, and reads both back out
-of the text.
-
-No statement about TYPO3 was established: the re-runs read this server's own
-answers, and the item that made seventeen eighteen was read in this repository's
-own history. The feedback is closed by this commit and nothing is queued.
-
-## Confirmed on 2026-08-18
-
-The 2026-08-03 section says an exclusion is used through its `instead`, and that
-its `why` is read once and believed. `feedback/2026-08-18-080743` is the
-strength where the caller did not use the `instead` either. It had read the
-class, on both majors, before the answer arrived.
-
-It is the debrief half of a session that fixed the `[blog.isPost()]` TypoScript
-conditions on TYPO3 v14 in `/home/benji/projects/blog` and called this server no
-times while doing it. `typo3_server_scope`, called afterwards, agreed with it:
-the *PHP source as code* exclusion describes what the session consisted of. The
-cost half is `feedback/2026-08-18-080710`, filed 33 seconds earlier, which is on
-the board with a card of its own.
-
-The first **Wrong if** did not fire. Reading the class is what the exclusion
-prescribes, so it is compliance rather than the *did instead* the ladder is
-walked from — `2026-07-31-194823` is where a corroboration was established not
-to be one. Every other counterfactual in the file belongs to a sibling: the
-session that called nothing to `080710`, the guides nobody listed to the note
-named below.
-
-The quotations are checked before the boundary is. The reporting project is
-another session's checkout, so the re-run was made on 2026-08-18 through
-`bin/typo3-dev-companion` from this repository's own `.checkouts/14.3`:
-
-- The exclusion reproduces verbatim, `Instead: Read the class` included, and the
-  three tools it hands the neighbouring questions to are registered.
-- Every covered topic carries its `Tools:` and `Source:` line, which is what let
-  the session tell a Bash detour with a tool behind it from one without.
-- The `answersFrom` block distinguishes the five sources the report names:
-  installation with 8 tools, packages 8, knowledge 12, network 4, checkout 2.
-- The installation half reproduces in shape and not in its values. This checkout
-  answers `core-checkout` with a console via php at 8.3.23; the
-  `composer-project` and the ddev console at PHP 8.2 are that machine's.
-
-**The praised sentence is true, which the 2026-08-01 section requires be checked
-rather than assumed.** Nothing here reads a class for what it declares.
-`Extension::declarationsIn()` tokenises the registration files an extension
-ships and takes TCA table names, content elements, plugin signatures and
-FlexForm data structures out of them. `PhpArray` and `FluidNamespaces` tokenise
-a configuration file for its keys, and `Instance::typo3Version()` matches one
-class constant. All of it is a registration or metadata, and none of it is a
-signature or an annotation.
-
-The boundary is **what an orientation answer is worth to a caller that has
-already decided against what it is worth to one that has not**. Everything this
-strength credits is a confirmation: an exclusion that agreed, a discovery that
-matched what the session had worked out from `.ddev` and `composer.json`, a
-per-topic attribution that made the debrief writable. None of it changed an
-action, because the call came after the work. The same answer carries the
-routing line that would have changed one — *starting work on a TYPO3 major you
-have not built on recently … → typo3_changelog_lookup* — which the cost half
-names as the one call it would make next time. One document, one session, and
-what separates the two halves is when it was read.
-
-The corpus repeats that split one hint deeper. The report ends on the two
-failures the session did have, both in Bash, one of them an unquoted
-`--filter A|B` whose pipe the shell ate inside `ddev exec`.
-`knowledge/hints/configuration.json` carries that trap and the `bash -c` form
-that survives it. So the answer to the one thing that went wrong was written
-here, and a session that calls nothing reaches no delivery.
-
-The suggestion is refused, and it is the shape `2026-08-03-164818` established:
-an ask for something the answer already does. It asks that covers entries gain
-an explicit *and not X* clause of the exclusions' firmness. On 2026-08-18, 26 of
-the 28 carry one — *it says nothing about what parseFunc does to a snippet*, *it
-runs nothing and starts no installation*, *a miss says the name is not a system
-extension there, never that it does not exist* — and the two that do not are the
-two shortest topics. What differs is the form: a covered topic renders as one
-line of `depth` with the clause at its tail, an exclusion as a heading of its
-own with an `Instead:` under it. Giving the clause that form states a boundary
-in a second place, and `R-SCO-008` makes `doesNotCover` the exhaustive one. What
-a boundary nobody tests costs is what the 2026-08-01 section priced. A second
-session reporting it read a covered topic and mistook its limit is what would
-change this.
-
-The keep-request is answered against the file as it is now, and it names two
-things. The `answersFrom` split is held already:
-`SourceTest::theOrientationAnswerGroupsEveryOfferedTool` asserts that every
-offered tool stands under a source and that each entry's meaning is the enum's,
-and a case cannot be dropped without the tool definitions failing to resolve.
-The exclusion rested on nobody rewriting the file. `SkillTest` holds
-`typo3-core-patch-review` restating it and nothing held the entry it restates,
-so `ScopeTest::theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact`
-names the `@internal` half of the topic, the `instead` the caller acts on, the
-three tools beside it, and the qualification a summarising rewrite drops first —
-*never for a signature or an annotation*, which is what the registration reads
-above would otherwise falsify.
-
-The guides half is the third arrival on one line and is nobody's to take over
-here. `feedback/2026-08-18-074226` is archived, the instructions have named
-those resources since `c62ecbcf` on 2026-08-04, and `feedback/2026-08-18-113425`
-reports from another project that naming them without listing them is not
-enough. Its card carries that.
-
-The feedback is closed by this commit and nothing is queued. No statement about
-TYPO3 was established: the re-run read this server's own answers, and what the
-exclusion claims about this server was settled against `src/`.
 
 ## Confirmed on 2026-08-21
 
@@ -1388,3 +803,51 @@ one as the highest-value answer of a whole audit.
 
 The third **Wrong if** is what this run bears on. What the closed half leaves
 behind is three assertions and a test rather than a commit message.
+
+## Confirmed on 2026-08-22
+
+Eight readings held the rule above and changed nothing in it, so each is a line
+here rather than a section of its own. What every one of them settled is the
+boundary it names and the guard it left. `D-DOC-041` is why they were judged.
+
+- `2026-07-31-194823` on 2026-08-02. The boundary is what an answer carries
+  where somebody wrote it against what it carries where it indexes something.
+  `HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists` holds the
+  sentence it asked be kept.
+- `2026-07-31-194825` on 2026-08-02, the second reading of the strength above.
+  The todo it queued was worked, and `Ships:` renders the language files the way
+  it renders the manual, in the text as well as in the data.
+- `2026-08-02-144456` on 2026-08-03. The boundary is between an obligation and
+  the rule that discharges it, which a task about a bug never reaches.
+  `HintsTest::aViewHelperPatchIsToldWhichTestItOwesAndWhichChangelogType` holds
+  the two sentences.
+- `2026-08-08-224455` on 2026-08-09. The boundary is a rule against an instance:
+  a rule arrives from the domain the task is already in, and an instance is
+  reachable only by an identifier the caller holds or by the words written in
+  it. `KnowledgeTest::theReleaseTargetsAnswerRefusesTheBranchListInTheCheckout`
+  and two assertions beside it hold what it asked be kept.
+- `2026-08-13-214838` on 2026-08-14. The boundary is what this corpus answers to
+  a handle the caller holds against what it answers to a description of what is
+  wanted. `LabelSearchTest::twoLabelsOfOneKeyAreToldApartByTheResourceEachIsIn`
+  and `KnowledgeTest::theFetchDirectionNamesTheRemoteTheChangeRefIsOn` hold the
+  two.
+- `2026-08-18-070515` on 2026-08-18. The praised absence is exhaustive, and its
+  axis was read off `SetupService::getAvailableDistributions()` rather than
+  supplied by the reader. The boundary is what an answer hands the caller to
+  check against what it asks the caller to believe.
+  `aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict` and three
+  assertions beside it hold what it asked be kept.
+- `2026-08-18-074305` on 2026-08-18, after five corpora in which the credit was
+  misplaced and the first in which it was not. The boundary is what a session
+  can settle when the answer arrives against what it would have to be reminded
+  of later, and its caveat prices `D-SKL-051` rather than contradicting it.
+  `ProjectTest::everySiteIsNamedWithTheBaseAndTheRootPageItCarries` and
+  `theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists` hold the
+  two.
+- `2026-08-18-080743` on 2026-08-18. The praised exclusion is true, which the
+  reading of `2026-08-01-121852` above requires be checked rather than assumed.
+  The boundary is what an orientation answer is worth to a caller that has
+  already decided, and the same answer carried the routing line that would have
+  changed an action.
+  `ScopeTest::theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact`
+  holds it.

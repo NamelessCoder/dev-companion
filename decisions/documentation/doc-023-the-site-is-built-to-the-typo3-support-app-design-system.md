@@ -82,7 +82,7 @@ is the product's own.
 - Every drawing ships twice and the dark file is a straight token swap of the
   light one. Which is shown is the script's decision rather than a `<picture>`
   query, because a `media` query reads the machine and this page can be held in
-  the other mode against it — and `Site::publishDrawings()` puts the twin nobody
+  the other mode against it — and Site::publishDrawings() puts the twin nobody
   named beside the one a page did.
 - A drawing is inlined into the page rather than linked. An `<img>` is a
   document of its own and cannot see this page's `@font-face` rules, so the type

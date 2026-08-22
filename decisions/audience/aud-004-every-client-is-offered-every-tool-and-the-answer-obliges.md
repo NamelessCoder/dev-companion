@@ -28,7 +28,7 @@ the right one at all.
 - The knowledge was never withheld. `D-AUD-002` decided the resources are not
   filtered, so every core document stayed readable as a `typo3://core` resource
   under the `project` profile. What the profile removed was the doorway, and
-  `Scope::offered()` then edited the map so the doorway was not mentioned —
+  Scope::offered() then edited the map so the doorway was not mentioned —
   leaving a client carrying knowledge it could no longer find.
 - Ten recorded sessions in `E-SITE` called `typo3_task_guide` eight times and
   not one was core-shaped, so the derivation was right every time it ran and

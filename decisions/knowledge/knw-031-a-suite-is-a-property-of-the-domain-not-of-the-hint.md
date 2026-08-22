@@ -31,7 +31,7 @@ written in.
 
 ## Decided
 
-- `checks` is gone from every hint and from `Schema::architectureHintRecord()`,
+- `checks` is gone from every hint and from `Schema::hintRecord()`,
   and `withoutChecks()` with it. A hint is a convention; what a caller runs
   afterwards is a different question with its own tool.
 - `knowledge/test-suite-hints.json` gains a `base` flag, and `baseFor()` returns

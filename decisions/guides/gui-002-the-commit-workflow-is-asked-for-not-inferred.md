@@ -13,7 +13,7 @@ A commit message carries no paths, and its subject text describes the change
 rather than the repository it lands in.
 
 `typo3_commit_message_guide` now takes `workflow: "core" | "project"`. Every
-other tool that draws this line derives it — `Scope::isOutsideCore` reads the
+other tool that draws this line derives it — `Scope::of()` reads the
 paths and the task text. This one does not.
 
 ## Decided

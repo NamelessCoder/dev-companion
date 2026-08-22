@@ -39,7 +39,7 @@ it was read from. The rest of that file is how the project boots.
   `dump.yaml` — is the project's own: its `db_pull_command` copies the unzipped
   dump into `.ddev/.downloads/db.sql.gz`, which is what makes `ddev pull dump`
   reproducible.
-- This server already opens that file. `Project::ddevPhp()` reads
+- This server already opens that file. `Project::ddev()` reads
   `.ddev/config.yaml` and every `.ddev/config.*.yaml` beside it, and takes
   `php_version` out of them and nothing else.
 - Nothing else here answers it. A search of `src/` for hooks and providers finds

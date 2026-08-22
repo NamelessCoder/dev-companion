@@ -69,8 +69,8 @@ more than one environment variable is the answer itself. It routes to
 `typo3_test_run_guide`, which this client cannot call — twice on the
 patch-shaped task and six times on a test-shaped one, out of
 `knowledge/architecture-hints/php.json`, two entries in
-`knowledge/server-scope.json` and `TaskGuide.php:502`. `Scope::offered()`
-filters those routes, and `TaskGuide` does not. It reads `Scope::read()` and
+`knowledge/server-scope.json` and `TaskGuide.php:502`. `Coverage::offered()`
+filters those routes, and `TaskGuide` does not. It reads `Coverage::read()` and
 filters by the audience of the task instead, which is exactly the collision this
 entry named: the task is core work and the directory is not. `R-SCO-007` says
 nothing the server hands out points at a tool it does not offer, so this is that

@@ -76,7 +76,7 @@ this entry.
   its readers once it is published —
   [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst) —
   and `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name in
-  `knowledge/` to it. It was the `Installer::SKILLS` list when this was decided
+  `knowledge/` to it. It was the Installer::SKILLS list when this was decided
   and is `Installer::skills()` since 2026-08-04, which is the same statement
   read out of the skills' own front matter; see **Since then**.
 - **`skills/base.md` is unchanged.** That is the half of this answer that cost
@@ -164,7 +164,7 @@ has the measurement and what it left alone.
 
 ### 2026-08-04 — publication is read off the skill, and the list is gone
 
-`Installer::SKILLS` was a list of published names beside the directory it
+Installer::SKILLS was a list of published names beside the directory it
 described, which is one fact in two places. `Installer::skills()` is that
 directory minus every skill whose front matter says `status: draft`, and there
 is no list any more.

@@ -31,7 +31,7 @@ the corpus was a directory plus one file above it. Neither is true since
 
 ## Decided
 
-- `Site::RENDER` carries `-c` and `Site::SOURCE`, so the flag names the same
+- Site::RENDER carries `-c` and `Site::SOURCE`, so the flag names the same
   constant the copy is read from and the two cannot be moved apart.
 - `Site::sources()` skips it by name. The copy is the pages published, and a
   renderer's configuration is not one — published it would sit in the input

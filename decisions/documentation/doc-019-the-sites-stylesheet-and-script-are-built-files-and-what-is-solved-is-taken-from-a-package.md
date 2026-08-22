@@ -57,7 +57,7 @@ things being hand-written had grown from a stylesheet to a highlighter.
   knows something a package cannot — that the 582 fenced blocks are recorded
   evidence and indexing them buries every prose match.
 - Node is 24, which is the active LTS and what this machine runs.
-- `Site::useBuilt()` is the seam a test hands its own directory in through,
+- Site::useBuilt() is the seam a test hands its own directory in through,
   because `npm run build` is not something the suite runs.
 
 ## Assumed

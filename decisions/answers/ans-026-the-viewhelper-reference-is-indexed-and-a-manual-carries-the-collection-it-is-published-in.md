@@ -22,7 +22,7 @@ every base used to have in common.
   `knowledge/versions.json` covers — so the version asked for is the branch that
   is already asked for elsewhere and the engine keeps no axis of its own
   ([`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md)).
-- Its root is a table of contents `Documentation::links()` reads: 189 pages at
+- Its root is a table of contents `Documentation::index()` reads: 189 pages at
   14.3, `Global/If.html` among them. That was the first **Wrong if** of
   `D-ANS-023` and it did not hold.
 - The pages excerpt. The If page opens with "This ViewHelper implements an

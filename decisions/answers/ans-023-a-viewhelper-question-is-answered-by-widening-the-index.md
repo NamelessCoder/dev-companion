@@ -51,7 +51,7 @@ reference is, and the lookup does not carry it.
   no `f:then`, `f:else` or `f:else if` child was seen, so the same template
   compiles with no then closure at all. Nothing raises and nothing is logged,
   which is the empty link the session reported.
-- Adding the book is not one entry in an array. `Documentation::search()` builds
+- Adding the book is not one entry in an array. Documentation::search() builds
   every base as `/m/<document>/<version>/en-us/`, and this manual is published
   under `/other/`.
 
@@ -78,7 +78,7 @@ reference is, and the lookup does not carry it.
 
 ## Assumed
 
-- The reference's root is a table of contents that `Documentation::links()` can
+- The reference's root is a table of contents that Documentation::links() can
   read, on the strength of the anchor counts alone. The parser was not run
   against it.
 - One book more is worth one fetch more per call. The lookup already fetches
@@ -107,7 +107,7 @@ one method builds every base from it.
 
 None of the three **Wrong if** held. The root at
 `/other/typo3/view-helper-reference/14.3/en-us/` is a table of contents:
-`Documentation::links()` reads 189 pages out of it, `Global/If.html` among them.
+Documentation::links() reads 189 pages out of it, `Global/If.html` among them.
 The excerpts are prose — the If page opens with "This ViewHelper implements an
 if/else condition", the Then page is 184 characters and still says what it is
 for. And a Fluid question is not outranked:

@@ -35,7 +35,7 @@ could be read for it.
   own `vendor/composer/platform_check.php` says `>= 80200`, matching its
   `require.php` of `>=8.2`, while the reported tree said 8.4.0 against a
   sitepackage that declares neither.
-- The reader exists and is one method. `Typo3Cli::installedPhpBound()` parses
+- The reader exists and is one method. `Instance::installedPhpBound()` parses
   that file for the console, and `R-DIS-010` is the same distinction — reachable
   and ready are two questions — already drawn for the boot and not for the
   commands the same server hands over.

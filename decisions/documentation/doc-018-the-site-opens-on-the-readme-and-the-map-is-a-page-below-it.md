@@ -38,7 +38,7 @@ what they were shown was the map of how this repository works on itself.
 
 ## Decided
 
-- `Site::FRONT` is `readme.md`, published as `index.md`. The map keeps its place
+- Site::FRONT is `readme.md`, published as `index.md`. The map keeps its place
   in the tree and is published under its own title, so no directory here has to
   stop calling its own page `readme.md`.
 - A link is resolved against the repository and named again from the published

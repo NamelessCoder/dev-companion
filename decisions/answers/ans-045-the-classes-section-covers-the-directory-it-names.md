@@ -22,7 +22,7 @@ a caller who trusts the promise never learns there was more to open.
   `classes: [{"kind": "EventListener", "files": 2}]`, while
   `find Classes -name '*.php'` gives three files in two directories.
   `Classes/Utility/` is under no kind and in no line of the answer.
-- `Extension::CLASS_KINDS` is a closed list of thirteen names, and
+- Extension::CLASS_KINDS is a closed list of thirteen names, and
   `Extension::classes()` iterates it and nothing else. A directory that is not
   on the list is dropped, and so is a PHP file lying directly in `Classes/`.
 - Measured against `.checkouts/14.3`, the filter is not an edge case. `core` has
@@ -143,3 +143,12 @@ rather than an effect — the line reads `TypoScript files:` and the schema
 `knowledge/server-scope.json` said "the rest is declared in files" of everything
 this tool answers, which is the same sentence one level out; it now says "read
 from files".
+
+## Since then
+
+Extension::CLASS_KINDS is gone and `Extension::classes()` reads the directory:
+`Finder::create()->directories()->in($directory)->depth(0)` takes every
+directory below `Classes/`, so the bullet above describes a closed list that no
+longer decides anything. What it settled still holds — the section covers the
+directory it names — and the mechanism under it is the opposite of the one
+recorded, a reading rather than a list.

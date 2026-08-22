@@ -25,7 +25,7 @@ vendor directory and four steps of a command.
   step of `documentation:render` that could run anywhere, and it was behind the
   three that could not.
 - Nothing on the rendered site references a dark twin: zero `<img>` sources
-  across 51 pages name one. `Site::publishDrawings()` was a step that copied
+  across 51 pages name one. Site::publishDrawings() was a step that copied
   eleven files nobody asks for, and the twins are in `documentation/images/` and
   reach the copy like every other file.
 - Resolved into this package's own `require-dev` the renderer would add 34

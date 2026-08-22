@@ -7,7 +7,7 @@ revokedBy: D-KNW-005
 
 # D-SCO-008 — The path decides, and the answer may say it cannot
 
-**`Scope::isOutsideCore()` is gone. `Scope::audienceOf()` answers `core`,
+**Scope::isOutsideCore() is gone. Scope::audienceOf() answers `core`,
 `outside-core` or `uncertain` for one path.**
 
 The two tools that take a `paths` array answer per path, and a call that placed
@@ -77,7 +77,7 @@ unit of decision, and a third value.
 
 The **Decided** that the payload keeps `outsideCore` did not hold. The field is
 removed from all five output schemas: it is `scope !== core`, and every tool
-carrying it already carried the scope beside it. `Scope::audienceOf()` is
+carrying it already carried the scope beside it. Scope::audienceOf() is
 `Scope::of()` and answers a case of the `Knowledge\Scope` enum rather than a
 string, with `outside-core` split into `project` and `extension` — the three
 audiences `R-AUD-001` names. See

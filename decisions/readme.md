@@ -496,7 +496,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
 - [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
-- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
@@ -508,7 +507,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SCO-010]: scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md
 [D-SCO-011]: scope/sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
-[D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-002]: scope/sco-002-a-core-only-intent-asks-for-evidence-not-for-silence.md
 [D-SCO-003]: scope/sco-003-what-is-core-only-is-decided-per-line-by-what-it-names.md
 [D-SCO-005]: scope/sco-005-the-installation-is-evidence-about-the-task-and-the-weakest-kind.md
@@ -794,6 +792,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
 - [`D-DOC-041`][D-DOC-041] — An entry outgrown by its own history is read out · 2026-08-22
+- [`D-DOC-042`][D-DOC-042] — A backticked name is a claim that the thing exists now · 2026-08-22
 - [`D-DOC-034`][D-DOC-034] — A recording is answered from the checkout the command makes · 2026-08-18
 - [`D-DOC-035`][D-DOC-035] — What the prose costs is counted beside how long a sentence is · 2026-08-18
 - [`D-DOC-036`][D-DOC-036] — A todo serves a decision by its id · 2026-08-18
@@ -831,6 +830,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
 [D-DOC-041]: documentation/doc-041-an-entry-outgrown-by-its-own-history-is-read-out.md
+[D-DOC-042]: documentation/doc-042-a-backticked-name-is-a-claim-that-the-thing-exists-now.md
 [D-DOC-034]: documentation/doc-034-a-recording-is-answered-from-the-checkout-the-command-makes.md
 [D-DOC-035]: documentation/doc-035-what-the-prose-costs-is-counted-beside-how-long-a-sentence-is.md
 [D-DOC-036]: documentation/doc-036-a-todo-serves-a-decision-by-its-id.md
@@ -902,6 +902,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
+- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01 → D-SCO-008
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
@@ -941,6 +942,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-015]: knowledge/knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
 [D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
 [D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md
 [D-KNW-003]: knowledge/knw-003-provenance-is-not-the-third-spelling-of-binding.md

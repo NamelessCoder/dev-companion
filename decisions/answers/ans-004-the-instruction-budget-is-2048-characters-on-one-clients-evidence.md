@@ -34,7 +34,7 @@ states a limit, and no other client has been measured.
 ## Wrong if
 
 - A client is found that truncates below 2048, which makes the budget a property
-  of the connection and `Scope::INSTRUCTIONS_BUDGET` a negotiated value rather
+  of the connection and `Coverage::INSTRUCTIONS_BUDGET` a negotiated value rather
   than a constant — or if clients start reporting truncation to the server, at
   which point the server can say what it lost instead of guessing what it may
   spend.

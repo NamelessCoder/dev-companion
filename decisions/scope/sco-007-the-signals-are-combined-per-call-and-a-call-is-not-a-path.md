@@ -1,12 +1,13 @@
 ---
 id: D-SCO-007
 date: 2026-08-01
-status: open
+status: revoked
+revokedBy: D-SCO-008
 ---
 
 # D-SCO-007 — The signals are combined per call, and a call is not a path
 
-**`Scope::isOutsideCore()` combines the signals `R-SCO-001` orders over the
+**Scope::isOutsideCore() combines the signals `R-SCO-001` orders over the
 whole call: every path is folded into one string and one boolean comes back.
 `META-03` is therefore a feature and not a wording change.**
 
@@ -61,3 +62,14 @@ asks what applies to each. Read against `Scope`, the question was which half of
   cheap answer is enough — a call whose signals disagree names both audiences
   and applies neither silently, which is `META-03`'s second required outcome
   without the first.
+
+## Revoked on 2026-08-22
+
+The statement describes a call that returns one boolean over the whole call, and
+`D-SCO-008` opens by saying that call is gone. What replaced it answers a case
+of the `Knowledge\Scope` enum per path — `D-KNW-005` — so nothing here reads as
+a claim about today, and the ordering the entry established is what `D-SCO-005`
+carries and `R-SCO-001` states.
+
+Nothing disproved it. The entry was left `open` while the API under it was
+replaced twice, which is what reading the corpus for names it spells found.

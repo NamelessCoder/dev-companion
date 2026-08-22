@@ -176,7 +176,7 @@ the whole argument for holding one.
 The sqlite driver is a workaround with a date on it, and it is the one part of
 this that somebody may want reversed: an installation on sqlite answers what a
 console question asks and says nothing about what MariaDB does under the same
-schema. `Environments::DEVELOPMENT_DRIVER` is the whole of it, and the released
+schema. Environments::DEVELOPMENT_DRIVER is the whole of it, and the released
 lines are untouched.
 
 **Measured on 2026-08-03**, built from an empty directory by
@@ -231,7 +231,7 @@ written and waiting on somebody with an account, on
 `todo/waiting/2026-08-03-104500-file-the-setup-defect-that-cannot-finish-on-main.md`.
 
 The workaround the **Wrong if** watched is no longer one. `c27f8bd` removed
-`Environments::DEVELOPMENT_DRIVER` and put every covered line on sqlite, for a
+Environments::DEVELOPMENT_DRIVER and put every covered line on sqlite, for a
 reason the defect did not buy: no database container, no volume named after the
 project, and `rm -rf` is the whole of taking an environment away. What that
 **Wrong if** was written to catch — an installation whose database is not the

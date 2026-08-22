@@ -32,7 +32,7 @@ classes that had no business knowing it.
 - `Documents::URI_PREFIX`, `Documents::uri()` and `Documents::idOf()`. The
   corpus owns how it is addressed, because the tools and the answer shapes need
   it and neither may ask the adapter.
-- `ResourceHandler::DOCUMENT_PREFIX` is gone rather than kept as an alias. Two
+- ResourceHandler::DOCUMENT_PREFIX is gone rather than kept as an alias. Two
   names for one constant is the thing this entry is about.
 - The id stays the argument every reading call takes. Passing a URI into
   `search()` would mean stripping it again at the other end, which is the same

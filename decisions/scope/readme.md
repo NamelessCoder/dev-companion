@@ -14,7 +14,6 @@ one is added.
 - [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
 - [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
-- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
@@ -26,7 +25,6 @@ one is added.
 [D-SCO-010]: sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md
 [D-SCO-011]: sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md
 [D-SCO-009]: sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
-[D-SCO-007]: sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-002]: sco-002-a-core-only-intent-asks-for-evidence-not-for-silence.md
 [D-SCO-003]: sco-003-what-is-core-only-is-decided-per-line-by-what-it-names.md
 [D-SCO-005]: sco-005-the-installation-is-evidence-about-the-task-and-the-weakest-kind.md
@@ -34,10 +32,12 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01 → D-SCO-008
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 
+[D-SCO-007]: sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-008]: sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-SCO-001]: sco-001-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md
 [D-SCO-004]: sco-004-the-frontend-is-recognised-by-name-and-only-the-two-ui-sections-go.md

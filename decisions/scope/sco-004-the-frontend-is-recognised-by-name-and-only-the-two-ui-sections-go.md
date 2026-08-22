@@ -19,7 +19,7 @@ are shaped exactly like core paths, and the second one is one.
 
 - The task text decides. A frontend marker with no backend marker withholds the
   `Backend CSS` and `Backend TypeScript` categories, and the answer says which
-  and why. `Scope::isOutsideCore` was the obvious lever and is the wrong one: an
+  and why. Scope::isOutsideCore was the obvious lever and is the wrong one: an
   extension's backend module has backend CSS, and the core renders a frontend.
 
 ## Assumed

@@ -1,7 +1,7 @@
 ---
 id: D-DOC-005
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-DOC-005 — A number is three digits so a group lists in order
@@ -74,3 +74,20 @@ opened with the tenth, and so did the index generated from it.
 
 - `RequirementsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder`
 - `DecisionsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder`
+
+## Confirmed on 2026-08-22
+
+The width holds and the shape it was chosen for is what happened. The largest
+group is `D-KNW` at 105, so two digits would have run out three weeks after this
+was written and the rename the entry priced at 183 files would be back — against
+a corpus that has roughly doubled. `R-ANS-008b` is still the only letter suffix
+and still lists where it belongs.
+
+Nothing has come back on the first **Wrong if**. The two-digit form survives in
+six places outside the git history, and all six quote it deliberately — three in
+this entry and three in the test that holds it. No feedback, todo or run names
+an id in it. The second **Wrong if** is further off than it was: 105 of 999.
+
+The third is the one a reading cannot settle. Whether 1393 ids read as noise in
+prose is a judgement about every sentence they stand in, and what would say so
+is somebody reporting it rather than a sweep.

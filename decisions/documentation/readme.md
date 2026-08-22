@@ -40,7 +40,7 @@ earns one.
 - [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
-- [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
+- [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02

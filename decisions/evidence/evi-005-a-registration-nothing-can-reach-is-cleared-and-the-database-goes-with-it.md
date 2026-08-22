@@ -96,9 +96,11 @@ directory nobody can visit.
 
 ## Wrong if
 
-- A session loses a database it wanted to an approot that was only temporarily
+- ~~A session loses a database it wanted to an approot that was only temporarily
   absent. Then the clearing needs to ask, or to keep the snapshot `delete` would
-  otherwise take.
+  otherwise take.~~ Priced out on 2026-08-22: the default driver is SQLite and
+  the build runs `omit_containers: [db]`, so the registration holds no database
+  to lose.
 - `ddev delete` stops working on a project whose directory is gone, which would
   put the two-command sequence back and leave the volume to the build.
 - TYPO3's setup gains a way past a populated database. Then the create has an
@@ -109,3 +111,21 @@ directory nobody can visit.
 
 - `EnvironmentsTest::aRegistrationWhoseCheckoutIsGoneHoldsNothingBack`
 - `EnvironmentsTest::clearingARegistrationTakesTheDatabaseThatWouldOutliveIt`
+
+## Since then
+
+The first **Wrong if** is struck rather than answered, because what it is about
+went away. `Environments::DEFAULT_DRIVER` is `sqlite` and every environment
+below `.environments/` runs `omit_containers: [db]`, so the database is a file
+in the directory the approot names: clearing a registration nothing can reach
+takes a name and no data, and the ask this **Wrong if** asks for would be about
+nothing. `discard()` is still `ddev delete --omit-snapshot -y` for the case
+where a project was built on MySQL.
+
+The second is unfired and not testable here without taking a registration apart.
+DDEV is v1.25.1 on this machine, the version the entry measured against, and the
+five projects `bin/cli environment:status` reports all have their approot.
+
+The third is an outside event and stays open. TYPO3's setup gaining a way past a
+populated database is a release note rather than a reading, and where it lands
+is the failure message the create prints.

@@ -40,5 +40,7 @@ What the state means
 They are the ``RequirementState`` enum. ``bin/cli requirements:check`` cannot
 fail on **open** or **not guarded**; both are legitimate, and
 :doc:`bin/cli unresolved:list <index>` reads them out instead, together with
-whether a todo names the id. Nothing in ``requirements/`` reaches the order of
-the work on its own; that listing is the whole of the coupling.
+what has been decided about each: a todo that names the id, or a ``judged:``
+date saying a session read the entry and left it as it is —
+:ref:`judging one <judging-a-requirement>`. Nothing in ``requirements/`` reaches
+the order of the work on its own; that listing is the whole of the coupling.

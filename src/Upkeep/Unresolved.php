@@ -25,16 +25,20 @@ final class Unresolved
     /**
      * Every requirement nothing answers for, in id order.
      *
-     * `queued` is the whole coupling to the pipeline: a queued todo naming
-     * the id is what turns an entry into work, and an entry no item names is one
-     * nobody has decided about either way.
+     * Two answers take an entry out of what nobody has decided about, and
+     * `queued` is only the first: a queued todo naming the id is what turns it
+     * into work, and `judged` is the day a session read it and decided it stays
+     * as it is. Without the second, a requirement no test can hold — which
+     * `writing-a-requirement.rst` names as the honest answer, and which the
+     * **Held by** of three entries has carried since July — could never leave
+     * this reading, and every session re-derived the same judgement.
      *
-     * Read from what the queue says it serves rather than from `todo/` as a
-     * whole. A search over the directory answers yes for an id named in the
-     * page that lists what is deliberately *not* queued — which is a decision
-     * that was taken, and the opposite of the one this flag reports.
+     * `queued` is read from what the queue says it serves rather than from
+     * `todo/` as a whole. A search over the directory answers yes for an id
+     * named in the page that lists what is deliberately *not* queued — which is
+     * a decision that was taken, and the opposite of the one this flag reports.
      *
-     * @return array<int, array{id: string, state: string, title: string, queued: bool}>
+     * @return array<int, array{id: string, state: string, title: string, queued: bool, judged: string}>
      */
     public static function requirements(): array
     {
@@ -51,6 +55,7 @@ final class Unresolved
                 'state' => Requirements::state($requirement)->value,
                 'title' => $requirement['title'],
                 'queued' => in_array($requirement['id'], $queued, true),
+                'judged' => $requirement['judged'],
             ];
         }
 

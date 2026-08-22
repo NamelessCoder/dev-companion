@@ -121,6 +121,28 @@ final class RequirementsTest extends TestCase
     }
 
     /**
+     * A judgement is what takes an unguarded entry out of
+     * `bin/cli unresolved:list` without anything being built for it, so what it
+     * says has to be the day it was made: the entry can be rewritten under a
+     * stamp, and the date is the only thing that lets a reader notice.
+     */
+    #[Test]
+    public function aJudgementIsTheDateItWasMadeOn(): void
+    {
+        foreach (Requirements::all() as $id => $requirement) {
+            if ($requirement['judged'] === '') {
+                continue;
+            }
+
+            self::assertMatchesRegularExpression(
+                '/^\d{4}-\d{2}-\d{2}$/',
+                $requirement['judged'],
+                $id . ' is judged ' . $requirement['judged'] . ', which is not a date',
+            );
+        }
+    }
+
+    /**
      * What holds a requirement is the only thing that separates it from a wish.
      * A test named here has to exist: a requirement claiming a test that was
      * renamed away is a claim nobody answers for, and it reads exactly like one

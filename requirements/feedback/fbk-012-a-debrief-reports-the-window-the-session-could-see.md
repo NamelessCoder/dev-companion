@@ -1,6 +1,7 @@
 ---
 id: R-FBK-012
 status: held
+judged: 2026-08-22
 restsOn: [D-FBK-023]
 ---
 

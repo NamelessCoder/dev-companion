@@ -1,6 +1,7 @@
 ---
 id: R-COD-003
 status: held
+judged: 2026-08-22
 restsOn: [D-COD-004]
 ---
 

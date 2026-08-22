@@ -68,7 +68,7 @@ final class Requirements
     /**
      * Every requirement, keyed and sorted by id.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
      */
     public static function all(): array
     {
@@ -131,7 +131,7 @@ final class Requirements
     /**
      * The requirements of one group, in the order its listing shows them.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -244,7 +244,7 @@ final class Requirements
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, title: string, status: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}
      */
     public static function read(string $path): array
     {
@@ -274,6 +274,12 @@ final class Requirements
             'heading' => $heading[1] ?? '',
             'title' => $heading[2] ?? '',
             'status' => self::frontMatterValue($frontMatter, 'status'),
+            // The day a session read this entry, found nothing holds it, and
+            // decided it stays that way. `bin/cli unresolved:list` names what
+            // nobody has answered for, and a todo naming the id was the only
+            // answer it could see — so a requirement no test can hold, which is
+            // a legitimate state, could never leave the reading.
+            'judged' => self::frontMatterValue($frontMatter, 'judged'),
             // The decisions this requirement stands on. A decision can be
             // revoked without anything noticing that a requirement was resting
             // on it, which is the silent case decisions/ exists to prevent.

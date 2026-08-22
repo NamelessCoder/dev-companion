@@ -72,6 +72,13 @@ final class RequirementCheck
             if (!in_array($requirement['status'], RequirementState::writtenValues(), true)) {
                 $problems[] = $id . ' has the status ' . ($requirement['status'] === '' ? '(none)' : $requirement['status']);
             }
+            // A date rather than a word, because a judgement is about the entry
+            // as it read on the day it was made, and the entry can be rewritten
+            // under it. Nothing catches that happening; the date is what lets a
+            // reader notice.
+            if ($requirement['judged'] !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $requirement['judged']) !== 1) {
+                $problems[] = $id . ' is judged ' . $requirement['judged'] . ', and a judgement is the date it was made on';
+            }
             foreach ($requirement['restsOn'] as $decision) {
                 // Whether the decision still holds is a reading rather than a
                 // failure, and bin/cli unresolved:list is where that is read out.

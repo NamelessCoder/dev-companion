@@ -67,6 +67,35 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
+     * The second answer, and the one the reading could not see until this was
+     * written: a requirement no test can hold is a legitimate state, so an
+     * entry whose **Held by** says so stays in the listing for good, and every
+     * session that ran `judge what nothing has answered for` re-derived the
+     * same judgement about the same entries.
+     *
+     * The date is carried through rather than folded into a flag, because the
+     * entry can be rewritten under the stamp and nothing catches that: what the
+     * reading can do is print the day the judgement was made.
+     */
+    #[Test]
+    public function aJudgedEntryCarriesTheDayItWasDecidedOn(): void
+    {
+        $reading = Unresolved::requirements();
+        $requirements = Requirements::all();
+
+        $judged = array_column(array_filter($reading, static fn(array $r): bool => $r['judged'] !== ''), 'id');
+        self::assertNotSame([], $judged, 'no unguarded requirement has been judged, which the reading would have to say instead');
+
+        foreach ($reading as $entry) {
+            self::assertSame(
+                $requirements[$entry['id']]['judged'],
+                $entry['judged'],
+                $entry['id'] . ' is read out with a judgement its file does not carry',
+            );
+        }
+    }
+
+    /**
      * The oldest open decision is the one the repository has moved furthest
      * away from, so it is the candidate the report names. Decisions::all() is
      * newest first for the listings, and this is the one caller that wants the

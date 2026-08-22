@@ -31,8 +31,9 @@ final class UnresolvedList
     /**
      * What is waiting, and whether the pipeline knows about it.
      *
-     * A requirement is named with the state it is in and with the one thing
-     * that turns it into work: a todo in the queue. The decisions are counted
+     * A requirement is named with the state it is in and with whichever of the
+     * two answers it has had: a todo in the queue that takes it on, or the day
+     * a session decided it stays as it is. The decisions are counted
      * rather than listed — most of them are standing because they are still
      * true, and a report that prints all of them every time is one nobody
      * reads twice. The oldest is named because it is the one the repository
@@ -51,7 +52,7 @@ final class UnresolvedList
                 $requirement['id'],
                 $requirement['state'],
                 $requirement['title'],
-                $requirement['queued'] ? '' : ' — no todo names it',
+                self::answer($requirement),
             ));
         }
         if ($requirements === []) {
@@ -59,10 +60,14 @@ final class UnresolvedList
         }
 
         // What is owed here is the judgement, not the work: a requirement some
-        // todo names has had it, and the open decisions have had it as soon
-        // as a todo takes on sorting them. Everything else would make a list
-        // that is legitimately long the only thing a session is ever offered.
-        $unjudged = array_filter($requirements, static fn(array $r): bool => !$r['queued']);
+        // todo names has had it, one carrying a `judged:` date has had it the
+        // other way, and the open decisions have had it as soon as a todo takes
+        // on sorting them. Everything else would make a list that is
+        // legitimately long the only thing a session is ever offered.
+        $unjudged = array_filter(
+            $requirements,
+            static fn(array $r): bool => !$r['queued'] && $r['judged'] === '',
+        );
         $sorting = in_array('decisions/', Todo::serves(), true);
 
         // Before the count of what nobody has been back to, because this one is
@@ -95,5 +100,26 @@ final class UnresolvedList
         ));
 
         return $unjudged === [] && $sorting ? 0 : 1;
+    }
+
+    /**
+     * What has been decided about one entry, as the line says it.
+     *
+     * A todo is the answer that turns it into work and a date is the answer
+     * that leaves it alone, so the date is printed: a judgement made before the
+     * entry was last rewritten is one somebody can disagree with, and a bare
+     * word would not say which.
+     *
+     * @param array{queued: bool, judged: string} $requirement
+     */
+    private static function answer(array $requirement): string
+    {
+        if ($requirement['queued']) {
+            return '';
+        }
+
+        return $requirement['judged'] === ''
+            ? ' — no todo names it'
+            : ' — judged on ' . $requirement['judged'];
     }
 }

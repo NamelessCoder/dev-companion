@@ -122,6 +122,40 @@ decision it rests on was later revoked is a reading rather than a failure, and
 the requirement's test green and the reasoning under it gone, which nothing else
 would say.
 
+.. _judging-a-requirement:
+
+Judging one that stays
+----------------------
+
+**open** and **not guarded** are legitimate states, which is why no check may
+fail on them and why ``bin/cli unresolved:list`` reads them out instead. What
+that reading could not see is the difference between an entry nobody has decided
+about and one a session read and deliberately left alone: it named every
+unguarded entry every time, so the same judgement was derived again in every
+session that ran it.
+
+``judged`` is that difference, and it is a date:
+
+.. code-block:: markdown
+
+    ---
+    id: R-COD-003
+    status: held
+    judged: 2026-08-22
+    restsOn: [D-COD-004]
+    ---
+
+**Why** it stays is not in the front matter. That is the sentence **Held by**
+already owes — ``not guarded`` in as many words — or, where the reasoning is a
+decision, the entry the requirement rests on. The date says only that somebody
+went and read it.
+
+A date rather than a word, because the judgement is about the entry as it read
+that day and the entry can be rewritten under it. Nothing catches that
+happening; ``bin/cli requirements:check`` holds the shape, and the date is what
+lets a reader see that the judgement is older than what it judged. Re-judging
+one is overwriting the date.
+
 ``bin/cli requirements:check`` holds every file to the shape above, and
 ``composer test`` runs the same check through ``RequirementsTest``, except the
 listing: that one is generated from every file in a group, so it is held by the

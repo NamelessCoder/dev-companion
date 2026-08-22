@@ -13,15 +13,20 @@ what its schema says. The rest of this file is what that comes to in each
 corner, and where one of these rules makes something harder to understand, it is
 the rule that is wrong.
 
-Two things follow and are worth saying outright:
+What that looks like in practice, and each is a defect on its own: a file name
+nobody can read at a glance, a sentence that will not end, a function name with
+three clauses in it. A formulation is short, precise and in plain words — the
+rule is in [Prose](#prose) and the measures are `bin/cli prose:check`.
+
+Two more follow and are worth saying outright:
 
 - **What is read as data lives where data lives**, and is said once. A title, a
   test that holds an entry, a version an answer is bound to — parsed out of
   prose, each is a regex somebody has to write again and get right again.
-- **What a reader has to reconstruct is the same defect**, even where nothing
-  fails on it. A title that repeats its own statement, an id that arrives only
-  in a docblock, a file whose name claims something the file no longer says:
-  each costs the reader the work the writer saved.
+- **Where a person has to guess what something means, that is the defect**, even
+  where nothing fails on it. A title that repeats its own statement, an id that
+  arrives only in a docblock, a file whose name claims something the file no
+  longer says: each costs the reader the work the writer saved.
 
 ## Layout
 

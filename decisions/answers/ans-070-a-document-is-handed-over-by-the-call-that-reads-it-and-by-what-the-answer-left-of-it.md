@@ -92,7 +92,7 @@ named the document, the session read the name, and it searched anyway.
 
 ## Since then
 
-, on 2026-08-11, that answer came back: the second of the three, recorded as
+On 2026-08-11, that answer came back: the second of the three, recorded as
 [`D-ANS-076`](ans-076-a-search-whose-matches-are-all-in-one-page-answers-with-the-page.md).
 A third wording was priced against it and refused, because it would have rested
 on one session's own phrasing of a line two sessions had already been handed.

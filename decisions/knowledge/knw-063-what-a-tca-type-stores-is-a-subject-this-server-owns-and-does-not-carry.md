@@ -102,7 +102,7 @@ routing failure, which is what this entry's first **Wrong if** was watching for.
 
 ## Since then
 
-, on 2026-08-07, the reading was done against `.checkouts/` at 12.4, 13.4, 14.3
+On 2026-08-07, the reading was done against `.checkouts/` at 12.4, 13.4, 14.3
 and `main`, and `tca-datetime-storage` is what came of it. All four places the
 feedback named hold, and two things it did not know are now part of the
 statement.

@@ -93,7 +93,7 @@ channel is least able to afford losing.
 
 ## Since then
 
-, on 2026-08-04, the second **Wrong if** happened. `feedback/2026-08-04-180241`
+On 2026-08-04, the second **Wrong if** happened. `feedback/2026-08-04-180241`
 recorded `ListMcpResourcesTool` beside two `typo3_*` names and read it back as
 `listmcpresourcestool`, in the joined string and in the split array alike.
 `Channel::toolNames()` keeps the separators the commit above restored and still

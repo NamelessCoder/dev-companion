@@ -159,18 +159,18 @@ before and after, so no hint became unreachable, and the order is unchanged.
 
 ## Since then
 
-, on 2026-08-07, the third **Wrong if** fired within the hour, and two things
+On 2026-08-07, the third **Wrong if** fired within the hour, and two things
 above are corrected in place.
 
 ## Since then
 
-, on 2026-08-07, the matcher half landed and it is not what that paragraph
+On 2026-08-07, the matcher half landed and it is not what that paragraph
 proposed. Subsystem detection was never built, because measuring first showed
 the failure has a simpler shape and a worse offender than either reported hint.
 
 ## Since then
 
-, on 2026-08-08, the shape turned up on a third subsystem and the fix this entry
+On 2026-08-08, the shape turned up on a third subsystem and the fix this entry
 has been queuing turned out not to be warranted. Three core frontend `Classes/`
 paths drew `frontend-records` and `page-variables-and-processors`, both
 sitepackage authoring hints, on `record` matching `RecordAccessVoter.php` and

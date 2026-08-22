@@ -97,7 +97,7 @@ different property and neither stating the rule.
 
 ## Since then
 
-, on 2026-08-04, a session hit the same rejection without the **Wrong if**
+On 2026-08-04, a session hit the same rejection without the **Wrong if**
 holding. `feedback/2026-08-04-175819` composed a search and spelled its argument
 `query`, which this tool does not have: the unknown property was ignored, the
 `oneOf` failed on both branches, and the message named `queries` and `page`

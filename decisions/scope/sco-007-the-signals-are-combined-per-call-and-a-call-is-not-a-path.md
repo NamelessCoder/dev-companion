@@ -7,9 +7,9 @@ revokedBy: D-SCO-008
 
 # D-SCO-007 — The signals are combined per call, and a call is not a path
 
-**Scope::isOutsideCore() combines the signals `R-SCO-001` orders over the
-whole call: every path is folded into one string and one boolean comes back.
-`META-03` is therefore a feature and not a wording change.**
+**Scope::isOutsideCore() combines the signals `R-SCO-001` orders over the whole
+call: every path is folded into one string and one boolean comes back. `META-03`
+is therefore a feature and not a wording change.**
 
 Nothing decides per path, and nothing can say the audience is uncertain.
 

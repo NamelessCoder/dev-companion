@@ -87,5 +87,5 @@ along with the element, and the document names the id instead.
 
 ## Since then
 
-, on 2026-08-04, the selectors were read off the core rather than off the
-report, and the assumption above did not hold as written.
+On 2026-08-04, the selectors were read off the core rather than off the report,
+and the assumption above did not hold as written.

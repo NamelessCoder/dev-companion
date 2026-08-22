@@ -110,7 +110,7 @@ the ladder, on a hint that already exists, and it is queued as
 
 ## Since then
 
-, on 2026-08-04, the generated file was read in a repository of the other shape.
+On 2026-08-04, the generated file was read in a repository of the other shape.
 `/home/benji/projects/syntax` is an extension whose own `composer.json` is the
 Composer root, with TYPO3 14.3 below `.build/vendor` and the docroot at
 `.build/public`, and DDEV writes the same `#ddev-generated`
@@ -121,7 +121,7 @@ warning at 222 that no other value is supported).
 
 ## Since then
 
-, on 2026-08-18, a session disputed one sentence of the reading above.
+On 2026-08-18, a session disputed one sentence of the reading above.
 `feedback/2026-08-17-205850` reports that DDEV writes the file only once it
 recognises an installation, so the first start of a clone with no `vendor/`
 writes nothing and the site answers 1396795884 until the project is started

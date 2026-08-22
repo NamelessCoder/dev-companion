@@ -217,12 +217,12 @@ analyser and nothing else in that layer.
 
 ## Since then
 
-, on 2026-08-11, the fourth **Wrong if** fired. The measurement disproves the
+On 2026-08-11, the fourth **Wrong if** fired. The measurement disproves the
 remedy it names rather than confirming it.
 
 ## Since then
 
-, on 2026-08-18, the third **Wrong if** fired, in a variant it did not name.
+On 2026-08-18, the third **Wrong if** fired, in a variant it did not name.
 `feedback/2026-08-17-211157` is a session that read `corePhpConstraint: ^8.2` in
 the answer and declared `^8.3` — neither the core's floor nor the container's
 8.4, but a third number above the one it could have declared and below the only

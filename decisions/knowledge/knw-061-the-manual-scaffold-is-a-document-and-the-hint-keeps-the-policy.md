@@ -92,5 +92,5 @@ The document is announced in `knowledge/server-scope.json`, which
 
 ## Since then
 
-, on 2026-08-04, the scaffold was established and written as
+On 2026-08-04, the scaffold was established and written as
 `knowledge/documents/extension/documentation/manual.md`.

@@ -40,8 +40,8 @@ document is the only place the range could be stated.
   `Documents::sections()`. A section that declares nothing holds on every
   covered major, the same as a hint statement carrying no `since` or `until`, so
   the corpus as it stands today changes in no answer.
-- Prose::NOT_VERSION_BOUND goes. A prose answer states the range of the
-  section it returns, which is what the constant used to say was impossible.
+- Prose::NOT_VERSION_BOUND goes. A prose answer states the range of the section
+  it returns, which is what the constant used to say was impossible.
 - The three tools rendering this corpus take an optional `targetVersion`
   together — `typo3_rule_lookup`, `typo3_script_lookup`, `typo3_task_guide` —
   because a caller that learns one of these answers has to find the next one

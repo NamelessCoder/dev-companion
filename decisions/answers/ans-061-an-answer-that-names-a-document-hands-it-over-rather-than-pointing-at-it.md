@@ -82,7 +82,7 @@ written — two skills — it is still an address. That is
 
 ## Since then
 
-, on 2026-08-09, the second **Assumed** did not hold on first contact.
+On 2026-08-09, the second **Assumed** did not hold on first contact.
 `feedback/2026-08-08-224406` is a core patch session that held the guide ids
 from `typo3_project_describe`, read the `documentId` parameter description, got
 the line this entry produced at the foot of its answer, and ran one search

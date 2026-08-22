@@ -35,9 +35,9 @@ without the matcher. The corpus does state the matcher. It states it under
   never the failure.
 - The section a breaking change reaches names no matcher. The `breaking` intent
   of `knowledge/task-intents.json` carries
-  `rulesQuery: "breaking change changelog"`, which `TaskIntents::rules()`
-  puts through `Documents::search` at `src/Knowledge/TaskIntents.php:168`. Run
-  today that query returns `## Breaking Changes`, `## Changelog Files`,
+  `rulesQuery: "breaking change changelog"`, which `TaskIntents::rules()` puts
+  through `Documents::search` at `src/Knowledge/TaskIntents.php:168`. Run today
+  that query returns `## Breaking Changes`, `## Changelog Files`,
   `## Review Readiness` and `## Summary Line`, and none of the four mentions the
   extension scanner.
 - The rule exists on one route and is hedged there. The same intent matches on

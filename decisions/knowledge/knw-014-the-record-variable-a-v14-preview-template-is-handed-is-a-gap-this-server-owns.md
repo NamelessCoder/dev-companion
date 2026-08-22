@@ -112,7 +112,7 @@ By the work this entry queued. The sentence at the head — what a v14 preview
 template reads off `{record}` is missing from this server — was true until the
 statements landed on `content-elements` the same day, and an entry a reader may
 still build on has to be one whose headline is true when they read it. The
-The **Confirmed on** above is the reading and it stays: the gap was real, the first
+reading above stays under its **Confirmed on**: the gap was real, the first
 **Wrong if** did not hold and the second did, and that is why the statement
 names five field types rather than one rule for a relation.
 

@@ -80,5 +80,5 @@ holds it, beside the case `D-ANS-012` left.
 
 ## Since then
 
-, on 2026-08-04, both candidates were measured against this checkout over stdio
+On 2026-08-04, both candidates were measured against this checkout over stdio
 and the first one was taken.

@@ -78,8 +78,8 @@ section again and not a number in it: `Classes/Utility/` is under no recognised
 kind, so it is in no line of the answer, and the caller who ran `find` over
 `Classes/` got three files where the answer accounted for two. The qualifier
 this entry asked for landed and holds; what could not be reproduced this time is
-the list of kinds, which is a property of Extension::CLASS_KINDS rather than
-of any count. That is
+the list of kinds, which is a property of Extension::CLASS_KINDS rather than of
+any count. That is
 [`D-ANS-045`](ans-045-the-classes-section-covers-the-directory-it-names.md), and
 nothing decided here moves.
 

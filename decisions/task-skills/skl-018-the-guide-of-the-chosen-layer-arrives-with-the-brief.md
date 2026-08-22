@@ -85,7 +85,7 @@ is where that was settled, and it changes nothing about the brief.
 
 ## Since then
 
-, on 2026-08-04, the intent was written and the brief was run.
+On 2026-08-04, the intent was written and the brief was run.
 `knowledge/task-intents.json` carries `browser-tests` — matching "playwright",
 "e2e", "spec.ts" and their neighbours — whose checklist opens with
 `skills/typo3-extension-testing/references/playwright.md` by name and whose

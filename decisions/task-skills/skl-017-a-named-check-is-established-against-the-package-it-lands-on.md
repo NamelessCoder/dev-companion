@@ -111,5 +111,5 @@ entry had already decided against naming.
 
 ## Since then
 
-, on 2026-08-04, the two measurements that decide the wording were made and the
+On 2026-08-04, the two measurements that decide the wording were made and the
 third was dropped.

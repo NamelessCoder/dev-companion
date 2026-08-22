@@ -93,8 +93,8 @@ installation side rather than the network one and was closed by `e917c17`.
 
 ## Since then
 
-, on 2026-08-05, the next debrief landed the same way, which the first
-**Assumed** said this could not promise. `feedback/2026-08-05-221232` and
+On 2026-08-05, the next debrief landed the same way, which the first **Assumed**
+said this could not promise. `feedback/2026-08-05-221232` and
 `feedback/2026-08-05-221256` come from a later triage session in the same
 checkout and name only computed answers as load-bearing: the refusal
 `typo3_configuration_lookup` gives while DDEV is stopped, carrying the cause,

@@ -82,8 +82,8 @@ the answer claims. `R-ANS-027` is held by
 
 ## Since then
 
-, on 2026-08-07, the first **Assumed** was measured and half of it is wrong.
-Asked of `review.typo3.org` directly, `change:95162`,
+On 2026-08-07, the first **Assumed** was measured and half of it is wrong. Asked
+of `review.typo3.org` directly, `change:95162`,
 `change:I7701923d80dbd29377213fa71c74ecad88cf7d31` and a change number that
 exists nowhere all answer `200` with `[]`. So the tool is consistent after all:
 all three are `empty`, and the `source-not-answering` the report saw for 95162

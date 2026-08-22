@@ -200,7 +200,7 @@ as `nvoke`, which is the word "activate it" stood there under.
 
 ## Since then
 
-, the crossing half is built. The three successors
+The crossing half is built. The three successors
 `typo3-content-element-development` named at once stand as three steps at three
 moments: `typo3-extension-testing` where the layer the element needs has no
 harness, `typo3-extension-documentation` where the verified element has to be

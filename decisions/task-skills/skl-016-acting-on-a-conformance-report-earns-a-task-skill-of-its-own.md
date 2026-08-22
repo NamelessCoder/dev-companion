@@ -76,8 +76,9 @@ removing it left the work with no owner at all.
   [`R-SKL-003`](../../requirements/task-skills/skl-003-crossing-into-another-skills-work-is-an-explicit-transition.md).
 - **The route is the second half of publishing rather than part of writing it.**
   `knowledge/task-intents.json` may name no skill before it is in
-  `Installer::skills()`, which `SkillTest::everySkillNamedInKnowledgeIsPublished`
-  holds — the shape `typo3-development-installation` has been in since
+  `Installer::skills()`, which
+  `SkillTest::everySkillNamedInKnowledgeIsPublished` holds — the shape
+  `typo3-development-installation` has been in since
   `D-SKL-013`.
 
 ## Assumed

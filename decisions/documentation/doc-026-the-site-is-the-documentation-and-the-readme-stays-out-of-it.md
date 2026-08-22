@@ -38,8 +38,8 @@ published that file rather than writing the manual it was missing.
 
 ## Decided
 
-- Site::FRONT and Site::MAP_PAGE are gone. Every page the site serves is a
-  file below `documentation/`, and `documentation/readme.rst` is published as
+- Site::FRONT and Site::MAP_PAGE are gone. Every page the site serves is a file
+  below `documentation/`, and `documentation/readme.rst` is published as
   `index.md` by the rule every other directory's page already followed.
 - The front page carries what the readme's opening paragraphs carried, and the
   four sections below it. It is the page `AGENTS.md` now names as the promise —

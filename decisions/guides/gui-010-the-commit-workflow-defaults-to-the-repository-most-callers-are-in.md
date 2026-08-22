@@ -112,9 +112,9 @@ rule is missing.
 
 ## Since then
 
-, on 2026-08-04, a session measured what the project workflow is worth over
-twelve commits. `feedback/2026-08-04-180133` called `typo3_commit_message_guide`
-once, for the first commit, and hand-wrote the other eleven: the answer was
-correct — a wrapped draft and a warning that the summary ran to 68 characters
-against the preferred 52 — and once the shape of an accepted message was in the
-session, the round trip stopped paying.
+On 2026-08-04, a session measured what the project workflow is worth over twelve
+commits. `feedback/2026-08-04-180133` called `typo3_commit_message_guide` once,
+for the first commit, and hand-wrote the other eleven: the answer was correct —
+a wrapped draft and a warning that the summary ran to 68 characters against the
+preferred 52 — and once the shape of an accepted message was in the session, the
+round trip stopped paying.

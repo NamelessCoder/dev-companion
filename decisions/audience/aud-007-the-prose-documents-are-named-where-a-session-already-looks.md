@@ -85,10 +85,10 @@ procedure, which exists whole at
 `typo3_rule_lookup` for the same subject — so what it would have got is the
 section a search matched, with nothing saying the rest of the page is there.
 
-What follows is not a typo3_document_list. The session named the lever itself:
-a skill names the resource it expects read whole, at the step that needs it, and
-a lookup answer that is one section of a procedure says which procedure. Both
-are contracts.
+What follows is not a typo3_document_list. The session named the lever itself: a
+skill names the resource it expects read whole, at the step that needs it, and a
+lookup answer that is one section of a procedure says which procedure. Both are
+contracts.
 
 The skill half is two skills and one rule. `typo3-core-patch-development` names
 `typo3://guides/core/contribution/gerrit-workflow` at the push step and
@@ -145,7 +145,7 @@ so it is not a session that finished without opening a page that exists.
 
 ## Since then
 
-, on 2026-08-04, the line was written and it is one clause rather than the
+On 2026-08-04, the line was written and it is one clause rather than the
 paragraph this entry imagined. The `instructions` carry a budget —
 `ScopeTest::theInstructionsFitWhatAClientKeeps` holds them to 2048 characters,
 including the prefix that grows when a caller excludes tools — and a first draft
@@ -154,7 +154,7 @@ over it by 75.
 
 ## Since then
 
-, on 2026-08-05, both were built. Every answer rendered by `Result\Prose` — the
+On 2026-08-05, both were built. Every answer rendered by `Result\Prose` — the
 rule lookup, the script lookup and the task guide — closes with the pages its
 excerpts were cut from, saying they are sections and that a client may render no
 resource list. The `Source:` line above each excerpt already carried the same
@@ -163,7 +163,7 @@ change rather than another field.
 
 ## Since then
 
-, on 2026-08-09, that evidence arrived and the answer is no.
+On 2026-08-09, that evidence arrived and the answer is no.
 `feedback/2026-08-08-224406` is a core patch session that read the guide ids in
 `typo3_project_describe`, got the corpus answer's closing line, and opened no
 page. The naming reached it on both surfaces this entry asked for, so what is
@@ -175,7 +175,7 @@ and the enumeration this entry decided against is still not what follows.
 
 ## Since then
 
-, on 2026-08-14, a session held the naming and opened a page whole.
+On 2026-08-14, a session held the naming and opened a page whole.
 `feedback/2026-08-13-214927` reviewed a Gerrit change in a client that rendered
 no resource list, and reports the guide ids in `typo3_project_describe` as the
 only place the corpus was named to it — enough that it never called
@@ -188,7 +188,7 @@ what to fetch from — is one its own words would not have matched in a search.
 
 ## Since then
 
-, on 2026-08-19, the clause was displaced by the call it should have named.
+On 2026-08-19, the clause was displaced by the call it should have named.
 `feedback/2026-08-18-113425` is a sitepackage session under a client that lists
 the tools by name and defers their schemas. It quotes the clause back, called
 this server nothing at all, and finished without learning that any guide exists.

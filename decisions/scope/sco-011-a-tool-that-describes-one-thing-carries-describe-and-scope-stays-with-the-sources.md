@@ -22,10 +22,10 @@ also the two carrying the verb wrongly, so one rename settles both.
   which depth, what it deliberately does not cover", and `typo3_catalog_scope`
   "Report whether component contracts come from the active installation or the
   bundled fallback … what they cover". Both state the coverage of a source.
-- typo3_project_scope opens "Describe the project around the TYPO3
-  installation this server was started in", and typo3_extension_scope
-  "Describe what one installed extension registers". Both describe one thing the
-  caller named, and neither states a boundary.
+- typo3_project_scope opens "Describe the project around the TYPO3 installation
+  this server was started in", and typo3_extension_scope "Describe what one
+  installed extension registers". Both describe one thing the caller named, and
+  neither states a boundary.
 - The two tools whose verb was wrong are exactly the two whose subject is a case
   of `Knowledge\Scope`: `project` and `extension`. A client is handed
   typo3_project_scope and, inside the answers, a `scope` field that can read

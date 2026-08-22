@@ -70,11 +70,13 @@ line beside four files nothing is wrong with, and says nothing about either.
 
 ## Wrong if
 
-- The statement turns out unwritable where it has to go. A hint binds by major
+- ~~The statement turns out unwritable where it has to go. A hint binds by major
   integer — `since` and `until` carry `12` to `15` across all of `knowledge/` —
   and `#109438` holds from 14.3, so `since: 14` is false for 14.0 to 14.2 while
   `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch` forbids saying the
-  minor in the text.
+  minor in the text.~~ Answered on 2026-08-02, in the reading below: a statement
+  that starts holding inside a major is already bound to the whole of it here,
+  so `#109438` loses the granularity `#108345` had already lost.
 - A later feedback reports the opposite cost: an extension answer that
   volunteers deprecations is read as a compatibility verdict, and a caller
   treats the absence of a signal as a clean bill for the next major.
@@ -200,42 +202,6 @@ and why.
 
 ## Since then
 
-Step 4 is done. Two shapes were open and the todo left the choice to the tool:
-the closing sentence naming both files, or a line per file that was checked and
-did not fire. It is the sentence, and the reason is the second **Wrong if**
-again. A line reading *ext_tables.php — checked, not shipped* stands under a
-heading that says *Deprecated registration files*, where it is a rendered "none"
-at file granularity — the thing this entry keeps out of the empty case, moved
-one level down and back into the block. The sentence states the coverage once,
-as a property of the check rather than a verdict on a file, and what the
-reporting session went and confirmed by hand was the coverage, not a bullet.
-
-The block now closes *Two files are checked, ext_tables.php and ext_emconf.php,
-so one of them missing from this block was looked at rather than skipped: the
-extension does not ship it, or, for ext_emconf.php, its composer.json declares
-the providesPackages and the version that exempt it.* Those are the only two
-ways a checked file stays out of a block that rendered — a framework package is
-exempt from both and returns nothing at all, so it never reaches this sentence.
-The pointer that followed lost its count: *these two entries whole* is now
-*#109438 and #108345 whole*, because the changelog number of the file that did
-not fire is in no rendered entry, and the number was what did not match what
-stood above it.
-
-`ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt` holds it, on
-the reported case — an extension shipping `ext_emconf.php` and no
-`ext_tables.php`, so one entry renders and the sentence names two files. It is
-the first assertion on this block at all; the three that existed cover
-`deprecatedFiles` as data, and the rendered text, which `ToolResult` makes the
-primary answer, was held by nothing. That is how a sentence saying *two*
-survived beside an answer rendering one.
-
-The feedback is archived by this. Its suggestion asks for the other file-level
-predicates as well as for the covered set, and the first half was already true
-when it was written — `ext_tables.php` has been checked by the same call since
-`a886a2d`, which is what the judging session trimmed the report to.
-
-## Since then
-
 The set is four, and the two that were missing were found by sweeping the
 changelogs of the covered majors for a file name rather than for an API. Every
 `:file:` role in `12.0` through `15.0` was listed and read against what the
@@ -291,3 +257,17 @@ only for `ext_tables.php` and `ext_emconf.php`, in `extension-boot-files` and
 `extension-manifest`. Neither new statement was written there, because the two
 spellings of one rule are what this entry already names as the thing most likely
 to go wrong, and nothing reported a caller looking for either.
+
+## Since then
+
+One reading carried this entry out and established nothing beyond it, so it is a
+line here rather than a section of its own. Judged on 2026-08-22.
+
+- Step 4, done on 2026-08-03. Two shapes were open and it is the sentence: the
+  block closes by stating the coverage once — two files are checked, so one
+  missing from a block that rendered was looked at rather than skipped — rather
+  than a line per file, which would be the rendered "none" this entry keeps out
+  of the empty case, moved one level down. The pointer lost its count with it,
+  and `ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt` is the
+  first assertion on the rendered block at all, which is how a sentence saying
+  two survived beside an answer rendering one.

@@ -1,12 +1,12 @@
 ---
 id: D-DOC-019
-title: The site's stylesheet and script are built files, and what is solved is taken from a package
+title: "The site's stylesheet and script are built files"
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-024
 ---
 
-# D-DOC-019 — The site's stylesheet and script are built files, and what is solved is taken from a package
+# D-DOC-019 — The site's stylesheet and script are built files
 
 **The theme's CSS and JS are built into two hashed files every page links, and
 the highlighting comes from highlight.js rather than from a regular expression

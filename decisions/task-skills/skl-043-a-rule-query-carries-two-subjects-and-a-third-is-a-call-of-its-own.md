@@ -1,13 +1,13 @@
 ---
 id: D-SKL-043
-title: A rule query carries two subjects, and a third is a call of its own
+title: 'A rule query carries two subjects'
 date: 2026-08-14
 status: open
 coveredBy:
   - SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn
 ---
 
-# D-SKL-043 — A rule query carries two subjects, and a third is a call of its own
+# D-SKL-043 — A rule query carries two subjects
 
 **A skill that tells a caller how many subjects one rule query carries states a
 count the corpus was measured to bear, and that count is two.**

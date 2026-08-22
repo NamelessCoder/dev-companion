@@ -1,12 +1,12 @@
 ---
 id: R-COD-003
-title: 'A unit test holds a small part, and stubs what is outside it'
+title: 'A unit test holds a small part and stubs what is outside it'
 status: held
 judged: 2026-08-22
 restsOn: [D-COD-004]
 ---
 
-# R-COD-003 — A unit test holds a small part, and stubs what is outside it
+# R-COD-003 — A unit test holds a small part and stubs what is outside it
 
 **A unit test exercises one small part and nothing outside this process.**
 

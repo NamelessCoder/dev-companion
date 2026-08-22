@@ -1,6 +1,6 @@
 ---
 id: D-AUD-006
-title: The server reports the exclusion that happened, and the installer keeps the line it did not write
+title: 'The server reports the exclusion that happened'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -11,7 +11,7 @@ coveredBy:
   - InstallerTest::codexInstallRefusesASectionItCannotRewriteWithoutDropping
 ---
 
-# D-AUD-006 — The server reports the exclusion that happened, and the installer keeps the line it did not write
+# D-AUD-006 — The server reports the exclusion that happened
 
 **What the client is told is missing is what the offered list is actually
 missing, and a name in `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` that took nothing

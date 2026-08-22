@@ -1,6 +1,6 @@
 ---
 id: D-SCO-011
-title: A tool that describes one thing carries `describe`, and `scope` stays with the sources
+title: 'A tool that describes one thing carries `describe`'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -10,7 +10,7 @@ coveredBy:
   - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---
 
-# D-SCO-011 — A tool that describes one thing carries `describe`, and `scope` stays with the sources
+# D-SCO-011 — A tool that describes one thing carries `describe`
 
 **typo3_project_scope and typo3_extension_scope are renamed
 `typo3_project_describe` and `typo3_extension_describe`, `describe` joins the

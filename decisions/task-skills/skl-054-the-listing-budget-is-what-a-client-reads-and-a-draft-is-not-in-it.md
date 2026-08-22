@@ -1,6 +1,6 @@
 ---
 id: D-SKL-054
-title: The listing budget is what a client reads, and a draft is not in it
+title: 'The listing budget is what a client reads'
 date: 2026-08-18
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - SkillTest::aDraftSaysSoInItsOwnFrontMatter
 ---
 
-# D-SKL-054 — The listing budget is what a client reads, and a draft is not in it
+# D-SKL-054 — The listing budget is what a client reads
 
 **The description budget is counted over the published skills rather than over
 the directory, so a draft costs no listing anything until the commit that

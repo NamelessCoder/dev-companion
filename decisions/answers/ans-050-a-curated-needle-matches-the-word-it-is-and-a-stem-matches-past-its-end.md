@@ -1,6 +1,6 @@
 ---
 id: D-ANS-050
-title: A curated needle matches the word it is, and a stem matches past its end
+title: 'A curated needle matches the word it is'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -11,7 +11,7 @@ coveredBy:
   - HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt
 ---
 
-# D-ANS-050 — A curated needle matches the word it is, and a stem matches past its end
+# D-ANS-050 — A curated needle matches the word it is
 
 **`Text::containsWord()` ends a match where the needle's word ends, give or take
 an inflection, and `Text::startsWord()` keeps the prefix rule for the stems.**

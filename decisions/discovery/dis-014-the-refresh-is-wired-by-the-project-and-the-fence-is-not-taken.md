@@ -1,6 +1,6 @@
 ---
 id: D-DIS-014
-title: The refresh is wired by the project, and the fence is not taken
+title: 'The refresh is wired by the project'
 date: 2026-08-08
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - InstallerTest::codexUpdateRemovesSkillsTrackedByThePreviousCentralState
 ---
 
-# D-DIS-014 — The refresh is wired by the project, and the fence is not taken
+# D-DIS-014 — The refresh is wired by the project
 
 **Of Laravel Boost's three ways of keeping a published copy current, this
 package documents the Composer hook, already has the stale-name sweep, and does

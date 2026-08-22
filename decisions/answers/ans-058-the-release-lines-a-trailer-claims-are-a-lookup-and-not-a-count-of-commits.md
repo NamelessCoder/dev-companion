@@ -1,6 +1,6 @@
 ---
 id: D-ANS-058
-title: The release lines a trailer claims are a lookup, and not a count of commits
+title: 'The release lines a trailer claims are a lookup'
 date: 2026-08-05
 status: confirmed
 coveredBy:
@@ -10,7 +10,7 @@ coveredBy:
   - CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch
 ---
 
-# D-ANS-058 — The release lines a trailer claims are a lookup, and not a count of commits
+# D-ANS-058 — The release lines a trailer claims are a lookup
 
 **Which TYPO3 branches are maintained today, and what each one is, becomes an
 answer this server holds, and `typo3_commit_message_guide` validates the

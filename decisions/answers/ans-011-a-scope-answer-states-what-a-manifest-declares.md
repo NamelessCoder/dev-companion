@@ -1,11 +1,11 @@
 ---
 id: D-ANS-011
-title: A scope answer states what a manifest declares, and the comparison is the audit's
+title: 'A scope answer states what a manifest declares'
 date: 2026-08-02
 status: open
 ---
 
-# D-ANS-011 — A scope answer states what a manifest declares, and the comparison is the audit's
+# D-ANS-011 — A scope answer states what a manifest declares
 
 **`typo3_project_describe` and `typo3_extension_describe` each state what one
 manifest declares; comparing two of them is the audit's work, and no tool here

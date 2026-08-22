@@ -1,11 +1,11 @@
 ---
 id: D-SKL-001
-title: The order a task starts in is one file, and the reading comes last in it
+title: 'The order a task starts in is one file'
 date: 2026-08-01
 status: confirmed
 ---
 
-# D-SKL-001 — The order a task starts in is one file, and the reading comes last in it
+# D-SKL-001 — The order a task starts in is one file
 
 **`skills/base.md` holds the order every task starts in, and is copied into each
 published skill rather than shared with it.**

@@ -1,11 +1,11 @@
 ---
 id: R-ANS-026
-title: 'A path names the subsystem, and a hint from another one does not answer'
+title: 'A path names the subsystem'
 status: held
 restsOn: [D-ANS-060]
 ---
 
-# R-ANS-026 — A path names the subsystem, and a hint from another one does not answer
+# R-ANS-026 — A path names the subsystem
 
 **A hint lookup given a path under `typo3/sysext/extbase/Classes/Persistence/`
 answers with that subsystem and not with the conventions of another.**

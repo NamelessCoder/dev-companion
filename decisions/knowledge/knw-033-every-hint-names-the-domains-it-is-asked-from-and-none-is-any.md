@@ -1,6 +1,6 @@
 ---
 id: D-KNW-033
-title: Every hint names the domains it is asked from, and none is `any`
+title: 'No hint carries `any`'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -10,7 +10,7 @@ coveredBy:
   - ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections
 ---
 
-# D-KNW-033 — Every hint names the domains it is asked from, and none is `any`
+# D-KNW-033 — No hint carries `any`
 
 **The 38 hints that carried `any` name the domains they are really asked from,
 and the withholding rule reads a hint's domains rather than the query's.**

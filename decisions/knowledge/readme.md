@@ -16,7 +16,7 @@ one is added.
 - [`D-KNW-088`][D-KNW-088] — What a Composer installation generates below the document root is a gap this server owns · 2026-08-18
 - [`D-KNW-089`][D-KNW-089] — What a warm TCA cache hides from `extension:setup` is a gap this server owns · 2026-08-18
 - [`D-KNW-090`][D-KNW-090] — The corpus names the PHP type a record and a transformed column arrive as · 2026-08-18 · confirmed
-- [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state, and a TYPO3 version is not · 2026-08-18
+- [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state · 2026-08-18
 - [`D-KNW-092`][D-KNW-092] — What an installation that does not answer is diagnosed from is a gap this server owns · 2026-08-18
 - [`D-KNW-093`][D-KNW-093] — A command whose success is unconditional is followed by what a correct result looks like · 2026-08-18 · confirmed
 - [`D-KNW-094`][D-KNW-094] — How a variable reaches a console command in the container is a gap this server owns · 2026-08-18 · confirmed
@@ -31,7 +31,7 @@ one is added.
 - [`D-KNW-104`][D-KNW-104] — The corpus states how an extension adds a field to a core palette · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
-- [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
+- [`D-KNW-082`][D-KNW-082] — A content element names its template · 2026-08-17
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
@@ -40,8 +40,8 @@ one is added.
 - [`D-KNW-078`][D-KNW-078] — The corpus states the shape a Record-sourced row has · 2026-08-14
 - [`D-KNW-079`][D-KNW-079] — The corpus states what a new backend label costs · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
-- [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
-- [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
+- [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day · 2026-08-10
+- [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint of its own · 2026-08-10
 - [`D-KNW-068`][D-KNW-068] — Looking at a backend change is a suite the core already carries · 2026-08-10
 - [`D-KNW-069`][D-KNW-069] — A browser in a container reaches a DDEV site on the router's own network · 2026-08-10
 - [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09 · confirmed
@@ -55,15 +55,15 @@ one is added.
 - [`D-KNW-060`][D-KNW-060] — What a backend spec locates by is written where the spec is · 2026-08-04
 - [`D-KNW-061`][D-KNW-061] — The manual scaffold is a document and the hint keeps the policy · 2026-08-04
 - [`D-KNW-062`][D-KNW-062] — What a hint pays with is the mechanism and the file it is read in · 2026-08-04
-- [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
-- [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
+- [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from · 2026-08-03
+- [`D-KNW-030`][D-KNW-030] — A hint is one question · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
 - [`D-KNW-032`][D-KNW-032] — The corpus is filed by question, and two splits were taken back · 2026-08-03
-- [`D-KNW-033`][D-KNW-033] — Every hint names the domains it is asked from, and none is `any` · 2026-08-03
-- [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
+- [`D-KNW-033`][D-KNW-033] — No hint carries `any` · 2026-08-03
+- [`D-KNW-034`][D-KNW-034] — The file is the subject · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
-- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
+- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload · 2026-08-03
 - [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
 - [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
 - [`D-KNW-041`][D-KNW-041] — The checkout a suite is started in supplies its own dependencies · 2026-08-03
@@ -74,7 +74,7 @@ one is added.
 - [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03 · confirmed
 - [`D-KNW-047`][D-KNW-047] — What installs TYPO3 below the extension being developed is a gap this server owns · 2026-08-03
 - [`D-KNW-048`][D-KNW-048] — What the impexp import rewrites in a site configuration is a gap this server owns · 2026-08-03
-- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03 · confirmed
+- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full · 2026-08-03 · confirmed
 - [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-KNW-051`][D-KNW-051] — The public-asset answer names the internal static beside the supported route · 2026-08-03
 - [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03 · confirmed
@@ -87,14 +87,14 @@ one is added.
 - [`D-KNW-009`][D-KNW-009] — A domain keyword is a phrasing, not a word · 2026-08-02
 - [`D-KNW-010`][D-KNW-010] — What the core reads from the environment is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
-- [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
+- [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — This repository's own sentence is reworded rather than indexed · 2026-08-02
 - [`D-KNW-016`][D-KNW-016] — What an `f:else` does to the branch beside it is a gap this server owns · 2026-08-02
 - [`D-KNW-017`][D-KNW-017] — A verification question is routed to the layer that verifies it · 2026-08-02
 - [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-019`][D-KNW-019] — The corpus states that a functional test sees only what it primed · 2026-08-02
-- [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
-- [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
+- [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors · 2026-08-02
+- [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half · 2026-08-02
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02

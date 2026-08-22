@@ -1,6 +1,6 @@
 ---
 id: D-SCO-010
-title: All three `typo3` namespaces are kept, and the draft RFC is read as a reference
+title: 'All three `typo3` namespaces are kept'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - StdioServerTest::theKnowledgeIndexIsServedWithTheScope
 ---
 
-# D-SCO-010 — All three `typo3` namespaces are kept, and the draft RFC is read as a reference
+# D-SCO-010 — All three `typo3` namespaces are kept
 
 **This server keeps the `typo3_` tool prefix, the `typo3://` resource scheme and
 the `typo3/dev-companion` package name. The draft RFC on an MCP interface

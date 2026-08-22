@@ -1,11 +1,11 @@
 ---
 id: D-CAT-005
-title: A reference entry names a form to imitate, and a fact is answered by a hint
+title: 'A reference entry names a form to imitate'
 date: 2026-08-18
 status: open
 ---
 
-# D-CAT-005 — A reference entry names a form to imitate, and a fact is answered by a hint
+# D-CAT-005 — A reference entry names a form to imitate
 
 **A directory earns an entry in `knowledge/catalog/references.json` where a
 caller reads it before writing one of the same shape, not where a fact happens

@@ -1,11 +1,11 @@
 ---
 id: D-DIS-003
-title: A label query is words, and the console is asked with a regex
+title: 'A label query is words and the console is asked with a regex'
 date: 2026-07-29
 status: revoked
 ---
 
-# D-DIS-003 — A label query is words, and the console is asked with a regex
+# D-DIS-003 — A label query is words and the console is asked with a regex
 
 **The words of a label query go to the console as one case-insensitive regex
 union, and the intersection is taken here.**

@@ -14,13 +14,13 @@ one is added.
 - [`D-ANS-095`][D-ANS-095] — A flex field is answered with the data structure the installation resolves · 2026-08-21
 - [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-087`][D-ANS-087] — The project answer stays whole because a call is what costs · 2026-08-19
-- [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section, and names what it left out · 2026-08-19
-- [`D-ANS-089`][D-ANS-089] — A person is a filter on the backlog, and a name is resolved here · 2026-08-19 · confirmed
-- [`D-ANS-090`][D-ANS-090] — A set larger than a page is answered by its shape, and a person by both sides at once · 2026-08-19
+- [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section · 2026-08-19
+- [`D-ANS-089`][D-ANS-089] — A person is a filter on the backlog · 2026-08-19 · confirmed
+- [`D-ANS-090`][D-ANS-090] — A matched set larger than a page is answered by its shape · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository, not by the installation in it · 2026-08-18
-- [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none · 2026-08-17
+- [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
@@ -29,7 +29,7 @@ one is added.
 - [`D-ANS-075`][D-ANS-075] — The hint index is ordered by the rank the matcher already computed · 2026-08-11
 - [`D-ANS-076`][D-ANS-076] — A search whose matches are all in one page answers with the page · 2026-08-11
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
-- [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes, and which belong next door · 2026-08-10
+- [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes and which belong next door · 2026-08-10
 - [`D-ANS-073`][D-ANS-073] — Which lines can take a patch is not which lines this patch belongs on · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set it names · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it and by what the answer left of it · 2026-08-09
@@ -42,32 +42,32 @@ one is added.
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
 - [`D-ANS-063`][D-ANS-063] — What a core session defends is the option list and the check it could not run itself · 2026-08-07
-- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05 · confirmed
+- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
-- [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named, and the reading is the caller's · 2026-08-05
-- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup, and not a count of commits · 2026-08-05 · confirmed
-- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task, and what it read elsewhere is where it misled · 2026-08-05
+- [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named · 2026-08-05
+- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup · 2026-08-05 · confirmed
+- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
-- [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
-- [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers, and no page is taken away for covering little · 2026-08-04
+- [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is · 2026-08-04
+- [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers · 2026-08-04
 - [`D-ANS-052`][D-ANS-052] — The configuration lookup answers for the installation as it stands · 2026-08-04
 - [`D-ANS-053`][D-ANS-053] — A rejected call names the argument that was not understood · 2026-08-04
-- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
+- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
-- [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers, and a miss that names the words · 2026-08-03
+- [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers · 2026-08-03
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
-- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
+- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent · 2026-08-03
 - [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
 - [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
 - [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
-- [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
+- [`D-ANS-043`][D-ANS-043] — A miss is answered in data · 2026-08-03
 - [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
-- [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
-- [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for, and the silence names the corpus that answers · 2026-08-03
+- [`D-ANS-045`][D-ANS-045] — The Classes section reports every directory below it · 2026-08-03
+- [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for · 2026-08-03
 - [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched for as the name it is · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
@@ -75,10 +75,10 @@ one is added.
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
-- [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
+- [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares · 2026-08-02
 - [`D-ANS-012`][D-ANS-012] — An `oneOf` alternative is stated where the caller composes the call · 2026-08-02
 - [`D-ANS-013`][D-ANS-013] — What runs a project is a placement, not a missing answer · 2026-08-02
-- [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared · 2026-08-02
+- [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files · 2026-08-02
 - [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-016`][D-ANS-016] — A miss names the query that would have hit, not only the reach of each word · 2026-08-02
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument gets the wording a client can compose against · 2026-08-02
@@ -89,13 +89,13 @@ one is added.
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02 · confirmed
-- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
-- [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
+- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed · 2026-08-02
+- [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
-- [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
+- [`D-ANS-002`][D-ANS-002] — Three numbers decide what a lookup answers · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-091]: ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md

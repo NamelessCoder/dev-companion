@@ -1,6 +1,6 @@
 ---
 id: D-KNW-034
-title: The file is the subject, and JavaScript is not a domain of its own
+title: 'The file is the subject'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects
 ---
 
-# D-KNW-034 — The file is the subject, and JavaScript is not a domain of its own
+# D-KNW-034 — The file is the subject
 
 **The corpus is one file per subject, and the `javascript` domain that no path
 detected and no hint carried is gone.**

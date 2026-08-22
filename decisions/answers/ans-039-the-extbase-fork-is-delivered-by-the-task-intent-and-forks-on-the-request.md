@@ -1,13 +1,13 @@
 ---
 id: D-ANS-039
-title: The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category
+title: 'The Extbase fork is delivered by the content-element intent'
 date: 2026-08-03
 status: open
 coveredBy:
   - HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt
 ---
 
-# D-ANS-039 — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category
+# D-ANS-039 — The Extbase fork is delivered by the content-element intent
 
 **The `content-element` intent carries the Extbase-or-not fork, worded as
 whether a controller has to answer the request rather than as a choice between

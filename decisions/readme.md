@@ -21,12 +21,12 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative of its own · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers, because a name is all a deferring client shows · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
-- [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
+- [`D-AUD-009`][D-AUD-009] — The entry point claims patch work · 2026-08-08
 - [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06 · confirmed
-- [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
-- [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
+- [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported and the server starts · 2026-08-04
+- [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened · 2026-08-04
 - [`D-AUD-007`][D-AUD-007] — The prose documents are named where a session already looks · 2026-08-04
-- [`D-AUD-004`][D-AUD-004] — Every client is offered every tool, and the answer says who it obliges · 2026-08-02
+- [`D-AUD-004`][D-AUD-004] — Every client is offered every tool · 2026-08-02
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
@@ -47,14 +47,14 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DIS-019`][D-DIS-019] — A project root is found from what its manifest declares · 2026-08-18
 - [`D-DIS-017`][D-DIS-017] — The skills reach a project through the installer · 2026-08-12
 - [`D-DIS-018`][D-DIS-018] — What `install` writes stays inside the project · 2026-08-12
-- [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
+- [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project · 2026-08-08
 - [`D-DIS-016`][D-DIS-016] — How an entrypoint may be named is a per-client question · 2026-08-08 · confirmed
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
-- [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable, and the install is what says so · 2026-08-02 · confirmed
+- [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable · 2026-08-02 · confirmed
 - [`D-DIS-006`][D-DIS-006] — The installation stays worked out from the directory the server was started in · 2026-08-01
 - [`D-DIS-005`][D-DIS-005] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
@@ -85,13 +85,13 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-095`][D-ANS-095] — A flex field is answered with the data structure the installation resolves · 2026-08-21
 - [`D-ANS-086`][D-ANS-086] — The project answer carries the bound that stops a declared command from starting · 2026-08-19
 - [`D-ANS-087`][D-ANS-087] — The project answer stays whole because a call is what costs · 2026-08-19
-- [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section, and names what it left out · 2026-08-19
-- [`D-ANS-089`][D-ANS-089] — A person is a filter on the backlog, and a name is resolved here · 2026-08-19 · confirmed
-- [`D-ANS-090`][D-ANS-090] — A set larger than a page is answered by its shape, and a person by both sides at once · 2026-08-19
+- [`D-ANS-088`][D-ANS-088] — The orientation answer is asked for by section · 2026-08-19
+- [`D-ANS-089`][D-ANS-089] — A person is a filter on the backlog · 2026-08-19 · confirmed
+- [`D-ANS-090`][D-ANS-090] — A matched set larger than a page is answered by its shape · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate where the selected layers do not claim it · 2026-08-18
 - [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository, not by the installation in it · 2026-08-18
-- [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none · 2026-08-17
+- [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries the votes on it and the comments nobody answered · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
@@ -100,7 +100,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-075`][D-ANS-075] — The hint index is ordered by the rank the matcher already computed · 2026-08-11
 - [`D-ANS-076`][D-ANS-076] — A search whose matches are all in one page answers with the page · 2026-08-11
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
-- [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes, and which belong next door · 2026-08-10
+- [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes and which belong next door · 2026-08-10
 - [`D-ANS-073`][D-ANS-073] — Which lines can take a patch is not which lines this patch belongs on · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set it names · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it and by what the answer left of it · 2026-08-09
@@ -113,32 +113,32 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over rather than pointing at it · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
 - [`D-ANS-063`][D-ANS-063] — What a core session defends is the option list and the check it could not run itself · 2026-08-07
-- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker, and the areas are read from it · 2026-08-05 · confirmed
+- [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue only where its commit message names it · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
-- [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named, and the reading is the caller's · 2026-08-05
-- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup, and not a count of commits · 2026-08-05 · confirmed
-- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task, and what it read elsewhere is where it misled · 2026-08-05
+- [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named · 2026-08-05
+- [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup · 2026-08-05 · confirmed
+- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
-- [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
-- [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers, and no page is taken away for covering little · 2026-08-04
+- [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is · 2026-08-04
+- [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers · 2026-08-04
 - [`D-ANS-052`][D-ANS-052] — The configuration lookup answers for the installation as it stands · 2026-08-04
 - [`D-ANS-053`][D-ANS-053] — A rejected call names the argument that was not understood · 2026-08-04
-- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
+- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
-- [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers, and a miss that names the words · 2026-08-03
+- [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers · 2026-08-03
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
-- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
+- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent · 2026-08-03
 - [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
 - [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
 - [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
-- [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
+- [`D-ANS-043`][D-ANS-043] — A miss is answered in data · 2026-08-03
 - [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
-- [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
-- [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for, and the silence names the corpus that answers · 2026-08-03
+- [`D-ANS-045`][D-ANS-045] — The Classes section reports every directory below it · 2026-08-03
+- [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for · 2026-08-03
 - [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched for as the name it is · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
@@ -146,10 +146,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
-- [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
+- [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares · 2026-08-02
 - [`D-ANS-012`][D-ANS-012] — An `oneOf` alternative is stated where the caller composes the call · 2026-08-02
 - [`D-ANS-013`][D-ANS-013] — What runs a project is a placement, not a missing answer · 2026-08-02
-- [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared · 2026-08-02
+- [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files · 2026-08-02
 - [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-016`][D-ANS-016] — A miss names the query that would have hit, not only the reach of each word · 2026-08-02
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument gets the wording a client can compose against · 2026-08-02
@@ -160,13 +160,13 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02 · confirmed
-- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
-- [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
+- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed · 2026-08-02
+- [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
-- [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
+- [`D-ANS-002`][D-ANS-002] — Three numbers decide what a lookup answers · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
@@ -271,7 +271,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-088`][D-KNW-088] — What a Composer installation generates below the document root is a gap this server owns · 2026-08-18
 - [`D-KNW-089`][D-KNW-089] — What a warm TCA cache hides from `extension:setup` is a gap this server owns · 2026-08-18
 - [`D-KNW-090`][D-KNW-090] — The corpus names the PHP type a record and a transformed column arrive as · 2026-08-18 · confirmed
-- [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state, and a TYPO3 version is not · 2026-08-18
+- [`D-KNW-091`][D-KNW-091] — A PHP version is the payload a hint may state · 2026-08-18
 - [`D-KNW-092`][D-KNW-092] — What an installation that does not answer is diagnosed from is a gap this server owns · 2026-08-18
 - [`D-KNW-093`][D-KNW-093] — A command whose success is unconditional is followed by what a correct result looks like · 2026-08-18 · confirmed
 - [`D-KNW-094`][D-KNW-094] — How a variable reaches a console command in the container is a gap this server owns · 2026-08-18 · confirmed
@@ -286,7 +286,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-104`][D-KNW-104] — The corpus states how an extension adds a field to a core palette · 2026-08-18
 - [`D-KNW-080`][D-KNW-080] — The impexp export hint is corrected against a run of the command it prescribes · 2026-08-17 · confirmed
 - [`D-KNW-081`][D-KNW-081] — What a NEW placeholder may contain in a relation field is a gap this server owns · 2026-08-17 · confirmed
-- [`D-KNW-082`][D-KNW-082] — A content element names its template, and the CType derivation is theme_camino's · 2026-08-17
+- [`D-KNW-082`][D-KNW-082] — A content element names its template · 2026-08-17
 - [`D-KNW-071`][D-KNW-071] — Proving what a rendering change renders is a procedure this server carries · 2026-08-14
 - [`D-KNW-073`][D-KNW-073] — The corpus states what makes a change breaking with no member moved · 2026-08-14
 - [`D-KNW-075`][D-KNW-075] — How Fluid resolves an object path is a gap this server owns · 2026-08-14 · confirmed
@@ -295,8 +295,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-078`][D-KNW-078] — The corpus states the shape a Record-sourced row has · 2026-08-14
 - [`D-KNW-079`][D-KNW-079] — The corpus states what a new backend label costs · 2026-08-14
 - [`D-KNW-070`][D-KNW-070] — Backend routing internals are a gap this server owns · 2026-08-12
-- [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day, and core usage is not evidence of it · 2026-08-10
-- [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint, and a test query still answers from PHP · 2026-08-10
+- [`D-KNW-066`][D-KNW-066] — The browser baseline is a release day · 2026-08-10
+- [`D-KNW-067`][D-KNW-067] — The JavaScript test layer is a hint of its own · 2026-08-10
 - [`D-KNW-068`][D-KNW-068] — Looking at a backend change is a suite the core already carries · 2026-08-10
 - [`D-KNW-069`][D-KNW-069] — A browser in a container reaches a DDEV site on the router's own network · 2026-08-10
 - [`D-KNW-065`][D-KNW-065] — What a public method on a non-final core class commits its author to is a gap this server owns · 2026-08-09 · confirmed
@@ -310,15 +310,15 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-060`][D-KNW-060] — What a backend spec locates by is written where the spec is · 2026-08-04
 - [`D-KNW-061`][D-KNW-061] — The manual scaffold is a document and the hint keeps the policy · 2026-08-04
 - [`D-KNW-062`][D-KNW-062] — What a hint pays with is the mechanism and the file it is read in · 2026-08-04
-- [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
-- [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
+- [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from · 2026-08-03
+- [`D-KNW-030`][D-KNW-030] — A hint is one question · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
 - [`D-KNW-032`][D-KNW-032] — The corpus is filed by question, and two splits were taken back · 2026-08-03
-- [`D-KNW-033`][D-KNW-033] — Every hint names the domains it is asked from, and none is `any` · 2026-08-03
-- [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
+- [`D-KNW-033`][D-KNW-033] — No hint carries `any` · 2026-08-03
+- [`D-KNW-034`][D-KNW-034] — The file is the subject · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
-- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
+- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload · 2026-08-03
 - [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
 - [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
 - [`D-KNW-041`][D-KNW-041] — The checkout a suite is started in supplies its own dependencies · 2026-08-03
@@ -329,7 +329,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03 · confirmed
 - [`D-KNW-047`][D-KNW-047] — What installs TYPO3 below the extension being developed is a gap this server owns · 2026-08-03
 - [`D-KNW-048`][D-KNW-048] — What the impexp import rewrites in a site configuration is a gap this server owns · 2026-08-03
-- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03 · confirmed
+- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full · 2026-08-03 · confirmed
 - [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-KNW-051`][D-KNW-051] — The public-asset answer names the internal static beside the supported route · 2026-08-03
 - [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03 · confirmed
@@ -342,14 +342,14 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-009`][D-KNW-009] — A domain keyword is a phrasing, not a word · 2026-08-02
 - [`D-KNW-010`][D-KNW-010] — What the core reads from the environment is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
-- [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
+- [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — This repository's own sentence is reworded rather than indexed · 2026-08-02
 - [`D-KNW-016`][D-KNW-016] — What an `f:else` does to the branch beside it is a gap this server owns · 2026-08-02
 - [`D-KNW-017`][D-KNW-017] — A verification question is routed to the layer that verifies it · 2026-08-02
 - [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-019`][D-KNW-019] — The corpus states that a functional test sees only what it primed · 2026-08-02
-- [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
-- [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
+- [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors · 2026-08-02
+- [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half · 2026-08-02
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
@@ -477,7 +477,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### catalog
 
 - [`D-CAT-006`][D-CAT-006] — A class-shaped query is answered by a second range over the class list · 2026-08-21
-- [`D-CAT-005`][D-CAT-005] — A reference entry names a form to imitate, and a fact is answered by a hint · 2026-08-18
+- [`D-CAT-005`][D-CAT-005] — A reference entry names a form to imitate · 2026-08-18
 - [`D-CAT-004`][D-CAT-004] — What the component index may hold is what the core files as a component · 2026-08-11
 - [`D-CAT-003`][D-CAT-003] — The component index is curated; its contract comes from the installation · 2026-07-30
 - [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · confirmed
@@ -493,9 +493,9 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-013`][D-SCO-013] — A declared command carries the interpreter it runs on, Node as well as PHP · 2026-08-19
 - [`D-SCO-014`][D-SCO-014] — The npm manifest is read where the repository keeps it, `Build/` included · 2026-08-19
 - [`D-SCO-012`][D-SCO-012] — The root manifest places the work before the dependencies are installed · 2026-08-18
-- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
-- [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
-- [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
+- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept · 2026-08-04
+- [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe` · 2026-08-04
+- [`D-SCO-009`][D-SCO-009] — The brief is one brief · 2026-08-02
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
@@ -556,7 +556,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-EVI-008`][D-EVI-008] — What the server buys is a ceiling rather than a lower average · 2026-08-18
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
-- [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
+- [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared with its database · 2026-08-02
 - [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
 - [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
 - [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed
@@ -572,7 +572,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
-- [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain · 2026-08-21
+- [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill · 2026-08-21
 - [`D-SKL-068`][D-SKL-068] — An audit's list is established against the work already in flight · 2026-08-21
 - [`D-SKL-069`][D-SKL-069] — Each runtime lookup says what it adds after the extension answer · 2026-08-21
 - [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
@@ -584,31 +584,31 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-047`][D-SKL-047] — The Composer root step fetches the installer keys from the hint that owns them · 2026-08-18
 - [`D-SKL-048`][D-SKL-048] — A build workflow says a symptom is a lookup trigger · 2026-08-18
 - [`D-SKL-049`][D-SKL-049] — The gate at the end of a workflow waits for the corrections it would sit on · 2026-08-18
-- [`D-SKL-050`][D-SKL-050] — Producing a distribution's content earns a task skill, and the project repository is owned · 2026-08-18 · confirmed
+- [`D-SKL-050`][D-SKL-050] — Producing a distribution's content earns a task skill · 2026-08-18 · confirmed
 - [`D-SKL-051`][D-SKL-051] — A site built from scratch reaches the installation intent · 2026-08-18
 - [`D-SKL-052`][D-SKL-052] — The injected size of a skill is what the retention rule leaves · 2026-08-18
 - [`D-SKL-053`][D-SKL-053] — An absence in the extension answer names the skill that owns it · 2026-08-18
-- [`D-SKL-054`][D-SKL-054] — The listing budget is what a client reads, and a draft is not in it · 2026-08-18
+- [`D-SKL-054`][D-SKL-054] — The listing budget is what a client reads · 2026-08-18
 - [`D-SKL-055`][D-SKL-055] — A call a skill names in order not to make it is written as a discharge · 2026-08-18
 - [`D-SKL-056`][D-SKL-056] — The installation workflow branches on the declared procedure and proves what the run wrote · 2026-08-18
 - [`D-SKL-057`][D-SKL-057] — A command's option set is read from the installed console and its meaning from the manual · 2026-08-18
 - [`D-SKL-058`][D-SKL-058] — A hint is routed by what the repository is rather than by how its installation came to exist · 2026-08-18
 - [`D-SKL-059`][D-SKL-059] — The installation that already answers is owned by the workflow that created it · 2026-08-18
-- [`D-SKL-060`][D-SKL-060] — A skill names a tool at the step that needs it, and a deferring client is answered in the instructions · 2026-08-18
+- [`D-SKL-060`][D-SKL-060] — A skill names a tool at the step that needs it · 2026-08-18
 - [`D-SKL-061`][D-SKL-061] — The upgrade description is reachable from a defect inside the range it already declares · 2026-08-18
 - [`D-SKL-062`][D-SKL-062] — The workflow question is asked again where the work enters a new subject · 2026-08-18
 - [`D-SKL-063`][D-SKL-063] — Reviewing one change proposed against a package that is not the core earns a task skill · 2026-08-18
-- [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
+- [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
 - [`D-SKL-041`][D-SKL-041] — A patch carried onto current code is carried on a named branch · 2026-08-14
 - [`D-SKL-042`][D-SKL-042] — A report is copyable markdown, and the answer is where it goes · 2026-08-14
-- [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects, and a third is a call of its own · 2026-08-14
+- [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
-- [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
+- [`D-SKL-033`][D-SKL-033] — Activation is the client's · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
-- [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
+- [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
 - [`D-SKL-030`][D-SKL-030] — A review surface names the lookup that can answer it · 2026-08-09
@@ -637,7 +637,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
-- [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
+- [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-067]: task-skills/skl-067-maintaining-a-packages-asset-build-earns-a-task-skill-and-the-typo3-half-is-the-domain.md
 [D-SKL-068]: task-skills/skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md
@@ -716,7 +716,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
-- [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
+- [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
 - [`D-FBK-044`][D-FBK-044] — A mangled call is refused rather than taken apart · 2026-08-04
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
@@ -789,7 +789,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### documentation
 
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
-- [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter, and the prose says it once · 2026-08-23
+- [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
+- [`D-DOC-046`][D-DOC-046] — A title is the name an entry is read by · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged to stay as it is · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
@@ -802,11 +803,11 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-037`][D-DOC-037] — A decision nobody has revisited is held to the console · 2026-08-18
 - [`D-DOC-033`][D-DOC-033] — The derived half of a tool page stays committed · 2026-08-14
 - [`D-DOC-032`][D-DOC-032] — A section heading is the label a contents list shows · 2026-08-13
-- [`D-DOC-024`][D-DOC-024] — The site's theme is a package, and this repository keeps none of it · 2026-08-12
+- [`D-DOC-024`][D-DOC-024] — The site's theme is a package this repository keeps none of · 2026-08-12
 - [`D-DOC-025`][D-DOC-025] — The documentation is four sections, and the bar carries those four · 2026-08-12
 - [`D-DOC-026`][D-DOC-026] — The site is the documentation, and the readme stays out of it · 2026-08-12
 - [`D-DOC-027`][D-DOC-027] — The renderer's configuration sits with the pages it renders · 2026-08-12
-- [`D-DOC-028`][D-DOC-028] — The renderer is a build tool, and this repository carries none of it · 2026-08-12
+- [`D-DOC-028`][D-DOC-028] — The renderer is a build tool this repository carries none of · 2026-08-12
 - [`D-DOC-029`][D-DOC-029] — The documentation is reStructuredText, and the rest of the corpus is not · 2026-08-12
 - [`D-DOC-030`][D-DOC-030] — The front page is a landing page, in the theme's marketing layout · 2026-08-12
 - [`D-DOC-031`][D-DOC-031] — A page is railed under a label and headed by a sentence · 2026-08-12
@@ -820,10 +821,10 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
 - [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
-- [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02 · confirmed
+- [`D-DOC-003`][D-DOC-003] — A decision says what came back · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
-- [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
+- [`D-DOC-006`][D-DOC-006] — A recording says what it is of · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02 · confirmed
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01 · confirmed
@@ -831,6 +832,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-DOC-044]: documentation/doc-044-a-failing-test-names-the-decisions-it-was-holding.md
 [D-DOC-045]: documentation/doc-045-what-a-listing-reads-is-front-matter.md
+[D-DOC-046]: documentation/doc-046-a-title-is-the-name-an-entry-is-read-by.md
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged-to-stay-as-it-is.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
@@ -890,7 +892,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-074`][D-KNW-074] — The shape a Record-sourced row has is a gap this server owns · 2026-08-14 → D-KNW-078
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says the report is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme and the map is a page below it · 2026-08-09 → D-DOC-026
-- [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files, and what is solved is taken from a package · 2026-08-09 → D-DOC-024
+- [`D-DOC-019`][D-DOC-019] — The site's stylesheet and script are built files · 2026-08-09 → D-DOC-024
 - [`D-DOC-020`][D-DOC-020] — The site is rendered by one command that installs what it needs · 2026-08-09 → D-DOC-028
 - [`D-DOC-021`][D-DOC-021] — The site is searched in a dialog opened with Ctrl-K · 2026-08-09 → D-DOC-024
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
@@ -908,20 +910,20 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
-- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01 → D-SCO-008
+- [`D-SCO-007`][D-SCO-007] — The signals are combined per call · 2026-08-01 → D-SCO-008
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 - [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
-- [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29
+- [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated · 2026-07-29
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
-- [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
+- [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
 - [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29 → D-GUI-010
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
-- [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
+- [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md

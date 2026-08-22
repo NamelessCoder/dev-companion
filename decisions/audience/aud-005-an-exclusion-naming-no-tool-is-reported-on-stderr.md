@@ -1,6 +1,6 @@
 ---
 id: D-AUD-005
-title: An exclusion naming no tool is reported on stderr, and the server starts
+title: 'An exclusion naming no tool is reported and the server starts'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -9,7 +9,7 @@ coveredBy:
   - InstallerTest::installKeepsWhatTheCallerPutInTheEntryAndRewritesOnlyTheCommand
 ---
 
-# D-AUD-005 — An exclusion naming no tool is reported on stderr, and the server starts
+# D-AUD-005 — An exclusion naming no tool is reported and the server starts
 
 **An excluded name that no tool answers to is written to stderr at startup, and
 the server starts with the rest of the list.**

@@ -1,6 +1,6 @@
 ---
 id: D-ANS-037
-title: A compound rule query is owed the section its score prefers, and a miss that names the words
+title: 'A compound rule query is owed the section its score prefers'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -13,7 +13,7 @@ coveredBy:
   - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
 ---
 
-# D-ANS-037 — A compound rule query is owed the section its score prefers, and a miss that names the words
+# D-ANS-037 — A compound rule query is owed the section its score prefers
 
 **A rule query longer than its topic is owed the section its score prefers, and
 a miss that names the words rather than the core boundary.**

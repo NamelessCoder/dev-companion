@@ -1,11 +1,11 @@
 ---
 id: D-SCO-004
-title: The frontend is recognised by name, and only the two UI sections go
+title: 'The frontend is recognised by name'
 date: 2026-07-29
 status: revoked
 ---
 
-# D-SCO-004 — The frontend is recognised by name, and only the two UI sections go
+# D-SCO-004 — The frontend is recognised by name
 
 **A frontend marker with no backend marker withholds the `Backend CSS` and
 `Backend TypeScript` categories, and the answer says which and why.**

@@ -1,6 +1,6 @@
 ---
 id: D-ANS-051
-title: A manual result carries how much of the question it covers, and no page is taken away for covering little
+title: 'A manual result carries how much of the question it covers'
 date: 2026-08-04
 status: open
 coveredBy:
@@ -12,7 +12,7 @@ coveredBy:
   - DocumentationTest::aPageReadBackCoversNoQuery
 ---
 
-# D-ANS-051 — A manual result carries how much of the question it covers, and no page is taken away for covering little
+# D-ANS-051 — A manual result carries how much of the question it covers
 
 **Every live-manual result carries the share of the query it covers, and the
 answer says above the results where nothing covers half. The floor is not

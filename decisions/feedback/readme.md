@@ -19,7 +19,7 @@ earns one.
 - [`D-FBK-045`][D-FBK-045] — A feedback is queued by the call that records it · 2026-08-14
 - [`D-FBK-046`][D-FBK-046] — The check that catches a duplicate id names the files and the command · 2026-08-14
 - [`D-FBK-041`][D-FBK-041] — What nothing answers for is called unresolved · 2026-08-04
-- [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation, and the feedback channel writes on this side of it · 2026-08-04
+- [`D-FBK-042`][D-FBK-042] — The read-only boundary is the installation · 2026-08-04
 - [`D-FBK-043`][D-FBK-043] — A structure is answered with a document rather than with a rule · 2026-08-04
 - [`D-FBK-044`][D-FBK-044] — A mangled call is refused rather than taken apart · 2026-08-04
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03

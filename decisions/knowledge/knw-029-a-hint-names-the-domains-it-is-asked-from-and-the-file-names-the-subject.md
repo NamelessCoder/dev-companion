@@ -1,6 +1,6 @@
 ---
 id: D-KNW-029
-title: A hint names the domains it is asked from, and the file names the subject
+title: 'A hint names the domains it is asked from'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
 ---
 
-# D-KNW-029 — A hint names the domains it is asked from, and the file names the subject
+# D-KNW-029 — A hint names the domains it is asked from
 
 **Each hint declares its domains in a `domains` field, and the file it sits in
 is where it is kept rather than what selects it.**

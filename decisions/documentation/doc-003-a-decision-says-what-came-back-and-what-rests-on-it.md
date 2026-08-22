@@ -1,6 +1,6 @@
 ---
 id: D-DOC-003
-title: A decision says what came back, and a requirement says what it rests on
+title: 'A decision says what came back'
 date: 2026-08-02
 status: confirmed
 coveredBy:
@@ -9,7 +9,7 @@ coveredBy:
   - UnresolvedTest::theOpenDecisionsAreReadOldestFirst
 ---
 
-# D-DOC-003 — A decision says what came back, and a requirement says what it rests on
+# D-DOC-003 — A decision says what came back
 
 **The decision states are `open`, `confirmed` and `revoked`, an entry is written
 in sections rather than labelled bullets, and a requirement names the decisions

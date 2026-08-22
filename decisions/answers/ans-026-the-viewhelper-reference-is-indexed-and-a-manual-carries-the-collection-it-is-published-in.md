@@ -1,6 +1,6 @@
 ---
 id: D-ANS-026
-title: The ViewHelper reference is indexed, and a manual carries the collection it is published in
+title: 'The ViewHelper reference is indexed'
 date: 2026-08-02
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
 ---
 
-# D-ANS-026 — The ViewHelper reference is indexed, and a manual carries the collection it is published in
+# D-ANS-026 — The ViewHelper reference is indexed
 
 **`typo3_documentation_lookup` searches four manuals, and where one is published
 is part of what the index knows about it.**

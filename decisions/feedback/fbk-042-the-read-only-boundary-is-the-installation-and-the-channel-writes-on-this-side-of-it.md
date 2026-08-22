@@ -1,13 +1,13 @@
 ---
 id: D-FBK-042
-title: The read-only boundary is the installation, and the feedback channel writes on this side of it
+title: 'The read-only boundary is the installation'
 date: 2026-08-04
 status: open
 coveredBy:
   - ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem
 ---
 
-# D-FBK-042 — The read-only boundary is the installation, and the feedback channel writes on this side of it
+# D-FBK-042 — The read-only boundary is the installation
 
 **"Write" without a target means into the caller's TYPO3 installation, and
 nothing this server does reaches one.**

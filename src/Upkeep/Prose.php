@@ -48,6 +48,16 @@ final class Prose
     public const RETOLD = 10;
 
     /**
+     * Where a title stops being a name and starts being the statement.
+     *
+     * Twelve rather than the thirty a lead is held to, because a title is read
+     * in a list beside four hundred others and a lead is read once, at the top
+     * of the file it belongs to. The requirement corpus is what says twelve is
+     * writable: its titles mean nine words and fourteen of 222 run past it.
+     */
+    public const TITLE_WORDS = 12;
+
+    /**
      * The files this repository writes about itself.
      *
      * `feedback/` is deliberately absent. A feedback is a session's report
@@ -103,6 +113,45 @@ final class Prose
         usort($over, static fn(array $a, array $b): int => $b['words'] <=> $a['words']);
 
         return ['file' => $file, 'sentences' => count($sentences), 'over' => $over];
+    }
+
+    /**
+     * A title that carries more than one thing, worst first.
+     *
+     * A title is the name an entry is read by in a listing of hundreds, and
+     * what it is not is the statement — that has a measure of its own and a
+     * check that fails on it, which is why the title was the half that grew.
+     * Measured on 2026-08-23: a decision's title reuses 46% of its own words
+     * from its statement, and 89 of the 446 join two claims with a comma-and, a
+     * dash or a semicolon.
+     *
+     * Reported and never failed on. 227 entries ran past twelve words that day,
+     * and a rule 227 entries break is a rewrite wearing a rule's clothes —
+     * `D-DOC-002` took the same road for the sentence count.
+     *
+     * @return list<array{id: string, words: int, joined: bool, title: string}>
+     */
+    public static function titles(): array
+    {
+        $titles = [];
+        foreach ([...array_values(Decisions::all()), ...array_values(Requirements::all())] as $entry) {
+            $joined = preg_match('/, and |, which | — |; /u', $entry['title']) === 1;
+            $words = str_word_count($entry['title']);
+            if (!$joined && $words <= self::TITLE_WORDS) {
+                continue;
+            }
+
+            $titles[] = [
+                'id' => $entry['id'],
+                'words' => $words,
+                'joined' => $joined,
+                'title' => $entry['title'],
+            ];
+        }
+
+        usort($titles, static fn(array $a, array $b): int => [$b['joined'], $b['words']] <=> [$a['joined'], $a['words']]);
+
+        return $titles;
     }
 
     /**

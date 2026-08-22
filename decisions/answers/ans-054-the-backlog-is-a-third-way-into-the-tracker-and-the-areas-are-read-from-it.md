@@ -1,6 +1,6 @@
 ---
 id: D-ANS-054
-title: The backlog is a third way into the tracker, and the areas are read from it
+title: 'The backlog is a third way into the tracker'
 date: 2026-08-05
 status: confirmed
 coveredBy:
@@ -12,7 +12,7 @@ coveredBy:
   - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes
 ---
 
-# D-ANS-054 — The backlog is a third way into the tracker, and the areas are read from it
+# D-ANS-054 — The backlog is a third way into the tracker
 
 **`typo3_forge_lookup` answers the core project's open issues as a filtered
 enumeration, and resolves the area a caller names against the project's own

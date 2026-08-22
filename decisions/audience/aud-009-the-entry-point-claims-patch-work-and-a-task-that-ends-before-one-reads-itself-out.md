@@ -1,6 +1,6 @@
 ---
 id: D-AUD-009
-title: The entry point claims patch work, and a task that ends before one reads itself out
+title: 'The entry point claims patch work'
 date: 2026-08-08
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes
 ---
 
-# D-AUD-009 — The entry point claims patch work, and a task that ends before one reads itself out
+# D-AUD-009 — The entry point claims patch work
 
 **A session asked whether a bug still reproduces skipped `typo3_task_guide`,
 because the instruction beside it says the coding agent writes the patch.** Its

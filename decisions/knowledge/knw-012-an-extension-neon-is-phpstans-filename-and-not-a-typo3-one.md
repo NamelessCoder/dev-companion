@@ -1,11 +1,11 @@
 ---
 id: D-KNW-012
-title: "`extension.neon` is PHPStan's filename, and the hint keeps the one include it means"
+title: "`extension.neon` is PHPStan's filename"
 date: 2026-08-02
 status: open
 ---
 
-# D-KNW-012 — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means
+# D-KNW-012 — `extension.neon` is PHPStan's filename
 
 **A feedback naming `extension.neon` is judged against the package it names,
 because PHPStan gives that filename to every extension package and TYPO3 ships

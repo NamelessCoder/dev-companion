@@ -1,6 +1,6 @@
 ---
 id: D-DOC-028
-title: The renderer is a build tool, and this repository carries none of it
+title: 'The renderer is a build tool this repository carries none of'
 date: 2026-08-12
 status: open
 coveredBy:
@@ -11,7 +11,7 @@ coveredBy:
   - DocumentationPreviewTest::aFailedStepStopsThePreviewAndQuotesTheCommand
 ---
 
-# D-DOC-028 — The renderer is a build tool, and this repository carries none of it
+# D-DOC-028 — The renderer is a build tool this repository carries none of
 
 **`bin/cli documentation:prepare` writes the copy and is the whole of what this
 repository does to a render. The renderer and its theme are required into a

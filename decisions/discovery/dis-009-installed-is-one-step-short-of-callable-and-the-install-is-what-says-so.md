@@ -1,11 +1,11 @@
 ---
 id: D-DIS-009
-title: Installed is one step short of callable, and the install is what says so
+title: 'Installed is one step short of callable'
 date: 2026-08-02
 status: confirmed
 ---
 
-# D-DIS-009 — Installed is one step short of callable, and the install is what says so
+# D-DIS-009 — Installed is one step short of callable
 
 **`install` reports success on writing `.mcp.json`, which is one step short of a
 callable tool, and it says nothing about the step that is left.**

@@ -1,13 +1,13 @@
 ---
 id: D-KNW-082
-title: A content element names its template, and the CType derivation is theme_camino's
+title: 'A content element names its template'
 date: 2026-08-17
 status: open
 coveredBy:
   - HintsTest::theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures
 ---
 
-# D-KNW-082 — A content element names its template, and the CType derivation is theme_camino's
+# D-KNW-082 — A content element names its template
 
 **The corpus states that `fluid_styled_content` sets `templateName` per element
 and attributes the `uppercamelcase` derivation to `theme_camino`, which

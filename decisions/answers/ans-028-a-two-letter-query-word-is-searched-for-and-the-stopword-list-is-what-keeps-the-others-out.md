@@ -1,6 +1,6 @@
 ---
 id: D-ANS-028
-title: A two-letter query word is searched for, and the stopword list is what keeps the others out
+title: 'A two-letter query word is searched for'
 date: 2026-08-02
 status: open
 coveredBy:
@@ -11,7 +11,7 @@ coveredBy:
   - DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName
 ---
 
-# D-ANS-028 — A two-letter query word is searched for, and the stopword list is what keeps the others out
+# D-ANS-028 — A two-letter query word is searched for
 
 **`TermSearch::terms()` admits a word of two characters, and the two-letter
 words that say nothing about a subject are named in `STOPWORDS` rather than cut

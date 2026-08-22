@@ -7,7 +7,7 @@ order it works.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain · 2026-08-21
+- [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill · 2026-08-21
 - [`D-SKL-068`][D-SKL-068] — An audit's list is established against the work already in flight · 2026-08-21
 - [`D-SKL-069`][D-SKL-069] — Each runtime lookup says what it adds after the extension answer · 2026-08-21
 - [`D-SKL-064`][D-SKL-064] — The audit and the work that answers it are one skill · 2026-08-19
@@ -19,31 +19,31 @@ one is added.
 - [`D-SKL-047`][D-SKL-047] — The Composer root step fetches the installer keys from the hint that owns them · 2026-08-18
 - [`D-SKL-048`][D-SKL-048] — A build workflow says a symptom is a lookup trigger · 2026-08-18
 - [`D-SKL-049`][D-SKL-049] — The gate at the end of a workflow waits for the corrections it would sit on · 2026-08-18
-- [`D-SKL-050`][D-SKL-050] — Producing a distribution's content earns a task skill, and the project repository is owned · 2026-08-18 · confirmed
+- [`D-SKL-050`][D-SKL-050] — Producing a distribution's content earns a task skill · 2026-08-18 · confirmed
 - [`D-SKL-051`][D-SKL-051] — A site built from scratch reaches the installation intent · 2026-08-18
 - [`D-SKL-052`][D-SKL-052] — The injected size of a skill is what the retention rule leaves · 2026-08-18
 - [`D-SKL-053`][D-SKL-053] — An absence in the extension answer names the skill that owns it · 2026-08-18
-- [`D-SKL-054`][D-SKL-054] — The listing budget is what a client reads, and a draft is not in it · 2026-08-18
+- [`D-SKL-054`][D-SKL-054] — The listing budget is what a client reads · 2026-08-18
 - [`D-SKL-055`][D-SKL-055] — A call a skill names in order not to make it is written as a discharge · 2026-08-18
 - [`D-SKL-056`][D-SKL-056] — The installation workflow branches on the declared procedure and proves what the run wrote · 2026-08-18
 - [`D-SKL-057`][D-SKL-057] — A command's option set is read from the installed console and its meaning from the manual · 2026-08-18
 - [`D-SKL-058`][D-SKL-058] — A hint is routed by what the repository is rather than by how its installation came to exist · 2026-08-18
 - [`D-SKL-059`][D-SKL-059] — The installation that already answers is owned by the workflow that created it · 2026-08-18
-- [`D-SKL-060`][D-SKL-060] — A skill names a tool at the step that needs it, and a deferring client is answered in the instructions · 2026-08-18
+- [`D-SKL-060`][D-SKL-060] — A skill names a tool at the step that needs it · 2026-08-18
 - [`D-SKL-061`][D-SKL-061] — The upgrade description is reachable from a defect inside the range it already declares · 2026-08-18
 - [`D-SKL-062`][D-SKL-062] — The workflow question is asked again where the work enters a new subject · 2026-08-18
 - [`D-SKL-063`][D-SKL-063] — Reviewing one change proposed against a package that is not the core earns a task skill · 2026-08-18
-- [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces, and its examples illustrate it · 2026-08-14
+- [`D-SKL-037`][D-SKL-037] — The sweep's exemption names what a task produces · 2026-08-14
 - [`D-SKL-038`][D-SKL-038] — The change answer names the skill that owns the patch it describes · 2026-08-14
 - [`D-SKL-039`][D-SKL-039] — A brief that changes nothing routes only the workflows that change nothing · 2026-08-14
 - [`D-SKL-041`][D-SKL-041] — A patch carried onto current code is carried on a named branch · 2026-08-14
 - [`D-SKL-042`][D-SKL-042] — A report is copyable markdown, and the answer is where it goes · 2026-08-14
-- [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects, and a third is a call of its own · 2026-08-14
+- [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
-- [`D-SKL-033`][D-SKL-033] — Activation is the client's, and the order after it is what this server holds · 2026-08-11
+- [`D-SKL-033`][D-SKL-033] — Activation is the client's · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step of the order is skippable on what the session holds, never on how it arrived · 2026-08-11
-- [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run, and nothing it can only see · 2026-08-10
+- [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage that reaches for a previous attempt is routed to the patch · 2026-08-09
 - [`D-SKL-029`][D-SKL-029] — Precedent is listed by the changelog's own axes before it is asked for in words · 2026-08-09
 - [`D-SKL-030`][D-SKL-030] — A review surface names the lookup that can answer it · 2026-08-09
@@ -72,7 +72,7 @@ one is added.
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
-- [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
+- [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill-and-the-typo3-half-is-the-domain.md
 [D-SKL-068]: skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md

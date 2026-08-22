@@ -10,14 +10,14 @@ one is added.
 - [`D-DIS-019`][D-DIS-019] — A project root is found from what its manifest declares · 2026-08-18
 - [`D-DIS-017`][D-DIS-017] — The skills reach a project through the installer · 2026-08-12
 - [`D-DIS-018`][D-DIS-018] — What `install` writes stays inside the project · 2026-08-12
-- [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project, and the fence is not taken · 2026-08-08
+- [`D-DIS-014`][D-DIS-014] — The refresh is wired by the project · 2026-08-08
 - [`D-DIS-016`][D-DIS-016] — How an entrypoint may be named is a per-client question · 2026-08-08 · confirmed
 - [`D-DIS-013`][D-DIS-013] — The record holds a digest of what was published · 2026-08-06
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
-- [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable, and the install is what says so · 2026-08-02 · confirmed
+- [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable · 2026-08-02 · confirmed
 - [`D-DIS-006`][D-DIS-006] — The installation stays worked out from the directory the server was started in · 2026-08-01
 - [`D-DIS-005`][D-DIS-005] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
@@ -44,7 +44,7 @@ one is added.
 - [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 → D-DIS-012
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
-- [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
+- [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
 
 [D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
 [D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md

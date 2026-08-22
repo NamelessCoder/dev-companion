@@ -1,11 +1,11 @@
 ---
 id: D-ANS-002
-title: Three numbers now decide what a lookup answers, and they were measured, not reasoned
+title: 'Three numbers decide what a lookup answers'
 date: 2026-07-30
 status: confirmed
 ---
 
-# D-ANS-002 — Three numbers now decide what a lookup answers, and they were measured, not reasoned
+# D-ANS-002 — Three numbers decide what a lookup answers
 
 **An unknown term, a diluted long field and a per-corpus reference length decide
 what a lookup answers.**

@@ -1,6 +1,6 @@
 ---
 id: D-DOC-045
-title: What a listing reads is front matter, and the prose says it once
+title: 'What a listing reads is front matter'
 date: 2026-08-23
 status: open
 restsOn: [D-DOC-004, D-DOC-044]
@@ -8,7 +8,7 @@ coveredBy:
   - DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd
 ---
 
-# D-DOC-045 — What a listing reads is front matter, and the prose says it once
+# D-DOC-045 — What a listing reads is front matter
 
 **The title and the tests an entry is held by are front matter, and the heading
 repeats the title for a reader of the file.**

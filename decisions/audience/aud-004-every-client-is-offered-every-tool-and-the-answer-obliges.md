@@ -1,11 +1,11 @@
 ---
 id: D-AUD-004
-title: Every client is offered every tool, and the answer says who it obliges
+title: 'Every client is offered every tool'
 date: 2026-08-02
 status: open
 ---
 
-# D-AUD-004 — Every client is offered every tool, and the answer says who it obliges
+# D-AUD-004 — Every client is offered every tool
 
 **Every client is offered every tool; what an answer is worth outside the core
 is said in the answer, and only the caller shortens the tool list.**

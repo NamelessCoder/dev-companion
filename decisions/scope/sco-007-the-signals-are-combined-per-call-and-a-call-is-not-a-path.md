@@ -1,12 +1,12 @@
 ---
 id: D-SCO-007
-title: The signals are combined per call, and a call is not a path
+title: 'The signals are combined per call'
 date: 2026-08-01
 status: revoked
 revokedBy: D-SCO-008
 ---
 
-# D-SCO-007 — The signals are combined per call, and a call is not a path
+# D-SCO-007 — The signals are combined per call
 
 **Scope::isOutsideCore() combines the signals `R-SCO-001` orders over the whole
 call: every path is folded into one string and one boolean comes back. `META-03`

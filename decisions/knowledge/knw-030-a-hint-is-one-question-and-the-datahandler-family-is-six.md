@@ -1,6 +1,6 @@
 ---
 id: D-KNW-030
-title: A hint is one question, and the DataHandler family is six of them
+title: 'A hint is one question'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -10,7 +10,7 @@ coveredBy:
   - HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor
 ---
 
-# D-KNW-030 — A hint is one question, and the DataHandler family is six of them
+# D-KNW-030 — A hint is one question
 
 **A subject is split along the questions a caller arrives with rather than along
 the subsystem: DataHandler becomes six hints, and reading a record becomes

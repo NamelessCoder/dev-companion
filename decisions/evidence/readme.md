@@ -11,7 +11,7 @@ one is added.
 - [`D-EVI-008`][D-EVI-008] — What the server buys is a ceiling rather than a lower average · 2026-08-18
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
-- [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
+- [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared with its database · 2026-08-02
 - [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
 - [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
 - [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed

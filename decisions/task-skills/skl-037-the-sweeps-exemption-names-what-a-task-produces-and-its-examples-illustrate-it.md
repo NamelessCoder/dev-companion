@@ -1,13 +1,13 @@
 ---
 id: D-SKL-037
-title: The sweep's exemption names what a task produces, and its examples illustrate it
+title: "The sweep's exemption names what a task produces"
 date: 2026-08-14
 status: open
 coveredBy:
   - SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api
 ---
 
-# D-SKL-037 — The sweep's exemption names what a task produces, and its examples illustrate it
+# D-SKL-037 — The sweep's exemption names what a task produces
 
 **The deprecation sweep's exemption is stated as the property it rests on — a
 task that produces no change — and reviewing a patch is inside it.**

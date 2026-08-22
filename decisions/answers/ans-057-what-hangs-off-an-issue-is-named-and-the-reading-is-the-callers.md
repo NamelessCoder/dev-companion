@@ -1,13 +1,13 @@
 ---
 id: D-ANS-057
-title: What hangs off an issue is named, and the reading is the caller's
+title: 'What hangs off an issue is named'
 date: 2026-08-05
 status: open
 coveredBy:
   - ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched
 ---
 
-# D-ANS-057 — What hangs off an issue is named, and the reading is the caller's
+# D-ANS-057 — What hangs off an issue is named
 
 **A single-issue read answers with the files attached to it — name, type, size,
 date and URL — and fetches none of them.**

@@ -1,13 +1,13 @@
 ---
 id: D-KNW-020
-title: What a preview template is handed is stated on both majors, and a field resolves by its TCA type
+title: 'What a preview template is handed is stated on both majors'
 date: 2026-08-02
 status: open
 coveredBy:
   - HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo
 ---
 
-# D-KNW-020 — What a preview template is handed is stated on both majors, and a field resolves by its TCA type
+# D-KNW-020 — What a preview template is handed is stated on both majors
 
 **The corpus states what a preview template is handed on each major, and what a
 field read off the record resolves to.**

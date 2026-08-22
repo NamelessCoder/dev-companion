@@ -1,11 +1,11 @@
 ---
 id: D-ANS-014
-title: The extension answer enumerates registrations, not files — and a registration is one wherever it is declared
+title: 'The extension answer enumerates registrations, not files'
 date: 2026-08-02
 status: open
 ---
 
-# D-ANS-014 — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared
+# D-ANS-014 — The extension answer enumerates registrations, not files
 
 **`typo3_extension_describe` lists what an extension registers and never the
 files it ships, and a registration belongs in that list wherever it is

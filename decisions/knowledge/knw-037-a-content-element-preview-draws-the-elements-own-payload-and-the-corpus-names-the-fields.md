@@ -1,13 +1,13 @@
 ---
 id: D-KNW-037
-title: A content-element preview draws the element's own payload, and the corpus names the fields
+title: "A content-element preview draws the element's own payload"
 date: 2026-08-03
 status: open
 coveredBy:
   - HintsTest::aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom
 ---
 
-# D-KNW-037 — A content-element preview draws the element's own payload, and the corpus names the fields
+# D-KNW-037 — A content-element preview draws the element's own payload
 
 **What a backend preview shows is the element's own payload, and the corpus
 states it as the field kinds a preview draws from rather than as a summary.**

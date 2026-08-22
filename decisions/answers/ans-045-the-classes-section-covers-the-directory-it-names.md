@@ -1,11 +1,11 @@
 ---
 id: D-ANS-045
-title: The Classes section covers the directory it names, and a value read off the tree says so
+title: 'The Classes section reports every directory below it'
 date: 2026-08-03
 status: open
 ---
 
-# D-ANS-045 — The Classes section covers the directory it names, and a value read off the tree says so
+# D-ANS-045 — The Classes section reports every directory below it
 
 **`typo3_extension_describe` reports every directory below `Classes/` and every
 PHP file under it, and a value it derives from a directory existing is not

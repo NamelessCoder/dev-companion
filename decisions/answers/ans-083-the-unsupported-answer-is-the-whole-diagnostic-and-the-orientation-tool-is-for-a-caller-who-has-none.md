@@ -1,11 +1,11 @@
 ---
 id: D-ANS-083
-title: The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none
+title: 'The unsupported answer is the whole diagnostic'
 date: 2026-08-17
 status: open
 ---
 
-# D-ANS-083 — The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none
+# D-ANS-083 — The unsupported answer is the whole diagnostic
 
 **A caller told its question is not answerable here is not sent on to
 `typo3_server_scope`: the answer beside that sentence already carries what the

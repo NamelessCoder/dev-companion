@@ -1,11 +1,11 @@
 ---
 id: D-ANS-046
-title: A manual result covers the question it is returned for, and the silence names the corpus that answers
+title: 'A manual result covers the question it is returned for'
 date: 2026-08-03
 status: open
 ---
 
-# D-ANS-046 — A manual result covers the question it is returned for, and the silence names the corpus that answers
+# D-ANS-046 — A manual result covers the question it is returned for
 
 **The live-manual search keeps what covers the query, the way the rule search
 already does. Where nothing clears that floor, the answer is a miss rather than

@@ -1,11 +1,11 @@
 ---
 id: D-SKL-060
-title: A skill names a tool at the step that needs it, and a deferring client is answered in the instructions
+title: 'A skill names a tool at the step that needs it'
 date: 2026-08-18
 status: open
 ---
 
-# D-SKL-060 — A skill names a tool at the step that needs it, and a deferring client is answered in the instructions
+# D-SKL-060 — A skill names a tool at the step that needs it
 
 **A skill names a tool at the step that needs it, and a client that defers tool
 schemas is answered in the `instructions`.**

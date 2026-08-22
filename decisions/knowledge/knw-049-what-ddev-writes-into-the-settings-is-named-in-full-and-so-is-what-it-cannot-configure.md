@@ -1,13 +1,13 @@
 ---
 id: D-KNW-049
-title: What DDEV writes into the settings is named in full, and so is what it cannot configure
+title: 'What DDEV writes into the settings is named in full'
 date: 2026-08-03
 status: confirmed
 coveredBy:
   - HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes
 ---
 
-# D-KNW-049 — What DDEV writes into the settings is named in full, and so is what it cannot configure
+# D-KNW-049 — What DDEV writes into the settings is named in full
 
 **What DDEV's settings management writes into `config/system/additional.php` is
 stated in full, and so is the installation its generator cannot configure.**

@@ -1,11 +1,11 @@
 ---
 id: D-SKL-050
-title: Producing a distribution's content earns a task skill, and the project repository is owned
+title: "Producing a distribution's content earns a task skill"
 date: 2026-08-18
 status: confirmed
 ---
 
-# D-SKL-050 — Producing a distribution's content earns a task skill, and the project repository is owned
+# D-SKL-050 — Producing a distribution's content earns a task skill
 
 **Producing the content artifact a distribution ships earns a task skill of its
 own.** It owns the seed, the export, and where the artifact and its files are

@@ -1,11 +1,11 @@
 ---
 id: D-ANS-059
-title: What this server holds carried the task, and what it read elsewhere is where it misled
+title: 'What this server holds carried the task'
 date: 2026-08-05
 status: open
 ---
 
-# D-ANS-059 — What this server holds carried the task, and what it read elsewhere is where it misled
+# D-ANS-059 — What this server holds carried the task
 
 **One core session reported its boundary between what this server computes and
 what it reads over somebody else's API, and every cost it named was on the

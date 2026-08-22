@@ -1,6 +1,6 @@
 ---
 id: D-ANS-090
-title: A set larger than a page is answered by its shape, and a person by both sides at once
+title: 'A matched set larger than a page is answered by its shape'
 date: 2026-08-19
 status: open
 coveredBy:
@@ -12,7 +12,7 @@ coveredBy:
   - ForgeTest::theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting
 ---
 
-# D-ANS-090 — A set larger than a page is answered by its shape, and a person by both sides at once
+# D-ANS-090 — A matched set larger than a page is answered by its shape
 
 **A matched set larger than a page is answered by its shape, a person by both
 sides at once, and the area list only where a word needs correcting.**

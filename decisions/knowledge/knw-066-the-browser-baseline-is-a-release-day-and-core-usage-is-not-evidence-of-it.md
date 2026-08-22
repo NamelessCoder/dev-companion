@@ -1,11 +1,11 @@
 ---
 id: D-KNW-066
-title: The browser baseline is a release day, and core usage is not evidence of it
+title: 'The browser baseline is a release day'
 date: 2026-08-10
 status: open
 ---
 
-# D-KNW-066 — The browser baseline is a release day, and core usage is not evidence of it
+# D-KNW-066 — The browser baseline is a release day
 
 **`css-browser-target` states the policy as a release day and names what is not
 evidence of it; it does not carry a feature-by-feature support table.**

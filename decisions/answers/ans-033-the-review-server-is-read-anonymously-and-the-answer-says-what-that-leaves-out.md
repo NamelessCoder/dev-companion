@@ -1,11 +1,11 @@
 ---
 id: D-ANS-033
-title: The review server is read anonymously, and the answer says what that leaves out
+title: 'The review server is read anonymously'
 date: 2026-08-03
 status: confirmed
 ---
 
-# D-ANS-033 — The review server is read anonymously, and the answer says what that leaves out
+# D-ANS-033 — The review server is read anonymously
 
 **`typo3_gerrit_lookup` reads review.typo3.org without a credential, so an empty
 answer means nothing public names the issue rather than that nobody fixed it.**

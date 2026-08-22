@@ -1,11 +1,11 @@
 ---
 id: D-SKL-032
-title: A probe is worth what the session can run, and nothing it can only see
+title: 'A probe is worth what the session can run'
 date: 2026-08-10
 status: open
 ---
 
-# D-SKL-032 — A probe is worth what the session can run, and nothing it can only see
+# D-SKL-032 — A probe is worth what the session can run
 
 **The scratch-probe permission carried the review wherever a suite could be run
 against the question, and the same session asserted for hours wherever the

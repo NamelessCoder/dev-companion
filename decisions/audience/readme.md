@@ -11,12 +11,12 @@ one is added.
 - [`D-AUD-012`][D-AUD-012] — The second call of the entry point is an imperative of its own · 2026-08-19
 - [`D-AUD-011`][D-AUD-011] — The instructions index the question each tool answers, because a name is all a deferring client shows · 2026-08-18
 - [`D-AUD-010`][D-AUD-010] — The content model is answered and the records stay with the installation · 2026-08-12
-- [`D-AUD-009`][D-AUD-009] — The entry point claims patch work, and a task that ends before one reads itself out · 2026-08-08
+- [`D-AUD-009`][D-AUD-009] — The entry point claims patch work · 2026-08-08
 - [`D-AUD-008`][D-AUD-008] — The server is called dev-companion, under the vendor TYPO3's own tooling uses · 2026-08-06 · confirmed
-- [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
-- [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
+- [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported and the server starts · 2026-08-04
+- [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened · 2026-08-04
 - [`D-AUD-007`][D-AUD-007] — The prose documents are named where a session already looks · 2026-08-04
-- [`D-AUD-004`][D-AUD-004] — Every client is offered every tool, and the answer says who it obliges · 2026-08-02
+- [`D-AUD-004`][D-AUD-004] — Every client is offered every tool · 2026-08-02
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 

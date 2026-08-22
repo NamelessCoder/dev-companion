@@ -1,6 +1,6 @@
 ---
 id: D-ANS-043
-title: A miss is answered in data, and says which corpus its silence belongs to
+title: 'A miss is answered in data'
 date: 2026-08-03
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo
 ---
 
-# D-ANS-043 — A miss is answered in data, and says which corpus its silence belongs to
+# D-ANS-043 — A miss is answered in data
 
 **The narrowing a miss computes is a field of the answer as well as a line of
 its text. Where the re-query it offers comes back empty too, the miss names the

@@ -123,6 +123,21 @@ final class ProseCheck
             ));
         }
 
+        // The other half of the same rule, and the half nothing measured: a
+        // title is the name an entry is read by, not its statement said again
+        // — `D-DOC-046`.
+        $titles = Prose::titles();
+        $joined = array_values(array_filter($titles, static fn(array $title): bool => $title['joined']));
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '%d titles carry more than one thing, %d of them joining two claims outright.',
+            count($titles),
+            count($joined),
+        ));
+        foreach (array_slice([...$joined, ...array_filter($titles, static fn(array $title): bool => !$title['joined'])], 0, self::NAMED) as $title) {
+            $output->writeln(sprintf('  %3d  %-11s %s', $title['words'], $title['id'], $title['title']));
+        }
+
         $leads = Prose::leadsOverTheMeasure();
         if ($leads === []) {
             $output->writeln('');

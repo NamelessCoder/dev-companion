@@ -1,11 +1,11 @@
 ---
 id: D-SKL-067
-title: Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain
+title: "Maintaining a package's asset build earns a task skill"
 date: 2026-08-21
 status: open
 ---
 
-# D-SKL-067 — Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain
+# D-SKL-067 — Maintaining a package's asset build earns a task skill
 
 **An extension's asset build is a task this server orders, and the TYPO3 half of
 it is the domain: the committed output, the import map, the borrowed backend

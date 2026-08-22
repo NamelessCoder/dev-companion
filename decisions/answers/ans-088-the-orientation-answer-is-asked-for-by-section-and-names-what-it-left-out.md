@@ -1,6 +1,6 @@
 ---
 id: D-ANS-088
-title: The orientation answer is asked for by section, and names what it left out
+title: 'The orientation answer is asked for by section'
 date: 2026-08-19
 status: open
 coveredBy:
@@ -9,7 +9,7 @@ coveredBy:
   - ScopeTest::namingNoSectionAnswersEverythingTheToolHas
 ---
 
-# D-ANS-088 — The orientation answer is asked for by section, and names what it left out
+# D-ANS-088 — The orientation answer is asked for by section
 
 **`typo3_server_scope` takes a `sections` argument, answers only the parts a
 caller names, and says which parts it left out.**

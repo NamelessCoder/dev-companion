@@ -114,7 +114,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-023`][R-ANS-023] — A review answer names only changes that name the issue · held
 - [`R-ANS-024`][R-ANS-024] — A field that is answered empty is one nothing could fill · held
 - [`R-ANS-025`][R-ANS-025] — An issue answer says what its comments refer to · held
-- [`R-ANS-026`][R-ANS-026] — A path names the subsystem, and a hint from another one does not answer · held
+- [`R-ANS-026`][R-ANS-026] — A path names the subsystem · held
 - [`R-ANS-027`][R-ANS-027] — An answer that cannot separate two causes says so in the answer · held
 - [`R-ANS-028`][R-ANS-028] — An answer that names a document says how to read it whole · held
 - [`R-ANS-029`][R-ANS-029] — An answer that names a record says enough of it to judge whether to open it · held
@@ -498,7 +498,7 @@ test. Both are legitimate, nothing fails on either, and
 
 - [`R-COD-001`][R-COD-001] — Every entrypoint is driven by a test that goes through it · held
 - [`R-COD-002`][R-COD-002] — What the server ships is held to the prose rule · held
-- [`R-COD-003`][R-COD-003] — A unit test holds a small part, and stubs what is outside it · not guarded
+- [`R-COD-003`][R-COD-003] — A unit test holds a small part and stubs what is outside it · not guarded
 
 [R-COD-001]: code/cod-001-every-entrypoint-is-driven-by-a-test-that-goes-through-it.md
 [R-COD-002]: code/cod-002-what-the-server-ships-is-held-to-the-prose-rule.md

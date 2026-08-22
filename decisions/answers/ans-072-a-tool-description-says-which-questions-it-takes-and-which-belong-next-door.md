@@ -1,11 +1,11 @@
 ---
 id: D-ANS-072
-title: A tool description says which questions it takes, and which belong next door
+title: 'A tool description says which questions it takes and which belong next door'
 date: 2026-08-10
 status: open
 ---
 
-# D-ANS-072 — A tool description says which questions it takes, and which belong next door
+# D-ANS-072 — A tool description says which questions it takes and which belong next door
 
 **`typo3_script_lookup` names what it holds and hands the run-shape questions to
 `typo3_test_run_guide`; the session that had both in its list called neither for

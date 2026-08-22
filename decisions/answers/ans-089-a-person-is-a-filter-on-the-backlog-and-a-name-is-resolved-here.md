@@ -1,6 +1,6 @@
 ---
 id: D-ANS-089
-title: A person is a filter on the backlog, and a name is resolved here
+title: 'A person is a filter on the backlog'
 date: 2026-08-19
 status: confirmed
 coveredBy:
@@ -12,7 +12,7 @@ coveredBy:
   - ForgeTest::aRowSaysWhoFiledIt
 ---
 
-# D-ANS-089 — A person is a filter on the backlog, and a name is resolved here
+# D-ANS-089 — A person is a filter on the backlog
 
 **`typo3_forge_lookup` narrows its enumeration by `reportedBy` and `assignedTo`
 in a person's own name, resolves that name to the id the tracker filters by, and

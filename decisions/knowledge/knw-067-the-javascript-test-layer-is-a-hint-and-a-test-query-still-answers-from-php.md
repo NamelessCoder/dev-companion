@@ -1,11 +1,11 @@
 ---
 id: D-KNW-067
-title: The JavaScript test layer is a hint, and a test query still answers from PHP
+title: 'The JavaScript test layer is a hint of its own'
 date: 2026-08-10
 status: open
 ---
 
-# D-KNW-067 — The JavaScript test layer is a hint, and a test query still answers from PHP
+# D-KNW-067 — The JavaScript test layer is a hint of its own
 
 **The core's JavaScript unit test layer is one hint in the TypeScript domain;
 the PHPUnit hints arriving beside it are a domain-detection question and stay

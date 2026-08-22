@@ -1,13 +1,13 @@
 ---
 id: D-DOC-024
-title: The site's theme is a package, and this repository keeps none of it
+title: "The site's theme is a package this repository keeps none of"
 date: 2026-08-12
 status: open
 coveredBy:
   - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
 ---
 
-# D-DOC-024 — The site's theme is a package, and this repository keeps none of it
+# D-DOC-024 — The site's theme is a package this repository keeps none of
 
 **The site is rendered with `typo3/soul-guides-theme`, and the layout, the
 assets and the search index come from that package rather than from files kept

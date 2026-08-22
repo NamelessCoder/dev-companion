@@ -1,11 +1,11 @@
 ---
 id: D-SKL-033
-title: Activation is the client's, and the order after it is what this server holds
+title: "Activation is the client's"
 date: 2026-08-11
 status: open
 ---
 
-# D-SKL-033 — Activation is the client's, and the order after it is what this server holds
+# D-SKL-033 — Activation is the client's
 
 **A skill's description is written for the listing it is read in, and nothing
 here is built to force an activation the client and the model decide.**

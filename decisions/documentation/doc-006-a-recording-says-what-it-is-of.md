@@ -1,6 +1,6 @@
 ---
 id: D-DOC-006
-title: A recording says what it is of, and nothing fails on its age
+title: 'A recording says what it is of'
 date: 2026-08-02
 status: open
 coveredBy:
@@ -10,7 +10,7 @@ coveredBy:
   - ToolAnswersTest::everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom
 ---
 
-# D-DOC-006 — A recording says what it is of, and nothing fails on its age
+# D-DOC-006 — A recording says what it is of
 
 **The recording under `documentation/clients/tool-answers/` is evidence rather
 than a derivation: it names the day, the checkout and the console behind it, and

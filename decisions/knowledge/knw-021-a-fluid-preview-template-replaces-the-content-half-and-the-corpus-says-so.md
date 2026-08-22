@@ -1,13 +1,13 @@
 ---
 id: D-KNW-021
-title: A Fluid preview template replaces the content half, and the corpus names what is drawn around it
+title: 'A Fluid preview template replaces the content half'
 date: 2026-08-02
 status: open
 coveredBy:
   - HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws
 ---
 
-# D-KNW-021 — A Fluid preview template replaces the content half, and the corpus names what is drawn around it
+# D-KNW-021 — A Fluid preview template replaces the content half
 
 **A Fluid preview template replaces the content half of the page module preview,
 and the corpus names the header and footer parts drawn around it.**

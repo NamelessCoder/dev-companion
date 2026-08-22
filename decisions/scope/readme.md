@@ -11,9 +11,9 @@ one is added.
 - [`D-SCO-013`][D-SCO-013] — A declared command carries the interpreter it runs on, Node as well as PHP · 2026-08-19
 - [`D-SCO-014`][D-SCO-014] — The npm manifest is read where the repository keeps it, `Build/` included · 2026-08-19
 - [`D-SCO-012`][D-SCO-012] — The root manifest places the work before the dependencies are installed · 2026-08-18
-- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the draft RFC is read as a reference · 2026-08-04
-- [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
-- [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
+- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept · 2026-08-04
+- [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe` · 2026-08-04
+- [`D-SCO-009`][D-SCO-009] — The brief is one brief · 2026-08-02
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
@@ -32,10 +32,10 @@ one is added.
 
 ### Revoked, and kept as the record
 
-- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01 → D-SCO-008
+- [`D-SCO-007`][D-SCO-007] — The signals are combined per call · 2026-08-01 → D-SCO-008
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
-- [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
+- [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name · 2026-07-29
 
 [D-SCO-007]: sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-008]: sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md

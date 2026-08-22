@@ -1,6 +1,6 @@
 ---
 id: D-SCO-009
-title: The brief is one brief, and names the paths a step is not for
+title: 'The brief is one brief'
 date: 2026-08-02
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep
 ---
 
-# D-SCO-009 — The brief is one brief, and names the paths a step is not for
+# D-SCO-009 — The brief is one brief
 
 **`typo3_task_guide` takes the paths of the work and places each of them, and
 the brief it composes stays one brief.**

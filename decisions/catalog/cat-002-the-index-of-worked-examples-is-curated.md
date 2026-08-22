@@ -1,11 +1,11 @@
 ---
 id: D-CAT-002
-title: The index of worked examples is curated, and existence is all that is checked
+title: 'The index of worked examples is curated'
 date: 2026-07-29
 status: revoked
 ---
 
-# D-CAT-002 — The index of worked examples is curated, and existence is all that is checked
+# D-CAT-002 — The index of worked examples is curated
 
 **The path of a worked example is machine-checked against every covered
 checkout; the sentence about what it is a reference for is not.**

@@ -131,8 +131,16 @@ What an entry holds
 
 * The **title** is the front matter's, and the heading repeats it so a reader
   of the file sees it where a heading belongs. ``bin/cli decisions:check`` holds
-  the two to each other, so a rewrite of one is a rewrite of both. It says what
-  will be done, in the affirmative. Not the deficiency
+  the two to each other, so a rewrite of one is a rewrite of both.
+
+  It is the name the entry is read by in a listing of hundreds, and it is not
+  the statement: that is the bold sentence below it, which is held to thirty
+  words. A title says one thing, in twelve or so — where an ``and`` joins two
+  claims, the second one is the statement's and is usually already in it.
+  ``bin/cli prose:check`` counts the ones that carry more, worst first, and
+  fails on none of them.
+
+  It says what will be done, in the affirmative. Not the deficiency
   it corrects and not a negation: "The ladder needs an outcome that builds
   something", not "the ladder had no outcome that builds" and not "the ladder is
   not a filter". What was wrong is evidence and belongs in the paragraph under

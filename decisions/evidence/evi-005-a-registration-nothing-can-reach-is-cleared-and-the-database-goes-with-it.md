@@ -1,6 +1,6 @@
 ---
 id: D-EVI-005
-title: A registration nothing can reach is cleared, and the database goes with it
+title: 'A registration nothing can reach is cleared with its database'
 date: 2026-08-02
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - EnvironmentsTest::clearingARegistrationTakesTheDatabaseThatWouldOutliveIt
 ---
 
-# D-EVI-005 — A registration nothing can reach is cleared, and the database goes with it
+# D-EVI-005 — A registration nothing can reach is cleared with its database
 
 **A DDEV registration whose approot is gone is cleared by `environment:create`
 rather than refused in its name, with `ddev delete` so the database it still

@@ -39,7 +39,7 @@ earns one.
 - [`D-FBK-019`][D-FBK-019] — A secret pasted into a feedback is taken out on the way in · 2026-08-02
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02 · confirmed
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
-- [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
+- [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02 · confirmed
 - [`D-FBK-024`][D-FBK-024] — A feedback about the caller's conduct toward its user names no surface · 2026-08-02 · confirmed
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01 · confirmed
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01

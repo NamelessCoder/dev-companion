@@ -1,7 +1,7 @@
 ---
 id: D-FBK-023
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-023 — A correction is judged by what its withdrawal moves
@@ -102,3 +102,18 @@ subject the earlier notes were about.
   from a report of exactly that shape.
 - A sibling's judgement turns out to have rested on the withdrawn claim after
   all. `003634` is the open one.
+
+## Confirmed on 2026-08-23
+
+The third **Wrong if** is answered and it is the one this entry left open.
+`003634` was judged on 2026-08-02 by the mapping `D-FBK-021` sets, and the
+premise the correction withdrew is a row of that mapping rather than something
+the judgement rested on: *the premise that the skill was never activated —
+withdrawn by `003736`*, with `D-KNW-017` recording the withdrawal and reading
+the trigger out. Both feedback are archived.
+
+The other two are unreported. No feedback since names a skill as never activated
+from a window that began at a summary, and none arrives hedged about what
+happened in its own session — `documentation/records/asking-for-a-debrief.rst`
+still asks for the skill that never activated and the tool it passed over as
+evidence, which is the sentence the second **Wrong if** prices.

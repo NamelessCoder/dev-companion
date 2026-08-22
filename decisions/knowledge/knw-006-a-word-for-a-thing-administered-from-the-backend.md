@@ -1,7 +1,7 @@
 ---
 id: D-KNW-006
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-KNW-006 — A word for a thing administered from the backend adds no domain to a backend-only task
@@ -57,3 +57,21 @@ was not, so a task about one TCA field still had its brief opened with
 ## Covered by
 
 - `HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`
+
+## Confirmed on 2026-08-23
+
+Neither half of the **Wrong if** holds, and the second is measured rather than
+argued. Probed on 2026-08-23, "render a content element", "build a content
+element", "content element template" and "add a content element to my extension"
+all select fluid and typoscript — so the two domains are reachable for a content
+element without a text that says sitepackage or frontend.
+
+The first half is covered from a direction that did not exist when this was
+written. "content element backend preview" selects `php` alone, as this entry
+decided, and the first hint it returns is `content-element-preview`, which is a
+Fluid hint: a curated `appliesTo` phrase crosses the domain gate under
+`D-ANS-084`. So a backend task naming a preview is answered with the Fluid hint
+that is about it, without the domain being opened to everything Fluid.
+
+`HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`
+holds both sides on five prompts, three of which are recorded scenario prompts.

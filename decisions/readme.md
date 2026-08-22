@@ -153,8 +153,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-016`][D-ANS-016] — A miss names the query that would have hit, not only the reach of each word · 2026-08-02
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument gets the wording a client can compose against · 2026-08-02
-- [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02
-- [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02
+- [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02 · confirmed
+- [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02 · confirmed
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A manual query is told what short buys, because the index is a table of contents · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
@@ -823,7 +823,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
-- [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02
+- [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02 · confirmed
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01 · confirmed
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 

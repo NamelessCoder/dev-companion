@@ -1,7 +1,7 @@
 ---
 id: D-DOC-008
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-DOC-008 — The calls that reach outside stay in the shared table
@@ -87,3 +87,19 @@ docs.typo3.org. It does not, and that is the whole of what this settles.
 
 - `DocumentationTest::aSourceThatDidNotAnswerIsStillAnAnswerToTheSchema`
 - `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`
+
+## Confirmed on 2026-08-23
+
+The three calls are still in the shared table and the suite is green on them.
+`typo3_documentation_lookup` answered `answered` for a live 14.3 search on
+2026-08-23, and the third call — the version outside the covered ones — is what
+holds the other half of the schema without reaching the network at all.
+
+None of the four **Wrong if** has fired. No CI run has gone red on these, and
+nothing has asked for the suite to run where the network is closed, which is the
+one case the entry reserves the skip list for.
+
+The fourth is the one with a date on it rather than a report: 14.3 is still
+covered, beside 12.4, 13.4 and `main`. When it leaves, both live calls fall to
+`version-not-covered` and the page goes back to what it was — so what to watch
+is `knowledge/versions.json`, and the recording is where it shows.

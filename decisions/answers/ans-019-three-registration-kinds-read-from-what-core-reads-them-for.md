@@ -1,7 +1,7 @@
 ---
 id: D-ANS-019
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-ANS-019 — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by
@@ -129,3 +129,22 @@ major.
 - `ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported`
 - `ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor`
 - `ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores`
+
+## Confirmed on 2026-08-23
+
+The three readings are where this put them and the four tests under **Covered
+by** still hold them. Nothing in `feedback/` has reported any of the four
+**Wrong if** — the four open ones are a JavaScript dependency update, a build
+workflow and an instruction budget, none of them about a registration.
+
+The second is the one that gained half an answer since. `disabledSets` is named
+in the schema of the site set entry — the `name` field says it is what
+`disabledSets` matches against — so a caller reading the data is told what
+switches a set off rather than finding out that the list is longer than the
+installation's. What the answer still cannot do is read an `ext_localconf.php`
+that writes it, which is the boundary `D-ANS-014` draws.
+
+The fourth is unfired and guarded twice over: `registerPlugin()` is still
+composed from its first two arguments in `Extension::declarationsIn()`, and
+`R-ANS-012` is what says a signature resolved through a variable is missing
+rather than wrong.

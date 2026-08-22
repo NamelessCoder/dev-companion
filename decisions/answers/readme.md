@@ -82,8 +82,8 @@ one is added.
 - [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-016`][D-ANS-016] — A miss names the query that would have hit, not only the reach of each word · 2026-08-02
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument gets the wording a client can compose against · 2026-08-02
-- [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02
-- [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02
+- [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02 · confirmed
+- [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02 · confirmed
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A manual query is told what short buys, because the index is a table of contents · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02

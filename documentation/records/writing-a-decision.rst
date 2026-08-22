@@ -141,6 +141,12 @@ What an entry holds
   entry, revoked ones included: what a revoked entry preserves is its statement
   and its **Revoked on** section, and a listing where some titles name a fix and
   others name a gap is read as two kinds of entry when there is one.
+
+  Nothing holds it, and nothing can. The corpus was read for the shape on
+  2026-08-22 and the search returned thirty-five titles of which one had drifted
+  — the rest were the affirmative "A is B, not C", which states what is and then
+  excludes. A check would report those thirty-four every time, so what keeps
+  this is somebody rereading the title before the commit.
 * The **bold first sentence** is the decision. A reader who stops after it knows
   what was settled; everything under it is what settled it.
 * The sections are a fixed set, in that order: **Evidence**, **Decided**,

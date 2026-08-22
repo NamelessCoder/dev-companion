@@ -48,7 +48,7 @@ cannot tell that session from one that had nothing to report.
   name one.
 - One text, read by the page and by the prompt. A second copy ages, and the copy
   that ages is the one somebody pastes.
-- Rejected: a debrief guide tool, which is the shape the feedback asked for. A
+- Rejected: `typo3_debrief_guide`, which is the shape the feedback asked for. A
   tool stands in the model's list from the first call, so the session under
   report learns it will be debriefed while it is still working — the
   contamination the page opens by naming. The id the feedback wants is the

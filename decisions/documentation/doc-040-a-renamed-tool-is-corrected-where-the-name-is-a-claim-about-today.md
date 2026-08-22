@@ -85,24 +85,34 @@ nothing else, so every other corpus went stale unwatched.
 
 ## Since then
 
-The maintainer asked the same day whether a tool that does not exist can be
-legitimate, and it cannot. What `decisions/` holds is not a tool but a
-**proposal** that was declined, and writing one in the backticks a callable tool
-wears is the deception a stale name is: a reader goes and calls it, and nothing
-can tell the two apart. The five were prose all along — "a debrief guide tool",
-"a skeleton lookup was drafted and dropped" — and none of those sentences wanted
-the identifier.
+The maintainer put two things the same day, and the second corrected the answer
+to the first.
 
-With them written as what they are, the reason this entry gave for leaving
-`decisions/` unguarded is gone, and the list of every rename it declined to
-start is not needed either.
-`ToolNamingTest::everyToolNameADecisionSpellsIsRegisteredOrIsTheSubject` reads
-the corpus for the **tool shape** — a subject and one of the six verbs — so the
-TER's own `typo3_versions` field and a `typo3_logo.png` in a Fluid example are
-not read as names at all, and no exception is owed to either.
+Whether a tool that does not exist can be legitimate: it cannot, and that was
+the word this entry got wrong. What `decisions/` holds is not a tool but a
+**proposal** that was declined, and a proposal is not a tool. So the reason
+given above for leaving the corpus unguarded — that it legitimately names tools
+which never existed — was never true of anything in it.
 
-What is owed an exception is the passage where a superseded name is the subject
-of the sentence, and there are five: this entry, whose evidence is the names as
-they were counted, and the four **Decided** already names. They are listed in
-the test with the reason each one is there, and that list shrinks as those
-entries stop being about a rename rather than growing with every rename made.
+Whether a declined proposal stays declined: it does not. `typo3_ter_lookup`
+exists after release was turned down twice, and `D-KNW-004` says in as many
+words that a producer appearing reopens its question. The name is what a later
+session searches for when the demand comes back, so the first fix tried here —
+writing the five as prose, "a debrief guide tool" — threw away the handle and
+was reverted. What never deceived a reader is the sentence: `Rejected:` stands
+in front of the name. Only a search could not tell.
+
+So the record is the list rather than the prose. The `NOT_A_TOOL` list in
+`ToolNamingTest` names every tool-shaped string in `decisions/` that no tool
+has, each with the entry that decided it, and
+`everyToolNameADecisionSpellsIsRegisteredOrAccountedFor` holds the corpus to it.
+Declining a tool fails the suite until the name is written down with its reason,
+and building one takes its line away —
+`nothingTheListWritesOffIsARegisteredTool` is what makes the second half true.
+The match is the tool shape, a subject and one of the six verbs, so the TER's
+own `typo3_versions` field and a `typo3_logo.png` in a Fluid example are not
+read as names at all.
+
+Both **Wrong if** struck above are closed by that, and the list of every rename
+ever made is not needed: eight lines carry three renames and five declined
+shapes, and each one leaves when the thing it stands for stops being true.

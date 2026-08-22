@@ -42,7 +42,7 @@ reconstruct from at all.
 
 ## Decided
 
-- The surface is the document corpus. A skeleton lookup was drafted and
+- The surface is the document corpus. A `typo3_skeleton_lookup` was drafted and
   dropped: it would have added a registry entry, an output schema, contract
   tests and a second place to state the scope, for an answer the corpus already
   returns in the right shape.

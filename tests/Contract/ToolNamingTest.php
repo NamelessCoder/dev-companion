@@ -117,28 +117,39 @@ final class ToolNamingTest extends TestCase
     }
 
     /**
-     * The entries where a superseded tool name is what the sentence is about,
-     * with what it is doing there. Nothing else in `decisions/` may spell a
-     * name shaped like a tool that no tool has.
+     * Tool names `decisions/` spells that no tool has, and the entry that says
+     * why. Everything else shaped like a tool name has to be one.
      *
-     * A proposal that was declined is not one of these. It used to be written
-     * `typo3_debrief_guide`, in the backticks a callable tool wears, which is
-     * the same deception a stale name is: a reader goes and calls it. Those are
-     * prose now — "a debrief guide tool" — and the sentence never wanted the
-     * identifier.
+     * Two kinds, and both are the subject of the sentence they stand in rather
+     * than something a reader is being sent to call. The first is a name that
+     * was superseded, where the entry is about the supersession. The second is
+     * a shape that was proposed and declined — and the name stays, because a
+     * decision against a tool is a reading of the demand on the day it was
+     * taken, and the demand grows: `typo3_ter_lookup` exists today after
+     * release was turned down twice, and `D-KNW-004` says outright that a
+     * producer appearing reopens its question. What a later session searches
+     * for is the name the shape was proposed under, and prose loses it.
+     *
+     * This list is the record, and it is kept by the test rather than beside
+     * it: declining a tool in an entry fails here until the name is written
+     * down with its reason, and building one takes its line away again.
      *
      * @var array<string, string>
      */
-    private const SUPERSEDED_IS_THE_SUBJECT = [
-        'sco-011' => 'the entry that renames the two, so both spellings are its subject',
-        'aud-005' => 'its finding is an exclusion variable set to a name no tool has',
-        'aud-003' => 'names what a commit put into the instructions, and both spellings',
-        'fbk-018' => 'quotes a shipped file at a named commit, and records the rename',
-        'doc-040' => 'its evidence is the stale names themselves, as they were counted',
+    private const NOT_A_TOOL = [
+        'typo3_project_scope' => 'D-SCO-011 renamed it typo3_project_describe',
+        'typo3_extension_scope' => 'D-SCO-011 renamed it typo3_extension_describe',
+        'typo3_architecture_lookup' => 'renamed typo3_hint_lookup at 7553cb3',
+        'typo3_document_list' => 'D-AUD-007 left it open; the lever was a contract, not a tool',
+        'typo3_skeleton_lookup' => 'D-KNW-056 drafted and dropped it for the document corpus',
+        'typo3_debrief_guide' => 'D-FBK-048 declined it: a tool in the list contaminates the session under report',
+        'typo3_convention_lookup' => 'D-KNW-035 declined it as a synonym of typo3_rule_lookup',
+        'typo3_migration_availability' => 'D-VER-009 declined it at one round trip, D-FBK-027',
     ];
 
     /**
-     * A decision names a tool a reader can call, or is about the name itself.
+     * A decision names a tool a reader can call, or one the list above accounts
+     * for.
      *
      * The corpus went stale unwatched: 157 mentions of three tools renamed
      * weeks earlier, across 56 entries, while this file read the knowledge base
@@ -148,26 +159,39 @@ final class ToolNamingTest extends TestCase
      * as any.
      */
     #[Test]
-    public function everyToolNameADecisionSpellsIsRegisteredOrIsTheSubject(): void
+    public function everyToolNameADecisionSpellsIsRegisteredOrAccountedFor(): void
     {
         $known = array_column(Registry::definitions(), 'name');
         $verbs = implode('|', array_keys(self::VERBS));
 
         $stale = [];
         foreach (Finder::create()->files()->in(dirname(__DIR__, 2) . '/decisions')->name('*.md')->sortByName() as $file) {
-            $id = substr($file->getBasename('.md'), 0, 7);
-            if (isset(self::SUPERSEDED_IS_THE_SUBJECT[$id])) {
-                continue;
-            }
             preg_match_all('/typo3_[a-z]+(?:_[a-z]+)*_(?:' . $verbs . ')\b/', (string) file_get_contents($file->getPathname()), $matches);
             foreach (array_unique($matches[0]) as $name) {
-                if (!in_array($name, $known, true)) {
+                if (!in_array($name, $known, true) && !isset(self::NOT_A_TOOL[$name])) {
                     $stale[] = $file->getBasename() . ': ' . $name;
                 }
             }
         }
 
-        self::assertSame([], $stale, 'spelled like a tool in decisions/, and no tool has the name');
+        self::assertSame([], $stale, 'spelled like a tool in decisions/, and neither registered nor accounted for');
+    }
+
+    /**
+     * A name the list accounts for is one no tool has. A tool that gets built
+     * under a name written off there would keep the entry that says it was not,
+     * and the list would be a record of a decision that was reversed.
+     */
+    #[Test]
+    public function nothingTheListWritesOffIsARegisteredTool(): void
+    {
+        $known = array_column(Registry::definitions(), 'name');
+
+        self::assertSame(
+            [],
+            array_values(array_intersect(array_keys(self::NOT_A_TOOL), $known)),
+            'accounted for as no tool of this server, and registered as one'
+        );
     }
 
     /** @param array<string, mixed> $arguments */

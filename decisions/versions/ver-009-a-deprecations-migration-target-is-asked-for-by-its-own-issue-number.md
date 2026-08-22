@@ -56,8 +56,8 @@ here for weeks while the session that needed it settled each entry by hand.
 - **Step 2 of the ladder, delivery, and queued.** All three routes predate the
   feedback by two weeks or more and none reached a dual-major audit. Nothing is
   missing from the corpus, so what is owed is placement and wording.
-- **Rejected: the `declaredVersions` parameter and the migration availability
-  tool the report asks for.** Both would have the
+- **Rejected: the `declaredVersions` parameter and the
+  `typo3_migration_availability` tool the report asks for.** Both would have the
   server read a Migration section, take the replacement identifier out of prose
   and answer with a version — and the caller already holds that answer as a
   query. What earns a tool is the round trips it takes off the caller

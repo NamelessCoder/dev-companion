@@ -376,9 +376,10 @@ final class CatalogCheck
 
     /**
      * The first covered major from which an entry holds without a gap up to the
-     * newest, or null when it holds everywhere. A gap in the middle is reported as
-     * no binding at all — a range cannot express it, and the entry needs splitting
-     * rather than a number.
+     * newest, or null when it holds everywhere. An entry with a hole in it binds
+     * on the newest unbroken run, so what is older than the hole is withheld — a
+     * range cannot express a gap, and such an entry needs splitting rather than
+     * a number.
      *
      * @param array<int, bool> $holds
      */

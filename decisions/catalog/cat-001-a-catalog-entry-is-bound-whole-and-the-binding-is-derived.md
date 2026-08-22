@@ -1,7 +1,7 @@
 ---
 id: D-CAT-001
 date: 2026-07-29
-status: open
+status: confirmed
 ---
 
 # D-CAT-001 — A catalog entry is bound whole, and the binding is derived
@@ -104,3 +104,19 @@ everything that is pasted. That did not reach the caller above. Over the class
 list alone the table entry binds at v13 rather than v12, because the core's own
 Sass does not spell out `table-striped`, `table-hover`, `table-sm` and
 `table-selected` on 12.4.
+
+## Confirmed on 2026-08-22
+
+Both halves of **Wrong if** were read against the checkouts. The first is closed
+as the section above records, and `bin/cli catalog:check` re-derives every
+binding and every digest: on 2026-08-22 it reports 26 components and 22 demos
+against 12.4, 13.4, 14.3 and main with nothing moved under them. The second
+names a behaviour `derivedSince()` no longer has. It returns the newest unbroken
+run, and only an entry holding on every covered version returns nothing — the
+docblock still described the old behaviour and is corrected in the same commit.
+No entry has a hole either way.
+
+The statement survives `D-CAT-006`. That entry adds a second derived range and
+gives it a field of its own, `coveredClasses`, leaving the entry's own binding
+untouched, and one `derivedSince()` derives both. So the binding still sits on
+the whole entry and is still derived rather than judged.

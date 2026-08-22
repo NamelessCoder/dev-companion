@@ -14,7 +14,7 @@ one is added.
 - [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
 - [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
 - [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
-- [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31
+- [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed
 
 [D-EVI-007]: evi-007-a-case-no-test-holds-says-so-with-its-exit-code.md
 [D-EVI-008]: evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md

@@ -48,7 +48,7 @@ earns one.
 - [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
-- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
+- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31 · confirmed
 
 [D-FBK-051]: fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md

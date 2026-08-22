@@ -1,7 +1,7 @@
 ---
 id: D-FBK-004
 date: 2026-07-31
-status: open
+status: confirmed
 ---
 
 # D-FBK-004 — The model is asked, because nothing else here can say it
@@ -53,3 +53,20 @@ answer is cheap — the call that is already being made.
   dropped rather than read. Or the same behaviour is reported by every model
   that is asked, which makes it the instruction's problem after all and the
   attribution merely a thing that was measured on the way there.
+
+## Confirmed on 2026-08-22
+
+Measured over every recorded feedback, 461 of them. 320 carry a `model` line and
+141 do not, and the split is the hour the field arrived: the newest without one
+is `2026-07-31-172757` and the oldest with one is `2026-07-31-174524`. The field
+has been written every time since it existed.
+
+The first half of **Wrong if** does not hold. `unknown` is 7 of the 320, all
+seven recorded between 18:55 and 19:06 on that first evening and none since, and
+nine distinct identifiers are on record — `claude-opus-5[1m]` 199 times,
+`claude-opus-5` 55, `opencode/deepseek-v4-flash-free` 31, and six more. Only
+`big-pickle`, three times, is not a released identifier.
+
+The second half is untried, and it is answerable for the first time. It asks
+whether every model reports the same behaviour, and until now there was not
+enough of more than one to ask.

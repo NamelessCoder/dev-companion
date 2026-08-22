@@ -1,7 +1,7 @@
 ---
 id: D-KNW-004
 date: 2026-07-30
-status: open
+status: confirmed
 ---
 
 # D-KNW-004 — Package knowledge needs a producer before it needs discovery
@@ -51,3 +51,11 @@ data here for now. From here the missing discovery path is a scope choice rather
 than a wait, so **Wrong if** narrows: a producer being ready is no longer enough
 on its own. The todo that carried the question is gone with it, and this entry
 is where the question is kept.
+
+## Confirmed on 2026-08-22
+
+Read on 2026-08-22: no discovery path, no loader and no `authority` field exist
+in `src/`, so the second half of **Decided** is what the code still does.
+**Wrong if** cannot fire as it was narrowed — the maintainer's answer of
+2026-08-02 made a ready producer insufficient on its own — and no producer has
+appeared either.

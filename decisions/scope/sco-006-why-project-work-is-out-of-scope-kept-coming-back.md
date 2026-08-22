@@ -1,7 +1,7 @@
 ---
 id: D-SCO-006
 date: 2026-07-29
-status: open
+status: confirmed
 ---
 
 # D-SCO-006 — Why "project work is out of scope" kept coming back
@@ -78,3 +78,17 @@ was removed rather than renamed: one enum, `Knowledge\Scope`, says which kind of
 work an answer is for, and there is no longer a field whose only content is what
 the work is not
 ([`D-KNW-005`](../knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md)).
+
+## Confirmed on 2026-08-22
+
+The guard is there and reads what it claims:
+`ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor` over the tool
+descriptions, the readme, the hints and the scope's own text, with
+`whatTheScopeExcludesIsNotWhatTheServerAnswers` beside it. The claim has
+reappeared in none of them.
+
+**Wrong if** has been overtaken by its own remedy. It prescribed renaming
+`outsideCore`, and the section above records that the flag was removed instead
+on 2026-08-02. So what would show this wrong is the reappearance alone, and the
+places it can still happen are the two left unguarded on purpose: the knowledge
+documents and the skills.

@@ -17,8 +17,8 @@ one is added.
 - [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
-- [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
-- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
+- [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
+- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29 · confirmed
 
 [D-SCO-013]: sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
 [D-SCO-014]: sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it.md

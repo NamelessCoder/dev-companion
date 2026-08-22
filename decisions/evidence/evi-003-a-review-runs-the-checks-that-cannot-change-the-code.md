@@ -1,7 +1,7 @@
 ---
 id: D-EVI-003
 date: 2026-07-31
-status: open
+status: confirmed
 ---
 
 # D-EVI-003 — A review runs the checks that cannot change the code
@@ -84,3 +84,17 @@ whether it can start here, which is the second question
 [D-ANS-086](../answers/ans-086-the-project-answer-carries-the-bound-that-stops-a-declared-command-from-starting.md)
 puts into the same answer. The decision stands; what was missing is a number
 beside the property rather than a different reading of it.
+
+## Confirmed on 2026-08-22
+
+The mechanism holds. `runs` is declared per command as `check`, `change` or
+`unknown`, read off the body in `Project::runs()`, and
+`ProjectTest::aCommandThatWritesIsNeverReportedAsACheck` still keeps the writers
+off the first value. Neither **Wrong if** has fired: no run has reported a
+checkout modified by a command marked `check`, and the one failure since — a
+command that would not start, in the section above — is neither of them.
+
+The tool is `typo3_project_describe` now, renamed by `D-SCO-011` after this was
+written, and the paragraph under the statement still calls it
+`typo3_project_scope`. The record is left as it read; this line is where a
+reader finds out.

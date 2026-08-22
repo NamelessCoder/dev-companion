@@ -116,3 +116,11 @@ own markup. The four are `button-group` â€” the `btn-group` half of that file â€
 `dropdown`, `input` and `status-indicator`, confirmed by reading all 25 entries
 against both checkouts again. `catalog:check` digests the whole file for them,
 because what a rewrite can change there is whether the judgment still stands.
+
+## Since then
+
+Re-read on 2026-08-22. `bin/cli catalog:check` reports every demo as its entry
+recorded it, the four `demoDerives` entries included, so the second half of
+**Wrong if** stays where the two sections above left it. The first half is
+untried for the reason it always was: state that exists only at runtime needs an
+installation to look for, and a checkout cannot show it.

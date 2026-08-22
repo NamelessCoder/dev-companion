@@ -101,7 +101,7 @@ one is added.
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
-- [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
+- [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
 [D-KNW-105]: knw-105-what-a-not-found-means-once-a-site-answered-is-a-gap-this-server-owns.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

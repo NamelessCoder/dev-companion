@@ -356,7 +356,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
-- [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
+- [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
 [D-KNW-105]: knowledge/knw-105-what-a-not-found-means-once-a-site-answered-is-a-gap-this-server-owns.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
@@ -480,7 +480,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-CAT-005`][D-CAT-005] — A reference entry names a form to imitate, and a fact is answered by a hint · 2026-08-18
 - [`D-CAT-004`][D-CAT-004] — What the component index may hold is what the core files as a component · 2026-08-11
 - [`D-CAT-003`][D-CAT-003] — The component index is curated; its contract comes from the installation · 2026-07-30
-- [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29
+- [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · confirmed
 
 [D-CAT-006]: catalog/cat-006-a-class-shaped-query-is-answered-by-a-second-range-over-the-class-list.md
 [D-CAT-005]: catalog/cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md
@@ -499,8 +499,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
-- [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
-- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
+- [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · confirmed
+- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29 · confirmed
 
 [D-SCO-013]: scope/sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md
 [D-SCO-014]: scope/sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it.md
@@ -561,7 +561,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
 - [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
 - [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
-- [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31
+- [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed
 
 [D-EVI-007]: evidence/evi-007-a-case-no-test-holds-says-so-with-its-exit-code.md
 [D-EVI-008]: evidence/evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md
@@ -747,7 +747,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
-- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
+- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31 · confirmed
 
 [D-FBK-051]: feedback/fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: feedback/fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md

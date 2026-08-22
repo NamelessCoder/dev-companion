@@ -80,3 +80,11 @@ on almost every core call and said what this one already says (2026-08-03).
 
 - The placeholder shows up in a pushed commit. Then the guide would have to
   refuse the draft outright instead of marking it.
+
+## Since then
+
+Re-read on 2026-08-22 and nothing has moved. `CommitMessage` still drops both
+placeholders out of the parsed input before the checks run, so a draft handed
+back for checking reports its fields missing rather than clean. **Wrong if**
+needs a placeholder seen in a pushed commit, and only a forward run against a
+real contribution would produce one.

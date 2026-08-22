@@ -1,7 +1,7 @@
 ---
 id: D-SCO-005
 date: 2026-07-29
-status: open
+status: confirmed
 ---
 
 # D-SCO-005 — The installation is evidence about the task, and the weakest kind
@@ -95,3 +95,10 @@ the call, and every marker above the shape — `typo3/sysext/`, `packages/`,
 changed is that one signal is weighed by the checkout it is being read in, which
 is what the neighbouring rung already did.
 
+## Confirmed on 2026-08-22
+
+The statement was read against `Scope::of()` and the ordering is as written.
+`Instance::startedIn()` is the closing `match`, below every marker, below what
+the installation knows the path as, and below both layout gates. Both **Wrong
+if** have been gone back to in the two sections above, and the three tests this
+entry names still stand in `ScopeTest`.

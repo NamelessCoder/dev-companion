@@ -19,11 +19,11 @@ one is added.
 
 [D-VER-009]: ver-009-a-deprecations-migration-target-is-asked-for-by-its-own-issue-number.md
 [D-VER-006]: ver-006-a-narrowed-statement-is-split-before-it-is-bound.md
-[D-VER-007]: ver-007-a-declared-major-that-is-not-installed-is-answered-by-naming-the-reading.md
+[D-VER-007]: ver-007-a-declared-major-that-is-not-installed-is-answered-by-naming-the-reading-that-settles-it.md
 [D-VER-008]: ver-008-a-declared-major-that-is-not-installed-is-proved-on-a-second-installation-of-its-own.md
 [D-VER-005]: ver-005-a-document-section-declares-the-majors-it-holds-for.md
-[D-VER-004]: ver-004-a-supported-range-is-a-property-of-the-package.md
-[D-VER-003]: ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md
+[D-VER-004]: ver-004-a-supported-range-is-a-property-of-the-package-not-of-the-checkout.md
+[D-VER-003]: ver-003-the-fluid-engine-gets-no-version-axis-of-its-own-because-the-core-pins-it.md
 [D-VER-001]: ver-001-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md
 
 ### Revoked, and kept as the record

@@ -10,7 +10,7 @@ status: open
 **The seventeen open `site-new` feedback say what reaches a skill rather than
 what a skill says, so the cluster earns the route and no second skill.**
 
-[`D-SKL-005`](skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md)
+[`D-SKL-005`](skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)
 read the other cluster the same way and turned 35 feedback into two skills. This
 one arrives at the opposite answer, and the answer is worth as much: a domain
 that already has its skill, a session that never loaded it, and fourteen
@@ -37,7 +37,7 @@ judgements of which not one reached the rung where a skill is built.
   That is the testimonials session's whole task. It was never reached, so
   nothing in this corpus says what the skill lacks.
 - **Its description was already rewritten for this shape, after the session.**
-  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
+  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
   read all seven descriptions on 2026-08-02 and found two naming one side of a
   domain they own both sides of. The preview moved from ninth of eleven to
   second, and `SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement`

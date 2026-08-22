@@ -10,6 +10,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\RequirementState;
 
@@ -63,6 +64,11 @@ final class RequirementCheck
                 $problems[] = $id . ' has no title in its front matter';
             } elseif ($requirement['written'] !== $requirement['title']) {
                 $problems[] = $id . ' is titled "' . $requirement['title'] . '" and its heading says "' . $requirement['written'] . '"';
+            } elseif (basename($path) !== Entry::fileName($id, $requirement['title'])) {
+                // The file name is the title, so a title corrected in place
+                // leaves a file claiming the old one — `D-DOC-047`.
+                $problems[] = $id . ' is titled "' . $requirement['title'] . '" and filed as ' . basename($path)
+                    . '; run bin/cli requirements:rename';
             }
             if (isset($seen[$id])) {
                 $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file;

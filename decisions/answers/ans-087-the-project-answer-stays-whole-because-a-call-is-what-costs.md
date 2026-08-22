@@ -81,7 +81,7 @@ characters is where the second one starts to be paid.
 
 What it did not change is the third **Decided** above. The orientation answer
 gained a selection under
-[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section-and-names-what-it-left-out.md)
+[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section.md)
 and the project answer stays whole, because what separates them is not their
 size: an orientation has parts a caller can name, and a caller that knows it
 wants the boundary is not choosing blind. The project answer is one repository

@@ -39,10 +39,10 @@ schemas.
   `typo3_server_scope`, which is a call, which a session that calls nothing
   never makes.
 - The channel was already established.
-  [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point.md) put the entry
+  [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md) put the entry
   point in the `instructions` because under deferral the descriptions are not a
   channel at all, and
-  [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md)
+  [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it.md)
   named them as the candidate and left them unchanged so this feedback would be
   read before they moved.
 - The room is what is scarce. Measured on 2026-08-18, the worst assembled case —

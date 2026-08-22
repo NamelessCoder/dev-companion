@@ -26,16 +26,16 @@ one is added.
 [D-DIS-019]: dis-019-a-project-root-is-found-from-what-its-manifest-declares.md
 [D-DIS-017]: dis-017-the-skills-reach-a-project-through-the-installer.md
 [D-DIS-018]: dis-018-what-install-writes-stays-inside-the-project.md
-[D-DIS-014]: dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md
+[D-DIS-014]: dis-014-the-refresh-is-wired-by-the-project.md
 [D-DIS-016]: dis-016-how-an-entrypoint-may-be-named-is-a-per-client-question.md
 [D-DIS-013]: dis-013-the-record-holds-a-digest-of-what-was-published.md
 [D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-012]: dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md
 [D-DIS-010]: dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DIS-007]: dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
-[D-DIS-009]: dis-009-installed-is-one-step-short-of-callable-and-the-install-is-what-says-so.md
-[D-DIS-006]: dis-006-the-installation-stays-worked-out-from-the-start-directory.md
-[D-DIS-005]: dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md
+[D-DIS-009]: dis-009-installed-is-one-step-short-of-callable.md
+[D-DIS-006]: dis-006-the-installation-stays-worked-out-from-the-directory-the-server-was-started-in.md
+[D-DIS-005]: dis-005-a-registry-with-no-console-command-is-read-by-booting-the-installation.md
 [D-DIS-001]: dis-001-the-root-package-counts-as-an-installed-package.md
 [D-DIS-004]: dis-004-the-version-comes-from-the-core-package-not-from-the-console.md
 
@@ -47,6 +47,6 @@ one is added.
 - [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
 
 [D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
-[D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
+[D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-server-is.md
 [D-DIS-002]: dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
 [D-DIS-003]: dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md

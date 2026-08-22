@@ -42,7 +42,7 @@ the ranker moved under it on the day it was followed.
   sections and drops `## Deprecations`, which `deprecation` alone returns first
   at 100%. `## Summary Line` goes with it. Four subjects dilute the share each
   section covers below `Documents::MIN_COVERAGE`, which is
-  [`D-ANS-037`](../answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md)'s
+  [`D-ANS-037`](../answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md)'s
   mechanism reached from the query's side rather than the document's.
 - The ground moved the same day the feedback was written. `D-ANS-037`'s **Since
   then** put the document title into `Documents::FIELD_WEIGHTS` at weight 2 on
@@ -118,7 +118,7 @@ The statement above is what is revoked, and the clause is the second one:
 every triple of headings inside one document empties 34 of 351. The first clause
 holds and is carried into the successor, which states a count of two and what it
 was measured over —
-[`D-SKL-043`](skl-043-a-rule-query-carries-two-subjects-and-a-third-is-a-call-of-its-own.md).
+[`D-SKL-043`](skl-043-a-rule-query-carries-two-subjects.md).
 
 The evidence above stays. The pair it was measured on still answers in one call,
 the round trip it removed was real, and the two proposals it rejected — a

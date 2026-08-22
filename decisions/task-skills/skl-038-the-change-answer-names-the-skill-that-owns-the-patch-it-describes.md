@@ -28,7 +28,7 @@ begun.
 - **The second session of the shape, and one hypothesis fewer.**
   [`feedback/archive/2026-08-10-182404`](../../feedback/archive/2026-08-10-182404-a-review-request-quoting-the-skill-s-own.md)
   is the same request shape in the same checkout, judged as
-  [`D-SKL-033`](skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md).
+  [`D-SKL-033`](skl-033-activation-is-the-clients.md).
   That report named two things that plausibly kept the skill shut: the language,
   and a request naming a local commit rather than a change on the review server.
   This one named the change, by number and by URL, and the skill stayed shut. So

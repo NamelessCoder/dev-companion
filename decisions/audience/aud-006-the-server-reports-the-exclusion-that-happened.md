@@ -40,7 +40,7 @@ described a capability the same server had just offered.
   [`R-SCO-009`](../../requirements/scope/sco-009-individual-tools-can-be-excluded.md)'s,
   and two of them are outside `ExcludedTools` entirely: `Registry::offered()`
   appends the feedback tools past the filter under
-  [`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md).
+  [`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation.md).
 - The TOML half of the installer, measured the same day in a fixture project:
   `.codex/config.toml` carrying
   `env = { TYPO3_DEV_COMPANION_EXCLUDE_TOOLS = ... }` and

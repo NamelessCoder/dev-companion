@@ -56,7 +56,7 @@ order. Nothing here states that boundary.
   TypoScript imports, templates, assets, schema and tests — the project's file
   organization is the thing a new element has to fit, and only the checkout has
   it." The installed TYPO3 is not among them.
-- [`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md)
+- [`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual-not-the-changelog.md)
   is the only entry that decides anything about this reading, and it decides
   against it: a miss in the manual "is a finding rather than a licence to
   reconstruct the contract from the installed core". Its first **Wrong if** did
@@ -127,7 +127,7 @@ Step 5 was the other candidate and it is where the reading would not have been
 found. Its paragraph asks "does this still work in version N", and the session
 this entry judges held a question about what an unaltered ViewHelper does — the
 mismatch
-[`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md)
+[`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual-not-the-changelog.md)
 already recorded against the conformance skill's narrower condition, a session
 holding a behaviour question does not match itself against a condition written
 for another one. What step 5 did give up is the displacement this card asked

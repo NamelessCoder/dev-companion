@@ -25,7 +25,7 @@ Half of what it asks about did not happen. The calls a session made are in front
 of it; the skill that never activated, the tool it passed over and the question
 it never asked leave nothing behind. A list that asks only what happened
 confirms the surface the server already has —
-`D-AUD-003 <../../decisions/audience/aud-003-the-instructions-carry-the-entry-point.md>`_
+`D-AUD-003 <../../decisions/audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md>`_
 is a session the published skill's body would have carried, which never loaded
 it and went through Bash instead.
 

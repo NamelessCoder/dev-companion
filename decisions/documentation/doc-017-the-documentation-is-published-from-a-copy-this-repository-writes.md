@@ -113,7 +113,7 @@ of what it points at is a directory the site does not carry.
 
 The stylesheet is no longer inlined, and the theme no longer writes everything
 itself. What was weighed here at 4 KB reached 16 KB on every page, and
-[`D-DOC-019`](doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md)
+[`D-DOC-019`](doc-019-the-sites-stylesheet-and-script-are-built-files.md)
 is what was decided on the measurement — including the cache buster this entry
 counted as a moving part, which Twig's `source()` makes two lines.
 
@@ -130,13 +130,13 @@ The three commands this entry names are one. `documentation:build`,
 to keep in the right order and could not, and
 [`D-DOC-020`](doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md)
 folded them into one. That one has moved since:
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md)
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md)
 took the renderer out of the checkout on 2026-08-12, and what is left here is
 `bin/cli documentation:prepare`, which writes the copy and nothing else. What is
 published, and that it is a copy, is unchanged through all three.
 
 The two cases this entry named over the search index went with the index. It is
 the theme's now, written from the rendered pages rather than from the copy —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md)
 — so what a hit is named by is no longer this repository's to hold. The four
 cases over the copy itself are untouched, which is what this entry is about.

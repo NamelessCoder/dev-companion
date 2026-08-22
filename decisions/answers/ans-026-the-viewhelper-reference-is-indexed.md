@@ -13,7 +13,7 @@ coveredBy:
 **`typo3_documentation_lookup` searches four manuals, and where one is published
 is part of what the index knows about it.**
 
-[`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
+[`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md)
 is the finding: three books, none of which documents a ViewHelper. This entry is
 what took its place — the book is carried, and carrying it cost the one thing
 every base used to have in common.
@@ -25,7 +25,7 @@ every base used to have in common.
   answers 200 on 12.4, 13.4, 14.3 and main — the four branches
   `knowledge/versions.json` covers — so the version asked for is the branch that
   is already asked for elsewhere and the engine keeps no axis of its own
-  ([`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md)).
+  ([`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own-because-the-core-pins-it.md)).
 - Its root is a table of contents `Documentation::index()` reads: 189 pages at
   14.3, `Global/If.html` among them. That was the first **Wrong if** of
   `D-ANS-023` and it did not hold.
@@ -81,7 +81,7 @@ every base used to have in common.
 ## Since then
 
 The tokenizer this entry left undecided is
-[`D-ANS-028`](ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md).
+[`D-ANS-028`](ans-028-a-two-letter-query-word-is-searched-for.md).
 `TermSearch::terms()` admits a two-letter word, so `f:if` reaches
 `Global/If.html` rather than nothing — and it reaches it eighth. Ten of the 1419
 pages carry `if` as a whole word and all ten score the same, so what decides

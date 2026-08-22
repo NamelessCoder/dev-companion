@@ -66,6 +66,38 @@ final class RenumberTest extends TestCase
     }
 
     /**
+     * The other move: the number stays and the title has been corrected, so the
+     * file goes where the title says and every path that named it goes with it
+     * — `D-DOC-047`.
+     *
+     * Every reference is rewritten rather than reported, which a renumbering
+     * may not do: two entries can share an id and no two share a file name.
+     */
+    #[Test]
+    public function anEntryIsRefiledUnderItsTitleAndEveryPathThatNamedItMoves(): void
+    {
+        $root = $this->corpus();
+        $entry = $this->entry($root);
+        $corrected = str_replace(
+            ['title: A fixture entry the renumber case moves', '# D-GUI-901 — A fixture entry the renumber case moves'],
+            ['title: A fixture entry the renaming case moves', '# D-GUI-901 — A fixture entry the renaming case moves'],
+            (string) file_get_contents($entry),
+        );
+        file_put_contents($entry, $corrected);
+
+        $report = Renumber::refile($root, $entry, 'D-GUI-901', 'A fixture entry the renaming case moves');
+
+        self::assertSame('gui-901-a-fixture-entry-the-renaming-case-moves.md', $report['to']);
+        self::assertFileDoesNotExist($root . '/decisions/guides/' . self::OLD);
+        self::assertFileExists($root . '/decisions/guides/' . $report['to']);
+        self::assertGreaterThan(0, $report['references']);
+        self::assertStringContainsString(
+            '[`D-GUI-901`](../../decisions/guides/' . $report['to'] . ')',
+            (string) file_get_contents($root . '/scenarios/contracts/ext-03-a-fixture-case.md'),
+        );
+    }
+
+    /**
      * A link path says which entry is meant, whichever of the two forms it is
      * written in. The reference definition a generated listing ends with carries
      * the path, so the usage above it is settled by the same file.

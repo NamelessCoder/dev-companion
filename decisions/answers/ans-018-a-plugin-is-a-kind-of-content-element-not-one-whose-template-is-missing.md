@@ -37,7 +37,7 @@ ever going to write.
   the wrapper's template, core sets it to `Generic`, and one set over it has to
   render `tt_content.<identifier>.20` or `{content}` or the plugin's own output
   is gone. That is the first **Wrong if** of
-  [`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md)
+  [`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary-not-evidence-about-where-it-runs.md)
   firing on its predicate and not on its conclusion — the absence is still no
   gap, because what the extension does not set core has already set.
 - The plugin's own templates come from `plugin.tx_<signature>.view`.

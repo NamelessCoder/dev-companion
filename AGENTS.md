@@ -1,5 +1,28 @@
 # Working on this repository
 
+## What comes first
+
+**What a person cannot understand is a defect, and so is what a machine cannot
+read.** Not a style question and not a matter of taste: a defect, reported and
+fixed like any other.
+
+Everything here has both readers, and where they pull apart both are served
+rather than one traded away — a name a person understands and a check can read,
+a title that scans in a listing and parses as data, an answer whose text says
+what its schema says. The rest of this file is what that comes to in each
+corner, and where one of these rules makes something harder to understand, it is
+the rule that is wrong.
+
+Two things follow and are worth saying outright:
+
+- **What is read as data lives where data lives**, and is said once. A title, a
+  test that holds an entry, a version an answer is bound to — parsed out of
+  prose, each is a regex somebody has to write again and get right again.
+- **What a reader has to reconstruct is the same defect**, even where nothing
+  fails on it. A title that repeats its own statement, an id that arrives only
+  in a docblock, a file whose name claims something the file no longer says:
+  each costs the reader the work the writer saved.
+
 ## Layout
 
 ```

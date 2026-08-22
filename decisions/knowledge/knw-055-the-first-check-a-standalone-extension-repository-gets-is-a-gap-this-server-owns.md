@@ -28,7 +28,7 @@ boundary the fourth one costs at.
 The directory is the reading no single card carries. `ext-guidedtour` holds
 eight of the ten open feedback, and the earlier cluster is a standalone
 extension repository being given the installation it had none of
-([`D-SKL-012`](../task-skills/skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md)).
+([`D-SKL-012`](../task-skills/skl-012-bringing-a-packages-development-installation-into-existence-earns-a-task-skill.md)).
 This one is the same repository being given the first check it had none of. The
 domain is a package with no infrastructure at all, and this server answers its
 analyser and nothing else in that layer.

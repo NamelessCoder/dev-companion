@@ -70,6 +70,23 @@ final class Entry
     }
 
     /**
+     * The file name an entry takes, which is its id and its title.
+     *
+     * One implementation, because the check that holds a name and whatever
+     * writes one have to agree on every character of it: an apostrophe or a
+     * backtick is dropped rather than turned into a separator, so "a package's
+     * build" reads `a-packages-build`, and every other run of what is neither a
+     * letter nor a figure is one dash.
+     */
+    public static function fileName(string $id, string $title): string
+    {
+        $slug = strtolower(str_replace(["\u{2019}", "\u{2018}", '`', "'"], '', $title));
+        $slug = trim((string) preg_replace('/[^a-z0-9]+/', '-', $slug), '-');
+
+        return strtolower(substr($id, 2)) . '-' . $slug . '.md';
+    }
+
+    /**
      * One key of the front matter as a string, or nothing where it is not
      * written.
      *

@@ -22,7 +22,7 @@ working directory and `Instance` walks up from it, which is what
 restricts to that one caller, and `TYPO3_DEV_COMPANION_ROOT` is how it is stated
 outright instead. Nothing in the protocol replaces either — `roots` was the
 candidate and is deprecated, which
-[`D-DIS-006`](../../decisions/discovery/dis-006-the-installation-stays-worked-out-from-the-start-directory.md)
+[`D-DIS-006`](../../decisions/discovery/dis-006-the-installation-stays-worked-out-from-the-directory-the-server-was-started-in.md)
 records. Should one arrive, the mechanism may change; this may not.
 
 ## From

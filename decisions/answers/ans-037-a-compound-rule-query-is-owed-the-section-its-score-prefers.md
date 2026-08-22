@@ -69,7 +69,7 @@ task sentence is not one.
   a section's heading and body, so the document title is in no searched field —
   `## Summary Line` does not contain the words *commit* or *message*, which
   stand in the title and the preamble of `typo3-commit-messages.md`. This is
-  [`D-ANS-021`](ans-021-a-manual-query-is-told-what-short-buys.md)'s finding on
+  [`D-ANS-021`](ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)'s finding on
   a second corpus, and worse in one way: there the subject term was merely
   cheap, here it is absent from the field being searched.
 - Where a compound query does miss, the caller is told the wrong reason.
@@ -111,7 +111,7 @@ task sentence is not one.
   the *query*.
 - **What replaces the floor is not named here.** Yielding the gate to the score,
   ranking the largest covering subset the way
-  [`D-ANS-016`](ans-016-a-miss-names-the-query-that-would-have-hit.md) does, and
+  [`D-ANS-016`](ans-016-a-miss-names-the-query-that-would-have-hit-not-only-the-reach-of-each-word.md) does, and
   weighting the document title into the searched fields are three different
   answers with three different costs over the whole corpus, and the run that
   judged this read one tool. The card carries the measurement.

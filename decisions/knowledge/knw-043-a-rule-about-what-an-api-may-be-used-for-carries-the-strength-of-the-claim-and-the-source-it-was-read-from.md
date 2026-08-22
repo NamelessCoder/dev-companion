@@ -92,7 +92,7 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
   session a rule quoted from a tracker or from prose docs is a claim to verify
   against the checkout. That orders a task rather than stating a fact, so it is
   a step of the core-contribution creation order
-  ([`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md)),
+  ([`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)),
   whose assessment half already comes from this cluster. The feedback stays open
   behind it, trimmed to that half, rather than gaining a card that would carry a
   quarter of an order somebody else is writing.

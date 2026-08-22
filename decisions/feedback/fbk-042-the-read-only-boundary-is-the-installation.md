@@ -26,7 +26,7 @@ than part of using it.
   Nothing in that reading was about an installation, and the tool it named goes
   nowhere near one. One word carried both meanings and the security conclusion
   came out of the wrong one.
-- [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md)
+- [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-and-the-server-starts.md)
   rests on the same word. Its **Wrong if** says an exclusion must never guard "a
   tool that writes"; under the installation meaning that holds today, under the
   checkout meaning it does not, and the entry cannot say which it meant.
@@ -63,7 +63,7 @@ than part of using it.
   that is offered, at the cost of a class in `src/Server/` knowing two tool
   names that only exist in one checkout. What the report actually costs a client
   is the in-band half of
-  [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md),
+  [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-and-the-server-starts.md),
   which is carded and reaches every unknown name, not only these two.
 
 - Nothing covers the first **Wrong if**. `Channel::isAvailable()` reads

@@ -45,7 +45,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
   `fluid-templates`, `content-elements`, `frontend-records` with
   `tca-schema-api`, and `project-extension-tests` — so the joined query misses
   three of the four hints its own parts find. That is
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
   measured on a hint probe rather than on the manual.
 - Nothing about TYPO3 was established here, deliberately. Whether an `f:else`
   really forces an explicit `f:then`, and what `project-extension-tests` already
@@ -109,7 +109,7 @@ lands on something:
   [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md)
 - **`typo3_documentation_lookup` reaching the Record objects page** — `002928`,
   whose premise
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
   rejected
 - **the Fluid conditional, and object access on the record** — `003448` and
   `003000`; the record half is `R-KNW-041`
@@ -163,7 +163,7 @@ skill's words.
 - **§2, §3, §5 rendered frontend and backend preview established by curl, the
   project's own `Tests/E2E` harness untouched, no spec run** — `003533`, judged
   in
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies-it.md),
   with a card in `todo/open/`
 - **§4 tests written against core ViewHelpers to find out what they do** —
   `003933`, which reports the same substitution of experiment for reading
@@ -174,7 +174,7 @@ skill's words.
   `D-KNW-017` records the withdrawal and reads the trigger out
 
 Its own query reaches less than its halves do, which is the pattern
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
 names and `002951` already showed on a probe. Re-run in this checkout on
 2026-08-02, `bin/cli hints:probe` matches nothing for the feedback's own `Query`
 line, nothing for either clause of its **Suggestion** in the words it wrote them
@@ -298,7 +298,7 @@ which is where this repository already keeps a per-run cost reading.
 The summary's own query reaches less than its halves do, for the fourth time.
 `bin/cli hints:probe` on it matches `content-elements` and `sitepackage-layout`
 and nothing else, against the 21 hints the session fetched by id — the dilution
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
 names, measured on a probe as it was on `002951`.
 
 This feedback is archived by the commit that writes the measurement, and that
@@ -402,7 +402,7 @@ five of them from the same twelve minutes:
   so** — `080743`, the same session's strength report
 - **every tool arrived deferred, so a first call costs two round trips** —
   `074627`, judged in
-  [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md)
+  [`D-SKL-060`](../task-skills/skl-060-a-skill-names-a-tool-at-the-step-that-needs-it.md)
 - **nothing in the task named a subject the server advertises loudly** —
   `080630`, on the upgrade skill's description, and `081159` on when a skill is
   matched
@@ -481,7 +481,7 @@ summary handed it is the one that had not landed yet. It has since.
   the existing test style** — its own repository, which `doesNotCover` puts
   outside
 - **the two core directories asked for as `typo3_reference_list` entries** —
-  [`D-CAT-005`](../catalog/cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md)
+  [`D-CAT-005`](../catalog/cat-005-a-reference-entry-names-a-form-to-imitate.md)
 - **the measurement: 13 of roughly 30 on one uncovered subject** —
   [`D-FBK-020`](fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md)
 

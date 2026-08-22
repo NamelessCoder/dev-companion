@@ -76,7 +76,7 @@ keep them, which is a sequence rather than a set of choices.
 
 The steps are four rather than six. The asset build is gone with the theme it
 built for, and what follows the render is the theme's own finish step —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md).
 So the command installs what is missing, writes the copy, renders it, finishes
 it and puts the dark twins beside the pages. What this entry decided is
 untouched: the order is not a choice, and one command is what keeps it.
@@ -86,7 +86,7 @@ untouched: the order is not a choice, and one command is what keeps it.
 Its statement no longer describes this repository: there is no
 `documentation:render`, and nothing here installs a renderer. What replaced it
 is `documentation:prepare`, which writes the copy and stops —
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md).
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md).
 
 What it was right about survives as `documentation:preview`: the order is not a
 choice, and a recipe that leaves out the install fails on a missing binary. So a

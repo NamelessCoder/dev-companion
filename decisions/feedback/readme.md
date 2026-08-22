@@ -58,7 +58,7 @@ earns one.
 [D-FBK-045]: fbk-045-a-feedback-is-queued-by-the-call-that-records-it.md
 [D-FBK-046]: fbk-046-the-check-that-catches-a-duplicate-id-names-the-files-and-the-command.md
 [D-FBK-041]: fbk-041-what-nothing-answers-for-is-called-unresolved.md
-[D-FBK-042]: fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md
+[D-FBK-042]: fbk-042-the-read-only-boundary-is-the-installation.md
 [D-FBK-043]: fbk-043-a-structure-is-answered-with-a-document-rather-than-with-a-rule.md
 [D-FBK-044]: fbk-044-a-mangled-call-is-refused-rather-than-taken-apart.md
 [D-FBK-025]: fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
@@ -87,7 +87,7 @@ earns one.
 [D-FBK-010]: fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-001]: fbk-001-the-backlog-is-read-out-rather-than-enforced.md
 [D-FBK-002]: fbk-002-the-order-of-the-work-is-declared-not-inferred.md
-[D-FBK-004]: fbk-004-the-model-is-asked-because-nothing-else-can-say-it.md
+[D-FBK-004]: fbk-004-the-model-is-asked-because-nothing-else-here-can-say-it.md
 
 ### Revoked, and kept as the record
 

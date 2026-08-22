@@ -107,7 +107,7 @@ past the filter is not the hole that sentence describes. It is a named exception
 —
 [`R-SCO-009`](../../requirements/scope/sco-009-individual-tools-can-be-excluded.md),
 under
-[`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md),
+[`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation.md),
 2026-08-04. Read with the installation meaning, the **Wrong if** stands and has
 not fired.
 
@@ -122,7 +122,7 @@ unexcludable tells the client the same falsehood an unknown one does, and
 common.
 
 That half was closed the same day by
-[`D-AUD-006`](aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md),
+[`D-AUD-006`](aud-006-the-server-reports-the-exclusion-that-happened.md),
 which trims `all()` to what the offered list is actually missing and reports the
 rest as having taken nothing away. Two bullets here are superseded by it: the
 last of **Decided**, which left `all()` as the caller wrote it, and the one

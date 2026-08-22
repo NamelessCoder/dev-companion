@@ -73,7 +73,7 @@ the hits landed where nobody could see them.
 ## Revoked on 2026-08-12
 
 The search is the theme's, and the theme's has no Ctrl-K —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md).
 `sds-search` sits in the bar and is opened by pressing it, so the half of the
 statement about the shortcut is not true of this site any more.
 

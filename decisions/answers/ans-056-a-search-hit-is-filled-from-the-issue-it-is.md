@@ -34,7 +34,7 @@ nothing has ever moved on it, and all four of those are claims.
 - Age is what the search path was being asked about. The triage skill's first
   step is entirely about which issues are old, and the wording route is how a
   session reaches an issue whose number nobody holds.
-- [`D-ANS-054`](ans-054-the-backlog-is-a-third-way-into-the-tracker-and-the-areas-are-read-from-it.md)
+- [`D-ANS-054`](ans-054-the-backlog-is-a-third-way-into-the-tracker.md)
   decided the other way on 2026-08-05: a hit is a title, so the four are
   answered empty. This is the same question with one session's reading of that
   answer in front of it.

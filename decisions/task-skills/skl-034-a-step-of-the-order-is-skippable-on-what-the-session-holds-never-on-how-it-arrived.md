@@ -116,4 +116,4 @@ therefore holds — what the session held was what its task produces, not how it
 arrived — and what does not hold is the last **Decided**: step 5 carries two
 tests for one skip, and a review of a patch answers them differently. That
 reading, and the work it queued, is
-[`D-SKL-037`](skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md).
+[`D-SKL-037`](skl-037-the-sweeps-exemption-names-what-a-task-produces.md).

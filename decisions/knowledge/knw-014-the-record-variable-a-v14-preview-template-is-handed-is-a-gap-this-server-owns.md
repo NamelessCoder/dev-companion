@@ -58,7 +58,7 @@ nothing here says what that variable is or what comes back from a field on it.
   it: `tt_content preview template` reaches `content-elements` at
   `appliesTo(10) + text(129)`. What the caller's own spelling does to the same
   query is
-  [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart.md).
+  [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md).
 - Not closed on the spot. Every statement has to be read on 13.4 and 14.3 and
   against the Fluid release each of them pins, and this run has read nothing but
   the greps above.

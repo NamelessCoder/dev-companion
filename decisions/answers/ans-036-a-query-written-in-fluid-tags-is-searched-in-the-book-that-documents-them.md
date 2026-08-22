@@ -36,7 +36,7 @@ already made a domain keyword for the hints.
 - `f:if f:then f:else condition ViewHelper` keeps it 4th and loses the two pages
   of other books from its six: `TranslateViewHelper.html` of TYPO3 Explained,
   which is one of the two answers
-  [`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
+  [`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md)
   was written from, and `UsingSettingTSconfig/Conditions.html`.
 - Nothing else moves. The other five of the seven rank identically, and over the
   41 scenario prompts of `Scenarios::load()` and `::contracts()` **not one

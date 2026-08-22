@@ -35,7 +35,7 @@ every word that short. Moving it means the list has to do its own.
   word of `f:if` that can reach it is two characters long.
   `TermSearch::terms('f:if')` returned nothing at all, and the lookup answered
   `empty` —
-  [`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
+  [`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md)
   measured that after indexing the book and left it here.
 - Both corpora go through it, so both were measured before and after, over the
   41 scenario prompts — the only corpus of real phrasings this repository has.

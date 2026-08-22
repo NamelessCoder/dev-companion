@@ -46,7 +46,7 @@ used to answer.
   written before this, so the repository already held that the answer is there
   and that nobody could ask for it by name.
 - The shape
-  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart.md) used,
+  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md) used,
   over the queries a caller writes: the 208 multi-word bare `appliesTo` patterns
   and the 41 scenario prompts, taken apart into 1360 one-term queries against
   the hint they belong to. 419 reached before, 572 after, none lost. All 153

@@ -10,7 +10,7 @@ status: open
 **The PHP a DDEV project actually runs is readable here twice over, and neither
 reading reaches `typo3_project_describe`, so `feedback/2026-07-31-193611` is
 step 2 of the ladder and is queued as
-[`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
+[`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it-not-only-what-it-declares.md).**
 
 [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) named
 this half and left it open: what the container runs is what that feedback asks
@@ -108,5 +108,5 @@ the other thing the file states — the hooks that install dependencies on start
 update the schema on import and create the backend user, and the pull provider
 that makes the data import reproducible. So the placement holds and the field is
 short rather than wrong, which is
-[`D-ANS-044`](ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md)
+[`D-ANS-044`](ans-044-the-environment-answer-carries-the-lifecycle-it-declares-beside-the-interpreter-it-runs.md)
 and `R-PRJ-009` after it.

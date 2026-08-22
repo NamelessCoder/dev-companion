@@ -49,7 +49,7 @@ corrections before the developer asked whether it had actually looked.
   it.
 - `e2e-prepare` carries the CSS domain as well. A Sass change is one of the
   changes somebody has to look at, and verifying in one engine is what
-  [`D-KNW-066`](knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md)
+  [`D-KNW-066`](knw-066-the-browser-baseline-is-a-release-day.md)
   cost a session on the same day.
 - The other half of the report — pointing a browser at the developer's own
   installation, where the data that shows the defect actually is — is

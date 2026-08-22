@@ -15,7 +15,7 @@ The two tools that take a `paths` array answer per path, and a call that placed
 nothing says so instead of handing over the core's process by default.
 
 What
-[`D-SCO-007`](sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md)
+[`D-SCO-007`](sco-007-the-signals-are-combined-per-call.md)
 measured, built. The two things it named as missing are the two things here: the
 unit of decision, and a third value.
 

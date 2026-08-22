@@ -41,7 +41,7 @@ Running one
    — so a modified tree is one of two things, and both are worth the ten
    seconds. Either the session overstepped, which is a criterion, or a lookup
    did. The second is what
-   `D-DIS-005 <../../decisions/discovery/dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md>`_
+   `D-DIS-005 <../../decisions/discovery/dis-005-a-registry-with-no-console-command-is-read-by-booting-the-installation.md>`_
    is watched for: the registry lookups answer by booting the installation in a
    subprocess, and a boot that writes outside the cache is the symptom that
    decision named and cannot hold itself. Start from a clean tree so the reading

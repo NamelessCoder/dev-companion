@@ -36,7 +36,7 @@ session got the assessment wrong.
   invalidation is `todo/open/2026-08-02-211403` on
   [`D-KNW-027`](../knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md).
   The rendered preview is `todo/open/2026-08-02-200948` on
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md).
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies-it.md).
 - The checklist had nothing of this kind. Five items — confirm the branch,
   inspect nearby code, keep the patch focused, cover it, run the checks — and
   the `bugfix` block adds reproducing and checking older branches. All of them

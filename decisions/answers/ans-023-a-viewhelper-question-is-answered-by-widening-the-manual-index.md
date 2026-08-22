@@ -47,7 +47,7 @@ reference is, and the lookup does not carry it.
   beside it does to that.
 - The claim the feedback makes about TYPO3 holds. Read in `typo3fluid/fluid`
   5.3.1 — the engine 14.3 pins,
-  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md)
+  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own-because-the-core-pins-it.md)
   — in a local installation's `vendor/`, because no core checkout has one.
   Uncached, `AbstractConditionViewHelper::renderThenChild()` walks the child
   nodes and returns `null` where it finds an `ElseViewHelper` and no
@@ -145,7 +145,7 @@ above stay: the gap was real, the three **Wrong if** were measured and none
 held, and that reading is the reason the change looks the way it does.
 
 What holds from here is
-[`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md)
+[`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed.md)
 — four manuals, each carrying the collection it is published in — and what must
 keep holding is
 [`R-DOC-003`](../../requirements/documentation/doc-003-a-viewhelper-question-is-answered-from-the-manual-that-documents-viewhelpers.md).

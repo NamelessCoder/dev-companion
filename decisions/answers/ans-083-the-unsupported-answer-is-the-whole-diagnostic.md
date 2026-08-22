@@ -114,7 +114,7 @@ from the other side by a session that liked what it got. The judgement is on
 where the boundary is the moment the answer is read.
 
 The third **Wrong if** fired on 2026-08-19:
-[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section-and-names-what-it-left-out.md)
+[`D-ANS-088`](ans-088-the-orientation-answer-is-asked-for-by-section.md)
 gave `typo3_server_scope` a `sections` argument, and
 `sections: ["installation"]` answers the binary question in 7,734 characters
 against 94,198. In its own words the step in `typo3-development-installation`

@@ -20,7 +20,7 @@ one is added.
 [D-EVI-008]: evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md
 [D-EVI-006]: evi-006-one-installation-per-covered-version-kept-and-started.md
 [D-EVI-004]: evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
-[D-EVI-005]: evi-005-a-registration-nothing-can-reach-is-cleared-and-the-database-goes-with-it.md
-[D-EVI-001]: evi-001-forward-evidence-comes-from-a-review.md
+[D-EVI-005]: evi-005-a-registration-nothing-can-reach-is-cleared-with-its-database.md
+[D-EVI-001]: evi-001-forward-evidence-comes-from-a-review-not-from-a-prompt-that-knows-the-answer.md
 [D-EVI-002]: evi-002-a-skill-crossing-is-read-rather-than-run.md
 [D-EVI-003]: evi-003-a-review-runs-the-checks-that-cannot-change-the-code.md

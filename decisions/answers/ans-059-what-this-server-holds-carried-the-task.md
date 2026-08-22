@@ -32,7 +32,7 @@ repository does not own.
   `typo3_gerrit_lookup` once —
   [`D-ANS-055`](ans-055-a-change-answers-for-an-issue-only-where-its-commit-message-names-it.md),
   [`D-ANS-056`](ans-056-a-search-hit-is-filled-from-the-issue-it-is.md),
-  [`D-ANS-057`](ans-057-what-hangs-off-an-issue-is-named-and-the-reading-is-the-callers.md)
+  [`D-ANS-057`](ans-057-what-hangs-off-an-issue-is-named.md)
   and the backlog interface that had landed an hour before the session ran.
 - The fifth cost, `feedback/2026-08-05-033924`, is a fact that lives on neither
   side: which release lines are maintained is not in the checkout and not in the

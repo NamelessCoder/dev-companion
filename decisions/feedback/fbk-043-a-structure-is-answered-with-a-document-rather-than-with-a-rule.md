@@ -26,7 +26,7 @@ clear.
   `extension/testing` and `project/testing`, and six commits of 2026-08-03 and
   2026-08-04 added, moved or rewrapped one.
 - What a document is was settled in the same days and in another group:
-  [`D-KNW-056`](../knowledge/knw-056-a-file-skeleton-is-shipped-as-a-bound-document-section.md)
+  [`D-KNW-056`](../knowledge/knw-056-a-file-skeleton-is-shipped-as-a-version-bound-document-section.md)
   for the bound section,
   [`D-KNW-057`](../knowledge/knw-057-a-document-declares-what-it-is-and-when-to-reach-for-it.md)
   for what it declares,

@@ -35,7 +35,7 @@ page says the opposite in the sentence it reads first.
   `typo3_documentation_lookup` returns Developing a custom ViewHelper, the Fluid
   Translate ViewHelper, JavaScript form helpers and three TypoScript
   *Conditions* pages. That is
-  [`D-ANS-023`](../answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
+  [`D-ANS-023`](../answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md)
   reproduced.
 - Indexing the ViewHelper reference would not close this, which is what keeps
   the two levers apart. The If page is at
@@ -53,7 +53,7 @@ page says the opposite in the sentence it reads first.
   seen. It is not read again here.
 - What that reading does not settle is the range. It was taken on one engine,
   and
-  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md)
+  [`D-VER-003`](../versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own-because-the-core-pins-it.md)
   says each covered branch pins its own — 12.4 on `^2.15.0`, 13.4 on `^4.6.1`,
   14.3 on `^5.3.1`. A statement written from it is measured on 14 and guessed on
   the other two.

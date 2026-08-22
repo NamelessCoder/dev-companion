@@ -23,17 +23,17 @@ one is added.
 [D-AUD-012]: aud-012-the-second-call-of-the-entry-point-is-an-imperative-of-its-own.md
 [D-AUD-011]: aud-011-the-instructions-index-the-question-each-tool-answers-because-a-name-is-all-a-deferring-client-shows.md
 [D-AUD-010]: aud-010-the-content-model-is-answered-and-the-records-stay-with-the-installation.md
-[D-AUD-009]: aud-009-the-entry-point-claims-patch-work-and-a-task-that-ends-before-one-reads-itself-out.md
-[D-AUD-008]: aud-008-the-server-is-called-dev-companion-under-the-tooling-vendor.md
-[D-AUD-005]: aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md
-[D-AUD-006]: aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md
+[D-AUD-009]: aud-009-the-entry-point-claims-patch-work.md
+[D-AUD-008]: aud-008-the-server-is-called-dev-companion-under-the-vendor-typo3s-own-tooling-uses.md
+[D-AUD-005]: aud-005-an-exclusion-naming-no-tool-is-reported-and-the-server-starts.md
+[D-AUD-006]: aud-006-the-server-reports-the-exclusion-that-happened.md
 [D-AUD-007]: aud-007-the-prose-documents-are-named-where-a-session-already-looks.md
-[D-AUD-004]: aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md
-[D-AUD-003]: aud-003-the-instructions-carry-the-entry-point.md
-[D-AUD-001]: aud-001-the-outward-description-stays-core-first-until-there-is-more.md
+[D-AUD-004]: aud-004-every-client-is-offered-every-tool.md
+[D-AUD-003]: aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md
+[D-AUD-001]: aud-001-the-outward-description-stays-core-first-until-there-is-non-core-knowledge.md
 
 ### Revoked, and kept as the record
 
 - [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
 
-[D-AUD-002]: aud-002-two-profiles-because-a-third-would-have-been-the-same-set.md
+[D-AUD-002]: aud-002-two-profiles-because-a-third-one-would-have-been-the-same-set.md

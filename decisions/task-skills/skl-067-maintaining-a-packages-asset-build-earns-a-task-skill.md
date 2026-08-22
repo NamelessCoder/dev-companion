@@ -44,7 +44,7 @@ is here; nothing carries a word either session typed, so nothing fired.
 - The `EXT:blog` session read the skill listing and called nothing. So the
   description in that listing is the only lever that reaches a session which
   never asks — activation is the client's, and
-  [`D-SKL-033`](skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md)
+  [`D-SKL-033`](skl-033-activation-is-the-clients.md)
   is where that boundary was drawn.
 
 ## Decided
@@ -60,7 +60,7 @@ is here; nothing carries a word either session typed, so nothing fired.
   rather than assumed from its name; and that the build commands are the ones
   `typo3_project_describe` reports from the manifest where the repository keeps
   it —
-  [`D-SCO-014`](../scope/sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it.md).
+  [`D-SCO-014`](../scope/sco-014-the-npm-manifest-is-read-where-the-repository-keeps-it-build-included.md).
 - It stops at the third-party library's own migration: a bundler's configuration
   format, a JavaScript library's API change, a Node defect. Both sessions drew
   that line themselves, and behind it is another project's manual.
@@ -72,7 +72,7 @@ is here; nothing carries a word either session typed, so nothing fired.
   `EXT:blog` session named as the reason it did not fit a change already asked
   for.
 - The listing budget is asked at publication and not now, where
-  [`D-SKL-054`](skl-054-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md)
+  [`D-SKL-054`](skl-054-the-listing-budget-is-what-a-client-reads.md)
   already puts it.
 - Repaired in the same commit: `extension-asset-build` gains the words that name
   what it is about — `npm`, `package.json`, `webpack`, `vite`, the build

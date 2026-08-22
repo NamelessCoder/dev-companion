@@ -148,7 +148,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-023]: answers/ans-023-a-review-answer-names-only-changes-that-name-the-issue.md
 [R-ANS-024]: answers/ans-024-a-field-that-is-answered-empty-is-one-nothing-could-fill.md
 [R-ANS-025]: answers/ans-025-an-issue-answer-says-what-its-comments-refer-to.md
-[R-ANS-026]: answers/ans-026-a-path-names-the-subsystem-and-a-hint-from-another-one-does-not-answer.md
+[R-ANS-026]: answers/ans-026-a-path-names-the-subsystem.md
 [R-ANS-027]: answers/ans-027-an-answer-that-cannot-separate-two-causes-says-so-in-the-answer.md
 [R-ANS-028]: answers/ans-028-an-answer-that-names-a-document-says-how-to-read-it-whole.md
 [R-ANS-029]: answers/ans-029-an-answer-that-names-a-record-says-enough-of-it-to-judge-whether-to-open-it.md
@@ -245,7 +245,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-PRJ-005]: project/prj-005-what-an-extension-registers-is-answered-from-the-installation-and-its-files.md
 [R-PRJ-006]: project/prj-006-what-an-extension-does-not-ship-is-answered-too.md
 [R-PRJ-007]: project/prj-007-a-declared-command-says-whether-running-it-changes-anything.md
-[R-PRJ-008]: project/prj-008-the-project-answer-says-what-runs-it.md
+[R-PRJ-008]: project/prj-008-the-project-answer-says-what-runs-it-not-only-what-it-declares.md
 [R-PRJ-009]: project/prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md
 [R-PRJ-010]: project/prj-010-the-project-answer-relates-its-php-numbers-rather-than-listing-them.md
 [R-PRJ-011]: project/prj-011-a-project-root-is-a-repository-that-declares-typo3.md
@@ -265,7 +265,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SCO-009`][R-SCO-009] — Individual tools can be excluded · held
 
 [R-SCO-001]: scope/sco-001-outside-the-core-is-recognised-from-structure-not-wording.md
-[R-SCO-002]: scope/sco-002-a-scope-outside-the-core-changes-the-payload.md
+[R-SCO-002]: scope/sco-002-a-scope-outside-the-core-changes-the-payload-entry-by-entry.md
 [R-SCO-003]: scope/sco-003-a-core-only-intent-needs-evidence-of-core-work.md
 [R-SCO-004]: scope/sco-004-the-backend-css-conventions-are-named-as-the-backends.md
 [R-SCO-005]: scope/sco-005-every-tool-applies-the-same-outside-the-core-check.md

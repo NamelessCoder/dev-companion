@@ -70,7 +70,7 @@ stays named in `todo/reference/`.
   repository's own idea of all three.
 - A made `E-SITE` is the environment and never the subject of a recorded forward
   review. Its defects would be the ones this repository wrote, which is
-  [`D-EVI-001`](evi-001-forward-evidence-comes-from-a-review.md) from the other
+  [`D-EVI-001`](evi-001-forward-evidence-comes-from-a-review-not-from-a-prompt-that-knows-the-answer.md) from the other
   side. What it is for is the contract cases, and a real installation for the
   half of this server that has never had one.
 - No site package is scaffolded, for the same reason. `scenarios/readme.md`
@@ -129,7 +129,7 @@ same name met at the setup step as
 reaches the settings file alone.
 
 Both are the same leftover and
-[`D-EVI-005`](evi-005-a-registration-nothing-can-reach-is-cleared-and-the-database-goes-with-it.md)
+[`D-EVI-005`](evi-005-a-registration-nothing-can-reach-is-cleared-with-its-database.md)
 clears them together. What that says about this entry is narrower than the
 **Wrong if** reads: an environment made on demand and gitignored is not thereby
 free, because the part of it that is global to the machine outlives the checkout

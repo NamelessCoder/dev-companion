@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
+use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 
 /**
@@ -62,6 +63,11 @@ final class DecisionCheck
                 $problems[] = $id . ' has no title in its front matter';
             } elseif ($decision['written'] !== $decision['title']) {
                 $problems[] = $id . ' is titled "' . $decision['title'] . '" and its heading says "' . $decision['written'] . '"';
+            } elseif (basename($path) !== Entry::fileName($id, $decision['title'])) {
+                // The file name is the title, so a title corrected in place
+                // leaves a file claiming the old one — `D-DOC-047`.
+                $problems[] = $id . ' is titled "' . $decision['title'] . '" and filed as ' . basename($path)
+                    . '; run bin/cli decisions:rename';
             }
             if (isset($seen[$id])) {
                 $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file

@@ -21,7 +21,7 @@ when it is added.
 - [`R-SCO-009`][R-SCO-009] — Individual tools can be excluded · held
 
 [R-SCO-001]: sco-001-outside-the-core-is-recognised-from-structure-not-wording.md
-[R-SCO-002]: sco-002-a-scope-outside-the-core-changes-the-payload.md
+[R-SCO-002]: sco-002-a-scope-outside-the-core-changes-the-payload-entry-by-entry.md
 [R-SCO-003]: sco-003-a-core-only-intent-needs-evidence-of-core-work.md
 [R-SCO-004]: sco-004-the-backend-css-conventions-are-named-as-the-backends.md
 [R-SCO-005]: sco-005-every-tool-applies-the-same-outside-the-core-check.md

@@ -102,7 +102,7 @@ built stops it rather than publishing a site served unstyled.
 ## Revoked on 2026-08-12
 
 There is no build here to write those two files. The theme is a package now —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md)
 — and it ships its own stylesheet, script and faces as files a page links, so
 the statement above describes a build that no longer exists. The two tests this
 entry named went with it.

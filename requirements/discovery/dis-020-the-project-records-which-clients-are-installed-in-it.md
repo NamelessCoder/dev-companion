@@ -23,7 +23,7 @@ nobody's name. An update in a project where nothing is installed says so rather
 than reporting work it did not do, and succeeds: it is the command a project
 wires into Composer's `post-update-cmd`, where a non-zero exit fails the whole
 run, and the record is not in anybody's checkout —
-[`D-DIS-014`](../../decisions/discovery/dis-014-the-refresh-is-wired-by-the-project-and-the-fence-is-not-taken.md).
+[`D-DIS-014`](../../decisions/discovery/dis-014-the-refresh-is-wired-by-the-project.md).
 
 What the record is read for is the refresh: a skill this package has stopped
 shipping is taken out of every client it reached, whichever of them the run was

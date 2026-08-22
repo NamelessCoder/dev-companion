@@ -17,7 +17,7 @@ The root manifest was the whole npm surface this server read, and the repository
 the TYPO3 layout describes has none: the core keeps its `package.json`, its
 `.nvmrc` and its Gruntfile one directory down. So the answer was silent about
 both halves of what
-[`D-SCO-013`](sco-013-a-declared-command-carries-the-interpreter-it-runs-on.md)
+[`D-SCO-013`](sco-013-a-declared-command-carries-the-interpreter-it-runs-on-node-as-well-as-php.md)
 had just built, and nothing in it said whether there was no npm surface or none
 that had been looked for.
 

@@ -29,7 +29,7 @@ four failures.
   read from the other end.
 - The costs in the same session are all on the other side of the same line.
   Whether a CSS feature is inside the browser baseline
-  ([`D-KNW-066`](../knowledge/knw-066-the-browser-baseline-is-a-release-day-and-core-usage-is-not-evidence-of-it.md)),
+  ([`D-KNW-066`](../knowledge/knw-066-the-browser-baseline-is-a-release-day.md)),
   whether the component sits where it should while scrolling
   ([`D-KNW-068`](../knowledge/knw-068-looking-at-a-backend-change-is-a-suite-the-core-already-carries.md)),
   how to reach the installation that has the content

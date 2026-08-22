@@ -165,7 +165,7 @@ template, and `backend preview` had to be added to the hint's `appliesTo` before
 the symptom reached it at all.
 
 What holds from here is
-[`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md),
+[`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half.md),
 and what must keep holding is `R-KNW-042`, which now rests on the successor. One
 of this entry's three **Wrong if** survives into it — the core moving the header
 behind the event — and it is a different failure there: a statement in the

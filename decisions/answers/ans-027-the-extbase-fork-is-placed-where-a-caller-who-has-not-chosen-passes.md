@@ -125,7 +125,7 @@ controller, and the reason the placement was left open are why the successor
 looks the way it does.
 
 What holds from here is
-[`D-ANS-039`](ans-039-the-extbase-fork-is-delivered-by-the-task-intent-and-forks-on-the-request.md),
+[`D-ANS-039`](ans-039-the-extbase-fork-is-delivered-by-the-content-element-intent.md),
 and what must keep holding is
 [`R-ANS-016`](../../requirements/answers/ans-016-a-content-element-task-is-offered-the-extbase-fork.md).
 The successor's **Wrong if** is a different list, because what can go wrong now

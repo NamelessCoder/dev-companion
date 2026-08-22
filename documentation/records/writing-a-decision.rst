@@ -203,14 +203,14 @@ is written for what holds instead — because the reader of a listing has the
 headline and the status and nothing else, and ``confirmed`` beside a sentence
 that is no longer the case reads as a claim about today.
 
-`D-ANS-023 <../../decisions/answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md>`_
+`D-ANS-023 <../../decisions/answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md>`_
 is the worked example. Its statement said that no manual this lookup indexes
 documents a ViewHelper. That was true, the change it asked for was made the same
 day, its three **Wrong if** were measured and none of them held — and from that
 moment the statement described a lookup that no longer existed. It carries its
 **Confirmed on** for the reading and a **Revoked on** below it for the
 supersession, ``revokedBy`` points at
-`D-ANS-026 <../../decisions/answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md>`_,
+`D-ANS-026 <../../decisions/answers/ans-026-the-viewhelper-reference-is-indexed.md>`_,
 and the successor is what a reader builds on.
 
 The successor is a new entry rather than a rewrite of the old one, and it is

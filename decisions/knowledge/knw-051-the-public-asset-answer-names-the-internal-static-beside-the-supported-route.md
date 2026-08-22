@@ -93,7 +93,7 @@ API. One line above the signature the docblock reads
   A session arrives at this hint having already found the method in the class,
   and a hint that is silent about it leaves what the class suggested standing.
   That is the shape of
-  [`D-KNW-043`](knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md)
+  [`D-KNW-043`](knw-043-a-rule-about-what-an-api-may-be-used-for-carries-the-strength-of-the-claim-and-the-source-it-was-read-from.md)
   read from the other side: there the corpus flattened two neighbouring APIs
   into one strength, here it stated one and said nothing about the third.
 - The general rule the feedback proposed is inverted rather than adopted. It

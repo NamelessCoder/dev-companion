@@ -50,7 +50,7 @@ names were all delivered, in order, before the calls that needed them.
   A fetch line listing that workflow's tools therefore either fails the suite or
   is a fetch line that deliberately leaves one out.
 - The channel that survives deferral is the `instructions`, which is what
-  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
+  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
   established and what `feedback/2026-08-18-113308` reports again from its own
   side: the tool descriptions never arrived and the `instructions` did, in full,
   from the first turn. They name six of the tools this server declares —

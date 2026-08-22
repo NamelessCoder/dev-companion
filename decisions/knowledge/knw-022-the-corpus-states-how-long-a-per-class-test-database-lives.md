@@ -23,7 +23,7 @@ the live one.
   allowed to create databases. Under DDEV that means root rather than the user
   the site itself runs as."
 - What the feedback reports about the name holds, read on the three refs
-  [`D-KNW-002`](knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md)
+  [`D-KNW-002`](knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags-not-against-the-checkouts.md)
   pairs with the covered majors — `.checkouts/testing-framework/8` at 8.3.3, `9`
   at 9.6.1 and `main`. `FunctionalTestCase::setUp()` builds
   `$dbName = $originalDatabaseName . '_ft' . $this->identifier` on all three,
@@ -69,7 +69,7 @@ the live one.
   `project-extension-tests` is 981 words against the 544-word ceiling
   [`D-ANS-025`](../answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md)
   measured, and that is the tension
-  [`D-KNW-019`](knw-019-the-corpus-states-that-a-test-sees-only-what-it-primed.md)
+  [`D-KNW-019`](knw-019-the-corpus-states-that-a-functional-test-sees-only-what-it-primed.md)
   declined to resolve there.
 - The priming premise is not restated here. It is `D-KNW-019`'s statement, its
   third **Wrong if** is this feedback writing it a second time, and the card

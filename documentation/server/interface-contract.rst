@@ -10,7 +10,7 @@ process around it. Nothing here is filed anywhere and nothing here waits on it.
 It was consulted as a reference — the yardstick this repository's own naming
 questions were judged against, which is the whole of its role here. What was
 judged is
-`D-SCO-010 <../../decisions/scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-draft-rfc-is-read-as-a-reference.md>`_.
+`D-SCO-010 <../../decisions/scope/sco-010-all-three-typo3-namespaces-are-kept.md>`_.
 This page is the reading behind it: what the draft says, what it would collide
 with here, and what this server would have to change if it ever became a
 contract.

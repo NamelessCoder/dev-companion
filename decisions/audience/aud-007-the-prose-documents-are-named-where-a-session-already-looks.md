@@ -32,7 +32,7 @@ tool list and finished without learning whether there was anything to read.
   resource is chosen by the host application or by the user rather than by the
   model mid-task. So a client that renders no list leaves the session nothing to
   find, and that is the half this side is blindest to.
-- [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point.md) is the same
+- [`D-AUD-003`](aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md) is the same
   shape one surface over: a session whose every criterion the conformance
   skill's body would have met never loaded it, and all thirty-five of its calls
   went through Bash.

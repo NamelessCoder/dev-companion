@@ -74,7 +74,7 @@ one is added.
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
-[D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill-and-the-typo3-half-is-the-domain.md
+[D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill.md
 [D-SKL-068]: skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md
 [D-SKL-069]: skl-069-each-runtime-lookup-says-what-it-adds-after-the-extension-answer.md
 [D-SKL-064]: skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md
@@ -90,31 +90,31 @@ one is added.
 [D-SKL-051]: skl-051-a-site-built-from-scratch-reaches-the-installation-intent.md
 [D-SKL-052]: skl-052-the-injected-size-of-a-skill-is-what-the-retention-rule-leaves.md
 [D-SKL-053]: skl-053-an-absence-in-the-extension-answer-names-the-skill-that-owns-it.md
-[D-SKL-054]: skl-054-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md
+[D-SKL-054]: skl-054-the-listing-budget-is-what-a-client-reads.md
 [D-SKL-055]: skl-055-a-call-a-skill-names-in-order-not-to-make-it-is-written-as-a-discharge.md
 [D-SKL-056]: skl-056-the-installation-workflow-branches-on-the-declared-procedure-and-proves-what-the-run-wrote.md
 [D-SKL-057]: skl-057-a-commands-option-set-is-read-from-the-installed-console-and-its-meaning-from-the-manual.md
 [D-SKL-058]: skl-058-a-hint-is-routed-by-what-the-repository-is-rather-than-by-how-its-installation-came-to-exist.md
 [D-SKL-059]: skl-059-the-installation-that-already-answers-is-owned-by-the-workflow-that-created-it.md
-[D-SKL-060]: skl-060-a-skill-names-a-tool-at-the-step-that-needs-it-and-a-deferring-client-is-answered-in-the-instructions.md
+[D-SKL-060]: skl-060-a-skill-names-a-tool-at-the-step-that-needs-it.md
 [D-SKL-061]: skl-061-the-upgrade-description-is-reachable-from-a-defect-inside-the-range-it-already-declares.md
 [D-SKL-062]: skl-062-the-workflow-question-is-asked-again-where-the-work-enters-a-new-subject.md
-[D-SKL-063]: skl-063-reviewing-one-change-proposed-against-a-package-earns-a-task-skill.md
-[D-SKL-037]: skl-037-the-sweeps-exemption-names-what-a-task-produces-and-its-examples-illustrate-it.md
+[D-SKL-063]: skl-063-reviewing-one-change-proposed-against-a-package-that-is-not-the-core-earns-a-task-skill.md
+[D-SKL-037]: skl-037-the-sweeps-exemption-names-what-a-task-produces.md
 [D-SKL-038]: skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md
 [D-SKL-039]: skl-039-a-brief-that-changes-nothing-routes-only-the-workflows-that-change-nothing.md
 [D-SKL-041]: skl-041-a-patch-carried-onto-current-code-is-carried-on-a-named-branch.md
 [D-SKL-042]: skl-042-a-report-is-copyable-markdown-and-the-answer-is-where-it-goes.md
-[D-SKL-043]: skl-043-a-rule-query-carries-two-subjects-and-a-third-is-a-call-of-its-own.md
+[D-SKL-043]: skl-043-a-rule-query-carries-two-subjects.md
 [D-SKL-035]: skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: skl-036-a-skill-runs-where-the-installer-put-it.md
-[D-SKL-033]: skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md
+[D-SKL-033]: skl-033-activation-is-the-clients.md
 [D-SKL-034]: skl-034-a-step-of-the-order-is-skippable-on-what-the-session-holds-never-on-how-it-arrived.md
-[D-SKL-032]: skl-032-a-probe-is-worth-what-the-session-can-run-and-nothing-it-can-only-see.md
+[D-SKL-032]: skl-032-a-probe-is-worth-what-the-session-can-run.md
 [D-SKL-028]: skl-028-a-triage-that-reaches-for-a-previous-attempt-is-routed-to-the-patch.md
-[D-SKL-029]: skl-029-precedent-is-listed-by-the-changelogs-own-axes.md
+[D-SKL-029]: skl-029-precedent-is-listed-by-the-changelogs-own-axes-before-it-is-asked-for-in-words.md
 [D-SKL-030]: skl-030-a-review-surface-names-the-lookup-that-can-answer-it.md
-[D-SKL-031]: skl-031-a-triage-picks-a-candidate-on-where-the-symptom-is-visible-and-what-the-suite-models.md
+[D-SKL-031]: skl-031-a-triage-picks-a-candidate-on-where-the-symptom-is-visible-and-what-the-suite-already-models.md
 [D-SKL-023]: skl-023-a-published-skill-no-intent-names-is-one-the-brief-cannot-route-to.md
 [D-SKL-024]: skl-024-a-description-names-the-task-and-leaves-the-steps-to-the-body.md
 [D-SKL-025]: skl-025-a-routed-tool-is-called-and-held-to-what-the-skill-sends-the-session-to-read.md
@@ -128,16 +128,16 @@ one is added.
 [D-SKL-018]: skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
 [D-SKL-019]: skl-019-an-absent-surface-is-asked-for-by-the-id-of-its-convention.md
 [D-SKL-020]: skl-020-a-re-check-runs-what-the-finding-was-about.md
-[D-SKL-005]: skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
+[D-SKL-005]: skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md
 [D-SKL-006]: skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: skl-007-every-disposition-a-review-makes-carries-its-evidence.md
 [D-SKL-008]: skl-008-a-review-reads-the-review-the-patch-is-already-in.md
 [D-SKL-009]: skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
 [D-SKL-010]: skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
-[D-SKL-012]: skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md
+[D-SKL-012]: skl-012-bringing-a-packages-development-installation-into-existence-earns-a-task-skill.md
 [D-SKL-013]: skl-013-the-guide-names-the-skill-that-owns-the-task.md
-[D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed.md
-[D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
+[D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed-not-the-list-it-closes-on.md
+[D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes-not-by-the-extensions-vocabulary.md
 [D-SKL-004]: skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md
 [D-SKL-001]: skl-001-the-order-a-task-starts-in-is-one-file.md
 

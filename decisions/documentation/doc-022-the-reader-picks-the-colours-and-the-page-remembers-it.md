@@ -77,7 +77,7 @@ the head — the switch writes the same attribute, and the system reads it with
 ## Since then
 
 The switch is the theme's `sds-theme`, two segments rather than one button —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md),
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md),
 after `D-DOC-023` had already replaced the three-state button with the design
 system's own. What this entry decided is what still happens: the reader picks,
 and the choice is written before the first paint on the next page, so nobody

@@ -7,7 +7,8 @@ namespace TYPO3\DevCompanion\Upkeep;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Moving a decision to another number, and naming what nobody here can move.
+ * Moving an entry's file — to another number, or under the title it now has —
+ * and naming what nobody here can move.
  *
  * The renumbering is the dangerous part rather than the collision: twice the
  * files naming the old number did not all mean the same entry — `R-PRJ-008`
@@ -94,6 +95,44 @@ final class Renumber
             'moved' => $moved,
             'named' => $named,
         ];
+    }
+
+    /**
+     * One entry, filed under the name its title says — `D-DOC-047`.
+     *
+     * A number never moves here, so nothing has to be told apart: an id is
+     * ambiguous across two entries and a file name is not, which is why this
+     * rewrites every reference to the name rather than reporting the ones it
+     * cannot settle. Where the file is already where it belongs it is left
+     * alone and nothing is rewritten.
+     *
+     * @return array{from: string, to: string, references: int}
+     */
+    public static function refile(string $root, string $file, string $id, string $title): array
+    {
+        $root = (string) (realpath($root) ?: $root);
+        $file = (string) realpath($file);
+
+        $old = basename($file);
+        $new = Entry::fileName($id, $title);
+        if ($old === $new) {
+            return ['from' => $old, 'to' => $old, 'references' => 0];
+        }
+
+        rename($file, dirname($file) . '/' . $new);
+
+        $references = 0;
+        foreach (self::documents($root) as $path) {
+            $contents = (string) file_get_contents($path);
+            if (!str_contains($contents, $old)) {
+                continue;
+            }
+
+            $references += substr_count($contents, $old);
+            file_put_contents($path, str_replace($old, $new, $contents));
+        }
+
+        return ['from' => $old, 'to' => $new, 'references' => $references];
     }
 
     /**

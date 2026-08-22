@@ -89,7 +89,7 @@ comes from instead. The reasoning is
 A made `E-SITE` is the environment, never the subject of a review. Its
 installation is TYPO3's own base distribution, so what a forward review would
 find in it is what this repository put there — which is the thing
-[`D-EVI-001`](../decisions/evidence/evi-001-forward-evidence-comes-from-a-review.md)
+[`D-EVI-001`](../decisions/evidence/evi-001-forward-evidence-comes-from-a-review-not-from-a-prompt-that-knows-the-answer.md)
 exists to prevent. A recorded forward review still runs in a real project.
 
 ## Running one

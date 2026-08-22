@@ -31,7 +31,7 @@ subject the earlier notes were about.
   move a judgement that took the claim as evidence rather than as the report it
   came in. Three siblings, three answers.
 - `002926` — archived on 2026-08-02. Its judgement is the **Since then** of
-  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
+  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
   and
   [`R-SKL-010`](../../requirements/task-skills/skl-010-a-skills-description-names-every-side-of-what-it-owns.md),
   and it rests on the descriptions themselves:
@@ -42,7 +42,7 @@ subject the earlier notes were about.
   rewrite. The withdrawal moves the sentence about what the session called, not
   the finding, and it is written into that entry.
 - `003533` — judged as
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies-it.md),
   step 3, on four hint probes against this repository. That entry already
   records the withdrawal and says the trigger is not its lever. Unmoved, and its
   todo stands.

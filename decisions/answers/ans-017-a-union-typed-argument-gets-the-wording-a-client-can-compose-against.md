@@ -66,7 +66,7 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 ## Decided
 
 - The judgement is **step 4 of the ladder**, wording — in the same sense as
-  [`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-call-is-composed.md),
+  [`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-caller-composes-the-call.md),
   where a declaration reached the caller and the caller could not act on it. No
   tool is missing, nothing is misrouted, and the reference says the truth.
 - The feedback is **queued whole**, not trimmed and not closed on the spot. It
@@ -83,7 +83,7 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
   renamed `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares` —
   stays green, because that test calls `Channel::record` directly. `R-FBK-001`
   is what either has to keep held.
-- [`D-ANS-005`](ans-005-an-unmet-precondition-is-answered-not-raised.md) and
+- [`D-ANS-005`](ans-005-a-question-that-is-not-supported-here-is-answered-in-a-shape-of-its-own.md) and
   `D-ANS-012` both bet that a client reading less of a schema than it declares
   gets a weaker promise and nothing worse. This is the counter-example: the
   degradation was an argument that could not be sent at all.
@@ -125,7 +125,7 @@ again finds no second union, and the 91 unions in the output schemas are all
 `[X, "null"]` — a nullable field, not an alternative a caller has to choose
 between. So nothing else in this package now says the opposite about the shape,
 which is the reading that kept the keyword in
-[`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-call-is-composed.md)
+[`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-caller-composes-the-call.md)
 and does not apply here.
 
 The string branch gives a client nothing less. `Channel::toolNames()` splits on

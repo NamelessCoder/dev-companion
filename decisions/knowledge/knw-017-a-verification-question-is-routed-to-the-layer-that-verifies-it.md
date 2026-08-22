@@ -71,7 +71,7 @@ involved, and that caller lands on `content-elements` instead.
   `content-elements`, or the `content-element` intent's checklist — and each one
   costs something different.
 - The judgement extends
-  [`D-KNW-008`](knw-008-tooling-is-a-row-that-is-crossed-in-the-answer.md)
+  [`D-KNW-008`](knw-008-tooling-is-a-row-the-answer-crosses-not-a-dimension-the-corpus-stores.md)
   rather than contradicting it. That entry checked the crossing from inside the
   tooling row, where `typo3_test_run_guide` names the other cells. This is the
   caller who never enters the row.
@@ -94,9 +94,9 @@ involved, and that caller lands on `content-elements` instead.
 
 - The crossing is written and a rendered-verification query still reaches only
   `content-elements`. Then it is ranking rather than routing, and
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys-because-the-index-is-a-table-of-contents.md)
   and
-  [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart.md)
+  [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md)
   are where it belongs.
 - Widening `browser-tests.appliesTo` pulls it into answers that did not want it,
   so every backend-preview question pays for a testing hint.

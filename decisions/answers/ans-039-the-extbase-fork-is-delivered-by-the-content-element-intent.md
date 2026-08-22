@@ -16,7 +16,7 @@ two categories.**
 It is worded that way because on the covered versions a plugin is a content
 element: one selector holds both, and what differs is what renders inside the
 element. That is the delivery step 2 of
-[`D-ANS-027`](ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md)
+[`D-ANS-027`](ans-027-the-extbase-fork-is-placed-where-a-caller-who-has-not-chosen-passes.md)
 queued, and what
 [`R-ANS-016`](../../requirements/answers/ans-016-a-content-element-task-is-offered-the-extbase-fork.md)
 demands.

@@ -13,7 +13,7 @@ restsOn: [D-AUD-004, D-FBK-042, D-AUD-006]
 The scope answer names the resulting omissions, so a shorter tool list carries
 its reason — and names nothing else, because a name in the variable that took no
 tool away is reported as that rather than as a missing capability
-([`D-AUD-006`](../../decisions/audience/aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md)).
+([`D-AUD-006`](../../decisions/audience/aud-006-the-server-reports-the-exclusion-that-happened.md)).
 
 Every tool that answers about TYPO3 can go. Three cannot, and both reasons are
 about what the caller would be left holding:
@@ -30,7 +30,7 @@ about what the caller would be left holding:
 
 Neither exception weakens the read-only posture, and reading it as one is the
 mistake
-[`D-FBK-042`](../../decisions/feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md)
+[`D-FBK-042`](../../decisions/feedback/fbk-042-the-read-only-boundary-is-the-installation.md)
 was written for: `typo3_feedback_record` writes into this server's own checkout
 and never into the installation being read.
 
@@ -38,7 +38,7 @@ and never into the installation being read.
 
 The two fixed profiles forcing a caller that wants all but one tool to pay for
 all of them (2026-07-30). The profiles were removed on 2026-08-02 under
-[`D-AUD-004`](../../decisions/audience/aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md)
+[`D-AUD-004`](../../decisions/audience/aud-004-every-client-is-offered-every-tool.md)
 and this is what is left of them: the subtraction the caller declares.
 
 The exceptions were added on 2026-08-04, after `453e439` read the feedback one

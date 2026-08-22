@@ -196,7 +196,7 @@ person approving a server or restarting a session, and only the message the
 precondition prints was ever going to get it asked for.
 
 What that leaves is not a skill question at all, and it is judged in
-[`D-DIS-009`](../discovery/dis-009-installed-is-one-step-short-of-callable-and-the-install-is-what-says-so.md):
+[`D-DIS-009`](../discovery/dis-009-installed-is-one-step-short-of-callable.md):
 the install writes the entry, reports nine successes, and never says that a
 callable tool is one step further on. The precondition is what a session does
 when the tools are absent. Keeping them from being absent is the install's, and
@@ -215,7 +215,7 @@ session are the siblings
 lists, and this one reports only the order they were reached in. The half about
 the skill not activating already has a change against it: the description
 rewrite of 2026-08-02 in
-[`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md),
+[`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md),
 made for this same task shape. What is left is the route through the server, and
 it ends before the skill.
 

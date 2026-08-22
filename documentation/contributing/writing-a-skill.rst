@@ -156,7 +156,7 @@ matter and the name every other skill calls it by are one string. The
 ``description`` is the only part of a skill read before it is chosen, so it is
 written in the words a user brings — the request, the symptom, the files being
 touched — and never in this server's tool names.
-`D-AUD-003 <../../decisions/audience/aud-003-the-instructions-carry-the-entry-point.md>`_
+`D-AUD-003 <../../decisions/audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md>`_
 is what a wrong one costs: a review prompt whose every criterion the conformance
 skill's body would have met did not activate it, and all thirty-five calls of
 that session went through Bash.
@@ -218,7 +218,7 @@ and what the client's own bundled skills leave over.
 
 A draft stands in no client's listing and costs it nothing, so what the budget
 asks is asked at publication and not of the file being written
-(`D-SKL-054 <../../decisions/task-skills/skl-054-the-listing-budget-is-what-a-client-reads-and-a-draft-is-not-in-it.md>`_).
+(`D-SKL-054 <../../decisions/task-skills/skl-054-the-listing-budget-is-what-a-client-reads.md>`_).
 Where the room is not there, the publishing commit is where a description is
 shortened or a workflow is merged into one that already exists — a question
 about which twelve descriptions are worth their room, which nobody can answer

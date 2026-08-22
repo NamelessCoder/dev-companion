@@ -157,7 +157,7 @@ than about what the miss says, and both are queued.
 A second corpus asks for it. `typo3_rule_lookup` reached its no-match answer
 only where the hints missed too, so a compound query that matched a hint was
 told a boundary emptied it —
-[`D-ANS-037`](ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md),
+[`D-ANS-037`](ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md),
 built on 2026-08-03 — and the subsets are what that miss now offers instead.
 
 What the second caller showed the two have in common is the pass and not the
@@ -177,7 +177,7 @@ way for every subset.
 ## Since then
 
 The decision this entry names and does not take is taken, as
-[`D-ANS-043`](ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md),
+[`D-ANS-043`](ans-043-a-miss-is-answered-in-data.md),
 and what took it is the first report of the gap from practice.
 `feedback/2026-08-03-144349` quotes a miss as its six structured fields —
 `matchCount: 0` among them — and states that nothing came back to re-ask with.

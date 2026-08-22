@@ -36,7 +36,7 @@ route.
   names it by id. The hints in a brief therefore take a query out of the skill's
   order and leave an id fetch, and withholding them puts the query back.
 - **The session that loads no skill is the ordinary case.**
-  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md)
+  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients.md)
   records a benchmark of eighty-two runs across four sweeps with `skills_used`
   empty on every row, one `typo3_task_guide` call among seventeen tasks. A brief
   that withheld on a skill name would withhold from the sessions that are

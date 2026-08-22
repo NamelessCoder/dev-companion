@@ -32,7 +32,7 @@ project.
   `bin/cli hints:probe "verify the rendered backend preview before reporting the work done"`
   reaches `content-elements` at `appliesTo(15) + text(195)` and nothing else —
   the same landing
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md)
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies-it.md)
   measured from four other phrasings, on `feedback/2026-08-01-003533`. It is
   that entry's routing gap read off a fifth sentence, not a second gap. As this
   branch stands, `todo/open/2026-08-02-200948` serves `003533`.
@@ -87,7 +87,7 @@ project.
   and `skills/base.md`, read at the start of a task. A turn-taking rule on
   either is paid for by every caller in every project, and it competes for the
   budget with "Start every task with typo3_project_describe" — the entry point
-  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
+  [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
   says the instructions exist to carry, because the tool descriptions never
   arrive.
 - The question goes up rather than being answered here, and the card stays in

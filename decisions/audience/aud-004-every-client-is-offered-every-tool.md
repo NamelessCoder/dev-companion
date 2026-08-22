@@ -13,7 +13,7 @@ is said in the answer, and only the caller shortens the tool list.**
 The list is shortened by naming tools in `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS`,
 and by nothing else.
 
-[`D-AUD-002`](aud-002-two-profiles-because-a-third-would-have-been-the-same-set.md)
+[`D-AUD-002`](aud-002-two-profiles-because-a-third-one-would-have-been-the-same-set.md)
 withheld three tools from a Composer project, on the grounds that a repository
 with no `Build/Scripts/`, no Gerrit remote and no Forge issue cannot follow the
 core's contribution process. Its own **Corrected on** line of 2026-08-02 showed

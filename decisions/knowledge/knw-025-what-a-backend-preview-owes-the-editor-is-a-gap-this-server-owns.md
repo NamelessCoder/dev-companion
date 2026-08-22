@@ -32,7 +32,7 @@ of one element apart by.
 - The nearest statement forbids where the rule has to require. The hint ends
   "what it owes the editor is what those parts do not already say", which a
   static label satisfies. That clause was written against a duplicated header —
-  [`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md).
+  [`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half.md).
 - The mechanism half of this feedback is already answered. That a relation comes
   back as records an `f:for` iterates landed on the same hint on 2026-08-02, and
   the feedback that asked for it is in
@@ -96,7 +96,7 @@ holds ten templates rather than the nine counted above, and the ten agree: every
 one draws the record's own payload, none renders a label naming the element, and
 none renders a field the header already draws. What lands is the field kinds
 rather than advice, and it carries no `since` — the reading is
-[`D-KNW-037`](knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md),
+[`D-KNW-037`](knw-037-a-content-element-preview-draws-the-elements-own-payload.md),
 and what must keep holding is `R-KNW-050`.
 
 What was not fixed is the routing. The feedback's own wording, "backend content

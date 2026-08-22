@@ -124,7 +124,7 @@ The second **Wrong if** was the one that happened, and it is closed rather than
 observed: the matcher ends a curated needle where its word ends, so
 "testimonials" no longer matches the `tests` intent's `test` and the
 testimonials task names `typo3-content-element-development` alone —
-[`D-ANS-050`](../answers/ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md)
+[`D-ANS-050`](../answers/ans-050-a-curated-needle-matches-the-word-it-is.md)
 has what the sweep found, including three more false intents on the same rule
 and one, `lit` reaching "Literals", a layer below the route where nothing acts
 on it. `HintsTest::aBriefNamesTheSkillThatOwnsTheWork` asserts the name alone
@@ -193,7 +193,7 @@ repository right are not core work.
 ### 2026-08-19 — the first Wrong if, in another project and the same client
 
 The benchmark
-[`D-SKL-033`](skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md)
+[`D-SKL-033`](skl-033-activation-is-the-clients.md)
 records for that date carries one `typo3_task_guide` call among seventeen
 project tasks. It answered `skills: ["typo3-content-element-development"]` with
 the line this entry put above the payload, and the session went on through

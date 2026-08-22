@@ -11,6 +11,7 @@ earns one.
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
 - [`D-DOC-046`][D-DOC-046] — A title is the name an entry is read by · 2026-08-23
+- [`D-DOC-047`][D-DOC-047] — An entry is filed under the title it has · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged to stay as it is · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
@@ -53,6 +54,7 @@ earns one.
 [D-DOC-044]: doc-044-a-failing-test-names-the-decisions-it-was-holding.md
 [D-DOC-045]: doc-045-what-a-listing-reads-is-front-matter.md
 [D-DOC-046]: doc-046-a-title-is-the-name-an-entry-is-read-by.md
+[D-DOC-047]: doc-047-an-entry-is-filed-under-the-title-it-has.md
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged-to-stay-as-it-is.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md
@@ -65,32 +67,32 @@ earns one.
 [D-DOC-037]: doc-037-a-decision-nobody-has-revisited-is-held-to-the-console.md
 [D-DOC-033]: doc-033-the-derived-half-of-a-tool-page-stays-committed.md
 [D-DOC-032]: doc-032-a-section-heading-is-the-label-a-contents-list-shows.md
-[D-DOC-024]: doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md
+[D-DOC-024]: doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md
 [D-DOC-025]: doc-025-the-documentation-is-four-sections-and-the-bar-carries-those-four.md
 [D-DOC-026]: doc-026-the-site-is-the-documentation-and-the-readme-stays-out-of-it.md
 [D-DOC-027]: doc-027-the-renderers-configuration-sits-with-the-pages-it-renders.md
-[D-DOC-028]: doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md
-[D-DOC-029]: doc-029-the-documentation-is-reStructuredText-and-the-rest-of-the-corpus-is-not.md
+[D-DOC-028]: doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md
+[D-DOC-029]: doc-029-the-documentation-is-restructuredtext-and-the-rest-of-the-corpus-is-not.md
 [D-DOC-030]: doc-030-the-front-page-is-a-landing-page-in-the-themes-marketing-layout.md
 [D-DOC-031]: doc-031-a-page-is-railed-under-a-label-and-headed-by-a-sentence.md
 [D-DOC-022]: doc-022-the-reader-picks-the-colours-and-the-page-remembers-it.md
 [D-DOC-017]: doc-017-the-documentation-is-published-from-a-copy-this-repository-writes.md
 [D-DOC-015]: doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
-[D-DOC-016]: doc-016-an-answer-that-reads-no-installation-is-derived-and-checked.md
+[D-DOC-016]: doc-016-an-answer-that-reads-no-installation-is-derived-and-checked-like-the-fields-above-it.md
 [D-DOC-009]: doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-011]: doc-011-a-schema-is-written-as-the-shape-it-validates.md
 [D-DOC-012]: doc-012-the-second-root-is-an-installation-this-repository-writes.md
 [D-DOC-013]: doc-013-a-commit-here-is-three-keywords-and-a-condensed-subject.md
 [D-DOC-014]: doc-014-a-working-directory-holds-entries-and-the-documentation-describes-them.md
-[D-DOC-003]: doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
+[D-DOC-003]: doc-003-a-decision-says-what-came-back.md
 [D-DOC-004]: doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
 [D-DOC-006]: doc-006-a-recording-says-what-it-is-of.md
-[D-DOC-007]: doc-007-one-page-per-tool-and-the-answer-whole.md
+[D-DOC-007]: doc-007-one-page-per-tool-and-the-answer-on-it-whole.md
 [D-DOC-008]: doc-008-the-calls-that-reach-outside-stay-in-the-shared-table.md
 [D-DOC-001]: doc-001-a-table-is-written-so-it-reads-unrendered.md
-[D-DOC-002]: doc-002-the-prose-rule-is-measured-and-only-the-lead-fails.md
+[D-DOC-002]: doc-002-the-prose-rule-is-measured-and-only-the-lead-fails-on-it.md
 
 ### Revoked, and kept as the record
 
@@ -101,7 +103,7 @@ earns one.
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 
 [D-DOC-018]: doc-018-the-site-opens-on-the-readme-and-the-map-is-a-page-below-it.md
-[D-DOC-019]: doc-019-the-sites-stylesheet-and-script-are-built-files-and-what-is-solved-is-taken-from-a-package.md
+[D-DOC-019]: doc-019-the-sites-stylesheet-and-script-are-built-files.md
 [D-DOC-020]: doc-020-the-site-is-rendered-by-one-command-that-installs-what-it-needs.md
 [D-DOC-021]: doc-021-the-site-is-searched-in-a-dialog-opened-with-ctrl-k.md
 [D-DOC-023]: doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md

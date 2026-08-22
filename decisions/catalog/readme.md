@@ -14,7 +14,7 @@ one is added.
 - [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · confirmed
 
 [D-CAT-006]: cat-006-a-class-shaped-query-is-answered-by-a-second-range-over-the-class-list.md
-[D-CAT-005]: cat-005-a-reference-entry-names-a-form-to-imitate-and-a-fact-is-answered-by-a-hint.md
+[D-CAT-005]: cat-005-a-reference-entry-names-a-form-to-imitate.md
 [D-CAT-004]: cat-004-what-the-component-index-may-hold-is-what-the-core-files-as-a-component.md
 [D-CAT-003]: cat-003-the-component-index-is-curated-its-contract-comes-from-the-installation.md
 [D-CAT-001]: cat-001-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md

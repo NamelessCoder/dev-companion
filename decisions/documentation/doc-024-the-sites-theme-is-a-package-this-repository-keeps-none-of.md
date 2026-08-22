@@ -110,7 +110,7 @@ caught by once.
 `build/guides/` is gone, manifest and lock with it. The renderer and the theme
 are required into a directory outside the checkout by whoever renders, and what
 a render takes is the theme as it stands —
-[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-and-this-repository-carries-none-of-it.md).
+[`D-DOC-028`](doc-028-the-renderer-is-a-build-tool-this-repository-carries-none-of.md).
 This entry's statement is untouched and is more true than it was: the theme is a
 package, and this repository now keeps none of it at all. Its first **Wrong if**
 became impossible with the lock: nothing here can render an older theme for

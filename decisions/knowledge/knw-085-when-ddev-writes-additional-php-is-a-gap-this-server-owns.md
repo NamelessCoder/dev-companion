@@ -41,7 +41,7 @@ exception naming the trusted hosts pattern rather than the file that carries it.
   `config/system/settings.php` from the environment variables, so only the web
   requests fail — the feedback reports the console succeeding on both rebuilds.
 - The claim contradicts a reading already recorded here.
-  [`D-KNW-049`](knw-049-what-ddev-writes-into-the-settings-is-named-in-full-and-so-is-what-it-cannot-configure.md)'s
+  [`D-KNW-049`](knw-049-what-ddev-writes-into-the-settings-is-named-in-full.md)'s
   **Confirmed on 2026-08-03** read `createTypo3SettingsFile` and
   `writeTypo3SettingsFile` at DDEV v1.25.1 and concluded that the only thing
   stopping the file being written at all is `disable_settings_management`.

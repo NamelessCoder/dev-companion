@@ -374,7 +374,7 @@ Its suggestion has landed. `1b61d5d` put the review row into `routing` —
 `typo3_rule_lookup` per obligation, `typo3_changelog_lookup` for the precedent,
 `typo3_test_run_guide` with the changed paths, then `typo3_commit_message_guide`
 — and published
-[`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md)'s
+[`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-two-task-skills-one-for-reviewing-a-patch-and-one-for-creating-one.md)'s
 `typo3-core-patch-review`, which states this feedback's boundary in the working
 form. The companion note it points at is `feedback/archive/2026-08-01-121847`,
 from the same review and closed on 2026-08-02.
@@ -419,7 +419,7 @@ credits was asked for as a topic or as an artifact: a directory, a two-word
 subject, a commit message. What its last clause reports is the same corpus asked
 in a sentence, and the cost side is from the same session — `115109`, archived,
 whose compound query `D-ANS-029` measured missing. The judgement of that half is
-[`D-ANS-037`](../answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md),
+[`D-ANS-037`](../answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md),
 where the mechanism is measured: two words naming the document drop the section
 that answers below `Documents::MIN_COVERAGE` while its score stays three times
 the winner's. The feedback is trimmed to that clause and stays open behind the
@@ -541,7 +541,7 @@ rather than the session. Beside the ask stands *the audited package happened not
 to ship one, and confirming that took a separate look* — a confirmation the same
 answer had already given in its `Registration files:` line. Both are one wording
 defect, judged onto
-[`D-ANS-009`](../answers/ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-it.md),
+[`D-ANS-009`](../answers/ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-the-file.md),
 whose **Wrong if** is where it lands: the rendered block says *these two entries
 whole* on an answer that rendered one, and names neither file, so what was
 checked and not found is readable in the schema description and nowhere a caller

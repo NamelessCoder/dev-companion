@@ -17,7 +17,7 @@ the sentence rather than the answer of the call that fired.
 ## Evidence
 
 - **The count.** The benchmark of 2026-08-19,
-  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients-and-the-order-after-it-is-what-this-server-holds.md):
+  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients.md):
   seventeen project tasks, eleven `typo3_project_describe` calls and one
   `typo3_task_guide`. Read again in this checkout on 2026-08-21,
   `src/Tool/ProjectDescribe.php` names `typo3_rule_lookup` for the guides it

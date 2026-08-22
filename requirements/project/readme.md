@@ -27,7 +27,7 @@ when it is added.
 [R-PRJ-005]: prj-005-what-an-extension-registers-is-answered-from-the-installation-and-its-files.md
 [R-PRJ-006]: prj-006-what-an-extension-does-not-ship-is-answered-too.md
 [R-PRJ-007]: prj-007-a-declared-command-says-whether-running-it-changes-anything.md
-[R-PRJ-008]: prj-008-the-project-answer-says-what-runs-it.md
+[R-PRJ-008]: prj-008-the-project-answer-says-what-runs-it-not-only-what-it-declares.md
 [R-PRJ-009]: prj-009-the-project-answer-states-the-lifecycle-its-environment-declares.md
 [R-PRJ-010]: prj-010-the-project-answer-relates-its-php-numbers-rather-than-listing-them.md
 [R-PRJ-011]: prj-011-a-project-root-is-a-repository-that-declares-typo3.md

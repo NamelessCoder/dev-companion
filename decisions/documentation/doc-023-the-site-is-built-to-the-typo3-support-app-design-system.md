@@ -172,7 +172,7 @@ explanation as the breach.
 By its own third **Assumed**, and then by the move it made necessary. Nothing
 below `theme/` is left to vendor: the design system publishes itself as a
 renderer theme, and this site installs it —
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md).
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md).
 Neither `theme/assets/tokens/` nor `icons/` nor `site.css` exists, so no part of
 the statement describes this site.
 
@@ -182,7 +182,7 @@ stylesheet here, and an icon cannot be a stale copy because the sprite ships
 with the theme.
 
 Three of its readings outlive it and are what
-[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-and-this-repository-keeps-none-of-it.md)
+[`D-DOC-024`](doc-024-the-sites-theme-is-a-package-this-repository-keeps-none-of.md)
 carries forward as open: a drawing has to be read at the size it was drawn at,
 which is what the lightbox was for; a truncated identifier is not the
 identifier, and the rail truncates one again; and a drawing that cannot be told

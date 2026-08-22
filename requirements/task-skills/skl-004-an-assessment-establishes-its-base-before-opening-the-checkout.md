@@ -69,7 +69,7 @@ title in `htmlspecialchars()` two classes further on. The run opened neither of
 them, and did open the core ViewHelper that confirmed what it already believed.
 Extended a last time by the feedback of 2026-07-31 18:36, which asked for a mode
 that skips the surface list for a focused review — judged in
-[`D-SKL-002`](../../decisions/task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md),
+[`D-SKL-002`](../../decisions/task-skills/skl-002-a-focused-audit-narrows-what-is-assessed-not-the-list-it-closes-on.md),
 where the skipping is what was refused and the reading is what was cut.
 
 ## Held by

@@ -18,10 +18,10 @@ somewhere else.
 - 82 sessions, 5414 tool calls, 718 million cached input tokens read back and
   5.9 million written out. The context a call re-reads was 124k at its peak and
   82k on average, so a call costs about as much as the session so far.
-- Not one of the 5414 was issued beside another: every turn carried exactly one.
-  **This one is wrong**, and the confirmations below say why: the shape it was
-  counted in cannot hold two calls, so it reads as one per turn whatever the
-  sessions did.
+- ~~Not one of the 5414 was issued beside another: every turn carried exactly
+  one.~~ Wrong, and the readings below say why: the shape it was counted in
+  cannot hold two calls, so it reads as one per turn whatever the sessions did.
+  Grouped on the message, 2020 of them were issued beside another.
 - 4046 were `bash`, and 2092 of those were `cat`, `sed`, `grep` and `ls`. The
   file tool was reached for 624 times, the search tool 15 times across all 82
   sessions, and the glob tool never.
@@ -54,9 +54,10 @@ somewhere else.
 
 ## Assumed
 
-- The client is free to batch and did not. A launch that forbids it would make
+- ~~The client is free to batch and did not. A launch that forbids it would make
   the first rule unreachable, and nothing in the transcripts distinguishes the
-  two.
+  two.~~ Settled against itself on 2026-08-02: it was free and it did, on 37% of
+  its calls, before it was told anything.
 - Reading the same in fewer calls does not read it worse. The rule replaces
   three windows into a file with one opening of it, not the file with a memory
   of it.
@@ -266,3 +267,15 @@ against a file somebody can open; a caller's archaeology in somebody else's
 checkout leaves nothing behind unless a debrief counts it. That is what
 `documentation/records/asking-for-a-debrief.rst` asks for, and this is the
 second run it has produced a number from.
+
+## Since then
+
+The four readings above were judged on 2026-08-22 against `D-DOC-041`, and none
+of them is collapsed. Each is a measurement of a different run — the ten
+worktree sessions after the rule, the eight of 2026-08-13, and the two caller
+sessions that counted themselves — and a number belongs to the day and the
+dataset it was taken on. What is not measured per run is nothing.
+
+What the readings overtook is struck above: the evidence bullet counting one
+call per turn, which three sessions have now arrived at independently in the
+same wrong shape, and the assumption that the client was not batching.

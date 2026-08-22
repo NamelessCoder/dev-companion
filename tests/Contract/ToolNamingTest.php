@@ -117,81 +117,37 @@ final class ToolNamingTest extends TestCase
     }
 
     /**
-     * Tool names `decisions/` spells that no tool has, and the entry that says
-     * why. Everything else shaped like a tool name has to be one.
-     *
-     * Two kinds, and both are the subject of the sentence they stand in rather
-     * than something a reader is being sent to call. The first is a name that
-     * was superseded, where the entry is about the supersession. The second is
-     * a shape that was proposed and declined — and the name stays, because a
-     * decision against a tool is a reading of the demand on the day it was
-     * taken, and the demand grows: `typo3_ter_lookup` exists today after
-     * release was turned down twice, and `D-KNW-004` says outright that a
-     * producer appearing reopens its question. What a later session searches
-     * for is the name the shape was proposed under, and prose loses it.
-     *
-     * This list is the record, and it is kept by the test rather than beside
-     * it: declining a tool in an entry fails here until the name is written
-     * down with its reason, and building one takes its line away again.
-     *
-     * @var array<string, string>
-     */
-    private const NOT_A_TOOL = [
-        'typo3_project_scope' => 'D-SCO-011 renamed it typo3_project_describe',
-        'typo3_extension_scope' => 'D-SCO-011 renamed it typo3_extension_describe',
-        'typo3_architecture_lookup' => 'renamed typo3_hint_lookup at 7553cb3',
-        'typo3_document_list' => 'D-AUD-007 left it open; the lever was a contract, not a tool',
-        'typo3_skeleton_lookup' => 'D-KNW-056 drafted and dropped it for the document corpus',
-        'typo3_debrief_guide' => 'D-FBK-048 declined it: a tool in the list contaminates the session under report',
-        'typo3_convention_lookup' => 'D-KNW-035 declined it as a synonym of typo3_rule_lookup',
-        'typo3_migration_availability' => 'D-VER-009 declined it at one round trip, D-FBK-027',
-    ];
-
-    /**
-     * A decision names a tool a reader can call, or one the list above accounts
-     * for.
+     * A decision names a tool in backticks, or is not naming a tool.
      *
      * The corpus went stale unwatched: 157 mentions of three tools renamed
      * weeks earlier, across 56 entries, while this file read the knowledge base
-     * and the skills alone. What is matched is the tool shape — a subject and
-     * one of the verbs above — so the TER's own `typo3_versions` field and a
-     * `typo3_logo.png` in a Fluid example are not tool names and are not read
-     * as any.
+     * and the skills alone. Guarding it took no list of what those names used
+     * to be, only the distinction a reader wants anyway — a name in backticks
+     * is one to call, and a name being talked about is written plainly.
+     * `Rejected: typo3_debrief_guide` keeps the name a later session searches
+     * for when the demand comes back, and offers it to nobody.
+     *
+     * Matched is the whole backticked token in the tool shape, a subject and
+     * one of the verbs above. So the TER's own `typo3_versions` field is not a
+     * tool name, and neither is the `typo3_logo.png` inside a Fluid example.
      */
     #[Test]
-    public function everyToolNameADecisionSpellsIsRegisteredOrAccountedFor(): void
+    public function everyToolADecisionOffersInBackticksIsRegistered(): void
     {
         $known = array_column(Registry::definitions(), 'name');
         $verbs = implode('|', array_keys(self::VERBS));
 
         $stale = [];
         foreach (Finder::create()->files()->in(dirname(__DIR__, 2) . '/decisions')->name('*.md')->sortByName() as $file) {
-            preg_match_all('/typo3_[a-z]+(?:_[a-z]+)*_(?:' . $verbs . ')\b/', (string) file_get_contents($file->getPathname()), $matches);
-            foreach (array_unique($matches[0]) as $name) {
-                if (!in_array($name, $known, true) && !isset(self::NOT_A_TOOL[$name])) {
+            preg_match_all('/`(typo3_[a-z]+(?:_[a-z]+)*_(?:' . $verbs . '))`/', (string) file_get_contents($file->getPathname()), $matches);
+            foreach (array_unique($matches[1]) as $name) {
+                if (!in_array($name, $known, true)) {
                     $stale[] = $file->getBasename() . ': ' . $name;
                 }
             }
         }
 
-        self::assertSame([], $stale, 'spelled like a tool in decisions/, and neither registered nor accounted for');
-    }
-
-    /**
-     * A name the list accounts for is one no tool has. A tool that gets built
-     * under a name written off there would keep the entry that says it was not,
-     * and the list would be a record of a decision that was reversed.
-     */
-    #[Test]
-    public function nothingTheListWritesOffIsARegisteredTool(): void
-    {
-        $known = array_column(Registry::definitions(), 'name');
-
-        self::assertSame(
-            [],
-            array_values(array_intersect(array_keys(self::NOT_A_TOOL), $known)),
-            'accounted for as no tool of this server, and registered as one'
-        );
+        self::assertSame([], $stale, 'offered in backticks by a decision, and no tool has the name');
     }
 
     /** @param array<string, mixed> $arguments */

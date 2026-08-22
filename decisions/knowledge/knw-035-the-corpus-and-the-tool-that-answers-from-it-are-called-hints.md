@@ -22,7 +22,7 @@ place in the repository still using the word for it.
   `hints:probe` and `hints:coverage` subjects use it, `HintsTest` is named for
   it, and `knowledge/test-suite-hints.json` is a second corpus of them.
 - `typo3_rule_lookup` already answers the core contribution rules, so
-  `typo3_convention_lookup` — the alternative the owner was asked about — would
+  typo3_convention_lookup — the alternative the owner was asked about — would
   have put a synonym next to it in the registry.
 
 ## Decided

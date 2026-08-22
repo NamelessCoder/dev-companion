@@ -15,8 +15,8 @@ so nowhere.
 
 ## Evidence
 
-- `a4470ee` renamed `typo3_project_scope` to `typo3_project_describe` and
-  `typo3_extension_scope` to `typo3_extension_describe`. Started on 2026-08-04
+- `a4470ee` renamed typo3_project_scope to `typo3_project_describe` and
+  typo3_extension_scope to `typo3_extension_describe`. Started on 2026-08-04
   with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope`, the server
   offered 25 tools including `typo3_project_describe`, and neither side said the
   exclusion had stopped applying. The same hole swallows every typo in that

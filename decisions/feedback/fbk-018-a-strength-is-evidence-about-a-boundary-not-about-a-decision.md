@@ -456,7 +456,7 @@ against a TYPO3 core checkout; determine the changed paths yourself and pass
 them to typo3_architecture_lookup and typo3_task_guide". The quotation is exact.
 It is the first `doesNotCover` entry of `knowledge/server-scope.json` at
 `18a371a`, which is the version that was in play on 2026-08-01, down to the tool
-name — `typo3_architecture_lookup` was renamed to `typo3_hint_lookup` at
+name — typo3_architecture_lookup was renamed to `typo3_hint_lookup` at
 `7553cb3` afterwards.
 
 That sentence was false when it was praised, and `f8be448` deleted it two days

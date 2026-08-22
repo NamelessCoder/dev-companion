@@ -80,7 +80,7 @@ element and called nothing — no tool, no skill, the work done by reading vendo
 code
 (`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
 It ran on 2026-08-01, a day after `b85036b` put `typo3_project_describe` — then
-spelled `typo3_project_scope` — at the head of the `instructions`, so the entry
+spelled typo3_project_scope — at the head of the `instructions`, so the entry
 point this entry added was in the text and did not fire. That is not the **Wrong
 if**: it was a different client and a much smaller model — `opencode` with
 `deepseek-v4-flash-free` — and neither has been measured here.

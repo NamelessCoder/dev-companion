@@ -6,7 +6,7 @@ status: open
 
 # D-SCO-011 — A tool that describes one thing carries `describe`, and `scope` stays with the sources
 
-**`typo3_project_scope` and `typo3_extension_scope` are renamed
+**typo3_project_scope and typo3_extension_scope are renamed
 `typo3_project_describe` and `typo3_extension_describe`, `describe` joins the
 tool verbs as the sixth, and `Knowledge\Scope` is untouched.**
 
@@ -22,13 +22,13 @@ also the two carrying the verb wrongly, so one rename settles both.
   which depth, what it deliberately does not cover", and `typo3_catalog_scope`
   "Report whether component contracts come from the active installation or the
   bundled fallback … what they cover". Both state the coverage of a source.
-- `typo3_project_scope` opens "Describe the project around the TYPO3
-  installation this server was started in", and `typo3_extension_scope`
+- typo3_project_scope opens "Describe the project around the TYPO3
+  installation this server was started in", and typo3_extension_scope
   "Describe what one installed extension registers". Both describe one thing the
   caller named, and neither states a boundary.
 - The two tools whose verb was wrong are exactly the two whose subject is a case
   of `Knowledge\Scope`: `project` and `extension`. A client is handed
-  `typo3_project_scope` and, inside the answers, a `scope` field that can read
+  typo3_project_scope and, inside the answers, a `scope` field that can read
   `project` — and nothing said the two were unrelated.
 - `Knowledge\Scope` is the one vocabulary `D-KNW-005` collapsed four spellings
   into: `binding`, `provenance`, `audience` and an `outsideCore` boolean. It is
@@ -81,7 +81,7 @@ also the two carrying the verb wrongly, so one rename settles both.
   `describe` whose subject is not named by the caller, or one where finding
   nothing is a legitimate answer: both of those are the `lookup` shape, and a
   `describe` that can miss is a `lookup` wearing the wrong verb.
-- A session calls `typo3_project_scope` and gets `Unknown tool`, from a skill
+- A session calls typo3_project_scope and gets `Unknown tool`, from a skill
   copied by hand or a client that cached the list. Two of the nine skills open
   on this call, so the failure lands in the first step of the order rather than
   somewhere a session can work around.

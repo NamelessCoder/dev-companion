@@ -15,24 +15,23 @@ nothing else, so every other corpus went stale unwatched.
 ## Evidence
 
 - Measured on 2026-08-22 against the 28 registered tools. `decisions/` named
-  `typo3_project_scope` 70 times, `typo3_extension_scope` 47 and
-  `typo3_architecture_lookup` 40, across 56 files. `knowledge/`, `skills/`,
+  typo3_project_scope 70 times, typo3_extension_scope 47 and
+  typo3_architecture_lookup 40, across 56 files. `knowledge/`, `skills/`,
   `requirements/` and `todo/` were clean, and `documentation/` named one
   hypothetical tool in an illustration.
-- The three are renames on record: `typo3_project_scope` and
-  `typo3_extension_scope` became `typo3_project_describe` and
-  `typo3_extension_describe` at `a4470ee` (`D-SCO-011`), and
-  `typo3_architecture_lookup` became `typo3_hint_lookup` at `7553cb3`.
+- The three are renames on record: typo3_project_scope and typo3_extension_scope
+  became `typo3_project_describe` and `typo3_extension_describe` at `a4470ee`
+  (`D-SCO-011`), and typo3_architecture_lookup became `typo3_hint_lookup` at
+  `7553cb3`.
 - Seven further names in `decisions/` belong to no tool and never did:
-  `typo3_document_list`, `typo3_skeleton_lookup`,
-  `typo3_migration_availability`, `typo3_debrief_guide` and
-  `typo3_convention_lookup` are proposals that were declined, and
-  `typo3_versions` and `typo3_logo` are a TER field and a file name. A decision
-  that records a rejection names the thing it rejected.
+  typo3_document_list, typo3_skeleton_lookup, typo3_migration_availability,
+  typo3_debrief_guide and typo3_convention_lookup are proposals that were
+  declined, and `typo3_versions` and `typo3_logo` are a TER field and a file
+  name. A decision that records a rejection names the thing it rejected.
 - `scenarios/runs/` had already solved it the other way. Each of the three
   recorded runs keeps the spelling its session used and closes with a line
   naming the current one — "`typo3_hint_lookup` was called
-  `typo3_architecture_lookup` when this run was recorded".
+  typo3_architecture_lookup when this run was recorded".
 
 ## Decided
 
@@ -85,34 +84,36 @@ nothing else, so every other corpus went stale unwatched.
 
 ## Since then
 
-The maintainer put two things the same day, and the second corrected the answer
-to the first.
+The maintainer put three things the same day, and each one took something away.
 
 Whether a tool that does not exist can be legitimate: it cannot, and that was
-the word this entry got wrong. What `decisions/` holds is not a tool but a
-**proposal** that was declined, and a proposal is not a tool. So the reason
-given above for leaving the corpus unguarded — that it legitimately names tools
-which never existed — was never true of anything in it.
+the word this entry got wrong. What decisions/ holds is not a tool but a
+**proposal** that was declined, so the reason given above for leaving the corpus
+unguarded — that it legitimately names tools which never existed — was never
+true of anything in it.
 
 Whether a declined proposal stays declined: it does not. `typo3_ter_lookup`
 exists after release was turned down twice, and `D-KNW-004` says in as many
 words that a producer appearing reopens its question. The name is what a later
 session searches for when the demand comes back, so the first fix tried here —
 writing the five as prose, "a debrief guide tool" — threw away the handle and
-was reverted. What never deceived a reader is the sentence: `Rejected:` stands
-in front of the name. Only a search could not tell.
+was reverted.
 
-So the record is the list rather than the prose. The `NOT_A_TOOL` list in
-`ToolNamingTest` names every tool-shaped string in `decisions/` that no tool
-has, each with the entry that decided it, and
-`everyToolNameADecisionSpellsIsRegisteredOrAccountedFor` holds the corpus to it.
-Declining a tool fails the suite until the name is written down with its reason,
-and building one takes its line away —
-`nothingTheListWritesOffIsARegisteredTool` is what makes the second half true.
+Whether the guard may hold a list of what the names used to be: it may not, and
+that is the one that settled the shape. A list of superseded and declined names
+duplicates what the entries already say and carries the corpus's history in the
+code, which is the thing that goes stale.
+
+What replaces it is the distinction a reader wants anyway. **A tool name in
+backticks is one to call; a name being talked about is written plainly.** The
+eight are plain now, every one of them still searchable, and
+`ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered` holds the
+whole corpus with no exceptions at all. `D-SCO-011`'s statement is what the rule
+looks like when it works: typo3_project_scope and typo3_extension_scope are
+renamed `typo3_project_describe` and `typo3_extension_describe`, and the
+backticks say which two answer.
+
 The match is the tool shape, a subject and one of the six verbs, so the TER's
 own `typo3_versions` field and a `typo3_logo.png` in a Fluid example are not
-read as names at all.
-
-Both **Wrong if** struck above are closed by that, and the list of every rename
-ever made is not needed: eight lines carry three renames and five declined
-shapes, and each one leaves when the thing it stands for stops being true.
+read as names. Both **Wrong if** struck above are closed by this, and the list
+of every rename ever made was never needed.

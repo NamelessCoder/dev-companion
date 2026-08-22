@@ -727,7 +727,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-040`][D-FBK-040] — The card a judgement folds into another is deleted by the same commit · 2026-08-03
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
-- [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
+- [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02 · confirmed
 - [`D-FBK-014`][D-FBK-014] — Every stage is a directory, and closing is none · 2026-08-02
 - [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02

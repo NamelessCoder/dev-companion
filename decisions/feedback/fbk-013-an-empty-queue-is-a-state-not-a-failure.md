@@ -1,7 +1,7 @@
 ---
 id: D-FBK-013
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-013 — An empty queue is a state, not a failure
@@ -85,3 +85,23 @@ finished the last todo, which is the one session that had done nothing wrong.
 - `CliTest::whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue`
 - `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
 - `StructureTest::noTestSkipsItselfInsteadOfHolding`
+
+## Confirmed on 2026-08-22
+
+The state the entry is about happened again, in the session that read this. The
+queue emptied when the last of three todos was worked off, `composer test`
+stayed green, and what said so were the three commands the entry names:
+`todo:list` printed "The queue is empty.", `todo:next` handed over the recurring
+sighting, and `repository:check` counted `0 queued, 0 problems`.
+
+So the second **Wrong if** did not fire, and the reason is the order rather than
+the alarm. A session that empties the queue is handed the sighting by the same
+command it was working from, which is what makes the emptiness the next piece of
+work instead of a state nobody opens a directory to find.
+
+The fixture holds where it was put. `tests/Support/QueuedTodo` is used by
+`CliTest` and `TodoTest`, it writes `phpunit-todo-fixture` into the name so a
+leftover is recognisable, and `todo/open/` carried exactly one real todo after
+the run. Nothing has needed the queue to be empty as a precondition, which is
+the third **Wrong if** and the one that would ask the fixture to work in both
+directions.

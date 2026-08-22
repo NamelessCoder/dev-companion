@@ -108,31 +108,6 @@ the ladder, on a hint that already exists, and it is queued as
 
 - `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`
 
-## Since then
-
-On 2026-08-04, the generated file was read in a repository of the other shape.
-`/home/benji/projects/syntax` is an extension whose own `composer.json` is the
-Composer root, with TYPO3 14.3 below `.build/vendor` and the docroot at
-`.build/public`, and DDEV writes the same `#ddev-generated`
-`config/system/additional.php` there — the file sits at the repository root,
-because `typo3/cms-composer-installers` keeps the application directory at the
-Composer root whatever the web directory is (`Plugin/Config.php:37`, and the
-warning at 222 that no other value is supported).
-
-## Since then
-
-On 2026-08-18, a session disputed one sentence of the reading above.
-`feedback/2026-08-17-205850` reports that DDEV writes the file only once it
-recognises an installation, so the first start of a clone with no `vendor/`
-writes nothing and the site answers 1396795884 until the project is started
-again after the dependencies are installed. That is a second thing stopping the
-file being written, where this entry's confirmation found only
-`disable_settings_management`. The reading was of the writer rather than of what
-calls it, and nothing here settles which of the two is right, so the statement
-of this entry stands and
-[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
-carries the question.
-
 ## Confirmed on 2026-08-03
 
 Read in DDEV v1.25.1 itself, which is what the first and third **Wrong if**
@@ -157,46 +132,17 @@ to that in the same commit.
 
 ## Since then
 
-Both lifecycle findings have landed, and neither of them in `knowledge/hints/`.
-`D-GUI-008` gave work that operates an installation a change type of its own,
-and the `installation-operations` checklist it wrote states the first one whole:
-`fail_on_hook_fail` defaults to false, so a post-start hook that installs the
-instance can fail while `ddev start` reports success, and an install hook
-belongs behind `fail_on_hook_fail: true`. `D-ANS-044` is not where it went. That
-entry counted this feedback as evidence that the subject recurs, and the field
-it built reports the hooks an environment declares, which says nothing about one
-that fails. The default was re-read at DDEV v1.25.1: its documentation states it
-on the configuration page, and the commented block DDEV writes into a generated
-`config.yaml` carries `# fail_on_hook_fail: False`.
-
-The second one is in `skills/typo3-development-installation/SKILL.md`, as an
-observable rather than as DDEV's behaviour: step 2 has the environment
-configuration read back after a command that rewrites it, to see what was set by
-hand and is gone. That is all it can be, because the finding is not confirmed.
-DDEV's own command documentation says the opposite of the report —
-"`ddev config` will not change configuration that already exists in your
-`.ddev/config.yaml`" — and what the reporting session saw is more likely the
-file being written back out of DDEV's own structure, comments and defaults
-included. Nothing in `knowledge/` asserts it either way, so nothing here rests
-on which of the two it is.
-
-No test names that checklist item.
-`HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief` holds the
-fork and two of the six items rather than the statement, and coverage for one
-more of them is `D-GUI-008`'s to add.
-
-So nothing is owed beyond what those two carry, and `feedback/2026-08-03-162858`
-is archived by this commit. The reporting session's own task, re-run through
-`bin/typo3-dev-companion` on 2026-08-03 — "run a local TYPO3 14.3.5 development
-instance under DDEV for an extension, on SQLite with no database container" —
-reaches `installation-operations` weakly, so the brief keeps the patch skeleton
-and prints that intent's six items under their condition, the
-`fail_on_hook_fail` one included. `bin/cli hints:probe` on the feedback's query
-now reaches `project-configuration-files` at `appliesTo(47) + text(808)`,
-against the `appliesTo(32) + text(467)` this entry recorded before the rewrite.
-
-So the layout does not decide whether the file appears, and a card that claimed
-it did was wrong when it was worked off.
+On 2026-08-18 a session disputed one sentence of the reading above.
+`feedback/2026-08-17-205850` reports that DDEV writes the file only once it
+recognises an installation, so the first start of a clone with no `vendor/`
+writes nothing and the site answers 1396795884 until the project is started
+again after the dependencies are installed. That is a second thing stopping the
+file being written, where this entry's confirmation found only
+`disable_settings_management`. The reading was of the writer rather than of what
+calls it, and nothing here settles which of the two is right, so the statement
+of this entry stands and
+[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
+carries the question.
 
 That entry has since been read against DDEV v1.25.1's own source and the
 reporting session was right. `disable_settings_management` is what stops the
@@ -207,3 +153,27 @@ above is the one that was too narrow, and the reading it came out of stopped one
 call short of the caller. The statement of this entry is untouched by that: what
 DDEV generates and what its generator cannot configure is what it settles, and
 when it generates it is `D-KNW-085`'s.
+
+## Since then
+
+Two readings held this entry and changed nothing in it, so each is a line here
+rather than a section of its own. Judged on 2026-08-22.
+
+- The two lifecycle findings the fifth **Decided** bullet left out landed, and
+  neither in `knowledge/hints/`. `fail_on_hook_fail` defaulting to false is an
+  item of the `installation-operations` checklist `D-GUI-008` wrote, re-read at
+  DDEV v1.25.1 in its documentation and in the commented block DDEV generates.
+  The `ddev config` one is in `skills/typo3-development-installation/SKILL.md`
+  as an observable rather than as DDEV's behaviour, because DDEV's own
+  documentation says the opposite of the report and nothing here settles it. No
+  test names that checklist item, which is `D-GUI-008`'s to add, and
+  `feedback/2026-08-03-162858` is archived.
+- On 2026-08-04 the generated file was read in a repository of the other shape.
+  `/home/benji/projects/syntax` is an extension whose own `composer.json` is the
+  Composer root, with TYPO3 below `.build/vendor` and the docroot at
+  `.build/public`, and DDEV writes the same `#ddev-generated`
+  `config/system/additional.php` at the repository root, because
+  `typo3/cms-composer-installers` keeps the application directory at the
+  Composer root whatever the web directory is (`Plugin/Config.php:37`). So the
+  layout does not decide whether the file appears, and a card that claimed it
+  did was wrong when it was worked off.

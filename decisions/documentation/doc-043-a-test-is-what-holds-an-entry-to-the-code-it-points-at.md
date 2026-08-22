@@ -76,7 +76,7 @@ Nothing else couples the two.
 ## Covered by
 
 - `DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn`
-- `DecisionsTest::anEntryItsOwnTestsSayNothingAboutIsReadOutRatherThanFailedOn`
+- `DecisionsTest::everyTestADecisionNamesNamesTheEntryBack`
 
 ## Since then
 
@@ -112,3 +112,18 @@ names to 313.
 
 What none of that licenses is reading the count down. Each correction was made
 to what the naming is for, and the names left are the work the todo carries.
+
+## Since then
+
+The naming reached zero on 2026-08-22 and is a problem from that day rather than
+a report. What kept it out of the checks was that the corpus had been written
+under the older rule, and 405 names were: 313 of them are a clause on the
+comment each method already carried, and 40 are a sentence written where there
+was none. `decisions:check` fails on a new one now, and
+`DecisionsTest::everyTestADecisionNamesNamesTheEntryBack` is the guard.
+
+What that costs is a name per entry in a comment somebody has to keep true, and
+it is the cheapest half of the coupling: the id says which entry to open, and
+the entry says what would falsify it. What it does not do is make the naming
+correct — an entry may still name a test holding a different claim, which is the
+first **Assumed** above and is not measurable.

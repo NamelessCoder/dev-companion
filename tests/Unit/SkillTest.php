@@ -2413,6 +2413,11 @@ final class SkillTest extends TestCase
         );
     }
 
+    /**
+     * And it says what it owns, which is what ends a workflow at the outcome it
+     * is responsible for instead of in the middle of somebody else's —
+     * `D-SKL-021`.
+     */
     #[Test]
     public function everySkillStatesWhatItOwns(): void
     {
@@ -2530,6 +2535,11 @@ final class SkillTest extends TestCase
         }
     }
 
+    /**
+     * A skill names the tool that owns each fact, in the order the work needs
+     * them, rather than restating what the tool answers — `D-SKL-046`,
+     * `D-SKL-055`, `D-SKL-021`.
+     */
     #[Test]
     public function everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder(): void
     {

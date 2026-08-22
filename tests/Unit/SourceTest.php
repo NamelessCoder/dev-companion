@@ -27,6 +27,11 @@ final class SourceTest extends TestCase
         }
     }
 
+    /**
+     * The declaration is one place and the description a client reads is
+     * generated from it, so a tool cannot claim a source it does not read —
+     * `D-ANS-048`.
+     */
     #[Test]
     public function theDescriptionACallerReadsCarriesThem(): void
     {
@@ -65,6 +70,11 @@ final class SourceTest extends TestCase
         }
     }
 
+    /**
+     * And the orientation answer groups the offered tools by the same
+     * declaration, with each source's meaning read off the enum rather than
+     * written twice — `D-ANS-048`.
+     */
     #[Test]
     public function theOrientationAnswerGroupsEveryOfferedTool(): void
     {

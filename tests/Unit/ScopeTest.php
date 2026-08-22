@@ -48,6 +48,10 @@ final class ScopeTest extends TestCase
         self::assertFalse(Scope::from($systemExtension->data['scope'])->isOutsideTheCore());
     }
 
+    /**
+     * The installation the session sits in is the weakest of the signals, so a
+     * path into the core still overrules it — `D-SCO-005`.
+     */
     #[Test]
     public function inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise(): void
     {
@@ -347,6 +351,11 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('in English', Registry::call('typo3_server_scope', [])->text);
     }
 
+    /**
+     * The instructions name the tool per question rather than the tools, which
+     * is what a client that shows a name and no schema can act on —
+     * `D-AUD-011`.
+     */
     #[Test]
     public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
     {
@@ -817,6 +826,11 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('Possibly also: Patch submission', $result->text);
     }
 
+    /**
+     * A path into the core is the positive evidence a core-only intent needs,
+     * so the same words that were demoted without one match strongly with it —
+     * `D-SCO-002`.
+     */
     #[Test]
     public function aCorePathStillMakesTheSameWordAPatchSubmission(): void
     {
@@ -1562,6 +1576,11 @@ final class ScopeTest extends TestCase
         );
     }
 
+    /**
+     * The scripts stay stored as the core's own and the crossing happens where
+     * the answer is composed, so a project asking for them is answered with
+     * none — `D-KNW-008`.
+     */
     #[Test]
     public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
     {
@@ -1742,6 +1761,11 @@ final class ScopeTest extends TestCase
         }
     }
 
+    /**
+     * Routing a question shape at the tool that answers it is worth nothing if
+     * the name has moved, and the scope is where a caller reads the name —
+     * `D-ANS-010`.
+     */
     #[Test]
     public function everyToolNamedInTheScopeExists(): void
     {

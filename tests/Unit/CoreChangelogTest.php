@@ -36,6 +36,11 @@ final class CoreChangelogTest extends TestCase
         Instance::discoverFrom(null);
     }
 
+    /**
+     * What the installation ships stops at its own major, so a version above it
+     * is answered from docs.typo3.org and the entry says where it came from —
+     * `D-ANS-067`.
+     */
     #[Test]
     public function anEntryAboveTheInstalledMajorComesFromTheManual(): void
     {

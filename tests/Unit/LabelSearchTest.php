@@ -122,6 +122,11 @@ final class LabelSearchTest extends TestCase
         );
     }
 
+    /**
+     * Every largest reaching subset is offered and the narrower one is first,
+     * because the caller reads the list from the top and the widest of them is
+     * the one that answers least — `D-ANS-016`.
+     */
     #[Test]
     public function theSubsetThatNarrowsBestComesFirst(): void
     {

@@ -214,7 +214,10 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString(Card::STEP, $contents);
     }
 
-    /** The caller is told where its report is waiting, not only where it was written. */
+    /**
+ * The caller is told where its report is waiting, not only where it was written
+ * — `D-FBK-045`.
+ */
     #[Test]
     public function theToolReportsTheCardTheFeedbackWasQueuedAs(): void
     {

@@ -147,6 +147,18 @@ final class DecisionCheck
             }
         }
 
+        // A problem since 2026-08-22, when the last of the 405 names written
+        // under the older rule was named back. A test that says nothing about
+        // the entry resting on it leaves the session that fixes it no way to
+        // learn the entry is now wrong — `D-DOC-043`.
+        foreach (Decisions::unnamedByItsTests() as $entry) {
+            $problems[] = sprintf(
+                '%s is named by %d tests that say nothing about it',
+                $entry['id'],
+                $entry['silent'],
+            );
+        }
+
         // A report rather than a problem: a rule the repository applies often
         // collects a `Confirmed on` per application, and nothing about that is
         // wrong. What it costs is a reader who pays more for the history than
@@ -189,17 +201,6 @@ final class DecisionCheck
             $output->writeln('');
         }
 
-        // The second degree of the same coupling. A test that says nothing about
-        // the entry resting on it leaves the session that fixes it no way to
-        // learn the entry is now wrong.
-        $loose = Decisions::unnamedByItsTests();
-        if ($loose !== []) {
-            $output->writeln(sprintf(
-                "%d more name a test that says nothing about them, %d test names in all.\n",
-                count($loose),
-                array_sum(array_column($loose, 'silent')),
-            ));
-        }
 
         $errors = Cli::errors($output);
         foreach ($problems as $problem) {

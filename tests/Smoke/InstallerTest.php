@@ -702,6 +702,11 @@ final class InstallerTest extends TestCase
         }
     }
 
+    /**
+     * The published copy is kept current from the state the last install wrote,
+     * so a skill this package has dropped goes with the update rather than
+     * staying behind in somebody's project — `D-DIS-014`.
+     */
     #[Test]
     public function codexUpdateRemovesSkillsTrackedByThePreviousCentralState(): void
     {

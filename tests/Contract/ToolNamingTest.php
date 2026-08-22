@@ -41,6 +41,11 @@ final class ToolNamingTest extends TestCase
     /** Segments that separate nothing, because they hold for every tool here. */
     private const EMPTY_SEGMENTS = ['core', 'typo3'];
 
+    /**
+     * The prefix and the shape are what clients installed months ago call this
+     * server by, so the vocabulary is defined here and nowhere else —
+     * `D-SCO-010`, `D-SCO-011`.
+     */
     #[Test]
     public function everyToolIsNamedSubjectThenVerb(): void
     {
@@ -151,6 +156,10 @@ final class ToolNamingTest extends TestCase
         self::assertSame([], $stale, 'offered in backticks by a decision, and no tool has the name');
     }
 
+    /**
+     * A rename reaches the answers as well as the registry, which is what a
+     * caller reading a tool name out of an answer depends on — `D-SCO-011`.
+     */
     /** @param array<string, mixed> $arguments */
     #[DataProvider('toolCalls')]
     #[Test]

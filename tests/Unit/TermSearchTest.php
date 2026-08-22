@@ -21,6 +21,11 @@ use TYPO3\DevCompanion\Search\Text;
  */
 final class TermSearchTest extends TestCase
 {
+    /**
+     * The floor is two characters, so `f:if` leaves something to search for;
+     * what a two-letter word costs is answered by the stop list rather than by
+     * the length — `D-ANS-028`.
+     */
     #[Test]
     public function aTwoLetterWordIsATerm(): void
     {

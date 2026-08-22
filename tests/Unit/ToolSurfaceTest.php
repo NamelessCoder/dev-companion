@@ -23,6 +23,11 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  */
 final class ToolSurfaceTest extends TestCase
 {
+    /**
+     * The page is generated from the declarations rather than written beside
+     * them, schemas included, so neither half can go stale against the other —
+     * `D-DOC-016`, `D-DOC-011`.
+     */
     #[Test]
     public function everyPageIsWhatTheRegistryDeclares(): void
     {

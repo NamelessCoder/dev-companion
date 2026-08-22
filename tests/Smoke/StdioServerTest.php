@@ -270,6 +270,11 @@ final class StdioServerTest extends TestCase
         return $keys;
     }
 
+    /**
+     * The `typo3://` scheme is what a client addresses this corpus by, and the
+     * index is served under it over the wire rather than only in a unit —
+     * `D-SCO-010`.
+     */
     #[Test]
     public function theKnowledgeIndexIsServedWithTheScope(): void
     {

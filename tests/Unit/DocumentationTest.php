@@ -281,7 +281,10 @@ final class DocumentationTest extends TestCase
         self::assertSame('typo3/reference-typoscript', $answer['results'][0]['document']);
     }
 
-    /** And the URL it hands back is one it takes back, on the same version. */
+    /**
+ * And the URL it hands back is one it takes back, on the same version —
+ * `D-ANS-023`, `D-ANS-026`.
+ */
     #[Test]
     public function aPageOfThatManualIsReadBackAtItsOwnBase(): void
     {
@@ -450,7 +453,10 @@ final class DocumentationTest extends TestCase
         self::assertMatchesRegularExpression('/Matched on: .+ — covers \d+% of the query\./', $text);
     }
 
-    /** And says nothing of the kind where a page does cover the question. */
+    /**
+ * And says nothing of the kind where a page does cover the question —
+ * `D-ANS-051`.
+ */
     #[Test]
     public function anAnswerThatCoversTheQuestionCarriesNoSuchSentence(): void
     {

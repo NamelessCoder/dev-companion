@@ -34,6 +34,10 @@ final class DocumentationPrepareTest extends TestCase
         Directory::remove($this->into);
     }
 
+    /**
+     * One call writes the whole copy a renderer is pointed at, and says where
+     * it went, so nothing else here touches a render — `D-DOC-028`.
+     */
     #[Test]
     public function oneCallWritesTheCopyAndSaysWhereItWent(): void
     {
@@ -50,7 +54,9 @@ final class DocumentationPrepareTest extends TestCase
         self::assertStringContainsString($this->into . '/source — ', $output->fetch());
     }
 
-    /** A page the documentation no longer has stops being in the copy. */
+    /**
+ * A page the documentation no longer has stops being in the copy — `D-DOC-028`.
+ */
     #[Test]
     public function whatTheDocumentationNoLongerHasIsReported(): void
     {

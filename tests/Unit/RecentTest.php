@@ -32,6 +32,10 @@ final class RecentTest extends TestCase
         Recent::useClock(null);
     }
 
+    /**
+     * The tracker is held the same way and by the same rule, because what is
+     * being spared is the round trip rather than the parsing — `D-ANS-049`.
+     */
     #[Test]
     public function anAnsweredIssueIsReadFromTheTrackerOnce(): void
     {
@@ -45,6 +49,10 @@ final class RecentTest extends TestCase
         self::assertSame(1, $this->reads, 'the second answer came from what was held');
     }
 
+    /**
+     * And what is held is read again once it is old, which is what keeps a
+     * triage from acting on a state that has moved — `D-ANS-049`.
+     */
     #[Test]
     public function anIssueIsReadAgainOnceWhatWasHeldIsOld(): void
     {
@@ -71,6 +79,10 @@ final class RecentTest extends TestCase
         self::assertSame(4, $this->reads, 'both calls read, and each retried with the plain agent');
     }
 
+    /**
+     * A change the review server answered for is held, so a second call inside
+     * the window costs nothing over the wire — `D-ANS-049`.
+     */
     #[Test]
     public function aChangeThatExistsIsReadFromTheReviewServerOnce(): void
     {

@@ -36,6 +36,11 @@ final class FixtureTest extends TestCase
         Icons::forget();
     }
 
+    /**
+     * The fixture is an installation the recording is taken from, so it has to
+     * boot and answer through its own console rather than only look like one —
+     * `D-DOC-012`.
+     */
     #[Test]
     public function theWrittenInstallationBootsAndItsConsoleAnswers(): void
     {

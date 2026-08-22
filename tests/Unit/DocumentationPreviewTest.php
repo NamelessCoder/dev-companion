@@ -87,7 +87,10 @@ final class DocumentationPreviewTest extends TestCase
         self::assertStringContainsString('read it: php -S', $output->fetch());
     }
 
-    /** A preview is run again after every paragraph, so the fetch happens once. */
+    /**
+ * A preview is run again after every paragraph, so the fetch happens once —
+ * `D-DOC-028`.
+ */
     #[Test]
     public function aRendererThatIsAlreadyThereIsNotFetchedAgain(): void
     {
@@ -100,7 +103,10 @@ final class DocumentationPreviewTest extends TestCase
         self::assertStringNotContainsString('composer', implode("\n", $this->ran));
     }
 
-    /** A step that failed stops the rest and is quoted with what it said. */
+    /**
+ * A step that failed stops the rest and is quoted with what it said —
+ * `D-DOC-028`.
+ */
     #[Test]
     public function aFailedStepStopsThePreviewAndQuotesTheCommand(): void
     {

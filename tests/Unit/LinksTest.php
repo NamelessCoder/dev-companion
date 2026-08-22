@@ -16,6 +16,12 @@ use TYPO3\DevCompanion\Upkeep\Links;
  */
 final class LinksTest extends TestCase
 {
+    /**
+     * One reading over every corpus, because a path is a path whichever markup
+     * wrote it: the four sections of `documentation/` link to each other in
+     * reStructuredText and everything around them in markdown — `D-DOC-025`,
+     * `D-DOC-029`.
+     */
     #[Test]
     public function everyPathThisRepositoryWritesToItselfResolves(): void
     {

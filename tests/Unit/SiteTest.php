@@ -86,7 +86,9 @@ final class SiteTest extends TestCase
         return false;
     }
 
-    /** And every relative link that stayed is a file the copy has. */
+    /**
+ * And every relative link that stayed is a file the copy has — `D-DOC-017`.
+ */
     #[Test]
     public function everyLinkThePublishedCopyKeepsResolvesInsideIt(): void
     {

@@ -360,6 +360,10 @@ final class CommitMessageTest extends TestCase
         }
     }
 
+    /**
+     * And nothing is invented for a project that named none: no trailer, and no
+     * check asking for one — `D-GUI-017`.
+     */
     #[Test]
     public function outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded(): void
     {
@@ -391,6 +395,11 @@ final class CommitMessageTest extends TestCase
         }
     }
 
+    /**
+     * An issue a project caller passed is carried as `Resolves:` the way the
+     * core's own is, because the trailer belongs to the issue rather than to
+     * the workflow — `D-GUI-017`.
+     */
     #[Test]
     public function outsideTheCoreATrailerTheCallerWroteIsStillKept(): void
     {

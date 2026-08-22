@@ -238,35 +238,26 @@ final class DecisionsTest extends TestCase
     }
 
     /**
-     * The other degree of the coupling, read out and never failed on.
+     * The other degree of the coupling, and the one that runs the other way.
      *
      * An entry names the test that would catch its **Wrong if**, and the test
      * is where somebody stands when the code moves — so a session that changes
      * the behaviour, fixes the test and never learns which entry rested on it
      * is how `D-ANS-045` came to describe the opposite of what its method does.
-     * `Covered by` has never asked for the return naming, so what this reports
-     * is a corpus written under the older rule — `D-DOC-043`.
+     * `Covered by` never asked for the return naming, so this was read out
+     * while 405 names were written under the older rule; it fails from the day
+     * the last of them was named — `D-DOC-043`.
      */
     #[Test]
-    public function anEntryItsOwnTestsSayNothingAboutIsReadOutRatherThanFailedOn(): void
+    public function everyTestADecisionNamesNamesTheEntryBack(): void
     {
-        $loose = Decisions::unnamedByItsTests();
-
-        self::assertNotSame([], $loose, 'every test names the entry resting on it, which the report would have to say instead');
-
-        $silent = array_column($loose, 'silent');
-        $sorted = $silent;
-        rsort($sorted);
-        self::assertSame($sorted, $silent, 'the entry with the most silent tests is not first');
-
-        foreach ($loose as $entry) {
-            self::assertGreaterThan(0, $entry['silent'], $entry['id'] . ' is reported with no silent test');
-            self::assertLessThanOrEqual(
-                $entry['tests'],
-                $entry['silent'],
-                $entry['id'] . ' has more silent tests than tests',
-            );
+        $loose = [];
+        foreach (Decisions::unnamedByItsTests() as $entry) {
+            $loose[] = $entry['id'] . ' is named by ' . $entry['silent'] . ' of its ' . $entry['tests']
+                . ' tests that say nothing about it';
         }
+
+        self::assertSame([], $loose, 'a test named under Covered by says which entry rests on it');
     }
 
     /**

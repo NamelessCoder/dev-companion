@@ -382,10 +382,10 @@ final class EnvironmentsTest extends TestCase
     }
 
     /**
-     * A build is minutes and a hundred packages and the containers are
-     * seconds. An environment that is kept between runs is only kept if asking
-     * for it again starts what is there — including out of the pause DDEV puts
-     * an idle project into by itself.
+     * A build is minutes and a hundred packages and the containers are seconds.
+     * An environment that is kept between runs is only kept if asking for it
+     * again starts what is there — including out of the pause DDEV puts an idle
+     * project into by itself — `D-EVI-006`.
      */
     /** @param array<int, string>|null $expected */
     #[Test]

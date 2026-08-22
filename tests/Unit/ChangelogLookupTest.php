@@ -93,6 +93,11 @@ final class ChangelogLookupTest extends TestCase
         self::assertSame(0, $result->data['matchCount']);
     }
 
+    /**
+     * A reviewer holds the identifier the diff removes, in whichever form the
+     * code spelled it, and the entry's own body is where it is written —
+     * `D-ANS-042`.
+     */
     #[Test]
     public function anIdentifierIsReachedInEverySpellingACallerHasIt(): void
     {

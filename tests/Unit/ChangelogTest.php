@@ -54,6 +54,11 @@ final class ChangelogTest extends TestCase
         Instance::discoverFrom(null);
     }
 
+    /**
+     * The file name carries the class and the title stated inside the file
+     * carries the method, so a scan over file names alone reaches neither —
+     * `D-ANS-041`.
+     */
     #[Test]
     public function aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry(): void
     {
@@ -88,6 +93,11 @@ final class ChangelogTest extends TestCase
         self::assertSame('46770', $result->data['entries'][0]['issue']);
     }
 
+    /**
+     * The per-word counts a miss offers are taken over the titles the search
+     * read, so the word that reaches nothing is the one the caller drops —
+     * `D-ANS-041`.
+     */
     #[Test]
     public function aMissCountsEachWordOverTheTitlesItSearched(): void
     {

@@ -24,6 +24,11 @@ use TYPO3\DevCompanion\Upkeep\ToolSurface;
  */
 final class ToolAnswersTest extends TestCase
 {
+    /**
+     * The recording is evidence a reader can paste anywhere rather than a
+     * derivation, which is what the shape holds and all it can — `D-DOC-006`,
+     * `D-DOC-007`.
+     */
     #[Test]
     public function everyRecordedAnswerIsJson(): void
     {

@@ -177,6 +177,11 @@ final class RequirementsTest extends TestCase
         }
     }
 
+    /**
+     * A requirement that is not open says what holds it, and every test it
+     * names exists, which is the whole of what `## Held by` promises —
+     * `D-DOC-004`.
+     */
     #[Test]
     public function everyRequirementNamesWhatHoldsIt(): void
     {

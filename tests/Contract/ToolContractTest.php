@@ -19,6 +19,10 @@ use TYPO3\DevCompanion\Upkeep\ToolCalls;
  * What every tool promises its callers: a declared input and output schema,
  * annotations, a text answer, and structured data that validates against the
  * schema — on every path, a miss included.
+ *
+ * That is where the unanswerable paths are held, and it is all `D-DIS-012` has:
+ * which driver left a schema question unanswerable needs a MySQL installation
+ * with its server stopped, which no environment here holds.
  */
 final class ToolContractTest extends TestCase
 {
@@ -150,6 +154,11 @@ final class ToolContractTest extends TestCase
         }
     }
 
+    /**
+     * The live documentation calls are driven here like every other tool, so a
+     * manual that moved fails the contract rather than a page nobody reads —
+     * `D-DOC-008`.
+     */
     /** @param array<string, mixed> $arguments */
     #[DataProvider('toolCalls')]
     #[Test]

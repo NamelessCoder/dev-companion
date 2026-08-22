@@ -150,6 +150,11 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    /**
+     * The Since and Until lines are what filters a section and never part of
+     * what is handed back, so a caller reads the rule and not its bookkeeping —
+     * `D-VER-005`.
+     */
     #[Test]
     public function theBindingDoesNotReachTheCallerAsPartOfWhatItBinds(): void
     {
@@ -239,6 +244,11 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    /**
+     * The card a client lists is the front matter plus who the document is for,
+     * so a document declares itself once and nothing states it a second time —
+     * `D-KNW-057`.
+     */
     #[Test]
     public function theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor(): void
     {
@@ -263,6 +273,11 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    /**
+     * A hint that a document is the long form of names it in the answer, so the
+     * caller reaches the whole of it by the call rather than by the scheme —
+     * `D-KNW-057`.
+     */
     #[Test]
     public function aHintAnswerNamesTheDocumentThatExpandsIt(): void
     {
@@ -1279,7 +1294,10 @@ final class KnowledgeTest extends TestCase
         );
     }
 
-    /** A page every section of which is above says that, rather than naming none. */
+    /**
+ * A page every section of which is above says that, rather than naming none —
+ * `D-ANS-070`.
+ */
     #[Test]
     public function anAnswerCarryingEveryHeadingOfAPageSaysThatToo(): void
     {
@@ -1350,6 +1368,11 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('No section that holds outside the core matched', $result->text);
     }
 
+    /**
+     * A miss offers what would have hit rather than the boundary it thought it
+     * met, and every subset it names returns sections when it is asked —
+     * `D-ANS-037`.
+     */
     #[Test]
     public function whatAMissOffersToAskAgainWithReturnsSections(): void
     {
@@ -1369,6 +1392,10 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    /**
+     * The subset offered is spelled in the caller's own words, because a re-
+     * query it has to translate first is one more round trip — `D-ANS-037`.
+     */
     #[Test]
     public function aSubsetIsNamedInTheWordsTheQueryWasWrittenIn(): void
     {

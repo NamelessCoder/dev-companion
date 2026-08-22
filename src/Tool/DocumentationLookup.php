@@ -87,7 +87,7 @@ final class DocumentationLookup extends ReadOnlyTool
     {
         return Schema::object([
             'mode' => ['type' => 'string', 'enum' => ['search', 'page']],
-            'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
+            'status' => Schema::answerStatus(),
             'targetVersion' => Schema::string('The exact documentation release searched.'),
             'source' => Schema::string('The external documentation host.'),
             'queries' => Schema::listOf(Schema::string()),
@@ -119,21 +119,12 @@ final class DocumentationLookup extends ReadOnlyTool
                     'field' => ['type' => 'string', 'enum' => ['title', 'path', 'manual'], 'description' => 'Where it was found: the page title, the section path it sits in, or the name of the manual.'],
                 ], ['term', 'field']), 'What this page was matched on. Every query word missing from it reached this page nowhere, so a result whose match is made of the words around the subject is an aimed answer rather than one about the subject; ask again with the subject alone. Empty in page mode.'),
             ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content', 'coverage', 'matched'])),
-            'unavailable' => [
-                'type' => ['object', 'null'],
-                'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
-                'properties' => [
-                    'cause' => [
-                        'type' => 'string',
-                        'enum' => ['version-not-covered', 'source-not-answering'],
-                        'description' => 'version-not-covered: the release asked about is outside the ones this server '
-                            . 'knows the manuals for, and asking again changes nothing. source-not-answering: '
-                            . 'docs.typo3.org did not answer this time, and the same call may answer the next.',
-                    ],
-                    'reason' => Schema::string(),
-                ],
-                'required' => ['cause', 'reason'],
-            ],
+            'unavailable' => Schema::unavailable([
+                'version-not-covered' => 'the release asked about is outside the ones this server knows the manuals '
+                    . 'for, and asking again changes nothing.',
+                'source-not-answering' => 'docs.typo3.org did not answer this time, and the same call may answer '
+                    . 'the next.',
+            ]),
         ], ['mode', 'status', 'targetVersion', 'source', 'queries', 'results', 'unavailable']);
     }
 

@@ -132,7 +132,7 @@ final class ForgeLookup extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::object([
-            'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
+            'status' => Schema::answerStatus(),
             'source' => Schema::string('The tracker the answer came from.'),
             'url' => Schema::string('What was read, so the same question can be asked again by hand. A union is two reads and both are named, separated by a space.'),
             'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number and where the open issues were enumerated.'),
@@ -218,21 +218,11 @@ final class ForgeLookup extends ReadOnlyTool
                     'url' => Schema::string('Where a person reads the change.'),
                 ], ['change', 'url']), 'The changes whose commit message names this issue, asked of the review server in one query for the whole page. A handle and not a verdict: whether a change is merged, open or abandoned is a typo3_gerrit_lookup call, and a change named here is what makes that call worth one. Empty where nothing on the review server names the issue and where the review server did not answer, which this does not separate — and empty on a search hit, where it is not asked.'),
             ], ['issue', 'subject', 'tracker', 'status', 'category', 'reportedBy', 'assignedTo', 'createdOn', 'updatedOn', 'url', 'relations', 'attachments', 'reviews']), 'The issues the query matched or the enumeration selected, in the tracker\'s own order — nothing here ranks them, and what an entry is worth is the caller\'s to judge. Empty where an issue was read by number.'),
-            'unavailable' => [
-                'type' => ['object', 'null'],
-                'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
-                'properties' => [
-                    'cause' => [
-                        'type' => 'string',
-                        'enum' => ['source-not-answering', 'source-not-parseable'],
-                        'description' => 'source-not-answering: the tracker did not answer this time. '
-                            . 'source-not-parseable: something answered with a page rather than with the API, '
-                            . 'which is what the bot protection in front of it looks like from here.',
-                    ],
-                    'reason' => Schema::string(),
-                ],
-                'required' => ['cause', 'reason'],
-            ],
+            'unavailable' => Schema::unavailable([
+                'source-not-answering' => 'the tracker did not answer this time.',
+                'source-not-parseable' => 'something answered with a page rather than with the API, which is what '
+                    . 'the bot protection in front of it looks like from here.',
+            ]),
         ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
     }
 

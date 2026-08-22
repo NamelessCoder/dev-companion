@@ -69,7 +69,7 @@ final class TerLookup extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::object([
-            'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
+            'status' => Schema::answerStatus(),
             'source' => Schema::string('The registry the answer came from.'),
             'url' => Schema::string('What was read, so the same question can be asked again by hand. Empty where the key was answered without a read.'),
             'page' => Schema::string('Where a person reads the extension\'s own page in the registry. Empty where the key is not one the registry takes.'),
@@ -87,20 +87,10 @@ final class TerLookup extends ReadOnlyTool
                 'majors' => Schema::listOf(Schema::integer(), 'The TYPO3 majors the release declares it runs on, ascending.'),
                 'constraint' => Schema::string('The constraints.depends.typo3 the release declared, as ext_emconf.php wrote it — for example ">=13.4.15 <=14.3.99". Empty where the release declared none, which the registry accepts on an upload made by a controller.'),
             ], ['number', 'state', 'uploaded', 'majors', 'constraint']), 'The published versions, highest number first. That is version order and not upload order: a maintenance release on an older line sits further down and may be the most recent upload of all, which is what the days beside the numbers say. Empty where nothing is published under the key.'),
-            'unavailable' => [
-                'type' => ['object', 'null'],
-                'description' => 'Why nothing was answered, where status says unavailable. Null otherwise, and null on a key nothing is published under — that one is an answer.',
-                'properties' => [
-                    'cause' => [
-                        'type' => 'string',
-                        'enum' => ['source-not-answering', 'source-not-parseable'],
-                        'description' => 'source-not-answering: the registry did not answer this time. '
-                            . 'source-not-parseable: something answered with a page rather than with the API.',
-                    ],
-                    'reason' => Schema::string(),
-                ],
-                'required' => ['cause', 'reason'],
-            ],
+            'unavailable' => Schema::unavailable([
+                'source-not-answering' => 'the registry did not answer this time.',
+                'source-not-parseable' => 'something answered with a page rather than with the API.',
+            ], 'Why nothing was answered, where status says unavailable. Null otherwise, and null on a key nothing is published under — that one is an answer.'),
         ], ['status', 'source', 'url', 'page', 'extension', 'version', 'held', 'total', 'versions', 'unavailable']);
     }
 

@@ -78,6 +78,58 @@ final class Schema
     }
 
     /**
+     * The other shape of "not answered", and the one a source outside this
+     * process takes — `D-ANS-007`.
+     *
+     * `unsupported()` is what a question this server cannot be asked from
+     * where it stands answers with, and it replaces the result. A manual, a
+     * tracker, a review server and a registry are reachable from anywhere or
+     * from nowhere, so those answer with a status beside the result and this
+     * object where the status is `unavailable`.
+     *
+     * What varies per source is which causes it can have and how each one
+     * reads, which is why the caller passes them: the enum is the keys and the
+     * description is the sentences, in the order they were written.
+     *
+     * @param array<string, string> $causes each cause this source can have, and what it means
+     * @return array<string, mixed>
+     */
+    public static function unavailable(array $causes, string $description = ''): array
+    {
+        $meanings = [];
+        foreach ($causes as $cause => $meaning) {
+            $meanings[] = $cause . ': ' . $meaning;
+        }
+
+        return [
+            'type' => ['object', 'null'],
+            'description' => $description !== ''
+                ? $description
+                : 'Why nothing was answered, where status says unavailable. Null otherwise.',
+            'properties' => [
+                'cause' => [
+                    'type' => 'string',
+                    'enum' => array_keys($causes),
+                    'description' => implode(' ', $meanings),
+                ],
+                'reason' => self::string(),
+            ],
+            'required' => ['cause', 'reason'],
+        ];
+    }
+
+    /**
+     * What a call to a source outside this process came back as: an answer, an
+     * answer that is empty, or the source not answering at all.
+     *
+     * @return array<string, mixed>
+     */
+    public static function answerStatus(): array
+    {
+        return ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']];
+    }
+
+    /**
      * Which source answered this call. An answer that came from none of them is
      * not one of its cases — that is unsupported, and it replaces the answer
      * rather than labelling it.

@@ -72,7 +72,7 @@ final class GerritLookup extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::object([
-            'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
+            'status' => Schema::answerStatus(),
             'source' => Schema::string('The review server the answer came from.'),
             'query' => Schema::string('The Gerrit query this was answered with, so the same question can be asked again by hand.'),
             'changes' => Schema::listOf(Schema::object([
@@ -178,21 +178,12 @@ final class GerritLookup extends ReadOnlyTool
                         . 'been near. Null where the log was not read.',
                 ],
             ]), 'The changes that matched, newest activity first.'),
-            'unavailable' => [
-                'type' => ['object', 'null'],
-                'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
-                'properties' => [
-                    'cause' => [
-                        'type' => 'string',
-                        'enum' => ['source-not-answering', 'source-not-parseable'],
-                        'description' => 'source-not-answering: review.typo3.org did not answer this time, and the '
-                            . 'same call may answer the next. source-not-parseable: something answered and it was '
-                            . 'not the review API, which is what a proxy or a captive portal looks like from here.',
-                    ],
-                    'reason' => Schema::string(),
-                ],
-                'required' => ['cause', 'reason'],
-            ],
+            'unavailable' => Schema::unavailable([
+                'source-not-answering' => 'review.typo3.org did not answer this time, and the same call may answer '
+                    . 'the next.',
+                'source-not-parseable' => 'something answered and it was not the review API, which is what a proxy '
+                    . 'or a captive portal looks like from here.',
+            ]),
             // Required and nullable, the shape `unavailable` beside it has. A
             // caller that has to branch on whether the key is there cannot
             // tell an answer with nothing to qualify from a server too old to

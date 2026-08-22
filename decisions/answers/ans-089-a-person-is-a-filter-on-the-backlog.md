@@ -4,7 +4,7 @@ title: 'A person is a filter on the backlog'
 date: 2026-08-19
 status: confirmed
 coveredBy:
-  - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembersAndFiltersByTheIdTheTrackerTakes
+  - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembers
   - ForgeTest::aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth
   - ForgeTest::aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt
   - ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog

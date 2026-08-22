@@ -46,13 +46,13 @@ prose (2026-07-29).
 ## Held by
 
 - `ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`
-- `ScopeTest::aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`
-- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
+- `ScopeTest::aPathKnownAsSomebodysExtensionIsOutsideTheCore`
+- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore`
 - `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
 - `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
 - `ScopeTest::aPackageShapedPathInACoreCheckoutIsCoreWork`
 - `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
-- `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`
+- `ScopeTest::theNamedInstallationIsTheEvidenceWhereNothingElseIs`
 - `ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest`
-- `ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes`
+- `ScopeTest::theDeclaredExtensionKeyPlacesAPath`
 - `ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised`

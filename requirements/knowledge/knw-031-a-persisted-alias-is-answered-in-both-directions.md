@@ -21,4 +21,4 @@ because the mapper's direction was left implicit (2026-07-30).
 
 ## Held by
 
-- `HintsTest::persistedAliasesStateBothDirectionsAndTheirValidationBoundary`
+- `HintsTest::persistedAliasesStateBothDirections`

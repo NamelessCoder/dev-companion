@@ -39,4 +39,4 @@ resolved. `D-SKL-069` is the judgement, and it puts the wording in
 
 ## Held by
 
-- `SkillTest::everyRuntimeLookupTheBaseNamesSaysWhatItAddsAfterTheExtensionAnswer`
+- `SkillTest::everyRuntimeLookupSaysWhatItAddsAfterTheExtensionAnswer`

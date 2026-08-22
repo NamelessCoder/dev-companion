@@ -4,7 +4,7 @@ title: "The sweep's exemption names what a task produces"
 date: 2026-08-14
 status: open
 coveredBy:
-  - SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api
+  - SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched
 ---
 
 # D-SKL-037 — The sweep's exemption names what a task produces

@@ -14,7 +14,7 @@ use TYPO3\DevCompanion\Tests\Support\Directory;
 final class InstallerTest extends TestCase
 {
     #[Test]
-    public function installWritesAnIdempotentConfigurationAndPreservesOtherServers(): void
+    public function installWritesOneEntryAndPreservesOtherServers(): void
     {
         $directory = sys_get_temp_dir() . '/typo3-dev-companion-install-' . bin2hex(random_bytes(8));
         self::assertTrue(mkdir($directory));
@@ -51,7 +51,7 @@ final class InstallerTest extends TestCase
      * reached from the other side.
      */
     #[Test]
-    public function installKeepsWhatTheCallerPutInTheEntryAndRewritesOnlyTheCommand(): void
+    public function installKeepsTheEntryAndRewritesOnlyTheCommand(): void
     {
         $directory = $this->directory();
         file_put_contents($directory . '/.mcp.json', json_encode([
@@ -101,7 +101,7 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
-    public function codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally(): void
+    public function codexInstallAndUpdateTrackTheirSkillsCentrally(): void
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
@@ -201,7 +201,7 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
-    public function ddevProjectUsesTheContainerPhpForMcpAndPublishesTheSkillToTheProject(): void
+    public function aDdevProjectUsesTheContainerPhpAndPublishesTheSkill(): void
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.ddev'));
@@ -307,7 +307,7 @@ final class InstallerTest extends TestCase
      */
     #[Test]
     #[DataProvider('clientsThatResolveTheProjectRoot')]
-    public function aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout(
+    public function aClientResolvingTheRootGetsAnEntryThatIsRightAnywhere(
         string $agent,
         string $configuration,
         string $key,
@@ -364,7 +364,7 @@ final class InstallerTest extends TestCase
      * path, because it is wrong on the machine that wrote it too — `D-DIS-016`.
      */
     #[Test]
-    public function aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot(): void
+    public function aCheckoutElsewhereKeepsTheHostPath(): void
     {
         $directory = $this->directory();
 
@@ -394,7 +394,7 @@ final class InstallerTest extends TestCase
      * project directory rather than the host.
      */
     #[Test]
-    public function aDdevProjectStartsTheContainerPhpEvenWhereTheClientResolvesTheRoot(): void
+    public function aDdevProjectStartsTheContainerPhp(): void
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.ddev'));
@@ -426,7 +426,7 @@ final class InstallerTest extends TestCase
      * told so — `D-DIS-016`.
      */
     #[Test]
-    public function aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing(): void
+    public function aDependencyOfTheProjectStillNamesTheHostPath(): void
     {
         $directory = $this->directory();
         $this->installEntrypoint($directory, 'vendor/bin');
@@ -482,7 +482,7 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
-    public function ddevProjectThatNeverRequiredTheServerKeepsTheAbsoluteEntrypoint(): void
+    public function aProjectThatNeverRequiredTheServerKeepsTheAbsolutePath(): void
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.ddev'));
@@ -815,7 +815,7 @@ final class InstallerTest extends TestCase
      * that is also why there is no second flag for taking one out.
      */
     #[Test]
-    public function aDraftIsPublishedWhereTheRunAsksForItAndRemovedWhereItDoesNot(): void
+    public function aDraftIsPublishedOnlyWhereTheRunAsksForIt(): void
     {
         $drafts = Installer::drafts();
         $directory = $this->directory();

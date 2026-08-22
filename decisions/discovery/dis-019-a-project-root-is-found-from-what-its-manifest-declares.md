@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
   - InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot
-  - InstanceTest::aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither
+  - InstanceTest::aNamedInstallationThatIsNotThereIsNotWalkedPast
   - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
   - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
   - ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne

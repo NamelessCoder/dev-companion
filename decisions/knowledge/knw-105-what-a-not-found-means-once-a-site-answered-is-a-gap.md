@@ -4,8 +4,8 @@ title: 'What a not-found means once a site answered is a gap'
 date: 2026-08-19
 status: open
 coveredBy:
-  - HintsTest::whatANotFoundMeansOnceASiteAnsweredIsStatedAndReachedFromTheSymptom
-  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
+  - HintsTest::whatANotFoundMeansOnceASiteAnsweredIsReached
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-KNW-105 — What a not-found means once a site answered is a gap

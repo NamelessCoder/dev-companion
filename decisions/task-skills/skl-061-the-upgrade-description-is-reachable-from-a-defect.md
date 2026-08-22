@@ -5,7 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
-  - SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval
+  - SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill
 ---
 
 # D-SKL-061 — The upgrade description is reachable from a defect

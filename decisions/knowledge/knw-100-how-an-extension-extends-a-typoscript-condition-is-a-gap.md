@@ -4,7 +4,7 @@ title: 'How an extension extends a TypoScript condition is a gap'
 date: 2026-08-18
 status: confirmed
 coveredBy:
-  - HintsTest::whatAnExtensionMayBuildBehindAConditionProviderIsStatedAndReached
+  - HintsTest::whatAnExtensionMayBuildBehindAConditionProviderIsStated
 ---
 
 # D-KNW-100 — How an extension extends a TypoScript condition is a gap

@@ -4,7 +4,7 @@ title: What decides a breaking removal is the caller, not the marker
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt
+  - HintsTest::whetherARemovalIsBreakingIsAnsweredWithoutTheMarker
 ---
 
 # D-FBK-038 — What decides a breaking removal is the caller, not the marker

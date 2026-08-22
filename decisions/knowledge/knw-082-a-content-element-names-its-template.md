@@ -4,7 +4,7 @@ title: 'A content element names its template'
 date: 2026-08-17
 status: open
 coveredBy:
-  - HintsTest::theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures
+  - HintsTest::theCTypeTemplateDerivationIsAttributedToItsTheme
 ---
 
 # D-KNW-082 — A content element names its template

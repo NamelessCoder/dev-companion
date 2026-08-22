@@ -4,7 +4,7 @@ title: "The manual ranking is diluted by an ordinary title's length"
 date: 2026-08-02
 status: open
 coveredBy:
-  - DocumentationTest::aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord
+  - DocumentationTest::aPageTitledAfterItsSubjectOutranksALongerTitle
 ---
 
 # D-ANS-032 — The manual ranking is diluted by an ordinary title's length

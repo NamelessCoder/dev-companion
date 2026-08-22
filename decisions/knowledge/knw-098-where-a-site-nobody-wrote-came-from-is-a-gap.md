@@ -4,7 +4,7 @@ title: 'Where a site nobody wrote came from is a gap'
 date: 2026-08-18
 status: confirmed
 coveredBy:
-  - HintsTest::whereASiteNobodyWroteCameFromIsStatedAndLeavesTheSymptomWhereItWas
+  - HintsTest::whereASiteNobodyWroteCameFromIsStated
 ---
 
 # D-KNW-098 — Where a site nobody wrote came from is a gap

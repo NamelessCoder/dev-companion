@@ -16,4 +16,4 @@ as "no installation found" (2026-07-29).
 
 ## Held by
 
-- `InstanceTest::aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed`
+- `InstanceTest::aProjectThatMovedItsVendorDirectoryIsStillFound`

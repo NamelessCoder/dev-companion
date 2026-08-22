@@ -126,7 +126,7 @@ queues is reached from the symptom rather than from the task.
 The fourth **Wrong if** is repaired rather than standing. The boot section of
 `skills/typo3-development-installation/SKILL.md` names `id=installation-boot` as
 its first bullet, before the declared steps are run, and
-`SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+`SkillTest::anInstallationIsBuiltInDependencyOrder`
 holds it there. What that does not answer is the first **Assumed**: the routing
 sends a boot task to the hint whatever it was worded as, so the patterns are
 still one session's vocabulary and still unmeasured against a second report.

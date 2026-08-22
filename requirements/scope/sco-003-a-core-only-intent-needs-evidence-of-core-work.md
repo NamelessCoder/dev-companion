@@ -26,5 +26,5 @@ Third-party extension maintenance recognised as a Gerrit patch submission
 - `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
 - `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
 - `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
-- `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`
+- `ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules`
 - `ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact`

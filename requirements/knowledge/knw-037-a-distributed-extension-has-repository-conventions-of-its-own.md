@@ -26,4 +26,4 @@ file non-reproducible (2026-07-31).
 
 ## Held by
 
-- `HintsTest::aDistributedExtensionIsNotAnsweredWithTheProjectRepositoryLayout`
+- `HintsTest::aDistributedExtensionIsNotAnsweredWithTheProjectLayout`

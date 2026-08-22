@@ -7,7 +7,7 @@ coveredBy:
   - EnvironmentsTest::everyEnvironmentAScenarioNamesSaysWhereItComesFrom
   - EnvironmentsTest::everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead
   - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
-  - EnvironmentsTest::theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor
+  - EnvironmentsTest::theBuildRequiresTheExtensionsThisServerAsksFor
   - EnvironmentsTest::theSetupStepPassesEveryOptionItCannotBeAskedFor
   - EnvironmentsTest::theSiteIsCreatedForTheAddressDdevGivesTheProject
   - EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine

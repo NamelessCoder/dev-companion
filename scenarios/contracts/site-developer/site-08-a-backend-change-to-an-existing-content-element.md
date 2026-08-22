@@ -2,8 +2,8 @@
 
 **Environment:** `E-SITE` · **Contract:** `held`
 **Held by:**
-`HintsTest::aBackendOnlyTaskNamingAContentElementIsNotAnsweredWithTheSitepackageLayout`,
-`HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`,
+`HintsTest::aBackendTaskIsNotAnsweredWithTheSitepackageLayout`,
+`HintsTest::aBackendTaskIsNotCalledFluidAndTypoScriptWork`,
 `HintsTest::aContentElementBuiltInASitepackageKeepsItsLayout`,
 `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`
 

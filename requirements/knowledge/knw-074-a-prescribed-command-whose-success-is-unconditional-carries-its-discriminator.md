@@ -44,4 +44,4 @@ round trips for each
 
 ## Held by
 
-- `HintsTest::aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator`
+- `HintsTest::aCommandThatAlwaysSucceedsCarriesItsDiscriminator`

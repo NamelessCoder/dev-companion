@@ -378,7 +378,7 @@ final class StdioServerTest extends TestCase
      * calls `Channel::record` directly and the recorder still takes a list.
      */
     #[Test]
-    public function severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted(): void
+    public function aListOfToolNamesIsRefusedWithTheTypeItWanted(): void
     {
         $answers = $this->session([
             $this->request(2, 'tools/call', ['name' => 'typo3_feedback_record', 'arguments' => [

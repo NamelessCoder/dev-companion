@@ -44,6 +44,6 @@ that extra entry costs: the root is then listed as an extension that is only a
 directory, and whether an answer goes wrong on it needs a monorepo somebody
 works in rather than one built here. No guess at which roots are containers was
 written, because nothing in the metadata carries it.
-`InstanceTest::aRootThatIsAlsoInstalledIntoTheVendorDirectoryIsOnePackageAtTheRoot`
+`InstanceTest::aRootAlsoInstalledIntoVendorIsOnePackage`
 and
-`InstanceTest::aMonorepoRootIsCountedBesideThePackagesItHoldsRatherThanInsteadOfThem`.
+`InstanceTest::aMonorepoRootIsCountedBesideThePackagesItHolds`.

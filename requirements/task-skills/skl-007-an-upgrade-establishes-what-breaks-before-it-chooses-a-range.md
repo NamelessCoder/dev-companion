@@ -51,7 +51,7 @@ a checkout that has one.
 ## Held by
 
 - `SkillTest::anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts`
-- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval`
+- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
 - That a session works in this order is not guarded and will not be by a forward

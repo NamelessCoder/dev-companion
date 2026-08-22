@@ -4,7 +4,7 @@ title: 'The root-package layout is stated from an installation'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing
+  - HintsTest::installingTypo3BeneathTheExtensionNamesTheInertKey
 ---
 
 # D-KNW-053 — The root-package layout is stated from an installation

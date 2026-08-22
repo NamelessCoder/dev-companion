@@ -4,9 +4,9 @@ title: How an entrypoint may be named is a per-client question
 date: 2026-08-08
 status: confirmed
 coveredBy:
-  - InstallerTest::aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout
-  - InstallerTest::aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot
-  - InstallerTest::aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing
+  - InstallerTest::aClientResolvingTheRootGetsAnEntryThatIsRightAnywhere
+  - InstallerTest::aCheckoutElsewhereKeepsTheHostPath
+  - InstallerTest::aDependencyOfTheProjectStillNamesTheHostPath
 ---
 
 # D-DIS-016 — How an entrypoint may be named is a per-client question

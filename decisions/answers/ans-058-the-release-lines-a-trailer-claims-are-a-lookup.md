@@ -5,7 +5,7 @@ date: 2026-08-05
 status: confirmed
 coveredBy:
   - ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose
-  - CommitMessageTest::aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch
+  - CommitMessageTest::aBranchOutOfSupportIsAnErrorNamingTheLinesThatTake
   - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
   - CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch
 ---

@@ -5,7 +5,7 @@ date: 2026-08-04
 status: open
 coveredBy:
   - ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList
-  - ExcludedToolsTest::theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded
+  - ExcludedToolsTest::theScopeNamesWhatTookNothingAwayAsIgnored
   - EntrypointTest::anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo
   - InstallerTest::codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn
   - InstallerTest::codexInstallRefusesASectionItCannotRewriteWithoutDropping

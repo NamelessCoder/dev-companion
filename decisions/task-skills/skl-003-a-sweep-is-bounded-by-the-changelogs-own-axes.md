@@ -36,7 +36,7 @@ nothing and the silence reads as a clean bill for the next major.
   then fixes the rest to "the symbols and registration shapes step 2 reported",
   and the sentence "the query set is derived from the extension's own surface"
   is asserted verbatim by
-  `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`.
+  `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface`.
 - The tool says both. Its description calls the `tag` field "what a sweep is
   bounded by where words are not", and the `query` field says "omit to list a
   version or a type as a whole". `D-ANS-006` established that reading when it

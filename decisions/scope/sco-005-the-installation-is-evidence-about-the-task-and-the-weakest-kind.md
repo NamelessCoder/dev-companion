@@ -5,8 +5,8 @@ date: 2026-07-29
 status: confirmed
 coveredBy:
   - ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs
-  - ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence
-  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise
+  - ScopeTest::theNamedInstallationIsTheEvidenceWhereNothingElseIs
+  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore
 ---
 
 # D-SCO-005 — The installation is evidence about the task, and the weakest kind

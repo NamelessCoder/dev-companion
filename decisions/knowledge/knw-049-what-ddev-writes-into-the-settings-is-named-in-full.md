@@ -4,7 +4,7 @@ title: 'What DDEV writes into the settings is named in full'
 date: 2026-08-03
 status: confirmed
 coveredBy:
-  - HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes
+  - HintsTest::theDdevSettingsAnswerNamesEverySectionItGenerates
 ---
 
 # D-KNW-049 — What DDEV writes into the settings is named in full

@@ -30,7 +30,7 @@ final class ExtensionTest extends TestCase
     }
 
     #[Test]
-    public function shippingBothFilesWithoutTheComposerFieldsCostsBothDeprecations(): void
+    public function shippingBothFilesWithoutTheFieldsCostsBothDeprecations(): void
     {
         $found = $this->deprecatedFilesOf(['ext_tables.php', 'ext_emconf.php'], []);
 

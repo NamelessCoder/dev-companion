@@ -36,4 +36,4 @@ installed source, and the hint that governs that file offered no way to see it.
 ## Held by
 
 - `HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt`
-- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn`
+- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldWhereItIsFree`

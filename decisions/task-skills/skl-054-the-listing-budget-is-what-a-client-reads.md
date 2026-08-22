@@ -32,7 +32,7 @@ charged for room in a listing it does not appear in.
   routes to it. `everyDescriptionIsWrittenToTheBudgetTheyShare` was the one
   assertion reading the directory instead.
 - A draft is published to nobody, which
-  `InstallerTest::aDraftIsPublishedWhereTheRunAsksForItAndRemovedWhereItDoesNot`
+  `InstallerTest::aDraftIsPublishedOnlyWhereTheRunAsksForIt`
   holds: `install` writes no draft, `install --drafts` writes it into that one
   project, and the next `update` takes it out again.
 - The ceiling is a ratchet rather than a measurement. Its own comment says it is

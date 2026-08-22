@@ -24,7 +24,7 @@ answer for 14.3 whose loudest version number was the 15.0 snapshot (2026-07-30).
 ## Held by
 
 - `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
-- `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`
+- `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswer`
 - `CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout`
 - `CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot`
 - `CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`, and the

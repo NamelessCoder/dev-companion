@@ -629,7 +629,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing(): void
+    public function theDeprecationSweepRunsFromTheExtensionsSurface(): void
     {
         // REVIEW-02 against an extension declaring two majors on an
         // installation a major behind: 24 $GLOBALS['TSFE'] call sites across 11
@@ -709,7 +709,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api(): void
+    public function theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched(): void
     {
         // The second half of `feedback/2026-08-04-055741`: the sweep was
         // prescribed and skipped on a change that added a fixer, an
@@ -872,7 +872,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound(): void
+    public function theInstalledSourceIsTheStepAfterTheLookups(): void
     {
         // The base's one sentence for an exhausted question was written for a
         // review — "the finding says the question could not be settled" — and
@@ -946,7 +946,7 @@ final class SkillTest extends TestCase
      * adds after step 2 rather than what kind of lookup it is.
      */
     #[Test]
-    public function everyRuntimeLookupTheBaseNamesSaysWhatItAddsAfterTheExtensionAnswer(): void
+    public function everyRuntimeLookupSaysWhatItAddsAfterTheExtensionAnswer(): void
     {
         $base = self::flat((string) file_get_contents(Paths::root() . '/skills/base.md'));
 
@@ -2205,7 +2205,7 @@ final class SkillTest extends TestCase
      * inside a declared range meets, and the step the body owes it once it did.
      */
     #[Test]
-    public function aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval(): void
+    public function aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill(): void
     {
         $upgrade = self::description('typo3-extension-upgrade');
         self::assertStringNotContainsString('from the TYPO3 and PHP versions it supports today', $upgrade);
@@ -2753,7 +2753,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function extensionTestingEstablishesStaticQualityAndKeepsCheckingApartFromFixing(): void
+    public function extensionTestingKeepsCheckingApartFromFixing(): void
     {
         // Two recorded REVIEW-02 runs bound this from both sides. Against an
         // extension whose PHPStan and baseline exist, the review read them and
@@ -2956,7 +2956,7 @@ final class SkillTest extends TestCase
      * `D-KNW-105`.
      */
     #[Test]
-    public function anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers(): void
+    public function anInstallationIsBuiltInDependencyOrder(): void
     {
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-development-installation/SKILL.md',
@@ -3208,7 +3208,7 @@ final class SkillTest extends TestCase
      * help does not print.
      */
     #[Test]
-    public function theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual(): void
+    public function theSetupOptionsAreReadFromTheConsole(): void
     {
         $skill = self::flat((string) file_get_contents(
             Paths::root() . '/skills/typo3-development-installation/SKILL.md',
@@ -3481,7 +3481,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared(): void
+    public function theCheckLayerIsMeasuredAgainstACompleteOne(): void
     {
         // The file-tree trap again, one surface further in. Two REVIEW-02 runs
         // in a checkout with no analyser, no analysis step and no baseline

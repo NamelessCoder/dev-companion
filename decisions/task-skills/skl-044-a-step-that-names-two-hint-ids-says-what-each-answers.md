@@ -4,7 +4,7 @@ title: 'A step that names two hint ids says what each answers'
 date: 2026-08-18
 status: open
 coveredBy:
-  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-SKL-044 — A step that names two hint ids says what each answers

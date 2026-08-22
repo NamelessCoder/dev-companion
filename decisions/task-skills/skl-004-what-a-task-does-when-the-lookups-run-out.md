@@ -4,7 +4,7 @@ title: 'What a task does when the lookups run out'
 date: 2026-08-02
 status: open
 coveredBy:
-  - SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound
+  - SkillTest::theInstalledSourceIsTheStepAfterTheLookups
 ---
 
 # D-SKL-004 — What a task does when the lookups run out

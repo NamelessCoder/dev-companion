@@ -4,7 +4,7 @@ title: A change answer names the siblings that share its Change-Id
 date: 2026-08-14
 status: open
 coveredBy:
-  - GerritTest::aChangeNamedByItsNumberIsAnsweredWithTheSiblingsSharingItsChangeId
+  - GerritTest::aChangeNamedByItsNumberAnswersWithItsSiblings
   - GerritTest::aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed
   - GerritTest::theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit
   - GerritTest::aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding

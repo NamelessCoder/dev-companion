@@ -61,7 +61,7 @@ final class ConfigurationLookupTest extends TestCase
     }
 
     #[Test]
-    public function anInstallationThatCouldNotBeBootedIsNotReportedAsHavingNoValue(): void
+    public function anInstallationThatCouldNotBeBootedIsNotReportedAsEmpty(): void
     {
         // R-ANS-001. The boot fails because no autoloader was written, and the
         // answer has to stay distinguishable from the case above it: `found`

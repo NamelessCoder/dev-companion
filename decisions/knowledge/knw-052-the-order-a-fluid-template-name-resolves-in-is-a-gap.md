@@ -4,8 +4,8 @@ title: 'The order a Fluid template name resolves in is a gap'
 date: 2026-08-03
 status: confirmed
 coveredBy:
-  - HintsTest::aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath
-  - HintsTest::theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt
+  - HintsTest::theFileNameFallbackIsStatedAsOncePerRootPath
+  - HintsTest::theFluidFileExtensionIsWithheldWhereItDoesNotResolve
 ---
 
 # D-KNW-052 — The order a Fluid template name resolves in is a gap

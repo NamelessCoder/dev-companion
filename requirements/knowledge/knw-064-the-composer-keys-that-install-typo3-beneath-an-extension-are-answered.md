@@ -29,4 +29,4 @@ to say which directory is served, and `app-dir`, `vendor-dir`, `bin-dir` and
 
 ## Held by
 
-- `HintsTest::installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing`
+- `HintsTest::installingTypo3BeneathTheExtensionNamesTheInertKey`

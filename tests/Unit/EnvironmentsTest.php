@@ -356,7 +356,7 @@ final class EnvironmentsTest extends TestCase
      * asking for nothing already means.
      */
     #[Test]
-    public function anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory(): void
+    public function anInstallationOnASecondDatabaseIsItsOwnProject(): void
     {
         $branch = Environments::branch();
 
@@ -416,7 +416,7 @@ final class EnvironmentsTest extends TestCase
      * `D-EVI-004`.
      */
     #[Test]
-    public function theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor(): void
+    public function theBuildRequiresTheExtensionsThisServerAsksFor(): void
     {
         $build = implode(' ', array_merge(...array_values(Environments::build(Environments::branch()))));
 

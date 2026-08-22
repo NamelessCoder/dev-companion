@@ -15,4 +15,4 @@ installation, although Composer lists dependencies rather than the root.**
 
 ## Held by
 
-- `InstanceTest::theExtensionBeingWorkedOnIsAmongThePackagesAlthoughComposerListsOnlyDependencies`
+- `InstanceTest::theExtensionBeingWorkedOnIsAmongThePackages`

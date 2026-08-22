@@ -46,5 +46,5 @@ The same mechanism twice more in two other kinds of checkout:
 
 - `ProjectTest::aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt`
 - `ProjectTest::aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut`
-- `ProjectTest::whereNothingConfiguresAnEnvironmentTheBoundIsStatedAndNoInterpreterIsGuessed`
+- `ProjectTest::whereNothingConfiguresAnEnvironmentTheBoundIsStated`
 - `ProjectTest::anInstallThatBoundsNothingIsSaidToBoundNothing`

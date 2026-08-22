@@ -30,11 +30,11 @@ installation that resolves none (2026-07-29).
 - `VersionsTest` in full — the range model, the precedence, the filtering, that
 - No statement dates itself in prose, and that a prose answer says it is not the
   bound half
-- `CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`
-- `CatalogTest::aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor`
-- `CatalogTest::withoutATargetTheWholeCatalogAnswersAndEachEntryCarriesItsRange`
+- `CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclined`
+- `CatalogTest::aComponentVerifiedOnTheTargetCarriesItsRange`
+- `CatalogTest::withoutATargetEachEntryCarriesItsRange`
 - `CatalogTest::theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion`
 - `CatalogTest::everyRecordedBindingNamesACoveredVersion`
 - `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
-- `CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`
-- `InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`
+- `CatalogTest::anInstallationWithoutDomainsIsGivenTheFileReference`
+- `InstanceTest::theTypo3VersionIsReadFromTheCorePackage`

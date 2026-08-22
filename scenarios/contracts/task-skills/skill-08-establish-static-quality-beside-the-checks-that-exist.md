@@ -4,7 +4,7 @@
 syntax lint but has no static analyser, no baseline and no test suite ·
 **Contract:** `held`
 **Held by:**
-`SkillTest::extensionTestingEstablishesStaticQualityAndKeepsCheckingApartFromFixing`,
+`SkillTest::extensionTestingKeepsCheckingApartFromFixing`,
 `SkillTest::everyReferenceIsOneHopAwayAndLoadedOnDemand`
 
 > Set up PHPStan and CGL for this TYPO3 extension, fix the findings in the

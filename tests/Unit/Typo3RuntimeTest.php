@@ -176,7 +176,7 @@ final class Typo3RuntimeTest extends TestCase
      * `Configuration/Backend/Modules.php` gives — `D-ANS-077`.
      */
     #[Test]
-    public function aModuleComesBackWithTheNavigationComponentTheRegistryResolved(): void
+    public function aModuleComesBackWithItsNavigationComponent(): void
     {
         $root = $this->installationWithAConsole();
         Fixture::bootsInto($root, modules: [

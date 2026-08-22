@@ -4,8 +4,8 @@ title: 'What a row handed to lib.contentElement owes is a gap'
 date: 2026-08-18
 status: confirmed
 coveredBy:
-  - HintsTest::whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows
-  - HintsTest::whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway
+  - HintsTest::whatAPartialRowCostsIsReachedFromItsException
+  - HintsTest::whatAPartialRowCostsIsWithheldWhereItRenders
 ---
 
 # D-KNW-099 — What a row handed to lib.contentElement owes is a gap

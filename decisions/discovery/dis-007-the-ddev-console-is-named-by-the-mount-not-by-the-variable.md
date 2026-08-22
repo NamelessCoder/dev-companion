@@ -73,7 +73,7 @@ transport: the direct one has no shell between, and what
 v1.25.1 on 2026-08-02, by the first recording made against an installation of
 this repository's own — `D-DOC-006` has that run.
 
-- `Typo3CliTest::everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell`
+- `Typo3CliTest::everyArgumentReachesTheContainerAsTheShellLeavesIt`
 
 ## Confirmed on 2026-08-02
 

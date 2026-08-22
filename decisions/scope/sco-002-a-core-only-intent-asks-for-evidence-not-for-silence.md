@@ -4,7 +4,7 @@ title: A core-only intent asks for evidence, not for silence
 date: 2026-07-29
 status: confirmed
 coveredBy:
-  - ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules
+  - ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules
   - ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact
   - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore
   - ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission
@@ -55,5 +55,5 @@ demotion this decided, met in the one text it was predicted to be met in. What
 keeps it cheap is that the condition is a sentence the contributor settles from
 their own intent, and naming a sysext path in the same session turns it into a
 stated match;
-`ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules` and
+`ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules` and
 `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission` hold both halves.

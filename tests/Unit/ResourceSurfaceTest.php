@@ -191,7 +191,7 @@ final class ResourceSurfaceTest extends TestCase
      * says for the client that does sort templates.
      */
     #[Test]
-    public function whatASkillHandsOverAtAStepIsOfferedAsATemplateRatherThanInTheList(): void
+    public function whatASkillHandsOverAtAStepIsOfferedAsATemplate(): void
     {
         $template = Factory::skillReferences();
         self::assertNotNull($template->description, 'the reference template says nothing about what it answers');

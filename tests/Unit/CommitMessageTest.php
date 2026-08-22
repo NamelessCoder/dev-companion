@@ -584,7 +584,7 @@ final class CommitMessageTest extends TestCase
      * twice, before the arithmetic became visible.
      */
     #[Test]
-    public function theLengthCheckSaysWhatMadeTheSubjectLongAndWhatTheLimitLeaves(): void
+    public function theLengthCheckSaysWhatMadeTheSubjectLong(): void
     {
         $result = CommitMessage::create([
             'changeType' => 'BUGFIX',
@@ -608,7 +608,7 @@ final class CommitMessageTest extends TestCase
      * branch would have come back the same way — `D-ANS-058`.
      */
     #[Test]
-    public function aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch(): void
+    public function aBranchOutOfSupportIsAnErrorNamingTheLinesThatTake(): void
     {
         $result = CommitMessage::create([
             'changeType' => 'BUGFIX',
@@ -659,7 +659,7 @@ final class CommitMessageTest extends TestCase
      * of the defect rather than by the defect being present there.
      */
     #[Test]
-    public function aMaintainedLineFurtherBackThanTheOrdinaryReachSaysWhatItClaims(): void
+    public function aMaintainedLineFurtherBackSaysWhatItClaims(): void
     {
         $older = ReleaseLines::releasable()[2] ?? null;
         self::assertNotNull($older, 'the list carries no line beyond the ordinary reach to hold this against');

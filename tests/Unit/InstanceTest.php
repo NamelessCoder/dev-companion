@@ -69,7 +69,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole(): void
+    public function theTypo3VersionIsReadFromTheCorePackage(): void
     {
         // It has to be available exactly when the console is not: an
         // installation whose database has no schema still has a version, and
@@ -90,7 +90,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed(): void
+    public function aProjectThatMovedItsVendorDirectoryIsStillFound(): void
     {
         // The layout the TYPO3 extension testing setup produces. Reading the
         // default vendor/ instead walked past the installation entirely, and
@@ -103,7 +103,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function theExtensionBeingWorkedOnIsAmongThePackagesAlthoughComposerListsOnlyDependencies(): void
+    public function theExtensionBeingWorkedOnIsAmongThePackages(): void
     {
         $root = $this->composerProject('.build/vendor');
         file_put_contents($root . '/composer.json', json_encode([
@@ -119,7 +119,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aPackageBelowTestsIsTheTestSetupsRatherThanTheOneBeingWorkedOn(): void
+    public function aPackageBelowTestsBelongsToTheTestSetup(): void
     {
         $root = $this->composerProject('.build/vendor');
         file_put_contents($root . '/composer.json', json_encode([
@@ -153,7 +153,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aRootThatIsAlsoInstalledIntoTheVendorDirectoryIsOnePackageAtTheRoot(): void
+    public function aRootAlsoInstalledIntoVendorIsOnePackage(): void
     {
         // The extension checkout that requires itself through a path
         // repository: Composer symlinks the root into the vendor directory and
@@ -184,7 +184,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aMonorepoRootIsCountedBesideThePackagesItHoldsRatherThanInsteadOfThem(): void
+    public function aMonorepoRootIsCountedBesideThePackagesItHolds(): void
     {
         // A repository that holds extensions rather than being one, and still
         // declares a TYPO3 package type at its root. Nothing in the metadata
@@ -316,7 +316,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither(): void
+    public function aNamedInstallationThatIsNotThereIsNotWalkedPast(): void
     {
         $root = $this->temporaryDirectory();
         file_put_contents($root . '/composer.json', json_encode(
@@ -349,7 +349,7 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
-    public function aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast(): void
+    public function aNamedInstallationThatIsNotThereIsReported(): void
     {
         $root = $this->composerProject();
         putenv(Instance::ROOT_VARIABLE . '=' . $root . '/nowhere');

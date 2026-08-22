@@ -94,5 +94,5 @@ repository can recreate, which is what makes the recording repeatable
   dependencies are not installed and names the missing autoloader wherever the
   console is absent and no autoloader stands beside it, which the preamble of
   every recorded page carries. Held by
-  `Typo3CliTest::aCheckoutThatWasNeverInstalledSaysThatRatherThanNamingEmptyPaths`
+  `Typo3CliTest::aCheckoutThatWasNeverInstalledSaysThat`
   and its counterpart for an installed root whose console sits elsewhere.

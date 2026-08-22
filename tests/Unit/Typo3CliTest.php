@@ -65,7 +65,7 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
-    public function aCheckoutThatWasNeverInstalledSaysThatRatherThanNamingEmptyPaths(): void
+    public function aCheckoutThatWasNeverInstalledSaysThat(): void
     {
         // The core checkouts below .checkouts/ are worktrees nothing was
         // installed in, and the core monorepo declares `bin-dir: bin` — so the
@@ -79,7 +79,7 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
-    public function anInstalledCheckoutWhoseConsoleSitsElsewhereIsNotBlamedOnItsDependencies(): void
+    public function anInstalledCheckoutWhoseConsoleSitsElsewhereIsNotBlamed(): void
     {
         // The other half: the autoloader is there, so the console is somewhere
         // this did not look, and the caller is told that and nothing else.
@@ -278,7 +278,7 @@ final class Typo3CliTest extends TestCase
      */
     #[Test]
     #[DataProvider('argumentsAShellWouldActOn')]
-    public function everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell(array $arguments): void
+    public function everyArgumentReachesTheContainerAsTheShellLeavesIt(array $arguments): void
     {
         $root = $this->installation();
         mkdir($root . '/vendor/bin', 0o777, true);
@@ -325,7 +325,7 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
-    public function aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs(): void
+    public function aStoppedProjectOnHostPhpIsReportedAsAHalfAnswer(): void
     {
         // The console answers, on an interpreter of this machine, because the
         // project that is meant to run in containers has none running. The
@@ -413,7 +413,7 @@ final class Typo3CliTest extends TestCase
      * is not remembered.
      */
     #[Test]
-    public function aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts(): void
+    public function aStoppedProjectIsAskedAgainAfterItStarts(): void
     {
         $root = $this->installation(['config' => ['platform' => []]]);
         $this->console($root);
@@ -513,7 +513,7 @@ final class Typo3CliTest extends TestCase
      * asking for it, and asking is a resolution.
      */
     #[Test]
-    public function theScopeAnswerDescribesAStoppedProjectOncePerHalfRatherThanPerSentence(): void
+    public function theScopeAnswerDescribesAStoppedProjectOncePerHalf(): void
     {
         $root = $this->installation();
         $this->console($root);

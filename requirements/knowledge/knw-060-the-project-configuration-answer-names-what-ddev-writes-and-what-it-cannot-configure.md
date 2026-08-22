@@ -31,4 +31,4 @@ been told about.
 
 ## Held by
 
-- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`
+- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGenerates`

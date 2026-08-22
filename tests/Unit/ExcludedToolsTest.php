@@ -65,7 +65,7 @@ final class ExcludedToolsTest extends TestCase
     }
 
     #[Test]
-    public function aCoreShapedTaskFromAProjectIsAnsweredAndTheToolItRoutesToIsThere(): void
+    public function aCoreShapedTaskFromAProjectIsAnswered(): void
     {
         Instance::discoverFrom($this->composerProject());
 
@@ -155,7 +155,7 @@ final class ExcludedToolsTest extends TestCase
      * `D-AUD-006`.
      */
     #[Test]
-    public function theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded(): void
+    public function theScopeNamesWhatTookNothingAwayAsIgnored(): void
     {
         putenv(ExcludedTools::VARIABLE . '=typo3_project_scope, typo3_feedback_record, typo3_icon_lookup');
 
@@ -200,7 +200,7 @@ final class ExcludedToolsTest extends TestCase
      * beside it still takes its tool away — `D-AUD-005`.
      */
     #[Test]
-    public function aNameNoToolAnswersToIsReportedAndTheRealOneBesideItStillExcludes(): void
+    public function aNameNoToolAnswersToLeavesTheRealOneExcluding(): void
     {
         putenv(ExcludedTools::VARIABLE . '=typo3_project_scope, typo3_icon_lookup');
 

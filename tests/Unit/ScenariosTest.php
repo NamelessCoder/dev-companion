@@ -338,7 +338,7 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRunJudgedAgainstOlderCriteriaIsNotReadAsAnAnswerToTheCurrentOnes(): void
+    public function aRunJudgedAgainstOlderCriteriaIsNotReadAsCurrent(): void
     {
         $recorded = $this->record('REVIEW-01', static function (array $run): array {
             $run['criteria'] = 'aaaaaaaaaaaa';

@@ -22,4 +22,4 @@ deprecation (2026-07-29).
 
 - `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`
 - `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`
-- `PackageSourcesTest::anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty`
+- `PackageSourcesTest::anInstallationWithoutAChangelogSaysSo`

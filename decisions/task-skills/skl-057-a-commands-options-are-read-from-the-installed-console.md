@@ -4,7 +4,7 @@ title: "A command's options are read from the installed console"
 date: 2026-08-18
 status: open
 coveredBy:
-  - SkillTest::theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual
+  - SkillTest::theSetupOptionsAreReadFromTheConsole
 ---
 
 # D-SKL-057 — A command's options are read from the installed console

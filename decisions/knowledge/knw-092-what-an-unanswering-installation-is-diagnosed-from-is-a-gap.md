@@ -5,7 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows
-  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-KNW-092 — What an unanswering installation is diagnosed from is a gap

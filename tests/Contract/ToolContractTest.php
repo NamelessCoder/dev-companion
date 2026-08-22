@@ -254,7 +254,7 @@ final class ToolContractTest extends TestCase
      * `D-ANS-005`.
      */
     #[Test]
-    public function anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer(): void
+    public function anInstallationBackedSchemaOffersEitherShape(): void
     {
         foreach (self::installationBackedSchemas() as $name => $schema) {
             $branches = $schema['oneOf'];

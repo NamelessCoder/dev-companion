@@ -20,5 +20,5 @@ Inputs, each on one word out of five (2026-07-30).
 
 ## Held by
 
-- `CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMissRatherThanItsNearestWords`
+- `CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMiss`
 - `CatalogTest::aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt`

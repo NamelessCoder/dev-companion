@@ -4,8 +4,8 @@ title: 'What a TypoScript condition can reach is a gap'
 date: 2026-08-18
 status: confirmed
 coveredBy:
-  - HintsTest::aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest
-  - HintsTest::whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem
+  - HintsTest::aConditionIsAnsweredWithWhatItIsHanded
+  - HintsTest::whichGlobalsAConditionCanReadIsBoundToItsMajor
 ---
 
 # D-KNW-101 — What a TypoScript condition can reach is a gap

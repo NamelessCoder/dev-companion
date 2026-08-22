@@ -4,7 +4,7 @@ title: 'What a Composer installation generates below the root is a gap'
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff
+  - HintsTest::whatAComposerInstallationGeneratesIsNamed
   - HintsTest::theGeneratedDocumentRootIsStatedPerMajorOnBothHints
 ---
 

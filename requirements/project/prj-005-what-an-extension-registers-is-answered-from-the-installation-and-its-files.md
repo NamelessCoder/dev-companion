@@ -55,8 +55,8 @@ from.
 
 - `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`
 - `ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor`
-- `ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`
+- `ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable`
 - `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`
 - `ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell`
-- `ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`
+- `ProjectTest::anExtensionTheInstallationLacksIsAMissWithTheKeysItHas`
 - `ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`

@@ -148,7 +148,7 @@ final class TodoHomeTest extends TestCase
      * the 200 commits before 2026-08-18 — `D-FBK-011`.
      */
     #[Test]
-    public function whatTheBranchOwesMainIsAmendedOntoItBetweenTheRebaseAndTheSuite(): void
+    public function whatTheBranchOwesMainIsAmendedAfterTheRebase(): void
     {
         $this->gitThatAnswers([
             'status --porcelain -- todo' => " M decisions/readme.md\n",

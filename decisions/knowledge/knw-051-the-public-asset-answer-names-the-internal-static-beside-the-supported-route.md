@@ -4,7 +4,7 @@ title: The public-asset answer names the internal static beside the supported ro
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::thePublicAssetAnswerSeparatesTheSupportedRouteFromTheInternalStaticBesideIt
+  - HintsTest::thePublicAssetAnswerSeparatesTheSupportedRoute
 ---
 
 # D-KNW-051 — The public-asset answer names the internal static beside the supported route

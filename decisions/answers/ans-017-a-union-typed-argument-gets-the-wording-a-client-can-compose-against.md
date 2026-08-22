@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - ToolContractTest::everyToolDeclaresSchemasAndAnnotations
   - ToolContractTest::noArgumentDeclaresMoreThanOneType
-  - StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted
+  - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted
   - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
   - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
 ---

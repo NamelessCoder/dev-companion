@@ -767,7 +767,7 @@ final class FeedbackTest extends TestCase
      * `tool` was declared `["string", "array"]` until `D-ANS-017`, and this case
      * is what covered the second branch. It is below the wire — a client sending
      * an array is now refused by the validator before `record()` is reached, and
-     * `StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted`
+     * `StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted`
      * is where that is held. What is left here is the tolerance itself, for a
      * caller standing in this package: a list that reached the recorder would
      * otherwise be dropped without a word, which is the one failure the feedback

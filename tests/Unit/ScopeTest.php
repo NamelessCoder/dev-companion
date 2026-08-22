@@ -34,7 +34,7 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore(): void
+    public function aPathKnownAsSomebodysExtensionIsOutsideTheCore(): void
     {
         // The wording gave nothing away — "bootstrap_package" is an extension
         // key and matches no phrase. The installation knows what it is, and an
@@ -53,7 +53,7 @@ final class ScopeTest extends TestCase
      * path into the core still overrules it — `D-SCO-005`.
      */
     #[Test]
-    public function inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise(): void
+    public function inASiteInstallationTheWorkIsOutsideTheCore(): void
     {
         Instance::discoverFrom($this->composerProject());
 
@@ -70,7 +70,7 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore(): void
+    public function whereNothingPlacesTheWorkTheAnswerSaysSo(): void
     {
         // The third value. Without an installation, without a path with a shape
         // of its own and without a word either way, the old boolean answered
@@ -113,7 +113,7 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore(): void
+    public function whatTheCoreKeepsInBuildIsOnlyTheCores(): void
     {
         // Build/Sources/ is the backend's Sass and TypeScript from the core
         // root — and from a site package's root it is that package's build
@@ -178,7 +178,7 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence(): void
+    public function theNamedInstallationIsTheEvidenceWhereNothingElseIs(): void
     {
         // The other half of the same sentence. A client that starts this server
         // away from the session's own directory breaks the walk-up, and
@@ -225,7 +225,7 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes(): void
+    public function theDeclaredExtensionKeyPlacesAPath(): void
     {
         // The affordance the `paths` parameter documents — an extension key
         // counts as a path — read off the manifest where there is no
@@ -870,7 +870,7 @@ final class ScopeTest extends TestCase
      * looking anything up, so the cost is a prefix rather than a lookup.
      */
     #[Test]
-    public function aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules(): void
+    public function aCoreTaskNamingNoPathKeepsTheSubmissionRules(): void
     {
         Instance::discoverFrom($this->coreCheckout());
 
@@ -966,7 +966,7 @@ final class ScopeTest extends TestCase
      * it, which is the reading `D-KNW-010` and `D-KNW-049` both took.
      */
     #[Test]
-    public function theInterpreterAnEnvironmentDeclaresIsNotDeclinedWithTheOperating(): void
+    public function theDeclaredInterpreterIsNotDeclined(): void
     {
         $declined = array_values(array_filter(
             Coverage::read()['doesNotCover'],
@@ -1056,7 +1056,7 @@ final class ScopeTest extends TestCase
      * read against `src/` rather than believed. `D-FBK-018`.
      */
     #[Test]
-    public function theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact(): void
+    public function theExclusionForPhpSourceKeepsItsQualification(): void
     {
         $excluded = array_values(array_filter(
             Coverage::read()['doesNotCover'],
@@ -1635,7 +1635,7 @@ final class ScopeTest extends TestCase
      * `D-KNW-033`.
      */
     #[Test]
-    public function aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections(): void
+    public function aCoreContributorOnFrontendLosesTheBackendUiSections(): void
     {
         $result = Registry::call('typo3_hint_lookup', [
             'task' => 'Core contribution to the frontend rendering of fluid_styled_content: the CSS and the '

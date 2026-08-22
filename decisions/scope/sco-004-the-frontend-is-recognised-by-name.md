@@ -67,7 +67,7 @@ answer this server writes.
 ## Since then
 
 Both halves are held rather than argued.
-`ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections` is
+`ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections` is
 the loss and
 `ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack` is the
 escape — the second asserts the clause in the notice and then calls with it,

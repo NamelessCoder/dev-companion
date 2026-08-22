@@ -5,7 +5,7 @@ date: 2026-08-02
 status: revoked
 revokedBy: D-ANS-026
 coveredBy:
-  - DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection
+  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
   - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
 ---
 

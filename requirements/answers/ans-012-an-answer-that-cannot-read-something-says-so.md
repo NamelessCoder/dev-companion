@@ -30,6 +30,6 @@ have.
 ## Held by
 
 - `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
-- `ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`
+- `ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable`
 - `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`
-- `ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing`
+- `ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate`

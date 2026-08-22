@@ -4,7 +4,7 @@ title: 'Which site a request matches when two bases collide is a gap'
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::whichOfTwoCollidingSiteBasesWinsIsStatedAndReachedFromTheSymptom
+  - HintsTest::whichOfTwoCollidingSiteBasesWinsIsStated
 ---
 
 # D-KNW-097 — Which site a request matches when two bases collide is a gap

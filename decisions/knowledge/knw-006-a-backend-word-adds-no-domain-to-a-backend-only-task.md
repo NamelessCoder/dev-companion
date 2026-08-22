@@ -4,7 +4,7 @@ title: 'A backend word adds no domain to a backend-only task'
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork
+  - HintsTest::aBackendTaskIsNotCalledFluidAndTypoScriptWork
 ---
 
 # D-KNW-006 — A backend word adds no domain to a backend-only task
@@ -72,5 +72,5 @@ Fluid hint: a curated `appliesTo` phrase crosses the domain gate under
 `D-ANS-084`. So a backend task naming a preview is answered with the Fluid hint
 that is about it, without the domain being opened to everything Fluid.
 
-`HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`
+`HintsTest::aBackendTaskIsNotCalledFluidAndTypoScriptWork`
 holds both sides on five prompts, three of which are recorded scenario prompts.

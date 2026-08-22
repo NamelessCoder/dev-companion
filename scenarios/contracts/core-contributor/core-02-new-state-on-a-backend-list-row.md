@@ -2,7 +2,7 @@
 
 **Environment:** `E-CORE` · **Contract:** `held` — `R-ANS-003` held
 **Held by:**
-`CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
+`CatalogTest::aStatedVersionSaysWhatItDidToTheAnswer`,
 `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`,
 `LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`
 

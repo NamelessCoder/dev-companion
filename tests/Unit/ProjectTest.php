@@ -432,7 +432,7 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
-    public function whereNothingConfiguresAnEnvironmentTheBoundIsStatedAndNoInterpreterIsGuessed(): void
+    public function whereNothingConfiguresAnEnvironmentTheBoundIsStated(): void
     {
         // The commands run in the caller's shell, and this server does not read
         // that shell: it is not the process this answer is composed in, and a
@@ -1624,7 +1624,7 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
-    public function anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing(): void
+    public function anExtbasePluginIsToldApartFromAnElementWithoutATemplate(): void
     {
         // An audit of a real sitepackage on 2026-07-31 was told both of its
         // plugins had "no templateName in this extension's TypoScript" and
@@ -1937,7 +1937,7 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
-    public function aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong(): void
+    public function aRegistrationBuiltInALoopIsNotDeterminable(): void
     {
         // The `news` run of 2026-07-31 was told the extension registers 26
         // icons, two of which are `provider` and `source`: its Icons.php builds
@@ -2249,7 +2249,7 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
-    public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
+    public function anExtensionTheInstallationLacksIsAMissWithTheKeysItHas(): void
     {
         $root = $this->composerProject();
         Instance::discoverFrom($root);

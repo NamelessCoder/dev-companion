@@ -5,7 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest
-  - ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes
+  - ScopeTest::theDeclaredExtensionKeyPlacesAPath
   - ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised
   - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
   - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne

@@ -143,7 +143,7 @@ queries now lead with the hint, *responsive backend component that reacts to its
 container width* still ranks `css-container-queries` first, and
 `bin/cli hints:coverage` is byte-identical before and after, so no hint became
 unreachable.
-`HintsTest::aQueryNamingAModernCssFeatureReachesTheBrowserTargetAndNotASecondPolicy`
+`HintsTest::aQueryNamingAModernCssFeatureReachesTheBrowserTarget`
 holds it.
 
 That list is vocabulary and not the table this entry refused, which is the

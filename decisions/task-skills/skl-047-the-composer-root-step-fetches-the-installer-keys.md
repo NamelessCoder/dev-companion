@@ -4,7 +4,7 @@ title: 'The Composer root step fetches the installer keys'
 date: 2026-08-18
 status: open
 coveredBy:
-  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-SKL-047 — The Composer root step fetches the installer keys

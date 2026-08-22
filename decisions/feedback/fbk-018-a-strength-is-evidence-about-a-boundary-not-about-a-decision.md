@@ -385,7 +385,7 @@ credits was held twice over; the invocation was held by nothing. Dropping
 `targeted` from every entry of `knowledge/test-suite-hints.json` broke no test,
 and `catalog:check` verifies the `-s <suite>` of a command against
 `.checkouts/`, never its options.
-`HintsTest::theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable`
+`HintsTest::theTargetedInvocationKeepsWhatMakesItRunnable`
 names them on the paths the report is about. No statement about TYPO3 was
 established for it: all three are read in
 `.checkouts/main/Build/Scripts/runTests.sh`, where line 6 branches on `CI`,
@@ -617,7 +617,7 @@ by quoting**. The four split on that line exactly. The preconditions are a block
 of `knowledge/test-suite-hints.json` and `reviews` is a key
 `ForgeLookup::outputSchema()` requires, so both were held already —
 `KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`,
-`HintsTest::theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable`
+`HintsTest::theTargetedInvocationKeepsWhatMakesItRunnable`
 and `ForgeTest` on the extraction. The other two are sentences inside a document
 and a skill, reachable only as strings, and both rested on nobody rewriting the
 file.
@@ -765,7 +765,7 @@ plugin-type statement was in no assertion either and is held by the test named
 below. The conditions hint was guarded for the variable list, the event and the
 silent failure, and not for the clause that refuses the obvious substitution;
 that clause is added to
-`whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem`. The two
+`whichGlobalsAConditionCanReadIsBoundToItsMajor`. The two
 failure modes the report would not change are guarded already —
 `PackageSourcesTest::theTagListTravelsWithAHitAsWellAsWithAMiss` for the tag
 list, and `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre` for the miss
@@ -836,19 +836,19 @@ boundary it names and the guard it left. `D-DOC-041` is why they were judged.
   axis was read off `SetupService::getAvailableDistributions()` rather than
   supplied by the reader. The boundary is what an answer hands the caller to
   check against what it asks the caller to believe.
-  `aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict` and three
+  `aBootBriefCarriesTheTestThatDecidesABranch` and three
   assertions beside it hold what it asked be kept.
 - `2026-08-18-074305` on 2026-08-18, after five corpora in which the credit was
   misplaced and the first in which it was not. The boundary is what a session
   can settle when the answer arrives against what it would have to be reminded
   of later, and its caveat prices `D-SKL-051` rather than contradicting it.
   `ProjectTest::everySiteIsNamedWithTheBaseAndTheRootPageItCarries` and
-  `theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists` hold the
+  `theSetupItemsArriveUnderTheirGuard` hold the
   two.
 - `2026-08-18-080743` on 2026-08-18. The praised exclusion is true, which the
   reading of `2026-08-01-121852` above requires be checked rather than assumed.
   The boundary is what an orientation answer is worth to a caller that has
   already decided, and the same answer carried the routing line that would have
   changed an action.
-  `ScopeTest::theExclusionForPhpSourceKeepsTheQualificationThatMakesItExact`
+  `ScopeTest::theExclusionForPhpSourceKeepsItsQualification`
   holds it.

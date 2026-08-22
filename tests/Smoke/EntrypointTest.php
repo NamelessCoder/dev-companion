@@ -57,7 +57,7 @@ final class EntrypointTest extends TestCase
      * `D-AUD-005`.
      */
     #[Test]
-    public function anExcludedNameNoToolAnswersToIsSaidOnStderrAndStdoutStaysProtocol(): void
+    public function anExcludedNameNoToolAnswersToIsSaidOnStderr(): void
     {
         $stderr = '';
         $stdout = '';

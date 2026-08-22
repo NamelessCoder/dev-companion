@@ -4,7 +4,7 @@ title: 'A hint is reached by the role of a file'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::aFileBelowAnExtensionIsAnsweredByItsRoleRatherThanByTheExtension
+  - HintsTest::aFileBelowAnExtensionIsAnsweredByItsRole
   - HintsTest::anExtbasePluginHasAHintOfItsOwn
   - HintsTest::everyHintIsReachedByItsOwnTitle
 ---

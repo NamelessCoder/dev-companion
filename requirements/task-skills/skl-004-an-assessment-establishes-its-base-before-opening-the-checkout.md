@@ -79,8 +79,8 @@ where the skipping is what was refused and the reading is what was cut.
 - `SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList`
 - `SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`
 - `HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`
-- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
-- `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
+- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface`
+- `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOne`,
 - `REVIEW-01`, `REVIEW-02`, `SKILL-09`, `SKILL-11` — the last two measure the
   escaping half and the focused half, because the test beside each of them reads
   a sentence rather than a review.

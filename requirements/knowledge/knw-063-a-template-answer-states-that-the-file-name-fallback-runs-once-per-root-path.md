@@ -44,5 +44,5 @@ skipped for the whole list as soon as one key in it is a string.
 
 ## Held by
 
-- `HintsTest::aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath`
-- `HintsTest::theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt`
+- `HintsTest::theFileNameFallbackIsStatedAsOncePerRootPath`
+- `HintsTest::theFluidFileExtensionIsWithheldWhereItDoesNotResolve`

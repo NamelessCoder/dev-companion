@@ -6,8 +6,8 @@
 `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`,
 `ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep`,
 `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
-`ScopeTest::aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
-`ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
+`ScopeTest::aPathKnownAsSomebodysExtensionIsOutsideTheCore`,
+`ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSo`
 
 > I am touching `packages/acme_events/Classes/Domain/Repository/EventRepository.php`
 > and `typo3/sysext/core/Classes/Database/Query/QueryBuilder.php` in the same

@@ -390,7 +390,7 @@ final class PackageSourcesTest extends TestCase
      * session away from it — `D-ANS-043`.
      */
     #[Test]
-    public function aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo(): void
+    public function aMissThatOffersARequeryNamesTheCorpusToAskNext(): void
     {
         $root = $this->composerProject();
         $this->changelogEntry($root, '14.2', 'Deprecation-109412-FormYamlConfigurationRegistration', 'Deprecation: #109412 - TypoScript-based form YAML registration', ['ext:form']);
@@ -540,7 +540,7 @@ final class PackageSourcesTest extends TestCase
     }
 
     #[Test]
-    public function anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty(): void
+    public function anInstallationWithoutAChangelogSaysSo(): void
     {
         Instance::discoverFrom($this->composerProject());
 

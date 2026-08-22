@@ -4,7 +4,7 @@ title: 'The ViewHelper reference is indexed'
 date: 2026-08-02
 status: open
 coveredBy:
-  - DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection
+  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
   - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
 ---
 

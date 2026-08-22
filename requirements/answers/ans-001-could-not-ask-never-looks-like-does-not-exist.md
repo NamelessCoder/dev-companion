@@ -38,6 +38,6 @@ installation that had just listed 27 packages.
 
 - `ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse`
 - `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
-- `ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer`
+- `ToolContractTest::anInstallationBackedSchemaOffersEitherShape`
 - `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`
 - `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`

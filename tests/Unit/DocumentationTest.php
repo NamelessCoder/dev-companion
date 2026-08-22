@@ -142,7 +142,7 @@ final class DocumentationTest extends TestCase
     }
 
     #[Test]
-    public function aTcaQuestionIsAnsweredFromTheTcaReferenceRatherThanFromWhatElseCarriesTheWord(): void
+    public function aTcaQuestionIsAnsweredFromTheTcaReference(): void
     {
         // TYPO3 Explained documents everything around TCA and not TCA itself,
         // so this used to come back as the events that carry "inline" and
@@ -165,7 +165,7 @@ final class DocumentationTest extends TestCase
      * was indexed first (`D-ANS-029`) — `D-ANS-032`.
      */
     #[Test]
-    public function aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord(): void
+    public function aPageTitledAfterItsSubjectOutranksALongerTitle(): void
     {
         $answer = (new Documentation($this->manuals()))->lookup(['inline'], '14.3', 2);
 
@@ -183,7 +183,7 @@ final class DocumentationTest extends TestCase
      * — `D-ANS-026`.
      */
     #[Test]
-    public function aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection(): void
+    public function aViewHelperQuestionReachesTheManualOutsideTheCollection(): void
     {
         $answer = (new Documentation($this->manuals()))->lookup(
             ['f:if f:then f:else condition ViewHelper'],

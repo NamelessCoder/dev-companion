@@ -4,7 +4,7 @@ title: 'A stated change type keeps the skeleton'
 date: 2026-08-04
 status: open
 coveredBy:
-  - HintsTest::aReviewThatStatesTheTypeOfThePatchUnderReviewNamesWhatItRemoves
+  - HintsTest::aReviewThatStatesThePatchTypeNamesWhatItRemoves
   - HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist
   - HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief
   - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore

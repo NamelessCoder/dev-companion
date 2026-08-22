@@ -7,7 +7,7 @@ coveredBy:
   - HintsTest::nothingIsTaggedAnyWithoutSayingWhy
   - HintsTest::hintsAreGroupedByDomainWithPhpFirst
   - HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions
-  - ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections
+  - ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections
 ---
 
 # D-KNW-033 — No hint carries `any`

@@ -21,6 +21,6 @@ the required one — with no lever available (2026-07-29).
 ## Held by
 
 - `InstanceTest::anInstallationNamedOutrightIsReadWithoutAnySearch`
-- `InstanceTest::aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast`
+- `InstanceTest::aNamedInstallationThatIsNotThereIsReported`
 - `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`
 - `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`

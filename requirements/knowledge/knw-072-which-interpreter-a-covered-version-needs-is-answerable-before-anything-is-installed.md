@@ -38,6 +38,6 @@ the same relation inside `typo3_project_describe` is a todo of its own
 
 ## Held by
 
-- `HintsTest::whichInterpreterAVersionNeedsIsAnsweredBeforeAnythingIsInstalled`
+- `HintsTest::whichInterpreterAVersionNeedsIsAnsweredFirst`
 - `HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange`
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+- `SkillTest::anInstallationIsBuiltInDependencyOrder`

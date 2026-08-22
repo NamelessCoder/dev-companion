@@ -34,5 +34,5 @@ where the five cases and `uncertain` are the enum the code answers with.
 
 - `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`
 - `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`
-- `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
-- `ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore`
+- `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSo`
+- `ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCores`

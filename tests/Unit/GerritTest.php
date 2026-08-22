@@ -91,7 +91,7 @@ final class GerritTest extends TestCase
      * has no signal at all that it is spurious — `D-ANS-055`.
      */
     #[Test]
-    public function aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered(): void
+    public function aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered(): void
     {
         $gerrit = new Gerrit(static fn(): string => self::BOTH);
 
@@ -323,7 +323,7 @@ final class GerritTest extends TestCase
      * sibling from the tracker.
      */
     #[Test]
-    public function aChangeNamedByItsNumberIsAnsweredWithTheSiblingsSharingItsChangeId(): void
+    public function aChangeNamedByItsNumberAnswersWithItsSiblings(): void
     {
         $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {

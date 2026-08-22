@@ -188,7 +188,7 @@ another set of versions, so a bug report whose cause is such a removal read as a
 premise the task did not meet and the skill stayed shut for a whole session
 (`D-SKL-061 <../../decisions/task-skills/skl-061-the-upgrade-description-is-reachable-from-a-defect.md>`_).
 A premise is rewritten with the body it governs, and
-``SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval``
+``SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill``
 holds that pair.
 
 It names **every side of the domain the skill owns**, and a skill that owns two

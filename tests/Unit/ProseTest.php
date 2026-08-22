@@ -53,7 +53,7 @@ final class ProseTest extends TestCase
     }
 
     #[Test]
-    public function everyRequirementAndDecisionOpensWithASentenceAReaderCanStopAfter(): void
+    public function everyEntryOpensWithASentenceAReaderCanStopAfter(): void
     {
         $over = Prose::leadsOverTheMeasure();
 

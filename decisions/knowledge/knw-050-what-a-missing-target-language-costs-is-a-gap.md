@@ -5,7 +5,7 @@ date: 2026-08-03
 status: open
 coveredBy:
   - HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt
-  - HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn
+  - HintsTest::whatAMissingTargetLanguageCostsIsWithheldWhereItIsFree
 ---
 
 # D-KNW-050 — What a missing `target-language` costs is a gap

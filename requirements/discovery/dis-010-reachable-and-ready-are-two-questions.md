@@ -52,7 +52,7 @@ platform check Composer had already written for `>= 8.5.0`.
 
 ## Held by
 
-- `Typo3CliTest::aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs`
+- `Typo3CliTest::aStoppedProjectOnHostPhpIsReportedAsAHalfAnswer`
 - `Typo3CliTest::aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp`
 - `Typo3CliTest::thePhpBoundComesFromTheInstallWhereTheManifestStatesNone`
 - `Typo3CliTest::anInstallWithNoPlatformCheckBoundsNothing`

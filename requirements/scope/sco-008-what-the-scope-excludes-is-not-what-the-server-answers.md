@@ -29,4 +29,4 @@ signal that cost confidence rather than time (2026-07-29).
 
 - `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers`
 - `ScopeTest::noExclusionDeniesASourceTheServerReads`
-- `ScopeTest::theInterpreterAnEnvironmentDeclaresIsNotDeclinedWithTheOperating`
+- `ScopeTest::theDeclaredInterpreterIsNotDeclined`

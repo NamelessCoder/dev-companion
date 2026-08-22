@@ -26,7 +26,7 @@ patched, the false positive said a merged change already existed.
 
 ## Held by
 
-- `GerritTest::aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered`
+- `GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered`
 - `GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed`
 - `GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty`
 - `GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone`

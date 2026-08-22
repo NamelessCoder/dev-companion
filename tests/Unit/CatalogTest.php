@@ -49,7 +49,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function anInstallationWithoutTranslationDomainsIsGivenTheFileReference(): void
+    public function anInstallationWithoutDomainsIsGivenTheFileReference(): void
     {
         // The domain string is syntactically fine on a version that cannot
         // resolve it, and every label written with it renders empty. This is
@@ -206,7 +206,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aComponentMatchedByItsOwnNameOutranksOneMatchedDeepInAClassList(): void
+    public function aComponentMatchedByItsOwnNameOutranksOneInAClassList(): void
     {
         $components = Components::find('card');
 
@@ -254,7 +254,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aQueryTheCatalogWasNotWrittenForIsAMissRatherThanItsNearestWords(): void
+    public function aQueryTheCatalogWasNotWrittenForIsAMiss(): void
     {
         // Three components came back for this, each on one word out of five:
         // Dropdown and Form Inputs through a keyword, Card because its summary
@@ -274,7 +274,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom(): void
+    public function aStatedVersionSaysWhatItDidToTheAnswer(): void
     {
         $result = Registry::call('typo3_component_lookup', ['query' => 'badge', 'targetVersion' => '14.3']);
 
@@ -288,7 +288,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver(): void
+    public function aComponentNotVerifiedOnTheTargetIsDeclined(): void
     {
         // The skew sentence named the difference without acting on it. Markup
         // taken from one revision either holds on the stated version or it does
@@ -311,7 +311,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor(): void
+    public function aComponentVerifiedOnTheTargetCarriesItsRange(): void
     {
         $result = Registry::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '14.3']);
 
@@ -324,7 +324,7 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function withoutATargetTheWholeCatalogAnswersAndEachEntryCarriesItsRange(): void
+    public function withoutATargetEachEntryCarriesItsRange(): void
     {
         // Nobody said which version this is for, so nothing is withheld and the
         // caller is told the range instead — the same rule the hints follow.

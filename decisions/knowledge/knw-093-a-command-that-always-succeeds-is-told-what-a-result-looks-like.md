@@ -4,7 +4,7 @@ title: 'A command that always succeeds is told what a result looks like'
 date: 2026-08-18
 status: confirmed
 coveredBy:
-  - HintsTest::aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator
+  - HintsTest::aCommandThatAlwaysSucceedsCarriesItsDiscriminator
 ---
 
 # D-KNW-093 — A command that always succeeds is told what a result looks like

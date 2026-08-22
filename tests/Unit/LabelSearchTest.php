@@ -72,7 +72,7 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
-    public function aWordInsideATransUnitIdCountsAlthoughNoWordBoundaryPrecedesIt(): void
+    public function aWordInsideATransUnitIdCountsWithoutABoundary(): void
     {
         // An underscore is a word character, so anchoring the match would drop
         // exactly the ids a caller searches by.
@@ -203,7 +203,7 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
-    public function aConsoleThatExitsWellAndSaysNothingAtAllIsUnansweredRatherThanEmpty(): void
+    public function aConsoleThatExitsWellAndSaysNothingIsUnanswered(): void
     {
         // Same failure with nothing behind it to fall back on: what must not
         // happen is a matchCount of 0 under answeredBy "installation", because
@@ -232,7 +232,7 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
-    public function whatEachWordReachesOnItsOwnIsInTheAnswerRatherThanOnlyInTheText(): void
+    public function whatEachWordReachesIsInTheAnswerAndNotOnlyTheText(): void
     {
         $this->consoleThatPrints((string) json_encode(['items' => [[
             'resource' => 'EXT:backend/Resources/Private/Language/locallang.xlf',

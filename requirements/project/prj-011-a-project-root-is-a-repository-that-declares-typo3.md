@@ -38,5 +38,5 @@ and `D-ANS-085` names admitting too much as the way that goes wrong.
 
 - `InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares`
 - `InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot`
-- `InstanceTest::aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither`
+- `InstanceTest::aNamedInstallationThatIsNotThereIsNotWalkedPast`
 - `ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne`

@@ -4,7 +4,7 @@ title: 'A plugin is a kind of content element'
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing
+  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate
   - ProjectTest::aPluginTheInstallationReportsIsStillToldApart
 ---
 
@@ -117,7 +117,7 @@ ever going to write.
 The split holds and none of the four **Wrong if** has been reported. A plugin
 still answers `kind: plugin` with `pluginSettings` beside it and an element
 answers with a `templateName`, and
-`ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing`
+`ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate`
 holds both halves.
 
 The second is the one this entry could only answer in prose, and the prose is

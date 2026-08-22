@@ -23,5 +23,5 @@ Four confidently inverted hints for a Bootstrap 5 frontend theme (2026-07-29).
 - `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`
 - `HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`
 - `HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`
-- `ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections`
+- `ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections`
 - `ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack`

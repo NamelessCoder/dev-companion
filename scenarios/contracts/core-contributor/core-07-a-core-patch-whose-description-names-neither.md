@@ -1,7 +1,7 @@
 # CORE-07 — A core patch whose description names neither the path nor Gerrit
 
 **Environment:** `E-CORE` · **Contract:** `held` — `R-SCO-003`
-**Held by:** `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`,
+**Held by:** `ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules`,
 `ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact`,
 `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
 

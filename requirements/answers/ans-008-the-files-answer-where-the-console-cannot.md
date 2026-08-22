@@ -29,6 +29,6 @@ the files and both console-backed lookups returned a raw SQL stack trace
 - `PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne`
 - `LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`
 - `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing`
-- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingAtAllIsUnansweredRatherThanEmpty`
+- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingIsUnanswered`
 - `LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`
 - `Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`

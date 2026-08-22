@@ -4,7 +4,7 @@ title: A listed neighbour says what it prevents
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::anUndeclaredContentAreaIsSaidToThrowAndTheEmptyOneToRenderNothing
+  - HintsTest::anUndeclaredContentAreaIsSaidToThrow
 ---
 
 # D-KNW-087 — A listed neighbour says what it prevents

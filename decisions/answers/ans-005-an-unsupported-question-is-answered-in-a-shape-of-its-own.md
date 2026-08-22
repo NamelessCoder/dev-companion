@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
   - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
-  - ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer
+  - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
   - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
 ---
 

@@ -138,10 +138,10 @@ touches TYPO3 API, and said so nowhere in its report — `D-SKL-037`.
 
 - `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`
 - `SkillTest::theWorkflowStepRunsInEverySession`
-- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
-- `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
+- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface`
+- `SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched`
 - `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
-- `SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound`
+- `SkillTest::theInstalledSourceIsTheStepAfterTheLookups`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
-- `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`
+- `InstallerTest::codexInstallAndUpdateTrackTheirSkillsCentrally`

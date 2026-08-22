@@ -27,4 +27,4 @@ not `[a-z0-9_]` was stripped from the field (2026-07-29).
 - `FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord`
 - `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares`
 - `FeedbackTest::theListCanBeRestrictedToOneTool`
-- `StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted`
+- `StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted`

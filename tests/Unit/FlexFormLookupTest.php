@@ -57,7 +57,7 @@ final class FlexFormLookupTest extends TestCase
     }
 
     #[Test]
-    public function theStructureIsTheOneTheInstallationResolvedForTheRecordPassed(): void
+    public function theStructureIsTheOneTheInstallationResolved(): void
     {
         $this->discover(takesTheSchema: true);
 
@@ -208,7 +208,7 @@ final class FlexFormLookupTest extends TestCase
      * the fields that state something about an installation is there.
      */
     #[Test]
-    public function anInstallationThatCouldNotBeBootedIsNotAColumnWithoutAStructure(): void
+    public function anInstallationThatCouldNotBeBootedIsNotAnEmptyColumn(): void
     {
         $this->discover(boots: false);
 

@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake
   - EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre
-  - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory
+  - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProject
   - EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf
   - EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing
   - EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory

@@ -46,7 +46,7 @@ with Developing a custom ViewHelper and the Translate ViewHelper.
 
 ## Held by
 
-- `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
+- `DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection`
 - `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
 - `DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName`
 - `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`

@@ -5,7 +5,7 @@ the rest of it renders · **Contract:** `held`
 **Held by:** `HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows`
 holds that both halves of a failing installation are stated and reached from the
 symptom's own words,
-`SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
+`SkillTest::anInstallationIsBuiltInDependencyOrder`
 that the workflow which owns a running installation names that lookup before it
 proves anything, and
 `HintsTest::aRequestForACauseIsAnsweredWithWhatFindingOneNeeds` that a request

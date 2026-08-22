@@ -4,7 +4,7 @@ title: 'A hint is routed by what the repository is'
 date: 2026-08-18
 status: open
 coveredBy:
-  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-SKL-058 — A hint is routed by what the repository is

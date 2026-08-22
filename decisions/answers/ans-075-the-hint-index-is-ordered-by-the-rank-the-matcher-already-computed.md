@@ -8,7 +8,7 @@ coveredBy:
   - HintsTest::theIdsOfferedAreTheOnesThatMajorHas
   - HintsTest::theIndexIsNotOfferingWhatTheSameAnswerWithheld
   - HintsTest::aMissNamesWhatThereWouldHaveBeenToFind
-  - HintsTest::anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn
+  - HintsTest::anAnswerStillNamesTheIdsItDidNotReturn
 ---
 
 # D-ANS-075 — The hint index is ordered by the rank the matcher already computed

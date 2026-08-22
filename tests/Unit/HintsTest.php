@@ -211,7 +211,7 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function aDistributedExtensionIsNotAnsweredWithTheProjectRepositoryLayout(): void
+    public function aDistributedExtensionIsNotAnsweredWithTheProjectLayout(): void
     {
         // The two hints describe different repositories, and the one that was
         // written first describes the one with an installation in it. A review
@@ -242,7 +242,7 @@ final class HintsTest extends TestCase
      * session exactly where the report found it — `D-KNW-053`.
      */
     #[Test]
-    public function installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing(): void
+    public function installingTypo3BeneathTheExtensionNamesTheInertKey(): void
     {
         // The feedback's own query, which used to reach the manifest and the
         // project scripts, and the narrowed one, which reached nothing at all.
@@ -290,7 +290,7 @@ final class HintsTest extends TestCase
      * the form stays one form rather than three.
      */
     #[Test]
-    public function aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator(): void
+    public function aCommandThatAlwaysSucceedsCarriesItsDiscriminator(): void
     {
         // impexp:export answers [OK] whatever it left out of the artifact.
         $text = self::statementsOf('impexp-artifact');
@@ -383,7 +383,7 @@ final class HintsTest extends TestCase
      * uses on 12.4.
      */
     #[Test]
-    public function whichOfTwoCollidingSiteBasesWinsIsStatedAndReachedFromTheSymptom(): void
+    public function whichOfTwoCollidingSiteBasesWinsIsStated(): void
     {
         // The feedback's own task, and the symptom stripped of the project it
         // arrived from. Neither reached the mechanism before this hint: the
@@ -437,7 +437,7 @@ final class HintsTest extends TestCase
      * for a class asked for without arguments reads the same on all four.
      */
     #[Test]
-    public function whatAnExtensionMayBuildBehindAConditionProviderIsStatedAndReached(): void
+    public function whatAnExtensionMayBuildBehindAConditionProviderIsStated(): void
     {
         // The three queries `D-KNW-100` measured as reaching nothing.
         foreach ([
@@ -501,7 +501,7 @@ final class HintsTest extends TestCase
      * still reaches the collision without this one beside it.
      */
     #[Test]
-    public function whereASiteNobodyWroteCameFromIsStatedAndLeavesTheSymptomWhereItWas(): void
+    public function whereASiteNobodyWroteCameFromIsStated(): void
     {
         // The provenance query D-KNW-098 measured, which answered
         // site-label-language first, and the mechanism named outright, which
@@ -561,7 +561,7 @@ final class HintsTest extends TestCase
      * messages and on the restrictions each query carries — `D-KNW-105`.
      */
     #[Test]
-    public function whatANotFoundMeansOnceASiteAnsweredIsStatedAndReachedFromTheSymptom(): void
+    public function whatANotFoundMeansOnceASiteAnsweredIsReached(): void
     {
         // The message as a caller would paste it, the seeding case the fact was
         // buried in, and the two records that produce it.
@@ -632,7 +632,7 @@ final class HintsTest extends TestCase
      * reach it — that caller has runTests.sh and a configuration already there.
      */
     #[Test]
-    public function settingUpTheAnalysisReachesTheExtensionHintAndACoreTaskDoesNot(): void
+    public function settingUpTheAnalysisReachesTheExtensionHint(): void
     {
         $setup = Hints::find([], 'how do I set up phpstan for my extension', 6);
 
@@ -843,7 +843,7 @@ final class HintsTest extends TestCase
      * inside one root path before the next is tried — `D-KNW-052`.
      */
     #[Test]
-    public function aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath(): void
+    public function theFileNameFallbackIsStatedAsOncePerRootPath(): void
     {
         // The path the audit had in hand, and then the question in the words it
         // would be asked in — which used to fall to the PHP domain before
@@ -893,7 +893,7 @@ final class HintsTest extends TestCase
      * the resolver there never asks for — `D-KNW-052`.
      */
     #[Test]
-    public function theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt(): void
+    public function theFluidFileExtensionIsWithheldWhereItDoesNotResolve(): void
     {
         $on = static fn(int $major): string => implode(
             "\n",
@@ -970,7 +970,7 @@ final class HintsTest extends TestCase
      * page throws once and then renders nothing.
      */
     #[Test]
-    public function anObjectPathIsAnsweredWithTheGetterThatComesBeforeTheProperty(): void
+    public function anObjectPathIsAnsweredWithTheGetterFirst(): void
     {
         foreach ([
             'Fluid object accessor resolution getter isser hasser method before public property',
@@ -1045,7 +1045,7 @@ final class HintsTest extends TestCase
      * condition runs.
      */
     #[Test]
-    public function aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest(): void
+    public function aConditionIsAnsweredWithWhatItIsHanded(): void
     {
         $held = Hints::find([], 'typoscript condition variables page request', 6);
         self::assertSame('typoscript-conditions', $held['matchedHints'][0]['id']);
@@ -1076,7 +1076,7 @@ final class HintsTest extends TestCase
      * either way — `D-KNW-101`.
      */
     #[Test]
-    public function whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem(): void
+    public function whichGlobalsAConditionCanReadIsBoundToItsMajor(): void
     {
         $on = static fn(int $major): string => implode(
             "\n",
@@ -1233,7 +1233,7 @@ final class HintsTest extends TestCase
      * second, coarser copy of the policy, which is the one such a query reached.
      */
     #[Test]
-    public function aQueryNamingAModernCssFeatureReachesTheBrowserTargetAndNotASecondPolicy(): void
+    public function aQueryNamingAModernCssFeatureReachesTheBrowserTarget(): void
     {
         foreach ([
             'container query for a stuck element',
@@ -1353,7 +1353,7 @@ final class HintsTest extends TestCase
      * `D-KNW-078`.
      */
     #[Test]
-    public function theShapeOfARecordSourcedRowNamesTheFieldsThatMovedAndTheSilentRead(): void
+    public function theShapeOfARecordSourcedRowNamesTheFieldsThatMoved(): void
     {
         // The feedback's own query, which reached three hints about other
         // layers and nothing about this one.
@@ -1421,7 +1421,7 @@ final class HintsTest extends TestCase
      * carries no `dataProcessing` block at all.
      */
     #[Test]
-    public function whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows(): void
+    public function whatAPartialRowCostsIsReachedFromItsException(): void
     {
         // The query the reporting session says it would have made, in the words
         // it had: the class, the code and the field the first message named.
@@ -1457,7 +1457,7 @@ final class HintsTest extends TestCase
      * of a failure the caller cannot have — `D-KNW-099`.
      */
     #[Test]
-    public function whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway(): void
+    public function whatAPartialRowCostsIsWithheldWhereItRenders(): void
     {
         self::assertNull(Hints::byId('content-element-record-row', 13));
         self::assertNotNull(Hints::byId('content-element-record-row', 14));
@@ -1556,7 +1556,7 @@ final class HintsTest extends TestCase
     #[Test]
     #[TestWith(['12'])]
     #[TestWith(['13'])]
-    public function whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn(string $targetVersion): void
+    public function whatAMissingTargetLanguageCostsIsWithheldWhereItIsFree(string $targetVersion): void
     {
         $result = Registry::call('typo3_hint_lookup', [
             'id' => 'language-files',
@@ -1673,7 +1673,7 @@ final class HintsTest extends TestCase
     #[TestWith(['minimum PHP version'])]
     #[TestWith(['php_version'])]
     #[TestWith(['supported PHP versions'])]
-    public function whichInterpreterAVersionNeedsIsAnsweredBeforeAnythingIsInstalled(string $task): void
+    public function whichInterpreterAVersionNeedsIsAnsweredFirst(string $task): void
     {
         self::assertSame('php-versions', Hints::find([], $task, 6)['matchedHints'][0]['id']);
 
@@ -2330,7 +2330,7 @@ final class HintsTest extends TestCase
      * miss is at most as long as the miss beside it — `D-ANS-075`.
      */
     #[Test]
-    public function anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn(): void
+    public function anAnswerStillNamesTheIdsItDidNotReturn(): void
     {
         $result = Registry::call('typo3_hint_lookup', [
             'task' => 'coding standards php-cs-fixer setup for an extension',
@@ -2431,7 +2431,7 @@ final class HintsTest extends TestCase
      * question. What was missing is the rule — `D-FBK-038`.
      */
     #[Test]
-    public function whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt(): void
+    public function whetherARemovalIsBreakingIsAnsweredWithoutTheMarker(): void
     {
         $reached = array_column(
             Hints::find([], 'is removing this internal method breaking', 6)['matchedHints'],
@@ -2626,7 +2626,7 @@ final class HintsTest extends TestCase
      * holding no records — so the two are asserted apart rather than together.
      */
     #[Test]
-    public function anUndeclaredContentAreaIsSaidToThrowAndTheEmptyOneToRenderNothing(): void
+    public function anUndeclaredContentAreaIsSaidToThrow(): void
     {
         $texts = static fn(int $major): string => implode("\n", array_column(
             Hints::byId('page-content-areas', $major)['hints'],
@@ -2826,7 +2826,7 @@ final class HintsTest extends TestCase
      * hint that answers everything is reached by all of it.
      */
     #[Test]
-    public function aFileBelowAnExtensionIsAnsweredByItsRoleRatherThanByTheExtension(): void
+    public function aFileBelowAnExtensionIsAnsweredByItsRole(): void
     {
         $result = Hints::find(
             [
@@ -2980,7 +2980,7 @@ final class HintsTest extends TestCase
      * generator writes the DB block unconditionally — `D-KNW-049`.
      */
     #[Test]
-    public function theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes(): void
+    public function theDdevSettingsAnswerNamesEverySectionItGenerates(): void
     {
         $result = Hints::find(
             [],
@@ -3051,7 +3051,7 @@ final class HintsTest extends TestCase
      * unchanged.
      */
     #[Test]
-    public function aBootBriefCarriesTheTestThatDecidesABranchAndNotOnlyItsVerdict(): void
+    public function aBootBriefCarriesTheTestThatDecidesABranch(): void
     {
         $checklist = implode("\n", Registry::call('typo3_task_guide', [
             'task' => 'Boot the local DDEV development installation for the blog extension repository: '
@@ -3084,7 +3084,7 @@ final class HintsTest extends TestCase
      * the install tool half on its own.
      */
     #[Test]
-    public function theAdminPasswordIsAnsweredWithWhatItAlsoBecomesAndHowItIsRecovered(): void
+    public function theAdminPasswordIsAnsweredWithHowItIsRecovered(): void
     {
         $checklist = implode("\n", Registry::call('typo3_task_guide', [
             'task' => 'Install TYPO3 unattended and report the backend user to whoever asked for the installation',
@@ -3255,7 +3255,7 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function persistedAliasesStateBothDirectionsAndTheirValidationBoundary(): void
+    public function persistedAliasesStateBothDirections(): void
     {
         $query = 'What does PersistedAliasMapper map, which value belongs in the query argument, and why is there no cHash?';
         $result = Hints::find(
@@ -3314,7 +3314,7 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function thePublicAssetAnswerSeparatesTheSupportedRouteFromTheInternalStaticBesideIt(): void
+    public function thePublicAssetAnswerSeparatesTheSupportedRoute(): void
     {
         // The query an audit of a v14 extension arrived with. What came back
         // named the factory and the publisher, and named
@@ -4079,7 +4079,7 @@ final class HintsTest extends TestCase
      * installed distribution per major.
      */
     #[Test]
-    public function whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff(): void
+    public function whatAComposerInstallationGeneratesIsNamed(): void
     {
         // The feedback's own query, which reached the hint that defers, and the
         // three the generated files were unreachable under.
@@ -4158,7 +4158,7 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures(): void
+    public function theCTypeTemplateDerivationIsAttributedToItsTheme(): void
     {
         // `D-KNW-082`. The derivation was stated as a property of
         // lib.contentElement and belongs to theme_camino, so a project that
@@ -4211,7 +4211,7 @@ final class HintsTest extends TestCase
      * `extension-asset-build` on a query about a sass build.
      */
     #[Test]
-    public function anAssetThatNeverReachesThePageIsAnsweredByTheLayoutThatSwallowedIt(): void
+    public function anAssetThatNeverReachesThePageIsAnsweredByItsLayout(): void
     {
         $text = self::statementsOf('fluid-layouts-sections');
         self::assertStringContainsString('<f:asset.css>', $text);
@@ -4650,7 +4650,7 @@ final class HintsTest extends TestCase
      * backend it is administered from.
      */
     #[Test]
-    public function aBackendOnlyTaskNamingAContentElementIsNotAnsweredWithTheSitepackageLayout(): void
+    public function aBackendTaskIsNotAnsweredWithTheSitepackageLayout(): void
     {
         foreach ([
             'Add a TCA field to the content element in the backend',
@@ -4678,7 +4678,7 @@ final class HintsTest extends TestCase
      * task names only the backend (`D-KNW-006`).
      */
     #[Test]
-    public function aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork(): void
+    public function aBackendTaskIsNotCalledFluidAndTypoScriptWork(): void
     {
         foreach ([
             'Add a TCA field to the content element in the backend',
@@ -4989,7 +4989,7 @@ final class HintsTest extends TestCase
      * `--dry-run --diff`.
      */
     #[Test]
-    public function theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable(): void
+    public function theTargetedInvocationKeepsWhatMakesItRunnable(): void
     {
         $answer = Registry::call('typo3_test_run_guide', [
             'query' => 'functional unit cgl phpstan',
@@ -5804,7 +5804,7 @@ final class HintsTest extends TestCase
      * password in your reply" as a step of a repair.
      */
     #[Test]
-    public function theSetupItemsArriveUnderTheirGuardWhereTheInstallationAlreadyExists(): void
+    public function theSetupItemsArriveUnderTheirGuard(): void
     {
         $brief = Registry::call('typo3_task_guide', [
             'task' => 'Blog extension development installation was set up, backend works but frontend '
@@ -5909,7 +5909,7 @@ final class HintsTest extends TestCase
      * never reached it (`D-GUI-009`).
      */
     #[Test]
-    public function aReviewThatStatesTheTypeOfThePatchUnderReviewNamesWhatItRemoves(): void
+    public function aReviewThatStatesThePatchTypeNamesWhatItRemoves(): void
     {
         $result = Registry::call('typo3_task_guide', [
             'task' => 'review the core patch replacing GD-based error thumbnails with a static SVG placeholder',

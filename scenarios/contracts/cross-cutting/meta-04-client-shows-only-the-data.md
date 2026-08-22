@@ -4,7 +4,7 @@
 drops the text block · **Contract:** `held` — `R-ANS-002`
 **Held by:** `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`,
 `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
-`LabelSearchTest::whatEachWordReachesOnItsOwnIsInTheAnswerRatherThanOnlyInTheText`
+`LabelSearchTest::whatEachWordReachesIsInTheAnswerAndNotOnlyTheText`
 
 > Same task as `SITE-03`, run in that client.
 

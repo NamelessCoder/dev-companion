@@ -4,7 +4,7 @@ title: 'A change answers for an issue its commit message names'
 date: 2026-08-05
 status: open
 coveredBy:
-  - GerritTest::aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered
+  - GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered
   - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
   - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
   - GerritTest::theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt

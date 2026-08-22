@@ -3,7 +3,7 @@
 **Environment:** `E-SITE`, with Codex project configuration containing unrelated
 settings · **Contract:** `held` — `R-DIS-012`
 **Held by:**
-`InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`,
+`InstallerTest::codexInstallAndUpdateTrackTheirSkillsCentrally`,
 `InstallerTest::codexInstallRefusesAConflictingServerEntry`,
 `InstallerTest::codexUpdateReplacesAModifiedGeneratedSkill`
 

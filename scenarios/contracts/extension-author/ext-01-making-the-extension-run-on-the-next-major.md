@@ -5,7 +5,7 @@ workflow exists since 2026-07-31 and owns the order this case asks for
 **Held by:** `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`,
 `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`,
 `SkillTest::anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts`,
-`SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`;
+`SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface`;
 that a session works in that order is `not guarded`, and by `D-EVI-002`'s
 reasoning no forward run will hold it — the wording is the proxy
 

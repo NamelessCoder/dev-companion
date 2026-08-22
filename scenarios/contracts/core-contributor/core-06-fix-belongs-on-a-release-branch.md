@@ -3,7 +3,7 @@
 **Environment:** `E-CORE`, checked out on a release branch · **Contract:**
 `open` — `R-AUD-004`
 **Held by:** `VersionsTest::aStatedVersionWinsOverTheInstallationBeingRead`,
-`CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`;
+`CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclined`;
 that a release-branch patch changes trailer and refspec is not guarded
 (`R-AUD-004` open)
 

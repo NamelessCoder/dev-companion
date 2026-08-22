@@ -7,7 +7,7 @@
 `Typo3CliTest::aMissingConsoleNamesEveryPathThatWasProbed`,
 `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`,
 `Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts`,
-`Typo3CliTest::aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts`,
+`Typo3CliTest::aStoppedProjectIsAskedAgainAfterItStarts`,
 `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`. Not guarded: that a
 stopped project returns the running project's own icons and labels is a property
 of an environment, and no test has one — it was measured instead, in

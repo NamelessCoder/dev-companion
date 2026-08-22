@@ -69,8 +69,10 @@ the numbers and stops there.
 - That the peel stays cheap as the changelog grows. It reads file names and
   never opens an entry, so it scales with the count above rather than with the
   files.
-- That two words is far enough to peel. Both queries here recovered at that
-  depth, and a query needing three has not been seen.
+- ~~That two words is far enough to peel. Both queries here recovered at that
+  depth, and a query needing three has not been seen.~~ Moot on 2026-08-02: what
+  was built is one pass with no depth to bound, and one of the twelve queries it
+  was run over recovered only at two of five words.
 
 ## Wrong if
 
@@ -153,48 +155,6 @@ than about what the miss says, and both are queued.
 
 ## Since then
 
-Built on 2026-08-03. A narrowed miss counts the terms a second time over the
-whole changelog, and where a word reaches there and nothing inside the
-narrowing, the filter is what the miss opens with: *Narrowed to version "15" —
-that filter is what emptied this, not the words: without it, "gifbuilder"
-reaches 4 entries, "placeholder" reaches 10 entries, "preview" reaches 28
-entries, "thumbnail" reaches 9 entries. Ask again without it.* The counts that
-stay say where they were taken — "Inside version "15", on its own, …" — and the
-"ask again with the one that narrows best" they carried is dropped there,
-because the call to action is the filter and a miss with two of them has none.
-
-Re-run from `/home/benji/projects/typo3-cms`, which ships 15.0: the reported
-`version: "15"` miss now names the version, and `image generation` still returns
-`13.0` #101955 alone.
-
-The second count is the whole corpus rather than the narrowed one, so it costs a
-scan of every version directory: 45 ms for the 3795 entries there, plus 8 ms to
-count four terms over them — the 48 ms this was priced at. It is spent on a
-narrowed miss alone: a hit and an unnarrowed miss never reach it.
-
-Offered where a `tag` was asked for, unlike the subsets, and on the same line
-this entry already drew. A count is what a word reaches and a subset is a query
-the caller is told to ask; only the second promises entries a tagged call would
-not return. The per-term counts stand there for that reason already, and this
-sentence is what says where they were counted. It also cannot be the tag that
-emptied it: the sentence turns on a word reaching nothing inside the version and
-the type, which the tag is applied after.
-
-Both filters are named together where both are in play, and the counts are taken
-outside both. Which of the two emptied it is answerable from the same pass —
-every entry carries its type and its version — and is not answered, because it
-buys a second sentence for a case nothing has reported: a caller who drops both
-loses one narrowing it could have kept.
-
-The sentence is text and not a field, like the per-term counts and the subsets
-it stands beside. What `R-ANS-002` is written against is a client rendering
-`structuredContent` and dropping the text, and a miss whose whole guidance is
-text is that gap already — `matchCount: 0` is the entire structured answer. That
-is one decision about the shape of a miss rather than three, and this entry does
-not take it.
-
-## Since then
-
 A second corpus asks for it. `typo3_rule_lookup` reached its no-match answer
 only where the hints missed too, so a compound query that matched a hint was
 told a boundary emptied it —
@@ -237,3 +197,18 @@ So the sentence this entry built is answered on its own terms — the offered
 subset was the query that would have hit, on a query nothing here chose. What
 `D-ANS-043` adds is the half above it: the offer is carried as data as well, and
 a miss whose offer also comes back empty names the corpus to ask instead.
+
+## Since then
+
+One reading carried this entry out and established nothing beyond it, so it is a
+line here rather than a section of its own. Judged on 2026-08-22.
+
+- 2026-08-03, the wording the reading above found owed: a miss narrowed by
+  `version` or `type` counts its terms a second time over the whole changelog,
+  and where a word reaches there and nothing inside the narrowing, the filter is
+  what the miss opens with. The counts that stay say where they were taken, and
+  the "ask again with the one that narrows best" is dropped there, because the
+  call to action is the filter. It costs 48 ms over 3795 entries and a hit never
+  reaches it. Unlike the subsets it is offered where a `tag` was asked for: a
+  count is what a word reaches, and only a subset promises entries the same call
+  would not return.

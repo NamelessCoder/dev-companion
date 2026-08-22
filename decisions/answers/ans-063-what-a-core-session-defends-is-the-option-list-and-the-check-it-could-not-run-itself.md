@@ -1,5 +1,6 @@
 ---
 id: D-ANS-063
+title: What a core session defends is the option list and the check it could not run itself
 date: 2026-08-07
 status: open
 ---

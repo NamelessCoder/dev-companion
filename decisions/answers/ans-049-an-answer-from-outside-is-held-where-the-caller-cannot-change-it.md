@@ -1,7 +1,14 @@
 ---
 id: D-ANS-049
+title: An answer from outside is held where the caller cannot change it
 date: 2026-08-04
 status: open
+coveredBy:
+  - RecentTest::anAnsweredIssueIsReadFromTheTrackerOnce
+  - RecentTest::anIssueIsReadAgainOnceWhatWasHeldIsOld
+  - RecentTest::aBodyTheTrackerDidNotAnswerIsNotHeld
+  - RecentTest::aChangeThatExistsIsReadFromTheReviewServerOnce
+  - RecentTest::noChangeForAnIssueIsAskedEveryTime
 ---
 
 # D-ANS-049 — An answer from outside is held where the caller cannot change it
@@ -56,11 +63,3 @@ call.
   long enough to act on it.
 - Sessions turn out to hammer the hosts across processes rather than inside one,
   which a per-process store does nothing about and a store on disk would.
-
-## Covered by
-
-- `RecentTest::anAnsweredIssueIsReadFromTheTrackerOnce`
-- `RecentTest::anIssueIsReadAgainOnceWhatWasHeldIsOld`
-- `RecentTest::aBodyTheTrackerDidNotAnswerIsNotHeld`
-- `RecentTest::aChangeThatExistsIsReadFromTheReviewServerOnce`
-- `RecentTest::noChangeForAnIssueIsAskedEveryTime`

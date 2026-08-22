@@ -1,5 +1,6 @@
 ---
 id: D-DIS-018
+title: What `install` writes stays inside the project
 date: 2026-08-12
 status: open
 ---

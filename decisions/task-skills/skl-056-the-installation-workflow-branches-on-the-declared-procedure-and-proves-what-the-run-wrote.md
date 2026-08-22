@@ -1,7 +1,10 @@
 ---
 id: D-SKL-056
+title: The installation workflow branches on the declared procedure and proves what the run wrote
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-SKL-056 — The installation workflow branches on the declared procedure and proves what the run wrote
@@ -93,10 +96,6 @@ an environment and nothing else falls on the wrong side of each.
   than as what the repository now carries.
 - A repository with a full boot procedure is sent through the create branch's
   steps. The condition would be catching more than it was written for.
-
-## Covered by
-
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
 
 ## Since then
 

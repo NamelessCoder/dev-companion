@@ -1,5 +1,6 @@
 ---
 id: R-SCO-005
+title: 'Every tool applies the same outside-the-core check'
 status: held
 ---
 

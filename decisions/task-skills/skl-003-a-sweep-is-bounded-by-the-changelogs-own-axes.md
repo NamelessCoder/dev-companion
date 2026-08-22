@@ -1,5 +1,6 @@
 ---
 id: D-SKL-003
+title: A sweep is bounded by the changelog's own axes, not by the extension's vocabulary
 date: 2026-08-02
 status: open
 ---

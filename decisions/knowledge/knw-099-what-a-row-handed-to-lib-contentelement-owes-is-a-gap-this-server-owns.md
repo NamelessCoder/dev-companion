@@ -1,7 +1,11 @@
 ---
 id: D-KNW-099
+title: What a row handed to lib.contentElement owes is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows
+  - HintsTest::whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway
 ---
 
 # D-KNW-099 — What a row handed to lib.contentElement owes is a gap this server owns
@@ -97,11 +101,6 @@ the changelog.
 - The core writes a changelog entry for this after all, in a 14.x still to come,
   which would make the gap a delivery question and put the answer back in
   `typo3_changelog_lookup`.
-
-## Covered by
-
-- `HintsTest::whatAPartialRowCostsAtLibContentElementIsReachedFromTheExceptionItThrows`
-- `HintsTest::whatAPartialRowCostsIsWithheldFromTheBranchesThatRenderItAnyway`
 
 ## Confirmed on 2026-08-18
 

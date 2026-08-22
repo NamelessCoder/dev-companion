@@ -1,7 +1,11 @@
 ---
 id: D-KNW-079
+title: The corpus states what a new backend label costs
 date: 2026-08-14
 status: open
+coveredBy:
+  - HintsTest::aNewBackendLabelIsToldWhatItCostsBeforeItResolves
+  - HintsTest::theLabelModuleIsWithheldFromTheMajorsThatHaveNone
 ---
 
 # D-KNW-079 — The corpus states what a new backend label costs
@@ -87,8 +91,3 @@ is the fourth thing done to a label rather than a second subject.
 - The same question is reported again from an extension. Nothing bound to the
   core here except the build, and an extension's own type stubs would make that
   statement wrong rather than core-only.
-
-## Covered by
-
-- `HintsTest::aNewBackendLabelIsToldWhatItCostsBeforeItResolves`
-- `HintsTest::theLabelModuleIsWithheldFromTheMajorsThatHaveNone`

@@ -1,7 +1,11 @@
 ---
 id: D-SCO-010
+title: All three `typo3` namespaces are kept, and the draft RFC is read as a reference
 date: 2026-08-04
 status: open
+coveredBy:
+  - ToolNamingTest::everyToolIsNamedSubjectThenVerb
+  - StdioServerTest::theKnowledgeIndexIsServedWithTheScope
 ---
 
 # D-SCO-010 — All three `typo3` namespaces are kept, and the draft RFC is read as a reference
@@ -135,8 +139,3 @@ draft ever became a contract.
   Association asks for the name back. Then `composer.json` carries a name this
   package may not use, and the rename is cheap only for as long as nothing has
   installed it.
-
-## Covered by
-
-- `ToolNamingTest::everyToolIsNamedSubjectThenVerb`
-- `StdioServerTest::theKnowledgeIndexIsServedWithTheScope`

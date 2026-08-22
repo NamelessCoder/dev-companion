@@ -1,7 +1,10 @@
 ---
 id: D-ANS-039
+title: The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt
 ---
 
 # D-ANS-039 — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category
@@ -106,7 +109,3 @@ demands.
   anything a session has to see, and the hint or the skill is where it belongs.
 - The checklist grows long enough that a fork placed sixth in it is read as
   procedure. Seven items is what a content-element task now carries.
-
-## Covered by
-
-- `HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt`

@@ -1,5 +1,6 @@
 ---
 id: D-DOC-022
+title: The reader picks the colours and the page remembers it
 date: 2026-08-09
 status: open
 ---

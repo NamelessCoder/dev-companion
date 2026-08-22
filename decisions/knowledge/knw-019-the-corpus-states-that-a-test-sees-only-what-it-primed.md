@@ -1,5 +1,6 @@
 ---
 id: D-KNW-019
+title: The corpus states that a functional test sees only what it primed
 date: 2026-08-02
 status: open
 ---

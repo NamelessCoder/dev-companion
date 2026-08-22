@@ -1,7 +1,10 @@
 ---
 id: D-KNW-049
+title: What DDEV writes into the settings is named in full, and so is what it cannot configure
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes
 ---
 
 # D-KNW-049 — What DDEV writes into the settings is named in full, and so is what it cannot configure
@@ -103,10 +106,6 @@ the ladder, on a hint that already exists, and it is queued as
   `config/system/`. The answer would have to arrive from the question of what
   the environment declares, which is the route `feedback/2026-08-03-154501`
   describes.
-
-## Covered by
-
-- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`
 
 ## Confirmed on 2026-08-03
 

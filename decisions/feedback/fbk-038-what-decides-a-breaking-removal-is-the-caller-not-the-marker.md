@@ -1,7 +1,10 @@
 ---
 id: D-FBK-038
+title: What decides a breaking removal is the caller, not the marker
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt
 ---
 
 # D-FBK-038 — What decides a breaking removal is the caller, not the marker
@@ -76,7 +79,3 @@ say a lookup would answer beside the question.
 - A review of a patch that is not checked out asks for the annotation and has no
   file to read, which is the case that would put both declined tools back
   together.
-
-## Covered by
-
-- `HintsTest::whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt`

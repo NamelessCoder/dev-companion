@@ -1,5 +1,6 @@
 ---
 id: R-KNW-016
+title: 'The test kind that needs a browser is covered'
 status: held
 ---
 

@@ -1,5 +1,6 @@
 ---
 id: D-KNW-025
+title: What a backend preview owes the editor is a gap this server owns
 date: 2026-08-02
 status: revoked
 revokedBy: D-KNW-037

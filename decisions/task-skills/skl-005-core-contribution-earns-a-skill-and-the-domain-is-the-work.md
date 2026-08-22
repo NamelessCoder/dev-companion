@@ -1,5 +1,6 @@
 ---
 id: D-SKL-005
+title: Core contribution earns two task skills, one for reviewing a patch and one for creating one
 date: 2026-08-03
 status: open
 ---

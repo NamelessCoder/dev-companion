@@ -1,7 +1,11 @@
 ---
 id: D-KNW-078
+title: The corpus states the shape a Record-sourced row has
 date: 2026-08-14
 status: open
+coveredBy:
+  - HintsTest::theShapeOfARecordSourcedRowNamesTheFieldsThatMovedAndTheSilentRead
+  - HintsTest::theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi
 ---
 
 # D-KNW-078 — The corpus states the shape a Record-sourced row has
@@ -78,8 +82,3 @@ query returns and what the object built from one of them looks like.
   is the last statement rather than the first.
 - The same question is reported again from a Fluid template. `{record.hidden}`
   is the other surface of the same failure, and this hint answers PHP.
-
-## Covered by
-
-- `HintsTest::theShapeOfARecordSourcedRowNamesTheFieldsThatMovedAndTheSilentRead`
-- `HintsTest::theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi`

@@ -1,5 +1,6 @@
 ---
 id: D-EVI-001
+title: Forward evidence comes from a review, not from a prompt that knows the answer
 date: 2026-07-31
 status: confirmed
 ---

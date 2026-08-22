@@ -1,5 +1,6 @@
 ---
 id: D-ANS-033
+title: The review server is read anonymously, and the answer says what that leaves out
 date: 2026-08-03
 status: confirmed
 ---

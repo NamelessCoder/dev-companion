@@ -1,5 +1,6 @@
 ---
 id: D-SKL-069
+title: Each runtime lookup says what it adds after the extension answer
 date: 2026-08-21
 status: open
 ---

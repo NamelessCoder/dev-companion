@@ -1,5 +1,6 @@
 ---
 id: D-SKL-012
+title: Bringing a package's development installation into existence earns a task skill
 date: 2026-08-03
 status: open
 ---

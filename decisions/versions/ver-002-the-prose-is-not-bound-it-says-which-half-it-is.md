@@ -1,8 +1,12 @@
 ---
 id: D-VER-002
+title: The prose is not bound; it says which half it is
 date: 2026-07-29
 status: revoked
 revokedBy: D-VER-005
+coveredBy:
+  - KnowledgeTest::noProseDocumentDatesAStatementInItsSentence
+  - KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave
 ---
 
 # D-VER-002 — The prose is not bound; it says which half it is
@@ -38,11 +42,6 @@ described there as the shape, with no range.
 - A prose section misleads on an LTS badly enough that the sentence does not
   save it, which would mean that statement belongs in the hints rather than in
   the document.
-
-## Covered by
-
-- `KnowledgeTest::noProseDocumentDatesAStatementInItsSentence`
-- `KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave`
 
 ## Confirmed on 2026-08-02
 

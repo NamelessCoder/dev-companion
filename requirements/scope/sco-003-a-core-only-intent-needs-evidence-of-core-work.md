@@ -1,5 +1,6 @@
 ---
 id: R-SCO-003
+title: 'A core-only intent needs evidence of core work'
 status: held
 restsOn: [D-SCO-002]
 ---

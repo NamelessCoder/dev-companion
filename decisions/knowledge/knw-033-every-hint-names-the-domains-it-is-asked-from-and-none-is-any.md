@@ -1,7 +1,13 @@
 ---
 id: D-KNW-033
+title: Every hint names the domains it is asked from, and none is `any`
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::nothingIsTaggedAnyWithoutSayingWhy
+  - HintsTest::hintsAreGroupedByDomainWithPhpFirst
+  - HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions
+  - ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections
 ---
 
 # D-KNW-033 — Every hint names the domains it is asked from, and none is `any`
@@ -66,10 +72,3 @@ because a split inherits the tag it was split from.
   longer and the failure this replaced.
 - The withholding lets a backend Sass convention through to a theme extension,
   which would mean the domains-subset test is the wrong rule for it.
-
-## Covered by
-
-- `HintsTest::nothingIsTaggedAnyWithoutSayingWhy`
-- `HintsTest::hintsAreGroupedByDomainWithPhpFirst`
-- `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`
-- `ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections`

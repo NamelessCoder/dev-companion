@@ -1,7 +1,13 @@
 ---
 id: D-ANS-019
+title: A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry
+  - ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported
+  - ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor
+  - ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores
 ---
 
 # D-ANS-019 — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by
@@ -122,13 +128,6 @@ major.
 - The `registerPlugin()` signature stops being composed from its first two
   arguments. Every identifier resolved through a variable would then be wrong
   rather than missing, which is the failure `R-ANS-012` exists to prevent.
-
-## Covered by
-
-- `ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry`
-- `ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported`
-- `ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor`
-- `ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores`
 
 ## Confirmed on 2026-08-23
 

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-035
+title: 'Backend-module guidance continues past registration'
 status: held
 ---
 

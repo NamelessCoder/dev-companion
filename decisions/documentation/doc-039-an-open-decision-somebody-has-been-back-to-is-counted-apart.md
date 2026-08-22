@@ -1,7 +1,10 @@
 ---
 id: D-DOC-039
+title: An open decision somebody has been back to is counted apart
 date: 2026-08-22
 status: open
+coveredBy:
+  - UnresolvedTest::anOpenDecisionSomebodyHasBeenBackToIsToldApart
 ---
 
 # D-DOC-039 — An open decision somebody has been back to is counted apart
@@ -69,10 +72,6 @@ reported as untouched.
 - ~~The bold-paragraph form spreads to new entries, because nothing fails on it
   and it now counts the same as the section.~~ Closed the same day, see **Since
   then**.
-
-## Covered by
-
-- `UnresolvedTest::anOpenDecisionSomebodyHasBeenBackToIsToldApart`
 
 ## Since then
 

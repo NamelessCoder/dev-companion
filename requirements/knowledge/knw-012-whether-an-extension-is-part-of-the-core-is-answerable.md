@@ -1,5 +1,6 @@
 ---
 id: R-KNW-012
+title: 'Whether an extension is part of the core is answerable'
 status: held
 ---
 

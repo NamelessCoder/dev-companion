@@ -1,5 +1,6 @@
 ---
 id: D-KNW-004
+title: Package knowledge needs a producer before it needs discovery
 date: 2026-07-30
 status: confirmed
 ---

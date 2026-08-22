@@ -1,5 +1,6 @@
 ---
 id: D-SKL-050
+title: Producing a distribution's content earns a task skill, and the project repository is owned
 date: 2026-08-18
 status: confirmed
 ---

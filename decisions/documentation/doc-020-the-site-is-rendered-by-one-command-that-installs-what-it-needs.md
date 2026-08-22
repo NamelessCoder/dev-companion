@@ -1,5 +1,6 @@
 ---
 id: D-DOC-020
+title: The site is rendered by one command that installs what it needs
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-028

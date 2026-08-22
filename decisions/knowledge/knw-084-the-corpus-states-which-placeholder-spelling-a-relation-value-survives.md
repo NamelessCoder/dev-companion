@@ -1,7 +1,10 @@
 ---
 id: D-KNW-084
+title: The corpus states which placeholder spelling a relation value survives
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aRelationValueSaysWhichPlaceholderSpellingSurvivesIt
 ---
 
 # D-KNW-084 — The corpus states which placeholder spelling a relation value survives
@@ -59,7 +62,3 @@ site.
 - A second feedback arrives from a session that named its datamap keys and never
   reached the relation hint. The rule then belongs where the placeholder is
   coined as well, which is `D-KNW-081`'s remaining **Wrong if**.
-
-## Covered by
-
-- `HintsTest::aRelationValueSaysWhichPlaceholderSpellingSurvivesIt`

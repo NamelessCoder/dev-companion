@@ -1,5 +1,6 @@
 ---
 id: R-ANS-022
+title: 'A resource is picked out of a list'
 status: held
 restsOn: [D-AUD-004]
 ---

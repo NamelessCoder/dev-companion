@@ -1,7 +1,10 @@
 ---
 id: D-ANS-032
+title: The dilution reference of the manual ranking is the length of an ordinary title
 date: 2026-08-02
 status: open
+coveredBy:
+  - DocumentationTest::aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord
 ---
 
 # D-ANS-032 — The dilution reference of the manual ranking is the length of an ordinary title
@@ -118,10 +121,6 @@ supposed to apply it.
   own references at 200 and 400 and are not touched here, and a shared value
   would be the mistake this one is: the manual's fields are titles, and theirs
   are bodies.
-
-## Covered by
-
-- `DocumentationTest::aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord`
 
 ## Since then
 

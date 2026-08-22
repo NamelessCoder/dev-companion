@@ -1,7 +1,12 @@
 ---
 id: D-ANS-076
+title: A search whose matches are all in one page answers with the page
 date: 2026-08-11
 status: open
+coveredBy:
+  - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
+  - KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft
+  - KnowledgeTest::everyToolThatRendersASectionOffersThePageAsACall
 ---
 
 # D-ANS-076 — A search whose matches are all in one page answers with the page
@@ -87,12 +92,6 @@ What is removed here is the round trip rather than the sentence about it.
   whatever it is right for on `documentId`.
 - A document grows to where the page stops being an answer. Then the
   concentrated case needs the ceiling the section cut already has.
-
-## Covered by
-
-- `KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage`
-- `KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft`
-- `KnowledgeTest::everyToolThatRendersASectionOffersThePageAsACall`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-064
+title: An issue answer holds what a triage needs and does not make it legible
 date: 2026-08-08
 status: open
 ---

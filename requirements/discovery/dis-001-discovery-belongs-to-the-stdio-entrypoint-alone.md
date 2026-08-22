@@ -1,5 +1,6 @@
 ---
 id: R-DIS-001
+title: 'Discovery belongs to the stdio entrypoint alone'
 status: held
 ---
 

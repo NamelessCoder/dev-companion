@@ -1,5 +1,6 @@
 ---
 id: R-DIS-014
+title: 'An installed skill is a workflow, not a prompt fragment'
 status: held
 ---
 

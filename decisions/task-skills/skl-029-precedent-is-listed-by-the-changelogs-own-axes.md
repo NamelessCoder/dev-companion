@@ -1,5 +1,6 @@
 ---
 id: D-SKL-029
+title: Precedent is listed by the changelog's own axes before it is asked for in words
 date: 2026-08-09
 status: open
 ---

@@ -1,7 +1,13 @@
 ---
 id: D-AUD-011
+title: The instructions index the question each tool answers, because a name is all a deferring client shows
 date: 2026-08-18
 status: open
+coveredBy:
+  - ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers
+  - ScopeTest::theIndexNamesNoToolTheCallerExcluded
+  - ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall
+  - ScopeTest::theInstructionsFitWhatAClientKeeps
 ---
 
 # D-AUD-011 — The instructions index the question each tool answers, because a name is all a deferring client shows
@@ -97,13 +103,6 @@ schemas.
 - An entry earns its place and nothing is left to displace for it. Then the
   budget is what to argue about rather than the wording, which is `D-ANS-004`'s
   **Wrong if** and not this one.
-
-## Covered by
-
-- `ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers`
-- `ScopeTest::theIndexNamesNoToolTheCallerExcluded`
-- `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`
-- `ScopeTest::theInstructionsFitWhatAClientKeeps`
 
 ## Since then
 

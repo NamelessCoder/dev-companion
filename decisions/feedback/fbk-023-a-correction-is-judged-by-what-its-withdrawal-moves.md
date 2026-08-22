@@ -1,5 +1,6 @@
 ---
 id: D-FBK-023
+title: A correction is judged by what its withdrawal moves
 date: 2026-08-02
 status: confirmed
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-079
+title: A change answer carries the votes on it and the comments nobody answered
 date: 2026-08-14
 status: open
 ---

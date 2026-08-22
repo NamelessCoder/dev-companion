@@ -1,5 +1,6 @@
 ---
 id: D-FBK-004
+title: The model is asked, because nothing else here can say it
 date: 2026-07-31
 status: confirmed
 ---

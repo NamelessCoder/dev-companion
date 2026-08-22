@@ -1,5 +1,6 @@
 ---
 id: D-ANS-086
+title: The project answer carries the bound that stops a declared command from starting
 date: 2026-08-19
 status: open
 ---

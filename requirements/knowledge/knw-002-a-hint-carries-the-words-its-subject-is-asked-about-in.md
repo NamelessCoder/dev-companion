@@ -1,5 +1,6 @@
 ---
 id: R-KNW-002
+title: 'A hint carries the words its subject is asked about in'
 status: held
 ---
 

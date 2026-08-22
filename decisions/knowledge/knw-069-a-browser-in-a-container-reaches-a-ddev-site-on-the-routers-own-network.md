@@ -1,5 +1,6 @@
 ---
 id: D-KNW-069
+title: A browser in a container reaches a DDEV site on the router's own network
 date: 2026-08-10
 status: open
 ---

@@ -1,7 +1,10 @@
 ---
 id: D-FBK-041
+title: What nothing answers for is called unresolved
 date: 2026-08-04
 status: open
+coveredBy:
+  - UpkeepCommandTest::everyCommandIsNamedSubjectThenVerb
 ---
 
 # D-FBK-041 — What nothing answers for is called unresolved
@@ -56,7 +59,3 @@ session opens with.
 - A reader takes `unresolved:list` for a check that fails, which is exactly what
   [`D-FBK-001`](fbk-001-the-backlog-is-read-out-rather-than-enforced.md) says it
   may never be.
-
-## Covered by
-
-- `UpkeepCommandTest::everyCommandIsNamedSubjectThenVerb`

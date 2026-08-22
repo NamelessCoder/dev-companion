@@ -1,7 +1,13 @@
 ---
 id: D-DOC-017
+title: The documentation is published from a copy this repository writes
 date: 2026-08-06
 status: open
+coveredBy:
+  - SiteTest::noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry
+  - SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel
 ---
 
 # D-DOC-017 — The documentation is published from a copy this repository writes
@@ -102,13 +108,6 @@ of what it points at is a directory the site does not carry.
 - A recorded tool answer reads differently on the site than in the checkout,
   because a fenced block acquired a relative link and the rewrite treated it as
   one — which is what `Links` does everywhere else.
-
-## Covered by
-
-- `SiteTest::noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry`
-- `SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt`
-- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
-- `SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel`
 
 ## Since then
 

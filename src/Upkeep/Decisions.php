@@ -56,14 +56,14 @@ final class Decisions
      * follows them, and what would catch that happening closes the entry —
      * everything below that line arrived later than the entry did.
      *
-     * `Covered by` is optional, because most entries here are about process and
+     * The tests an entry is held by are `coveredBy` in its front matter, because
      * nothing runs over them. Where a test would catch the **Wrong if**, naming
      * it is what turns the promise into something the suite keeps: a renamed
      * test then fails a check instead of quietly orphaning the claim.
      *
      * @var array<int, string>
      */
-    public const FIELDS = ['Evidence', 'Decided', 'Assumed', 'Wrong if', 'Covered by'];
+    public const FIELDS = ['Evidence', 'Decided', 'Assumed', 'Wrong if'];
 
     /**
      * The labels a later session adds. The dated ones belong to
@@ -112,14 +112,9 @@ final class Decisions
     {
         $held = [];
         foreach (self::all() as $decision) {
-            $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
-            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
-                continue;
-            }
-
-            preg_match_all('/`(\w+Test)(?:::(\w+))?`/', $section[1], $matches, PREG_SET_ORDER);
-            foreach ($matches as $named) {
-                if ($named[1] !== $class || (($named[2] ?? '') !== '' && $named[2] !== $method)) {
+            foreach ($decision['coveredBy'] as $test) {
+                [$namedClass, $namedMethod] = array_pad(explode('::', $test), 2, '');
+                if ($namedClass !== $class || ($namedMethod !== '' && $namedMethod !== $method)) {
                     continue;
                 }
 
@@ -206,7 +201,7 @@ final class Decisions
 
         $uncovered = [];
         foreach (self::all() as $decision) {
-            if (in_array('Covered by', $decision['fields'], true)) {
+            if ($decision['coveredBy'] !== []) {
                 continue;
             }
             $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
@@ -247,12 +242,7 @@ final class Decisions
     {
         $loose = [];
         foreach (self::all() as $decision) {
-            $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
-            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
-                continue;
-            }
-            preg_match_all('/`(\w+Test(?:::\w+)?)`/', $section[1], $matches);
-            $tests = array_unique($matches[1]);
+            $tests = $decision['coveredBy'];
             $silent = array_filter(
                 $tests,
                 static fn(string $test): bool => !str_contains(Sources::saidAt($test), $decision['id']),
@@ -295,7 +285,7 @@ final class Decisions
      * Every decision, keyed by id and newest first — which is the order the
      * file this replaces claimed to be in.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function all(): array
     {
@@ -359,7 +349,7 @@ final class Decisions
     /**
      * The decisions of one group, or every one of them where no group is named.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -441,26 +431,28 @@ final class Decisions
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, revisited: bool, statement: string, fields: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}
      */
     public static function read(string $path): array
     {
         $contents = (string) file_get_contents($path);
         $head = Entry::head($contents);
-        $frontMatter = $head['frontMatter'];
+        $matter = $head['matter'];
 
         return [
-            'id' => Entry::frontMatterValue($frontMatter, 'id'),
+            'id' => Entry::value($matter, 'id'),
             'group' => basename(dirname($path)),
             'file' => basename($path),
             'heading' => $head['heading'],
-            'title' => $head['title'],
-            'date' => Entry::frontMatterValue($frontMatter, 'date'),
-            'status' => Entry::frontMatterValue($frontMatter, 'status'),
+            'written' => $head['written'],
+            'title' => Entry::value($matter, 'title'),
+            'date' => Entry::value($matter, 'date'),
+            'status' => Entry::value($matter, 'status'),
             // What replaced it, where a revoked entry has a successor. A reader
             // who reaches a dead entry needs somewhere to go next, and prose
             // said it on four of them and nowhere a listing could see.
-            'revokedBy' => Entry::frontMatterValue($frontMatter, 'revokedBy'),
+            'revokedBy' => Entry::value($matter, 'revokedBy'),
+            'coveredBy' => Entry::names($matter, 'coveredBy'),
             'revisited' => self::revisited($contents),
             'statement' => $head['statement'],
             'fields' => self::fields($contents),

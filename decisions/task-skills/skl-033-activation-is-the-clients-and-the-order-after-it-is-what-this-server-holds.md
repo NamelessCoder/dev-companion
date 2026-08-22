@@ -1,5 +1,6 @@
 ---
 id: D-SKL-033
+title: Activation is the client's, and the order after it is what this server holds
 date: 2026-08-11
 status: open
 ---

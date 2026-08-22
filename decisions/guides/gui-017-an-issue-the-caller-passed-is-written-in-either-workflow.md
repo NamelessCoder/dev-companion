@@ -1,7 +1,11 @@
 ---
 id: D-GUI-017
+title: An issue the caller passed is written in either workflow
 date: 2026-08-21
 status: open
+coveredBy:
+  - CommitMessageTest::outsideTheCoreATrailerTheCallerWroteIsStillKept
+  - CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded
 ---
 
 # D-GUI-017 — An issue the caller passed is written in either workflow
@@ -61,8 +65,3 @@ and committed without one.
   `Resolves:` and `Related:` for the issues their commits close, often enough
   that one form cannot serve both audiences.
 - A `project` draft comes back carrying a trailer the call never passed.
-
-## Covered by
-
-- `CommitMessageTest::outsideTheCoreATrailerTheCallerWroteIsStillKept`
-- `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`

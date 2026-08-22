@@ -1,7 +1,10 @@
 ---
 id: D-FBK-020
+title: A session is charged per call, so the calls are what is budgeted
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - CliTest::theTodoItHandsOverNamesTheFileItIs
 ---
 
 # D-FBK-020 — A session is charged per call, so the calls are what is budgeted
@@ -70,10 +73,6 @@ somewhere else.
   another call in the same message had already changed.
 - Sessions stop reaching for `.checkouts/` and the manuals at the same rate. The
   orientation calls were not the waste; the second reading of one file was.
-
-## Covered by
-
-- `CliTest::theTodoItHandsOverNamesTheFileItIs`
 
 ## Confirmed on 2026-08-02
 

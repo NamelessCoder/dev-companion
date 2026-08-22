@@ -1,7 +1,10 @@
 ---
 id: D-ANS-007
+title: Two shapes for "not answered", one word for why
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - DocumentationTest::aVersionOutsideTheCoveredOnesIsNotAskedFor
 ---
 
 # D-ANS-007 — Two shapes for "not answered", one word for why
@@ -62,10 +65,6 @@ same case.
 - A third source arrives that is neither an installation nor a manual and fits
   neither shape. Then the split is between "here" and "elsewhere" rather than
   between the two sources this server has.
-
-## Covered by
-
-- `DocumentationTest::aVersionOutsideTheCoveredOnesIsNotAskedFor`
 
 ## Confirmed on 2026-08-22
 

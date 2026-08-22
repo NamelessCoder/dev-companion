@@ -1,7 +1,10 @@
 ---
 id: D-DIS-007
+title: The DDEV console is named by the mount, not by the variable
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove
 ---
 
 # D-DIS-007 — The DDEV console is named by the mount, not by the variable
@@ -55,10 +58,6 @@ container.
 - DDEV stops mounting at that path, or starts deriving it. Then the variable is
   the right form and the version floor is whatever this repository still
   supports.
-
-## Covered by
-
-- `Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove`
 
 ## Since then
 

@@ -1,7 +1,11 @@
 ---
 id: D-KNW-050
+title: What a missing `target-language` does to a translation file is a gap this server owns
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt
+  - HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn
 ---
 
 # D-KNW-050 — What a missing `target-language` does to a translation file is a gap this server owns
@@ -103,11 +107,6 @@ attribute does.
 - XLIFF 1.2 does not in fact require `original`, `source-language` and
   `datatype` on `<file>`. The feedback asserts it and this judgement did not
   check it, so a schema check recommended on that basis would rest on nothing.
-
-## Covered by
-
-- `HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt`
-- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn`
 
 ## Since then
 

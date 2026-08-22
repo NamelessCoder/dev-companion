@@ -1,5 +1,6 @@
 ---
 id: D-FBK-049
+title: A stored field states the cap it is cut at
 date: 2026-08-18
 status: open
 ---

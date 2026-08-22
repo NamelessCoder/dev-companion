@@ -1,5 +1,6 @@
 ---
 id: D-ANS-077
+title: The module answer carries the resolved navigation component and each module's routes
 date: 2026-08-12
 status: open
 ---

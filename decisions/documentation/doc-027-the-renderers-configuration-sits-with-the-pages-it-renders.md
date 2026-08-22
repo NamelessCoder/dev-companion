@@ -1,7 +1,10 @@
 ---
 id: D-DOC-027
+title: The renderer's configuration sits with the pages it renders
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::theRenderersConfigurationIsNotPublished
 ---
 
 # D-DOC-027 — The renderer's configuration sits with the pages it renders
@@ -53,7 +56,3 @@ the corpus was a directory plus one file above it. Neither is true since
 - The render is ever run from somewhere other than the root. Then `-c` resolves
   against that directory and the flag has to become an absolute path, along with
   everything else the two steps name.
-
-## Covered by
-
-- `SiteTest::theRenderersConfigurationIsNotPublished`

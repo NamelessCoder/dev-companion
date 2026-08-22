@@ -1,5 +1,6 @@
 ---
 id: R-DIS-020
+title: 'The project records which clients are installed in it'
 status: held
 restsOn: [D-DIS-014]
 ---

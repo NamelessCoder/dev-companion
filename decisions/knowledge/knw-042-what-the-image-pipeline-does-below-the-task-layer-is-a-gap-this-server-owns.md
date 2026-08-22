@@ -1,5 +1,6 @@
 ---
 id: D-KNW-042
+title: What the image pipeline does below the task layer is a gap this server owns
 date: 2026-08-03
 status: open
 ---

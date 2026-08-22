@@ -1,5 +1,6 @@
 ---
 id: R-SKL-011
+title: 'A review reports what it dropped and what dropped it'
 status: held
 restsOn: [D-SKL-007]
 ---

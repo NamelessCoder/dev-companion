@@ -1,5 +1,6 @@
 ---
 id: R-DIS-007
+title: 'The installation and the console can be named outright'
 status: held
 ---
 

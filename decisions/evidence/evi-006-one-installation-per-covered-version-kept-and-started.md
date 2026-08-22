@@ -1,7 +1,18 @@
 ---
 id: D-EVI-006
+title: One installation per covered version, kept and started
 date: 2026-08-03
 status: open
+coveredBy:
+  - EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake
+  - EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre
+  - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory
+  - EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf
+  - EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing
+  - EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory
+  - EnvironmentsTest::anInstallationThatIsThereIsStartedRatherThanBuiltAgain
+  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
+  - EnvironmentsTest::theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares
 ---
 
 # D-EVI-006 — One installation per covered version, kept and started
@@ -101,18 +112,6 @@ covered line would be answered was shown by nothing.
   line has one. Every covered line is on sqlite since `c27f8bd`, and an
   installation on sqlite answers what a console question asks and says nothing
   about what MariaDB does under the same schema.
-
-## Covered by
-
-- `EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake`
-- `EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre`
-- `EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory`
-- `EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf`
-- `EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing`
-- `EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory`
-- `EnvironmentsTest::anInstallationThatIsThereIsStartedRatherThanBuiltAgain`
-- `EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion`
-- `EnvironmentsTest::theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares`
 
 ## Since then
 

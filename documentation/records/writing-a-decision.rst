@@ -96,8 +96,11 @@ What an entry holds
 
     ---
     id: D-DIS-004
+    title: The version comes from the core package, not from the console
     date: 2026-07-29
     status: open
+    coveredBy:
+      - SomeTest::theMethodThatWouldCatchIt
     ---
 
     # D-DIS-004 — The version comes from the core package, not from the console
@@ -125,12 +128,11 @@ What an entry holds
     - What would show it to have been wrong, concretely enough that somebody could
       notice it happening.
 
-    ## Covered by
 
-    - `SomeTest::theMethodThatWouldCatchIt`
-
-
-* The **title** says what will be done, in the affirmative. Not the deficiency
+* The **title** is the front matter's, and the heading repeats it so a reader
+  of the file sees it where a heading belongs. ``bin/cli decisions:check`` holds
+  the two to each other, so a rewrite of one is a rewrite of both. It says what
+  will be done, in the affirmative. Not the deficiency
   it corrects and not a negation: "The ladder needs an outcome that builds
   something", not "the ladder had no outcome that builds" and not "the ladder is
   not a filter". What was wrong is evidence and belongs in the paragraph under
@@ -142,7 +144,8 @@ What an entry holds
   and its **Revoked on** section, and a listing where some titles name a fix and
   others name a gap is read as two kinds of entry when there is one.
 
-  Nothing holds it, and nothing can. The corpus was read for the shape on
+  What the check holds is that the two spellings agree, and nothing holds the
+  shape. The corpus was read for it on
   2026-08-22 and the search returned thirty-five titles of which one had drifted
   — the rest were the affirmative "A is B, not C", which states what is and then
   excludes. A check would report those thirty-four every time, so what keeps
@@ -150,17 +153,26 @@ What an entry holds
 * The **bold first sentence** is the decision. A reader who stops after it knows
   what was settled; everything under it is what settled it.
 * The sections are a fixed set, in that order: **Evidence**, **Decided**,
-  **Assumed**, **Wrong if**, **Covered by**. Only **Wrong if** is required — an
-  entry that cannot say what would falsify it is not a decision worth recording.
-  ``date`` is the day it was decided.
+  **Assumed**, **Wrong if**. Only **Wrong if** is required — an entry that cannot
+  say what would falsify it is not a decision worth recording. ``date`` is the
+  day it was decided.
 * Each section holds one bullet per item. Half the entries decide more than one
   thing and a fifth rest on more than one assumption, which is why these are
   sections and not a bullet repeating its own label.
-* **Covered by** is optional and lists the tests that would catch the **Wrong
-  if** happening, one per line. Most entries are about process and nothing runs
-  over them; where something does, naming it is what turns the promise into
-  something the suite keeps. Every test named anywhere in an entry has to exist
-  — ``DecisionsTest::everyTestADecisionNamesExists``.
+* ``coveredBy`` lists the tests that would catch the **Wrong if** happening,
+  one per line of the front matter, and it is optional. Most entries are about
+  process and nothing runs over them; where something does, naming it is what
+  turns the promise into something the suite keeps — and what a failing test
+  prints, so the session that made it red is sent here. Every test named
+  anywhere in an entry has to exist —
+  ``DecisionsTest::everyTestADecisionNamesExists`` — and every test named in
+  ``coveredBy`` names the entry back, which
+  ``DecisionsTest::everyTestADecisionNamesNamesTheEntryBack`` fails on.
+* It is front matter rather than a section because it is data: three readings
+  parse it, a listing counts it, and a failing test prints it. Where nothing can
+  hold an entry, ``coveredBy: []`` says so and the reason is a bullet of
+  **Decided** — an empty list read and a list nobody wrote look identical
+  otherwise.
 
 The dated sections
 ------------------

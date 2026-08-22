@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-007
+title: 'A declared command says whether running it changes anything'
 status: held
 ---
 

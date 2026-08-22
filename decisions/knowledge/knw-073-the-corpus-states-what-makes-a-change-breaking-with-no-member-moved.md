@@ -1,7 +1,10 @@
 ---
 id: D-KNW-073
+title: The corpus states what makes a change breaking with no member moved
 date: 2026-08-14
 status: open
+coveredBy:
+  - HintsTest::aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember
 ---
 
 # D-KNW-073 — The corpus states what makes a change breaking with no member moved
@@ -82,7 +85,3 @@ two questions are a member that moved and a member that did not.
 - The same question is reported again phrased about TCA, YAML or a database
   column. Those are the same class and the hint names them in one clause, so a
   report would say the clause is not enough and each owes its own sentence.
-
-## Covered by
-
-- `HintsTest::aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember`

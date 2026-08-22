@@ -1,5 +1,6 @@
 ---
 id: R-DIS-012
+title: 'Codex setup installs the server and its skills'
 status: held
 ---
 

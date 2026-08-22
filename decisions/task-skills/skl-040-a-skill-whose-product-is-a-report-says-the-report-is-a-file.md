@@ -1,5 +1,6 @@
 ---
 id: D-SKL-040
+title: A skill whose product is a report says the report is a file
 date: 2026-08-14
 status: revoked
 revokedBy: D-SKL-042

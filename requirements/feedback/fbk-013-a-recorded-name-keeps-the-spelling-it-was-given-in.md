@@ -1,5 +1,6 @@
 ---
 id: R-FBK-013
+title: 'A recorded name keeps the spelling it was given in'
 status: held
 restsOn: [D-FBK-039]
 ---

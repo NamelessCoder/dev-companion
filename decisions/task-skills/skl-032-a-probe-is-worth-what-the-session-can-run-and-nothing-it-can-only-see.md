@@ -1,5 +1,6 @@
 ---
 id: D-SKL-032
+title: A probe is worth what the session can run, and nothing it can only see
 date: 2026-08-10
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-FBK-026
+title: The ladder needs an outcome that builds something
 date: 2026-08-03
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-KNW-017
+title: A verification question is routed to the layer that verifies it
 date: 2026-08-02
 status: open
 ---

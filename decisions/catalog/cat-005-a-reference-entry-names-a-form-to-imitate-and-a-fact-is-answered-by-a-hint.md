@@ -1,5 +1,6 @@
 ---
 id: D-CAT-005
+title: A reference entry names a form to imitate, and a fact is answered by a hint
 date: 2026-08-18
 status: open
 ---

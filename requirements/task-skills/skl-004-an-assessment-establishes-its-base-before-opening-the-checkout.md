@@ -1,5 +1,6 @@
 ---
 id: R-SKL-004
+title: 'An assessment establishes its base before opening the checkout'
 status: held
 restsOn: [D-SKL-002]
 ---

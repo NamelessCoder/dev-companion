@@ -1,8 +1,12 @@
 ---
 id: D-ANS-081
+title: A symptom is answered across the domain it was observed in
 date: 2026-08-18
 status: revoked
 revokedBy: D-ANS-084
+coveredBy:
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
+  - HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten
 ---
 
 # D-ANS-081 — A symptom is answered across the domain it was observed in
@@ -92,11 +96,6 @@ in. Debugging is where they part.
 - The next symptom reported as a miss turns out lexical like
   `fluid-layouts-sections` rather than gated, which would make this a curation
   task and not a matcher one.
-
-## Covered by
-
-- `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`
-- `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
 
 ## Confirmed on 2026-08-18
 

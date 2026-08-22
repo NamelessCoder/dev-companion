@@ -1,5 +1,6 @@
 ---
 id: D-DOC-019
+title: The site's stylesheet and script are built files, and what is solved is taken from a package
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-024

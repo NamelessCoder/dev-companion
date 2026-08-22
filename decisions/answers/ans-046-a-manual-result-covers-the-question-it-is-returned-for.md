@@ -1,5 +1,6 @@
 ---
 id: D-ANS-046
+title: A manual result covers the question it is returned for, and the silence names the corpus that answers
 date: 2026-08-03
 status: open
 ---

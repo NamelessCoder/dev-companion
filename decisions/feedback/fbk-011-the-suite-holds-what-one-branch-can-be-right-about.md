@@ -1,7 +1,9 @@
 ---
 id: D-FBK-011
+title: The suite holds what one branch can be right about
 date: 2026-08-02
 status: open
+coveredBy: []
 ---
 
 # D-FBK-011 — The suite holds what one branch can be right about
@@ -45,6 +47,8 @@ green, never both.
   that pick the same number are each right on their own and wrong once merged,
   so `TodoTest` fails on `main`, which is where it can be fixed.
 
+- Nothing in the suite holds it, because what this decides is that one assertion
+  is absent from it. The check it moved to is `bin/cli decisions:check`.
 ## Assumed
 
 - A stale listing between merges costs a reader one missing line in an index,
@@ -57,11 +61,6 @@ green, never both.
   the only thing that runs the command and a session working alone never does.
   Then the index belongs in a hook or in `todo:next`, not in a suite that
   branches cannot pass.
-
-## Covered by
-
-- Nothing: what this decides is that one assertion is absent from the suite, and
-  the check it moved to is `bin/cli decisions:check`.
 
 ## Since then
 

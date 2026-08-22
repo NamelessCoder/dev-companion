@@ -1,7 +1,10 @@
 ---
 id: D-SKL-052
+title: The injected size of a skill is what the retention rule leaves
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns
 ---
 
 # D-SKL-052 — The injected size of a skill is what the retention rule leaves
@@ -89,7 +92,3 @@ it is a rule, and that rule is guarded on two of the four kinds it names.
 - The drift arrives after all: a domain wide enough for its own skill folded
   into an existing one because adding a section is cheaper than publishing a
   file. `D-SKL-050` is the counter-example today and one case is not the rule.
-
-## Covered by
-
-- `SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`

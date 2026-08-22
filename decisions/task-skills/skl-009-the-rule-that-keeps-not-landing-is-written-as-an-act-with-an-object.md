@@ -1,7 +1,10 @@
 ---
 id: D-SKL-009
+title: The rule that keeps not landing is written as an act with an object
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - SkillTest::aReviewNamesTheSuitesItDidNotRun
 ---
 
 # D-SKL-009 — The rule that keeps not landing is written as an act with an object
@@ -72,10 +75,6 @@ produced it.
   subtraction rather than another rewrite.
 - A run starts listing every suite the guide returned as unrun without having
   considered any of them, which is the demand satisfied as a formality.
-
-## Covered by
-
-- `SkillTest::aReviewNamesTheSuitesItDidNotRun`
 
 ## Confirmed on 2026-08-03
 

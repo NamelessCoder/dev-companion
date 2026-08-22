@@ -1,7 +1,10 @@
 ---
 id: D-ANS-040
+title: A boundary guard is asked with a query that clears the coverage floor
 date: 2026-08-03
 status: open
+coveredBy:
+  - ScopeTest::whatARuleAnswerWithheldIsNamedRatherThanMissing
 ---
 
 # D-ANS-040 — A boundary guard is asked with a query that clears the coverage floor
@@ -64,7 +67,3 @@ one entry away from failing on a corpus that got better.
 - The new query drifts under the floor as the corpus grows. Then a fixture is
   the wrong instrument for this and the guard has to be built out of what the
   answer contains rather than out of what a query happens to weigh.
-
-## Covered by
-
-- `ScopeTest::whatARuleAnswerWithheldIsNamedRatherThanMissing`

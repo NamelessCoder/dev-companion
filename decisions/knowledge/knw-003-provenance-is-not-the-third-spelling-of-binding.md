@@ -1,8 +1,11 @@
 ---
 id: D-KNW-003
+title: '`provenance` is not the third spelling of `binding`, and stays'
 date: 2026-07-30
 status: revoked
 revokedBy: D-KNW-005
+coveredBy:
+  - KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares
 ---
 
 # D-KNW-003 — `provenance` is not the third spelling of `binding`, and stays
@@ -31,12 +34,6 @@ are the same axis. The third is not, and reading its values is what showed it.
 
 - A fourth value arrives on either side that reads naturally in both — then they
   are the same axis after all and the merge is the entry that was right.
-
-## Covered by
-
-- `KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares` — which replaced
-  the pinned-sets assertion this entry left behind and holds the one vocabulary
-  to the cases the enum declares.
 
 ## Confirmed on 2026-08-02
 

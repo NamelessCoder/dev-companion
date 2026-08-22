@@ -1,5 +1,6 @@
 ---
 id: R-SKL-007
+title: 'An upgrade establishes what breaks before it chooses a range'
 status: held
 restsOn: [D-EVI-001]
 ---

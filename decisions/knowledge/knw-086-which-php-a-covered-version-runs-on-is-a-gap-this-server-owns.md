@@ -1,5 +1,6 @@
 ---
 id: D-KNW-086
+title: Which PHP a covered version runs on is a gap this server owns
 date: 2026-08-18
 status: open
 ---

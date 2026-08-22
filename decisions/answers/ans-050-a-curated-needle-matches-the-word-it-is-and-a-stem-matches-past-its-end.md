@@ -1,7 +1,14 @@
 ---
 id: D-ANS-050
+title: A curated needle matches the word it is, and a stem matches past its end
 date: 2026-08-04
 status: open
+coveredBy:
+  - TermSearchTest::aStemRunsPastItsOwnEndAndACuratedWordDoesNot
+  - TermSearchTest::aNeedleThatRunsIntoASeparatorIsLeftAsItWas
+  - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
+  - HintsTest::aBriefNamesTheHintsItLeftBehind
+  - HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt
 ---
 
 # D-ANS-050 — A curated needle matches the word it is, and a stem matches past its end
@@ -119,11 +126,3 @@ task is the case.
   to draw — a corpus where `-able` or `-er` carries the subject would want the
   ending list to be the needle's property after all, which is the corpus edit
   this entry decided against.
-
-## Covered by
-
-- `TermSearchTest::aStemRunsPastItsOwnEndAndACuratedWordDoesNot`
-- `TermSearchTest::aNeedleThatRunsIntoASeparatorIsLeftAsItWas`
-- `HintsTest::aBriefNamesTheSkillThatOwnsTheWork`
-- `HintsTest::aBriefNamesTheHintsItLeftBehind`
-- `HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt`

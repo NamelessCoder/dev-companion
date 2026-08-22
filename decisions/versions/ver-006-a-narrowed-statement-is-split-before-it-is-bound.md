@@ -1,5 +1,6 @@
 ---
 id: D-VER-006
+title: A narrowed statement is split before it is bound
 date: 2026-08-18
 status: confirmed
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-083
+title: The unsupported answer is the whole diagnostic, and the orientation tool is for a caller who has none
 date: 2026-08-17
 status: open
 ---

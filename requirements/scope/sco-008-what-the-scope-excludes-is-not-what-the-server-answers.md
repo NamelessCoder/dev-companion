@@ -1,5 +1,6 @@
 ---
 id: R-SCO-008
+title: 'What the scope excludes is not what the server answers'
 status: held
 ---
 

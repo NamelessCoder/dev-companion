@@ -1,7 +1,11 @@
 ---
 id: D-KNW-044
+title: One search over the whole Tests/ tree finds what asserts a rendered output
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aRenderedOutputChangeIsToldWhereTheExpectationsHide
+  - HintsTest::theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor
 ---
 
 # D-KNW-044 — One search over the whole Tests/ tree finds what asserts a rendered output
@@ -98,8 +102,3 @@ reaches them.
   running the suite. The 24 of 26 was counted against one change; a second
   change reaching materially fewer means the shapes did belong to the asset area
   after all.
-
-## Covered by
-
-- `HintsTest::aRenderedOutputChangeIsToldWhereTheExpectationsHide`
-- `HintsTest::theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor`

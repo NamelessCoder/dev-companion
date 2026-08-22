@@ -1,7 +1,12 @@
 ---
 id: D-SCO-005
+title: The installation is evidence about the task, and the weakest kind
 date: 2026-07-29
 status: confirmed
+coveredBy:
+  - ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs
+  - ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence
+  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise
 ---
 
 # D-SCO-005 — The installation is evidence about the task, and the weakest kind
@@ -40,12 +45,6 @@ now consulted, and the installation this server was started in is one of them.
 - `TYPO3_DEV_COMPANION_ROOT` points at a site installation for the label and
   icon lookups while the questions are about the core. The variable now moves
   the boundary too, which it was not introduced to do.
-
-## Covered by
-
-- `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
-- `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`
-- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
 
 ## Since then
 

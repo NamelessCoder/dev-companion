@@ -1,5 +1,6 @@
 ---
 id: R-SKL-014
+title: 'A review reads what the project already says about the patch'
 status: held
 restsOn: [D-SKL-008]
 ---

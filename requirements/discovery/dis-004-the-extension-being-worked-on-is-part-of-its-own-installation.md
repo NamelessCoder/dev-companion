@@ -1,5 +1,6 @@
 ---
 id: R-DIS-004
+title: 'The extension being worked on is part of its own installation'
 status: held
 ---
 

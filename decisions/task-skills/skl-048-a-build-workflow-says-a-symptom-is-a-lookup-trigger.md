@@ -1,7 +1,10 @@
 ---
 id: D-SKL-048
+title: A build workflow says a symptom is a lookup trigger
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::theBuildWorkflowSaysASymptomIsALookupTrigger
 ---
 
 # D-SKL-048 — A build workflow says a symptom is a lookup trigger
@@ -85,10 +88,6 @@ one moment a subject is what the session has. Debugging is where it does not.
   workflow too.
 - A session reads the section and reads the installed source first anyway. Then
   the surface is not the lever, and no wording at it will be.
-
-## Covered by
-
-- `SkillTest::theBuildWorkflowSaysASymptomIsALookupTrigger`
 
 ## Since then
 

@@ -1,7 +1,10 @@
 ---
 id: D-DOC-037
+title: A decision nobody has revisited is held to the console
 date: 2026-08-18
 status: open
+coveredBy:
+  - DecisionsTest::anUnvisitedDecisionNamesNoCommandTheConsoleLost
 ---
 
 # D-DOC-037 — A decision nobody has revisited is held to the console
@@ -70,7 +73,3 @@ line.
 - A page under `documentation/` sends a reader to a command that does not exist.
   Nothing here would catch it, and the reader is somebody following a procedure
   rather than reading a record.
-
-## Covered by
-
-- `DecisionsTest::anUnvisitedDecisionNamesNoCommandTheConsoleLost`

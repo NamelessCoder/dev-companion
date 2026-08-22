@@ -1,5 +1,6 @@
 ---
 id: R-DIS-011
+title: 'The entrypoint installs its own client configuration'
 status: held
 ---
 

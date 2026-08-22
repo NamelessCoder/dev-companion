@@ -1,5 +1,6 @@
 ---
 id: D-KNW-065
+title: What a public method on a non-final core class commits its author to is a gap this server owns
 date: 2026-08-09
 status: confirmed
 ---

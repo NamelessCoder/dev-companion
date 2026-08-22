@@ -1,5 +1,6 @@
 ---
 id: R-KNW-017
+title: 'A convention read off the core carries its condition'
 status: held
 ---
 

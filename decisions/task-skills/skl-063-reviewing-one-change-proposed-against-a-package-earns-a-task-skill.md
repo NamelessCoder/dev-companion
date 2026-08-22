@@ -1,5 +1,6 @@
 ---
 id: D-SKL-063
+title: Reviewing one change proposed against a package that is not the core earns a task skill
 date: 2026-08-18
 status: open
 ---

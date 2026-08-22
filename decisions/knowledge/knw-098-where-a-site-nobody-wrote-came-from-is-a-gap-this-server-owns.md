@@ -1,7 +1,10 @@
 ---
 id: D-KNW-098
+title: Where a site nobody wrote came from is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::whereASiteNobodyWroteCameFromIsStatedAndLeavesTheSymptomWhereItWas
 ---
 
 # D-KNW-098 — Where a site nobody wrote came from is a gap this server owns
@@ -113,10 +116,6 @@ four other reasons a root request answers 404. The feedback is queued at
 - A caller follows the statement, finds the base is a sub-path, and corrects it
   into a collision with a site that already names the host. The two hints would
   owe each other more than a neighbour line.
-
-## Covered by
-
-- `HintsTest::whereASiteNobodyWroteCameFromIsStatedAndLeavesTheSymptomWhereItWas`
 
 ## Confirmed on 2026-08-18
 

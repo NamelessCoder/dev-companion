@@ -1,7 +1,14 @@
 ---
 id: D-AUD-006
+title: The server reports the exclusion that happened, and the installer keeps the line it did not write
 date: 2026-08-04
 status: open
+coveredBy:
+  - ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList
+  - ExcludedToolsTest::theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded
+  - EntrypointTest::anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo
+  - InstallerTest::codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn
+  - InstallerTest::codexInstallRefusesASectionItCannotRewriteWithoutDropping
 ---
 
 # D-AUD-006 — The server reports the exclusion that happened, and the installer keeps the line it did not write
@@ -97,11 +104,3 @@ described a capability the same server had just offered.
 - An `install` or an `update` is found to have dropped a line of a section
   again. The JSON path and the TOML path now make the same promise, and it is
   the promise, not the format, that a caller relies on.
-
-## Covered by
-
-- `ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList`
-- `ExcludedToolsTest::theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded`
-- `EntrypointTest::anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo`
-- `InstallerTest::codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn`
-- `InstallerTest::codexInstallRefusesASectionItCannotRewriteWithoutDropping`

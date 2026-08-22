@@ -1,7 +1,12 @@
 ---
 id: D-KNW-007
+title: A hint says whose it is in both directions
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::whatOnlyBindsOutsideTheCoreSaysSoInsideIt
+  - HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore
+  - VersionsTest::whoIsObligedIsWrittenAsDataToo
 ---
 
 # D-KNW-007 — A hint says whose it is in both directions
@@ -62,12 +67,6 @@ a repository outside the core has to do" — it said nothing, which reads as
   for a core patch in different sentences. The statement-level field is where
   that goes, and a hint needing it per statement in both directions is one hint
   doing two jobs.
-
-## Covered by
-
-- `HintsTest::whatOnlyBindsOutsideTheCoreSaysSoInsideIt`
-- `HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore`
-- `VersionsTest::whoIsObligedIsWrittenAsDataToo`
 
 ## Since then
 

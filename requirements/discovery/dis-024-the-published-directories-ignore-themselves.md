@@ -1,5 +1,6 @@
 ---
 id: R-DIS-024
+title: 'The published directories ignore themselves'
 status: held
 restsOn: [D-DIS-010]
 ---

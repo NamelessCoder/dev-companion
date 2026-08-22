@@ -244,8 +244,9 @@ final class DecisionsTest extends TestCase
      * answer for every entry that names one — the method where **Covered by**
      * names a method, and every method of the class where it names the class.
      * A test nothing names answers with nothing, which is the ordinary case and
-     * the one that must stay quiet — `D-DOC-043`, and `D-DOC-044` is what
-     * prints it when a test fails.
+     * the one that must stay quiet — `D-DOC-043`, `D-DOC-044` is what prints it
+     * when a test fails, and `D-DOC-045` is why it is read out of the front
+     * matter rather than out of a section.
      */
     #[Test]
     public function everyEntryATestHoldsIsNamedFromTheFailingEnd(): void

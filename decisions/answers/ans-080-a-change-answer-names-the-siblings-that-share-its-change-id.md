@@ -1,7 +1,13 @@
 ---
 id: D-ANS-080
+title: A change answer names the siblings that share its Change-Id
 date: 2026-08-14
 status: open
+coveredBy:
+  - GerritTest::aChangeNamedByItsNumberIsAnsweredWithTheSiblingsSharingItsChangeId
+  - GerritTest::aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed
+  - GerritTest::theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit
+  - GerritTest::aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding
 ---
 
 # D-ANS-080 — A change answer names the siblings that share its Change-Id
@@ -114,13 +120,6 @@ whether the answer names it.
 - A change with siblings on several supported lines makes the answer longer than
   the question it was asked, so that a review lookup has to be bounded where it
   is not today.
-
-## Covered by
-
-- `GerritTest::aChangeNamedByItsNumberIsAnsweredWithTheSiblingsSharingItsChangeId`
-- `GerritTest::aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed`
-- `GerritTest::theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit`
-- `GerritTest::aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding`
 
 ## Since then
 

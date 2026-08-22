@@ -1,5 +1,6 @@
 ---
 id: R-KNW-005
+title: 'Where a mechanism fails silently, the hint names the failure'
 status: held
 ---
 

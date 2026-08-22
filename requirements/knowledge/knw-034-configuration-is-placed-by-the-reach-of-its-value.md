@@ -1,5 +1,6 @@
 ---
 id: R-KNW-034
+title: 'Configuration is placed by the reach of its value'
 status: held
 ---
 

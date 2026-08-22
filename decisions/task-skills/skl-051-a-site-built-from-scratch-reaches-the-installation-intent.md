@@ -1,7 +1,12 @@
 ---
 id: D-SKL-051
+title: A site built from scratch reaches the installation intent
 date: 2026-08-18
 status: open
+coveredBy:
+  - KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther
+  - KnowledgeTest::everyKindOfWorkHasSuchABrief
+  - SkillTest::aBriefThatNamesSeveralUnitsRoutesToTheSkillOfEach
 ---
 
 # D-SKL-051 — A site built from scratch reaches the installation intent
@@ -83,9 +88,3 @@ them.
 - A session given the corrected brief still activates
   `typo3-development-installation` by hand, or does not activate it at all. Then
   the route was not what was missing.
-
-## Covered by
-
-- `KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther`
-- `KnowledgeTest::everyKindOfWorkHasSuchABrief`
-- `SkillTest::aBriefThatNamesSeveralUnitsRoutesToTheSkillOfEach`

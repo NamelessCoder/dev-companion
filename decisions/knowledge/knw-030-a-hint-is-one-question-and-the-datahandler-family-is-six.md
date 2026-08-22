@@ -1,7 +1,13 @@
 ---
 id: D-KNW-030
+title: A hint is one question, and the DataHandler family is six of them
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
+  - HintsTest::theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain
+  - HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding
+  - HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor
 ---
 
 # D-KNW-030 — A hint is one question, and the DataHandler family is six of them
@@ -74,10 +80,3 @@ patch-review obligation. Which of them a caller got depended on how much of its
   would mean the five specific ones are unreachable and the split is cosmetic.
 - Somebody asks how to read a record and gets `persistence-reading` plus four
   write-path hints, because `persistence` is a word both halves carry.
-
-## Covered by
-
-- `HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem`
-- `HintsTest::theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain`
-- `HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding`
-- `HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor`

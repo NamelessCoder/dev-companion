@@ -1,7 +1,11 @@
 ---
 id: D-KNW-024
+title: The Fluid namespace prefix is what a template question is written in
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::aQueryWrittenInFluidTagSyntaxReachesTheFluidHints
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 
 # D-KNW-024 — The Fluid namespace prefix is what a template question is written in
@@ -66,8 +70,3 @@ and `fluid.json` was filtered out before a single hint was scored.
 - The Fluid category starts winning where the question is about the ViewHelper
   class rather than the template — `fluid-templates` now carries three patterns
   that a class-level question also spells out.
-
-## Covered by
-
-- `HintsTest::aQueryWrittenInFluidTagSyntaxReachesTheFluidHints`
-- `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`

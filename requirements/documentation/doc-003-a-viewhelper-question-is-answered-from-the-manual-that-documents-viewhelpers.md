@@ -1,5 +1,6 @@
 ---
 id: R-DOC-003
+title: 'A ViewHelper question is answered from the manual that documents ViewHelpers'
 status: held
 restsOn: [D-ANS-026, D-ANS-032, D-ANS-036, D-ANS-047]
 ---

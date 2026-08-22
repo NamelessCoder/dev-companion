@@ -1,7 +1,11 @@
 ---
 id: D-FBK-044
+title: A mangled call is refused rather than taken apart
 date: 2026-08-04
 status: open
+coveredBy:
+  - FeedbackTest::aFieldCarryingTheCallItArrivedInIsRefused
+  - FeedbackTest::aReportQuotingTheMarkersIsStillRecorded
 ---
 
 # D-FBK-044 — A mangled call is refused rather than taken apart
@@ -70,8 +74,3 @@ itself and swallowed everything behind it.
   the subject rather than the structure.
 - The frame arrives with the parameters in another order, or from a client that
   builds them differently, and the check does not see it.
-
-## Covered by
-
-- `FeedbackTest::aFieldCarryingTheCallItArrivedInIsRefused`
-- `FeedbackTest::aReportQuotingTheMarkersIsStillRecorded`

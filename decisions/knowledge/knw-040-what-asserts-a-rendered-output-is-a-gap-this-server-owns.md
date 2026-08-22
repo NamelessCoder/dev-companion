@@ -1,5 +1,6 @@
 ---
 id: D-KNW-040
+title: What asserts a rendered output is a gap this server owns
 date: 2026-08-03
 status: revoked
 revokedBy: D-KNW-044

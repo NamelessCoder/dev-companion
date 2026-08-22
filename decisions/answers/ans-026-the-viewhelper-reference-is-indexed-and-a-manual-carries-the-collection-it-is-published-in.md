@@ -1,7 +1,11 @@
 ---
 id: D-ANS-026
+title: The ViewHelper reference is indexed, and a manual carries the collection it is published in
 date: 2026-08-02
 status: open
+coveredBy:
+  - DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection
+  - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
 ---
 
 # D-ANS-026 — The ViewHelper reference is indexed, and a manual carries the collection it is published in
@@ -73,11 +77,6 @@ every base used to have in common.
   `singlehtml/Index.html`, the whole book as one page, and `isDocumentPage()`
   lets it into the index as an ordinary candidate; for this book it is 2.9 MB,
   where in the three under `/m/` it has been cheap enough to go unnoticed.
-
-## Covered by
-
-- `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
-- `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`
 
 ## Since then
 

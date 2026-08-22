@@ -1,5 +1,6 @@
 ---
 id: D-AUD-008
+title: The server is called dev-companion, under the vendor TYPO3's own tooling uses
 date: 2026-08-06
 status: confirmed
 ---

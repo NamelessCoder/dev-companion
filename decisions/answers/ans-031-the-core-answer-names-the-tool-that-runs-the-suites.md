@@ -1,5 +1,6 @@
 ---
 id: D-ANS-031
+title: The core answer names the tool that runs the suites
 date: 2026-08-02
 status: open
 ---

@@ -1,7 +1,11 @@
 ---
 id: D-ANS-036
+title: A query written in Fluid tags is searched in the book that documents them
 date: 2026-08-03
 status: open
+coveredBy:
+  - DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook
+  - DocumentationTest::aQueryIsRoutedToABookOnlyWhileThatBookAnswers
 ---
 
 # D-ANS-036 — A query written in Fluid tags is searched in the book that documents them
@@ -85,11 +89,6 @@ already made a domain keyword for the hints.
   is answered without TypoScript Explained.
 - The tie inside the book is what callers actually notice. `f:if` is 2nd rather
   than 1st, and the page above it is a different ViewHelper.
-
-## Covered by
-
-- `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
-- `DocumentationTest::aQueryIsRoutedToABookOnlyWhileThatBookAnswers`
 
 ## Since then
 

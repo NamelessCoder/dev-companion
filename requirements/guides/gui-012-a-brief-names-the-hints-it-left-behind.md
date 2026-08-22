@@ -1,5 +1,6 @@
 ---
 id: R-GUI-012
+title: 'A brief names the hints it left behind'
 status: held
 restsOn: [D-GUI-007]
 ---

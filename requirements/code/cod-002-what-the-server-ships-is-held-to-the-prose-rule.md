@@ -1,5 +1,6 @@
 ---
 id: R-COD-002
+title: 'What the server ships is held to the prose rule'
 status: held
 restsOn: [D-DOC-002]
 ---

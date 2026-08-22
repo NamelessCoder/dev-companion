@@ -1,5 +1,6 @@
 ---
 id: D-FBK-025
+title: A judgement reads the corpus, decides the shape, and sets the priority
 date: 2026-08-03
 status: open
 ---

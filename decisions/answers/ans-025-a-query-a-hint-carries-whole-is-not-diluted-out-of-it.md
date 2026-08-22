@@ -1,7 +1,12 @@
 ---
 id: D-ANS-025
+title: A query a hint carries whole is not diluted out of it
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - HintsTest::aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs
+  - HintsTest::aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 
 # D-ANS-025 — A query a hint carries whole is not diluted out of it
@@ -116,12 +121,6 @@ used to answer.
   stop, arriving through the exception instead of through the mean.
 - A hint over the line is found to have been *usefully* unreachable: a caller
   asking one word and wanting the index rather than the hint that says it.
-
-## Covered by
-
-- `HintsTest::aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs`
-- `HintsTest::aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt`
-- `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`
 
 ## Confirmed on 2026-08-22
 

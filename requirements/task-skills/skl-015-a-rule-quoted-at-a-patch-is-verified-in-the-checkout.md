@@ -1,5 +1,6 @@
 ---
 id: R-SKL-015
+title: 'A rule quoted at a patch is verified in the checkout'
 status: held
 restsOn: [D-KNW-043, D-SKL-005]
 ---

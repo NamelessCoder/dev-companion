@@ -1,7 +1,12 @@
 ---
 id: D-AUD-005
+title: An exclusion naming no tool is reported on stderr, and the server starts
 date: 2026-08-04
 status: open
+coveredBy:
+  - ExcludedToolsTest::aNameNoToolAnswersToIsReportedAndTheRealOneBesideItStillExcludes
+  - EntrypointTest::anExcludedNameNoToolAnswersToIsSaidOnStderrAndStdoutStaysProtocol
+  - InstallerTest::installKeepsWhatTheCallerPutInTheEntryAndRewritesOnlyTheCommand
 ---
 
 # D-AUD-005 — An exclusion naming no tool is reported on stderr, and the server starts
@@ -91,12 +96,6 @@ so nowhere.
 - A session turns up where the renamed tool came back and nobody saw the line,
   because the client captured stderr and showed it to no one. The report then
   has to be in-band, where the agent reads it.
-
-## Covered by
-
-- `ExcludedToolsTest::aNameNoToolAnswersToIsReportedAndTheRealOneBesideItStillExcludes`
-- `EntrypointTest::anExcludedNameNoToolAnswersToIsSaidOnStderrAndStdoutStaysProtocol`
-- `InstallerTest::installKeepsWhatTheCallerPutInTheEntryAndRewritesOnlyTheCommand`
 
 ## Since then
 

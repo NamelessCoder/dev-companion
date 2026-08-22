@@ -1,7 +1,13 @@
 ---
 id: D-DOC-025
+title: The documentation is four sections, and the bar carries those four
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
+  - LinksTest::everyPathThisRepositoryWritesToItselfResolves
+  - TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked
+  - TodoTest::everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked
 ---
 
 # D-DOC-025 — The documentation is four sections, and the bar carries those four
@@ -70,10 +76,3 @@ find where the answer was.
   the thirteen entries were.
 - The rail on a tool page keeps listing the sections, because the theme did not
   move and this was left standing on the assumption that it would.
-
-## Covered by
-
-- `SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage`
-- `LinksTest::everyPathThisRepositoryWritesToItselfResolves`
-- `TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked`
-- `TodoTest::everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked`

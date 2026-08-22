@@ -1,5 +1,6 @@
 ---
 id: R-SKL-019
+title: 'Every published skill is named by an intent the brief can reach'
 status: held
 restsOn: [D-SKL-023]
 ---

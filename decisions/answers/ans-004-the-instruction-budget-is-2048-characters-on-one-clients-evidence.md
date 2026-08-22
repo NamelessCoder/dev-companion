@@ -1,5 +1,6 @@
 ---
 id: D-ANS-004
+title: The instruction budget is 2048 characters, on one client's evidence
 date: 2026-07-31
 status: open
 ---

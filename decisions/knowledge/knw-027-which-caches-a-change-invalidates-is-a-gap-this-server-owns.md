@@ -1,7 +1,11 @@
 ---
 id: D-KNW-027
+title: Which caches a change invalidates is a gap this server owns
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - HintsTest::aChangeIsToldWhichCacheGroupHoldsItsOldOutput
+  - HintsTest::clearingACacheAndDeclaringOneAreDifferentQuestions
 ---
 
 # D-KNW-027 — Which caches a change invalidates is a gap this server owns
@@ -92,11 +96,6 @@ instead.
 - The statement lands on the `caching` hint in `php.json`. That is where a cache
   is declared, which is a core-development question, and the session that needed
   this asked from a template.
-
-## Covered by
-
-- `HintsTest::aChangeIsToldWhichCacheGroupHoldsItsOldOutput`
-- `HintsTest::clearingACacheAndDeclaringOneAreDifferentQuestions`
 
 ## Confirmed on 2026-08-03
 

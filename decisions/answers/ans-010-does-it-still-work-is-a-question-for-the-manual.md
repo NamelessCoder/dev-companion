@@ -1,7 +1,11 @@
 ---
 id: D-ANS-010
+title: '"Does it still work" is a question for the manual, not the changelog'
 date: 2026-08-02
 status: open
+coveredBy:
+  - ScopeTest::everyToolNamedInTheScopeExists
+  - SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks
 ---
 
 # D-ANS-010 — "Does it still work" is a question for the manual, not the changelog
@@ -97,11 +101,6 @@ correct answer is "still supported".
   changelog — and still no way to tell whether the thing exists in the version
   it runs on. That is what would trigger the capability the first bullet
   reserves. Written on 2026-08-03, from the third reading below.
-
-## Covered by
-
-- `ScopeTest::everyToolNamedInTheScopeExists`
-- `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
 
 ## Since then
 

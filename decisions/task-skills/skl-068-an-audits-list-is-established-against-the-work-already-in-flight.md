@@ -1,5 +1,6 @@
 ---
 id: D-SKL-068
+title: An audit's list is established against the work already in flight
 date: 2026-08-21
 status: open
 ---

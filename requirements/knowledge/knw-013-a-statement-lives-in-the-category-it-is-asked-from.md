@@ -1,5 +1,6 @@
 ---
 id: R-KNW-013
+title: 'A statement lives in the category it is asked from'
 status: held
 ---
 

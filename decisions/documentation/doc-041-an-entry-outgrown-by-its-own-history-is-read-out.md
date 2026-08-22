@@ -1,7 +1,10 @@
 ---
 id: D-DOC-041
+title: An entry outgrown by its own history is read out
 date: 2026-08-22
 status: open
+coveredBy:
+  - DecisionsTest::anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn
 ---
 
 # D-DOC-041 — An entry outgrown by its own history is read out
@@ -75,10 +78,6 @@ Nothing about that is wrong, which is why nothing had counted it.
 - The measure names the wrong entries. A 1283-line history that a reader
   genuinely wants read is not a cost, and a feedback saying so would be the
   evidence.
-
-## Covered by
-
-- `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn`
 
 ## Since then
 

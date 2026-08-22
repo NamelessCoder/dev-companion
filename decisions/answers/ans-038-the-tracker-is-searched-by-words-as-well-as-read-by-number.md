@@ -1,5 +1,6 @@
 ---
 id: D-ANS-038
+title: The tracker is searched by words as well as read by number
 date: 2026-08-03
 status: open
 ---

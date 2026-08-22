@@ -1,7 +1,15 @@
 ---
 id: D-ANS-009
+title: A shipped-file deprecation is found by the tool that lists the file
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
+  - ExtensionTest::aFrameworkPackageIsExemptFromBoth
+  - ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile
+  - ExtensionTest::anIconBelowResourcesIsWhatSilencesTheRootOne
+  - ExtensionTest::theRenamedFileBesideItIsWhatSilencesTheOldOne
+  - ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt
 ---
 
 # D-ANS-009 — A shipped-file deprecation is found by the tool that lists the file
@@ -80,15 +88,6 @@ line beside four files nothing is wrong with, and says nothing about either.
 - A later feedback reports the opposite cost: an extension answer that
   volunteers deprecations is read as a compatibility verdict, and a caller
   treats the absence of a signal as a clean bill for the next major.
-
-## Covered by
-
-- `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
-- `ExtensionTest::aFrameworkPackageIsExemptFromBoth`
-- `ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile`
-- `ExtensionTest::anIconBelowResourcesIsWhatSilencesTheRootOne`
-- `ExtensionTest::theRenamedFileBesideItIsWhatSilencesTheOldOne`
-- `ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt`
 
 ## Since then
 

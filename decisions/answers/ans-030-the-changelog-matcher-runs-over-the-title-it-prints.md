@@ -1,5 +1,6 @@
 ---
 id: D-ANS-030
+title: The changelog matcher runs over the title it prints
 date: 2026-08-02
 status: open
 ---

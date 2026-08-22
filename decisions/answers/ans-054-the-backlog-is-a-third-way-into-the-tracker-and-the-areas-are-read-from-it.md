@@ -1,7 +1,15 @@
 ---
 id: D-ANS-054
+title: The backlog is a third way into the tracker, and the areas are read from it
 date: 2026-08-05
 status: confirmed
+coveredBy:
+  - ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields
+  - ForgeTest::anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary
+  - ForgeTest::awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist
+  - ForgeTest::theAreasAreReadFromTheProjectAndHeldRatherThanCopied
+  - ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage
+  - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes
 ---
 
 # D-ANS-054 — The backlog is a third way into the tracker, and the areas are read from it
@@ -80,15 +88,6 @@ written Redmine URL, which is the shape `D-FBK-027` names as earning a tool.
   by raising `limit` instead of narrowing.
 - The core adds a tracker and somebody has to release this server to filter by
   it, which would say the two lists were split on the wrong side.
-
-## Covered by
-
-- `ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields`
-- `ForgeTest::anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary`
-- `ForgeTest::awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist`
-- `ForgeTest::theAreasAreReadFromTheProjectAndHeldRatherThanCopied`
-- `ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage`
-- `ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes`
 
 ## Confirmed on 2026-08-05
 

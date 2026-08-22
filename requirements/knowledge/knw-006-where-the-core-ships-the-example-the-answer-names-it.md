@@ -1,5 +1,6 @@
 ---
 id: R-KNW-006
+title: 'Where the core ships the example, the answer names it'
 status: held
 ---
 

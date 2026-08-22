@@ -1,5 +1,6 @@
 ---
 id: D-ANS-011
+title: A scope answer states what a manifest declares, and the comparison is the audit's
 date: 2026-08-02
 status: open
 ---

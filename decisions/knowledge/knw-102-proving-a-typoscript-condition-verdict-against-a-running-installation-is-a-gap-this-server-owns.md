@@ -1,5 +1,6 @@
 ---
 id: D-KNW-102
+title: Proving a TypoScript condition verdict against a running installation is a gap this server owns
 date: 2026-08-18
 status: open
 ---

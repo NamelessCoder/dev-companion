@@ -1,7 +1,15 @@
 ---
 id: D-VER-005
+title: A document section declares the majors it holds for
 date: 2026-08-04
 status: open
+coveredBy:
+  - KnowledgeTest::aBoundSectionIsKeptOnTheMajorItHoldsFor
+  - KnowledgeTest::theBindingDoesNotReachTheCallerAsPartOfWhatItBinds
+  - KnowledgeTest::aDeclarationBelowTheFirstLineOfContentBindsNothing
+  - KnowledgeTest::noProseDocumentDatesAStatementInItsSentence
+  - KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave
+  - VersionsTest::proseSaysWhereARangeItDoesNotCarryLives
 ---
 
 # D-VER-005 — A document section declares the majors it holds for
@@ -75,12 +83,3 @@ document is the only place the range could be stated.
   the caller used passes no target. Nothing runs over that one: which tools
   render this corpus is read rather than counted, and a fourth would have to be
   given the target by whoever adds it.
-
-## Covered by
-
-- `KnowledgeTest::aBoundSectionIsKeptOnTheMajorItHoldsFor`
-- `KnowledgeTest::theBindingDoesNotReachTheCallerAsPartOfWhatItBinds`
-- `KnowledgeTest::aDeclarationBelowTheFirstLineOfContentBindsNothing`
-- `KnowledgeTest::noProseDocumentDatesAStatementInItsSentence`
-- `KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave`
-- `VersionsTest::proseSaysWhereARangeItDoesNotCarryLives`

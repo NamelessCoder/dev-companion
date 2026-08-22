@@ -1,5 +1,6 @@
 ---
 id: D-SKL-022
+title: A handoff between skills is an instruction rather than a closing sentence
 date: 2026-08-07
 status: confirmed
 ---

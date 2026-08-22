@@ -1,7 +1,12 @@
 ---
 id: D-ANS-020
+title: A deprecation is answered by the version that removes it
 date: 2026-08-02
 status: open
+coveredBy:
+  - PackageSourcesTest::aDeprecationSaysWhichVersionItStopsWorkingIn
+  - PackageSourcesTest::whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer
+  - PackageSourcesTest::aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne
 ---
 
 # D-ANS-020 — A deprecation is answered by the version that removes it
@@ -111,12 +116,6 @@ the rule that would cover the rest has an exception inside the same corpus.
   deprecations that name a removal other than v15, the "always v15" reading was
   a snapshot rather than a policy, and the parsed clause is the only honest
   source.
-
-## Covered by
-
-- `PackageSourcesTest::aDeprecationSaysWhichVersionItStopsWorkingIn`
-- `PackageSourcesTest::whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer`
-- `PackageSourcesTest::aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne`
 
 ## Since then
 

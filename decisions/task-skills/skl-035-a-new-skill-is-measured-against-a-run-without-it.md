@@ -1,5 +1,6 @@
 ---
 id: D-SKL-035
+title: A new skill is measured against a run without it
 date: 2026-08-12
 status: open
 ---

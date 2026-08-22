@@ -1,7 +1,10 @@
 ---
 id: D-VER-004
+title: A supported range is a property of the package, not of the checkout
 date: 2026-07-31
 status: confirmed
+coveredBy:
+  - VersionsTest::aSpellingFromTheWildAnswersForEveryMajorItServes
 ---
 
 # D-VER-004 — A supported range is a property of the package, not of the checkout
@@ -51,10 +54,6 @@ that file is for — was removed before the answer was composed.
   declares a range far wider than it tests, and the answer then carries
   statements for majors nobody is maintaining. The second one is worth watching:
   the declaration is a promise, and this now treats it as one.
-
-## Covered by
-
-- `VersionsTest::aSpellingFromTheWildAnswersForEveryMajorItServes`
 
 ## Confirmed on 2026-08-02
 

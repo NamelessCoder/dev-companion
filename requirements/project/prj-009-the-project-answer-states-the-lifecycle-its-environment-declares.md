@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-009
+title: 'The project answer states the lifecycle its environment declares'
 status: held
 restsOn: [D-ANS-044]
 ---

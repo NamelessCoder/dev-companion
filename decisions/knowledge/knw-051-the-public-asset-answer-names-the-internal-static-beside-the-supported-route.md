@@ -1,7 +1,10 @@
 ---
 id: D-KNW-051
+title: The public-asset answer names the internal static beside the supported route
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::thePublicAssetAnswerSeparatesTheSupportedRouteFromTheInternalStaticBesideIt
 ---
 
 # D-KNW-051 — The public-asset answer names the internal static beside the supported route
@@ -144,7 +147,3 @@ API. One line above the signature the docblock reads
 - The 107537 namespaces turn out to be right at some patch level, or the classes
   move. The clause about the migration example then describes a docs bug that
   was fixed, and it goes.
-
-## Covered by
-
-- `HintsTest::thePublicAssetAnswerSeparatesTheSupportedRouteFromTheInternalStaticBesideIt`

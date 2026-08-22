@@ -1,7 +1,11 @@
 ---
 id: D-ANS-070
+title: A document is handed over by the call that reads it and by what the answer left of it
 date: 2026-08-09
 status: open
+coveredBy:
+  - KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft
+  - KnowledgeTest::anAnswerCarryingEveryHeadingOfAPageSaysThatToo
 ---
 
 # D-ANS-070 — A document is handed over by the call that reads it and by what the answer left of it
@@ -84,11 +88,6 @@ named the document, the session read the name, and it searched anyway.
 - The share turns out unstateable — a document whose sections a query
   legitimately covers most of, answered as *2 of 9* and read as a reproach. Then
   what was missing is the headings and not a number.
-
-## Covered by
-
-- `KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft`
-- `KnowledgeTest::anAnswerCarryingEveryHeadingOfAPageSaysThatToo`
 
 ## Since then
 

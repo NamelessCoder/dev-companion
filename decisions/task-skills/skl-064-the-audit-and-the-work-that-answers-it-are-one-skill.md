@@ -1,7 +1,12 @@
 ---
 id: D-SKL-064
+title: The audit and the work that answers it are one skill
 date: 2026-08-19
 status: open
+coveredBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
+  - SkillTest::everyPublishedSkillIsNamedByAnIntent
 ---
 
 # D-SKL-064 — The audit and the work that answers it are one skill
@@ -86,9 +91,3 @@ to save.
   session should be able to see — is the one that has to be answered.
 - A published skill turns out to have been wrong in a way a baseline run would
   have shown. That is what `D-SKL-035` buys and what these two did not.
-
-## Covered by
-
-- `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
-- `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`
-- `SkillTest::everyPublishedSkillIsNamedByAnIntent`

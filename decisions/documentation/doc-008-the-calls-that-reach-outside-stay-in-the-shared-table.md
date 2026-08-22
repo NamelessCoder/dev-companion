@@ -1,7 +1,11 @@
 ---
 id: D-DOC-008
+title: The calls that reach outside stay in the shared table
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - DocumentationTest::aSourceThatDidNotAnswerIsStillAnAnswerToTheSchema
+  - ToolContractTest::aToolCallAnswersWithTextAndMatchingData
 ---
 
 # D-DOC-008 — The calls that reach outside stay in the shared table
@@ -82,11 +86,6 @@ docs.typo3.org. It does not, and that is the whole of what this settles.
   whether docs.typo3.org answered, so it would read as a defect in the tool.
 - 14.3 leaves the covered versions and both calls fall to `version-not-covered`,
   which puts the page back where it started while everything stays green.
-
-## Covered by
-
-- `DocumentationTest::aSourceThatDidNotAnswerIsStillAnAnswerToTheSchema`
-- `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`
 
 ## Confirmed on 2026-08-23
 

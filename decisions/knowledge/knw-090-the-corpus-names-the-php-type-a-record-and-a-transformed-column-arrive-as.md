@@ -1,7 +1,10 @@
 ---
 id: D-KNW-090
+title: The corpus names the PHP type a record and a transformed column arrive as
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::theRecordAndItsTransformedColumnsAreNamedAsPhpTypes
 ---
 
 # D-KNW-090 — The corpus names the PHP type a record and a transformed column arrive as
@@ -81,10 +84,6 @@ the class name instead, and no statement carries one.
 - The set of columns that transform into a value object is open-ended enough
   that naming it dates on the next major — the way `D-KNW-020`'s five relational
   types can, and for the same reason.
-
-## Covered by
-
-- `HintsTest::theRecordAndItsTransformedColumnsAreNamedAsPhpTypes`
 
 ## Confirmed on 2026-08-18
 

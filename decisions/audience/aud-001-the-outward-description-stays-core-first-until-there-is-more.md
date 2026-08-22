@@ -1,5 +1,6 @@
 ---
 id: D-AUD-001
+title: The outward description stays core-first until there is non-core knowledge
 date: 2026-07-29
 status: confirmed
 ---

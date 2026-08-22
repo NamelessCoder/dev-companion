@@ -1,5 +1,6 @@
 ---
 id: D-ANS-029
+title: The scanner matcher is stated on the route a removal takes
 date: 2026-08-02
 status: revoked
 revokedBy: D-ANS-035

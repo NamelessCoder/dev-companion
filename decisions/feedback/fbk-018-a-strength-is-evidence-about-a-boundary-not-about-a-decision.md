@@ -1,5 +1,6 @@
 ---
 id: D-FBK-018
+title: A strength is evidence about a boundary, not about a decision
 date: 2026-08-02
 status: confirmed
 ---

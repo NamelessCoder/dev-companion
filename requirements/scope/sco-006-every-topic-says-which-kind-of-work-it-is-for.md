@@ -1,5 +1,6 @@
 ---
 id: R-SCO-006
+title: 'Every topic says which kind of work it is for'
 status: held
 restsOn: [D-KNW-005]
 ---

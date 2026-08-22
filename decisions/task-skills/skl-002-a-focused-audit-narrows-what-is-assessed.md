@@ -1,7 +1,10 @@
 ---
 id: D-SKL-002
+title: A focused audit narrows what is assessed, not the list it closes on
 date: 2026-08-02
 status: open
+coveredBy:
+  - SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList
 ---
 
 # D-SKL-002 — A focused audit narrows what is assessed, not the list it closes on
@@ -65,6 +68,11 @@ not a reason to reopen it.
   answered in the reference and contradicted in the instruction, and a session
   that follows the instruction is following the right file.
 
+- `SKILL-11` is what measures the behaviour, and the test above is a sentence:
+  `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened` and
+  `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk` hold the
+  list being written and answered, and none of the three can see whether a
+  session narrowed what it read.
 ## Assumed
 
 - That the two halves come apart — that what a review *reads* can be cut to the
@@ -86,17 +94,6 @@ not a reason to reopen it.
   unprompted, in which case nothing was outranked, the cost the feedback reports
   is the reading and not the list, and a paragraph was spent in a file that is
   load-bearing because it is short.
-
-## Covered by
-
-- `SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList`, which
-  reads back the narrowing where the list is built, the third state where the
-  report closes, and the clause in the reference that used to be outranked.
-- `SKILL-11`, which is what measures the behaviour. The test above is a
-  sentence; `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened` and
-  `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk` hold the
-  list being written and answered, and none of the three can see whether a
-  session given a focused prompt narrowed the reading or the list.
 
 ## Since then
 

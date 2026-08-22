@@ -1,7 +1,11 @@
 ---
 id: D-KNW-031
+title: A suite is a property of the domain, not of the hint
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::theBaseSuitesOfADomainAreStatedWhateverTheTaskNames
+  - HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor
 ---
 
 # D-KNW-031 — A suite is a property of the domain, not of the hint
@@ -62,8 +66,3 @@ written in.
 - Somebody puts a suite back on a hint because the brief did not name it. The
   hint is not where that is fixed; either the suite is base for the domain or
   the task guide's suite matcher missed it.
-
-## Covered by
-
-- `HintsTest::theBaseSuitesOfADomainAreStatedWhateverTheTaskNames`
-- `HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor`

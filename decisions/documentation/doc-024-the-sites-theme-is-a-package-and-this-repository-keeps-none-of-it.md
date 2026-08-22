@@ -1,7 +1,10 @@
 ---
 id: D-DOC-024
+title: The site's theme is a package, and this repository keeps none of it
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
 ---
 
 # D-DOC-024 — The site's theme is a package, and this repository keeps none of it
@@ -101,10 +104,6 @@ caught by once.
   the copy's defect arriving through a lock file nobody updates.
 - A page is served unstyled, because the finish step did not run and nothing
   said so.
-
-## Covered by
-
-- `SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage`
 
 ## Since then
 

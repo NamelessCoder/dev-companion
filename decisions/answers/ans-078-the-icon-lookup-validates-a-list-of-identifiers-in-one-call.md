@@ -1,5 +1,6 @@
 ---
 id: D-ANS-078
+title: The icon lookup validates a list of identifiers in one call
 date: 2026-08-12
 status: open
 ---

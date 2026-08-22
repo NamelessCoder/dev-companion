@@ -1,5 +1,6 @@
 ---
 id: D-EVI-008
+title: What the server buys is a ceiling rather than a lower average
 date: 2026-08-18
 status: open
 ---

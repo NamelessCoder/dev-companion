@@ -1,5 +1,6 @@
 ---
 id: R-SKL-016
+title: 'The assessment before a core patch reads the issue and the review server'
 status: held
 restsOn: [D-SKL-010]
 ---

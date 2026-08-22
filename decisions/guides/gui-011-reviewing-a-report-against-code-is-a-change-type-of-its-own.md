@@ -1,7 +1,10 @@
 ---
 id: D-GUI-011
+title: Reviewing a report against code is a change type of its own
 date: 2026-08-08
 status: open
+coveredBy:
+  - HintsTest::aTriageIsAnsweredWithWhatDecidingAReportNeeds
 ---
 
 # D-GUI-011 — Reviewing a report against code is a change type of its own
@@ -79,7 +82,3 @@ work that writes no file picked it and got a review of a diff.
   `audit` needles reach a report after all and the two vocabularies do overlap.
 - `forge ` is reported reaching a task that is not about the tracker, which
   would say a marker matched on a word rather than on a subject.
-
-## Covered by
-
-- `HintsTest::aTriageIsAnsweredWithWhatDecidingAReportNeeds`

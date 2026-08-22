@@ -1,7 +1,10 @@
 ---
 id: D-KNW-046
+title: The non-interactive install path is a gap this server owns
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - HintsTest::anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses
 ---
 
 # D-KNW-046 — The non-interactive install path is a gap this server owns
@@ -97,10 +100,6 @@ report afterwards and left to find out what the command takes.
 - The entry lands and a later install session still reaches nothing. Then the
   gap was never the knowledge but where an install task looks, and the fix is on
   `installation-setup` rather than in `knowledge/hints/`.
-
-## Covered by
-
-- `HintsTest::anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses`
 
 ## Confirmed on 2026-08-03
 

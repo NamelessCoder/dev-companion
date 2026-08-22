@@ -1,5 +1,6 @@
 ---
 id: D-DIS-006
+title: The installation stays worked out from the directory the server was started in
 date: 2026-08-01
 status: open
 ---

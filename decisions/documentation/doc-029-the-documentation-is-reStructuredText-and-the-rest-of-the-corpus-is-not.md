@@ -1,7 +1,19 @@
 ---
 id: D-DOC-029
+title: The documentation is reStructuredText, and the rest of the corpus is not
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel
+  - SiteTest::aReferenceInsideTheCorpusIsNotRewritten
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
+  - LinksTest::everyPathThisRepositoryWritesToItselfResolves
+  - ProseTest::rewrappingChangesNothingButTheLineBreaks
+  - ProseTest::whatIsNotProseInReStructuredTextComesBackUnchanged
+  - ProseTest::aLiteralAndARoleAreNeverBrokenAcrossLines
+  - ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers
+  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---
 
 # D-DOC-029 — The documentation is reStructuredText, and the rest of the corpus is not
@@ -92,16 +104,3 @@ fragment away and landed the reader at the top of a page instead.
 - A reader arrives from `AGENTS.md` or a decision, lands on a `.rst` file in the
   checkout, and cannot follow it further because every link on the page is a
   role. That is the assumption above, failing.
-
-## Covered by
-
-- `SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel`
-- `SiteTest::aReferenceInsideTheCorpusIsNotRewritten`
-- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
-- `SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage`
-- `LinksTest::everyPathThisRepositoryWritesToItselfResolves`
-- `ProseTest::rewrappingChangesNothingButTheLineBreaks`
-- `ProseTest::whatIsNotProseInReStructuredTextComesBackUnchanged`
-- `ProseTest::aLiteralAndARoleAreNeverBrokenAcrossLines`
-- `ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers`
-- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`

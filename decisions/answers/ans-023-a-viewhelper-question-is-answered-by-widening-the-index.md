@@ -1,8 +1,12 @@
 ---
 id: D-ANS-023
+title: A ViewHelper question is answered by widening the manual index
 date: 2026-08-02
 status: revoked
 revokedBy: D-ANS-026
+coveredBy:
+  - DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection
+  - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
 ---
 
 # D-ANS-023 — A ViewHelper question is answered by widening the manual index
@@ -93,11 +97,6 @@ reference is, and the lookup does not carry it.
   would then outrank the Fluid chapter of TYPO3 Explained.
 - The pages come back too thin to excerpt. A ViewHelper page is largely argument
   tables and code, and the reader takes its excerpt from paragraphs.
-
-## Covered by
-
-- `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
-- `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`
 
 ## Confirmed on 2026-08-02
 

@@ -1,7 +1,10 @@
 ---
 id: D-KNW-045
+title: The document root is named by what configures it and by what serves it
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar
 ---
 
 # D-KNW-045 — The document root is named by what configures it and by what serves it
@@ -105,7 +108,3 @@ sentence.
 - The next report of this comes from a session that never asked where a file
   goes. The rule would then have to arrive from the introspection question,
   which is `003933`'s route rather than this one's.
-
-## Covered by
-
-- `HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar`

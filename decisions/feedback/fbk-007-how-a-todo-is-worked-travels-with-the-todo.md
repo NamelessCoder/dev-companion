@@ -1,5 +1,6 @@
 ---
 id: D-FBK-007
+title: How a todo is worked travels with the todo
 date: 2026-08-01
 status: open
 ---

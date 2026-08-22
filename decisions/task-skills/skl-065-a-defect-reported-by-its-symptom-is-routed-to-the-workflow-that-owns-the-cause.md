@@ -1,7 +1,10 @@
 ---
 id: D-SKL-065
+title: A defect reported by its symptom is routed to the workflow that owns the cause
 date: 2026-08-19
 status: open
+coveredBy:
+  - HintsTest::aRequestForACauseIsAnsweredWithWhatFindingOneNeeds
 ---
 
 # D-SKL-065 — A defect reported by its symptom is routed to the workflow that owns the cause
@@ -115,10 +118,6 @@ absence of a workflow behind it.
 - The no-write brief is built and a diagnosis request still comes back with the
   patch checklist, because it was recognized by its subject first. Then the fork
   is in the wrong place and the intent alone does not reach it.
-
-## Covered by
-
-- `HintsTest::aRequestForACauseIsAnsweredWithWhatFindingOneNeeds`
 
 ## Since then
 

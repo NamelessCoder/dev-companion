@@ -1,5 +1,6 @@
 ---
 id: R-KNW-064
+title: 'The Composer keys that install TYPO3 beneath an extension are answered'
 status: held
 restsOn: [D-KNW-053]
 ---

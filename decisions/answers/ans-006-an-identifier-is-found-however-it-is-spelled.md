@@ -1,7 +1,10 @@
 ---
 id: D-ANS-006
+title: An identifier is found however it is spelled
 date: 2026-08-02
 status: open
+coveredBy:
+  - PackageSourcesTest::anIdentifierReachesTheEntryTitledInWords
 ---
 
 # D-ANS-006 — An identifier is found however it is spelled
@@ -52,10 +55,6 @@ thing reached neither the file name nor the words derived from it.
   the separatorless form of the term is a fragment of an unrelated title.
 - The label search starts answering more widely than its callers expect: the
   same rule now reaches a label whose id spells the query's identifier apart.
-
-## Covered by
-
-- `PackageSourcesTest::anIdentifierReachesTheEntryTitledInWords`
 
 ## Since then
 

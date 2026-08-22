@@ -1,5 +1,6 @@
 ---
 id: R-COD-003
+title: 'A unit test holds a small part, and stubs what is outside it'
 status: held
 judged: 2026-08-22
 restsOn: [D-COD-004]

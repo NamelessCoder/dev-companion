@@ -1,7 +1,12 @@
 ---
 id: D-ANS-041
+title: The changelog title is read where the file names carry nothing
 date: 2026-08-03
 status: open
+coveredBy:
+  - ChangelogTest::aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry
+  - ChangelogTest::theTitlesAreReadOnlyWhereTheFileNamesCarryNothing
+  - ChangelogTest::aMissCountsEachWordOverTheTitlesItSearched
 ---
 
 # D-ANS-041 — The changelog title is read where the file names carry nothing
@@ -79,9 +84,3 @@ read goes open, because the read is per file and the scan is per name.
   title names what a change replaces as well as what it deprecates.
 - The names stop being the cheap field, because a checkout ships enough versions
   that one scan of them is no longer 71 ms.
-
-## Covered by
-
-- `ChangelogTest::aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry`
-- `ChangelogTest::theTitlesAreReadOnlyWhereTheFileNamesCarryNothing`
-- `ChangelogTest::aMissCountsEachWordOverTheTitlesItSearched`

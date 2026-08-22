@@ -1,7 +1,11 @@
 ---
 id: D-FBK-046
+title: The check that catches a duplicate id names the files and the command
 date: 2026-08-14
 status: open
+coveredBy:
+  - DecisionsTest::aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne
+  - RequirementsTest::aDuplicateIdNamesBothFilesAndThatNothingMovesOne
 ---
 
 # D-FBK-046 — The check that catches a duplicate id names the files and the command
@@ -62,6 +66,10 @@ the session is a size mismatch between two counts.
   which group it will write into, so it reserves in every one — and reopening it
   is that feedback's judgement rather than this one's.
 
+- What the message says is held by a test rather than by reading it, because the
+  checkout the assertion fails on is the one checkout where nothing collides —
+  `Decisions::duplicates()` finds the files and `Decisions::collision()` writes
+  what the reader gets.
 ## Assumed
 
 - That the message reaches the caller through the tail `todo:home` prints. It is
@@ -82,12 +90,3 @@ the session is a size mismatch between two counts.
 - A requirement id collides and the two paths are not enough, because moving one
   by hand is the dangerous half. That is `D-DOC-015`'s fourth **Wrong if**
   reached from this side.
-
-## Covered by
-
-- `DecisionsTest::aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne` and
-  `RequirementsTest::aDuplicateIdNamesBothFilesAndThatNothingMovesOne`. What the
-  message says is held by a test rather than by reading it, because the checkout
-  the assertion fails on is the one checkout where nothing collides —
-  `Decisions::duplicates()` finds the files and `Decisions::collision()` writes
-  what the reader gets.

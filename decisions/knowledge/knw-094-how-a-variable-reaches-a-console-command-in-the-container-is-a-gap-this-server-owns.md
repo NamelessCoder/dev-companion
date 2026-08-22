@@ -1,7 +1,10 @@
 ---
 id: D-KNW-094
+title: How a variable reaches a console command in the container is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::theLineThatCarriesAVariableIntoTheContainerIsAnswered
 ---
 
 # D-KNW-094 — How a variable reaches a console command in the container is a gap this server owns
@@ -102,10 +105,6 @@ variables into the web container.
 - DDEV changes what `ddev exec` does with its arguments. An undated statement
   about somebody else's tool goes stale with nothing failing, which is the cost
   of the second assumption above.
-
-## Covered by
-
-- `HintsTest::theLineThatCarriesAVariableIntoTheContainerIsAnswered`
 
 ## Confirmed on `2026-08-18`
 

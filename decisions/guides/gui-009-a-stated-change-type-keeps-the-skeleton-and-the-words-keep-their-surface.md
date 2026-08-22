@@ -1,7 +1,13 @@
 ---
 id: D-GUI-009
+title: A stated change type keeps the skeleton and the words keep their surface
 date: 2026-08-04
 status: open
+coveredBy:
+  - HintsTest::aReviewThatStatesTheTypeOfThePatchUnderReviewNamesWhatItRemoves
+  - HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist
+  - HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief
+  - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore
 ---
 
 # D-GUI-009 — A stated change type keeps the skeleton and the words keep their surface
@@ -82,10 +88,3 @@ against it: it stated the type of the patch under review.
 - A review of something that is not a change gets the removal surface anyway and
   reads it as noise. The item is worded "Where the review is of a change", so
   that would be the wording rather than the shape.
-
-## Covered by
-
-- `HintsTest::aReviewThatStatesTheTypeOfThePatchUnderReviewNamesWhatItRemoves`
-- `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`
-- `HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief`
-- `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`

@@ -68,7 +68,7 @@ final class Requirements
     /**
      * Every requirement, keyed and sorted by id.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
      */
     public static function all(): array
     {
@@ -131,7 +131,7 @@ final class Requirements
     /**
      * The requirements of one group, in the order its listing shows them.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -244,13 +244,13 @@ final class Requirements
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}
      */
     public static function read(string $path): array
     {
         $contents = (string) file_get_contents($path);
         $head = Entry::head($contents);
-        $frontMatter = $head['frontMatter'];
+        $matter = $head['matter'];
 
         // A test method where one holds it, a whole test class where the class
         // is the answer — `VersionsTest` in full is a claim about every method
@@ -260,44 +260,29 @@ final class Requirements
         preg_match_all('/`(\w+Test(?:::\w+)?)`/', $heldBy, $tests);
 
         return [
-            'id' => Entry::frontMatterValue($frontMatter, 'id'),
+            'id' => Entry::value($matter, 'id'),
             'group' => basename(dirname($path)),
             'file' => basename($path),
             'heading' => $head['heading'],
-            'title' => $head['title'],
-            'status' => Entry::frontMatterValue($frontMatter, 'status'),
+            'written' => $head['written'],
+            'title' => Entry::value($matter, 'title'),
+            'status' => Entry::value($matter, 'status'),
             // The day a session read this entry, found nothing holds it, and
             // decided it stays that way. `bin/cli unresolved:list` names what
             // nobody has answered for, and a todo naming the id was the only
             // answer it could see — so a requirement no test can hold, which is
             // a legitimate state, could never leave the reading.
-            'judged' => Entry::frontMatterValue($frontMatter, 'judged'),
+            'judged' => Entry::value($matter, 'judged'),
             // The decisions this requirement stands on. A decision can be
             // revoked without anything noticing that a requirement was resting
             // on it, which is the silent case decisions/ exists to prevent.
-            'restsOn' => self::idList($frontMatter, 'restsOn'),
+            'restsOn' => Entry::names($matter, 'restsOn'),
             'statement' => $head['statement'],
             'heldBy' => $heldBy,
             'tests' => $tests[1],
         ];
     }
 
-    /**
-     * A front-matter list of ids, written as `restsOn: [D-FBK-005, D-SCO-007]`.
-     *
-     * @return array<int, string>
-     */
-    private static function idList(string $frontMatter, string $key): array
-    {
-        $value = Entry::frontMatterValue($frontMatter, $key);
-        if ($value === '') {
-            return [];
-        }
-
-        preg_match_all('/[A-Z]-[A-Z]{3}-\d+/', $value, $matches);
-
-        return array_values(array_unique($matches[0]));
-    }
 
     /**
      * A section's body, to the next heading or the end of the file.

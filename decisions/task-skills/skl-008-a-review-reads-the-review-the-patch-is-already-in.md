@@ -1,7 +1,10 @@
 ---
 id: D-SKL-008
+title: A review reads the review the patch is already in
 date: 2026-08-03
 status: open
+coveredBy:
+  - SkillTest::aReviewReadsTheReviewThePatchIsAlreadyIn
 ---
 
 # D-SKL-008 — A review reads the review the patch is already in
@@ -91,10 +94,6 @@ checkout and cannot be derived from it.
   would say the guard belongs in the tools rather than in a skill: neither
   lookup can currently tell a caller that the number it was given looks like the
   other one's.
-
-## Covered by
-
-- `SkillTest::aReviewReadsTheReviewThePatchIsAlreadyIn`
 
 ## Since then
 

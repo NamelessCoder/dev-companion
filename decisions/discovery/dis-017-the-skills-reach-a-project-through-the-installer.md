@@ -1,5 +1,6 @@
 ---
 id: D-DIS-017
+title: The skills reach a project through the installer
 date: 2026-08-12
 status: open
 ---

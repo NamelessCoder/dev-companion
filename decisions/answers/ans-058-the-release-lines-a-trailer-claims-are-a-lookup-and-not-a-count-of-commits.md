@@ -1,7 +1,13 @@
 ---
 id: D-ANS-058
+title: The release lines a trailer claims are a lookup, and not a count of commits
 date: 2026-08-05
 status: confirmed
+coveredBy:
+  - ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose
+  - CommitMessageTest::aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch
+  - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
+  - CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch
 ---
 
 # D-ANS-058 — The release lines a trailer claims are a lookup, and not a count of commits
@@ -68,13 +74,6 @@ server does not offer anywhere, and accepts whatever comes back.
   trailers, which is worse than the silence it replaced.
 - What a change type owes each line turns out to be a judgement rather than a
   rule, in which case the check can only report the branch and not the set.
-
-## Covered by
-
-- `ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose`
-- `CommitMessageTest::aBranchOutOfRegularSupportIsAnErrorNamingTheLinesThatTakeAPatch`
-- `CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead`
-- `CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch`
 
 ## Confirmed on 2026-08-05
 

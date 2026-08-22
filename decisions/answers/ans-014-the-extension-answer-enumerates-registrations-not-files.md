@@ -1,5 +1,6 @@
 ---
 id: D-ANS-014
+title: The extension answer enumerates registrations, not files — and a registration is one wherever it is declared
 date: 2026-08-02
 status: open
 ---

@@ -1,7 +1,14 @@
 ---
 id: D-ANS-028
+title: A two-letter query word is searched for, and the stopword list is what keeps the others out
 date: 2026-08-02
 status: open
+coveredBy:
+  - TermSearchTest::aTwoLetterWordIsATerm
+  - TermSearchTest::oneLetterIsNot
+  - TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped
+  - TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix
+  - DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName
 ---
 
 # D-ANS-028 — A two-letter query word is searched for, and the stopword list is what keeps the others out
@@ -109,14 +116,6 @@ every word that short. Moving it means the list has to do its own.
   corpus held it, so an admitted word the corpus has no answer for lowers the
   coverage of everything beside it — `record id uid field` returns three hints
   where it returned five.
-
-## Covered by
-
-- `TermSearchTest::aTwoLetterWordIsATerm`
-- `TermSearchTest::oneLetterIsNot`
-- `TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped`
-- `TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix`
-- `DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName`
 
 ## Since then
 

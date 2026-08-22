@@ -1,5 +1,6 @@
 ---
 id: D-GUI-001
+title: A missing release target becomes a placeholder, not `main`
 date: 2026-07-29
 status: open
 ---

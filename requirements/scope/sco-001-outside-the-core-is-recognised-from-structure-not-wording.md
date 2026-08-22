@@ -1,5 +1,6 @@
 ---
 id: R-SCO-001
+title: 'Outside the core is recognised from structure, not wording'
 status: held
 ---
 

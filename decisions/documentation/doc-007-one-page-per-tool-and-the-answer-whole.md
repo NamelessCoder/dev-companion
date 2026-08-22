@@ -1,7 +1,15 @@
 ---
 id: D-DOC-007
+title: One page per tool, and the answer on it whole
 date: 2026-08-02
 status: open
+coveredBy:
+  - ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers
+  - ToolAnswersTest::everyRecordedAnswerIsJson
+  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
+  - ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy
+  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
+  - ToolSurfaceTest::everyToolCarriesItsAnswerOrSaysWhyItHasNone
 ---
 
 # D-DOC-007 — One page per tool, and the answer on it whole
@@ -59,15 +67,6 @@ others nor `… 14 more` where the entries were is what they came for.
   per page, on the two or three that need it, rather than everywhere.
 - A tool's recording is re-run alone and the pages start carrying different
   days. Nothing in the command can do that today; a hand-edited page can.
-
-## Covered by
-
-- `ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers`
-- `ToolAnswersTest::everyRecordedAnswerIsJson`
-- `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
-- `ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy`
-- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`
-- `ToolSurfaceTest::everyToolCarriesItsAnswerOrSaysWhyItHasNone`
 
 ## Since then
 

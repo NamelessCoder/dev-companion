@@ -1,7 +1,14 @@
 ---
 id: D-SCO-002
+title: A core-only intent asks for evidence, not for silence
 date: 2026-07-29
 status: confirmed
+coveredBy:
+  - ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules
+  - ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact
+  - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore
+  - ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission
+  - ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll
 ---
 
 # D-SCO-002 — A core-only intent asks for evidence, not for silence
@@ -35,14 +42,6 @@ answered exactly as before.
 - A core contributor's task text names neither a sysext path nor Gerrit and they
   now get the submission rules as conditional rather than as fact. That is the
   cost of not guessing, and the condition line is what keeps it cheap.
-
-## Covered by
-
-- `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`
-- `ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact`
-- `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
-- `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
-- `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
 
 ## Confirmed on 2026-08-02
 

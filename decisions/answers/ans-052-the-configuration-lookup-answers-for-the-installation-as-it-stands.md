@@ -1,5 +1,6 @@
 ---
 id: D-ANS-052
+title: The configuration lookup answers for the installation as it stands
 date: 2026-08-04
 status: open
 ---

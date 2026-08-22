@@ -1,7 +1,12 @@
 ---
 id: D-SKL-027
+title: A draft declares itself under this server's own metadata key
 date: 2026-08-08
 status: open
+coveredBy:
+  - SkillTest::aDraftIsWhatDeclaresItselfOneUnderThisServersKey
+  - SkillTest::everyFrontMatterFieldIsOneTheStandardDefines
+  - SkillTest::aDraftSaysSoInItsOwnFrontMatter
 ---
 
 # D-SKL-027 — A draft declares itself under this server's own metadata key
@@ -71,9 +76,3 @@ refuses, and the line holding it back was the reason.
   would make a published skill read as a draft on the next `update`.
 - A later revision of the standard defines `status` itself, which would make the
   short spelling correct and this one a private duplicate of it.
-
-## Covered by
-
-- `SkillTest::aDraftIsWhatDeclaresItselfOneUnderThisServersKey`
-- `SkillTest::everyFrontMatterFieldIsOneTheStandardDefines`
-- `SkillTest::aDraftSaysSoInItsOwnFrontMatter`

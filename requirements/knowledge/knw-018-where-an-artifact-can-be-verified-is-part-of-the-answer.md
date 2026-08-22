@@ -1,5 +1,6 @@
 ---
 id: R-KNW-018
+title: 'Where an artifact can be verified is part of the answer'
 status: held
 ---
 

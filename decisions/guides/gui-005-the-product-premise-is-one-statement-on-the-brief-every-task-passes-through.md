@@ -1,7 +1,10 @@
 ---
 id: D-GUI-005
+title: The product premise is one statement, on the brief every task passes through
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::everyBriefOpensOnThePremiseADefectIsJudgedBy
 ---
 
 # D-GUI-005 — The product premise is one statement, on the brief every task passes through
@@ -107,7 +110,3 @@ session got the assessment wrong.
 - A session agrees with the premise and ships a stale asset anyway. Then the
   outcome is stated where the mechanism was needed, and the three cards are the
   answer rather than its corollaries.
-
-## Covered by
-
-- `HintsTest::everyBriefOpensOnThePremiseADefectIsJudgedBy`

@@ -1,5 +1,6 @@
 ---
 id: D-COD-002
+title: The upkeep CLI is a Symfony Console application
 date: 2026-08-01
 status: open
 ---

@@ -68,6 +68,7 @@ What an entry holds
 
     ---
     id: R-DIS-009
+    title: A negative is never remembered
     status: held
     ---
 
@@ -90,6 +91,9 @@ What an entry holds
     - `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
 
 
+* The **title** is the front matter's, and the heading repeats it so a reader
+  of the file sees it where a heading belongs. ``bin/cli requirements:check``
+  holds the two to each other, so a rewrite of one is a rewrite of both.
 * The **bold first sentence** is the requirement. Everything under it is why it
   is one, and a reader who stops after the bold line has read the whole demand.
 * **From** is the session, review or feedback the demand came out of, with its

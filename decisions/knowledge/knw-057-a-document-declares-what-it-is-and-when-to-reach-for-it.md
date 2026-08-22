@@ -1,7 +1,13 @@
 ---
 id: D-KNW-057
+title: A document declares what it is and when to reach for it
 date: 2026-08-04
 status: open
+coveredBy:
+  - KnowledgeTest::theFrontMatterDescribesTheDocumentAndReachesNoAnswer
+  - KnowledgeTest::theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor
+  - KnowledgeTest::everyHintADocumentSaysItExpandsExists
+  - KnowledgeTest::aHintAnswerNamesTheDocumentThatExpandsIt
 ---
 
 # D-KNW-057 — A document declares what it is and when to reach for it
@@ -74,10 +80,3 @@ to the hints is a sentence somebody remembered to write.
   that no hint names and is reachable only by guessing its words.
 - A fourth field arrives that repeats what the coverage row or the directory
   already says.
-
-## Covered by
-
-- `KnowledgeTest::theFrontMatterDescribesTheDocumentAndReachesNoAnswer`
-- `KnowledgeTest::theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor`
-- `KnowledgeTest::everyHintADocumentSaysItExpandsExists`
-- `KnowledgeTest::aHintAnswerNamesTheDocumentThatExpandsIt`

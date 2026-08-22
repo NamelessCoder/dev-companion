@@ -1,5 +1,6 @@
 ---
 id: D-ANS-072
+title: A tool description says which questions it takes, and which belong next door
 date: 2026-08-10
 status: open
 ---

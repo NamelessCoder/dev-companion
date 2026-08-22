@@ -1,5 +1,6 @@
 ---
 id: D-SKL-020
+title: A re-check runs what the finding was about
 date: 2026-08-04
 status: open
 ---

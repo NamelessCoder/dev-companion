@@ -1,7 +1,12 @@
 ---
 id: D-ANS-047
+title: A word behind a namespace prefix is searched for as the name it is
 date: 2026-08-03
 status: open
+coveredBy:
+  - TermSearchTest::aWordBehindANamespacePrefixIsNotAStopword
+  - TermSearchTest::theSameWordAfterTheColonOfASentenceIsNot
+  - DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName
 ---
 
 # D-ANS-047 — A word behind a namespace prefix is searched for as the name it is
@@ -91,9 +96,3 @@ documents the tags; there was nothing left for the book to rank.
   another book. `or` and `then` each carry exactly one page today; a third such
   tag whose word is spread over the corpus would be admitted on the same rule
   and reach the spread instead.
-
-## Covered by
-
-- `TermSearchTest::aWordBehindANamespacePrefixIsNotAStopword`
-- `TermSearchTest::theSameWordAfterTheColonOfASentenceIsNot`
-- `DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName`

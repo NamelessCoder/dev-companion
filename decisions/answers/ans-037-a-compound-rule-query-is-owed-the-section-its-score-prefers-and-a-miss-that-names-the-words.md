@@ -1,7 +1,16 @@
 ---
 id: D-ANS-037
+title: A compound rule query is owed the section its score prefers, and a miss that names the words
 date: 2026-08-03
 status: open
+coveredBy:
+  - KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt
+  - KnowledgeTest::everyDocumentIsReachedByItsOwnTitle
+  - KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse
+  - KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary
+  - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
+  - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
+  - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
 ---
 
 # D-ANS-037 — A compound rule query is owed the section its score prefers, and a miss that names the words
@@ -137,16 +146,6 @@ task sentence is not one.
 - The score turns out to be the wrong tie-break, because a heading weighs four
   and a long section can out-score a short one that answers. `## Summary Line`
   won on a heading match here, which is the easy case.
-
-## Covered by
-
-- `KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt`
-- `KnowledgeTest::everyDocumentIsReachedByItsOwnTitle`
-- `KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse`
-- `KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary`
-- `KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt`
-- `KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections`
-- `KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn`
 
 ## Since then
 

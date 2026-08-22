@@ -1,5 +1,6 @@
 ---
 id: D-FBK-047
+title: The debrief asks what an answer left out and what the session wanted
 date: 2026-08-18
 status: open
 ---

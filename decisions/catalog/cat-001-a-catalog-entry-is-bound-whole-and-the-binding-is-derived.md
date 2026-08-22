@@ -1,5 +1,6 @@
 ---
 id: D-CAT-001
+title: A catalog entry is bound whole, and the binding is derived
 date: 2026-07-29
 status: confirmed
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-SKL-006
+title: The site-new cluster earns the route into the skill that owns the task
 date: 2026-08-03
 status: open
 ---

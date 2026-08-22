@@ -1,7 +1,10 @@
 ---
 id: D-KNW-006
+title: A word for a thing administered from the backend adds no domain to a backend-only task
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork
 ---
 
 # D-KNW-006 — A word for a thing administered from the backend adds no domain to a backend-only task
@@ -53,10 +56,6 @@ was not, so a task about one TCA field still had its brief opened with
   because it happened to say "backend form" as well, or the two domains stop
   being reachable for a content element at all outside a text that says
   "sitepackage" or "frontend".
-
-## Covered by
-
-- `HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`
 
 ## Confirmed on 2026-08-23
 

@@ -1,7 +1,10 @@
 ---
 id: D-SKL-047
+title: The Composer root step fetches the installer keys from the hint that owns them
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-SKL-047 — The Composer root step fetches the installer keys from the hint that owns them
@@ -101,10 +104,6 @@ manifest being written is there to install.
 - A session follows the id and finds the manual carried something the hint does
   not. Then the step's first source was doing work and only its second was
   circular.
-
-## Covered by
-
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
 
 ## Since then
 

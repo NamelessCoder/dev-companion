@@ -1,7 +1,10 @@
 ---
 id: D-SKL-046
+title: A precondition is restated in the workflow that writes the file it guards
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
 ---
 
 # D-SKL-046 — A precondition is restated in the workflow that writes the file it guards
@@ -108,7 +111,3 @@ was where the rule was written.
 - A third published skill turns out to write backend markup without routing the
   lookup. Then this is not per-skill placement but something `skills/base.md`
   owes every workflow, and it is stated once there instead.
-
-## Covered by
-
-- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`

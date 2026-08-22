@@ -1,5 +1,6 @@
 ---
 id: D-KNW-041
+title: The checkout a suite is started in supplies its own dependencies
 date: 2026-08-03
 status: open
 ---

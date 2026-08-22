@@ -1,7 +1,11 @@
 ---
 id: D-ANS-068
+title: A change answer carries the ref that fetches the patch set it names
 date: 2026-08-09
 status: open
+coveredBy:
+  - GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames
+  - GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne
 ---
 
 # D-ANS-068 — A change answer carries the ref that fetches the patch set it names
@@ -85,11 +89,6 @@ states.
   would say it belongs on a change lookup alone.
 - A session reads the ref and fetches over `origin` anyway, which would say
   naming the remote in the same answer was not enough.
-
-## Covered by
-
-- `GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames`
-- `GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne`
 
 ## Since then
 

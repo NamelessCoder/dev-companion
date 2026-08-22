@@ -1,7 +1,10 @@
 ---
 id: D-SKL-058
+title: A hint is routed by what the repository is rather than by how its installation came to exist
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-SKL-058 — A hint is routed by what the repository is rather than by how its installation came to exist
@@ -122,7 +125,3 @@ filed.
 - `extension-repository-layout` turns out to be what such a session reaches,
   with its closing statement widened to the layout. The route would belong in
   the corpus rather than in the skill.
-
-## Covered by
-
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`

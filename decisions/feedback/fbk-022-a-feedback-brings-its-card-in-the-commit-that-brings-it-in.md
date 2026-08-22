@@ -1,8 +1,11 @@
 ---
 id: D-FBK-022
+title: A feedback brings its card in the commit that brings it in
 date: 2026-08-02
 status: revoked
 revokedBy: D-FBK-045
+coveredBy:
+  - TodoTest::everyOpenFeedbackIsOnTheBoard
 ---
 
 # D-FBK-022 — A feedback brings its card in the commit that brings it in
@@ -68,10 +71,6 @@ comes apart.
 - `bin/cli todo:check` stops reporting unserved feedback because the hook is
   assumed to have handled it. The hook covers the commits made here; the check
   covers the ones made anywhere else.
-
-## Covered by
-
-- `TodoTest::everyOpenFeedbackIsOnTheBoard`
 
 ## Revoked on 2026-08-14
 

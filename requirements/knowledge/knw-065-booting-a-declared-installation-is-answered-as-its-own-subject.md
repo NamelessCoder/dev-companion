@@ -1,5 +1,6 @@
 ---
 id: R-KNW-065
+title: 'Booting a declared installation is answered as its own subject'
 status: held
 restsOn: [D-KNW-054]
 ---

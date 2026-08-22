@@ -1,7 +1,10 @@
 ---
 id: D-FBK-014
+title: Every stage is a directory, and closing is none
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - TodoTest::aClaimIsOneMoveThatGoesBothWays
 ---
 
 # D-FBK-014 — Every stage is a directory, and closing is none
@@ -69,10 +72,6 @@ built a path.
   [`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md)
   split `todo.md` away from, and a second such page would say the store has a
   hole that people are filling there.
-
-## Covered by
-
-- `TodoTest::aClaimIsOneMoveThatGoesBothWays`
 
 ## Confirmed on 2026-08-22
 

@@ -1,7 +1,12 @@
 ---
 id: D-CAT-006
+title: A class-shaped query is answered by a second range over the class list
 date: 2026-08-21
 status: open
+coveredBy:
+  - CatalogTest::aClassIsAnsweredOnAVersionItsOwnEntryIsWithheldOn
+  - CatalogTest::aQueryThatNamesNoClassOfAWithheldEntryIsAnsweredWithNothing
+  - CatalogTest::theClassListReachesAtLeastAsFarBackAsTheEntryItBelongsTo
 ---
 
 # D-CAT-006 — A class-shaped query is answered by a second range over the class list
@@ -61,9 +66,3 @@ whether that class is still there.
 - The two ranges keep agreeing. Today the second one buys 4 entries and costs a
   field on 21, and a core release that lets the custom properties arrive with
   their classes would take even that away.
-
-## Covered by
-
-- `CatalogTest::aClassIsAnsweredOnAVersionItsOwnEntryIsWithheldOn`
-- `CatalogTest::aQueryThatNamesNoClassOfAWithheldEntryIsAnsweredWithNothing`
-- `CatalogTest::theClassListReachesAtLeastAsFarBackAsTheEntryItBelongsTo`

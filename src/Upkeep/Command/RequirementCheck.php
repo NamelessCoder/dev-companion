@@ -57,6 +57,13 @@ final class RequirementCheck
             if ($requirement['heading'] !== $id) {
                 $problems[] = $id . ' has the heading of ' . $requirement['heading'];
             }
+            // The title is the front matter's and the heading repeats it, so a
+            // rewrite of one is a rewrite of both — `D-DOC-045`.
+            if ($requirement['title'] === '') {
+                $problems[] = $id . ' has no title in its front matter';
+            } elseif ($requirement['written'] !== $requirement['title']) {
+                $problems[] = $id . ' is titled "' . $requirement['title'] . '" and its heading says "' . $requirement['written'] . '"';
+            }
             if (isset($seen[$id])) {
                 $problems[] = $id . ' is claimed by ' . $seen[$id] . ' and by ' . $file;
             }

@@ -1,5 +1,6 @@
 ---
 id: D-SKL-031
+title: A triage picks a candidate on where the symptom is visible and what the suite already models
 date: 2026-08-09
 status: open
 ---

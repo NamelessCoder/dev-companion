@@ -1,7 +1,10 @@
 ---
 id: D-SKL-025
+title: A routed tool is called and held to what the skill sends the session to read
 date: 2026-08-08
 status: open
+coveredBy:
+  - SkillTest::everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead
 ---
 
 # D-SKL-025 — A routed tool is called and held to what the skill sends the session to read
@@ -75,7 +78,3 @@ while the behaviour goes.
   green by loosening it rather than by shaping the fixture.
 - A tool that only `ROUTING_SKILLS` names drifts and costs a session a step,
   which would say the four were the wrong place to stop.
-
-## Covered by
-
-- `SkillTest::everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead`

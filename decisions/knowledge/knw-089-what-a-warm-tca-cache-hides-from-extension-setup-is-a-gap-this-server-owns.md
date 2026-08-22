@@ -1,7 +1,10 @@
 ---
 id: D-KNW-089
+title: What a warm TCA cache hides from `extension:setup` is a gap this server owns
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::theSchemaStepIsSaidToMigrateFromTheCachedTca
 ---
 
 # D-KNW-089 — What a warm TCA cache hides from `extension:setup` is a gap this server owns
@@ -128,10 +131,6 @@ package that was already active, on an installation whose caches are warm.
 - A second feedback reports the same trap from `installation-upgrade` rather
   than from the schema hint. The home decided here would be the wrong one, and
   the statement would belong where the upgrade order is stated.
-
-## Covered by
-
-- `HintsTest::theSchemaStepIsSaidToMigrateFromTheCachedTca`
 
 ## Since then
 

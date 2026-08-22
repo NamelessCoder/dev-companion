@@ -1,5 +1,6 @@
 ---
 id: D-ANS-060
+title: A bare word in `appliesTo` reaches a path segment and outranks the subsystem
 date: 2026-08-07
 status: open
 ---

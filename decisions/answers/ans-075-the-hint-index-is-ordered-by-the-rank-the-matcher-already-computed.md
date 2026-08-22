@@ -1,7 +1,14 @@
 ---
 id: D-ANS-075
+title: The hint index is ordered by the rank the matcher already computed
 date: 2026-08-11
 status: open
+coveredBy:
+  - HintsTest::theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused
+  - HintsTest::theIdsOfferedAreTheOnesThatMajorHas
+  - HintsTest::theIndexIsNotOfferingWhatTheSameAnswerWithheld
+  - HintsTest::aMissNamesWhatThereWouldHaveBeenToFind
+  - HintsTest::anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn
 ---
 
 # D-ANS-075 — The hint index is ordered by the rank the matcher already computed
@@ -95,14 +102,6 @@ just ranked it seventh.
   the candidate filter took it out. Then filtering the index by what the matcher
   refused is narrower than the field's purpose, and the domain read is what it
   should be built from.
-
-## Covered by
-
-- `HintsTest::theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused`
-- `HintsTest::theIdsOfferedAreTheOnesThatMajorHas`
-- `HintsTest::theIndexIsNotOfferingWhatTheSameAnswerWithheld`
-- `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`
-- `HintsTest::anAnswerThatMatchedSomethingElseStillNamesTheIdsItDidNotReturn`
 
 ## Since then
 

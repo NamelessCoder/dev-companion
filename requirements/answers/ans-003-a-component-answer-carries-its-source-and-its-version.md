@@ -1,5 +1,6 @@
 ---
 id: R-ANS-003
+title: 'A component answer carries its source and its version'
 status: held
 ---
 

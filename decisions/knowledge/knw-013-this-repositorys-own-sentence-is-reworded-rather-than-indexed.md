@@ -1,7 +1,11 @@
 ---
 id: D-KNW-013
+title: This repository's own sentence is reworded rather than indexed
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange
+  - HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat
 ---
 
 # D-KNW-013 — This repository's own sentence is reworded rather than indexed
@@ -103,8 +107,3 @@ cross-version testing", a package no covered line ships.
 - A testing question with no version in it starts leading with the layout hint.
   That is the tie the *test*-carrying patterns were rejected for, and the two
   that stayed are one corpus-growth away from the same score.
-
-## Covered by
-
-- `HintsTest::anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange`
-- `HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat`

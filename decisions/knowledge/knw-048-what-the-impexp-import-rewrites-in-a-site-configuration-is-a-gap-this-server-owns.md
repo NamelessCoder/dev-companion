@@ -1,5 +1,6 @@
 ---
 id: D-KNW-048
+title: What the impexp import rewrites in a site configuration is a gap this server owns
 date: 2026-08-03
 status: open
 ---

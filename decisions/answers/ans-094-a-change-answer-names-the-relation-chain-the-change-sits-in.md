@@ -1,7 +1,16 @@
 ---
 id: D-ANS-094
+title: A change answer names the relation chain the change sits in
 date: 2026-08-21
 status: open
+coveredBy:
+  - GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf
+  - GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt
+  - GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer
+  - GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone
+  - GerritTest::aChainCallThatDidNotAnswerIsNotAChangeStandingAlone
+  - GerritTest::theTextHalfSaysWhereInTheStackTheChangeSits
+  - GerritTest::theTwoRelationsAChangeStandsInAreToldApart
 ---
 
 # D-ANS-094 — A change answer names the relation chain the change sits in
@@ -129,16 +138,6 @@ alone, and nothing in the answer says there is more to read.
 - A session that receives the Change-Id siblings and the chain in one answer
   reads them as one set, which would say the label was the whole of the work and
   the two relations should never have shared a paragraph.
-
-## Covered by
-
-- `GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf`
-- `GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt`
-- `GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer`
-- `GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone`
-- `GerritTest::aChainCallThatDidNotAnswerIsNotAChangeStandingAlone`
-- `GerritTest::theTextHalfSaysWhereInTheStackTheChangeSits`
-- `GerritTest::theTwoRelationsAChangeStandsInAreToldApart`
 
 ## Since then
 

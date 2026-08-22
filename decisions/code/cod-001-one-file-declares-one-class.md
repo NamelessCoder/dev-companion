@@ -1,7 +1,10 @@
 ---
 id: D-COD-001
+title: One file declares one class
 date: 2026-08-01
 status: confirmed
+coveredBy:
+  - StructureTest::everyFileDeclaresOneClass
 ---
 
 # D-COD-001 — One file declares one class
@@ -40,10 +43,6 @@ there.
   exactly one class, say — and splitting it makes both harder to read. Then the
   rule needs an allowed list rather than a flat ban, and the test is where it
   goes.
-
-## Covered by
-
-- `StructureTest::everyFileDeclaresOneClass`
 
 ## Confirmed on 2026-08-22
 

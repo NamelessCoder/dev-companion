@@ -1,7 +1,11 @@
 ---
 id: D-FBK-016
+title: A feedback waits on the board rather than behind it
 date: 2026-08-02
 status: open
+coveredBy:
+  - TodoTest::everyOpenFeedbackIsOnTheBoard
+  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
 ---
 
 # D-FBK-016 — A feedback waits on the board rather than behind it
@@ -72,11 +76,6 @@ the priority does what the group boundary did.
 - Cards accumulate for feedback that were closed elsewhere, or feedback
   accumulate with no card. Either means the sync is not being run, and the
   relation is then a claim the board makes and does not keep.
-
-## Covered by
-
-- `TodoTest::everyOpenFeedbackIsOnTheBoard`
-- `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
 
 ## Since then
 

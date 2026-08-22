@@ -1,5 +1,6 @@
 ---
 id: D-ANS-015
+title: A registration the extension answer misreads is inside its boundary, not evidence about where it runs
 date: 2026-08-02
 status: open
 ---

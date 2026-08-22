@@ -1,7 +1,11 @@
 ---
 id: D-GUI-014
+title: Looking at a change is an intent of its own
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aBriefRecognizesLookingAtAChangeInABrowser
+  - KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther
 ---
 
 # D-GUI-014 — Looking at a change is an intent of its own
@@ -88,8 +92,3 @@ nothing at all.
 - A session reports that the guide arrived with the work and the view still
   shipped unverified. Then the route was not what was missing, which is where
   `D-SKL-045`'s own first **Wrong if** would land as well.
-
-## Covered by
-
-- `HintsTest::aBriefRecognizesLookingAtAChangeInABrowser`
-- `KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther`

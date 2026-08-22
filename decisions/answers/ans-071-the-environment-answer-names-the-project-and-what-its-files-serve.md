@@ -1,5 +1,6 @@
 ---
 id: D-ANS-071
+title: The environment answer names the project and what its files serve
 date: 2026-08-10
 status: open
 ---

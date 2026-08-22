@@ -1,7 +1,12 @@
 ---
 id: D-DIS-013
+title: The record holds a digest of what was published
 date: 2026-08-06
 status: open
+coveredBy:
+  - InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted
+  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
+  - ScopeTest::theInstructionsFitWhatAClientKeeps
 ---
 
 # D-DIS-013 — The record holds a digest of what was published
@@ -83,9 +88,3 @@ under the current name, and every listing on both sides agreed.
   budget is spent either way; what this change establishes is that the notice
   fires rarely and the routing is what pays for it, and the next session may
   read that trade differently.
-
-## Covered by
-
-- `InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted`
-- `StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall`
-- `ScopeTest::theInstructionsFitWhatAClientKeeps`

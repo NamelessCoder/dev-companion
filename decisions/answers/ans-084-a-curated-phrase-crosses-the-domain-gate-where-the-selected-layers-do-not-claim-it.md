@@ -1,7 +1,13 @@
 ---
 id: D-ANS-084
+title: A curated phrase crosses the domain gate where the selected layers do not claim it
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aSymptomReachesTheHintThatExplainsItFromAnotherDomain
+  - HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
+  - HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten
 ---
 
 # D-ANS-084 — A curated phrase crosses the domain gate where the selected layers do not claim it
@@ -74,10 +80,3 @@ themselves is one they can answer.
 - `bin/cli hints:coverage` or the sweep shows crossings becoming ordinary as the
   corpus grows, which would make the rule a second matcher rather than an
   exception to the gate.
-
-## Covered by
-
-- `HintsTest::aSymptomReachesTheHintThatExplainsItFromAnotherDomain`
-- `HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit`
-- `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`
-- `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`

@@ -1,7 +1,15 @@
 ---
 id: D-KNW-055
+title: The first check a standalone extension repository gets is a gap this server owns
 date: 2026-08-04
 status: open
+coveredBy:
+  - ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn
+  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
+  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
+  - HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable
+  - HintsTest::aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt
 ---
 
 # D-KNW-055 — The first check a standalone extension repository gets is a gap this server owns
@@ -205,15 +213,6 @@ analyser and nothing else in that layer.
   session on a tooling task skips steps 3 and 5 again. Then the prescription
   rather than its wording is what is being skipped, and `R-SKL-005` is the entry
   that has to move.
-
-## Covered by
-
-- `ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn`
-- `ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares`
-- `ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent`
-- `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`
-- `HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable`
-- `HintsTest::aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt`
 
 ## Since then
 

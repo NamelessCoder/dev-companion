@@ -1,7 +1,10 @@
 ---
 id: D-KNW-054
+title: What booting a declared installation takes is stated as one hint beside the project's own
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback
 ---
 
 # D-KNW-054 — What booting a declared installation takes is stated as one hint beside the project's own
@@ -107,10 +110,6 @@ hint half of `feedback/2026-08-03-154508` was open behind that.
 - The skill in `skills/typo3-development-installation/` is published and its
   boot section still routes to no hint of its own. Then the corpus gained a
   statement nothing sends a caller to.
-
-## Covered by
-
-- `HintsTest::bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: R-GUI-003
+title: 'A guide points at the tool that performs the step'
 status: held
 ---
 

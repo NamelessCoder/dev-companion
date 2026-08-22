@@ -1,7 +1,12 @@
 ---
 id: D-ANS-069
+title: A backlog row carries the review server and not the journal
 date: 2026-08-08
 status: open
+coveredBy:
+  - ForgeTest::aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt
+  - ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt
+  - GerritTest::aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames
 ---
 
 # D-ANS-069 — A backlog row carries the review server and not the journal
@@ -84,12 +89,6 @@ enumeration answer has no journal in it.
   it, which would say the filter does not survive the alternation.
 - Sessions keep reading candidates whole once the rows carry the signals, which
   would say the reading was never about what the rows were missing.
-
-## Covered by
-
-- `ForgeTest::aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt`
-- `ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt`
-- `GerritTest::aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames`
 
 ## Since then
 

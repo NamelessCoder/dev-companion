@@ -1,7 +1,9 @@
 ---
 id: D-DIS-012
+title: The driver decides whether the derived columns need the database server
 date: 2026-08-04
 status: open
+coveredBy: []
 ---
 
 # D-DIS-012 — The driver decides whether the derived columns need the database server
@@ -56,6 +58,9 @@ reach entirely.
   statement both name a responding server as the condition, and the reader of a
   listing has the title and the status and nothing else.
 
+- Nothing runs over the split: it needs a MySQL installation with its server
+  stopped, which no environment here holds. `ToolContractTest` covers the two
+  unanswerable paths and not which driver produced one.
 ## Assumed
 
 - The installation runs one of the four drivers TYPO3 checks for. A connection
@@ -75,9 +80,3 @@ reach entirely.
 - TYPO3 gains a driver none of this covers — mssql was assumed once and is in
   neither branch — so which installations pay stops being readable from these
   four.
-
-## Covered by
-
-- Nothing runs over the split: it needs a MySQL installation with its server
-  stopped, which no environment here holds. `ToolContractTest` covers the two
-  unanswerable paths and not which driver produced one.

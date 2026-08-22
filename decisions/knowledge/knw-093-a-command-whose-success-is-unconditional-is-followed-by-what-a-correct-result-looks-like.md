@@ -1,7 +1,10 @@
 ---
 id: D-KNW-093
+title: A command whose success is unconditional is followed by what a correct result looks like
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator
 ---
 
 # D-KNW-093 — A command whose success is unconditional is followed by what a correct result looks like
@@ -115,10 +118,6 @@ the hint that prescribes the command is where the discriminator belongs.
   reading them. The cost is paid in payload, which `bin/cli hints:coverage`
   reports as body lengths, and the rule would be right about the sentence and
   wrong about where it goes.
-
-## Covered by
-
-- `HintsTest::aPrescribedCommandWhoseSuccessIsUnconditionalCarriesItsDiscriminator`
 
 ## Confirmed on 2026-08-18
 

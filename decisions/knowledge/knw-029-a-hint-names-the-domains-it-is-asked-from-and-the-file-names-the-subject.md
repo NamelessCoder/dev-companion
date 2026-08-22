@@ -1,7 +1,11 @@
 ---
 id: D-KNW-029
+title: A hint names the domains it is asked from, and the file names the subject
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects
+  - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
 ---
 
 # D-KNW-029 — A hint names the domains it is asked from, and the file names the subject
@@ -74,11 +78,6 @@ grew a bucket that answers everything.
   than as a statement about the subject.
 - Somebody re-derives the domain from the file name because the two still agree
   everywhere except `general.json`.
-
-## Covered by
-
-- `HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects`
-- `HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt`
 
 ## Since then
 

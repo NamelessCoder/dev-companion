@@ -1,5 +1,6 @@
 ---
 id: D-KNW-066
+title: The browser baseline is a release day, and core usage is not evidence of it
 date: 2026-08-10
 status: open
 ---

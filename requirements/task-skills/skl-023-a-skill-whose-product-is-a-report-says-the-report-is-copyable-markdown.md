@@ -1,5 +1,6 @@
 ---
 id: R-SKL-023
+title: 'A skill whose product is a report says the report is copyable markdown'
 status: held
 restsOn: [D-SKL-042]
 ---

@@ -1,7 +1,10 @@
 ---
 id: D-FBK-042
+title: The read-only boundary is the installation, and the feedback channel writes on this side of it
 date: 2026-08-04
 status: open
+coveredBy:
+  - ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem
 ---
 
 # D-FBK-042 — The read-only boundary is the installation, and the feedback channel writes on this side of it
@@ -63,6 +66,9 @@ than part of using it.
   [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md),
   which is carded and reaches every unknown name, not only these two.
 
+- Nothing covers the first **Wrong if**. `Channel::isAvailable()` reads
+  `InstalledVersions::getRootPackage()` through no seam, and every test runs in
+  the standalone checkout where it answers true.
 ## Assumed
 
 - Nobody excludes a feedback tool for a reason this does not cover. The variable
@@ -84,12 +90,3 @@ than part of using it.
 - Another reader draws the same conclusion `453e439` did after this entry
   exists. Then the distinction was written in the wrong places, and the tool
   description a client reads is the next one to carry it.
-
-## Covered by
-
-- `ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem`
-
-Nothing covers the first **Wrong if**. `Channel::isAvailable()` reads
-`InstalledVersions::getRootPackage()` through no seam, and every test runs in
-the standalone checkout where it answers true.
-

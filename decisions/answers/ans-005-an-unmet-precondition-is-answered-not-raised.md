@@ -1,7 +1,13 @@
 ---
 id: D-ANS-005
+title: A question that is not supported here is answered in a shape of its own
 date: 2026-08-02
 status: open
+coveredBy:
+  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
+  - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
+  - ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer
+  - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
 ---
 
 # D-ANS-005 — A question that is not supported here is answered in a shape of its own
@@ -57,13 +63,6 @@ The shape was never the thing worth keeping.
   document rather than only in a test here; a validator that ignores the keyword
   reads the relaxed outer required list instead and gets a weaker promise than
   the server keeps.
-
-## Covered by
-
-- `ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse`
-- `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
-- `ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer`
-- `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`
 
 ## Since then
 

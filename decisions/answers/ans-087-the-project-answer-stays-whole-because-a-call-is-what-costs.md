@@ -1,5 +1,6 @@
 ---
 id: D-ANS-087
+title: The project answer stays whole because a call is what costs
 date: 2026-08-19
 status: open
 ---

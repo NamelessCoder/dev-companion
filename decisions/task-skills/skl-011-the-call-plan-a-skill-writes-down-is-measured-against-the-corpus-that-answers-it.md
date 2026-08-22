@@ -1,8 +1,11 @@
 ---
 id: D-SKL-011
+title: The call plan a skill writes down is measured against the corpus that answers it
 date: 2026-08-03
 status: revoked
 revokedBy: D-SKL-043
+coveredBy:
+  - SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn
 ---
 
 # D-SKL-011 — The call plan a skill writes down is measured against the corpus that answers it
@@ -102,10 +105,6 @@ the ranker moved under it on the day it was followed.
 - The next skill sentence that states a retrieval behaviour is found stale the
   same way. Then the lesson is not this wording but that a skill may not state
   one at all, and what belongs in the file is the subject to ask in.
-
-## Covered by
-
-- `SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn`
 
 ## Revoked on 2026-08-14
 

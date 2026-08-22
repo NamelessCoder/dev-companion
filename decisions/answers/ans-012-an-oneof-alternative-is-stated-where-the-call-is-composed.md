@@ -1,7 +1,11 @@
 ---
 id: D-ANS-012
+title: An `oneOf` alternative is stated where the caller composes the call
 date: 2026-08-02
 status: open
+coveredBy:
+  - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes
+  - StdioServerTest::aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth
 ---
 
 # D-ANS-012 — An `oneOf` alternative is stated where the caller composes the call
@@ -89,11 +93,6 @@ different property and neither stating the rule.
 - Another tool grows an input-side alternative and its callers compose the call
   correctly. Then `oneOf` does reach a caller, and this entry was reading one
   session's mistake as a property of the keyword.
-
-## Covered by
-
-- `ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes`
-- `StdioServerTest::aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth`
 
 ## Since then
 

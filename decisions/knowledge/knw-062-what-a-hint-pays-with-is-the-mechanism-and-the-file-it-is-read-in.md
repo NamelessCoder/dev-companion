@@ -1,5 +1,6 @@
 ---
 id: D-KNW-062
+title: What a hint pays with is the mechanism and the file it is read in
 date: 2026-08-04
 status: open
 ---

@@ -1,7 +1,11 @@
 ---
 id: D-SKL-034
+title: A step of the order is skippable on what the session holds, never on how it arrived
 date: 2026-08-11
 status: open
+coveredBy:
+  - SkillTest::theWorkflowStepRunsInEverySession
+  - SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api
 ---
 
 # D-SKL-034 — A step of the order is skippable on what the session holds, never on how it arrived
@@ -96,11 +100,6 @@ direction.
   activated rather than off the files the change touches. Then the line this
   entry draws between the two conditions is not the one that matters, and both
   come off.
-
-## Covered by
-
-- `SkillTest::theWorkflowStepRunsInEverySession`
-- `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
 
 ## Since then
 

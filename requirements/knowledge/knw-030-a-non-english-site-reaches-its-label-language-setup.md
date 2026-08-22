@@ -1,5 +1,6 @@
 ---
 id: R-KNW-030
+title: 'A non-English site reaches its label-language setup'
 status: held
 ---
 

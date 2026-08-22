@@ -1,5 +1,6 @@
 ---
 id: D-SCO-007
+title: The signals are combined per call, and a call is not a path
 date: 2026-08-01
 status: revoked
 revokedBy: D-SCO-008

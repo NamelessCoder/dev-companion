@@ -1,5 +1,6 @@
 ---
 id: R-FBK-014
+title: 'A judgement takes the card it replaced with it'
 status: held
 restsOn: [D-FBK-040]
 ---

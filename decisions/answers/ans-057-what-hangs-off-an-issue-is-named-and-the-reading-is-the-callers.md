@@ -1,7 +1,10 @@
 ---
 id: D-ANS-057
+title: What hangs off an issue is named, and the reading is the caller's
 date: 2026-08-05
 status: open
+coveredBy:
+  - ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched
 ---
 
 # D-ANS-057 — What hangs off an issue is named, and the reading is the caller's
@@ -58,7 +61,3 @@ referring to something the answer never mentioned exists.
   the decision.
 - The download URLs stop answering without a credential, which would make the
   list an offer this server cannot keep.
-
-## Covered by
-
-- `ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched`

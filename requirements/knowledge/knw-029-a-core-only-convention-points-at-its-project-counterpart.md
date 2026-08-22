@@ -1,5 +1,6 @@
 ---
 id: R-KNW-029
+title: 'A core-only convention points at its project counterpart'
 status: held
 ---
 

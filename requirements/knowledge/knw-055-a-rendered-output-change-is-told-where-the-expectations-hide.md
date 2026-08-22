@@ -1,5 +1,6 @@
 ---
 id: R-KNW-055
+title: 'A rendered-output change is told where the expectations hide'
 status: held
 restsOn: [D-KNW-044]
 ---

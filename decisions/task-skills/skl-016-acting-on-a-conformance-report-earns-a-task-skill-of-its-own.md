@@ -1,5 +1,6 @@
 ---
 id: D-SKL-016
+title: Acting on a conformance report earns a task skill of its own
 date: 2026-08-04
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-049
+title: 'A check that can pass without reading anything says so'
 status: held
 restsOn: [D-KNW-036]
 ---

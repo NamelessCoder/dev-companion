@@ -1,5 +1,6 @@
 ---
 id: D-GUI-002
+title: The commit workflow is asked for, not inferred
 date: 2026-07-29
 status: revoked
 revokedBy: D-GUI-010

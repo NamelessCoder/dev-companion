@@ -1,7 +1,11 @@
 ---
 id: D-SKL-039
+title: A brief that changes nothing routes only the workflows that change nothing
 date: 2026-08-14
 status: open
+coveredBy:
+  - HintsTest::aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt
+  - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
 ---
 
 # D-SKL-039 — A brief that changes nothing routes only the workflows that change nothing
@@ -91,8 +95,3 @@ workflow for authoring a breaking change.
   `remove the public method and make it a breaking change` still names
   `typo3-core-patch-development`; a task that stops doing so is this decision
   taking the route from the caller who was in the workflow.
-
-## Covered by
-
-- `HintsTest::aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt`
-- `HintsTest::aBriefNamesTheSkillThatOwnsTheWork`

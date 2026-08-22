@@ -1,5 +1,6 @@
 ---
 id: D-KNW-022
+title: The corpus states how long a per-class test database lives
 date: 2026-08-02
 status: open
 ---

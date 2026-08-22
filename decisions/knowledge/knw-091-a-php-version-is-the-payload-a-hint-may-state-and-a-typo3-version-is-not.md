@@ -1,7 +1,11 @@
 ---
 id: D-KNW-091
+title: A PHP version is the payload a hint may state, and a TYPO3 version is not
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
+  - HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange
 ---
 
 # D-KNW-091 — A PHP version is the payload a hint may state, and a TYPO3 version is not
@@ -56,8 +60,3 @@ the number carries its word, so exempting it exempts nothing else.
 - A caller reads a tested range as a support statement despite the sentence
   saying it is the core testing itself. Then the numbers were the wrong payload
   and the answer belongs in the manual lookup instead.
-
-## Covered by
-
-- `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
-- `HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange`

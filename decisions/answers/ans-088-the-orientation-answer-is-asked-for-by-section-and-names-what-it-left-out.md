@@ -1,7 +1,12 @@
 ---
 id: D-ANS-088
+title: The orientation answer is asked for by section, and names what it left out
 date: 2026-08-19
 status: open
+coveredBy:
+  - ScopeTest::aCallThatNamesOneSectionIsAnsweredWithThatSectionAlone
+  - ScopeTest::noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor
+  - ScopeTest::namingNoSectionAnswersEverythingTheToolHas
 ---
 
 # D-ANS-088 — The orientation answer is asked for by section, and names what it left out
@@ -101,9 +106,3 @@ of the orientation it is missing.
 - Nobody but the skill passes `sections` over the sessions that follow. Then the
   argument is a surface nobody chooses off, `D-ANS-087`'s reasoning covered this
   tool too, and what a skill prescribes is the whole of what it bought.
-
-## Covered by
-
-- `ScopeTest::aCallThatNamesOneSectionIsAnsweredWithThatSectionAlone`
-- `ScopeTest::noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor`
-- `ScopeTest::namingNoSectionAnswersEverythingTheToolHas`

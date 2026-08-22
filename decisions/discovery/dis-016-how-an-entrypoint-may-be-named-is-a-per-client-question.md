@@ -1,7 +1,12 @@
 ---
 id: D-DIS-016
+title: How an entrypoint may be named is a per-client question
 date: 2026-08-08
 status: confirmed
+coveredBy:
+  - InstallerTest::aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout
+  - InstallerTest::aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot
+  - InstallerTest::aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing
 ---
 
 # D-DIS-016 — How an entrypoint may be named is a per-client question
@@ -73,12 +78,6 @@ rule it proposed.
   read, and the split cost more than a single rule would have.
 - Naming the machine-specific path stays the answer everywhere, and the reading
   bought a sentence that `install` could have printed without it.
-
-## Covered by
-
-- `InstallerTest::aClientResolvingTheProjectRootGetsAnEntryEveryCheckoutIsRightAbout`
-- `InstallerTest::aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot`
-- `InstallerTest::aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing`
 
 ## Confirmed on 2026-08-09
 

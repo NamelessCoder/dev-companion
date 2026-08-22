@@ -1,7 +1,10 @@
 ---
 id: D-KNW-104
+title: The corpus states how an extension adds a field to a core palette
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::addingToACorePaletteIsStatedAsTheCallAndNotAsTheString
 ---
 
 # D-KNW-104 — The corpus states how an extension adds a field to a core palette
@@ -101,7 +104,3 @@ dump the feedback asked for.
 - `addFieldsToPalette()` diverges on one covered branch — a position argument
   that moved, an insertion that deduplicates where another does not. The unbound
   half would then be wrong on one of the four.
-
-## Covered by
-
-- `HintsTest::addingToACorePaletteIsStatedAsTheCallAndNotAsTheString`

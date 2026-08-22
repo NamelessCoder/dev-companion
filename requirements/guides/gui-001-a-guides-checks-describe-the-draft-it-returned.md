@@ -1,5 +1,6 @@
 ---
 id: R-GUI-001
+title: "A guide's checks describe the draft it returned"
 status: held
 ---
 

@@ -1,5 +1,6 @@
 ---
 id: R-ANS-014
+title: 'A registration is answered wherever it is declared'
 status: held
 restsOn: [D-ANS-014, D-ANS-019]
 ---

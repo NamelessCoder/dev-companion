@@ -1,5 +1,6 @@
 ---
 id: R-SKL-002
+title: 'A testing task verifies the harness before relying on it'
 status: held
 ---
 

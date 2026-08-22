@@ -1,5 +1,6 @@
 ---
 id: D-DOC-009
+title: Prose names what counts rather than the count
 date: 2026-08-03
 status: open
 ---

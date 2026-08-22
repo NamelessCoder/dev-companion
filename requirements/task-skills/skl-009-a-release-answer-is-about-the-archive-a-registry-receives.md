@@ -1,5 +1,6 @@
 ---
 id: R-SKL-009
+title: 'A release answer is about the archive a registry receives'
 status: open
 judged: 2026-08-22
 ---

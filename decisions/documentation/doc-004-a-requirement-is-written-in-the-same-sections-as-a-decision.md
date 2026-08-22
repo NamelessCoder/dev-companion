@@ -1,7 +1,11 @@
 ---
 id: D-DOC-004
+title: A requirement is written in the same sections as a decision
 date: 2026-08-02
 status: open
+coveredBy:
+  - RequirementsTest::everyRequirementIsWrittenInTheSectionsTheFormatHas
+  - RequirementsTest::everyRequirementNamesWhatHoldsIt
 ---
 
 # D-DOC-004 — A requirement is written in the same sections as a decision
@@ -61,11 +65,6 @@ in one entry. That reason does not exist here, and a different one does.
 - The four extra lines make a short requirement look heavier than it is and
   entries start being written without a `From`, which is optional today and
   present on 115 of 123.
-
-## Covered by
-
-- `RequirementsTest::everyRequirementIsWrittenInTheSectionsTheFormatHas`
-- `RequirementsTest::everyRequirementNamesWhatHoldsIt`
 
 ## Since then
 

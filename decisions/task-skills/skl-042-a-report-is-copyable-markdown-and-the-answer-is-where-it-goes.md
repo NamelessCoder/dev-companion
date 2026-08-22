@@ -1,5 +1,6 @@
 ---
 id: D-SKL-042
+title: A report is copyable markdown, and the answer is where it goes
 date: 2026-08-14
 status: open
 ---

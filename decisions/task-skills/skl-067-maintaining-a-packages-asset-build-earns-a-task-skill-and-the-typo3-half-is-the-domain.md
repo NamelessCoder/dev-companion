@@ -1,5 +1,6 @@
 ---
 id: D-SKL-067
+title: Maintaining a package's asset build earns a task skill, and the TYPO3 half is the domain
 date: 2026-08-21
 status: open
 ---

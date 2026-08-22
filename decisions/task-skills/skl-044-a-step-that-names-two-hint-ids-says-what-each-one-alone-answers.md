@@ -1,7 +1,10 @@
 ---
 id: D-SKL-044
+title: A step that names two hint ids says what each one alone answers
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-SKL-044 — A step that names two hint ids says what each one alone answers
@@ -97,10 +100,6 @@ full, and read the step as discharged.
   session, and the missing suite is on the far side of a boundary this step does
   not own. Then step 5's wording is a smaller finding sitting on top of one
   `R-SKL-003` already governs.
-
-## Covered by
-
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
 
 ## Since then
 

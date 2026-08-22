@@ -1,5 +1,6 @@
 ---
 id: D-ANS-001
+title: The unanswered result keeps its shape and gains a reason
 date: 2026-07-29
 status: revoked
 revokedBy: D-ANS-005

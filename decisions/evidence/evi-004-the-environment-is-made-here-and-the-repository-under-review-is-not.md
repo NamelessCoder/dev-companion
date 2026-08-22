@@ -1,7 +1,17 @@
 ---
 id: D-EVI-004
+title: The environment is made here, and the repository under review is not
 date: 2026-08-02
 status: open
+coveredBy:
+  - EnvironmentsTest::everyEnvironmentAScenarioNamesSaysWhereItComesFrom
+  - EnvironmentsTest::everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead
+  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
+  - EnvironmentsTest::theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor
+  - EnvironmentsTest::theSetupStepPassesEveryOptionItCannotBeAskedFor
+  - EnvironmentsTest::theSiteIsCreatedForTheAddressDdevGivesTheProject
+  - EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine
+  - EnvironmentsTest::whatIsMadeHereIsNeverCommitted
 ---
 
 # D-EVI-004 — The environment is made here, and the repository under review is not
@@ -103,17 +113,6 @@ stays named in `todo/reference/`.
 - `E-EXT` turns out to be the environment cases actually fail in, and the three
   declared checkouts drift apart from what the reference says they play. Then
   what was rejected here — pinning them — is worth its cost after all.
-
-## Covered by
-
-- `EnvironmentsTest::everyEnvironmentAScenarioNamesSaysWhereItComesFrom`
-- `EnvironmentsTest::everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead`
-- `EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion`
-- `EnvironmentsTest::theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor`
-- `EnvironmentsTest::theSetupStepPassesEveryOptionItCannotBeAskedFor`
-- `EnvironmentsTest::theSiteIsCreatedForTheAddressDdevGivesTheProject`
-- `EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine`
-- `EnvironmentsTest::whatIsMadeHereIsNeverCommitted`
 
 ## Since then
 

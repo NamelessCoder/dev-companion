@@ -1,7 +1,12 @@
 ---
 id: D-ANS-048
+title: A tool declares what can answer it, and both readers render that
 date: 2026-08-04
 status: open
+coveredBy:
+  - SourceTest::theAnsweredByCasesAreTheDeclaredSources
+  - SourceTest::theDescriptionACallerReadsCarriesThem
+  - SourceTest::theOrientationAnswerGroupsEveryOfferedTool
 ---
 
 # D-ANS-048 — A tool declares what can answer it, and both readers render that
@@ -62,9 +67,3 @@ so the schema promised a fallback that was never going to arrive.
 - The clause is measured against a client's tool-list budget and loses: 26 tools
   carry it in every session, and nothing here has weighed that against what a
   client will hold.
-
-## Covered by
-
-- `SourceTest::theAnsweredByCasesAreTheDeclaredSources`
-- `SourceTest::theDescriptionACallerReadsCarriesThem`
-- `SourceTest::theOrientationAnswerGroupsEveryOfferedTool`

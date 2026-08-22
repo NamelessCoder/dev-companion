@@ -1,7 +1,10 @@
 ---
 id: D-KNW-043
+title: A rule about what an API may be used for carries the strength of the claim and the source it was read from
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aFluidResourceUriTaskIsAnsweredWithWhoAppliesCacheBusting
 ---
 
 # D-KNW-043 — A rule about what an API may be used for carries the strength of the claim and the source it was read from
@@ -125,10 +128,6 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
 - Another rule of this shape is found stated at full strength in the corpus with
   no source on it. One correction is then a fix and not a rule, and what is
   needed is a check over the corpus rather than a sentence in one hint.
-
-## Covered by
-
-- `HintsTest::aFluidResourceUriTaskIsAnsweredWithWhoAppliesCacheBusting`
 
 ## Since then
 

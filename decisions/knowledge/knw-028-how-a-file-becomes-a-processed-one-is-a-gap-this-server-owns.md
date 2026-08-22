@@ -1,5 +1,6 @@
 ---
 id: D-KNW-028
+title: How a file becomes a processed one is a gap this server owns
 date: 2026-08-02
 status: open
 ---

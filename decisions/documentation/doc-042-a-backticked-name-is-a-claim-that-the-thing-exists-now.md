@@ -1,8 +1,11 @@
 ---
 id: D-DOC-042
+title: A backticked name is a claim that the thing exists now
 date: 2026-08-22
 status: open
 restsOn: [D-DOC-040]
+coveredBy:
+  - RecordsTest::everyMemberTheRecordsNameInBackticksExists
 ---
 
 # D-DOC-042 — A backticked name is a claim that the thing exists now
@@ -79,7 +82,3 @@ in the present tense that a member exists which does not.
   which is why `D-ANS-045` got a **Since then** and not a plain spelling.
 - A class this repository shares a name with grows a member the records name,
   and the guard reports a miss that is nobody's mistake.
-
-## Covered by
-
-- `RecordsTest::everyMemberTheRecordsNameInBackticksExists`

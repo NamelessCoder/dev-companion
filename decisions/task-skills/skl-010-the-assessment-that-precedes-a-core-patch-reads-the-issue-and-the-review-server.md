@@ -1,7 +1,10 @@
 ---
 id: D-SKL-010
+title: The assessment that precedes a core patch reads the issue and the review server
 date: 2026-08-03
 status: open
+coveredBy:
+  - SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer
 ---
 
 # D-SKL-010 — The assessment that precedes a core patch reads the issue and the review server
@@ -106,10 +109,6 @@ the checkout the feedback was written in.
   first that came from a single report.
 - The blast radius turns out to be knowable only after the change. Then it is
   not an assessment step, and what it belongs to is the changelog decision.
-
-## Covered by
-
-- `SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer`
 
 ## Since then
 

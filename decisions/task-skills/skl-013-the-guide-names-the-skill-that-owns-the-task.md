@@ -1,7 +1,11 @@
 ---
 id: D-SKL-013
+title: The guide names the skill that owns the task
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
+  - SkillTest::everySkillNamedInKnowledgeIsPublished
 ---
 
 # D-SKL-013 — The guide names the skill that owns the task
@@ -113,11 +117,6 @@ this entry.
   own them and three published skills — documentation, release, backend module —
   are reached by no intent at all; a name invented for the sixth row is a route
   into a workflow nobody asked for.
-
-## Covered by
-
-- `HintsTest::aBriefNamesTheSkillThatOwnsTheWork`
-- `SkillTest::everySkillNamedInKnowledgeIsPublished`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-067
+title: 'The e2e answer states the price of a Playwright-only change'
 status: held
 restsOn: [D-KNW-068]
 ---

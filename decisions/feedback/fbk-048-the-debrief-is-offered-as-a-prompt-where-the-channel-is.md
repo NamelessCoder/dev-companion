@@ -1,5 +1,6 @@
 ---
 id: D-FBK-048
+title: The debrief is offered as a prompt where the channel is
 date: 2026-08-18
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-AUD-002
+title: Two profiles, because a third one would have been the same set
 date: 2026-07-29
 status: revoked
 revokedBy: D-AUD-004

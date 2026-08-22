@@ -1,5 +1,6 @@
 ---
 id: D-SKL-019
+title: An absent surface is asked for by the id of its convention
 date: 2026-08-04
 status: open
 ---

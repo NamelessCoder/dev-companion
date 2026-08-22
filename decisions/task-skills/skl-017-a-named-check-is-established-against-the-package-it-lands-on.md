@@ -1,5 +1,6 @@
 ---
 id: D-SKL-017
+title: A named check is established against the package it lands on
 date: 2026-08-04
 status: open
 ---

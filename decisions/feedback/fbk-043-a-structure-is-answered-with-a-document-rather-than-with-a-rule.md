@@ -1,5 +1,6 @@
 ---
 id: D-FBK-043
+title: A structure is answered with a document rather than with a rule
 date: 2026-08-04
 status: open
 ---

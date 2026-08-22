@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Upkeep;
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * The head a requirement and a decision are both written with: front matter, a
  * heading naming the id and the title, and the sentence under it.
@@ -19,7 +21,7 @@ namespace TYPO3\DevCompanion\Upkeep;
 final class Entry
 {
     /**
-     * @return array{frontMatter: string, heading: string, title: string, statement: string}
+     * @return array{matter: array<string, mixed>, heading: string, written: string, statement: string}
      */
     public static function head(string $contents): array
     {
@@ -31,17 +33,74 @@ final class Entry
         $body = (string) preg_replace('/^---\n.*?\n---\n\n# [^\n]*\n\n/s', '', $contents);
 
         return [
-            'frontMatter' => $matter[1] ?? '',
+            'matter' => self::matter($matter[1] ?? ''),
             'heading' => $heading[1] ?? '',
-            'title' => $heading[2] ?? '',
+            // What the heading says the title is. The front matter is the
+            // title; this is what a check holds it to, so the two cannot drift.
+            'written' => $heading[2] ?? '',
             'statement' => trim(str_replace('**', '', self::firstParagraph($body))),
         ];
     }
 
-    /** One key of the front matter, or nothing where it is not written. */
-    public static function frontMatterValue(string $frontMatter, string $key): string
+    /**
+     * The front matter as data, which is what it is.
+     *
+     * Read with a YAML parser rather than a line at a time: it carries a list
+     * since the tests moved into it, and a hand-rolled reader for one is a
+     * third parser over a format somebody else already implements.
+     *
+     * @return array<string, mixed>
+     */
+    public static function matter(string $frontMatter): array
     {
-        return preg_match('/^' . $key . ':\s*(.*)$/m', $frontMatter, $matches) === 1 ? trim($matches[1]) : '';
+        if (trim($frontMatter) === '') {
+            return [];
+        }
+
+        try {
+            // A date is asked for as a date rather than left to become the
+            // Unix timestamp the parser answers by default, so `2026-08-23`
+            // comes back as the day it is written as.
+            $parsed = Yaml::parse($frontMatter, Yaml::PARSE_DATETIME);
+        } catch (\Throwable) {
+            return [];
+        }
+
+        return is_array($parsed) ? $parsed : [];
+    }
+
+    /**
+     * One key of the front matter as a string, or nothing where it is not
+     * written.
+     *
+     * @param array<string, mixed> $matter
+     */
+    public static function value(array $matter, string $key): string
+    {
+        $value = $matter[$key] ?? '';
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('Y-m-d');
+        }
+
+        return is_scalar($value) ? trim((string) $value) : '';
+    }
+
+    /**
+     * One key as a list of names, whatever shape it was written in.
+     *
+     * @param array<string, mixed> $matter
+     * @return list<string>
+     */
+    public static function names(array $matter, string $key): array
+    {
+        $value = $matter[$key] ?? [];
+        if (is_string($value)) {
+            $value = [$value];
+        }
+
+        return is_array($value)
+            ? array_values(array_map(static fn(mixed $name): string => trim((string) $name), array_filter($value, is_scalar(...))))
+            : [];
     }
 
     /**

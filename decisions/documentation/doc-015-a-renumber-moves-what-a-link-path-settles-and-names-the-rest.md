@@ -1,7 +1,13 @@
 ---
 id: D-DOC-015
+title: A renumber moves what a link path settles and names the rest
 date: 2026-08-04
 status: open
+coveredBy:
+  - RenumberTest::everyMentionIsEitherMovedOrNamed
+  - RenumberTest::noPathIsLeftPointingAtTheOldFile
+  - RenumberTest::aReferenceNoLineSettlesIsNamedRatherThanMoved
+  - RenumberTest::aLetterSuffixIsAnotherEntryAndStaysWhereItIs
 ---
 
 # D-DOC-015 — A renumber moves what a link path settles and names the rest
@@ -97,13 +103,6 @@ gone wrong, twice, silently.
 - A requirement id collides and there is no `requirements:renumber` to move it.
 - A branch's listing does carry the entry, the regeneration fires in a worktree,
   and the merge conflicts on the one block a branch is told not to touch.
-
-## Covered by
-
-- `RenumberTest::everyMentionIsEitherMovedOrNamed`
-- `RenumberTest::noPathIsLeftPointingAtTheOldFile`
-- `RenumberTest::aReferenceNoLineSettlesIsNamedRatherThanMoved`
-- `RenumberTest::aLetterSuffixIsAnotherEntryAndStaysWhereItIs`
 
 ## Since then
 

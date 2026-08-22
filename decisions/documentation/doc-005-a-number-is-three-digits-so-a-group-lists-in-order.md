@@ -1,7 +1,11 @@
 ---
 id: D-DOC-005
+title: A number is three digits so a group lists in order
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - RequirementsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder
+  - DecisionsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder
 ---
 
 # D-DOC-005 — A number is three digits so a group lists in order
@@ -69,11 +73,6 @@ opened with the tenth, and so did the index generated from it.
   a corpus that will be larger than 289 files.
 - The ids read as noise in prose. Every one of the 1393 is a character or two
   longer than it was, most of them inside sentences a person reads.
-
-## Covered by
-
-- `RequirementsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder`
-- `DecisionsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder`
 
 ## Confirmed on 2026-08-22
 

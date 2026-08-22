@@ -1,5 +1,6 @@
 ---
 id: R-SKL-010
+title: "A skill's description names every side of what it owns"
 status: held
 restsOn: [D-AUD-003]
 ---

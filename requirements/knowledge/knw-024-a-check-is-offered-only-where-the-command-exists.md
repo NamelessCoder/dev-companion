@@ -1,5 +1,6 @@
 ---
 id: R-KNW-024
+title: 'A check is offered only where the command exists'
 status: held
 ---
 

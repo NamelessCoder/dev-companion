@@ -1,7 +1,10 @@
 ---
 id: D-DOC-031
+title: A page is railed under a label and headed by a sentence
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::everyPageIsRailedUnderALabelRatherThanItsHeading
 ---
 
 # D-DOC-031 — A page is railed under a label and headed by a sentence
@@ -61,7 +64,3 @@ titles a page with the question it answers.
 - A four-word label is still a sentence, which the count cannot tell.
 - The theme starts showing the navigation title where the heading is meant, and
   a page then announces itself as `Tools`.
-
-## Covered by
-
-- `SiteTest::everyPageIsRailedUnderALabelRatherThanItsHeading`

@@ -1,7 +1,10 @@
 ---
 id: D-SKL-053
+title: An absence in the extension answer names the skill that owns it
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor
 ---
 
 # D-SKL-053 — An absence in the extension answer names the skill that owns it
@@ -126,10 +129,6 @@ sentence of the skill it was following, and it says it read that sentence.
 - A session activates one of the three owners off the closing paragraph as it
   stands. Then this run read one session's momentum as a property of the
   sentence.
-
-## Covered by
-
-- `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`
 
 ## Since then
 

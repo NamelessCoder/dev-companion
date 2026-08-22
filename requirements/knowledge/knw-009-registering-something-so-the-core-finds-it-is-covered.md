@@ -1,5 +1,6 @@
 ---
 id: R-KNW-009
+title: 'Registering something so the core finds it is covered'
 status: held
 ---
 

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-022
+title: 'A hint is a candidate for the question it is asked from'
 status: held
 ---
 

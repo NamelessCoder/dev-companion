@@ -1,5 +1,6 @@
 ---
 id: D-KNW-103
+title: How an extension adds a field to a core palette is a gap this server owns
 date: 2026-08-18
 status: revoked
 revokedBy: D-KNW-104

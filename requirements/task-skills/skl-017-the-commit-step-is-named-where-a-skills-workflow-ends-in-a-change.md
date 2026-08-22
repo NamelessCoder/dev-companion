@@ -1,5 +1,6 @@
 ---
 id: R-SKL-017
+title: "The commit step is named where a skill's workflow ends in a change"
 status: held
 restsOn: [D-GUI-010, D-SKL-014]
 ---

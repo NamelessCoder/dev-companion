@@ -1,5 +1,6 @@
 ---
 id: R-ANS-019
+title: 'A rendered-verification question reaches the layer that verifies it'
 status: held
 restsOn: [D-KNW-017]
 ---

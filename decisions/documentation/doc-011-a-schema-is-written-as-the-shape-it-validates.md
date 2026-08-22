@@ -1,7 +1,10 @@
 ---
 id: D-DOC-011
+title: A schema is written as the shape it validates
 date: 2026-08-03
 status: open
+coveredBy:
+  - ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares
 ---
 
 # D-DOC-011 — A schema is written as the shape it validates
@@ -54,7 +57,3 @@ a caller reads a schema for.
   tool declares, and files a defect because the page does not parse. Then the
   block needs a language nothing renders as data — but the schema itself is what
   a client should be reading, and the page says so.
-
-## Covered by
-
-- `ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares`

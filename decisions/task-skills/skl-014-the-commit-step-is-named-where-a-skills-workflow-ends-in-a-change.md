@@ -1,7 +1,10 @@
 ---
 id: D-SKL-014
+title: The commit step is named where a skill's workflow ends in a change
 date: 2026-08-04
 status: open
+coveredBy:
+  - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
 ---
 
 # D-SKL-014 — The commit step is named where a skill's workflow ends in a change
@@ -97,10 +100,6 @@ that came from those habits is not something this server may be credited with.
 - The routing entry changes nothing because nobody reads it. It sits behind
   `typo3_server_scope`, and `D-AUD-003` measured what that costs: a tool has to
   be called to learn that tools should be called.
-
-## Covered by
-
-- `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`
 
 ## Since then
 

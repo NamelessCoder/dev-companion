@@ -1,7 +1,15 @@
 ---
 id: D-DIS-019
+title: A project root is found from what its manifest declares
 date: 2026-08-18
 status: open
+coveredBy:
+  - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
+  - InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot
+  - InstanceTest::aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither
+  - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
+  - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
+  - ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne
 ---
 
 # D-DIS-019 — A project root is found from what its manifest declares
@@ -95,12 +103,3 @@ a TYPO3 project for every PHP repository above the caller.
 - A tool other than `typo3_project_describe` starts answering from a root with
   nothing installed below it. Then the two questions have run together and
   `D-DIS-001`'s second **Assumed** no longer holds.
-
-## Covered by
-
-- `InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares`
-- `InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot`
-- `InstanceTest::aNamedInstallationThatDoesNotExistIsNotWalkedPastForAProjectEither`
-- `InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne`
-- `ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt`
-- `ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne`

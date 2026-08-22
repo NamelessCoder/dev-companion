@@ -1,5 +1,6 @@
 ---
 id: R-ANS-020
+title: 'The Classes section covers the directory it names'
 status: held
 restsOn: [D-ANS-045]
 ---

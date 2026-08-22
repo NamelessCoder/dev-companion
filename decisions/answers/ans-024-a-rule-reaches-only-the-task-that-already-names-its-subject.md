@@ -1,5 +1,6 @@
 ---
 id: D-ANS-024
+title: A rule reaches only the task that already names its subject
 date: 2026-08-02
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-045
+title: The Classes section covers the directory it names, and a value read off the tree says so
 date: 2026-08-03
 status: open
 ---

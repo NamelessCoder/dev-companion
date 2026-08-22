@@ -1,7 +1,11 @@
 ---
 id: D-ANS-043
+title: A miss is answered in data, and says which corpus its silence belongs to
 date: 2026-08-03
 status: open
+coveredBy:
+  - PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine
+  - PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo
 ---
 
 # D-ANS-043 — A miss is answered in data, and says which corpus its silence belongs to
@@ -104,11 +108,6 @@ had already computed returns the one entry its review turned on.
   because the field was filled where the text withholds it — under a `tag`,
   where `D-ANS-016` established that a subset promises what the same call does
   not return.
-
-## Covered by
-
-- `PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine`
-- `PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo`
 
 ## Since then
 

@@ -1,7 +1,11 @@
 ---
 id: D-SKL-066
+title: Documenting a package for its readers is an intent of its own
 date: 2026-08-19
 status: open
+coveredBy:
+  - KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther
+  - ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout
 ---
 
 # D-SKL-066 — Documenting a package for its readers is an intent of its own
@@ -86,8 +90,3 @@ the right workflow behind four items about
 - `readme` reaches a task that is about the repository's own readme file rather
   than about a package's documentation. It reaches no prompt in `scenarios/`
   today, which is evidence that it steals nothing and none that it is needed.
-
-## Covered by
-
-- `KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther`
-- `ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout`

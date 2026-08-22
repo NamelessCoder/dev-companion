@@ -1,5 +1,6 @@
 ---
 id: R-KNW-026
+title: 'A routed argument carries its cache-hash boundary'
 status: held
 ---
 

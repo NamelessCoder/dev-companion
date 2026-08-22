@@ -1,7 +1,10 @@
 ---
 id: D-KNW-053
+title: The root-package layout is stated from an installation and holds across the covered majors
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing
 ---
 
 # D-KNW-053 — The root-package layout is stated from an installation and holds across the covered majors
@@ -77,7 +80,3 @@ major. So the hint carries no `since` and no `until`.
 - A session composing the layout reads the statement and still requires
   `typo3/cms-cli`. The gap would be in the routing rather than in the corpus —
   carried over from `D-KNW-047`.
-
-## Covered by
-
-- `HintsTest::installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing`

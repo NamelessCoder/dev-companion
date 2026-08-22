@@ -1,5 +1,6 @@
 ---
 id: R-KNW-031
+title: 'A persisted alias is answered in both directions'
 status: held
 ---
 

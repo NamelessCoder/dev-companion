@@ -1,7 +1,14 @@
 ---
 id: D-SCO-012
+title: The root manifest places the work before the dependencies are installed
 date: 2026-08-18
 status: open
+coveredBy:
+  - ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest
+  - ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes
+  - ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised
+  - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
+  - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
 ---
 
 # D-SCO-012 — The root manifest places the work before the dependencies are installed
@@ -96,11 +103,3 @@ fire on.
 - `uncertain` stays common once the rung is fixed. Then what places the work is
   not in the call at all and has to be asked for at initialize time, which is
   where `D-SCO-008` pointed and this entry does not go.
-
-## Covered by
-
-- `ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest`
-- `ScopeTest::theKeyAnExtensionRepositoryDeclaresPlacesAPathBeforeTheProseDoes`
-- `ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised`
-- `ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite`
-- `InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne`

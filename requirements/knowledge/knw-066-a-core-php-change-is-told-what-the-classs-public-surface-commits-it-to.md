@@ -1,5 +1,6 @@
 ---
 id: R-KNW-066
+title: "A core PHP change is told what the class's public surface commits it to"
 status: held
 restsOn: [D-KNW-065]
 ---

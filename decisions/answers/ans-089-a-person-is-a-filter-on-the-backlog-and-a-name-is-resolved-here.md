@@ -1,7 +1,15 @@
 ---
 id: D-ANS-089
+title: A person is a filter on the backlog, and a name is resolved here
 date: 2026-08-19
 status: confirmed
+coveredBy:
+  - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembersAndFiltersByTheIdTheTrackerTakes
+  - ForgeTest::aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth
+  - ForgeTest::aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt
+  - ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog
+  - ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach
+  - ForgeTest::aRowSaysWhoFiledIt
 ---
 
 # D-ANS-089 — A person is a filter on the backlog, and a name is resolved here
@@ -102,15 +110,6 @@ different question with the same shape.
 - Nobody passes a person filter over the sessions that follow. Then the
   enumeration grew three arguments for a question one session asked once, and
   the answer was the sentence in `query` alone.
-
-## Covered by
-
-- `ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembersAndFiltersByTheIdTheTrackerTakes`
-- `ForgeTest::aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth`
-- `ForgeTest::aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt`
-- `ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog`
-- `ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach`
-- `ForgeTest::aRowSaysWhoFiledIt`
 
 ## Confirmed on 2026-08-19
 

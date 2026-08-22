@@ -1,7 +1,11 @@
 ---
 id: D-SCO-009
+title: The brief is one brief, and names the paths a step is not for
 date: 2026-08-02
 status: open
+coveredBy:
+  - ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich
+  - ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep
 ---
 
 # D-SCO-009 — The brief is one brief, and names the paths a step is not for
@@ -59,11 +63,6 @@ What it does not do is answer twice.
   arrives in `scopes` as a path nobody named. Then `area` is what has to go,
   which is a removal `AGENTS.md` does not allow of a schema — so it would be
   deprecated in its description first.
-
-## Covered by
-
-- `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`
-- `ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: D-SKL-028
+title: A triage that reaches for a previous attempt is routed to the patch
 date: 2026-08-09
 status: open
 ---

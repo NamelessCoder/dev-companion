@@ -1,7 +1,12 @@
 ---
 id: D-SKL-055
+title: A call a skill names in order not to make it is written as a discharge
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::everyDischargedCallIsWrittenAsOneAndRoutedNowhere
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
+  - SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence
 ---
 
 # D-SKL-055 — A call a skill names in order not to make it is written as a discharge
@@ -79,9 +84,3 @@ routing half is everything else.
 - `DISCHARGED_TOOLS` grows past a handful of entries. A skill discharging
   several calls is a skill restating what the base already fixes, which is the
   thing the base exists to stop.
-
-## Covered by
-
-- `SkillTest::everyDischargedCallIsWrittenAsOneAndRoutedNowhere`
-- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
-- `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`

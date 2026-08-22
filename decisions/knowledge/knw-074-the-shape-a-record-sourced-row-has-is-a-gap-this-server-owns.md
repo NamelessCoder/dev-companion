@@ -1,5 +1,6 @@
 ---
 id: D-KNW-074
+title: The shape a Record-sourced row has is a gap this server owns
 date: 2026-08-14
 status: revoked
 revokedBy: D-KNW-078

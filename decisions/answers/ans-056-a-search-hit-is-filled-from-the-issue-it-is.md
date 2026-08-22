@@ -1,7 +1,11 @@
 ---
 id: D-ANS-056
+title: A search hit is filled from the issue it is
 date: 2026-08-05
 status: open
+coveredBy:
+  - ForgeTest::aSearchHitIsFilledFromTheIssuesTheHitsAre
+  - ForgeTest::aPageThatCouldNotBeFilledIsStillTheHitsThatMatched
 ---
 
 # D-ANS-056 — A search hit is filled from the issue it is
@@ -64,8 +68,3 @@ nothing has ever moved on it, and all four of those are claims.
   trip buys nothing.
 - The tracker starts serving those fields in `/search.json`, which would make
   the fill a call for something already in hand.
-
-## Covered by
-
-- `ForgeTest::aSearchHitIsFilledFromTheIssuesTheHitsAre`
-- `ForgeTest::aPageThatCouldNotBeFilledIsStillTheHitsThatMatched`

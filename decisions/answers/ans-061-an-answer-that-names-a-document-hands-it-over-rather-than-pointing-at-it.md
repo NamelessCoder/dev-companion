@@ -1,5 +1,6 @@
 ---
 id: D-ANS-061
+title: An answer that names a document hands it over rather than pointing at it
 date: 2026-08-07
 status: open
 ---

@@ -1,7 +1,14 @@
 ---
 id: D-ANS-067
+title: The changelog above the installed major comes from the manual
 date: 2026-08-08
 status: open
+coveredBy:
+  - CoreChangelogTest::anEntryAboveTheInstalledMajorComesFromTheManual
+  - CoreChangelogTest::aVersionTheInstallationShipsIsNeverTakenFromTheManual
+  - CoreChangelogTest::askingForAnInstalledVersionReachesNoHostAtAll
+  - CoreChangelogTest::aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing
+  - CoreChangelogTest::aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout
 ---
 
 # D-ANS-067 — The changelog above the installed major comes from the manual
@@ -91,11 +98,3 @@ so the entries a caller is upgrading *to* were the ones the tool could not show.
   installation's highest version and the host's are the same. Nothing withholds
   the read in that case today: the skip is by named version, not by comparing
   the two highest.
-
-## Covered by
-
-- `CoreChangelogTest::anEntryAboveTheInstalledMajorComesFromTheManual`
-- `CoreChangelogTest::aVersionTheInstallationShipsIsNeverTakenFromTheManual`
-- `CoreChangelogTest::askingForAnInstalledVersionReachesNoHostAtAll`
-- `CoreChangelogTest::aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing`
-- `CoreChangelogTest::aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout`

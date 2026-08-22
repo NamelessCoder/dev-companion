@@ -1,5 +1,6 @@
 ---
 id: D-SKL-049
+title: The gate at the end of a workflow waits for the corrections it would sit on
 date: 2026-08-18
 status: open
 ---

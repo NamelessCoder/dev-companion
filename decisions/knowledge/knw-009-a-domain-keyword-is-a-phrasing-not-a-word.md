@@ -1,7 +1,10 @@
 ---
 id: D-KNW-009
+title: A domain keyword is a phrasing, not a word
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat
 ---
 
 # D-KNW-009 — A domain keyword is a phrasing, not a word
@@ -58,10 +61,6 @@ hint in `php.json` was filtered out before anything was scored.
 - The PHP category starts winning where the question is about the website —
   which is what the three unmoved phrasings above are for, and what a fourth
   keyword would put at risk.
-
-## Covered by
-
-- `HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat`
 
 ## Since then
 

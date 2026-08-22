@@ -1,5 +1,6 @@
 ---
 id: R-KNW-007
+title: 'A hint that ends in an instruction carries its steps'
 status: held
 ---
 

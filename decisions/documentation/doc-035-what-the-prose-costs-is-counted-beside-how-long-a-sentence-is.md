@@ -1,7 +1,12 @@
 ---
 id: D-DOC-035
+title: What the prose costs is counted beside how long a sentence is
 date: 2026-08-18
 status: open
+coveredBy:
+  - ProseTest::whatTheCommentsCostIsMeasured
+  - ProseTest::aCommentThatNamesAnEntryAndRetellsItAnywayIsReported
+  - ProseTest::whatTheMarkupCostsIsNotCountedAsProse
 ---
 
 # D-DOC-035 — What the prose costs is counted beside how long a sentence is
@@ -73,12 +78,6 @@ passed by writing two, and it read no file in `src/` at all.
 - The comments on it turn out, on being read, to be right more often than not.
   Then the shape is wrong: what such a comment names is a cross-reference and
   not a retelling.
-
-## Covered by
-
-- `ProseTest::whatTheCommentsCostIsMeasured`
-- `ProseTest::aCommentThatNamesAnEntryAndRetellsItAnywayIsReported`
-- `ProseTest::whatTheMarkupCostsIsNotCountedAsProse`
 
 ## Since then
 

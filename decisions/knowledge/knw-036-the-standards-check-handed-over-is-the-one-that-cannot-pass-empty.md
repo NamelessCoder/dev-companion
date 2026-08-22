@@ -1,7 +1,10 @@
 ---
 id: D-KNW-036
+title: The standards check handed over is the one that cannot pass empty
 date: 2026-08-03
 status: open
+coveredBy:
+  - KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold
 ---
 
 # D-KNW-036 — The standards check handed over is the one that cannot pass empty
@@ -86,7 +89,3 @@ that trusted it reported a standards check as passed having run none.
 - A caller in a normal checkout reads the worktree condition and stops using
   `cglGit` at all, which would mean the qualification cost the fast path rather
   than making it safe.
-
-## Covered by
-
-- `KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold`

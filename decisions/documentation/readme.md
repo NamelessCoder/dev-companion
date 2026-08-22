@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
+- [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter, and the prose says it once · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged to stay as it is · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim about today · 2026-08-22
@@ -49,6 +50,7 @@ earns one.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-044]: doc-044-a-failing-test-names-the-decisions-it-was-holding.md
+[D-DOC-045]: doc-045-what-a-listing-reads-is-front-matter.md
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged-to-stay-as-it-is.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim-about-today.md

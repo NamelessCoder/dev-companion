@@ -1,8 +1,12 @@
 ---
 id: D-SKL-015
+title: A step of the order is skipped only where it has already run or has nothing to find
 date: 2026-08-04
 status: revoked
 revokedBy: D-SKL-034
+coveredBy:
+  - SkillTest::theWorkflowStepRunsInEverySession
+  - SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api
 ---
 
 # D-SKL-015 — A step of the order is skipped only where it has already run or has nothing to find
@@ -100,11 +104,6 @@ wanted, and the maintainer answered it on 2026-08-04.
 - `D-SKL-014` lands in the skill bodies and the commit step stays written into
   step 3 as a cost of skipping it. That half stops being true on that commit;
   the path-specific brief is what carries the condition afterwards.
-
-## Covered by
-
-- `SkillTest::theWorkflowStepRunsInEverySession`
-- `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
 
 ## Since then
 

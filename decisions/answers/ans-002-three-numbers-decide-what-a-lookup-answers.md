@@ -1,5 +1,6 @@
 ---
 id: D-ANS-002
+title: Three numbers now decide what a lookup answers, and they were measured, not reasoned
 date: 2026-07-30
 status: confirmed
 ---

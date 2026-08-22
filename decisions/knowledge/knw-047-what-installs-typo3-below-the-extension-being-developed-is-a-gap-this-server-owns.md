@@ -1,5 +1,6 @@
 ---
 id: D-KNW-047
+title: What installs TYPO3 below the extension being developed is a gap this server owns
 date: 2026-08-03
 status: open
 ---

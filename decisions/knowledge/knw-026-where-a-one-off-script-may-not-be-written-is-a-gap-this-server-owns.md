@@ -1,5 +1,6 @@
 ---
 id: D-KNW-026
+title: Where a one-off script may not be written is a gap this server owns
 date: 2026-08-02
 status: open
 ---

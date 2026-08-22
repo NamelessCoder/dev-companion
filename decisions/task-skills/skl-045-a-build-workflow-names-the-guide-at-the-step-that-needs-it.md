@@ -1,7 +1,10 @@
 ---
 id: D-SKL-045
+title: A build workflow names the guide at the step that needs it
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::theBrowserStepNamesTheGuidesThatAnswerIt
 ---
 
 # D-SKL-045 — A build workflow names the guide at the step that needs it
@@ -113,10 +116,6 @@ unverified. It called `typo3_rule_lookup` at no point in the session.
   the work that produces an editor-facing view rather than to the surface.
 - A build session reports reading a guide off the `guides` array. Then the array
   was delivery after all, and what this entry moves bought nothing.
-
-## Covered by
-
-- `SkillTest::theBrowserStepNamesTheGuidesThatAnswerIt`
 
 ## Since then
 

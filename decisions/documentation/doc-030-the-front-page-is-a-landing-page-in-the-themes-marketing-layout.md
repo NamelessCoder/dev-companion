@@ -1,7 +1,11 @@
 ---
 id: D-DOC-030
+title: The front page is a landing page, in the theme's marketing layout
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::theSiteOpensOnTheDocumentationsOwnPage
+  - VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine
 ---
 
 # D-DOC-030 — The front page is a landing page, in the theme's marketing layout
@@ -71,8 +75,3 @@ has to read to the end of.
   wrong page. `bin/cli links:check` does not read a directive option.
 - The prose the bands hold gets shorter every time somebody edits the page, and
   what is left is a brochure the manual has to answer for.
-
-## Covered by
-
-- `SiteTest::theSiteOpensOnTheDocumentationsOwnPage`
-- `VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine`

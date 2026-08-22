@@ -1,7 +1,15 @@
 ---
 id: D-ANS-051
+title: A manual result carries how much of the question it covers, and no page is taken away for covering little
 date: 2026-08-04
 status: open
+coveredBy:
+  - DocumentationTest::everySearchResultSaysHowMuchOfTheQueryItCovers
+  - DocumentationTest::aResultCoversTheQueryItIsKeptFor
+  - DocumentationTest::aResultCoveringLessThanHalfTheQueryIsStillReturned
+  - DocumentationTest::theAnswerSaysWhereNothingCoversHalfTheQuery
+  - DocumentationTest::anAnswerThatCoversTheQuestionCarriesNoSuchSentence
+  - DocumentationTest::aPageReadBackCoversNoQuery
 ---
 
 # D-ANS-051 — A manual result carries how much of the question it covers, and no page is taken away for covering little
@@ -127,15 +135,6 @@ queries that entry offers as proof that *LoginProvider* is reachable at all.
   that carries what the floor drops, which `Search\Subsets::largestReaching()`
   does not today: it offers `layout login`, which returns three of the six
   collisions and not *LoginProvider*.
-
-## Covered by
-
-- `DocumentationTest::everySearchResultSaysHowMuchOfTheQueryItCovers`
-- `DocumentationTest::aResultCoversTheQueryItIsKeptFor`
-- `DocumentationTest::aResultCoveringLessThanHalfTheQueryIsStillReturned`
-- `DocumentationTest::theAnswerSaysWhereNothingCoversHalfTheQuery`
-- `DocumentationTest::anAnswerThatCoversTheQuestionCarriesNoSuchSentence`
-- `DocumentationTest::aPageReadBackCoversNoQuery`
 
 ## Since then
 

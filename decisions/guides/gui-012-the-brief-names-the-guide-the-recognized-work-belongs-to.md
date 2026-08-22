@@ -1,7 +1,11 @@
 ---
 id: D-GUI-012
+title: The brief names the guide the recognized work belongs to
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aBriefNamesTheGuideTheWorkIsWrittenUpIn
+  - KnowledgeTest::everyGuideAnIntentNamesIsADocument
 ---
 
 # D-GUI-012 — The brief names the guide the recognized work belongs to
@@ -83,10 +87,6 @@ session outside the core no guide at all.
   over whole.
 - A named guide repeats what the skill on the same line carries, which would say
   the two are one pointer rather than two.
-
-## Covered by
-
-- `R-GUI-013`
 
 ## Since then
 

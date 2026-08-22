@@ -1,5 +1,6 @@
 ---
 id: R-KNW-043
+title: 'A datamap answer says what the parent column holds'
 status: held
 restsOn: [D-KNW-018]
 ---

@@ -1,7 +1,11 @@
 ---
 id: D-FBK-017
+title: A judgement turns a feedback into work, and the work closes it
 date: 2026-08-02
 status: open
+coveredBy:
+  - TodoTest::everyOpenFeedbackIsOnTheBoard
+  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
 ---
 
 # D-FBK-017 — A judgement turns a feedback into work, and the work closes it
@@ -73,11 +77,6 @@ there.
   nothing had happened. That is the mirror of the evidence `R-FBK-002` was
   written from, and it would mean the middle state needs to be visible through
   `typo3_feedback_list` rather than only in `todo/`.
-
-## Covered by
-
-- `TodoTest::everyOpenFeedbackIsOnTheBoard`
-- `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
 
 ## Since then
 

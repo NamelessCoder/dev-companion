@@ -1,5 +1,6 @@
 ---
 id: R-SCO-009
+title: 'Individual tools can be excluded'
 status: held
 restsOn: [D-AUD-004, D-FBK-042, D-AUD-006]
 ---

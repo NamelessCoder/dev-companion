@@ -1,5 +1,6 @@
 ---
 id: R-KNW-037
+title: 'A distributed extension has repository conventions of its own'
 status: held
 ---
 

@@ -1,7 +1,12 @@
 ---
 id: D-DOC-003
+title: A decision says what came back, and a requirement says what it rests on
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - DecisionsTest::aStatusNamesTheLastDatedLineInTheFile
+  - DecisionsTest::everyTestADecisionNamesExists
+  - UnresolvedTest::theOpenDecisionsAreReadOldestFirst
 ---
 
 # D-DOC-003 — A decision says what came back, and a requirement says what it rests on
@@ -97,12 +102,6 @@ than silent.
 - `restsOn` stays at eleven entries. A crossing nobody maintains reports
   nothing, and a report that is always empty is read as "nothing is wrong"
   rather than "nothing was recorded".
-
-## Covered by
-
-- `DecisionsTest::aStatusNamesTheLastDatedLineInTheFile`
-- `DecisionsTest::everyTestADecisionNamesExists`
-- `UnresolvedTest::theOpenDecisionsAreReadOldestFirst`
 
 ## Confirmed on 2026-08-22
 

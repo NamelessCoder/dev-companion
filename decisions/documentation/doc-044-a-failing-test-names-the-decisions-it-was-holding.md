@@ -1,8 +1,11 @@
 ---
 id: D-DOC-044
+title: A failing test names the decisions it was holding
 date: 2026-08-23
 status: open
 restsOn: [D-DOC-043]
+coveredBy:
+  - DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd
 ---
 
 # D-DOC-044 — A failing test names the decisions it was holding
@@ -77,7 +80,3 @@ file somebody has to open. A failure prints neither.
 - `Covered by` starts collecting names chosen to make this print something. That
   is `D-DOC-043`'s second **Wrong if** with a new incentive behind it, and the
   count falling while entries go on going stale is what would show it.
-
-## Covered by
-
-- `DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd`

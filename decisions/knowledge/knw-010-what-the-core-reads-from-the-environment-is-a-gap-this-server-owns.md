@@ -1,5 +1,6 @@
 ---
 id: D-KNW-010
+title: What the core reads from the environment is a gap this server owns
 date: 2026-08-02
 status: confirmed
 ---

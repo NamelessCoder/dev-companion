@@ -1,7 +1,10 @@
 ---
 id: D-SKL-057
+title: A command's option set is read from the installed console and its meaning from the manual
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual
 ---
 
 # D-SKL-057 — A command's option set is read from the installed console and its meaning from the manual
@@ -104,10 +107,6 @@ differ by a package and no version-bound page can carry the difference.
   name the manual spells differently. The split would then be finer than two
   sources, and what the step owes is which one wins rather than which one is
   asked.
-
-## Covered by
-
-- `SkillTest::theSetupOptionsAreReadFromTheConsoleAndTheirMeaningFromTheManual`
 
 ## Since then
 

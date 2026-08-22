@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-005
+title: 'What an extension registers is answered from the installation and its files'
 status: held
 ---
 

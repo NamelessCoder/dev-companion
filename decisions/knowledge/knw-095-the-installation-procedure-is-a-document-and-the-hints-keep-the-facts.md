@@ -1,7 +1,12 @@
 ---
 id: D-KNW-095
+title: The installation procedure is a document and the hints keep the facts
 date: 2026-08-18
 status: open
+coveredBy:
+  - KnowledgeTest::theBootRunIsOrderedInTheDocumentAndNotInTheHint
+  - SkillTest::theBootStepNamesTheGuideThatCarriesTheRun
+  - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
 ---
 
 # D-KNW-095 — The installation procedure is a document and the hints keep the facts
@@ -110,12 +115,6 @@ hint ids.
 - One document cannot be written without a branch per environment. Then this is
   a statement per environment rather than a procedure, and it belongs where the
   hints are.
-
-## Covered by
-
-- `KnowledgeTest::theBootRunIsOrderedInTheDocumentAndNotInTheHint`
-- `SkillTest::theBootStepNamesTheGuideThatCarriesTheRun`
-- `ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope`
 
 ## Since then
 

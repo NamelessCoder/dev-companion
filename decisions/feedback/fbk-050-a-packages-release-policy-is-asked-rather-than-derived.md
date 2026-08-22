@@ -1,5 +1,6 @@
 ---
 id: D-FBK-050
+title: A package's release policy is asked rather than derived
 date: 2026-08-19
 status: open
 ---

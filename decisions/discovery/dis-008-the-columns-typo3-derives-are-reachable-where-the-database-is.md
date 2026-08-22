@@ -1,8 +1,10 @@
 ---
 id: D-DIS-008
+title: The columns TYPO3 derives are reachable where the database server is
 date: 2026-08-02
 status: revoked
 revokedBy: D-DIS-012
+coveredBy: []
 ---
 
 # D-DIS-008 — The columns TYPO3 derives are reachable where the database server is
@@ -45,6 +47,8 @@ output". Whether that output can be had at all is what this settles.
 - The tool is a step of its own and is queued, bounded to the derived side: the
   columns TYPO3 adds for a table, and nothing about the live schema.
 
+- Nothing holds it yet: what is settled here is that the answer exists, and the
+  todo that builds it is what a test can hold.
 ## Assumed
 
 - The class is `@internal` on both branches and the probe would call it anyway,
@@ -62,11 +66,6 @@ output". Whether that output can be had at all is what this settles.
   asked.
 - The one SQLite branch grows into several, so what is derived stops being a
   property of TCA and becomes one of the platform the caller happens to run.
-
-## Covered by
-
-- Nothing yet: what is settled here is that the answer exists, and the todo that
-  builds it is what a test can hold.
 
 ## Confirmed on 2026-08-02
 

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-060
+title: 'The project configuration answer names what DDEV writes and what it cannot configure'
 status: held
 restsOn: [D-KNW-049]
 ---

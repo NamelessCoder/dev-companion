@@ -1,5 +1,6 @@
 ---
 id: D-DIS-005
+title: A registry with no console command is read by booting the installation
 date: 2026-07-31
 status: confirmed
 ---

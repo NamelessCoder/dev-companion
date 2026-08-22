@@ -1,5 +1,6 @@
 ---
 id: D-VER-008
+title: A declared major that is not installed is proved on a second installation of its own
 date: 2026-08-18
 status: confirmed
 ---

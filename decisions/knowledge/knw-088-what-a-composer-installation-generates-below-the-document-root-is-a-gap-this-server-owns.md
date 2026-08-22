@@ -1,7 +1,11 @@
 ---
 id: D-KNW-088
+title: What a Composer installation generates below the document root is a gap this server owns
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff
+  - HintsTest::theGeneratedDocumentRootIsStatedPerMajorOnBothHints
 ---
 
 # D-KNW-088 — What a Composer installation generates below the document root is a gap this server owns
@@ -87,11 +91,6 @@ ends on "the .gitignore is where the answer is read off" and names no path.
 - The next session is offered the enumeration and still writes an incomplete
   ignore file. That is step 4 and a rewrite of where the sentence sits, rather
   than a statement that was missing.
-
-## Covered by
-
-- `HintsTest::whatAComposerInstallationGeneratesIsNamedWhereTheIgnoreFileIsReadOff`
-- `HintsTest::theGeneratedDocumentRootIsStatedPerMajorOnBothHints`
 
 ## Since then
 

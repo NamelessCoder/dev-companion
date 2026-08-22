@@ -1,5 +1,6 @@
 ---
 id: R-GUI-013
+title: 'A brief names the guide the recognized work is written up in'
 status: held
 restsOn: [D-GUI-012]
 ---

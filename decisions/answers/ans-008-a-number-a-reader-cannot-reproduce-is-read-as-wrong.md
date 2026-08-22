@@ -1,7 +1,10 @@
 ---
 id: D-ANS-008
+title: A number a reader cannot reproduce is read as wrong
 date: 2026-08-02
 status: open
+coveredBy:
+  - ProjectTest::aClassCountSaysWhatItCounted
 ---
 
 # D-ANS-008 — A number a reader cannot reproduce is read as wrong
@@ -65,10 +68,6 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
   count was the right one all along.
 - Nothing else in this server states a number a caller could check, which would
   make the generalisation above one case wearing a rule's clothes.
-
-## Covered by
-
-- `ProjectTest::aClassCountSaysWhatItCounted`
 
 ## Since then
 

@@ -1,7 +1,11 @@
 ---
 id: D-DOC-038
+title: A requirement carries the day it was judged to stay as it is
 date: 2026-08-22
 status: open
+coveredBy:
+  - UnresolvedTest::aJudgedEntryCarriesTheDayItWasDecidedOn
+  - RequirementsTest::aJudgementIsTheDateItWasMadeOn
 ---
 
 # D-DOC-038 — A requirement carries the day it was judged to stay as it is
@@ -78,8 +82,3 @@ judgement in every session that ran it.
 - The listing exits 0 for long enough that nobody runs it. Both halves are now
   answerable, so a repository owing nothing prints three judged lines and a
   count — and a report nobody has a reason to read is where the last one went.
-
-## Covered by
-
-- `UnresolvedTest::aJudgedEntryCarriesTheDayItWasDecidedOn`
-- `RequirementsTest::aJudgementIsTheDateItWasMadeOn`

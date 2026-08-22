@@ -1,5 +1,6 @@
 ---
 id: R-ANS-026
+title: 'A path names the subsystem, and a hint from another one does not answer'
 status: held
 restsOn: [D-ANS-060]
 ---

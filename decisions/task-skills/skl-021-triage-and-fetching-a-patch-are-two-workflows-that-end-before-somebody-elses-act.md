@@ -1,7 +1,13 @@
 ---
 id: D-SKL-021
+title: Triage and fetching a patch are two workflows that end before somebody else's act
 date: 2026-08-05
 status: open
+coveredBy:
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
+  - SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem
+  - SkillTest::everySkillStatesWhatItOwns
+  - SkillTest::aDraftSaysSoInItsOwnFrontMatter
 ---
 
 # D-SKL-021 — Triage and fetching a patch are two workflows that end before somebody else's act
@@ -65,6 +71,8 @@ resolves past them, which is how a session produces a patch nobody wrote.
   the first draft left to `typo3_test_run_guide` alone and that decide whether a
   reproduction is about this checkout at all.
 
+- `SKILL-12` and `SKILL-13` in `scenarios/contracts/task-skills/` are what
+  measure the behaviour none of the tests above reads off the file.
 ## Assumed
 
 - Triage is a task people bring as a task. If it only ever arrives inside "fix
@@ -87,12 +95,3 @@ resolves past them, which is how a session produces a patch nobody wrote.
 - Nobody uses either as a workflow of its own, and both are only ever reached
   from the patch skill — which would say they were two sections and not two
   skills.
-
-## Covered by
-
-- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
-- `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`
-- `SkillTest::everySkillStatesWhatItOwns`
-- `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
-- `SKILL-12` and `SKILL-13` in `scenarios/contracts/task-skills/`, which is what
-  measures the behaviour none of the above reads off the file

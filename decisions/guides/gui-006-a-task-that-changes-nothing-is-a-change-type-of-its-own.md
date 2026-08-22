@@ -1,7 +1,10 @@
 ---
 id: D-GUI-006
+title: A task that changes nothing is a change type of its own
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist
 ---
 
 # D-GUI-006 — A task that changes nothing is a change type of its own
@@ -64,10 +67,6 @@ kinds of change as well, so a review fell through to the patch checklist.
   each other again. What this hands over is meant to be the difference from a
   patch brief rather than a second audit workflow, and if it reads as one, the
   question is `D-SKL-001`'s.
-
-## Covered by
-
-- `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: D-KNW-080
+title: The impexp export hint is corrected against a run of the command it prescribes
 date: 2026-08-17
 status: confirmed
 ---

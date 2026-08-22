@@ -1,5 +1,6 @@
 ---
 id: D-KNW-081
+title: What a NEW placeholder may contain in a relation field is a gap this server owns
 date: 2026-08-17
 status: confirmed
 ---

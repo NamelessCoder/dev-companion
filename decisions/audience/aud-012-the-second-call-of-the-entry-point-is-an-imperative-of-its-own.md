@@ -1,7 +1,11 @@
 ---
 id: D-AUD-012
+title: The second call of the entry point is an imperative of its own
 date: 2026-08-19
 status: open
+coveredBy:
+  - ScopeTest::bothCallsOfTheEntryPointAreToldInTheImperative
+  - ScopeTest::theInstructionsFitWhatAClientKeeps
 ---
 
 # D-AUD-012 — The second call of the entry point is an imperative of its own
@@ -72,11 +76,6 @@ do and one a sentence about a tool, and a run counted them eleven to one.
 - A session reports calling `typo3_task_guide` for a task with no workflow to
   give it, and the answer costs it a turn. Then the descriptive wording was
   carrying a condition and the imperative overclaims.
-
-## Covered by
-
-- `ScopeTest::bothCallsOfTheEntryPointAreToldInTheImperative`
-- `ScopeTest::theInstructionsFitWhatAClientKeeps`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: R-GUI-010
+title: 'A review brief names what the change removes'
 status: held
 restsOn: [D-GUI-004]
 ---

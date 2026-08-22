@@ -1,7 +1,12 @@
 ---
 id: D-VER-007
+title: A declared major that is not installed is answered by naming the reading that settles it
 date: 2026-08-18
 status: open
+coveredBy:
+  - KnowledgeTest::aQuestionAboutADeclaredMajorReachesTheReadingThatSettlesIt
+  - KnowledgeTest::theCrossMajorPageHandsOverTheReadingAndNoSignature
+  - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
 ---
 
 # D-VER-007 — A declared major that is not installed is answered by naming the reading that settles it
@@ -92,12 +97,6 @@ Nothing here says how that is settled, so a session that needs it invents a way.
   instead of as a lookup.
 - The procedure is followed and the curl remains cheaper, because assembling the
   other branch costs more than five files do.
-
-## Covered by
-
-- `KnowledgeTest::aQuestionAboutADeclaredMajorReachesTheReadingThatSettlesIt`
-- `KnowledgeTest::theCrossMajorPageHandsOverTheReadingAndNoSignature`
-- `ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope`
 
 ## Since then
 

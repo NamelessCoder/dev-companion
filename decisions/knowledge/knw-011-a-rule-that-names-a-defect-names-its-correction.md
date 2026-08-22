@@ -1,5 +1,6 @@
 ---
 id: D-KNW-011
+title: A rule that names a defect names its correction
 date: 2026-08-02
 status: open
 ---

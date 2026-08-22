@@ -1,5 +1,6 @@
 ---
 id: R-ANS-010
+title: 'A component answers the query that names it'
 status: held
 ---
 

@@ -1,7 +1,10 @@
 ---
 id: D-KNW-085
+title: When DDEV writes additional.php is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten
 ---
 
 # D-KNW-085 — When DDEV writes additional.php is a gap this server owns
@@ -99,10 +102,6 @@ exception naming the trusted hosts pattern rather than the file that carries it.
 - The next report arrives from a session that never asked what configures the
   installation. The statement would then be owed where a clone is booted, which
   is `installation-boot`, rather than where the file is owned.
-
-## Covered by
-
-- `HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten`
 
 ## Confirmed on 2026-08-18
 

@@ -1,7 +1,14 @@
 ---
 id: D-ANS-017
+title: A union-typed argument gets the wording a client can compose against
 date: 2026-08-02
 status: open
+coveredBy:
+  - ToolContractTest::everyToolDeclaresSchemasAndAnnotations
+  - ToolContractTest::noArgumentDeclaresMoreThanOneType
+  - StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted
+  - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
+  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
 ---
 
 # D-ANS-017 — A union-typed argument gets the wording a client can compose against
@@ -102,14 +109,6 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 - Another argument in this surface is given a union type and every client
   composes calls for it. Then a union is not a shape that costs a caller, and
   the diagnosis here was about `tool` alone.
-
-## Covered by
-
-- `ToolContractTest::everyToolDeclaresSchemasAndAnnotations`
-- `ToolContractTest::noArgumentDeclaresMoreThanOneType`
-- `StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted`
-- `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares`
-- `FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord`
 
 ## Since then
 

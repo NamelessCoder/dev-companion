@@ -1,7 +1,11 @@
 ---
 id: D-ANS-092
+title: The project answer says how the declared suites are run outside the core too
 date: 2026-08-21
 status: open
+coveredBy:
+  - ProjectTest::aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst
+  - HintsTest::aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs
 ---
 
 # D-ANS-092 — The project answer says how the declared suites are run outside the core too
@@ -106,11 +110,6 @@ is run, while the knowledge that would have answered it sits one lookup away.
   the harness, so a caller whose harness exists may stop before the credentials.
   It would then take no round trip off anybody, which is the measure `D-FBK-027`
   sets.
-
-## Covered by
-
-- `ProjectTest::aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst`
-- `HintsTest::aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs`
 
 ## Since then
 

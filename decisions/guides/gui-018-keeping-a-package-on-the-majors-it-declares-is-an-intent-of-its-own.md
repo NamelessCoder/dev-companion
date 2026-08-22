@@ -1,7 +1,13 @@
 ---
 id: D-GUI-018
+title: Keeping a package on the majors it declares is an intent of its own
 date: 2026-08-21
 status: open
+coveredBy:
+  - KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther
+  - KnowledgeTest::anInstallationSayingWhichMajorItIsOnIsNotCompatibilityWork
+  - KnowledgeTest::everyGuideAnIntentNamesIsADocument
+  - ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout
 ---
 
 # D-GUI-018 — Keeping a package on the majors it declares is an intent of its own
@@ -90,10 +96,3 @@ The workflow and both pages were already here and no task text reached either.
 - A session gets the running page and needed the sibling. Then the two pages are
   two pointers rather than one hand-off, and the intent owns a `guide` it cannot
   fill with one id.
-
-## Covered by
-
-- `KnowledgeTest::aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther`
-- `KnowledgeTest::anInstallationSayingWhichMajorItIsOnIsNotCompatibilityWork`
-- `KnowledgeTest::everyGuideAnIntentNamesIsADocument`
-- `ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout`

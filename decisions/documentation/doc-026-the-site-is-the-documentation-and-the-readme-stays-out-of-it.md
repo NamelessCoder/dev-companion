@@ -1,7 +1,13 @@
 ---
 id: D-DOC-026
+title: The site is the documentation, and the readme stays out of it
 date: 2026-08-12
 status: open
+coveredBy:
+  - SiteTest::theSiteOpensOnTheDocumentationsOwnPage
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine
 ---
 
 # D-DOC-026 — The site is the documentation, and the readme stays out of it
@@ -81,10 +87,3 @@ published that file rather than writing the manual it was missing.
 - The front page reads as the map it replaced. It has to answer "is this for me"
   above "how is the work done here", and the four sections come last for that
   reason.
-
-## Covered by
-
-- `SiteTest::theSiteOpensOnTheDocumentationsOwnPage`
-- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
-- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
-- `VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine`

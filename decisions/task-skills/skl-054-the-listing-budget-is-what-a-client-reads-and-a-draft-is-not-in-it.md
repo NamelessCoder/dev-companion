@@ -1,7 +1,11 @@
 ---
 id: D-SKL-054
+title: The listing budget is what a client reads, and a draft is not in it
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::aDraftSaysSoInItsOwnFrontMatter
 ---
 
 # D-SKL-054 — The listing budget is what a client reads, and a draft is not in it
@@ -75,11 +79,6 @@ charged for room in a listing it does not appear in.
 - More than one draft accumulates in `skills/`. The directory would then hold
   workflows nobody is reviewing, and a guard that no longer counts them is what
   let it happen quietly.
-
-## Covered by
-
-- `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
-- `SkillTest::aDraftSaysSoInItsOwnFrontMatter`
 
 ## Since then
 

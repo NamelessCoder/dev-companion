@@ -1,5 +1,6 @@
 ---
 id: D-SCO-013
+title: A declared command carries the interpreter it runs on, Node as well as PHP
 date: 2026-08-19
 status: open
 ---

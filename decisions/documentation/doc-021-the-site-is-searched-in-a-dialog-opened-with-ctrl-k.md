@@ -1,5 +1,6 @@
 ---
 id: D-DOC-021
+title: The site is searched in a dialog opened with Ctrl-K
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-024

@@ -1,5 +1,6 @@
 ---
 id: D-KNW-002
+title: A hint about typo3/testing-framework is verified against tags, not against the checkouts
 date: 2026-07-29
 status: revoked
 ---

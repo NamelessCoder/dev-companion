@@ -1,8 +1,12 @@
 ---
 id: D-DOC-043
+title: A test is what holds an entry to the code it points at
 date: 2026-08-22
 status: open
 restsOn: [D-DOC-041, D-DOC-042]
+coveredBy:
+  - DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn
+  - DecisionsTest::everyTestADecisionNamesNamesTheEntryBack
 ---
 
 # D-DOC-043 — A test is what holds an entry to the code it points at
@@ -72,11 +76,6 @@ Nothing else couples the two.
 - An entry with a test goes stale anyway, because the test held a narrower claim
   than the statement. That is the assumption above failing, and a fourth stale
   entry carrying **Covered by** would show it.
-
-## Covered by
-
-- `DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn`
-- `DecisionsTest::everyTestADecisionNamesNamesTheEntryBack`
 
 ## Since then
 

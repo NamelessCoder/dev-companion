@@ -1,5 +1,6 @@
 ---
 id: D-FBK-021
+title: A summary feedback is judged against its series, not on its own
 date: 2026-08-02
 status: open
 ---

@@ -1,7 +1,10 @@
 ---
 id: D-DIS-011
+title: What was read from the installation lives as long as the call
 date: 2026-08-04
 status: open
+coveredBy:
+  - IconLookupTest::anIdentifierRegisteredSinceTheLastCallIsFound
 ---
 
 # D-DIS-011 — What was read from the installation lives as long as the call
@@ -53,10 +56,6 @@ looks exactly like the answer it is there to give.
   slow enough that a caller stops using them, or a client times a call out and
   the agent retries it. Either turns saved tokens back into spent ones, and the
   mtime signature is what it escalates to.
-
-## Covered by
-
-- `IconLookupTest::anIdentifierRegisteredSinceTheLastCallIsFound`
 
 ## Since then
 

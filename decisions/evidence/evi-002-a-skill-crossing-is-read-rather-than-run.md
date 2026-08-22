@@ -1,5 +1,6 @@
 ---
 id: D-EVI-002
+title: A skill crossing is read rather than run
 date: 2026-07-31
 status: confirmed
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-021
+title: A manual query is told what short buys, because the index is a table of contents
 date: 2026-08-02
 status: open
 ---

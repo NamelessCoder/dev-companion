@@ -1,7 +1,11 @@
 ---
 id: D-DOC-040
+title: A renamed tool is corrected where the name is a claim about today
 date: 2026-08-22
 status: open
+coveredBy:
+  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
+  - ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered
 ---
 
 # D-DOC-040 — A renamed tool is corrected where the name is a claim about today
@@ -77,11 +81,6 @@ nothing else, so every other corpus went stale unwatched.
   four exceptions were found by reading every line the sweep changed that sat
   beside a date, a commit or the word "renamed"; a fifth would show up as an
   entry that stopped making sense.
-
-## Covered by
-
-- `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
-- `ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered`
 
 ## Since then
 

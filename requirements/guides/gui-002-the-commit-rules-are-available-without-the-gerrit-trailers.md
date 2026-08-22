@@ -1,5 +1,6 @@
 ---
 id: R-GUI-002
+title: 'The commit rules are available without the Gerrit trailers'
 status: held
 ---
 

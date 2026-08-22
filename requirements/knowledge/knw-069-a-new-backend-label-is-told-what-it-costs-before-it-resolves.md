@@ -1,5 +1,6 @@
 ---
 id: R-KNW-069
+title: 'A new backend label is told what it costs before it resolves'
 status: held
 restsOn: [D-KNW-076]
 ---

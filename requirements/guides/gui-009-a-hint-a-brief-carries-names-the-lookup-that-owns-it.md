@@ -1,5 +1,6 @@
 ---
 id: R-GUI-009
+title: 'A hint a brief carries names the lookup that owns it'
 status: held
 restsOn: [D-GUI-007]
 ---

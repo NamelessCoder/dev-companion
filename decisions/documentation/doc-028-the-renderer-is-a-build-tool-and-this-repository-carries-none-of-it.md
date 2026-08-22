@@ -1,7 +1,14 @@
 ---
 id: D-DOC-028
+title: The renderer is a build tool, and this repository carries none of it
 date: 2026-08-12
 status: open
+coveredBy:
+  - DocumentationPrepareTest::oneCallWritesTheCopyAndSaysWhereItWent
+  - DocumentationPrepareTest::whatTheDocumentationNoLongerHasIsReported
+  - DocumentationPreviewTest::onePreviewFetchesTheRendererThenRendersThenFinishes
+  - DocumentationPreviewTest::aRendererThatIsAlreadyThereIsNotFetchedAgain
+  - DocumentationPreviewTest::aFailedStepStopsThePreviewAndQuotesTheCommand
 ---
 
 # D-DOC-028 — The renderer is a build tool, and this repository carries none of it
@@ -69,11 +76,3 @@ vendor directory and four steps of a command.
   months old and nothing says so.
 - The site breaks and the checkout cannot say what changed, because there is no
   recorded commit of the theme to go back to.
-
-## Covered by
-
-- `DocumentationPrepareTest::oneCallWritesTheCopyAndSaysWhereItWent`
-- `DocumentationPrepareTest::whatTheDocumentationNoLongerHasIsReported`
-- `DocumentationPreviewTest::onePreviewFetchesTheRendererThenRendersThenFinishes`
-- `DocumentationPreviewTest::aRendererThatIsAlreadyThereIsNotFetchedAgain`
-- `DocumentationPreviewTest::aFailedStepStopsThePreviewAndQuotesTheCommand`

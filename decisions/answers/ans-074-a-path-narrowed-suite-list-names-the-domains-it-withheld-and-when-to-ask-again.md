@@ -1,5 +1,6 @@
 ---
 id: D-ANS-074
+title: A path-narrowed suite list names the domains it withheld and when to ask again
 date: 2026-08-11
 status: open
 ---

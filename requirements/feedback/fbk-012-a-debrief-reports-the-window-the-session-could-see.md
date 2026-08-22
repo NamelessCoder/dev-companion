@@ -1,5 +1,6 @@
 ---
 id: R-FBK-012
+title: 'A debrief reports the window the session could see'
 status: held
 judged: 2026-08-22
 restsOn: [D-FBK-023]

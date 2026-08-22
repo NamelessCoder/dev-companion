@@ -1,5 +1,6 @@
 ---
 id: D-FBK-040
+title: The card a judgement folds into another is deleted by the same commit
 date: 2026-08-03
 status: open
 ---

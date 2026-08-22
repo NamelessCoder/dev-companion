@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-012
+title: 'A declared command says whether it can start'
 status: held
 restsOn: [D-ANS-086]
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-KNW-075
+title: How Fluid resolves an object path is a gap this server owns
 date: 2026-08-14
 status: confirmed
 ---

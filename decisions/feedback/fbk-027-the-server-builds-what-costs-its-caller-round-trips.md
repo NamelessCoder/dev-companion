@@ -1,5 +1,6 @@
 ---
 id: D-FBK-027
+title: The server builds what costs its caller round trips
 date: 2026-08-03
 status: open
 ---

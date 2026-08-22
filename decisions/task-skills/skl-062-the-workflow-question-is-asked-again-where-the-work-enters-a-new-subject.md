@@ -1,7 +1,10 @@
 ---
 id: D-SKL-062
+title: The workflow question is asked again where the work enters a new subject
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt
 ---
 
 # D-SKL-062 — The workflow question is asked again where the work enters a new subject
@@ -109,10 +112,6 @@ only one this server points at.
 - Sessions start calling the guide at every file they open. Then the moments
   were written as subjects after all, and what they cost is the round trips
   `D-FBK-027` weighs a tool against.
-
-## Covered by
-
-- `HintsTest::aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt`
 
 ## Since then
 

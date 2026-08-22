@@ -1,5 +1,6 @@
 ---
 id: R-ANS-028
+title: 'An answer that names a document says how to read it whole'
 status: held
 restsOn: [D-ANS-061]
 ---

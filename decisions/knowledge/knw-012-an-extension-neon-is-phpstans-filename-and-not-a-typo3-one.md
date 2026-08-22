@@ -1,5 +1,6 @@
 ---
 id: D-KNW-012
+title: "`extension.neon` is PHPStan's filename, and the hint keeps the one include it means"
 date: 2026-08-02
 status: open
 ---

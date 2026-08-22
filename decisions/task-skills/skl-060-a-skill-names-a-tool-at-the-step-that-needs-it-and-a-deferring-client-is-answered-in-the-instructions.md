@@ -1,5 +1,6 @@
 ---
 id: D-SKL-060
+title: A skill names a tool at the step that needs it, and a deferring client is answered in the instructions
 date: 2026-08-18
 status: open
 ---

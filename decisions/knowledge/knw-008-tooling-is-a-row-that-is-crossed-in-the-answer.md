@@ -1,7 +1,13 @@
 ---
 id: D-KNW-008
+title: Tooling is a row the answer crosses, not a dimension the corpus stores
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::theTestApiAProjectWritesItsTestsWithReachesTheProjectHint
+  - HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll
+  - ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt
+  - ScopeTest::aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell
 ---
 
 # D-KNW-008 — Tooling is a row the answer crosses, not a dimension the corpus stores
@@ -76,13 +82,6 @@ was asked is whether it should become a dimension crossing the audience one.
 - Two cells of the row start disagreeing about the same fact for the same
   audience, which is what a single stored dimension would have prevented and six
   places cannot.
-
-## Covered by
-
-- `HintsTest::theTestApiAProjectWritesItsTestsWithReachesTheProjectHint`
-- `HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll`
-- `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`
-- `ScopeTest::aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell`
 
 ## Since then
 

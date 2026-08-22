@@ -1,5 +1,6 @@
 ---
 id: D-KNW-071
+title: Proving what a rendering change renders is a procedure this server carries
 date: 2026-08-14
 status: open
 ---

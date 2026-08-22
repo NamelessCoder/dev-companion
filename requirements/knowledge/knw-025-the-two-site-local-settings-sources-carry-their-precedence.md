@@ -1,5 +1,6 @@
 ---
 id: R-KNW-025
+title: 'The two site-local settings sources carry their precedence'
 status: held
 ---
 

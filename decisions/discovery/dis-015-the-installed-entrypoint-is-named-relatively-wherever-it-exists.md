@@ -1,5 +1,6 @@
 ---
 id: D-DIS-015
+title: The installed entrypoint is named relatively wherever it exists
 date: 2026-08-08
 status: revoked
 revokedBy: D-DIS-016

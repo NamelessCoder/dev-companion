@@ -1,7 +1,11 @@
 ---
 id: D-FBK-012
+title: The queue comes first, and the sighting hands over one
 date: 2026-08-02
 status: open
+coveredBy:
+  - CliTest::theSightingsWaitForAnEmptyQueue
+  - CliTest::whatRecursIsEitherAnAppointmentOrASighting
 ---
 
 # D-FBK-012 — The queue comes first, and the sighting hands over one
@@ -79,11 +83,6 @@ rather than how many are made at once.
   several could see and one cannot. `decisions/` is where that has to become
   visible now, and a directory that only ever restates single feedback would
   mean it has not.
-
-## Covered by
-
-- `CliTest::theSightingsWaitForAnEmptyQueue`
-- `CliTest::whatRecursIsEitherAnAppointmentOrASighting`
 
 ## Since then
 

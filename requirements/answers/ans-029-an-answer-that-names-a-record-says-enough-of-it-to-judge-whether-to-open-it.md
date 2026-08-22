@@ -1,5 +1,6 @@
 ---
 id: R-ANS-029
+title: 'An answer that names a record says enough of it to judge whether to open it'
 status: held
 restsOn: [D-ANS-064, D-ANS-069]
 ---

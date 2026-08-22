@@ -1,5 +1,6 @@
 ---
 id: D-SCO-001
+title: Outside the core the core test guide declines rather than adapts
 date: 2026-07-29
 status: revoked
 ---

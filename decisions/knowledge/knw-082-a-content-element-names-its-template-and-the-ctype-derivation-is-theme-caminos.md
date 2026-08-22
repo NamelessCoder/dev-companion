@@ -1,7 +1,10 @@
 ---
 id: D-KNW-082
+title: A content element names its template, and the CType derivation is theme_camino's
 date: 2026-08-17
 status: open
+coveredBy:
+  - HintsTest::theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures
 ---
 
 # D-KNW-082 — A content element names its template, and the CType derivation is theme_camino's
@@ -103,7 +106,3 @@ sitepackage that trusted it would have named no template at all.
   the sentence has to say where the theme lives instead.
 - A judging run cites this entry to close a false statement without reading the
   checkout. The exception is the reading, not the closing.
-
-## Covered by
-
-- `HintsTest::theCTypeTemplateDerivationIsAttributedToTheThemeThatConfigures`

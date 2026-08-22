@@ -1,5 +1,6 @@
 ---
 id: D-CAT-004
+title: What the component index may hold is what the core files as a component
 date: 2026-08-11
 status: open
 ---

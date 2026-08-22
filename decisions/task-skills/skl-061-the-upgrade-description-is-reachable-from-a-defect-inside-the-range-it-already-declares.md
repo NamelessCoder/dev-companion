@@ -1,7 +1,11 @@
 ---
 id: D-SKL-061
+title: The upgrade description is reachable from a defect inside the range it already declares
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval
 ---
 
 # D-SKL-061 — The upgrade description is reachable from a defect inside the range it already declares
@@ -107,11 +111,6 @@ carries the activation states a premise the task does not meet.
 - The premise can only be widened by adding characters. Then this is a budget
   question rather than a wording one, and which of the twelve descriptions pays
   is what has to be decided first.
-
-## Covered by
-
-- `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
-- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheSkillThatOwnsTheRemoval`
 
 ## Since then
 

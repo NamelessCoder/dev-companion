@@ -1,7 +1,11 @@
 ---
 id: D-KNW-101
+title: What a TypoScript condition can reach at evaluation time is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest
+  - HintsTest::whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem
 ---
 
 # D-KNW-101 — What a TypoScript condition can reach at evaluation time is a gap this server owns
@@ -104,11 +108,6 @@ runs.
 - `AfterPageAndLanguageIsResolvedEvent` turns out not to be dispatched before
   condition matching on 12.4. The hint binds `since: 13` rather than holding on
   every covered major, and the recommendation is wrong for the oldest one.
-
-## Covered by
-
-- `HintsTest::aConditionIsAnsweredWithWhatItIsHandedRatherThanWithTheRequest`
-- `HintsTest::whichGlobalsAConditionCanReadIsBoundToTheMajorThatPopulatesThem`
 
 ## Confirmed on 2026-08-18
 

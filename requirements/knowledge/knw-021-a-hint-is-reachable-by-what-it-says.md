@@ -1,5 +1,6 @@
 ---
 id: R-KNW-021
+title: 'A hint is reachable by what it says'
 status: held
 ---
 

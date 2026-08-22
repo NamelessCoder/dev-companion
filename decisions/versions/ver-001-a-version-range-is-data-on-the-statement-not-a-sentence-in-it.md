@@ -1,5 +1,6 @@
 ---
 id: D-VER-001
+title: A version range is data on the statement, not a sentence in it
 date: 2026-07-29
 status: confirmed
 ---

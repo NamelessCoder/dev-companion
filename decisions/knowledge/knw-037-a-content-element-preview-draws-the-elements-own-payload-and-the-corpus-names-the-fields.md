@@ -1,7 +1,10 @@
 ---
 id: D-KNW-037
+title: A content-element preview draws the element's own payload, and the corpus names the fields
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom
 ---
 
 # D-KNW-037 — A content-element preview draws the element's own payload, and the corpus names the fields
@@ -83,7 +86,3 @@ statement that could go false rather than one that is missing.
 - A 13.4 caller is misled by the unbound rule — a field kind named here that a
   13.4 template cannot draw. Nothing in the statement is about reaching a field,
   which is what would have to be wrong for that.
-
-## Covered by
-
-- `HintsTest::aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom`

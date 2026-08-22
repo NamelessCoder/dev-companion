@@ -1,7 +1,10 @@
 ---
 id: D-KNW-039
+title: The type a changelog entry owes is stated in prose and the skeleton stays a hint
 date: 2026-08-03
 status: open
+coveredBy:
+  - KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes
 ---
 
 # D-KNW-039 — The type a changelog entry owes is stated in prose and the skeleton stays a hint
@@ -59,7 +62,3 @@ is in `Documentation/Changelog/` and is asking the hints.
   neighbouring entry to pick the type.
 - The two corpora disagree — the hint's sections per type and the prose's type
   rule describing different files.
-
-## Covered by
-
-- `KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes`

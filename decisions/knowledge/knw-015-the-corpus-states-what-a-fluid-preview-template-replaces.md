@@ -1,5 +1,6 @@
 ---
 id: D-KNW-015
+title: The corpus states what a Fluid preview template replaces
 date: 2026-08-02
 status: revoked
 revokedBy: D-KNW-021

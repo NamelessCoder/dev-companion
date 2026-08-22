@@ -1,5 +1,6 @@
 ---
 id: D-SCO-003
+title: What is core-only is decided per line, by what it names
 date: 2026-07-29
 status: confirmed
 ---

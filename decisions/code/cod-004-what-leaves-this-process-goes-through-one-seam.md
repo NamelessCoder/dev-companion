@@ -1,7 +1,13 @@
 ---
 id: D-COD-004
+title: What leaves this process goes through one seam
 date: 2026-08-03
 status: open
+coveredBy:
+  - Typo3CliTest::everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell
+  - Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove
+  - TodoTest::aWorktreeIsToldApartFromTheCheckoutItWasCutFrom
+  - TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim
 ---
 
 # D-COD-004 — What leaves this process goes through one seam
@@ -89,10 +95,3 @@ instead of arranging for the real thing.
 - A fourth caller writes its own `proc_open` rather than taking the runner,
   which is the state this replaced and which nothing prevents — deliberately,
   because the check that would prevent it is the one `R-COD-003` declines.
-
-## Covered by
-
-- `Typo3CliTest::everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell`
-- `Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove`
-- `TodoTest::aWorktreeIsToldApartFromTheCheckoutItWasCutFrom`
-- `TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim`

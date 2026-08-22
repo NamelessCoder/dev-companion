@@ -1,7 +1,11 @@
 ---
 id: D-DIS-010
+title: What this package writes into a project ignores itself
 date: 2026-08-03
 status: open
+coveredBy:
+  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
+  - InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore
 ---
 
 # D-DIS-010 — What this package writes into a project ignores itself
@@ -90,8 +94,3 @@ belongs to somebody else, on every run.
   lines ignore directories that ignore themselves, and nothing says so. Then not
   migrating cost somebody a confused reading of their own `.gitignore`, and the
   release notes are what has to carry it.
-
-## Covered by
-
-- `InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote`
-- `InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore`

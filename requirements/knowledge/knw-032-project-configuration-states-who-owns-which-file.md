@@ -1,5 +1,6 @@
 ---
 id: R-KNW-032
+title: 'Project configuration states who owns which file'
 status: held
 ---
 

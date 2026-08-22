@@ -1,7 +1,12 @@
 ---
 id: D-DOC-034
+title: A recording is answered from the checkout the command makes
 date: 2026-08-18
 status: open
+coveredBy:
+  - CheckoutsTest::everyEntryGitReportsIsCarried
+  - CheckoutsTest::bothKindsOfChangeAreCarried
+  - CheckoutsTest::aGitThatCannotAnswerReportsNoDifference
 ---
 
 # D-DOC-034 — A recording is answered from the checkout the command makes
@@ -78,12 +83,6 @@ repository can recreate, which is what makes the recording repeatable
   the same person verifying knowledge by running the core's tests and recording
   the tool surface. Then the two uses need two trees and the rejected third root
   comes back.
-
-## Covered by
-
-- `CheckoutsTest::everyEntryGitReportsIsCarried`
-- `CheckoutsTest::bothKindsOfChangeAreCarried`
-- `CheckoutsTest::aGitThatCannotAnswerReportsNoDifference`
 
 ## Since then
 

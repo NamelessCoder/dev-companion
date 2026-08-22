@@ -1,7 +1,10 @@
 ---
 id: D-GUI-016
+title: The brief carries its hints whether or not it names a skill
 date: 2026-08-19
 status: open
+coveredBy:
+  - HintsTest::theSkillABriefNamesTakesNoHintOutOfIt
 ---
 
 # D-GUI-016 — The brief carries its hints whether or not it names a skill
@@ -100,7 +103,3 @@ route.
   calls on the strength of one answer. Then what is decided here for the hints
   is being read as a rule about the whole brief, and where it stops is the thing
   to write down.
-
-## Covered by
-
-- `HintsTest::theSkillABriefNamesTakesNoHintOutOfIt`

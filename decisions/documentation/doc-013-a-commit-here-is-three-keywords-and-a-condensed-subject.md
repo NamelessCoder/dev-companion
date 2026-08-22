@@ -1,5 +1,6 @@
 ---
 id: D-DOC-013
+title: A commit here is three keywords and a condensed subject
 date: 2026-08-03
 status: open
 ---

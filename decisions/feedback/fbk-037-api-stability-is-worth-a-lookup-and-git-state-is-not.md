@@ -1,8 +1,11 @@
 ---
 id: D-FBK-037
+title: API stability is worth a lookup and git state is not
 date: 2026-08-03
 status: revoked
 revokedBy: D-FBK-038
+coveredBy:
+  - ScopeTest::noExclusionDeniesASourceTheServerReads
 ---
 
 # D-FBK-037 — API stability is worth a lookup and git state is not
@@ -71,10 +74,6 @@ Judged against `D-FBK-027` they come apart.
 - The API-stability lookup, once built, answers `unavailable` more often than it
   answers, which would mean the source question the card carries was settled the
   wrong way.
-
-## Covered by
-
-- `ScopeTest::noExclusionDeniesASourceTheServerReads`
 
 ## Revoked on 2026-08-03
 

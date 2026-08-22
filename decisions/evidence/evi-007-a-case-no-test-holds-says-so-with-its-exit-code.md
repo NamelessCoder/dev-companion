@@ -1,7 +1,11 @@
 ---
 id: D-EVI-007
+title: A case no test holds says so with its exit code
 date: 2026-08-18
 status: open
+coveredBy:
+  - ScenariosTest::aContractCaseNoTestHoldsSaysSoWithItsExitCode
+  - CliTest::anAppointmentComesUpOnlyWhileItsCommandFindsWork
 ---
 
 # D-EVI-007 — A case no test holds says so with its exit code
@@ -69,8 +73,3 @@ failed.
 - The reading the todo now asks for is more than a session does, so the date is
   written without the cases being read. That is the failure a list of five could
   not have — it was small enough to look done.
-
-## Covered by
-
-- `ScenariosTest::aContractCaseNoTestHoldsSaysSoWithItsExitCode`
-- `CliTest::anAppointmentComesUpOnlyWhileItsCommandFindsWork`

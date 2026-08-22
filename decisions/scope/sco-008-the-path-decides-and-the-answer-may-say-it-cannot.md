@@ -1,5 +1,6 @@
 ---
 id: D-SCO-008
+title: The path decides, and the answer may say it cannot
 date: 2026-08-01
 status: revoked
 revokedBy: D-KNW-005

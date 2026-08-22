@@ -1,7 +1,13 @@
 ---
 id: D-SCO-011
+title: A tool that describes one thing carries `describe`, and `scope` stays with the sources
 date: 2026-08-04
 status: open
+coveredBy:
+  - ToolNamingTest::everyToolIsNamedSubjectThenVerb
+  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
+  - ToolNamingTest::everyToolNameAnAnswerNamesIsRegistered
+  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---
 
 # D-SCO-011 — A tool that describes one thing carries `describe`, and `scope` stays with the sources
@@ -85,10 +91,3 @@ also the two carrying the verb wrongly, so one rename settles both.
   copied by hand or a client that cached the list. Two of the nine skills open
   on this call, so the failure lands in the first step of the order rather than
   somewhere a session can work around.
-
-## Covered by
-
-- `ToolNamingTest::everyToolIsNamedSubjectThenVerb`
-- `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
-- `ToolNamingTest::everyToolNameAnAnswerNamesIsRegistered`
-- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`

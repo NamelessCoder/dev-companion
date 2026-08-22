@@ -1,7 +1,10 @@
 ---
 id: D-SKL-004
+title: What a task does when the lookups run out is written for a review
 date: 2026-08-02
 status: open
+coveredBy:
+  - SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound
 ---
 
 # D-SKL-004 — What a task does when the lookups run out is written for a review
@@ -109,10 +112,6 @@ order. Nothing here states that boundary.
 - The same task shape files again with a skill active and the Fluid statement in
   reach, and still names source reading. Then it is the activation rather than
   the order, and the lever is `003356`'s.
-
-## Covered by
-
-- `SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound`
 
 ## Since then
 

@@ -1,7 +1,11 @@
 ---
 id: D-EVI-005
+title: A registration nothing can reach is cleared, and the database goes with it
 date: 2026-08-02
 status: open
+coveredBy:
+  - EnvironmentsTest::aRegistrationWhoseCheckoutIsGoneHoldsNothingBack
+  - EnvironmentsTest::clearingARegistrationTakesTheDatabaseThatWouldOutliveIt
 ---
 
 # D-EVI-005 — A registration nothing can reach is cleared, and the database goes with it
@@ -106,11 +110,6 @@ directory nobody can visit.
 - TYPO3's setup gains a way past a populated database. Then the create has an
   option rather than a deletion, and the failure message names the wrong way
   out.
-
-## Covered by
-
-- `EnvironmentsTest::aRegistrationWhoseCheckoutIsGoneHoldsNothingBack`
-- `EnvironmentsTest::clearingARegistrationTakesTheDatabaseThatWouldOutliveIt`
 
 ## Since then
 

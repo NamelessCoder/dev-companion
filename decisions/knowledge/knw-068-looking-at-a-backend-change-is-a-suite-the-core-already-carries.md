@@ -1,5 +1,6 @@
 ---
 id: D-KNW-068
+title: Looking at a backend change is a suite the core already carries
 date: 2026-08-10
 status: open
 ---

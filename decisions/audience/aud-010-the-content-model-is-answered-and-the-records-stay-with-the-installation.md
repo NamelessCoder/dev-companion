@@ -1,5 +1,6 @@
 ---
 id: D-AUD-010
+title: The content model is answered and the records stay with the installation
 date: 2026-08-12
 status: open
 ---

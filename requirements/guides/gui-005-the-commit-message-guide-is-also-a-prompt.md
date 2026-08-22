@@ -1,5 +1,6 @@
 ---
 id: R-GUI-005
+title: 'The commit-message guide is also a prompt'
 status: held
 ---
 

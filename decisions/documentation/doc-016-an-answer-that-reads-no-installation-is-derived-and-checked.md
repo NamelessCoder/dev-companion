@@ -1,7 +1,12 @@
 ---
 id: D-DOC-016
+title: An answer that reads no installation is derived and checked like the fields above it
 date: 2026-08-04
 status: open
+coveredBy:
+  - CoreFixtureTest::theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs
+  - CoreFixtureTest::everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne
+  - ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares
 ---
 
 # D-DOC-016 — An answer that reads no installation is derived and checked like the fields above it
@@ -99,9 +104,3 @@ recorded there was a derivation nobody checked.
 - `bin/cli tools:check` grows into what `tools:record` is. It writes a fixture
   and makes 20 calls today, none of which reaches a host, boots a container or
   needs `.checkouts/` — the properties that let it run in CI at all.
-
-## Covered by
-
-- `CoreFixtureTest::theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs`
-- `CoreFixtureTest::everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne`
-- `ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares`

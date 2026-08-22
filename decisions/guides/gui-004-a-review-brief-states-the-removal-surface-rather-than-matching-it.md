@@ -1,5 +1,6 @@
 ---
 id: D-GUI-004
+title: A review brief states the removal surface rather than matching it
 date: 2026-08-03
 status: open
 ---

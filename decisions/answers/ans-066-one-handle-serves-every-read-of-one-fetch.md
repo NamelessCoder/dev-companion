@@ -1,7 +1,9 @@
 ---
 id: D-ANS-066
+title: One handle serves every read of one Fetch
 date: 2026-08-08
 status: open
+coveredBy: []
 ---
 
 # D-ANS-066 — One handle serves every read of one Fetch
@@ -50,6 +52,10 @@ does the same thing, which is what this settles.
   the tracker and the review server too, that this server holds a connection
   open to a host it is not currently reading.
 
+- Nothing runs over it. The transport seam returns before curl is reached, so no
+  unit test in this repository crosses the handle at all — the same limitation
+  `D-ANS-065` records for revalidation, and the reason both were measured
+  against the host instead.
 ## Assumed
 
 - That the ten reads of one lookup are close enough in time for the host to
@@ -68,10 +74,3 @@ does the same thing, which is what this settles.
 - A long-running session holds a connection to docs.typo3.org open between
   lookups. It must not: the handle goes with the `Fetch`, and the `Fetch` goes
   with the `Documentation` that built it.
-
-## Covered by
-
-- Nothing runs over it. The transport seam returns before curl is reached, so no
-  unit test in this repository crosses the handle at all — the same limitation
-  `D-ANS-065` records for revalidation, and the reason both were measured
-  against the host instead.

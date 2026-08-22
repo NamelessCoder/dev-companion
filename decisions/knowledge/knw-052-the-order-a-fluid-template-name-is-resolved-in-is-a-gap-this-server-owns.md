@@ -1,7 +1,11 @@
 ---
 id: D-KNW-052
+title: The order a Fluid template name is resolved in is a gap this server owns
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - HintsTest::aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath
+  - HintsTest::theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt
 ---
 
 # D-KNW-052 — The order a Fluid template name is resolved in is a gap this server owns
@@ -138,11 +142,6 @@ resolver out of a vendor tree.
 - `.fluid.html` turns out to be expected rather than optional on a v14-only
   extension. The entry calls it "entirely optional", so a conformance finding
   written against a bare `.html` name would rest on nothing.
-
-## Covered by
-
-- `HintsTest::aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath`
-- `HintsTest::theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt`
 
 ## Confirmed on 2026-08-03
 

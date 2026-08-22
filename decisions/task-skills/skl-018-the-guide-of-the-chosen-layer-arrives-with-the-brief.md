@@ -1,5 +1,6 @@
 ---
 id: D-SKL-018
+title: The guide of the chosen layer arrives with the brief
 date: 2026-08-04
 status: open
 ---

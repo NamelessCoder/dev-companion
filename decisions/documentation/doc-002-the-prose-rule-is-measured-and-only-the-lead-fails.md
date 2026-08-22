@@ -1,5 +1,6 @@
 ---
 id: D-DOC-002
+title: The prose rule is measured, and only the lead fails on it
 date: 2026-08-01
 status: open
 ---

@@ -1,7 +1,10 @@
 ---
 id: D-KNW-023
+title: Which page may hold a record is a gap this server owns
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - HintsTest::thePlacementAnswerSaysWhichPageMayHoldTheRecord
 ---
 
 # D-KNW-023 — Which page may hold a record is a gap this server owns
@@ -93,10 +96,6 @@ one this one guessed at.
   another route, and the statement then describes a check the session never met.
 - The three majors differ in more than where the allowed list is declared. The
   hint then gains a statement per major where the todo planned one with a range.
-
-## Covered by
-
-- `HintsTest::thePlacementAnswerSaysWhichPageMayHoldTheRecord`
 
 ## Confirmed on 2026-08-03
 

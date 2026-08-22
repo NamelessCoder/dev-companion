@@ -1,5 +1,6 @@
 ---
 id: R-KNW-015
+title: 'Building the harness is covered, not assumed'
 status: held
 ---
 

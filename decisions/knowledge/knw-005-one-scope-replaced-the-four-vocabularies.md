@@ -1,5 +1,6 @@
 ---
 id: D-KNW-005
+title: One `Scope` replaced the four vocabularies
 date: 2026-08-02
 status: confirmed
 ---

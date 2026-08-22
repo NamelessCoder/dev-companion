@@ -1,5 +1,6 @@
 ---
 id: R-KNW-074
+title: 'A prescribed command whose success is unconditional carries its discriminator'
 status: held
 restsOn: [D-KNW-093]
 ---

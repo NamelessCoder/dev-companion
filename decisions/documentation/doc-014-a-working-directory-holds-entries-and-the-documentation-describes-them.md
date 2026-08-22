@@ -1,5 +1,6 @@
 ---
 id: D-DOC-014
+title: A working directory holds entries, and the documentation describes them
 date: 2026-08-03
 status: open
 ---

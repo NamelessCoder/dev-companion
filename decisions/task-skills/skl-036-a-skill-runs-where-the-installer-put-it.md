@@ -1,5 +1,6 @@
 ---
 id: D-SKL-036
+title: A skill runs where the installer put it
 date: 2026-08-12
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: R-DIS-002
+title: 'The packages are read from the declared vendor directory'
 status: held
 ---
 

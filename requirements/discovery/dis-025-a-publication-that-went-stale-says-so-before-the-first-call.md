@@ -1,5 +1,6 @@
 ---
 id: R-DIS-025
+title: 'A publication that went stale says so before the first call'
 status: held
 restsOn: [D-DIS-013]
 ---

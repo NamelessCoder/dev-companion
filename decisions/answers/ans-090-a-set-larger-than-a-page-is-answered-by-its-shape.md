@@ -1,7 +1,15 @@
 ---
 id: D-ANS-090
+title: A set larger than a page is answered by its shape, and a person by both sides at once
 date: 2026-08-19
 status: open
+coveredBy:
+  - ForgeTest::aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry
+  - ForgeTest::aBreakdownCountsTheWholeSetRatherThanAPageOfIt
+  - ForgeTest::theCountedReadPagesUntilTheWholeMatchedSetIsRead
+  - ForgeTest::aBreakdownSaysWhereTheBoundCutTheRead
+  - ForgeTest::theLargestBucketsAreAnsweredAndTheTailIsCounted
+  - ForgeTest::theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting
 ---
 
 # D-ANS-090 — A set larger than a page is answered by its shape, and a person by both sides at once
@@ -111,12 +119,3 @@ questions it is, and what an answer carries that nobody asked for.
 - A caller passes no `category`, needs the area names, and has to call
   `typo3_server_scope` for them. Then the echo was doing work nobody had
   measured.
-
-## Covered by
-
-- `ForgeTest::aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry`
-- `ForgeTest::aBreakdownCountsTheWholeSetRatherThanAPageOfIt`
-- `ForgeTest::theCountedReadPagesUntilTheWholeMatchedSetIsRead`
-- `ForgeTest::aBreakdownSaysWhereTheBoundCutTheRead`
-- `ForgeTest::theLargestBucketsAreAnsweredAndTheTailIsCounted`
-- `ForgeTest::theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting`

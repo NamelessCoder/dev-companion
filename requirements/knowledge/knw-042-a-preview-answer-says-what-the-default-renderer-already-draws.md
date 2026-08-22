@@ -1,5 +1,6 @@
 ---
 id: R-KNW-042
+title: 'A preview answer says what the default renderer already draws'
 status: held
 restsOn: [D-KNW-021]
 ---

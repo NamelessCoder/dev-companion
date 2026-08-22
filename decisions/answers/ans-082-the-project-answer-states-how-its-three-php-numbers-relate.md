@@ -1,5 +1,6 @@
 ---
 id: D-ANS-082
+title: The project answer states how its three PHP numbers relate
 date: 2026-08-18
 status: open
 ---

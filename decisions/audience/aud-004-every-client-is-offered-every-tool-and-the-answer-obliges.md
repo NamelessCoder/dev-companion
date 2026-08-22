@@ -1,5 +1,6 @@
 ---
 id: D-AUD-004
+title: Every client is offered every tool, and the answer says who it obliges
 date: 2026-08-02
 status: open
 ---

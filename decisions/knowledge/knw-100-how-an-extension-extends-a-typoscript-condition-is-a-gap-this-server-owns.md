@@ -1,7 +1,10 @@
 ---
 id: D-KNW-100
+title: How an extension extends a TypoScript condition is a gap this server owns
 date: 2026-08-18
 status: confirmed
+coveredBy:
+  - HintsTest::whatAnExtensionMayBuildBehindAConditionProviderIsStatedAndReached
 ---
 
 # D-KNW-100 — How an extension extends a TypoScript condition is a gap this server owns
@@ -116,10 +119,6 @@ sees them and cannot carry a dot. The feedback is queued at `normal`.
   `Services.yaml` already registers its classes as public, or it ships none at
   all and `makeInstance` never consults the container. Half the entry would be
   describing core's habit rather than a rule an extension author is held to.
-
-## Covered by
-
-- `HintsTest::whatAnExtensionMayBuildBehindAConditionProviderIsStatedAndReached`
 
 ## Confirmed on 2026-08-18
 

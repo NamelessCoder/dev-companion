@@ -1,7 +1,10 @@
 ---
 id: D-KNW-021
+title: A Fluid preview template replaces the content half, and the corpus names what is drawn around it
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws
 ---
 
 # D-KNW-021 — A Fluid preview template replaces the content half, and the corpus names what is drawn around it
@@ -78,10 +81,6 @@ rather than one that is missing.
   probes and one frontend query — "Fluid template layout partial section
   frontend rendering" still reaches `fluid-templates` and
   `frontend-page-rendering` alone — rather than a sweep.
-
-## Covered by
-
-- `HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws`
 
 ## Since then
 

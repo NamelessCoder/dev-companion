@@ -1,5 +1,6 @@
 ---
 id: R-DIS-018
+title: "A console command never inherits the client's stdin"
 status: held
 ---
 

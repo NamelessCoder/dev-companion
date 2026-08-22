@@ -1,5 +1,6 @@
 ---
 id: D-CAT-003
+title: The component index is curated; its contract comes from the installation
 date: 2026-07-30
 status: open
 ---

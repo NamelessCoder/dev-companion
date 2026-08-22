@@ -1,7 +1,12 @@
 ---
 id: D-KNW-038
+title: A hint is reached by the role of a file rather than by the extension it sits in
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::aFileBelowAnExtensionIsAnsweredByItsRoleRatherThanByTheExtension
+  - HintsTest::anExtbasePluginHasAHintOfItsOwn
+  - HintsTest::everyHintIsReachedByItsOwnTitle
 ---
 
 # D-KNW-038 — A hint is reached by the role of a file rather than by the extension it sits in
@@ -75,9 +80,3 @@ for a file that resolves files and builds URLs.
   than the key redundant.
 - Another hint gains a bare extension key and nothing says so, because coverage
   cannot see it and the sweep is not a check.
-
-## Covered by
-
-- `HintsTest::aFileBelowAnExtensionIsAnsweredByItsRoleRatherThanByTheExtension`
-- `HintsTest::anExtbasePluginHasAHintOfItsOwn`
-- `HintsTest::everyHintIsReachedByItsOwnTitle`

@@ -1,5 +1,6 @@
 ---
 id: D-GUI-015
+title: A case's own prompt reaches less than the brief that stands in for it
 date: 2026-08-19
 status: open
 ---

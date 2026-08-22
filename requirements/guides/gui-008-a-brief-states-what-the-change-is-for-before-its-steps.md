@@ -1,5 +1,6 @@
 ---
 id: R-GUI-008
+title: 'A brief states what the change is for before its steps'
 status: held
 restsOn: [D-GUI-005]
 ---

@@ -1,5 +1,6 @@
 ---
 id: R-DIS-015
+title: 'The DDEV client entry names an entrypoint that exists'
 status: held
 ---
 

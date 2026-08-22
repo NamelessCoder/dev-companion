@@ -1,7 +1,10 @@
 ---
 id: D-KNW-083
+title: The shared-root collision is stated for the partial root as well
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::theSharedRootCollisionIsStatedForPartialsBesideLayouts
 ---
 
 # D-KNW-083 — The shared-root collision is stated for the partial root as well
@@ -91,7 +94,3 @@ followed it subdivided `Layouts/` and put its own
   directory name it chose is one another extension in the project ships. Then
   what the statement owes is how to pick the name, not that it has to be its
   own.
-
-## Covered by
-
-- `HintsTest::theSharedRootCollisionIsStatedForPartialsBesideLayouts`

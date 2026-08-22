@@ -1,7 +1,11 @@
 ---
 id: D-ANS-018
+title: A plugin is a kind of content element, not one whose template is missing
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing
+  - ProjectTest::aPluginTheInstallationReportsIsStillToldApart
 ---
 
 # D-ANS-018 — A plugin is a kind of content element, not one whose template is missing
@@ -107,11 +111,6 @@ ever going to write.
   not get them there — because the path is set in a site set, or because the
   controller and action decide the template name. The pointer would then be one
   step short of the answer.
-
-## Covered by
-
-- `ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing`
-- `ProjectTest::aPluginTheInstallationReportsIsStillToldApart`
 
 ## Confirmed on 2026-08-23
 

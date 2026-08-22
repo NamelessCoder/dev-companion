@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-011
+title: 'A project root is a repository that declares TYPO3'
 status: held
 restsOn: [D-ANS-085]
 ---

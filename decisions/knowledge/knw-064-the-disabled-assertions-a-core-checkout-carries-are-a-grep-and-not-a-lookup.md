@@ -1,7 +1,10 @@
 ---
 id: D-KNW-064
+title: The disabled assertions a core checkout carries are a grep and not a lookup
 date: 2026-08-08
 status: open
+coveredBy:
+  - SkillTest::aTriageLooksForTheAssertionTheSuiteAlreadyCarries
 ---
 
 # D-KNW-064 — The disabled assertions a core checkout carries are a grep and not a lookup
@@ -72,8 +75,3 @@ them.
 - A session reports the grep answering with the two hundred `@todo` notes and
   nothing usable, which would say narrowing to the subsystem is not enough and
   the pattern has to name the shape rather than the marker.
-
-## Covered by
-
-- `SkillTest::aTriageLooksForTheAssertionTheSuiteAlreadyCarries`
-

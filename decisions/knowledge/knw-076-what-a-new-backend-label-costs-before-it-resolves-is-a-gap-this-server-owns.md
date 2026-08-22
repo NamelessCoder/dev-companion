@@ -1,5 +1,6 @@
 ---
 id: D-KNW-076
+title: What a new backend label costs before it resolves is a gap this server owns
 date: 2026-08-14
 status: confirmed
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-DIS-003
+title: A label query is words, and the console is asked with a regex
 date: 2026-07-29
 status: revoked
 ---

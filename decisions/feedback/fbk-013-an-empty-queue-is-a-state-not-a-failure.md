@@ -1,7 +1,13 @@
 ---
 id: D-FBK-013
+title: An empty queue is a state, not a failure
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - CliTest::theSightingsWaitForAnEmptyQueue
+  - CliTest::whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue
+  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
+  - StructureTest::noTestSkipsItselfInsteadOfHolding
 ---
 
 # D-FBK-013 — An empty queue is a state, not a failure
@@ -78,13 +84,6 @@ finished the last todo, which is the one session that had done nothing wrong.
 - A case arrives that needs the queue to be *empty*. Then this fixture is a
   precondition in the way rather than one being met, and the pair has to be able
   to take the queue away as well as add to it.
-
-## Covered by
-
-- `CliTest::theSightingsWaitForAnEmptyQueue`
-- `CliTest::whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue`
-- `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
-- `StructureTest::noTestSkipsItselfInsteadOfHolding`
 
 ## Confirmed on 2026-08-22
 

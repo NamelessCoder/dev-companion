@@ -1,5 +1,6 @@
 ---
 id: D-KNW-063
+title: What a TCA type stores is a subject this server owns and does not carry
 date: 2026-08-07
 status: open
 ---

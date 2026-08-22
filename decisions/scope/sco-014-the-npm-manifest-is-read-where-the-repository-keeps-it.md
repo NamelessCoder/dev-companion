@@ -1,7 +1,11 @@
 ---
 id: D-SCO-014
+title: The npm manifest is read where the repository keeps it, `Build/` included
 date: 2026-08-19
 status: open
+coveredBy:
+  - ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere
+  - ProjectTest::twoManifestsDeclaringOneNameAreTwoCommandsThatCanBeToldApart
 ---
 
 # D-SCO-014 — The npm manifest is read where the repository keeps it, `Build/` included
@@ -73,8 +77,3 @@ that had been looked for.
 - `npm --prefix` stops setting the working directory to the prefix, which would
   make every command stated for a second manifest one that runs in the wrong
   place.
-
-## Covered by
-
-- `ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere`
-- `ProjectTest::twoManifestsDeclaringOneNameAreTwoCommandsThatCanBeToldApart`

@@ -1,5 +1,6 @@
 ---
 id: R-KNW-044
+title: 'The fixture rule is stated with the empty database under it'
 status: held
 restsOn: [D-KNW-019]
 ---

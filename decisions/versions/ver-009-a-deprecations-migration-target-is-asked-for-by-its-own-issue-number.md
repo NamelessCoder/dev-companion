@@ -1,5 +1,6 @@
 ---
 id: D-VER-009
+title: A deprecation's migration target is asked for by its own issue number
 date: 2026-08-21
 status: open
 ---

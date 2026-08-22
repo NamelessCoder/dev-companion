@@ -1,5 +1,6 @@
 ---
 id: R-FBK-007
+title: 'The work already judged comes before judging more'
 status: held
 restsOn: [D-FBK-012, D-FBK-016]
 ---

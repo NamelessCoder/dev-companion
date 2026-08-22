@@ -1,5 +1,6 @@
 ---
 id: D-KNW-072
+title: What makes a core change breaking when no PHP member moved is a gap this server owns
 date: 2026-08-14
 status: revoked
 revokedBy: D-KNW-073

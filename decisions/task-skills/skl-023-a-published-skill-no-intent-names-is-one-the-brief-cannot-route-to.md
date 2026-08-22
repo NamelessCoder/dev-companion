@@ -1,5 +1,6 @@
 ---
 id: D-SKL-023
+title: A published skill no intent names is one the brief cannot route to
 date: 2026-08-08
 status: open
 ---

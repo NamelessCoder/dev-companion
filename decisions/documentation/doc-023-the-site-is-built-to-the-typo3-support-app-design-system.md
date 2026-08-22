@@ -1,8 +1,10 @@
 ---
 id: D-DOC-023
+title: The site is built to the TYPO3 Support App design system
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-024
+coveredBy: []
 ---
 
 # D-DOC-023 — The site is built to the TYPO3 Support App design system
@@ -133,9 +135,6 @@ forbidden:
   vocabulary and is also the change most likely to have taken meaning out.
 - The mark or the signet is read as TYPO3 endorsing this package. The system
   keeps the Soul out for exactly that reason, and nothing here may put it back.
-
-## Covered by
-
 
 ## Since then
 

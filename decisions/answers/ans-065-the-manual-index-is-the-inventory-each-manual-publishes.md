@@ -1,7 +1,13 @@
 ---
 id: D-ANS-065
+title: The manual index is the inventory each manual publishes
 date: 2026-08-08
 status: open
+coveredBy:
+  - DocumentationTest::aPageIsIndexedUnderTheTitleTheInventoryStates
+  - DocumentationTest::theNotFoundPageIsNotOneOfTheAnswers
+  - DocumentationTest::aBodyThatIsNotAnInventoryIsNotAnIndex
+  - DocumentationTest::anApiIdentifierReachesThePageThatIsNotNamedAfterIt
 ---
 
 # D-ANS-065 — The manual index is the inventory each manual publishes
@@ -105,10 +111,3 @@ JavaScript reached it.
 - The longer stated titles cost more ranks than they buy. The functional testing
   chapter already answers with a sibling page rather than its index, and a
   second query doing the same is the pattern rather than the exception.
-
-## Covered by
-
-- `DocumentationTest::aPageIsIndexedUnderTheTitleTheInventoryStates`
-- `DocumentationTest::theNotFoundPageIsNotOneOfTheAnswers`
-- `DocumentationTest::aBodyThatIsNotAnInventoryIsNotAnIndex`
-- `DocumentationTest::anApiIdentifierReachesThePageThatIsNotNamedAfterIt`

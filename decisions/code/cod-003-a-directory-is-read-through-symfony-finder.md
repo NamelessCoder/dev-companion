@@ -1,7 +1,10 @@
 ---
 id: D-COD-003
+title: A directory is read through symfony/finder
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - StructureTest::everyDirectoryIsReadThroughTheFinder
 ---
 
 # D-COD-003 — A directory is read through symfony/finder
@@ -51,10 +54,6 @@ directory removal copied between test classes.
   else. The failure is loud — `rmdir` on a directory that still has something in
   it — and the fallback is the explicit sort by depth, which does not depend on
   the traversal order at all.
-
-## Covered by
-
-- `StructureTest::everyDirectoryIsReadThroughTheFinder`
 
 ## Confirmed on 2026-08-22
 

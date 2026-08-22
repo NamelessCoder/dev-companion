@@ -1,5 +1,6 @@
 ---
 id: D-SKL-041
+title: A patch carried onto current code is carried on a named branch
 date: 2026-08-14
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-DOC-010
+title: '`targetVersion` opens with one sentence and diverges after it'
 date: 2026-08-03
 status: open
 ---

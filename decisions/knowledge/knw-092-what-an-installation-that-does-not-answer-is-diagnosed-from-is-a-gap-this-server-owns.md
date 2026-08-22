@@ -1,7 +1,11 @@
 ---
 id: D-KNW-092
+title: What an installation that does not answer is diagnosed from is a gap this server owns
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-KNW-092 — What an installation that does not answer is diagnosed from is a gap this server owns
@@ -127,11 +131,6 @@ error page in a terminal does not cheaply have.
 - The skill names the log at its proving step and a session reports scraping the
   page anyway. Then the lever is the wording rather than the placement, and this
   is step 4 of the ladder.
-
-## Covered by
-
-- `HintsTest::aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows`
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`
 
 ## Since then
 

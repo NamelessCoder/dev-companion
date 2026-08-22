@@ -1,7 +1,10 @@
 ---
 id: D-DOC-036
+title: A todo serves a decision by its id
 date: 2026-08-18
 status: open
+coveredBy:
+  - TodoTest::whatATodoServesIsCheckedAgainstThePlaceThatOwnsIt
 ---
 
 # D-DOC-036 — A todo serves a decision by its id
@@ -52,7 +55,3 @@ being what a todo sorting the pile names.**
 - `bin/cli unresolved:list` comes to want which open decisions are queued. It
   asks about `decisions/` alone, so an id it cannot see would make an entry
   somebody is working look like one nobody has been back to.
-
-## Covered by
-
-- `TodoTest::whatATodoServesIsCheckedAgainstThePlaceThatOwnsIt`

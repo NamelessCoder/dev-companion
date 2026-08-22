@@ -1,7 +1,11 @@
 ---
 id: D-KNW-105
+title: What a not-found means once a site answered is a gap this server owns
 date: 2026-08-19
 status: open
+coveredBy:
+  - HintsTest::whatANotFoundMeansOnceASiteAnsweredIsStatedAndReachedFromTheSymptom
+  - SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers
 ---
 
 # D-KNW-105 — What a not-found means once a site answered is a gap this server owns
@@ -103,8 +107,3 @@ written down once, in a hint about writing a seeding script.
 - The next session with a failing request reports that what it needed was which
   record to look at rather than what the message means. The gap would be in the
   procedure and a statement of meaning would not have closed it.
-
-## Covered by
-
-- `HintsTest::whatANotFoundMeansOnceASiteAnsweredIsStatedAndReachedFromTheSymptom`
-- `SkillTest::anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers`

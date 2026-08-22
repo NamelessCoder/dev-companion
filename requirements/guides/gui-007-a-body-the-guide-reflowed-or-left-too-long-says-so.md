@@ -1,5 +1,6 @@
 ---
 id: R-GUI-007
+title: 'A body the guide reflowed or left too long says so'
 status: held
 restsOn: [D-GUI-003]
 ---

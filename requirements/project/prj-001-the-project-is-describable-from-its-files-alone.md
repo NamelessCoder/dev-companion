@@ -1,5 +1,6 @@
 ---
 id: R-PRJ-001
+title: 'The project is describable from its files alone'
 status: held
 ---
 

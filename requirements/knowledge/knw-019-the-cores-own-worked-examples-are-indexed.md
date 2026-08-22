@@ -1,5 +1,6 @@
 ---
 id: R-KNW-019
+title: "The core's own worked examples are indexed"
 status: held
 ---
 

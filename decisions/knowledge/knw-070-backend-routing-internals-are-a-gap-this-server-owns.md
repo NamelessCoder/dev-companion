@@ -1,5 +1,6 @@
 ---
 id: D-KNW-070
+title: Backend routing internals are a gap this server owns
 date: 2026-08-12
 status: open
 ---

@@ -1,5 +1,6 @@
 ---
 id: D-ANS-044
+title: The environment answer carries the lifecycle it declares, beside the interpreter it runs
 date: 2026-08-03
 status: open
 ---

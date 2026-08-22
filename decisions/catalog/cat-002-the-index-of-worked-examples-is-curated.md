@@ -1,5 +1,6 @@
 ---
 id: D-CAT-002
+title: The index of worked examples is curated, and existence is all that is checked
 date: 2026-07-29
 status: revoked
 ---

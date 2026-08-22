@@ -1,7 +1,11 @@
 ---
 id: D-KNW-034
+title: The file is the subject, and JavaScript is not a domain of its own
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
+  - HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects
 ---
 
 # D-KNW-034 — The file is the subject, and JavaScript is not a domain of its own
@@ -57,8 +61,3 @@ stopped meaning anything the moment every entry named its own domains.
   mean the subjects are cut too fine to file against.
 - Somebody looks for a subject under the domain it is written in, because two
   names for one shelf is what this removed.
-
-## Covered by
-
-- `HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt`
-- `HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects`

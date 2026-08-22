@@ -1,7 +1,10 @@
 ---
 id: D-KNW-097
+title: Which site a request matches when two bases collide is a gap this server owns
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::whichOfTwoCollidingSiteBasesWinsIsStatedAndReachedFromTheSymptom
 ---
 
 # D-KNW-097 — Which site a request matches when two bases collide is a gap this server owns
@@ -120,10 +123,6 @@ two sites has to arrive at the opposite of.
   what it was missing was which site had matched rather than why. The gap would
   be in what `typo3_project_describe` reports — the call this session names as
   the most useful thing it made — and not in the corpus.
-
-## Covered by
-
-- `HintsTest::whichOfTwoCollidingSiteBasesWinsIsStatedAndReachedFromTheSymptom`
 
 ## Since then
 

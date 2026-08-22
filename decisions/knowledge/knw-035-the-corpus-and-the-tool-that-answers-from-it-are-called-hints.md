@@ -1,7 +1,12 @@
 ---
 id: D-KNW-035
+title: The corpus and the tool that answers from it are called hints
 date: 2026-08-03
 status: open
+coveredBy:
+  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
+  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
+  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
 ---
 
 # D-KNW-035 — The corpus and the tool that answers from it are called hints
@@ -59,9 +64,3 @@ place in the repository still using the word for it.
   from the payload.
 - The word `architecture` returns for part of this corpus, which would mean the
   subject it was dropped for is back and one of the two words is wrong.
-
-## Covered by
-
-- `ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered`
-- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`
-- `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`

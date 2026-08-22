@@ -1,7 +1,10 @@
 ---
 id: D-KNW-020
+title: What a preview template is handed is stated on both majors, and a field resolves by its TCA type
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo
 ---
 
 # D-KNW-020 — What a preview template is handed is stated on both majors, and a field resolves by its TCA type
@@ -83,10 +86,6 @@ is their content rather than their absence.
   getters, or the core stops handing the template a container.
   `{record.<column>}` then works for another reason, and the sentence explaining
   why is right by accident.
-
-## Covered by
-
-- `HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo`
 
 ## Since then
 

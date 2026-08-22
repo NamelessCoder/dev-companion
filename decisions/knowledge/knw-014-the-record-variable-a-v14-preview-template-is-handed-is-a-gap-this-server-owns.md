@@ -1,5 +1,6 @@
 ---
 id: D-KNW-014
+title: The record variable a v14 preview template is handed is a gap this server owns
 date: 2026-08-02
 status: revoked
 revokedBy: D-KNW-020

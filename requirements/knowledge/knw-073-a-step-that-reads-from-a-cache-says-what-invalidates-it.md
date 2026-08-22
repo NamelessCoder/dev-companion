@@ -1,5 +1,6 @@
 ---
 id: R-KNW-073
+title: 'A step that reads from a cache says what invalidates it'
 status: held
 restsOn: [D-KNW-089]
 ---

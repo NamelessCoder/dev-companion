@@ -1,7 +1,12 @@
 ---
 id: D-ANS-035
+title: The matcher entry is owed to what the changelog tag claims
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires
+  - HintsTest::aRemovalIsToldWhatTheScannerMatcherRequires
+  - KnowledgeTest::theMatcherListSaysWhatItsMissingRowsDoNotMean
 ---
 
 # D-ANS-035 — The matcher entry is owed to what the changelog tag claims
@@ -108,12 +113,6 @@ about the matchers.
 - A feedback reports a removal reviewed without a matcher after this. Delivery
   was then not the gap and the wording is what to look at — step 4 of the
   `D-ANS-029` ladder.
-
-## Covered by
-
-- `KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires`
-- `HintsTest::aRemovalIsToldWhatTheScannerMatcherRequires`
-- `KnowledgeTest::theMatcherListSaysWhatItsMissingRowsDoNotMean`
 
 ## Confirmed on 2026-08-03
 

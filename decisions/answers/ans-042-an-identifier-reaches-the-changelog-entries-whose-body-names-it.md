@@ -1,7 +1,13 @@
 ---
 id: D-ANS-042
+title: An identifier reaches the changelog entries whose body names it
 date: 2026-08-03
 status: open
+coveredBy:
+  - ChangelogLookupTest::aRemovedMethodReachesTheEntriesNamingItInTheirBody
+  - ChangelogLookupTest::aQueryTheNamesAnswerIsNotWidenedByTheBodies
+  - ChangelogLookupTest::aWordThatIsAlsoWrittenAsCodeIsNotAnIdentifier
+  - ChangelogLookupTest::anIdentifierIsReachedInEverySpellingACallerHasIt
 ---
 
 # D-ANS-042 — An identifier reaches the changelog entries whose body names it
@@ -87,10 +93,3 @@ is the half of `D-ANS-030` the title alone does not answer.
   hump.
 - A caller reads a body match as the entry being about the identifier, despite
   the sentence beside it saying that it is not.
-
-## Covered by
-
-- `ChangelogLookupTest::aRemovedMethodReachesTheEntriesNamingItInTheirBody`
-- `ChangelogLookupTest::aQueryTheNamesAnswerIsNotWidenedByTheBodies`
-- `ChangelogLookupTest::aWordThatIsAlsoWrittenAsCodeIsNotAnIdentifier`
-- `ChangelogLookupTest::anIdentifierIsReachedInEverySpellingACallerHasIt`

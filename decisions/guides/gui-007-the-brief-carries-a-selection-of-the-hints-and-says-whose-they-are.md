@@ -1,7 +1,10 @@
 ---
 id: D-GUI-007
+title: The brief carries a selection of the hints and says whose they are
 date: 2026-08-03
 status: confirmed
+coveredBy:
+  - HintsTest::theHintsABriefCarriesNameTheLookupTheyCameFrom
 ---
 
 # D-GUI-007 — The brief carries a selection of the hints and says whose they are
@@ -70,10 +73,6 @@ judgement.
 - `HINTS_PER_GROUP` is ever raised to the lookup's own default. The second half
   of the sentence stops being true where the brief carries everything the lookup
   would.
-
-## Covered by
-
-- `HintsTest::theHintsABriefCarriesNameTheLookupTheyCameFrom`
 
 ## Confirmed on 2026-08-03
 

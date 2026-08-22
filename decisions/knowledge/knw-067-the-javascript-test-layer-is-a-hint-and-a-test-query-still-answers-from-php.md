@@ -1,5 +1,6 @@
 ---
 id: D-KNW-067
+title: The JavaScript test layer is a hint, and a test query still answers from PHP
 date: 2026-08-10
 status: open
 ---

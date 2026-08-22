@@ -1,7 +1,12 @@
 ---
 id: D-DOC-012
+title: The second root is an installation this repository writes
 date: 2026-08-03
 status: open
+coveredBy:
+  - FixtureTest::theWrittenInstallationBootsAndItsConsoleAnswers
+  - FixtureTest::everyInstallationBackedToolAnswersFromIt
+  - ToolAnswersTest::everyAnswerOnAPageIsOneItsSchemaAllows
 ---
 
 # D-DOC-012 — The second root is an installation this repository writes
@@ -90,9 +95,3 @@ recording that is committed from wherever it was last run.
   arguments into a line (`D-DOC-006`). The fixture reaches its console through
   `Typo3Cli::viaPhp` and never through DDEV, so nothing here exercises that
   transport at all, and the one fault this surface has ever found was in it.
-
-## Covered by
-
-- `FixtureTest::theWrittenInstallationBootsAndItsConsoleAnswers`
-- `FixtureTest::everyInstallationBackedToolAnswersFromIt`
-- `ToolAnswersTest::everyAnswerOnAPageIsOneItsSchemaAllows`

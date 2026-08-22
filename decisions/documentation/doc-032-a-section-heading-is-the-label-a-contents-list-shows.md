@@ -1,7 +1,10 @@
 ---
 id: D-DOC-032
+title: A section heading is the label a contents list shows
 date: 2026-08-13
 status: open
+coveredBy:
+  - SiteTest::everySectionIsHeadedByALabel
 ---
 
 # D-DOC-032 — A section heading is the label a contents list shows
@@ -61,7 +64,3 @@ page shows its sections, and nothing had been said about those.
   looking for.
 - A five-word label is still a sentence, which the count cannot tell.
 - A claim that was in a heading is now in no body, so the shortening lost it.
-
-## Covered by
-
-- `SiteTest::everySectionIsHeadedByALabel`

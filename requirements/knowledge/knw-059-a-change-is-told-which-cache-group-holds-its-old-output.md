@@ -1,5 +1,6 @@
 ---
 id: R-KNW-059
+title: 'A change is told which cache group holds its old output'
 status: held
 restsOn: [D-KNW-027]
 ---

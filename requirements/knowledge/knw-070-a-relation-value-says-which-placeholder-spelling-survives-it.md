@@ -1,5 +1,6 @@
 ---
 id: R-KNW-070
+title: 'A relation value says which placeholder spelling survives it'
 status: held
 restsOn: [D-KNW-081]
 ---

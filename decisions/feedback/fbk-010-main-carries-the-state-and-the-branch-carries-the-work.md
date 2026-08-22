@@ -1,5 +1,6 @@
 ---
 id: D-FBK-010
+title: '`main` carries the state and the branch carries the work'
 date: 2026-08-01
 status: open
 ---

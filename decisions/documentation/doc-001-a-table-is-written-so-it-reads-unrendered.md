@@ -1,7 +1,11 @@
 ---
 id: D-DOC-001
+title: A table is written so it reads unrendered
 date: 2026-08-01
 status: confirmed
+coveredBy:
+  - ProseTest::aTableComesBackPaddedToItsWidestCell
+  - ProseTest::whatIsNotATableIsNotPadded
 ---
 
 # D-DOC-001 — A table is written so it reads unrendered
@@ -54,11 +58,6 @@ words with pipes in it, and which cell a value belongs to has to be counted out.
   something genuinely tabular turns up whose cells cannot be shortened, in which
   case a list will read worse than the table did and the exception has to say so
   where it is taken.
-
-## Covered by
-
-- `ProseTest::aTableComesBackPaddedToItsWidestCell`
-- `ProseTest::whatIsNotATableIsNotPadded`
 
 ## Since then
 

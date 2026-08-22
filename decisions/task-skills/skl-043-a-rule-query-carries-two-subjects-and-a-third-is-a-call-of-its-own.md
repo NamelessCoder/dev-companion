@@ -1,7 +1,10 @@
 ---
 id: D-SKL-043
+title: A rule query carries two subjects, and a third is a call of its own
 date: 2026-08-14
 status: open
+coveredBy:
+  - SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn
 ---
 
 # D-SKL-043 — A rule query carries two subjects, and a third is a call of its own
@@ -127,7 +130,3 @@ obligations in one query and reporting what came back missing. That happened on
   way. `D-SKL-011`'s fourth **Wrong if** said this twice over: two entries have
   now corrected one paragraph about the ranker, and the lesson would be that a
   skill states the subject to ask in and no property of the search at all.
-
-## Covered by
-
-- `SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn`

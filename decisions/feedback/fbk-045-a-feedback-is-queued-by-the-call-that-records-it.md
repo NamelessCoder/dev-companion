@@ -1,7 +1,12 @@
 ---
 id: D-FBK-045
+title: A feedback is queued by the call that records it
 date: 2026-08-14
 status: open
+coveredBy:
+  - FeedbackTest::aRecordedFeedbackArrivesWithTheCardThatAsksForItsJudgement
+  - FeedbackTest::theToolReportsTheCardTheFeedbackWasQueuedAs
+  - TodoTest::everyOpenFeedbackIsOnTheBoard
 ---
 
 # D-FBK-045 — A feedback is queued by the call that records it
@@ -79,9 +84,3 @@ board was right on the checkout that committed and nowhere else.
 - `bin/cli todo:check` starts reporting feedback with no card again, often
   enough that writing one by hand is a step people know by heart. Then the
   repair was carrying something, and what it was carrying is what to find.
-
-## Covered by
-
-- `FeedbackTest::aRecordedFeedbackArrivesWithTheCardThatAsksForItsJudgement`
-- `FeedbackTest::theToolReportsTheCardTheFeedbackWasQueuedAs`
-- `TodoTest::everyOpenFeedbackIsOnTheBoard`

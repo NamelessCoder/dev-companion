@@ -1,5 +1,6 @@
 ---
 id: R-AUD-002
+title: 'The audience is a property of the task'
 status: held
 restsOn: [D-KNW-005]
 ---

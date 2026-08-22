@@ -1,5 +1,6 @@
 ---
 id: D-FBK-051
+title: What the TER already holds is a lookup of its own
 date: 2026-08-21
 status: open
 ---

@@ -1,7 +1,14 @@
 ---
 id: D-ANS-055
+title: A change answers for an issue only where its commit message names it
 date: 2026-08-05
 status: open
+coveredBy:
+  - GerritTest::aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered
+  - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
+  - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
+  - GerritTest::theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt
+  - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
 ---
 
 # D-ANS-055 — A change answers for an issue only where its commit message names it
@@ -68,11 +75,3 @@ change that carries the number as its own whatever it is about.
   answer for a whole class of change.
 - `o=CURRENT_COMMIT` stops being served anonymously, which would leave every
   answer decided by the number rule alone.
-
-## Covered by
-
-- `GerritTest::aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered`
-- `GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed`
-- `GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty`
-- `GerritTest::theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt`
-- `GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone`

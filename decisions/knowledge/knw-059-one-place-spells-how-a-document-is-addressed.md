@@ -1,7 +1,10 @@
 ---
 id: D-KNW-059
+title: One place spells how a document is addressed
 date: 2026-08-04
 status: open
+coveredBy:
+  - StructureTest::onlyTheCorpusSpellsHowADocumentIsAddressed
 ---
 
 # D-KNW-059 — One place spells how a document is addressed
@@ -53,7 +56,3 @@ classes that had no business knowing it.
   nothing.
 - The index URI and the document prefix drift apart, since one lives in
   `ResourceHandler` and the other in `Documents`.
-
-## Covered by
-
-- `StructureTest::onlyTheCorpusSpellsHowADocumentIsAddressed`

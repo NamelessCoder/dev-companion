@@ -1,7 +1,10 @@
 ---
 id: D-GUI-008
+title: Operating an installation is a change type of its own
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief
 ---
 
 # D-GUI-008 — Operating an installation is a change type of its own
@@ -115,10 +118,6 @@ message — for work that writes no file.
   documentation restated, with nothing about TYPO3 in it. Then what was missing
   was the environment's lifecycle in `typo3_project_describe`, which
   `feedback/2026-08-03-154501` reports, and not a shape in this brief.
-
-## Covered by
-
-- `HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief`
 
 ## Since then
 

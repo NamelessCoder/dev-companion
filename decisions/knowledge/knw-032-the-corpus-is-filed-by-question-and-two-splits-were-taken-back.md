@@ -1,7 +1,13 @@
 ---
 id: D-KNW-032
+title: The corpus is filed by question, and two splits were taken back
 date: 2026-08-03
 status: open
+coveredBy:
+  - HintsTest::everyHintIsReachedByItsOwnTitle
+  - HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat
+  - HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes
+  - HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations
 ---
 
 # D-KNW-032 — The corpus is filed by question, and two splits were taken back
@@ -70,13 +76,6 @@ words to 126.
 - Another split turns out to have dropped a rule the way the two merged ones
   did, which would mean the axis is being applied without reading what a
   statement is reached from.
-
-## Covered by
-
-- `HintsTest::everyHintIsReachedByItsOwnTitle`
-- `HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat`
-- `HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes`
-- `HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`
 
 ## Since then
 

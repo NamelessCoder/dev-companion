@@ -1,5 +1,6 @@
 ---
 id: R-KNW-068
+title: 'A suite that waits for a keypress says it needs a terminal'
 status: held
 restsOn: [D-KNW-068]
 ---

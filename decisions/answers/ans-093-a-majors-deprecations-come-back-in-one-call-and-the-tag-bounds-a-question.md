@@ -1,7 +1,10 @@
 ---
 id: D-ANS-093
+title: A major's deprecations come back in one call and the tag bounds a question
 date: 2026-08-21
 status: open
+coveredBy:
+  - ChangelogLookupTest::aMajorsDeprecationsComeBackInOneCall
 ---
 
 # D-ANS-093 — A major's deprecations come back in one call and the tag bounds a question
@@ -101,10 +104,6 @@ without a tag.
 - A caller passes the raised cap on a set nobody narrowed and gets an answer it
   cannot use. Then the ceiling belongs to the narrowing rather than to the
   parameter.
-
-## Covered by
-
-- `ChangelogLookupTest::aMajorsDeprecationsComeBackInOneCall`
 
 ## Since then
 

@@ -1,5 +1,6 @@
 ---
 id: D-SCO-004
+title: The frontend is recognised by name, and only the two UI sections go
 date: 2026-07-29
 status: revoked
 ---

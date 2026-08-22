@@ -1,5 +1,6 @@
 ---
 id: D-SCO-006
+title: Every surface says who this server answers for
 date: 2026-07-29
 status: confirmed
 ---

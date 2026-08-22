@@ -1,5 +1,6 @@
 ---
 id: R-KNW-001
+title: 'Upgrade wizards and DataProcessors have hints of their own'
 status: held
 ---
 

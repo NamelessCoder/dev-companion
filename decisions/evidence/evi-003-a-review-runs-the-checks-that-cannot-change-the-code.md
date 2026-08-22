@@ -1,7 +1,10 @@
 ---
 id: D-EVI-003
+title: A review runs the checks that cannot change the code
 date: 2026-07-31
 status: confirmed
+coveredBy:
+  - ProjectTest::aCommandThatWritesIsNeverReportedAsACheck
 ---
 
 # D-EVI-003 — A review runs the checks that cannot change the code
@@ -58,10 +61,6 @@ quoted the commands as subjects of findings instead.
   reviews that now run the checks report the same findings they read out of CI
   files, in which case the runs cost time and settled nothing, and the base's
   three-way distinction was doing all the work by itself.
-
-## Covered by
-
-- `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`
 
 ## Since then
 

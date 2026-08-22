@@ -1,7 +1,10 @@
 ---
 id: D-SKL-026
+title: The descriptions are written to the listing budget they share
 date: 2026-08-08
 status: open
+coveredBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
 ---
 
 # D-SKL-026 — The descriptions are written to the listing budget they share
@@ -95,10 +98,6 @@ spends is taken off the skill that gets listed by its name alone.
 - A description trimmed here stops matching a task it used to carry — a feedback
   or a run naming a request that reached nothing. Then a side or a trigger went
   out with the summary, and it goes back at the cost of another skill's.
-
-## Covered by
-
-- `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`
 
 ## Since then
 

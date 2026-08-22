@@ -1,5 +1,6 @@
 ---
 id: D-KNW-077
+title: The TypeScript style hint names the config and carries what cannot be guessed
 date: 2026-08-14
 status: open
 ---

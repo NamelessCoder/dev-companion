@@ -1,7 +1,10 @@
 ---
 id: D-KNW-087
+title: A listed neighbour says what it prevents
 date: 2026-08-18
 status: open
+coveredBy:
+  - HintsTest::anUndeclaredContentAreaIsSaidToThrowAndTheEmptyOneToRenderNothing
 ---
 
 # D-KNW-087 — A listed neighbour says what it prevents
@@ -93,10 +96,6 @@ dropped: five review findings and an HTTP 500 on every page.
 - A session reports the opposite cost: a pointer written as a warning followed
   into a hint the task did not need, crowding the limit. That is the second
   **Wrong if** of `D-KNW-032` arriving from this side.
-
-## Covered by
-
-- `HintsTest::anUndeclaredContentAreaIsSaidToThrowAndTheEmptyOneToRenderNothing`
 
 ## Since then
 

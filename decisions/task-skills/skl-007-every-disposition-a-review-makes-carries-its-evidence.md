@@ -1,7 +1,12 @@
 ---
 id: D-SKL-007
+title: Every disposition a review makes carries its evidence
 date: 2026-08-03
 status: open
+coveredBy:
+  - SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt
+  - SkillTest::aFindingSaysWhetherThePatchIntroducedIt
+  - SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead
 ---
 
 # D-SKL-007 — Every disposition a review makes carries its evidence
@@ -107,12 +112,6 @@ cheapest sentence in a review to write.
 - Surfaces start being reported as unassessed at a rate that says the word is
   being used to avoid naming a reading rather than to report a missing one. The
   demand would then have bought a cheaper evasion than the one it closed.
-
-## Covered by
-
-- `SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt`
-- `SkillTest::aFindingSaysWhetherThePatchIntroducedIt`
-- `SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead`
 
 ## Since then
 

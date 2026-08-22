@@ -1,7 +1,11 @@
 ---
 id: D-FBK-015
+title: A priority is a class, and the stamp is the rest
 date: 2026-08-02
 status: open
+coveredBy:
+  - TodoTest::theQueueIsReadByPriorityAndThenByAge
+  - TodoTest::aClaimIsOneMoveThatGoesBothWays
 ---
 
 # D-FBK-015 — A priority is a class, and the stamp is the rest
@@ -81,11 +85,6 @@ queueing work at once cannot pick the same one.
   importance. The assumption above says this has already happened once.
 - Two todos at one priority and one age turn out to need separating, which would
   mean the stamp is too coarse or the order was a rank after all.
-
-## Covered by
-
-- `TodoTest::theQueueIsReadByPriorityAndThenByAge`
-- `TodoTest::aClaimIsOneMoveThatGoesBothWays`
 
 ## Since then
 

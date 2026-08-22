@@ -1,7 +1,14 @@
 ---
 id: D-ANS-016
+title: A miss names the query that would have hit, not only the reach of each word
 date: 2026-08-02
 status: open
+coveredBy:
+  - LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach
+  - LabelSearchTest::theSubsetThatNarrowsBestComesFirst
+  - PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit
+  - PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt
+  - PackageSourcesTest::aFilterThatChangedNothingIsNotBlamedForTheMiss
 ---
 
 # D-ANS-016 — A miss names the query that would have hit, not only the reach of each word
@@ -85,14 +92,6 @@ the numbers and stops there.
 - The peel is measured against a fuller changelog and costs more than the `tag`
   filter it was priced against. Then it is a second call the caller makes rather
   than something a miss can afford.
-
-## Covered by
-
-- `LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach`
-- `LabelSearchTest::theSubsetThatNarrowsBestComesFirst`
-- `PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit`
-- `PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt`
-- `PackageSourcesTest::aFilterThatChangedNothingIsNotBlamedForTheMiss`
 
 ## Since then
 

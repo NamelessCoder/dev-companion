@@ -1,8 +1,11 @@
 ---
 id: D-DOC-018
+title: The site opens on the readme and the map is a page below it
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-026
+coveredBy:
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
 ---
 
 # D-DOC-018 — The site opens on the readme and the map is a page below it
@@ -74,10 +77,6 @@ what they were shown was the map of how this repository works on itself.
 - A covered line is added and the readme names it without the server answering
   for it, because the test holds the sentence to the declaration in one
   direction only.
-
-## Covered by
-
-- `SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex`
 
 ## Revoked on 2026-08-12
 

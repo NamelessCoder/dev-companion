@@ -1,7 +1,11 @@
 ---
 id: D-AUD-009
+title: The entry point claims patch work, and a task that ends before one reads itself out
 date: 2026-08-08
 status: open
+coveredBy:
+  - ScopeTest::theEntryPointClaimsTheWorkThatEndsBeforeAPatch
+  - KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes
 ---
 
 # D-AUD-009 — The entry point claims patch work, and a task that ends before one reads itself out
@@ -68,11 +72,6 @@ task ended one step before a patch.
 - Naming three more task shapes in the instructions is reported as making them
   longer without making them clearer, which `R-ANS-013` already holds a budget
   for.
-
-## Covered by
-
-- `ScopeTest::theEntryPointClaimsTheWorkThatEndsBeforeAPatch`
-- `KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`
 
 ## Since then
 

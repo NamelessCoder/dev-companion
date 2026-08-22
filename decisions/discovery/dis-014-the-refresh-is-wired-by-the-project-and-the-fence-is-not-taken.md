@@ -1,7 +1,11 @@
 ---
 id: D-DIS-014
+title: The refresh is wired by the project, and the fence is not taken
 date: 2026-08-08
 status: open
+coveredBy:
+  - InstallerRecordTest::updateSaysSoWhereNothingIsInstalledAtAll
+  - InstallerTest::codexUpdateRemovesSkillsTrackedByThePreviousCentralState
 ---
 
 # D-DIS-014 — The refresh is wired by the project, and the fence is not taken
@@ -85,8 +89,3 @@ so its three answers to the same problem were read before one was invented here.
 - This package starts writing prose into a file the user writes in as well. Then
   the fence is exactly what is missing, and this entry is why it was not already
   there.
-
-## Covered by
-
-- `InstallerRecordTest::updateSaysSoWhereNothingIsInstalledAtAll`
-- `InstallerTest::codexUpdateRemovesSkillsTrackedByThePreviousCentralState`

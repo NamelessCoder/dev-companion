@@ -1,5 +1,6 @@
 ---
 id: R-DIS-019
+title: 'A registry with no command is answered by the installation itself'
 status: held
 ---
 

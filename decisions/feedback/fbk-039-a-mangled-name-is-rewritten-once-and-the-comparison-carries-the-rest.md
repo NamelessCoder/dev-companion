@@ -1,7 +1,11 @@
 ---
 id: D-FBK-039
+title: A mangled name is rewritten once, and the comparison carries the rest
 date: 2026-08-03
 status: open
+coveredBy:
+  - FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt
+  - FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled
 ---
 
 # D-FBK-039 — A mangled name is rewritten once, and the comparison carries the rest
@@ -60,11 +64,6 @@ name a grep finds.
   names met on their separatorless form.
 - The next mangling is a different one and the corpus needs a second sweep. Then
   rewriting the data was the cheaper half of a problem that lives in the writer.
-
-## Covered by
-
-- `FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt`
-- `FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled`
 
 ## Since then
 

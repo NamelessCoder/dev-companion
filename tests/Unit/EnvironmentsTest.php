@@ -25,7 +25,7 @@ final class EnvironmentsTest extends TestCase
     /**
      * `scenarios/readme.md` defines the environments and this list says where
      * each one comes from, so an environment added there and forgotten here is
-     * an id `environment:create` answers `null` for.
+     * an id `environment:create` answers `null` for — `D-EVI-004`.
      */
     #[Test]
     public function everyEnvironmentAScenarioNamesSaysWhereItComesFrom(): void
@@ -41,7 +41,7 @@ final class EnvironmentsTest extends TestCase
     /**
      * An environment this repository does not make is one somebody has to get
      * hold of, and a refusal that does not say where from leaves them exactly
-     * where the machine-bound reference left them.
+     * where the machine-bound reference left them — `D-EVI-004`.
      */
     #[Test]
     public function everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead(): void
@@ -61,7 +61,7 @@ final class EnvironmentsTest extends TestCase
      * The installation is built at the version this server answers for. A
      * repository that starts covering a new stable major and keeps making
      * environments of the old one measures itself against the wrong TYPO3, and
-     * nothing about the environment would say so.
+     * nothing about the environment would say so — `D-EVI-006`, `D-EVI-004`.
      */
     #[Test]
     public function theInstallationIsBuiltAtTheCoveredStableVersion(): void
@@ -88,7 +88,7 @@ final class EnvironmentsTest extends TestCase
      * Every covered line, the development one included: it was the line whose
      * answers about the next major nothing here could show, and a version
      * `versions.json` covers while `create` declines is the same gap under a
-     * different name.
+     * different name — `D-EVI-006`.
      */
     #[Test]
     public function everyCoveredLineIsOneAnInstallationIsMadeOf(): void
@@ -109,7 +109,7 @@ final class EnvironmentsTest extends TestCase
      * A version argument is a thing somebody types wrong, and what the mistake
      * needs back is which versions there are. Nothing covered declines any
      * more, so a refusal naming a covered line is this drifting apart from
-     * `knowledge/versions.json`.
+     * `knowledge/versions.json` — `D-EVI-006`.
      */
     #[Test]
     public function aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing(): void
@@ -141,7 +141,8 @@ final class EnvironmentsTest extends TestCase
      * Asserted against the built command rather than against the constants,
      * because a step that dropped one of the three comes out looking finished:
      * the stability flag missing is a resolver error, but the PHP pin missing
-     * is an installation that builds and then answers as the wrong PHP.
+     * is an installation that builds and then answers as the wrong PHP —
+     * `D-EVI-006`.
      */
     #[Test]
     public function theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares(): void
@@ -224,7 +225,8 @@ final class EnvironmentsTest extends TestCase
      *
      * The connection values are DDEV's own, measured on 2026-08-04 against
      * v1.25.1 by building a project on each and reading it back: host `db`,
-     * database `db`, user `db`, password `db`, and only the port moves.
+     * database `db`, user `db`, password `db`, and only the port moves —
+     * `D-EVI-006`.
      *
      * @param array<int, string> $expected
      */
@@ -289,7 +291,8 @@ final class EnvironmentsTest extends TestCase
      * The version half is what this is written against. `ddev config` accepts
      * `--database=mariadb:99.9` and writes it, and `ddev start` is where it
      * fails — measured on 2026-08-04 against v1.25.1 — so a version that is
-     * wrong here costs the whole configure step before it says so.
+     * wrong here costs the whole configure step before it says so —
+     * `D-EVI-006`.
      */
     #[Test]
     public function aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre(): void
@@ -409,7 +412,8 @@ final class EnvironmentsTest extends TestCase
      * `scenarios/readme.md` says an `E-SITE` is an installation whose console
      * has `language:domain:search`, and the base distribution does not require
      * the extension that carries it. A build that dropped this step would come
-     * out looking finished and answer nothing the label lookup asks.
+     * out looking finished and answer nothing the label lookup asks —
+     * `D-EVI-004`.
      */
     #[Test]
     public function theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor(): void
@@ -427,7 +431,8 @@ final class EnvironmentsTest extends TestCase
      * `--server-type` was passed: 14.3.5 reads that option's default through
      * the same fallback as its environment variable, hands the validator
      * `false` where neither is set, and only asks the question where a person
-     * is there to answer it. Nothing about the option's own definition says so.
+     * is there to answer it. Nothing about the option's own definition says so
+     * — `D-EVI-004`.
      */
     #[Test]
     public function theSetupStepPassesEveryOptionItCannotBeAskedFor(): void
@@ -464,7 +469,7 @@ final class EnvironmentsTest extends TestCase
      * Every driver, because the name is where the second database was dropped:
      * a build that asked DDEV for the default project name in a directory of
      * its own was refused by `ddev config` for a project root it does not own,
-     * minutes before the installation it was after.
+     * minutes before the installation it was after — `D-EVI-004`.
      */
     #[Test]
     public function theSiteIsCreatedForTheAddressDdevGivesTheProject(): void
@@ -491,7 +496,7 @@ final class EnvironmentsTest extends TestCase
      * Every step is `ddev`, which is what keeps the build inside the containers
      * it declares. A `composer` or a `php` among them would run on whatever the
      * machine happens to have, and the version the environment is of would stop
-     * being the one it was asked for.
+     * being the one it was asked for — `D-EVI-004`.
      */
     #[Test]
     public function everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine(): void
@@ -505,10 +510,10 @@ final class EnvironmentsTest extends TestCase
     /**
      * The project name is global to the machine and the directory is per
      * checkout, so a worktree that made an environment and was then removed
-     * leaves the name held for an approot that is gone. Measured on
-     * 2026-08-02: `typo3-mcp-e-site` registered at a `.worktrees/` path DDEV
-     * itself reported as `project directory missing`, and `environment:create`
-     * refusing in the name of a checkout nobody could visit.
+     * leaves the name held for an approot that is gone. Measured on 2026-08-02:
+     * `typo3-mcp-e-site` registered at a `.worktrees/` path DDEV itself
+     * reported as `project directory missing`, and `environment:create`
+     * refusing in the name of a checkout nobody could visit — `D-EVI-005`.
      */
     #[Test]
     public function aRegistrationWhoseCheckoutIsGoneHoldsNothingBack(): void
@@ -531,10 +536,10 @@ final class EnvironmentsTest extends TestCase
     /**
      * `ddev stop --unlist` frees the name and is the wrong command. Stop is
      * documented as non-destructive, and the database is a volume named after
-     * the project rather than after the directory — so the next build under
-     * the same name attaches to it and the setup step meets the tables the
-     * last installation left. `--force` does not reach that: it forces the
-     * settings file alone. `delete` takes the volume with the name.
+     * the project rather than after the directory — so the next build under the
+     * same name attaches to it and the setup step meets the tables the last
+     * installation left. `--force` does not reach that: it forces the settings
+     * file alone. `delete` takes the volume with the name — `D-EVI-005`.
      */
     #[Test]
     public function clearingARegistrationTakesTheDatabaseThatWouldOutliveIt(): void
@@ -551,7 +556,7 @@ final class EnvironmentsTest extends TestCase
     /**
      * A made environment is a TYPO3 installation and its database dump, and it
      * belongs in a commit as little as `.checkouts/` does. This is the one
-     * failure here that is unrecoverable rather than annoying.
+     * failure here that is unrecoverable rather than annoying — `D-EVI-004`.
      */
     #[Test]
     public function whatIsMadeHereIsNeverCommitted(): void

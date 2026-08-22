@@ -59,7 +59,7 @@ final class CoreChangelogTest extends TestCase
      * A version the installation does ship is that installation's, whatever the
      * manual says about it. The two are never both in one answer: an entry on
      * disk is the code that is running, and the host publishes what the release
-     * branch carries today.
+     * branch carries today — `D-ANS-067`.
      */
     #[Test]
     public function aVersionTheInstallationShipsIsNeverTakenFromTheManual(): void
@@ -79,7 +79,8 @@ final class CoreChangelogTest extends TestCase
      * Naming a version the installation ships is the one call that must stay
      * local. It is the ordinary question — what did the release I am on change
      * — and it would otherwise pay a round trip, or on a machine with no
-     * network a connect timeout, for entries the narrowing already excluded.
+     * network a connect timeout, for entries the narrowing already excluded —
+     * `D-ANS-067`.
      */
     #[Test]
     public function askingForAnInstalledVersionReachesNoHostAtAll(): void
@@ -103,7 +104,7 @@ final class CoreChangelogTest extends TestCase
      * A host that did not answer is a gap in this answer rather than in the
      * changelog, and the difference is what a caller upgrading has to know:
      * silence read as "there is nothing above your major" is the wrong answer
-     * to the one question this exists for.
+     * to the one question this exists for — `D-ANS-067`.
      */
     #[Test]
     public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing(): void
@@ -121,7 +122,8 @@ final class CoreChangelogTest extends TestCase
      * The inventory line carries the stated title and an installed entry's
      * title is a file read away, so carrying it under the field a search reads
      * would have let a manual entry answer in the pass where the installed one
-     * it should have found is still searched by its file name alone.
+     * it should have found is still searched by its file name alone —
+     * `D-ANS-067`.
      */
     #[Test]
     public function aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout(): void

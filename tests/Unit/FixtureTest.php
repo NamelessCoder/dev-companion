@@ -59,7 +59,8 @@ final class FixtureTest extends TestCase
      * `unsupported` is what those tools say where there was nothing to ask, and
      * a second recording of it says what the first already said — the core
      * checkout has no console and reports exactly that. So the property that
-     * makes this root worth recording against is that not one call falls to it.
+     * makes this root worth recording against is that not one call falls to it
+     * — `D-DOC-012`.
      */
     #[Test]
     public function everyInstallationBackedToolAnswersFromIt(): void

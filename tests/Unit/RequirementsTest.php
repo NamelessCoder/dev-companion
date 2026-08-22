@@ -59,7 +59,7 @@ final class RequirementsTest extends TestCase
      * The message is all the reader of that failure gets, and there is no
      * command to send them to — so it names both files and says that the move
      * is by hand. Held here rather than by reading it, because the checkout it
-     * fails on is the one checkout where nothing collides.
+     * fails on is the one checkout where nothing collides — `D-FBK-046`.
      */
     #[Test]
     public function aDuplicateIdNamesBothFilesAndThatNothingMovesOne(): void
@@ -78,7 +78,7 @@ final class RequirementsTest extends TestCase
      * The number is the only part of an id a listing sorts on, and three digits
      * is what makes sorting it as text the same as sorting it as a number.
      * Unpadded, `dis-10` sat between `dis-1` and `dis-2` in every directory
-     * listing and in every generated index.
+     * listing and in every generated index — `D-DOC-005`.
      */
     #[Test]
     public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
@@ -152,7 +152,7 @@ final class RequirementsTest extends TestCase
     /**
      * The sections are what a reader navigates an entry by, and the order
      * carries meaning: where the demand came from is evidence, and what holds
-     * it there is the claim the suite keeps.
+     * it there is the claim the suite keeps — `D-DOC-004`.
      */
     #[Test]
     public function everyRequirementIsWrittenInTheSectionsTheFormatHas(): void

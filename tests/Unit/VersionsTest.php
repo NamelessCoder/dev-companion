@@ -55,7 +55,7 @@ final class VersionsTest extends TestCase
      * they install it, and it is read in the two places somebody arrives at:
      * the readme on GitHub and the front page of the site. So the sentence
      * naming the lines is held to the declaration rather than to what was
-     * covered on the day it was written.
+     * covered on the day it was written — `D-DOC-026`, `D-DOC-030`.
      */
     #[Test]
     public function whatSomebodyArrivesAtNamesEveryCoveredLine(): void

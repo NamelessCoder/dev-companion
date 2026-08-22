@@ -118,9 +118,10 @@ final class ExcludedToolsTest extends TestCase
     /**
      * What both client surfaces said before this: the name the caller wrote,
      * whether or not it took a tool away. Measured on 2026-08-04 with
-     * `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope` — the instructions opened
-     * "typo3_project_scope is left out of your tool list" out of the budget
-     * `R-ANS-013` holds, while `typo3_project_describe` was in the list.
+     * `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_project_scope` — the
+     * instructions opened "typo3_project_scope is left out of your tool list"
+     * out of the budget `R-ANS-013` holds, while `typo3_project_describe` was
+     * in the list — `D-AUD-006`.
      */
     #[Test]
     #[DataProvider('everyNameThatTakesNoToolAway')]
@@ -150,7 +151,8 @@ final class ExcludedToolsTest extends TestCase
     /**
      * The other half: a name that took nothing away is still said, where the
      * client reads it. `D-AUD-005` put the stderr line in and left this open,
-     * because a client is free to capture that stream and show it to nobody.
+     * because a client is free to capture that stream and show it to nobody —
+     * `D-AUD-006`.
      */
     #[Test]
     public function theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded(): void
@@ -195,7 +197,7 @@ final class ExcludedToolsTest extends TestCase
      * The hole `a4470ee` fell into: `typo3_project_scope` was renamed, and the
      * caller who had excluded it got the tool back under its new name with
      * nothing said on either side. The name is reported now, and the exclusion
-     * beside it still takes its tool away.
+     * beside it still takes its tool away — `D-AUD-005`.
      */
     #[Test]
     public function aNameNoToolAnswersToIsReportedAndTheRealOneBesideItStillExcludes(): void

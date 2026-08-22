@@ -98,7 +98,7 @@ final class RenumberTest extends TestCase
      * The one both mis-pointings on record were. A `restsOn:` is checked for
      * existence and never for correctness, and a sentence naming an id is
      * checked for neither — so moving either is a guess, and the entry it would
-     * land on is real whichever way the guess went.
+     * land on is real whichever way the guess went — `D-DOC-015`.
      */
     #[Test]
     public function aReferenceNoLineSettlesIsNamedRatherThanMoved(): void
@@ -128,7 +128,7 @@ final class RenumberTest extends TestCase
      * The whole of what the command is worth. A line naming the old id is
      * rewritten or reported and never neither, and once the call is over the
      * lines still naming it are the reported ones exactly — so a person handed
-     * that list has been handed all of it.
+     * that list has been handed all of it — `D-DOC-015`.
      */
     #[Test]
     public function everyMentionIsEitherMovedOrNamed(): void
@@ -157,7 +157,7 @@ final class RenumberTest extends TestCase
      * The other half of leaving nothing behind: a path that no longer resolves.
      * `links:check` would catch this one, which is why the command may not
      * produce it — a renumber that needs a check to finish it is a renumber
-     * somebody has to remember to finish.
+     * somebody has to remember to finish — `D-DOC-015`.
      */
     #[Test]
     public function noPathIsLeftPointingAtTheOldFile(): void
@@ -177,7 +177,7 @@ final class RenumberTest extends TestCase
     /**
      * `D-GUI-901b` is the entry that was split off `D-GUI-901` and never a
      * spelling of it — D-DOC-005. It is the case a search and replace over the
-     * id gets wrong without anything being ambiguous about it.
+     * id gets wrong without anything being ambiguous about it — `D-DOC-015`.
      */
     #[Test]
     public function aLetterSuffixIsAnotherEntryAndStaysWhereItIs(): void

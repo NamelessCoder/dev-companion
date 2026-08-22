@@ -63,7 +63,8 @@ final class StructureTest extends TestCase
      * been true since the day they were written.
      *
      * A genuinely environment-dependent case would need a way past this. It
-     * would also need this paragraph rewritten, which is the point.
+     * would also need this paragraph rewritten, which is the point —
+     * `D-FBK-013`.
      */
     #[Test]
     public function noTestSkipsItselfInsteadOfHolding(): void

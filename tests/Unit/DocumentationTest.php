@@ -162,7 +162,7 @@ final class DocumentationTest extends TestCase
      * class name carry the word equally well, and the class name carries five
      * other words besides. While no title in the corpus was long enough to be
      * diluted the two were worth the same, and the tie went to whichever manual
-     * was indexed first (`D-ANS-029`).
+     * was indexed first (`D-ANS-029`) — `D-ANS-032`.
      */
     #[Test]
     public function aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord(): void
@@ -174,12 +174,13 @@ final class DocumentationTest extends TestCase
     }
 
     /**
-     * The manuals of the core are published under `/m/` and this one is not,
-     * so a search that built every base the same way reached three books, none
-     * of which documents a ViewHelper, and the question was answered from
+     * The manuals of the core are published under `/m/` and this one is not, so
+     * a search that built every base the same way reached three books, none of
+     * which documents a ViewHelper, and the question was answered from
      * whichever of them carried the word (`D-ANS-023`). A base that is wrong is
      * silent — the index does not answer and the book is simply absent — so
-     * what is held is that its pages are reached and reached at their own base.
+     * what is held is that its pages are reached and reached at their own base
+     * — `D-ANS-026`.
      */
     #[Test]
     public function aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection(): void
@@ -205,11 +206,11 @@ final class DocumentationTest extends TestCase
     /**
      * And the page of the ViewHelper that gave its name to the question.
      *
-     * That book titles a page after the tag, so `Global/If.html` is called
-     * "if" and the only word of `f:if` that can reach it is two characters
-     * long. Every one of those was dropped before it was searched for, which
-     * is what left the query answered by `Global/Else.html` — the right family
-     * and the wrong page (`D-ANS-023`).
+     * That book titles a page after the tag, so `Global/If.html` is called "if"
+     * and the only word of `f:if` that can reach it is two characters long.
+     * Every one of those was dropped before it was searched for, which is what
+     * left the query answered by `Global/Else.html` — the right family and the
+     * wrong page (`D-ANS-023`) — `D-ANS-028`.
      */
     #[Test]
     public function aViewHelperNamedAfterAKeywordIsReachedByItsOwnName(): void
@@ -265,7 +266,8 @@ final class DocumentationTest extends TestCase
     /**
      * A book that did not answer routes nothing. The route is in front of the
      * scoring, so a root that is down would otherwise leave such a query with
-     * no candidates and report "no match" for a reason the caller cannot see.
+     * no candidates and report "no match" for a reason the caller cannot see —
+     * `D-ANS-036`.
      */
     #[Test]
     public function aQueryIsRoutedToABookOnlyWhileThatBookAnswers(): void
@@ -301,7 +303,7 @@ final class DocumentationTest extends TestCase
     {
         // Nothing in a table of contents is called AssetCollector or
         // FunctionalTestCase; the pages that answer them are titled after their
-        // subject, which is assets and functional testing.
+        // subject, which is assets and functional testing — `D-ANS-065`.
         $documentation = new Documentation($this->manuals());
 
         self::assertContains(
@@ -394,7 +396,7 @@ final class DocumentationTest extends TestCase
     /**
      * The coverage reported is the one of the question the page is kept for,
      * like the match beside it — not of whichever query was passed last. Both
-     * pages here are returned for the query that names them.
+     * pages here are returned for the query that names them — `D-ANS-051`.
      */
     #[Test]
     public function aResultCoversTheQueryItIsKeptFor(): void
@@ -430,7 +432,7 @@ final class DocumentationTest extends TestCase
     /**
      * And the caller is told in the text, because a share in a payload is not a
      * warning: the answer this feedback reported as the expensive kind of wrong
-     * one was six results in the shape a good answer has.
+     * one was six results in the shape a good answer has — `D-ANS-051`.
      */
     #[Test]
     public function theAnswerSaysWhereNothingCoversHalfTheQuery(): void
@@ -573,7 +575,7 @@ final class DocumentationTest extends TestCase
      * What the inventory lists and the manual has no page for. Sphinx renders
      * the "content was removed" template as a document of its own, so it is in
      * every inventory and in no navigation tree, and its two words are ordinary
-     * enough to be searched for.
+     * enough to be searched for — `D-ANS-065`.
      */
     #[Test]
     public function theNotFoundPageIsNotOneOfTheAnswers(): void
@@ -595,7 +597,8 @@ final class DocumentationTest extends TestCase
      * A page where the inventory was asked for is a host that did not answer,
      * not an index. That is what bot protection and a captive portal put a 200
      * in front of (`D-ANS-034`), and the whole corpus would otherwise be one
-     * unparsed body away from an empty search that reads like a real one.
+     * unparsed body away from an empty search that reads like a real one —
+     * `D-ANS-065`.
      */
     #[Test]
     public function aBodyThatIsNotAnInventoryIsNotAnIndex(): void
@@ -726,7 +729,8 @@ final class DocumentationTest extends TestCase
 
     /**
      * The other one, and the reason the field exists: a release outside the
-     * covered versions is permanent, and nothing is fetched to find that out.
+     * covered versions is permanent, and nothing is fetched to find that out —
+     * `D-ANS-007`.
      */
     #[Test]
     public function aVersionOutsideTheCoveredOnesIsNotAskedFor(): void

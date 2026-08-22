@@ -44,7 +44,7 @@ final class TermSearchTest extends TestCase
     /**
      * The colon has to touch both sides. A sentence puts a space after it, and
      * that is what keeps the same word a stopword in prose — seven of the 41
-     * scenario prompts say "or" or "then" in a sentence.
+     * scenario prompts say "or" or "then" in a sentence — `D-ANS-047`.
      */
     #[Test]
     public function theSameWordAfterTheColonOfASentenceIsNot(): void
@@ -55,7 +55,8 @@ final class TermSearchTest extends TestCase
 
     /**
      * One letter is a whole word wherever it is spelled out, so it separates
-     * nothing — the `f` of `f:if` is the `f` of every other tag in the book.
+     * nothing — the `f` of `f:if` is the `f` of every other tag in the book —
+     * `D-ANS-028`.
      */
     #[Test]
     public function oneLetterIsNot(): void
@@ -66,7 +67,7 @@ final class TermSearchTest extends TestCase
     /**
      * The floor was doing the stopword list's work for words this short, and
      * moving it means the list has to name them itself: "set it up from
-     * scratch" otherwise reaches Setting up backend user groups.
+     * scratch" otherwise reaches Setting up backend user groups — `D-ANS-028`.
      */
     #[Test]
     public function aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped(): void
@@ -77,7 +78,7 @@ final class TermSearchTest extends TestCase
     /**
      * Below four characters a term is matched whole, which is the reason the
      * floor could move at all: none of the prefix noise `PREFIX_FROM_LENGTH`
-     * guards against reaches a word this short.
+     * guards against reaches a word this short — `D-ANS-028`.
      */
     #[Test]
     public function aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix(): void
@@ -118,7 +119,7 @@ final class TermSearchTest extends TestCase
     /**
      * The right side closes on a letter and not on a word character, so an
      * identifier a needle is the head of is still reached — `D-ANS-006`'s side
-     * of the same question.
+     * of the same question — `D-ANS-050`.
      */
     #[Test]
     public function aNeedleThatRunsIntoASeparatorIsLeftAsItWas(): void

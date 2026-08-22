@@ -93,7 +93,8 @@ final class UpkeepCommandTest extends TestCase
     /**
      * Every command is `<subject>:<verb>`, because that is what groups the list
      * a caller reads: the subject is what the command is about, and a command
-     * without one sits loose above every group and belongs to nothing.
+     * without one sits loose above every group and belongs to nothing —
+     * `D-FBK-041`.
      *
      * @param class-string $class
      */

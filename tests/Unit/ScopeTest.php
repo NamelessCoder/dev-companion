@@ -123,11 +123,12 @@ final class ScopeTest extends TestCase
     #[Test]
     public function namingAnInstallationToReadDoesNotMoveWhereTheWorkIs(): void
     {
-        // What TYPO3_DEV_COMPANION_ROOT is for: a core contributor points it at a site
-        // installation because that is where the registered icons and the
-        // shipped labels are. Reading the last signal off the same value made
-        // it move the boundary as well, and every unmarked question about the
-        // core checkout they were standing in came back as project work.
+        // What TYPO3_DEV_COMPANION_ROOT is for: a core contributor points it at
+        // a site installation because that is where the registered icons and
+        // the shipped labels are. Reading the last signal off the same value
+        // made it move the boundary as well, and every unmarked question about
+        // the core checkout they were standing in came back as project work —
+        // `D-SCO-005`.
         $site = $this->composerProject();
         putenv(Instance::ROOT_VARIABLE . '=' . $site);
         Instance::discoverFrom($this->coreCheckout());
@@ -179,7 +180,7 @@ final class ScopeTest extends TestCase
         // away from the session's own directory breaks the walk-up, and
         // D-DIS-006 says the variable is what such a setup states instead — so
         // where the walk reaches no installation it is the only evidence there
-        // is, and it answers.
+        // is, and it answers — `D-SCO-005`.
         putenv(Instance::ROOT_VARIABLE . '=' . $this->coreCheckout());
         Instance::discoverFrom(sys_get_temp_dir());
 
@@ -225,7 +226,8 @@ final class ScopeTest extends TestCase
         // The affordance the `paths` parameter documents — an extension key
         // counts as a path — read off the manifest where there is no
         // installation to know the key. It sits at the rung it did, so the
-        // contribution workflow in the task text is still weaker (`R-SCO-001`).
+        // contribution workflow in the task text is still weaker (`R-SCO-001`)
+        // — `D-SCO-012`.
         Instance::discoverFrom($this->extensionRepository());
 
         self::assertSame(Scope::Extension, Scope::of('blog', 'Triage the core issue this was reported as'));
@@ -235,7 +237,8 @@ final class ScopeTest extends TestCase
     public function aDotfileKeepsItsDotWhenAPathIsNormalised(): void
     {
         // `ltrim($path, './')` took the dot of the dotfile with the "./" it was
-        // meant to strip, so nothing could reach the `.ddev/` entry at all.
+        // meant to strip, so nothing could reach the `.ddev/` entry at all —
+        // `D-SCO-012`.
         Instance::discoverFrom(null);
 
         self::assertSame(Scope::Project, Scope::of('.ddev/config.yaml'));
@@ -248,7 +251,7 @@ final class ScopeTest extends TestCase
      *
      * What it got back was four `runTests.sh` suites and a
      * `checkExtensionScannerRst`, into a repository whose `Build/` holds two
-     * phpunit configurations and a phpstan baseline.
+     * phpunit configurations and a phpstan baseline — `D-SCO-012`.
      */
     #[Test]
     public function aBriefInAnExtensionRepositoryHandsBackNoCoreSuite(): void
@@ -296,7 +299,8 @@ final class ScopeTest extends TestCase
     {
         // The sentence below this one is why the length is held at all: both
         // release runs of 2026-07-31 were handed instructions cut from 3662 to
-        // 2048 characters, and the half that fell off ended with "in English".
+        // 2048 characters, and the half that fell off ended with "in English" —
+        // `D-AUD-011`, `D-DIS-013`.
         self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
         // The largest assembly, re-measured on 2026-08-19: nothing excluded, in
@@ -408,7 +412,7 @@ final class ScopeTest extends TestCase
      *
      * A caller that had excluded most of the server was still told which four
      * tools to call — the case that binds `R-ANS-013`, spending the budget on
-     * an index of tools that caller does not have.
+     * an index of tools that caller does not have — `D-AUD-011`.
      */
     #[Test]
     public function theIndexNamesNoToolTheCallerExcluded(): void
@@ -565,7 +569,8 @@ final class ScopeTest extends TestCase
 
     /**
      * The same call with the core path taken out: nothing in it is the core's,
-     * so the brief drops the checks rather than naming who they are for.
+     * so the brief drops the checks rather than naming who they are for —
+     * `D-SCO-009`.
      */
     #[Test]
     public function aBriefForExtensionPathsAloneKeepsNoCoreStep(): void
@@ -799,7 +804,8 @@ final class ScopeTest extends TestCase
         // describe Gerrit. Reading one of them as a patch submission put the
         // entire core contribution workflow into an answer about a third-party
         // extension. Nothing here says which side this is, so the intent is
-        // offered under its condition rather than stated.
+        // offered under its condition rather than stated — `D-GUI-009`,
+        // `D-SCO-002`.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Maintain and extend the third-party TYPO3 extension bk2k/bootstrap-package for '
                 . 'TYPO3 13.4 and 14.3: check TCA, TypoScript, Fluid templates, data processors and '
@@ -827,7 +833,7 @@ final class ScopeTest extends TestCase
     public function inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll(): void
     {
         // There is no Gerrit to submit to, so this is not a weaker match — it
-        // is not one.
+        // is not one — `D-SCO-002`.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Push the fix for review',
             'paths' => ['packages/my_sitepackage/Classes/Controller/EventController.php'],
@@ -878,11 +884,12 @@ final class ScopeTest extends TestCase
     }
 
     /**
-     * The other half of what keeps it cheap: the condition is not something
-     * the reader has to live with. Where nothing placed the work at all the
-     * brief names the question it could not answer, and naming a path is what
-     * turns the same words into a stated submission — which
-     * `aCorePathStillMakesTheSameWordAPatchSubmission` holds from the far side.
+     * The other half of what keeps it cheap: the condition is not something the
+     * reader has to live with. Where nothing placed the work at all the brief
+     * names the question it could not answer, and naming a path is what turns
+     * the same words into a stated submission — which
+     * `aCorePathStillMakesTheSameWordAPatchSubmission` holds from the far side
+     * — `D-SCO-002`.
      */
     #[Test]
     public function theBriefNamesWhatWouldTurnTheConditionIntoFact(): void
@@ -1004,9 +1011,9 @@ final class ScopeTest extends TestCase
      * The first `doesNotCover` entry told every client this server "never
      * reads, inspects, or runs anything against a TYPO3 core checkout. It
      * cannot be pointed at one." Started in a core checkout,
-     * `typo3_project_describe` answers with its kind, its TYPO3 version, its PHP
-     * constraint and the commands it declares. The topic was the only field
-     * anything read, and the sentence was in the `why`.
+     * `typo3_project_describe` answers with its kind, its TYPO3 version, its
+     * PHP constraint and the commands it declares. The topic was the only field
+     * anything read, and the sentence was in the `why` — `D-FBK-037`.
      */
     #[Test]
     public function noExclusionDeniesASourceTheServerReads(): void
@@ -1479,7 +1486,8 @@ final class ScopeTest extends TestCase
      * Which of the two a document is comes from the scope rather than from a
      * second list, so a document the coverage does not announce has no scope to
      * read — and is served as a resource and searched by the rule lookup all
-     * the same. `core/contribution/sources` was exactly that.
+     * the same. `core/contribution/sources` was exactly that — `D-KNW-095`,
+     * `D-VER-007`.
      */
     #[Test]
     public function everyKnowledgeDocumentIsAnnouncedByTheScope(): void
@@ -1601,10 +1609,11 @@ final class ScopeTest extends TestCase
      * D-SCO-004's named loss, run: the contributor is inside the core, on a
      * sysext path, and the two backend UI sections go anyway. That is the
      * decision working rather than failing — the corpus behind those two is the
-     * backend interface's Sass and its --typo3-* tokens, which fluid_styled_content
-     * does not render — so what the case actually tests is that the audience
-     * does not enter into it. `Scope::isOutsideCore` was the rejected lever, and
-     * a core path is where a reinstated one would show.
+     * backend interface's Sass and its --typo3-* tokens, which
+     * fluid_styled_content does not render — so what the case actually tests is
+     * that the audience does not enter into it. `Scope::isOutsideCore` was the
+     * rejected lever, and a core path is where a reinstated one would show —
+     * `D-KNW-033`.
      */
     #[Test]
     public function aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections(): void
@@ -1811,7 +1820,8 @@ final class ScopeTest extends TestCase
      * `R-SCO-009` keeps this tool out of the exclusion list because it is what
      * tells a client why its tool list is shorter than the documentation says.
      * A selection that could hide the same thing would be that hole reopened
-     * through the arguments, so the exclusion report is not one of the sections.
+     * through the arguments, so the exclusion report is not one of the sections
+     * — `D-ANS-088`.
      */
     #[Test]
     public function noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor(): void
@@ -1833,7 +1843,7 @@ final class ScopeTest extends TestCase
     /**
      * Naming none is the whole answer, which is the default because a caller
      * that does not know what this server covers cannot name the part it wants
-     * — `D-ANS-087`.
+     * — `D-ANS-087` — `D-ANS-088`.
      */
     #[Test]
     public function namingNoSectionAnswersEverythingTheToolHas(): void

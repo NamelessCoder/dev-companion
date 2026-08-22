@@ -171,7 +171,7 @@ final class IconLookupTest extends TestCase
         // The registry is read once per call, not once per process. A caller
         // registers an icon and asks about it in the same session, and a
         // reading kept from before that edit answers that it is not registered
-        // — which is the one answer this tool exists to prevent.
+        // — which is the one answer this tool exists to prevent — `D-DIS-011`.
         $root = $this->installationWithItsOwnIcon();
         Instance::discoverFrom($root);
 

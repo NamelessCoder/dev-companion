@@ -61,7 +61,7 @@ final class RecentTest extends TestCase
     public function aBodyTheTrackerDidNotAnswerIsNotHeld(): void
     {
         // The challenge page a protection answers with is a state of this
-        // minute. Held, one bad minute would be five.
+        // minute. Held, one bad minute would be five — `D-ANS-049`.
         $forge = new Forge($this->transport('<html>are you a robot</html>'));
 
         $forge->issue('105403');
@@ -89,7 +89,7 @@ final class RecentTest extends TestCase
     {
         // The caller falsifies this one itself by pushing, and asks again right
         // afterwards. A held "there is none" is what sends somebody to write a
-        // patch that is already up.
+        // patch that is already up — `D-ANS-049`.
         $gerrit = new Gerrit($this->transport(")]}'\n[]"));
 
         $gerrit->changesForIssue('105403');

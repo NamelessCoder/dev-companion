@@ -86,7 +86,8 @@ final class DecisionsTest extends TestCase
      * The number is the only part of an id a listing sorts on, and three digits
      * is what makes sorting it as text the same as sorting it as a number.
      * `Decisions::all()` compares ids as text, so unpadded it put `D-FBK-10`
-     * between `D-FBK-1` and `D-FBK-2` in the generated readme as well.
+     * between `D-FBK-1` and `D-FBK-2` in the generated readme as well —
+     * `D-DOC-005`.
      */
     #[Test]
     public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
@@ -304,7 +305,8 @@ final class DecisionsTest extends TestCase
      * `confirmed` and `revoked` are claims about a later reading, and the line
      * that carries it has to be in the file. The status names the **last** of
      * them rather than the only one: an entry may be confirmed by one run and
-     * revoked by the next, and what a reader relies on is the latest.
+     * revoked by the next, and what a reader relies on is the latest —
+     * `D-DOC-003`.
      */
     #[Test]
     public function aStatusNamesTheLastDatedLineInTheFile(): void
@@ -327,7 +329,7 @@ final class DecisionsTest extends TestCase
      * **Wrong if** happening, and a renamed test turns it into a claim nobody
      * answers for — which reads exactly like one that still holds. This covers
      * the `Covered by` field and every test named in passing, because the prose
-     * makes the same claim and goes stale the same way.
+     * makes the same claim and goes stale the same way — `D-DOC-003`.
      */
     #[Test]
     public function everyTestADecisionNamesExists(): void
@@ -362,9 +364,10 @@ final class DecisionsTest extends TestCase
      * doing its job.
      *
      * And only where no dated section stands. One of those is somebody having
-     * been back and written what changed, which is the mechanism this repository
-     * already has for an entry that aged; a head left standing under one is a
-     * question about how a record is kept rather than a name nothing holds.
+     * been back and written what changed, which is the mechanism this
+     * repository already has for an entry that aged; a head left standing under
+     * one is a question about how a record is kept rather than a name nothing
+     * holds — `D-DOC-037`.
      */
     #[Test]
     public function anUnvisitedDecisionNamesNoCommandTheConsoleLost(): void

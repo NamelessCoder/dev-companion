@@ -130,7 +130,7 @@ final class UnresolvedTest extends TestCase
      * The oldest open decision is the one the repository has moved furthest
      * away from, so it is the candidate the report names. Decisions::all() is
      * newest first for the listings, and this is the one caller that wants the
-     * other end.
+     * other end — `D-DOC-003`.
      */
     #[Test]
     public function theOpenDecisionsAreReadOldestFirst(): void

@@ -47,7 +47,7 @@ final class ReleaseLinesTest extends TestCase
     /**
      * The list ages in one direction: what a stored window says will happen
      * happens without anybody reading the file again, and only a branch created
-     * after it was read is missing from it.
+     * after it was read is missing from it — `D-ANS-058`.
      */
     #[Test]
     public function theLinesTakingAPatchNarrowAsTheirWindowsClose(): void

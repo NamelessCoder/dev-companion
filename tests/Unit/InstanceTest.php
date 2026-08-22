@@ -238,7 +238,8 @@ final class InstanceTest extends TestCase
         // files, and the walk goes up twelve directories — so what identifies a
         // root has to be a declaration of TYPO3 rather than the presence of a
         // composer.json, or the answer reports a TYPO3 project for whatever PHP
-        // repository the caller happens to be standing below (`D-ANS-085`).
+        // repository the caller happens to be standing below (`D-ANS-085`) —
+        // `D-DIS-019`.
         $root = $this->temporaryDirectory();
         file_put_contents($root . '/composer.json', json_encode($manifest, JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
@@ -303,7 +304,7 @@ final class InstanceTest extends TestCase
         // declaration is, so the project a session stands in stays the answer
         // from inside one of its own packages — where the manifest declares a
         // TYPO3 package type and the environment, the sites and the document
-        // root are one directory up.
+        // root are one directory up — `D-DIS-019`.
         $root = $this->composerProject();
         file_put_contents($root . '/packages/my_sitepackage/composer.json', json_encode(
             ['name' => 'acme/my-sitepackage', 'type' => 'typo3-cms-extension'],

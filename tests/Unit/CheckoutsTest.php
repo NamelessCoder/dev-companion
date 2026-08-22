@@ -32,7 +32,7 @@ final class CheckoutsTest extends TestCase
         // What `composer install` leaves in a core checkout, as git reported it
         // in .checkouts/14.3 on 2026-08-18. All six are ignored, which is why
         // the status is asked with --ignored and why a plain one calls this
-        // tree clean.
+        // tree clean — `D-DOC-034`.
         $this->answering(0, "!! .cache/\n!! bin/\n!! index.php\n!! typo3/sysext/core/bin/\n!! typo3temp/\n!! vendor/\n");
 
         self::assertSame(
@@ -54,7 +54,7 @@ final class CheckoutsTest extends TestCase
     {
         // Not a repository, or no git at all. Either way nothing was found to
         // carry, and a refusal on that would stop a recording over a question
-        // that was never asked.
+        // that was never asked — `D-DOC-034`.
         $this->answering(128, "fatal: not a git repository\n");
 
         self::assertSame([], Checkouts::beyondIndex('/somewhere/else'));
@@ -64,7 +64,8 @@ final class CheckoutsTest extends TestCase
     public function bothKindsOfChangeAreCarried(): void
     {
         // A tracked file somebody edited breaks the recording exactly as an
-        // installed console does: neither is in what checkouts:update makes.
+        // installed console does: neither is in what checkouts:update makes —
+        // `D-DOC-034`.
         $this->answering(0, " M composer.json\n?? notes.md\n!! vendor/\n");
 
         self::assertSame(['composer.json', 'notes.md', 'vendor/'], Checkouts::beyondIndex('/checkouts/14.3'));

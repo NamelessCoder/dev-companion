@@ -396,10 +396,10 @@ final class CatalogTest extends TestCase
     #[Test]
     public function theClassListReachesAtLeastAsFarBackAsTheEntryItBelongsTo(): void
     {
-        // The class list is what the entry names minus its custom properties, so
-        // it cannot start later than the entry does. A recorded range that says
-        // otherwise is a derivation nobody re-ran, and it would withhold a class
-        // on a version the entry itself is handed over on.
+        // The class list is what the entry names minus its custom properties,
+        // so it cannot start later than the entry does. A recorded range that
+        // says otherwise is a derivation nobody re-ran, and it would withhold a
+        // class on a version the entry itself is handed over on — `D-CAT-006`.
         foreach (Components::load() as $component) {
             if ($component['classesSince'] === null || $component['since'] === null) {
                 continue;
@@ -418,7 +418,7 @@ final class CatalogTest extends TestCase
         // What `feedback/2026-08-19-090231` shipped unverified: a backend class
         // borrowed by an extension's asset build. The entry is withheld because
         // one of its eleven custom properties arrived later, and the caller was
-        // asking about the class rather than about the component.
+        // asking about the class rather than about the component — `D-CAT-006`.
         $result = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '13.4']);
 
         self::assertSame(0, $result->data['matchCount'], 'the component itself is still not handed over');
@@ -437,7 +437,8 @@ final class CatalogTest extends TestCase
     public function aQueryThatNamesNoClassOfAWithheldEntryIsAnsweredWithNothing(): void
     {
         // The whole class list is not the answer to a question about one class:
-        // handing it over would be the entry again, minus what withheld it.
+        // handing it over would be the entry again, minus what withheld it —
+        // `D-CAT-006`.
         $topic = Registry::call('typo3_component_lookup', ['query' => 'table', 'targetVersion' => '13.4']);
         self::assertSame(['table'], array_column($topic->data['coveredClasses'], 'class'), 'only the root class was named');
 

@@ -268,7 +268,8 @@ final class FeedbackTest extends TestCase
 
     /**
      * The report about that failure is the one report this check must not
-     * refuse, and it is the only kind that names those markers at all.
+     * refuse, and it is the only kind that names those markers at all —
+     * `D-FBK-044`.
      */
     #[Test]
     public function aReportQuotingTheMarkersIsStillRecorded(): void
@@ -741,7 +742,8 @@ final class FeedbackTest extends TestCase
     {
         // An observation about the four tools that go quiet together is a
         // normal one. Stripping the separator ran their names into
-        // "typo3_label_lookuptypo3_icon_lookup", which no filter can match.
+        // "typo3_label_lookuptypo3_icon_lookup", which no filter can match —
+        // `D-ANS-017`.
         $file = $this->recordFeedback([
             'observation' => self::MARKER . ' both lookups went quiet',
             'tool' => 'typo3_label_lookup, typo3_icon_lookup',
@@ -905,7 +907,7 @@ final class FeedbackTest extends TestCase
     {
         // What is stored is what the session wrote, so one name arrives in more
         // than one spelling and the filter is where they meet — `D-ANS-006`
-        // applied to the one thing this store is filtered by.
+        // applied to the one thing this store is filtered by — `D-FBK-039`.
         $file = $this->recordFeedback([
             'observation' => self::MARKER . ' named the skill with hyphens',
             'tool' => 'typo3-extension-health',

@@ -67,7 +67,7 @@ final class ToolContractTest extends TestCase
      * the call is shown two plain optional arguments (`D-ANS-012`). The answer
      * was to keep the keyword and state the rule where the call is written, and
      * the descriptions are on the wire in `tools/list`, which is why this holds
-     * them rather than the reference alone.
+     * them rather than the reference alone — `D-ANS-054`.
      */
     #[Test]
     public function anArgumentInAnAlternativeNamesTheOnesItExcludes(): void
@@ -192,7 +192,7 @@ final class ToolContractTest extends TestCase
      * and nothing besides. No count to read as a count, no flag to read as a
      * fact, and no empty list standing in for a result — R-ANS-001. The reason
      * travels as data and names where discovery looked, which is R-ANS-002 and
-     * what META-02 asks for where discovery failed.
+     * what META-02 asks for where discovery failed — `D-ANS-005`.
      */
     #[Test]
     public function aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse(): void
@@ -240,7 +240,8 @@ final class ToolContractTest extends TestCase
      * The schema says the two are alternatives rather than leaving a client to
      * infer it. That is what keeps the full promise on a hit — the spec tells a
      * client to validate structuredContent, and a required list relaxed to suit
-     * the other branch would have quietly withdrawn the promise instead.
+     * the other branch would have quietly withdrawn the promise instead —
+     * `D-ANS-005`.
      */
     #[Test]
     public function anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer(): void
@@ -270,10 +271,10 @@ final class ToolContractTest extends TestCase
 
     /**
      * The unsupported answer is built in one place, so no path can reach the
-     * shape without a reason to hand over. typo3_extension_describe reported every
-     * miss as unanswerable, including against an installation that had just
-     * listed its packages, because the constant it filled from carried the
-     * value.
+     * shape without a reason to hand over. typo3_extension_describe reported
+     * every miss as unanswerable, including against an installation that had
+     * just listed its packages, because the constant it filled from carried the
+     * value — `D-ANS-005`.
      */
     #[Test]
     public function onlyOneClassBuildsTheUnsupportedAnswer(): void

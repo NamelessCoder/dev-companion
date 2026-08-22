@@ -96,7 +96,7 @@ final class ToolNamingTest extends TestCase
      *
      * `decisions/` is read by the test below rather than by this one, because
      * it is the one corpus where a superseded name is sometimes the subject of
-     * the sentence.
+     * the sentence — `D-DOC-040`, `D-SCO-011`, `D-KNW-035`.
      */
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
@@ -129,7 +129,8 @@ final class ToolNamingTest extends TestCase
      *
      * Matched is the whole backticked token in the tool shape, a subject and
      * one of the verbs above. So the TER's own `typo3_versions` field is not a
-     * tool name, and neither is the `typo3_logo.png` inside a Fluid example.
+     * tool name, and neither is the `typo3_logo.png` inside a Fluid example —
+     * `D-DOC-040`.
      */
     #[Test]
     public function everyToolADecisionOffersInBackticksIsRegistered(): void

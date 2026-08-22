@@ -717,10 +717,11 @@ final class SkillTest extends TestCase
         // about API the package calls, so that sweep was empty before it ran —
         // at one call per declared major carrying that major whole, which is
         // the largest answer the order asks for and what makes this step the
-        // expensive one to leave prescribed and unrun. It is the one
-        // condition the order carries since step 3's came off, and it survives
-        // for the reason that one did not: what a change touches is in front of
-        // the session, and how the skill was activated is not (`D-SKL-034`).
+        // expensive one to leave prescribed and unrun. It is the one condition
+        // the order carries since step 3's came off, and it survives for the
+        // reason that one did not: what a change touches is in front of the
+        // session, and how the skill was activated is not (`D-SKL-034`) —
+        // `D-SKL-015`.
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $condition = strpos($base, 'Skip the sweep only where the change touches no TYPO3 API');
@@ -1337,7 +1338,8 @@ final class SkillTest extends TestCase
         // the prose corpus carries: two subjects emptied none of 234 queries, a
         // third emptied 123 of 516 and a fourth 377 of 830. "Length is the
         // limit rather than the count" was read as permission by a review that
-        // asked four subjects at once and got nothing — `D-SKL-043`.
+        // asked four subjects at once and got nothing — `D-SKL-043` —
+        // `D-SKL-011`.
         $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
             Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
         ));
@@ -2007,7 +2009,7 @@ final class SkillTest extends TestCase
      * The set is closed rather than checked one field at a time because the
      * failure is the key nobody thought about. `status` was the one that got
      * in, and it got in beside a test that read one field out of the block and
-     * let every other one through.
+     * let every other one through — `D-SKL-027`.
      */
     #[Test]
     public function everyFrontMatterFieldIsOneTheStandardDefines(): void
@@ -2046,12 +2048,12 @@ final class SkillTest extends TestCase
      * That line is the decider rather than a label beside one. `Installer` used
      * to carry a list of the published names, which is a second place one fact
      * lives, and the two disagree in the direction nobody notices — a reviewed
-     * draft added to the list with the marker still in its file is published and
-     * reads as unfinished, and one dropped from the list while its file says
-     * nothing reads as ready and can be loaded by nobody. So publishing is one
-     * edit now, and this holds the derivation that made it one: every directory
-     * that declares itself a draft is published to nobody, and every one that
-     * does not is published.
+     * draft added to the list with the marker still in its file is published
+     * and reads as unfinished, and one dropped from the list while its file
+     * says nothing reads as ready and can be loaded by nobody. So publishing is
+     * one edit now, and this holds the derivation that made it one: every
+     * directory that declares itself a draft is published to nobody, and every
+     * one that does not is published — `D-SKL-054`, `D-SKL-027`, `D-SKL-021`.
      */
     #[Test]
     public function aDraftSaysSoInItsOwnFrontMatter(): void
@@ -2096,7 +2098,7 @@ final class SkillTest extends TestCase
      * are the parser's gain over the pattern this used to be: a quoted value
      * and an inline mapping are the same declaration to every client and were
      * not to a regex, and front matter no parser can read is not a declaration
-     * at all.
+     * at all — `D-SKL-027`.
      */
     #[Test]
     #[DataProvider('theShapesAFrontMatterCanTake')]
@@ -2227,7 +2229,7 @@ final class SkillTest extends TestCase
      * rather than shortening them, least-used first — which is every skill this
      * server publishes on a fresh install (`D-SKL-026`). So what is held is
      * their total, in the client's own arithmetic: `- <name>: <description>`,
-     * one newline between entries.
+     * one newline between entries — `D-SKL-061`.
      */
     #[Test]
     public function everyDescriptionIsWrittenToTheBudgetTheyShare(): void
@@ -2381,13 +2383,13 @@ final class SkillTest extends TestCase
     /**
      * The other direction, which is the one that fails without saying so.
      *
-     * A client selects a skill on its description and `typo3_task_guide` selects
-     * one on the intents, so a skill in the first and absent from the second is
-     * reachable only by a caller who already knew it existed. What the guide
-     * answers such a task with is the nearest intent that did match — a
-     * different workflow, confidently named (`D-SKL-023`). A draft is not in this
-     * set, because a draft reachable by routing is one nobody chose, and that is
-     * the exemption this check has and the only one.
+     * A client selects a skill on its description and `typo3_task_guide`
+     * selects one on the intents, so a skill in the first and absent from the
+     * second is reachable only by a caller who already knew it existed. What
+     * the guide answers such a task with is the nearest intent that did match —
+     * a different workflow, confidently named (`D-SKL-023`). A draft is not in
+     * this set, because a draft reachable by routing is one nobody chose, and
+     * that is the exemption this check has and the only one — `D-SKL-064`.
      */
     #[Test]
     public function everyPublishedSkillIsNamedByAnIntent(): void
@@ -2599,7 +2601,8 @@ final class SkillTest extends TestCase
      * otherwise judge to the evidence or to the checklist one directory away:
      * the registries a backend module needs, the sweep an upgrade produces, the
      * findings a review hands a patch, the cold start an installation answers
-     * to, and the install that says whether a distribution is complete.
+     * to, and the install that says whether a distribution is complete —
+     * `D-SKL-021`.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
@@ -2939,7 +2942,8 @@ final class SkillTest extends TestCase
      * A third declared an environment and no procedure at all, so the fork asks
      * which procedure is declared, and what the closing section owes follows
      * what the install left the repository carrying. Both discriminants are
-     * wording and nothing else, which is why they are held here — `D-SKL-056`.
+     * wording and nothing else, which is why they are held here — `D-SKL-056` —
+     * `D-KNW-105`.
      */
     #[Test]
     public function anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers(): void
@@ -3267,7 +3271,8 @@ final class SkillTest extends TestCase
         // listed the file tree and spent five minutes in it before calling
         // task_guide or a single conventions lookup. So the four owning calls
         // and the surface list come first here, in one block, and the sentence
-        // that sends the session into the files comes after all of them.
+        // that sends the session into the files comes after all of them —
+        // `D-SKL-002`.
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
@@ -3307,7 +3312,8 @@ final class SkillTest extends TestCase
         // after the view has formed confirms it instead of testing it, and the
         // run that established this read three XLF files, judged them sound and
         // never asked what governs them — so the rule that calls a non-English
-        // source file a defect was in the corpus, one query away, unread.
+        // source file a defect was in the corpus, one query away, unread —
+        // `D-SKL-002`.
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );
@@ -3361,7 +3367,8 @@ final class SkillTest extends TestCase
         // checklist while the two steps that build and close the work list
         // never mentioned it, so a security-only review was told to write the
         // whole list and answer every entry on it anyway. The narrowing is
-        // stated where the list is built now, and it reaches the reading only.
+        // stated where the list is built now, and it reaches the reading only —
+        // `D-SKL-002`.
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-health/SKILL.md',
         );

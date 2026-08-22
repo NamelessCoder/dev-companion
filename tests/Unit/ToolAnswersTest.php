@@ -48,11 +48,12 @@ final class ToolAnswersTest extends TestCase
      * Every call on a page carries its arguments and each answer it got.
      *
      * What this used to guard is gone with the markdown — `D-DOC-029`. Half of
-     * these answers are documents themselves, and in a fenced corpus an answer's
-     * own closing fence ended the block it had been written into, while a
-     * directive has no closing marker for an answer to imitate. The counting
-     * stays, because it is what says a page holds what it claims to: one set of
-     * arguments per call, and a text and a data answer for each.
+     * these answers are documents themselves, and in a fenced corpus an
+     * answer's own closing fence ended the block it had been written into,
+     * while a directive has no closing marker for an answer to imitate. The
+     * counting stays, because it is what says a page holds what it claims to:
+     * one set of arguments per call, and a text and a data answer for each —
+     * `D-DOC-007`.
      */
     #[Test]
     public function everyCallOnAPageCarriesItsArgumentsAndItsAnswers(): void
@@ -80,7 +81,8 @@ final class ToolAnswersTest extends TestCase
     /**
      * A page carrying two answers per call has to say which is which, or it is
      * two recordings a reader cannot tell apart — and the one they are told
-     * apart by is the whole reason for the second one being there.
+     * apart by is the whole reason for the second one being there —
+     * `D-DOC-006`.
      */
     #[Test]
     public function everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom(): void
@@ -103,7 +105,7 @@ final class ToolAnswersTest extends TestCase
     /**
      * The pages ship inside this package, so a path from the machine that
      * recorded them would be in every checkout of it. The substitutions are
-     * `ToolAnswers`' own and the surface says they happened.
+     * `ToolAnswers`' own and the surface says they happened — `D-DOC-006`.
      */
     #[Test]
     public function theRecordingCarriesNobodysDirectoryLayout(): void
@@ -123,7 +125,7 @@ final class ToolAnswersTest extends TestCase
      * to one is a call the other shows. It may be older than the table — that
      * is the whole point of it not being checked — so what is asserted is that
      * every tool in the table has answered, not that the pages match call for
-     * call.
+     * call — `D-KNW-035`, `D-DOC-006`, `D-DOC-007`.
      */
     #[Test]
     public function everyToolTheTableDrivesHasARecordedAnswer(): void
@@ -149,7 +151,7 @@ final class ToolAnswersTest extends TestCase
      *
      * This is the one thing that can be checked without an installation: the
      * answer is on the page and the schema is in the class, so the two can be
-     * held to each other wherever the suite runs.
+     * held to each other wherever the suite runs — `D-DOC-012`.
      */
     #[Test]
     public function everyAnswerOnAPageIsOneItsSchemaAllows(): void
@@ -223,7 +225,7 @@ final class ToolAnswersTest extends TestCase
      * way to make it pass again was to add its name. The list is
      * `ToolCalls::undriven()` now, so making this green means writing the
      * reason — and the reason is what the tool's own page then states where a
-     * reader meets the absence.
+     * reader meets the absence — `D-DOC-007`.
      */
     #[Test]
     public function everyToolTheTableLeavesOutSaysWhy(): void

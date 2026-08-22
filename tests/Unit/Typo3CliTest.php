@@ -240,7 +240,7 @@ final class Typo3CliTest extends TestCase
      * the invocation names.
      *
      * DDEV is stubbed rather than run: what is held here is the command that
-     * would be run, which is where the failure was.
+     * would be run, which is where the failure was — `D-COD-004`, `D-DIS-007`.
      */
     #[Test]
     public function theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove(): void
@@ -272,7 +272,7 @@ final class Typo3CliTest extends TestCase
      *
      * What this holds is the quoting, which is this class's part. That the
      * joining then happens is DDEV's behaviour and is not reproduced here; the
-     * measurement is written into `Typo3Cli::pastTheShell()`.
+     * measurement is written into `Typo3Cli::pastTheShell()` — `D-COD-004`.
      *
      * @param array<int, string> $arguments
      */

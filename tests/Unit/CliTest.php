@@ -30,7 +30,8 @@ final class CliTest extends TestCase
      *
      * The queue it needs is written rather than assumed. An empty one is the
      * state the sightings are *for*, so a case about what happens while items
-     * wait cannot also demand that the repository always have some.
+     * wait cannot also demand that the repository always have some —
+     * `D-FBK-012`, `D-FBK-013`.
      */
     #[Test]
     public function theSightingsWaitForAnEmptyQueue(): void
@@ -62,8 +63,8 @@ final class CliTest extends TestCase
      * todo stops coming up the moment there is none. What that costs is a todo
      * pointed at a command that always exits 0 — it is never handed over,
      * whatever its cadence says, and `bin/cli todo:list` marks it due the whole
-     * time. `read-the-contract-cases-no-test-can-hold` sat 16 days past its date
-     * that way, and nothing failed, because nothing asks.
+     * time. `read-the-contract-cases-no-test-can-hold` sat 16 days past its
+     * date that way, and nothing failed, because nothing asks — `D-EVI-007`.
      */
     #[Test]
     public function anAppointmentComesUpOnlyWhileItsCommandFindsWork(): void
@@ -144,8 +145,9 @@ final class CliTest extends TestCase
     /**
      * Every recurring todo is one of the two, and the cadence is what says
      * which: a clock makes it an appointment, `session` makes it a sighting.
-     * `bin/cli todo:next` asks the one group before the queue and the other after
-     * it, so a todo in neither would be asked at no point at all.
+     * `bin/cli todo:next` asks the one group before the queue and the other
+     * after it, so a todo in neither would be asked at no point at all —
+     * `D-FBK-012`.
      */
     #[Test]
     public function whatRecursIsEitherAnAppointmentOrASighting(): void
@@ -231,7 +233,7 @@ final class CliTest extends TestCase
      *
      * It is written to hold wherever the suite runs, because it runs in the
      * worktrees too: standing on a claim the answer is that claim, standing on
-     * none it is a refusal, and the queue is neither.
+     * none it is a refusal, and the queue is neither — `D-FBK-013`.
      */
     #[Test]
     public function whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue(): void

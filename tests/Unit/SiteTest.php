@@ -39,7 +39,7 @@ final class SiteTest extends TestCase
      * The whole point of the copy. A link into `decisions/`, `requirements/`,
      * `todo/`, `src/` or `AGENTS.md` is a path the site does not serve, and it
      * is not a dead link on the site because it is not a relative link there at
-     * all.
+     * all — `D-DOC-017`.
      */
     #[Test]
     public function noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry(): void
@@ -134,7 +134,7 @@ final class SiteTest extends TestCase
      * discarded whole by the generator, text and all, so `Site` dropped the
      * fragment and landed the reader at the top of the page instead. What
      * replaces that is a label the renderer resolves and fails loudly on, and
-     * what fails loudly in a checkout with no renderer is this.
+     * what fails loudly in a checkout with no renderer is this — `D-DOC-017`.
      */
     #[Test]
     public function everyReferenceIntoAnotherPageIsAnsweredByALabel(): void
@@ -150,7 +150,7 @@ final class SiteTest extends TestCase
     /**
      * And a reference is left exactly as written, because the renderer is what
      * resolves it. `Site` rewrites the links that leave the tree and nothing
-     * else, which is the whole of what it does to a page now.
+     * else, which is the whole of what it does to a page now — `D-DOC-029`.
      */
     #[Test]
     public function aReferenceInsideTheCorpusIsNotRewritten(): void
@@ -167,7 +167,8 @@ final class SiteTest extends TestCase
      * A directory's own page is `readme.rst` here and `index.rst` there,
      * because a generator publishes the second as the directory itself. The
      * links naming it already say `index`, since that is the name the renderer
-     * resolves a `:doc:` against.
+     * resolves a `:doc:` against — `D-DOC-026`, `D-DOC-029`, `D-DOC-018`,
+     * `D-DOC-017`.
      */
     #[Test]
     public function aDirectorysOwnPageIsPublishedAsItsIndex(): void
@@ -261,9 +262,9 @@ final class SiteTest extends TestCase
      * `D-DOC-024`: every directory the site serves has a page of its own.
      *
      * The rail and the trail are built from the directories, and a page whose
-     * directory has no `readme.rst` is attached to nothing: the renderer says so
-     * as a warning nobody reads and the page is then in no menu at all. Six of
-     * them were unreachable that way.
+     * directory has no `readme.rst` is attached to nothing: the renderer says
+     * so as a warning nobody reads and the page is then in no menu at all. Six
+     * of them were unreachable that way — `D-DOC-025`, `D-DOC-029`.
      */
     #[Test]
     public function everyDirectoryOfTheDocumentationHasItsOwnPage(): void

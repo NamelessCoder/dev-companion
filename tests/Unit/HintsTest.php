@@ -2202,7 +2202,8 @@ final class HintsTest extends TestCase
     {
         // Scoring the text is additive: where somebody anticipated a phrasing,
         // that hint is still what comes back first. Otherwise every hint that
-        // mentions a subject in passing would compete with the one about it.
+        // mentions a subject in passing would compete with the one about it —
+        // `D-ANS-081`, `D-ANS-084`.
         $result = Hints::find([], 'event listener', 6);
 
         self::assertSame('events-extension-points', $result['matchedHints'][0]['id']);

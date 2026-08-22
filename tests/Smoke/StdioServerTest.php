@@ -100,7 +100,7 @@ final class StdioServerTest extends TestCase
      * version wrote it, and the agent loading it has nothing that says
      * otherwise. The instructions are what that agent reads; stderr is what the
      * person who can run the command reads, and it carries what differs, since
-     * only one of the two is budgeted — `R-DIS-025`.
+     * only one of the two is budgeted — `R-DIS-025` — `D-DIS-013`.
      */
     #[Test]
     public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void

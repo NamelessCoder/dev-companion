@@ -99,7 +99,8 @@ final class LabelSearchTest extends TestCase
     /**
      * What the per-term counts cannot say: which words have to go. Two of these
      * five had to, and the smallest reach — `yaml`, carried by both entries the
-     * query was after — is the one to keep rather than the one to drop.
+     * query was after — is the one to keep rather than the one to drop —
+     * `D-ANS-016`.
      */
     #[Test]
     public function anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach(): void

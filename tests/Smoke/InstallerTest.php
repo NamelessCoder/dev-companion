@@ -361,7 +361,7 @@ final class InstallerTest extends TestCase
      * A standalone checkout is the case the whole reading is about: the server
      * runs from somewhere else, and `${workspaceFolder}/vendor/bin/…` there
      * would be an entry that starts a server for nobody — worse than the host
-     * path, because it is wrong on the machine that wrote it too.
+     * path, because it is wrong on the machine that wrote it too — `D-DIS-016`.
      */
     #[Test]
     public function aCheckoutElsewhereKeepsTheHostPathEvenWhereTheClientResolvesTheRoot(): void
@@ -423,7 +423,7 @@ final class InstallerTest extends TestCase
      * The defect the feedback reported, where it still stands: a client whose
      * documentation names no way to reach the project root gets the host path
      * even though `vendor/bin/typo3-dev-companion` is sitting there, and is
-     * told so.
+     * told so — `D-DIS-016`.
      */
     #[Test]
     public function aDependencyOfTheProjectStillNamesTheHostPathForAClientThatResolvesNothing(): void
@@ -638,7 +638,7 @@ final class InstallerTest extends TestCase
      * A value continued on the next line is the reason this path replaced the
      * section rather than editing it: keeping a line means knowing where one
      * ends. Refusing is what is left, because the alternative on record is
-     * deleting the caller's lines without saying so.
+     * deleting the caller's lines without saying so — `D-AUD-006`.
      */
     #[Test]
     public function codexInstallRefusesASectionItCannotRewriteWithoutDropping(): void
@@ -738,7 +738,7 @@ final class InstallerTest extends TestCase
      * property being kept is about `git status` and not about a file's
      * contents. A skill the project wrote itself sits beside the published ones
      * throughout: it is what tells "this package's directories are invisible"
-     * apart from "the whole skills directory is".
+     * apart from "the whole skills directory is" — `D-DIS-010`.
      */
     #[Test]
     public function gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote(): void

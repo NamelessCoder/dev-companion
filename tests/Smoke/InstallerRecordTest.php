@@ -125,7 +125,8 @@ final class InstallerRecordTest extends TestCase
      * Said, and not a failure: this is the command a project wires into
      * Composer's `post-update-cmd`, where a non-zero exit fails the run, and
      * the record ignores itself — so a colleague who never installed would have
-     * their `composer update` fail over a dev tool they do not use.
+     * their `composer update` fail over a dev tool they do not use —
+     * `D-DIS-014`.
      */
     #[Test]
     public function updateSaysSoWhereNothingIsInstalledAtAll(): void
@@ -151,7 +152,7 @@ final class InstallerRecordTest extends TestCase
      * This is the one file an install used to write into, and the case that
      * would show it doing so again is an `update` in a project that has one:
      * nine skills are republished, the record is rewritten, and what the
-     * project wrote stays byte for byte what it was.
+     * project wrote stays byte for byte what it was — `D-DIS-010`.
      */
     #[Test]
     public function neitherCommandWritesIntoTheProjectsGitignore(): void
@@ -183,7 +184,8 @@ final class InstallerRecordTest extends TestCase
      * The four cases are the four ways a project drifts. A publication that was
      * never made is silence, because this package has nothing to say about a
      * project it never wrote into. The rest each name themselves, so the line
-     * says which of them happened rather than only that something did.
+     * says which of them happened rather than only that something did —
+     * `D-DIS-013`.
      */
     #[Test]
     public function aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted(): void

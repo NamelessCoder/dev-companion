@@ -180,7 +180,7 @@ final class KnowledgeTest extends TestCase
     {
         // The declaration has one place, so a reader never has to search a
         // section for the range it holds on — and a sentence that happens to
-        // start that way stays prose.
+        // start that way stays prose — `D-VER-005`.
         $this->useCorpus(['extension/testing/loose' => <<<'MD'
             # Loose
 
@@ -367,7 +367,7 @@ final class KnowledgeTest extends TestCase
      * the caller pays a `typo3_rule_lookup` call to be told the document does
      * not exist. One direction only — a document no intent names is still
      * listed at orientation and served as its resource, which is what the
-     * skills the same file routes to have no equivalent of.
+     * skills the same file routes to have no equivalent of — `D-GUI-018`.
      */
     #[Test]
     public function everyGuideAnIntentNamesIsADocument(): void
@@ -444,7 +444,7 @@ final class KnowledgeTest extends TestCase
         // E_USER_DEPRECATED" was answering a 13.4 question — a sentence the
         // binding would have carried. A version inside an example command is a
         // different thing and stays: "git push origin HEAD:refs/for/13.4" is
-        // the command.
+        // the command — `D-VER-002`.
         foreach (Documents::documents() as $document) {
             self::assertDoesNotMatchRegularExpression(
                 '/\bTYPO3 v\d|\bsince v?\d|\bfrom v\d/i',
@@ -460,13 +460,14 @@ final class KnowledgeTest extends TestCase
         // The other half of the rule above, for the statement that dates itself
         // without a digit in it. `-s checkIntegrityXliff` reads as timeless and
         // arrives in 14; a 12.4 contributor asking typo3_script_lookup about
-        // language files was handed it, plus `-s normalizeXliff` and `-s build`,
-        // none of which that branch has. A section binding could filter that
-        // now and still must not: the range of a suite already lives on the
-        // suite in test-suite-hints.json, and declaring it here as well is one
-        // fact in two places that can disagree. So a prose document may only
-        // name a suite every covered major carries, and anything narrower stays
-        // where typo3_test_run_guide filters it by targetVersion.
+        // language files was handed it, plus `-s normalizeXliff` and `-s
+        // build`, none of which that branch has. A section binding could filter
+        // that now and still must not: the range of a suite already lives on
+        // the suite in test-suite-hints.json, and declaring it here as well is
+        // one fact in two places that can disagree. So a prose document may
+        // only name a suite every covered major carries, and anything narrower
+        // stays where typo3_test_run_guide filters it by targetVersion —
+        // `D-VER-002` — `D-VER-005`.
         $everywhere = array_intersect(...array_map(TestSuiteHints::availableOn(...), Versions::majors()));
 
         foreach (Documents::documents() as $document) {
@@ -533,7 +534,7 @@ final class KnowledgeTest extends TestCase
         // session that guessed it passes every suite. The corpus answered with
         // five bullets that named a Task- prefix no branch's validator accepts,
         // and the session behind feedback/2026-08-02-145315 picked the type by
-        // reading neighbouring entries.
+        // reading neighbouring entries — `D-KNW-039`.
         $bodies = implode("\n", array_column(Documents::search('changelog file'), 'body'));
 
         // Four aspects of one search result rather than four cases: a
@@ -561,7 +562,7 @@ final class KnowledgeTest extends TestCase
         // reviewer asking about a removal was handed the [!!!] marker and the
         // changelog file and nothing else — D-ANS-029. The query is read off
         // the intent rather than written here, because that is the one a
-        // removal actually arrives on.
+        // removal actually arrives on — `D-ANS-035`.
         $breaking = array_values(array_filter(
             TaskIntents::load(),
             static fn(array $intent): bool => $intent['id'] === 'breaking',
@@ -581,7 +582,8 @@ final class KnowledgeTest extends TestCase
      * to reach one brief reaches several, and the second intent arrives stated
      * as fact with a checklist and a skill behind it (`D-SKL-051`). The briefs
      * are written here rather than taken from `scenarios/`, because a scenario
-     * prompt is a whole task and half of them name two kinds of work on purpose.
+     * prompt is a whole task and half of them name two kinds of work on purpose
+     * — `D-GUI-018`, `D-SKL-066`, `D-GUI-014`.
      */
     #[Test]
     #[DataProvider('aBriefForEachKindOfWork')]
@@ -596,7 +598,8 @@ final class KnowledgeTest extends TestCase
 
     /**
      * And the set is every intent, so an intent added without a brief is caught
-     * here rather than by the first widening that swallows it unmeasured.
+     * here rather than by the first widening that swallows it unmeasured —
+     * `D-SKL-051`.
      */
     #[Test]
     public function everyKindOfWorkHasSuchABrief(): void
@@ -615,7 +618,7 @@ final class KnowledgeTest extends TestCase
      * `installation-upgrade` on nothing: measured while `compatibility` was
      * written, a strong "runs on typo3" made the compatibility brief the whole
      * answer to a site upgrade rather than a second one beside it. The subject
-     * inside the needle is what separates them (`D-GUI-012`).
+     * inside the needle is what separates them (`D-GUI-012`) — `D-GUI-018`.
      */
     #[Test]
     public function anInstallationSayingWhichMajorItIsOnIsNotCompatibilityWork(): void
@@ -782,7 +785,8 @@ final class KnowledgeTest extends TestCase
     {
         // The weakest thing that can be asked of this corpus, and only two of
         // the five documents did it: "TYPO3 Core Script Help" returned nothing,
-        // and three titles were answered first by another document.
+        // and three titles were answered first by another document —
+        // `D-ANS-037`.
         foreach (Documents::documents() as $document) {
             $results = Documents::search($document['title']);
 
@@ -1330,7 +1334,8 @@ final class KnowledgeTest extends TestCase
 
     /**
      * The other miss path: outside the core, with a document dropped for the
-     * boundary. That is the one case the sentence is true in, and it stays.
+     * boundary. That is the one case the sentence is true in, and it stays —
+     * `D-ANS-037`.
      */
     #[Test]
     public function aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt(): void
@@ -1422,7 +1427,7 @@ final class KnowledgeTest extends TestCase
      * outside that mount, and an empty list is "all is well" to the script. A
      * false green is the one failure a reading session cannot see, so the entry
      * that offers the command says where it does not hold — in the same entry,
-     * because nothing carries a caller from one to the next.
+     * because nothing carries a caller from one to the next — `D-KNW-036`.
      */
     #[Test]
     public function aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold(): void

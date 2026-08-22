@@ -111,7 +111,8 @@ final class ProjectTest extends TestCase
         // A conformance audit reported "PHP version mismatch blocks all tests"
         // from a host at 8.3.23 against a declared ^8.4, while the suite it
         // meant runs in a container at 8.4 and was never blocked
-        // (feedback/2026-07-31-193611). Two machines, one number in the answer.
+        // (feedback/2026-07-31-193611). Two machines, one number in the answer
+        // — `D-KNW-055`.
         $root = $this->composerProject('vendor', '14.3.5');
         $this->manifest($root, [
             'require' => ['php' => '^8.4'],
@@ -694,9 +695,9 @@ final class ProjectTest extends TestCase
     {
         // What made the second location worth deciding rather than assuming: a
         // repository declaring a build in both manifests would have had one
-        // name for two commands. The prefix is what settles which is meant,
-        // and it is what the core's own runTests.sh puts in front of its
-        // playwright scripts.
+        // name for two commands. The prefix is what settles which is meant, and
+        // it is what the core's own runTests.sh puts in front of its playwright
+        // scripts — `D-SCO-014`.
         $root = $this->composerProject('vendor', '14.3.6');
         $this->declare($root . '/package.json', json_encode([
             'scripts' => ['build' => 'vite build'],
@@ -905,7 +906,8 @@ final class ProjectTest extends TestCase
         // A stated console is how a layout this server could not work out gets
         // named at all, and it is evidence that the installation is reached
         // somewhere other than this shell. Answering null there would say
-        // "these run where you are", which is the claim that went wrong.
+        // "these run where you are", which is the claim that went wrong —
+        // `D-KNW-055`.
         $root = $this->composerProject();
         $this->manifest($root, ['scripts' => ['ci' => 'phpunit']]);
         putenv(Typo3Cli::CONSOLE_VARIABLE . '=docker compose exec web bin/typo3');
@@ -1001,7 +1003,8 @@ final class ProjectTest extends TestCase
         // call this server prescribes first came back with `no-installation`
         // and nothing else — and the session read composer.json, package.json
         // and .ddev/config.yaml out of the checkout by hand, in the state the
-        // installation workflow declares as its entry condition (`D-ANS-085`).
+        // installation workflow declares as its entry condition (`D-ANS-085`) —
+        // `D-DIS-019`.
         $root = $this->temporaryDirectory();
         file_put_contents($root . '/composer.json', json_encode([
             'name' => 't3g/blog',
@@ -1048,7 +1051,7 @@ final class ProjectTest extends TestCase
         // The other half of the same rule. The walk goes up twelve directories,
         // so admitting any composer.json would answer for whatever PHP
         // repository a session happens to be standing below — and this tool is
-        // the one every task opens with.
+        // the one every task opens with — `D-DIS-019`.
         $root = $this->temporaryDirectory();
         file_put_contents($root . '/composer.json', json_encode([
             'name' => 'acme/toolkit',
@@ -1413,7 +1416,7 @@ final class ProjectTest extends TestCase
         // The count is the whole subtree, and bootstrap_package is where that
         // shows: 21 files in Classes/Updates/ and six below Criteria/, reported
         // as one number. A caller counted the top level, got 21, and filed the
-        // answer as wrong — so the number says which it is.
+        // answer as wrong — so the number says which it is — `D-ANS-008`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare($extension . '/Classes/Updates/AbstractUpdate.php', "<?php\n");
@@ -1624,10 +1627,11 @@ final class ProjectTest extends TestCase
     public function anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing(): void
     {
         // An audit of a real sitepackage on 2026-07-31 was told both of its
-        // plugins had "no templateName in this extension's TypoScript" and wrote
-        // a finding about two TypoScript files nobody was going to write:
-        // configurePlugin() generates the rendering definition, and the plugin's
-        // own templates are configured under plugin.tx_<signature> — D-ANS-015.
+        // plugins had "no templateName in this extension's TypoScript" and
+        // wrote a finding about two TypoScript files nobody was going to write:
+        // configurePlugin() generates the rendering definition, and the
+        // plugin's own templates are configured under plugin.tx_<signature> —
+        // D-ANS-015 — `D-ANS-018`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
@@ -1747,7 +1751,7 @@ final class ProjectTest extends TestCase
         // extension supporting two majors ships more than one of them — the
         // third argument of addPiFlexFormValue() until v14.3, where it is
         // deprecated, and the data structure argument of addPlugin() and
-        // registerPlugin() from v14.2.
+        // registerPlugin() from v14.2 — `D-ANS-019`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
@@ -1792,13 +1796,12 @@ final class ProjectTest extends TestCase
         // A binding is read by one parser and the identifiers by another, and
         // the second does not recognise every call the first does. Where they
         // disagree the binding is reported rather than dropped: a FlexForm read
-        // and then not mentioned is the same silence as one never opened.
-        //
-        // The example used to be registerPlugin(), whose signature this reads
-        // out of a variable while the element list did not carry it. It carries
-        // it now — that half arrived on its own branch the same day — so the
-        // case is made with a content type nothing in the file registers, which
-        // is what is left of the disagreement this guards.
+        // and then not mentioned is the same silence as one never opened.  The
+        // example used to be registerPlugin(), whose signature this reads out
+        // of a variable while the element list did not carry it. It carries it
+        // now — that half arrived on its own branch the same day — so the case
+        // is made with a content type nothing in the file registers, which is
+        // what is left of the disagreement this guards — `D-ANS-019`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
@@ -1835,7 +1838,7 @@ final class ProjectTest extends TestCase
         // and says nothing about what is in it, so a route enhancer shipped in
         // a set was in no answer this server gives. Core reads the directory
         // for a fixed list of names, and which of them are there is what the
-        // set carries.
+        // set carries — `D-ANS-019`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare($extension . '/Configuration/Sets/Acme/config.yaml', "name: acme/site\n");
@@ -1873,7 +1876,7 @@ final class ProjectTest extends TestCase
         // nowhere, so nothing in the file tree says the form definitions beside
         // it are loaded at all. The way before it registers a YAML file through
         // this extension's own TypoScript, which is read from the same place
-        // the content element templates are.
+        // the content element templates are — `D-ANS-019`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
@@ -2070,10 +2073,11 @@ final class ProjectTest extends TestCase
     #[Test]
     public function aPluginTheInstallationReportsIsStillToldApart(): void
     {
-        // Where the answer comes from the booted installation, the CType list is
-        // one list for every extension and says nothing about what kind of
+        // Where the answer comes from the booted installation, the CType list
+        // is one list for every extension and says nothing about what kind of
         // registration put an entry in it. The call that says so is in the
-        // override file either way, which is the only place core allows it.
+        // override file either way, which is the only place core allows it —
+        // `D-ANS-018`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
@@ -2112,7 +2116,7 @@ final class ProjectTest extends TestCase
         // document nobody wrote. The same three read its XLF headers and none
         // reported the German source language. Both are facts about the files,
         // both are cheap, and neither is discoverable by reading further — so
-        // they are told rather than left to be found.
+        // they are told rather than left to be found — `D-KNW-055`.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare($extension . '/Tests/Unit/SomeTest.php', "<?php\n");

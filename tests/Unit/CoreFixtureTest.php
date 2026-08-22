@@ -60,7 +60,7 @@ final class CoreFixtureTest extends TestCase
      * monorepo and says which TYPO3 it is. Without the first every answer that
      * places a path comes back `uncertain`, and without the second every one
      * bound to a version comes back unbound — and both would go unnoticed,
-     * because a wrong answer here is still a well-formed one.
+     * because a wrong answer here is still a well-formed one — `D-DOC-016`.
      */
     #[Test]
     public function theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs(): void
@@ -75,12 +75,13 @@ final class CoreFixtureTest extends TestCase
      * Both directions, because the list fails in both.
      *
      * A tool in it whose answers move is a checked page asserting one root's
-     * content. A tool outside it whose answers do not move is a recording nobody
-     * needs. Two kinds are outside the question rather than outside the set: one
-     * that reaches a host answers from something no root here holds
+     * content. A tool outside it whose answers do not move is a recording
+     * nobody needs. Two kinds are outside the question rather than outside the
+     * set: one that reaches a host answers from something no root here holds
      * (`D-DOC-008`) and is not driven at all, and one that answers from the
      * installation turns on a console neither root has, so the two agree for a
-     * reason that says nothing about a caller with a booted TYPO3.
+     * reason that says nothing about a caller with a booted TYPO3 —
+     * `D-DOC-016`.
      */
     #[Test]
     public function everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne(): void

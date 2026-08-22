@@ -88,7 +88,7 @@ final class GerritTest extends TestCase
      * Both skills that call this treat a hit as grounds to stop working, so a
      * change that does not name the issue is the answer this tool must not
      * give: a session reading one MERGED core change with a plausible subject
-     * has no signal at all that it is spurious.
+     * has no signal at all that it is spurious — `D-ANS-055`.
      */
     #[Test]
     public function aChangeMatchedByItsOwnNumberRatherThanByItsMessageIsNotAnswered(): void
@@ -105,7 +105,8 @@ final class GerritTest extends TestCase
     /**
      * The trailer that carries the number without meaning it is the one a
      * merged change gains, and it ends in the change's own number — so reading
-     * the message as text would clear exactly the change the filter is for.
+     * the message as text would clear exactly the change the filter is for —
+     * `D-ANS-055`.
      */
     #[Test]
     public function theNumberInAReviewUrlIsNotTheIssueBeingNamed(): void
@@ -123,7 +124,7 @@ final class GerritTest extends TestCase
     /**
      * Everything the server matched being a false positive is the truthful
      * empty answer, which is what the caller acts on: nothing public names this
-     * issue.
+     * issue — `D-ANS-055`.
      */
     #[Test]
     public function anAnswerOfNothingButFalsePositivesIsEmpty(): void
@@ -190,7 +191,7 @@ final class GerritTest extends TestCase
     /**
      * The commit message is what the filter reads, so it is asked for — and
      * only where there is something to hold against it. A caller naming a
-     * change has named it.
+     * change has named it — `D-ANS-055`.
      */
     #[Test]
     public function theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt(): void
@@ -218,7 +219,7 @@ final class GerritTest extends TestCase
      * A server that answered without the option is not a reason to drop
      * everything or to hand back the false positive: the one rule that needs no
      * message is that a change is not the answer to the issue whose number it
-     * carries as its own.
+     * carries as its own — `D-ANS-055`.
      */
     #[Test]
     public function aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone(): void
@@ -351,7 +352,7 @@ final class GerritTest extends TestCase
     /**
      * The other handle asks the whole question in one query, so nothing is
      * asked twice — including where that query answers one change, which is a
-     * patch nobody has backported yet.
+     * patch nobody has backported yet — `D-ANS-080`.
      */
     #[Test]
     public function aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed(): void
@@ -382,7 +383,7 @@ final class GerritTest extends TestCase
      * `n` is applied after the change that was named, not to the query that
      * finds its siblings. Gerrit orders by last activity, so
      * `change:I4b02…&n=1` answers the backport — a caller asking for one change
-     * by number would otherwise be handed the other one.
+     * by number would otherwise be handed the other one — `D-ANS-080`.
      */
     #[Test]
     public function theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit(): void
@@ -398,7 +399,8 @@ final class GerritTest extends TestCase
 
     /**
      * A second query that did not answer is not an absence of siblings, so the
-     * change the caller named stands rather than being replaced by nothing.
+     * change the caller named stands rather than being replaced by nothing —
+     * `D-ANS-080`.
      */
     #[Test]
     public function aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding(): void
@@ -421,7 +423,7 @@ final class GerritTest extends TestCase
      *
      * There is no ref either, because a ref names a patch set: null rather than
      * a string carrying a zero, which would fetch nothing and read like a
-     * command to run.
+     * command to run — `D-ANS-068`.
      */
     #[Test]
     public function aChangeWithoutARevisionSaysSoRatherThanInventingOne(): void
@@ -541,7 +543,7 @@ final class GerritTest extends TestCase
      * By the number and not by the Change-Id. `/changes/<Change-Id>/…/related`
      * answered 404 `Multiple changes found` on 2026-08-21 for the backport pair
      * `D-ANS-080` puts in this answer, so the handle the caller passed is not
-     * the handle this call can be made with.
+     * the handle this call can be made with — `D-ANS-094`.
      */
     #[Test]
     public function theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer(): void
@@ -565,7 +567,7 @@ final class GerritTest extends TestCase
      * A change nothing is stacked on and that is stacked on nothing. The review
      * server answers `{"changes":[]}` for it — 20 bytes measured on 2026-08-21
      * — and that is the ordinary case rather than a failure, so it is an empty
-     * chain and not a null one.
+     * chain and not a null one — `D-ANS-094`.
      */
     #[Test]
     public function aChangeStandingAloneHasAnEmptyChainRatherThanNone(): void
@@ -582,7 +584,8 @@ final class GerritTest extends TestCase
     /**
      * A chain that could not be read is not a change standing alone. Nothing in
      * the change payload says whether there is one, so an empty list here would
-     * be this side inventing the answer the call failed to bring back.
+     * be this side inventing the answer the call failed to bring back —
+     * `D-ANS-094`.
      */
     #[Test]
     public function aChainCallThatDidNotAnswerIsNotAChangeStandingAlone(): void
@@ -599,7 +602,7 @@ final class GerritTest extends TestCase
 
     /**
      * The stack is what the caller reads, so the text half says where the
-     * change sits in it and which entries have moved on.
+     * change sits in it and which entries have moved on — `D-ANS-094`.
      */
     #[Test]
     public function theTextHalfSaysWhereInTheStackTheChangeSits(): void

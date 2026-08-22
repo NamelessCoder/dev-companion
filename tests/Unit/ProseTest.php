@@ -91,7 +91,7 @@ final class ProseTest extends TestCase
      * see: a retelling is within the measure on every sentence of it.
      *
      * Reported rather than failed on, so what is held is that the report finds
-     * the shape it claims to find.
+     * the shape it claims to find — `D-DOC-035`.
      */
     #[Test]
     public function aCommentThatNamesAnEntryAndRetellsItAnywayIsReported(): void
@@ -195,7 +195,8 @@ final class ProseTest extends TestCase
      *
      * A rewrap that drops or reorders a word does not look like a bug when the
      * diff is a hundred files of moved line breaks — it looks like an edit
-     * somebody made on purpose, and the next reader has no way to tell.
+     * somebody made on purpose, and the next reader has no way to tell —
+     * `D-DOC-029`.
      */
     #[Test]
     public function rewrappingChangesNothingButTheLineBreaks(): void
@@ -241,7 +242,7 @@ final class ProseTest extends TestCase
     /**
      * What carries its meaning in a line break or a column, in the other
      * markup: a heading and the rule under it, a directive and its indent, a
-     * drawn table, a label.
+     * drawn table, a label — `D-DOC-029`.
      */
     #[Test]
     public function whatIsNotProseInReStructuredTextComesBackUnchanged(): void
@@ -261,7 +262,8 @@ final class ProseTest extends TestCase
 
     /**
      * A literal and a role are spans a line break would break, and both are
-     * written with the backticks the markdown reader treats as one span.
+     * written with the backticks the markdown reader treats as one span —
+     * `D-DOC-029`.
      */
     #[Test]
     public function aLiteralAndARoleAreNeverBrokenAcrossLines(): void

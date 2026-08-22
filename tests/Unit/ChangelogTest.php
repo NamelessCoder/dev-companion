@@ -75,7 +75,7 @@ final class ChangelogTest extends TestCase
     /**
      * The read costs 818 ms cold against the 48 ms the names cost, so it buys
      * an answer where there was none and is not spent on one there already is.
-     * What that gives up is the entry a hit leaves out.
+     * What that gives up is the entry a hit leaves out — `D-ANS-041`.
      */
     #[Test]
     public function theTitlesAreReadOnlyWhereTheFileNamesCarryNothing(): void

@@ -621,7 +621,8 @@ final class CommitMessageTest extends TestCase
     /**
      * A branch the list has never heard of is a warning, because the list ages
      * in one direction: a line that ends does so on a date it already carries,
-     * and a line that opens is a branch created after it was read.
+     * and a line that opens is a branch created after it was read —
+     * `D-ANS-058`.
      */
     #[Test]
     public function aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead(): void
@@ -683,7 +684,7 @@ final class CommitMessageTest extends TestCase
 
     /**
      * A check that only refuses arrives too late: the session that filed this
-     * had already counted the trailers on 40 commits by then.
+     * had already counted the trailers on 40 commits by then — `D-ANS-058`.
      */
     #[Test]
     public function theMissingTrailerNamesTheLinesThatTakeAPatch(): void

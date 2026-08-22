@@ -69,7 +69,7 @@ final class ChangelogLookupTest extends TestCase
         // Breaking-101955 names GraphicalFunctions 44 times in the corpus this
         // was measured against while being titled about image generation, which
         // is the answer this order exists to keep out: the names answer, and
-        // the bodies are read only where they answered nothing.
+        // the bodies are read only where they answered nothing — `D-ANS-042`.
         Instance::discoverFrom($this->installationWithTheImageGenerationEntries());
 
         $result = Registry::call('typo3_changelog_lookup', ['query' => 'GraphicalFunctions']);
@@ -85,7 +85,7 @@ final class ChangelogLookupTest extends TestCase
         // `crop()` is a real method and the index does not carry it: an
         // identifier is a name written with a hump or an underscore, and
         // without that rule every entry writing `preview` or `file` would
-        // answer the word.
+        // answer the word — `D-ANS-042`.
         Instance::discoverFrom($this->installationWithTheImageGenerationEntries());
 
         $result = Registry::call('typo3_changelog_lookup', ['query' => 'crop']);

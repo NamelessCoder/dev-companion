@@ -47,7 +47,8 @@ final class SourceTest extends TestCase
     {
         // The field labels one answer, the declaration describes the tool, and
         // a tool offering `packages` in the field while declaring it cannot be
-        // answered that way promises a fallback that will never arrive.
+        // answered that way promises a fallback that will never arrive —
+        // `D-ANS-048`.
         foreach (Registry::definitions() as $definition) {
             $cases = $definition['outputSchema']['properties']['answeredBy']['enum'] ?? null;
             if ($cases === null) {

@@ -158,7 +158,7 @@ final class ForgeTest extends TestCase
      * text of such a comment is a bare filename referring to something the
      * answer otherwise never mentions exists. On #88556 two attachments decided
      * the triage and the text alone was actively misleading
-     * (`feedback/2026-08-05-033846`).
+     * (`feedback/2026-08-05-033846`) — `D-ANS-057`.
      */
     #[Test]
     public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
@@ -464,7 +464,7 @@ final class ForgeTest extends TestCase
      * one: 50 of 50 rows read as issues nobody has categorised and nothing has
      * moved on, when every one of them had an area and a date
      * (`feedback/2026-08-05-033902`). The search path is also where a triage
-     * asks about age, which no title carries.
+     * asks about age, which no title carries — `D-ANS-056`.
      */
     #[Test]
     public function aSearchHitIsFilledFromTheIssuesTheHitsAre(): void
@@ -498,7 +498,7 @@ final class ForgeTest extends TestCase
 
     /**
      * A second call that did not answer does not turn a search that did into an
-     * outage. The hits stand with the fields the title carried.
+     * outage. The hits stand with the fields the title carried — `D-ANS-056`.
      */
     #[Test]
     public function aPageThatCouldNotBeFilledIsStillTheHitsThatMatched(): void
@@ -688,7 +688,8 @@ final class ForgeTest extends TestCase
      *
      * What this holds against the search above is where a triage state is read
      * from: a search hit carries it in a title and an enumeration carries it in
-     * fields, which is why the two dates are answerable here at all.
+     * fields, which is why the two dates are answerable here at all —
+     * `D-ANS-054`.
      */
     #[Test]
     public function theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields(): void
@@ -819,7 +820,7 @@ final class ForgeTest extends TestCase
 
     /**
      * A page is not the set, and only the tracker's own count says which of the
-     * two the caller is holding.
+     * two the caller is holding — `D-ANS-054`.
      */
     #[Test]
     public function theCountOfEverythingThatMatchedComesBackWithThePage(): void
@@ -853,7 +854,8 @@ final class ForgeTest extends TestCase
     /**
      * Nobody types "RTE (rtehtmlarea + ckeditor)", so the caller's own word is
      * matched against the project's names — at a word boundary, because a
-     * substring match answers "rte" with every category carrying "Reporter".
+     * substring match answers "rte" with every category carrying "Reporter" —
+     * `D-ANS-054`.
      */
     #[Test]
     public function anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary(): void
@@ -896,7 +898,7 @@ final class ForgeTest extends TestCase
     /**
      * A word naming no area is an answer about the word. Sent on unfiltered it
      * would come back as the whole backlog, which reads as "everything is about
-     * the RTE" and is the one mistake this path can make.
+     * the RTE" and is the one mistake this path can make — `D-ANS-054`.
      */
     #[Test]
     public function awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist(): void
@@ -914,7 +916,8 @@ final class ForgeTest extends TestCase
 
     /**
      * The areas are read from the project rather than written down here, so a
-     * category the core adds is one this can filter by without a release.
+     * category the core adds is one this can filter by without a release —
+     * `D-ANS-054`.
      */
     #[Test]
     public function theAreasAreReadFromTheProjectAndHeldRatherThanCopied(): void
@@ -952,7 +955,7 @@ final class ForgeTest extends TestCase
     /**
      * The tracker takes a numeric user id and answers no public user list, so
      * the name a caller holds is resolved here or the question cannot be asked
-     * at all.
+     * at all — `D-ANS-089`.
      */
     #[Test]
     public function aPersonIsResolvedAgainstTheProjectsOwnMembersAndFiltersByTheIdTheTrackerTakes(): void
@@ -977,7 +980,7 @@ final class ForgeTest extends TestCase
     /**
      * Half a name is not a person. Merging two people into one backlog is a
      * wrong answer nothing about it says is wrong, so neither is chosen and
-     * both are named — which is what a caller asks again with.
+     * both are named — which is what a caller asks again with — `D-ANS-089`.
      */
     #[Test]
     public function aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth(): void
@@ -995,7 +998,7 @@ final class ForgeTest extends TestCase
     /**
      * A quarter of the reporters hold no membership — 24 of the 100 most
      * recently filed issues on 2026-08-19 — so the members alone would answer
-     * "no such person" about people who have filed dozens.
+     * "no such person" about people who have filed dozens — `D-ANS-089`.
      */
     #[Test]
     public function aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt(): void
@@ -1041,7 +1044,7 @@ final class ForgeTest extends TestCase
     /**
      * A name nothing here carries is an answer about the name. Sent on
      * unfiltered it would be the backlog of everybody, which is the mistake the
-     * word naming no area is guarded against making.
+     * word naming no area is guarded against making — `D-ANS-089`.
      */
     #[Test]
     public function aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog(): void
@@ -1069,7 +1072,7 @@ final class ForgeTest extends TestCase
 
     /**
      * What somebody has filed over the years is mostly closed, and the
-     * enumeration the tracker answers by default hides all of it.
+     * enumeration the tracker answers by default hides all of it — `D-ANS-089`.
      */
     #[Test]
     public function theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach(): void
@@ -1087,7 +1090,7 @@ final class ForgeTest extends TestCase
 
     /**
      * The dimension the filter selects on is answered on the row as well, so a
-     * page says who is reporting it without a call per row.
+     * page says who is reporting it without a call per row — `D-ANS-089`.
      */
     #[Test]
     public function aRowSaysWhoFiledIt(): void
@@ -1148,7 +1151,7 @@ final class ForgeTest extends TestCase
     /**
      * The tracker ANDs its filters, so the question somebody actually says —
      * everything of this person's — is two reads and a merge here or two calls
-     * and a merge in the caller (`feedback/2026-08-19-134706`).
+     * and a merge in the caller (`feedback/2026-08-19-134706`) — `D-ANS-090`.
      */
     #[Test]
     public function aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry(): void
@@ -1200,7 +1203,7 @@ final class ForgeTest extends TestCase
     /**
      * A person's history has no other words to narrow it by, so a page of 50
      * out of 621 leaves the rest reachable by nothing — what answers it is how
-     * the set is distributed (`feedback/2026-08-19-134651`).
+     * the set is distributed (`feedback/2026-08-19-134651`) — `D-ANS-090`.
      */
     #[Test]
     public function aBreakdownCountsTheWholeSetRatherThanAPageOfIt(): void
@@ -1268,7 +1271,8 @@ final class ForgeTest extends TestCase
 
     /**
      * A hundred rows is what one request answers, and a set larger than that is
-     * read page by page rather than counted off the first of them.
+     * read page by page rather than counted off the first of them —
+     * `D-ANS-090`.
      */
     #[Test]
     public function theCountedReadPagesUntilTheWholeMatchedSetIsRead(): void
@@ -1293,7 +1297,8 @@ final class ForgeTest extends TestCase
 
     /**
      * A read that stops is a shape of one end of the set, and a caller reading
-     * proportions off it would be reading them off the oldest thousand.
+     * proportions off it would be reading them off the oldest thousand —
+     * `D-ANS-090`.
      */
     #[Test]
     public function aBreakdownSaysWhereTheBoundCutTheRead(): void
@@ -1324,7 +1329,8 @@ final class ForgeTest extends TestCase
 
     /**
      * The tail of an area count is subsystems holding one issue each, and what
-     * it says is already said by the head. What it is not is silently dropped.
+     * it says is already said by the head. What it is not is silently dropped —
+     * `D-ANS-090`.
      */
     #[Test]
     public function theLargestBucketsAreAnsweredAndTheTailIsCounted(): void
@@ -1351,7 +1357,7 @@ final class ForgeTest extends TestCase
     /**
      * The areas are 54 names, and on a call that passed no category they are 54
      * names nobody asked for — three times over in one session
-     * (`feedback/2026-08-19-134717`).
+     * (`feedback/2026-08-19-134717`) — `D-ANS-090`.
      */
     #[Test]
     public function theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting(): void

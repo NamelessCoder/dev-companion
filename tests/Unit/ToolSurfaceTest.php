@@ -38,10 +38,11 @@ final class ToolSurfaceTest extends TestCase
     }
 
     /**
-     * What the comparison above cannot say on its own: that the directory is the
-     * whole surface and nothing besides. A renderer that dropped every tool
+     * What the comparison above cannot say on its own: that the directory is
+     * the whole surface and nothing besides. A renderer that dropped every tool
      * would agree with a directory that had none, and a tool that left the
-     * registry leaves a page behind that reads like one it still offers.
+     * registry leaves a page behind that reads like one it still offers —
+     * `D-DOC-029`, `D-SCO-011`, `D-KNW-035`, `D-DOC-007`.
      */
     #[Test]
     public function theIndexReachesEveryToolAndTheDirectoryHoldsNoOther(): void
@@ -74,9 +75,9 @@ final class ToolSurfaceTest extends TestCase
      *
      * Neither happened for the two feedback tools. The head of the surface
      * promised a recording for every tool, the renderer emitted nothing where
-     * there was none, and the promise was therefore false in the one direction a
-     * reader cannot check: an absent recording and a forgotten one look the
-     * same.
+     * there was none, and the promise was therefore false in the one direction
+     * a reader cannot check: an absent recording and a forgotten one look the
+     * same — `D-DOC-007`.
      */
     #[Test]
     public function everyToolCarriesItsAnswerOrSaysWhyItHasNone(): void

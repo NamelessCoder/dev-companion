@@ -146,7 +146,7 @@ final class PackageSourcesTest extends TestCase
      * deprecations of 14 — and an empty field beside a populated one is read as
      * "no removal planned", which is what `D-ANS-009` was built against. So the
      * rule that covers the silence travels with the answer, as data and not
-     * only as text: `R-ANS-002`.
+     * only as text: `R-ANS-002` — `D-ANS-020`.
      */
     #[Test]
     public function whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer(): void
@@ -172,7 +172,8 @@ final class PackageSourcesTest extends TestCase
      * deprecation whose subject "will be removed with v5", which is Fluid
      * standalone, and an entry recounting what an earlier release already
      * removed before naming its own. What tells them apart is the type of the
-     * entry, and that a removal is later than the version it was released in.
+     * entry, and that a removal is later than the version it was released in —
+     * `D-ANS-020`.
      */
     #[Test]
     public function aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne(): void
@@ -214,7 +215,7 @@ final class PackageSourcesTest extends TestCase
      * The shape two sessions reported from two checkouts, and the one a caller
      * actually types: the thing has a name with separators in it, and the
      * changelog file spells that name apart. Every one of these has an entry in
-     * `.checkouts/14.3` and reached none of them.
+     * `.checkouts/14.3` and reached none of them — `D-ANS-006`.
      */
     #[Test]
     public function anIdentifierReachesTheEntryTitledInWords(): void
@@ -386,7 +387,7 @@ final class PackageSourcesTest extends TestCase
      * saying something is absent names the tool that has it. After the offer
      * and not in place of it: the reported miss did carry the entry, one subset
      * away, and a sentence naming the manual first would have routed that
-     * session away from it.
+     * session away from it — `D-ANS-043`.
      */
     #[Test]
     public function aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo(): void
@@ -500,7 +501,8 @@ final class PackageSourcesTest extends TestCase
      * A version that narrows nothing away is not what emptied the answer, and
      * the miss that says it is sends the caller to drop a filter that costs it
      * nothing. What the sentence turns on is a word reaching outside the
-     * narrowing and nothing inside it, not that a narrowing was asked for.
+     * narrowing and nothing inside it, not that a narrowing was asked for —
+     * `D-ANS-016`.
      */
     #[Test]
     public function aFilterThatChangedNothingIsNotBlamedForTheMiss(): void

@@ -62,11 +62,12 @@ final class TodoTest extends TestCase
      * feedback is invisible rather than merely far down a list.
      *
      * It holds the state of the board rather than what writes it. A feedback
-     * arrives with its card, so what this catches is one that came in some other
-     * way, and the answer is a card written into `todo/open/` by hand. One
-     * assertion over the set rather than one per feedback, because an empty
+     * arrives with its card, so what this catches is one that came in some
+     * other way, and the answer is a card written into `todo/open/` by hand.
+     * One assertion over the set rather than one per feedback, because an empty
      * `feedback/` is a state the board is legitimately in (`D-FBK-013`) and a
-     * loop asserts nothing there.
+     * loop asserts nothing there — `D-FBK-045`, `D-FBK-016`, `D-FBK-017`,
+     * `D-FBK-022`.
      */
     #[Test]
     public function everyOpenFeedbackIsOnTheBoard(): void
@@ -169,9 +170,10 @@ final class TodoTest extends TestCase
     /**
      * A todo that serves nothing is an idea, and one without a next concrete
      * step is worse than no todo at all: a session that reads it cannot start.
-     * What it names has to be readable too — a feedback is deleted by the commit
-     * that closes it, and a todo still naming one is either finished or has a
-     * part left that nobody has trimmed it down to.
+     * What it names has to be readable too — a feedback is deleted by the
+     * commit that closes it, and a todo still naming one is either finished or
+     * has a part left that nobody has trimmed it down to — `D-FBK-013`,
+     * `D-FBK-016`, `D-FBK-017`.
      */
     #[Test]
     public function everyTodoAnswersForSomethingThatCanStillBeRead(): void
@@ -202,7 +204,7 @@ final class TodoTest extends TestCase
      *
      * A decision is one of the five because the work it carries is that entry's
      * **Wrong if** gone back to, and `decisions/` says only that somebody is
-     * sorting the pile.
+     * sorting the pile — `D-DOC-036`.
      *
      * @param string|null $unreadable why it cannot be read, or null where it can
      */
@@ -327,7 +329,8 @@ final class TodoTest extends TestCase
      * The name survives both moves, which is what the stamp bought over the
      * number: a released todo comes back where it was, at the priority somebody
      * gave it, rather than at the end of a queue it never asked to leave.
-     * Putting it further down is a judgement now, and judgements are written.
+     * Putting it further down is a judgement now, and judgements are written —
+     * `D-FBK-014`, `D-FBK-015`.
      */
     #[Test]
     public function aClaimIsOneMoveThatGoesBothWays(): void
@@ -391,10 +394,10 @@ final class TodoTest extends TestCase
      * the queue instead of its own claim reads a real todo, starts real work,
      * and is the second person doing it.
      *
-     * git is stubbed rather than asked, so the case says the same in a
-     * worktree standing on a real claim as it does on `main`. It used to ask
-     * whichever checkout the suite was in, and then had to assert around
-     * whatever that answered.
+     * git is stubbed rather than asked, so the case says the same in a worktree
+     * standing on a real claim as it does on `main`. It used to ask whichever
+     * checkout the suite was in, and then had to assert around whatever that
+     * answered — `D-COD-004`.
      */
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
@@ -427,10 +430,10 @@ final class TodoTest extends TestCase
      * What `linked()` does with git's two answers is the part that can be wrong
      * and the part this holds: the directories are compared with trailing
      * slashes off, and either call failing is read as "not a worktree" rather
-     * than as one. It used to answer by making a real worktree and a real branch
-     * in whichever checkout the suite was running in — `R-COD-003`. What a stub
-     * cannot say is whether the local git has `--path-format=absolute` at all,
-     * which is a property of the machine.
+     * than as one. It used to answer by making a real worktree and a real
+     * branch in whichever checkout the suite was running in — `R-COD-003`. What
+     * a stub cannot say is whether the local git has `--path-format=absolute`
+     * at all, which is a property of the machine — `D-COD-004`.
      *
      * @param array{0: int, 1: string} $own
      * @param array{0: int, 1: string} $shared
@@ -491,7 +494,7 @@ final class TodoTest extends TestCase
      * The priority decides, and the age decides the rest. Written as the one
      * case where the two disagree: the newest todo is the highest one, so a
      * queue read by age alone would hand it over last, and one read by priority
-     * alone could not tell the two `low` ones apart.
+     * alone could not tell the two `low` ones apart — `D-FBK-015`.
      */
     #[Test]
     public function theQueueIsReadByPriorityAndThenByAge(): void
@@ -562,10 +565,10 @@ final class TodoTest extends TestCase
      * whether the change is right happen before its first sentence: reading
      * what it serves against what the code does now, and settling a question
      * from a source instead of from recall. Neither leaves a trace — the diff
-     * of a todo worked from the checkouts is the diff of one worked from
-     * memory — so what can be held is that the procedure exists and that the
-     * command hands it over with the work rather than leaving it to be looked
-     * up. `R-FBK-009` says why; `D-FBK-007` says what it bets on.
+     * of a todo worked from the checkouts is the diff of one worked from memory
+     * — so what can be held is that the procedure exists and that the command
+     * hands it over with the work rather than leaving it to be looked up.
+     * `R-FBK-009` says why; `D-FBK-007` says what it bets on — `D-DOC-025`.
      */
     #[Test]
     public function everyTodoIsHandedWithThePageThatSaysHowOneIsWorked(): void
@@ -593,7 +596,7 @@ final class TodoTest extends TestCase
      * moves files and names branches, which is the half this repository owns;
      * the worktree, what a question that arrives mid-work leaves behind and who
      * merges are not things a command can carry out. A claim taken without them
-     * is a lock nobody knows how to release.
+     * is a lock nobody knows how to release — `D-DOC-025`.
      */
     #[Test]
     public function everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked(): void

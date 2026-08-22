@@ -53,7 +53,8 @@ final class EntrypointTest extends TestCase
      * it was handed the tool back under its new name — nothing on either side
      * said so, because the list is never read against the registry. It is said
      * on stderr now, and this holds the half that matters more: stdout carries
-     * the protocol and nothing else, whatever was written beside it.
+     * the protocol and nothing else, whatever was written beside it —
+     * `D-AUD-005`.
      */
     #[Test]
     public function anExcludedNameNoToolAnswersToIsSaidOnStderrAndStdoutStaysProtocol(): void
@@ -91,8 +92,8 @@ final class EntrypointTest extends TestCase
      * The other name that takes nothing away: one of the three `R-SCO-009` says
      * a caller cannot exclude. It said nothing at all before, on either stream,
      * while the instructions claimed the tool was gone — measured 2026-08-04
-     * with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools offered
-     * including it.
+     * with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools
+     * offered including it — `D-AUD-006`.
      */
     #[Test]
     public function anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo(): void

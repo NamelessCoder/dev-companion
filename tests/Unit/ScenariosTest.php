@@ -130,7 +130,7 @@ final class ScenariosTest extends TestCase
      *
      * One case may claim two rows. `SKILL-07` is a task that crosses from one
      * workflow to another, and a row per half is what says the second one
-     * arrives too — `D-SKL-066`.
+     * arrives too — `D-SKL-066` — `D-GUI-018`.
      */
     #[Test]
     #[DataProvider('theCasesWhoseOwnWordsHaveToReachAnIntent')]
@@ -207,7 +207,7 @@ final class ScenariosTest extends TestCase
      * Every case rather than two named ones, because a list of ids in a test is
      * the same thing that went stale in the todo: it was written against the
      * cases of its day and read for months afterwards as though it still named
-     * them.
+     * them — `D-EVI-007`.
      */
     #[Test]
     public function aContractCaseNoTestHoldsSaysSoWithItsExitCode(): void

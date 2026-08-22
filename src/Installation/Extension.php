@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * What one installed extension registers, read from its own files.
@@ -96,7 +95,7 @@ final class Extension
             return null;
         }
 
-        $manifest = self::json($path . '/composer.json');
+        $manifest = Data::json($path . '/composer.json');
         $requires = [];
         foreach ($manifest['require'] ?? [] as $package => $constraint) {
             $requires[] = ['package' => (string) $package, 'constraint' => (string) $constraint];
@@ -953,7 +952,7 @@ final class Extension
         foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
             $set = $file->getRelativePath();
             $sets[] = [
-                'name' => (string) (self::yaml($file->getPathname())['name'] ?? $set),
+                'name' => (string) (Data::yaml($file->getPathname())['name'] ?? $set),
                 'path' => 'Configuration/Sets/' . $set . '/',
                 'files' => array_values(array_filter(
                     self::SET_FILES,
@@ -992,7 +991,7 @@ final class Extension
         $directory = $path . '/Configuration/Form';
         if (is_dir($directory)) {
             foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
-                $configuration = self::yaml($file->getPathname());
+                $configuration = Data::yaml($file->getPathname());
                 $name = $configuration['name'] ?? null;
                 $configurations[substr($file->getPathname(), strlen($path) + 1)] = [
                     'name' => is_string($name) && $name !== '' ? $name : null,
@@ -1013,7 +1012,7 @@ final class Extension
             $configurations[$relative] = [
                 'name' => null,
                 'registeredBy' => 'typoscript',
-                'storage' => self::yaml($path . '/' . $relative),
+                'storage' => Data::yaml($path . '/' . $relative),
             ];
         }
 
@@ -1084,7 +1083,7 @@ final class Extension
      */
     private static function serviceTags(string $path): array
     {
-        $services = self::yaml($path . '/Configuration/Services.yaml')['services'] ?? null;
+        $services = Data::yaml($path . '/Configuration/Services.yaml')['services'] ?? null;
         if (!is_array($services)) {
             return [];
         }
@@ -1466,36 +1465,4 @@ final class Extension
         return $names;
     }
 
-    /** @return array<string, mixed> */
-    private static function json(string $file): array
-    {
-        if (!is_file($file)) {
-            return [];
-        }
-        $decoded = json_decode((string) file_get_contents($file), true);
-
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    /**
-     * A YAML file, or an empty one where it cannot be read — an extension
-     * mid-edit is a state it is genuinely in, and one unreadable file must not
-     * cost the rest of the answer.
-     *
-     * @return array<string, mixed>
-     */
-    private static function yaml(string $file): array
-    {
-        if (!is_file($file)) {
-            return [];
-        }
-
-        try {
-            $parsed = Yaml::parseFile($file);
-        } catch (\Throwable) {
-            return [];
-        }
-
-        return is_array($parsed) ? $parsed : [];
-    }
 }

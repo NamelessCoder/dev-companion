@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
@@ -64,7 +63,7 @@ final class Node
         $nvmrc = null;
         $nvmrcIn = null;
         foreach (self::directories($manifests) as $directory) {
-            $declared = self::json($root . '/' . $directory . 'package.json')['engines']['node'] ?? null;
+            $declared = Data::json($root . '/' . $directory . 'package.json')['engines']['node'] ?? null;
             if ($engines === null && is_string($declared) && trim($declared) !== '') {
                 $engines = trim($declared);
                 $enginesIn = $directory . 'package.json';
@@ -199,7 +198,7 @@ final class Node
 
         $steps = [];
         foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.yml')->name('*.yaml')->sortByName() as $file) {
-            $jobs = self::yaml($file->getPathname())['jobs'] ?? null;
+            $jobs = Data::yaml($file->getPathname())['jobs'] ?? null;
             foreach (is_array($jobs) ? $jobs : [] as $job) {
                 foreach (is_array($job['steps'] ?? null) ? $job['steps'] : [] as $step) {
                     $stated = is_array($step) ? self::setupNode($step) : null;
@@ -264,34 +263,4 @@ final class Node
         return $matches[1];
     }
 
-    /** @return array<string, mixed> */
-    private static function json(string $file): array
-    {
-        if (!is_file($file)) {
-            return [];
-        }
-        $decoded = json_decode((string) file_get_contents($file), true);
-
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    /**
-     * A workflow, or an empty one where it cannot be read.
-     *
-     * The same reading `Project` gives a site configuration: a file mid-edit is
-     * a state a repository is genuinely in, and the answer is the other
-     * workflows rather than an exception.
-     *
-     * @return array<string, mixed>
-     */
-    private static function yaml(string $file): array
-    {
-        try {
-            $parsed = Yaml::parseFile($file);
-        } catch (\Throwable) {
-            return [];
-        }
-
-        return is_array($parsed) ? $parsed : [];
-    }
 }

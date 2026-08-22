@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Installation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\DevCompanion\Knowledge\Versions;
 
 /**
@@ -122,7 +121,7 @@ final class Project
         }
 
         $root = $project['root'];
-        $manifest = self::json($root . '/composer.json');
+        $manifest = Data::json($root . '/composer.json');
         $php = self::requirement($manifest, 'php');
         $corePhp = self::corePhpConstraint();
         $bound = Instance::installedPhpBound($root);
@@ -274,7 +273,7 @@ final class Project
         $hostnames = [];
         $fqdns = [];
         foreach ($files as $file) {
-            $configuration = self::yaml($root . '/' . $file);
+            $configuration = Data::yaml($root . '/' . $file);
             $version = self::configuredVersion($configuration['php_version'] ?? null);
             if ($version !== null) {
                 $php = $version;
@@ -432,7 +431,7 @@ final class Project
             }
 
             $declared = ['pull' => false, 'push' => false];
-            foreach (array_keys(self::yaml($file->getPathname())) as $stanza) {
+            foreach (array_keys(Data::yaml($file->getPathname())) as $stanza) {
                 // A recipe may obtain the dump in one stanza and import it in
                 // another, and either half makes it one you can pull with.
                 $declared['pull'] = $declared['pull'] || preg_match('/_(pull|import)_command$/', (string) $stanza) === 1;
@@ -575,7 +574,7 @@ final class Project
 
         $sites = [];
         foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
-            $configuration = self::yaml($file->getPathname());
+            $configuration = Data::yaml($file->getPathname());
             $languages = [];
             foreach ($configuration['languages'] ?? [] as $language) {
                 if (is_array($language)) {
@@ -620,7 +619,7 @@ final class Project
         }
 
         foreach (self::npmManifests($root) as $manifest) {
-            $packageScripts = self::json($root . '/' . $manifest)['scripts'] ?? [];
+            $packageScripts = Data::json($root . '/' . $manifest)['scripts'] ?? [];
             foreach (is_array($packageScripts) ? $packageScripts : [] as $name => $declaration) {
                 $commands[] = [
                     'command' => self::npm($manifest) . $name,
@@ -894,7 +893,7 @@ final class Project
     {
         $core = Instance::packages()['core'] ?? null;
 
-        return $core === null ? null : self::requirement(self::json($core . '/composer.json'), 'php');
+        return $core === null ? null : self::requirement(Data::json($core . '/composer.json'), 'php');
     }
 
     /**
@@ -986,38 +985,7 @@ final class Project
             return null;
         }
 
-        return self::requirement(self::json($instance['root'] . '/composer.json'), 'typo3/cms-core');
-    }
-
-    /** @return array<string, mixed> */
-    private static function json(string $file): array
-    {
-        if (!is_file($file)) {
-            return [];
-        }
-        $decoded = json_decode((string) file_get_contents($file), true);
-
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    /**
-     * A site configuration, or an empty one when it cannot be read.
-     *
-     * A broken config.yaml is a state a project is genuinely in — mid-edit, or
-     * with an environment placeholder a parser rejects — and the answer is the
-     * other sites rather than an exception.
-     *
-     * @return array<string, mixed>
-     */
-    private static function yaml(string $file): array
-    {
-        try {
-            $parsed = Yaml::parseFile($file);
-        } catch (\Throwable) {
-            return [];
-        }
-
-        return is_array($parsed) ? $parsed : [];
+        return self::requirement(Data::json($instance['root'] . '/composer.json'), 'typo3/cms-core');
     }
 
     private static function relative(string $root, string $path): string

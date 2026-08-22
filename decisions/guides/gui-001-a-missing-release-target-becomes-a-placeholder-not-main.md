@@ -72,23 +72,21 @@ because the change is in `src/` and adds a check code.
 
 ## Since then
 
-That check exists as `breaking-not-assessed`, and building it took one thing the
-placeholder mechanism never needed: a third value. `false` and "not supplied"
-had been the same answer everywhere — `create()` read
-`$input['isBreaking'] ?? false` and `parse()` wrote the key from the subject —
-so the field is now `?bool` and `null` all the way through, which is the only
-form in which the checks can tell a caller who classified the change from one
-who never did. `default: false` came off the input schema in the same move: a
-client that materialises a declared default would have sent the assumption back
-as an answer and silenced the check for exactly the caller it is written for.
-`isDeprecation` shares the one check rather than getting a second of its own —
-nothing in a subject answers it either way, so a separate check would have fired
-on almost every core call and said what this one already says (2026-08-03).
+Two readings carried this entry out and established nothing beyond it, so each
+is a line here rather than a section of its own. Judged on 2026-08-22.
 
-## Since then
-
-Re-read on 2026-08-22 and nothing has moved. `CommitMessage` still drops both
-placeholders out of the parsed input before the checks run, so a draft handed
-back for checking reports its fields missing rather than clean. **Wrong if**
-needs a placeholder seen in a pushed commit, and only a forward run against a
-real contribution would produce one.
+- 2026-08-03: the check the reading above queued exists as
+  `breaking-not-assessed`, and building it took one thing the placeholder
+  mechanism never needed — a third value. `false` and "not supplied" had been
+  the same answer everywhere, so `isBreaking` is `?bool` and `null` all the way
+  through, which is the only form in which a caller who classified the change
+  can be told from one who never did. `default: false` came off the input schema
+  in the same move, because a client that materialises a declared default would
+  have sent the assumption back as an answer and silenced the check for exactly
+  the caller it is written for. `isDeprecation` shares the one check, since
+  nothing in a subject answers it either way.
+- 2026-08-22: re-read and nothing has moved. `CommitMessage` still drops both
+  placeholders out of the parsed input before the checks run, so a draft handed
+  back for checking reports its fields missing rather than clean. The **Wrong
+  if** needs a placeholder seen in a pushed commit, and only a forward run
+  against a real contribution would produce one.

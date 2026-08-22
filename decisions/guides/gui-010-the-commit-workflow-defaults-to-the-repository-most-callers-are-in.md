@@ -63,6 +63,15 @@ and the measurement it records is that the cost is the ordinary answer there.
 - The routes that are supposed to state `core` stop stating it, so the default
   decides a case it was never meant to.
 
+## Since then
+
+On 2026-08-04, a session measured what the project workflow is worth over twelve
+commits. `feedback/2026-08-04-180133` called `typo3_commit_message_guide` once,
+for the first commit, and hand-wrote the other eleven: the answer was correct —
+a wrapped draft and a warning that the summary ran to 68 characters against the
+preferred 52 — and once the shape of an accepted message was in the session, the
+round trip stopped paying.
+
 That is the default working rather than failing. The core workflow carries the
 Forge issue and the Releases trailer, which cannot be recalled from the last
 commit; the project workflow carries two widths and a wrap, which can. Nothing
@@ -109,12 +118,3 @@ it. `[TASK]` is what a change that is neither a bug fix nor a feature already
 is, the session chose it correctly from the four the corpus lists, and one
 session wanting confirmation of an answer it got right is not evidence that a
 rule is missing.
-
-## Since then
-
-On 2026-08-04, a session measured what the project workflow is worth over twelve
-commits. `feedback/2026-08-04-180133` called `typo3_commit_message_guide` once,
-for the first commit, and hand-wrote the other eleven: the answer was correct —
-a wrapped draft and a warning that the summary ran to 68 characters against the
-preferred 52 — and once the shape of an accepted message was in the session, the
-round trip stopped paying.

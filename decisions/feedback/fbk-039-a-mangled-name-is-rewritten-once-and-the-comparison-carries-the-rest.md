@@ -66,6 +66,16 @@ name a grep finds.
 - `FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt`
 - `FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled`
 
+## Since then
+
+On 2026-08-04, the second **Wrong if** happened. `feedback/2026-08-04-180241`
+recorded `ListMcpResourcesTool` beside two `typo3_*` names and read it back as
+`listmcpresourcestool`, in the joined string and in the split array alike.
+`Channel::toolNames()` keeps the separators the commit above restored and still
+lowercases what is left, so the mangling is a different one and the writer is
+where it lives — which is exactly what this entry named as the sign that
+rewriting the data had been the cheaper half.
+
 `Channel::comparable()` carries the other half of it: it strips everything
 outside `[a-z0-9]`, so a stored name in the spelling it was given in would lose
 its capitals rather than fold them, and the filter would not find the name it
@@ -90,13 +100,3 @@ is lower case, so nothing in its own vocabulary could show the fold. The one
 kind of name that could is a name from outside it, which is also the kind a
 session writes down when it reached for something else instead — the report this
 channel is least able to afford losing.
-
-## Since then
-
-On 2026-08-04, the second **Wrong if** happened. `feedback/2026-08-04-180241`
-recorded `ListMcpResourcesTool` beside two `typo3_*` names and read it back as
-`listmcpresourcestool`, in the joined string and in the split array alike.
-`Channel::toolNames()` keeps the separators the commit above restored and still
-lowercases what is left, so the mangling is a different one and the writer is
-where it lives — which is exactly what this entry named as the sign that
-rewriting the data had been the cheaper half.

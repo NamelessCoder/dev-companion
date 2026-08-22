@@ -64,6 +64,17 @@ which is the file that work is for.
 - The intent matches tasks that are not browser work, and briefs start carrying
   a guide nobody needs. Then the layer is not readable off a task's words.
 
+## Since then
+
+On 2026-08-04, the intent was written and the brief was run.
+`knowledge/task-intents.json` carries `browser-tests` — matching "playwright",
+"e2e", "spec.ts" and their neighbours — whose checklist opens with
+`skills/typo3-extension-testing/references/playwright.md` by name and whose
+`tools` name the two hints that exist. Called over stdio with "add a Playwright
+spec that proves the backend preview of a content element" and a `spec.ts` path,
+the answer recognizes `browser-tests` beside `content-element` and returns the
+guide as its first checklist line.
+
 What that took was data and no code: the brief already renders an intent's
 checklist, so naming a file there needs no field of its own, and
 `bin/cli links:check` holds the path like every other one this repository
@@ -82,14 +93,3 @@ this entry names a file where three competed and removes no content, while the
 hint block is a quoted selection carried under `D-GUI-007`.
 [`D-GUI-016`](../guides/gui-016-the-brief-carries-its-hints-whether-or-not-it-names-a-skill.md)
 is where that was settled, and it changes nothing about the brief.
-
-## Since then
-
-On 2026-08-04, the intent was written and the brief was run.
-`knowledge/task-intents.json` carries `browser-tests` — matching "playwright",
-"e2e", "spec.ts" and their neighbours — whose checklist opens with
-`skills/typo3-extension-testing/references/playwright.md` by name and whose
-`tools` name the two hints that exist. Called over stdio with "add a Playwright
-spec that proves the backend preview of a content element" and a `spec.ts` path,
-the answer recognizes `browser-tests` beside `content-element` and returns the
-guide as its first checklist line.

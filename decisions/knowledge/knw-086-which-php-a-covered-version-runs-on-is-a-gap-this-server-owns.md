@@ -82,6 +82,8 @@ version number to put in its place.
   states a ceiling one release old. `bin/cli checkouts:update` re-reads the
   branch; nothing compares it against what was written.
 
+## Since then
+
 It landed as a hint of its own, `php-versions`, and as a routing line in the
 installation skill's "Declare the container" step — both, because the two
 **Wrong if** above are the two halves: the corpus carries the numbers and the
@@ -92,5 +94,3 @@ container runs, and it was in another session's hands, so a statement written
 there would have collided in the file. `R-KNW-072` is what holds the answer;
 `D-KNW-091` is the guard the numbers needed loosening, having refused every
 `<major>.<minor>` in a hint.
-
-## Since then

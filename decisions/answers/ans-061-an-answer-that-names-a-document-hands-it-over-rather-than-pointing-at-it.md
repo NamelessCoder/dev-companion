@@ -74,12 +74,6 @@ rendered, and read none of the three.
 - A later debrief from a resource-rendering client reports the same miss, which
   would say the client was never the variable.
 
-Nothing decided here moves: the resource surface was never the lever, and this
-session's client rendered no list either. What it adds is that the name is one
-step short of the handover, and where the imperative to read a page whole is
-written — two skills — it is still an address. That is
-[`D-ANS-070`](ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md).
-
 ## Since then
 
 On 2026-08-09, the second **Assumed** did not hold on first contact.
@@ -89,6 +83,12 @@ the line this entry produced at the foot of its answer, and ran one search
 instead. Re-run with its own arguments, that answer is two of the nine sections
 of `core/contribution/commit-messages` and says it cut a page without saying how
 much of it it left.
+
+Nothing decided here moves: the resource surface was never the lever, and this
+session's client rendered no list either. What it adds is that the name is one
+step short of the handover, and where the imperative to read a page whole is
+written — two skills — it is still an address. That is
+[`D-ANS-070`](ans-070-a-document-is-handed-over-by-the-call-that-reads-it-and-by-what-the-answer-left-of-it.md).
 
 ## Since then
 

@@ -81,6 +81,11 @@ own source.
   is there. Then the naming is what misleads, and the row drops the tool rather
   than qualifying it.
 
+## Since then
+
+On 2026-08-04, the two measurements that decide the wording were made and the
+third was dropped.
+
 `helmich/typo3-typoscript-lint` v3.3.0 installs on TYPO3 14.3.5: a real require
 against `.environments/e-site-14.3`, which carries `symfony/event-dispatcher`
 v7.4.15. `typo3/cms-core` 14.3.5 requires that package nowhere — only
@@ -108,8 +113,3 @@ The frontend measurement was dropped rather than deferred. What the page gains
 there is the instruction to run a named linter over the files it guards, and
 that sentence is the same whichever tool wins on one small package — which this
 entry had already decided against naming.
-
-## Since then
-
-On 2026-08-04, the two measurements that decide the wording were made and the
-third was dropped.

@@ -61,6 +61,11 @@ the rejection named neither the guess nor the near miss.
 - A client is found that sends its own extra properties. Then the strict schema
   is a break for a message, and the alias is the answer.
 
+## Since then
+
+On 2026-08-04, both candidates were measured against this checkout over stdio
+and the first one was taken.
+
 `{"query": "…", "targetVersion": "14.3"}` is answered today with "Missing
 required properties: `queries`.; Missing required properties: `page`." — the two
 `oneOf` branches, neither of which the caller was asking about. With
@@ -77,8 +82,3 @@ makes a third arrive.
 
 `StdioServerTest::aCallNamingAnArgumentTheToolDoesNotHaveIsRejectedByThatName`
 holds it, beside the case `D-ANS-012` left.
-
-## Since then
-
-On 2026-08-04, both candidates were measured against this checkout over stdio
-and the first one was taken.

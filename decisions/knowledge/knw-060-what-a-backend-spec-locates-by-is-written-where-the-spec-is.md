@@ -70,6 +70,11 @@ says so.
   statement carries no binding. Then this belonged in a catalog that is checked
   against `.checkouts/` after all.
 
+## Since then
+
+On 2026-08-04, the selectors were read off the core rather than off the report,
+and the assumption above did not hold as written.
+
 `typo3-contentIframe` and `name="list_frame"` are in the shipped
 `typo3-iframe-module` element —
 `backend/Resources/Public/JavaScript/module/iframe.js` — and in the same file on
@@ -84,8 +89,3 @@ The module menu is where the report is worth correcting rather than copying.
 `aria-label` is `modulemenu.label`, translated — "Module Menu" is the English
 source. So the accessible name the session used asserts the backend's language
 along with the element, and the document names the id instead.
-
-## Since then
-
-On 2026-08-04, the selectors were read off the core rather than off the report,
-and the assumption above did not hold as written.

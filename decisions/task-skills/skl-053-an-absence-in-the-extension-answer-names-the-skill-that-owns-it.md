@@ -131,6 +131,17 @@ sentence of the skill it was following, and it says it read that sentence.
 
 - `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor`
 
+## Since then
+
+The crossing half is built. The three successors
+`typo3-content-element-development` named at once stand as three steps at three
+moments: `typo3-extension-testing` where the layer the element needs has no
+harness, `typo3-extension-documentation` where the verified element has to be
+written up, `typo3-extension-conformance` where the request turns from this
+element to the package. The last of those is the shape whose trigger is
+something the reader says, so it names the sentence that fires it and the
+question about the element that does not — `R-SKL-018`'s second half.
+
 The other six extension skills were read in the same pass, and each got the
 crossing its own workflow reaches. `typo3-backend-module-development` had two
 already standing at a moment and both are now instructions — the installation
@@ -197,14 +208,3 @@ ownership paragraph keeps both directions of the boundary and carries no
 instruction. In the guard, the `$crossings` map names that successor for this
 skill, and the position half now reads the last paragraph for `ctivate` as well
 as `nvoke`, which is the word "activate it" stood there under.
-
-## Since then
-
-The crossing half is built. The three successors
-`typo3-content-element-development` named at once stand as three steps at three
-moments: `typo3-extension-testing` where the layer the element needs has no
-harness, `typo3-extension-documentation` where the verified element has to be
-written up, `typo3-extension-conformance` where the request turns from this
-element to the package. The last of those is the shape whose trigger is
-something the reader says, so it names the sentence that fires it and the
-question about the element that does not — `R-SKL-018`'s second half.

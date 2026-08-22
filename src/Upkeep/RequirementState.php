@@ -44,12 +44,6 @@ enum RequirementState: string
         return array_map(static fn(self $state): string => $state->value, self::written());
     }
 
-    /** Whether the sentence is built at all. */
-    public function isBuilt(): bool
-    {
-        return $this !== self::Open;
-    }
-
     /** Whether something would fail if the sentence stopped being true. */
     public function isGuarded(): bool
     {

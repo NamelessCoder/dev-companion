@@ -144,12 +144,6 @@ final class Site
         });
     }
 
-    /** Whether a path in this repository is one the site serves. */
-    public static function isPublished(string $path): bool
-    {
-        return $path === self::SOURCE || str_starts_with($path, self::SOURCE . '/');
-    }
-
     /**
      * What a path in this repository is called on the site.
      *

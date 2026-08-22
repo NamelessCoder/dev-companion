@@ -40,7 +40,8 @@ final class ToolContractTest extends TestCase
             );
             // The tools that reach a host outside this package. Every other
             // answer is bundled or read from the installation, and a caller
-            // reads that difference off this flag before it calls.
+            // reads that difference off this flag before it calls —
+            // `D-ANS-017`.
             self::assertSame(
                 in_array($name, [
                     'typo3_documentation_lookup',

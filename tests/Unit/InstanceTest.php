@@ -214,8 +214,8 @@ final class InstanceTest extends TestCase
         Instance::discoverFrom($root);
 
         // An extension checkout whose dependencies were never installed has
-        // nothing to answer from, and saying so beats reporting an
-        // installation that holds a single package and no console.
+        // nothing to answer from, and saying so beats reporting an installation
+        // that holds a single package and no console — `D-DIS-019`.
         self::assertFalse(Instance::isAvailable());
         self::assertSame([], Instance::packages());
 
@@ -327,8 +327,8 @@ final class InstanceTest extends TestCase
         Instance::discoverFrom($root);
 
         // Describing the repository the walk finds would answer about something
-        // other than what the caller named, which is the failure the variable is
-        // reported through rather than searched past.
+        // other than what the caller named, which is the failure the variable
+        // is reported through rather than searched past — `D-DIS-019`.
         self::assertNull(Instance::project());
     }
 

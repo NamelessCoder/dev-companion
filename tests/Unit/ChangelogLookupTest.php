@@ -55,7 +55,7 @@ final class ChangelogLookupTest extends TestCase
 
         // Breaking-101955 is titled about image generation and carries the
         // method in a list of what it removed; Deprecation-46770 is the older
-        // markup, single backticks and no :php: role.
+        // markup, single backticks and no :php: role — `D-ANS-042`.
         self::assertSame(2, $result->data['matchCount']);
         self::assertStringContainsString('13.0/Breaking-101955-', (string) $result->data['entries'][0]['file']);
         self::assertStringContainsString('7.1/Deprecation-46770-', (string) $result->data['entries'][1]['file']);

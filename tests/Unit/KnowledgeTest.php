@@ -228,7 +228,8 @@ final class KnowledgeTest extends TestCase
 
         // It says what the page is rather than answering a query, so a query
         // about it must not reach it — the section above the first heading is
-        // one this corpus returns, and the front matter lands in it.
+        // one this corpus returns, and the front matter lands in it —
+        // `D-KNW-057`.
         foreach (Documents::search('description whenToUse hints') as $match) {
             self::assertStringNotContainsString('whenToUse', $match['body']);
         }

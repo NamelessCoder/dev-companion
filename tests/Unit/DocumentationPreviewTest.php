@@ -81,7 +81,8 @@ final class DocumentationPreviewTest extends TestCase
         self::assertIsInt($finish);
         self::assertGreaterThan($render, $finish, 'the finish step read pages the renderer had not written');
         // The copy is written by this process rather than by a command, so what
-        // says it ran first is the file the renderer was pointed at.
+        // says it ran first is the file the renderer was pointed at —
+        // `D-DOC-028`.
         self::assertFileExists($this->into . '/source/index.rst');
         self::assertStringContainsString('read it: php -S', $output->fetch());
     }

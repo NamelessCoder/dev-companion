@@ -58,9 +58,9 @@ final class ExtensionTest extends TestCase
             'extra' => ['typo3/cms' => ['Package' => ['providesPackages' => []]]],
         ]);
 
-        // The predicate is both fields rather than either, which is the half
-        // an extension author reads past: composer.json gains a version, the
-        // deprecation stays, and nothing says why.
+        // The predicate is both fields rather than either, which is the half an
+        // extension author reads past: composer.json gains a version, the
+        // deprecation stays, and nothing says why — `D-ANS-009`.
         self::assertSame(['#108345'], array_column($version, 'changelog'));
         self::assertSame(['#108345'], array_column($provides, 'changelog'));
     }
@@ -87,7 +87,7 @@ final class ExtensionTest extends TestCase
         // Core exempts a framework package from #109438 outright, and a system
         // extension derives its version from Typo3Version rather than from
         // composer.json. The v13 system extensions all ship an ext_emconf.php
-        // and none of them is the caller's to migrate.
+        // and none of them is the caller's to migrate — `D-ANS-009`.
         self::assertSame([], $found);
     }
 
@@ -120,7 +120,8 @@ final class ExtensionTest extends TestCase
 
         // getExtensionIcon() takes the first location that exists and reads the
         // Resources one first, so the root file is never reached and costs
-        // nothing — reporting it would be a finding with no migration behind it.
+        // nothing — reporting it would be a finding with no migration behind it
+        // — `D-ANS-009`.
         self::assertSame([], $found);
     }
 
@@ -148,7 +149,7 @@ final class ExtensionTest extends TestCase
         );
 
         // Per file rather than per extension: the setup half is migrated and
-        // the constants half is still lost.
+        // the constants half is still lost — `D-ANS-009`.
         self::assertSame(['ext_typoscript_constants.txt'], array_column($found, 'file'));
     }
 

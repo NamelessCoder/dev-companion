@@ -1860,7 +1860,7 @@ final class SkillTest extends TestCase
             // The first routing and not the first mention: a step that
             // discharges a call stands where a routing would, and taking it for
             // one is what let the base be read as established by the sentence
-            // saying the base had already answered.
+            // saying the base had already answered — `D-SKL-055`.
             $routing = self::routing($body, $first);
             self::assertNotFalse($routing, $name . ' routes to ' . $first . ' nowhere');
             self::assertLessThan(

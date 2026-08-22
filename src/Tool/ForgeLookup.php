@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tool;
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unreachable;
 
 /**
  * What a Forge issue actually says, including the part that decides it.
@@ -23,6 +24,18 @@ final class ForgeLookup extends ReadOnlyTool
 {
     /** The issue is read from the tracker at forge.typo3.org. */
     protected const OPEN_WORLD = true;
+
+    /**
+     * Why nothing was answered, in the caller's terms rather than the
+     * transport's — one shape for all three ways in, because what a caller does
+     * about it is the same whichever question it asked.
+     */
+    private const UNREACHABLE = [
+        Unreachable::NOT_ANSWERING => 'The tracker did not answer. It is reachable at ' . Forge::HOST
+            . ' in a browser; nothing here can answer this offline.',
+        Unreachable::NOT_PARSEABLE => 'Something answered with a page rather than with the API. The tracker sits '
+            . 'behind bot protection, and what it challenges is a browser-shaped request.',
+    ];
 
     public static function name(): string
     {
@@ -299,27 +312,6 @@ final class ForgeLookup extends ReadOnlyTool
         return self::searched($query, $limit);
     }
 
-    /**
-     * Why nothing was answered, in the caller's terms rather than the
-     * transport's — one shape for all three ways in, because what a caller does
-     * about it is the same whichever question it asked.
-     *
-     * @return array{cause: string, reason: string}|null
-     */
-    private static function unreachable(?string $cause): ?array
-    {
-        if ($cause === null) {
-            return null;
-        }
-
-        return [
-            'cause' => $cause,
-            'reason' => $cause === 'source-not-answering'
-                ? 'The tracker did not answer. It is reachable at ' . Forge::HOST . ' in a browser; nothing here can answer this offline.'
-                : 'Something answered with a page rather than with the API. The tracker sits behind bot protection, and what it challenges is a browser-shaped request.',
-        ];
-    }
-
     /** One issue, whole, which is what a number is asked for. */
     private static function read(string $issue, string $notes): ToolResult
     {
@@ -337,7 +329,7 @@ final class ForgeLookup extends ReadOnlyTool
             'breakdown' => null,
             'issue' => $answer['issue'],
             'results' => [],
-            'unavailable' => self::unreachable($answer['cause']),
+            'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
 
         if ($answer['status'] === 'unavailable') {
@@ -468,7 +460,7 @@ final class ForgeLookup extends ReadOnlyTool
             'breakdown' => null,
             'issue' => null,
             'results' => $answer['results'],
-            'unavailable' => self::unreachable($answer['cause']),
+            'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
 
         if ($answer['status'] === 'unavailable') {
@@ -637,7 +629,7 @@ final class ForgeLookup extends ReadOnlyTool
             'breakdown' => $answer['breakdown'],
             'issue' => null,
             'results' => $answer['results'],
-            'unavailable' => self::unreachable($answer['cause']),
+            'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
 
         $narrowed = implode(', ', array_filter([

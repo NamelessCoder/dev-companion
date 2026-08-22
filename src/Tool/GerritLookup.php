@@ -8,6 +8,7 @@ use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unreachable;
 
 /**
  * Whether a core patch already exists, read from the review server.
@@ -21,6 +22,14 @@ final class GerritLookup extends ReadOnlyTool
 {
     /** The change is read from the review server at review.typo3.org. */
     protected const OPEN_WORLD = true;
+
+    /** Why nothing was answered, in the caller's terms rather than the transport's. */
+    private const UNREACHABLE = [
+        Unreachable::NOT_ANSWERING => 'The review server did not answer. It is reachable at ' . Gerrit::HOST
+            . ' in a browser; nothing here can answer this question offline.',
+        Unreachable::NOT_PARSEABLE => 'The host answered with something that is not the review API, which is what a '
+            . 'proxy or a login page looks like from here.',
+    ];
 
     public static function name(): string
     {
@@ -351,12 +360,7 @@ final class GerritLookup extends ReadOnlyTool
             'query' => $answer['query'],
             'changes' => $answer['changes'],
             'indistinguishable' => $indistinguishable,
-            'unavailable' => $answer['cause'] === null ? null : [
-                'cause' => $answer['cause'],
-                'reason' => $answer['cause'] === 'source-not-answering'
-                    ? 'The review server did not answer. It is reachable at ' . Gerrit::HOST . ' in a browser; nothing here can answer this question offline.'
-                    : 'The host answered with something that is not the review API, which is what a proxy or a login page looks like from here.',
-            ],
+            'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
 
         $lines = ['TYPO3 core review server: ' . Gerrit::HOST, 'Query: ' . $answer['query']];

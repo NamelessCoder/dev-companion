@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tool;
 use TYPO3\DevCompanion\Publication\Ter;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Result\Unreachable;
 
 /**
  * What the TYPO3 Extension Repository already holds under an extension key.
@@ -21,6 +22,15 @@ final class TerLookup extends ReadOnlyTool
 {
     /** The releases are read from the registry at extensions.typo3.org. */
     protected const OPEN_WORLD = true;
+
+    /** Why nothing was answered, in the caller's terms rather than the transport's. */
+    private const UNREACHABLE = [
+        Unreachable::NOT_ANSWERING => 'The registry did not answer. It is reachable at ' . Ter::HOST
+            . ' in a browser; nothing here can answer this offline, and no bundled list of releases could be right '
+            . 'for it.',
+        Unreachable::NOT_PARSEABLE => 'Something answered with a page rather than with the API, which is what a '
+            . 'portal in front of the connection looks like from here.',
+    ];
 
     public static function name(): string
     {
@@ -120,7 +130,7 @@ final class TerLookup extends ReadOnlyTool
             'held' => $held,
             'total' => count($answer['versions']),
             'versions' => array_slice($answer['versions'], 0, $limit),
-            'unavailable' => self::unreachable($answer['cause']),
+            'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
 
         if ($answer['status'] === 'unavailable') {
@@ -191,27 +201,6 @@ final class TerLookup extends ReadOnlyTool
         return in_array($version, array_column($answer['versions'], 'number'), true);
     }
 
-    /**
-     * Why nothing was answered, in the caller's terms rather than the
-     * transport's.
-     *
-     * @return array{cause: string, reason: string}|null
-     */
-    private static function unreachable(?string $cause): ?array
-    {
-        if ($cause === null) {
-            return null;
-        }
-
-        return [
-            'cause' => $cause,
-            'reason' => $cause === 'source-not-answering'
-                ? 'The registry did not answer. It is reachable at ' . Ter::HOST . ' in a browser; nothing here can '
-                    . 'answer this offline, and no bundled list of releases could be right for it.'
-                : 'Something answered with a page rather than with the API, which is what a portal in front of the '
-                    . 'connection looks like from here.',
-        ];
-    }
 
     /**
      * What is published, with the asked version answered first.

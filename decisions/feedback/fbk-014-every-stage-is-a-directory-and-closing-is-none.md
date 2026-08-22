@@ -1,7 +1,7 @@
 ---
 id: D-FBK-014
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-014 — Every stage is a directory, and closing is none
@@ -73,3 +73,21 @@ built a path.
 ## Covered by
 
 - `TodoTest::aClaimIsOneMoveThatGoesBothWays`
+
+## Confirmed on 2026-08-22
+
+Three stages and no fourth. `todo/` holds `open/`, `waiting/`, `recurring/` and
+`reference/` on 2026-08-22, and `progress/` is absent because nothing is in hand
+— an empty stage is a directory git does not keep, which is the same shape
+`D-FBK-013` settled for the queue and costs nothing: `bin/cli todo:check` counts
+`0 in hand` either way.
+
+Nobody has written a second list of what was finished. Nothing under `todo/`
+carries one, and the questions this session asked of the history — which todo
+was worked when, what a commit closed — were answered from git each time.
+
+`reference/` still holds one page, and it shrank rather than growing. Two of the
+three items it bundled are no longer a machine's business at all, because
+`bin/cli environment:create` makes those installations, so what is left is what
+a scaffold cannot produce. That is the third **Wrong if** answered the other way
+round: the page was read and emptied instead of a second one being started.

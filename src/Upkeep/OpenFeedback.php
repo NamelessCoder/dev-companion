@@ -23,7 +23,7 @@ final class OpenFeedback
     /**
      * Every open feedback, oldest first.
      *
-     * @return array<int, array{file: string, category: string, model: string, title: string, judged: bool, ...}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, directory: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}, judged: bool}>
      */
     public static function all(): array
     {

@@ -376,12 +376,17 @@ final class Typo3Cli
         }
 
         $command = $invocation['command'];
+        // An invocation with nothing to run is not one an interpreter can be
+        // taken out of, and every read below assumes there is a first word.
+        if ($command === []) {
+            return null;
+        }
         // Already an interpreter in front: the console argument simply goes.
         if (str_starts_with(basename($command[0]), 'php')) {
             return [$command[0]];
         }
         $last = array_key_last($command);
-        if ($last === 0 || !str_contains(basename((string) $command[$last]), 'typo3')) {
+        if ($last === 0 || !str_contains(basename($command[$last]), 'typo3')) {
             return null;
         }
         $command[$last] = 'php';

@@ -468,9 +468,7 @@ final class Wrap
     /** How far a line is indented. */
     private static function indent(string $line): int
     {
-        preg_match('/^(\s*)/', $line, $match);
-
-        return mb_strlen($match[1]);
+        return mb_strlen($line) - mb_strlen(ltrim($line));
     }
 
     /**

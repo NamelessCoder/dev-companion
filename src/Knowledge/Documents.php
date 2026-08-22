@@ -107,7 +107,7 @@ final class Documents
 
         foreach (Finder::create()->files()->in($root)->depth(self::DEPTH)->name('*.md')->sortByName() as $file) {
             $id = substr($file->getPathname(), strlen($root) + 1, -strlen('.md'));
-            if (Scope::tryFrom(strtok($id, '/')) === null) {
+            if (Scope::tryFrom((string) strtok($id, '/')) === null) {
                 continue;
             }
 
@@ -131,7 +131,7 @@ final class Documents
      */
     public static function scopeOf(string $id): Scope
     {
-        return Scope::tryFrom(strtok($id, '/')) ?? Scope::Uncertain;
+        return Scope::tryFrom((string) strtok($id, '/')) ?? Scope::Uncertain;
     }
 
     /** Whether a document is the core repository's own. */

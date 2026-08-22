@@ -102,6 +102,13 @@ in the test already gets, and the one a docblock repeating it would say twice.
 `Sources::saidAt()` is that reading now: the docblock and the member, ending at
 the first `}` in the column a method closes in.
 
-What that does not license is reading the count down. The reading was widened to
-what the naming is for rather than to make the number smaller, and the 308 names
-left are the work the todo carries.
+Reading it again found the same method twice more. It started at the last `/**`
+before the declaration, so a method carrying a prose docblock and a
+`/** @param */` line below it was read from the second of the two, and a method
+carrying no comment at all was read from the previous method's docblock and
+counted as naming whatever that one named. It reads from where the run of
+comments and attributes begins now, and the count went up rather than down: 293
+names to 313.
+
+What none of that licenses is reading the count down. Each correction was made
+to what the naming is for, and the names left are the work the todo carries.

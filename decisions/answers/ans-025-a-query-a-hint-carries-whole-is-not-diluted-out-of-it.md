@@ -1,7 +1,7 @@
 ---
 id: D-ANS-025
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-ANS-025 — A query a hint carries whole is not diluted out of it
@@ -122,3 +122,26 @@ used to answer.
 - `HintsTest::aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs`
 - `HintsTest::aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt`
 - `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay`
+
+## Confirmed on 2026-08-22
+
+The crowding the second **Wrong if** watches has not arrived, and the corpus has
+more than doubled since the gate was opened: 149 hints against 66, mean body 274
+words against 291, longest 842 against 1147.
+
+Swept the way this entry swept: 596 one-term queries taken from hint bodies,
+skipping every word the title or `appliesTo` already indexes, one term at a time
+against the whole corpus. 101 distinct hints come back first and the five
+commonest answer 144 of 579 hits, so a quarter of the answers are shared by five
+hints out of 149 and the rest is spread over a hundred. 17 of the 596 reached
+nothing at all, which is the floor still doing its work on a word no hint is
+about.
+
+Two of those five are the two longest hints — `installation-boot` at 842 words
+and `project-build-and-scripts` at 824 — and the other three are 117, 146 and
+165. So length is not what puts a hint at the front: `di-service-not-found` is
+under half the corpus mean and answers 29 of them.
+
+The first and third **Wrong if** are unreported. Nothing in the archive says a
+one-term query came back with a long hint that merely mentions the word, and
+nothing says a caller wanted the index instead of the hint that says it.

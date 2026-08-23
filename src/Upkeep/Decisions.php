@@ -165,6 +165,14 @@ final class Decisions
      * carried no such name and the two whose code had moved under them carried
      * one and were right.
      *
+     * A revoked entry is left out. Its statement is not the case any more, so
+     * no test may declare it — `D-DOC-052` — and counting it here would report
+     * as missing what the checks forbid.
+     *
+     * The number that is left is not a backlog. The corpus was swept on
+     * 2026-08-23 and what stayed uncovered stayed for a reason written in the
+     * entry, which is what `D-DOC-053` records.
+     *
      * @return array<int, array{id: string, names: int, status: string}>
      */
     public static function uncovered(): array
@@ -173,7 +181,7 @@ final class Decisions
 
         $uncovered = [];
         foreach (self::all() as $decision) {
-            if ($decision['tests'] !== []) {
+            if ($decision['tests'] !== [] || DecisionStatus::tryFrom($decision['status']) === DecisionStatus::Revoked) {
                 continue;
             }
             $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);

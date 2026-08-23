@@ -217,12 +217,23 @@ final class DecisionsTest extends TestCase
      * would be answered with a name chosen to satisfy it — `D-DOC-043`.
      */
     #[Decision('D-DOC-043')]
+    #[Decision('D-DOC-053')]
     #[Test]
     public function anEntryNamingThisCodeWithNoTestIsReadOut(): void
     {
         $uncovered = Decisions::uncovered();
 
         self::assertNotSame([], $uncovered, 'every entry naming this code names a test, which the report would have to say instead');
+
+        // A revoked entry may not be declared by a test at all, so reporting it
+        // as missing one would ask for what `D-DOC-052` forbids — `D-DOC-053`.
+        foreach ($uncovered as $entry) {
+            self::assertNotSame(
+                DecisionStatus::Revoked,
+                DecisionStatus::tryFrom($entry['status']),
+                $entry['id'] . ' is revoked and is reported as naming no test',
+            );
+        }
 
         $named = array_column($uncovered, 'names');
         $sorted = $named;

@@ -214,8 +214,11 @@ final class DecisionCheck
         $uncovered = Decisions::uncovered();
         if ($uncovered !== []) {
             $output->writeln(sprintf(
-                '%d entries point at this code and name no test that would catch it moving:',
+                '%d entries point at this code and name no test that would catch it moving — '
+                . '%d open, %d confirmed, and each one for a reason in the entry (D-DOC-053):',
                 count($uncovered),
+                count(array_filter($uncovered, static fn(array $e): bool => $e['status'] === 'open')),
+                count(array_filter($uncovered, static fn(array $e): bool => $e['status'] === 'confirmed')),
             ));
             foreach (array_slice($uncovered, 0, 3) as $entry) {
                 $output->writeln(sprintf(

@@ -3,6 +3,8 @@ id: D-SKL-012
 title: Bringing a package's development installation into existence earns a task skill
 date: 2026-08-03
 status: open
+coveredBy:
+  - ScopeTest::theDeclaredInterpreterIsNotDeclined
 ---
 
 # D-SKL-012 — Bringing a package's development installation into existence earns a task skill

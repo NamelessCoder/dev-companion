@@ -3,6 +3,8 @@ id: D-ANS-021
 title: The manual lookup says why a short query ranks better
 date: 2026-08-02
 status: open
+coveredBy:
+  - DocumentationTest::aResultNamesTheWordsOfTheQueryItWasMatchedOn
 ---
 
 # D-ANS-021 — The manual lookup says why a short query ranks better

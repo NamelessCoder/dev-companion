@@ -339,6 +339,7 @@ final class DocumentationTest extends TestCase
      * each, and nothing in them showed that the word naming the subject had
      * reached none of the pages returned.
      */
+    #[Decision('D-ANS-021')]
     #[Requirement('R-DOC-002')]
     #[Test]
     public function aResultNamesTheWordsOfTheQueryItWasMatchedOn(): void
@@ -420,6 +421,7 @@ final class DocumentationTest extends TestCase
      * like the match beside it — not of whichever query was passed last. Both
      * pages here are returned for the query that names them — `D-ANS-051`.
      */
+    #[Decision('D-ANS-046')]
     #[Decision('D-ANS-051')]
     #[Test]
     public function aResultCoversTheQueryItIsKeptFor(): void
@@ -458,6 +460,7 @@ final class DocumentationTest extends TestCase
      * warning: the answer this feedback reported as the expensive kind of wrong
      * one was six results in the shape a good answer has — `D-ANS-051`.
      */
+    #[Decision('D-ANS-046')]
     #[Decision('D-ANS-051')]
     #[Test]
     public function theAnswerSaysWhereNothingCoversHalfTheQuery(): void

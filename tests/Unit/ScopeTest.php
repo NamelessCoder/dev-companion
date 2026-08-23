@@ -1022,6 +1022,7 @@ final class ScopeTest extends TestCase
      * inside the excluded topic. What stays declined is the operating around
      * it, which is the reading `D-KNW-010` and `D-KNW-049` both took.
      */
+    #[Decision('D-SKL-012')]
     #[Requirement('R-SCO-008')]
     #[Test]
     public function theDeclaredInterpreterIsNotDeclined(): void
@@ -1605,6 +1606,7 @@ final class ScopeTest extends TestCase
      * the same. `core/contribution/sources` was exactly that — `D-KNW-095`,
      * `D-VER-007`.
      */
+    #[Decision('D-KNW-061')]
     #[Requirement('R-ANS-022')]
     #[Decision('D-KNW-095')]
     #[Decision('D-VER-007')]

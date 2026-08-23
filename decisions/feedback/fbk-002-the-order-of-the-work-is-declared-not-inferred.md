@@ -3,6 +3,8 @@ id: D-FBK-002
 title: The order of the work is declared, not inferred
 date: 2026-07-31
 status: confirmed
+coveredBy:
+  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
 ---
 
 # D-FBK-002 — The order of the work is declared, not inferred

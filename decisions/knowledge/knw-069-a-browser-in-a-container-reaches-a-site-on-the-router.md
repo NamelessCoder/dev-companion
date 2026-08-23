@@ -3,6 +3,8 @@ id: D-KNW-069
 title: 'A browser in a container reaches a site on the router'
 date: 2026-08-10
 status: open
+coveredBy:
+  - KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites
 ---
 
 # D-KNW-069 — A browser in a container reaches a site on the router

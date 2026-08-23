@@ -185,6 +185,7 @@ final class TodoTest extends TestCase
      * has a part left that nobody has trimmed it down to — `D-FBK-013`,
      * `D-FBK-016`, `D-FBK-017`.
      */
+    #[Decision('D-FBK-002')]
     #[Decision('D-FBK-013')]
     #[Decision('D-FBK-016')]
     #[Decision('D-FBK-017')]

@@ -2292,6 +2292,7 @@ final class SkillTest extends TestCase
      * their total, in the client's own arithmetic: `- <name>: <description>`,
      * one newline between entries — `D-SKL-061`.
      */
+    #[Decision('D-SKL-033')]
     #[Requirement('R-SKL-021')]
     #[Decision('D-SKL-026')]
     #[Decision('D-SKL-054')]

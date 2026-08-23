@@ -351,6 +351,7 @@ final class LabelSearchTest extends TestCase
      * the rule rides on the answer rather than on a query the caller would
      * have had to phrase around labels first.
      */
+    #[Decision('D-ANS-024')]
     #[Requirement('R-ANS-015')]
     #[Test]
     #[DataProvider('whatTheConsoleAnswers')]

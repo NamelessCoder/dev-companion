@@ -3,6 +3,9 @@ id: D-ANS-046
 title: 'A manual result covers the question it is returned for'
 date: 2026-08-03
 status: open
+coveredBy:
+  - DocumentationTest::aResultCoversTheQueryItIsKeptFor
+  - DocumentationTest::theAnswerSaysWhereNothingCoversHalfTheQuery
 ---
 
 # D-ANS-046 — A manual result covers the question it is returned for

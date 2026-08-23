@@ -3,6 +3,8 @@ id: D-KNW-061
 title: The manual scaffold is a document and the hint keeps the policy
 date: 2026-08-04
 status: open
+coveredBy:
+  - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
 ---
 
 # D-KNW-061 — The manual scaffold is a document and the hint keeps the policy

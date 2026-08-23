@@ -1097,6 +1097,7 @@ final class KnowledgeTest extends TestCase
      * `any/testing/browser-check` sitting unopened in the first answer it
      * received. The paths below are that session's own (`D-KNW-069`).
      */
+    #[Decision('D-KNW-069')]
     #[Requirement('R-ANS-028')]
     #[Test]
     public function theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites(): void

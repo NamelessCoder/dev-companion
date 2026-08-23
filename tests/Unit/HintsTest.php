@@ -2139,6 +2139,7 @@ final class HintsTest extends TestCase
         self::assertContains('events-extension-points', $reached('hooks'));
     }
 
+    #[Decision('D-ANS-022')]
     #[Decision('D-ANS-050')]
     #[Test]
     public function aCompoundIsFoundWhicheverWayTheCallerJoinsIt(): void

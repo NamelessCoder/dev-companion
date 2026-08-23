@@ -60,6 +60,7 @@ final class ChangelogTest extends TestCase
      * carries the method, so a scan over file names alone reaches neither —
      * `D-ANS-041`.
      */
+    #[Decision('D-ANS-030')]
     #[Decision('D-ANS-041')]
     #[Test]
     public function aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry(): void

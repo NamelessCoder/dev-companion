@@ -3,6 +3,8 @@ id: D-ANS-022
 title: The matcher takes a hyphenated compound apart, measured over the corpus first
 date: 2026-08-02
 status: open
+coveredBy:
+  - HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt
 ---
 
 # D-ANS-022 — The matcher takes a hyphenated compound apart, measured over the corpus first

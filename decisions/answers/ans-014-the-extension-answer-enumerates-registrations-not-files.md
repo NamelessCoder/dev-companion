@@ -3,6 +3,8 @@ id: D-ANS-014
 title: 'The extension answer enumerates registrations, not files'
 date: 2026-08-02
 status: open
+coveredBy:
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswered
 ---
 
 # D-ANS-014 — The extension answer enumerates registrations, not files

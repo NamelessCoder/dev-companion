@@ -3,6 +3,8 @@ id: D-SKL-033
 title: Whether a skill is activated is the client's and the model's
 date: 2026-08-11
 status: open
+coveredBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
 ---
 
 # D-SKL-033 — Whether a skill is activated is the client's and the model's

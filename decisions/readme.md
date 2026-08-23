@@ -118,7 +118,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
 - [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named · 2026-08-05
 - [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup · 2026-08-05 · confirmed
-- [`D-ANS-059`][D-ANS-059] — What a core session named as load-bearing came from outside · 2026-08-05
+- [`D-ANS-059`][D-ANS-059] — What a session named as load-bearing is kept · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is · 2026-08-04
@@ -209,7 +209,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-056]: answers/ans-056-a-search-hit-is-filled-from-the-issue-it-is.md
 [D-ANS-057]: answers/ans-057-what-hangs-off-an-issue-is-named.md
 [D-ANS-058]: answers/ans-058-the-release-lines-a-trailer-claims-are-a-lookup.md
-[D-ANS-059]: answers/ans-059-what-a-core-session-named-as-load-bearing-came-from-outside.md
+[D-ANS-059]: answers/ans-059-what-a-session-named-as-load-bearing-is-kept.md
 [D-ANS-048]: answers/ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: answers/ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: answers/ans-050-a-curated-needle-matches-the-word-it-is.md

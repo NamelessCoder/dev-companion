@@ -1,19 +1,20 @@
 ---
 id: D-ANS-059
-title: What a core session named as load-bearing came from outside
+title: What a session named as load-bearing is kept
 date: 2026-08-05
 status: open
 ---
 
-# D-ANS-059 — What a core session named as load-bearing came from outside
+# D-ANS-059 — What a session named as load-bearing is kept
 
-**One core session reported its boundary between what this server computes and
-what it reads over somebody else's API, and every cost it named was on the
-second side.**
+**The invocation notes beside the suites and the verdict checklist a triage
+makes a session read stay, because a session named both as what changed what it
+did.**
 
-Seven feedback came out of one triage-and-patch session. The strengths name six
-tools and both skills; the failures name two, and both of them reach a host this
-repository does not own.
+Seven feedback came out of one triage-and-patch session, and they draw a
+boundary: the strengths name six tools and both skills, the failures name two,
+and both of those reach a host this repository does not own. Every cost the
+session named was on the side this server reads rather than computes.
 
 ## Evidence
 

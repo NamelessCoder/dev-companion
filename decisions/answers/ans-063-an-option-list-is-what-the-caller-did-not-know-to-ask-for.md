@@ -7,9 +7,12 @@ status: open
 
 # D-ANS-063 — An option list is what the caller did not know to ask for
 
-**Three strength reports out of one day of core work name the same two kinds of
-answer as load-bearing.** One is an option a session would not have known to ask
-for; the other is a fact no checkout can supply.
+**An answer keeps the option a caller did not know to ask for and the fact no
+checkout can supply, rather than being trimmed to the question it was asked.**
+
+Three strength reports out of one day of core work name those same two kinds as
+load-bearing: an option a session would not have known to ask for, and a fact
+only the project holds.
 
 Read as a boundary rather than as a confirmation
 ([`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)).

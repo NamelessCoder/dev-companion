@@ -79,8 +79,9 @@ final class ResourceSurfaceTest extends TestCase
             }
         }
 
-        self::assertNotSame([], $coreOnly);
-        self::assertNotSame([], $transferable);
+        if ($coreOnly === [] || $transferable === []) {
+            self::fail('the corpus has no resource of one of the two kinds, so nothing is being compared');
+        }
         self::assertLessThan(
             min($transferable),
             max($coreOnly),
@@ -218,6 +219,9 @@ final class ResourceSurfaceTest extends TestCase
             static fn(ResourceDefinition $resource): float => (float) $resource->annotations?->priority,
             Factory::resources(),
         );
+        if ($priorities === []) {
+            self::fail('the server offers no resource at all');
+        }
         self::assertLessThan(min($priorities), $priority);
     }
 

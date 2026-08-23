@@ -3802,7 +3802,7 @@ final class SkillTest extends TestCase
         );
 
         try {
-            $matter = Yaml::parse($block[1]);
+            $matter = Yaml::parse($block[1] ?? '');
         } catch (ParseException $exception) {
             self::fail($name . ' has front matter no reader of the standard can parse: ' . $exception->getMessage());
         }
@@ -3815,11 +3815,9 @@ final class SkillTest extends TestCase
     private static function description(string $name): string
     {
         $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
-        self::assertSame(
-            1,
-            preg_match('/\ndescription: (.+)\n/', $skill, $matches),
-            $name . ' has no description',
-        );
+        if (preg_match('/\ndescription: (.+)\n/', $skill, $matches) !== 1) {
+            self::fail($name . ' has no description');
+        }
 
         return $matches[1];
     }

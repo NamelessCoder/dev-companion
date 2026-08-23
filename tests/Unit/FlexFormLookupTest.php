@@ -238,6 +238,16 @@ final class FlexFormLookupTest extends TestCase
             'extra' => ['typo3/cms' => ['extension-key' => 'core']],
         ], JSON_THROW_ON_ERROR));
 
+        $flexForm = [
+            'pointer' => 'CType',
+            'structures' => [
+                'acme_teaser' => self::TEASER,
+                'acme_map' => ['sheets' => ['sDEF' => ['ROOT' => ['type' => 'array', 'el' => [
+                    'settings.zoom' => ['label' => 'Zoom', 'config' => ['type' => 'number']],
+                ]]]]],
+            ],
+        ];
+
         if ($boots) {
             Fixture::bootsInto(
                 $this->root,
@@ -259,16 +269,7 @@ final class FlexFormLookupTest extends TestCase
                         ]]]],
                     ],
                 ]],
-                flexForm: [
-                    'pointer' => 'CType',
-                    'structures' => [
-                        'acme_teaser' => self::TEASER,
-                        'acme_map' => ['sheets' => ['sDEF' => ['ROOT' => ['type' => 'array', 'el' => [
-                            'settings.zoom' => ['label' => 'Zoom', 'config' => ['type' => 'number']],
-                        ]]]]],
-                    ],
-                    ...($schemaFor === null ? [] : ['schemaTables' => $schemaFor]),
-                ],
+                flexForm: $schemaFor === null ? $flexForm : $flexForm + ['schemaTables' => $schemaFor],
                 flexFormTakesTheSchema: $takesTheSchema,
             );
         }

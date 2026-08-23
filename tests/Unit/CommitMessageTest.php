@@ -268,8 +268,11 @@ final class CommitMessageTest extends TestCase
     {
         $message = CommitMessage::create(['changeType' => 'TASK', 'summary' => 'Do a thing', 'workflow' => CommitMessage::WORKFLOW_CORE])['message'];
 
-        preg_match('/^Resolves: (.*)$/m', $message, $resolves);
-        preg_match('/^Releases: (.*)$/m', $message, $releases);
+        if (preg_match('/^Resolves: (.*)$/m', $message, $resolves) !== 1
+            || preg_match('/^Releases: (.*)$/m', $message, $releases) !== 1
+        ) {
+            self::fail('the draft carries neither trailer, so there is no placeholder to read');
+        }
 
         // What the real values look like: a Forge issue is digits, a release
         // target is main or a minor. A placeholder that fits either shape reads

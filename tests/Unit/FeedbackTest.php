@@ -69,7 +69,9 @@ final class FeedbackTest extends TestCase
 
         $contents = (string) file_get_contents($this->inStore($this->recordFeedback(['observation' => $observation])));
 
-        preg_match('/^# (.*)$/m', $contents, $heading);
+        if (preg_match('/^# (.*)$/m', $contents, $heading) !== 1) {
+            self::fail('the feedback was written without the heading it is read by');
+        }
         self::assertSame($heading[1], mb_convert_encoding($heading[1], 'UTF-8', 'UTF-8'), 'the heading was cut through a character');
         self::assertStringEndsWith('...', $heading[1]);
     }
@@ -534,7 +536,9 @@ final class FeedbackTest extends TestCase
 
         // The title is shortened where it always was, and gains no marker.
         $contents = (string) file_get_contents((string) $result->data['path']);
-        preg_match('/^# (.*)$/m', $contents, $heading);
+        if (preg_match('/^# (.*)$/m', $contents, $heading) !== 1) {
+            self::fail('the feedback was written without the heading it is read by');
+        }
         self::assertStringEndsWith('...', $heading[1]);
         self::assertSame(100, mb_strlen($heading[1]));
         self::assertStringNotContainsString('[cut:', $contents);

@@ -4329,12 +4329,15 @@ final class HintsTest extends TestCase
             array_column((array) Hints::byId('sitepackage-templates', $major)['hints'], 'text'),
         );
 
-        $derivation = array_filter(
+        $derivation = array_values(array_filter(
             (array) Hints::byId('sitepackage-templates', 14)['hints'],
             static fn(array $hint): bool => str_contains($hint['text'], 'uppercamelcase'),
-        );
+        ));
+        if ($derivation === []) {
+            self::fail('the statement about how a template name is derived is gone');
+        }
         self::assertCount(1, $derivation);
-        self::assertStringContainsString('theme_camino', reset($derivation)['text'], 'the owner is what the statement was missing');
+        self::assertStringContainsString('theme_camino', $derivation[0]['text'], 'the owner is what the statement was missing');
 
         foreach ([12, 13, 14] as $major) {
             self::assertStringContainsString('templateName = Text', $on($major), 'what fluid_styled_content does holds on all of them');
@@ -4626,8 +4629,9 @@ final class HintsTest extends TestCase
         $checklist = (string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-health/references/checklist.md',
         );
-        preg_match('/^- Quality: (.+?)\.$/ms', $checklist, $surface);
-        self::assertNotSame([], $surface, 'the checklist still writes a quality surface down');
+        if (preg_match('/^- Quality: (.+?)\.$/ms', $checklist, $surface) !== 1) {
+            self::fail('the checklist no longer writes a quality surface down');
+        }
 
         $reaches = static fn(string $task): array => array_column(
             Hints::find([], $task, 6)['matchedHints'],

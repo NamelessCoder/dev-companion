@@ -94,9 +94,9 @@ final class CliTest extends TestCase
         $working = new BufferedOutput();
         Cli::application()->doRun(new StringInput('todo:next'), $working);
 
-        self::assertStringStartsWith(
+        self::assertSame(
             $queued['title'],
-            trim($quiet->fetch()),
+            explode("\n", trim($quiet->fetch()))[0],
             'an appointment whose command found nothing was handed over ahead of the queue',
         );
         self::assertStringStartsWith(

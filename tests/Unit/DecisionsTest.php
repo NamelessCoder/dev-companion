@@ -448,7 +448,7 @@ final class DecisionsTest extends TestCase
             }
 
             $contents = (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']);
-            $head = (string) preg_split('/^## /m', (string) preg_replace('/^---\R.*?\R---\R/s', '', $contents), 2)[0];
+            $head = (preg_split('/^## /m', (string) preg_replace('/^---\R.*?\R---\R/s', '', $contents), 2) ?: [''])[0];
             preg_match_all('#bin/cli [a-z]+:[a-z]+#', $head, $matches);
             foreach (array_unique($matches[0]) as $named) {
                 if (!Cli::knows($named)) {

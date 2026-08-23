@@ -101,11 +101,9 @@ final class VersionsTest extends TestCase
         );
 
         $below = array_values(array_filter($majors, static fn(int $major): bool => $major < TranslationDomainLookup::SINCE));
-        self::assertNotSame(
-            [],
-            $below,
-            'no covered major is below it, so the answer it withholds is one nothing can ask for',
-        );
+        if ($below === []) {
+            self::fail('no covered major is below it, so the answer it withholds is one nothing can ask for');
+        }
 
         // And what the number means, at the two covered majors it divides.
         $ask = function (int $major): array {

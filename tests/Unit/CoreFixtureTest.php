@@ -123,7 +123,7 @@ final class CoreFixtureTest extends TestCase
      */
     private function answersFromBothRoots(): array
     {
-        $answers = [];
+        $answers = ['a' => [], 'b' => []];
         foreach (['a' => CoreFixture::write(), 'b' => $this->variantRoot()] as $side => $root) {
             Instance::discoverFrom($root);
             Typo3Cli::forget();

@@ -2,6 +2,8 @@
 id: R-FBK-008
 title: "A feedback's name says what only that feedback says"
 status: held
+heldBy:
+  - FeedbackTest::notesThatOpenAlikeAreNamedAfterWhatTellsThemApart
 ---
 
 # R-FBK-008 — A feedback's name says what only that feedback says
@@ -26,7 +28,3 @@ a series is the only one that cannot: nothing yet says it is a series.
 25 of 56 open feedback on 2026-08-01 carrying one of three names, 17 of them
 `debrief-of-the-typo3-14-testimonials-session`; the feedback recorded before
 that day were renamed to the same rule.
-
-## Held by
-
-- `FeedbackTest::notesThatOpenAlikeAreNamedAfterWhatTellsThemApart`

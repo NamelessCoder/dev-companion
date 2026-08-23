@@ -2,6 +2,11 @@
 id: R-DIS-007
 title: 'The installation and the console can be named outright'
 status: held
+heldBy:
+  - InstanceTest::aNamedInstallationThatIsNotThereIsReported
+  - InstanceTest::anInstallationNamedOutrightIsReadWithoutAnySearch
+  - Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut
+  - Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced
 ---
 
 # R-DIS-007 — The installation and the console can be named outright
@@ -17,10 +22,3 @@ is reported, never quietly replaced by a discovered one.
 
 A session where two links broke at once — a moved bin-dir and a host PHP below
 the required one — with no lever available (2026-07-29).
-
-## Held by
-
-- `InstanceTest::anInstallationNamedOutrightIsReadWithoutAnySearch`
-- `InstanceTest::aNamedInstallationThatIsNotThereIsReported`
-- `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`
-- `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`

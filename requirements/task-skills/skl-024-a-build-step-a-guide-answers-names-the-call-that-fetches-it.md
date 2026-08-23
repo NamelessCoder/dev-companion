@@ -3,6 +3,8 @@ id: R-SKL-024
 title: 'A build step a guide answers names the call that fetches it'
 status: held
 restsOn: [D-SKL-045]
+heldBy:
+  - SkillTest::theBrowserStepNamesTheGuidesThatAnswerIt
 ---
 
 # R-SKL-024 — A build step a guide answers names the call that fetches it
@@ -27,7 +29,3 @@ ids from `typo3_project_describe`, reached the step where six backend previews
 had to be seen in a browser, gave up on a scripted backend login and shipped
 them unverified. It called `typo3_rule_lookup` at no point in the session, and
 its own account is that it stopped rather than that it could not.
-
-## Held by
-
-- `SkillTest::theBrowserStepNamesTheGuidesThatAnswerIt`

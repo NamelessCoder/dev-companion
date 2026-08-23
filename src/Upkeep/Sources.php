@@ -49,11 +49,16 @@ final class Sources
     }
 
     /**
-     * Which tests declare they hold a decision, keyed by id.
+     * Which tests declare they hold an entry, keyed by id.
      *
-     * The `#[Decision]` attribute over a test method is where the coupling is
-     * written, and the entry's `coveredBy` is generated from it — one source,
-     * so the test and the entry cannot name each other differently.
+     * The `#[Decision]` and `#[Requirement]` attributes over a test are where
+     * the coupling is written, and the entry's `coveredBy` or `heldBy` is
+     * generated from them — one source, so the test and the entry cannot name
+     * each other differently.
+     *
+     * An attribute over the class names the class, which is a claim about every
+     * method in it and what a requirement writes where the whole class is the
+     * answer.
      *
      * Read from the text rather than through reflection, for the reason the
      * rest of this class is: loading every test class to ask about it is a cost
@@ -61,7 +66,7 @@ final class Sources
      *
      * @return array<string, list<string>>
      */
-    public static function decisionsHeld(): array
+    public static function held(string $attribute): array
     {
         $held = [];
         foreach (Finder::create()->files()->in(Paths::root() . '/tests')->name('*Test.php')->sortByName() as $file) {
@@ -69,16 +74,24 @@ final class Sources
             $pending = [];
             foreach (explode("\n", (string) file_get_contents($file->getPathname())) as $line) {
                 $line = trim($line);
-                if (preg_match("/^#\\[Decision\\('([^']+)'\\)]$/", $line, $named) === 1) {
+                if (preg_match('/^#\[' . $attribute . "\\('([^']+)'\\)]$/", $line, $named) === 1) {
                     $pending[] = $named[1];
-                } elseif (preg_match('/^public function (\w+)\(/', $line, $test) === 1) {
-                    foreach ($pending as $id) {
-                        $held[$id][] = $class . '::' . $test[1];
-                    }
-                    $pending = [];
-                } elseif (!str_starts_with($line, '#[')) {
-                    $pending = [];
+                    continue;
                 }
+                if (preg_match('/^public function (\w+)\(/', $line, $test) === 1) {
+                    $names = array_fill_keys($pending, $class . '::' . $test[1]);
+                } elseif (preg_match('/^(?:final |abstract |readonly )*class \w+/', $line) === 1) {
+                    $names = array_fill_keys($pending, $class);
+                } elseif (str_starts_with($line, '#[')) {
+                    continue;
+                } else {
+                    $pending = [];
+                    continue;
+                }
+                foreach ($names as $id => $name) {
+                    $held[$id][] = $name;
+                }
+                $pending = [];
             }
         }
 

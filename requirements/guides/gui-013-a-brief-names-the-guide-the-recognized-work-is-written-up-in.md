@@ -3,6 +3,10 @@ id: R-GUI-013
 title: 'A brief names the guide the recognized work is written up in'
 status: held
 restsOn: [D-GUI-012]
+heldBy:
+  - HintsTest::aBriefNamesTheGuideTheWorkIsWrittenUpIn
+  - KnowledgeTest::aGuideNamedOutsideTheCoreIsNotTheCoresOwn
+  - KnowledgeTest::everyGuideAnIntentNamesIsADocument
 ---
 
 # R-GUI-013 — A brief names the guide the recognized work is written up in
@@ -26,9 +30,3 @@ functional tests without `extension/testing/phpunit` and verified a rendering in
 a browser without `any/testing/browser-check`. Measured in this worktree the
 same day, the brief for that test work named `core/contribution/rules` — the
 page a core patch is judged by, handed to somebody's package.
-
-## Held by
-
-- `HintsTest::aBriefNamesTheGuideTheWorkIsWrittenUpIn`
-- `KnowledgeTest::everyGuideAnIntentNamesIsADocument`
-- `KnowledgeTest::aGuideNamedOutsideTheCoreIsNotTheCoresOwn`

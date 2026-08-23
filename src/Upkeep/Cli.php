@@ -31,6 +31,7 @@ use TYPO3\DevCompanion\Upkeep\Command\ProseCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ProseFormat;
 use TYPO3\DevCompanion\Upkeep\Command\RepositoryCheck;
 use TYPO3\DevCompanion\Upkeep\Command\RequirementCheck;
+use TYPO3\DevCompanion\Upkeep\Command\RequirementCover;
 use TYPO3\DevCompanion\Upkeep\Command\RequirementIndex;
 use TYPO3\DevCompanion\Upkeep\Command\RequirementList;
 use TYPO3\DevCompanion\Upkeep\Command\RequirementRename;
@@ -98,6 +99,7 @@ final class Cli
 
         $application->addCommand(new RequirementList());
         $application->addCommand(new RequirementCheck());
+        $application->addCommand(new RequirementCover());
         $application->addCommand(new RequirementIndex());
         $application->addCommand(new RequirementRename());
         $application->addCommand(new DecisionList());

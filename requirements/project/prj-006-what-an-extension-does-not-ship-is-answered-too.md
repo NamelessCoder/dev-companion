@@ -2,6 +2,8 @@
 id: R-PRJ-006
 title: 'What an extension does not ship is answered too'
 status: held
+heldBy:
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
 ---
 
 # R-PRJ-006 — What an extension does not ship is answered too
@@ -22,7 +24,3 @@ one it ought to be stays a convention in the knowledge base.
 Three `REVIEW-01` runs (2026-07-31), none of which reported that the site
 package ships no manual, and none of which reported the German `source-language`
 of its three XLF files while reading them.
-
-## Held by
-
-- `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`

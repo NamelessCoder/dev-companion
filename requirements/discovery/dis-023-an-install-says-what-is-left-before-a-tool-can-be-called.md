@@ -3,6 +3,8 @@ id: R-DIS-023
 title: 'An install says what is left before a tool can be called'
 status: held
 restsOn: [D-DIS-009]
+heldBy:
+  - InstallerAgentSupportTest::everyClientWithAnEntryIsToldWhatIsLeftBeforeAToolCanBeCalled
 ---
 
 # R-DIS-023 — An install says what is left before a tool can be called
@@ -31,8 +33,6 @@ Both reached the server in the end by driving the stdio binary by hand, the
 second only after it had already audited a site package without it.
 
 ## Held by
-
-- `InstallerAgentSupportTest::everyClientWithAnEntryIsToldWhatIsLeftBeforeAToolCanBeCalled`
 
 What the output has to say is a property of each client rather than of this
 package, so that test holds that something is said — per client, on both

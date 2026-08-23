@@ -2,6 +2,10 @@
 id: R-AUD-005
 title: 'An answer says who it obliges'
 status: held
+heldBy:
+  - HintsTest::oneCoreObligationInATransferableHintIsMarkedOnItsOwn
+  - HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore
+  - VersionsTest::whoIsObligedIsWrittenAsDataToo
 ---
 
 # R-AUD-005 — An answer says who it obliges
@@ -24,9 +28,3 @@ A project ViewHelper task answered with "needs a changelog entry under
 typo3/sysext/core/Documentation/Changelog/", a project test task answered with
 the mono repository's test paths, and nineteen backend CSS hints delivered to
 project work behind the same blanket notice as everything else (2026-07-29).
-
-## Held by
-
-- `HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore`
-- `HintsTest::oneCoreObligationInATransferableHintIsMarkedOnItsOwn`
-- `VersionsTest::whoIsObligedIsWrittenAsDataToo`

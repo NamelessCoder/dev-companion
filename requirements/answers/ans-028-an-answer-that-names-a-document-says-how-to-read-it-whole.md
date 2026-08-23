@@ -3,6 +3,12 @@ id: R-ANS-028
 title: 'An answer that names a document says how to read it whole'
 status: held
 restsOn: [D-ANS-061]
+heldBy:
+  - KnowledgeTest::aCutScriptSectionSaysHowToReadThePageWhole
+  - KnowledgeTest::aDocumentIdReadsTheWholePageWithoutAResourceList
+  - KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre
+  - KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites
+  - KnowledgeTest::theTestRunGuideNamesTheScriptsDocument
 ---
 
 # R-ANS-028 — An answer that names a document says how to read it whole
@@ -36,11 +42,3 @@ with the two things the guide carries and it does not, because the moment a
 caller is about to run something is the one moment they are certainly reading.
 `typo3_script_lookup` says the same where the section it returned was cut, which
 is the case that produced the report.
-
-## Held by
-
-- `KnowledgeTest::aDocumentIdReadsTheWholePageWithoutAResourceList`
-- `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre`
-- `KnowledgeTest::theTestRunGuideNamesTheScriptsDocument`
-- `KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites`
-- `KnowledgeTest::aCutScriptSectionSaysHowToReadThePageWhole`

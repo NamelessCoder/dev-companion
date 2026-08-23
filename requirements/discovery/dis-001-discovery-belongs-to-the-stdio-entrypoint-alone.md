@@ -2,6 +2,8 @@
 id: R-DIS-001
 title: 'Discovery belongs to the stdio entrypoint alone'
 status: held
+heldBy:
+  - InstanceTest::withoutAnEntrypointHandingInADirectoryThereIsNoInstance
 ---
 
 # R-DIS-001 — Discovery belongs to the stdio entrypoint alone
@@ -21,7 +23,3 @@ restricts.
 
 The one call is in `Server\Entrypoint`, which `bin/typo3-dev-companion` runs and
 nothing else does.
-
-## Held by
-
-- `InstanceTest::withoutAnEntrypointHandingInADirectoryThereIsNoInstance`

@@ -218,6 +218,16 @@ final class Requirements
     }
 
     /**
+     * The requirements a test holds, which is what a failing one prints.
+     *
+     * @return list<array{id: string, title: string, file: string}>
+     */
+    public static function restingOn(string $class, string $method): array
+    {
+        return Entry::restingOn(self::all(), 'requirements', $class, $method);
+    }
+
+    /**
      * Every requirement file, group readmes excluded.
      *
      * @return array<int, string>
@@ -252,12 +262,11 @@ final class Requirements
         $head = Entry::head($contents);
         $matter = $head['matter'];
 
-        // A test method where one holds it, a whole test class where the class
-        // is the answer — `VersionsTest` in full is a claim about every method
-        // in it, and naming them one at a time would go stale on the next one
-        // written.
+        // What holds the entry and is not a test: a `bin/cli` command, a half
+        // nothing guards, a clause saying what one of the tests holds. The
+        // tests themselves are the front matter, generated from the
+        // `#[Requirement]` attributes they carry — `D-DOC-049`.
         $heldBy = self::field($contents, 'Held by');
-        preg_match_all('/`(\w+Test(?:::\w+)?)`/', $heldBy, $tests);
 
         return [
             'id' => Entry::value($matter, 'id'),
@@ -279,7 +288,11 @@ final class Requirements
             'restsOn' => Entry::names($matter, 'restsOn'),
             'statement' => $head['statement'],
             'heldBy' => $heldBy,
-            'tests' => $tests[1],
+            // A test method where one holds it, a whole test class where the
+            // class is the answer — `VersionsTest` in full is a claim about
+            // every method in it, and naming them one at a time would go stale
+            // on the next one written.
+            'tests' => Entry::names($matter, 'heldBy'),
         ];
     }
 

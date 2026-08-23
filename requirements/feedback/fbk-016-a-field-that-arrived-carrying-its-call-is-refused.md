@@ -3,6 +3,9 @@ id: R-FBK-016
 title: 'A field that arrived carrying its call is refused'
 status: held
 restsOn: [D-FBK-044]
+heldBy:
+  - FeedbackTest::aFieldCarryingTheCallItArrivedInIsRefused
+  - FeedbackTest::aReportQuotingTheMarkersIsStillRecorded
 ---
 
 # R-FBK-016 — A field that arrived carrying its call is refused
@@ -19,8 +22,3 @@ nothing else can tell afterwards that a suggestion was written.
 34 of 270 feedback carrying the frame, in two batches — 2026-07-29 and the 14 of
 2026-08-04 17:58 to 18:02, whose session made 456 tool calls and mangled only
 these.
-
-## Held by
-
-- `FeedbackTest::aFieldCarryingTheCallItArrivedInIsRefused`
-- `FeedbackTest::aReportQuotingTheMarkersIsStillRecorded`

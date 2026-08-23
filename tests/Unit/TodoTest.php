@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\OpenFeedback;
 use TYPO3\DevCompanion\Upkeep\Todo;
@@ -70,6 +71,7 @@ final class TodoTest extends TestCase
      * loop asserts nothing there — `D-FBK-045`, `D-FBK-016`, `D-FBK-017`,
      * `D-FBK-022`.
      */
+    #[Requirement('R-FBK-007')]
     #[Decision('D-FBK-016')]
     #[Decision('D-FBK-017')]
     #[Decision('D-FBK-022')]
@@ -95,6 +97,7 @@ final class TodoTest extends TestCase
      * and sharing no word with it — which is one claimed session, spent
      * arriving where the repository already was (`D-FBK-040`).
      */
+    #[Requirement('R-FBK-014')]
     #[Test]
     public function noJudgementLeavesBehindTheCardItReplaced(): void
     {
@@ -118,6 +121,7 @@ final class TodoTest extends TestCase
      * than a pair — what is wrong is an unjudged card beside a judged one, not
      * two cards.
      */
+    #[Requirement('R-FBK-014')]
     #[Test]
     public function theCardAJudgementReplacedIsFoundByTheStepItStillCarries(): void
     {
@@ -280,6 +284,7 @@ final class TodoTest extends TestCase
      * requirement that fell back among the unresolved while somebody was working on
      * it is one a second session queues all over again.
      */
+    #[Requirement('R-FBK-010')]
     #[Test]
     public function whatIsInHandIsOfferedToNobodyElse(): void
     {
@@ -341,6 +346,7 @@ final class TodoTest extends TestCase
      * Putting it further down is a judgement now, and judgements are written —
      * `D-FBK-014`, `D-FBK-015`.
      */
+    #[Requirement('R-FBK-010')]
     #[Decision('D-FBK-014')]
     #[Decision('D-FBK-015')]
     #[Test]
@@ -410,6 +416,7 @@ final class TodoTest extends TestCase
      * checkout the suite was in, and then had to assert around whatever that
      * answered — `D-COD-004`.
      */
+    #[Requirement('R-FBK-010')]
     #[Decision('D-COD-004')]
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
@@ -509,6 +516,7 @@ final class TodoTest extends TestCase
      * queue read by age alone would hand it over last, and one read by priority
      * alone could not tell the two `low` ones apart — `D-FBK-015`.
      */
+    #[Requirement('R-FBK-007')]
     #[Decision('D-FBK-015')]
     #[Test]
     public function theQueueIsReadByPriorityAndThenByAge(): void
@@ -536,6 +544,7 @@ final class TodoTest extends TestCase
      * meant "nobody has judged this", a priority somebody forgot and one left
      * off on purpose were the same file, and no check could name either.
      */
+    #[Requirement('R-FBK-007')]
     #[Test]
     public function everyTodoInAStageSaysWhereItStands(): void
     {
@@ -584,6 +593,7 @@ final class TodoTest extends TestCase
      * hands it over with the work rather than leaving it to be looked up.
      * `R-FBK-009` says why; `D-FBK-007` says what it bets on — `D-DOC-025`.
      */
+    #[Requirement('R-FBK-009')]
     #[Decision('D-DOC-025')]
     #[Test]
     public function everyTodoIsHandedWithThePageThatSaysHowOneIsWorked(): void

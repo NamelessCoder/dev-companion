@@ -3,6 +3,8 @@ id: R-KNW-033
 title: 'A new label names its source language'
 status: held
 restsOn: [D-KNW-011]
+heldBy:
+  - HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes
 ---
 
 # R-KNW-033 — A new label names its source language
@@ -26,7 +28,3 @@ A sitepackage whose German source XLF led a forward run to add every new
 backend-module label in German too (2026-07-30), and an audit of a package
 already in that state that offered "add en.xlf" and "switch the source to en and
 add de.xlf" as equal remedies (2026-07-31).
-
-## Held by
-
-- `HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes`

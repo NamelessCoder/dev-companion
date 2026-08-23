@@ -2,6 +2,8 @@
 id: R-KNW-009
 title: 'Registering something so the core finds it is covered'
 status: held
+heldBy:
+  - HintsTest::registeringSomethingSoTheCoreFindsItIsCovered
 ---
 
 # R-KNW-009 — Registering something so the core finds it is covered
@@ -16,7 +18,3 @@ piece of backend markup — the two places an answer was looked for.
 
 A content element registered with a call signature from the previous major, and
 a page title provider that was not public and therefore not found (2026-07-29).
-
-## Held by
-
-- `HintsTest::registeringSomethingSoTheCoreFindsItIsCovered`

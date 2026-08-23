@@ -2,6 +2,8 @@
 id: R-KNW-018
 title: 'Where an artifact can be verified is part of the answer'
 status: held
+heldBy:
+  - HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists
 ---
 
 # R-KNW-018 — Where an artifact can be verified is part of the answer
@@ -18,7 +20,3 @@ exercised and what re-triggers it.
 `Initialisation/data.xml` regenerated three times in one session and never
 imported once, on an installation that had already run it — with the registry
 namespace in the hint but not the key that unlocks it (2026-07-29).
-
-## Held by
-
-- `HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists`

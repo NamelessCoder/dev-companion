@@ -3,6 +3,8 @@ id: R-KNW-056
 title: 'The placement answer names the document root as a place a script may not go'
 status: held
 restsOn: [D-KNW-026, D-KNW-045]
+heldBy:
+  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar
 ---
 
 # R-KNW-056 — The placement answer names the document root as a place a script may not go
@@ -39,7 +41,3 @@ reached nothing.
 class that wrote `/var/www/html/check_record.php` into a DDEV TYPO3 project and
 executed it in the container; the user rejected the action, and nothing in this
 corpus had said not to.
-
-## Held by
-
-- `HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar`

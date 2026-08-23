@@ -3,6 +3,9 @@ id: R-ANS-019
 title: 'A rendered-verification question reaches the layer that verifies it'
 status: held
 restsOn: [D-KNW-017]
+heldBy:
+  - HintsTest::aRenderedVerificationQuestionReachesTheLayerThatVerifiesIt
+  - HintsTest::theBrowserLayerIsReachedByAPromptThatNamesOnlyTheOutcome
 ---
 
 # R-ANS-019 — A rendered-verification question reaches the layer that verifies it
@@ -39,8 +42,3 @@ lists reached `content-elements` or `content-element-preview` and nothing that
 named a test layer, and `bin/cli hints:coverage` reported `browser-tests` among
 the hints no scenario prompt reaches — `SKILL-06`, the scenario written for it,
 reached no hint at all.
-
-## Held by
-
-- `HintsTest::aRenderedVerificationQuestionReachesTheLayerThatVerifiesIt`
-- `HintsTest::theBrowserLayerIsReachedByAPromptThatNamesOnlyTheOutcome`

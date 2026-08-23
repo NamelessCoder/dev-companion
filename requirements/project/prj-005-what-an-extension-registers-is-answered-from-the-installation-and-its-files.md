@@ -2,6 +2,14 @@
 id: R-PRJ-005
 title: 'What an extension registers is answered from the installation and its files'
 status: held
+heldBy:
+  - ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell
+  - ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs
+  - ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable
+  - ProjectTest::anExtensionTheInstallationLacksIsAMissWithTheKeysItHas
+  - ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt
+  - ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles
+  - ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor
 ---
 
 # R-PRJ-005 — What an extension registers is answered from the installation and its files
@@ -50,13 +58,3 @@ content element at all (2026-07-30); and a `REVIEW-02` run against
 `georgringer/news` (2026-07-31) that was told the extension registers the icons
 `provider` and `source` — the keys of the literal its `foreach` builds each icon
 from.
-
-## Held by
-
-- `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`
-- `ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor`
-- `ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable`
-- `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`
-- `ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell`
-- `ProjectTest::anExtensionTheInstallationLacksIsAMissWithTheKeysItHas`
-- `ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`

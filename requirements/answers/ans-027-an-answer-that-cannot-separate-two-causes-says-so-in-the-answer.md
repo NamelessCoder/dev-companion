@@ -3,6 +3,9 @@ id: R-ANS-027
 title: 'An answer that cannot separate two causes says so in the answer'
 status: held
 restsOn: [D-ANS-062]
+heldBy:
+  - GerritTest::aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer
+  - GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate
 ---
 
 # R-ANS-027 — An answer that cannot separate two causes says so in the answer
@@ -37,8 +40,3 @@ tracker is asked only on the empty path — 0.12 seconds measured. The side the
 report was actually about stays a hedge: searching the tracker for a change
 number costs 2.5 seconds and answers two issues, one unrelated, and searching
 for a Change-Id answers nothing.
-
-## Held by
-
-- `GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate`
-- `GerritTest::aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer`

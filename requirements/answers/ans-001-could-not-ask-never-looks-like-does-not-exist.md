@@ -3,6 +3,12 @@ id: R-ANS-001
 title: '"Could not ask" never looks like "does not exist"'
 status: held
 restsOn: [D-ANS-005]
+heldBy:
+  - ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent
+  - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
+  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
+  - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
+  - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
 ---
 
 # R-ANS-001 — "Could not ask" never looks like "does not exist"
@@ -33,11 +39,3 @@ being made: `typo3_icon_lookup` answered a directory with no installation with
 the miss it emits against a reachable one — and `typo3_extension_describe`
 reported `answeredBy: "nothing"` for every miss, including against an
 installation that had just listed 27 packages.
-
-## Held by
-
-- `ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse`
-- `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
-- `ToolContractTest::anInstallationBackedSchemaOffersEitherShape`
-- `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`
-- `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`

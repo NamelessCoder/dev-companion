@@ -14,9 +14,11 @@ use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
+#[Requirement('R-FBK-003')]
 final class ScenariosTest extends TestCase
 {
     private string $runs = '';
@@ -62,6 +64,7 @@ final class ScenariosTest extends TestCase
      * nobody can tell which criteria a judgment answered — and the runner would
      * print two prompts under one id.
      */
+    #[Requirement('R-FBK-004')]
     #[Test]
     public function everyCaseHasAFileOfItsOwn(): void
     {
@@ -81,6 +84,7 @@ final class ScenariosTest extends TestCase
      * answers. What holds it therefore has to be named beside it — and a test
      * named there that does not exist is worth less than saying nothing.
      */
+    #[Requirement('R-FBK-004')]
     #[Test]
     public function everyContractCaseNamesWhatHoldsIt(): void
     {
@@ -192,6 +196,7 @@ final class ScenariosTest extends TestCase
         self::assertSame([], $problems);
     }
 
+    #[Requirement('R-FBK-004')]
     #[Test]
     public function aTargetedContractCaseIsNotSomethingARunCanAnswer(): void
     {

@@ -3,6 +3,8 @@ id: R-SKL-016
 title: 'The assessment before a core patch reads the issue and the review server'
 status: held
 restsOn: [D-SKL-010]
+heldBy:
+  - SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer
 ---
 
 # R-SKL-016 — The assessment before a core patch reads the issue and the review server
@@ -46,7 +48,3 @@ arrived, characterised the change before finding that it moved about 141
 expectations across 23 files, and reached the change that introduced the
 behaviour by searching the tracker on the feature wording rather than through
 the reported issue's own relations.
-
-## Held by
-
-- `SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer`

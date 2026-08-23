@@ -2,6 +2,8 @@
 id: R-KNW-020
 title: 'The repository around the extension is a subject of its own'
 status: held
+heldBy:
+  - HintsTest::whereSomethingGoesInTheRepositoryIsAnsweredToo
 ---
 
 # R-KNW-020 — The repository around the extension is a subject of its own
@@ -22,7 +24,3 @@ A session that had to invent the location of the phpunit configurations, the
 browser suite and its config, the scripts a project exposes, and what is ignored
 — with a working answer for the extension (`sitepackage-layout`) and none for
 what sits around it (2026-07-29).
-
-## Held by
-
-- `HintsTest::whereSomethingGoesInTheRepositoryIsAnsweredToo`

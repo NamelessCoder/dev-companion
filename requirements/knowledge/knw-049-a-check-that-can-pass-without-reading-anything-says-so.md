@@ -3,6 +3,8 @@ id: R-KNW-049
 title: 'A check that can pass without reading anything says so'
 status: held
 restsOn: [D-KNW-036]
+heldBy:
+  - KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold
 ---
 
 # R-KNW-049 — A check that can pass without reading anything says so
@@ -35,7 +37,3 @@ A core patch session in a git worktree, given `cglGit` among the checks for the
 `fluid-viewhelpers` hint, watching it print `fatal: not a git repository`, then
 `No PHP files to check, all is well`, then `SUCCESS` — and noticing only because
 the fatal line was still on screen (2026-08-02).
-
-## Held by
-
-- `KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold`

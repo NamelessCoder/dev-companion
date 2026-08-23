@@ -2,6 +2,10 @@
 id: R-FBK-015
 title: 'A feedback field that was cut says so'
 status: held
+heldBy:
+  - FeedbackTest::aFieldCutForLengthSaysSoInTheFileAndInTheAnswer
+  - FeedbackTest::aFieldExactlyOnTheCapIsNotMarked
+  - FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile
 ---
 
 # R-FBK-015 — A feedback field that was cut says so
@@ -39,9 +43,3 @@ reporting, which is the half the judgement turned on, and neither the file nor
 the answer of `typo3_feedback_record` said anything had been removed. One field
 in 235 recorded feedback sits on the cap, so this is rare rather than widespread
 — and undetectable from the file, which is why it is worth a line.
-
-## Held by
-
-- `FeedbackTest::aFieldCutForLengthSaysSoInTheFileAndInTheAnswer`
-- `FeedbackTest::aFieldExactlyOnTheCapIsNotMarked`
-- `FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile`

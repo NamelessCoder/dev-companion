@@ -3,6 +3,8 @@ id: R-KNW-050
 title: 'A preview answer names what the preview draws from'
 status: held
 restsOn: [D-KNW-037]
+heldBy:
+  - HintsTest::aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom
 ---
 
 # R-KNW-050 — A preview answer names what the preview draws from
@@ -30,7 +32,3 @@ a field is reached is the half that is bound, and `R-KNW-041` carries it.
 A session that built a TYPO3 14 testimonials element and shipped a preview
 naming the element, having followed every preview statement the corpus had; the
 rule it was missing came from the user instead (2026-08-01).
-
-## Held by
-
-- `HintsTest::aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom`

@@ -3,6 +3,8 @@ id: R-KNW-051
 title: 'A changelog question is told which type the change owes'
 status: held
 restsOn: [D-KNW-039]
+heldBy:
+  - KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes
 ---
 
 # R-KNW-051 — A changelog question is told which type the change owes
@@ -26,7 +28,3 @@ the file "as in the neighbouring files". The same intent and
 `knowledge/documents/typo3-commit-messages.md` both named a `Task-` prefix that
 no branch's `Build/Scripts/validateRstFiles.php` accepts and no entry in
 `.checkouts/12.4`, `13.4`, `14.3` or `main` carries.
-
-## Held by
-
-- `KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes`

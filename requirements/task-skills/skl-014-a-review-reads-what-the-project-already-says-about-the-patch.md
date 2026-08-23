@@ -3,6 +3,8 @@ id: R-SKL-014
 title: 'A review reads what the project already says about the patch'
 status: held
 restsOn: [D-SKL-008]
+heldBy:
+  - SkillTest::aReviewReadsTheReviewThePatchIsAlreadyIn
 ---
 
 # R-SKL-014 — A review reads what the project already says about the patch
@@ -36,7 +38,3 @@ Both calls answered at once when they were made while judging it: the issue is
 "Avoid calling ImageService methods - part 2" with an empty description, and its
 part 1 is already in `origin/main`. The run judged a series as a patch standing
 alone. Until then both tools existed and no skill routed to either.
-
-## Held by
-
-- `SkillTest::aReviewReadsTheReviewThePatchIsAlreadyIn`

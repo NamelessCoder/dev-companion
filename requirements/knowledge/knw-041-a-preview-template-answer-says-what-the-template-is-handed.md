@@ -3,6 +3,8 @@ id: R-KNW-041
 title: 'A preview template answer says what the template is handed'
 status: held
 restsOn: [D-KNW-020]
+heldBy:
+  - HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo
 ---
 
 # R-KNW-041 — A preview template answer says what the template is handed
@@ -28,7 +30,3 @@ A session writing a TYPO3 14 preview template that had to show assigned related
 groups: it found the registration and nothing else, could not determine how
 {record.header} resolves given a class with neither `__get` nor `ArrayAccess`,
 and guessed a template it could not verify (2026-08-01).
-
-## Held by
-
-- `HintsTest::aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo`

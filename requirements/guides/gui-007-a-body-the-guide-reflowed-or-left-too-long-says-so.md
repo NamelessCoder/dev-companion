@@ -3,6 +3,12 @@ id: R-GUI-007
 title: 'A body the guide reflowed or left too long says so'
 status: held
 restsOn: [D-GUI-003]
+heldBy:
+  - CommitMessageGuideTest::aCheckedMessageStillSaysWhatTheWrappingJoined
+  - CommitMessageTest::aBodyTheWrappingLeftAloneReportsNoReflow
+  - CommitMessageTest::aLineOverTheWidthIsAnErrorForTheCoreAndAWarningOutsideIt
+  - CommitMessageTest::aRunOfLinesTheWrappingJoinedIsNamed
+  - CommitMessageTest::eachJoinedRunIsReportedOnItsOwn
 ---
 
 # R-GUI-007 — A body the guide reflowed or left too long says so
@@ -25,11 +31,3 @@ same session (`feedback/2026-08-02-144315`, 2026-08-02). The other half was
 established on 2026-08-03 from `Build/git-hooks/commit-msg` in the `main`
 checkout: `checkForLineLength()` refuses every line of 73 characters or more,
 whether it is indented, fenced or a URL.
-
-## Held by
-
-- `CommitMessageTest::aRunOfLinesTheWrappingJoinedIsNamed`
-- `CommitMessageTest::eachJoinedRunIsReportedOnItsOwn`
-- `CommitMessageTest::aBodyTheWrappingLeftAloneReportsNoReflow`
-- `CommitMessageTest::aLineOverTheWidthIsAnErrorForTheCoreAndAWarningOutsideIt`
-- `CommitMessageGuideTest::aCheckedMessageStillSaysWhatTheWrappingJoined`

@@ -3,6 +3,8 @@ id: R-SKL-012
 title: 'A finding is attributed to the change under review'
 status: held
 restsOn: [D-SKL-007]
+heldBy:
+  - SkillTest::aFindingSaysWhetherThePatchIntroducedIt
 ---
 
 # R-SKL-012 — A finding is attributed to the change under review
@@ -33,7 +35,3 @@ skill asked for either, so nothing makes the next run do it.
 
 `D-SKL-007` records where the general form was read and what was rejected with
 it.
-
-## Held by
-
-- `SkillTest::aFindingSaysWhetherThePatchIntroducedIt`

@@ -3,6 +3,8 @@ id: R-KNW-053
 title: 'The per-class database answer says what survives the run'
 status: held
 restsOn: [D-KNW-022]
+heldBy:
+  - HintsTest::thePerClassDatabaseAnswerSaysWhatSurvivesTheRun
 ---
 
 # R-KNW-053 — The per-class database answer says what survives the run
@@ -26,7 +28,3 @@ class over a working session and lost track of which records it had modified by
 hand across the live database and the test ones — "created tons of databases,
 lost track what manually were modified instead of using api",
 `feedback/2026-08-01-003929` (2026-08-01).
-
-## Held by
-
-- `HintsTest::thePerClassDatabaseAnswerSaysWhatSurvivesTheRun`

@@ -3,6 +3,8 @@ id: R-KNW-070
 title: 'A relation value says which placeholder spelling survives it'
 status: held
 restsOn: [D-KNW-081]
+heldBy:
+  - HintsTest::aRelationValueSaysWhichPlaceholderSpellingSurvivesIt
 ---
 
 # R-KNW-070 — A relation value says which placeholder spelling survives it
@@ -23,7 +25,3 @@ every relation: the children were written, the parent's counter stayed 0,
 `uid_foreign` stayed 0, `process_datamap()` reported success and the error log
 was empty. Twelve tool calls and three probe scripts isolated the underscore
 (2026-08-17).
-
-## Held by
-
-- `HintsTest::aRelationValueSaysWhichPlaceholderSpellingSurvivesIt`

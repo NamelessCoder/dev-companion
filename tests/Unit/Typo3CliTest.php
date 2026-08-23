@@ -14,6 +14,7 @@ use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Result\Unsupported;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -35,6 +36,7 @@ final class Typo3CliTest extends TestCase
         Typo3Cli::forget();
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough(): void
     {
@@ -94,6 +96,7 @@ final class Typo3CliTest extends TestCase
         self::assertStringNotContainsString('dependencies are not installed', Typo3Cli::reason());
     }
 
+    #[Requirement('R-DIS-003')]
     #[Test]
     public function aConsoleInTheDeclaredBinDirectoryIsFound(): void
     {
@@ -113,6 +116,7 @@ final class Typo3CliTest extends TestCase
         self::assertStringNotContainsString('has no TYPO3 console', Typo3Cli::reason());
     }
 
+    #[Requirement('R-DIS-003')]
     #[Test]
     public function anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory(): void
     {
@@ -137,6 +141,7 @@ final class Typo3CliTest extends TestCase
         self::assertStringNotContainsString('has no TYPO3 console', Typo3Cli::reason());
     }
 
+    #[Requirement('R-DIS-003')]
     #[Test]
     public function aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver(): void
     {
@@ -161,6 +166,7 @@ final class Typo3CliTest extends TestCase
         self::assertStringContainsString('vendor/bin/typo3', $reason);
     }
 
+    #[Requirement('R-DIS-007')]
     #[Test]
     public function aStatedCommandIsUsedInsteadOfWorkingOneOut(): void
     {
@@ -175,6 +181,7 @@ final class Typo3CliTest extends TestCase
         self::assertSame([PHP_BINARY, '/some/where/typo3'], $console['command']);
     }
 
+    #[Requirement('R-DIS-007')]
     #[Test]
     public function aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced(): void
     {
@@ -217,6 +224,7 @@ final class Typo3CliTest extends TestCase
         self::assertStringContainsString('requires PHP 99.0.0', Typo3Cli::reason());
     }
 
+    #[Requirement('R-DIS-006')]
     #[Test]
     public function aDdevProjectThatIsNotRunningIsReportedRatherThanStarted(): void
     {
@@ -328,6 +336,7 @@ final class Typo3CliTest extends TestCase
         ];
     }
 
+    #[Requirement('R-DIS-010')]
     #[Test]
     public function aStoppedProjectOnHostPhpIsReportedAsAHalfAnswer(): void
     {
@@ -376,6 +385,7 @@ final class Typo3CliTest extends TestCase
      * bound where it decides anything — the platform check the autoloader
      * includes.
      */
+    #[Requirement('R-DIS-010')]
     #[Test]
     public function thePhpBoundComesFromTheInstallWhereTheManifestStatesNone(): void
     {
@@ -393,6 +403,7 @@ final class Typo3CliTest extends TestCase
      * when platform requirements are ignored, so its absence has to mean "no
      * bound to read" rather than "no interpreter will do".
      */
+    #[Requirement('R-DIS-010')]
     #[Test]
     public function anInstallWithNoPlatformCheckBoundsNothing(): void
     {
@@ -416,6 +427,7 @@ final class Typo3CliTest extends TestCase
      * stopped project has no answer at all, and an answer that was never given
      * is not remembered.
      */
+    #[Requirement('R-DIS-009')]
     #[Test]
     public function aStoppedProjectIsAskedAgainAfterItStarts(): void
     {
@@ -450,6 +462,7 @@ final class Typo3CliTest extends TestCase
      * the same process changed nothing, and every later call was answered from
      * the memo until the process ended — `META-02`'s third **How it fails**.
      */
+    #[Requirement('R-DIS-009')]
     #[Test]
     public function aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts(): void
     {
@@ -516,6 +529,7 @@ final class Typo3CliTest extends TestCase
      * own: what limits a console cannot be had from outside `Typo3Cli` without
      * asking for it, and asking is a resolution.
      */
+    #[Requirement('R-DIS-009')]
     #[Test]
     public function theScopeAnswerDescribesAStoppedProjectOncePerHalf(): void
     {
@@ -545,6 +559,7 @@ final class Typo3CliTest extends TestCase
      * would charge the failure that diagnosed itself for a sentence it does
      * not print.
      */
+    #[Requirement('R-DIS-009')]
     #[Test]
     public function anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence(): void
     {
@@ -589,6 +604,7 @@ final class Typo3CliTest extends TestCase
         );
     }
 
+    #[Requirement('R-DIS-010')]
     #[Test]
     public function aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp(): void
     {

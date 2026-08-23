@@ -3,6 +3,9 @@ id: R-GUI-006
 title: 'A review is not answered with a checklist for changing something'
 status: held
 restsOn: [D-GUI-006, D-GUI-008]
+heldBy:
+  - HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist
+  - HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief
 ---
 
 # R-GUI-006 — A review is not answered with a checklist for changing something
@@ -33,8 +36,3 @@ reported it added little for a pure audit (`feedback/2026-07-31-194826`,
 intent matches, and the checklist that comes back is "Keep the patch focused on
 the stated task", "Add or update the narrowest useful test coverage" and "Write
 the commit message with typo3_commit_message_guide".
-
-## Held by
-
-- `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`
-- `HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief`

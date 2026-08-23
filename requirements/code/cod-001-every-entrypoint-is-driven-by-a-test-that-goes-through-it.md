@@ -2,6 +2,10 @@
 id: R-COD-001
 title: 'Every entrypoint is driven by a test that goes through it'
 status: held
+heldBy:
+  - EntrypointTest::helpNamesTheCommandsAndTheClientsTheyTake
+  - StdioServerTest::theServerAnnouncesItselfWithItsBoundary
+  - UpkeepTest::everyReadingCommandRuns
 ---
 
 # R-COD-001 — Every entrypoint is driven by a test that goes through it
@@ -22,9 +26,3 @@ file, and `bin/cli requirements:check` died on a path that no longer existed.
 All 483 tests stayed green, because none of them went through `bin/cli` — a
 smoke layer existed and covered the other binary alone. It was found by running
 the command by hand, one commit late (2026-08-01).
-
-## Held by
-
-- `UpkeepTest::everyReadingCommandRuns`
-- `EntrypointTest::helpNamesTheCommandsAndTheClientsTheyTake`
-- `StdioServerTest::theServerAnnouncesItselfWithItsBoundary`

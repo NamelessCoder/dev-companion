@@ -3,6 +3,10 @@ id: R-DOC-002
 title: 'A manual search says what it matched on'
 status: held
 restsOn: [D-ANS-021]
+heldBy:
+  - DocumentationTest::aPageReadBackCarriesNoMatch
+  - DocumentationTest::aResultNamesTheWordsOfTheQueryItWasMatchedOn
+  - ToolContractTest::aToolCallAnswersWithTextAndMatchingData
 ---
 
 # R-DOC-002 — A manual search says what it matched on
@@ -29,9 +33,3 @@ Record API returned six results each, `status: answered`, and ranked the present
 *Record objects* page 28th, 13th and 11th of 1230 — behind pages matched on
 `has`, `get` and `acces`. Two round trips went on a miss the answers gave no
 sign of.
-
-## Held by
-
-- `DocumentationTest::aResultNamesTheWordsOfTheQueryItWasMatchedOn`
-- `DocumentationTest::aPageReadBackCarriesNoMatch`
-- `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`

@@ -2,6 +2,10 @@
 id: R-FBK-004
 title: 'Only an open prompt produces forward evidence'
 status: held
+heldBy:
+  - ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer
+  - ScenariosTest::everyCaseHasAFileOfItsOwn
+  - ScenariosTest::everyContractCaseNamesWhatHoldsIt
 ---
 
 # R-FBK-004 — Only an open prompt produces forward evidence
@@ -28,7 +32,5 @@ one person's project (2026-07-31).
 
 ## Held by
 
-- `ScenariosTest::everyCaseHasAFileOfItsOwn`
-- `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`
 - `ScenariosTest::everyContractCaseNamesWhatHoldsIt`; that a prompt stays free
 - Of a named installation is not guarded.

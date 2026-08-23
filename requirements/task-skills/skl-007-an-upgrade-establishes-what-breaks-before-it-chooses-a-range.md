@@ -3,6 +3,11 @@ id: R-SKL-007
 title: 'An upgrade establishes what breaks before it chooses a range'
 status: held
 restsOn: [D-EVI-001]
+heldBy:
+  - SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill
+  - SkillTest::anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
+  - SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence
 ---
 
 # R-SKL-007 — An upgrade establishes what breaks before it chooses a range
@@ -50,9 +55,6 @@ a checkout that has one.
 
 ## Held by
 
-- `SkillTest::anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts`
-- `SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill`
-- `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
 - That a session works in this order is not guarded and will not be by a forward
   run — `D-EVI-001` admits only an open review as forward evidence, and a review

@@ -2,6 +2,8 @@
 id: R-ANS-008b
 title: 'A short term is not the prefix of a longer word'
 status: held
+heldBy:
+  - HintsTest::aShortTermIsNotMatchedAsThePrefixOfALongerWord
 ---
 
 # R-ANS-008b — A short term is not the prefix of a longer word
@@ -23,7 +25,3 @@ decides the answer. A pattern carrying punctuation — a path fragment, `.xlf`,
 `fal`, the File Abstraction Layer, prefix-matching seven hints through
 "fallback" and "false"; and the same pattern reaching that hint from a query
 about a label, as a plain substring of a longer word (2026-07-30).
-
-## Held by
-
-- `HintsTest::aShortTermIsNotMatchedAsThePrefixOfALongerWord`

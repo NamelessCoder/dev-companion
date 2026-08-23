@@ -3,6 +3,8 @@ id: R-SKL-025
 title: "An audit's list says what the repository already carries unmerged"
 status: held
 restsOn: [D-SKL-068]
+heldBy:
+  - SkillTest::anAuditsListSaysWhatTheRepositoryAlreadyCarriesUnmerged
 ---
 
 # R-SKL-025 — An audit's list says what the repository already carries unmerged
@@ -36,8 +38,6 @@ reached, with the test the audit had found missing, and with two further v14
 defects the audit had not found at all.
 
 ## Held by
-
-- `SkillTest::anAuditsListSaysWhatTheRepositoryAlreadyCarriesUnmerged`
 
 The step is step 6 of `typo3-extension-health`, between writing the list and
 showing it. The assertion reads it for its position, for the three surfaces, for

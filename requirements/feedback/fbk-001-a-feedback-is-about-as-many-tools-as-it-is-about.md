@@ -2,6 +2,11 @@
 id: R-FBK-001
 title: 'A feedback is about as many tools as it is about'
 status: held
+heldBy:
+  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
+  - FeedbackTest::theListCanBeRestrictedToOneTool
+  - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
+  - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted
 ---
 
 # R-FBK-001 — A feedback is about as many tools as it is about
@@ -21,10 +26,3 @@ holds either way.
 
 Four tool names recorded as one unsearchable word, because everything that was
 not `[a-z0-9_]` was stripped from the field (2026-07-29).
-
-## Held by
-
-- `FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord`
-- `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares`
-- `FeedbackTest::theListCanBeRestrictedToOneTool`
-- `StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted`

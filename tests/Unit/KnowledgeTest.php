@@ -18,6 +18,7 @@ use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Result\Prose;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
 
 final class KnowledgeTest extends TestCase
@@ -396,6 +397,7 @@ final class KnowledgeTest extends TestCase
      * listed at orientation and served as its resource, which is what the
      * skills the same file routes to have no equivalent of — `D-GUI-018`.
      */
+    #[Requirement('R-GUI-013')]
     #[Decision('D-GUI-012')]
     #[Decision('D-GUI-018')]
     #[Test]
@@ -426,6 +428,7 @@ final class KnowledgeTest extends TestCase
      * process handed to somebody's package — which is what the brief measured
      * in `D-GUI-012` did with `core/contribution/rules`.
      */
+    #[Requirement('R-GUI-013')]
     #[Test]
     public function aGuideNamedOutsideTheCoreIsNotTheCoresOwn(): void
     {
@@ -462,6 +465,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Requirement('R-KNW-023')]
     #[Decision('D-VER-002')]
     #[Decision('D-VER-005')]
     #[Test]
@@ -485,6 +489,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Requirement('R-KNW-024')]
     #[Decision('D-VER-002')]
     #[Decision('D-VER-005')]
     #[Test]
@@ -516,6 +521,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Requirement('R-ANS-007')]
     #[Test]
     public function theDiscriminatingTermsOfAQueryDecideTheAnswer(): void
     {
@@ -537,6 +543,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Requirement('R-ANS-007')]
     #[Test]
     public function aTermMatchesAWordRatherThanAnythingThatContainsIt(): void
     {
@@ -548,6 +555,7 @@ final class KnowledgeTest extends TestCase
         self::assertSame([], Documents::search('ffset'));
     }
 
+    #[Requirement('R-KNW-004')]
     #[Test]
     public function anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing(): void
     {
@@ -559,6 +567,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('Extension Scanner', $bodies);
     }
 
+    #[Requirement('R-KNW-051')]
     #[Decision('D-KNW-039')]
     #[Test]
     public function aChangelogQuestionIsToldWhichTypeTheChangeOwes(): void
@@ -589,6 +598,7 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-017')]
     #[Decision('D-ANS-035')]
     #[Test]
     public function theBreakingRouteStatesWhatTheScannerMatcherRequires(): void
@@ -739,6 +749,7 @@ final class KnowledgeTest extends TestCase
      * one that publishes alone — six sections on this query and `%private` in
      * none of them (`D-SKL-005`, 2026-08-03).
      */
+    #[Requirement('R-KNW-057')]
     #[Test]
     public function theUnlistedPushIsAnsweredBesideTheOneThatPublishes(): void
     {
@@ -760,6 +771,7 @@ final class KnowledgeTest extends TestCase
      * the issue behind it means. One test rather than three, because they are
      * three aspects of the step the skill calls irreversible.
      */
+    #[Requirement('R-KNW-057')]
     #[Test]
     public function theWriteDirectionIsAnsweredAroundThePushItself(): void
     {
@@ -900,6 +912,7 @@ final class KnowledgeTest extends TestCase
      * answer blamed the boundary for both — which `D-ANS-029` then quoted back
      * as what the tool answers a core query (`D-ANS-037`).
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-037')]
     #[Test]
     public function aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary(): void
@@ -931,6 +944,7 @@ final class KnowledgeTest extends TestCase
      * answer carried and which the session never fetched — it says nothing in
      * the answer presented the uri as something to do (`D-ANS-061`).
      */
+    #[Requirement('R-ANS-028')]
     #[Test]
     public function aDocumentIdReadsTheWholePageWithoutAResourceList(): void
     {
@@ -1004,6 +1018,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Requirement('R-ANS-028')]
     #[Test]
     public function anUnknownDocumentIdNamesTheOnesThereAre(): void
     {
@@ -1023,6 +1038,7 @@ final class KnowledgeTest extends TestCase
      * this tool, never reached `typo3_script_lookup`, and so never saw the
      * guide — which carries the two things below and this answer does not.
      */
+    #[Requirement('R-ANS-028')]
     #[Test]
     public function theTestRunGuideNamesTheScriptsDocument(): void
     {
@@ -1054,6 +1070,7 @@ final class KnowledgeTest extends TestCase
      * `any/testing/browser-check` sitting unopened in the first answer it
      * received. The paths below are that session's own (`D-KNW-069`).
      */
+    #[Requirement('R-ANS-028')]
     #[Test]
     public function theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites(): void
     {
@@ -1183,6 +1200,7 @@ final class KnowledgeTest extends TestCase
      * to act on where the client lists no resources — the same session, same
      * call, `feedback/2026-08-07-130058`.
      */
+    #[Requirement('R-ANS-028')]
     #[Test]
     public function aCutScriptSectionSaysHowToReadThePageWhole(): void
     {
@@ -1391,6 +1409,7 @@ final class KnowledgeTest extends TestCase
      * boundary. That is the one case the sentence is true in, and it stays —
      * `D-ANS-037`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-037')]
     #[Test]
     public function aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt(): void
@@ -1409,6 +1428,7 @@ final class KnowledgeTest extends TestCase
      * met, and every subset it names returns sections when it is asked —
      * `D-ANS-037`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-037')]
     #[Test]
     public function whatAMissOffersToAskAgainWithReturnsSections(): void
@@ -1433,6 +1453,7 @@ final class KnowledgeTest extends TestCase
      * The subset offered is spelled in the caller's own words, because a re-
      * query it has to translate first is one more round trip — `D-ANS-037`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-037')]
     #[Test]
     public function aSubsetIsNamedInTheWordsTheQueryWasWrittenIn(): void
@@ -1458,6 +1479,7 @@ final class KnowledgeTest extends TestCase
      * has to be a case of it, and a statement may not claim `uncertain`, which
      * belongs to a path nothing placed rather than to a sentence somebody wrote.
      */
+    #[Requirement('R-SCO-006')]
     #[Decision('D-KNW-003')]
     #[Test]
     public function everyScopeInTheCorpusIsOneTheEnumDeclares(): void
@@ -1496,6 +1518,7 @@ final class KnowledgeTest extends TestCase
      * that offers the command says where it does not hold — in the same entry,
      * because nothing carries a caller from one to the next — `D-KNW-036`.
      */
+    #[Requirement('R-KNW-049')]
     #[Decision('D-KNW-036')]
     #[Test]
     public function aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold(): void
@@ -1533,6 +1556,7 @@ final class KnowledgeTest extends TestCase
      * every suite the script offers and is read before one is chosen, which is
      * where `typo3_test_run_guide` prints it (`D-AUD-009`).
      */
+    #[Requirement('R-KNW-052')]
     #[Decision('D-AUD-009')]
     #[Test]
     public function theInvocationNotesNameTheInstallAFreshCheckoutOwes(): void
@@ -1593,6 +1617,7 @@ final class KnowledgeTest extends TestCase
      * what they need: they run on the host, where the browsers are an install of
      * their own, while the containerised path never asks.
      */
+    #[Requirement('R-KNW-067')]
     #[Test]
     public function theE2eAnswerStatesThePriceOfAPlaywrightOnlyChange(): void
     {
@@ -1623,6 +1648,7 @@ final class KnowledgeTest extends TestCase
      * `feedback/2026-08-13-214729` lost the instance that way with `CI=true`
      * set, which the note beside it read as covering exactly this.
      */
+    #[Requirement('R-KNW-068')]
     #[Test]
     public function aSuiteThatWaitsForAKeypressSaysItNeedsATerminal(): void
     {

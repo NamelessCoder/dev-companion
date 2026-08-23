@@ -3,6 +3,8 @@ id: R-SKL-008
 title: 'A task skill does not run without the server it came from'
 status: held
 restsOn: [D-EVI-002]
+heldBy:
+  - SkillTest::theBaseStopsTheTaskWhenTheServerIsNotConnected
 ---
 
 # R-SKL-008 — A task skill does not run without the server it came from

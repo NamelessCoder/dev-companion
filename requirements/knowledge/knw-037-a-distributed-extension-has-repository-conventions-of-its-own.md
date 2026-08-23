@@ -2,6 +2,8 @@
 id: R-KNW-037
 title: 'A distributed extension has repository conventions of its own'
 status: held
+heldBy:
+  - HintsTest::aDistributedExtensionIsNotAnsweredWithTheProjectLayout
 ---
 
 # R-KNW-037 — A distributed extension has repository conventions of its own
@@ -23,7 +25,3 @@ for each other.
 distributed extension, and the review quoted the project one — moving the
 browser suite to a repository that does not exist and calling the ignored lock
 file non-reproducible (2026-07-31).
-
-## Held by
-
-- `HintsTest::aDistributedExtensionIsNotAnsweredWithTheProjectLayout`

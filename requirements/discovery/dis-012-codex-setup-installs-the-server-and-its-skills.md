@@ -2,6 +2,8 @@
 id: R-DIS-012
 title: 'Codex setup installs the server and its skills'
 status: held
+heldBy:
+  - InstallerTest
 ---
 
 # R-DIS-012 — Codex setup installs the server and its skills
@@ -20,7 +22,3 @@ while the skills are published into the host-mounted project.
 ## From
 
 `META-05`.
-
-## Held by
-
-- `InstallerTest`

@@ -3,6 +3,8 @@ id: R-KNW-067
 title: 'The e2e answer states the price of a Playwright-only change'
 status: held
 restsOn: [D-KNW-068]
+heldBy:
+  - KnowledgeTest::theE2eAnswerStatesThePriceOfAPlaywrightOnlyChange
 ---
 
 # R-KNW-067 — The e2e answer states the price of a Playwright-only change
@@ -43,7 +45,3 @@ before the developer asked why the testing suite was not being used —
 `feedback/2026-08-13-214708` (2026-08-13). The passthrough was read on
 `.checkouts/main`, `14.3` and `13.4`, and `playwright:install` on the same
 three.
-
-## Held by
-
-- `KnowledgeTest::theE2eAnswerStatesThePriceOfAPlaywrightOnlyChange`

@@ -2,6 +2,8 @@
 id: R-DIS-018
 title: "A console command never inherits the client's stdin"
 status: held
+heldBy:
+  - StdioServerTest::aRequestBehindOneThatRunsTheConsoleIsStillAnswered
 ---
 
 # R-DIS-018 — A console command never inherits the client's stdin
@@ -18,7 +20,3 @@ session stops without an error on either side.
 
 Two runs of `REVIEW-02` that both stalled on the first pair of tool calls the
 client dispatched concurrently (2026-07-31).
-
-## Held by
-
-- `StdioServerTest::aRequestBehindOneThatRunsTheConsoleIsStillAnswered`

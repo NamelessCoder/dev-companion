@@ -2,6 +2,10 @@
 id: R-DIS-003
 title: 'The console is looked for where the installation declares it'
 status: held
+heldBy:
+  - Typo3CliTest::aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver
+  - Typo3CliTest::aConsoleInTheDeclaredBinDirectoryIsFound
+  - Typo3CliTest::anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory
 ---
 
 # R-DIS-003 — The console is looked for where the installation declares it
@@ -18,9 +22,3 @@ over in silence.
 
 `.build/bin/typo3` existing, working, and never being probed (2026-07-29); the
 same directory declared absolutely being dropped again (2026-08-01).
-
-## Held by
-
-- `Typo3CliTest::aConsoleInTheDeclaredBinDirectoryIsFound`
-- `Typo3CliTest::anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory`
-- `Typo3CliTest::aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver`

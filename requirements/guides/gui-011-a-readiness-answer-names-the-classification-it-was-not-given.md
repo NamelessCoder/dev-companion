@@ -3,6 +3,10 @@ id: R-GUI-011
 title: 'A readiness answer names the classification it was not given'
 status: held
 restsOn: [D-GUI-001]
+heldBy:
+  - CommitMessageGuideTest::aCheckedMessageSaysTheClassificationWasAssumed
+  - CommitMessageTest::aClassificationNobodyGaveIsNamedInTheChecks
+  - CommitMessageTest::aClassificationTheCallerGaveIsNotAskedAboutAgain
 ---
 
 # R-GUI-011 — A readiness answer names the classification it was not given
@@ -31,9 +35,3 @@ protected method from a class that is neither `final` nor `@internal`
 (`feedback/2026-08-03-144432`, 2026-08-03). The same clearance beside an unready
 message was reported the day before by the session behind `R-GUI-007`
 (`feedback/2026-08-02-144315`, 2026-08-02).
-
-## Held by
-
-- `CommitMessageTest::aClassificationNobodyGaveIsNamedInTheChecks`
-- `CommitMessageTest::aClassificationTheCallerGaveIsNotAskedAboutAgain`
-- `CommitMessageGuideTest::aCheckedMessageSaysTheClassificationWasAssumed`

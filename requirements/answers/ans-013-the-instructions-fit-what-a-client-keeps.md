@@ -2,6 +2,9 @@
 id: R-ANS-013
 title: 'The instructions fit what a client keeps'
 status: held
+heldBy:
+  - ScopeTest::theInstructionsFitWhatAClientKeeps
+  - StdioServerTest::theServerAnnouncesItselfWithItsBoundary
 ---
 
 # R-ANS-013 — The instructions fit what a client keeps

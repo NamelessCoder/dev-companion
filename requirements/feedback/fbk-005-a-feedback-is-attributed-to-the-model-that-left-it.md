@@ -2,6 +2,9 @@
 id: R-FBK-005
 title: 'A feedback is attributed to the model that left it'
 status: held
+heldBy:
+  - FeedbackTest::aNoteSaysWhichModelLeftIt
+  - FeedbackTest::aNoteWithoutAModelSaysSoRatherThanCarryingNone
 ---
 
 # R-FBK-005 — A feedback is attributed to the model that left it
@@ -31,8 +34,3 @@ package whose published skill was byte-identical to this repository's, base and
 checklist included, so the gap it named was not in the text the session had. The
 one thing that would have made it actionable, which model read those steps and
 walked past them, was the one thing the feedback could not carry.
-
-## Held by
-
-- `FeedbackTest::aNoteSaysWhichModelLeftIt`
-- `FeedbackTest::aNoteWithoutAModelSaysSoRatherThanCarryingNone`

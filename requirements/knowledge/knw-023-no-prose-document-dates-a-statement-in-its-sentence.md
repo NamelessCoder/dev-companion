@@ -2,6 +2,8 @@
 id: R-KNW-023
 title: 'No prose document dates a statement in its sentence'
 status: held
+heldBy:
+  - KnowledgeTest::noProseDocumentDatesAStatementInItsSentence
 ---
 
 # R-KNW-023 — No prose document dates a statement in its sentence
@@ -22,7 +24,3 @@ cannot reach, and it is what decides what may stay as prose at all.
 `core/contribution/rules.md`, handed unqualified to a caller on 13.4 by
 `typo3_rule_lookup`, which has no `targetVersion` and searches every document
 (2026-07-30).
-
-## Held by
-
-- `KnowledgeTest::noProseDocumentDatesAStatementInItsSentence`

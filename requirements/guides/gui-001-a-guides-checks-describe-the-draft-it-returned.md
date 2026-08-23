@@ -2,6 +2,11 @@
 id: R-GUI-001
 title: "A guide's checks describe the draft it returned"
 status: held
+heldBy:
+  - CommitMessageTest::aPlaceholderHandedBackIsStillAnUnansweredField
+  - CommitMessageTest::aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing
+  - CommitMessageTest::neitherPlaceholderCouldBeReadAsAnAnswer
+  - CommitMessageTest::theDraftNeverCarriesAReleaseTheCallerDidNotName
 ---
 
 # R-GUI-001 — A guide's checks describe the draft it returned
@@ -17,10 +22,3 @@ again — the draft returned still carries it, so the checks still name it.
 
 `Releases: main` being appended and `missing-releases` warned in the same answer
 (2026-07-29).
-
-## Held by
-
-- `CommitMessageTest::theDraftNeverCarriesAReleaseTheCallerDidNotName`
-- `CommitMessageTest::aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing`
-- `CommitMessageTest::neitherPlaceholderCouldBeReadAsAnAnswer`
-- `CommitMessageTest::aPlaceholderHandedBackIsStillAnUnansweredField`

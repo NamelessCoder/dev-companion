@@ -2,6 +2,8 @@
 id: R-DIS-014
 title: 'An installed skill is a workflow, not a prompt fragment'
 status: held
+heldBy:
+  - SkillTest
 ---
 
 # R-DIS-014 — An installed skill is a workflow, not a prompt fragment
@@ -24,7 +26,3 @@ skill written later is held to it without being added to a list first.
 
 Forward tests of the testing, conformance, documentation, and backend module
 skills against the Printworks sitepackage (2026-07-30).
-
-## Held by
-
-- `SkillTest`

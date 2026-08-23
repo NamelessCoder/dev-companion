@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\RequirementState;
+use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
  * Everything the format of requirements/ promises a reader, checked against the
@@ -34,7 +35,7 @@ final class RequirementCheck
     {
         $problems = [];
         $decisions = Decisions::all();
-        $tests = self::testMethods();
+        $held = Sources::held('Requirement');
         $seen = [];
 
         foreach (Requirements::files() as $path) {
@@ -75,6 +76,25 @@ final class RequirementCheck
             }
             $seen[$id] = $file;
 
+            // `heldBy` is generated from the `#[Requirement]` attributes the
+            // tests carry, so what is held here is that the copy still says
+            // what the source does — `D-DOC-049`.
+            $contents = (string) file_get_contents($path);
+            if (Entry::withNames($contents, 'heldBy', $held[$id] ?? []) !== $contents) {
+                $problems[] = $file . ' carries a heldBy the tests do not write — run bin/cli requirements:cover';
+            }
+            // A bullet that is only a test name is the front matter written a
+            // second time. What the section is for is what is not a test — a
+            // `bin/cli` command, a half nothing guards, or the clause on the
+            // next line saying what one of the tests holds, which is a bullet
+            // this leaves alone.
+            if (preg_match('/^## Held by$\R(.*?)(?=^## |\z)/ms', $contents, $section) === 1) {
+                preg_match_all('/^- `(\w+Test(?:::\w+)?)`$(?:\R(?!  \S)|\z)/m', $section[1], $bare);
+                foreach ($bare[1] as $test) {
+                    $problems[] = $id . ' names ' . $test . ' under Held by, and the tests are the front matter';
+                }
+            }
+
             $group = Requirements::GROUPS[substr($id, 2, 3)] ?? null;
             if ($group === null) {
                 $problems[] = $id . ' has a prefix no group is named after';
@@ -107,19 +127,14 @@ final class RequirementCheck
             if (RequirementState::tryFrom($requirement['status']) === RequirementState::Open) {
                 continue;
             }
-            if ($requirement['heldBy'] === '') {
-                $problems[] = $id . ' does not say what holds it, or that nothing does';
-            }
             if ($requirement['tests'] === [] && !str_contains($requirement['heldBy'], 'not guarded')) {
                 $problems[] = $id . ' names neither a test nor that it is not guarded';
             }
-            foreach ($requirement['tests'] as $test) {
-                $exists = str_contains($test, '::')
-                    ? in_array($test, $tests, true)
-                    : in_array($test, array_map(static fn(string $m): string => explode('::', $m)[0], $tests), true);
-                if (!$exists) {
-                    $problems[] = $id . ' names ' . $test . ', which no test declares';
-                }
+        }
+
+        foreach (array_keys($held) as $id) {
+            if (!isset($seen[$id])) {
+                $problems[] = 'a test declares it holds ' . $id . ', which no requirement has';
             }
         }
 
@@ -149,26 +164,6 @@ final class RequirementCheck
         return $problems === [] ? 0 : 1;
     }
 
-    /**
-     * Every test method in this suite as `Class::method`, read from the files
-     * rather than from reflection — the same list ScenariosTest holds its cases to.
-     *
-     * @return array<int, string>
-     */
-    private static function testMethods(): array
-    {
-        $methods = [];
-        foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
-                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
-                foreach ($matches[1] as $method) {
-                    $methods[] = $file->getBasename('.php') . '::' . $method;
-                }
-            }
-        }
-
-        return $methods;
-    }
 
     /**
      * The requirement ids the scenario suite names, with the file that names them.

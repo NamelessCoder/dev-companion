@@ -3,6 +3,11 @@ id: R-DOC-003
 title: 'A ViewHelper question is answered from the manual that documents ViewHelpers'
 status: held
 restsOn: [D-ANS-026, D-ANS-032, D-ANS-036, D-ANS-047]
+heldBy:
+  - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
+  - DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook
+  - DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName
+  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
 ---
 
 # R-DOC-003 — A ViewHelper question is answered from the manual that documents ViewHelpers
@@ -43,10 +48,3 @@ in a sentence, and a word written behind a namespace prefix is not in one
 lost a task to three Fluid mistakes; three manuals were searched, none of them
 documents a ViewHelper, and `f:if f:then f:else condition ViewHelper` came back
 with Developing a custom ViewHelper and the Translate ViewHelper.
-
-## Held by
-
-- `DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection`
-- `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
-- `DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName`
-- `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`

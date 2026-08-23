@@ -3,6 +3,10 @@ id: R-ANS-031
 title: 'A symptom reaches the hint that explains it'
 status: held
 restsOn: [D-ANS-084]
+heldBy:
+  - HintsTest::aSymptomReachesTheHintThatExplainsItFromAnotherDomain
+  - HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 
 # R-ANS-031 — A symptom reaches the hint that explains it
@@ -29,7 +33,6 @@ it was measured against cross 9 and 39 times and displace answers.
 
 ## Held by
 
-- `HintsTest::aSymptomReachesTheHintThatExplainsItFromAnotherDomain`
 - `HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit` — the other half: a
   phrase the selected layers claim themselves does not cross
 - `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay` — that

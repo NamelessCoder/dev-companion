@@ -2,6 +2,9 @@
 id: R-KNW-030
 title: 'A non-English site reaches its label-language setup'
 status: held
+heldBy:
+  - HintsTest::aGermanSiteTaskReachesItsLabelLanguageSetup
+  - HintsTest::languagePackActivationUsesTheConfigurationOfTheTargetBranch
 ---
 
 # R-KNW-030 — A non-English site reaches its label-language setup
@@ -17,8 +20,3 @@ translatable labels.
 
 A German-only site silently rendering core validation messages and the form
 submit button in English (2026-07-30).
-
-## Held by
-
-- `HintsTest::aGermanSiteTaskReachesItsLabelLanguageSetup`
-- `HintsTest::languagePackActivationUsesTheConfigurationOfTheTargetBranch`

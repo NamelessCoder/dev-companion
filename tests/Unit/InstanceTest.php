@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Project;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 
 /**
@@ -28,6 +29,7 @@ final class InstanceTest extends TestCase
         Instance::discoverFrom(null);
     }
 
+    #[Requirement('R-DIS-001')]
     #[Test]
     public function withoutAnEntrypointHandingInADirectoryThereIsNoInstance(): void
     {
@@ -69,6 +71,7 @@ final class InstanceTest extends TestCase
         self::assertSame(['core', 'my_sitepackage'], array_keys(Instance::packages()));
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function theTypo3VersionIsReadFromTheCorePackage(): void
     {
@@ -90,6 +93,7 @@ final class InstanceTest extends TestCase
         self::assertNull(Instance::typo3Major());
     }
 
+    #[Requirement('R-DIS-002')]
     #[Test]
     public function aProjectThatMovedItsVendorDirectoryIsStillFound(): void
     {
@@ -103,6 +107,7 @@ final class InstanceTest extends TestCase
         self::assertSame(['core', 'my_sitepackage'], array_keys(Instance::packages()));
     }
 
+    #[Requirement('R-DIS-004')]
     #[Test]
     public function theExtensionBeingWorkedOnIsAmongThePackages(): void
     {
@@ -119,6 +124,7 @@ final class InstanceTest extends TestCase
         self::assertSame(realpath($root), Instance::packages()['bootstrap_package'] ?? null);
     }
 
+    #[Requirement('R-DIS-017')]
     #[Test]
     public function aPackageBelowTestsBelongsToTheTestSetup(): void
     {
@@ -204,6 +210,7 @@ final class InstanceTest extends TestCase
         self::assertSame(realpath($root) . '/packages/my_sitepackage', Instance::packages()['my_sitepackage']);
     }
 
+    #[Requirement('R-DIS-005')]
     #[Decision('D-DIS-019')]
     #[Decision('D-SCO-012')]
     #[Test]
@@ -232,6 +239,7 @@ final class InstanceTest extends TestCase
     /**
      * @param array<string, mixed> $manifest what the root's composer.json declares
      */
+    #[Requirement('R-PRJ-011')]
     #[Decision('D-DIS-019')]
     #[Test]
     #[DataProvider('manifests')]
@@ -301,6 +309,7 @@ final class InstanceTest extends TestCase
         ];
     }
 
+    #[Requirement('R-PRJ-011')]
     #[Decision('D-DIS-019')]
     #[Test]
     public function aPackageInsideAnInstalledProjectIsNotTheProjectRoot(): void
@@ -320,6 +329,7 @@ final class InstanceTest extends TestCase
         self::assertSame(realpath($root), Instance::project()['root'] ?? null);
     }
 
+    #[Requirement('R-PRJ-011')]
     #[Decision('D-DIS-019')]
     #[Test]
     public function aNamedInstallationThatIsNotThereIsNotWalkedPast(): void
@@ -338,6 +348,7 @@ final class InstanceTest extends TestCase
         self::assertNull(Instance::project());
     }
 
+    #[Requirement('R-DIS-007')]
     #[Test]
     public function anInstallationNamedOutrightIsReadWithoutAnySearch(): void
     {
@@ -354,6 +365,7 @@ final class InstanceTest extends TestCase
         self::assertSame('', Instance::misconfiguration());
     }
 
+    #[Requirement('R-DIS-007')]
     #[Test]
     public function aNamedInstallationThatIsNotThereIsReported(): void
     {
@@ -368,6 +380,7 @@ final class InstanceTest extends TestCase
         self::assertStringContainsString(Instance::ROOT_VARIABLE, Instance::misconfiguration());
     }
 
+    #[Requirement('R-DIS-009')]
     #[Test]
     public function anInstallationThatAppearsDuringTheSessionIsFound(): void
     {

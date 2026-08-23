@@ -30,7 +30,7 @@ What the state means
 * **open** — accepted and not built yet. It is read out beside **not guarded**
   rather than in a list of its own, because a requirement nobody has implemented
   and one that could silently regress are the same kind of thing.
-* **not guarded** — built, and **Held by** names no test. It is never written in
+* **not guarded** — built, and ``heldBy`` names no test. It is never written in
   the front matter: an entry may not claim it of itself, and it is what a claim
   of ``held`` turns out to be. It is the honest answer for a requirement no test
   can hold, and it is the one worth seeing in a listing, because from afar it

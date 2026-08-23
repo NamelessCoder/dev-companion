@@ -14,9 +14,11 @@ use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Knowledge\Scope;
 use TYPO3\DevCompanion\Server\ExcludedTools;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
+#[Requirement('R-SCO-007')]
 final class ExcludedToolsTest extends TestCase
 {
     use TemporaryInstallation;
@@ -82,6 +84,7 @@ final class ExcludedToolsTest extends TestCase
         self::assertContains('typo3_test_run_guide', $this->toolNames());
     }
 
+    #[Requirement('R-SCO-009')]
     #[Test]
     public function onlyTheCallerShortensTheList(): void
     {
@@ -93,6 +96,7 @@ final class ExcludedToolsTest extends TestCase
         self::assertContains('typo3_hint_lookup', $offered);
     }
 
+    #[Requirement('R-SCO-009')]
     #[Test]
     public function theScopeNamesWhatTheCallerExcluded(): void
     {
@@ -124,6 +128,7 @@ final class ExcludedToolsTest extends TestCase
      * out of the budget `R-ANS-013` holds, while `typo3_project_describe` was
      * in the list — `D-AUD-006`.
      */
+    #[Requirement('R-SCO-009')]
     #[Decision('D-AUD-006')]
     #[Test]
     #[DataProvider('everyNameThatTakesNoToolAway')]
@@ -223,6 +228,7 @@ final class ExcludedToolsTest extends TestCase
         self::assertSame([], ExcludedTools::unknown());
     }
 
+    #[Requirement('R-SCO-009')]
     #[Test]
     public function theToolThatExplainsAShortListCannotBeExcluded(): void
     {
@@ -238,6 +244,7 @@ final class ExcludedToolsTest extends TestCase
      * them — R-SCO-009, D-FBK-042. What they write is this checkout, not the
      * installation the server read.
      */
+    #[Requirement('R-SCO-009')]
     #[Decision('D-FBK-042')]
     #[Test]
     public function theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem(): void

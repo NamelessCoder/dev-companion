@@ -21,10 +21,14 @@ use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
 
+#[Requirement('R-DIS-014')]
+#[Requirement('R-SKL-001')]
+#[Requirement('R-SKL-002')]
 final class SkillTest extends TestCase
 {
     /**
@@ -227,6 +231,7 @@ final class SkillTest extends TestCase
         'typo3-extension-patch-review',
     ];
 
+    #[Requirement('R-SKL-005')]
     #[Test]
     public function theBaseFixesTheOrderEveryTaskStartsIn(): void
     {
@@ -480,6 +485,7 @@ final class SkillTest extends TestCase
         Icons::forget();
     }
 
+    #[Requirement('R-SKL-008')]
     #[Test]
     public function theBaseStopsTheTaskWhenTheServerIsNotConnected(): void
     {
@@ -514,6 +520,8 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('Continue only when asked to after saying so', $base);
     }
 
+    #[Requirement('R-SKL-005')]
+    #[Requirement('R-SKL-017')]
     #[Decision('D-SKL-015')]
     #[Decision('D-SKL-034')]
     #[Test]
@@ -574,6 +582,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-017')]
     #[Decision('D-SKL-014')]
     #[Decision('D-SKL-064')]
     #[Test]
@@ -634,6 +643,8 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('improve', self::description('typo3-extension-health'));
     }
 
+    #[Requirement('R-SKL-004')]
+    #[Requirement('R-SKL-005')]
     #[Test]
     public function theDeprecationSweepRunsFromTheExtensionsSurface(): void
     {
@@ -714,6 +725,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('the sweep ran and came back empty', $skill);
     }
 
+    #[Requirement('R-SKL-005')]
     #[Decision('D-SKL-015')]
     #[Decision('D-SKL-034')]
     #[Decision('D-SKL-037')]
@@ -794,6 +806,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-005')]
     #[Decision('D-ANS-010')]
     #[Test]
     public function theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks(): void
@@ -881,6 +894,7 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('page titles and section paths', $skill);
     }
 
+    #[Requirement('R-SKL-005')]
     #[Decision('D-SKL-004')]
     #[Test]
     public function theInstalledSourceIsTheStepAfterTheLookups(): void
@@ -956,6 +970,7 @@ final class SkillTest extends TestCase
      * (`feedback/2026-08-19-094432`, `D-SKL-069`). So each of them says what it
      * adds after step 2 rather than what kind of lookup it is.
      */
+    #[Requirement('R-SKL-026')]
     #[Test]
     public function everyRuntimeLookupSaysWhatItAddsAfterTheExtensionAnswer(): void
     {
@@ -1034,6 +1049,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('per surface in scope', $skill);
     }
 
+    #[Requirement('R-SKL-004')]
     #[Test]
     public function aSecurityFindingIsNotEstablishedUntilItsSinkIs(): void
     {
@@ -1068,6 +1084,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('`typo3_hint_lookup` for the sinks', $checklist);
     }
 
+    #[Requirement('R-SKL-011')]
     #[Decision('D-SKL-007')]
     #[Test]
     public function aReviewReportsWhatItDroppedAndWhatDroppedIt(): void
@@ -1142,6 +1159,7 @@ final class SkillTest extends TestCase
      * and where one is written it goes outside the checkout the skill just
      * assessed.
      */
+    #[Requirement('R-SKL-023')]
     #[Test]
     public function aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes(): void
     {
@@ -1379,6 +1397,7 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('Length is the limit rather than the count', $skill);
     }
 
+    #[Requirement('R-SKL-014')]
     #[Decision('D-SKL-008')]
     #[Test]
     public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
@@ -1557,6 +1576,7 @@ final class SkillTest extends TestCase
      * That address is what a published skill may not carry, because a contact
      * route is the fact that moves.
      */
+    #[Requirement('R-SKL-020')]
     #[Test]
     public function aWorkflowThatEndsInPublicationStopsAtAVulnerability(): void
     {
@@ -1625,6 +1645,7 @@ final class SkillTest extends TestCase
      * that can still be spared the work is the one about to write the code
      * (`D-SKL-010`).
      */
+    #[Requirement('R-SKL-016')]
     #[Decision('D-SKL-010')]
     #[Test]
     public function theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer(): void
@@ -1679,6 +1700,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('a change that has to announce itself, or a breaking one', $skill);
     }
 
+    #[Requirement('R-SKL-013')]
     #[Decision('D-SKL-007')]
     #[Test]
     public function aSurfaceReportedAsAssessedNamesWhatWasRead(): void
@@ -1704,6 +1726,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-022')]
     #[Test]
     public function aReviewSurfaceNamesTheLookupThatCanAnswerIt(): void
     {
@@ -1741,6 +1764,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('`typo3_rule_lookup` asked for `documentation`', $skill);
     }
 
+    #[Requirement('R-SKL-012')]
     #[Decision('D-SKL-007')]
     #[Test]
     public function aFindingSaysWhetherThePatchIntroducedIt(): void
@@ -1769,6 +1793,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('rather than of what a message promises about it', $skill);
     }
 
+    #[Requirement('R-SKL-015')]
     #[Test]
     public function aRuleQuotedAtTheIssueIsVerifiedInTheCheckout(): void
     {
@@ -1867,6 +1892,8 @@ final class SkillTest extends TestCase
         self::assertLessThan($reproduce, $closure);
     }
 
+    #[Requirement('R-SKL-005')]
+    #[Requirement('R-SKL-007')]
     #[Decision('D-SKL-055')]
     #[Test]
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
@@ -1892,6 +1919,7 @@ final class SkillTest extends TestCase
         }
     }
 
+    #[Requirement('R-SKL-006')]
     #[Test]
     public function theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt(): void
     {
@@ -2165,6 +2193,7 @@ final class SkillTest extends TestCase
      * written down in the authoring contract rather than assertable over the
      * directory, because which sides a skill owns is not in the file.
      */
+    #[Requirement('R-SKL-010')]
     #[Test]
     public function aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement(): void
     {
@@ -2230,6 +2259,7 @@ final class SkillTest extends TestCase
      * — `D-SKL-061`. So both halves are held here too: the premise a defect
      * inside a declared range meets, and the step the body owes it once it did.
      */
+    #[Requirement('R-SKL-007')]
     #[Decision('D-SKL-061')]
     #[Test]
     public function aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill(): void
@@ -2258,6 +2288,7 @@ final class SkillTest extends TestCase
      * their total, in the client's own arithmetic: `- <name>: <description>`,
      * one newline between entries — `D-SKL-061`.
      */
+    #[Requirement('R-SKL-021')]
     #[Decision('D-SKL-026')]
     #[Decision('D-SKL-054')]
     #[Decision('D-SKL-061')]
@@ -2373,6 +2404,7 @@ final class SkillTest extends TestCase
      * its extension side (`D-SKL-023`). The task names the core as a tracker
      * rather than as a patch, which is what work ending before a patch does.
      */
+    #[Requirement('R-SKL-019')]
     #[Test]
     public function aCoreTriageReachesTheSkillThatOwnsItWithoutNamingAPath(): void
     {
@@ -2424,6 +2456,7 @@ final class SkillTest extends TestCase
      * this set, because a draft reachable by routing is one nobody chose, and
      * that is the exemption this check has and the only one — `D-SKL-064`.
      */
+    #[Requirement('R-SKL-019')]
     #[Decision('D-SKL-064')]
     #[Test]
     public function everyPublishedSkillIsNamedByAnIntent(): void
@@ -2576,6 +2609,9 @@ final class SkillTest extends TestCase
      * them, rather than restating what the tool answers — `D-SKL-046`,
      * `D-SKL-055`, `D-SKL-021`.
      */
+    #[Requirement('R-SKL-007')]
+    #[Requirement('R-SKL-017')]
+    #[Requirement('R-SKL-022')]
     #[Decision('D-SKL-021')]
     #[Decision('D-SKL-046')]
     #[Decision('D-SKL-055')]
@@ -2724,6 +2760,7 @@ final class SkillTest extends TestCase
      * caller holding the looking answer must not read the step as discharged
      * (`D-SKL-044`).
      */
+    #[Requirement('R-SKL-024')]
     #[Decision('D-SKL-045')]
     #[Test]
     public function theBrowserStepNamesTheGuidesThatAnswerIt(): void
@@ -2894,6 +2931,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-007')]
     #[Test]
     public function anUpgradeIsOrderedWorkAndStopsWhereAnotherSkillStarts(): void
     {
@@ -2998,6 +3036,7 @@ final class SkillTest extends TestCase
      * wording and nothing else, which is why they are held here — `D-SKL-056` —
      * `D-KNW-105`.
      */
+    #[Requirement('R-KNW-072')]
     #[Decision('D-KNW-092')]
     #[Decision('D-KNW-105')]
     #[Decision('D-SKL-044')]
@@ -3301,6 +3340,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-003')]
     #[Test]
     public function backendModuleDocumentationIsAnExplicitSkillTransition(): void
     {
@@ -3323,6 +3363,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-004')]
     #[Test]
     public function theBaseIsEstablishedBeforeTheCheckoutIsOpened(): void
     {
@@ -3366,6 +3407,8 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-004')]
+    #[Requirement('R-SKL-005')]
     #[Test]
     public function anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk(): void
     {
@@ -3421,6 +3464,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Requirement('R-SKL-004')]
     #[Decision('D-SKL-002')]
     #[Test]
     public function aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList(): void
@@ -3481,6 +3525,7 @@ final class SkillTest extends TestCase
      * item 2 already fixed. The list is the thing that gets agreed, so the
      * answer sits on the item and before it is shown.
      */
+    #[Requirement('R-SKL-025')]
     #[Test]
     public function anAuditsListSaysWhatTheRepositoryAlreadyCarriesUnmerged(): void
     {
@@ -3532,6 +3577,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('*What a dropped candidate owes* is', $flat);
     }
 
+    #[Requirement('R-SKL-004')]
     #[Test]
     public function theCheckLayerIsMeasuredAgainstACompleteOne(): void
     {
@@ -3627,6 +3673,7 @@ final class SkillTest extends TestCase
      * That the moment is the right one is a reading of the workflow rather than
      * a property of a file.
      */
+    #[Requirement('R-SKL-018')]
     #[Decision('D-SKL-053')]
     #[Test]
     public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void

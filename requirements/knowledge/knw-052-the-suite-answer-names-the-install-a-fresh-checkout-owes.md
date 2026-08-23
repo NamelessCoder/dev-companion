@@ -3,6 +3,8 @@ id: R-KNW-052
 title: 'The suite answer names the install a fresh checkout owes'
 status: held
 restsOn: [D-KNW-041]
+heldBy:
+  - KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes
 ---
 
 # R-KNW-052 — The suite answer names the install a fresh checkout owes
@@ -38,7 +40,3 @@ failing run, `composerInstall`, then the real run (2026-08-02). Reproduced in a
 worktree of `.checkouts/typo3.git` on 2026-08-03, which is the run
 [`D-KNW-041`](../../decisions/knowledge/knw-041-the-checkout-a-suite-is-started-in-supplies-its-own-dependencies.md)
 records.
-
-## Held by
-
-- `KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`

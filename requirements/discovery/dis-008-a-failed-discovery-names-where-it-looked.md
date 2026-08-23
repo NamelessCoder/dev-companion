@@ -2,6 +2,8 @@
 id: R-DIS-008
 title: 'A failed discovery names where it looked'
 status: held
+heldBy:
+  - ScopeTest::theInstallationDiagnosticIsDataRatherThanProse
 ---
 
 # R-DIS-008 — A failed discovery names where it looked
@@ -15,7 +17,3 @@ the wrong directory.
 
 The same session; "no installation found" was indistinguishable from "started in
 the wrong directory".
-
-## Held by
-
-- `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`

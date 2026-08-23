@@ -3,6 +3,8 @@ id: R-GUI-008
 title: 'A brief states what the change is for before its steps'
 status: held
 restsOn: [D-GUI-005]
+heldBy:
+  - HintsTest::everyBriefOpensOnThePremiseADefectIsJudgedBy
 ---
 
 # R-GUI-008 — A brief states what the change is for before its steps
@@ -24,7 +26,3 @@ committed a clearer exception for it, where the defect was that an editor
 replacing the image went on being served the old one. The same premise was
 missing from three further turns the user corrected
 (`feedback/2026-08-02-145043`, 2026-08-02).
-
-## Held by
-
-- `HintsTest::everyBriefOpensOnThePremiseADefectIsJudgedBy`

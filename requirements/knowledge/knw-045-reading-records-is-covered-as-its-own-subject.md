@@ -2,6 +2,8 @@
 id: R-KNW-045
 title: 'Reading records is covered as its own subject'
 status: held
+heldBy:
+  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
 ---
 
 # R-KNW-045 — Reading records is covered as its own subject
@@ -20,7 +22,3 @@ A corpus in which `datahandler-persistence` carried `querybuilder`,
 `appliesTo` and not one statement about reading. A grep for the reading APIs
 over every hint there is returned one sentence, and it was about the doktypes of
 a menu (2026-08-03).
-
-## Held by
-
-- `HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem`

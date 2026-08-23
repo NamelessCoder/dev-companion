@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * That `bin/cli` still runs, driven the way a session drives it.
@@ -71,6 +72,7 @@ final class UpkeepTest extends TestCase
      *
      * @param array<int, string> $arguments
      */
+    #[Requirement('R-COD-001')]
     #[DataProvider('readingCommands')]
     #[Test]
     public function everyReadingCommandRuns(array $arguments): void

@@ -2,6 +2,9 @@
 id: R-SKL-002
 title: 'A testing task verifies the harness before relying on it'
 status: held
+heldBy:
+  - InstallerTest
+  - SkillTest
 ---
 
 # R-SKL-002 — A testing task verifies the harness before relying on it
@@ -38,8 +41,3 @@ check in `/home/benji/projects/ext-guidedtour` found the page said to split the
 formatting pass off and nothing about which half goes first, worked the order
 out itself, and reported that anyone landing a first check on a non-conformant
 repository has to.
-
-## Held by
-
-- `SkillTest`
-- `InstallerTest`

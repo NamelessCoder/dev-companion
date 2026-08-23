@@ -3,6 +3,16 @@ id: R-SKL-005
 title: 'The order a task starts in is written once'
 status: held
 restsOn: [D-EVI-003, D-SKL-003, D-SKL-004, D-SKL-034, D-SKL-037]
+heldBy:
+  - InstallerTest::codexInstallAndUpdateTrackTheirSkillsCentrally
+  - SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk
+  - SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence
+  - SkillTest::theBaseFixesTheOrderEveryTaskStartsIn
+  - SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks
+  - SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched
+  - SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface
+  - SkillTest::theInstalledSourceIsTheStepAfterTheLookups
+  - SkillTest::theWorkflowStepRunsInEverySession
 ---
 
 # R-SKL-005 — The order a task starts in is written once
@@ -133,15 +143,3 @@ said so — `D-SKL-034`. The sweep's other exemption was stated as a property
 after `feedback/2026-08-11-055337`: a review of one Gerrit change read the three
 examples as the list its own shape was not in, skipped the sweep on a diff that
 touches TYPO3 API, and said so nowhere in its report — `D-SKL-037`.
-
-## Held by
-
-- `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`
-- `SkillTest::theWorkflowStepRunsInEverySession`
-- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface`
-- `SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched`
-- `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
-- `SkillTest::theInstalledSourceIsTheStepAfterTheLookups`
-- `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
-- `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
-- `InstallerTest::codexInstallAndUpdateTrackTheirSkillsCentrally`

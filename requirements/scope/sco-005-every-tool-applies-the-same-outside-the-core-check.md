@@ -2,6 +2,9 @@
 id: R-SCO-005
 title: 'Every tool applies the same outside-the-core check'
 status: held
+heldBy:
+  - ScopeTest::aScriptAnswerSaysWhichRepositoryItsCommandsRunIn
+  - ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt
 ---
 
 # R-SCO-005 — Every tool applies the same outside-the-core check
@@ -20,5 +23,3 @@ session (2026-07-29).
 ## Held by
 
 - the two tests above, and
-- `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`
-- `ScopeTest::aScriptAnswerSaysWhichRepositoryItsCommandsRunIn`

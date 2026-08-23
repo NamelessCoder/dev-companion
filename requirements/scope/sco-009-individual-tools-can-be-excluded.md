@@ -3,6 +3,12 @@ id: R-SCO-009
 title: 'Individual tools can be excluded'
 status: held
 restsOn: [D-AUD-004, D-FBK-042, D-AUD-006]
+heldBy:
+  - ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList
+  - ExcludedToolsTest::onlyTheCallerShortensTheList
+  - ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem
+  - ExcludedToolsTest::theScopeNamesWhatTheCallerExcluded
+  - ExcludedToolsTest::theToolThatExplainsAShortListCannotBeExcluded
 ---
 
 # R-SCO-009 — Individual tools can be excluded
@@ -45,11 +51,3 @@ The exceptions were added on 2026-08-04, after `453e439` read the feedback one
 as a defect. What holds the status at `held` is that the code and this entry now
 say the same thing — `Registry::offered()` filters `TOOLS` and appends the
 feedback tools past the filter, which is exactly the list above.
-
-## Held by
-
-- `ExcludedToolsTest::onlyTheCallerShortensTheList`
-- `ExcludedToolsTest::theScopeNamesWhatTheCallerExcluded`
-- `ExcludedToolsTest::theToolThatExplainsAShortListCannotBeExcluded`
-- `ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem`
-- `ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList`

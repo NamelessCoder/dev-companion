@@ -3,6 +3,8 @@ id: R-KNW-073
 title: 'A step that reads from a cache says what invalidates it'
 status: held
 restsOn: [D-KNW-089]
+heldBy:
+  - HintsTest::theSchemaStepIsSaidToMigrateFromTheCachedTca
 ---
 
 # R-KNW-073 — A step that reads from a cache says what invalidates it
@@ -22,7 +24,3 @@ the schema step migrated from the TCA cached before them, created neither table
 and answered `[OK] Extension(s) ... successfully set up.`, and the seeding
 script that followed died on a table that does not exist
 (feedback/2026-08-17-212117, 2026-08-17).
-
-## Held by
-
-- `HintsTest::theSchemaStepIsSaidToMigrateFromTheCachedTca`

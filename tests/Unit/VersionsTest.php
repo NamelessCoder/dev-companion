@@ -15,6 +15,7 @@ use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
@@ -26,6 +27,7 @@ use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
  * a site runs. Handing it over anyway produces code that fails at runtime and
  * fails silently — which is why the range is data rather than a sentence.
  */
+#[Requirement('R-AUD-004')]
 final class VersionsTest extends TestCase
 {
     use TemporaryInstallation;
@@ -245,6 +247,7 @@ final class VersionsTest extends TestCase
         }
     }
 
+    #[Requirement('R-AUD-005')]
     #[Decision('D-KNW-007')]
     #[Test]
     public function whoIsObligedIsWrittenAsDataToo(): void
@@ -284,6 +287,7 @@ final class VersionsTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-016')]
     #[Test]
     public function anExtensionThatServesTwoMajorsIsAnsweredForBoth(): void
     {
@@ -318,6 +322,7 @@ final class VersionsTest extends TestCase
         );
     }
 
+    #[Requirement('R-DIS-016')]
     #[Test]
     public function theAnswerSaysWhichMajorsItWasComposedFor(): void
     {
@@ -336,6 +341,7 @@ final class VersionsTest extends TestCase
         self::assertStringContainsString('^13.4 || ^14.3', $result->text);
     }
 
+    #[Requirement('R-DIS-016')]
     #[Test]
     public function aStatedMajorSaysWhichOtherOneItLeftOut(): void
     {
@@ -384,6 +390,7 @@ final class VersionsTest extends TestCase
         );
     }
 
+    #[Requirement('R-DIS-016')]
     #[Test]
     public function aConstraintIsReadByAskingItAboutEachCoveredMajor(): void
     {
@@ -527,6 +534,7 @@ final class VersionsTest extends TestCase
         yield 'Composer\'s hyphen range, which this declines to read' => ['8.1 - 8.4', null];
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     #[DataProvider('phpConstraintSpellingsFromTheCheckouts')]
     public function aPhpSpellingFromTheCheckoutsAnswersItsLowestVersion(string $constraint, ?string $floor): void
@@ -544,6 +552,7 @@ final class VersionsTest extends TestCase
         self::assertNull(Versions::floor('   '));
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     public function theFloorIsReadOneLevelBelowTheMajorTheRestOfThisAnswers(): void
     {

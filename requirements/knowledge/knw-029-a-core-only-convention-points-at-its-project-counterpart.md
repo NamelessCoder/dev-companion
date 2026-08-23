@@ -2,6 +2,8 @@
 id: R-KNW-029
 title: 'A core-only convention points at its project counterpart'
 status: held
+heldBy:
+  - HintsTest::coreOnlyDocumentationAndBuildHintsHaveProjectTwins
 ---
 
 # R-KNW-029 — A core-only convention points at its project counterpart
@@ -17,7 +19,3 @@ than the core's source trees.
 
 The binding pass finding two subjects whose core obligation had no project
 counterpart (2026-07-29).
-
-## Held by
-
-- `HintsTest::coreOnlyDocumentationAndBuildHintsHaveProjectTwins`

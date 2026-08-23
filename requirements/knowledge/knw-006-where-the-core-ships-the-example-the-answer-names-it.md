@@ -2,6 +2,8 @@
 id: R-KNW-006
 title: 'Where the core ships the example, the answer names it'
 status: held
+heldBy:
+  - HintsTest::aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips
 ---
 
 # R-KNW-006 — Where the core ships the example, the answer names it
@@ -17,7 +19,3 @@ a project's own CSS, not the core's own extension.
 
 A sitepackage built with an invented directory layout, rejected with "die ordner
 passen nicht zu den best practices, bitte prüfe camino" (2026-07-29).
-
-## Held by
-
-- `HintsTest::aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips`

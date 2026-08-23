@@ -3,6 +3,8 @@ id: R-SKL-021
 title: 'Every description is written to the budget they share'
 status: held
 restsOn: [D-SKL-026]
+heldBy:
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
 ---
 
 # R-SKL-021 — Every description is written to the budget they share
@@ -23,7 +25,3 @@ characters against a budget of 6000 for a 200k session on the current model
 generation, of which the client's own bundled skills had already taken 5997.
 What a dropped description costs is `D-AUD-003` — a review prompt whose every
 criterion the conformance skill would have met, which did not activate it.
-
-## Held by
-
-- `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`

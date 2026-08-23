@@ -11,7 +11,12 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
+#[Requirement('R-DIS-011')]
+#[Requirement('R-DIS-012')]
+#[Requirement('R-SKL-001')]
+#[Requirement('R-SKL-002')]
 final class InstallerTest extends TestCase
 {
     #[Test]
@@ -102,6 +107,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-SKL-005')]
     #[Test]
     public function codexInstallAndUpdateTrackTheirSkillsCentrally(): void
     {
@@ -456,6 +462,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-015')]
     #[Test]
     public function ddevProjectNamesTheEntrypointAtTheBinDirectoryItDeclares(): void
     {
@@ -486,6 +493,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-015')]
     #[Test]
     public function aProjectThatNeverRequiredTheServerKeepsTheAbsolutePath(): void
     {
@@ -512,6 +520,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-021')]
     #[Test]
     public function updateRewritesTheEntryAProjectHasOutgrown(): void
     {
@@ -542,6 +551,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-021')]
     #[Test]
     public function updateRefusesToReplaceAnotherCommand(): void
     {
@@ -579,6 +589,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Requirement('R-DIS-021')]
     #[Test]
     public function codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile(): void
     {
@@ -753,6 +764,7 @@ final class InstallerTest extends TestCase
      * throughout: it is what tells "this package's directories are invisible"
      * apart from "the whole skills directory is" — `D-DIS-010`.
      */
+    #[Requirement('R-DIS-024')]
     #[Decision('D-DIS-010')]
     #[Test]
     public function gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote(): void

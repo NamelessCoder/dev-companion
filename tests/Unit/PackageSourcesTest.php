@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -61,6 +62,7 @@ final class PackageSourcesTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne(): void
     {
@@ -84,6 +86,7 @@ final class PackageSourcesTest extends TestCase
         self::assertSame([], FluidNamespaces::all());
     }
 
+    #[Requirement('R-PRJ-003')]
     #[Test]
     public function theChangelogOfTheInstalledCoreIsSearchable(): void
     {
@@ -313,6 +316,7 @@ final class PackageSourcesTest extends TestCase
      * ends it is a query the caller can ask rather than five numbers, because
      * two words had to go before anything matched — `D-ANS-016`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-016')]
     #[Test]
     public function aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit(): void
@@ -342,6 +346,7 @@ final class PackageSourcesTest extends TestCase
      * data too, and which of the two count fields carries a number is what says
      * whether it was taken inside the narrowing or outside it.
      */
+    #[Requirement('R-ANS-002')]
     #[Decision('D-ANS-043')]
     #[Test]
     public function theNarrowingAMissComputesIsAFieldAsWellAsALine(): void
@@ -396,6 +401,7 @@ final class PackageSourcesTest extends TestCase
      * away, and a sentence naming the manual first would have routed that
      * session away from it — `D-ANS-043`.
      */
+    #[Requirement('R-ANS-018')]
     #[Decision('D-ANS-043')]
     #[Test]
     public function aMissThatOffersARequeryNamesTheCorpusToAskNext(): void
@@ -423,6 +429,7 @@ final class PackageSourcesTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-006')]
     #[Test]
     public function whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith(): void
     {
@@ -469,6 +476,7 @@ final class PackageSourcesTest extends TestCase
      * miss opens with, and the counts that stay are marked as taken inside it —
      * `D-ANS-016`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-016')]
     #[Test]
     public function aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt(): void
@@ -532,6 +540,7 @@ final class PackageSourcesTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-003')]
     #[Test]
     public function theChangelogIsNarrowedByTypeAndVersion(): void
     {
@@ -549,6 +558,7 @@ final class PackageSourcesTest extends TestCase
         self::assertSame(['1', '2'], array_column($byVersion->data['entries'], 'issue'));
     }
 
+    #[Requirement('R-PRJ-003')]
     #[Test]
     public function anInstallationWithoutAChangelogSaysSo(): void
     {

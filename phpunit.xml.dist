@@ -16,7 +16,7 @@
         docblock carries the id and a failure does not print docblocks.
     -->
     <extensions>
-        <bootstrap class="TYPO3\DevCompanion\Tests\Support\HeldDecisions"/>
+        <bootstrap class="TYPO3\DevCompanion\Tests\Support\HeldEntries"/>
     </extensions>
     <testsuites>
         <testsuite name="unit">

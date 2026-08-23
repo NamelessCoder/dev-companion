@@ -2,6 +2,9 @@
 id: R-ANS-005
 title: 'A console that answered "none" has answered'
 status: held
+heldBy:
+  - LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered
+  - LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure
 ---
 
 # R-ANS-005 — A console that answered "none" has answered
@@ -18,8 +21,3 @@ fix an installation instead of narrowing a query.
 
 The same feedback; the console's zero-match warning was read as an unreachable
 installation (2026-07-29).
-
-## Held by
-
-- `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`
-- `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`

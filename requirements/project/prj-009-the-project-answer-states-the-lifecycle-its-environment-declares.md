@@ -3,6 +3,10 @@ id: R-PRJ-009
 title: 'The project answer states the lifecycle its environment declares'
 status: held
 restsOn: [D-ANS-044]
+heldBy:
+  - ProjectTest::aHookAConfigBesideTheBaseOneTakesAwayIsNotStillReported
+  - ProjectTest::aPullRecipeDdevWroteIsNotOneThisRepositoryDecidedOn
+  - ProjectTest::theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked
 ---
 
 # R-PRJ-009 — The project answer states the lifecycle its environment declares
@@ -31,9 +35,3 @@ project from a fresh clone in `/home/benji/projects/site-demo-typo3-org`, whose
 every step came from reading `.ddev/config.yaml` and `.ddev/providers/dump.yaml`
 by hand. Re-run the same day: `environment` is still `via`, `php`, `source` and
 `entered`, and `commands` still holds the one composer script.
-
-## Held by
-
-- `ProjectTest::theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked`
-- `ProjectTest::aHookAConfigBesideTheBaseOneTakesAwayIsNotStillReported`
-- `ProjectTest::aPullRecipeDdevWroteIsNotOneThisRepositoryDecidedOn`

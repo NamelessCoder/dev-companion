@@ -3,6 +3,8 @@ id: R-SKL-010
 title: "A skill's description names every side of what it owns"
 status: held
 restsOn: [D-AUD-003]
+heldBy:
+  - SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement
 ---
 
 # R-SKL-010 — A skill's description names every side of what it owns
@@ -27,7 +29,3 @@ that failed was the descriptions: `typo3-content-element-development` opened on
 "frontend content elements" and reached `previews` ninth of eleven, while
 `typo3-backend-module-development` promised "backend UI work" and meant a
 module. `D-AUD-003` carries the reading of the three channels behind it.
-
-## Held by
-
-- `SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement`

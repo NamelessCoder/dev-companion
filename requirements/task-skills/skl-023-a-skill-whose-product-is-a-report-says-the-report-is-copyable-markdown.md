@@ -3,6 +3,8 @@ id: R-SKL-023
 title: 'A skill whose product is a report says the report is copyable markdown'
 status: held
 restsOn: [D-SKL-042]
+heldBy:
+  - SkillTest::aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes
 ---
 
 # R-SKL-023 — A skill whose product is a report says the report is copyable markdown
@@ -37,7 +39,3 @@ time: `D-SKL-040` made the file the session wrote afterwards the requirement.
 Asked on 2026-08-14, the maintainer answered that the report may stay in the
 chat and needs no path, and that formatted HTML is what cannot be transferred —
 which is `D-SKL-042` and the revocation of the entry before it.
-
-## Held by
-
-- `SkillTest::aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes`

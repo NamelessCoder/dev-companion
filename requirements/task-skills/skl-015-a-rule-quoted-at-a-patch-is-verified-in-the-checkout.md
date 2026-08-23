@@ -3,6 +3,8 @@ id: R-SKL-015
 title: 'A rule quoted at a patch is verified in the checkout'
 status: held
 restsOn: [D-KNW-043, D-SKL-005]
+heldBy:
+  - SkillTest::aRuleQuotedAtTheIssueIsVerifiedInTheCheckout
 ---
 
 # R-SKL-015 — A rule quoted at a patch is verified in the checkout
@@ -32,7 +34,3 @@ repeated it as correct until its user asked what it made of the statement. The
 checkout contradicted it — the ViewHelper's own first example is an `EXT:` path,
 the core's functional suite renders that form with scaling and cropping, and
 both docblocks warn about stability rather than support (`D-KNW-043`).
-
-## Held by
-
-- `SkillTest::aRuleQuotedAtTheIssueIsVerifiedInTheCheckout`

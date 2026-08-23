@@ -3,6 +3,10 @@ id: R-DIS-025
 title: 'A publication that went stale says so before the first call'
 status: held
 restsOn: [D-DIS-013]
+heldBy:
+  - InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted
+  - ScopeTest::theInstructionsFitWhatAClientKeeps
+  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
 ---
 
 # R-DIS-025 — A publication that went stale says so before the first call
@@ -49,7 +53,5 @@ no `.claude/skills` at all.
 
 ## Held by
 
-- `InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted`
-- `StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall`
 - `ScopeTest::theInstructionsFitWhatAClientKeeps`, which measures the notice
   beside the prefix naming excluded tools, since both fire at once

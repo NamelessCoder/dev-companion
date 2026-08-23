@@ -3,6 +3,9 @@ id: R-KNW-063
 title: 'A template answer states that the file-name fallback runs once per root path'
 status: held
 restsOn: [D-KNW-052]
+heldBy:
+  - HintsTest::theFileNameFallbackIsStatedAsOncePerRootPath
+  - HintsTest::theFluidFileExtensionIsWithheldWhereItDoesNotResolve
 ---
 
 # R-KNW-063 — A template answer states that the file-name fallback runs once per root path
@@ -41,8 +44,3 @@ Which root path is the later one is the half no changelog entry states, so the
 statement carries that too: the list is sorted by its integer key before it is
 walked, so the highest key wins rather than the last call — and the sort is
 skipped for the whole list as soon as one key in it is a string.
-
-## Held by
-
-- `HintsTest::theFileNameFallbackIsStatedAsOncePerRootPath`
-- `HintsTest::theFluidFileExtensionIsWithheldWhereItDoesNotResolve`

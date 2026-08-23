@@ -17,6 +17,7 @@ use TYPO3\DevCompanion\Sdk\SkillReferenceHandler;
 use TYPO3\DevCompanion\Sdk\Skills;
 use TYPO3\DevCompanion\Server\Factory;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * The typo3:// resources as a host reads them, which is before anything of
@@ -27,6 +28,7 @@ use TYPO3\DevCompanion\Server\Installer;
  * list and nothing else. `R-ANS-022` is what follows from that, and this holds
  * the fields the choice is made on.
  */
+#[Requirement('R-ANS-022')]
 final class ResourceSurfaceTest extends TestCase
 {
     #[Test]
@@ -161,6 +163,7 @@ final class ResourceSurfaceTest extends TestCase
      * that nobody may load yet — `typo3-development-installation`, `D-SKL-013`
      * — and offering it as a resource would publish it by the back door.
      */
+    #[Requirement('R-ANS-022')]
     #[Test]
     public function onlyAPublishedSkillIsOffered(): void
     {
@@ -263,6 +266,7 @@ final class ResourceSurfaceTest extends TestCase
      * the way a relative reference is resolved against any other URI, and the
      * result has to be a URI this server answers.
      */
+    #[Requirement('R-ANS-022')]
     #[Test]
     public function everyLinkASkillWritesResolvesToAResourceThisServerServes(): void
     {

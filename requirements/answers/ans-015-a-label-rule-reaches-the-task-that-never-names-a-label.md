@@ -3,6 +3,8 @@ id: R-ANS-015
 title: 'A label rule reaches the task that never names a label'
 status: held
 restsOn: [D-ANS-024]
+heldBy:
+  - LabelSearchTest::aCallerAboutToWriteAUnitIsToldItsSourceLanguage
 ---
 
 # R-ANS-015 — A label rule reaches the task that never names a label
@@ -42,7 +44,3 @@ Measured on 2026-08-02:
 `bin/cli hints:probe "add a testimonials content element to the sitepackage"`
 reaches `content-elements`, `sitepackage-layout` and `frontend-page-rendering`.
 Adding the word labels to the same query is what brings `language-files` back.
-
-## Held by
-
-- `LabelSearchTest::aCallerAboutToWriteAUnitIsToldItsSourceLanguage`

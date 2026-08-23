@@ -3,6 +3,9 @@ id: R-ANS-018
 title: 'An answer names the tool for what it says is absent'
 status: held
 restsOn: [D-ANS-031]
+heldBy:
+  - PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskNext
+  - ProjectTest::whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt
 ---
 
 # R-ANS-018 — An answer names the tool for what it says is absent
@@ -21,8 +24,3 @@ directory for (`feedback/2026-08-01-114807`, 2026-08-01). The same gap from the
 other end the next day — four `gerrit:setup` hook installers answered "what can
 I run here" while `Build/Scripts/runTests.sh`, called about thirty times that
 session, was named nowhere (`feedback/2026-08-02-144350`).
-
-## Held by
-
-- `ProjectTest::whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt`
-- `PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskNext`

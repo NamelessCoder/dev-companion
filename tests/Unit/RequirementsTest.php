@@ -9,8 +9,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\RequirementState;
+use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
  * The shape of requirements/, as far as one branch can be right about it.
@@ -183,35 +185,50 @@ final class RequirementsTest extends TestCase
     }
 
     /**
-     * A requirement that is not open says what holds it, and every test it
-     * names exists, which is the whole of what `## Held by` promises —
-     * `D-DOC-004`.
+     * A requirement that is not open says what holds it: the tests that declare
+     * it, or a section saying nothing does — `D-DOC-004`, `D-DOC-049`.
      */
     #[Decision('D-DOC-004')]
+    #[Decision('D-DOC-049')]
     #[Test]
     public function everyRequirementNamesWhatHoldsIt(): void
     {
-        $methods = $this->testMethods();
-        $classes = array_unique(array_map(static fn(string $m): string => explode('::', $m)[0], $methods));
-
         foreach (Requirements::all() as $id => $requirement) {
             if (RequirementState::tryFrom($requirement['status']) === RequirementState::Open) {
                 continue;
             }
 
-            self::assertNotSame('', $requirement['heldBy'], $id . ' does not say what holds it');
             self::assertTrue(
                 $requirement['tests'] !== [] || str_contains($requirement['heldBy'], 'not guarded'),
                 $id . ' names neither a test nor that it is not guarded',
             );
-            foreach ($requirement['tests'] as $test) {
-                self::assertContains(
-                    $test,
-                    str_contains($test, '::') ? $methods : $classes,
-                    $id . ' names ' . $test . ', which no test declares',
-                );
+        }
+    }
+
+    /**
+     * The two ends are one source: the test declares `#[Requirement]` and
+     * `heldBy` is generated from it — `D-DOC-049`, which is `D-DOC-048` for the
+     * corpus that says what must be true.
+     */
+    #[Decision('D-DOC-049')]
+    #[Test]
+    public function everyRequirementSaysWhatTheTestsHoldingItDeclare(): void
+    {
+        $held = Sources::held('Requirement');
+        $stale = [];
+        foreach (Requirements::files() as $path) {
+            $contents = (string) file_get_contents($path);
+            if (Entry::withNames($contents, 'heldBy', $held[Requirements::read($path)['id']] ?? []) !== $contents) {
+                $stale[] = basename($path);
             }
         }
+
+        self::assertSame([], $stale, 'a heldBy the tests do not write — run bin/cli requirements:cover');
+        self::assertSame(
+            [],
+            array_values(array_diff(array_keys($held), array_keys(Requirements::all()))),
+            'a test declares it holds a requirement no entry has',
+        );
     }
 
     /**
@@ -235,25 +252,4 @@ final class RequirementsTest extends TestCase
         }
     }
 
-    /**
-     * Every test method in this suite as `Class::method`, read from the files
-     * rather than from reflection — the same list ScenariosTest holds its cases
-     * to.
-     *
-     * @return array<int, string>
-     */
-    private function testMethods(): array
-    {
-        $methods = [];
-        foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
-                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
-                foreach ($matches[1] as $method) {
-                    $methods[] = $file->getBasename('.php') . '::' . $method;
-                }
-            }
-        }
-
-        return $methods;
-    }
 }

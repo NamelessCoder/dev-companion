@@ -2,6 +2,8 @@
 id: R-KNW-048
 title: 'Which processor claims a file is answered'
 status: held
+heldBy:
+  - HintsTest::whichProcessorClaimsAFileIsAnswered
 ---
 
 # R-KNW-048 — Which processor claims a file is answered
@@ -20,7 +22,3 @@ A patch review replacing GD read seven core classes by hand —
 `ThumbnailViewHelper`, `DeferredBackendImageProcessor`, `PreviewProcessing` and
 `PreviewNotAvailable.svg` — because nothing below `knowledge/` said which of
 them runs when (2026-08-01, judged as `D-KNW-028`).
-
-## Held by
-
-- `HintsTest::whichProcessorClaimsAFileIsAnswered`

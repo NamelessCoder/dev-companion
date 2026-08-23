@@ -2,6 +2,8 @@
 id: R-KNW-031
 title: 'A persisted alias is answered in both directions'
 status: held
+heldBy:
+  - HintsTest::persistedAliasesStateBothDirections
 ---
 
 # R-KNW-031 — A persisted alias is answered in both directions
@@ -18,7 +20,3 @@ argument.
 
 An implementation passing and validating the display value as a query argument
 because the mapper's direction was left implicit (2026-07-30).
-
-## Held by
-
-- `HintsTest::persistedAliasesStateBothDirections`

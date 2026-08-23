@@ -2,6 +2,10 @@
 id: R-SCO-008
 title: 'What the scope excludes is not what the server answers'
 status: held
+heldBy:
+  - ScopeTest::noExclusionDeniesASourceTheServerReads
+  - ScopeTest::theDeclaredInterpreterIsNotDeclined
+  - ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers
 ---
 
 # R-SCO-008 — What the scope excludes is not what the server answers
@@ -24,9 +28,3 @@ left whole reads as excluded whole.
 `doesNotCover` still excluding "project or third-party extension development"
 and "upgrading an installation" while both had hints of their own, reported as a
 signal that cost confidence rather than time (2026-07-29).
-
-## Held by
-
-- `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers`
-- `ScopeTest::noExclusionDeniesASourceTheServerReads`
-- `ScopeTest::theDeclaredInterpreterIsNotDeclined`

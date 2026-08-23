@@ -14,6 +14,7 @@ use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -37,6 +38,7 @@ final class IconLookupTest extends TestCase
         Typo3Runtime::forget();
     }
 
+    #[Requirement('R-KNW-010')]
     #[Test]
     #[DataProvider('theThreeShapesAnIconAnswerTakes')]
     public function everyAnswerSaysTheIdentifiersAreTheBackendRegistrys(string $query): void
@@ -59,6 +61,7 @@ final class IconLookupTest extends TestCase
         ];
     }
 
+    #[Requirement('R-KNW-010')]
     #[Test]
     public function theRoutingEntrySendsCallersThereForBackendWorkOnly(): void
     {
@@ -73,6 +76,7 @@ final class IconLookupTest extends TestCase
         self::assertStringContainsString('backend', $entries[0]['when']);
     }
 
+    #[Requirement('R-KNW-038')]
     #[Test]
     public function aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist(): void
     {
@@ -146,6 +150,7 @@ final class IconLookupTest extends TestCase
         );
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function aRegistryReadFromTheFilesSaysThatInTheAnswerItself(): void
     {

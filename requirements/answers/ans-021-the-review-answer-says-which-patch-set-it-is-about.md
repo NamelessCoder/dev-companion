@@ -3,6 +3,9 @@ id: R-ANS-021
 title: 'The review answer says which patch set it is about'
 status: held
 restsOn: [D-ANS-033]
+heldBy:
+  - GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne
+  - GerritTest::theAnswerCarriesThePatchSetACheckoutIsHeldAgainst
 ---
 
 # R-ANS-021 — The review answer says which patch set it is about
@@ -26,8 +29,6 @@ exists only because Gerrit happens to comment there.
 
 ## Held by
 
-- `GerritTest::theAnswerCarriesThePatchSetACheckoutIsHeldAgainst`
-- `GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne`
 - The sentence the text carries beside them — hold the commit against
   `git rev-parse HEAD` — is not guarded. It is rendered by the tool, which
   builds its own reader and reaches the network as it runs, and no test in this

@@ -19,9 +19,11 @@ use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Server\ExcludedTools;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
+#[Requirement('R-KNW-022')]
 final class ScopeTest extends TestCase
 {
     use TemporaryInstallation;
@@ -34,6 +36,7 @@ final class ScopeTest extends TestCase
         putenv(ExcludedTools::VARIABLE);
     }
 
+    #[Requirement('R-SCO-001')]
     #[Test]
     public function aPathKnownAsSomebodysExtensionIsOutsideTheCore(): void
     {
@@ -53,6 +56,7 @@ final class ScopeTest extends TestCase
      * The installation the session sits in is the weakest of the signals, so a
      * path into the core still overrules it — `D-SCO-005`.
      */
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-005')]
     #[Test]
     public function inASiteInstallationTheWorkIsOutsideTheCore(): void
@@ -63,6 +67,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Core, Scope::of('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
     }
 
+    #[Requirement('R-SCO-001')]
     #[Test]
     public function inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone(): void
     {
@@ -71,6 +76,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Core, Scope::of('', 'Add a content element with a backend preview'));
     }
 
+    #[Requirement('R-AUD-002')]
     #[Test]
     public function whereNothingPlacesTheWorkTheAnswerSaysSo(): void
     {
@@ -87,6 +93,7 @@ final class ScopeTest extends TestCase
         );
     }
 
+    #[Requirement('R-SCO-001')]
     #[Test]
     public function namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork(): void
     {
@@ -101,6 +108,7 @@ final class ScopeTest extends TestCase
         ));
     }
 
+    #[Requirement('R-SCO-001')]
     #[Test]
     public function aPathInsideAnExtensionIsRecognisedByItsShape(): void
     {
@@ -114,6 +122,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Core, Scope::of('Build/Sources/Sass/component/_card.scss'));
     }
 
+    #[Requirement('R-AUD-002')]
     #[Test]
     public function whatTheCoreKeepsInBuildIsOnlyTheCores(): void
     {
@@ -126,6 +135,7 @@ final class ScopeTest extends TestCase
         self::assertTrue(Scope::of('Build/Sources/Sass/theme.scss')->isOutsideTheCore());
     }
 
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-005')]
     #[Test]
     public function namingAnInstallationToReadDoesNotMoveWhereTheWorkIs(): void
@@ -155,6 +165,7 @@ final class ScopeTest extends TestCase
      * package layout is what such a path looks like, and it was read as
      * somebody's extension before the checkout was consulted at all.
      */
+    #[Requirement('R-SCO-001')]
     #[Test]
     public function aPackageShapedPathInACoreCheckoutIsCoreWork(): void
     {
@@ -180,6 +191,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('Classes/Controller/EditDocumentController.php'));
     }
 
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-005')]
     #[Test]
     public function theNamedInstallationIsTheEvidenceWhereNothingElseIs(): void
@@ -214,6 +226,7 @@ final class ScopeTest extends TestCase
      * `composer install` had run, and the root manifest answers all three
      * before it (`D-SCO-012`).
      */
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-012')]
     #[Test]
     #[DataProvider('theTwoStatesAnExtensionRepositoryIsIn')]
@@ -229,6 +242,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('Build/Sources/Sass/theme.scss'));
     }
 
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-012')]
     #[Test]
     public function theDeclaredExtensionKeyPlacesAPath(): void
@@ -243,6 +257,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('blog', 'Triage the core issue this was reported as'));
     }
 
+    #[Requirement('R-SCO-001')]
     #[Decision('D-SCO-012')]
     #[Test]
     public function aDotfileKeepsItsDotWhenAPathIsNormalised(): void
@@ -264,6 +279,7 @@ final class ScopeTest extends TestCase
      * `checkExtensionScannerRst`, into a repository whose `Build/` holds two
      * phpunit configurations and a phpstan baseline — `D-SCO-012`.
      */
+    #[Requirement('R-SCO-002')]
     #[Decision('D-SCO-012')]
     #[Test]
     public function aBriefInAnExtensionRepositoryHandsBackNoCoreSuite(): void
@@ -306,6 +322,8 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('checkout', $instructions);
     }
 
+    #[Requirement('R-ANS-013')]
+    #[Requirement('R-DIS-025')]
     #[Decision('D-AUD-011')]
     #[Decision('D-AUD-012')]
     #[Decision('D-DIS-013')]
@@ -348,6 +366,7 @@ final class ScopeTest extends TestCase
         );
     }
 
+    #[Requirement('R-AUD-006')]
     #[Test]
     public function theQueryLanguageIsStatedWhereTheCallingAgentReadsIt(): void
     {
@@ -367,6 +386,8 @@ final class ScopeTest extends TestCase
      * is what a client that shows a name and no schema can act on —
      * `D-AUD-011`.
      */
+    #[Requirement('R-ANS-009')]
+    #[Requirement('R-ANS-032')]
     #[Decision('D-AUD-011')]
     #[Test]
     public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
@@ -388,6 +409,7 @@ final class ScopeTest extends TestCase
      * derived from `git log`, because "TYPO3 commit message" read as the core's
      * Gerrit convention. So the entry says whose repository it is for.
      */
+    #[Requirement('R-ANS-032')]
     #[Decision('D-AUD-011')]
     #[Test]
     public function theInstructionsIndexTheQuestionEachToolAnswers(): void
@@ -519,6 +541,8 @@ final class ScopeTest extends TestCase
         ));
     }
 
+    #[Requirement('R-AUD-002')]
+    #[Requirement('R-SCO-002')]
     #[Test]
     public function twoPathsOfDifferentAudienceInOneCallStayApart(): void
     {
@@ -568,6 +592,7 @@ final class ScopeTest extends TestCase
      * `D-SCO-009` — the checklist, the checks and the discovery steps stay one
      * list, and the brief names the paths the core's own are not for.
      */
+    #[Requirement('R-AUD-002')]
     #[Decision('D-SCO-009')]
     #[Test]
     public function aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich(): void
@@ -824,6 +849,7 @@ final class ScopeTest extends TestCase
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
     }
 
+    #[Requirement('R-SCO-003')]
     #[Decision('D-GUI-009')]
     #[Decision('D-SCO-002')]
     #[Test]
@@ -851,6 +877,7 @@ final class ScopeTest extends TestCase
      * so the same words that were demoted without one match strongly with it —
      * `D-SCO-002`.
      */
+    #[Requirement('R-SCO-003')]
     #[Decision('D-SCO-002')]
     #[Test]
     public function aCorePathStillMakesTheSameWordAPatchSubmission(): void
@@ -864,6 +891,7 @@ final class ScopeTest extends TestCase
         self::assertSame('strong', $confidence['submission'] ?? null);
     }
 
+    #[Requirement('R-SCO-003')]
     #[Decision('D-SCO-002')]
     #[Test]
     public function inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll(): void
@@ -891,6 +919,7 @@ final class ScopeTest extends TestCase
      * arrive whole, each carrying a condition the contributor answers without
      * looking anything up, so the cost is a prefix rather than a lookup.
      */
+    #[Requirement('R-SCO-003')]
     #[Decision('D-SCO-002')]
     #[Test]
     public function aCoreTaskNamingNoPathKeepsTheSubmissionRules(): void
@@ -928,6 +957,7 @@ final class ScopeTest extends TestCase
      * `aCorePathStillMakesTheSameWordAPatchSubmission` holds from the far side
      * — `D-SCO-002`.
      */
+    #[Requirement('R-SCO-003')]
     #[Decision('D-SCO-002')]
     #[Test]
     public function theBriefNamesWhatWouldTurnTheConditionIntoFact(): void
@@ -989,6 +1019,7 @@ final class ScopeTest extends TestCase
      * inside the excluded topic. What stays declined is the operating around
      * it, which is the reading `D-KNW-010` and `D-KNW-049` both took.
      */
+    #[Requirement('R-SCO-008')]
     #[Test]
     public function theDeclaredInterpreterIsNotDeclined(): void
     {
@@ -1003,6 +1034,8 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('typo3_hint_lookup', $declined[0]['instead']);
     }
 
+    #[Requirement('R-AUD-001')]
+    #[Requirement('R-SCO-008')]
     #[Test]
     public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
     {
@@ -1053,6 +1086,7 @@ final class ScopeTest extends TestCase
      * PHP constraint and the commands it declares. The topic was the only field
      * anything read, and the sentence was in the `why` — `D-FBK-037`.
      */
+    #[Requirement('R-SCO-008')]
     #[Decision('D-FBK-037')]
     #[Test]
     public function noExclusionDeniesASourceTheServerReads(): void
@@ -1166,6 +1200,7 @@ final class ScopeTest extends TestCase
      * wording, which is as weak as wording always is, so the three sentences the
      * decision recorded are run through the matcher first.
      */
+    #[Requirement('R-AUD-001')]
     #[Test]
     public function noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor(): void
     {
@@ -1277,6 +1312,7 @@ final class ScopeTest extends TestCase
         return $surfaces;
     }
 
+    #[Requirement('R-GUI-003')]
     #[Test]
     public function theBriefPointsAtTheGuideForTheStepItEndsWith(): void
     {
@@ -1327,6 +1363,7 @@ final class ScopeTest extends TestCase
         self::fail($tool . ' is not among the next lookups of this brief.');
     }
 
+    #[Requirement('R-GUI-004')]
     #[Test]
     public function theBriefRoutesToTheToolsItsOwnSubjectsAreAnsweredBy(): void
     {
@@ -1347,6 +1384,7 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('14', implode("\n", array_column($labels->data['nextTools'], 'when')));
     }
 
+    #[Requirement('R-SCO-002')]
     #[Test]
     public function aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas(): void
     {
@@ -1373,6 +1411,7 @@ final class ScopeTest extends TestCase
         self::assertSame(1, substr_count($result->text, 'runTests.sh'));
     }
 
+    #[Requirement('R-SCO-002')]
     #[Test]
     public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void
     {
@@ -1440,6 +1479,7 @@ final class ScopeTest extends TestCase
         ];
     }
 
+    #[Requirement('R-ANS-007')]
     #[Test]
     public function aRuleQueryIsPointedAtTheHintCorpusItBelongsIn(): void
     {
@@ -1530,6 +1570,7 @@ final class ScopeTest extends TestCase
      * the same. `core/contribution/sources` was exactly that — `D-KNW-095`,
      * `D-VER-007`.
      */
+    #[Requirement('R-ANS-022')]
     #[Decision('D-KNW-095')]
     #[Decision('D-VER-007')]
     #[Test]
@@ -1577,6 +1618,7 @@ final class ScopeTest extends TestCase
      * is read off the coverage and nowhere else, so a published skill no topic
      * names is offered as core-only — to every extension author who picks it.
      */
+    #[Requirement('R-ANS-022')]
     #[Test]
     public function everyPublishedSkillIsAnnouncedByTheScope(): void
     {
@@ -1610,6 +1652,7 @@ final class ScopeTest extends TestCase
      * the answer is composed, so a project asking for them is answered with
      * none — `D-KNW-008`.
      */
+    #[Requirement('R-SCO-005')]
     #[Decision('D-KNW-008')]
     #[Test]
     public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
@@ -1623,6 +1666,7 @@ final class ScopeTest extends TestCase
         self::assertStringNotContainsString('CI=true', $result->text);
     }
 
+    #[Requirement('R-SCO-005')]
     #[Test]
     public function aScriptAnswerSaysWhichRepositoryItsCommandsRunIn(): void
     {
@@ -1637,6 +1681,7 @@ final class ScopeTest extends TestCase
         self::assertStringNotContainsString('run in a TYPO3 core checkout', $stated->text);
     }
 
+    #[Requirement('R-SCO-002')]
     #[Test]
     public function aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
     {
@@ -1664,6 +1709,7 @@ final class ScopeTest extends TestCase
      * rejected lever, and a core path is where a reinstated one would show —
      * `D-KNW-033`.
      */
+    #[Requirement('R-SCO-004')]
     #[Decision('D-KNW-033')]
     #[Test]
     public function aCoreContributorOnFrontendLosesTheBackendUiSections(): void
@@ -1694,6 +1740,7 @@ final class ScopeTest extends TestCase
      * notice and then used: a notice naming an escape nobody can act on reads
      * to the caller exactly like a refusal.
      */
+    #[Requirement('R-SCO-004')]
     #[Test]
     public function theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack(): void
     {
@@ -1728,6 +1775,8 @@ final class ScopeTest extends TestCase
         }
     }
 
+    #[Requirement('R-ANS-002')]
+    #[Requirement('R-DIS-008')]
     #[Test]
     public function theInstallationDiagnosticIsDataRatherThanProse(): void
     {
@@ -1751,6 +1800,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Typo3Cli::CONSOLE_VARIABLE, $installation['settings']['console']);
     }
 
+    #[Requirement('R-ANS-002')]
     #[Test]
     public function anUnanswerableLookupCarriesItsReasonInTheData(): void
     {
@@ -1766,6 +1816,7 @@ final class ScopeTest extends TestCase
         self::assertArrayNotHasKey('labels', $result->data);
     }
 
+    #[Requirement('R-ANS-001')]
     #[Test]
     public function anUnconsultedConfigurationPathIsNotReportedAsAbsent(): void
     {
@@ -1780,6 +1831,7 @@ final class ScopeTest extends TestCase
         self::assertSame('no-installation', $result->data['unsupported']['cause']);
     }
 
+    #[Requirement('R-SCO-006')]
     #[Test]
     public function everyCoveredTopicSaysWhatItIsWorthOutsideTheCore(): void
     {
@@ -1797,6 +1849,7 @@ final class ScopeTest extends TestCase
      * the name has moved, and the scope is where a caller reads the name —
      * `D-ANS-010`.
      */
+    #[Requirement('R-DOC-001')]
     #[Decision('D-ANS-010')]
     #[Test]
     public function everyToolNamedInTheScopeExists(): void
@@ -1818,6 +1871,7 @@ final class ScopeTest extends TestCase
         }
     }
 
+    #[Requirement('R-DOC-001')]
     #[Test]
     public function everyToolIsReachableThroughTheScope(): void
     {

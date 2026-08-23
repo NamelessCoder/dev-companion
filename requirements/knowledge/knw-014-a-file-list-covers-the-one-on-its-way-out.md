@@ -2,6 +2,8 @@
 id: R-KNW-014
 title: 'A file list covers the one on its way out'
 status: held
+heldBy:
+  - HintsTest::theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre
 ---
 
 # R-KNW-014 — A file list covers the one on its way out
@@ -17,7 +19,3 @@ not.
 `extension-files` listing every current registration file and not mentioning
 `ext_emconf.php`, whose deprecation turned a first functional test run red
 (2026-07-29).
-
-## Held by
-
-- `HintsTest::theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre`

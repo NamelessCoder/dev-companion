@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
+use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\Sources;
 
@@ -232,7 +233,7 @@ final class DecisionsTest extends TestCase
         foreach ($uncovered as $entry) {
             $decision = Decisions::all()[$entry['id']];
             $body = (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']);
-            self::assertSame([], $decision['coveredBy'], $entry['id'] . ' names a test and is reported as naming none');
+            self::assertSame([], $decision['tests'], $entry['id'] . ' names a test and is reported as naming none');
             preg_match_all('/`(\w+)::\w+/', $body, $matches);
             self::assertNotSame(
                 [],
@@ -258,7 +259,7 @@ final class DecisionsTest extends TestCase
     {
         $missed = [];
         foreach (Decisions::all() as $decision) {
-            foreach ($decision['coveredBy'] as $test) {
+            foreach ($decision['tests'] as $test) {
                 [$class, $method] = explode('::', $test);
                 if (!in_array($decision['id'], array_column(Decisions::restingOn($class, $method), 'id'), true)) {
                     $missed[] = $decision['id'] . ' names ' . $test . ' and is not held from it';
@@ -283,11 +284,11 @@ final class DecisionsTest extends TestCase
     #[Test]
     public function everyEntrySaysWhatTheTestsHoldingItDeclare(): void
     {
-        $held = Sources::decisionsHeld();
+        $held = Sources::held('Decision');
         $stale = [];
         foreach (Decisions::files() as $path) {
             $contents = (string) file_get_contents($path);
-            if (Decisions::covered($contents, $held[Decisions::read($path)['id']] ?? []) !== $contents) {
+            if (Entry::withNames($contents, 'coveredBy', $held[Decisions::read($path)['id']] ?? []) !== $contents) {
                 $stale[] = basename($path);
             }
         }

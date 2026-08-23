@@ -2,6 +2,11 @@
 id: R-ANS-012
 title: 'An answer that cannot read something says so'
 status: held
+heldBy:
+  - ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable
+  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate
+  - ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead
+  - ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread
 ---
 
 # R-ANS-012 — An answer that cannot read something says so
@@ -26,10 +31,3 @@ reported three content elements of four. The fourth wrote `$contentType = '…'`
 above its `addRecordType()` call, and an earlier run had already read the
 omission as a template with no registration — a defect the extension does not
 have.
-
-## Held by
-
-- `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
-- `ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable`
-- `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`
-- `ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate`

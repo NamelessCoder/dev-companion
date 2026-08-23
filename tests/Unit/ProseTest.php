@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Prose;
 use TYPO3\DevCompanion\Upkeep\Wrap;
@@ -30,6 +31,7 @@ final class ProseTest extends TestCase
      * nothing runs long: `Prose::documents()` reads the markdown corpus and no
      * file in `src/`.
      */
+    #[Requirement('R-COD-002')]
     #[Test]
     public function theProseAClientIsHandedIsMeasured(): void
     {

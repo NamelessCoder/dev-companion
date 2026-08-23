@@ -3,6 +3,8 @@ id: R-SCO-007
 title: 'Only the caller shortens the tool list'
 status: held
 restsOn: [D-AUD-004]
+heldBy:
+  - ExcludedToolsTest
 ---
 
 # R-SCO-007 — Only the caller shortens the tool list

@@ -2,6 +2,8 @@
 id: R-GUI-005
 title: 'The commit-message guide is also a prompt'
 status: held
+heldBy:
+  - StdioServerTest::theCommitMessageGuideIsAvailableAsAPrompt
 ---
 
 # R-GUI-005 — The commit-message guide is also a prompt
@@ -16,7 +18,3 @@ commit-message rules.
 
 The SDK prompt primitive being unused while the most naturally user-invoked
 guide already existed (2026-07-30).
-
-## Held by
-
-- `StdioServerTest::theCommitMessageGuideIsAvailableAsAPrompt`

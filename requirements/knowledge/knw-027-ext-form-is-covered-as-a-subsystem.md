@@ -2,6 +2,8 @@
 id: R-KNW-027
 title: 'EXT:form is covered as a subsystem'
 status: held
+heldBy:
+  - HintsTest::theFormFrameworkIsCoveredAsAWholeSubsystem
 ---
 
 # R-KNW-027 — EXT:form is covered as a subsystem
@@ -16,7 +18,3 @@ without overriding a submitted value.
 
 A sitepackage form task whose complete answer had to be read from the installed
 system extension and whose isolated identifier test was misleading (2026-07-29).
-
-## Held by
-
-- `HintsTest::theFormFrameworkIsCoveredAsAWholeSubsystem`

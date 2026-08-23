@@ -2,6 +2,12 @@
 id: R-DIS-009
 title: 'A negative is never remembered'
 status: held
+heldBy:
+  - InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound
+  - Typo3CliTest::aStoppedProjectIsAskedAgainAfterItStarts
+  - Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts
+  - Typo3CliTest::anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence
+  - Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalf
 ---
 
 # R-DIS-009 — A negative is never remembered
@@ -34,11 +40,3 @@ a fourth way to ask a class whose three accessors each mean one thing.
 A session lost to a cached negative — the agent ran `composer install`, started
 DDEV, verified `bin/typo3` answered, and every tool kept reporting no
 installation until the client was restarted (2026-07-29).
-
-## Held by
-
-- `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
-- `Typo3CliTest::aStoppedProjectIsAskedAgainAfterItStarts`
-- `Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts`
-- `Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalf`
-- `Typo3CliTest::anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence`

@@ -3,6 +3,9 @@ id: R-ANS-026
 title: 'A path names the subsystem'
 status: held
 restsOn: [D-ANS-060]
+heldBy:
+  - HintsTest::anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem
+  - HintsTest::pruningThePathPatternsLeftBothSubjectsReachable
 ---
 
 # R-ANS-026 — A path names the subsystem
@@ -33,8 +36,3 @@ the core `QueryBuilder`, `PageRepository` and the restrictions, and
 `extbase-domain-mapping` is the model and the table behind it. Neither covers
 the query parser, the column map or `Backend`. `extbase-persistence-internals`
 was written against the checkouts and is what answers now.
-
-## Held by
-
-- `HintsTest::anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem`
-- `HintsTest::pruningThePathPatternsLeftBothSubjectsReachable`

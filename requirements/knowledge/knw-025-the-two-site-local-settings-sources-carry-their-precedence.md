@@ -2,6 +2,8 @@
 id: R-KNW-025
 title: 'The two site-local settings sources carry their precedence'
 status: held
+heldBy:
+  - HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence
 ---
 
 # R-KNW-025 — The two site-local settings sources carry their precedence
@@ -16,7 +18,3 @@ the former.
 
 Adding one setting in the backend silently dropping every value a sitepackage
 seed carried inline (2026-07-30).
-
-## Held by
-
-- `HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence`

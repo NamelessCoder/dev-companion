@@ -3,6 +3,11 @@ id: R-PRJ-012
 title: 'A declared command says whether it can start'
 status: held
 restsOn: [D-ANS-086]
+heldBy:
+  - ProjectTest::aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut
+  - ProjectTest::aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt
+  - ProjectTest::anInstallThatBoundsNothingIsSaidToBoundNothing
+  - ProjectTest::whereNothingConfiguresAnEnvironmentTheBoundIsStated
 ---
 
 # R-PRJ-012 — A declared command says whether it can start
@@ -41,10 +46,3 @@ marked it a check carried nothing that could be read for it. The session looked
 for a `php8.4` on the machine, found none, and gave the check to GitHub Actions.
 The same mechanism twice more in two other kinds of checkout:
 `feedback/archive/2026-08-07-125950` and `D-KNW-036`.
-
-## Held by
-
-- `ProjectTest::aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt`
-- `ProjectTest::aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut`
-- `ProjectTest::whereNothingConfiguresAnEnvironmentTheBoundIsStated`
-- `ProjectTest::anInstallThatBoundsNothingIsSaidToBoundNothing`

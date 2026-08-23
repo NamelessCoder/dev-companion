@@ -15,6 +15,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\RecordedFeedback;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
 
 /**
@@ -134,6 +135,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    #[Requirement('R-FBK-005')]
     #[Test]
     public function aNoteSaysWhichModelLeftIt(): void
     {
@@ -152,6 +154,7 @@ final class FeedbackTest extends TestCase
         self::assertSame('claude-opus-5', self::noteFor($file)['model']);
     }
 
+    #[Requirement('R-FBK-005')]
     #[Test]
     public function aNoteWithoutAModelSaysSoRatherThanCarryingNone(): void
     {
@@ -167,6 +170,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(Channel::UNATTRIBUTED, self::noteFor($file)['model']);
     }
 
+    #[Requirement('R-FBK-006')]
     #[Test]
     public function theRecordedNoteIsReportedWhereItActuallyIs(): void
     {
@@ -262,6 +266,7 @@ final class FeedbackTest extends TestCase
      * suggestion parameter inside the observation because each one had been
      * closed with a tag named after itself — `D-FBK-044`.
      */
+    #[Requirement('R-FBK-016')]
     #[Decision('D-FBK-044')]
     #[Test]
     public function aFieldCarryingTheCallItArrivedInIsRefused(): void
@@ -278,6 +283,7 @@ final class FeedbackTest extends TestCase
      * refuse, and it is the only kind that names those markers at all —
      * `D-FBK-044`.
      */
+    #[Requirement('R-FBK-016')]
     #[Decision('D-FBK-044')]
     #[Test]
     public function aReportQuotingTheMarkersIsStillRecorded(): void
@@ -297,6 +303,7 @@ final class FeedbackTest extends TestCase
      * pushed. The path and the shape were the finding; the 96 characters
      * established nothing further and left the installation that owns them.
      */
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function aValueThatLooksLikeACredentialNeverReachesTheFile(): void
     {
@@ -321,6 +328,7 @@ final class FeedbackTest extends TestCase
         self::assertStringNotContainsString($key, $file);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function everyFieldAFeedbackIsWrittenFromIsRead(): void
     {
@@ -345,6 +353,7 @@ final class FeedbackTest extends TestCase
         ], $redacted);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function whatASessionQuotesAboutTheCoreIsLeftAlone(): void
     {
@@ -364,6 +373,7 @@ final class FeedbackTest extends TestCase
         self::assertSame([], $redaction->removed);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function aValueGoesAndTheNameThatSaysWhatItWasStays(): void
     {
@@ -379,6 +389,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(['the value of `installToolPassword`'], $redaction->removed);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt(): void
     {
@@ -391,6 +402,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(['the password in a URL'], $redaction->removed);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function aLongBase64ValueIsTakenOutAndAWordIsNot(): void
     {
@@ -405,6 +417,7 @@ final class FeedbackTest extends TestCase
         self::assertSame([], Redaction::of(str_repeat('AnotherLongIdentifierName', 3))->removed);
     }
 
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function theToolSaysWhatItTookOutOfWhatItWasHanded(): void
     {
@@ -441,6 +454,7 @@ final class FeedbackTest extends TestCase
      * file, not the answer. A cut is blinder than a redaction, which leaves the
      * name of what it took standing beside its marker.
      */
+    #[Requirement('R-FBK-015')]
     #[Test]
     public function aFieldCutForLengthSaysSoInTheFileAndInTheAnswer(): void
     {
@@ -471,6 +485,7 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('[cut: 100 characters past the 4000-character limit]', $contents);
     }
 
+    #[Requirement('R-FBK-015')]
     #[Test]
     public function aFieldExactlyOnTheCapIsNotMarked(): void
     {
@@ -495,6 +510,7 @@ final class FeedbackTest extends TestCase
      * `D-FBK-049`. The file cannot say it, because the `...` a listing shows is
      * all a title may carry, so the answer is the only place it is said at all.
      */
+    #[Requirement('R-FBK-015')]
     #[Test]
     public function aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile(): void
     {
@@ -552,6 +568,7 @@ final class FeedbackTest extends TestCase
      * stopping for: a rule got greedier, or a feedback carrying a live value
      * was written by a hand rather than through the channel that guards it.
      */
+    #[Requirement('R-FBK-011')]
     #[Test]
     public function theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor(): void
     {
@@ -590,6 +607,7 @@ final class FeedbackTest extends TestCase
      * The first of a series keeps the opening, because nothing yet says it is
      * one. Every feedback after it is named after what it alone says.
      */
+    #[Requirement('R-FBK-008')]
     #[Test]
     public function notesThatOpenAlikeAreNamedAfterWhatTellsThemApart(): void
     {
@@ -621,6 +639,7 @@ final class FeedbackTest extends TestCase
         }
     }
 
+    #[Requirement('R-FBK-002')]
     #[Test]
     public function aNoteThatWasWorkedOffKeepsEverythingItSaid(): void
     {
@@ -655,6 +674,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    #[Requirement('R-FBK-002')]
     #[Test]
     public function aNoteThatWasWorkedOffIsStillAnswerableFor(): void
     {
@@ -745,6 +765,7 @@ final class FeedbackTest extends TestCase
         }
     }
 
+    #[Requirement('R-FBK-001')]
     #[Decision('D-ANS-017')]
     #[Test]
     public function severalToolsStaySeveralToolsRatherThanOneWord(): void
@@ -779,6 +800,7 @@ final class FeedbackTest extends TestCase
      * otherwise be dropped without a word, which is the one failure the feedback
      * behind that decision reported.
      */
+    #[Requirement('R-FBK-001')]
     #[Decision('D-ANS-017')]
     #[Test]
     public function theRecorderStillTakesAListTheSchemaNoLongerDeclares(): void
@@ -791,6 +813,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], self::noteFor($file)['tools']);
     }
 
+    #[Requirement('R-FBK-001')]
     #[Test]
     public function theListCanBeRestrictedToOneTool(): void
     {
@@ -817,6 +840,7 @@ final class FeedbackTest extends TestCase
      * project carries nowhere, and the grep that answers "what has been
      * reported about this skill" found none of the seven feedback about it.
      */
+    #[Requirement('R-FBK-013')]
     #[Test]
     public function aRecordedNameKeepsTheSpellingItWasGivenIn(): void
     {
@@ -891,6 +915,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    #[Requirement('R-FBK-013')]
     #[Test]
     public function aNameFromOutsideThisServerKeepsItsCapitals(): void
     {
@@ -911,6 +936,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    #[Requirement('R-FBK-013')]
     #[Decision('D-FBK-039')]
     #[Test]
     #[DataProvider('theSpellingsOneNameArrivesIn')]
@@ -949,6 +975,7 @@ final class FeedbackTest extends TestCase
      * feedback naming a tool that has since been renamed away, or naming its
      * client's wrapper, is a session's report and is left as it was written.
      */
+    #[Requirement('R-FBK-013')]
     #[Decision('D-FBK-039')]
     #[Test]
     public function everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt(): void

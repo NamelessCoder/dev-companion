@@ -3,6 +3,9 @@ id: R-GUI-009
 title: 'A hint a brief carries names the lookup that owns it'
 status: held
 restsOn: [D-GUI-007]
+heldBy:
+  - HintsTest::aBriefThatCarriedEverythingDoesNotSendTheCallerBackForMore
+  - HintsTest::theHintsABriefCarriesNameTheLookupTheyCameFrom
 ---
 
 # R-GUI-009 — A hint a brief carries names the lookup that owns it
@@ -33,8 +36,3 @@ sent the caller to a call with nothing behind it, which is what `R-GUI-012` was
 written to stop. `feedback/2026-08-07-065259` is the measured case: for its
 three Extbase persistence paths `typo3_hint_lookup` returns the same three hints
 at limit 4, 8 and 20. So the sentence says which of the two the brief did.
-
-## Held by
-
-- `HintsTest::theHintsABriefCarriesNameTheLookupTheyCameFrom`
-- `HintsTest::aBriefThatCarriedEverythingDoesNotSendTheCallerBackForMore`

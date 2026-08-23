@@ -2,6 +2,10 @@
 id: R-KNW-005
 title: 'Where a mechanism fails silently, the hint names the failure'
 status: held
+heldBy:
+  - HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured
+  - HintsTest::anAssetThatNeverReachesThePageIsAnsweredByItsLayout
+  - HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed
 ---
 
 # R-KNW-005 — Where a mechanism fails silently, the hint names the failure
@@ -23,7 +27,5 @@ storage folder appeared in the menu (2026-07-29).
 
 ## Held by
 
-- `HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed`
-- `HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured`
 - `HintsTest::anAssetThatNeverReachesThePageIsAnsweredByItsLayout`
   — the other half: naming the failure is what makes the hint reachable by it

@@ -2,6 +2,8 @@
 id: R-KNW-016
 title: 'The test kind that needs a browser is covered'
 status: held
+heldBy:
+  - HintsTest::theTestKindThatNeedsABrowserIsCovered
 ---
 
 # R-KNW-016 — The test kind that needs a browser is covered
@@ -19,7 +21,3 @@ Browser tests answered with the id index and a section about site sets, while
 the core works the conventions out in `Build/tests/playwright/`; and a first axe
 run on a theme that passed every other test, which failed on contrast four times
 and was right each time (2026-07-29).
-
-## Held by
-
-- `HintsTest::theTestKindThatNeedsABrowserIsCovered`

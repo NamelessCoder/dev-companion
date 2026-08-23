@@ -3,6 +3,8 @@ id: R-SKL-011
 title: 'A review reports what it dropped and what dropped it'
 status: held
 restsOn: [D-SKL-007]
+heldBy:
+  - SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt
 ---
 
 # R-SKL-011 — A review reports what it dropped and what dropped it
@@ -58,7 +60,3 @@ delta-only rule unraised for want of a schema-analyzer comparison, keeps the
 `provider` and `source` among the returned icon identifiers as an artifact of
 the tool. Four is a section a reader sits through, and the first of
 `REVIEW-02`'s is already the open case written in the shape this asks for.
-
-## Held by
-
-- `SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt`

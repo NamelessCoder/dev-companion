@@ -2,6 +2,9 @@
 id: R-FBK-002
 title: 'A feedback that was worked off stays answerable for'
 status: held
+heldBy:
+  - FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor
+  - FeedbackTest::aNoteThatWasWorkedOffKeepsEverythingItSaid
 ---
 
 # R-FBK-002 — A feedback that was worked off stays answerable for
@@ -26,8 +29,3 @@ Seventeen feedback recorded over two sessions, of which the store showed three,
 and a re-report of a request that had shipped in the meantime (2026-07-29).
 Reading the commit back was that answer; what it could not give back was
 everything the feedback itself said (2026-08-01).
-
-## Held by
-
-- `FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor`
-- `FeedbackTest::aNoteThatWasWorkedOffKeepsEverythingItSaid`

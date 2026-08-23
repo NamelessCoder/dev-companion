@@ -3,6 +3,15 @@ id: R-FBK-011
 title: 'A recorded feedback carries no secret out of the installation'
 status: held
 restsOn: [D-FBK-019]
+heldBy:
+  - FeedbackTest::aLongBase64ValueIsTakenOutAndAWordIsNot
+  - FeedbackTest::aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt
+  - FeedbackTest::aValueGoesAndTheNameThatSaysWhatItWasStays
+  - FeedbackTest::aValueThatLooksLikeACredentialNeverReachesTheFile
+  - FeedbackTest::everyFieldAFeedbackIsWrittenFromIsRead
+  - FeedbackTest::theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor
+  - FeedbackTest::theToolSaysWhatItTookOutOfWhatItWasHanded
+  - FeedbackTest::whatASessionQuotesAboutTheCoreIsLeftAlone
 ---
 
 # R-FBK-011 — A recorded feedback carries no secret out of the installation
@@ -46,15 +55,6 @@ what it is, and the password in a URL that carries one. Each threshold was
 settled against the 207 recorded feedback rather than reasoned about, because a
 rule that redacts a revision or a class name costs more than the leak it
 prevents.
-
-- `FeedbackTest::aValueThatLooksLikeACredentialNeverReachesTheFile`
-- `FeedbackTest::everyFieldAFeedbackIsWrittenFromIsRead`
-- `FeedbackTest::whatASessionQuotesAboutTheCoreIsLeftAlone`
-- `FeedbackTest::aValueGoesAndTheNameThatSaysWhatItWasStays`
-- `FeedbackTest::aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt`
-- `FeedbackTest::aLongBase64ValueIsTakenOutAndAWordIsNot`
-- `FeedbackTest::theToolSaysWhatItTookOutOfWhatItWasHanded`
-- `FeedbackTest::theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor`
 
 Behind the guard, the `observation` and `query` descriptions in
 `src/Tool/FeedbackRecord.php` say what a finding needs — the path, the shape,

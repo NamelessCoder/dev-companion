@@ -3,6 +3,8 @@ id: R-KNW-064
 title: 'The Composer keys that install TYPO3 beneath an extension are answered'
 status: held
 restsOn: [D-KNW-053]
+heldBy:
+  - HintsTest::installingTypo3BeneathTheExtensionNamesTheInertKey
 ---
 
 # R-KNW-064 — The Composer keys that install TYPO3 beneath an extension are answered
@@ -26,7 +28,3 @@ found all three by trial and reported them as missing knowledge
 (`feedback/2026-08-03-162759`). The corpus named `extra.typo3/cms.web-dir` only
 to say which directory is served, and `app-dir`, `vendor-dir`, `bin-dir` and
 `cms-cli` occurred nowhere below `knowledge/` (2026-08-03).
-
-## Held by
-
-- `HintsTest::installingTypo3BeneathTheExtensionNamesTheInertKey`

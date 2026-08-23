@@ -3,6 +3,8 @@ id: R-KNW-054
 title: 'Where FAL stops in the image pipeline is answered'
 status: held
 restsOn: [D-KNW-042]
+heldBy:
+  - HintsTest::whereFalStopsInTheImagePipelineIsAnswered
 ---
 
 # R-KNW-054 — Where FAL stops in the image pipeline is answered
@@ -19,7 +21,3 @@ and stopped there, so the last thing it said was read as the foundation.
 A session asserted twice, as its reason for calling a wrapped package resource
 technically necessary, that image processing requires a FAL object and that
 dimensions are unavailable without one (2026-08-02, judged as `D-KNW-042`).
-
-## Held by
-
-- `HintsTest::whereFalStopsInTheImagePipelineIsAnswered`

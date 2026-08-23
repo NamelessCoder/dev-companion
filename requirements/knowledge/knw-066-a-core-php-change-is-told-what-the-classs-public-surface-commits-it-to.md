@@ -3,6 +3,8 @@ id: R-KNW-066
 title: "A core PHP change is told what the class's public surface commits it to"
 status: held
 restsOn: [D-KNW-065]
+heldBy:
+  - HintsTest::wideningAPublicSignatureIsAnsweredAsTheBreakingMoveItIs
 ---
 
 # R-KNW-066 — A core PHP change is told what the class's public surface commits it to
@@ -39,7 +41,3 @@ unit tests, cgl over 6300 files and phpstan over 6265 were green on it. What
 raised it was the `breaking-not-assessed` info line of
 `typo3_commit_message_guide`, after the diff was finished and every suite had
 run.
-
-## Held by
-
-- `HintsTest::wideningAPublicSignatureIsAnsweredAsTheBreakingMoveItIs`

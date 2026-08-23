@@ -70,6 +70,8 @@ What an entry holds
     id: R-DIS-009
     title: A negative is never remembered
     status: held
+    heldBy:
+      - InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound
     ---
 
     # R-DIS-009 — A negative is never remembered
@@ -86,28 +88,30 @@ What an entry holds
     DDEV, verified `bin/typo3` answered, and every tool kept reporting no
     installation until the client was restarted (2026-07-29).
 
-    ## Held by
 
-    - `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
-
-
-* The **title** is the front matter's, and the heading repeats it so a reader
-  of the file sees it where a heading belongs. ``bin/cli requirements:check``
-  holds the two to each other, so a rewrite of one is a rewrite of both. It
-  names the demand in twelve words or so and leaves the demand itself to the
-  bold sentence — :doc:`writing-a-decision` has the measure, and this corpus is
-  what showed it is writable.
+* The **title** is the front matter's, and the heading repeats it so a reader of
+  the file sees it where a heading belongs. ``bin/cli requirements:check`` holds
+  the two to each other, so a rewrite of one is a rewrite of both. It names the
+  demand in twelve words or so and leaves the demand itself to the bold sentence
+  — :doc:`writing-a-decision` has the measure, and this corpus is what showed it
+  is writable.
 * The **bold first sentence** is the requirement. Everything under it is why it
   is one, and a reader who stops after the bold line has read the whole demand.
 * **From** is the session, review or feedback the demand came out of, with its
   date. It is evidence, not decoration: it is what tells the next person whether
   the requirement still describes a real failure.
-* **Held by** lists the tests that hold it, one per line, or says in as many
-  words that something is not guarded. A whole test class is a legitimate item —
-  ``VersionsTest`` in full is a claim about every method in it, and naming them
-  one at a time would go stale on the next one written. A test named there has
-  to exist; a requirement claiming a test that was renamed away is a claim
-  nobody answers for.
+* ``heldBy`` lists the tests that hold it, and it is **generated**: the test
+  declares ``#[Requirement('R-DIS-002')]`` and ``bin/cli requirements:cover``
+  writes the front matter from every such attribute. A whole test class is a
+  legitimate item — the attribute stands over the class, and ``VersionsTest`` in
+  full is a claim about every method in it.
+  `D-DOC-049 <../../decisions/documentation/doc-049-a-requirements-tests-are-declared-where-the-test-is.md>`_
+  is why the attribute is the source and the entry the copy.
+* **Held by** is the section for what is not a test: a ``bin/cli`` command that
+  re-derives the claim, a clause saying what one of the tests holds, a half
+  nothing guards. A bullet that is only a test name fails
+  ``bin/cli requirements:check`` — that name is the front matter's. An entry
+  nothing holds keeps the section and says ``not guarded`` in as many words.
 
 What it rests on
 ----------------
@@ -120,6 +124,8 @@ A requirement may name the decisions it stands on in its front matter:
     id: R-FBK-007
     status: held
     restsOn: [D-FBK-005]
+    heldBy:
+      - SomeTest::theTestThatHoldsIt      # written by requirements:cover
     ---
 
 
@@ -153,9 +159,9 @@ session that ran it.
     ---
 
 **Why** it stays is not in the front matter. That is the sentence **Held by**
-already owes — ``not guarded`` in as many words — or, where the reasoning is a
-decision, the entry the requirement rests on. The date says only that somebody
-went and read it.
+owes — ``not guarded`` in as many words — or, where the reasoning is a decision,
+the entry the requirement rests on. The date says only that somebody went and
+read it.
 
 A date rather than a word, because the judgement is about the entry as it read
 that day and the entry can be rewritten under it. Nothing catches that

@@ -2,6 +2,13 @@
 id: R-ANS-003
 title: 'A component answer carries its source and its version'
 status: held
+heldBy:
+  - CatalogTest::aStatedVersionSaysWhatItDidToTheAnswer
+  - CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor
+  - CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead
+  - CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout
+  - CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot
+  - ToolContractTest
 ---
 
 # R-ANS-003 — A component answer carries its source and its version
@@ -23,9 +30,5 @@ answer for 14.3 whose loudest version number was the 15.0 snapshot (2026-07-30).
 
 ## Held by
 
-- `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
-- `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswer`
-- `CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout`
-- `CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot`
 - `CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`, and the
 - `describesVersion` field the component schema requires (`ToolContractTest`).

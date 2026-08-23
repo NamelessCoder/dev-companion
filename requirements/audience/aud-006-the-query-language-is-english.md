@@ -2,6 +2,8 @@
 id: R-AUD-006
 title: 'The query language is English'
 status: held
+heldBy:
+  - ScopeTest::theQueryLanguageIsStatedWhereTheCallingAgentReadsIt
 ---
 
 # R-AUD-006 — The query language is English
@@ -26,7 +28,3 @@ statement in another language is one nothing can find.
 
 A German-phrased task reaching four of twelve hints by loanword accident, six
 clean misses, and one confidently wrong answer (2026-07-30).
-
-## Held by
-
-- `ScopeTest::theQueryLanguageIsStatedWhereTheCallingAgentReadsIt`

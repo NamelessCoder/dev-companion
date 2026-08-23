@@ -3,6 +3,11 @@ id: R-AUD-003
 title: 'Commit conventions differ by audience'
 status: held
 restsOn: [D-GUI-017]
+heldBy:
+  - CommitMessageTest::outsideTheCoreATrailerTheCallerWroteIsStillKept
+  - CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded
+  - CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold
+  - CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore
 ---
 
 # R-AUD-003 — Commit conventions differ by audience
@@ -19,10 +24,3 @@ the trailer names a TYPO3 repository on GitHub carries its own issue numbers in,
 so an issue handed to the guide is written out in either workflow — demanding no
 trailer is not adding none, and every sentence describing the project workflow
 says which of the two it means (`D-GUI-017`).
-
-## Held by
-
-- `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`
-- `CommitMessageTest::outsideTheCoreATrailerTheCallerWroteIsStillKept`
-- `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`
-- `CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`

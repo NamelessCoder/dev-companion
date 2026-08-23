@@ -2,6 +2,9 @@
 id: R-AUD-001
 title: 'Three audiences, not one'
 status: held
+heldBy:
+  - ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor
+  - ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers
 ---
 
 # R-AUD-001 — Three audiences, not one

@@ -3,6 +3,8 @@ id: R-KNW-060
 title: 'The project configuration answer names what DDEV writes and what it cannot configure'
 status: held
 restsOn: [D-KNW-049]
+heldBy:
+  - HintsTest::theDdevSettingsAnswerNamesEverySectionItGenerates
 ---
 
 # R-KNW-060 — The project configuration answer names what DDEV writes and what it cannot configure
@@ -28,7 +30,3 @@ instance up under DDEV v1.25.1 for an extension, on SQLite with
 disabled settings management, wrote that half back, and got
 `UnexpectedValueException` 1396795884 for the trusted hosts pattern it had not
 been told about.
-
-## Held by
-
-- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGenerates`

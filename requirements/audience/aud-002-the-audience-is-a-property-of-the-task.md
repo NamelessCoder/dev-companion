@@ -3,6 +3,11 @@ id: R-AUD-002
 title: 'The audience is a property of the task'
 status: held
 restsOn: [D-KNW-005]
+heldBy:
+  - ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich
+  - ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart
+  - ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCores
+  - ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSo
 ---
 
 # R-AUD-002 — The audience is a property of the task
@@ -29,10 +34,3 @@ both
 answer, `D-SCO-008`: what this rests on now is
 [`D-KNW-005`](../../decisions/knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md),
 where the five cases and `uncertain` are the enum the code answers with.
-
-## Held by
-
-- `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`
-- `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`
-- `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSo`
-- `ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCores`

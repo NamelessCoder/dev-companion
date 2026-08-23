@@ -2,6 +2,10 @@
 id: R-ANS-007
 title: 'The discriminating terms of a query decide the answer'
 status: held
+heldBy:
+  - KnowledgeTest::aTermMatchesAWordRatherThanAnythingThatContainsIt
+  - KnowledgeTest::theDiscriminatingTermsOfAQueryDecideTheAnswer
+  - ScopeTest::aRuleQueryIsPointedAtTheHintCorpusItBelongsIn
 ---
 
 # R-ANS-007 — The discriminating terms of a query decide the answer
@@ -18,9 +22,3 @@ the hints that match the same query.
 
 "site set settings definitions" answered with the backend's Sass class naming,
 at a stated 75% of the query terms (2026-07-29).
-
-## Held by
-
-- `KnowledgeTest::theDiscriminatingTermsOfAQueryDecideTheAnswer`
-- `KnowledgeTest::aTermMatchesAWordRatherThanAnythingThatContainsIt`
-- `ScopeTest::aRuleQueryIsPointedAtTheHintCorpusItBelongsIn`

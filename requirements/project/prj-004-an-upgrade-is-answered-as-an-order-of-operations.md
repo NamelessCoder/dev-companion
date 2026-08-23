@@ -2,6 +2,8 @@
 id: R-PRJ-004
 title: 'An upgrade is answered as an order of operations'
 status: held
+heldBy:
+  - HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations
 ---
 
 # R-PRJ-004 — An upgrade is answered as an order of operations
@@ -19,7 +21,3 @@ and the changelog lookup already know.
 
 "what do I do, in which order, and what breaks" answered with how to author a
 deprecation (2026-07-29).
-
-## Held by
-
-- `HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`

@@ -3,6 +3,9 @@ id: R-ANS-032
 title: 'The instructions index the question each tool answers'
 status: held
 restsOn: [D-AUD-011]
+heldBy:
+  - ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers
+  - ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall
 ---
 
 # R-ANS-032 — The instructions index the question each tool answers
@@ -25,7 +28,6 @@ this server nothing at all under such a client.
 
 ## Held by
 
-- `ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers`
 - `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall` for the
   three whose value exists only before the mistake —
   [`R-ANS-009`](ans-009-the-instructions-say-when-to-call-the-lookups-that-come-first.md)

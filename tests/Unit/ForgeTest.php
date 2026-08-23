@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Http\Recent;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * The tracker is somebody else's host, so what is held here is what this side
@@ -161,6 +162,7 @@ final class ForgeTest extends TestCase
      * the triage and the text alone was actively misleading
      * (`feedback/2026-08-05-033846`) — `D-ANS-057`.
      */
+    #[Requirement('R-ANS-025')]
     #[Decision('D-ANS-057')]
     #[Test]
     public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
@@ -210,6 +212,7 @@ final class ForgeTest extends TestCase
      * fix would cost was among them (`D-ANS-064`). What makes it a fix rather
      * than a trade is that the whole set is filled in one call.
      */
+    #[Requirement('R-ANS-029')]
     #[Test]
     public function aRelationCarriesEnoughOfTheOtherIssueToJudgeWhetherToReadIt(): void
     {
@@ -237,6 +240,7 @@ final class ForgeTest extends TestCase
      * An issue that answered is not turned into an outage by a second call that
      * did not.
      */
+    #[Requirement('R-ANS-029')]
     #[Test]
     public function aRelationTheFillCouldNotReachIsStillTheRelationThatWasFiled(): void
     {
@@ -270,6 +274,7 @@ final class ForgeTest extends TestCase
      * where it reads as history rather than as a handle: the session that
      * triaged this issue never loaded `typo3_gerrit_lookup`'s schema.
      */
+    #[Requirement('R-ANS-029')]
     #[Test]
     public function aReviewChangeIsLiftedOutOfTheProseThatCarriesIt(): void
     {
@@ -293,6 +298,7 @@ final class ForgeTest extends TestCase
      * (`D-ANS-064`). So the bound is asked for: a caller reading one issue
      * keeps exactly what it had.
      */
+    #[Requirement('R-ANS-030')]
     #[Test]
     public function theJournalComesBackWholeUnlessACallerAsksForLessOfIt(): void
     {
@@ -310,6 +316,7 @@ final class ForgeTest extends TestCase
      * reader was going to use — the change numbers in them are a field of their
      * own by the time they are dropped.
      */
+    #[Requirement('R-ANS-030')]
     #[Test]
     public function thePingsAreWhatALimitedReaderDropsAndTheChangesSurviveThem(): void
     {
@@ -330,6 +337,7 @@ final class ForgeTest extends TestCase
      * anywhere in a review URL would report it as change 3129, which is a
      * change that exists and is about something else.
      */
+    #[Requirement('R-ANS-029')]
     #[Test]
     public function aQueryUrlNamesNoChangeAndIsNotReportedAsOne(): void
     {
@@ -468,6 +476,7 @@ final class ForgeTest extends TestCase
      * (`feedback/2026-08-05-033902`). The search path is also where a triage
      * asks about age, which no title carries — `D-ANS-056`.
      */
+    #[Requirement('R-ANS-024')]
     #[Decision('D-ANS-056')]
     #[Test]
     public function aSearchHitIsFilledFromTheIssuesTheHitsAre(): void
@@ -503,6 +512,7 @@ final class ForgeTest extends TestCase
      * A second call that did not answer does not turn a search that did into an
      * outage. The hits stand with the fields the title carried — `D-ANS-056`.
      */
+    #[Requirement('R-ANS-024')]
     #[Decision('D-ANS-056')]
     #[Test]
     public function aPageThatCouldNotBeFilledIsStillTheHitsThatMatched(): void
@@ -755,6 +765,7 @@ final class ForgeTest extends TestCase
      * the same bulk read — `R-ANS-029`. One call for the whole page, whatever
      * the rows carry between them.
      */
+    #[Requirement('R-ANS-029')]
     #[Test]
     public function theRelationsOfAWholePageAreFilledInOneCall(): void
     {
@@ -781,6 +792,7 @@ final class ForgeTest extends TestCase
      * `message:` index answers with — a change whose own number was asked for —
      * is dropped by the rule a single-issue lookup already applies.
      */
+    #[Requirement('R-ANS-029')]
     #[Decision('D-ANS-069')]
     #[Test]
     public function aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt(): void

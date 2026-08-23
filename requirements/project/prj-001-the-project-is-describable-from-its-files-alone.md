@@ -2,6 +2,10 @@
 id: R-PRJ-001
 title: 'The project is describable from its files alone'
 status: held
+heldBy:
+  - ProjectTest::theProjectIsDescribedFromItsFilesAlone
+  - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
+  - ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe
 ---
 
 # R-PRJ-001 — The project is describable from its files alone
@@ -21,9 +25,3 @@ installed tree wait for it and the answer says which state it is in.
 
 Three sessions asking for a project mode, and a guide that recommended
 `runTests.sh` to repositories that declare `composer t3g:cgl` (2026-07-29).
-
-## Held by
-
-- `ProjectTest::theProjectIsDescribedFromItsFilesAlone`
-- `ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt`
-- `ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe`

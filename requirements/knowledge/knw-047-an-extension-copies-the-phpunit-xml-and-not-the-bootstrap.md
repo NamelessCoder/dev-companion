@@ -2,6 +2,8 @@
 id: R-KNW-047
 title: 'An extension copies the phpunit XML and not the bootstrap'
 status: held
+heldBy:
+  - HintsTest::theBootstrapIsReferencedRatherThanCopied
 ---
 
 # R-KNW-047 — An extension copies the phpunit XML and not the bootstrap
@@ -21,7 +23,3 @@ The corpus said "copy all four", read off the header of the upstream XML, which
 tells extensions to copy the bootstrap along with it. That is boilerplate
 maintenance advice rather than a requirement, and it costs the extension a file
 that drifts (2026-08-03).
-
-## Held by
-
-- `HintsTest::theBootstrapIsReferencedRatherThanCopied`

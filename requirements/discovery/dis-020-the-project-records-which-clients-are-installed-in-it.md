@@ -3,6 +3,8 @@ id: R-DIS-020
 title: 'The project records which clients are installed in it'
 status: held
 restsOn: [D-DIS-014]
+heldBy:
+  - InstallerRecordTest
 ---
 
 # R-DIS-020 — The project records which clients are installed in it
@@ -35,7 +37,3 @@ that ignores itself now, is
 
 An update that had to be repeated per client, in a project set up for two of
 them (2026-07-31).
-
-## Held by
-
-- `InstallerRecordTest`

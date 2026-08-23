@@ -3,6 +3,8 @@ id: R-KNW-058
 title: 'The placement answer says which page may hold the record'
 status: held
 restsOn: [D-KNW-023]
+heldBy:
+  - HintsTest::thePlacementAnswerSaysWhichPageMayHoldTheRecord
 ---
 
 # R-KNW-058 — The placement answer says which page may hold the record
@@ -34,7 +36,3 @@ an editor restriction describes a check that session will meet anyway.
 A session seeding a sysfolder, two groups, five testimonials and a content
 element: it guessed at the pid and at the storage folder's role, and nothing in
 the corpus said which page may hold what (2026-08-01).
-
-## Held by
-
-- `HintsTest::thePlacementAnswerSaysWhichPageMayHoldTheRecord`

@@ -2,6 +2,8 @@
 id: R-DIS-002
 title: 'The packages are read from the declared vendor directory'
 status: held
+heldBy:
+  - InstanceTest::aProjectThatMovedItsVendorDirectoryIsStillFound
 ---
 
 # R-DIS-002 — The packages are read from the declared vendor directory
@@ -13,7 +15,3 @@ declares, not from the default.**
 
 The extension checkout with `config.vendor-dir=.build/vendor` that was reported
 as "no installation found" (2026-07-29).
-
-## Held by
-
-- `InstanceTest::aProjectThatMovedItsVendorDirectoryIsStillFound`

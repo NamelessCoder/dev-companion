@@ -2,6 +2,13 @@
 id: R-DIS-019
 title: 'A registry with no command is answered by the installation itself'
 status: held
+heldBy:
+  - IconLookupTest::aRegistryReadFromTheFilesSaysThatInTheAnswerItself
+  - Typo3RuntimeTest::aStatedConsoleIsKeptAsTheWayInAndPointedAtPhp
+  - Typo3RuntimeTest::aStatedConsoleNoInterpreterCanBeDerivedFromIsSaidOutLoud
+  - Typo3RuntimeTest::theAutoloaderIsTheOneTheInstallationDeclares
+  - Typo3RuntimeTest::theProbeReachesAnInterpreterAndAnswersAsData
+  - Typo3RuntimeTest::withoutAConsoleTheReasonIsTheConsolesOwn
 ---
 
 # R-DIS-019 — A registry with no command is answered by the installation itself
@@ -34,12 +41,3 @@ identifiers against 1289 read from files, the 25 extra being the ones its
 while a second site without news agreed on all 1287. In the extension's own
 repository, which has no `settings.php`, the same boot yields a failsafe
 container with 1259 core icons and none of the extension's own.
-
-## Held by
-
-- `Typo3RuntimeTest::theProbeReachesAnInterpreterAndAnswersAsData`
-- `Typo3RuntimeTest::theAutoloaderIsTheOneTheInstallationDeclares`
-- `Typo3RuntimeTest::aStatedConsoleIsKeptAsTheWayInAndPointedAtPhp`
-- `Typo3RuntimeTest::aStatedConsoleNoInterpreterCanBeDerivedFromIsSaidOutLoud`
-- `Typo3RuntimeTest::withoutAConsoleTheReasonIsTheConsolesOwn`
-- `IconLookupTest::aRegistryReadFromTheFilesSaysThatInTheAnswerItself`

@@ -2,6 +2,8 @@
 id: R-DIS-017
 title: "An extension below Tests/ is the test setup's"
 status: held
+heldBy:
+  - InstanceTest::aPackageBelowTestsBelongsToTheTestSetup
 ---
 
 # R-DIS-017 — An extension below Tests/ is the test setup's
@@ -17,7 +19,3 @@ one nobody can account for.
 `REVIEW-02`. `demo_package` below `Tests/Packages/` came back with origin
 `project`, which the schema defines as "inside the repository, so what it is
 working on" (2026-07-31).
-
-## Held by
-
-- `InstanceTest::aPackageBelowTestsBelongsToTheTestSetup`

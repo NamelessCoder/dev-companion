@@ -2,6 +2,8 @@
 id: R-KNW-039
 title: 'A backend module in a sitepackage stays backend-module work'
 status: held
+heldBy:
+  - HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork
 ---
 
 # R-KNW-039 — A backend module in a sitepackage stays backend-module work
@@ -19,7 +21,3 @@ when the words merely name the owner and the data a backend module reviews.
 A backend review module with actions, badges, icons and translated labels whose
 17 KB guide was dominated by frontend records and the complete sitepackage
 layout while omitting PHP/module registration (2026-07-30).
-
-## Held by
-
-- `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`

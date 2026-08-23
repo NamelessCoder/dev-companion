@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Knowledge\Documents;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
@@ -39,6 +40,7 @@ final class ProjectTest extends TestCase
         Typo3Runtime::forget();
     }
 
+    #[Requirement('R-PRJ-001')]
     #[Test]
     public function theProjectIsDescribedFromItsFilesAlone(): void
     {
@@ -106,6 +108,7 @@ final class ProjectTest extends TestCase
         self::assertSame('guides', array_key_last(array_diff_key($answer, ['answeredBy' => null])));
     }
 
+    #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
     #[Test]
     public function theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares(): void
@@ -246,6 +249,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     public function theThreePhpNumbersAreRelatedAndNotOnlyListed(): void
     {
@@ -283,6 +287,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Nothing was executed on any of these versions', $text);
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     public function aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut(): void
     {
@@ -313,6 +318,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('which is that floor', $text);
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     public function aFloorTheCoreRefusesAndAnEnvironmentUnderItAreBothSaid(): void
     {
@@ -342,6 +348,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('says it does not support', $text);
     }
 
+    #[Requirement('R-PRJ-010')]
     #[Test]
     public function aProjectWithNoReadableFloorIsRelatedToNothing(): void
     {
@@ -382,6 +389,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('No environment here states a PHP', $text);
     }
 
+    #[Requirement('R-PRJ-012')]
     #[Test]
     public function aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt(): void
     {
@@ -412,6 +420,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('composer/platform_check.php', $text);
     }
 
+    #[Requirement('R-PRJ-012')]
     #[Test]
     public function aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut(): void
     {
@@ -434,6 +443,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('nothing in that check stops them', $text);
     }
 
+    #[Requirement('R-PRJ-012')]
     #[Test]
     public function whereNothingConfiguresAnEnvironmentTheBoundIsStated(): void
     {
@@ -457,6 +467,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString(PHP_VERSION, $text, 'no interpreter on this machine was read');
     }
 
+    #[Requirement('R-PRJ-012')]
     #[Test]
     public function anInstallThatBoundsNothingIsSaidToBoundNothing(): void
     {
@@ -474,6 +485,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('They do not start', $text);
     }
 
+    #[Requirement('R-PRJ-013')]
     #[Test]
     public function theNodeThoseNpmCommandsRunOnIsStatedBesideThem(): void
     {
@@ -546,6 +558,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Nothing was run to find it out', $text);
     }
 
+    #[Requirement('R-PRJ-013')]
     #[Test]
     public function aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved(): void
     {
@@ -608,6 +621,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('without stating a version, so the runner image\'s own', $text);
     }
 
+    #[Requirement('R-PRJ-013')]
     #[Test]
     public function aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone(): void
     {
@@ -641,6 +655,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-013')]
     #[Test]
     public function aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode(): void
     {
@@ -656,6 +671,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('Node', Registry::call('typo3_project_describe', [])->text);
     }
 
+    #[Requirement('R-PRJ-013')]
     #[Decision('D-SCO-014')]
     #[Test]
     public function theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere(): void
@@ -726,6 +742,7 @@ final class ProjectTest extends TestCase
         self::assertSame('Build/package.json', $project['node']['relation']['declaredBy']);
     }
 
+    #[Requirement('R-PRJ-008')]
     #[Test]
     public function aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave(): void
     {
@@ -754,6 +771,7 @@ final class ProjectTest extends TestCase
         self::assertSame('8.0', Project::describe()['environment']['php']);
     }
 
+    #[Requirement('R-PRJ-009')]
     #[Test]
     public function theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked(): void
     {
@@ -823,6 +841,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-009')]
     #[Test]
     public function aHookAConfigBesideTheBaseOneTakesAwayIsNotStillReported(): void
     {
@@ -863,6 +882,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-009')]
     #[Test]
     public function aPullRecipeDdevWroteIsNotOneThisRepositoryDecidedOn(): void
     {
@@ -905,6 +925,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('acquia', $text);
     }
 
+    #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
     #[Test]
     public function anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent(): void
@@ -973,6 +994,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('- blog at /, root page 2', $text);
     }
 
+    #[Requirement('R-PRJ-002')]
     #[Test]
     public function aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther(): void
     {
@@ -989,6 +1011,7 @@ final class ProjectTest extends TestCase
         self::assertContains('broken', $identifiers, 'the site exists even when its configuration does not parse');
     }
 
+    #[Requirement('R-PRJ-001')]
     #[Test]
     public function withoutAnInstallationThereIsNoProjectToDescribe(): void
     {
@@ -1000,6 +1023,7 @@ final class ProjectTest extends TestCase
         self::assertSame(['unsupported'], array_keys($result->data));
     }
 
+    #[Requirement('R-PRJ-001')]
     #[Decision('D-DIS-019')]
     #[Test]
     public function theRepositoryIsDescribedBeforeAnythingIsInstalledInIt(): void
@@ -1052,6 +1076,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Extensions: not readable until the install has run', $result->text);
     }
 
+    #[Requirement('R-PRJ-011')]
     #[Decision('D-DIS-019')]
     #[Test]
     public function aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne(): void
@@ -1088,6 +1113,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('typo3_test_run_guide', $text);
     }
 
+    #[Requirement('R-ANS-018')]
     #[Test]
     public function whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt(): void
     {
@@ -1156,6 +1182,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-007')]
     #[Test]
     public function aDeclaredCommandSaysWhetherRunningItChangesTheSources(): void
     {
@@ -1206,6 +1233,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('A task told not to change files can run the checks and nothing else', $text);
     }
 
+    #[Requirement('R-PRJ-007')]
     #[Test]
     public function aCommandThatDeclaresNothingReadableIsNotCalledSafe(): void
     {
@@ -1237,6 +1265,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-007')]
     #[Test]
     public function anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand(): void
     {
@@ -1273,6 +1302,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-007')]
     #[Decision('D-EVI-003')]
     #[Test]
     public function aCommandThatWritesIsNeverReportedAsACheck(): void
@@ -1335,6 +1365,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function aPatchedDependencyIsPartOfWhatThisProjectIs(): void
     {
@@ -1354,6 +1385,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Patched dependencies', Registry::call('typo3_project_describe', [])->text);
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function whatAnExtensionRegistersIsReadFromItsOwnFiles(): void
     {
@@ -1445,6 +1477,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('its own subdirectories included', $result->text);
     }
 
+    #[Requirement('R-ANS-020')]
     #[Test]
     public function everyDirectoryBelowClassesIsInTheAnswer(): void
     {
@@ -1481,6 +1514,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString("find Classes -name '*.php' | wc -l", $result->text);
     }
 
+    #[Requirement('R-ANS-020')]
     #[Test]
     public function aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration(): void
     {
@@ -1502,6 +1536,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('rather than a root something declared', $result->text);
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt(): void
     {
@@ -1569,6 +1604,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('at runtime, takes from a constant', $result->text);
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function aContentElementRegisteredWithAddRecordTypeIsFoundAsWell(): void
     {
@@ -1634,6 +1670,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-012')]
     #[Decision('D-ANS-018')]
     #[Test]
     public function anExtbasePluginIsToldApartFromAnElementWithoutATemplate(): void
@@ -1703,6 +1740,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('no templateName here is no missing template', $result->text);
     }
 
+    #[Requirement('R-ANS-012')]
     #[Test]
     public function anIdentifierThatTookADetourThroughAVariableIsStillRead(): void
     {
@@ -1753,6 +1791,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-014')]
     #[Decision('D-ANS-019')]
     #[Test]
     public function theFlexFormAContentElementBindsIsOnItsEntry(): void
@@ -1803,6 +1842,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-014')]
     #[Decision('D-ANS-019')]
     #[Test]
     public function aFlexFormBoundThroughACallThisDoesNotReadIsStillReported(): void
@@ -1845,6 +1885,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('FlexForms bound to a content type none of the above names', $result->text);
     }
 
+    #[Requirement('R-ANS-014')]
     #[Decision('D-ANS-019')]
     #[Test]
     public function aSiteSetIsAnsweredByTheFilesCoreReadsItFor(): void
@@ -1883,6 +1924,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('route-enhancers.yaml is read from v14.1', $result->text);
     }
 
+    #[Requirement('R-ANS-014')]
     #[Decision('D-ANS-019')]
     #[Test]
     public function aFormSetIsAnsweredWithTheDefinitionsItStores(): void
@@ -1952,6 +1994,8 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Resources/Private/Forms/ProductRequest.form.yaml', $result->text);
     }
 
+    #[Requirement('R-ANS-012')]
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function aRegistrationBuiltInALoopIsNotDeterminable(): void
     {
@@ -2009,6 +2053,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Nothing could be read statically from Configuration/Icons.php', $result->text);
     }
 
+    #[Requirement('R-ANS-012')]
     #[Test]
     public function theFilesThatRegisterByRunningAreSaidToBeUnread(): void
     {
@@ -2038,6 +2083,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('a global Fluid namespace it sets is in none of the lists above', $result->text);
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor(): void
     {
@@ -2125,6 +2171,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Requirement('R-PRJ-006')]
     #[Decision('D-KNW-055')]
     #[Test]
     public function whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut(): void
@@ -2267,6 +2314,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('#109438, #108345, #98093 and #96518 whole', $result->text);
     }
 
+    #[Requirement('R-PRJ-005')]
     #[Test]
     public function anExtensionTheInstallationLacksIsAMissWithTheKeysItHas(): void
     {

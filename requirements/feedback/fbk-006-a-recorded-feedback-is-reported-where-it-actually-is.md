@@ -2,6 +2,8 @@
 id: R-FBK-006
 title: 'A recorded feedback is reported where it actually is'
 status: held
+heldBy:
+  - FeedbackTest::theRecordedNoteIsReportedWhereItActuallyIs
 ---
 
 # R-FBK-006 — A recorded feedback is reported where it actually is
@@ -24,7 +26,3 @@ The feedback of 2026-07-31 17:23, recorded from a site package: the tool
 answered `feedback/<name>.md`, the session searched its own workspace for that
 path, found neither the file nor a `feedback/` directory, and reported the
 creation as failed.
-
-## Held by
-
-- `FeedbackTest::theRecordedNoteIsReportedWhereItActuallyIs`

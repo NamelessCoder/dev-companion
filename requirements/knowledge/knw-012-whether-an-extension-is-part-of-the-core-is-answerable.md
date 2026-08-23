@@ -2,6 +2,10 @@
 id: R-KNW-012
 title: 'Whether an extension is part of the core is answerable'
 status: held
+heldBy:
+  - CatalogTest::aTargetVersionDecidesWhichExtensionsAreShipped
+  - CatalogTest::everyShippedRangeNamesACoveredVersion
+  - CatalogTest::whetherAnExtensionIsPartOfTheCoreIsAnswerable
 ---
 
 # R-KNW-012 — Whether an extension is part of the core is answerable
@@ -22,7 +26,5 @@ extension nobody knew existed until the user named it (2026-07-29).
 
 ## Held by
 
-- `CatalogTest::whetherAnExtensionIsPartOfTheCoreIsAnswerable`
-- `CatalogTest::aTargetVersionDecidesWhichExtensionsAreShipped`
 - `CatalogTest::everyShippedRangeNamesACoveredVersion`, and
 - `bin/cli catalog:check`, which re-derives the list from the checkouts

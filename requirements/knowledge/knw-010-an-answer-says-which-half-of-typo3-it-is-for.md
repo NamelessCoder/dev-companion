@@ -2,6 +2,10 @@
 id: R-KNW-010
 title: 'An answer says which half of TYPO3 it is for'
 status: held
+heldBy:
+  - HintsTest::theIconHintSaysWhichHalfOfTypo3ItIsAbout
+  - IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys
+  - IconLookupTest::theRoutingEntrySendsCallersThereForBackendWorkOnly
 ---
 
 # R-KNW-010 — An answer says which half of TYPO3 it is for
@@ -21,9 +25,3 @@ Backend icon identifiers about to be used in a frontend template, stopped by the
 user: "die icons welche du findest sind übrigens nur für das backend gedacht,
 nicht für das frontend" (2026-07-29); re-reported for the hint after the tool
 half had shipped.
-
-## Held by
-
-- `IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys`
-- `IconLookupTest::theRoutingEntrySendsCallersThereForBackendWorkOnly`
-- `HintsTest::theIconHintSaysWhichHalfOfTypo3ItIsAbout`

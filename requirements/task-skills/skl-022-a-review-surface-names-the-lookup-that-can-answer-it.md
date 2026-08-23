@@ -3,6 +3,9 @@ id: R-SKL-022
 title: 'A review surface names the lookup that can answer it'
 status: held
 restsOn: [D-SKL-030]
+heldBy:
+  - SkillTest::aReviewSurfaceNamesTheLookupThatCanAnswerIt
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
 ---
 
 # R-SKL-022 — A review surface names the lookup that can answer it
@@ -25,8 +28,3 @@ the patch makes false. The session never called it, and nothing led there:
 `typo3-core-patch-review` sent the obligations a diff raises to
 `typo3_rule_lookup` and the precedent to `typo3_changelog_lookup` and named no
 third owner.
-
-## Held by
-
-- `SkillTest::aReviewSurfaceNamesTheLookupThatCanAnswerIt`
-- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`

@@ -3,6 +3,10 @@ id: R-KNW-072
 title: 'Which interpreter a covered version needs is answerable before anything is installed'
 status: held
 restsOn: [D-KNW-086, D-KNW-091]
+heldBy:
+  - HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange
+  - HintsTest::whichInterpreterAVersionNeedsIsAnsweredFirst
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # R-KNW-072 — Which interpreter a covered version needs is answerable before anything is installed
@@ -35,9 +39,3 @@ claim no run tests.
 requiring `^8.2` and executed every command on 8.4. The half of it that derives
 the same relation inside `typo3_project_describe` is a todo of its own
 (2026-08-17).
-
-## Held by
-
-- `HintsTest::whichInterpreterAVersionNeedsIsAnsweredFirst`
-- `HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange`
-- `SkillTest::anInstallationIsBuiltInDependencyOrder`

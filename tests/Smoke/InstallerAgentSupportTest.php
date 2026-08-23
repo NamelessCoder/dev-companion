@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
+#[Requirement('R-DIS-013')]
 final class InstallerAgentSupportTest extends TestCase
 {
     /** @var array<string, array{skills: string, mcp?: string}> */
@@ -85,6 +87,7 @@ final class InstallerAgentSupportTest extends TestCase
      * beside the entry it is about; whether it is true of that client is what
      * `documentation/usage/installing.rst` sources, and no test reaches it.
      */
+    #[Requirement('R-DIS-023')]
     #[Test]
     public function everyClientWithAnEntryIsToldWhatIsLeftBeforeAToolCanBeCalled(): void
     {

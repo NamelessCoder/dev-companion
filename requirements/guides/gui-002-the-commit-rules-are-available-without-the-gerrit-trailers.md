@@ -2,6 +2,8 @@
 id: R-GUI-002
 title: 'The commit rules are available without the Gerrit trailers'
 status: held
+heldBy:
+  - ToolContractTest
 ---
 
 # R-GUI-002 — The commit rules are available without the Gerrit trailers

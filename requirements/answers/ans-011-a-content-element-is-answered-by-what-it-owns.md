@@ -2,6 +2,8 @@
 id: R-ANS-011
 title: 'A content element is answered by what it owns'
 status: held
+heldBy:
+  - HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns
 ---
 
 # R-ANS-011 — A content element is answered by what it owns
@@ -22,7 +24,3 @@ that answer without the task having to call itself a content element.
 A hero carousel designed out of generic record references and validated as
 technically possible, with the ownership decision never forced (2026-07-30);
 scenario `SKILL-04`.
-
-## Held by
-
-- `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`

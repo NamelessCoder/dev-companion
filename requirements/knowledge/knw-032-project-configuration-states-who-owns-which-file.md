@@ -2,6 +2,8 @@
 id: R-KNW-032
 title: 'Project configuration states who owns which file'
 status: held
+heldBy:
+  - HintsTest::projectSystemConfigurationStatesItsOwnershipBoundary
 ---
 
 # R-KNW-032 — Project configuration states who owns which file
@@ -19,7 +21,3 @@ and reads deployment secrets from the environment rather than committing them.
 
 DDEV replacing deployment overrides and re-ignoring the replaced file in the
 same project-configuration change (2026-07-30).
-
-## Held by
-
-- `HintsTest::projectSystemConfigurationStatesItsOwnershipBoundary`

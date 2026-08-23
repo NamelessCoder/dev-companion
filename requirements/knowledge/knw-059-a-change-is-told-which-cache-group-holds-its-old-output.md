@@ -3,6 +3,9 @@ id: R-KNW-059
 title: 'A change is told which cache group holds its old output'
 status: held
 restsOn: [D-KNW-027]
+heldBy:
+  - HintsTest::aChangeIsToldWhichCacheGroupHoldsItsOldOutput
+  - HintsTest::clearingACacheAndDeclaringOneAreDifferentQuestions
 ---
 
 # R-KNW-059 — A change is told which cache group holds its old output
@@ -40,8 +43,3 @@ in `php.json` and is a different subject.
 `rm` on `var/cache/code/fluid_template` and was told by its user that it "did
 not clear the caches properly after changes". Its own query reached nothing, and
 the nearest hint the corpus had was about declaring a cache (2026-08-01).
-
-## Held by
-
-- `HintsTest::aChangeIsToldWhichCacheGroupHoldsItsOldOutput`
-- `HintsTest::clearingACacheAndDeclaringOneAreDifferentQuestions`

@@ -429,12 +429,15 @@ bin/cli knowledge:format <path>   # only that part of it
   `bin/cli links:check`, and `LinksTest` so a rename that misses a reference
   fails the suite rather than the next reader. The anchor is not held, because a
   heading moves and the link still lands on the page.
-- **A test that holds a decision declares it**: `#[Decision('D-DOC-048')]` over
-  the method, and `bin/cli decisions:cover` writes that entry's `coveredBy` from
-  it. The attribute is the source and the front matter is the copy, so a renamed
-  test rewrites the entry instead of orphaning a name in it — `D-DOC-048`.
-  `bin/cli decisions:check` fails on a copy that says anything else, and on an
-  attribute naming an id no entry has.
+- **A test that holds a decision or a requirement declares it**:
+  `#[Decision('D-DOC-048')]` and `#[Requirement('R-COD-003')]` over the method,
+  or over the class where the whole class is the answer.
+  `bin/cli decisions:cover` and `bin/cli requirements:cover` write that entry's
+  `coveredBy` or `heldBy` from them — the attribute is the source and the front
+  matter is the copy, so a renamed test rewrites the entry instead of orphaning
+  a name in it. The checks fail on a copy that says anything else and on an
+  attribute naming an id no entry has, and a failing test prints every entry
+  that rested on it — `D-DOC-048`, `D-DOC-049`.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.

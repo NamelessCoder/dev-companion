@@ -2,6 +2,10 @@
 id: R-KNW-019
 title: "The core's own worked examples are indexed"
 status: held
+heldBy:
+  - CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf
+  - CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs
+  - CatalogTest::theCoresOwnWorkedExamplesAreIndexed
 ---
 
 # R-KNW-019 — The core's own worked examples are indexed
@@ -23,7 +27,5 @@ by accident or by being told (2026-07-29).
 
 ## Held by
 
-- `CatalogTest::theCoresOwnWorkedExamplesAreIndexed`
-- `CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf`
 - `CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs`, and
 - `bin/cli catalog:paths` for the paths

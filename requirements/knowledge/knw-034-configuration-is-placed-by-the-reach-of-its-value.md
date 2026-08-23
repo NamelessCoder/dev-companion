@@ -2,6 +2,9 @@
 id: R-KNW-034
 title: 'Configuration is placed by the reach of its value'
 status: held
+heldBy:
+  - HintsTest::aSettingIsPlacedByTheReachOfItsValue
+  - HintsTest::siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist
 ---
 
 # R-KNW-034 — Configuration is placed by the reach of its value
@@ -16,8 +19,3 @@ The site-settings form is bound to the versions that have it.
 
 A per-site storage pid put into a new `ext_conf_template.txt` after the same
 sitepackage's set settings had already been read (2026-07-30).
-
-## Held by
-
-- `HintsTest::aSettingIsPlacedByTheReachOfItsValue`
-- `HintsTest::siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist`

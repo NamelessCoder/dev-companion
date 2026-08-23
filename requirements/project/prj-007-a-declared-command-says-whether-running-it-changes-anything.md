@@ -2,6 +2,11 @@
 id: R-PRJ-007
 title: 'A declared command says whether running it changes anything'
 status: held
+heldBy:
+  - ProjectTest::aCommandThatDeclaresNothingReadableIsNotCalledSafe
+  - ProjectTest::aCommandThatWritesIsNeverReportedAsACheck
+  - ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources
+  - ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand
 ---
 
 # R-PRJ-007 — A declared command says whether running it changes anything
@@ -40,10 +45,3 @@ repositories (2026-07-31) that were told not to change files and ran none of the
 fifteen commands they were offered — among them `composer cgl:ci` and
 `composer test:php:lint`, which change nothing and would have settled two of the
 findings the syntax run derived from CI configuration instead.
-
-## Held by
-
-- `ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources`
-- `ProjectTest::aCommandThatDeclaresNothingReadableIsNotCalledSafe`
-- `ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand`
-- `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`

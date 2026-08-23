@@ -2,6 +2,18 @@
 id: R-ANS-006
 title: 'A miss says what there would have been to find'
 status: held
+heldBy:
+  - HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt
+  - HintsTest::aMissNamesWhatThereWouldHaveBeenToFind
+  - HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo
+  - KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary
+  - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
+  - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
+  - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
+  - LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach
+  - PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit
+  - PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt
+  - PackageSourcesTest::whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith
 ---
 
 # R-ANS-006 — A miss says what there would have been to find
@@ -17,17 +29,3 @@ accepts one as `id`, so "your words did not match" is distinguishable from
 
 A query naming XLF, labels and language files returning the TCA hint and nothing
 else, with no way to see that a Language Files hint existed (2026-07-29).
-
-## Held by
-
-- `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`
-- `HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt`
-- `HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo`
-- `LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach`
-- `PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit`
-- `PackageSourcesTest::whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith`
-- `PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt`
-- `KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary`
-- `KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt`
-- `KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections`
-- `KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn`

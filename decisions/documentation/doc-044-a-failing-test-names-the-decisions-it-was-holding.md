@@ -10,7 +10,7 @@ coveredBy:
 
 # D-DOC-044 — A failing test names the decisions it was holding
 
-**A test that fails prints the entries whose **Covered by** names it, with the
+**A test that fails prints the entries whose generated list names it, with the
 path to each.**
 
 The session that made it red is sent to the decision rather than left to make
@@ -42,20 +42,20 @@ file somebody has to open. A failure prints neither.
 
 ## Decided
 
-- A PHPUnit extension, `Tests\Support\HeldDecisions`, registered in
+- A PHPUnit extension, `Tests\Support\HeldEntries`, registered in
   `phpunit.xml.dist`. It collects the failed and errored tests, and at
-  `ExecutionFinished` prints each entry whose **Covered by** names one, with its
-  id, its title and its path. A run where nothing fails prints nothing.
-- `Decisions::restingOn()` is the reading, and it is the other direction of
-  `unnamedByItsTests()`: which entries a test was holding rather than what a
-  test says about its entry. A **Covered by** naming a whole class holds every
-  method in it, which the format already allows.
+  `ExecutionFinished` prints each entry naming one, with its id, its title and
+  its path. A run where nothing fails prints nothing.
+- `Decisions::restingOn()` is the reading, and it is the other direction of the
+  attribute: which entries a test was holding rather than what one test
+  declares. A list naming a whole class holds every method in it, which the
+  format already allows.
 - The extension is thin and the reading is tested.
   `DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd` asserts it over
   the whole corpus — every entry that names a test is reachable from that test —
   because a mapping that misses an entry is a decision that quietly stops being
   pointed at.
-- No test is edited for it. The coupling it prints is the one **Covered by**
+- No test is edited for it. The coupling it prints is the one the entry's list
   already declares, so a decision joins the mechanism by being named there and
   by nothing else.
 
@@ -80,3 +80,12 @@ file somebody has to open. A failure prints neither.
 - `Covered by` starts collecting names chosen to make this print something. That
   is `D-DOC-043`'s second **Wrong if** with a new incentive behind it, and the
   count falling while entries go on going stale is what would show it.
+
+## Since then
+
+It prints requirements as well, since 2026-08-23. `#[Requirement]` put a
+requirement's tests in its front matter the way `#[Decision]` did a decision's —
+`D-DOC-049` — and from that moment the two corpora were one reading away from
+each other, so the extension is `Tests\Support\HeldEntries` and names both. What
+a session that made a test red is sent to is every entry that rested on it,
+whichever corpus wrote it down.

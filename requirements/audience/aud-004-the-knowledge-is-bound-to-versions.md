@@ -2,6 +2,16 @@
 id: R-AUD-004
 title: 'The knowledge is bound to versions'
 status: held
+heldBy:
+  - CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclined
+  - CatalogTest::aComponentVerifiedOnTheTargetCarriesItsRange
+  - CatalogTest::anInstallationWithoutDomainsIsGivenTheFileReference
+  - CatalogTest::everyRecordedBindingNamesACoveredVersion
+  - CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead
+  - CatalogTest::theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion
+  - CatalogTest::withoutATargetEachEntryCarriesItsRange
+  - InstanceTest::theTypo3VersionIsReadFromTheCorePackage
+  - VersionsTest
 ---
 
 # R-AUD-004 — The knowledge is bound to versions
@@ -30,11 +40,3 @@ installation that resolves none (2026-07-29).
 - `VersionsTest` in full — the range model, the precedence, the filtering, that
 - No statement dates itself in prose, and that a prose answer says it is not the
   bound half
-- `CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclined`
-- `CatalogTest::aComponentVerifiedOnTheTargetCarriesItsRange`
-- `CatalogTest::withoutATargetEachEntryCarriesItsRange`
-- `CatalogTest::theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion`
-- `CatalogTest::everyRecordedBindingNamesACoveredVersion`
-- `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
-- `CatalogTest::anInstallationWithoutDomainsIsGivenTheFileReference`
-- `InstanceTest::theTypo3VersionIsReadFromTheCorePackage`

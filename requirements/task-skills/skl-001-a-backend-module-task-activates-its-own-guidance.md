@@ -2,6 +2,9 @@
 id: R-SKL-001
 title: 'A backend-module task activates its own guidance'
 status: held
+heldBy:
+  - InstallerTest
+  - SkillTest
 ---
 
 # R-SKL-001 — A backend-module task activates its own guidance
@@ -16,8 +19,3 @@ copy of versioned knowledge is generated or permanently loaded.
 ## From
 
 `SITE-07`.
-
-## Held by
-
-- `SkillTest`
-- `InstallerTest`

@@ -2,6 +2,11 @@
 id: R-DIS-010
 title: 'Reachable and ready are two questions'
 status: held
+heldBy:
+  - Typo3CliTest::aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp
+  - Typo3CliTest::aStoppedProjectOnHostPhpIsReportedAsAHalfAnswer
+  - Typo3CliTest::anInstallWithNoPlatformCheckBoundsNothing
+  - Typo3CliTest::thePhpBoundComesFromTheInstallWhereTheManifestStatesNone
 ---
 
 # R-DIS-010 — Reachable and ready are two questions
@@ -49,10 +54,3 @@ The same report one layer down, against `.environments/e-site-main` on
 neither `config.platform.php` nor `require.php`, so nothing bounded the
 interpreter, host PHP 8.3 was accepted, and every boot through it died in the
 platform check Composer had already written for `>= 8.5.0`.
-
-## Held by
-
-- `Typo3CliTest::aStoppedProjectOnHostPhpIsReportedAsAHalfAnswer`
-- `Typo3CliTest::aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp`
-- `Typo3CliTest::thePhpBoundComesFromTheInstallWhereTheManifestStatesNone`
-- `Typo3CliTest::anInstallWithNoPlatformCheckBoundsNothing`

@@ -2,6 +2,8 @@
 id: R-KNW-026
 title: 'A routed argument carries its cache-hash boundary'
 status: held
+heldBy:
+  - HintsTest::routedArgumentsAreAnsweredWithTheirCacheHashBoundary
 ---
 
 # R-KNW-026 — A routed argument carries its cache-hash boundary
@@ -17,7 +19,3 @@ cache-framework hint.
 
 A route-enhancer answer that described the mapper but could not say whether the
 resulting URL still carried a cache hash (2026-07-30).
-
-## Held by
-
-- `HintsTest::routedArgumentsAreAnsweredWithTheirCacheHashBoundary`

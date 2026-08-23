@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\CommitMessageGuide;
 
 /**
@@ -15,6 +16,7 @@ use TYPO3\DevCompanion\Tool\CommitMessageGuide;
  */
 final class CommitMessageGuideTest extends TestCase
 {
+    #[Requirement('R-GUI-007')]
     #[Test]
     public function aCheckedMessageStillSaysWhatTheWrappingJoined(): void
     {
@@ -33,6 +35,7 @@ final class CommitMessageGuideTest extends TestCase
      * The caveat survives the drop, because the answer it qualifies is the one
      * with something else in it — R-GUI-011.
      */
+    #[Requirement('R-GUI-011')]
     #[Test]
     public function aCheckedMessageSaysTheClassificationWasAssumed(): void
     {

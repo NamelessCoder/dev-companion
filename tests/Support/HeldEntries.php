@@ -16,22 +16,23 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 use TYPO3\DevCompanion\Upkeep\Decisions;
+use TYPO3\DevCompanion\Upkeep\Requirements;
 
 /**
  * What a failing test was holding, printed where the failure is read.
  *
- * A decision is held by the test named under its **Covered by** and by nothing
- * else, and the session that changes the behaviour stands in the test rather
- * than in `decisions/`. The id in the test's own comment reaches whoever opens
- * the file; this reaches whoever reads the run — the entry is named with the
- * path to it, so a test made green again is a decision somebody looked at
- * rather than one nobody knew was there.
+ * A decision and a requirement are held by the tests declaring `#[Decision]`
+ * and `#[Requirement]`, and the session that changes the behaviour stands in
+ * the test rather than in `decisions/` or `requirements/`. The attribute
+ * reaches whoever opens the file; this reaches whoever reads the run — each
+ * entry is named with the path to it, so a test made green again is an entry
+ * somebody looked at rather than one nobody knew was there.
  *
  * The state is static because a run has one of these, and the three subscribers
  * are one collector seen from three events. A run where nothing fails prints
  * nothing.
  */
-final class HeldDecisions implements Extension
+final class HeldEntries implements Extension
 {
     /** @var array<string, array{class: string, method: string}> */
     private static array $failed = [];
@@ -44,19 +45,19 @@ final class HeldDecisions implements Extension
             new class implements FailedSubscriber {
                 public function notify(Failed $event): void
                 {
-                    HeldDecisions::remember($event->test());
+                    HeldEntries::remember($event->test());
                 }
             },
             new class implements ErroredSubscriber {
                 public function notify(Errored $event): void
                 {
-                    HeldDecisions::remember($event->test());
+                    HeldEntries::remember($event->test());
                 }
             },
             new class implements ExecutionFinishedSubscriber {
                 public function notify(ExecutionFinished $event): void
                 {
-                    HeldDecisions::report();
+                    HeldEntries::report();
                 }
             },
         );
@@ -84,9 +85,13 @@ final class HeldDecisions implements Extension
     {
         $lines = [];
         foreach (self::$failed as $name => $test) {
-            foreach (Decisions::restingOn($test['class'], $test['method']) as $decision) {
-                $lines[] = sprintf('  %s — %s', $decision['id'], $decision['title']);
-                $lines[] = sprintf('    %s (%s)', $decision['file'], $name);
+            $held = [
+                ...Decisions::restingOn($test['class'], $test['method']),
+                ...Requirements::restingOn($test['class'], $test['method']),
+            ];
+            foreach ($held as $entry) {
+                $lines[] = sprintf('  %s — %s', $entry['id'], $entry['title']);
+                $lines[] = sprintf('    %s (%s)', $entry['file'], $name);
             }
         }
 
@@ -94,6 +99,6 @@ final class HeldDecisions implements Extension
             return;
         }
 
-        fwrite(STDERR, "\nWhat failed above is what these decisions rest on:\n" . implode("\n", $lines) . "\n");
+        fwrite(STDERR, "\nWhat failed above is what these entries rest on:\n" . implode("\n", $lines) . "\n");
     }
 }

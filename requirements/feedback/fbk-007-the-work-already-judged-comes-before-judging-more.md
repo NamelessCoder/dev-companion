@@ -3,6 +3,10 @@ id: R-FBK-007
 title: 'The work already judged comes before judging more'
 status: held
 restsOn: [D-FBK-012, D-FBK-016]
+heldBy:
+  - TodoTest::everyOpenFeedbackIsOnTheBoard
+  - TodoTest::everyTodoInAStageSaysWhereItStands
+  - TodoTest::theQueueIsReadByPriorityAndThenByAge
 ---
 
 # R-FBK-007 — The work already judged comes before judging more
@@ -42,9 +46,3 @@ which carries both halves of this and names
 as the entry the measurement was recorded in. The order became a priority on
 2026-08-02, with 67 feedback and an empty queue —
 [D-FBK-016](../../decisions/feedback/fbk-016-a-feedback-waits-on-the-board-rather-than-behind-it.md).
-
-## Held by
-
-- `TodoTest::theQueueIsReadByPriorityAndThenByAge`
-- `TodoTest::everyTodoInAStageSaysWhereItStands`
-- `TodoTest::everyOpenFeedbackIsOnTheBoard`

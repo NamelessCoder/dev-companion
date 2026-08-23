@@ -3,6 +3,8 @@ id: R-SKL-003
 title: "Crossing into another skill's work is an explicit transition"
 status: held
 restsOn: [D-EVI-002]
+heldBy:
+  - SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition
 ---
 
 # R-SKL-003 — Crossing into another skill's work is an explicit transition

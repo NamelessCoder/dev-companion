@@ -2,6 +2,11 @@
 id: R-DIS-016
 title: 'A repository that serves two majors is answered for both'
 status: held
+heldBy:
+  - VersionsTest::aConstraintIsReadByAskingItAboutEachCoveredMajor
+  - VersionsTest::aStatedMajorSaysWhichOtherOneItLeftOut
+  - VersionsTest::anExtensionThatServesTwoMajorsIsAnsweredForBoth
+  - VersionsTest::theAnswerSaysWhichMajorsItWasComposedFor
 ---
 
 # R-DIS-016 — A repository that serves two majors is answered for both
@@ -32,10 +37,3 @@ the widened answer: the session read `14.3.0` out of `typo3_project_describe`
 and stated it, which the input description invited by promising the installed
 version as the default, and the narrowing said nothing about itself
 (2026-07-31).
-
-## Held by
-
-- `VersionsTest::anExtensionThatServesTwoMajorsIsAnsweredForBoth`
-- `VersionsTest::theAnswerSaysWhichMajorsItWasComposedFor`
-- `VersionsTest::aStatedMajorSaysWhichOtherOneItLeftOut`
-- `VersionsTest::aConstraintIsReadByAskingItAboutEachCoveredMajor`

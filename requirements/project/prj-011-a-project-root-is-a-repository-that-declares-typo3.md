@@ -3,6 +3,11 @@ id: R-PRJ-011
 title: 'A project root is a repository that declares TYPO3'
 status: held
 restsOn: [D-ANS-085]
+heldBy:
+  - InstanceTest::aNamedInstallationThatIsNotThereIsNotWalkedPast
+  - InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot
+  - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
+  - ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne
 ---
 
 # R-PRJ-011 — A project root is a repository that declares TYPO3
@@ -33,10 +38,3 @@ because the root that was found had to hold Composer's installed metadata — an
 the session read `composer.json`, `package.json` and `.ddev/config.yaml` out of
 the checkout by hand instead. Widening what counts as a root is what answers it,
 and `D-ANS-085` names admitting too much as the way that goes wrong.
-
-## Held by
-
-- `InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares`
-- `InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot`
-- `InstanceTest::aNamedInstallationThatIsNotThereIsNotWalkedPast`
-- `ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne`

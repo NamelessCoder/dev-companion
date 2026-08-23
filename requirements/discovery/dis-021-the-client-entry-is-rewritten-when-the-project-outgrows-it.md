@@ -2,6 +2,10 @@
 id: R-DIS-021
 title: 'The client entry is rewritten when the project outgrows it'
 status: held
+heldBy:
+  - InstallerTest::codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile
+  - InstallerTest::updateRefusesToReplaceAnotherCommand
+  - InstallerTest::updateRewritesTheEntryAProjectHasOutgrown
 ---
 
 # R-DIS-021 — The client entry is rewritten when the project outgrows it
@@ -23,9 +27,3 @@ somebody else is still never replaced.
 `.mcp.json has a different or missing typo3-dev-companion entry` after the
 project required the server, with `install` refusing the same entry
 (2026-07-31).
-
-## Held by
-
-- `InstallerTest::updateRewritesTheEntryAProjectHasOutgrown`
-- `InstallerTest::updateRefusesToReplaceAnotherCommand`
-- `InstallerTest::codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile`

@@ -152,7 +152,7 @@ final class DecisionCheck
         }
 
         $requirements = Requirements::all();
-        $held = Sources::decisionsHeld();
+        $held = Sources::held('Decision');
         foreach (Decisions::files() as $path) {
             $contents = (string) file_get_contents($path);
             preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', $contents, $matches);
@@ -167,7 +167,7 @@ final class DecisionCheck
             // what the source does. A test renamed, moved or given another
             // entry leaves the front matter behind otherwise, which is the
             // drift `D-DOC-043` measured.
-            if (Decisions::covered($contents, $held[Decisions::read($path)['id']] ?? []) !== $contents) {
+            if (Entry::withNames($contents, 'coveredBy', $held[Decisions::read($path)['id']] ?? []) !== $contents) {
                 $problems[] = basename($path) . ' carries a coveredBy the tests do not write — run bin/cli decisions:cover';
             }
         }

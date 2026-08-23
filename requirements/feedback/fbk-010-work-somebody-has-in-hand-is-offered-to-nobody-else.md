@@ -2,6 +2,10 @@
 id: R-FBK-010
 title: 'Work somebody has in hand is offered to nobody else'
 status: held
+heldBy:
+  - TodoTest::aClaimIsOneMoveThatGoesBothWays
+  - TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim
+  - TodoTest::whatIsInHandIsOfferedToNobodyElse
 ---
 
 # R-FBK-010 — Work somebody has in hand is offered to nobody else

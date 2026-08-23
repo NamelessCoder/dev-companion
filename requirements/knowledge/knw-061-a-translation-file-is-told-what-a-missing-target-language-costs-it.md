@@ -3,6 +3,9 @@ id: R-KNW-061
 title: 'A translation file is told what a missing `target-language` costs it'
 status: held
 restsOn: [D-KNW-050]
+heldBy:
+  - HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt
+  - HintsTest::whatAMissingTargetLanguageCostsIsWithheldWhereItIsFree
 ---
 
 # R-KNW-061 — A translation file is told what a missing `target-language` costs it
@@ -32,8 +35,3 @@ file.
 TYPO3 14.3.5 installation (2026-08-03). Its highest-impact finding — 22 German
 translations discarded from a fully maintained file — came from four hops into
 installed source, and the hint that governs that file offered no way to see it.
-
-## Held by
-
-- `HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt`
-- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldWhereItIsFree`

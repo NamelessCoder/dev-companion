@@ -3,6 +3,9 @@ id: R-KNW-057
 title: 'The push a session cannot take back is answered in full'
 status: held
 restsOn: [D-SKL-005]
+heldBy:
+  - KnowledgeTest::theUnlistedPushIsAnsweredBesideTheOneThatPublishes
+  - KnowledgeTest::theWriteDirectionIsAnsweredAroundThePushItself
 ---
 
 # R-KNW-057 — The push a session cannot take back is answered in full
@@ -36,8 +39,3 @@ knowledge — `feedback/2026-08-02-144848`, which
 [`D-SKL-005`](../../decisions/task-skills/skl-005-core-contribution-earns-two-task-skills.md)
 trimmed to these four on 2026-08-03 after re-running the rest against the server
 (2026-08-02).
-
-## Held by
-
-- `KnowledgeTest::theUnlistedPushIsAnsweredBesideTheOneThatPublishes`
-- `KnowledgeTest::theWriteDirectionIsAnsweredAroundThePushItself`

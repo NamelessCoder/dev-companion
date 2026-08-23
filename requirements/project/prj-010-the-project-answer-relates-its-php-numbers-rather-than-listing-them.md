@@ -3,6 +3,13 @@ id: R-PRJ-010
 title: 'The project answer relates its PHP numbers rather than listing them'
 status: held
 restsOn: [D-ANS-082]
+heldBy:
+  - ProjectTest::aFloorTheCoreRefusesAndAnEnvironmentUnderItAreBothSaid
+  - ProjectTest::aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut
+  - ProjectTest::aProjectWithNoReadableFloorIsRelatedToNothing
+  - ProjectTest::theThreePhpNumbersAreRelatedAndNotOnlyListed
+  - VersionsTest::aPhpSpellingFromTheCheckoutsAnswersItsLowestVersion
+  - VersionsTest::theFloorIsReadOneLevelBelowTheMajorTheRestOfThisAnswers
 ---
 
 # R-PRJ-010 — The project answer relates its PHP numbers rather than listing them
@@ -43,13 +50,6 @@ executed no line on the one it claimed to support — and reports that the answe
 which would have shown it was one it had already read.
 
 ## Held by
-
-- `ProjectTest::theThreePhpNumbersAreRelatedAndNotOnlyListed`
-- `ProjectTest::aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut`
-- `ProjectTest::aFloorTheCoreRefusesAndAnEnvironmentUnderItAreBothSaid`
-- `ProjectTest::aProjectWithNoReadableFloorIsRelatedToNothing`
-- `VersionsTest::aPhpSpellingFromTheCheckoutsAnswersItsLowestVersion`
-- `VersionsTest::theFloorIsReadOneLevelBelowTheMajorTheRestOfThisAnswers`
 
 The reading is minor-granular, which `Versions::admits()` is not: it answers per
 TYPO3 major, so `^8.3` and `^8.2` are one answer to it. What a manifest actually

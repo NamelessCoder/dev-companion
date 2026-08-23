@@ -2,6 +2,8 @@
 id: R-DIS-011
 title: 'The entrypoint installs its own client configuration'
 status: held
+heldBy:
+  - InstallerTest
 ---
 
 # R-DIS-011 — The entrypoint installs its own client configuration
@@ -18,7 +20,3 @@ configuration.
 
 The two manual absolute-path JSON snippets between discovering the package and
 being able to call it (2026-07-30).
-
-## Held by
-
-- `InstallerTest`

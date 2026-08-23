@@ -3,6 +3,9 @@ id: R-SKL-019
 title: 'Every published skill is named by an intent the brief can reach'
 status: held
 restsOn: [D-SKL-023]
+heldBy:
+  - SkillTest::aCoreTriageReachesTheSkillThatOwnsItWithoutNamingAPath
+  - SkillTest::everyPublishedSkillIsNamedByAnIntent
 ---
 
 # R-SKL-019 — Every published skill is named by an intent the brief can reach
@@ -38,9 +41,6 @@ core as a tracker and a checkout — `core issue`, `core bug`, `core checkout`,
 `core backlog`, `core tracker` are markers now.
 
 ## Held by
-
-- `SkillTest::everyPublishedSkillIsNamedByAnIntent`
-- `SkillTest::aCoreTriageReachesTheSkillThatOwnsItWithoutNamingAPath`
 
 The first has one exemption and it is in the code rather than in a list: a draft
 is not published, and a draft reachable by routing is one nobody chose.

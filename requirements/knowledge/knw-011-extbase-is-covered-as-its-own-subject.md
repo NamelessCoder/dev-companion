@@ -2,6 +2,8 @@
 id: R-KNW-011
 title: 'Extbase is covered as its own subject'
 status: held
+heldBy:
+  - HintsTest::anExtbasePluginHasAHintOfItsOwn
 ---
 
 # R-KNW-011 — Extbase is covered as its own subject
@@ -21,7 +23,3 @@ trace anyone could search for.
 A catalog with fifty hint ids and not one about Extbase, and the five failure
 modes met afterwards while building the plugin it had nothing to say about
 (2026-07-29).
-
-## Held by
-
-- `HintsTest::anExtbasePluginHasAHintOfItsOwn`

@@ -3,6 +3,9 @@ id: R-KNW-069
 title: 'A new backend label is told what it costs before it resolves'
 status: held
 restsOn: [D-KNW-076]
+heldBy:
+  - HintsTest::aNewBackendLabelIsToldWhatItCostsBeforeItResolves
+  - HintsTest::theLabelModuleIsWithheldFromTheMajorsThatHaveNone
 ---
 
 # R-KNW-069 — A new backend label is told what it costs before it resolves
@@ -33,8 +36,3 @@ XLF one, and the answer holds from 14, where the module exists at all.
 often saves a session from debugging the wrong file". Its query reached
 `language-files`, `backend-typescript` and `backend-ui`, none of which names the
 JavaScript label bundle (2026-08-13).
-
-## Held by
-
-- `HintsTest::aNewBackendLabelIsToldWhatItCostsBeforeItResolves`
-- `HintsTest::theLabelModuleIsWithheldFromTheMajorsThatHaveNone`

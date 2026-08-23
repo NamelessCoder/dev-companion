@@ -3,6 +3,11 @@ id: R-FBK-013
 title: 'A recorded name keeps the spelling it was given in'
 status: held
 restsOn: [D-FBK-039]
+heldBy:
+  - FeedbackTest::aNameFromOutsideThisServerKeepsItsCapitals
+  - FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled
+  - FeedbackTest::aRecordedNameKeepsTheSpellingItWasGivenIn
+  - FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt
 ---
 
 # R-FBK-013 — A recorded name keeps the spelling it was given in
@@ -21,10 +26,3 @@ filter alone.
 listing spells them, hyphenated, storing `typo3extensionconformance` — a name
 the project has nowhere, while the argument's own description asks for the
 hyphenated one (2026-08-02).
-
-## Held by
-
-- `FeedbackTest::aRecordedNameKeepsTheSpellingItWasGivenIn`
-- `FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled`
-- `FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt`
-- `FeedbackTest::aNameFromOutsideThisServerKeepsItsCapitals`

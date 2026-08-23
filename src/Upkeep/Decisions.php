@@ -94,29 +94,13 @@ final class Decisions
     }
 
     /**
-     * The entries a test holds, which is what a failing one prints.
-     *
-     * Read from `coveredBy`, which the test's own `#[Decision]` attributes are
-     * what wrote — so this answers with the entries that test declared, and a
-     * session standing in a red test is sent to them.
+     * The decisions a test holds, which is what a failing one prints.
      *
      * @return list<array{id: string, title: string, file: string}>
      */
     public static function restingOn(string $class, string $method): array
     {
-        $held = [];
-        foreach (self::all() as $decision) {
-            if (!in_array($class . '::' . $method, $decision['coveredBy'], true)) {
-                continue;
-            }
-            $held[] = [
-                'id' => $decision['id'],
-                'title' => $decision['title'],
-                'file' => 'decisions/' . $decision['group'] . '/' . $decision['file'],
-            ];
-        }
-
-        return $held;
+        return Entry::restingOn(self::all(), 'decisions', $class, $method);
     }
 
     /**
@@ -189,7 +173,7 @@ final class Decisions
 
         $uncovered = [];
         foreach (self::all() as $decision) {
-            if ($decision['coveredBy'] !== []) {
+            if ($decision['tests'] !== []) {
                 continue;
             }
             $body = (string) file_get_contents(self::directory() . '/' . $decision['group'] . '/' . $decision['file']);
@@ -208,42 +192,6 @@ final class Decisions
         usort($uncovered, static fn(array $a, array $b): int => [$b['names'], $a['id']] <=> [$a['names'], $b['id']]);
 
         return $uncovered;
-    }
-
-    /**
-     * One entry's file as `coveredBy` generated from the tests would write it.
-     *
-     * The `#[Decision]` attributes are the source and this is the copy, which
-     * is why the whole file comes back rather than the list: `decisions:cover`
-     * writes what this returns and `decisions:check` compares against it, so
-     * one implementation decides what the front matter says.
-     *
-     * An entry no test names keeps a `coveredBy: []` it was written with —
-     * that empty list is a statement that nothing can hold the entry, and the
-     * absence of the key is that nobody has asked.
-     *
-     * @param list<string> $tests
-     */
-    public static function covered(string $contents, array $tests): string
-    {
-        $written = $tests === []
-            ? "coveredBy: []\n"
-            : "coveredBy:\n" . implode('', array_map(static fn(string $test): string => '  - ' . $test . "\n", $tests));
-
-        // A callback rather than a replacement string: a `$` in one would be
-        // read as a group reference, and what is written here is a name.
-        $carries = '/^coveredBy:(?: \[])?\R(?:  - .*\R)*/m';
-        if (preg_match($carries, $contents) === 1) {
-            return (string) preg_replace_callback($carries, static fn(): string => $written, $contents, 1);
-        }
-        if ($tests === []) {
-            return $contents;
-        }
-
-        // The key is new, and goes at the foot of the front matter: the first
-        // `---` on a line of its own, the opening one standing at the very
-        // start of the file.
-        return (string) preg_replace_callback('/\R---\R/', static fn(): string => "\n" . $written . "---\n", $contents, 1);
     }
 
     /**
@@ -269,7 +217,7 @@ final class Decisions
      * Every decision, keyed by id and newest first — which is the order the
      * file this replaces claimed to be in.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function all(): array
     {
@@ -333,7 +281,7 @@ final class Decisions
     /**
      * The decisions of one group, or every one of them where no group is named.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -415,7 +363,7 @@ final class Decisions
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, coveredBy: list<string>, revisited: bool, statement: string, fields: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, date: string, status: string, revokedBy: string, tests: list<string>, revisited: bool, statement: string, fields: array<int, string>}
      */
     public static function read(string $path): array
     {
@@ -436,7 +384,7 @@ final class Decisions
             // who reaches a dead entry needs somewhere to go next, and prose
             // said it on four of them and nowhere a listing could see.
             'revokedBy' => Entry::value($matter, 'revokedBy'),
-            'coveredBy' => Entry::names($matter, 'coveredBy'),
+            'tests' => Entry::names($matter, 'coveredBy'),
             'revisited' => self::revisited($contents),
             'statement' => $head['statement'],
             'fields' => self::fields($contents),

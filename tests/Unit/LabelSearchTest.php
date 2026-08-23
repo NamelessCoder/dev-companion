@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Search\LabelSearch;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -50,6 +51,7 @@ final class LabelSearchTest extends TestCase
         self::assertSame('--regex=/(labels\.title)/i', LabelSearch::consoleOption(LabelSearch::terms('labels.title')));
     }
 
+    #[Requirement('R-ANS-004')]
     #[Test]
     public function aLabelAnswersOnlyWhenItCarriesEveryWord(): void
     {
@@ -64,6 +66,7 @@ final class LabelSearchTest extends TestCase
         self::assertSame(['labels.save_document'], array_column($matching, 'key'));
     }
 
+    #[Requirement('R-ANS-004')]
     #[Test]
     public function theWordsMayComeInAnyOrderAndAnyCase(): void
     {
@@ -103,6 +106,7 @@ final class LabelSearchTest extends TestCase
      * query was after — is the one to keep rather than the one to drop —
      * `D-ANS-016`.
      */
+    #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-016')]
     #[Test]
     public function anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach(): void
@@ -161,6 +165,7 @@ final class LabelSearchTest extends TestCase
         self::assertSame([], LabelSearch::largestReachingSubsets($entries, LabelSearch::terms('alpha beta')));
     }
 
+    #[Requirement('R-ANS-005')]
     #[Test]
     public function aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure(): void
     {
@@ -177,6 +182,7 @@ final class LabelSearchTest extends TestCase
         self::assertStringContainsString('No label in', $result->text);
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing(): void
     {
@@ -205,6 +211,7 @@ final class LabelSearchTest extends TestCase
         self::assertStringContainsString('the console settled nothing', $result->text);
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function aConsoleThatExitsWellAndSaysNothingIsUnanswered(): void
     {
@@ -223,6 +230,7 @@ final class LabelSearchTest extends TestCase
         );
     }
 
+    #[Requirement('R-ANS-005')]
     #[Test]
     public function aConsoleThatCannotRunIsStillUnanswered(): void
     {
@@ -255,6 +263,7 @@ final class LabelSearchTest extends TestCase
         self::assertStringContainsString('"save" matches 1 label(s)', $result->text);
     }
 
+    #[Requirement('R-KNW-036')]
     #[Test]
     public function aResourceRestrictsReuseToTheUsageContext(): void
     {
@@ -342,6 +351,7 @@ final class LabelSearchTest extends TestCase
      * the rule rides on the answer rather than on a query the caller would
      * have had to phrase around labels first.
      */
+    #[Requirement('R-ANS-015')]
     #[Test]
     #[DataProvider('whatTheConsoleAnswers')]
     public function aCallerAboutToWriteAUnitIsToldItsSourceLanguage(string $output): void
@@ -375,6 +385,7 @@ final class LabelSearchTest extends TestCase
         ];
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead(): void
     {
@@ -398,6 +409,7 @@ final class LabelSearchTest extends TestCase
         self::assertStringContainsString('LANG/resourceOverrides', $result->text);
     }
 
+    #[Requirement('R-ANS-008')]
     #[Test]
     public function aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace(): void
     {

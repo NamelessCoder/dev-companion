@@ -10,6 +10,7 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * What a project records about the clients installed in it.
@@ -19,6 +20,7 @@ use TYPO3\DevCompanion\Tests\Support\Directory;
  * update needs no list from whoever runs it, and so that a skill this package
  * has stopped shipping can be taken out of every client it reached.
  */
+#[Requirement('R-DIS-020')]
 final class InstallerRecordTest extends TestCase
 {
     private const SKILL = 'typo3-backend-module-development';
@@ -156,6 +158,7 @@ final class InstallerRecordTest extends TestCase
      * nine skills are republished, the record is rewritten, and what the
      * project wrote stays byte for byte what it was — `D-DIS-010`.
      */
+    #[Requirement('R-DIS-024')]
     #[Decision('D-DIS-010')]
     #[Test]
     public function neitherCommandWritesIntoTheProjectsGitignore(): void
@@ -190,6 +193,7 @@ final class InstallerRecordTest extends TestCase
      * says which of them happened rather than only that something did —
      * `D-DIS-013`.
      */
+    #[Requirement('R-DIS-025')]
     #[Decision('D-DIS-013')]
     #[Test]
     public function aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted(): void

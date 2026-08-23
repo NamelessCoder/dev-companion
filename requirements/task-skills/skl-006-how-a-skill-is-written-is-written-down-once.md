@@ -2,6 +2,8 @@
 id: R-SKL-006
 title: 'How a skill is written is written down once'
 status: held
+heldBy:
+  - SkillTest::theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt
 ---
 
 # R-SKL-006 — How a skill is written is written down once

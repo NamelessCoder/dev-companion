@@ -2,6 +2,8 @@
 id: R-KNW-028
 title: 'A surviving hook is named by the subsystem that calls it'
 status: held
+heldBy:
+  - HintsTest::survivingHooksAreNamedByTheirSubsystemAndIntent
 ---
 
 # R-KNW-028 — A surviving hook is named by the subsystem that calls it
@@ -17,7 +19,3 @@ subsystem knowledge.
 
 Prefilling an EXT:form field requiring a grep to discover both a surviving hook
 and the request-aware event that should be used instead (2026-07-29).
-
-## Held by
-
-- `HintsTest::survivingHooksAreNamedByTheirSubsystemAndIntent`

@@ -2,6 +2,9 @@
 id: R-KNW-040
 title: 'An environment variable answer names what the core reads itself'
 status: held
+heldBy:
+  - HintsTest::settingTheEncryptionKeyFromAnExtensionIsBoundToWhereItBreaks
+  - HintsTest::whichEnvironmentVariablesTheCoreReadsItselfIsAnswered
 ---
 
 # R-KNW-040 — An environment variable answer names what the core reads itself
@@ -28,8 +31,3 @@ A session that could not verify whether the core reads `TYPO3_ENCRYPTION_KEY` or
 `TYPO3_DB_HOST` and answered from its own knowledge instead — correctly, but
 unverifiably, because the corpus stated the project half of the boundary without
 the core half (2026-07-31).
-
-## Held by
-
-- `HintsTest::whichEnvironmentVariablesTheCoreReadsItselfIsAnswered`
-- `HintsTest::settingTheEncryptionKeyFromAnExtensionIsBoundToWhereItBreaks`

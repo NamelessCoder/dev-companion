@@ -3,6 +3,8 @@ id: R-GUI-012
 title: 'A brief names the hints it left behind'
 status: held
 restsOn: [D-GUI-007]
+heldBy:
+  - HintsTest::aBriefNamesTheHintsItLeftBehind
 ---
 
 # R-GUI-012 — A brief names the hints it left behind
@@ -26,7 +28,3 @@ the brief did not reach is visible before a file is opened.
 patch's new service dependency by grepping three call sites out of the checkout.
 `dependency-injection` is the seventh hint the lookup holds for the five paths
 that brief was composed for.
-
-## Held by
-
-- `HintsTest::aBriefNamesTheHintsItLeftBehind`

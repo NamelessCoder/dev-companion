@@ -2,6 +2,9 @@
 id: R-ANS-004
 title: 'A tool implements the query language it documents'
 status: held
+heldBy:
+  - LabelSearchTest::aLabelAnswersOnlyWhenItCarriesEveryWord
+  - LabelSearchTest::theWordsMayComeInAnyOrderAndAnyCase
 ---
 
 # R-ANS-004 — A tool implements the query language it documents
@@ -16,8 +19,3 @@ multi-word query means what the description says it means.
 
 Every multi-word label query coming back empty, the tool's own documented
 example included (2026-07-29).
-
-## Held by
-
-- `LabelSearchTest::aLabelAnswersOnlyWhenItCarriesEveryWord`
-- `LabelSearchTest::theWordsMayComeInAnyOrderAndAnyCase`

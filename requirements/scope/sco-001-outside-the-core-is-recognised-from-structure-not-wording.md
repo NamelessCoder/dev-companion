@@ -2,6 +2,18 @@
 id: R-SCO-001
 title: 'Outside the core is recognised from structure, not wording'
 status: held
+heldBy:
+  - ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised
+  - ScopeTest::aPackageShapedPathInACoreCheckoutIsCoreWork
+  - ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape
+  - ScopeTest::aPathKnownAsSomebodysExtensionIsOutsideTheCore
+  - ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest
+  - ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone
+  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore
+  - ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs
+  - ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork
+  - ScopeTest::theDeclaredExtensionKeyPlacesAPath
+  - ScopeTest::theNamedInstallationIsTheEvidenceWhereNothingElseIs
 ---
 
 # R-SCO-001 — Outside the core is recognised from structure, not wording
@@ -42,17 +54,3 @@ path relative to a system extension directory looks like.
 
 `outsideCore` flipping only after the caller spelled out "not TYPO3 core" in
 prose (2026-07-29).
-
-## Held by
-
-- `ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`
-- `ScopeTest::aPathKnownAsSomebodysExtensionIsOutsideTheCore`
-- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore`
-- `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
-- `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
-- `ScopeTest::aPackageShapedPathInACoreCheckoutIsCoreWork`
-- `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
-- `ScopeTest::theNamedInstallationIsTheEvidenceWhereNothingElseIs`
-- `ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest`
-- `ScopeTest::theDeclaredExtensionKeyPlacesAPath`
-- `ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised`

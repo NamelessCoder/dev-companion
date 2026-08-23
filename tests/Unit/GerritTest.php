@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Http\Recent;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\GerritLookup;
 
 /**
@@ -91,6 +92,7 @@ final class GerritTest extends TestCase
      * give: a session reading one MERGED core change with a plausible subject
      * has no signal at all that it is spurious — `D-ANS-055`.
      */
+    #[Requirement('R-ANS-023')]
     #[Decision('D-ANS-055')]
     #[Test]
     public function aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered(): void
@@ -110,6 +112,7 @@ final class GerritTest extends TestCase
      * the message as text would clear exactly the change the filter is for —
      * `D-ANS-055`.
      */
+    #[Requirement('R-ANS-023')]
     #[Decision('D-ANS-055')]
     #[Test]
     public function theNumberInAReviewUrlIsNotTheIssueBeingNamed(): void
@@ -129,6 +132,7 @@ final class GerritTest extends TestCase
      * empty answer, which is what the caller acts on: nothing public names this
      * issue — `D-ANS-055`.
      */
+    #[Requirement('R-ANS-023')]
     #[Decision('D-ANS-055')]
     #[Test]
     public function anAnswerOfNothingButFalsePositivesIsEmpty(): void
@@ -227,6 +231,7 @@ final class GerritTest extends TestCase
      * message is that a change is not the answer to the issue whose number it
      * carries as its own — `D-ANS-055`.
      */
+    #[Requirement('R-ANS-023')]
     #[Decision('D-ANS-055')]
     #[Test]
     public function aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone(): void
@@ -282,6 +287,7 @@ final class GerritTest extends TestCase
      * cannot say whether the two are the same thing, and neither is served
      * unless the query asks for the current revision.
      */
+    #[Requirement('R-ANS-021')]
     #[Test]
     public function theAnswerCarriesThePatchSetACheckoutIsHeldAgainst(): void
     {
@@ -437,6 +443,7 @@ final class GerritTest extends TestCase
      * a string carrying a zero, which would fetch nothing and read like a
      * command to run — `D-ANS-068`.
      */
+    #[Requirement('R-ANS-021')]
     #[Decision('D-ANS-068')]
     #[Test]
     public function aChangeWithoutARevisionSaysSoRatherThanInventingOne(): void
@@ -929,6 +936,7 @@ final class GerritTest extends TestCase
      * and this server reads Gerrit without credentials, so nothing in that
      * answer could have said otherwise.
      */
+    #[Requirement('R-ANS-027')]
     #[Test]
     public function anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate(): void
     {
@@ -957,6 +965,7 @@ final class GerritTest extends TestCase
      * answers two issues, one unrelated, and searching for a Change-Id answers
      * nothing at all.
      */
+    #[Requirement('R-ANS-027')]
     #[Test]
     public function aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer(): void
     {

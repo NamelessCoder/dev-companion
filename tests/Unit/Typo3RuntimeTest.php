@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 
 /**
@@ -37,6 +38,7 @@ final class Typo3RuntimeTest extends TestCase
         Typo3Runtime::forget();
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function theProbeReachesAnInterpreterAndAnswersAsData(): void
     {
@@ -54,6 +56,7 @@ final class Typo3RuntimeTest extends TestCase
         self::assertStringContainsString($this->root, $answer['reason'], 'it ran in the installation root');
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function theAutoloaderIsTheOneTheInstallationDeclares(): void
     {
@@ -65,6 +68,7 @@ final class Typo3RuntimeTest extends TestCase
         self::assertStringContainsString('.Build/vendor/autoload.php', Typo3Runtime::ask()['reason']);
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function aStatedConsoleIsKeptAsTheWayInAndPointedAtPhp(): void
     {
@@ -78,6 +82,7 @@ final class Typo3RuntimeTest extends TestCase
         self::assertStringContainsString('no autoloader at', Typo3Runtime::ask()['reason']);
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function aStatedConsoleNoInterpreterCanBeDerivedFromIsSaidOutLoud(): void
     {
@@ -231,6 +236,7 @@ final class Typo3RuntimeTest extends TestCase
         self::assertNull(Typo3Runtime::extensionIn('impexp.db:tx_impexp_presets'));
     }
 
+    #[Requirement('R-DIS-019')]
     #[Test]
     public function withoutAConsoleTheReasonIsTheConsolesOwn(): void
     {

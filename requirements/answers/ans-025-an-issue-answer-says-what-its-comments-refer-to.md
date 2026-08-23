@@ -3,6 +3,8 @@ id: R-ANS-025
 title: 'An issue answer says what its comments refer to'
 status: held
 restsOn: [D-ANS-057]
+heldBy:
+  - ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched
 ---
 
 # R-ANS-025 — An issue answer says what its comments refer to
@@ -25,7 +27,6 @@ verdict for both.
 
 ## Held by
 
-- `ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched`
 - The sentence beside the list, which says what `!filename!` in a comment means,
   is not guarded. It is rendered by the tool, and no test here drives one that
   reaches the tracker.

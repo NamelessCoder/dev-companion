@@ -2,6 +2,8 @@
 id: R-DIS-013
 title: 'Which agent clients can be installed into'
 status: held
+heldBy:
+  - InstallerAgentSupportTest
 ---
 
 # R-DIS-013 — Which agent clients can be installed into
@@ -11,7 +13,3 @@ Factory Droid, Kiro, OpenCode, Antigravity, Zed, Pi and Grok.**
 
 Each writes the client's native MCP and skill paths; Antigravity and Pi receive
 skills only.
-
-## Held by
-
-- `InstallerAgentSupportTest`

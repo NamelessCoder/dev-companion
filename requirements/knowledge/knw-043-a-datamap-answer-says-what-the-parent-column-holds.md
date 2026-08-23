@@ -3,6 +3,8 @@ id: R-KNW-043
 title: 'A datamap answer says what the parent column holds'
 status: held
 restsOn: [D-KNW-018]
+heldBy:
+  - HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding
 ---
 
 # R-KNW-043 — A datamap answer says what the parent column holds
@@ -26,7 +28,3 @@ A session seeding a sysfolder, two groups, five testimonials and a content
 element through raw INSERT statements: it wrote the children's parent column by
 hand after reading the parent's int column as one that rejects a comma list, and
 lost track of which records it had touched (2026-08-01).
-
-## Held by
-
-- `HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding`

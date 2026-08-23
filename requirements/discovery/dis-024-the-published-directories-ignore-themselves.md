@@ -3,6 +3,9 @@ id: R-DIS-024
 title: 'The published directories ignore themselves'
 status: held
 restsOn: [D-DIS-010]
+heldBy:
+  - InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore
+  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
 ---
 
 # R-DIS-024 — The published directories ignore themselves
@@ -37,9 +40,6 @@ The remark that installing the skills always means a change to the `.gitignore`,
 2026-08-03.
 
 ## Held by
-
-- `InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote`
-- `InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore`
 
 The first asks git rather than the files: it installs into a repository of its
 own, next to a skill the project wrote, and holds that `git status` reports the

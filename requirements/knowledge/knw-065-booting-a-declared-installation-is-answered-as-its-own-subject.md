@@ -3,6 +3,8 @@ id: R-KNW-065
 title: 'Booting a declared installation is answered as its own subject'
 status: held
 restsOn: [D-KNW-054]
+heldBy:
+  - HintsTest::bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback
 ---
 
 # R-KNW-065 — Booting a declared installation is answered as its own subject
@@ -29,7 +31,3 @@ back with `datahandler-basics`, `fal-basics` and `public-assets`
 move the hints; the four knowledge cards `D-SKL-012` put first landed the
 install rather than the boot, and the same query still reached the same four PHP
 hints on 2026-08-03.
-
-## Held by
-
-- `HintsTest::bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback`

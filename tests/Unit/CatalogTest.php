@@ -18,6 +18,7 @@ use TYPO3\DevCompanion\Knowledge\Catalog\TranslationDomain;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Catalogs;
@@ -33,6 +34,8 @@ final class CatalogTest extends TestCase
         Instance::discoverFrom(null);
     }
 
+    #[Requirement('R-ANS-003')]
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function theCatalogSaysHowItRelatesToTheInstallationBeingRead(): void
     {
@@ -49,6 +52,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('13.4.33', Registry::call('typo3_component_lookup', ['query' => 'badge'])->text);
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function anInstallationWithoutDomainsIsGivenTheFileReference(): void
     {
@@ -116,6 +120,7 @@ final class CatalogTest extends TestCase
         self::assertNull($result->data['catalog']['skew']);
     }
 
+    #[Requirement('R-ANS-003')]
     #[Test]
     public function theInstalledComponentContractWinsOverTheBundledSnapshot(): void
     {
@@ -177,6 +182,7 @@ final class CatalogTest extends TestCase
         self::assertSame('installation', $broad->data['componentSource']);
     }
 
+    #[Requirement('R-ANS-003')]
     #[Test]
     public function anInstalledContractDoesNotAnswerForAnotherTargetMajor(): void
     {
@@ -234,6 +240,7 @@ final class CatalogTest extends TestCase
         self::assertSame([], Components::find('quantumflux'));
     }
 
+    #[Requirement('R-ANS-010')]
     #[Test]
     #[DataProvider('theQueriesThatUsedToReturnSomethingElseFirst')]
     public function aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt(string $query): void
@@ -254,6 +261,7 @@ final class CatalogTest extends TestCase
         ];
     }
 
+    #[Requirement('R-ANS-010')]
     #[Test]
     public function aQueryTheCatalogWasNotWrittenForIsAMiss(): void
     {
@@ -274,6 +282,7 @@ final class CatalogTest extends TestCase
         self::assertNotSame([], Components::find('input-group'));
     }
 
+    #[Requirement('R-ANS-003')]
     #[Test]
     public function aStatedVersionSaysWhatItDidToTheAnswer(): void
     {
@@ -288,6 +297,7 @@ final class CatalogTest extends TestCase
         );
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function aComponentNotVerifiedOnTheTargetIsDeclined(): void
     {
@@ -311,6 +321,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('13.4 branch', $result->text);
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function aComponentVerifiedOnTheTargetCarriesItsRange(): void
     {
@@ -324,6 +335,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('Verified on: TYPO3 v14 and newer', $result->text);
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function withoutATargetEachEntryCarriesItsRange(): void
     {
@@ -336,6 +348,7 @@ final class CatalogTest extends TestCase
         self::assertSame([], $result->data['withheld']);
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion(): void
     {
@@ -352,6 +365,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('Withheld for TYPO3 v12', $onTwelve->text);
     }
 
+    #[Requirement('R-ANS-003')]
     #[Test]
     public function theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout(): void
     {
@@ -378,6 +392,7 @@ final class CatalogTest extends TestCase
         self::assertSame($input['sassPaths'][0], $input['sassPath'], 'sassPath stays the primary one');
     }
 
+    #[Requirement('R-AUD-004')]
     #[Test]
     public function everyRecordedBindingNamesACoveredVersion(): void
     {
@@ -634,6 +649,7 @@ final class CatalogTest extends TestCase
         }
     }
 
+    #[Requirement('R-KNW-012')]
     #[Test]
     public function whetherAnExtensionIsPartOfTheCoreIsAnswerable(): void
     {
@@ -650,6 +666,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('third-party', $contentBlocks->text, 'a miss is about the core, not about the package');
     }
 
+    #[Requirement('R-KNW-012')]
     #[Test]
     public function aTargetVersionDecidesWhichExtensionsAreShipped(): void
     {
@@ -663,6 +680,7 @@ final class CatalogTest extends TestCase
         }
     }
 
+    #[Requirement('R-KNW-012')]
     #[Test]
     public function everyShippedRangeNamesACoveredVersion(): void
     {
@@ -677,6 +695,7 @@ final class CatalogTest extends TestCase
         }
     }
 
+    #[Requirement('R-KNW-019')]
     #[Test]
     public function theCoresOwnWorkedExamplesAreIndexed(): void
     {
@@ -697,6 +716,7 @@ final class CatalogTest extends TestCase
         self::assertNotContains('typo3/sysext/theme_camino', array_column($onThirteen->data['references'], 'path'));
     }
 
+    #[Requirement('R-KNW-019')]
     #[Test]
     public function aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf(): void
     {
@@ -712,6 +732,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('typo3_reference_list', $result->text);
     }
 
+    #[Requirement('R-KNW-019')]
     #[Test]
     public function everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs(): void
     {

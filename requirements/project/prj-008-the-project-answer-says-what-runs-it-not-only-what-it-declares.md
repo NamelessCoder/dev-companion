@@ -3,6 +3,10 @@ id: R-PRJ-008
 title: 'The project answer says what runs it, not only what it declares'
 status: held
 restsOn: [D-ANS-013]
+heldBy:
+  - ProjectTest::aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave
+  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
+  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
 ---
 
 # R-PRJ-008 — The project answer says what runs it, not only what it declares
@@ -39,10 +43,6 @@ container the suite runs in has 8.4 and the tests were never blocked. Re-run on
 `composer test:unit`, and names DDEV nowhere.
 
 ## Held by
-
-- `ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares`
-- `ProjectTest::aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave`
-- `ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent`
 
 What DDEV does with these files was measured rather than recalled, against
 v1.25.1 on 2026-08-02 and its documentation: `.ddev/config.yaml` is read first

@@ -2,6 +2,9 @@
 id: R-KNW-013
 title: 'A statement lives in the category it is asked from'
 status: held
+heldBy:
+  - HintsTest::aMenuQuestionThatReadsAsFrontendWorkStillReachesTheMenuTrap
+  - HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured
 ---
 
 # R-KNW-013 — A statement lives in the category it is asked from
@@ -19,8 +22,3 @@ it.
 `excludeDoktypes` reported a second time, while the sentence about it was in
 `frontend-dataprocessors` — a hint about writing a processor, which a
 sitepackage question never sees (2026-07-29).
-
-## Held by
-
-- `HintsTest::aMenuQuestionThatReadsAsFrontendWorkStillReachesTheMenuTrap`
-- `HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured`

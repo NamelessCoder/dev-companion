@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Knowledge\CommitMessage;
 use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 final class CommitMessageTest extends TestCase
 {
@@ -68,6 +69,7 @@ final class CommitMessageTest extends TestCase
      * The body of `feedback/2026-08-02-144315`: four command lines at column 0,
      * returned as one running paragraph with nothing saying so.
      */
+    #[Requirement('R-GUI-007')]
     #[Test]
     public function aRunOfLinesTheWrappingJoinedIsNamed(): void
     {
@@ -87,6 +89,7 @@ final class CommitMessageTest extends TestCase
         self::assertNotContains('no-issues-found', array_column($result['checks'], 'code'));
     }
 
+    #[Requirement('R-GUI-007')]
     #[Test]
     public function aBodyTheWrappingLeftAloneReportsNoReflow(): void
     {
@@ -107,6 +110,7 @@ final class CommitMessageTest extends TestCase
      * Each block is its own run, so the caller reads which lines went where
      * rather than one report covering the whole body.
      */
+    #[Requirement('R-GUI-007')]
     #[Test]
     public function eachJoinedRunIsReportedOnItsOwn(): void
     {
@@ -130,6 +134,7 @@ final class CommitMessageTest extends TestCase
      * `grep -q -E '^[^#].{72}'`: under the core workflow a line the guide left
      * over the width is a commit the hook refuses — D-GUI-003.
      */
+    #[Requirement('R-GUI-007')]
     #[Test]
     public function aLineOverTheWidthIsAnErrorForTheCoreAndAWarningOutsideIt(): void
     {
@@ -246,6 +251,7 @@ final class CommitMessageTest extends TestCase
         self::assertSame(['no-issues-found', 'breaking-not-assessed'], array_column($result['checks'], 'code'));
     }
 
+    #[Requirement('R-GUI-001')]
     #[Test]
     public function theDraftNeverCarriesAReleaseTheCallerDidNotName(): void
     {
@@ -255,6 +261,7 @@ final class CommitMessageTest extends TestCase
         self::assertContains('missing-releases', array_column($result['checks'], 'code'));
     }
 
+    #[Requirement('R-GUI-001')]
     #[Test]
     public function neitherPlaceholderCouldBeReadAsAnAnswer(): void
     {
@@ -272,6 +279,7 @@ final class CommitMessageTest extends TestCase
         self::assertSame(CommitMessage::RELEASE_PLACEHOLDER, $releases[1]);
     }
 
+    #[Requirement('R-GUI-001')]
     #[Test]
     public function aPlaceholderHandedBackIsStillAnUnansweredField(): void
     {
@@ -286,6 +294,7 @@ final class CommitMessageTest extends TestCase
         self::assertStringContainsString('Releases: RELEASE_TARGET', $result['message']);
     }
 
+    #[Requirement('R-GUI-001')]
     #[Test]
     public function aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing(): void
     {
@@ -303,6 +312,7 @@ final class CommitMessageTest extends TestCase
      * subject cannot say which of "not breaking" and "nobody looked" it means,
      * so `parse()` hands the field back unanswered.
      */
+    #[Requirement('R-GUI-011')]
     #[Test]
     public function aClassificationNobodyGaveIsNamedInTheChecks(): void
     {
@@ -321,6 +331,7 @@ final class CommitMessageTest extends TestCase
     }
 
     /** @param array<string, mixed> $answered */
+    #[Requirement('R-GUI-011')]
     #[Test]
     #[DataProvider('theWaysACallerAnswersTheClassification')]
     public function aClassificationTheCallerGaveIsNotAskedAboutAgain(array $answered): void
@@ -365,6 +376,7 @@ final class CommitMessageTest extends TestCase
      * And nothing is invented for a project that named none: no trailer, and no
      * check asking for one — `D-GUI-017`.
      */
+    #[Requirement('R-AUD-003')]
     #[Decision('D-GUI-017')]
     #[Test]
     public function outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded(): void
@@ -380,6 +392,7 @@ final class CommitMessageTest extends TestCase
         self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
     }
 
+    #[Requirement('R-AUD-003')]
     #[Test]
     public function outsideTheCoreTheSubjectAndBodyRulesStillHold(): void
     {
@@ -402,6 +415,7 @@ final class CommitMessageTest extends TestCase
      * core's own is, because the trailer belongs to the issue rather than to
      * the workflow — `D-GUI-017`.
      */
+    #[Requirement('R-AUD-003')]
     #[Decision('D-GUI-017')]
     #[Test]
     public function outsideTheCoreATrailerTheCallerWroteIsStillKept(): void
@@ -416,6 +430,7 @@ final class CommitMessageTest extends TestCase
         self::assertStringContainsString("\nResolves: #66", $result['message']);
     }
 
+    #[Requirement('R-AUD-003')]
     #[Test]
     public function theSecurityKeywordIsTheRepositoryOwnOutsideTheCore(): void
     {

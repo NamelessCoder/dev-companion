@@ -3,6 +3,10 @@ id: R-SKL-017
 title: "The commit step is named where a skill's workflow ends in a change"
 status: held
 restsOn: [D-GUI-010, D-SKL-014]
+heldBy:
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
+  - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
+  - SkillTest::theWorkflowStepRunsInEverySession
 ---
 
 # R-SKL-017 — The commit step is named where a skill's workflow ends in a change
@@ -52,9 +56,3 @@ were the one channel that carried nothing — the commit guide was named in
 `typo3-core-patch-development` and `typo3-core-patch-review` and in none of the
 seven an extension author reaches for, which is what `D-SKL-014` decided to
 close.
-
-## Held by
-
-- `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`
-- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
-- `SkillTest::theWorkflowStepRunsInEverySession`

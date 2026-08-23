@@ -2,6 +2,8 @@
 id: R-FBK-003
 title: 'A forward run is a record, not a remembered status'
 status: held
+heldBy:
+  - ScenariosTest
 ---
 
 # R-FBK-003 — A forward run is a record, not a remembered status
@@ -21,7 +23,3 @@ answer.
 
 `EXT-04` standing at `partial` next to a `SITE-07` marked `covered` that it
 shares its subject with, with no run behind either mark (2026-07-30).
-
-## Held by
-
-- `ScenariosTest`

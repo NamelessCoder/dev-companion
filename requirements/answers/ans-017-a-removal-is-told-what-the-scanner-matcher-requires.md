@@ -3,6 +3,9 @@ id: R-ANS-017
 title: 'A removal is told what the scanner matcher requires'
 status: held
 restsOn: [D-ANS-035]
+heldBy:
+  - HintsTest::aRemovalIsToldWhatTheScannerMatcherRequires
+  - KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires
 ---
 
 # R-ANS-017 — A removal is told what the scanner matcher requires
@@ -30,8 +33,3 @@ Measured on 2026-08-02: `typo3_rule_lookup "extension scanner"` returned the
 `## Deprecations` section of `knowledge/documents/typo3-commit-messages.md`,
 while "breaking change changelog" — the `rulesQuery` the `breaking` intent
 itself uses — returned four sections, none of which named a matcher.
-
-## Held by
-
-- `KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires`
-- `HintsTest::aRemovalIsToldWhatTheScannerMatcherRequires`

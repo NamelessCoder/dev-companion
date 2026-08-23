@@ -3,6 +3,9 @@ id: R-KNW-055
 title: 'A rendered-output change is told where the expectations hide'
 status: held
 restsOn: [D-KNW-044]
+heldBy:
+  - HintsTest::aRenderedOutputChangeIsToldWhereTheExpectationsHide
+  - HintsTest::theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor
 ---
 
 # R-KNW-055 — A rendered-output change is told where the expectations hide
@@ -36,8 +39,3 @@ suite at a time over roughly fifteen full functional runs of several minutes
 each, with five rewrite passes that each still missed cases. The same session
 reported the cost a second time, from the assessment end, in
 `feedback/2026-08-02-145128` (2026-08-02).
-
-## Held by
-
-- `HintsTest::aRenderedOutputChangeIsToldWhereTheExpectationsHide`
-- `HintsTest::theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor`

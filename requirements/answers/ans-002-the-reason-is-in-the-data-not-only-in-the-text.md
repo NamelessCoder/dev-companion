@@ -2,6 +2,10 @@
 id: R-ANS-002
 title: 'The reason is in the data, not only in the text'
 status: held
+heldBy:
+  - PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine
+  - ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData
+  - ScopeTest::theInstallationDiagnosticIsDataRatherThanProse
 ---
 
 # R-ANS-002 — The reason is in the data, not only in the text
@@ -16,9 +20,3 @@ Nothing a caller needs in order to act lives in the text alone.
 
 A client that renders `structuredContent` and drops the text block; the agent
 twice concluded an extension registered no icons and no labels (2026-07-29).
-
-## Held by
-
-- `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`
-- `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
-- `PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine`

@@ -2,6 +2,9 @@
 id: R-ANS-010
 title: 'A component answers the query that names it'
 status: held
+heldBy:
+  - CatalogTest::aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt
+  - CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMiss
 ---
 
 # R-ANS-010 — A component answers the query that names it
@@ -17,8 +20,3 @@ in, so a term found only there is not what makes an entry an answer.
 
 "content element preview heading text" answered with Dropdown, Infobox and Form
 Inputs, each on one word out of five (2026-07-30).
-
-## Held by
-
-- `CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMiss`
-- `CatalogTest::aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt`

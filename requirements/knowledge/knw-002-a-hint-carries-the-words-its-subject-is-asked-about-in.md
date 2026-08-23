@@ -2,6 +2,8 @@
 id: R-KNW-002
 title: 'A hint carries the words its subject is asked about in'
 status: held
+heldBy:
+  - HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint
 ---
 
 # R-KNW-002 — A hint carries the words its subject is asked about in
@@ -16,7 +18,3 @@ to is a subject the server does not have.
 
 `language-files` matching `.xlf` and `trans-unit` but neither "xlf" nor "label"
 nor "language file" (2026-07-29).
-
-## Held by
-
-- `HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint`

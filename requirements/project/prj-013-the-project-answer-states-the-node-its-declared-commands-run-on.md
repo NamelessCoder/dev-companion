@@ -3,6 +3,12 @@ id: R-PRJ-013
 title: 'The project answer states the Node its declared commands run on'
 status: held
 restsOn: [D-SCO-013, D-SCO-014]
+heldBy:
+  - ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved
+  - ProjectTest::aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone
+  - ProjectTest::aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode
+  - ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere
+  - ProjectTest::theNodeThoseNpmCommandsRunOnIsStatedBesideThem
 ---
 
 # R-PRJ-013 — The project answer states the Node its declared commands run on
@@ -44,12 +50,6 @@ and its defect was fantasticon writing 65536 bytes instead of 5828 because Node
 machine ran 24.16 and CI ran 24.19.
 
 ## Held by
-
-- `ProjectTest::theNodeThoseNpmCommandsRunOnIsStatedBesideThem`
-- `ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved`
-- `ProjectTest::aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone`
-- `ProjectTest::aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode`
-- `ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere`
 
 What is read is every `package.json` `Project::commands()` reads its npm scripts
 from: the root one, and the `Build/package.json` beside it that a core checkout

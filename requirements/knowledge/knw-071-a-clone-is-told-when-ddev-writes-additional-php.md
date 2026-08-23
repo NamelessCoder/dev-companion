@@ -3,6 +3,8 @@ id: R-KNW-071
 title: 'A clone is told when DDEV writes additional.php'
 status: held
 restsOn: [D-KNW-085]
+heldBy:
+  - HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten
 ---
 
 # R-KNW-071 — A clone is told when DDEV writes additional.php
@@ -27,7 +29,3 @@ the state a colleague's clone is in. It met the missing file twice — on the
 initial build and again on the clone-state rebuild — and diagnosed both against
 TYPO3's exception, because nothing in the corpus pointed at the environment's
 write timing.
-
-## Held by
-
-- `HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten`

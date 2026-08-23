@@ -3,6 +3,9 @@ id: R-SCO-006
 title: 'Every topic says which kind of work it is for'
 status: held
 restsOn: [D-KNW-005]
+heldBy:
+  - KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares
+  - ScopeTest::everyCoveredTopicSaysWhatItIsWorthOutsideTheCore
 ---
 
 # R-SCO-006 — Every topic says which kind of work it is for
@@ -23,8 +26,3 @@ answers it, so `installation` stopped being a value of this field on 2026-08-02
 A site developer for whom five installation-backed tools answered correctly
 while the curated half handed over runTests.sh commands, with nothing in the
 scope separating the two (2026-07-29).
-
-## Held by
-
-- `ScopeTest::everyCoveredTopicSaysWhatItIsWorthOutsideTheCore`
-- `KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares`

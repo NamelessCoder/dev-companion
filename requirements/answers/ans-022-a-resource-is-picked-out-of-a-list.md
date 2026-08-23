@@ -3,6 +3,14 @@ id: R-ANS-022
 title: 'A resource is picked out of a list'
 status: held
 restsOn: [D-AUD-004]
+heldBy:
+  - ResourceSurfaceTest
+  - ResourceSurfaceTest::everyLinkASkillWritesResolvesToAResourceThisServerServes
+  - ResourceSurfaceTest::onlyAPublishedSkillIsOffered
+  - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
+  - ScopeTest::everyPublishedSkillIsAnnouncedByTheScope
+  - StdioServerTest::aTaskWorkflowIsServedWithWhatItSendsItsReaderTo
+  - StdioServerTest::theResourceListCarriesWhatAPickerChoosesBy
 ---
 
 # R-ANS-022 — A resource is picked out of a list

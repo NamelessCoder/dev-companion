@@ -3,6 +3,8 @@ id: R-SKL-013
 title: 'A surface reported as assessed names what was read'
 status: held
 restsOn: [D-SKL-007]
+heldBy:
+  - SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead
 ---
 
 # R-SKL-013 — A surface reported as assessed names what was read
@@ -36,7 +38,3 @@ reading that would have caught the finding, and naming what was read does not
 make that reading happen. It turns a wrong "assessed" into an "unassessed" a
 reader can act on, which is what the judgement itself argues is the cheaper of
 the two failures.
-
-## Held by
-
-- `SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead`

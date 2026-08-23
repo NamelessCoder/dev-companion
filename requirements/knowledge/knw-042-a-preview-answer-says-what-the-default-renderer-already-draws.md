@@ -3,6 +3,8 @@ id: R-KNW-042
 title: 'A preview answer says what the default renderer already draws'
 status: held
 restsOn: [D-KNW-021]
+heldBy:
+  - HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws
 ---
 
 # R-KNW-042 — A preview answer says what the default renderer already draws
@@ -34,7 +36,3 @@ does not yet know which renderer drew the other one.
 A session that copied the manual's preview-template example verbatim and shipped
 a duplicate header into the page module, because the default renderer already
 renders the record label into `element-preview-header` (2026-08-01).
-
-## Held by
-
-- `HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws`

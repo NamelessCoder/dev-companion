@@ -3,6 +3,8 @@ id: R-SKL-018
 title: 'A skill that hands over tells the session to invoke the next one'
 status: held
 restsOn: [D-SKL-022, D-SKL-053]
+heldBy:
+  - SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor
 ---
 
 # R-SKL-018 — A skill that hands over tells the session to invoke the next one

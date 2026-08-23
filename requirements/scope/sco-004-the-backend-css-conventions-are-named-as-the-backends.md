@@ -2,6 +2,12 @@
 id: R-SCO-004
 title: "The backend CSS conventions are named as the backend's"
 status: held
+heldBy:
+  - HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions
+  - HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp
+  - HintsTest::stylingABackendModuleStillReachesTheBackendCssHints
+  - ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections
+  - ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack
 ---
 
 # R-SCO-004 — The backend CSS conventions are named as the backend's
@@ -17,11 +23,3 @@ than applied.
 ## From
 
 Four confidently inverted hints for a Bootstrap 5 frontend theme (2026-07-29).
-
-## Held by
-
-- `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`
-- `HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`
-- `HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`
-- `ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections`
-- `ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack`

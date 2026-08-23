@@ -3,6 +3,8 @@ id: R-KNW-068
 title: 'A suite that waits for a keypress says it needs a terminal'
 status: held
 restsOn: [D-KNW-068]
+heldBy:
+  - KnowledgeTest::aSuiteThatWaitsForAKeypressSaysItNeedsATerminal
 ---
 
 # R-KNW-068 — A suite that waits for a keypress says it needs a terminal
@@ -39,7 +41,3 @@ A core patch review that ran the prepare suite from a background shell with
 of composer work, and worked the pty out for itself, one failed attempt and a
 2.2 MB log of NUL bytes on the way — `feedback/2026-08-13-214729` (2026-08-13).
 The read was verified in `runTests.sh` on `.checkouts/main`, `14.3` and `13.4`.
-
-## Held by
-
-- `KnowledgeTest::aSuiteThatWaitsForAKeypressSaysItNeedsATerminal`

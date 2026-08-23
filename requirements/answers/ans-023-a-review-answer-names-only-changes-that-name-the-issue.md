@@ -3,6 +3,11 @@ id: R-ANS-023
 title: 'A review answer names only changes that name the issue'
 status: held
 restsOn: [D-ANS-055]
+heldBy:
+  - GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered
+  - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
+  - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
+  - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
 ---
 
 # R-ANS-023 — A review answer names only changes that name the issue
@@ -23,10 +28,3 @@ one of them the change whose own number equalled the issue number
 (`feedback/2026-08-05-033826`). It caught them only because it had asked about
 seven at once and the pattern was too regular to be real. For the issue it then
 patched, the false positive said a merged change already existed.
-
-## Held by
-
-- `GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered`
-- `GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed`
-- `GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty`
-- `GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone`

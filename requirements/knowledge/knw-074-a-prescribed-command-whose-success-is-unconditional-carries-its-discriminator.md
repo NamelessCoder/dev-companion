@@ -3,6 +3,8 @@ id: R-KNW-074
 title: 'A prescribed command whose success is unconditional carries its discriminator'
 status: held
 restsOn: [D-KNW-093]
+heldBy:
+  - HintsTest::aCommandThatAlwaysSucceedsCarriesItsDiscriminator
 ---
 
 # R-KNW-074 — A prescribed command whose success is unconditional carries its discriminator
@@ -41,7 +43,3 @@ round trips for each
 (`feedback/2026-08-17-212800-four-commands-reported-success-while-doing.md`,
 2026-08-17). The sweep those four earned found `language:update`,
 `backend:user:create` and `upgrade:run` answering the same way.
-
-## Held by
-
-- `HintsTest::aCommandThatAlwaysSucceedsCarriesItsDiscriminator`

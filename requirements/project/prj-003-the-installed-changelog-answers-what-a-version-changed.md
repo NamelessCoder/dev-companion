@@ -2,6 +2,10 @@
 id: R-PRJ-003
 title: 'The installed changelog answers what a version changed'
 status: held
+heldBy:
+  - PackageSourcesTest::anInstallationWithoutAChangelogSaysSo
+  - PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion
+  - PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable
 ---
 
 # R-PRJ-003 — The installed changelog answers what a version changed
@@ -17,9 +21,3 @@ it covers so a gap is visible rather than silent.
 
 "what did v14 deprecate that affects my code" answered with how to author a
 deprecation (2026-07-29).
-
-## Held by
-
-- `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`
-- `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`
-- `PackageSourcesTest::anInstallationWithoutAChangelogSaysSo`

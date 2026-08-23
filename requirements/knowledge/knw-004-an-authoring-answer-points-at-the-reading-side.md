@@ -2,6 +2,8 @@
 id: R-KNW-004
 title: 'An authoring answer points at the reading side'
 status: held
+heldBy:
+  - KnowledgeTest::anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing
 ---
 
 # R-KNW-004 — An authoring answer points at the reading side
@@ -17,7 +19,3 @@ the stated scope.
 
 `typo3_rule_lookup` answering "deprecation" with how to write one, to a caller
 asking what a version had deprecated (2026-07-29).
-
-## Held by
-
-- `KnowledgeTest::anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing`

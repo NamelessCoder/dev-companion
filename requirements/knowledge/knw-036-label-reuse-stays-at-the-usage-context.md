@@ -2,6 +2,9 @@
 id: R-KNW-036
 title: 'Label reuse stays at the usage context'
 status: held
+heldBy:
+  - HintsTest::labelReuseStaysAtTheUsageContext
+  - LabelSearchTest::aResourceRestrictsReuseToTheUsageContext
 ---
 
 # R-KNW-036 — Label reuse stays at the usage context
@@ -17,8 +20,3 @@ rather than using a context-free word such as `new`.
 
 A label search whose installation-wide matches looked reusable even though they
 belonged to unrelated modules and packages (2026-07-30).
-
-## Held by
-
-- `HintsTest::labelReuseStaysAtTheUsageContext`
-- `LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`

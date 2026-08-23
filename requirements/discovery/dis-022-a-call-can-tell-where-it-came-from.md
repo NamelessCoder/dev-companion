@@ -3,6 +3,9 @@ id: R-DIS-022
 title: 'A call can tell where it came from'
 status: held
 restsOn: [D-DIS-006]
+heldBy:
+  - StdioServerTest::itWalksUpToTheInstallationFromInsideIt
+  - StdioServerTest::theServerWorksOutWhichInstallationItWasStartedIn
 ---
 
 # R-DIS-022 — A call can tell where it came from
@@ -31,8 +34,3 @@ The line that finds it could be deleted from the entrypoint with all 495 tests
 staying green, because every test that covers discovery hands `Instance` a
 directory itself and so covers what happens after somebody does. Nothing covered
 that somebody does (2026-08-01).
-
-## Held by
-
-- `StdioServerTest::theServerWorksOutWhichInstallationItWasStartedIn`
-- `StdioServerTest::itWalksUpToTheInstallationFromInsideIt`

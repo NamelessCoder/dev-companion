@@ -3,6 +3,8 @@ id: R-SKL-026
 title: 'A runtime lookup a step names says what it adds after the extension answer'
 status: held
 restsOn: [D-SKL-069]
+heldBy:
+  - SkillTest::everyRuntimeLookupSaysWhatItAddsAfterTheExtensionAnswer
 ---
 
 # R-SKL-026 — A runtime lookup a step names says what it adds after the extension answer
@@ -36,7 +38,3 @@ provider with `depends` and `after`, and the run judged the order off the
 registration in `ext_localconf.php` rather than asking the installation what it
 resolved. `D-SKL-069` is the judgement, and it puts the wording in
 `skills/base.md`, which every published skill carries a copy of.
-
-## Held by
-
-- `SkillTest::everyRuntimeLookupSaysWhatItAddsAfterTheExtensionAnswer`

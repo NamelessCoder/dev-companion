@@ -3,6 +3,8 @@ id: R-KNW-062
 title: 'The import answer says what it rewrites in a site configuration'
 status: held
 restsOn: [D-KNW-048]
+heldBy:
+  - HintsTest::theImportAnswerSaysWhatItRewritesInASiteConfiguration
 ---
 
 # R-KNW-062 — The import answer says what it rewrites in a site configuration
@@ -19,7 +21,3 @@ A session seeding a TYPO3 14.3 installation from a distribution package: the
 frontend answered 404 at the project root, and the corpus carried two sentences
 that read as covering the case and pointed the other way
 (`feedback/2026-08-03-162836`, 2026-08-03).
-
-## Held by
-
-- `HintsTest::theImportAnswerSaysWhatItRewritesInASiteConfiguration`

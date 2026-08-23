@@ -3,6 +3,11 @@ id: R-ANS-014
 title: 'A registration is answered wherever it is declared'
 status: held
 restsOn: [D-ANS-014, D-ANS-019]
+heldBy:
+  - ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported
+  - ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores
+  - ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor
+  - ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry
 ---
 
 # R-ANS-014 — A registration is answered wherever it is declared
@@ -44,10 +49,3 @@ that fell back to `glob` and `read` for the whole file tree. Re-run on
 `route-enhancers.yaml` and its form set are in no answer this server gives, and
 the two content elements the answer describes least are exactly the two whose
 FlexForm it did not read.
-
-## Held by
-
-- `ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry`
-- `ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported`
-- `ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor`
-- `ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores`

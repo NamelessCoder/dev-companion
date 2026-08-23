@@ -6,34 +6,32 @@ namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\Entry;
+use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
- * Writes each entry's `coveredBy` from the `#[Decision]` attributes the tests
+ * Writes each entry's `heldBy` from the `#[Requirement]` attributes the tests
  * carry.
  *
- * The coupling has to be readable from both ends: a session standing in a red
- * test needs the entry that rested on it, and a reader of the entry needs the
- * test that would catch its **Wrong if**. Written in both places by hand, the
- * two drifted — 405 tests were named by an entry and said nothing about it
- * (`D-DOC-043`). One is generated from the other now, so drifting is not a
- * state the two can be in.
+ * The same one-way generation `decisions:cover` does, for the corpus that says
+ * what must be true — `D-DOC-049`. What stays in the `## Held by` section is
+ * what is not a test: a `bin/cli` command, a clause saying what one of them
+ * holds, a half nothing guards.
  */
 #[AsCommand(
-    name: 'decisions:cover',
-    description: 'write coveredBy in each entry from the #[Decision] attributes the tests carry',
+    name: 'requirements:cover',
+    description: 'write heldBy in each entry from the #[Requirement] attributes the tests carry',
 )]
-final class DecisionCover
+final class RequirementCover
 {
     public function __invoke(OutputInterface $output): int
     {
-        $held = Sources::held('Decision');
+        $held = Sources::held('Requirement');
         $written = 0;
-        foreach (Decisions::files() as $path) {
+        foreach (Requirements::files() as $path) {
             $contents = (string) file_get_contents($path);
-            $covered = Entry::withNames($contents, 'coveredBy', $held[Decisions::read($path)['id']] ?? []);
+            $covered = Entry::withNames($contents, 'heldBy', $held[Requirements::read($path)['id']] ?? []);
             if ($covered === $contents) {
                 continue;
             }

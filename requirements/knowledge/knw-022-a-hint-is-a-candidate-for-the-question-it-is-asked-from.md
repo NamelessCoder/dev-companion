@@ -2,6 +2,11 @@
 id: R-KNW-022
 title: 'A hint is a candidate for the question it is asked from'
 status: held
+heldBy:
+  - HintsTest::aPhpPathIsNeverAnsweredWithFrontendConventions
+  - HintsTest::everyHintIsReachedByItsOwnTitle
+  - HintsTest::whatACallerCanSeeReachesTheHintAboutIt
+  - ScopeTest
 ---
 
 # R-KNW-022 — A hint is a candidate for the question it is asked from
@@ -29,7 +34,6 @@ every scenario prompt.
 
 ## Held by
 
-- `HintsTest::everyHintIsReachedByItsOwnTitle`
 - `HintsTest::whatACallerCanSeeReachesTheHintAboutIt`, with
 - `HintsTest::aPhpPathIsNeverAnsweredWithFrontendConventions` and
 - `ScopeTest`'s frontend withholding holding the other direction

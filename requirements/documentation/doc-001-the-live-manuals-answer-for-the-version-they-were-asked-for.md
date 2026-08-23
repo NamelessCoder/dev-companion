@@ -2,6 +2,12 @@
 id: R-DOC-001
 title: 'The live manuals answer for the version they were asked for'
 status: held
+heldBy:
+  - DocumentationTest
+  - ScopeTest::everyToolIsReachableThroughTheScope
+  - ScopeTest::everyToolNamedInTheScopeExists
+  - ToolContractTest::aToolCallAnswersWithTextAndMatchingData
+  - ToolContractTest::everyToolDeclaresSchemasAndAnnotations
 ---
 
 # R-DOC-001 — The live manuals answer for the version they were asked for
@@ -29,11 +35,3 @@ sources after the right manual page was already found.
 `EXT-07`; and two sessions answered with whatever else carried one of their
 words — TCA `inline` with PSR-14 events, the testing APIs with the
 content-element pages (2026-07-30).
-
-## Held by
-
-- `DocumentationTest`
-- `ToolContractTest::everyToolDeclaresSchemasAndAnnotations`
-- `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`
-- `ScopeTest::everyToolNamedInTheScopeExists`
-- `ScopeTest::everyToolIsReachableThroughTheScope`

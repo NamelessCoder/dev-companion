@@ -3,6 +3,8 @@ id: R-GUI-010
 title: 'A review brief names what the change removes'
 status: held
 restsOn: [D-GUI-004]
+heldBy:
+  - HintsTest::aReviewBriefNamesWhatTheChangeRemoves
 ---
 
 # R-GUI-010 — A review brief names what the change removes
@@ -33,7 +35,3 @@ nothing at what the diff removed, and the breaking aspect of removing
 `GifBuilder::getTemporaryImageWithText()` was under-stated until the user pushed
 back (`feedback/2026-08-01-115711`, 2026-08-01). Re-run on 2026-08-03 after
 `R-GUI-006` was held: the review shape came back and still named no removal.
-
-## Held by
-
-- `HintsTest::aReviewBriefNamesWhatTheChangeRemoves`

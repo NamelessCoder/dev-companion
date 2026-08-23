@@ -9,9 +9,11 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Manual\Documentation;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\DocumentationLookup;
 use TYPO3\DevCompanion\Tool\Registry;
 
+#[Requirement('R-DOC-001')]
 final class DocumentationTest extends TestCase
 {
     protected function tearDown(): void
@@ -184,6 +186,7 @@ final class DocumentationTest extends TestCase
      * what is held is that its pages are reached and reached at their own base
      * — `D-ANS-026`.
      */
+    #[Requirement('R-DOC-003')]
     #[Decision('D-ANS-023')]
     #[Decision('D-ANS-026')]
     #[Test]
@@ -235,6 +238,7 @@ final class DocumentationTest extends TestCase
      * separates identical titles (`D-ANS-032`). The query says which book in
      * the `f:` it is written in (`D-ANS-036`).
      */
+    #[Requirement('R-DOC-003')]
     #[Decision('D-ANS-036')]
     #[Test]
     public function aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook(): void
@@ -257,6 +261,7 @@ final class DocumentationTest extends TestCase
      * says nothing in a sentence — which is not what it does behind a namespace
      * prefix (`D-ANS-047`).
      */
+    #[Requirement('R-DOC-003')]
     #[Decision('D-ANS-047')]
     #[Test]
     public function aTagNamedAfterAStopwordIsReachedByItsOwnName(): void
@@ -293,6 +298,7 @@ final class DocumentationTest extends TestCase
  * And the URL it hands back is one it takes back, on the same version —
  * `D-ANS-023`, `D-ANS-026`.
  */
+    #[Requirement('R-DOC-003')]
     #[Decision('D-ANS-023')]
     #[Decision('D-ANS-026')]
     #[Test]
@@ -335,6 +341,7 @@ final class DocumentationTest extends TestCase
      * each, and nothing in them showed that the word naming the subject had
      * reached none of the pages returned.
      */
+    #[Requirement('R-DOC-002')]
     #[Test]
     public function aResultNamesTheWordsOfTheQueryItWasMatchedOn(): void
     {
@@ -365,6 +372,7 @@ final class DocumentationTest extends TestCase
     }
 
     /** A page was not searched for, so it was matched on nothing. */
+    #[Requirement('R-DOC-002')]
     #[Test]
     public function aPageReadBackCarriesNoMatch(): void
     {

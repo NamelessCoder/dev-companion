@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * What the entrypoint does with an argument that is not a command.
@@ -22,6 +23,7 @@ use TYPO3\DevCompanion\Tests\Support\Decision;
  */
 final class EntrypointTest extends TestCase
 {
+    #[Requirement('R-COD-001')]
     #[Test]
     public function helpNamesTheCommandsAndTheClientsTheyTake(): void
     {

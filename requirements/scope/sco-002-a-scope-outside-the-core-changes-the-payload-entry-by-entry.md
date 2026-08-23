@@ -2,6 +2,12 @@
 id: R-SCO-002
 title: 'A scope outside the core changes the payload, entry by entry'
 status: held
+heldBy:
+  - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
+  - ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas
+  - ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks
+  - ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests
+  - ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart
 ---
 
 # R-SCO-002 — A scope outside the core changes the payload, entry by entry
@@ -19,11 +25,3 @@ named beside them.
 
 An answer that reported `outsideCore: true` and then returned four `runTests.sh`
 suites for a repository that has no `Build/Scripts/` (2026-07-29).
-
-## Held by
-
-- `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`
-- `ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite`
-- `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
-- `ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
-- `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`

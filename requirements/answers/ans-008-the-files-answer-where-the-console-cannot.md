@@ -2,6 +2,13 @@
 id: R-ANS-008
 title: 'The files answer where the console cannot'
 status: held
+heldBy:
+  - LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead
+  - LabelSearchTest::aConsoleThatExitsWellAndSaysNothingIsUnanswered
+  - LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing
+  - LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace
+  - PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne
+  - Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough
 ---
 
 # R-ANS-008 — The files answer where the console cannot
@@ -23,12 +30,3 @@ has no schema, not that the installation is broken.
 An installed TYPO3 13.4.33 before the dump was imported, where the labels sat in
 the files and both console-backed lookups returned a raw SQL stack trace
 (2026-07-29).
-
-## Held by
-
-- `PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne`
-- `LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`
-- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing`
-- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingIsUnanswered`
-- `LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`
-- `Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`

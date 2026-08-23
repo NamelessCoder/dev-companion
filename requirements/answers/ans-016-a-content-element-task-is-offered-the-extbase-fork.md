@@ -3,6 +3,8 @@ id: R-ANS-016
 title: 'A content-element task is offered the Extbase fork'
 status: held
 restsOn: [D-ANS-039]
+heldBy:
+  - HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt
 ---
 
 # R-ANS-016 — A content-element task is offered the Extbase fork
@@ -44,8 +46,6 @@ brings `frontend-records` back, and naming Extbase, a plugin, a repository or
 pagination is what brings `extbase` back.
 
 ## Held by
-
-- `HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt`
 
 It holds this the way the fork is delivered: the two hints stay unreachable from
 the reporting query, and the `content-element` checklist is what carries the

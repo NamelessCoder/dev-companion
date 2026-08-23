@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * Drives the real entrypoint the way a client does: a subprocess speaking
@@ -71,6 +72,8 @@ final class StdioServerTest extends TestCase
         return $this->feedbackDirectory;
     }
 
+    #[Requirement('R-ANS-013')]
+    #[Requirement('R-COD-001')]
     #[Test]
     public function theServerAnnouncesItselfWithItsBoundary(): void
     {
@@ -103,6 +106,7 @@ final class StdioServerTest extends TestCase
      * person who can run the command reads, and it carries what differs, since
      * only one of the two is budgeted — `R-DIS-025` — `D-DIS-013`.
      */
+    #[Requirement('R-DIS-025')]
     #[Decision('D-DIS-013')]
     #[Test]
     public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void
@@ -170,6 +174,7 @@ final class StdioServerTest extends TestCase
         self::assertContains('typo3_server_scope', array_column($tools, 'name'));
     }
 
+    #[Requirement('R-GUI-005')]
     #[Test]
     public function theCommitMessageGuideIsAvailableAsAPrompt(): void
     {
@@ -238,6 +243,7 @@ final class StdioServerTest extends TestCase
      * `D-ANS-005`. What comes back is the unsupported answer and the caller's
      * own query, with no count, no flag and no empty list to read as a result.
      */
+    #[Requirement('R-ANS-001')]
     #[Decision('D-ANS-005')]
     #[Test]
     public function aQuestionThatCannotBeAnsweredHereIsStillAnAnswer(): void
@@ -296,6 +302,7 @@ final class StdioServerTest extends TestCase
      * definitions say is `ResourceSurfaceTest`; this is that the SDK passes the
      * fields on rather than dropping the ones it does not use itself.
      */
+    #[Requirement('R-ANS-022')]
     #[Test]
     public function theResourceListCarriesWhatAPickerChoosesBy(): void
     {
@@ -332,6 +339,7 @@ final class StdioServerTest extends TestCase
      * at, the link the body writes is the URI read here, and the SDK matches it
      * against the registered template.
      */
+    #[Requirement('R-ANS-022')]
     #[Test]
     public function aTaskWorkflowIsServedWithWhatItSendsItsReaderTo(): void
     {
@@ -381,6 +389,7 @@ final class StdioServerTest extends TestCase
      * should have used. Both halves belong over the wire, because `FeedbackTest`
      * calls `Channel::record` directly and the recorder still takes a list.
      */
+    #[Requirement('R-FBK-001')]
     #[Decision('D-ANS-017')]
     #[Test]
     public function aListOfToolNamesIsRefusedWithTheTypeItWanted(): void
@@ -498,6 +507,7 @@ final class StdioServerTest extends TestCase
      * an answer that can never come. Both runs of `REVIEW-02` in an extension
      * checkout died here, 24 minutes apart, with no error on either side.
      */
+    #[Requirement('R-DIS-018')]
     #[Test]
     public function aRequestBehindOneThatRunsTheConsoleIsStillAnswered(): void
     {
@@ -556,6 +566,7 @@ final class StdioServerTest extends TestCase
      * something hands one in at all: the line doing it is in the entrypoint, and
      * with it deleted the rest of the suite stays green.
      */
+    #[Requirement('R-DIS-022')]
     #[Test]
     public function theServerWorksOutWhichInstallationItWasStartedIn(): void
     {
@@ -578,6 +589,7 @@ final class StdioServerTest extends TestCase
      * Finding the installation from there is the walk-up, and it is the half
      * that makes the answer right in practice rather than in a fixture.
      */
+    #[Requirement('R-DIS-022')]
     #[Test]
     public function itWalksUpToTheInstallationFromInsideIt(): void
     {

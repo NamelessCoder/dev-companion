@@ -31,10 +31,36 @@ came from them and two from the reading beside it:
   the import map, a borrowed backend class, an icon. A sitepackage that builds
   Sass into a stylesheet and includes it through TypoScript has no check at all
   after the rebuild, and that is the commonest case this workflow will meet.
+- **The maintainer would skip step 3**, the build of the untouched tree before
+  anything is changed. It is the most expensive instruction in the workflow and
+  it is not what somebody who knows the repository does, so it goes — see below
+  for what takes its place.
 - The borrowed-class verification stands after the change rather than before it,
   so the class is already written when the answer arrives. Whether that is the
   order the work goes in is the one review question still open.
 - Step 6 of the order and step 1 of **Closing the change** say the same thing.
+
+## What replaces the baseline build
+
+Step 3 came from the `bootstrap_package` session, where an unreproducible build
+was the whole defect: Node 24.19 raised `Buffer.poolSize`, fantasticon's EOT
+generator wrote 65536 bytes instead of 5828, and the padding was recycled
+process heap that differed on every run. Deleting the step without replacing it
+takes that class of defect out of the workflow, so two things take it over:
+
+- **The repository's own gate, where it has one.** That session's defect was
+  caught by a working-tree-clean check going red, not by anybody building twice
+  — and the draft already establishes in step 2 whether such a check exists and
+  calls its absence a finding.
+- **The untouched tree as a diagnostic rather than a step.** Where the rebuild
+  produces a diff that the change does not account for, building the unchanged
+  checkout is what separates the two causes. It costs nothing in the ordinary
+  case and it is there in the one case it answers.
+
+What this trades away is stated rather than hidden. A maintainer skips the
+up-front build because they know what their repository does on a clean run; an
+agent in a repository it has never opened does not, and it learns the answer
+later and with a change already on top of it.
 
 ## What the review's third finding costs
 

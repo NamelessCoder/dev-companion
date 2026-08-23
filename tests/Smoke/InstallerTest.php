@@ -208,6 +208,7 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Decision('D-DIS-017')]
     #[Test]
     public function aDdevProjectUsesTheContainerPhpAndPublishesTheSkill(): void
     {

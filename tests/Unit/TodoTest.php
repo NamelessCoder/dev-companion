@@ -314,6 +314,7 @@ final class TodoTest extends TestCase
      * and the file records it — which is what `claimed()` matches on, so a
      * session in that worktree is handed its own todo and not nothing.
      */
+    #[Decision('D-FBK-010')]
     #[Test]
     public function aClaimCarriesTheBranchItWasGiven(): void
     {
@@ -347,6 +348,7 @@ final class TodoTest extends TestCase
      * Putting it further down is a judgement now, and judgements are written —
      * `D-FBK-014`, `D-FBK-015`.
      */
+    #[Decision('D-FBK-010')]
     #[Requirement('R-FBK-010')]
     #[Decision('D-FBK-014')]
     #[Decision('D-FBK-015')]
@@ -594,6 +596,7 @@ final class TodoTest extends TestCase
      * hands it over with the work rather than leaving it to be looked up.
      * `R-FBK-009` says why; `D-FBK-007` says what it bets on — `D-DOC-025`.
      */
+    #[Decision('D-FBK-007')]
     #[Requirement('R-FBK-009')]
     #[Decision('D-DOC-025')]
     #[Test]

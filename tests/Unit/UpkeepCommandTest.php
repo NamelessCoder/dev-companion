@@ -61,6 +61,7 @@ final class UpkeepCommandTest extends TestCase
      *
      * @param class-string $class
      */
+    #[Decision('D-COD-002')]
     #[Test]
     #[DataProvider('commandClasses')]
     public function everyCommandClassIsOnTheApplication(string $class, string $name): void
@@ -134,6 +135,7 @@ final class UpkeepCommandTest extends TestCase
      *
      * @param class-string $class
      */
+    #[Decision('D-COD-002')]
     #[Test]
     #[DataProvider('commandClasses')]
     public function everyArgumentOfACommandIsOneTheConsoleBinds(string $class, string $name): void

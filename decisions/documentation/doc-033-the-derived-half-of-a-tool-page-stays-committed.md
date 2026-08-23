@@ -3,6 +3,8 @@ id: D-DOC-033
 title: The derived half of a tool page stays committed
 date: 2026-08-14
 status: open
+coveredBy:
+  - ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares
 ---
 
 # D-DOC-033 — The derived half of a tool page stays committed

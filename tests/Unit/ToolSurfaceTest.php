@@ -29,6 +29,7 @@ final class ToolSurfaceTest extends TestCase
      * them, schemas included, so neither half can go stale against the other —
      * `D-DOC-016`, `D-DOC-011`.
      */
+    #[Decision('D-DOC-033')]
     #[Decision('D-DOC-011')]
     #[Decision('D-DOC-016')]
     #[Test]

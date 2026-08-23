@@ -3,6 +3,8 @@ id: D-ANS-015
 title: 'A registration the extension answer misreads is inside its boundary'
 date: 2026-08-02
 status: open
+coveredBy:
+  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate
 ---
 
 # D-ANS-015 — A registration the extension answer misreads is inside its boundary

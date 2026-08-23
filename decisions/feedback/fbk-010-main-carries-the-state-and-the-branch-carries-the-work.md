@@ -3,6 +3,9 @@ id: D-FBK-010
 title: '`main` carries the state and the branch carries the work'
 date: 2026-08-01
 status: open
+coveredBy:
+  - TodoTest::aClaimCarriesTheBranchItWasGiven
+  - TodoTest::aClaimIsOneMoveThatGoesBothWays
 ---
 
 # D-FBK-010 — `main` carries the state and the branch carries the work

@@ -612,6 +612,7 @@ final class FeedbackTest extends TestCase
      * The first of a series keeps the opening, because nothing yet says it is
      * one. Every feedback after it is named after what it alone says.
      */
+    #[Decision('D-FBK-006')]
     #[Requirement('R-FBK-008')]
     #[Test]
     public function notesThatOpenAlikeAreNamedAfterWhatTellsThemApart(): void

@@ -160,6 +160,7 @@ final class InstanceTest extends TestCase
         self::assertSame(Project::ORIGIN_THIRD_PARTY, Project::origin('/app/.build/vendor/b13/container'));
     }
 
+    #[Decision('D-DIS-001')]
     #[Test]
     public function aRootAlsoInstalledIntoVendorIsOnePackage(): void
     {
@@ -191,6 +192,7 @@ final class InstanceTest extends TestCase
         self::assertSame(Project::ORIGIN_PROJECT, $origins['bootstrap_package'] ?? null);
     }
 
+    #[Decision('D-DIS-001')]
     #[Test]
     public function aMonorepoRootIsCountedBesideThePackagesItHolds(): void
     {

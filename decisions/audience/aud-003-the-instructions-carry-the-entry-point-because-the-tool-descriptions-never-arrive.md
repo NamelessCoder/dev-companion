@@ -3,6 +3,8 @@ id: D-AUD-003
 title: The instructions carry the entry point, because the tool descriptions never arrive
 date: 2026-07-31
 status: confirmed
+coveredBy:
+  - ScopeTest::bothCallsOfTheEntryPointAreToldInTheImperative
 ---
 
 # D-AUD-003 — The instructions carry the entry point, because the tool descriptions never arrive

@@ -517,6 +517,7 @@ final class ScopeTest extends TestCase
      * same context window. What differed between the two was the mood, and step
      * 3 of `skills/base.md` has said "Run it in every session" all along.
      */
+    #[Decision('D-AUD-003')]
     #[Decision('D-AUD-012')]
     #[Test]
     public function bothCallsOfTheEntryPointAreToldInTheImperative(): void

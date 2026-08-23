@@ -231,6 +231,7 @@ final class SkillTest extends TestCase
         'typo3-extension-patch-review',
     ];
 
+    #[Decision('D-SKL-001')]
     #[Requirement('R-SKL-005')]
     #[Test]
     public function theBaseFixesTheOrderEveryTaskStartsIn(): void

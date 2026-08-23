@@ -3,6 +3,9 @@ id: D-DIS-001
 title: The root package counts as an installed package
 date: 2026-07-29
 status: confirmed
+coveredBy:
+  - InstanceTest::aMonorepoRootIsCountedBesideThePackagesItHolds
+  - InstanceTest::aRootAlsoInstalledIntoVendorIsOnePackage
 ---
 
 # D-DIS-001 — The root package counts as an installed package

@@ -27,5 +27,5 @@ storage folder appeared in the menu (2026-07-29).
 
 ## Held by
 
-- `HintsTest::anAssetThatNeverReachesThePageIsAnsweredByItsLayout`
-  — the other half: naming the failure is what makes the hint reachable by it
+- `HintsTest::anAssetThatNeverReachesThePageIsAnsweredByItsLayout` — the other
+  half: naming the failure is what makes the hint reachable by it

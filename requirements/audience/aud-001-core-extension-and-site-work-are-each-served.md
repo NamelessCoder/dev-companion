@@ -22,9 +22,9 @@ a wrong answer rather than a partial one.
 
 - The two tests hold the operative half: the scope fails the day the site
   developer's knowledge goes, and the day it puts project and extension work
-  back outside what the server answers. The second holds the same sentence
-  where it is prose rather than a list — a tool description, the readme, a
-  hint, the instructions a client is handed.
+  back outside what the server answers. The second holds the same sentence where
+  it is prose rather than a list — a tool description, the readme, a hint, the
+  instructions a client is handed.
 - [`R-AUD-005`](aud-005-an-answer-says-who-it-obliges.md) holds the marking, and
   the [scope group](../scope/readme.md) is how the rest of it is met in the
   tools that exist today. The principle as one sentence is not what any of them

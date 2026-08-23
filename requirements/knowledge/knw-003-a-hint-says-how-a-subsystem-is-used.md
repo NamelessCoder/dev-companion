@@ -24,6 +24,6 @@ questions were "how do I do X with this API" (2026-07-29).
 
 ## Held by
 
-- `HintsTest::theFrontendRenderingPathIsAnswered`, and the
-  shape of `datahandler-persistence`, `sitepackage-initial-content`,
-  `public-assets`, `frontend-page-rendering` — not guarded beyond that.
+- `HintsTest::theFrontendRenderingPathIsAnswered`, and the shape of
+  `datahandler-persistence`, `sitepackage-initial-content`, `public-assets`,
+  `frontend-page-rendering` — not guarded beyond that.

@@ -18,9 +18,9 @@ is data (`scope: "core"`), on the hint where the whole subject is the core's own
 and on the statement where one sentence in a transferable hint is. What only
 binds a core patch is marked outside the core rather than dropped: the backend's
 design system is exactly what a project building a backend module needs. This is
-[R-AUD-001](aud-001-core-extension-and-site-work-are-each-served.md) made specific — a core rule
-handed over as the rule is a wrong answer, and handing it over as nothing is a
-second one.
+[R-AUD-001](aud-001-core-extension-and-site-work-are-each-served.md) made
+specific — a core rule handed over as the rule is a wrong answer, and handing it
+over as nothing is a second one.
 
 ## From
 

@@ -27,9 +27,10 @@ know what reading one costs. A resource offered as a name and a mime type is one
 nobody picks.
 
 Who does the picking is the second half. The tool list serves the three
-audiences of [`R-AUD-001`](../audience/aud-001-core-extension-and-site-work-are-each-served.md), and
-the document corpus behind `typo3://guides/{id}` serves one, because most of it
-is the core repository's own and says so. The published task skills are the
+audiences of
+[`R-AUD-001`](../audience/aud-001-core-extension-and-site-work-are-each-served.md),
+and the document corpus behind `typo3://guides/{id}` serves one, because most of
+it is the core repository's own and says so. The published task skills are the
 other way round: most of them are extension, sitepackage and project work, and
 two are the core's, which `knowledge/server-scope.json` is where to read off.
 Both families are offered, so each audience picks something that holds where it

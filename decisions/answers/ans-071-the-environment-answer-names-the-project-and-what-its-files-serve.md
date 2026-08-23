@@ -62,3 +62,19 @@ caller reach the site it describes.
   `project_tld`, a project renamed since. The fields say they are what the
   configuration declares; a report of somebody being misled by them anyway means
   the marking is not carrying it.
+
+## Since then
+
+The fields are there and marked. `typo3_project_describe`'s `environment` block
+requires `via`, `project` and `hostnames`, and the `hostnames` description says
+what the **Wrong if** depends on: "What the configuration declares, not what is
+running — the ports the router binds and its address on the container network
+are not in these files, and `ddev describe -j` is what carries them."
+
+Nobody reports being misled by them. Two sessions since have named a DDEV
+hostname in a feedback and neither is that case: `2026-08-18-070515` used the
+declared base to check its own assumption and reports the site answering at
+`https://blog.ddev.site/`, and `2026-08-18-074200` is about two site
+configurations colliding on one base, where this tool's answer is what the
+session calls the single most useful thing it had. So the marking has not been
+tested by somebody acting past it, which is what the bullet waits for.

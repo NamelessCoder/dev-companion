@@ -82,3 +82,18 @@ repository's question and what makes core work cheap is not.
   free reading a paid one.
 - A candidate rejected as an interaction turns out to be one class after all,
   which would say the fourth reading trusts a reporter who was guessing.
+
+## Since then
+
+The five readings are in the published skill in the order this settled, under
+"Where you do pick, pick on where the symptom is visible and on how much the
+checkout already models it", and the section closes as **Decided** asked: "Say
+which of those decided, and say of the rows you passed over that you passed over
+them."
+
+Nothing has run against it. `scenarios/runs/` holds three recorded forward runs
+and none is a triage; no feedback since 2026-08-09 comes from a triage session —
+the three that name triage at all are patch reviews quoting the neighbouring
+skill. So all three **Wrong if** are undisturbed rather than held: each needs
+one session working a real backlog, and what it would report is which reading
+decided, which is the sentence the skill already asks for.

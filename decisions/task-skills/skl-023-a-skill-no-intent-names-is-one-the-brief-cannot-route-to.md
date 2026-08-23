@@ -3,6 +3,8 @@ id: D-SKL-023
 title: 'A skill no intent names is one the brief cannot route to'
 date: 2026-08-08
 status: open
+coveredBy:
+  - SkillTest::everyPublishedSkillIsNamedByAnIntent
 ---
 
 # D-SKL-023 — A skill no intent names is one the brief cannot route to
@@ -68,3 +70,25 @@ routes somewhere else instead.**
   this a check with an exemption rather than an invariant.
 - Giving triage its own intent is reported as pulling patch work into it, which
   would say the vocabulary does not separate the two.
+
+## Since then
+
+The hole is closed and held. `SkillTest::everyPublishedSkillIsNamedByAnIntent`
+asserts the whole set at once rather than one skill at a time, and this entry is
+what it declares beside `D-SKL-064`; the attribute was missing until 2026-08-23,
+so the invariant was guarded and the entry read as held by nothing.
+
+Triage got the intent this entry left to the todo. `triage` in
+`knowledge/task-intents.json` carries `skillCore: typo3-core-issue-triage` and
+matches on the vocabulary the **Decided** predicted — `triage`, `backlog`,
+`forge.typo3.org`, `bug report`, `still reproduce`, `still a thing`. Re-run on
+2026-08-23 with the reporting session's own words, "Triage an old open core bug
+report" at `changeType: bugfix`, `typo3_task_guide` answers
+`typo3-core-issue-triage` and nothing else, where it answered
+`typo3-extension-conformance` then.
+
+The first **Wrong if** did not fire in the case it names. The check has exactly
+one exemption and it is not a published skill that cannot be routed to: a draft
+is out of the set, because a draft reachable by routing is one nobody chose —
+`D-SKL-064`. Nothing reports the second one either; no feedback since says an
+intent for triage pulled patch work into it.

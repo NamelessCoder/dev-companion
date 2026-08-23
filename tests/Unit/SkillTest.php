@@ -2462,6 +2462,7 @@ final class SkillTest extends TestCase
      * that is the exemption this check has and the only one — `D-SKL-064`.
      */
     #[Requirement('R-SKL-019')]
+    #[Decision('D-SKL-023')]
     #[Decision('D-SKL-064')]
     #[Test]
     public function everyPublishedSkillIsNamedByAnIntent(): void

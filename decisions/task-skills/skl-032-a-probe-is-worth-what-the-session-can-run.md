@@ -69,3 +69,18 @@ four failures.
 - A session with the route now written down still asserts a positional finding
   it could have looked at. Then the missing thing was the permission after all,
   and the skill is where it belongs.
+
+## Since then
+
+The route is still there and reachable.
+`bin/cli hints:probe "is this CSS feature inside the browser baseline"` returns
+`css-browser-target` at `appliesTo(26) + text(279)`, and the two hints that
+answer looking at a backend change — `browser-tests` and
+`browser-test-accessibility` — are in the corpus beside it. `D-KNW-066`,
+`D-KNW-068` and `D-KNW-069` all stand.
+
+Nothing has tested the **Wrong if**. The only feedback since that names a probe
+or a positional finding is the pair this entry was written from, both stamped
+2026-08-10, so no session has had the route written down and asserted anyway.
+That is the run this entry is waiting for, and it is a review of a backend
+change rather than a reading here.

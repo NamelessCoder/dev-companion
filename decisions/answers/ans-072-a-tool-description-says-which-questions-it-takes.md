@@ -60,3 +60,18 @@ other tool had already answered, and grepped a 1400-line script instead.
 - Another session reports skipping it for the same reason. Then the word
   "script" is what misroutes, and renaming or folding the tool is the change —
   which costs a name clients already know.
+
+## Since then
+
+The description says both halves today, read on 2026-08-23. It opens on what the
+tool holds — how `Build/Scripts/runTests.sh` is started and what it needs first,
+what an argument after `--` reaches, the commands per subject, the pre-commit
+hook — and hands the rest over by name: "Which suite a change actually needs,
+and what one of them does when it runs — what it provisions, what it passes
+through, which environment variables change it — is `typo3_test_run_guide`."
+
+No session reports skipping it for the reason this entry names. The one open
+feedback that names the tool since, `2026-08-19-090401`, reports a client that
+delivered every tool as a bare name with no schema and a session that called
+none of them — a cause on the client's side, which `D-AUD-011` owns, rather than
+the word "script" misrouting a session that read the description.

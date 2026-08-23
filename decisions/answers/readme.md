@@ -7,6 +7,7 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
 - [`D-ANS-093`][D-ANS-093] — A major's deprecations come back in one call · 2026-08-21
@@ -55,7 +56,6 @@ one is added.
 - [`D-ANS-052`][D-ANS-052] — The configuration lookup answers for the installation as it stands · 2026-08-04
 - [`D-ANS-053`][D-ANS-053] — A rejected call names the argument that was not understood · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously · 2026-08-03 · confirmed
-- [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query in Fluid tags is searched in the book for them · 2026-08-03
 - [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers · 2026-08-03
@@ -99,6 +99,7 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-096]: ans-096-an-outside-source-is-read-in-the-form-it-publishes.md
 [D-ANS-091]: ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: ans-092-the-project-answer-says-how-its-declared-suites-are-run.md
 [D-ANS-093]: ans-093-a-majors-deprecations-come-back-in-one-call.md
@@ -147,7 +148,6 @@ one is added.
 [D-ANS-052]: ans-052-the-configuration-lookup-answers-for-the-installation-as-it-stands.md
 [D-ANS-053]: ans-053-a-rejected-call-names-the-argument-that-was-not-understood.md
 [D-ANS-033]: ans-033-the-review-server-is-read-anonymously.md
-[D-ANS-034]: ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md
 [D-ANS-036]: ans-036-a-query-in-fluid-tags-is-searched-in-the-book-for-them.md
 [D-ANS-037]: ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md
@@ -194,11 +194,13 @@ one is added.
 ### Revoked, and kept as the record
 
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
+- [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03 → D-ANS-096
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
 [D-ANS-081]: ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
+[D-ANS-034]: ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md
 [D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-a-caller-who-has-not-chosen-passes.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

@@ -2,7 +2,7 @@
 id: D-DOC-013
 title: A commit here is three keywords and a condensed subject
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-DOC-013 — A commit here is three keywords and a condensed subject
@@ -66,7 +66,7 @@ The two measures could not both be right. This repository's own
   against this server would be the case, and that keyword is then not the core's
   alone.
 
-## Since then
+## Confirmed on 2026-08-23
 
 Measured over the 779 commits on `main` since 2026-08-04. The keyword half held
 without an exception: 668 `[TASK]`, 70 `[FEATURE]`, 41 `[BUGFIX]`, no `[DOCS]`,
@@ -81,8 +81,14 @@ one subject is past 72, where 708 of 926 used to be past 52 at a median of 61.
 
 So the practice follows `Knowledge\CommitMessage`'s two severities rather than
 one demand — it warns above 52 with "Under 52 characters is preferred" and fails
-above 72 — and `AGENTS.md` states both numbers as one rule. Which of the three
-that asks for is not a reading: the wording follows the tool, or 52 becomes the
-number this repository can hold and the tool is what says so, or the
-`commit-msg` hook comes back and refuses. The measurement above is what any of
-them would be decided on.
+above 72 — while `AGENTS.md` stated both numbers as one rule. Put to the
+maintainer on 2026-08-23 with the measurement, and the answer was that the
+wording follows the tool: the widths stand as this entry decided them, and the
+line now says 52 is where a subject goes if it can and 72 is where it may not.
+
+The other two were declined. Raising 52 would move what
+`typo3_commit_message_guide` tells every other project, which is the second
+number this entry refused to invent; the `commit-msg` hook stays refused for
+what **Decided** already says, that a hook which only warns prints what the
+reread has to catch anyway. What holds the widths is still the reread, and the
+number to measure the next reading against is above.

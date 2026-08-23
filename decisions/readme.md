@@ -78,6 +78,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
 - [`D-ANS-093`][D-ANS-093] — A major's deprecations come back in one call · 2026-08-21
@@ -126,7 +127,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-052`][D-ANS-052] — The configuration lookup answers for the installation as it stands · 2026-08-04
 - [`D-ANS-053`][D-ANS-053] — A rejected call names the argument that was not understood · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously · 2026-08-03 · confirmed
-- [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query in Fluid tags is searched in the book for them · 2026-08-03
 - [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers · 2026-08-03
@@ -170,6 +170,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-096]: answers/ans-096-an-outside-source-is-read-in-the-form-it-publishes.md
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: answers/ans-092-the-project-answer-says-how-its-declared-suites-are-run.md
 [D-ANS-093]: answers/ans-093-a-majors-deprecations-come-back-in-one-call.md
@@ -218,7 +219,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-052]: answers/ans-052-the-configuration-lookup-answers-for-the-installation-as-it-stands.md
 [D-ANS-053]: answers/ans-053-a-rejected-call-names-the-argument-that-was-not-understood.md
 [D-ANS-033]: answers/ans-033-the-review-server-is-read-anonymously.md
-[D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: answers/ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md
 [D-ANS-036]: answers/ans-036-a-query-in-fluid-tags-is-searched-in-the-book-for-them.md
 [D-ANS-037]: answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers.md
@@ -842,7 +842,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03 · confirmed
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
-- [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
+- [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03 · confirmed
 - [`D-DOC-014`][D-DOC-014] — A record directory keeps its listing and the site carries its description · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
@@ -931,6 +931,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 - [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
 - [`D-SKL-015`][D-SKL-015] — A step is skipped only where it has already run · 2026-08-04 → D-SKL-034
+- [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03 → D-ANS-096
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a subject this server owns · 2026-08-03 → D-KNW-044
 - [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured · 2026-08-03 → D-SKL-043
@@ -967,6 +968,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-023]: documentation/doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md
 [D-DIS-015]: discovery/dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
 [D-SKL-015]: task-skills/skl-015-a-step-is-skipped-only-where-it-has-already-run.md
+[D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-subject-this-server-owns.md
 [D-SKL-011]: task-skills/skl-011-the-call-plan-a-skill-writes-down-is-measured.md

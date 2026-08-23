@@ -2,7 +2,8 @@
 id: D-ANS-034
 title: A source outside this package answers JSON, or it did not answer
 date: 2026-08-03
-status: open
+status: revoked
+revokedBy: D-ANS-096
 ---
 
 # D-ANS-034 — A source outside this package answers JSON, or it did not answer
@@ -67,7 +68,7 @@ out is the declared schema, so nothing downstream parses anything.
   half already says. Then the shape is not carrying what it promises, and the
   fix is in the schema rather than in the prose.
 
-## Since then
+## Revoked on 2026-08-23
 
 Read on 2026-08-23, and the first **Wrong if** does not wait for its first case:
 one was here before this entry was. `Manual\Documentation` reads
@@ -82,8 +83,9 @@ the review server, the manual and the registry — `Result\Unreachable` carries
 the cause vocabulary, and `D-ANS-007` is where the manual's `status` and `cause`
 were settled against the installation answer's.
 
-What is left is the scope of the statement, and no reading here settles it:
-either this means the sources that publish an API, in which case the entry is
-revoked and a successor states the boundary the manual sits outside, or the
-manual is an exception nobody has written down. `Fetch::decode()` is untouched
-either way — it is the JSON reader, and the manual never asks it.
+Put to the maintainer on 2026-08-23, and the answer was to revoke rather than
+leave a bold sentence a reader would take for today. What stands is carried by
+[`D-ANS-096`](ans-096-an-outside-source-is-read-in-the-form-it-publishes.md):
+the JSON reader, one per source with an API, and the rule that a parser is
+written only where the source publishes nothing else. `Fetch::decode()` is
+untouched by any of it — the manual never asks it.

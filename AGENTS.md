@@ -597,11 +597,12 @@ diff carries the detail, so the message does not have to.
   `[TASK]`, `[BUGFIX]` or `[FEATURE]`, and none other. A documentation change
   here is a `[TASK]` — `[DOCS]`, `[SECURITY]` and `[!!!]` belong to the core's
   process, which this checkout does not run.
-- Keep the whole subject line, keyword included, under 52 characters, and never
-  past 72. Wrap the body at 72. Those are the numbers
-  `typo3_commit_message_guide` returns for `workflow="project"` — `D-DOC-013`.
-  The 80 `bin/cli prose:format` wraps at belongs to the markdown corpus and
-  reaches no commit message.
+- The whole subject line, keyword included, is under 52 characters where it can
+  be and never past 72; the body wraps at 72. Those are the two severities
+  `typo3_commit_message_guide` returns for `workflow="project"` — 52 is what it
+  prefers and 72 is what it fails on, and `D-DOC-013` measured what this
+  repository writes against both. The 80 `bin/cli prose:format` wraps at belongs
+  to the markdown corpus and reaches no commit message.
 - The body says only what the diff cannot: what was measured, what was rejected,
   what the change rests on. Where a decision or a requirement already carries
   that, the body names the id instead. A body that summarises the entry beside

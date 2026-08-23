@@ -50,7 +50,7 @@ earns one.
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03 · confirmed
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
-- [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
+- [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03 · confirmed
 - [`D-DOC-014`][D-DOC-014] — A record directory keeps its listing and the site carries its description · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02

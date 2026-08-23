@@ -4,8 +4,8 @@ title: A hint says whose it is in both directions
 date: 2026-08-02
 status: open
 coveredBy:
-  - HintsTest::whatOnlyBindsOutsideTheCoreSaysSoInsideIt
   - HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore
+  - HintsTest::whatOnlyBindsOutsideTheCoreSaysSoInsideIt
   - VersionsTest::whoIsObligedIsWrittenAsDataToo
 ---
 

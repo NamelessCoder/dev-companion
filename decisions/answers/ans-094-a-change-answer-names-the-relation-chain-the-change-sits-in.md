@@ -4,11 +4,11 @@ title: A change answer names the relation chain the change sits in
 date: 2026-08-21
 status: open
 coveredBy:
-  - GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf
-  - GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt
-  - GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer
-  - GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone
   - GerritTest::aChainCallThatDidNotAnswerIsNotAChangeStandingAlone
+  - GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt
+  - GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf
+  - GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone
+  - GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer
   - GerritTest::theTextHalfSaysWhereInTheStackTheChangeSits
   - GerritTest::theTwoRelationsAChangeStandsInAreToldApart
 ---

@@ -8,8 +8,8 @@ coveredBy:
   - ToolAnswersTest::everyRecordedAnswerIsJson
   - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
   - ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy
-  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
   - ToolSurfaceTest::everyToolCarriesItsAnswerOrSaysWhyItHasNone
+  - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---
 
 # D-DOC-007 — One page per tool, and the answer on it whole

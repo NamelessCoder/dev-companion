@@ -6,11 +6,11 @@ status: open
 coveredBy:
   - EnvironmentsTest::everyEnvironmentAScenarioNamesSaysWhereItComesFrom
   - EnvironmentsTest::everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead
-  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
+  - EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine
   - EnvironmentsTest::theBuildRequiresTheExtensionsThisServerAsksFor
+  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
   - EnvironmentsTest::theSetupStepPassesEveryOptionItCannotBeAskedFor
   - EnvironmentsTest::theSiteIsCreatedForTheAddressDdevGivesTheProject
-  - EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine
   - EnvironmentsTest::whatIsMadeHereIsNeverCommitted
 ---
 

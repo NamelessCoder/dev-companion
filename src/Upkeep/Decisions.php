@@ -94,17 +94,11 @@ final class Decisions
     }
 
     /**
-     * The entries a test holds, by what their **Covered by** names.
+     * The entries a test holds, which is what a failing one prints.
      *
-     * Read the other way round from `unnamedByItsTests()`: that one asks what a
-     * test says about its entry, this one asks which entries a failing test was
-     * holding. A session changing a behaviour stands in the test, so that is
-     * where the entry has to be named — and a docblock is not where a failure
-     * prints.
-     *
-     * A whole class counts for every method in it: an entry naming
-     * `VersionsTest` rests on all of it, which is what the format already
-     * allows.
+     * Read from `coveredBy`, which the test's own `#[Decision]` attributes are
+     * what wrote — so this answers with the entries that test declared, and a
+     * session standing in a red test is sent to them.
      *
      * @return list<array{id: string, title: string, file: string}>
      */
@@ -112,20 +106,14 @@ final class Decisions
     {
         $held = [];
         foreach (self::all() as $decision) {
-            foreach ($decision['coveredBy'] as $test) {
-                [$namedClass, $namedMethod] = array_pad(explode('::', $test), 2, '');
-                if ($namedClass !== $class || ($namedMethod !== '' && $namedMethod !== $method)) {
-                    continue;
-                }
-
-                $held[] = [
-                    'id' => $decision['id'],
-                    'title' => $decision['title'],
-                    'file' => 'decisions/' . $decision['group'] . '/' . $decision['file'],
-                ];
-
-                break;
+            if (!in_array($class . '::' . $method, $decision['coveredBy'], true)) {
+                continue;
             }
+            $held[] = [
+                'id' => $decision['id'],
+                'title' => $decision['title'],
+                'file' => 'decisions/' . $decision['group'] . '/' . $decision['file'],
+            ];
         }
 
         return $held;
@@ -183,11 +171,11 @@ final class Decisions
      * Not a defect and nothing fails on it. Most entries here are about process
      * and nothing runs over them, so an entry may name `Scope::of()` in its
      * evidence while deciding something no test could keep — and a check that
-     * demanded **Covered by** would be answered with a test name chosen to
+     * demanded a `coveredBy` would be answered with a test name chosen to
      * satisfy it.
      *
      * What it reports is the one coupling that actually holds an entry to the
-     * code: a test named under **Covered by** fails when the behaviour moves,
+     * code: a test named in `coveredBy` fails when the behaviour moves,
      * and `DecisionsTest::everyTestADecisionNamesExists` fails when the test
      * goes with it. Read on 2026-08-22, the three entries found stale that day
      * carried no such name and the two whose code had moved under them carried
@@ -223,43 +211,39 @@ final class Decisions
     }
 
     /**
-     * Entries whose **Covered by** names a test that says nothing about them,
-     * most such tests first.
+     * One entry's file as `coveredBy` generated from the tests would write it.
      *
-     * The naming runs one way today. An entry names the test that would catch
-     * its **Wrong if**, and the test is where somebody stands when the code
-     * moves — so a session that changes the behaviour, fixes the test and never
-     * learns which entry rested on it is how `D-ANS-045` came to describe the
-     * opposite of what its method does.
+     * The `#[Decision]` attributes are the source and this is the copy, which
+     * is why the whole file comes back rather than the list: `decisions:cover`
+     * writes what this returns and `decisions:check` compares against it, so
+     * one implementation decides what the front matter says.
      *
-     * What is read is the docblock over the method, or the file where the entry
-     * names a whole class. Nothing fails on it: `Covered by` has never asked for
-     * the return naming, so this reports a corpus written under the older rule.
+     * An entry no test names keeps a `coveredBy: []` it was written with —
+     * that empty list is a statement that nothing can hold the entry, and the
+     * absence of the key is that nobody has asked.
      *
-     * @return array<int, array{id: string, silent: int, tests: int}>
+     * @param list<string> $tests
      */
-    public static function unnamedByItsTests(): array
+    public static function covered(string $contents, array $tests): string
     {
-        $loose = [];
-        foreach (self::all() as $decision) {
-            $tests = $decision['coveredBy'];
-            $silent = array_filter(
-                $tests,
-                static fn(string $test): bool => !str_contains(Sources::saidAt($test), $decision['id']),
-            );
-            if ($silent === []) {
-                continue;
-            }
-            $loose[] = [
-                'id' => $decision['id'],
-                'silent' => count($silent),
-                'tests' => count($tests),
-            ];
+        $written = $tests === []
+            ? "coveredBy: []\n"
+            : "coveredBy:\n" . implode('', array_map(static fn(string $test): string => '  - ' . $test . "\n", $tests));
+
+        // A callback rather than a replacement string: a `$` in one would be
+        // read as a group reference, and what is written here is a name.
+        $carries = '/^coveredBy:(?: \[])?\R(?:  - .*\R)*/m';
+        if (preg_match($carries, $contents) === 1) {
+            return (string) preg_replace_callback($carries, static fn(): string => $written, $contents, 1);
+        }
+        if ($tests === []) {
+            return $contents;
         }
 
-        usort($loose, static fn(array $a, array $b): int => [$b['silent'], $a['id']] <=> [$a['silent'], $b['id']]);
-
-        return $loose;
+        // The key is new, and goes at the foot of the front matter: the first
+        // `---` on a line of its own, the opening one standing at the very
+        // start of the file.
+        return (string) preg_replace_callback('/\R---\R/', static fn(): string => "\n" . $written . "---\n", $contents, 1);
     }
 
     /**

@@ -4,10 +4,10 @@ title: 'Three registration kinds are read the way core reads them'
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry
   - ProjectTest::aFlexFormBoundThroughACallThisDoesNotReadIsStillReported
-  - ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor
   - ProjectTest::aFormSetIsAnsweredWithTheDefinitionsItStores
+  - ProjectTest::aSiteSetIsAnsweredByTheFilesCoreReadsItFor
+  - ProjectTest::theFlexFormAContentElementBindsIsOnItsEntry
 ---
 
 # D-ANS-019 — Three registration kinds are read the way core reads them

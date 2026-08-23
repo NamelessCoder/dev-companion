@@ -4,11 +4,11 @@ title: A union-typed argument gets the wording a client can compose against
 date: 2026-08-02
 status: open
 coveredBy:
+  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
+  - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
+  - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted
   - ToolContractTest::everyToolDeclaresSchemasAndAnnotations
   - ToolContractTest::noArgumentDeclaresMoreThanOneType
-  - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted
-  - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
-  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
 ---
 
 # D-ANS-017 — A union-typed argument gets the wording a client can compose against

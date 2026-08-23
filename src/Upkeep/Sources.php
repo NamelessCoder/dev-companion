@@ -10,11 +10,12 @@ use TYPO3\DevCompanion\Paths;
 /**
  * The PHP this repository declares, as the records name it.
  *
- * Two readings want it and neither wants the other's copy: `RecordsTest` holds
- * a backticked `Class::member` to a class that has it, and
- * `Decisions::uncovered()` asks which entries point at this code without naming
- * a test that would catch it moving. Both need the same list, and a second copy
- * of it is the duplication those two readings exist to find.
+ * Three readings want it and none wants another's copy: `RecordsTest` holds a
+ * backticked `Class::member` to a class that has it, `Decisions::uncovered()`
+ * asks which entries point at this code naming no test that would catch it
+ * moving, and `decisions:cover` writes each entry's `coveredBy` from the
+ * `#[Decision]` attributes. A second copy of the list is the duplication those
+ * readings exist to find.
  *
  * Read from the files rather than through reflection, because the records name
  * a private member as readily as a public one, and because loading every class
@@ -48,42 +49,46 @@ final class Sources
     }
 
     /**
-     * What a test method says: its docblock and its body, or the whole file
-     * where the entry names a class rather than a member.
+     * Which tests declare they hold a decision, keyed by id.
      *
-     * Found by walking back from the declaration rather than by splitting the
-     * file on an indented `/**`, which is what a run of `composer cgl` moves.
-     * A reading that changes with the formatter is a reading nobody can quote.
+     * The `#[Decision]` attribute over a test method is where the coupling is
+     * written, and the entry's `coveredBy` is generated from it — one source,
+     * so the test and the entry cannot name each other differently.
      *
-     * The body is in it because that is where this corpus writes half its
-     * reasons: 38 of the 346 names a docblock-only reading called silent on
-     * 2026-08-22 carry the id in a comment beside the assertion it explains,
-     * and a docblock repeating it is the second copy `AGENTS.md` sends to the
-     * id instead. The member ends at the first `}` in the column a method
-     * closes in, which nothing nested reaches.
+     * Read from the text rather than through reflection, for the reason the
+     * rest of this class is: loading every test class to ask about it is a cost
+     * a check pays on every run.
+     *
+     * @return array<string, list<string>>
      */
-    public static function saidAt(string $test): string
+    public static function decisionsHeld(): array
     {
-        [$class, $method] = array_pad(explode('::', $test), 2, '');
-        $file = self::files()[$class] ?? null;
-        if ($file === null) {
-            return '';
+        $held = [];
+        foreach (Finder::create()->files()->in(Paths::root() . '/tests')->name('*Test.php')->sortByName() as $file) {
+            $class = basename($file->getFilename(), '.php');
+            $pending = [];
+            foreach (explode("\n", (string) file_get_contents($file->getPathname())) as $line) {
+                $line = trim($line);
+                if (preg_match("/^#\\[Decision\\('([^']+)'\\)]$/", $line, $named) === 1) {
+                    $pending[] = $named[1];
+                } elseif (preg_match('/^public function (\w+)\(/', $line, $test) === 1) {
+                    foreach ($pending as $id) {
+                        $held[$id][] = $class . '::' . $test[1];
+                    }
+                    $pending = [];
+                } elseif (!str_starts_with($line, '#[')) {
+                    $pending = [];
+                }
+            }
         }
 
-        $code = (string) file_get_contents($file);
-        if ($method === '') {
-            return $code;
+        foreach ($held as $id => $tests) {
+            sort($tests);
+            $held[$id] = array_values(array_unique($tests));
         }
+        ksort($held);
 
-        $at = strpos($code, 'function ' . $method . '(');
-        if ($at === false) {
-            return '';
-        }
-
-        $opens = self::whereTheRunAboveStarts(substr($code, 0, $at));
-        $ends = strpos($code, "\n    }\n", $at);
-
-        return substr($code, $opens, ($ends === false ? strlen($code) : $ends) - $opens);
+        return $held;
     }
 
     /**
@@ -94,29 +99,6 @@ final class Sources
     public static function files(): array
     {
         return self::read()[2];
-    }
-
-    /**
-     * Where the run of comments and attributes above a declaration begins.
-     *
-     * The last `/**` is not it: a method carrying both a prose docblock and a
-     * `/** @param ... *\/` line has its reason in the first of the two, and a
-     * reading that starts at the second says the entry is unnamed while the
-     * name is two lines above.
-     */
-    private static function whereTheRunAboveStarts(string $head): int
-    {
-        $lines = explode("\n", $head);
-        $opens = strlen($head) - strlen($lines[count($lines) - 1]);
-        for ($index = count($lines) - 2; $index >= 0; $index--) {
-            $line = trim($lines[$index]);
-            if ($line !== '' && !str_starts_with($line, '#[') && !str_starts_with($line, '*') && !str_starts_with($line, '/*') && !str_starts_with($line, '//')) {
-                break;
-            }
-            $opens -= strlen($lines[$index]) + 1;
-        }
-
-        return $opens;
     }
 
     /**

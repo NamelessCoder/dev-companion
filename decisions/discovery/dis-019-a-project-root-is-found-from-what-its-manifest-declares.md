@@ -4,12 +4,12 @@ title: A project root is found from what its manifest declares
 date: 2026-08-18
 status: open
 coveredBy:
-  - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
-  - InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot
   - InstanceTest::aNamedInstallationThatIsNotThereIsNotWalkedPast
+  - InstanceTest::aPackageInsideAnInstalledProjectIsNotTheProjectRoot
+  - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
   - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
-  - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
   - ProjectTest::aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne
+  - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
 ---
 
 # D-DIS-019 — A project root is found from what its manifest declares

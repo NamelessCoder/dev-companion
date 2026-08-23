@@ -5,8 +5,8 @@ date: 2026-08-02
 status: open
 coveredBy:
   - PackageSourcesTest::aDeprecationSaysWhichVersionItStopsWorkingIn
-  - PackageSourcesTest::whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer
   - PackageSourcesTest::aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne
+  - PackageSourcesTest::whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer
 ---
 
 # D-ANS-020 — A deprecation is answered by the version that removes it

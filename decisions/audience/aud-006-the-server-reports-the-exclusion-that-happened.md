@@ -4,9 +4,9 @@ title: 'The server reports the exclusion that happened'
 date: 2026-08-04
 status: open
 coveredBy:
+  - EntrypointTest::anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo
   - ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList
   - ExcludedToolsTest::theScopeNamesWhatTookNothingAwayAsIgnored
-  - EntrypointTest::anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo
   - InstallerTest::codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn
   - InstallerTest::codexInstallRefusesASectionItCannotRewriteWithoutDropping
 ---

@@ -4,8 +4,8 @@ title: 'A change answer carries the ref that fetches the patch set'
 date: 2026-08-09
 status: open
 coveredBy:
-  - GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames
   - GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne
+  - GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames
 ---
 
 # D-ANS-068 — A change answer carries the ref that fetches the patch set

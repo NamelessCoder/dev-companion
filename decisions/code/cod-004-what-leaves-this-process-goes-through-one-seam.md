@@ -4,10 +4,10 @@ title: What leaves this process goes through one seam
 date: 2026-08-03
 status: open
 coveredBy:
-  - Typo3CliTest::everyArgumentReachesTheContainerAsTheShellLeavesIt
-  - Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove
   - TodoTest::aWorktreeIsToldApartFromTheCheckoutItWasCutFrom
   - TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim
+  - Typo3CliTest::everyArgumentReachesTheContainerAsTheShellLeavesIt
+  - Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove
 ---
 
 # D-COD-004 — What leaves this process goes through one seam

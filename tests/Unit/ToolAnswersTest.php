@@ -8,6 +8,7 @@ use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\ToolAnswers;
 use TYPO3\DevCompanion\Upkeep\ToolCalls;
@@ -29,6 +30,8 @@ final class ToolAnswersTest extends TestCase
      * derivation, which is what the shape holds and all it can — `D-DOC-006`,
      * `D-DOC-007`.
      */
+    #[Decision('D-DOC-006')]
+    #[Decision('D-DOC-007')]
     #[Test]
     public function everyRecordedAnswerIsJson(): void
     {
@@ -60,6 +63,8 @@ final class ToolAnswersTest extends TestCase
      * one set of arguments per call, and a text and a data answer for each —
      * `D-DOC-007`.
      */
+    #[Decision('D-DOC-007')]
+    #[Decision('D-DOC-029')]
     #[Test]
     public function everyCallOnAPageCarriesItsArgumentsAndItsAnswers(): void
     {
@@ -89,6 +94,7 @@ final class ToolAnswersTest extends TestCase
      * apart by is the whole reason for the second one being there —
      * `D-DOC-006`.
      */
+    #[Decision('D-DOC-006')]
     #[Test]
     public function everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom(): void
     {
@@ -112,6 +118,7 @@ final class ToolAnswersTest extends TestCase
      * recorded them would be in every checkout of it. The substitutions are
      * `ToolAnswers`' own and the surface says they happened — `D-DOC-006`.
      */
+    #[Decision('D-DOC-006')]
     #[Test]
     public function theRecordingCarriesNobodysDirectoryLayout(): void
     {
@@ -132,6 +139,9 @@ final class ToolAnswersTest extends TestCase
      * every tool in the table has answered, not that the pages match call for
      * call — `D-KNW-035`, `D-DOC-006`, `D-DOC-007`.
      */
+    #[Decision('D-DOC-006')]
+    #[Decision('D-DOC-007')]
+    #[Decision('D-KNW-035')]
     #[Test]
     public function everyToolTheTableDrivesHasARecordedAnswer(): void
     {
@@ -158,6 +168,7 @@ final class ToolAnswersTest extends TestCase
      * answer is on the page and the schema is in the class, so the two can be
      * held to each other wherever the suite runs — `D-DOC-012`.
      */
+    #[Decision('D-DOC-012')]
     #[Test]
     public function everyAnswerOnAPageIsOneItsSchemaAllows(): void
     {
@@ -232,6 +243,7 @@ final class ToolAnswersTest extends TestCase
      * reason — and the reason is what the tool's own page then states where a
      * reader meets the absence — `D-DOC-007`.
      */
+    #[Decision('D-DOC-007')]
     #[Test]
     public function everyToolTheTableLeavesOutSaysWhy(): void
     {

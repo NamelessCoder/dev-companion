@@ -5,8 +5,8 @@ date: 2026-08-04
 status: revoked
 revokedBy: D-SKL-034
 coveredBy:
-  - SkillTest::theWorkflowStepRunsInEverySession
   - SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched
+  - SkillTest::theWorkflowStepRunsInEverySession
 ---
 
 # D-SKL-015 — A step is skipped only where it has already run

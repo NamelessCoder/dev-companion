@@ -5,8 +5,8 @@ date: 2026-08-06
 status: open
 coveredBy:
   - InstallerRecordTest::aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted
-  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
   - ScopeTest::theInstructionsFitWhatAClientKeeps
+  - StdioServerTest::aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall
 ---
 
 # D-DIS-013 — The record holds a digest of what was published

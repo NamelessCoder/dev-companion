@@ -4,10 +4,10 @@ title: A renumber moves what a link path settles and names the rest
 date: 2026-08-04
 status: open
 coveredBy:
+  - RenumberTest::aLetterSuffixIsAnotherEntryAndStaysWhereItIs
+  - RenumberTest::aReferenceNoLineSettlesIsNamedRatherThanMoved
   - RenumberTest::everyMentionIsEitherMovedOrNamed
   - RenumberTest::noPathIsLeftPointingAtTheOldFile
-  - RenumberTest::aReferenceNoLineSettlesIsNamedRatherThanMoved
-  - RenumberTest::aLetterSuffixIsAnotherEntryAndStaysWhereItIs
 ---
 
 # D-DOC-015 — A renumber moves what a link path settles and names the rest

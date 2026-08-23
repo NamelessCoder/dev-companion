@@ -4,8 +4,8 @@ title: 'A PHP version is the payload a hint may state'
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
   - HintsTest::eachCoveredLineCarriesItsOwnFloorAndTestedRange
+  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
 ---
 
 # D-KNW-091 — A PHP version is the payload a hint may state

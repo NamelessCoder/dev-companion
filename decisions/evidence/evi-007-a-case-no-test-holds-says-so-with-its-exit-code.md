@@ -4,8 +4,8 @@ title: A case no test holds says so with its exit code
 date: 2026-08-18
 status: open
 coveredBy:
-  - ScenariosTest::aContractCaseNoTestHoldsSaysSoWithItsExitCode
   - CliTest::anAppointmentComesUpOnlyWhileItsCommandFindsWork
+  - ScenariosTest::aContractCaseNoTestHoldsSaysSoWithItsExitCode
 ---
 
 # D-EVI-007 — A case no test holds says so with its exit code

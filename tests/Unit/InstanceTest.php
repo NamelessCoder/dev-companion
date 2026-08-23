@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Project;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 
 /**
@@ -203,6 +204,8 @@ final class InstanceTest extends TestCase
         self::assertSame(realpath($root) . '/packages/my_sitepackage', Instance::packages()['my_sitepackage']);
     }
 
+    #[Decision('D-DIS-019')]
+    #[Decision('D-SCO-012')]
     #[Test]
     public function aRepositoryWithNoInstallationAroundItIsNotReportedAsOne(): void
     {
@@ -229,6 +232,7 @@ final class InstanceTest extends TestCase
     /**
      * @param array<string, mixed> $manifest what the root's composer.json declares
      */
+    #[Decision('D-DIS-019')]
     #[Test]
     #[DataProvider('manifests')]
     public function aProjectRootIsRecognisedByWhatItsOwnManifestDeclares(array $manifest, bool $isProjectRoot): void
@@ -297,6 +301,7 @@ final class InstanceTest extends TestCase
         ];
     }
 
+    #[Decision('D-DIS-019')]
     #[Test]
     public function aPackageInsideAnInstalledProjectIsNotTheProjectRoot(): void
     {
@@ -315,6 +320,7 @@ final class InstanceTest extends TestCase
         self::assertSame(realpath($root), Instance::project()['root'] ?? null);
     }
 
+    #[Decision('D-DIS-019')]
     #[Test]
     public function aNamedInstallationThatIsNotThereIsNotWalkedPast(): void
     {

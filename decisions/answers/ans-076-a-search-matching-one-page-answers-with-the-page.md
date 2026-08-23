@@ -4,8 +4,8 @@ title: 'A search matching one page answers with the page'
 date: 2026-08-11
 status: open
 coveredBy:
-  - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
   - KnowledgeTest::aCutAnswerNamesTheHeadingsOfThePageItLeft
+  - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
   - KnowledgeTest::everyToolThatRendersASectionOffersThePageAsACall
 ---
 

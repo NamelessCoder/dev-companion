@@ -4,8 +4,8 @@ title: What the prose costs is counted beside how long a sentence is
 date: 2026-08-18
 status: open
 coveredBy:
-  - ProseTest::whatTheCommentsCostIsMeasured
   - ProseTest::aCommentThatNamesAnEntryAndRetellsItAnywayIsReported
+  - ProseTest::whatTheCommentsCostIsMeasured
   - ProseTest::whatTheMarkupCostsIsNotCountedAsProse
 ---
 

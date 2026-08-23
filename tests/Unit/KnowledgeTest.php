@@ -17,6 +17,7 @@ use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Result\Prose;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 
 final class KnowledgeTest extends TestCase
@@ -104,6 +105,7 @@ final class KnowledgeTest extends TestCase
         Paths::useDocuments($this->corpus);
     }
 
+    #[Decision('D-VER-005')]
     #[Test]
     public function aBoundSectionIsKeptOnTheMajorItHoldsFor(): void
     {
@@ -155,6 +157,7 @@ final class KnowledgeTest extends TestCase
      * what is handed back, so a caller reads the rule and not its bookkeeping —
      * `D-VER-005`.
      */
+    #[Decision('D-VER-005')]
     #[Test]
     public function theBindingDoesNotReachTheCallerAsPartOfWhatItBinds(): void
     {
@@ -180,6 +183,7 @@ final class KnowledgeTest extends TestCase
         self::assertSame(14, $match['until']);
     }
 
+    #[Decision('D-VER-005')]
     #[Test]
     public function aDeclarationBelowTheFirstLineOfContentBindsNothing(): void
     {
@@ -202,6 +206,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('**Since:** 14', $match['body']);
     }
 
+    #[Decision('D-KNW-057')]
     #[Test]
     public function theFrontMatterDescribesTheDocumentAndReachesNoAnswer(): void
     {
@@ -249,6 +254,7 @@ final class KnowledgeTest extends TestCase
      * so a document declares itself once and nothing states it a second time —
      * `D-KNW-057`.
      */
+    #[Decision('D-KNW-057')]
     #[Test]
     public function theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor(): void
     {
@@ -259,6 +265,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('Answers for a package', $card);
     }
 
+    #[Decision('D-KNW-057')]
     #[Test]
     public function everyHintADocumentSaysItExpandsExists(): void
     {
@@ -278,6 +285,7 @@ final class KnowledgeTest extends TestCase
      * caller reaches the whole of it by the call rather than by the scheme —
      * `D-KNW-057`.
      */
+    #[Decision('D-KNW-057')]
     #[Test]
     public function aHintAnswerNamesTheDocumentThatExpandsIt(): void
     {
@@ -300,6 +308,7 @@ final class KnowledgeTest extends TestCase
      * two hint ids. Two orderings that release together are the pair that
      * disagrees, so the hint may not grow the order back.
      */
+    #[Decision('D-KNW-095')]
     #[Test]
     public function theBootRunIsOrderedInTheDocumentAndNotInTheHint(): void
     {
@@ -328,6 +337,7 @@ final class KnowledgeTest extends TestCase
      * files itself. Nothing here said how that is done, so the words the
      * situation is described in have to arrive at the page that does.
      */
+    #[Decision('D-VER-007')]
     #[Test]
     public function aQuestionAboutADeclaredMajorReachesTheReadingThatSettlesIt(): void
     {
@@ -351,6 +361,7 @@ final class KnowledgeTest extends TestCase
      * signature written here is right on the day it is written, and nothing in
      * the answer would tell a caller which day that was.
      */
+    #[Decision('D-VER-007')]
     #[Test]
     public function theCrossMajorPageHandsOverTheReadingAndNoSignature(): void
     {
@@ -385,6 +396,8 @@ final class KnowledgeTest extends TestCase
      * listed at orientation and served as its resource, which is what the
      * skills the same file routes to have no equivalent of — `D-GUI-018`.
      */
+    #[Decision('D-GUI-012')]
+    #[Decision('D-GUI-018')]
     #[Test]
     public function everyGuideAnIntentNamesIsADocument(): void
     {
@@ -449,6 +462,8 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Decision('D-VER-002')]
+    #[Decision('D-VER-005')]
     #[Test]
     public function noProseDocumentDatesAStatementInItsSentence(): void
     {
@@ -470,6 +485,8 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Decision('D-VER-002')]
+    #[Decision('D-VER-005')]
     #[Test]
     public function noProseDocumentNamesACheckOnlySomeBranchesHave(): void
     {
@@ -542,6 +559,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('Extension Scanner', $bodies);
     }
 
+    #[Decision('D-KNW-039')]
     #[Test]
     public function aChangelogQuestionIsToldWhichTypeTheChangeOwes(): void
     {
@@ -571,6 +589,7 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-035')]
     #[Test]
     public function theBreakingRouteStatesWhatTheScannerMatcherRequires(): void
     {
@@ -601,6 +620,10 @@ final class KnowledgeTest extends TestCase
      * prompt is a whole task and half of them name two kinds of work on purpose
      * — `D-GUI-018`, `D-SKL-066`, `D-GUI-014`.
      */
+    #[Decision('D-GUI-014')]
+    #[Decision('D-GUI-018')]
+    #[Decision('D-SKL-051')]
+    #[Decision('D-SKL-066')]
     #[Test]
     #[DataProvider('aBriefForEachKindOfWork')]
     public function aBriefNamingOneKindOfWorkConfirmsThatKindAndNoOther(string $id, string $task): void
@@ -617,6 +640,7 @@ final class KnowledgeTest extends TestCase
      * here rather than by the first widening that swallows it unmeasured —
      * `D-SKL-051`.
      */
+    #[Decision('D-SKL-051')]
     #[Test]
     public function everyKindOfWorkHasSuchABrief(): void
     {
@@ -636,6 +660,7 @@ final class KnowledgeTest extends TestCase
      * answer to a site upgrade rather than a second one beside it. The subject
      * inside the needle is what separates them (`D-GUI-012`) — `D-GUI-018`.
      */
+    #[Decision('D-GUI-018')]
     #[Test]
     public function anInstallationSayingWhichMajorItIsOnIsNotCompatibilityWork(): void
     {
@@ -689,6 +714,7 @@ final class KnowledgeTest extends TestCase
         return $cases;
     }
 
+    #[Decision('D-ANS-035')]
     #[Test]
     public function theMatcherListSaysWhatItsMissingRowsDoNotMean(): void
     {
@@ -779,6 +805,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('remote.origin.pushurl', $fetch, 'nothing says what to fetch from instead');
     }
 
+    #[Decision('D-ANS-037')]
     #[Test]
     public function aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt(): void
     {
@@ -796,6 +823,7 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-037')]
     #[Test]
     public function everyDocumentIsReachedByItsOwnTitle(): void
     {
@@ -814,6 +842,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-037')]
     #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
@@ -871,6 +900,7 @@ final class KnowledgeTest extends TestCase
      * answer blamed the boundary for both — which `D-ANS-029` then quoted back
      * as what the tool answers a core query (`D-ANS-037`).
      */
+    #[Decision('D-ANS-037')]
     #[Test]
     public function aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary(): void
     {
@@ -947,6 +977,7 @@ final class KnowledgeTest extends TestCase
      * notes at 0.56, so no threshold tells a right answer from a plausible one.
      * The intent's own curated `rulesQuery` already decided.
      */
+    #[Decision('D-ANS-076')]
     #[Test]
     public function everyToolThatRendersASectionOffersThePageAsACall(): void
     {
@@ -1186,6 +1217,8 @@ final class KnowledgeTest extends TestCase
      * document and is answered with the page instead (`D-ANS-076`). What is
      * held here is the answer that really is a cut: two pages, part of each.
      */
+    #[Decision('D-ANS-070')]
+    #[Decision('D-ANS-076')]
     #[Test]
     public function aCutAnswerNamesTheHeadingsOfThePageItLeft(): void
     {
@@ -1231,6 +1264,7 @@ final class KnowledgeTest extends TestCase
      * matches all sit in one page. Both halves the entry bought are still
      * bought, on the other call.
      */
+    #[Decision('D-ANS-076')]
     #[Test]
     public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
     {
@@ -1298,6 +1332,7 @@ final class KnowledgeTest extends TestCase
  * A page every section of which is above says that, rather than naming none —
  * `D-ANS-070`.
  */
+    #[Decision('D-ANS-070')]
     #[Test]
     public function anAnswerCarryingEveryHeadingOfAPageSaysThatToo(): void
     {
@@ -1356,6 +1391,7 @@ final class KnowledgeTest extends TestCase
      * boundary. That is the one case the sentence is true in, and it stays —
      * `D-ANS-037`.
      */
+    #[Decision('D-ANS-037')]
     #[Test]
     public function aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt(): void
     {
@@ -1373,6 +1409,7 @@ final class KnowledgeTest extends TestCase
      * met, and every subset it names returns sections when it is asked —
      * `D-ANS-037`.
      */
+    #[Decision('D-ANS-037')]
     #[Test]
     public function whatAMissOffersToAskAgainWithReturnsSections(): void
     {
@@ -1396,6 +1433,7 @@ final class KnowledgeTest extends TestCase
      * The subset offered is spelled in the caller's own words, because a re-
      * query it has to translate first is one more round trip — `D-ANS-037`.
      */
+    #[Decision('D-ANS-037')]
     #[Test]
     public function aSubsetIsNamedInTheWordsTheQueryWasWrittenIn(): void
     {
@@ -1420,6 +1458,7 @@ final class KnowledgeTest extends TestCase
      * has to be a case of it, and a statement may not claim `uncertain`, which
      * belongs to a path nothing placed rather than to a sentence somebody wrote.
      */
+    #[Decision('D-KNW-003')]
     #[Test]
     public function everyScopeInTheCorpusIsOneTheEnumDeclares(): void
     {
@@ -1457,6 +1496,7 @@ final class KnowledgeTest extends TestCase
      * that offers the command says where it does not hold — in the same entry,
      * because nothing carries a caller from one to the next — `D-KNW-036`.
      */
+    #[Decision('D-KNW-036')]
     #[Test]
     public function aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold(): void
     {
@@ -1493,6 +1533,7 @@ final class KnowledgeTest extends TestCase
      * every suite the script offers and is read before one is chosen, which is
      * where `typo3_test_run_guide` prints it (`D-AUD-009`).
      */
+    #[Decision('D-AUD-009')]
     #[Test]
     public function theInvocationNotesNameTheInstallAFreshCheckoutOwes(): void
     {

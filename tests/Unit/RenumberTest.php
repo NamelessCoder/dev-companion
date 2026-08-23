@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Links;
 use TYPO3\DevCompanion\Upkeep\Renumber;
@@ -73,6 +74,7 @@ final class RenumberTest extends TestCase
      * Every reference is rewritten rather than reported, which a renumbering
      * may not do: two entries can share an id and no two share a file name.
      */
+    #[Decision('D-DOC-047')]
     #[Test]
     public function anEntryIsRefiledUnderItsTitleAndEveryPathThatNamedItMoves(): void
     {
@@ -132,6 +134,7 @@ final class RenumberTest extends TestCase
      * checked for neither — so moving either is a guess, and the entry it would
      * land on is real whichever way the guess went — `D-DOC-015`.
      */
+    #[Decision('D-DOC-015')]
     #[Test]
     public function aReferenceNoLineSettlesIsNamedRatherThanMoved(): void
     {
@@ -162,6 +165,7 @@ final class RenumberTest extends TestCase
      * lines still naming it are the reported ones exactly — so a person handed
      * that list has been handed all of it — `D-DOC-015`.
      */
+    #[Decision('D-DOC-015')]
     #[Test]
     public function everyMentionIsEitherMovedOrNamed(): void
     {
@@ -191,6 +195,7 @@ final class RenumberTest extends TestCase
      * produce it — a renumber that needs a check to finish it is a renumber
      * somebody has to remember to finish — `D-DOC-015`.
      */
+    #[Decision('D-DOC-015')]
     #[Test]
     public function noPathIsLeftPointingAtTheOldFile(): void
     {
@@ -211,6 +216,7 @@ final class RenumberTest extends TestCase
      * spelling of it — D-DOC-005. It is the case a search and replace over the
      * id gets wrong without anything being ambiguous about it — `D-DOC-015`.
      */
+    #[Decision('D-DOC-015')]
     #[Test]
     public function aLetterSuffixIsAnotherEntryAndStaysWhereItIs(): void
     {

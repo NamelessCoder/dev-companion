@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\ToolAnswers;
 use TYPO3\DevCompanion\Upkeep\ToolCalls;
@@ -28,6 +29,8 @@ final class ToolSurfaceTest extends TestCase
      * them, schemas included, so neither half can go stale against the other —
      * `D-DOC-016`, `D-DOC-011`.
      */
+    #[Decision('D-DOC-011')]
+    #[Decision('D-DOC-016')]
     #[Test]
     public function everyPageIsWhatTheRegistryDeclares(): void
     {
@@ -49,6 +52,10 @@ final class ToolSurfaceTest extends TestCase
      * registry leaves a page behind that reads like one it still offers —
      * `D-DOC-029`, `D-SCO-011`, `D-KNW-035`, `D-DOC-007`.
      */
+    #[Decision('D-DOC-007')]
+    #[Decision('D-DOC-029')]
+    #[Decision('D-KNW-035')]
+    #[Decision('D-SCO-011')]
     #[Test]
     public function theIndexReachesEveryToolAndTheDirectoryHoldsNoOther(): void
     {
@@ -84,6 +91,7 @@ final class ToolSurfaceTest extends TestCase
      * a reader cannot check: an absent recording and a forgotten one look the
      * same — `D-DOC-007`.
      */
+    #[Decision('D-DOC-007')]
     #[Test]
     public function everyToolCarriesItsAnswerOrSaysWhyItHasNone(): void
     {

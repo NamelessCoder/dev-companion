@@ -4,8 +4,8 @@ title: A number is three digits so a group lists in order
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - RequirementsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder
   - DecisionsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder
+  - RequirementsTest::everyNumberIsThreeDigitsWideSoAGroupListsInOrder
 ---
 
 # D-DOC-005 — A number is three digits so a group lists in order

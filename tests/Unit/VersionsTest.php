@@ -14,6 +14,7 @@ use TYPO3\DevCompanion\Knowledge\Scope;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
@@ -57,6 +58,8 @@ final class VersionsTest extends TestCase
      * naming the lines is held to the declaration rather than to what was
      * covered on the day it was written — `D-DOC-026`, `D-DOC-030`.
      */
+    #[Decision('D-DOC-026')]
+    #[Decision('D-DOC-030')]
     #[Test]
     public function whatSomebodyArrivesAtNamesEveryCoveredLine(): void
     {
@@ -200,6 +203,7 @@ final class VersionsTest extends TestCase
         self::assertStringContainsString('[TYPO3 v', $result->text);
     }
 
+    #[Decision('D-VER-005')]
     #[Test]
     #[DataProvider('theProseLookupsAndAQueryEachAnswers')]
     public function proseSaysWhereARangeItDoesNotCarryLives(string $tool, string $query): void
@@ -241,6 +245,7 @@ final class VersionsTest extends TestCase
         }
     }
 
+    #[Decision('D-KNW-007')]
     #[Test]
     public function whoIsObligedIsWrittenAsDataToo(): void
     {
@@ -462,6 +467,7 @@ final class VersionsTest extends TestCase
      * manifest writes answers for the majors it serves — `D-VER-004`.
      */
     /** @param array<int, int> $majors */
+    #[Decision('D-VER-004')]
     #[Test]
     #[DataProvider('rangeSpellingsFromTheWild')]
     public function aSpellingFromTheWildAnswersForEveryMajorItServes(string $constraint, array $majors): void

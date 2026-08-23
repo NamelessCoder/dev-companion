@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Environments;
 
 /**
@@ -27,6 +28,7 @@ final class EnvironmentsTest extends TestCase
      * each one comes from, so an environment added there and forgotten here is
      * an id `environment:create` answers `null` for — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function everyEnvironmentAScenarioNamesSaysWhereItComesFrom(): void
     {
@@ -43,6 +45,7 @@ final class EnvironmentsTest extends TestCase
      * hold of, and a refusal that does not say where from leaves them exactly
      * where the machine-bound reference left them — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead(): void
     {
@@ -63,6 +66,8 @@ final class EnvironmentsTest extends TestCase
      * environments of the old one measures itself against the wrong TYPO3, and
      * nothing about the environment would say so — `D-EVI-006`, `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
+    #[Decision('D-EVI-006')]
     #[Test]
     public function theInstallationIsBuiltAtTheCoveredStableVersion(): void
     {
@@ -90,6 +95,7 @@ final class EnvironmentsTest extends TestCase
      * `versions.json` covers while `create` declines is the same gap under a
      * different name — `D-EVI-006`.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function everyCoveredLineIsOneAnInstallationIsMadeOf(): void
     {
@@ -111,6 +117,7 @@ final class EnvironmentsTest extends TestCase
      * more, so a refusal naming a covered line is this drifting apart from
      * `knowledge/versions.json` — `D-EVI-006`.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing(): void
     {
@@ -144,6 +151,7 @@ final class EnvironmentsTest extends TestCase
      * is an installation that builds and then answers as the wrong PHP —
      * `D-EVI-006`.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares(): void
     {
@@ -230,6 +238,7 @@ final class EnvironmentsTest extends TestCase
      *
      * @param array<int, string> $expected
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     #[DataProvider('everyDatabaseAnInstallationCanBeMadeOn')]
     public function eachDriverPassesTheValuesItsOwnToolsTake(
@@ -294,6 +303,7 @@ final class EnvironmentsTest extends TestCase
      * wrong here costs the whole configure step before it says so —
      * `D-EVI-006`.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre(): void
     {
@@ -324,6 +334,7 @@ final class EnvironmentsTest extends TestCase
      * directory of its own. One name for all of them is one installation for
      * all of them, which is the state `D-EVI-006` was written against.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function eachCoveredLineIsItsOwnProjectAndItsOwnDirectory(): void
     {
@@ -355,6 +366,7 @@ final class EnvironmentsTest extends TestCase
      * machine and every path `todo/reference/` names is renamed to say what
      * asking for nothing already means.
      */
+    #[Decision('D-EVI-006')]
     #[Test]
     public function anInstallationOnASecondDatabaseIsItsOwnProject(): void
     {
@@ -388,6 +400,7 @@ final class EnvironmentsTest extends TestCase
      * project into by itself — `D-EVI-006`.
      */
     /** @param array<int, string>|null $expected */
+    #[Decision('D-EVI-006')]
     #[Test]
     #[DataProvider('everyStateDdevReportsAProjectIn')]
     public function anInstallationThatIsThereIsStartedRatherThanBuiltAgain(?string $status, ?array $expected): void
@@ -415,6 +428,7 @@ final class EnvironmentsTest extends TestCase
      * out looking finished and answer nothing the label lookup asks —
      * `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function theBuildRequiresTheExtensionsThisServerAsksFor(): void
     {
@@ -434,6 +448,7 @@ final class EnvironmentsTest extends TestCase
      * is there to answer it. Nothing about the option's own definition says so
      * — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function theSetupStepPassesEveryOptionItCannotBeAskedFor(): void
     {
@@ -471,6 +486,7 @@ final class EnvironmentsTest extends TestCase
      * its own was refused by `ddev config` for a project root it does not own,
      * minutes before the installation it was after — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function theSiteIsCreatedForTheAddressDdevGivesTheProject(): void
     {
@@ -498,6 +514,7 @@ final class EnvironmentsTest extends TestCase
      * machine happens to have, and the version the environment is of would stop
      * being the one it was asked for — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine(): void
     {
@@ -515,6 +532,7 @@ final class EnvironmentsTest extends TestCase
      * reported as `project directory missing`, and `environment:create`
      * refusing in the name of a checkout nobody could visit — `D-EVI-005`.
      */
+    #[Decision('D-EVI-005')]
     #[Test]
     public function aRegistrationWhoseCheckoutIsGoneHoldsNothingBack(): void
     {
@@ -541,6 +559,7 @@ final class EnvironmentsTest extends TestCase
      * installation left. `--force` does not reach that: it forces the settings
      * file alone. `delete` takes the volume with the name — `D-EVI-005`.
      */
+    #[Decision('D-EVI-005')]
     #[Test]
     public function clearingARegistrationTakesTheDatabaseThatWouldOutliveIt(): void
     {
@@ -558,6 +577,7 @@ final class EnvironmentsTest extends TestCase
      * belongs in a commit as little as `.checkouts/` does. This is the one
      * failure here that is unrecoverable rather than annoying — `D-EVI-004`.
      */
+    #[Decision('D-EVI-004')]
     #[Test]
     public function whatIsMadeHereIsNeverCommitted(): void
     {

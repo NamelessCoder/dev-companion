@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Knowledge\Coverage;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -165,6 +166,7 @@ final class IconLookupTest extends TestCase
         self::assertTrue($result->data['exactMatch']);
     }
 
+    #[Decision('D-DIS-011')]
     #[Test]
     public function anIdentifierRegisteredSinceTheLastCallIsFound(): void
     {

@@ -4,8 +4,8 @@ title: 'The entry point claims patch work'
 date: 2026-08-08
 status: open
 coveredBy:
-  - ScopeTest::theEntryPointClaimsTheWorkThatEndsBeforeAPatch
   - KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes
+  - ScopeTest::theEntryPointClaimsTheWorkThatEndsBeforeAPatch
 ---
 
 # D-AUD-009 — The entry point claims patch work

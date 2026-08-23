@@ -4,10 +4,10 @@ title: Tooling is a row the answer crosses, not a dimension the corpus stores
 date: 2026-08-02
 status: open
 coveredBy:
-  - HintsTest::theTestApiAProjectWritesItsTestsWithReachesTheProjectHint
   - HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll
-  - ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt
+  - HintsTest::theTestApiAProjectWritesItsTestsWithReachesTheProjectHint
   - ScopeTest::aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell
+  - ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt
 ---
 
 # D-KNW-008 — Tooling is a row the answer crosses, not a dimension the corpus stores

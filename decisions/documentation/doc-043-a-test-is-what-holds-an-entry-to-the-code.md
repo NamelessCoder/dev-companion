@@ -6,13 +6,13 @@ status: open
 restsOn: [D-DOC-041, D-DOC-042]
 coveredBy:
   - DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn
-  - DecisionsTest::everyTestADecisionNamesNamesTheEntryBack
+  - DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd
 ---
 
 # D-DOC-043 — A test is what holds an entry to the code
 
 **`bin/cli decisions:check` names the entries pointing at this repository's code
-that name no test under **Covered by**, and fails on none of them.**
+that name no test in `coveredBy`, and fails on none of them.**
 
 A test named there fails when the behaviour moves, and
 `DecisionsTest::everyTestADecisionNamesExists` fails when the test goes with it.
@@ -98,7 +98,7 @@ The proxy read the docblock alone, and this corpus writes half its reasons in
 the body. Of the 346 names it called silent on 2026-08-22, 38 carry the entry's
 id in a comment beside the assertion it explains — the naming a session standing
 in the test already gets, and the one a docblock repeating it would say twice.
-`Sources::saidAt()` is that reading now: the docblock and the member, ending at
+`Upkeep\Sources` read that from then on: the docblock and the member, ending at
 the first `}` in the column a method closes in.
 
 Reading it again found the same method twice more. It started at the last `/**`
@@ -118,11 +118,20 @@ The naming reached zero on 2026-08-22 and is a problem from that day rather than
 a report. What kept it out of the checks was that the corpus had been written
 under the older rule, and 405 names were: 313 of them are a clause on the
 comment each method already carried, and 40 are a sentence written where there
-was none. `decisions:check` fails on a new one now, and
-`DecisionsTest::everyTestADecisionNamesNamesTheEntryBack` is the guard.
+was none. `decisions:check` fails on a new one now, and a test in
+`DecisionsTest` is the guard.
 
 What that costs is a name per entry in a comment somebody has to keep true, and
 it is the cheapest half of the coupling: the id says which entry to open, and
 the entry says what would falsify it. What it does not do is make the naming
 correct — an entry may still name a test holding a different claim, which is the
 first **Assumed** above and is not measurable.
+
+## Since then
+
+The naming is one thing written once, since 2026-08-23: a test declares
+`#[Decision]` and `bin/cli decisions:cover` writes the entry's `coveredBy` from
+it — `D-DOC-048`. What that ends is the half of this entry that measured how
+much of the prose said the id back, and the reading it needed. The **Assumed**
+above is what it does not end: an attribute names an entry and nothing says the
+test holds that entry's claim.

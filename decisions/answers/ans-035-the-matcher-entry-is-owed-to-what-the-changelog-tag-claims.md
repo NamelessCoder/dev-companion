@@ -4,8 +4,8 @@ title: The matcher entry is owed to what the changelog tag claims
 date: 2026-08-03
 status: confirmed
 coveredBy:
-  - KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires
   - HintsTest::aRemovalIsToldWhatTheScannerMatcherRequires
+  - KnowledgeTest::theBreakingRouteStatesWhatTheScannerMatcherRequires
   - KnowledgeTest::theMatcherListSaysWhatItsMissingRowsDoNotMean
 ---
 

@@ -4,14 +4,14 @@ title: The documentation is reStructuredText, and the rest of the corpus is not
 date: 2026-08-12
 status: open
 coveredBy:
-  - SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel
-  - SiteTest::aReferenceInsideTheCorpusIsNotRewritten
-  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
-  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
   - LinksTest::everyPathThisRepositoryWritesToItselfResolves
+  - ProseTest::aLiteralAndARoleAreNeverBrokenAcrossLines
   - ProseTest::rewrappingChangesNothingButTheLineBreaks
   - ProseTest::whatIsNotProseInReStructuredTextComesBackUnchanged
-  - ProseTest::aLiteralAndARoleAreNeverBrokenAcrossLines
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - SiteTest::aReferenceInsideTheCorpusIsNotRewritten
+  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
+  - SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel
   - ToolAnswersTest::everyCallOnAPageCarriesItsArgumentsAndItsAnswers
   - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---

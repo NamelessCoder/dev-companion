@@ -8,6 +8,7 @@ use PhpCsFixer\ConfigInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Editorconfig;
 
 /**
@@ -23,6 +24,7 @@ final class StructureTest extends TestCase
      * a missing class from anywhere else, which is the kind of failure that
      * arrives long after the commit — `D-COD-001`.
      */
+    #[Decision('D-COD-001')]
     #[Test]
     public function everyFileDeclaresOneClass(): void
     {
@@ -66,6 +68,7 @@ final class StructureTest extends TestCase
      * would also need this paragraph rewritten, which is the point —
      * `D-FBK-013`.
      */
+    #[Decision('D-FBK-013')]
     #[Test]
     public function noTestSkipsItselfInsteadOfHolding(): void
     {
@@ -101,6 +104,7 @@ final class StructureTest extends TestCase
      * purpose: an expectation computed from the code under test asserts that
      * the code equals itself.
      */
+    #[Decision('D-KNW-059')]
     #[Test]
     public function onlyTheCorpusSpellsHowADocumentIsAddressed(): void
     {
@@ -121,6 +125,7 @@ final class StructureTest extends TestCase
      * the same call and a tolerance is written where it is relied on —
      * `D-COD-003`.
      */
+    #[Decision('D-COD-003')]
     #[Test]
     public function everyDirectoryIsReadThroughTheFinder(): void
     {

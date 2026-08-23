@@ -4,8 +4,8 @@ title: 'The listing budget is what a client reads'
 date: 2026-08-18
 status: open
 coveredBy:
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
   - SkillTest::aDraftSaysSoInItsOwnFrontMatter
+  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
 ---
 
 # D-SKL-054 — The listing budget is what a client reads

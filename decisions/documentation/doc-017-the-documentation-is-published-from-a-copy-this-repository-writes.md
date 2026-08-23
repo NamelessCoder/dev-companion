@@ -4,10 +4,10 @@ title: The documentation is published from a copy this repository writes
 date: 2026-08-06
 status: open
 coveredBy:
-  - SiteTest::noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry
-  - SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt
   - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+  - SiteTest::everyLinkThePublishedCopyKeepsResolvesInsideIt
   - SiteTest::everyReferenceIntoAnotherPageIsAnsweredByALabel
+  - SiteTest::noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry
 ---
 
 # D-DOC-017 — The documentation is published from a copy this repository writes

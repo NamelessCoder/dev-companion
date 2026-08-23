@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Installation\Icons;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 use TYPO3\DevCompanion\Upkeep\ToolCalls;
@@ -41,6 +42,7 @@ final class FixtureTest extends TestCase
      * boot and answer through its own console rather than only look like one —
      * `D-DOC-012`.
      */
+    #[Decision('D-DOC-012')]
     #[Test]
     public function theWrittenInstallationBootsAndItsConsoleAnswers(): void
     {
@@ -67,6 +69,7 @@ final class FixtureTest extends TestCase
      * makes this root worth recording against is that not one call falls to it
      * — `D-DOC-012`.
      */
+    #[Decision('D-DOC-012')]
     #[Test]
     public function everyInstallationBackedToolAnswersFromIt(): void
     {

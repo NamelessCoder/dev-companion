@@ -4,10 +4,10 @@ title: The documentation is four sections, and the bar carries those four
 date: 2026-08-12
 status: open
 coveredBy:
-  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
   - LinksTest::everyPathThisRepositoryWritesToItselfResolves
-  - TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked
+  - SiteTest::everyDirectoryOfTheDocumentationHasItsOwnPage
   - TodoTest::everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked
+  - TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked
 ---
 
 # D-DOC-025 — The documentation is four sections, and the bar carries those four

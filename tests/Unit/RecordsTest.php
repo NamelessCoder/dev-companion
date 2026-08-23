@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
@@ -45,6 +46,7 @@ final class RecordsTest extends TestCase
      * one below `src/Upkeep/`. Nothing tells those apart from the name, so a
      * class we share is a hole `D-DOC-042` states rather than closes.
      */
+    #[Decision('D-DOC-042')]
     #[Test]
     public function everyMemberTheRecordsNameInBackticksExists(): void
     {

@@ -18,6 +18,7 @@ use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Server\ExcludedTools;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -52,6 +53,7 @@ final class ScopeTest extends TestCase
      * The installation the session sits in is the weakest of the signals, so a
      * path into the core still overrules it — `D-SCO-005`.
      */
+    #[Decision('D-SCO-005')]
     #[Test]
     public function inASiteInstallationTheWorkIsOutsideTheCore(): void
     {
@@ -124,6 +126,7 @@ final class ScopeTest extends TestCase
         self::assertTrue(Scope::of('Build/Sources/Sass/theme.scss')->isOutsideTheCore());
     }
 
+    #[Decision('D-SCO-005')]
     #[Test]
     public function namingAnInstallationToReadDoesNotMoveWhereTheWorkIs(): void
     {
@@ -177,6 +180,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('Classes/Controller/EditDocumentController.php'));
     }
 
+    #[Decision('D-SCO-005')]
     #[Test]
     public function theNamedInstallationIsTheEvidenceWhereNothingElseIs(): void
     {
@@ -210,6 +214,7 @@ final class ScopeTest extends TestCase
      * `composer install` had run, and the root manifest answers all three
      * before it (`D-SCO-012`).
      */
+    #[Decision('D-SCO-012')]
     #[Test]
     #[DataProvider('theTwoStatesAnExtensionRepositoryIsIn')]
     public function anExtensionRepositoryIsPlacedByItsRootManifest(bool $installed): void
@@ -224,6 +229,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('Build/Sources/Sass/theme.scss'));
     }
 
+    #[Decision('D-SCO-012')]
     #[Test]
     public function theDeclaredExtensionKeyPlacesAPath(): void
     {
@@ -237,6 +243,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Extension, Scope::of('blog', 'Triage the core issue this was reported as'));
     }
 
+    #[Decision('D-SCO-012')]
     #[Test]
     public function aDotfileKeepsItsDotWhenAPathIsNormalised(): void
     {
@@ -257,6 +264,7 @@ final class ScopeTest extends TestCase
      * `checkExtensionScannerRst`, into a repository whose `Build/` holds two
      * phpunit configurations and a phpstan baseline — `D-SCO-012`.
      */
+    #[Decision('D-SCO-012')]
     #[Test]
     public function aBriefInAnExtensionRepositoryHandsBackNoCoreSuite(): void
     {
@@ -298,6 +306,9 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('checkout', $instructions);
     }
 
+    #[Decision('D-AUD-011')]
+    #[Decision('D-AUD-012')]
+    #[Decision('D-DIS-013')]
     #[Test]
     public function theInstructionsFitWhatAClientKeeps(): void
     {
@@ -356,6 +367,7 @@ final class ScopeTest extends TestCase
      * is what a client that shows a name and no schema can act on —
      * `D-AUD-011`.
      */
+    #[Decision('D-AUD-011')]
     #[Test]
     public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
     {
@@ -376,6 +388,7 @@ final class ScopeTest extends TestCase
      * derived from `git log`, because "TYPO3 commit message" read as the core's
      * Gerrit convention. So the entry says whose repository it is for.
      */
+    #[Decision('D-AUD-011')]
     #[Test]
     public function theInstructionsIndexTheQuestionEachToolAnswers(): void
     {
@@ -423,6 +436,7 @@ final class ScopeTest extends TestCase
      * tools to call — the case that binds `R-ANS-013`, spending the budget on
      * an index of tools that caller does not have — `D-AUD-011`.
      */
+    #[Decision('D-AUD-011')]
     #[Test]
     public function theIndexNamesNoToolTheCallerExcluded(): void
     {
@@ -458,6 +472,7 @@ final class ScopeTest extends TestCase
      * same call again from the same wording (`D-AUD-009`). Triage, reproduction
      * and pricing a fix are three task shapes `scenarios/` holds cases for.
      */
+    #[Decision('D-AUD-009')]
     #[Test]
     public function theEntryPointClaimsTheWorkThatEndsBeforeAPatch(): void
     {
@@ -478,6 +493,7 @@ final class ScopeTest extends TestCase
      * same context window. What differed between the two was the mood, and step
      * 3 of `skills/base.md` has said "Run it in every session" all along.
      */
+    #[Decision('D-AUD-012')]
     #[Test]
     public function bothCallsOfTheEntryPointAreToldInTheImperative(): void
     {
@@ -552,6 +568,7 @@ final class ScopeTest extends TestCase
      * `D-SCO-009` — the checklist, the checks and the discovery steps stay one
      * list, and the brief names the paths the core's own are not for.
      */
+    #[Decision('D-SCO-009')]
     #[Test]
     public function aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich(): void
     {
@@ -581,6 +598,7 @@ final class ScopeTest extends TestCase
      * so the brief drops the checks rather than naming who they are for —
      * `D-SCO-009`.
      */
+    #[Decision('D-SCO-009')]
     #[Test]
     public function aBriefForExtensionPathsAloneKeepsNoCoreStep(): void
     {
@@ -806,6 +824,8 @@ final class ScopeTest extends TestCase
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
     }
 
+    #[Decision('D-GUI-009')]
+    #[Decision('D-SCO-002')]
     #[Test]
     public function maintainingAnExtensionIsNotSubmittingAPatchToTheCore(): void
     {
@@ -831,6 +851,7 @@ final class ScopeTest extends TestCase
      * so the same words that were demoted without one match strongly with it —
      * `D-SCO-002`.
      */
+    #[Decision('D-SCO-002')]
     #[Test]
     public function aCorePathStillMakesTheSameWordAPatchSubmission(): void
     {
@@ -843,6 +864,7 @@ final class ScopeTest extends TestCase
         self::assertSame('strong', $confidence['submission'] ?? null);
     }
 
+    #[Decision('D-SCO-002')]
     #[Test]
     public function inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll(): void
     {
@@ -869,6 +891,7 @@ final class ScopeTest extends TestCase
      * arrive whole, each carrying a condition the contributor answers without
      * looking anything up, so the cost is a prefix rather than a lookup.
      */
+    #[Decision('D-SCO-002')]
     #[Test]
     public function aCoreTaskNamingNoPathKeepsTheSubmissionRules(): void
     {
@@ -905,6 +928,7 @@ final class ScopeTest extends TestCase
      * `aCorePathStillMakesTheSameWordAPatchSubmission` holds from the far side
      * — `D-SCO-002`.
      */
+    #[Decision('D-SCO-002')]
     #[Test]
     public function theBriefNamesWhatWouldTurnTheConditionIntoFact(): void
     {
@@ -1029,6 +1053,7 @@ final class ScopeTest extends TestCase
      * PHP constraint and the commands it declares. The topic was the only field
      * anything read, and the sentence was in the `why` — `D-FBK-037`.
      */
+    #[Decision('D-FBK-037')]
     #[Test]
     public function noExclusionDeniesASourceTheServerReads(): void
     {
@@ -1380,6 +1405,7 @@ final class ScopeTest extends TestCase
      * cells, neither of which answers what goes into a phpstan.neon.
      */
     /** @param array<int, string> $paths */
+    #[Decision('D-KNW-008')]
     #[Test]
     #[DataProvider('theWaysAnExtensionAsksAboutStaticAnalysis')]
     public function aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell(array $paths): void
@@ -1474,6 +1500,7 @@ final class ScopeTest extends TestCase
      * weighed by how few sections carry it, so anything added anywhere moves it
      * — `D-ANS-040`.
      */
+    #[Decision('D-ANS-040')]
     #[Test]
     public function whatARuleAnswerWithheldIsNamedRatherThanMissing(): void
     {
@@ -1503,6 +1530,8 @@ final class ScopeTest extends TestCase
      * the same. `core/contribution/sources` was exactly that — `D-KNW-095`,
      * `D-VER-007`.
      */
+    #[Decision('D-KNW-095')]
+    #[Decision('D-VER-007')]
     #[Test]
     public function everyKnowledgeDocumentIsAnnouncedByTheScope(): void
     {
@@ -1581,6 +1610,7 @@ final class ScopeTest extends TestCase
      * the answer is composed, so a project asking for them is answered with
      * none — `D-KNW-008`.
      */
+    #[Decision('D-KNW-008')]
     #[Test]
     public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
     {
@@ -1634,6 +1664,7 @@ final class ScopeTest extends TestCase
      * rejected lever, and a core path is where a reinstated one would show —
      * `D-KNW-033`.
      */
+    #[Decision('D-KNW-033')]
     #[Test]
     public function aCoreContributorOnFrontendLosesTheBackendUiSections(): void
     {
@@ -1766,6 +1797,7 @@ final class ScopeTest extends TestCase
      * the name has moved, and the scope is where a caller reads the name —
      * `D-ANS-010`.
      */
+    #[Decision('D-ANS-010')]
     #[Test]
     public function everyToolNamedInTheScopeExists(): void
     {
@@ -1811,6 +1843,7 @@ final class ScopeTest extends TestCase
      * catalogue, and reported the size as the cost rather than the answer as
      * wrong.
      */
+    #[Decision('D-ANS-088')]
     #[Test]
     public function aCallThatNamesOneSectionIsAnsweredWithThatSectionAlone(): void
     {
@@ -1847,6 +1880,7 @@ final class ScopeTest extends TestCase
      * through the arguments, so the exclusion report is not one of the sections
      * — `D-ANS-088`.
      */
+    #[Decision('D-ANS-088')]
     #[Test]
     public function noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor(): void
     {
@@ -1869,6 +1903,7 @@ final class ScopeTest extends TestCase
      * that does not know what this server covers cannot name the part it wants
      * — `D-ANS-087` — `D-ANS-088`.
      */
+    #[Decision('D-ANS-088')]
     #[Test]
     public function namingNoSectionAnswersEverythingTheToolHas(): void
     {

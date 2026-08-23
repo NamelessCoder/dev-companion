@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Upkeep\Command\CatalogPaths;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutStatus;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutUpdate;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionCheck;
+use TYPO3\DevCompanion\Upkeep\Command\DecisionCover;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionIndex;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionList;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionRename;
@@ -101,6 +102,7 @@ final class Cli
         $application->addCommand(new RequirementRename());
         $application->addCommand(new DecisionList());
         $application->addCommand(new DecisionCheck());
+        $application->addCommand(new DecisionCover());
         $application->addCommand(new DecisionIndex());
         $application->addCommand(new DecisionRename());
         $application->addCommand(new DecisionRenumber());

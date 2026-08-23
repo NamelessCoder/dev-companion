@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 
 final class InstallerTest extends TestCase
@@ -50,6 +51,7 @@ final class InstallerTest extends TestCase
      * out came back with nothing said — the same silence `D-AUD-005` is about,
      * reached from the other side.
      */
+    #[Decision('D-AUD-005')]
     #[Test]
     public function installKeepsTheEntryAndRewritesOnlyTheCommand(): void
     {
@@ -305,6 +307,7 @@ final class InstallerTest extends TestCase
      *
      * @param string $key the object the client keeps its servers under
      */
+    #[Decision('D-DIS-016')]
     #[Test]
     #[DataProvider('clientsThatResolveTheProjectRoot')]
     public function aClientResolvingTheRootGetsAnEntryThatIsRightAnywhere(
@@ -363,6 +366,7 @@ final class InstallerTest extends TestCase
      * would be an entry that starts a server for nobody — worse than the host
      * path, because it is wrong on the machine that wrote it too — `D-DIS-016`.
      */
+    #[Decision('D-DIS-016')]
     #[Test]
     public function aCheckoutElsewhereKeepsTheHostPath(): void
     {
@@ -425,6 +429,7 @@ final class InstallerTest extends TestCase
      * even though `vendor/bin/typo3-dev-companion` is sitting there, and is
      * told so — `D-DIS-016`.
      */
+    #[Decision('D-DIS-016')]
     #[Test]
     public function aDependencyOfTheProjectStillNamesTheHostPath(): void
     {
@@ -611,6 +616,7 @@ final class InstallerTest extends TestCase
      * `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS` was gone after an `install` — measured
      * 2026-08-04, `D-AUD-006`.
      */
+    #[Decision('D-AUD-006')]
     #[Test]
     public function codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn(): void
     {
@@ -640,6 +646,7 @@ final class InstallerTest extends TestCase
      * ends. Refusing is what is left, because the alternative on record is
      * deleting the caller's lines without saying so — `D-AUD-006`.
      */
+    #[Decision('D-AUD-006')]
     #[Test]
     public function codexInstallRefusesASectionItCannotRewriteWithoutDropping(): void
     {
@@ -707,6 +714,7 @@ final class InstallerTest extends TestCase
      * so a skill this package has dropped goes with the update rather than
      * staying behind in somebody's project — `D-DIS-014`.
      */
+    #[Decision('D-DIS-014')]
     #[Test]
     public function codexUpdateRemovesSkillsTrackedByThePreviousCentralState(): void
     {
@@ -745,6 +753,7 @@ final class InstallerTest extends TestCase
      * throughout: it is what tells "this package's directories are invisible"
      * apart from "the whole skills directory is" — `D-DIS-010`.
      */
+    #[Decision('D-DIS-010')]
     #[Test]
     public function gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote(): void
     {

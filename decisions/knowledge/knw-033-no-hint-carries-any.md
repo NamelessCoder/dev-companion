@@ -4,9 +4,9 @@ title: 'No hint carries `any`'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::nothingIsTaggedAnyWithoutSayingWhy
-  - HintsTest::hintsAreGroupedByDomainWithPhpFirst
   - HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions
+  - HintsTest::hintsAreGroupedByDomainWithPhpFirst
+  - HintsTest::nothingIsTaggedAnyWithoutSayingWhy
   - ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections
 ---
 

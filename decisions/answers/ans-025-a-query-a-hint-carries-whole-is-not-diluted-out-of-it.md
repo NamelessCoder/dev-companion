@@ -4,8 +4,8 @@ title: A query a hint carries whole is not diluted out of it
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - HintsTest::aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs
   - HintsTest::aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt
+  - HintsTest::aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs
   - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 

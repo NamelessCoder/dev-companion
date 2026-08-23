@@ -5,8 +5,8 @@ date: 2026-08-02
 status: revoked
 revokedBy: D-ANS-026
 coveredBy:
-  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
   - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
+  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
 ---
 
 # D-ANS-023 — A ViewHelper question is answered by widening the manual index

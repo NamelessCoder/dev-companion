@@ -4,11 +4,11 @@ title: A core-only intent asks for evidence, not for silence
 date: 2026-07-29
 status: confirmed
 coveredBy:
-  - ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules
-  - ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact
-  - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore
   - ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission
+  - ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules
   - ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll
+  - ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore
+  - ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact
 ---
 
 # D-SCO-002 — A core-only intent asks for evidence, not for silence

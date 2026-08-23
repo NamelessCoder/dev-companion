@@ -4,12 +4,12 @@ title: 'A manual result carries how much of the question it covers'
 date: 2026-08-04
 status: open
 coveredBy:
-  - DocumentationTest::everySearchResultSaysHowMuchOfTheQueryItCovers
-  - DocumentationTest::aResultCoversTheQueryItIsKeptFor
-  - DocumentationTest::aResultCoveringLessThanHalfTheQueryIsStillReturned
-  - DocumentationTest::theAnswerSaysWhereNothingCoversHalfTheQuery
-  - DocumentationTest::anAnswerThatCoversTheQuestionCarriesNoSuchSentence
   - DocumentationTest::aPageReadBackCoversNoQuery
+  - DocumentationTest::aResultCoveringLessThanHalfTheQueryIsStillReturned
+  - DocumentationTest::aResultCoversTheQueryItIsKeptFor
+  - DocumentationTest::anAnswerThatCoversTheQuestionCarriesNoSuchSentence
+  - DocumentationTest::everySearchResultSaysHowMuchOfTheQueryItCovers
+  - DocumentationTest::theAnswerSaysWhereNothingCoversHalfTheQuery
 ---
 
 # D-ANS-051 — A manual result carries how much of the question it covers

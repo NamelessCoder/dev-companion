@@ -4,8 +4,8 @@ title: 'A requirement carries the day it was judged'
 date: 2026-08-22
 status: open
 coveredBy:
-  - UnresolvedTest::aJudgedEntryCarriesTheDayItWasDecidedOn
   - RequirementsTest::aJudgementIsTheDateItWasMadeOn
+  - UnresolvedTest::aJudgedEntryCarriesTheDayItWasDecidedOn
 ---
 
 # D-DOC-038 — A requirement carries the day it was judged

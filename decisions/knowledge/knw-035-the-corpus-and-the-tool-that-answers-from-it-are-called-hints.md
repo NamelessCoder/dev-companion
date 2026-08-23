@@ -4,9 +4,9 @@ title: The corpus and the tool that answers from it are called hints
 date: 2026-08-03
 status: open
 coveredBy:
+  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
   - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
   - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
-  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
 ---
 
 # D-KNW-035 — The corpus and the tool that answers from it are called hints

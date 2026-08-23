@@ -4,8 +4,8 @@ title: 'A step is skippable on what the session holds'
 date: 2026-08-11
 status: open
 coveredBy:
-  - SkillTest::theWorkflowStepRunsInEverySession
   - SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched
+  - SkillTest::theWorkflowStepRunsInEverySession
 ---
 
 # D-SKL-034 — A step is skippable on what the session holds

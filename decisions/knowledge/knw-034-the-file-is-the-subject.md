@@ -4,8 +4,8 @@ title: 'The file is the subject'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
   - HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects
+  - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
 ---
 
 # D-KNW-034 — The file is the subject

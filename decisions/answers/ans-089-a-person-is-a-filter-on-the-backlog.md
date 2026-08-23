@@ -4,12 +4,12 @@ title: 'A person is a filter on the backlog'
 date: 2026-08-19
 status: confirmed
 coveredBy:
-  - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembers
   - ForgeTest::aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth
   - ForgeTest::aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt
   - ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog
-  - ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach
+  - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembers
   - ForgeTest::aRowSaysWhoFiledIt
+  - ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach
 ---
 
 # D-ANS-089 — A person is a filter on the backlog

@@ -4,9 +4,8 @@ title: The site is the documentation, and the readme stays out of it
 date: 2026-08-12
 status: open
 coveredBy:
+  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
   - SiteTest::theSiteOpensOnTheDocumentationsOwnPage
-  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
-  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
   - VersionsTest::whatSomebodyArrivesAtNamesEveryCoveredLine
 ---
 

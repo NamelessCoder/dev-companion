@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Installation\Project;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
 use TYPO3\DevCompanion\Knowledge\Documents;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
@@ -105,6 +106,7 @@ final class ProjectTest extends TestCase
         self::assertSame('guides', array_key_last(array_diff_key($answer, ['answeredBy' => null])));
     }
 
+    #[Decision('D-KNW-055')]
     #[Test]
     public function theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares(): void
     {
@@ -186,6 +188,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('ddev describe -j', $text, 'nothing says where the running ports come from');
     }
 
+    #[Decision('D-KNW-055')]
     #[Test]
     public function theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn(): void
     {
@@ -653,6 +656,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('Node', Registry::call('typo3_project_describe', [])->text);
     }
 
+    #[Decision('D-SCO-014')]
     #[Test]
     public function theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere(): void
     {
@@ -690,6 +694,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Its Build/package.json admits >=24.14.0 <25.0.0', $text);
     }
 
+    #[Decision('D-SCO-014')]
     #[Test]
     public function twoManifestsDeclaringOneNameAreTwoCommandsThatCanBeToldApart(): void
     {
@@ -900,6 +905,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('acquia', $text);
     }
 
+    #[Decision('D-KNW-055')]
     #[Test]
     public function anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent(): void
     {
@@ -994,6 +1000,7 @@ final class ProjectTest extends TestCase
         self::assertSame(['unsupported'], array_keys($result->data));
     }
 
+    #[Decision('D-DIS-019')]
     #[Test]
     public function theRepositoryIsDescribedBeforeAnythingIsInstalledInIt(): void
     {
@@ -1045,6 +1052,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Extensions: not readable until the install has run', $result->text);
     }
 
+    #[Decision('D-DIS-019')]
     #[Test]
     public function aRepositoryThatSaysNothingAboutTypo3IsNotDescribedAsOne(): void
     {
@@ -1117,6 +1125,7 @@ final class ProjectTest extends TestCase
      * which PHP the run is on — while this answer listed the command and said
      * none of it (`D-ANS-092`).
      */
+    #[Decision('D-ANS-092')]
     #[Test]
     public function aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst(): void
     {
@@ -1264,6 +1273,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-EVI-003')]
     #[Test]
     public function aCommandThatWritesIsNeverReportedAsACheck(): void
     {
@@ -1410,6 +1420,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('not what it does at runtime', $result->text);
     }
 
+    #[Decision('D-ANS-008')]
     #[Test]
     public function aClassCountSaysWhatItCounted(): void
     {
@@ -1623,6 +1634,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-018')]
     #[Test]
     public function anExtbasePluginIsToldApartFromAnElementWithoutATemplate(): void
     {
@@ -1741,6 +1753,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-019')]
     #[Test]
     public function theFlexFormAContentElementBindsIsOnItsEntry(): void
     {
@@ -1790,6 +1803,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-019')]
     #[Test]
     public function aFlexFormBoundThroughACallThisDoesNotReadIsStillReported(): void
     {
@@ -1831,6 +1845,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('FlexForms bound to a content type none of the above names', $result->text);
     }
 
+    #[Decision('D-ANS-019')]
     #[Test]
     public function aSiteSetIsAnsweredByTheFilesCoreReadsItFor(): void
     {
@@ -1868,6 +1883,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('route-enhancers.yaml is read from v14.1', $result->text);
     }
 
+    #[Decision('D-ANS-019')]
     #[Test]
     public function aFormSetIsAnsweredWithTheDefinitionsItStores(): void
     {
@@ -2070,6 +2086,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('what the booted installation has', $result->text);
     }
 
+    #[Decision('D-ANS-018')]
     #[Test]
     public function aPluginTheInstallationReportsIsStillToldApart(): void
     {
@@ -2108,6 +2125,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-KNW-055')]
     #[Test]
     public function whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut(): void
     {
@@ -2216,6 +2234,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('typo3-extension-testing', $shipped->text);
     }
 
+    #[Decision('D-ANS-009')]
     #[Test]
     public function theDeprecatedFilesBlockNamesEveryPredicateItLookedAt(): void
     {

@@ -4,8 +4,8 @@ title: 'An exclusion naming no tool is reported and the server starts'
 date: 2026-08-04
 status: open
 coveredBy:
-  - ExcludedToolsTest::aNameNoToolAnswersToLeavesTheRealOneExcluding
   - EntrypointTest::anExcludedNameNoToolAnswersToIsSaidOnStderr
+  - ExcludedToolsTest::aNameNoToolAnswersToLeavesTheRealOneExcluding
   - InstallerTest::installKeepsTheEntryAndRewritesOnlyTheCommand
 ---
 

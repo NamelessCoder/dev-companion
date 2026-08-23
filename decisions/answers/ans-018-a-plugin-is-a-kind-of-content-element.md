@@ -4,8 +4,8 @@ title: 'A plugin is a kind of content element'
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate
   - ProjectTest::aPluginTheInstallationReportsIsStillToldApart
+  - ProjectTest::anExtbasePluginIsToldApartFromAnElementWithoutATemplate
 ---
 
 # D-ANS-018 — A plugin is a kind of content element

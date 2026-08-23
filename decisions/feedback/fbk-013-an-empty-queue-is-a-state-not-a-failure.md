@@ -6,8 +6,8 @@ status: confirmed
 coveredBy:
   - CliTest::theSightingsWaitForAnEmptyQueue
   - CliTest::whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue
-  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
   - StructureTest::noTestSkipsItselfInsteadOfHolding
+  - TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead
 ---
 
 # D-FBK-013 — An empty queue is a state, not a failure

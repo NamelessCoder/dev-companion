@@ -4,8 +4,8 @@ title: An identifier reaches the changelog entries whose body names it
 date: 2026-08-03
 status: open
 coveredBy:
-  - ChangelogLookupTest::aRemovedMethodReachesTheEntriesNamingItInTheirBody
   - ChangelogLookupTest::aQueryTheNamesAnswerIsNotWidenedByTheBodies
+  - ChangelogLookupTest::aRemovedMethodReachesTheEntriesNamingItInTheirBody
   - ChangelogLookupTest::aWordThatIsAlsoWrittenAsCodeIsNotAnIdentifier
   - ChangelogLookupTest::anIdentifierIsReachedInEverySpellingACallerHasIt
 ---

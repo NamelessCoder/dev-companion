@@ -4,11 +4,11 @@ title: 'A curated needle matches the word it is'
 date: 2026-08-04
 status: open
 coveredBy:
-  - TermSearchTest::aStemRunsPastItsOwnEndAndACuratedWordDoesNot
-  - TermSearchTest::aNeedleThatRunsIntoASeparatorIsLeftAsItWas
-  - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
   - HintsTest::aBriefNamesTheHintsItLeftBehind
+  - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
   - HintsTest::aCompoundIsFoundWhicheverWayTheCallerJoinsIt
+  - TermSearchTest::aNeedleThatRunsIntoASeparatorIsLeftAsItWas
+  - TermSearchTest::aStemRunsPastItsOwnEndAndACuratedWordDoesNot
 ---
 
 # D-ANS-050 — A curated needle matches the word it is

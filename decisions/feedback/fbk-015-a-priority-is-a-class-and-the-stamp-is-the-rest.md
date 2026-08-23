@@ -4,8 +4,8 @@ title: A priority is a class, and the stamp is the rest
 date: 2026-08-02
 status: open
 coveredBy:
-  - TodoTest::theQueueIsReadByPriorityAndThenByAge
   - TodoTest::aClaimIsOneMoveThatGoesBothWays
+  - TodoTest::theQueueIsReadByPriorityAndThenByAge
 ---
 
 # D-FBK-015 — A priority is a class, and the stamp is the rest

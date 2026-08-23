@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 /**
  * What the entrypoint does with an argument that is not a command.
@@ -56,6 +57,7 @@ final class EntrypointTest extends TestCase
      * the protocol and nothing else, whatever was written beside it —
      * `D-AUD-005`.
      */
+    #[Decision('D-AUD-005')]
     #[Test]
     public function anExcludedNameNoToolAnswersToIsSaidOnStderr(): void
     {
@@ -95,6 +97,7 @@ final class EntrypointTest extends TestCase
      * with `TYPO3_DEV_COMPANION_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools
      * offered including it — `D-AUD-006`.
      */
+    #[Decision('D-AUD-006')]
     #[Test]
     public function anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo(): void
     {

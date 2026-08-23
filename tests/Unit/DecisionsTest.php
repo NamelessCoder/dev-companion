@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
@@ -65,6 +66,7 @@ final class DecisionsTest extends TestCase
      * what it used to be. Held here rather than by reading it, because the
      * checkout it fails on is the one checkout where nothing collides.
      */
+    #[Decision('D-FBK-046')]
     #[Test]
     public function aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne(): void
     {
@@ -89,6 +91,7 @@ final class DecisionsTest extends TestCase
      * between `D-FBK-1` and `D-FBK-2` in the generated readme as well —
      * `D-DOC-005`.
      */
+    #[Decision('D-DOC-005')]
     #[Test]
     public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
     {
@@ -175,6 +178,7 @@ final class DecisionsTest extends TestCase
      * who pays more for the history than for the decision, and only a reading
      * says which entries those are — `D-DOC-041`.
      */
+    #[Decision('D-DOC-041')]
     #[Test]
     public function anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn(): void
     {
@@ -200,7 +204,7 @@ final class DecisionsTest extends TestCase
     /**
      * What an entry pointing at this code owes is read out, never failed on.
      *
-     * A test named under **Covered by** is the one coupling that holds: it
+     * A test named in `coveredBy` is the one coupling that holds: it
      * fails when the behaviour moves, and `everyTestADecisionNamesExists`
      * fails when the test goes with the code. The three entries found stale on
      * 2026-08-22 named no such test, and the two whose code had moved under
@@ -208,9 +212,10 @@ final class DecisionsTest extends TestCase
      * and not the age of the entry.
      *
      * Most entries here decide something about process and no test could keep
-     * them, which is why nothing may fail on this: a demand for **Covered by**
+     * them, which is why nothing may fail on this: a demand for a `coveredBy`
      * would be answered with a name chosen to satisfy it — `D-DOC-043`.
      */
+    #[Decision('D-DOC-043')]
     #[Test]
     public function anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn(): void
     {
@@ -227,7 +232,7 @@ final class DecisionsTest extends TestCase
         foreach ($uncovered as $entry) {
             $decision = Decisions::all()[$entry['id']];
             $body = (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']);
-            self::assertNotContains('Covered by', $decision['fields'], $entry['id'] . ' names a test and is reported as naming none');
+            self::assertSame([], $decision['coveredBy'], $entry['id'] . ' names a test and is reported as naming none');
             preg_match_all('/`(\w+)::\w+/', $body, $matches);
             self::assertNotSame(
                 [],
@@ -241,30 +246,22 @@ final class DecisionsTest extends TestCase
      * The naming read from the failing end: which entries a test was holding.
      *
      * This is what a session that made a test red is sent to, so it has to
-     * answer for every entry that names one — the method where **Covered by**
-     * names a method, and every method of the class where it names the class.
-     * A test nothing names answers with nothing, which is the ordinary case and
-     * the one that must stay quiet — `D-DOC-043`, `D-DOC-044` is what prints it
-     * when a test fails, and `D-DOC-045` is why it is read out of the front
-     * matter rather than out of a section.
+     * answer for every entry that names one. A test nothing names answers with
+     * nothing, which is the ordinary case and the one that must stay quiet —
+     * `D-DOC-043`, `D-DOC-044` is what prints it when a test fails.
      */
+    #[Decision('D-DOC-043')]
+    #[Decision('D-DOC-044')]
+    #[Decision('D-DOC-045')]
     #[Test]
     public function everyEntryATestHoldsIsNamedFromTheFailingEnd(): void
     {
         $missed = [];
         foreach (Decisions::all() as $decision) {
-            $body = (string) file_get_contents(
-                Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file'],
-            );
-            if (preg_match('/^## Covered by$(.*?)(?=^## |\z)/ms', $body, $section) !== 1) {
-                continue;
-            }
-
-            preg_match_all('/`(\w+Test)(?:::(\w+))?`/', $section[1], $named, PREG_SET_ORDER);
-            foreach ($named as $test) {
-                $held = array_column(Decisions::restingOn($test[1], $test[2] ?? 'anyMethodAtAll'), 'id');
-                if (!in_array($decision['id'], $held, true)) {
-                    $missed[] = $decision['id'] . ' names ' . $test[0] . ' and is not held from it';
+            foreach ($decision['coveredBy'] as $test) {
+                [$class, $method] = explode('::', $test);
+                if (!in_array($decision['id'], array_column(Decisions::restingOn($class, $method), 'id'), true)) {
+                    $missed[] = $decision['id'] . ' names ' . $test . ' and is not held from it';
                 }
             }
         }
@@ -274,26 +271,33 @@ final class DecisionsTest extends TestCase
     }
 
     /**
-     * The other degree of the coupling, and the one that runs the other way.
+     * The two ends are one source: the attribute is written and `coveredBy` is
+     * generated from it.
      *
-     * An entry names the test that would catch its **Wrong if**, and the test
-     * is where somebody stands when the code moves — so a session that changes
-     * the behaviour, fixes the test and never learns which entry rested on it
-     * is how `D-ANS-045` came to describe the opposite of what its method does.
-     * `Covered by` never asked for the return naming, so this was read out
-     * while 405 names were written under the older rule; it fails from the day
-     * the last of them was named — `D-DOC-043`.
+     * Both were written by hand until 2026-08-23, and the corpus is what that
+     * costs: 405 of the tests an entry named said nothing about the entry, so
+     * a session that changed the behaviour and fixed the test never learned
+     * which entry had rested on it — `D-DOC-048`.
      */
+    #[Decision('D-DOC-048')]
     #[Test]
-    public function everyTestADecisionNamesNamesTheEntryBack(): void
+    public function everyEntrySaysWhatTheTestsHoldingItDeclare(): void
     {
-        $loose = [];
-        foreach (Decisions::unnamedByItsTests() as $entry) {
-            $loose[] = $entry['id'] . ' is named by ' . $entry['silent'] . ' of its ' . $entry['tests']
-                . ' tests that say nothing about it';
+        $held = Sources::decisionsHeld();
+        $stale = [];
+        foreach (Decisions::files() as $path) {
+            $contents = (string) file_get_contents($path);
+            if (Decisions::covered($contents, $held[Decisions::read($path)['id']] ?? []) !== $contents) {
+                $stale[] = basename($path);
+            }
         }
 
-        self::assertSame([], $loose, 'a test named under Covered by says which entry rests on it');
+        self::assertSame([], $stale, 'a coveredBy the tests do not write — run bin/cli decisions:cover');
+        self::assertSame(
+            [],
+            array_values(array_diff(array_keys($held), array_keys(Decisions::all()))),
+            'a test declares it holds a decision no entry has',
+        );
     }
 
     /**
@@ -335,6 +339,7 @@ final class DecisionsTest extends TestCase
      * revoked by the next, and what a reader relies on is the latest —
      * `D-DOC-003`.
      */
+    #[Decision('D-DOC-003')]
     #[Test]
     public function aStatusNamesTheLastDatedLineInTheFile(): void
     {
@@ -354,10 +359,12 @@ final class DecisionsTest extends TestCase
     /**
      * A test named in a decision is a claim that something would catch the
      * **Wrong if** happening, and a renamed test turns it into a claim nobody
-     * answers for — which reads exactly like one that still holds. This covers
-     * the `Covered by` field and every test named in passing, because the prose
-     * makes the same claim and goes stale the same way — `D-DOC-003`.
+     * answers for — which reads exactly like one that still holds. `coveredBy`
+     * is generated and cannot say a name the tests do not; what this reaches is
+     * every test named in passing, whose claim goes stale the same way —
+     * `D-DOC-003`.
      */
+    #[Decision('D-DOC-003')]
     #[Test]
     public function everyTestADecisionNamesExists(): void
     {
@@ -396,6 +403,7 @@ final class DecisionsTest extends TestCase
      * one is a question about how a record is kept rather than a name nothing
      * holds — `D-DOC-037`.
      */
+    #[Decision('D-DOC-037')]
     #[Test]
     public function anUnvisitedDecisionNamesNoCommandTheConsoleLost(): void
     {

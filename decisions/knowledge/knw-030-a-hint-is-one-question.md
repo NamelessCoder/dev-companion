@@ -4,10 +4,10 @@ title: 'A hint is one question'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
-  - HintsTest::theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain
   - HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding
+  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
   - HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor
+  - HintsTest::theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain
 ---
 
 # D-KNW-030 — A hint is one question

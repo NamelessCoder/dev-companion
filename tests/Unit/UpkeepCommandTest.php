@@ -12,6 +12,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Cli;
 
 /**
@@ -98,6 +99,7 @@ final class UpkeepCommandTest extends TestCase
      *
      * @param class-string $class
      */
+    #[Decision('D-FBK-041')]
     #[Test]
     #[DataProvider('commandClasses')]
     public function everyCommandIsNamedSubjectThenVerb(string $class, string $name): void

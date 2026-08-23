@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Knowledge\CommitMessage;
 use TYPO3\DevCompanion\Knowledge\ReleaseLines;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 final class CommitMessageTest extends TestCase
 {
@@ -364,6 +365,7 @@ final class CommitMessageTest extends TestCase
      * And nothing is invented for a project that named none: no trailer, and no
      * check asking for one — `D-GUI-017`.
      */
+    #[Decision('D-GUI-017')]
     #[Test]
     public function outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded(): void
     {
@@ -400,6 +402,7 @@ final class CommitMessageTest extends TestCase
      * core's own is, because the trailer belongs to the issue rather than to
      * the workflow — `D-GUI-017`.
      */
+    #[Decision('D-GUI-017')]
     #[Test]
     public function outsideTheCoreATrailerTheCallerWroteIsStillKept(): void
     {
@@ -607,6 +610,7 @@ final class CommitMessageTest extends TestCase
      * The trailer the feedback was filed about came back clean, and a long dead
      * branch would have come back the same way — `D-ANS-058`.
      */
+    #[Decision('D-ANS-058')]
     #[Test]
     public function aBranchOutOfSupportIsAnErrorNamingTheLinesThatTake(): void
     {
@@ -633,6 +637,7 @@ final class CommitMessageTest extends TestCase
      * and a line that opens is a branch created after it was read —
      * `D-ANS-058`.
      */
+    #[Decision('D-ANS-058')]
     #[Test]
     public function aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead(): void
     {
@@ -695,6 +700,7 @@ final class CommitMessageTest extends TestCase
      * A check that only refuses arrives too late: the session that filed this
      * had already counted the trailers on 40 commits by then — `D-ANS-058`.
      */
+    #[Decision('D-ANS-058')]
     #[Test]
     public function theMissingTrailerNamesTheLinesThatTakeAPatch(): void
     {

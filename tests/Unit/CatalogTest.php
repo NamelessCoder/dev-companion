@@ -17,6 +17,7 @@ use TYPO3\DevCompanion\Knowledge\Catalog\SystemExtensions;
 use TYPO3\DevCompanion\Knowledge\Catalog\TranslationDomain;
 use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\Versions;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Catalogs;
@@ -393,6 +394,7 @@ final class CatalogTest extends TestCase
         }
     }
 
+    #[Decision('D-CAT-006')]
     #[Test]
     public function theClassListReachesAtLeastAsFarBackAsTheEntryItBelongsTo(): void
     {
@@ -412,6 +414,7 @@ final class CatalogTest extends TestCase
         }
     }
 
+    #[Decision('D-CAT-006')]
     #[Test]
     public function aClassIsAnsweredOnAVersionItsOwnEntryIsWithheldOn(): void
     {
@@ -433,6 +436,7 @@ final class CatalogTest extends TestCase
         self::assertStringNotContainsString('<table', $result->text);
     }
 
+    #[Decision('D-CAT-006')]
     #[Test]
     public function aQueryThatNamesNoClassOfAWithheldEntryIsAnsweredWithNothing(): void
     {

@@ -5,8 +5,8 @@ date: 2026-08-03
 status: open
 coveredBy:
   - ChangelogTest::aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry
-  - ChangelogTest::theTitlesAreReadOnlyWhereTheFileNamesCarryNothing
   - ChangelogTest::aMissCountsEachWordOverTheTitlesItSearched
+  - ChangelogTest::theTitlesAreReadOnlyWhereTheFileNamesCarryNothing
 ---
 
 # D-ANS-041 — The changelog title is read where the file names carry nothing

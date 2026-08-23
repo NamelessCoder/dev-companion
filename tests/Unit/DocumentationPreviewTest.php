@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Command\DocumentationPreview;
 
@@ -61,6 +62,7 @@ final class DocumentationPreviewTest extends TestCase
     }
 
     /** The whole of it in one call, and each step over what the one before it wrote. */
+    #[Decision('D-DOC-028')]
     #[Test]
     public function onePreviewFetchesTheRendererThenRendersThenFinishes(): void
     {
@@ -91,6 +93,7 @@ final class DocumentationPreviewTest extends TestCase
  * A preview is run again after every paragraph, so the fetch happens once —
  * `D-DOC-028`.
  */
+    #[Decision('D-DOC-028')]
     #[Test]
     public function aRendererThatIsAlreadyThereIsNotFetchedAgain(): void
     {
@@ -107,6 +110,7 @@ final class DocumentationPreviewTest extends TestCase
  * A step that failed stops the rest and is quoted with what it said —
  * `D-DOC-028`.
  */
+    #[Decision('D-DOC-028')]
     #[Test]
     public function aFailedStepStopsThePreviewAndQuotesTheCommand(): void
     {

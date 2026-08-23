@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 /**
  * The tracker is somebody else's host, so what is held here is what this side
@@ -160,6 +161,7 @@ final class ForgeTest extends TestCase
      * the triage and the text alone was actively misleading
      * (`feedback/2026-08-05-033846`) — `D-ANS-057`.
      */
+    #[Decision('D-ANS-057')]
     #[Test]
     public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
     {
@@ -466,6 +468,7 @@ final class ForgeTest extends TestCase
      * (`feedback/2026-08-05-033902`). The search path is also where a triage
      * asks about age, which no title carries — `D-ANS-056`.
      */
+    #[Decision('D-ANS-056')]
     #[Test]
     public function aSearchHitIsFilledFromTheIssuesTheHitsAre(): void
     {
@@ -500,6 +503,7 @@ final class ForgeTest extends TestCase
      * A second call that did not answer does not turn a search that did into an
      * outage. The hits stand with the fields the title carried — `D-ANS-056`.
      */
+    #[Decision('D-ANS-056')]
     #[Test]
     public function aPageThatCouldNotBeFilledIsStillTheHitsThatMatched(): void
     {
@@ -691,6 +695,7 @@ final class ForgeTest extends TestCase
      * fields, which is why the two dates are answerable here at all —
      * `D-ANS-054`.
      */
+    #[Decision('D-ANS-054')]
     #[Test]
     public function theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields(): void
     {
@@ -726,6 +731,7 @@ final class ForgeTest extends TestCase
      * carried a relation and 6 carried a file, and the answer dropped all of
      * them.
      */
+    #[Decision('D-ANS-069')]
     #[Test]
     public function aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt(): void
     {
@@ -775,6 +781,7 @@ final class ForgeTest extends TestCase
      * `message:` index answers with — a change whose own number was asked for —
      * is dropped by the rule a single-issue lookup already applies.
      */
+    #[Decision('D-ANS-069')]
     #[Test]
     public function aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt(): void
     {
@@ -822,6 +829,7 @@ final class ForgeTest extends TestCase
      * A page is not the set, and only the tracker's own count says which of the
      * two the caller is holding — `D-ANS-054`.
      */
+    #[Decision('D-ANS-054')]
     #[Test]
     public function theCountOfEverythingThatMatchedComesBackWithThePage(): void
     {
@@ -857,6 +865,7 @@ final class ForgeTest extends TestCase
      * substring match answers "rte" with every category carrying "Reporter" —
      * `D-ANS-054`.
      */
+    #[Decision('D-ANS-054')]
     #[Test]
     public function anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary(): void
     {
@@ -900,6 +909,7 @@ final class ForgeTest extends TestCase
      * would come back as the whole backlog, which reads as "everything is about
      * the RTE" and is the one mistake this path can make — `D-ANS-054`.
      */
+    #[Decision('D-ANS-054')]
     #[Test]
     public function awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist(): void
     {
@@ -919,6 +929,7 @@ final class ForgeTest extends TestCase
      * category the core adds is one this can filter by without a release —
      * `D-ANS-054`.
      */
+    #[Decision('D-ANS-054')]
     #[Test]
     public function theAreasAreReadFromTheProjectAndHeldRatherThanCopied(): void
     {
@@ -957,6 +968,7 @@ final class ForgeTest extends TestCase
      * the name a caller holds is resolved here or the question cannot be asked
      * at all — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function aPersonIsResolvedAgainstTheProjectsOwnMembers(): void
     {
@@ -982,6 +994,7 @@ final class ForgeTest extends TestCase
      * wrong answer nothing about it says is wrong, so neither is chosen and
      * both are named — which is what a caller asks again with — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth(): void
     {
@@ -1000,6 +1013,7 @@ final class ForgeTest extends TestCase
      * recently filed issues on 2026-08-19 — so the members alone would answer
      * "no such person" about people who have filed dozens — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt(): void
     {
@@ -1046,6 +1060,7 @@ final class ForgeTest extends TestCase
      * unfiltered it would be the backlog of everybody, which is the mistake the
      * word naming no area is guarded against making — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog(): void
     {
@@ -1074,6 +1089,7 @@ final class ForgeTest extends TestCase
      * What somebody has filed over the years is mostly closed, and the
      * enumeration the tracker answers by default hides all of it — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach(): void
     {
@@ -1092,6 +1108,7 @@ final class ForgeTest extends TestCase
      * The dimension the filter selects on is answered on the row as well, so a
      * page says who is reporting it without a call per row — `D-ANS-089`.
      */
+    #[Decision('D-ANS-089')]
     #[Test]
     public function aRowSaysWhoFiledIt(): void
     {
@@ -1153,6 +1170,7 @@ final class ForgeTest extends TestCase
      * everything of this person's — is two reads and a merge here or two calls
      * and a merge in the caller (`feedback/2026-08-19-134706`) — `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry(): void
     {
@@ -1205,6 +1223,7 @@ final class ForgeTest extends TestCase
      * out of 621 leaves the rest reachable by nothing — what answers it is how
      * the set is distributed (`feedback/2026-08-19-134651`) — `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function aBreakdownCountsTheWholeSetRatherThanAPageOfIt(): void
     {
@@ -1274,6 +1293,7 @@ final class ForgeTest extends TestCase
      * read page by page rather than counted off the first of them —
      * `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function theCountedReadPagesUntilTheWholeMatchedSetIsRead(): void
     {
@@ -1300,6 +1320,7 @@ final class ForgeTest extends TestCase
      * proportions off it would be reading them off the oldest thousand —
      * `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function aBreakdownSaysWhereTheBoundCutTheRead(): void
     {
@@ -1332,6 +1353,7 @@ final class ForgeTest extends TestCase
      * it says is already said by the head. What it is not is silently dropped —
      * `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function theLargestBucketsAreAnsweredAndTheTailIsCounted(): void
     {
@@ -1359,6 +1381,7 @@ final class ForgeTest extends TestCase
      * names nobody asked for — three times over in one session
      * (`feedback/2026-08-19-134717`) — `D-ANS-090`.
      */
+    #[Decision('D-ANS-090')]
     #[Test]
     public function theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting(): void
     {

@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Feedback\Card;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\OpenFeedback;
@@ -69,6 +70,10 @@ final class TodoTest extends TestCase
      * loop asserts nothing there — `D-FBK-045`, `D-FBK-016`, `D-FBK-017`,
      * `D-FBK-022`.
      */
+    #[Decision('D-FBK-016')]
+    #[Decision('D-FBK-017')]
+    #[Decision('D-FBK-022')]
+    #[Decision('D-FBK-045')]
     #[Test]
     public function everyOpenFeedbackIsOnTheBoard(): void
     {
@@ -175,6 +180,9 @@ final class TodoTest extends TestCase
      * has a part left that nobody has trimmed it down to — `D-FBK-013`,
      * `D-FBK-016`, `D-FBK-017`.
      */
+    #[Decision('D-FBK-013')]
+    #[Decision('D-FBK-016')]
+    #[Decision('D-FBK-017')]
     #[Test]
     public function everyTodoAnswersForSomethingThatCanStillBeRead(): void
     {
@@ -208,6 +216,7 @@ final class TodoTest extends TestCase
      *
      * @param string|null $unreadable why it cannot be read, or null where it can
      */
+    #[Decision('D-DOC-036')]
     #[Test]
     #[DataProvider('whatATodoMayServe')]
     public function whatATodoServesIsCheckedAgainstThePlaceThatOwnsIt(string $what, ?string $unreadable): void
@@ -332,6 +341,8 @@ final class TodoTest extends TestCase
      * Putting it further down is a judgement now, and judgements are written —
      * `D-FBK-014`, `D-FBK-015`.
      */
+    #[Decision('D-FBK-014')]
+    #[Decision('D-FBK-015')]
     #[Test]
     public function aClaimIsOneMoveThatGoesBothWays(): void
     {
@@ -399,6 +410,7 @@ final class TodoTest extends TestCase
      * checkout the suite was in, and then had to assert around whatever that
      * answered — `D-COD-004`.
      */
+    #[Decision('D-COD-004')]
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
     {
@@ -438,6 +450,7 @@ final class TodoTest extends TestCase
      * @param array{0: int, 1: string} $own
      * @param array{0: int, 1: string} $shared
      */
+    #[Decision('D-COD-004')]
     #[Test]
     #[DataProvider('whatGitAnswersAboutTwoDirectories')]
     public function aWorktreeIsToldApartFromTheCheckoutItWasCutFrom(array $own, array $shared, bool $linked): void
@@ -496,6 +509,7 @@ final class TodoTest extends TestCase
      * queue read by age alone would hand it over last, and one read by priority
      * alone could not tell the two `low` ones apart — `D-FBK-015`.
      */
+    #[Decision('D-FBK-015')]
     #[Test]
     public function theQueueIsReadByPriorityAndThenByAge(): void
     {
@@ -570,6 +584,7 @@ final class TodoTest extends TestCase
      * hands it over with the work rather than leaving it to be looked up.
      * `R-FBK-009` says why; `D-FBK-007` says what it bets on — `D-DOC-025`.
      */
+    #[Decision('D-DOC-025')]
     #[Test]
     public function everyTodoIsHandedWithThePageThatSaysHowOneIsWorked(): void
     {
@@ -598,6 +613,7 @@ final class TodoTest extends TestCase
      * merges are not things a command can carry out. A claim taken without them
      * is a lock nobody knows how to release — `D-DOC-025`.
      */
+    #[Decision('D-DOC-025')]
     #[Test]
     public function everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked(): void
     {

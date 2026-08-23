@@ -4,8 +4,8 @@ title: Every disposition a review makes carries its evidence
 date: 2026-08-03
 status: open
 coveredBy:
-  - SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt
   - SkillTest::aFindingSaysWhetherThePatchIntroducedIt
+  - SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt
   - SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead
 ---
 

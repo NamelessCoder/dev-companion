@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Feedback\Channel;
 use TYPO3\DevCompanion\Feedback\Redaction;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\RecordedFeedback;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -194,6 +195,7 @@ final class FeedbackTest extends TestCase
      * recorded from anywhere else was on disk and on nobody's board until
      * somebody committed in this checkout (`D-FBK-045`).
      */
+    #[Decision('D-FBK-045')]
     #[Test]
     public function aRecordedFeedbackArrivesWithTheCardThatAsksForItsJudgement(): void
     {
@@ -218,6 +220,7 @@ final class FeedbackTest extends TestCase
  * The caller is told where its report is waiting, not only where it was written
  * — `D-FBK-045`.
  */
+    #[Decision('D-FBK-045')]
     #[Test]
     public function theToolReportsTheCardTheFeedbackWasQueuedAs(): void
     {
@@ -259,6 +262,7 @@ final class FeedbackTest extends TestCase
      * suggestion parameter inside the observation because each one had been
      * closed with a tag named after itself — `D-FBK-044`.
      */
+    #[Decision('D-FBK-044')]
     #[Test]
     public function aFieldCarryingTheCallItArrivedInIsRefused(): void
     {
@@ -274,6 +278,7 @@ final class FeedbackTest extends TestCase
      * refuse, and it is the only kind that names those markers at all —
      * `D-FBK-044`.
      */
+    #[Decision('D-FBK-044')]
     #[Test]
     public function aReportQuotingTheMarkersIsStillRecorded(): void
     {
@@ -740,6 +745,7 @@ final class FeedbackTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-017')]
     #[Test]
     public function severalToolsStaySeveralToolsRatherThanOneWord(): void
     {
@@ -773,6 +779,7 @@ final class FeedbackTest extends TestCase
      * otherwise be dropped without a word, which is the one failure the feedback
      * behind that decision reported.
      */
+    #[Decision('D-ANS-017')]
     #[Test]
     public function theRecorderStillTakesAListTheSchemaNoLongerDeclares(): void
     {
@@ -904,6 +911,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    #[Decision('D-FBK-039')]
     #[Test]
     #[DataProvider('theSpellingsOneNameArrivesIn')]
     public function aNameIsFoundHoweverItsSeparatorsAreSpelled(string $spelling): void
@@ -941,6 +949,7 @@ final class FeedbackTest extends TestCase
      * feedback naming a tool that has since been renamed away, or naming its
      * client's wrapper, is a session's report and is left as it was written.
      */
+    #[Decision('D-FBK-039')]
     #[Test]
     public function everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt(): void
     {

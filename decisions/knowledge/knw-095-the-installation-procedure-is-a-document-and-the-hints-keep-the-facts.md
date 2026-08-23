@@ -5,8 +5,8 @@ date: 2026-08-18
 status: open
 coveredBy:
   - KnowledgeTest::theBootRunIsOrderedInTheDocumentAndNotInTheHint
-  - SkillTest::theBootStepNamesTheGuideThatCarriesTheRun
   - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
+  - SkillTest::theBootStepNamesTheGuideThatCarriesTheRun
 ---
 
 # D-KNW-095 — The installation procedure is a document and the hints keep the facts

@@ -5,8 +5,8 @@ date: 2026-08-08
 status: open
 coveredBy:
   - SkillTest::aDraftIsWhatDeclaresItselfOneUnderThisServersKey
-  - SkillTest::everyFrontMatterFieldIsOneTheStandardDefines
   - SkillTest::aDraftSaysSoInItsOwnFrontMatter
+  - SkillTest::everyFrontMatterFieldIsOneTheStandardDefines
 ---
 
 # D-SKL-027 — A draft declares itself under this server's own metadata key

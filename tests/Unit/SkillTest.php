@@ -20,6 +20,7 @@ use TYPO3\DevCompanion\Knowledge\Hints;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
@@ -327,6 +328,7 @@ final class SkillTest extends TestCase
      * them and threaded the way a session reads them, and the two that need an
      * installation are asked of the one this repository writes (`D-SKL-025`).
      */
+    #[Decision('D-SKL-025')]
     #[Test]
     public function everyCallTheBaseFixesAnswersWithWhatItSendsTheSessionToRead(): void
     {
@@ -512,6 +514,8 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('Continue only when asked to after saying so', $base);
     }
 
+    #[Decision('D-SKL-015')]
+    #[Decision('D-SKL-034')]
     #[Test]
     public function theWorkflowStepRunsInEverySession(): void
     {
@@ -570,6 +574,8 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-SKL-014')]
+    #[Decision('D-SKL-064')]
     #[Test]
     public function theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange(): void
     {
@@ -708,6 +714,9 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('the sweep ran and came back empty', $skill);
     }
 
+    #[Decision('D-SKL-015')]
+    #[Decision('D-SKL-034')]
+    #[Decision('D-SKL-037')]
     #[Test]
     public function theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched(): void
     {
@@ -785,6 +794,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-010')]
     #[Test]
     public function theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks(): void
     {
@@ -871,6 +881,7 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('page titles and section paths', $skill);
     }
 
+    #[Decision('D-SKL-004')]
     #[Test]
     public function theInstalledSourceIsTheStepAfterTheLookups(): void
     {
@@ -1057,6 +1068,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('`typo3_hint_lookup` for the sinks', $checklist);
     }
 
+    #[Decision('D-SKL-007')]
     #[Test]
     public function aReviewReportsWhatItDroppedAndWhatDroppedIt(): void
     {
@@ -1165,6 +1177,7 @@ final class SkillTest extends TestCase
         }
     }
 
+    #[Decision('D-SKL-009')]
     #[Test]
     public function aReviewNamesTheSuitesItDidNotRun(): void
     {
@@ -1331,6 +1344,8 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('Autowire', $skill);
     }
 
+    #[Decision('D-SKL-011')]
+    #[Decision('D-SKL-043')]
     #[Test]
     public function aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn(): void
     {
@@ -1364,6 +1379,7 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('Length is the limit rather than the count', $skill);
     }
 
+    #[Decision('D-SKL-008')]
     #[Test]
     public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
     {
@@ -1425,6 +1441,7 @@ final class SkillTest extends TestCase
      * `markTestSkipped` is mostly the machine, since fifty of those against two
      * about a defect is a ratio that sends a session reading the wrong fifty.
      */
+    #[Decision('D-KNW-064')]
     #[Test]
     public function aTriageLooksForTheAssertionTheSuiteAlreadyCarries(): void
     {
@@ -1608,6 +1625,7 @@ final class SkillTest extends TestCase
      * that can still be spared the work is the one about to write the code
      * (`D-SKL-010`).
      */
+    #[Decision('D-SKL-010')]
     #[Test]
     public function theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer(): void
     {
@@ -1661,6 +1679,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('a change that has to announce itself, or a breaking one', $skill);
     }
 
+    #[Decision('D-SKL-007')]
     #[Test]
     public function aSurfaceReportedAsAssessedNamesWhatWasRead(): void
     {
@@ -1722,6 +1741,7 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('`typo3_rule_lookup` asked for `documentation`', $skill);
     }
 
+    #[Decision('D-SKL-007')]
     #[Test]
     public function aFindingSaysWhetherThePatchIntroducedIt(): void
     {
@@ -1847,6 +1867,7 @@ final class SkillTest extends TestCase
         self::assertLessThan($reproduce, $closure);
     }
 
+    #[Decision('D-SKL-055')]
     #[Test]
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
     {
@@ -2011,6 +2032,7 @@ final class SkillTest extends TestCase
      * in, and it got in beside a test that read one field out of the block and
      * let every other one through — `D-SKL-027`.
      */
+    #[Decision('D-SKL-027')]
     #[Test]
     public function everyFrontMatterFieldIsOneTheStandardDefines(): void
     {
@@ -2055,6 +2077,9 @@ final class SkillTest extends TestCase
      * directory that declares itself a draft is published to nobody, and every
      * one that does not is published — `D-SKL-054`, `D-SKL-027`, `D-SKL-021`.
      */
+    #[Decision('D-SKL-021')]
+    #[Decision('D-SKL-027')]
+    #[Decision('D-SKL-054')]
     #[Test]
     public function aDraftSaysSoInItsOwnFrontMatter(): void
     {
@@ -2100,6 +2125,7 @@ final class SkillTest extends TestCase
      * not to a regex, and front matter no parser can read is not a declaration
      * at all — `D-SKL-027`.
      */
+    #[Decision('D-SKL-027')]
     #[Test]
     #[DataProvider('theShapesAFrontMatterCanTake')]
     public function aDraftIsWhatDeclaresItselfOneUnderThisServersKey(bool $draft, string $body): void
@@ -2204,6 +2230,7 @@ final class SkillTest extends TestCase
      * — `D-SKL-061`. So both halves are held here too: the premise a defect
      * inside a declared range meets, and the step the body owes it once it did.
      */
+    #[Decision('D-SKL-061')]
     #[Test]
     public function aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill(): void
     {
@@ -2231,6 +2258,10 @@ final class SkillTest extends TestCase
      * their total, in the client's own arithmetic: `- <name>: <description>`,
      * one newline between entries — `D-SKL-061`.
      */
+    #[Decision('D-SKL-026')]
+    #[Decision('D-SKL-054')]
+    #[Decision('D-SKL-061')]
+    #[Decision('D-SKL-064')]
     #[Test]
     public function everyDescriptionIsWrittenToTheBudgetTheyShare(): void
     {
@@ -2271,6 +2302,7 @@ final class SkillTest extends TestCase
      * somebody first, and `typo3-development-installation` has been sitting
      * there since 2026-08-03 waiting for exactly that review.
      */
+    #[Decision('D-SKL-013')]
     #[Test]
     public function everySkillNamedInKnowledgeIsPublished(): void
     {
@@ -2367,6 +2399,7 @@ final class SkillTest extends TestCase
      * brief names the installation with (`D-SKL-051`). Two of the three, because
      * the third has no intent yet: that workflow is `D-SKL-050`'s card.
      */
+    #[Decision('D-SKL-051')]
     #[Test]
     public function aBriefThatNamesSeveralUnitsRoutesToTheSkillOfEach(): void
     {
@@ -2391,6 +2424,7 @@ final class SkillTest extends TestCase
      * this set, because a draft reachable by routing is one nobody chose, and
      * that is the exemption this check has and the only one — `D-SKL-064`.
      */
+    #[Decision('D-SKL-064')]
     #[Test]
     public function everyPublishedSkillIsNamedByAnIntent(): void
     {
@@ -2418,6 +2452,7 @@ final class SkillTest extends TestCase
      * is responsible for instead of in the middle of somebody else's —
      * `D-SKL-021`.
      */
+    #[Decision('D-SKL-021')]
     #[Test]
     public function everySkillStatesWhatItOwns(): void
     {
@@ -2481,6 +2516,7 @@ final class SkillTest extends TestCase
         }
     }
 
+    #[Decision('D-SKL-052')]
     #[Test]
     public function noSkillKeepsASecondCopyOfWhatAToolOwns(): void
     {
@@ -2540,6 +2576,9 @@ final class SkillTest extends TestCase
      * them, rather than restating what the tool answers — `D-SKL-046`,
      * `D-SKL-055`, `D-SKL-021`.
      */
+    #[Decision('D-SKL-021')]
+    #[Decision('D-SKL-046')]
+    #[Decision('D-SKL-055')]
     #[Test]
     public function everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder(): void
     {
@@ -2570,6 +2609,7 @@ final class SkillTest extends TestCase
      * discharge names what answers instead, in the words `DISCHARGE` carries,
      * and a routing is any other mention — `D-SKL-055`.
      */
+    #[Decision('D-SKL-055')]
     #[Test]
     public function everyDischargedCallIsWrittenAsOneAndRoutedNowhere(): void
     {
@@ -2614,6 +2654,7 @@ final class SkillTest extends TestCase
      * to, and the install that says whether a distribution is complete —
      * `D-SKL-021`.
      */
+    #[Decision('D-SKL-021')]
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
     {
@@ -2646,6 +2687,7 @@ final class SkillTest extends TestCase
      * than described: the line promises a caller that a symptom reaches, and
      * curation is what can make that false without touching the skill.
      */
+    #[Decision('D-SKL-048')]
     #[Test]
     public function theBuildWorkflowSaysASymptomIsALookupTrigger(): void
     {
@@ -2682,6 +2724,7 @@ final class SkillTest extends TestCase
      * caller holding the looking answer must not read the step as discharged
      * (`D-SKL-044`).
      */
+    #[Decision('D-SKL-045')]
     #[Test]
     public function theBrowserStepNamesTheGuidesThatAnswerIt(): void
     {
@@ -2955,6 +2998,12 @@ final class SkillTest extends TestCase
      * wording and nothing else, which is why they are held here — `D-SKL-056` —
      * `D-KNW-105`.
      */
+    #[Decision('D-KNW-092')]
+    #[Decision('D-KNW-105')]
+    #[Decision('D-SKL-044')]
+    #[Decision('D-SKL-047')]
+    #[Decision('D-SKL-056')]
+    #[Decision('D-SKL-058')]
     #[Test]
     public function anInstallationIsBuiltInDependencyOrder(): void
     {
@@ -3174,6 +3223,7 @@ final class SkillTest extends TestCase
      * `D-KNW-095`. The order is the document's from that entry on, so a step
      * that names only the hint sends the caller to the facts and to no run.
      */
+    #[Decision('D-KNW-095')]
     #[Test]
     public function theBootStepNamesTheGuideThatCarriesTheRun(): void
     {
@@ -3207,6 +3257,7 @@ final class SkillTest extends TestCase
      * nowhere, so a caller there given it unbounded looks for an option its own
      * help does not print.
      */
+    #[Decision('D-SKL-057')]
     #[Test]
     public function theSetupOptionsAreReadFromTheConsole(): void
     {
@@ -3370,6 +3421,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-SKL-002')]
     #[Test]
     public function aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList(): void
     {
@@ -3575,6 +3627,7 @@ final class SkillTest extends TestCase
      * That the moment is the right one is a reading of the workflow rather than
      * a property of a file.
      */
+    #[Decision('D-SKL-053')]
     #[Test]
     public function aSkillThatHandsOverSaysToInvokeTheSuccessor(): void
     {

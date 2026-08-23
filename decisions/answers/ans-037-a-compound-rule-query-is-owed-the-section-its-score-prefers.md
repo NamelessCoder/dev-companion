@@ -4,13 +4,13 @@ title: 'A compound rule query is owed the section its score prefers'
 date: 2026-08-03
 status: open
 coveredBy:
-  - KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt
-  - KnowledgeTest::everyDocumentIsReachedByItsOwnTitle
-  - KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse
   - KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary
   - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
-  - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
+  - KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt
   - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
+  - KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse
+  - KnowledgeTest::everyDocumentIsReachedByItsOwnTitle
+  - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
 ---
 
 # D-ANS-037 — A compound rule query is owed the section its score prefers

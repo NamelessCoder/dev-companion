@@ -4,9 +4,9 @@ title: The installation is evidence about the task, and the weakest kind
 date: 2026-07-29
 status: confirmed
 coveredBy:
+  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore
   - ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs
   - ScopeTest::theNamedInstallationIsTheEvidenceWhereNothingElseIs
-  - ScopeTest::inASiteInstallationTheWorkIsOutsideTheCore
 ---
 
 # D-SCO-005 — The installation is evidence about the task, and the weakest kind

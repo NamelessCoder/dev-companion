@@ -4,8 +4,8 @@ title: What this package writes into a project ignores itself
 date: 2026-08-03
 status: open
 coveredBy:
-  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
   - InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore
+  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
 ---
 
 # D-DIS-010 — What this package writes into a project ignores itself

@@ -5,10 +5,10 @@ date: 2026-08-04
 status: open
 coveredBy:
   - KnowledgeTest::aBoundSectionIsKeptOnTheMajorItHoldsFor
-  - KnowledgeTest::theBindingDoesNotReachTheCallerAsPartOfWhatItBinds
   - KnowledgeTest::aDeclarationBelowTheFirstLineOfContentBindsNothing
   - KnowledgeTest::noProseDocumentDatesAStatementInItsSentence
   - KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave
+  - KnowledgeTest::theBindingDoesNotReachTheCallerAsPartOfWhatItBinds
   - VersionsTest::proseSaysWhereARangeItDoesNotCarryLives
 ---
 

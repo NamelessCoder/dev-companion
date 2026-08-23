@@ -4,8 +4,8 @@ title: A brief that changes nothing routes only the workflows that change nothin
 date: 2026-08-14
 status: open
 coveredBy:
-  - HintsTest::aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt
   - HintsTest::aBriefNamesTheSkillThatOwnsTheWork
+  - HintsTest::aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt
 ---
 
 # D-SKL-039 — A brief that changes nothing routes only the workflows that change nothing

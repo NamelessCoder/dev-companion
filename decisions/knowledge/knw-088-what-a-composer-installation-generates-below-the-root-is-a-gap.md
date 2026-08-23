@@ -4,8 +4,8 @@ title: 'What a Composer installation generates below the root is a gap'
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::whatAComposerInstallationGeneratesIsNamed
   - HintsTest::theGeneratedDocumentRootIsStatedPerMajorOnBothHints
+  - HintsTest::whatAComposerInstallationGeneratesIsNamed
 ---
 
 # D-KNW-088 — What a Composer installation generates below the root is a gap

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Search\TermSearch;
 use TYPO3\DevCompanion\Search\Text;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 /**
  * Which words of a query are searched for at all.
@@ -26,6 +27,7 @@ final class TermSearchTest extends TestCase
      * what a two-letter word costs is answered by the stop list rather than by
      * the length — `D-ANS-028`.
      */
+    #[Decision('D-ANS-028')]
     #[Test]
     public function aTwoLetterWordIsATerm(): void
     {
@@ -38,6 +40,7 @@ final class TermSearchTest extends TestCase
      * English word it is spelled like, so the stopword list does not reach it —
      * `f:or` and `f:then` otherwise have no term at all (`D-ANS-047`).
      */
+    #[Decision('D-ANS-047')]
     #[Test]
     public function aWordBehindANamespacePrefixIsNotAStopword(): void
     {
@@ -51,6 +54,7 @@ final class TermSearchTest extends TestCase
      * that is what keeps the same word a stopword in prose — seven of the 41
      * scenario prompts say "or" or "then" in a sentence — `D-ANS-047`.
      */
+    #[Decision('D-ANS-047')]
     #[Test]
     public function theSameWordAfterTheColonOfASentenceIsNot(): void
     {
@@ -63,6 +67,7 @@ final class TermSearchTest extends TestCase
      * nothing — the `f` of `f:if` is the `f` of every other tag in the book —
      * `D-ANS-028`.
      */
+    #[Decision('D-ANS-028')]
     #[Test]
     public function oneLetterIsNot(): void
     {
@@ -74,6 +79,7 @@ final class TermSearchTest extends TestCase
      * moving it means the list has to name them itself: "set it up from
      * scratch" otherwise reaches Setting up backend user groups — `D-ANS-028`.
      */
+    #[Decision('D-ANS-028')]
     #[Test]
     public function aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped(): void
     {
@@ -85,6 +91,7 @@ final class TermSearchTest extends TestCase
      * floor could move at all: none of the prefix noise `PREFIX_FROM_LENGTH`
      * guards against reaches a word this short — `D-ANS-028`.
      */
+    #[Decision('D-ANS-028')]
     #[Test]
     public function aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix(): void
     {
@@ -102,6 +109,7 @@ final class TermSearchTest extends TestCase
      * while `test` — a word, and the tests intent's own needle — does not
      * reach it at all.
      */
+    #[Decision('D-ANS-050')]
     #[Test]
     public function aStemRunsPastItsOwnEndAndACuratedWordDoesNot(): void
     {
@@ -126,6 +134,7 @@ final class TermSearchTest extends TestCase
      * identifier a needle is the head of is still reached — `D-ANS-006`'s side
      * of the same question — `D-ANS-050`.
      */
+    #[Decision('D-ANS-050')]
     #[Test]
     public function aNeedleThatRunsIntoASeparatorIsLeftAsItWas(): void
     {

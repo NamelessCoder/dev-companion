@@ -4,11 +4,11 @@ title: A shipped-file deprecation is found by the tool that lists the file
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
   - ExtensionTest::aFrameworkPackageIsExemptFromBoth
-  - ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile
   - ExtensionTest::anIconBelowResourcesIsWhatSilencesTheRootOne
+  - ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile
   - ExtensionTest::theRenamedFileBesideItIsWhatSilencesTheOldOne
+  - HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch
   - ProjectTest::theDeprecatedFilesBlockNamesEveryPredicateItLookedAt
 ---
 

@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\ChangelogLookup;
 use TYPO3\DevCompanion\Tool\Registry;
@@ -46,6 +47,7 @@ final class ChangelogLookupTest extends TestCase
         Instance::discoverFrom(null);
     }
 
+    #[Decision('D-ANS-042')]
     #[Test]
     public function aRemovedMethodReachesTheEntriesNamingItInTheirBody(): void
     {
@@ -63,6 +65,7 @@ final class ChangelogLookupTest extends TestCase
         self::assertStringContainsString('not the same as being about it', $result->text);
     }
 
+    #[Decision('D-ANS-042')]
     #[Test]
     public function aQueryTheNamesAnswerIsNotWidenedByTheBodies(): void
     {
@@ -79,6 +82,7 @@ final class ChangelogLookupTest extends TestCase
         self::assertSame('name', $result->data['matchedIn']);
     }
 
+    #[Decision('D-ANS-042')]
     #[Test]
     public function aWordThatIsAlsoWrittenAsCodeIsNotAnIdentifier(): void
     {
@@ -98,6 +102,7 @@ final class ChangelogLookupTest extends TestCase
      * code spelled it, and the entry's own body is where it is written —
      * `D-ANS-042`.
      */
+    #[Decision('D-ANS-042')]
     #[Test]
     public function anIdentifierIsReachedInEverySpellingACallerHasIt(): void
     {
@@ -192,6 +197,7 @@ final class ChangelogLookupTest extends TestCase
      * covered majors put under a version and a type, which is the 128
      * deprecations of 12 counted in `.checkouts/12.4` on 2026-08-21.
      */
+    #[Decision('D-ANS-093')]
     #[Test]
     public function aMajorsDeprecationsComeBackInOneCall(): void
     {

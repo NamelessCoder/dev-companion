@@ -100,7 +100,7 @@ What an entry holds
     date: 2026-07-29
     status: open
     coveredBy:
-      - SomeTest::theMethodThatWouldCatchIt
+      - SomeTest::theMethodThatWouldCatchIt      # written by decisions:cover
     ---
 
     # D-DIS-004 — The version comes from the core package, not from the console
@@ -129,8 +129,8 @@ What an entry holds
       notice it happening.
 
 
-* The **title** is the front matter's, and the heading repeats it so a reader
-  of the file sees it where a heading belongs. ``bin/cli decisions:check`` holds
+* The **title** is the front matter's, and the heading repeats it so a reader of
+  the file sees it where a heading belongs. ``bin/cli decisions:check`` holds
   the two to each other, so a rewrite of one is a rewrite of both.
 
   It is the name the entry is read by in a listing of hundreds, and it is not
@@ -140,47 +140,51 @@ What an entry holds
   ``bin/cli prose:check`` counts the ones that carry more, worst first, and
   fails on none of them.
 
-  It says what will be done, in the affirmative. Not the deficiency
-  it corrects and not a negation: "The ladder needs an outcome that builds
-  something", not "the ladder had no outcome that builds" and not "the ladder is
-  not a filter". What was wrong is evidence and belongs in the paragraph under
-  the bold sentence; a listing of 138 entries is read for what each one settled,
-  and a title in the past tense or in the negative makes the reader reconstruct
-  that. It is `AGENTS.md <../../AGENTS.md>`_'s "say what is, not what it is
-  not", applied where it is read most and followed least. It holds for every
-  entry, revoked ones included: what a revoked entry preserves is its statement
-  and its **Revoked on** section, and a listing where some titles name a fix and
-  others name a gap is read as two kinds of entry when there is one.
+  It says what will be done, in the affirmative. Not the deficiency it corrects
+  and not a negation: "The ladder needs an outcome that builds something", not
+  "the ladder had no outcome that builds" and not "the ladder is not a filter".
+  What was wrong is evidence and belongs in the paragraph under the bold
+  sentence; a listing of 138 entries is read for what each one settled, and a
+  title in the past tense or in the negative makes the reader reconstruct that.
+  It is `AGENTS.md <../../AGENTS.md>`_'s "say what is, not what it is not",
+  applied where it is read most and followed least. It holds for every entry,
+  revoked ones included: what a revoked entry preserves is its statement and its
+  **Revoked on** section, and a listing where some titles name a fix and others
+  name a gap is read as two kinds of entry when there is one.
 
   What the check holds is that the two spellings agree, and nothing holds the
-  shape. The corpus was read for it on
-  2026-08-22 and the search returned thirty-five titles of which one had drifted
-  — the rest were the affirmative "A is B, not C", which states what is and then
-  excludes. A check would report those thirty-four every time, so what keeps
-  this is somebody rereading the title before the commit.
+  shape. The corpus was read for it on 2026-08-22 and the search returned
+  thirty-five titles of which one had drifted — the rest were the affirmative "A
+  is B, not C", which states what is and then excludes. A check would report
+  those thirty-four every time, so what keeps this is somebody rereading the
+  title before the commit.
 * The **bold first sentence** is the decision. A reader who stops after it knows
   what was settled; everything under it is what settled it.
 * The sections are a fixed set, in that order: **Evidence**, **Decided**,
-  **Assumed**, **Wrong if**. Only **Wrong if** is required — an entry that cannot
-  say what would falsify it is not a decision worth recording. ``date`` is the
-  day it was decided.
+  **Assumed**, **Wrong if**. Only **Wrong if** is required — an entry that
+  cannot say what would falsify it is not a decision worth recording. ``date``
+  is the day it was decided.
 * Each section holds one bullet per item. Half the entries decide more than one
   thing and a fifth rest on more than one assumption, which is why these are
   sections and not a bullet repeating its own label.
-* ``coveredBy`` lists the tests that would catch the **Wrong if** happening,
-  one per line of the front matter, and it is optional. Most entries are about
-  process and nothing runs over them; where something does, naming it is what
-  turns the promise into something the suite keeps — and what a failing test
-  prints, so the session that made it red is sent here. Every test named
-  anywhere in an entry has to exist —
-  ``DecisionsTest::everyTestADecisionNamesExists`` — and every test named in
-  ``coveredBy`` names the entry back, which
-  ``DecisionsTest::everyTestADecisionNamesNamesTheEntryBack`` fails on.
-* It is front matter rather than a section because it is data: three readings
-  parse it, a listing counts it, and a failing test prints it. Where nothing can
-  hold an entry, ``coveredBy: []`` says so and the reason is a bullet of
-  **Decided** — an empty list read and a list nobody wrote look identical
-  otherwise.
+* ``coveredBy`` lists the tests that would catch the **Wrong if** happening, and
+  it is **generated**: the test declares ``#[Decision('D-DIS-004')]`` and
+  ``bin/cli decisions:cover`` writes the front matter from every such attribute.
+  Editing the list by hand is undone by the next run, and
+  ``bin/cli decisions:check`` fails meanwhile — naming the command — so the two
+  ends cannot say different things.
+  `D-DOC-048 <../../decisions/documentation/doc-048-a-test-declares-the-decision-it-holds.md>`_
+  is why the attribute is the source and not the entry.
+* Most entries are about process and nothing runs over them. Where something
+  does, the attribute is what turns the promise into something the suite keeps —
+  and what a failing test prints, so the session that made it red is sent here.
+  A test declaring an id no entry has fails the check as well, and every test an
+  entry names in passing has to exist —
+  ``DecisionsTest::everyTestADecisionNamesExists``.
+* It is front matter rather than a section because it is data: a listing counts
+  it, a check reads it, and a failing test prints it. Where nothing can hold an
+  entry, ``coveredBy: []`` says so and the reason is a bullet of **Decided** —
+  an empty list read and a list nobody wrote look identical otherwise.
 
 The dated sections
 ------------------

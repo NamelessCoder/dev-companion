@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 
 /**
@@ -46,6 +47,8 @@ final class ToolNamingTest extends TestCase
      * server by, so the vocabulary is defined here and nowhere else —
      * `D-SCO-010`, `D-SCO-011`.
      */
+    #[Decision('D-SCO-010')]
+    #[Decision('D-SCO-011')]
     #[Test]
     public function everyToolIsNamedSubjectThenVerb(): void
     {
@@ -103,6 +106,9 @@ final class ToolNamingTest extends TestCase
      * it is the one corpus where a superseded name is sometimes the subject of
      * the sentence — `D-DOC-040`, `D-SCO-011`, `D-KNW-035`.
      */
+    #[Decision('D-DOC-040')]
+    #[Decision('D-KNW-035')]
+    #[Decision('D-SCO-011')]
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
     {
@@ -137,6 +143,7 @@ final class ToolNamingTest extends TestCase
      * tool name, and neither is the `typo3_logo.png` inside a Fluid example —
      * `D-DOC-040`.
      */
+    #[Decision('D-DOC-040')]
     #[Test]
     public function everyToolADecisionOffersInBackticksIsRegistered(): void
     {
@@ -161,6 +168,7 @@ final class ToolNamingTest extends TestCase
      * caller reading a tool name out of an answer depends on — `D-SCO-011`.
      */
     /** @param array<string, mixed> $arguments */
+    #[Decision('D-SCO-011')]
     #[DataProvider('toolCalls')]
     #[Test]
     public function everyToolNameAnAnswerNamesIsRegistered(string $tool, array $arguments): void

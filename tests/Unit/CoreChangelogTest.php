@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -41,6 +42,7 @@ final class CoreChangelogTest extends TestCase
      * is answered from docs.typo3.org and the entry says where it came from —
      * `D-ANS-067`.
      */
+    #[Decision('D-ANS-067')]
     #[Test]
     public function anEntryAboveTheInstalledMajorComesFromTheManual(): void
     {
@@ -66,6 +68,7 @@ final class CoreChangelogTest extends TestCase
      * disk is the code that is running, and the host publishes what the release
      * branch carries today — `D-ANS-067`.
      */
+    #[Decision('D-ANS-067')]
     #[Test]
     public function aVersionTheInstallationShipsIsNeverTakenFromTheManual(): void
     {
@@ -87,6 +90,7 @@ final class CoreChangelogTest extends TestCase
      * network a connect timeout, for entries the narrowing already excluded —
      * `D-ANS-067`.
      */
+    #[Decision('D-ANS-067')]
     #[Test]
     public function askingForAnInstalledVersionReachesNoHostAtAll(): void
     {
@@ -111,6 +115,7 @@ final class CoreChangelogTest extends TestCase
      * silence read as "there is nothing above your major" is the wrong answer
      * to the one question this exists for — `D-ANS-067`.
      */
+    #[Decision('D-ANS-067')]
     #[Test]
     public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing(): void
     {
@@ -130,6 +135,7 @@ final class CoreChangelogTest extends TestCase
      * it should have found is still searched by its file name alone —
      * `D-ANS-067`.
      */
+    #[Decision('D-ANS-067')]
     #[Test]
     public function aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout(): void
     {

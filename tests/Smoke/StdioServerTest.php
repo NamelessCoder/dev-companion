@@ -10,6 +10,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 
 /**
@@ -102,6 +103,7 @@ final class StdioServerTest extends TestCase
      * person who can run the command reads, and it carries what differs, since
      * only one of the two is budgeted — `R-DIS-025` — `D-DIS-013`.
      */
+    #[Decision('D-DIS-013')]
     #[Test]
     public function aProjectWhoseSkillsNobodyHasUpdatedIsToldBeforeTheFirstCall(): void
     {
@@ -236,6 +238,7 @@ final class StdioServerTest extends TestCase
      * `D-ANS-005`. What comes back is the unsupported answer and the caller's
      * own query, with no count, no flag and no empty list to read as a result.
      */
+    #[Decision('D-ANS-005')]
     #[Test]
     public function aQuestionThatCannotBeAnsweredHereIsStillAnAnswer(): void
     {
@@ -275,6 +278,7 @@ final class StdioServerTest extends TestCase
      * index is served under it over the wire rather than only in a unit —
      * `D-SCO-010`.
      */
+    #[Decision('D-SCO-010')]
     #[Test]
     public function theKnowledgeIndexIsServedWithTheScope(): void
     {
@@ -377,6 +381,7 @@ final class StdioServerTest extends TestCase
      * should have used. Both halves belong over the wire, because `FeedbackTest`
      * calls `Channel::record` directly and the recorder still takes a list.
      */
+    #[Decision('D-ANS-017')]
     #[Test]
     public function aListOfToolNamesIsRefusedWithTheTypeItWanted(): void
     {
@@ -414,6 +419,7 @@ final class StdioServerTest extends TestCase
      * still validates against; `D-ANS-012` says what would show that the wrong
      * half was fixed.
      */
+    #[Decision('D-ANS-012')]
     #[Test]
     public function aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth(): void
     {

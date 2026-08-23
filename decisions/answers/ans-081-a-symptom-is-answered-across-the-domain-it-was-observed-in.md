@@ -5,8 +5,8 @@ date: 2026-08-18
 status: revoked
 revokedBy: D-ANS-084
 coveredBy:
-  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
   - HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 
 # D-ANS-081 — A symptom is answered across the domain it was observed in

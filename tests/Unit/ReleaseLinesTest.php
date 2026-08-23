@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Knowledge\ReleaseLines;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 /**
  * Which branches take a patch, and what the list is worth on a day nobody read
@@ -49,6 +50,7 @@ final class ReleaseLinesTest extends TestCase
      * happens without anybody reading the file again, and only a branch created
      * after it was read is missing from it — `D-ANS-058`.
      */
+    #[Decision('D-ANS-058')]
     #[Test]
     public function theLinesTakingAPatchNarrowAsTheirWindowsClose(): void
     {

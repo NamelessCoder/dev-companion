@@ -4,8 +4,8 @@ title: 'A query in Fluid tags is searched in the book for them'
 date: 2026-08-03
 status: open
 coveredBy:
-  - DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook
   - DocumentationTest::aQueryIsRoutedToABookOnlyWhileThatBookAnswers
+  - DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook
 ---
 
 # D-ANS-036 — A query in Fluid tags is searched in the book for them

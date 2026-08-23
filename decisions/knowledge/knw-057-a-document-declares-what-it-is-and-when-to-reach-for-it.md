@@ -4,10 +4,10 @@ title: A document declares what it is and when to reach for it
 date: 2026-08-04
 status: open
 coveredBy:
+  - KnowledgeTest::aHintAnswerNamesTheDocumentThatExpandsIt
+  - KnowledgeTest::everyHintADocumentSaysItExpandsExists
   - KnowledgeTest::theFrontMatterDescribesTheDocumentAndReachesNoAnswer
   - KnowledgeTest::theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor
-  - KnowledgeTest::everyHintADocumentSaysItExpandsExists
-  - KnowledgeTest::aHintAnswerNamesTheDocumentThatExpandsIt
 ---
 
 # D-KNW-057 — A document declares what it is and when to reach for it

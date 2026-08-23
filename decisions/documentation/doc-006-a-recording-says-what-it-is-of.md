@@ -4,10 +4,10 @@ title: 'A recording says what it is of'
 date: 2026-08-02
 status: open
 coveredBy:
-  - ToolAnswersTest::everyRecordedAnswerIsJson
-  - ToolAnswersTest::theRecordingCarriesNobodysDirectoryLayout
-  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
   - ToolAnswersTest::everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom
+  - ToolAnswersTest::everyRecordedAnswerIsJson
+  - ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer
+  - ToolAnswersTest::theRecordingCarriesNobodysDirectoryLayout
 ---
 
 # D-DOC-006 — A recording says what it is of

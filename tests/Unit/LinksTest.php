@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Links;
 
 /**
@@ -22,6 +23,8 @@ final class LinksTest extends TestCase
      * reStructuredText and everything around them in markdown — `D-DOC-025`,
      * `D-DOC-029`.
      */
+    #[Decision('D-DOC-025')]
+    #[Decision('D-DOC-029')]
     #[Test]
     public function everyPathThisRepositoryWritesToItselfResolves(): void
     {

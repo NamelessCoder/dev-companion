@@ -4,10 +4,10 @@ title: A change answer names the siblings that share its Change-Id
 date: 2026-08-14
 status: open
 coveredBy:
-  - GerritTest::aChangeNamedByItsNumberAnswersWithItsSiblings
   - GerritTest::aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed
-  - GerritTest::theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit
+  - GerritTest::aChangeNamedByItsNumberAnswersWithItsSiblings
   - GerritTest::aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding
+  - GerritTest::theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit
 ---
 
 # D-ANS-080 — A change answer names the siblings that share its Change-Id

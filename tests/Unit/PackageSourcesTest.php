@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Installation\FluidNamespaces;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -110,6 +111,7 @@ final class PackageSourcesTest extends TestCase
      * `D-ANS-020`. The wordings are the corpus's own and the clause wraps in
      * the file, so the whole text is matched rather than a line.
      */
+    #[Decision('D-ANS-020')]
     #[Test]
     public function aDeprecationSaysWhichVersionItStopsWorkingIn(): void
     {
@@ -148,6 +150,7 @@ final class PackageSourcesTest extends TestCase
      * rule that covers the silence travels with the answer, as data and not
      * only as text: `R-ANS-002` — `D-ANS-020`.
      */
+    #[Decision('D-ANS-020')]
     #[Test]
     public function whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer(): void
     {
@@ -175,6 +178,7 @@ final class PackageSourcesTest extends TestCase
      * entry, and that a removal is later than the version it was released in —
      * `D-ANS-020`.
      */
+    #[Decision('D-ANS-020')]
     #[Test]
     public function aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne(): void
     {
@@ -217,6 +221,7 @@ final class PackageSourcesTest extends TestCase
      * changelog file spells that name apart. Every one of these has an entry in
      * `.checkouts/14.3` and reached none of them — `D-ANS-006`.
      */
+    #[Decision('D-ANS-006')]
     #[Test]
     public function anIdentifierReachesTheEntryTitledInWords(): void
     {
@@ -308,6 +313,7 @@ final class PackageSourcesTest extends TestCase
      * ends it is a query the caller can ask rather than five numbers, because
      * two words had to go before anything matched — `D-ANS-016`.
      */
+    #[Decision('D-ANS-016')]
     #[Test]
     public function aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit(): void
     {
@@ -336,6 +342,7 @@ final class PackageSourcesTest extends TestCase
      * data too, and which of the two count fields carries a number is what says
      * whether it was taken inside the narrowing or outside it.
      */
+    #[Decision('D-ANS-043')]
     #[Test]
     public function theNarrowingAMissComputesIsAFieldAsWellAsALine(): void
     {
@@ -389,6 +396,7 @@ final class PackageSourcesTest extends TestCase
      * away, and a sentence naming the manual first would have routed that
      * session away from it — `D-ANS-043`.
      */
+    #[Decision('D-ANS-043')]
     #[Test]
     public function aMissThatOffersARequeryNamesTheCorpusToAskNext(): void
     {
@@ -461,6 +469,7 @@ final class PackageSourcesTest extends TestCase
      * miss opens with, and the counts that stay are marked as taken inside it —
      * `D-ANS-016`.
      */
+    #[Decision('D-ANS-016')]
     #[Test]
     public function aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt(): void
     {
@@ -504,6 +513,7 @@ final class PackageSourcesTest extends TestCase
      * narrowing and nothing inside it, not that a narrowing was asked for —
      * `D-ANS-016`.
      */
+    #[Decision('D-ANS-016')]
     #[Test]
     public function aFilterThatChangedNothingIsNotBlamedForTheMiss(): void
     {

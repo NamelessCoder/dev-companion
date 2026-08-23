@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\Source;
 
@@ -32,6 +33,7 @@ final class SourceTest extends TestCase
      * generated from it, so a tool cannot claim a source it does not read —
      * `D-ANS-048`.
      */
+    #[Decision('D-ANS-048')]
     #[Test]
     public function theDescriptionACallerReadsCarriesThem(): void
     {
@@ -47,6 +49,7 @@ final class SourceTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-048')]
     #[Test]
     public function theAnsweredByCasesAreTheDeclaredSources(): void
     {
@@ -75,6 +78,7 @@ final class SourceTest extends TestCase
      * declaration, with each source's meaning read off the enum rather than
      * written twice — `D-ANS-048`.
      */
+    #[Decision('D-ANS-048')]
     #[Test]
     public function theOrientationAnswerGroupsEveryOfferedTool(): void
     {

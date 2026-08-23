@@ -4,8 +4,8 @@ title: 'An answer that reads no installation is derived and checked'
 date: 2026-08-04
 status: open
 coveredBy:
-  - CoreFixtureTest::theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs
   - CoreFixtureTest::everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne
+  - CoreFixtureTest::theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs
   - ToolSurfaceTest::everyPageIsWhatTheRegistryDeclares
 ---
 

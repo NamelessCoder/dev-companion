@@ -19,6 +19,7 @@ use TYPO3\DevCompanion\Knowledge\TestSuiteHints;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Result\ToolResult;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\HintLookup;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\TaskGuide;
@@ -70,6 +71,7 @@ final class HintsTest extends TestCase
      * itself and nothing crosses. A phrase let past on its own puts them back —
      * `D-ANS-084`.
      */
+    #[Decision('D-ANS-084')]
     #[Test]
     public function aTypeScriptTestPathIsNotAnsweredWithPhpunit(): void
     {
@@ -241,6 +243,7 @@ final class HintsTest extends TestCase
      * not. A hint that named the keys and not their two failures would leave a
      * session exactly where the report found it — `D-KNW-053`.
      */
+    #[Decision('D-KNW-053')]
     #[Test]
     public function installingTypo3BeneathTheExtensionNamesTheInertKey(): void
     {
@@ -289,6 +292,7 @@ final class HintsTest extends TestCase
      * was — `impexp-artifact` and `extension-schema-sql` — and are held here so
      * the form stays one form rather than three.
      */
+    #[Decision('D-KNW-093')]
     #[Test]
     public function aCommandThatAlwaysSucceedsCarriesItsDiscriminator(): void
     {
@@ -335,6 +339,7 @@ final class HintsTest extends TestCase
      * 12.4, 13.4, 14.3 and main alike. What a stale entry hides differs by major
      * and the two statements beside this one already carry that.
      */
+    #[Decision('D-KNW-089')]
     #[Test]
     public function theSchemaStepIsSaidToMigrateFromTheCachedTca(): void
     {
@@ -382,6 +387,7 @@ final class HintsTest extends TestCase
      * only difference between them is the `strpos` the tail tiebreak below it
      * uses on 12.4.
      */
+    #[Decision('D-KNW-097')]
     #[Test]
     public function whichOfTwoCollidingSiteBasesWinsIsStated(): void
     {
@@ -436,6 +442,7 @@ final class HintsTest extends TestCase
      * through `makeInstance()`, and the line that consults the container only
      * for a class asked for without arguments reads the same on all four.
      */
+    #[Decision('D-KNW-100')]
     #[Test]
     public function whatAnExtensionMayBuildBehindAConditionProviderIsStated(): void
     {
@@ -500,6 +507,7 @@ final class HintsTest extends TestCase
      * such a site would write reaches this hint, and the plain root-404 query
      * still reaches the collision without this one beside it.
      */
+    #[Decision('D-KNW-098')]
     #[Test]
     public function whereASiteNobodyWroteCameFromIsStated(): void
     {
@@ -560,6 +568,7 @@ final class HintsTest extends TestCase
      * Read on `.checkouts/12.4`, `13.4`, `14.3` and `main`, which agree on the
      * messages and on the restrictions each query carries — `D-KNW-105`.
      */
+    #[Decision('D-KNW-105')]
     #[Test]
     public function whatANotFoundMeansOnceASiteAnsweredIsReached(): void
     {
@@ -656,6 +665,7 @@ final class HintsTest extends TestCase
      * matched at any depth rather than literal paths, and `.build` is hidden.
      * What is one is a build directory that is neither.
      */
+    #[Decision('D-KNW-055')]
     #[Test]
     public function theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable(): void
     {
@@ -697,6 +707,7 @@ final class HintsTest extends TestCase
      * `intents: []` and the core patch checklist, so nothing named the skill
      * that owns the work — `D-KNW-055`.
      */
+    #[Decision('D-KNW-055')]
     #[Test]
     public function aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt(): void
     {
@@ -773,6 +784,7 @@ final class HintsTest extends TestCase
         self::assertNotContains(Hints::CATEGORY_CSS, $categories);
     }
 
+    #[Decision('D-KNW-024')]
     #[Test]
     public function aQueryWrittenInFluidTagSyntaxReachesTheFluidHints(): void
     {
@@ -796,6 +808,7 @@ final class HintsTest extends TestCase
         self::assertNotContains('Fluid', array_column($php['matchedHints'], 'category'));
     }
 
+    #[Decision('D-KNW-043')]
     #[Test]
     public function aFluidResourceUriTaskIsAnsweredWithWhoAppliesCacheBusting(): void
     {
@@ -842,6 +855,7 @@ final class HintsTest extends TestCase
      * `typo3fluid/fluid` is in no checkout: the whole file-name chain runs
      * inside one root path before the next is tried — `D-KNW-052`.
      */
+    #[Decision('D-KNW-052')]
     #[Test]
     public function theFileNameFallbackIsStatedAsOncePerRootPath(): void
     {
@@ -892,6 +906,7 @@ final class HintsTest extends TestCase
      * it. A caller on 13 told about `.fluid.html` would go looking for a file
      * the resolver there never asks for — `D-KNW-052`.
      */
+    #[Decision('D-KNW-052')]
     #[Test]
     public function theFluidFileExtensionIsWithheldWhereItDoesNotResolve(): void
     {
@@ -1044,6 +1059,7 @@ final class HintsTest extends TestCase
      * read the page off the request — has nothing to read it from where a
      * condition runs.
      */
+    #[Decision('D-KNW-101')]
     #[Test]
     public function aConditionIsAnsweredWithWhatItIsHanded(): void
     {
@@ -1075,6 +1091,7 @@ final class HintsTest extends TestCase
      * newer ones, so an unbound statement would be wrong on half the corpus
      * either way — `D-KNW-101`.
      */
+    #[Decision('D-KNW-101')]
     #[Test]
     public function whichGlobalsAConditionCanReadIsBoundToItsMajor(): void
     {
@@ -1170,6 +1187,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('inside an installed package', $text);
     }
 
+    #[Decision('D-KNW-033')]
     #[Test]
     public function aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions(): void
     {
@@ -1352,6 +1370,7 @@ final class HintsTest extends TestCase
      * the types are one statement rather than a table of versions —
      * `D-KNW-078`.
      */
+    #[Decision('D-KNW-078')]
     #[Test]
     public function theShapeOfARecordSourcedRowNamesTheFieldsThatMoved(): void
     {
@@ -1394,6 +1413,7 @@ final class HintsTest extends TestCase
      * all, and the `pages` exception arrives with 14: on 13.4 `Page` is no
      * `Record` and `RecordFactory` builds none — `D-KNW-078`.
      */
+    #[Decision('D-KNW-078')]
     #[Test]
     public function theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi(): void
     {
@@ -1420,6 +1440,7 @@ final class HintsTest extends TestCase
      * `fluid_styled_content`'s `Helper/ContentElement.typoscript`, which on 13.4
      * carries no `dataProcessing` block at all.
      */
+    #[Decision('D-KNW-099')]
     #[Test]
     public function whatAPartialRowCostsIsReachedFromItsException(): void
     {
@@ -1456,6 +1477,7 @@ final class HintsTest extends TestCase
      * where the same partial row renders — so the statement would be an account
      * of a failure the caller cannot have — `D-KNW-099`.
      */
+    #[Decision('D-KNW-099')]
     #[Test]
     public function whatAPartialRowCostsIsWithheldWhereItRenders(): void
     {
@@ -1503,6 +1525,7 @@ final class HintsTest extends TestCase
      * en.-prefixed file useless, so no answer this server gives may omit it —
      * `D-KNW-032`.
      */
+    #[Decision('D-KNW-032')]
     #[Test]
     #[TestWith(['12'])]
     #[TestWith(['13'])]
@@ -1533,6 +1556,7 @@ final class HintsTest extends TestCase
      * for from both directions it arrives in, an audit of the file and an
      * upgrade that changed what the file does.
      */
+    #[Decision('D-KNW-050')]
     #[Test]
     #[TestWith(['full conformance audit of an extension, Resources/Private/Language/de.locallang.xlf'])]
     #[TestWith(['upgrade an extension to a new TYPO3 major, German labels render in English'])]
@@ -1553,6 +1577,7 @@ final class HintsTest extends TestCase
      * otherwise would go looking for a defect the branch does not have —
      * `D-KNW-050`.
      */
+    #[Decision('D-KNW-050')]
     #[Test]
     #[TestWith(['12'])]
     #[TestWith(['13'])]
@@ -1590,6 +1615,7 @@ final class HintsTest extends TestCase
      * both — `D-KNW-076`'s reading of `.checkouts/14.3` and `main` —
      * `D-KNW-079`.
      */
+    #[Decision('D-KNW-079')]
     #[Test]
     public function aNewBackendLabelIsToldWhatItCostsBeforeItResolves(): void
     {
@@ -1642,6 +1668,7 @@ final class HintsTest extends TestCase
      * The pointers go with it, because a neighbour naming a hint the caller
      * cannot ask for is worse than no neighbour — `D-KNW-079`.
      */
+    #[Decision('D-KNW-079')]
     #[Test]
     public function theLabelModuleIsWithheldFromTheMajorsThatHaveNone(): void
     {
@@ -1698,6 +1725,7 @@ final class HintsTest extends TestCase
      * two LTS lines and the stable one share a constraint; `main` has already
      * left every interpreter a released line runs on — `D-KNW-091`.
      */
+    #[Decision('D-KNW-091')]
     #[Test]
     public function eachCoveredLineCarriesItsOwnFloorAndTestedRange(): void
     {
@@ -1930,6 +1958,10 @@ final class HintsTest extends TestCase
      * hint text was scored, and each is answered by a hint that says the thing
      * in so many words — `D-ANS-081`, `D-ANS-084`, `D-ANS-025`, `D-KNW-024`.
      */
+    #[Decision('D-ANS-025')]
+    #[Decision('D-ANS-081')]
+    #[Decision('D-ANS-084')]
+    #[Decision('D-KNW-024')]
     #[Test]
     #[DataProvider('theSweep')]
     public function theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay(
@@ -1975,6 +2007,8 @@ final class HintsTest extends TestCase
         );
     }
 
+    #[Decision('D-KNW-032')]
+    #[Decision('D-KNW-038')]
     #[Test]
     public function everyHintIsReachedByItsOwnTitle(): void
     {
@@ -2016,6 +2050,7 @@ final class HintsTest extends TestCase
         );
     }
 
+    #[Decision('D-KNW-008')]
     #[Test]
     public function theTestApiAProjectWritesItsTestsWithReachesTheProjectHint(): void
     {
@@ -2066,6 +2101,7 @@ final class HintsTest extends TestCase
         self::assertContains('events-extension-points', $reached('hooks'));
     }
 
+    #[Decision('D-ANS-050')]
     #[Test]
     public function aCompoundIsFoundWhicheverWayTheCallerJoinsIt(): void
     {
@@ -2118,6 +2154,7 @@ final class HintsTest extends TestCase
      * and what this holds is unchanged: the long body is reached, not that it
      * is the only one — `D-ANS-025`.
      */
+    #[Decision('D-ANS-025')]
     #[Test]
     #[TestWith(['showitem', 'content-elements'])]
     #[TestWith(['allowProperties', 'extbase-arguments'])]
@@ -2146,6 +2183,7 @@ final class HintsTest extends TestCase
      * reason, which is the part a change to the floor would take away without
      * moving them — `D-ANS-025`.
      */
+    #[Decision('D-ANS-025')]
     #[Test]
     public function aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt(): void
     {
@@ -2184,6 +2222,7 @@ final class HintsTest extends TestCase
      * themselves, and aTypeScriptTestPathIsNotAnsweredWithPhpunit is where that
      * half is held — `D-ANS-084`.
      */
+    #[Decision('D-ANS-084')]
     #[Test]
     public function aSymptomReachesTheHintThatExplainsItFromAnotherDomain(): void
     {
@@ -2197,6 +2236,8 @@ final class HintsTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-081')]
+    #[Decision('D-ANS-084')]
     #[Test]
     public function theCuratedVocabularyStillDecidesWhereItWasWritten(): void
     {
@@ -2245,6 +2286,7 @@ final class HintsTest extends TestCase
      * on 13, and none on the two majors above them, which is why it turned
      * quietly — `D-ANS-075`.
      */
+    #[Decision('D-ANS-075')]
     #[Test]
     public function theIdsOfferedAreTheOnesThatMajorHas(): void
     {
@@ -2300,6 +2342,7 @@ final class HintsTest extends TestCase
         self::assertSame(0, $miss->data['availableHintsWithheld']);
     }
 
+    #[Decision('D-ANS-075')]
     #[Test]
     public function aMissNamesWhatThereWouldHaveBeenToFind(): void
     {
@@ -2329,6 +2372,7 @@ final class HintsTest extends TestCase
      * in, because narrowing to those drops hints and none of the length: a near
      * miss is at most as long as the miss beside it — `D-ANS-075`.
      */
+    #[Decision('D-ANS-075')]
     #[Test]
     public function anAnswerStillNamesTheIdsItDidNotReturn(): void
     {
@@ -2363,6 +2407,7 @@ final class HintsTest extends TestCase
      * instead. What the limit cut is what the query came closest to and did not
      * get, so it is what the index opens with — `D-ANS-075`.
      */
+    #[Decision('D-ANS-075')]
     #[Test]
     public function theIndexNamesWhatTheLimitCutBeforeWhatTheFloorRefused(): void
     {
@@ -2402,6 +2447,7 @@ final class HintsTest extends TestCase
      * the candidates, the index cannot offer what the same call withheld —
      * `D-ANS-075`.
      */
+    #[Decision('D-ANS-075')]
     #[Test]
     public function theIndexIsNotOfferingWhatTheSameAnswerWithheld(): void
     {
@@ -2430,6 +2476,7 @@ final class HintsTest extends TestCase
      * nothing did — so a tool answering the marker would answer beside the
      * question. What was missing is the rule — `D-FBK-038`.
      */
+    #[Decision('D-FBK-038')]
     #[Test]
     public function whetherARemovalIsBreakingIsAnsweredWithoutTheMarker(): void
     {
@@ -2556,6 +2603,7 @@ final class HintsTest extends TestCase
      * `public-api-surface` shares its `appliesTo` phrases and would otherwise
      * answer the wrong half — `D-KNW-073`.
      */
+    #[Decision('D-KNW-073')]
     #[Test]
     public function aChangedRenderingIsAnsweredAsTheBreakingMoveWithNoMember(): void
     {
@@ -2625,6 +2673,7 @@ final class HintsTest extends TestCase
      * The empty render is the other path — a column the layout does declare,
      * holding no records — so the two are asserted apart rather than together.
      */
+    #[Decision('D-KNW-087')]
     #[Test]
     public function anUndeclaredContentAreaIsSaidToThrow(): void
     {
@@ -2666,6 +2715,7 @@ final class HintsTest extends TestCase
      * is the first entry of `IGNORED_EXCEPTION_CODES`, so a caller sent to the
      * log for it finds nothing and has to be told which half they are on.
      */
+    #[Decision('D-KNW-092')]
     #[Test]
     public function aFailingInstallationIsSaidWhatItWritesDownAndWhatItOnlyShows(): void
     {
@@ -2704,6 +2754,7 @@ final class HintsTest extends TestCase
      * time, so the edit rewrote it. What kept answering with the old page was
      * the page cache, in another group and in the database — `D-KNW-027`.
      */
+    #[Decision('D-KNW-027')]
     #[Test]
     public function aChangeIsToldWhichCacheGroupHoldsItsOldOutput(): void
     {
@@ -2748,6 +2799,7 @@ final class HintsTest extends TestCase
      * Clearing a cache and declaring one are asked in the same words and are
      * not the same question (`D-KNW-027`).
      */
+    #[Decision('D-KNW-027')]
     #[Test]
     public function clearingACacheAndDeclaringOneAreDifferentQuestions(): void
     {
@@ -2794,6 +2846,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString("group 'all'", $text);
     }
 
+    #[Decision('D-KNW-038')]
     #[Test]
     public function anExtbasePluginHasAHintOfItsOwn(): void
     {
@@ -2825,6 +2878,7 @@ final class HintsTest extends TestCase
      * `hints:coverage` cannot see this. It counts what nothing reaches, and a
      * hint that answers everything is reached by all of it.
      */
+    #[Decision('D-KNW-038')]
     #[Test]
     public function aFileBelowAnExtensionIsAnsweredByItsRole(): void
     {
@@ -2979,6 +3033,7 @@ final class HintsTest extends TestCase
      * less half is the same omission read the other way, because DDEV's
      * generator writes the DB block unconditionally — `D-KNW-049`.
      */
+    #[Decision('D-KNW-049')]
     #[Test]
     public function theDdevSettingsAnswerNamesEverySectionItGenerates(): void
     {
@@ -3016,6 +3071,7 @@ final class HintsTest extends TestCase
      * the hint that owns it and the checklist a boot is briefed with —
      * `D-KNW-085`.
      */
+    #[Decision('D-KNW-085')]
     #[Test]
     public function theDdevSettingsAnswerSaysWhenThatFileIsWritten(): void
     {
@@ -3107,6 +3163,7 @@ final class HintsTest extends TestCase
      * from elsewhere, a user that is already taken, a base that names another
      * host — and every one of those fails quietly — `D-KNW-054`.
      */
+    #[Decision('D-KNW-054')]
     #[Test]
     public function bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback(): void
     {
@@ -3148,6 +3205,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('cleanup:localprocessedfiles', $text);
     }
 
+    #[Decision('D-KNW-045')]
     #[Test]
     public function whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar(): void
     {
@@ -3313,6 +3371,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('form-framework', $eventText);
     }
 
+    #[Decision('D-KNW-051')]
     #[Test]
     public function thePublicAssetAnswerSeparatesTheSupportedRoute(): void
     {
@@ -3395,6 +3454,7 @@ final class HintsTest extends TestCase
         self::assertContains('extension-asset-build', array_column($assetQuery['matchedHints'], 'id'));
     }
 
+    #[Decision('D-KNW-030')]
     #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
@@ -3423,6 +3483,7 @@ final class HintsTest extends TestCase
      * column is a counter DataHandler maintains, and the same holds on every
      * covered major, so the statement carries no range — `D-KNW-030`.
      */
+    #[Decision('D-KNW-030')]
     #[Test]
     public function aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding(): void
     {
@@ -3464,6 +3525,7 @@ final class HintsTest extends TestCase
      * is read as two fields, and it is the same block on every covered major,
      * so the statement carries no range — `D-KNW-084`.
      */
+    #[Decision('D-KNW-084')]
     #[Test]
     public function aRelationValueSaysWhichPlaceholderSpellingSurvivesIt(): void
     {
@@ -3509,6 +3571,7 @@ final class HintsTest extends TestCase
      * is the same on every covered major; only where the list is declared
      * moved, which is the one statement carrying a range — `D-KNW-023`.
      */
+    #[Decision('D-KNW-023')]
     #[Test]
     public function thePlacementAnswerSaysWhichPageMayHoldTheRecord(): void
     {
@@ -3617,6 +3680,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Content/Default', $text, 'the layout name collision is the load-bearing half');
     }
 
+    #[Decision('D-KNW-007')]
     #[Test]
     public function whatOnlyBindsACorePatchSaysSoOutsideTheCore(): void
     {
@@ -3649,6 +3713,7 @@ final class HintsTest extends TestCase
      * is context there rather than a condition, and inside its own scope the
      * notice would be on every answer and say nothing.
      */
+    #[Decision('D-KNW-007')]
     #[Test]
     public function whatOnlyBindsOutsideTheCoreSaysSoInsideIt(): void
     {
@@ -3772,6 +3837,7 @@ final class HintsTest extends TestCase
      * That entry also carries how the two DDEV facts asserted below were
      * measured, and against which release.
      */
+    #[Decision('D-ANS-092')]
     #[Test]
     public function aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs(): void
     {
@@ -3872,6 +3938,7 @@ final class HintsTest extends TestCase
      * record. The whole corpus held one sentence naming any of the reading
      * APIs, and it was about a menu — `D-KNW-030`.
      */
+    #[Decision('D-KNW-030')]
     #[Test]
     public function readingRecordsIsAnsweredAsWellAsWritingThem(): void
     {
@@ -3897,6 +3964,7 @@ final class HintsTest extends TestCase
      * seeding run. The corpus said "seed with DataHandler, then export", which
      * reads as the other way round — `D-KNW-030`.
      */
+    #[Decision('D-KNW-030')]
     #[Test]
     public function theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain(): void
     {
@@ -3946,6 +4014,8 @@ final class HintsTest extends TestCase
      * like a narrow one. `Domains::hintDomains()` is the whole vocabulary there
      * is — `D-KNW-029`, `D-KNW-034`.
      */
+    #[Decision('D-KNW-029')]
+    #[Decision('D-KNW-034')]
     #[Test]
     public function everyHintIsTaggedWithADomainSomeQuerySelects(): void
     {
@@ -3981,6 +4051,7 @@ final class HintsTest extends TestCase
      * has to be argued for in a decision rather than reached for when a query
      * misses.
      */
+    #[Decision('D-KNW-033')]
     #[Test]
     public function nothingIsTaggedAnyWithoutSayingWhy(): void
     {
@@ -4005,6 +4076,8 @@ final class HintsTest extends TestCase
      * the moment somebody re-derives the domain from the file name —
      * `D-KNW-029`, `D-KNW-034`.
      */
+    #[Decision('D-KNW-029')]
+    #[Decision('D-KNW-034')]
     #[Test]
     public function theFileAHintSitsInDoesNotDecideWhatSelectsIt(): void
     {
@@ -4078,6 +4151,7 @@ final class HintsTest extends TestCase
      * `typo3/cms-composer-installers`, which are in no checkout: read out of an
      * installed distribution per major.
      */
+    #[Decision('D-KNW-088')]
     #[Test]
     public function whatAComposerInstallationGeneratesIsNamed(): void
     {
@@ -4113,6 +4187,7 @@ final class HintsTest extends TestCase
      * `DefaultSystemResourcePublisher` — which is what publishes
      * `_assets_install/` — exists in neither LTS checkout — `D-KNW-088`.
      */
+    #[Decision('D-KNW-088')]
     #[Test]
     public function theGeneratedDocumentRootIsStatedPerMajorOnBothHints(): void
     {
@@ -4146,6 +4221,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Configuration/page.tsconfig', $text, 'the condition is what makes it transfer');
     }
 
+    #[Decision('D-KNW-083')]
     #[Test]
     public function theSharedRootCollisionIsStatedForPartialsBesideLayouts(): void
     {
@@ -4157,6 +4233,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Partials/Header/All', $text, 'what renders it is why the failure is not local');
     }
 
+    #[Decision('D-KNW-082')]
     #[Test]
     public function theCTypeTemplateDerivationIsAttributedToItsTheme(): void
     {
@@ -4352,6 +4429,7 @@ final class HintsTest extends TestCase
      * none of them. The ratio holds on every covered line, so the statement
      * carries no version range — `D-KNW-044`.
      */
+    #[Decision('D-KNW-044')]
     #[Test]
     public function aRenderedOutputChangeIsToldWhereTheExpectationsHide(): void
     {
@@ -4386,6 +4464,9 @@ final class HintsTest extends TestCase
      * ahead of `core-tests` for a question about the DataHandler — `D-KNW-032`,
      * `D-KNW-009`, `D-KNW-013`.
      */
+    #[Decision('D-KNW-009')]
+    #[Decision('D-KNW-013')]
+    #[Decision('D-KNW-032')]
     #[Test]
     public function settingTestsUpInAPackageReachesTheHintAboutThat(): void
     {
@@ -4447,6 +4528,7 @@ final class HintsTest extends TestCase
      * writes the bare word back fails here rather than in an audit six weeks
      * later.
      */
+    #[Decision('D-KNW-013')]
     #[Test]
     public function anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange(): void
     {
@@ -4495,6 +4577,7 @@ final class HintsTest extends TestCase
         self::assertSame('project-extension-tests', $reaches('how do I test my extension')[0] ?? '');
     }
 
+    #[Decision('D-KNW-008')]
     #[Test]
     public function aProjectExtensionIsToldHowToGetASuiteAtAll(): void
     {
@@ -4677,6 +4760,7 @@ final class HintsTest extends TestCase
      * `frontend-page-rendering`. What it stops doing is adding them where the
      * task names only the backend (`D-KNW-006`).
      */
+    #[Decision('D-KNW-006')]
     #[Test]
     public function aBackendTaskIsNotCalledFluidAndTypoScriptWork(): void
     {
@@ -4732,6 +4816,7 @@ final class HintsTest extends TestCase
      * asked from since `D-KNW-033`, so nothing is filed under the label that
      * meant "belongs to more than one and had nowhere to say so".
      */
+    #[Decision('D-KNW-033')]
     #[Test]
     public function hintsAreGroupedByDomainWithPhpFirst(): void
     {
@@ -4753,6 +4838,8 @@ final class HintsTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-009')]
+    #[Decision('D-KNW-091')]
     #[Test]
     public function noHintStatesSomethingThatOnlyHoldsOnOneBranch(): void
     {
@@ -4829,6 +4916,7 @@ final class HintsTest extends TestCase
      * name, while 14.3 and main have checkIntegrityXliff and normalizeXliff —
      * `D-KNW-031`.
      */
+    #[Decision('D-KNW-031')]
     #[Test]
     public function theSuiteListItselfIsFilteredByTheBranchItIsAskedFor(): void
     {
@@ -5035,6 +5123,7 @@ final class HintsTest extends TestCase
      * that cheap is the search before the run, so the note points at the
      * statement that says where to aim it — `D-KNW-044`.
      */
+    #[Decision('D-KNW-044')]
     #[Test]
     public function theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor(): void
     {
@@ -5113,6 +5202,8 @@ final class HintsTest extends TestCase
      * back for it — a focused patch, test coverage, and a commit message for a
      * session that commits nothing — `D-GUI-009`, `D-GUI-006`.
      */
+    #[Decision('D-GUI-006')]
+    #[Decision('D-GUI-009')]
     #[Test]
     public function aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist(): void
     {
@@ -5231,6 +5322,9 @@ final class HintsTest extends TestCase
      * among them holds just as well when a whole workflow the task has nothing
      * to do with is loaded first — `D-SKL-039`.
      */
+    #[Decision('D-ANS-050')]
+    #[Decision('D-SKL-013')]
+    #[Decision('D-SKL-039')]
     #[Test]
     public function aBriefNamesTheSkillThatOwnsTheWork(): void
     {
@@ -5290,6 +5384,7 @@ final class HintsTest extends TestCase
      * server cannot verify takes the hints off every session that has no such
      * skill installed.
      */
+    #[Decision('D-GUI-016')]
     #[Test]
     public function theSkillABriefNamesTakesNoHintOutOfIt(): void
     {
@@ -5338,6 +5433,7 @@ final class HintsTest extends TestCase
      * before the change, that brief named `core/contribution/rules`: the page a
      * core patch is judged by, handed to a package.
      */
+    #[Decision('D-GUI-012')]
     #[Test]
     public function aBriefNamesTheGuideTheWorkIsWrittenUpIn(): void
     {
@@ -5396,6 +5492,7 @@ final class HintsTest extends TestCase
      * own it — so what was missing is the moment, and the brief is where it is
      * said, the `instructions` being 2038 characters of the 2048 a client keeps.
      */
+    #[Decision('D-SKL-062')]
     #[Test]
     public function aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt(): void
     {
@@ -5439,6 +5536,7 @@ final class HintsTest extends TestCase
      * `feedback/2026-08-18-074226` finished without the page written for it —
      * matched no intent at all, so the brief named no guide and no skill.
      */
+    #[Decision('D-GUI-014')]
     #[Test]
     public function aBriefRecognizesLookingAtAChangeInABrowser(): void
     {
@@ -5491,6 +5589,7 @@ final class HintsTest extends TestCase
      * one a request naming its change by number arrives in. It is `D-SKL-013`'s
      * second **Wrong if** by a second route.
      */
+    #[Decision('D-SKL-039')]
     #[Test]
     public function aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt(): void
     {
@@ -5565,6 +5664,7 @@ final class HintsTest extends TestCase
      * and `checkRst` over a core diff, for work that produces no diff. It used
      * none of them and says so.
      */
+    #[Decision('D-GUI-011')]
     #[Test]
     public function aTriageIsAnsweredWithWhatDecidingAReportNeeds(): void
     {
@@ -5611,6 +5711,7 @@ final class HintsTest extends TestCase
      * recognized as nothing at all and came back with keep the change focused,
      * add coverage, draft the commit message. `SKILL-15` is the case.
      */
+    #[Decision('D-SKL-065')]
     #[Test]
     public function aRequestForACauseIsAnsweredWithWhatFindingOneNeeds(): void
     {
@@ -5713,6 +5814,8 @@ final class HintsTest extends TestCase
      * reached was `installation-setup` — matched on `install dependencies`,
      * which is Composer's install and not TYPO3's — `D-GUI-009`.
      */
+    #[Decision('D-GUI-008')]
+    #[Decision('D-GUI-009')]
     #[Test]
     public function workThatOperatesAnInstallationIsAnsweredWithABootBrief(): void
     {
@@ -5908,6 +6011,7 @@ final class HintsTest extends TestCase
      * so the audit intent was filtered out and the surface `R-GUI-010` states
      * never reached it (`D-GUI-009`).
      */
+    #[Decision('D-GUI-009')]
     #[Test]
     public function aReviewThatStatesThePatchTypeNamesWhatItRemoves(): void
     {
@@ -5972,6 +6076,7 @@ final class HintsTest extends TestCase
      * actually fail on. It came off the hints until `D-KNW-031`,
      * where twenty-eight of them repeated it as their own `checks` list.
      */
+    #[Decision('D-KNW-031')]
     #[Test]
     public function theBaseSuitesOfADomainAreStatedWhateverTheTaskNames(): void
     {
@@ -6006,6 +6111,7 @@ final class HintsTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-035')]
     #[Test]
     public function aRemovalIsToldWhatTheScannerMatcherRequires(): void
     {
@@ -6029,6 +6135,7 @@ final class HintsTest extends TestCase
      * editor and the visitor get once the image is replaced
      * (`feedback/2026-08-02-145043`) — `D-GUI-005`.
      */
+    #[Decision('D-GUI-005')]
     #[Test]
     public function everyBriefOpensOnThePremiseADefectIsJudgedBy(): void
     {
@@ -6068,6 +6175,7 @@ final class HintsTest extends TestCase
      * report's reader was sent to a tool that had not answered
      * (`scenarios/runs/REVIEW-03.json`, `D-SKL-009`) — `D-GUI-007`.
      */
+    #[Decision('D-GUI-007')]
     #[Test]
     public function theHintsABriefCarriesNameTheLookupTheyCameFrom(): void
     {
@@ -6231,6 +6339,7 @@ final class HintsTest extends TestCase
      * paths, and the brief had stated a count rather than the subjects
      * (`feedback/2026-08-03-144410`) — `D-ANS-050`.
      */
+    #[Decision('D-ANS-050')]
     #[Test]
     public function aBriefNamesTheHintsItLeftBehind(): void
     {
@@ -6277,6 +6386,7 @@ final class HintsTest extends TestCase
         }
     }
 
+    #[Decision('D-KNW-032')]
     #[Test]
     public function upgradingAnInstallationIsAnsweredAsAnOrderOfOperations(): void
     {
@@ -6306,6 +6416,7 @@ final class HintsTest extends TestCase
         self::assertLessThan($order[2], $order[1], 'the caches are flushed after the wizards');
     }
 
+    #[Decision('D-KNW-046')]
     #[Test]
     public function anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses(): void
     {
@@ -6360,6 +6471,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('is the whole test for being one', $onFourteen);
     }
 
+    #[Decision('D-KNW-094')]
     #[Test]
     public function theLineThatCarriesAVariableIntoTheContainerIsAnswered(): void
     {
@@ -6440,6 +6552,7 @@ final class HintsTest extends TestCase
      * `tt_content.<signature> =< lib.contentElement` with `20 = EXTBASEPLUGIN`.
      * So the fork is not element or plugin — `D-ANS-039`.
      */
+    #[Decision('D-ANS-039')]
     #[Test]
     public function aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt(): void
     {
@@ -6487,6 +6600,7 @@ final class HintsTest extends TestCase
      * back as records are named rather than a single rule for "a relation" —
      * `D-KNW-020`.
      */
+    #[Decision('D-KNW-020')]
     #[Test]
     public function aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo(): void
     {
@@ -6543,6 +6657,7 @@ final class HintsTest extends TestCase
      * StrictArgumentProcessor, which the fluid extension aliases the argument
      * processor to, accepts an interface name for it — `D-KNW-090`.
      */
+    #[Decision('D-KNW-090')]
     #[Test]
     public function theRecordAndItsTransformedColumnsAreNamedAsPhpTypes(): void
     {
@@ -6593,6 +6708,7 @@ final class HintsTest extends TestCase
      * instead. Both majors draw the same four, so the statement carries no
      * version binding and has to reach a caller on either — `D-KNW-021`.
      */
+    #[Decision('D-KNW-021')]
     #[Test]
     #[DataProvider('theMajorsThePreviewAnswerIsBoundFor')]
     public function aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws(int $major): void
@@ -6644,6 +6760,7 @@ final class HintsTest extends TestCase
      * property of a major — how a field is reached carries the binding instead
      * — `D-KNW-037`.
      */
+    #[Decision('D-KNW-037')]
     #[Test]
     public function aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom(): void
     {
@@ -6683,6 +6800,7 @@ final class HintsTest extends TestCase
      * binding; what the reshaping did is bound, because that is what a caller
      * upgrading arrives with — `D-KNW-104`.
      */
+    #[Decision('D-KNW-104')]
     #[Test]
     public function addingToACorePaletteIsStatedAsTheCallAndNotAsTheString(): void
     {

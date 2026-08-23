@@ -4,8 +4,8 @@ title: A mangled name is rewritten once, and the comparison carries the rest
 date: 2026-08-03
 status: open
 coveredBy:
-  - FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt
   - FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled
+  - FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt
 ---
 
 # D-FBK-039 — A mangled name is rewritten once, and the comparison carries the rest

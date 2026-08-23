@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
 use TYPO3\DevCompanion\Upkeep\Entry;
 use TYPO3\DevCompanion\Upkeep\Requirements;
+use TYPO3\DevCompanion\Upkeep\Sources;
 
 /**
  * Everything the format of decisions/ promises a reader, checked against the
@@ -151,25 +152,30 @@ final class DecisionCheck
         }
 
         $requirements = Requirements::all();
+        $held = Sources::decisionsHeld();
         foreach (Decisions::files() as $path) {
-            preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', (string) file_get_contents($path), $matches);
+            $contents = (string) file_get_contents($path);
+            preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', $contents, $matches);
             foreach ($matches[1] as $requirement) {
                 if (!isset($requirements[$requirement])) {
                     $problems[] = basename($path) . ' names ' . $requirement . ', which no requirement has';
                 }
             }
+
+            // `coveredBy` is generated from the `#[Decision]` attributes the
+            // tests carry, so what is held here is that the copy still says
+            // what the source does. A test renamed, moved or given another
+            // entry leaves the front matter behind otherwise, which is the
+            // drift `D-DOC-043` measured.
+            if (Decisions::covered($contents, $held[Decisions::read($path)['id']] ?? []) !== $contents) {
+                $problems[] = basename($path) . ' carries a coveredBy the tests do not write — run bin/cli decisions:cover';
+            }
         }
 
-        // A problem since 2026-08-22, when the last of the 405 names written
-        // under the older rule was named back. A test that says nothing about
-        // the entry resting on it leaves the session that fixes it no way to
-        // learn the entry is now wrong — `D-DOC-043`.
-        foreach (Decisions::unnamedByItsTests() as $entry) {
-            $problems[] = sprintf(
-                '%s is named by %d tests that say nothing about it',
-                $entry['id'],
-                $entry['silent'],
-            );
+        foreach (array_keys($held) as $id) {
+            if (!isset($seen[$id])) {
+                $problems[] = 'a test declares it holds ' . $id . ', which no decision has';
+            }
         }
 
         // A report rather than a problem: a rule the repository applies often
@@ -195,7 +201,7 @@ final class DecisionCheck
         }
 
         // The other report, and the one that says which entries can go stale
-        // without anything noticing: a test named under **Covered by** is the
+        // without anything noticing: a test naming it in `coveredBy` is the
         // only thing that fails when the behaviour an entry describes moves.
         $uncovered = Decisions::uncovered();
         if ($uncovered !== []) {

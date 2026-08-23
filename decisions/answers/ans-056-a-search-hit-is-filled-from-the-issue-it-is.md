@@ -4,8 +4,8 @@ title: A search hit is filled from the issue it is
 date: 2026-08-05
 status: open
 coveredBy:
-  - ForgeTest::aSearchHitIsFilledFromTheIssuesTheHitsAre
   - ForgeTest::aPageThatCouldNotBeFilledIsStillTheHitsThatMatched
+  - ForgeTest::aSearchHitIsFilledFromTheIssuesTheHitsAre
 ---
 
 # D-ANS-056 — A search hit is filled from the issue it is

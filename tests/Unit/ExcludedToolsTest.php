@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Knowledge\Coverage;
 use TYPO3\DevCompanion\Knowledge\Scope;
 use TYPO3\DevCompanion\Server\ExcludedTools;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -123,6 +124,7 @@ final class ExcludedToolsTest extends TestCase
      * out of the budget `R-ANS-013` holds, while `typo3_project_describe` was
      * in the list — `D-AUD-006`.
      */
+    #[Decision('D-AUD-006')]
     #[Test]
     #[DataProvider('everyNameThatTakesNoToolAway')]
     public function neitherSurfaceCallsAToolExcludedThatIsInTheList(string $name): void
@@ -154,6 +156,7 @@ final class ExcludedToolsTest extends TestCase
      * because a client is free to capture that stream and show it to nobody —
      * `D-AUD-006`.
      */
+    #[Decision('D-AUD-006')]
     #[Test]
     public function theScopeNamesWhatTookNothingAwayAsIgnored(): void
     {
@@ -199,6 +202,7 @@ final class ExcludedToolsTest extends TestCase
      * nothing said on either side. The name is reported now, and the exclusion
      * beside it still takes its tool away — `D-AUD-005`.
      */
+    #[Decision('D-AUD-005')]
     #[Test]
     public function aNameNoToolAnswersToLeavesTheRealOneExcluding(): void
     {
@@ -234,6 +238,7 @@ final class ExcludedToolsTest extends TestCase
      * them — R-SCO-009, D-FBK-042. What they write is this checkout, not the
      * installation the server read.
      */
+    #[Decision('D-FBK-042')]
     #[Test]
     public function theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem(): void
     {

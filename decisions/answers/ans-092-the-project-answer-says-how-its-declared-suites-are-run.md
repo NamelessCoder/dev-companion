@@ -4,8 +4,8 @@ title: 'The project answer says how its declared suites are run'
 date: 2026-08-21
 status: open
 coveredBy:
-  - ProjectTest::aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst
   - HintsTest::aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs
+  - ProjectTest::aDeclaredSuiteOutsideTheCoreIsToldWhatARunNeedsFirst
 ---
 
 # D-ANS-092 — The project answer says how its declared suites are run

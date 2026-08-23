@@ -4,11 +4,11 @@ title: 'The backlog is a third way into the tracker'
 date: 2026-08-05
 status: confirmed
 coveredBy:
-  - ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields
   - ForgeTest::anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary
   - ForgeTest::awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist
   - ForgeTest::theAreasAreReadFromTheProjectAndHeldRatherThanCopied
   - ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage
+  - ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields
   - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes
 ---
 

@@ -4,8 +4,8 @@ title: The second root is an installation this repository writes
 date: 2026-08-03
 status: open
 coveredBy:
-  - FixtureTest::theWrittenInstallationBootsAndItsConsoleAnswers
   - FixtureTest::everyInstallationBackedToolAnswersFromIt
+  - FixtureTest::theWrittenInstallationBootsAndItsConsoleAnswers
   - ToolAnswersTest::everyAnswerOnAPageIsOneItsSchemaAllows
 ---
 

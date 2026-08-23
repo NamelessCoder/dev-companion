@@ -8,6 +8,7 @@ use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Manual\Documentation;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\DocumentationLookup;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -164,6 +165,7 @@ final class DocumentationTest extends TestCase
      * diluted the two were worth the same, and the tie went to whichever manual
      * was indexed first (`D-ANS-029`) — `D-ANS-032`.
      */
+    #[Decision('D-ANS-032')]
     #[Test]
     public function aPageTitledAfterItsSubjectOutranksALongerTitle(): void
     {
@@ -182,6 +184,8 @@ final class DocumentationTest extends TestCase
      * what is held is that its pages are reached and reached at their own base
      * — `D-ANS-026`.
      */
+    #[Decision('D-ANS-023')]
+    #[Decision('D-ANS-026')]
     #[Test]
     public function aViewHelperQuestionReachesTheManualOutsideTheCollection(): void
     {
@@ -212,6 +216,7 @@ final class DocumentationTest extends TestCase
      * left the query answered by `Global/Else.html` — the right family and the
      * wrong page (`D-ANS-023`) — `D-ANS-028`.
      */
+    #[Decision('D-ANS-028')]
     #[Test]
     public function aViewHelperNamedAfterAKeywordIsReachedByItsOwnName(): void
     {
@@ -230,6 +235,7 @@ final class DocumentationTest extends TestCase
      * separates identical titles (`D-ANS-032`). The query says which book in
      * the `f:` it is written in (`D-ANS-036`).
      */
+    #[Decision('D-ANS-036')]
     #[Test]
     public function aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook(): void
     {
@@ -251,6 +257,7 @@ final class DocumentationTest extends TestCase
      * says nothing in a sentence — which is not what it does behind a namespace
      * prefix (`D-ANS-047`).
      */
+    #[Decision('D-ANS-047')]
     #[Test]
     public function aTagNamedAfterAStopwordIsReachedByItsOwnName(): void
     {
@@ -269,6 +276,7 @@ final class DocumentationTest extends TestCase
      * no candidates and report "no match" for a reason the caller cannot see —
      * `D-ANS-036`.
      */
+    #[Decision('D-ANS-036')]
     #[Test]
     public function aQueryIsRoutedToABookOnlyWhileThatBookAnswers(): void
     {
@@ -285,6 +293,8 @@ final class DocumentationTest extends TestCase
  * And the URL it hands back is one it takes back, on the same version —
  * `D-ANS-023`, `D-ANS-026`.
  */
+    #[Decision('D-ANS-023')]
+    #[Decision('D-ANS-026')]
     #[Test]
     public function aPageOfThatManualIsReadBackAtItsOwnBase(): void
     {
@@ -301,6 +311,7 @@ final class DocumentationTest extends TestCase
         self::assertSame('Fluid ViewHelper Reference', $answer['results'][0]['documentTitle']);
     }
 
+    #[Decision('D-ANS-065')]
     #[Test]
     public function anApiIdentifierReachesThePageThatIsNotNamedAfterIt(): void
     {
@@ -369,6 +380,7 @@ final class DocumentationTest extends TestCase
      * And it covers no query either, which is null rather than zero: nothing
      * was asked, so there is no share to report (`D-ANS-051`).
      */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function aPageReadBackCoversNoQuery(): void
     {
@@ -386,6 +398,7 @@ final class DocumentationTest extends TestCase
      * five-word question say so in a number rather than in a rank
      * (`D-ANS-051`).
      */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function everySearchResultSaysHowMuchOfTheQueryItCovers(): void
     {
@@ -401,6 +414,7 @@ final class DocumentationTest extends TestCase
      * like the match beside it — not of whichever query was passed last. Both
      * pages here are returned for the query that names them — `D-ANS-051`.
      */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function aResultCoversTheQueryItIsKeptFor(): void
     {
@@ -418,6 +432,7 @@ final class DocumentationTest extends TestCase
      * that answers a three-word question, so this page keeps answering while
      * the number says how little of the question it carries (`D-ANS-051`).
      */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function aResultCoveringLessThanHalfTheQueryIsStillReturned(): void
     {
@@ -437,6 +452,7 @@ final class DocumentationTest extends TestCase
      * warning: the answer this feedback reported as the expensive kind of wrong
      * one was six results in the shape a good answer has — `D-ANS-051`.
      */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function theAnswerSaysWhereNothingCoversHalfTheQuery(): void
     {
@@ -457,6 +473,7 @@ final class DocumentationTest extends TestCase
  * And says nothing of the kind where a page does cover the question —
  * `D-ANS-051`.
  */
+    #[Decision('D-ANS-051')]
     #[Test]
     public function anAnswerThatCoversTheQuestionCarriesNoSuchSentence(): void
     {
@@ -569,6 +586,7 @@ final class DocumentationTest extends TestCase
      * from the rendered root, this page was "Assets" and no question naming CSS
      * or JavaScript reached it (`D-ANS-065`).
      */
+    #[Decision('D-ANS-065')]
     #[Test]
     public function aPageIsIndexedUnderTheTitleTheInventoryStates(): void
     {
@@ -583,6 +601,7 @@ final class DocumentationTest extends TestCase
      * every inventory and in no navigation tree, and its two words are ordinary
      * enough to be searched for — `D-ANS-065`.
      */
+    #[Decision('D-ANS-065')]
     #[Test]
     public function theNotFoundPageIsNotOneOfTheAnswers(): void
     {
@@ -606,6 +625,7 @@ final class DocumentationTest extends TestCase
      * unparsed body away from an empty search that reads like a real one —
      * `D-ANS-065`.
      */
+    #[Decision('D-ANS-065')]
     #[Test]
     public function aBodyThatIsNotAnInventoryIsNotAnIndex(): void
     {
@@ -657,6 +677,7 @@ final class DocumentationTest extends TestCase
      * one branch every unavailable answer shares, and the entry that asks for
      * TYPO3 999 already drives it without reaching anything.
      */
+    #[Decision('D-DOC-008')]
     #[Test]
     public function aSourceThatDidNotAnswerIsStillAnAnswerToTheSchema(): void
     {
@@ -738,6 +759,7 @@ final class DocumentationTest extends TestCase
      * covered versions is permanent, and nothing is fetched to find that out —
      * `D-ANS-007`.
      */
+    #[Decision('D-ANS-007')]
     #[Test]
     public function aVersionOutsideTheCoveredOnesIsNotAskedFor(): void
     {

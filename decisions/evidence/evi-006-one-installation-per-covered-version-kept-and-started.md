@@ -4,15 +4,15 @@ title: One installation per covered version, kept and started
 date: 2026-08-03
 status: open
 coveredBy:
-  - EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake
   - EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre
-  - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProject
-  - EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf
   - EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing
-  - EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory
+  - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProject
   - EnvironmentsTest::anInstallationThatIsThereIsStartedRatherThanBuiltAgain
-  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
+  - EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory
+  - EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake
+  - EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf
   - EnvironmentsTest::theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares
+  - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
 ---
 
 # D-EVI-006 — One installation per covered version, kept and started

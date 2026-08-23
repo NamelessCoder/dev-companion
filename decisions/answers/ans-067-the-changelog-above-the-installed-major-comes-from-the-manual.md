@@ -4,11 +4,11 @@ title: The changelog above the installed major comes from the manual
 date: 2026-08-08
 status: open
 coveredBy:
-  - CoreChangelogTest::anEntryAboveTheInstalledMajorComesFromTheManual
-  - CoreChangelogTest::aVersionTheInstallationShipsIsNeverTakenFromTheManual
-  - CoreChangelogTest::askingForAnInstalledVersionReachesNoHostAtAll
   - CoreChangelogTest::aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing
   - CoreChangelogTest::aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout
+  - CoreChangelogTest::aVersionTheInstallationShipsIsNeverTakenFromTheManual
+  - CoreChangelogTest::anEntryAboveTheInstalledMajorComesFromTheManual
+  - CoreChangelogTest::askingForAnInstalledVersionReachesNoHostAtAll
 ---
 
 # D-ANS-067 — The changelog above the installed major comes from the manual

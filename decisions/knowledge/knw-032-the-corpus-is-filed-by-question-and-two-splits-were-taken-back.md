@@ -4,9 +4,9 @@ title: The corpus is filed by question, and two splits were taken back
 date: 2026-08-03
 status: open
 coveredBy:
+  - HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes
   - HintsTest::everyHintIsReachedByItsOwnTitle
   - HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat
-  - HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes
   - HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations
 ---
 

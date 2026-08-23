@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Decisions;
 use TYPO3\DevCompanion\Upkeep\DecisionStatus;
 use TYPO3\DevCompanion\Upkeep\Requirements;
@@ -77,6 +78,7 @@ final class UnresolvedTest extends TestCase
      * entry can be rewritten under the stamp and nothing catches that: what the
      * reading can do is print the day the judgement was made — `D-DOC-038`.
      */
+    #[Decision('D-DOC-038')]
     #[Test]
     public function aJudgedEntryCarriesTheDayItWasDecidedOn(): void
     {
@@ -105,6 +107,7 @@ final class UnresolvedTest extends TestCase
      * Both spellings counted while the corpus had two. It has one since
      * `D-DOC-039`, which is the entry this holds and where the numbers are.
      */
+    #[Decision('D-DOC-039')]
     #[Test]
     public function anOpenDecisionSomebodyHasBeenBackToIsToldApart(): void
     {
@@ -132,6 +135,7 @@ final class UnresolvedTest extends TestCase
      * newest first for the listings, and this is the one caller that wants the
      * other end — `D-DOC-003`.
      */
+    #[Decision('D-DOC-003')]
     #[Test]
     public function theOpenDecisionsAreReadOldestFirst(): void
     {

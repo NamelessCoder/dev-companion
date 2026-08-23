@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
@@ -33,6 +34,8 @@ final class CliTest extends TestCase
      * wait cannot also demand that the repository always have some —
      * `D-FBK-012`, `D-FBK-013`.
      */
+    #[Decision('D-FBK-012')]
+    #[Decision('D-FBK-013')]
     #[Test]
     public function theSightingsWaitForAnEmptyQueue(): void
     {
@@ -66,6 +69,7 @@ final class CliTest extends TestCase
      * time. `read-the-contract-cases-no-test-can-hold` sat 16 days past its
      * date that way, and nothing failed, because nothing asks — `D-EVI-007`.
      */
+    #[Decision('D-EVI-007')]
     #[Test]
     public function anAppointmentComesUpOnlyWhileItsCommandFindsWork(): void
     {
@@ -111,6 +115,7 @@ final class CliTest extends TestCase
      * of `todo/` on a file the command had just read. So the path is printed
      * whichever of the three kinds of todo comes up — `D-FBK-020`.
      */
+    #[Decision('D-FBK-020')]
     #[Test]
     public function theTodoItHandsOverNamesTheFileItIs(): void
     {
@@ -149,6 +154,7 @@ final class CliTest extends TestCase
      * after it, so a todo in neither would be asked at no point at all —
      * `D-FBK-012`.
      */
+    #[Decision('D-FBK-012')]
     #[Test]
     public function whatRecursIsEitherAnAppointmentOrASighting(): void
     {
@@ -235,6 +241,7 @@ final class CliTest extends TestCase
      * worktrees too: standing on a claim the answer is that claim, standing on
      * none it is a refusal, and the queue is neither — `D-FBK-013`.
      */
+    #[Decision('D-FBK-013')]
     #[Test]
     public function whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue(): void
     {

@@ -4,10 +4,10 @@ title: 'The instructions index the question each tool answers'
 date: 2026-08-18
 status: open
 coveredBy:
-  - ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers
   - ScopeTest::theIndexNamesNoToolTheCallerExcluded
-  - ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall
   - ScopeTest::theInstructionsFitWhatAClientKeeps
+  - ScopeTest::theInstructionsIndexTheQuestionEachToolAnswers
+  - ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall
 ---
 
 # D-AUD-011 — The instructions index the question each tool answers

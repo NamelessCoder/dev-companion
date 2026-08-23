@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Server\Installer;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 
 /**
@@ -128,6 +129,7 @@ final class InstallerRecordTest extends TestCase
      * their `composer update` fail over a dev tool they do not use —
      * `D-DIS-014`.
      */
+    #[Decision('D-DIS-014')]
     #[Test]
     public function updateSaysSoWhereNothingIsInstalledAtAll(): void
     {
@@ -154,6 +156,7 @@ final class InstallerRecordTest extends TestCase
      * nine skills are republished, the record is rewritten, and what the
      * project wrote stays byte for byte what it was — `D-DIS-010`.
      */
+    #[Decision('D-DIS-010')]
     #[Test]
     public function neitherCommandWritesIntoTheProjectsGitignore(): void
     {
@@ -187,6 +190,7 @@ final class InstallerRecordTest extends TestCase
      * says which of them happened rather than only that something did —
      * `D-DIS-013`.
      */
+    #[Decision('D-DIS-013')]
     #[Test]
     public function aPublicationThatIsNoLongerTheCurrentOneSaysWhichWayItDrifted(): void
     {

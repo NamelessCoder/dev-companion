@@ -6,9 +6,9 @@ status: open
 coveredBy:
   - DocumentationPrepareTest::oneCallWritesTheCopyAndSaysWhereItWent
   - DocumentationPrepareTest::whatTheDocumentationNoLongerHasIsReported
-  - DocumentationPreviewTest::onePreviewFetchesTheRendererThenRendersThenFinishes
-  - DocumentationPreviewTest::aRendererThatIsAlreadyThereIsNotFetchedAgain
   - DocumentationPreviewTest::aFailedStepStopsThePreviewAndQuotesTheCommand
+  - DocumentationPreviewTest::aRendererThatIsAlreadyThereIsNotFetchedAgain
+  - DocumentationPreviewTest::onePreviewFetchesTheRendererThenRendersThenFinishes
 ---
 
 # D-DOC-028 — The renderer is a build tool this repository carries none of

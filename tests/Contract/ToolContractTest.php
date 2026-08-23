@@ -12,6 +12,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Result\Unsupported;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\ToolCalls;
 
@@ -26,6 +27,7 @@ use TYPO3\DevCompanion\Upkeep\ToolCalls;
  */
 final class ToolContractTest extends TestCase
 {
+    #[Decision('D-ANS-017')]
     #[Test]
     public function everyToolDeclaresSchemasAndAnnotations(): void
     {
@@ -74,6 +76,8 @@ final class ToolContractTest extends TestCase
      * the descriptions are on the wire in `tools/list`, which is why this holds
      * them rather than the reference alone — `D-ANS-054`.
      */
+    #[Decision('D-ANS-012')]
+    #[Decision('D-ANS-054')]
     #[Test]
     public function anArgumentInAnAlternativeNamesTheOnesItExcludes(): void
     {
@@ -125,6 +129,7 @@ final class ToolContractTest extends TestCase
      * Output schemas are not held here, because every union in them is
      * `[X, "null"]` rather than an alternative a caller has to produce.
      */
+    #[Decision('D-ANS-017')]
     #[Test]
     public function noArgumentDeclaresMoreThanOneType(): void
     {
@@ -160,6 +165,7 @@ final class ToolContractTest extends TestCase
      * `D-DOC-008`.
      */
     /** @param array<string, mixed> $arguments */
+    #[Decision('D-DOC-008')]
     #[DataProvider('toolCalls')]
     #[Test]
     public function aToolCallAnswersWithTextAndMatchingData(string $name, array $arguments): void
@@ -204,6 +210,7 @@ final class ToolContractTest extends TestCase
      * travels as data and names where discovery looked, which is R-ANS-002 and
      * what META-02 asks for where discovery failed — `D-ANS-005`.
      */
+    #[Decision('D-ANS-005')]
     #[Test]
     public function aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse(): void
     {
@@ -253,6 +260,7 @@ final class ToolContractTest extends TestCase
      * the other branch would have quietly withdrawn the promise instead —
      * `D-ANS-005`.
      */
+    #[Decision('D-ANS-005')]
     #[Test]
     public function anInstallationBackedSchemaOffersEitherShape(): void
     {
@@ -286,6 +294,7 @@ final class ToolContractTest extends TestCase
      * just listed its packages, because the constant it filled from carried the
      * value — `D-ANS-005`.
      */
+    #[Decision('D-ANS-005')]
     #[Test]
     public function onlyOneClassBuildsTheUnsupportedAnswer(): void
     {

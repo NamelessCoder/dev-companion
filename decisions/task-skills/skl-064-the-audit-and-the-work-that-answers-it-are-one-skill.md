@@ -5,8 +5,8 @@ date: 2026-08-19
 status: open
 coveredBy:
   - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
-  - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
   - SkillTest::everyPublishedSkillIsNamedByAnIntent
+  - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
 ---
 
 # D-SKL-064 — The audit and the work that answers it are one skill

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Requirements;
 use TYPO3\DevCompanion\Upkeep\RequirementState;
 
@@ -61,6 +62,7 @@ final class RequirementsTest extends TestCase
      * is by hand. Held here rather than by reading it, because the checkout it
      * fails on is the one checkout where nothing collides — `D-FBK-046`.
      */
+    #[Decision('D-FBK-046')]
     #[Test]
     public function aDuplicateIdNamesBothFilesAndThatNothingMovesOne(): void
     {
@@ -80,6 +82,7 @@ final class RequirementsTest extends TestCase
      * Unpadded, `dis-10` sat between `dis-1` and `dis-2` in every directory
      * listing and in every generated index — `D-DOC-005`.
      */
+    #[Decision('D-DOC-005')]
     #[Test]
     public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
     {
@@ -127,6 +130,7 @@ final class RequirementsTest extends TestCase
      * stamp, and the date is the only thing that lets a reader notice —
      * `D-DOC-038`.
      */
+    #[Decision('D-DOC-038')]
     #[Test]
     public function aJudgementIsTheDateItWasMadeOn(): void
     {
@@ -154,6 +158,7 @@ final class RequirementsTest extends TestCase
      * carries meaning: where the demand came from is evidence, and what holds
      * it there is the claim the suite keeps — `D-DOC-004`.
      */
+    #[Decision('D-DOC-004')]
     #[Test]
     public function everyRequirementIsWrittenInTheSectionsTheFormatHas(): void
     {
@@ -182,6 +187,7 @@ final class RequirementsTest extends TestCase
      * names exists, which is the whole of what `## Held by` promises —
      * `D-DOC-004`.
      */
+    #[Decision('D-DOC-004')]
     #[Test]
     public function everyRequirementNamesWhatHoldsIt(): void
     {

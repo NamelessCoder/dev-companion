@@ -4,12 +4,12 @@ title: 'The first check a standalone extension gets is a gap'
 date: 2026-08-04
 status: open
 coveredBy:
-  - ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn
-  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
-  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
-  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
-  - HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable
   - HintsTest::aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt
+  - HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable
+  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
+  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
+  - ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
 ---
 
 # D-KNW-055 — The first check a standalone extension gets is a gap

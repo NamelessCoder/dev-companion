@@ -6,9 +6,9 @@ status: open
 coveredBy:
   - LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach
   - LabelSearchTest::theSubsetThatNarrowsBestComesFirst
+  - PackageSourcesTest::aFilterThatChangedNothingIsNotBlamedForTheMiss
   - PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit
   - PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt
-  - PackageSourcesTest::aFilterThatChangedNothingIsNotBlamedForTheMiss
 ---
 
 # D-ANS-016 — A miss names the query that would have hit

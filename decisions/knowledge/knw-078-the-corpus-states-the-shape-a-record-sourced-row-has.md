@@ -4,8 +4,8 @@ title: The corpus states the shape a Record-sourced row has
 date: 2026-08-14
 status: open
 coveredBy:
-  - HintsTest::theShapeOfARecordSourcedRowNamesTheFieldsThatMoved
   - HintsTest::theRecordShapeIsWithheldFromTheBranchThatHasNoRecordApi
+  - HintsTest::theShapeOfARecordSourcedRowNamesTheFieldsThatMoved
 ---
 
 # D-KNW-078 — The corpus states the shape a Record-sourced row has

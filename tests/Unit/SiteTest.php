@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Links;
 use TYPO3\DevCompanion\Upkeep\Site;
@@ -41,6 +42,7 @@ final class SiteTest extends TestCase
      * is not a dead link on the site because it is not a relative link there at
      * all — `D-DOC-017`.
      */
+    #[Decision('D-DOC-017')]
     #[Test]
     public function noPublishedPageKeepsALinkToAFileTheSiteDoesNotCarry(): void
     {
@@ -89,6 +91,7 @@ final class SiteTest extends TestCase
     /**
  * And every relative link that stayed is a file the copy has — `D-DOC-017`.
  */
+    #[Decision('D-DOC-017')]
     #[Test]
     public function everyLinkThePublishedCopyKeepsResolvesInsideIt(): void
     {
@@ -138,6 +141,8 @@ final class SiteTest extends TestCase
      * replaces that is a label the renderer resolves and fails loudly on, and
      * what fails loudly in a checkout with no renderer is this — `D-DOC-017`.
      */
+    #[Decision('D-DOC-017')]
+    #[Decision('D-DOC-029')]
     #[Test]
     public function everyReferenceIntoAnotherPageIsAnsweredByALabel(): void
     {
@@ -154,6 +159,7 @@ final class SiteTest extends TestCase
      * resolves it. `Site` rewrites the links that leave the tree and nothing
      * else, which is the whole of what it does to a page now — `D-DOC-029`.
      */
+    #[Decision('D-DOC-029')]
     #[Test]
     public function aReferenceInsideTheCorpusIsNotRewritten(): void
     {
@@ -172,6 +178,10 @@ final class SiteTest extends TestCase
      * resolves a `:doc:` against — `D-DOC-026`, `D-DOC-029`, `D-DOC-018`,
      * `D-DOC-017`.
      */
+    #[Decision('D-DOC-017')]
+    #[Decision('D-DOC-018')]
+    #[Decision('D-DOC-026')]
+    #[Decision('D-DOC-029')]
     #[Test]
     public function aDirectorysOwnPageIsPublishedAsItsIndex(): void
     {
@@ -196,6 +206,8 @@ final class SiteTest extends TestCase
      * field written below it is rendered as a definition list in the body, so
      * the order is what makes the shape and not decoration.
      */
+    #[Decision('D-DOC-026')]
+    #[Decision('D-DOC-030')]
     #[Test]
     public function theSiteOpensOnTheDocumentationsOwnPage(): void
     {
@@ -217,6 +229,7 @@ final class SiteTest extends TestCase
      * not one of them. Published, it would land in the input directory it
      * declares.
      */
+    #[Decision('D-DOC-027')]
     #[Test]
     public function theRenderersConfigurationIsNotPublished(): void
     {
@@ -268,6 +281,9 @@ final class SiteTest extends TestCase
      * so as a warning nobody reads and the page is then in no menu at all. Six
      * of them were unreachable that way — `D-DOC-025`, `D-DOC-029`.
      */
+    #[Decision('D-DOC-024')]
+    #[Decision('D-DOC-025')]
+    #[Decision('D-DOC-029')]
     #[Test]
     public function everyDirectoryOfTheDocumentationHasItsOwnPage(): void
     {
@@ -293,6 +309,7 @@ final class SiteTest extends TestCase
      * a page whose heading is longer says the short name in a
      * `:navigation-title:` above it.
      */
+    #[Decision('D-DOC-031')]
     #[Test]
     public function everyPageIsRailedUnderALabelRatherThanItsHeading(): void
     {
@@ -320,6 +337,7 @@ final class SiteTest extends TestCase
      * `ToolAnswers` and held by `bin/cli tools:check`, and what heads a recorded
      * answer there is the case it is of.
      */
+    #[Decision('D-DOC-032')]
     #[Test]
     public function everySectionIsHeadedByALabel(): void
     {

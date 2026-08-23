@@ -4,9 +4,9 @@ title: A recording is answered from the checkout the command makes
 date: 2026-08-18
 status: open
 coveredBy:
-  - CheckoutsTest::everyEntryGitReportsIsCarried
-  - CheckoutsTest::bothKindsOfChangeAreCarried
   - CheckoutsTest::aGitThatCannotAnswerReportsNoDifference
+  - CheckoutsTest::bothKindsOfChangeAreCarried
+  - CheckoutsTest::everyEntryGitReportsIsCarried
 ---
 
 # D-DOC-034 — A recording is answered from the checkout the command makes

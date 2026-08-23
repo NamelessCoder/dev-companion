@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 
 /**
  * What is held from a host outside this machine, and what is fetched again.
@@ -36,6 +37,7 @@ final class RecentTest extends TestCase
      * The tracker is held the same way and by the same rule, because what is
      * being spared is the round trip rather than the parsing — `D-ANS-049`.
      */
+    #[Decision('D-ANS-049')]
     #[Test]
     public function anAnsweredIssueIsReadFromTheTrackerOnce(): void
     {
@@ -53,6 +55,7 @@ final class RecentTest extends TestCase
      * And what is held is read again once it is old, which is what keeps a
      * triage from acting on a state that has moved — `D-ANS-049`.
      */
+    #[Decision('D-ANS-049')]
     #[Test]
     public function anIssueIsReadAgainOnceWhatWasHeldIsOld(): void
     {
@@ -65,6 +68,7 @@ final class RecentTest extends TestCase
         self::assertSame(2, $this->reads);
     }
 
+    #[Decision('D-ANS-049')]
     #[Test]
     public function aBodyTheTrackerDidNotAnswerIsNotHeld(): void
     {
@@ -83,6 +87,7 @@ final class RecentTest extends TestCase
      * A change the review server answered for is held, so a second call inside
      * the window costs nothing over the wire — `D-ANS-049`.
      */
+    #[Decision('D-ANS-049')]
     #[Test]
     public function aChangeThatExistsIsReadFromTheReviewServerOnce(): void
     {
@@ -96,6 +101,7 @@ final class RecentTest extends TestCase
         self::assertSame(1, $this->reads);
     }
 
+    #[Decision('D-ANS-049')]
     #[Test]
     public function noChangeForAnIssueIsAskedEveryTime(): void
     {

@@ -5,10 +5,10 @@ date: 2026-08-05
 status: open
 coveredBy:
   - GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered
-  - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
+  - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
   - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
   - GerritTest::theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt
-  - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
+  - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
 ---
 
 # D-ANS-055 — A change answers for an issue its commit message names

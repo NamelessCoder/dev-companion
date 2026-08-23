@@ -4,12 +4,12 @@ title: 'A matched set larger than a page is answered by its shape'
 date: 2026-08-19
 status: open
 coveredBy:
-  - ForgeTest::aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry
   - ForgeTest::aBreakdownCountsTheWholeSetRatherThanAPageOfIt
-  - ForgeTest::theCountedReadPagesUntilTheWholeMatchedSetIsRead
   - ForgeTest::aBreakdownSaysWhereTheBoundCutTheRead
-  - ForgeTest::theLargestBucketsAreAnsweredAndTheTailIsCounted
+  - ForgeTest::aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry
   - ForgeTest::theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting
+  - ForgeTest::theCountedReadPagesUntilTheWholeMatchedSetIsRead
+  - ForgeTest::theLargestBucketsAreAnsweredAndTheTailIsCounted
 ---
 
 # D-ANS-090 — A matched set larger than a page is answered by its shape

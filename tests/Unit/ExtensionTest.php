@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Extension;
 use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 
 /**
@@ -50,6 +51,7 @@ final class ExtensionTest extends TestCase
         self::assertSame([], $found);
     }
 
+    #[Decision('D-ANS-009')]
     #[Test]
     public function declaringOneOfTheTwoFieldsStillReadsTheFile(): void
     {
@@ -76,6 +78,7 @@ final class ExtensionTest extends TestCase
         self::assertSame([], $found);
     }
 
+    #[Decision('D-ANS-009')]
     #[Test]
     public function aFrameworkPackageIsExemptFromBoth(): void
     {
@@ -110,6 +113,7 @@ final class ExtensionTest extends TestCase
         self::assertSame(['#98093'], array_column($found, 'changelog'));
     }
 
+    #[Decision('D-ANS-009')]
     #[Test]
     public function anIconBelowResourcesIsWhatSilencesTheRootOne(): void
     {
@@ -140,6 +144,7 @@ final class ExtensionTest extends TestCase
         self::assertSame(['#96518', '#96518'], array_column($found, 'changelog'));
     }
 
+    #[Decision('D-ANS-009')]
     #[Test]
     public function theRenamedFileBesideItIsWhatSilencesTheOldOne(): void
     {

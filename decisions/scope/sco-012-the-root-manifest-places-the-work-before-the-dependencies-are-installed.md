@@ -4,11 +4,11 @@ title: The root manifest places the work before the dependencies are installed
 date: 2026-08-18
 status: open
 coveredBy:
+  - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
+  - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
+  - ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised
   - ScopeTest::anExtensionRepositoryIsPlacedByItsRootManifest
   - ScopeTest::theDeclaredExtensionKeyPlacesAPath
-  - ScopeTest::aDotfileKeepsItsDotWhenAPathIsNormalised
-  - ScopeTest::aBriefInAnExtensionRepositoryHandsBackNoCoreSuite
-  - InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne
 ---
 
 # D-SCO-012 — The root manifest places the work before the dependencies are installed

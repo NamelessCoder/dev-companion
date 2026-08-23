@@ -4,8 +4,8 @@ title: 'The brief is one brief'
 date: 2026-08-02
 status: open
 coveredBy:
-  - ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich
   - ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep
+  - ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich
 ---
 
 # D-SCO-009 — The brief is one brief

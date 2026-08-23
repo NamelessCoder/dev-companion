@@ -5,8 +5,8 @@ date: 2026-08-19
 status: open
 coveredBy:
   - ScopeTest::aCallThatNamesOneSectionIsAnsweredWithThatSectionAlone
-  - ScopeTest::noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor
   - ScopeTest::namingNoSectionAnswersEverythingTheToolHas
+  - ScopeTest::noSelectionHidesWhatTheCallerExcludedOrWhatThisServerIsFor
 ---
 
 # D-ANS-088 — The orientation answer is asked for by section

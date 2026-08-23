@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Installation\Icons;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Tool\Source;
 use TYPO3\DevCompanion\Upkeep\CoreFixture;
@@ -62,6 +63,7 @@ final class CoreFixtureTest extends TestCase
      * bound to a version comes back unbound — and both would go unnoticed,
      * because a wrong answer here is still a well-formed one — `D-DOC-016`.
      */
+    #[Decision('D-DOC-016')]
     #[Test]
     public function theWrittenCheckoutIsReadAsOneAndSaysWhichTypo3ItIs(): void
     {
@@ -83,6 +85,7 @@ final class CoreFixtureTest extends TestCase
      * reason that says nothing about a caller with a booted TYPO3 —
      * `D-DOC-016`.
      */
+    #[Decision('D-DOC-016')]
     #[Test]
     public function everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne(): void
     {

@@ -4,8 +4,8 @@ title: 'The ViewHelper reference is indexed'
 date: 2026-08-02
 status: open
 coveredBy:
-  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
   - DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase
+  - DocumentationTest::aViewHelperQuestionReachesTheManualOutsideTheCollection
 ---
 
 # D-ANS-026 — The ViewHelper reference is indexed

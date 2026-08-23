@@ -7,6 +7,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Command\DocumentationPrepare;
 
@@ -38,6 +39,7 @@ final class DocumentationPrepareTest extends TestCase
      * One call writes the whole copy a renderer is pointed at, and says where
      * it went, so nothing else here touches a render — `D-DOC-028`.
      */
+    #[Decision('D-DOC-028')]
     #[Test]
     public function oneCallWritesTheCopyAndSaysWhereItWent(): void
     {
@@ -57,6 +59,7 @@ final class DocumentationPrepareTest extends TestCase
     /**
  * A page the documentation no longer has stops being in the copy — `D-DOC-028`.
  */
+    #[Decision('D-DOC-028')]
     #[Test]
     public function whatTheDocumentationNoLongerHasIsReported(): void
     {

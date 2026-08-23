@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Manual\CoreChangelog;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -59,6 +60,7 @@ final class ChangelogTest extends TestCase
      * carries the method, so a scan over file names alone reaches neither —
      * `D-ANS-041`.
      */
+    #[Decision('D-ANS-041')]
     #[Test]
     public function aMethodNameOnlyTheStatedTitleSpellsReachesTheEntry(): void
     {
@@ -82,6 +84,7 @@ final class ChangelogTest extends TestCase
      * an answer where there was none and is not spent on one there already is.
      * What that gives up is the entry a hit leaves out — `D-ANS-041`.
      */
+    #[Decision('D-ANS-041')]
     #[Test]
     public function theTitlesAreReadOnlyWhereTheFileNamesCarryNothing(): void
     {
@@ -98,6 +101,7 @@ final class ChangelogTest extends TestCase
      * read, so the word that reaches nothing is the one the caller drops —
      * `D-ANS-041`.
      */
+    #[Decision('D-ANS-041')]
     #[Test]
     public function aMissCountsEachWordOverTheTitlesItSearched(): void
     {

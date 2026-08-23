@@ -4,9 +4,9 @@ title: 'A word behind a namespace prefix is searched as itself'
 date: 2026-08-03
 status: open
 coveredBy:
+  - DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName
   - TermSearchTest::aWordBehindANamespacePrefixIsNotAStopword
   - TermSearchTest::theSameWordAfterTheColonOfASentenceIsNot
-  - DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName
 ---
 
 # D-ANS-047 — A word behind a namespace prefix is searched as itself

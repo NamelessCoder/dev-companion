@@ -4,8 +4,8 @@ title: How an entrypoint may be named is a per-client question
 date: 2026-08-08
 status: confirmed
 coveredBy:
-  - InstallerTest::aClientResolvingTheRootGetsAnEntryThatIsRightAnywhere
   - InstallerTest::aCheckoutElsewhereKeepsTheHostPath
+  - InstallerTest::aClientResolvingTheRootGetsAnEntryThatIsRightAnywhere
   - InstallerTest::aDependencyOfTheProjectStillNamesTheHostPath
 ---
 

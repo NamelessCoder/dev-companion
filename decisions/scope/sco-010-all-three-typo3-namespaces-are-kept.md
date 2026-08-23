@@ -4,8 +4,8 @@ title: 'All three `typo3` namespaces are kept'
 date: 2026-08-04
 status: open
 coveredBy:
-  - ToolNamingTest::everyToolIsNamedSubjectThenVerb
   - StdioServerTest::theKnowledgeIndexIsServedWithTheScope
+  - ToolNamingTest::everyToolIsNamedSubjectThenVerb
 ---
 
 # D-SCO-010 — All three `typo3` namespaces are kept

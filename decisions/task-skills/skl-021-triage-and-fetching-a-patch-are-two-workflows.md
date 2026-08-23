@@ -4,10 +4,10 @@ title: 'Triage and fetching a patch are two workflows'
 date: 2026-08-05
 status: open
 coveredBy:
-  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
-  - SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem
-  - SkillTest::everySkillStatesWhatItOwns
   - SkillTest::aDraftSaysSoInItsOwnFrontMatter
+  - SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder
+  - SkillTest::everySkillStatesWhatItOwns
+  - SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem
 ---
 
 # D-SKL-021 — Triage and fetching a patch are two workflows

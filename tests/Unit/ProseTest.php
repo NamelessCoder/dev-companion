@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Prose;
 use TYPO3\DevCompanion\Upkeep\Wrap;
@@ -71,6 +72,7 @@ final class ProseTest extends TestCase
      * the reading happens over both halves of the corpus and that a retelling
      * is a comment naming an entry, not that any number stays where it is.
      */
+    #[Decision('D-DOC-035')]
     #[Test]
     public function whatTheCommentsCostIsMeasured(): void
     {
@@ -93,6 +95,7 @@ final class ProseTest extends TestCase
      * Reported rather than failed on, so what is held is that the report finds
      * the shape it claims to find — `D-DOC-035`.
      */
+    #[Decision('D-DOC-035')]
     #[Test]
     public function aCommentThatNamesAnEntryAndRetellsItAnywayIsReported(): void
     {
@@ -117,6 +120,7 @@ final class ProseTest extends TestCase
      * docblock had seven of ten lines gone before a sentence was written and
      * the report named the shape of a docblock rather than a retelling.
      */
+    #[Decision('D-DOC-035')]
     #[Test]
     #[DataProvider('comments')]
     public function whatTheMarkupCostsIsNotCountedAsProse(string $comment, int $prose): void
@@ -198,6 +202,7 @@ final class ProseTest extends TestCase
      * somebody made on purpose, and the next reader has no way to tell —
      * `D-DOC-029`.
      */
+    #[Decision('D-DOC-029')]
     #[Test]
     public function rewrappingChangesNothingButTheLineBreaks(): void
     {
@@ -244,6 +249,7 @@ final class ProseTest extends TestCase
      * markup: a heading and the rule under it, a directive and its indent, a
      * drawn table, a label — `D-DOC-029`.
      */
+    #[Decision('D-DOC-029')]
     #[Test]
     public function whatIsNotProseInReStructuredTextComesBackUnchanged(): void
     {
@@ -265,6 +271,7 @@ final class ProseTest extends TestCase
      * written with the backticks the markdown reader treats as one span —
      * `D-DOC-029`.
      */
+    #[Decision('D-DOC-029')]
     #[Test]
     public function aLiteralAndARoleAreNeverBrokenAcrossLines(): void
     {
@@ -320,6 +327,7 @@ final class ProseTest extends TestCase
      * whoever writes it once, against every reading of it in a diff, in a
      * terminal and by a model that receives it as text.
      */
+    #[Decision('D-DOC-001')]
     #[Test]
     public function aTableComesBackPaddedToItsWidestCell(): void
     {
@@ -339,6 +347,7 @@ final class ProseTest extends TestCase
      * it, padding would put a line break's meaning where the author did not —
      * `D-DOC-001`.
      */
+    #[Decision('D-DOC-001')]
     #[Test]
     public function whatIsNotATableIsNotPadded(): void
     {

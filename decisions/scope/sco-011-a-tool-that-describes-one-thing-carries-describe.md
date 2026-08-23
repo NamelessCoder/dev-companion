@@ -5,8 +5,8 @@ date: 2026-08-04
 status: open
 coveredBy:
   - ToolNamingTest::everyToolIsNamedSubjectThenVerb
-  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
   - ToolNamingTest::everyToolNameAnAnswerNamesIsRegistered
+  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
   - ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther
 ---
 

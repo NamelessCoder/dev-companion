@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Search\LabelSearch;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -102,6 +103,7 @@ final class LabelSearchTest extends TestCase
      * query was after — is the one to keep rather than the one to drop —
      * `D-ANS-016`.
      */
+    #[Decision('D-ANS-016')]
     #[Test]
     public function anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach(): void
     {
@@ -127,6 +129,7 @@ final class LabelSearchTest extends TestCase
      * because the caller reads the list from the top and the widest of them is
      * the one that answers least — `D-ANS-016`.
      */
+    #[Decision('D-ANS-016')]
     #[Test]
     public function theSubsetThatNarrowsBestComesFirst(): void
     {

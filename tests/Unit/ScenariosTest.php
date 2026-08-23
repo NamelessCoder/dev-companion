@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Finder\Finder;
 use TYPO3\DevCompanion\Knowledge\TaskIntents;
 use TYPO3\DevCompanion\Paths;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\Scenarios;
@@ -132,6 +133,8 @@ final class ScenariosTest extends TestCase
      * workflow to another, and a row per half is what says the second one
      * arrives too — `D-SKL-066` — `D-GUI-018`.
      */
+    #[Decision('D-GUI-018')]
+    #[Decision('D-SKL-066')]
     #[Test]
     #[DataProvider('theCasesWhoseOwnWordsHaveToReachAnIntent')]
     public function aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout(string $id, string $intent): void
@@ -209,6 +212,7 @@ final class ScenariosTest extends TestCase
      * cases of its day and read for months afterwards as though it still named
      * them — `D-EVI-007`.
      */
+    #[Decision('D-EVI-007')]
     #[Test]
     public function aContractCaseNoTestHoldsSaysSoWithItsExitCode(): void
     {

@@ -4,8 +4,8 @@ title: 'A renamed tool is corrected where the name is a claim'
 date: 2026-08-22
 status: open
 coveredBy:
-  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
   - ToolNamingTest::everyToolADecisionOffersInBackticksIsRegistered
+  - ToolNamingTest::everyToolNameWrittenInTheKnowledgeBaseIsRegistered
 ---
 
 # D-DOC-040 — A renamed tool is corrected where the name is a claim

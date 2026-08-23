@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\GerritLookup;
 
 /**
@@ -90,6 +91,7 @@ final class GerritTest extends TestCase
      * give: a session reading one MERGED core change with a plausible subject
      * has no signal at all that it is spurious — `D-ANS-055`.
      */
+    #[Decision('D-ANS-055')]
     #[Test]
     public function aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered(): void
     {
@@ -108,6 +110,7 @@ final class GerritTest extends TestCase
      * the message as text would clear exactly the change the filter is for —
      * `D-ANS-055`.
      */
+    #[Decision('D-ANS-055')]
     #[Test]
     public function theNumberInAReviewUrlIsNotTheIssueBeingNamed(): void
     {
@@ -126,6 +129,7 @@ final class GerritTest extends TestCase
      * empty answer, which is what the caller acts on: nothing public names this
      * issue — `D-ANS-055`.
      */
+    #[Decision('D-ANS-055')]
     #[Test]
     public function anAnswerOfNothingButFalsePositivesIsEmpty(): void
     {
@@ -148,6 +152,7 @@ final class GerritTest extends TestCase
      * carries over unchanged: a change is the answer to the issue its message
      * names and to no other number in the batch.
      */
+    #[Decision('D-ANS-069')]
     #[Test]
     public function aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames(): void
     {
@@ -193,6 +198,7 @@ final class GerritTest extends TestCase
      * only where there is something to hold against it. A caller naming a
      * change has named it — `D-ANS-055`.
      */
+    #[Decision('D-ANS-055')]
     #[Test]
     public function theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt(): void
     {
@@ -221,6 +227,7 @@ final class GerritTest extends TestCase
      * message is that a change is not the answer to the issue whose number it
      * carries as its own — `D-ANS-055`.
      */
+    #[Decision('D-ANS-055')]
     #[Test]
     public function aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone(): void
     {
@@ -300,6 +307,7 @@ final class GerritTest extends TestCase
      * 100 written as two digits, so 95108 is filed under `08` and a ref built
      * by hand from the last digit alone resolves to nothing.
      */
+    #[Decision('D-ANS-068')]
     #[Test]
     public function theAnswerCarriesTheRefThatFetchesThePatchSetItNames(): void
     {
@@ -322,6 +330,7 @@ final class GerritTest extends TestCase
      * `feedback/2026-08-12-092654` reviewed 95169 and learned of its 13.4
      * sibling from the tracker.
      */
+    #[Decision('D-ANS-080')]
     #[Test]
     public function aChangeNamedByItsNumberAnswersWithItsSiblings(): void
     {
@@ -354,6 +363,7 @@ final class GerritTest extends TestCase
      * asked twice — including where that query answers one change, which is a
      * patch nobody has backported yet — `D-ANS-080`.
      */
+    #[Decision('D-ANS-080')]
     #[Test]
     public function aChangeIdIsNotAskedAgainWhereItIsWhatTheCallerPassed(): void
     {
@@ -385,6 +395,7 @@ final class GerritTest extends TestCase
      * `change:I4b02…&n=1` answers the backport — a caller asking for one change
      * by number would otherwise be handed the other one — `D-ANS-080`.
      */
+    #[Decision('D-ANS-080')]
     #[Test]
     public function theChangeThatWasNamedIsInItsOwnAnswerWhateverTheLimit(): void
     {
@@ -402,6 +413,7 @@ final class GerritTest extends TestCase
      * change the caller named stands rather than being replaced by nothing —
      * `D-ANS-080`.
      */
+    #[Decision('D-ANS-080')]
     #[Test]
     public function aSiblingQueryThatDidNotAnswerLeavesTheNamedChangeStanding(): void
     {
@@ -425,6 +437,7 @@ final class GerritTest extends TestCase
      * a string carrying a zero, which would fetch nothing and read like a
      * command to run — `D-ANS-068`.
      */
+    #[Decision('D-ANS-068')]
     #[Test]
     public function aChangeWithoutARevisionSaysSoRatherThanInventingOne(): void
     {
@@ -492,6 +505,7 @@ final class GerritTest extends TestCase
      * order is git parentage, child first, so the place of the change in the
      * list is what says how much is stacked on it and how much it is built on.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function aChangeCarriesTheStackOfChangesItIsOnePartOf(): void
     {
@@ -524,6 +538,7 @@ final class GerritTest extends TestCase
      * Acting on the patch set the chain names is the mistake carrying only that
      * number would make possible, which is `D-ANS-094`'s second **Wrong if**.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt(): void
     {
@@ -545,6 +560,7 @@ final class GerritTest extends TestCase
      * `D-ANS-080` puts in this answer, so the handle the caller passed is not
      * the handle this call can be made with — `D-ANS-094`.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer(): void
     {
@@ -569,6 +585,7 @@ final class GerritTest extends TestCase
      * — and that is the ordinary case rather than a failure, so it is an empty
      * chain and not a null one — `D-ANS-094`.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function aChangeStandingAloneHasAnEmptyChainRatherThanNone(): void
     {
@@ -587,6 +604,7 @@ final class GerritTest extends TestCase
      * be this side inventing the answer the call failed to bring back —
      * `D-ANS-094`.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function aChainCallThatDidNotAnswerIsNotAChangeStandingAlone(): void
     {
@@ -604,6 +622,7 @@ final class GerritTest extends TestCase
      * The stack is what the caller reads, so the text half says where the
      * change sits in it and which entries have moved on — `D-ANS-094`.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function theTextHalfSaysWhereInTheStackTheChangeSits(): void
     {
@@ -630,6 +649,7 @@ final class GerritTest extends TestCase
      * on several branches, and reading the first as the second would say the
      * label was the whole of the work — `D-ANS-094`.
      */
+    #[Decision('D-ANS-094')]
     #[Test]
     public function theTwoRelationsAChangeStandsInAreToldApart(): void
     {

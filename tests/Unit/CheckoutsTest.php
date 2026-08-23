@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Process\CommandRunner;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 
 /**
@@ -26,6 +27,7 @@ final class CheckoutsTest extends TestCase
         Checkouts::useRunner(null);
     }
 
+    #[Decision('D-DOC-034')]
     #[Test]
     public function everyEntryGitReportsIsCarried(): void
     {
@@ -49,6 +51,7 @@ final class CheckoutsTest extends TestCase
         self::assertSame([], Checkouts::beyondIndex('/checkouts/14.3'));
     }
 
+    #[Decision('D-DOC-034')]
     #[Test]
     public function aGitThatCannotAnswerReportsNoDifference(): void
     {
@@ -60,6 +63,7 @@ final class CheckoutsTest extends TestCase
         self::assertSame([], Checkouts::beyondIndex('/somewhere/else'));
     }
 
+    #[Decision('D-DOC-034')]
     #[Test]
     public function bothKindsOfChangeAreCarried(): void
     {

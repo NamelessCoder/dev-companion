@@ -4,11 +4,11 @@ title: 'A two-letter query word is searched for'
 date: 2026-08-02
 status: open
 coveredBy:
-  - TermSearchTest::aTwoLetterWordIsATerm
-  - TermSearchTest::oneLetterIsNot
-  - TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped
-  - TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix
   - DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName
+  - TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix
+  - TermSearchTest::aTwoLetterWordIsATerm
+  - TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped
+  - TermSearchTest::oneLetterIsNot
 ---
 
 # D-ANS-028 — A two-letter query word is searched for

@@ -76,3 +76,14 @@ the file already keeps data.
   refuse.
 - A decision needs a clause per test the way a requirement does. Then the list
   is the wrong shape for both and the requirement's section was right.
+
+## Since then
+
+`coveredBy` is generated rather than written, since 2026-08-23: the tests
+declare `#[Decision]` and `bin/cli decisions:cover` writes the front matter from
+it — `D-DOC-048`. That is this entry's reasoning taken one step: what is read as
+data is written in one place, and the entry carries the copy.
+
+A requirement's **Held by** is untouched, and the two corpora still say it in
+two shapes. What the attribute makes cheap is moving the second one, since the
+clause per test would be what stays in the section.

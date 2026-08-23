@@ -4,10 +4,10 @@ title: 'The release lines a trailer claims are a lookup'
 date: 2026-08-05
 status: confirmed
 coveredBy:
-  - ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose
   - CommitMessageTest::aBranchOutOfSupportIsAnErrorNamingTheLinesThatTake
   - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
   - CommitMessageTest::theMissingTrailerNamesTheLinesThatTakeAPatch
+  - ReleaseLinesTest::theLinesTakingAPatchNarrowAsTheirWindowsClose
 ---
 
 # D-ANS-058 — The release lines a trailer claims are a lookup

@@ -13,6 +13,7 @@ use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Result\Unsupported;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 
@@ -242,6 +243,8 @@ final class Typo3CliTest extends TestCase
      * DDEV is stubbed rather than run: what is held here is the command that
      * would be run, which is where the failure was — `D-COD-004`, `D-DIS-007`.
      */
+    #[Decision('D-COD-004')]
+    #[Decision('D-DIS-007')]
     #[Test]
     public function theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove(): void
     {
@@ -276,6 +279,7 @@ final class Typo3CliTest extends TestCase
      *
      * @param array<int, string> $arguments
      */
+    #[Decision('D-COD-004')]
     #[Test]
     #[DataProvider('argumentsAShellWouldActOn')]
     public function everyArgumentReachesTheContainerAsTheShellLeavesIt(array $arguments): void

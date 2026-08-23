@@ -12,6 +12,7 @@ earns one.
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
 - [`D-DOC-046`][D-DOC-046] — A title is the name an entry is read by · 2026-08-23
 - [`D-DOC-047`][D-DOC-047] — An entry is filed under the title it has · 2026-08-23
+- [`D-DOC-048`][D-DOC-048] — A test declares the decision it holds · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -55,6 +56,7 @@ earns one.
 [D-DOC-045]: doc-045-what-a-listing-reads-is-front-matter.md
 [D-DOC-046]: doc-046-a-title-is-the-name-an-entry-is-read-by.md
 [D-DOC-047]: doc-047-an-entry-is-filed-under-the-title-it-has.md
+[D-DOC-048]: doc-048-a-test-declares-the-decision-it-holds.md
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md

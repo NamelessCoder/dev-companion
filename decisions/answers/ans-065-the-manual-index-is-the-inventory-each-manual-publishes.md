@@ -4,10 +4,10 @@ title: The manual index is the inventory each manual publishes
 date: 2026-08-08
 status: open
 coveredBy:
-  - DocumentationTest::aPageIsIndexedUnderTheTitleTheInventoryStates
-  - DocumentationTest::theNotFoundPageIsNotOneOfTheAnswers
   - DocumentationTest::aBodyThatIsNotAnInventoryIsNotAnIndex
+  - DocumentationTest::aPageIsIndexedUnderTheTitleTheInventoryStates
   - DocumentationTest::anApiIdentifierReachesThePageThatIsNotNamedAfterIt
+  - DocumentationTest::theNotFoundPageIsNotOneOfTheAnswers
 ---
 
 # D-ANS-065 — The manual index is the inventory each manual publishes

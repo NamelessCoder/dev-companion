@@ -4,10 +4,10 @@ title: 'An unsupported question is answered in a shape of its own'
 date: 2026-08-02
 status: open
 coveredBy:
-  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
-  - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
-  - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
   - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
+  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
+  - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
+  - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
 ---
 
 # D-ANS-005 — An unsupported question is answered in a shape of its own

@@ -6,8 +6,8 @@ status: open
 coveredBy:
   - HintsTest::aSymptomReachesTheHintThatExplainsItFromAnotherDomain
   - HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit
-  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
   - HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten
+  - HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay
 ---
 
 # D-ANS-084 — A curated phrase crosses the domain gate

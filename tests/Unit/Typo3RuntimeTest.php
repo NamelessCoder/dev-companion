@@ -209,7 +209,7 @@ final class Typo3RuntimeTest extends TestCase
     }
 
     #[Test]
-    public function aFailsafeContainerIsAReasonRatherThanAResult(): void
+    public function aFailsafeContainerIsAReason(): void
     {
         // It answers — with core packages and nothing else, which is the state
         // every extension repository is in and the one that looks complete.

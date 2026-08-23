@@ -4,7 +4,7 @@ title: A union-typed argument gets the wording a client can compose against
 date: 2026-08-02
 status: open
 coveredBy:
-  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
+  - FeedbackTest::severalToolsStaySeveralTools
   - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
   - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted
   - ToolContractTest::everyToolDeclaresSchemasAndAnnotations
@@ -56,7 +56,7 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 - The union buys nothing the string branch does not. `Channel::toolNames()`
   splits a string on `[\s,;]+`, the argument description already says "Several
   may be named, as a list or separated by commas", and
-  `FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord` covers the comma
+  `FeedbackTest::severalToolsStaySeveralTools` covers the comma
   form on its own. `15405e5`, which introduced the list, wanted names that stay
   apart — not a second declared type.
 - This is not a delivery gap. `documentation/clients/tools.md:1812` renders the

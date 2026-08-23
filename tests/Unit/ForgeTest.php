@@ -165,7 +165,7 @@ final class ForgeTest extends TestCase
     #[Requirement('R-ANS-025')]
     #[Decision('D-ANS-057')]
     #[Test]
-    public function theFilesHangingOffAnIssueAreNamedRatherThanFetched(): void
+    public function theFilesHangingOffAnIssueAreNamed(): void
     {
         $asked = [];
         $forge = new Forge(function (string $url) use (&$asked): string {
@@ -371,7 +371,7 @@ final class ForgeTest extends TestCase
      * false answer rather than a missing one, so it is neither.
      */
     #[Test]
-    public function aChallengePageIsNotAnIssueAndNotAnAbsence(): void
+    public function aChallengePageIsNeitherAnIssueNorAnAbsence(): void
     {
         $calls = 0;
         $forge = new Forge(function () use (&$calls): string {
@@ -390,7 +390,7 @@ final class ForgeTest extends TestCase
     }
 
     #[Test]
-    public function aTrackerThatDoesNotAnswerIsSaidRatherThanGuessedAt(): void
+    public function aTrackerThatDoesNotAnswerIsSaid(): void
     {
         $forge = new Forge(fn(): ?string => null);
 
@@ -535,7 +535,7 @@ final class ForgeTest extends TestCase
      * and never `unavailable`.
      */
     #[Test]
-    public function wordsThatMatchNothingAreEmptyRatherThanUnavailable(): void
+    public function wordsThatMatchNothingAreEmpty(): void
     {
         $forge = new Forge(fn(): string => (string) json_encode([
             'results' => [],
@@ -573,7 +573,7 @@ final class ForgeTest extends TestCase
     }
 
     #[Test]
-    public function aTrackerThatDoesNotAnswerASearchIsSaidRatherThanGuessedAt(): void
+    public function aTrackerThatDoesNotAnswerASearchIsSaid(): void
     {
         $forge = new Forge(fn(): ?string => null);
 
@@ -943,7 +943,7 @@ final class ForgeTest extends TestCase
      */
     #[Decision('D-ANS-054')]
     #[Test]
-    public function theAreasAreReadFromTheProjectAndHeldRatherThanCopied(): void
+    public function theAreasAreReadFromTheProjectAndHeld(): void
     {
         $calls = 0;
         $forge = new Forge(function (string $url) use (&$calls): string {
@@ -1074,7 +1074,7 @@ final class ForgeTest extends TestCase
      */
     #[Decision('D-ANS-089')]
     #[Test]
-    public function aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog(): void
+    public function aNameNothingHereCarriesReadsNothing(): void
     {
         $asked = [];
         $forge = new Forge(function (string $url) use (&$asked): string {
@@ -1162,7 +1162,7 @@ final class ForgeTest extends TestCase
      * call it makes.
      */
     #[Test]
-    public function theMembersAreHeldRatherThanReadPerCall(): void
+    public function theMembersAreReadOncePerProcess(): void
     {
         $calls = 0;
         $forge = new Forge(function (string $url) use (&$calls): string {
@@ -1237,7 +1237,7 @@ final class ForgeTest extends TestCase
      */
     #[Decision('D-ANS-090')]
     #[Test]
-    public function aBreakdownCountsTheWholeSetRatherThanAPageOfIt(): void
+    public function aBreakdownCountsTheWholeSet(): void
     {
         $asked = [];
         $forge = new Forge(function (string $url) use (&$asked): string {

@@ -4,7 +4,7 @@ title: 'The placement answer names the document root as a place a script may not
 status: held
 restsOn: [D-KNW-026, D-KNW-045]
 heldBy:
-  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar
+  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRoot
 ---
 
 # R-KNW-056 — The placement answer names the document root as a place a script may not go

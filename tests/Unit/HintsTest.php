@@ -1045,7 +1045,7 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
+    public function aTypoScriptPathReachesTheTypoScriptHints(): void
     {
         // .typoscript and .tsconfig used to fall into the generic frontend
         // bucket, which answered a site set with the CSS browser baseline.
@@ -1241,7 +1241,7 @@ final class HintsTest extends TestCase
      * that reads complete and stops neither session.
      */
     #[Test]
-    public function theBrowserTargetKeepsTheArgumentsItRefusesAsWellAsThePolicy(): void
+    public function theBrowserTargetKeepsTheArgumentsItRefuses(): void
     {
         $text = self::statementsOf('css-browser-target');
 
@@ -2696,7 +2696,7 @@ final class HintsTest extends TestCase
 
     #[Requirement('R-KNW-003')]
     #[Test]
-    public function theFrontendRenderingPathIsAnsweredAsWellAsTheBackendOne(): void
+    public function theFrontendRenderingPathIsAnswered(): void
     {
         // Every Fluid hint was about backend modules, and the mechanism every
         // site is built on — how a page template is found and how it reaches
@@ -3260,7 +3260,7 @@ final class HintsTest extends TestCase
     #[Requirement('R-KNW-056')]
     #[Decision('D-KNW-045')]
     #[Test]
-    public function whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar(): void
+    public function whereAOneOffScriptMayNotGoNamesTheDocumentRoot(): void
     {
         // The corpus placed such a script — Build/, and not var/ because var/
         // is ignored — and named no place that is served. A session debugging
@@ -3847,7 +3847,7 @@ final class HintsTest extends TestCase
      */
     #[Requirement('R-KNW-047')]
     #[Test]
-    public function theBootstrapIsReferencedRatherThanCopied(): void
+    public function theBootstrapIsReferenced(): void
     {
         $text = self::statementsOf('project-extension-tests');
 
@@ -4015,7 +4015,7 @@ final class HintsTest extends TestCase
     #[Requirement('R-KNW-045')]
     #[Decision('D-KNW-030')]
     #[Test]
-    public function readingRecordsIsAnsweredAsWellAsWritingThem(): void
+    public function readingRecordsIsAnswered(): void
     {
         $reached = array_column(
             Hints::find([], 'why is a record missing from my query result', 6)['matchedHints'],
@@ -5688,7 +5688,7 @@ final class HintsTest extends TestCase
      */
     #[Decision('D-SKL-039')]
     #[Test]
-    public function aReviewOfAChangeRoutesTheReviewAndNotTheWorkflowThatWritesIt(): void
+    public function aReviewOfAChangeRoutesTheReview(): void
     {
         $review = Registry::call('typo3_task_guide', [
             'task' => 'review core patch 95169 and say whether it is breaking',
@@ -6912,7 +6912,7 @@ final class HintsTest extends TestCase
      */
     #[Decision('D-KNW-104')]
     #[Test]
-    public function addingToACorePaletteIsStatedAsTheCallAndNotAsTheString(): void
+    public function addingToACorePaletteIsStatedAsTheCall(): void
     {
         foreach (Versions::majors() as $major) {
             $texts = implode("\n", array_column(

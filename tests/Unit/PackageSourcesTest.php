@@ -291,7 +291,7 @@ final class PackageSourcesTest extends TestCase
      * it happened to see.
      */
     #[Test]
-    public function theTagListTravelsWithAHitAsWellAsWithAMiss(): void
+    public function theTagListTravelsWithAHit(): void
     {
         $root = $this->composerProject();
         $this->changelogEntry($root, '14.0', 'Deprecation-1-Scanned', 'Deprecation: #1 - Scanned', ['PHP-API', 'FullyScanned', 'ext:core']);
@@ -349,7 +349,7 @@ final class PackageSourcesTest extends TestCase
     #[Requirement('R-ANS-002')]
     #[Decision('D-ANS-043')]
     #[Test]
-    public function theNarrowingAMissComputesIsAFieldAsWellAsALine(): void
+    public function theNarrowingAMissComputesIsAField(): void
     {
         $root = $this->composerProject();
         $this->changelogEntry($root, '14.2', 'Deprecation-109412-FormYamlConfigurationRegistration', 'Deprecation: #109412 - TypoScript-based form YAML registration', []);

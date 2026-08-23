@@ -6,10 +6,10 @@ status: open
 coveredBy:
   - HintsTest::aCodeStyleFixerTaskIsRoutedToTheSkillThatOwnsIt
   - HintsTest::theFixerHalfOfTheStaticQualityLayerIsStatedAndReachable
-  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
-  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
+  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnread
+  - ProjectTest::theAnswerSaysWhatRunsTheProject
   - ProjectTest::theFloorTheInstalledCoreDeclaresIsBesideTheProjectsOwn
-  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswered
 ---
 
 # D-KNW-055 — The first check a standalone extension gets is a gap

@@ -62,7 +62,7 @@ final class FeedbackTest extends TestCase
      * three weeks after it was recorded.
      */
     #[Test]
-    public function aHeadingIsCutBetweenCharactersRatherThanBytes(): void
+    public function aHeadingIsCutBetweenCharacters(): void
     {
         // The dash sits where a 97-byte cut goes through the middle of it.
         $observation = self::MARKER . ' ' . str_repeat('a', 94 - strlen(self::MARKER)) . '— and the rest of the line';
@@ -156,7 +156,7 @@ final class FeedbackTest extends TestCase
 
     #[Requirement('R-FBK-005')]
     #[Test]
-    public function aNoteWithoutAModelSaysSoRatherThanCarryingNone(): void
+    public function aNoteWithoutAModelSaysSo(): void
     {
         // The write never fails on the attribution — the feedback is worth more
         // than the name — but an unattributed one says it is unattributed,
@@ -512,7 +512,7 @@ final class FeedbackTest extends TestCase
      */
     #[Requirement('R-FBK-015')]
     #[Test]
-    public function aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile(): void
+    public function aSubjectShortenedForLengthSaysSoInTheAnswer(): void
     {
         $subject = mb_substr(self::MARKER . ' ' . str_repeat('a line saying what only this one reports. ', 4), 0, 120);
         $this->ownFeedbackStore();
@@ -768,7 +768,7 @@ final class FeedbackTest extends TestCase
     #[Requirement('R-FBK-001')]
     #[Decision('D-ANS-017')]
     #[Test]
-    public function severalToolsStaySeveralToolsRatherThanOneWord(): void
+    public function severalToolsStaySeveralTools(): void
     {
         // An observation about the four tools that go quiet together is a
         // normal one. Stripping the separator ran their names into

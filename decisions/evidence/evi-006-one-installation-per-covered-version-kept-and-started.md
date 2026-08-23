@@ -5,9 +5,9 @@ date: 2026-08-03
 status: open
 coveredBy:
   - EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre
-  - EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing
+  - EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhy
   - EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProject
-  - EnvironmentsTest::anInstallationThatIsThereIsStartedRatherThanBuiltAgain
+  - EnvironmentsTest::anInstallationThatIsThereIsStarted
   - EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory
   - EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake
   - EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf

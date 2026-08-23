@@ -5,7 +5,7 @@ date: 2026-08-02
 status: open
 coveredBy:
   - DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName
-  - TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix
+  - TermSearchTest::aShortTermIsCarriedAsAWholeWord
   - TermSearchTest::aTwoLetterWordIsATerm
   - TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped
   - TermSearchTest::oneLetterIsNot

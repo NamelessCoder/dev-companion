@@ -4,7 +4,7 @@ title: 'A matched set larger than a page is answered by its shape'
 date: 2026-08-19
 status: open
 coveredBy:
-  - ForgeTest::aBreakdownCountsTheWholeSetRatherThanAPageOfIt
+  - ForgeTest::aBreakdownCountsTheWholeSet
   - ForgeTest::aBreakdownSaysWhereTheBoundCutTheRead
   - ForgeTest::aUnionIsTwoReadsMergedAndCountedWithoutTheIssuesBothCarry
   - ForgeTest::theAreasComeBackOnlyWhereAWordOfTheCallersNeedsCorrecting

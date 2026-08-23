@@ -3,9 +3,9 @@ id: R-ANS-002
 title: 'The reason is in the data, not only in the text'
 status: held
 heldBy:
-  - PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine
+  - PackageSourcesTest::theNarrowingAMissComputesIsAField
   - ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData
-  - ScopeTest::theInstallationDiagnosticIsDataRatherThanProse
+  - ScopeTest::theInstallationDiagnosticIsData
 ---
 
 # R-ANS-002 — The reason is in the data, not only in the text

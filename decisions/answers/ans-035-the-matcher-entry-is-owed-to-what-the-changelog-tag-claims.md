@@ -56,7 +56,7 @@ about the matchers.
   it raised its own weight from 1.61 to 3.22, and `## Review Readiness` — which
   carries none of it — fell from 0.51 coverage to 0.41 and out of the answer to
   "review readiness for my site package", which
-  `ScopeTest::whatARuleAnswerWithheldIsNamedRatherThanMissing` asks.
+  `ScopeTest::whatARuleAnswerWithheldIsNamed` asks.
 
 ## Decided
 

@@ -4,7 +4,7 @@ title: 'A declared command says whether it can start'
 status: held
 restsOn: [D-ANS-086]
 heldBy:
-  - ProjectTest::aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut
+  - ProjectTest::aBoundTheInterpreterClearsIsSaidToBeCleared
   - ProjectTest::aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt
   - ProjectTest::anInstallThatBoundsNothingIsSaidToBoundNothing
   - ProjectTest::whereNothingConfiguresAnEnvironmentTheBoundIsStated

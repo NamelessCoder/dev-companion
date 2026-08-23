@@ -6,7 +6,7 @@ status: open
 coveredBy:
   - EnvironmentsTest::everyEnvironmentAScenarioNamesSaysWhereItComesFrom
   - EnvironmentsTest::everyEnvironmentThatIsNotMadeHereSaysWhereItComesFromInstead
-  - EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine
+  - EnvironmentsTest::everyStepOfTheBuildRunsInTheProject
   - EnvironmentsTest::theBuildRequiresTheExtensionsThisServerAsksFor
   - EnvironmentsTest::theInstallationIsBuiltAtTheCoveredStableVersion
   - EnvironmentsTest::theSetupStepPassesEveryOptionItCannotBeAskedFor

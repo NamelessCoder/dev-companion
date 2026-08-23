@@ -5,7 +5,7 @@ date: 2026-08-03
 status: open
 coveredBy:
   - HintsTest::aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding
-  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
+  - HintsTest::readingRecordsIsAnswered
   - HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor
   - HintsTest::theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain
 ---

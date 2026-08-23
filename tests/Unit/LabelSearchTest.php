@@ -167,7 +167,7 @@ final class LabelSearchTest extends TestCase
 
     #[Requirement('R-ANS-005')]
     #[Test]
-    public function aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure(): void
+    public function aConsoleThatFoundNothingIsAnAnswer(): void
     {
         // The console prints "[WARNING] No language resource files found." and
         // exits successfully. Reading that as an unreachable installation sent
@@ -243,7 +243,7 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
-    public function whatEachWordReachesIsInTheAnswerAndNotOnlyTheText(): void
+    public function whatEachWordReachesIsInTheAnswer(): void
     {
         $this->consoleThatPrints((string) json_encode(['items' => [[
             'resource' => 'EXT:backend/Resources/Private/Language/locallang.xlf',
@@ -411,7 +411,7 @@ final class LabelSearchTest extends TestCase
 
     #[Requirement('R-ANS-008')]
     #[Test]
-    public function aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace(): void
+    public function aDatabaseWithoutASchemaIsNamed(): void
     {
         $this->consoleThatFails('An exception occurred while executing a query: '
             . "Table 'db.tx_scheduler_task' doesn't exist");

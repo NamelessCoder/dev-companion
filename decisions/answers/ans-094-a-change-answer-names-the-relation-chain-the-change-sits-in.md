@@ -7,7 +7,7 @@ coveredBy:
   - GerritTest::aChainCallThatDidNotAnswerIsNotAChangeStandingAlone
   - GerritTest::aChainEntryNamesThePatchSetInTheStackAndTheOneItStandsAt
   - GerritTest::aChangeCarriesTheStackOfChangesItIsOnePartOf
-  - GerritTest::aChangeStandingAloneHasAnEmptyChainRatherThanNone
+  - GerritTest::aChangeStandingAloneHasAnEmptyChain
   - GerritTest::theChainIsAskedByTheChangeNumberOfEveryChangeInTheAnswer
   - GerritTest::theTextHalfSaysWhereInTheStackTheChangeSits
   - GerritTest::theTwoRelationsAChangeStandsInAreToldApart

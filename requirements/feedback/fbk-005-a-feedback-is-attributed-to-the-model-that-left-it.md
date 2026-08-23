@@ -4,7 +4,7 @@ title: 'A feedback is attributed to the model that left it'
 status: held
 heldBy:
   - FeedbackTest::aNoteSaysWhichModelLeftIt
-  - FeedbackTest::aNoteWithoutAModelSaysSoRatherThanCarryingNone
+  - FeedbackTest::aNoteWithoutAModelSaysSo
 ---
 
 # R-FBK-005 — A feedback is attributed to the model that left it

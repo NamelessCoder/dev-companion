@@ -88,7 +88,7 @@ final class JsonTest extends TestCase
     }
 
     #[Test]
-    public function whatIsNotJsonIsRefusedRatherThanRewritten(): void
+    public function whatIsNotJsonIsRefused(): void
     {
         $this->expectException(\JsonException::class);
 
@@ -101,7 +101,7 @@ final class JsonTest extends TestCase
      * author of the same file.
      */
     #[Test]
-    public function theCorpusIsEveryJsonBelowKnowledgeAndNothingElse(): void
+    public function theCorpusIsEveryJsonBelowKnowledge(): void
     {
         $found = [];
         foreach (Finder::create()->files()->in(Paths::knowledge())->name('*.json') as $file) {

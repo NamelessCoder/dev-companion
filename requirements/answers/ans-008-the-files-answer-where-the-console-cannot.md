@@ -6,7 +6,7 @@ heldBy:
   - LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead
   - LabelSearchTest::aConsoleThatExitsWellAndSaysNothingIsUnanswered
   - LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing
-  - LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace
+  - LabelSearchTest::aDatabaseWithoutASchemaIsNamed
   - PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne
   - Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough
 ---

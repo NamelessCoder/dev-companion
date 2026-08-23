@@ -3,7 +3,7 @@ id: R-DIS-003
 title: 'The console is looked for where the installation declares it'
 status: held
 heldBy:
-  - Typo3CliTest::aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver
+  - Typo3CliTest::aBinDirectoryOutsideTheRootIsNamed
   - Typo3CliTest::aConsoleInTheDeclaredBinDirectoryIsFound
   - Typo3CliTest::anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory
 ---

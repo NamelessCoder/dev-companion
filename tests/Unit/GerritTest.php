@@ -95,7 +95,7 @@ final class GerritTest extends TestCase
     #[Requirement('R-ANS-023')]
     #[Decision('D-ANS-055')]
     #[Test]
-    public function aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered(): void
+    public function aChangeMatchedByItsNumberIsNotAnswered(): void
     {
         $gerrit = new Gerrit(static fn(): string => self::BOTH);
 
@@ -446,7 +446,7 @@ final class GerritTest extends TestCase
     #[Requirement('R-ANS-021')]
     #[Decision('D-ANS-068')]
     #[Test]
-    public function aChangeWithoutARevisionSaysSoRatherThanInventingOne(): void
+    public function aChangeWithoutARevisionSaysSo(): void
     {
         $gerrit = new Gerrit(static fn(): string => ")]}'\n" . '[{"_number":95040,"branch":"main","status":"NEW"}]');
 
@@ -594,7 +594,7 @@ final class GerritTest extends TestCase
      */
     #[Decision('D-ANS-094')]
     #[Test]
-    public function aChangeStandingAloneHasAnEmptyChainRatherThanNone(): void
+    public function aChangeStandingAloneHasAnEmptyChain(): void
     {
         $gerrit = new Gerrit(static fn(string $url): string => str_contains($url, '/related')
             ? ")]}'\n" . '{"changes":[]}'
@@ -814,7 +814,7 @@ final class GerritTest extends TestCase
      * here into an answer of "nobody answered" — `D-ANS-079`.
      */
     #[Test]
-    public function aCommentCarriesItsThreadRatherThanAVerdictOnIt(): void
+    public function aCommentCarriesItsThread(): void
     {
         $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {
@@ -915,7 +915,7 @@ final class GerritTest extends TestCase
      * than that no patch exists — the distinction the tool's own text carries.
      */
     #[Test]
-    public function aSearchThatMatchedNothingIsEmptyRatherThanUnavailable(): void
+    public function aSearchThatMatchedNothingIsEmpty(): void
     {
         $gerrit = new Gerrit(static fn(): string => ")]}'\n[]");
 
@@ -1021,7 +1021,7 @@ final class GerritTest extends TestCase
     }
 
     #[Test]
-    public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNoPatch(): void
+    public function aHostThatDoesNotAnswerIsSaid(): void
     {
         $gerrit = new Gerrit(static fn(): ?string => null);
 

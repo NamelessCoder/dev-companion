@@ -3,7 +3,7 @@ id: R-KNW-003
 title: 'A hint says how a subsystem is used'
 status: held
 heldBy:
-  - HintsTest::theFrontendRenderingPathIsAnsweredAsWellAsTheBackendOne
+  - HintsTest::theFrontendRenderingPathIsAnswered
 ---
 
 # R-KNW-003 — A hint says how a subsystem is used
@@ -24,6 +24,6 @@ questions were "how do I do X with this API" (2026-07-29).
 
 ## Held by
 
-- `HintsTest::theFrontendRenderingPathIsAnsweredAsWellAsTheBackendOne`, and the
+- `HintsTest::theFrontendRenderingPathIsAnswered`, and the
   shape of `datahandler-persistence`, `sitepackage-initial-content`,
   `public-assets`, `frontend-page-rendering` — not guarded beyond that.

@@ -5,7 +5,7 @@ date: 2026-08-04
 status: open
 coveredBy:
   - RenumberTest::aLetterSuffixIsAnotherEntryAndStaysWhereItIs
-  - RenumberTest::aReferenceNoLineSettlesIsNamedRatherThanMoved
+  - RenumberTest::aReferenceNoLineSettlesIsNamed
   - RenumberTest::everyMentionIsEitherMovedOrNamed
   - RenumberTest::noPathIsLeftPointingAtTheOldFile
 ---

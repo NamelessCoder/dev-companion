@@ -4,7 +4,7 @@ title: 'The review answer says which patch set it is about'
 status: held
 restsOn: [D-ANS-033]
 heldBy:
-  - GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne
+  - GerritTest::aChangeWithoutARevisionSaysSo
   - GerritTest::theAnswerCarriesThePatchSetACheckoutIsHeldAgainst
 ---
 

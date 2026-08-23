@@ -5,7 +5,7 @@ status: held
 restsOn: [D-DIS-010]
 heldBy:
   - InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore
-  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
+  - InstallerTest::gitReportsTheProjectsOwnFiles
 ---
 
 # R-DIS-024 — The published directories ignore themselves

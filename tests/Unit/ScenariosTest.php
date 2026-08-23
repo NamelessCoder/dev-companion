@@ -268,7 +268,7 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRunWhoseSessionHasNotHappenedYetIsOpenRatherThanBroken(): void
+    public function aRunWhoseSessionHasNotHappenedYetIsOpen(): void
     {
         // What `bin/cli scenarios:record` writes. A checker that fails on it stops
         // the repository for as long as a run is open — which is the one time
@@ -282,7 +282,7 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRecordedCallSaysWhatItAskedAndNotOnlyWhichToolItAsked(): void
+    public function aRecordedCallSaysWhatItAsked(): void
     {
         // A bare name cannot answer what the runs are judged on: whether the
         // conventions lookup was asked once per surface or once broadly,

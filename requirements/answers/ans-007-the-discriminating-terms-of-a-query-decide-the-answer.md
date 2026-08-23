@@ -3,7 +3,7 @@ id: R-ANS-007
 title: 'The discriminating terms of a query decide the answer'
 status: held
 heldBy:
-  - KnowledgeTest::aTermMatchesAWordRatherThanAnythingThatContainsIt
+  - KnowledgeTest::aTermMatchesAWholeWord
   - KnowledgeTest::theDiscriminatingTermsOfAQueryDecideTheAnswer
   - ScopeTest::aRuleQueryIsPointedAtTheHintCorpusItBelongsIn
 ---

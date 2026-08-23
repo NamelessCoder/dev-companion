@@ -117,7 +117,7 @@ final class CoreChangelogTest extends TestCase
      */
     #[Decision('D-ANS-067')]
     #[Test]
-    public function aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing(): void
+    public function aHostThatDoesNotAnswerIsSaid(): void
     {
         Instance::discoverFrom($this->installationAt('13.4'));
         CoreChangelog::useReader(static fn(string $url): ?string => null);

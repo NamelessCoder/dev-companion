@@ -3,7 +3,7 @@ id: R-PRJ-006
 title: 'What an extension does not ship is answered too'
 status: held
 heldBy:
-  - ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut
+  - ProjectTest::whatAnExtensionDoesNotShipIsAnswered
 ---
 
 # R-PRJ-006 — What an extension does not ship is answered too

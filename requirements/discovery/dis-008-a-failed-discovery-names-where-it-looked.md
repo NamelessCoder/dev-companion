@@ -3,7 +3,7 @@ id: R-DIS-008
 title: 'A failed discovery names where it looked'
 status: held
 heldBy:
-  - ScopeTest::theInstallationDiagnosticIsDataRatherThanProse
+  - ScopeTest::theInstallationDiagnosticIsData
 ---
 
 # R-DIS-008 — A failed discovery names where it looked

@@ -92,7 +92,7 @@ final class CatalogTest extends TestCase
      * written with it renders empty.
      */
     #[Test]
-    public function theStatedVersionDecidesTheDomainRatherThanTheInstallation(): void
+    public function theStatedVersionDecidesTheDomain(): void
     {
         $path = 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf';
 

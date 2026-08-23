@@ -4,7 +4,7 @@ title: 'The corpus states how a field reaches a core palette'
 date: 2026-08-18
 status: open
 coveredBy:
-  - HintsTest::addingToACorePaletteIsStatedAsTheCallAndNotAsTheString
+  - HintsTest::addingToACorePaletteIsStatedAsTheCall
 ---
 
 # D-KNW-104 — The corpus states how a field reaches a core palette

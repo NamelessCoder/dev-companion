@@ -4,7 +4,7 @@ title: 'A review answer names only changes that name the issue'
 status: held
 restsOn: [D-ANS-055]
 heldBy:
-  - GerritTest::aChangeMatchedByItsNumberAndNotItsMessageIsNotAnswered
+  - GerritTest::aChangeMatchedByItsNumberIsNotAnswered
   - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
   - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
   - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed

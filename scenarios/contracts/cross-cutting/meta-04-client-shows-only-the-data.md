@@ -2,9 +2,9 @@
 
 **Environment:** `E-SITE`, with a client that renders `structuredContent` and
 drops the text block · **Contract:** `held` — `R-ANS-002`
-**Held by:** `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`,
+**Held by:** `ScopeTest::theInstallationDiagnosticIsData`,
 `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
-`LabelSearchTest::whatEachWordReachesIsInTheAnswerAndNotOnlyTheText`
+`LabelSearchTest::whatEachWordReachesIsInTheAnswer`
 
 > Same task as `SITE-03`, run in that client.
 

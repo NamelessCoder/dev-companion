@@ -4,11 +4,11 @@ title: 'A compound rule query is owed the section its score prefers'
 date: 2026-08-03
 status: open
 coveredBy:
-  - KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary
+  - KnowledgeTest::aMissInsideTheCoreNamesTheWords
   - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
   - KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt
   - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
-  - KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse
+  - KnowledgeTest::anUnrelatedQueryAnswersWithNothing
   - KnowledgeTest::everyDocumentIsReachedByItsOwnTitle
   - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections
 ---
@@ -195,7 +195,7 @@ six sections of the commit conventions with nothing withheld — the core-only
 documents are outranked rather than dropped at the boundary, which is why
 `ScopeTest::aRuleAnswerKeepsWhatTransfersAndWithholdsWhatDoesNot` no longer
 asserts that something was withheld. The query in
-`whatARuleAnswerWithheldIsNamedRatherThanMissing` reaches both halves and holds
+`whatARuleAnswerWithheldIsNamed` reaches both halves and holds
 it.
 
 ## Since then

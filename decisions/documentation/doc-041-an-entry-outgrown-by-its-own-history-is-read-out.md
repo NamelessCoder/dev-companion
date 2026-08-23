@@ -4,7 +4,7 @@ title: An entry outgrown by its own history is read out
 date: 2026-08-22
 status: open
 coveredBy:
-  - DecisionsTest::anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn
+  - DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut
 ---
 
 # D-DOC-041 — An entry outgrown by its own history is read out
@@ -43,7 +43,7 @@ Nothing about that is wrong, which is why nothing had counted it.
 
 - A report in `bin/cli decisions:check`, beside the problems and not among them.
   `Decisions::outgrown()` is the reading and
-  `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn` holds
+  `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut` holds
   it. The command still exits 0, because a long history is legitimate and a
   check that fails on one would be answered by writing shorter accounts of the
   same readings.

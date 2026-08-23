@@ -4,7 +4,7 @@ title: 'A console that answered "none" has answered'
 status: held
 heldBy:
   - LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered
-  - LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure
+  - LabelSearchTest::aConsoleThatFoundNothingIsAnAnswer
 ---
 
 # R-ANS-005 — A console that answered "none" has answered

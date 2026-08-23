@@ -3,7 +3,7 @@
 **Environment:** `E-NONE`, then `E-STOPPED` · **Contract:** `held`
 — `R-DIS-006` … `R-DIS-009`, `R-ANS-001`, `R-ANS-005`
 **Held by:**
-`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
+`Typo3CliTest::aDdevProjectThatIsNotRunningIsReported`,
 `Typo3CliTest::aMissingConsoleNamesEveryPathThatWasProbed`,
 `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`,
 `Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts`,

@@ -6,7 +6,7 @@ status: confirmed
 coveredBy:
   - ForgeTest::aNameCarriedByTwoPeopleResolvesToNeitherAndAnswersWithBoth
   - ForgeTest::aNameNoMemberCarriesIsResolvedFromTheIssuesThatNameIt
-  - ForgeTest::aNameNothingHereCarriesReadsNothingRatherThanTheWholeBacklog
+  - ForgeTest::aNameNothingHereCarriesReadsNothing
   - ForgeTest::aPersonIsResolvedAgainstTheProjectsOwnMembers
   - ForgeTest::aRowSaysWhoFiledIt
   - ForgeTest::theStatusIsWhatPutsWhatAPersonAlreadyFiledInReach

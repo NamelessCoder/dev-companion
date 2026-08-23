@@ -6,7 +6,7 @@ heldBy:
   - InstanceTest::aNamedInstallationThatIsNotThereIsReported
   - InstanceTest::anInstallationNamedOutrightIsReadWithoutAnySearch
   - Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut
-  - Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced
+  - Typo3CliTest::aStatedCommandThatIsNoProgramIsReported
 ---
 
 # R-DIS-007 — The installation and the console can be named outright

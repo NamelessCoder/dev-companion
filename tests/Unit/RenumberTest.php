@@ -136,7 +136,7 @@ final class RenumberTest extends TestCase
      */
     #[Decision('D-DOC-015')]
     #[Test]
-    public function aReferenceNoLineSettlesIsNamedRatherThanMoved(): void
+    public function aReferenceNoLineSettlesIsNamed(): void
     {
         $root = $this->corpus();
         $report = Renumber::decision($root, $this->entry($root), self::TO);

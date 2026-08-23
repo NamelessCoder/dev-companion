@@ -4,7 +4,7 @@ title: 'The Classes section covers the directory it names'
 status: held
 restsOn: [D-ANS-045]
 heldBy:
-  - ProjectTest::aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration
+  - ProjectTest::aFluidRootIsRenderedAsADirectory
   - ProjectTest::everyDirectoryBelowClassesIsInTheAnswer
 ---
 
@@ -41,5 +41,5 @@ asking about. Measured against `.checkouts/14.3` the same day, `core` reports
 - `ProjectTest::everyDirectoryBelowClassesIsInTheAnswer` — the first half. Every
   directory below `Classes/` is named, a PHP file lying directly in it is
   counted where it lies, and the total is the number `find` gives.
-- `ProjectTest::aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration` — the
+- `ProjectTest::aFluidRootIsRenderedAsADirectory` — the
   second half: the line says the directory is shipped rather than declared.

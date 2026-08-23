@@ -767,7 +767,7 @@ final class InstallerTest extends TestCase
     #[Requirement('R-DIS-024')]
     #[Decision('D-DIS-010')]
     #[Test]
-    public function gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote(): void
+    public function gitReportsTheProjectsOwnFiles(): void
     {
         // A property of this repository rather than of the machine: it is a git
         // checkout, its coverage is fetched by `checkouts:update` and it commits

@@ -5,9 +5,9 @@ status: held
 restsOn: [D-ANS-082]
 heldBy:
   - ProjectTest::aFloorTheCoreRefusesAndAnEnvironmentUnderItAreBothSaid
-  - ProjectTest::aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut
+  - ProjectTest::aFloorTheEnvironmentRunsIsSaidToBeRun
   - ProjectTest::aProjectWithNoReadableFloorIsRelatedToNothing
-  - ProjectTest::theThreePhpNumbersAreRelatedAndNotOnlyListed
+  - ProjectTest::theThreePhpNumbersAreRelated
   - VersionsTest::aPhpSpellingFromTheCheckoutsAnswersItsLowestVersion
   - VersionsTest::theFloorIsReadOneLevelBelowTheMajorTheRestOfThisAnswers
 ---

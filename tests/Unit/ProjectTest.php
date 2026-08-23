@@ -111,7 +111,7 @@ final class ProjectTest extends TestCase
     #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
     #[Test]
-    public function theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares(): void
+    public function theAnswerSaysWhatRunsTheProject(): void
     {
         // A conformance audit reported "PHP version mismatch blocks all tests"
         // from a host at 8.3.23 against a declared ^8.4, while the suite it
@@ -251,7 +251,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-PRJ-010')]
     #[Test]
-    public function theThreePhpNumbersAreRelatedAndNotOnlyListed(): void
+    public function theThreePhpNumbersAreRelated(): void
     {
         // The exact project feedback/2026-08-17-211157 was written in: ^8.3
         // declared, a core requiring ^8.2, a container at 8.4. Above the floor
@@ -289,7 +289,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-PRJ-010')]
     #[Test]
-    public function aFloorTheEnvironmentRunsIsSaidToBeRunAndNotLeftOut(): void
+    public function aFloorTheEnvironmentRunsIsSaidToBeRun(): void
     {
         // Stated even where the three agree, for the reason ProjectDescribe
         // states the core's number where it repeats the project's own: a line
@@ -422,7 +422,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-PRJ-012')]
     #[Test]
-    public function aBoundTheInterpreterClearsIsSaidToBeClearedAndNotLeftOut(): void
+    public function aBoundTheInterpreterClearsIsSaidToBeCleared(): void
     {
         // Stated for the reason every other number here is stated where nothing
         // is wrong: an answer that goes quiet when the commands start cannot be
@@ -560,7 +560,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-PRJ-013')]
     #[Test]
-    public function aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved(): void
+    public function aNodeAWorkflowDecidesElsewhereIsStatedBack(): void
     {
         // The third Wrong if of D-SCO-013: a resolved wrong number carries this
         // server's authority, which is worse than the silence it replaced. A
@@ -928,7 +928,7 @@ final class ProjectTest extends TestCase
     #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
     #[Test]
-    public function anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent(): void
+    public function anEnvironmentThatIsNotDdevIsSaidToBeUnread(): void
     {
         // A stated console is how a layout this server could not work out gets
         // named at all, and it is evidence that the installation is reached
@@ -1516,7 +1516,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-ANS-020')]
     #[Test]
-    public function aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration(): void
+    public function aFluidRootIsRenderedAsADirectory(): void
     {
         // The audited extension of feedback/2026-08-03-164651 declares no root
         // at all: it appends its layout root to setLayoutRootPaths() while an
@@ -1538,7 +1538,7 @@ final class ProjectTest extends TestCase
 
     #[Requirement('R-PRJ-005')]
     #[Test]
-    public function theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt(): void
+    public function theContentElementsAnExtensionAddsAreNamed(): void
     {
         // "It extends tt_content" says where they are registered. What a
         // sitepackage question is about is which ones — and both item shapes
@@ -2174,7 +2174,7 @@ final class ProjectTest extends TestCase
     #[Requirement('R-PRJ-006')]
     #[Decision('D-KNW-055')]
     #[Test]
-    public function whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut(): void
+    public function whatAnExtensionDoesNotShipIsAnswered(): void
     {
         // Three forward reviews of the same site package missed that it has no
         // manual, because there is no file to trip over: `find` cannot list a

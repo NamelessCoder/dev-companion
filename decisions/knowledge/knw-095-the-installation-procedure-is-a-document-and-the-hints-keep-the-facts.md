@@ -4,7 +4,7 @@ title: The installation procedure is a document and the hints keep the facts
 date: 2026-08-18
 status: open
 coveredBy:
-  - KnowledgeTest::theBootRunIsOrderedInTheDocumentAndNotInTheHint
+  - KnowledgeTest::theBootRunIsOrderedInTheDocument
   - ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope
   - SkillTest::theBootStepNamesTheGuideThatCarriesTheRun
 ---

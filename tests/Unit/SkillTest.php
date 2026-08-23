@@ -1313,7 +1313,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function anIdiomPrecedentIsSweptFromTheCheckoutRatherThanLookedUp(): void
+    public function anIdiomPrecedentIsSweptFromTheCheckout(): void
     {
         // `feedback/2026-08-03-144457` reviewed a core commit and settled three
         // questions by grep. Two of them name a class, which the base's step
@@ -3322,7 +3322,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function coreTestGuidanceIsGuardedByTheWorkAndNotByTheToolList(): void
+    public function coreTestGuidanceIsGuardedByTheWork(): void
     {
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',

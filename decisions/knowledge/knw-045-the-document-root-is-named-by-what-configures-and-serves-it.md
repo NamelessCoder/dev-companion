@@ -4,7 +4,7 @@ title: 'The document root is named by what configures and serves it'
 date: 2026-08-03
 status: open
 coveredBy:
-  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar
+  - HintsTest::whereAOneOffScriptMayNotGoNamesTheDocumentRoot
 ---
 
 # D-KNW-045 — The document root is named by what configures and serves it

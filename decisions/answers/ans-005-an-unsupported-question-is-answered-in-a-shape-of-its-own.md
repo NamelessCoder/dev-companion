@@ -5,7 +5,7 @@ date: 2026-08-02
 status: open
 coveredBy:
   - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
-  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
+  - ToolContractTest::aQuestionThatCannotBeAnsweredHereSaysOnlyThat
   - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
   - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
 ---

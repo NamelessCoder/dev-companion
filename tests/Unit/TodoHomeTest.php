@@ -84,7 +84,7 @@ final class TodoHomeTest extends TestCase
      * command rather than from this one.
      */
     #[Test]
-    public function aRebaseThatConflictsIsAbortedAndNothingIsMerged(): void
+    public function aRebaseThatConflictsIsAborted(): void
     {
         $this->gitThatAnswers(['rebase' => [1, "CONFLICT (content): Merge conflict in src/Upkeep/Todo.php\n"]]);
         $output = new BufferedOutput();
@@ -124,7 +124,7 @@ final class TodoHomeTest extends TestCase
      * nothing.
      */
     #[Test]
-    public function theSuiteIsAskedAfterTheRebaseRatherThanBeforeIt(): void
+    public function theSuiteIsAskedAfterTheRebase(): void
     {
         $this->gitThatAnswers(['composer' => [1, "FAILURES!\n"]]);
 

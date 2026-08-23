@@ -3,7 +3,7 @@ id: R-KNW-047
 title: 'An extension copies the phpunit XML and not the bootstrap'
 status: held
 heldBy:
-  - HintsTest::theBootstrapIsReferencedRatherThanCopied
+  - HintsTest::theBootstrapIsReferenced
 ---
 
 # R-KNW-047 — An extension copies the phpunit XML and not the bootstrap

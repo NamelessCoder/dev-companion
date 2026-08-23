@@ -285,7 +285,7 @@ the text is the primary answer and the data is what a client composes with.
 [`R-ANS-002`](../../requirements/answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md)
 states the same rule in the other direction, for a client that renders the data
 and drops the text.
-`ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut` asserts the
+`ProjectTest::whatAnExtensionDoesNotShipIsAnswered` asserts the
 present case in both halves of the answer and the absent case in the data alone,
 which is why nothing failed.
 
@@ -563,7 +563,7 @@ entry points, `164734` six substring hits that read as "the manual has nothing",
 one costs is the reading the caller supplies where the answer stops.
 
 One keep-request rested on nothing and is held now:
-`PackageSourcesTest::theTagListTravelsWithAHitAsWellAsWithAMiss`. `tags` is not
+`PackageSourcesTest::theTagListTravelsWithAHit`. `tags` is not
 among the keys `ChangelogLookup::outputSchema()` requires and the hit path was
 in no assertion, so the list a sweep's second and third call are read off could
 have been dropped without a failure. The other two are held already — the
@@ -624,7 +624,7 @@ file.
 
 Two guards were written, which is the keep-request in the only form this
 repository has for one.
-`KnowledgeTest::theMovesTheCommitRulesStopAreStillStatedAsWellAsTheRules` holds
+`KnowledgeTest::theMovesTheCommitRulesStopAreStillStated` holds
 the clause refusing the demand and the one refusing the branch list; the
 obligation beside them was held twice over already, and it is the refusing half
 that a summarising rewrite drops.
@@ -767,7 +767,7 @@ silent failure, and not for the clause that refuses the obvious substitution;
 that clause is added to
 `whichGlobalsAConditionCanReadIsBoundToItsMajor`. The two
 failure modes the report would not change are guarded already —
-`PackageSourcesTest::theTagListTravelsWithAHitAsWellAsWithAMiss` for the tag
+`PackageSourcesTest::theTagListTravelsWithAHit` for the tag
 list, and `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre` for the miss
 that lists every document id.
 

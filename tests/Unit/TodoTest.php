@@ -314,7 +314,7 @@ final class TodoTest extends TestCase
      * session in that worktree is handed its own todo and not nothing.
      */
     #[Test]
-    public function aClaimCarriesTheBranchItWasGivenRatherThanTheOneItDerivesTo(): void
+    public function aClaimCarriesTheBranchItWasGiven(): void
     {
         $queued = $this->queueATodo();
 

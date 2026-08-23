@@ -2,7 +2,7 @@
 
 **Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-001`
 **Held by:** `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`,
-`ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
+`ProjectTest::theContentElementsAnExtensionAddsAreNamed`,
 `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`
 
 > Editors need a "team members" content element: a list of people picked from a

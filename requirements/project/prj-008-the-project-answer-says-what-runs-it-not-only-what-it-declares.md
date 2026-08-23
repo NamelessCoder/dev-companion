@@ -5,8 +5,8 @@ status: held
 restsOn: [D-ANS-013]
 heldBy:
   - ProjectTest::aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave
-  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent
-  - ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares
+  - ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnread
+  - ProjectTest::theAnswerSaysWhatRunsTheProject
 ---
 
 # R-PRJ-008 — The project answer says what runs it, not only what it declares

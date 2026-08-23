@@ -1545,7 +1545,7 @@ final class ScopeTest extends TestCase
         self::assertSame([], $result->data['matches']);
         self::assertStringContainsString('typo3_commit_message_guide', $result->text);
         // That a miss on the boundary is named is held by
-        // whatARuleAnswerWithheldIsNamedRatherThanMissing, on a query that
+        // whatARuleAnswerWithheldIsNamed, on a query that
         // still reaches both halves. This one no longer does: since D-ANS-037
         // put the document title among the searched fields, a query naming the
         // commit conventions is answered by that document's own sections
@@ -1573,7 +1573,7 @@ final class ScopeTest extends TestCase
      */
     #[Decision('D-ANS-040')]
     #[Test]
-    public function whatARuleAnswerWithheldIsNamedRatherThanMissing(): void
+    public function whatARuleAnswerWithheldIsNamed(): void
     {
         $outside = Registry::call('typo3_rule_lookup', ['query' => 'code style rules for my site package']);
 
@@ -1809,7 +1809,7 @@ final class ScopeTest extends TestCase
     #[Requirement('R-ANS-002')]
     #[Requirement('R-DIS-008')]
     #[Test]
-    public function theInstallationDiagnosticIsDataRatherThanProse(): void
+    public function theInstallationDiagnosticIsData(): void
     {
         Instance::discoverFrom(sys_get_temp_dir());
         Typo3Cli::forget();

@@ -4,7 +4,7 @@ title: The changelog above the installed major comes from the manual
 date: 2026-08-08
 status: open
 coveredBy:
-  - CoreChangelogTest::aHostThatDoesNotAnswerIsSaidRatherThanReadAsNothing
+  - CoreChangelogTest::aHostThatDoesNotAnswerIsSaid
   - CoreChangelogTest::aManualTitleDoesNotShadowTheInstalledEntryAQueryIsAbout
   - CoreChangelogTest::aVersionTheInstallationShipsIsNeverTakenFromTheManual
   - CoreChangelogTest::anEntryAboveTheInstalledMajorComesFromTheManual

@@ -93,7 +93,7 @@ final class TermSearchTest extends TestCase
      */
     #[Decision('D-ANS-028')]
     #[Test]
-    public function aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix(): void
+    public function aShortTermIsCarriedAsAWholeWord(): void
     {
         self::assertTrue(TermSearch::carries('if', 'if'));
         self::assertTrue(TermSearch::carries('be.security.if Authenticated', 'if'));

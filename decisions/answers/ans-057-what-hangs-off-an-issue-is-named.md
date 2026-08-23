@@ -4,7 +4,7 @@ title: 'What hangs off an issue is named'
 date: 2026-08-05
 status: open
 coveredBy:
-  - ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched
+  - ForgeTest::theFilesHangingOffAnIssueAreNamed
 ---
 
 # D-ANS-057 — What hangs off an issue is named

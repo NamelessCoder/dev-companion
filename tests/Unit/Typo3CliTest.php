@@ -143,7 +143,7 @@ final class Typo3CliTest extends TestCase
 
     #[Requirement('R-DIS-003')]
     #[Test]
-    public function aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver(): void
+    public function aBinDirectoryOutsideTheRootIsNamed(): void
     {
         // It has no form the invocation can use — the console is run relative
         // to the root, and in a container the host path is not there. What the
@@ -183,7 +183,7 @@ final class Typo3CliTest extends TestCase
 
     #[Requirement('R-DIS-007')]
     #[Test]
-    public function aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced(): void
+    public function aStatedCommandThatIsNoProgramIsReported(): void
     {
         $root = $this->installation();
         mkdir($root . '/bin');
@@ -226,7 +226,7 @@ final class Typo3CliTest extends TestCase
 
     #[Requirement('R-DIS-006')]
     #[Test]
-    public function aDdevProjectThatIsNotRunningIsReportedRatherThanStarted(): void
+    public function aDdevProjectThatIsNotRunningIsReported(): void
     {
         // An agent asking about a label must not bring containers up as a side
         // effect, so the answer names the command the caller may choose to run.
@@ -497,7 +497,7 @@ final class Typo3CliTest extends TestCase
      * changed was what a second call returns rather than whether one is made.
      */
     #[Test]
-    public function theCaveatAsksForTheCallThatEndsTheStateAndNotOnlyForTheStart(): void
+    public function theCaveatAsksForTheCallThatEndsTheState(): void
     {
         $root = $this->installation();
         $this->console($root);
@@ -561,7 +561,7 @@ final class Typo3CliTest extends TestCase
      */
     #[Requirement('R-DIS-009')]
     #[Test]
-    public function anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence(): void
+    public function anUnsupportedAnswerReadsTheCaveatOnce(): void
     {
         $root = $this->installation();
         $this->console($root);
@@ -626,7 +626,7 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
-    public function runningWithoutAConsoleFailsWithTheReasonRatherThanThrowing(): void
+    public function runningWithoutAConsoleFailsWithTheReason(): void
     {
         $this->discover($this->installation());
 

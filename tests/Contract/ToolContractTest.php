@@ -219,7 +219,7 @@ final class ToolContractTest extends TestCase
     #[Requirement('R-ANS-001')]
     #[Decision('D-ANS-005')]
     #[Test]
-    public function aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse(): void
+    public function aQuestionThatCannotBeAnsweredHereSaysOnlyThat(): void
     {
         // From a real directory with nothing above it rather than from no
         // directory at all: searched is what tells "nothing is here" from "the

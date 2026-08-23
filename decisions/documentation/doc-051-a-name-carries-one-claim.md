@@ -22,7 +22,7 @@ so what a reader cannot resolve from it is not resolvable at all.
   run past twelve, and 83 join two claims with `RatherThan`, `AndNot`, `ButNot`,
   `NotOnly` or `AsWellAs`.
 - The join is what a reader takes apart.
-  `everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn` states a case and the
+  `everyLineIsSetUpOnAFile` states a case and the
   case it is told apart from; the second is a sentence in the docblock and never
   a word in the name.
 - The titles fail the same way and differently. "Three audiences, not one"

@@ -4,7 +4,7 @@ title: 'A change answer carries the ref that fetches the patch set'
 date: 2026-08-09
 status: open
 coveredBy:
-  - GerritTest::aChangeWithoutARevisionSaysSoRatherThanInventingOne
+  - GerritTest::aChangeWithoutARevisionSaysSo
   - GerritTest::theAnswerCarriesTheRefThatFetchesThePatchSetItNames
 ---
 

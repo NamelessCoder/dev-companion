@@ -181,7 +181,7 @@ final class DecisionsTest extends TestCase
      */
     #[Decision('D-DOC-041')]
     #[Test]
-    public function anEntryOutgrownByItsHistoryIsReadOutRatherThanFailedOn(): void
+    public function anEntryOutgrownByItsHistoryIsReadOut(): void
     {
         $outgrown = Decisions::outgrown();
 
@@ -218,7 +218,7 @@ final class DecisionsTest extends TestCase
      */
     #[Decision('D-DOC-043')]
     #[Test]
-    public function anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn(): void
+    public function anEntryNamingThisCodeWithNoTestIsReadOut(): void
     {
         $uncovered = Decisions::uncovered();
 

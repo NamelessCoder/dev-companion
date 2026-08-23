@@ -4,7 +4,7 @@ title: 'An issue answer says what its comments refer to'
 status: held
 restsOn: [D-ANS-057]
 heldBy:
-  - ForgeTest::theFilesHangingOffAnIssueAreNamedRatherThanFetched
+  - ForgeTest::theFilesHangingOffAnIssueAreNamed
 ---
 
 # R-ANS-025 — An issue answer says what its comments refer to

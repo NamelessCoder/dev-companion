@@ -6,7 +6,7 @@ heldBy:
   - HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt
   - HintsTest::aMissNamesWhatThereWouldHaveBeenToFind
   - HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo
-  - KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary
+  - KnowledgeTest::aMissInsideTheCoreNamesTheWords
   - KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt
   - KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn
   - KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections

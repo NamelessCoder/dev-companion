@@ -157,7 +157,7 @@ The keep-request is answered in the only form this repository has for one. The
 three sentences rested on nobody rewriting the hint: no test named any of them,
 and a rewrite that kept the policy and dropped the two refusals would have left
 a hint that reads complete and stops neither session.
-`HintsTest::theBrowserTargetKeepsTheArgumentsItRefusesAsWellAsThePolicy` names
+`HintsTest::theBrowserTargetKeepsTheArgumentsItRefuses` names
 them.
 
 The press itself is refused. This hint is `scope: core` and the `instructions`

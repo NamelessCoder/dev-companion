@@ -5,7 +5,7 @@ date: 2026-08-03
 status: open
 coveredBy:
   - PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskNext
-  - PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine
+  - PackageSourcesTest::theNarrowingAMissComputesIsAField
 ---
 
 # D-ANS-043 — A miss is answered in data

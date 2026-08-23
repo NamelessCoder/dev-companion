@@ -3,7 +3,7 @@ id: R-FBK-001
 title: 'A feedback is about as many tools as it is about'
 status: held
 heldBy:
-  - FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord
+  - FeedbackTest::severalToolsStaySeveralTools
   - FeedbackTest::theListCanBeRestrictedToOneTool
   - FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares
   - StdioServerTest::aListOfToolNamesIsRefusedWithTheTypeItWanted

@@ -6,7 +6,7 @@ status: confirmed
 coveredBy:
   - ForgeTest::anAreaIsNamedInTheCallersWordsAndMatchedAtAWordBoundary
   - ForgeTest::awordThatNamesNoAreaReadsNothingAndSaysWhichAreasExist
-  - ForgeTest::theAreasAreReadFromTheProjectAndHeldRatherThanCopied
+  - ForgeTest::theAreasAreReadFromTheProjectAndHeld
   - ForgeTest::theCountOfEverythingThatMatchedComesBackWithThePage
   - ForgeTest::theEnumerationAsksForTheOpenIssuesAndReadsThemAsFields
   - ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes

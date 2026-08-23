@@ -5,7 +5,7 @@ status: held
 heldBy:
   - FeedbackTest::aFieldCutForLengthSaysSoInTheFileAndInTheAnswer
   - FeedbackTest::aFieldExactlyOnTheCapIsNotMarked
-  - FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswerAndNotInTheFile
+  - FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswer
 ---
 
 # R-FBK-015 — A feedback field that was cut says so

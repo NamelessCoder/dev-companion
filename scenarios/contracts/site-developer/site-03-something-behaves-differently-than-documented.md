@@ -3,7 +3,7 @@
 **Environment:** `E-SITE` · **Contract:** `held`
 **Held by:** `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`,
 `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
-`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
+`Typo3CliTest::aDdevProjectThatIsNotRunningIsReported`,
 `ConfigurationLookupTest` in full,
 `Typo3RuntimeTest::aTopicWithAnArgumentIsReadOnlyWhereACallerAskedForIt`
 

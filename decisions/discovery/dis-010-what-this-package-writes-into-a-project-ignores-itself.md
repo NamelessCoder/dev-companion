@@ -5,7 +5,7 @@ date: 2026-08-03
 status: open
 coveredBy:
   - InstallerRecordTest::neitherCommandWritesIntoTheProjectsGitignore
-  - InstallerTest::gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote
+  - InstallerTest::gitReportsTheProjectsOwnFiles
 ---
 
 # D-DIS-010 — What this package writes into a project ignores itself

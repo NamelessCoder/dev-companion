@@ -6,7 +6,7 @@ restsOn: [D-ANS-005]
 heldBy:
   - ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent
   - StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer
-  - ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse
+  - ToolContractTest::aQuestionThatCannotBeAnsweredHereSaysOnlyThat
   - ToolContractTest::anInstallationBackedSchemaOffersEitherShape
   - ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer
 ---

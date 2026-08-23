@@ -4,7 +4,7 @@ title: 'The project answer states the Node its declared commands run on'
 status: held
 restsOn: [D-SCO-013, D-SCO-014]
 heldBy:
-  - ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBackRatherThanResolved
+  - ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBack
   - ProjectTest::aRepositoryThatDeclaresNoNodeIsSaidToDeclareNone
   - ProjectTest::aRepositoryWithNoNpmSurfaceIsToldNothingAboutNode
   - ProjectTest::theManifestBelowBuildIsReadWhereTheRepositoryKeepsItThere

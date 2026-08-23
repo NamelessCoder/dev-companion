@@ -205,7 +205,7 @@ final class CliTest extends TestCase
      * with nothing to compose composes nothing wrong.
      */
     #[Test]
-    public function whereTheSessionsAreStartedIsPrintedRatherThanDescribed(): void
+    public function whereTheSessionsAreStartedIsPrinted(): void
     {
         $handover = TodoClaim::handover('/checkout', ['.worktrees/first', '.worktrees/second']);
 

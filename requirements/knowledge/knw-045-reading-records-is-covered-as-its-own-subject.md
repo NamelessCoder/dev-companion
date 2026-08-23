@@ -3,7 +3,7 @@ id: R-KNW-045
 title: 'Reading records is covered as its own subject'
 status: held
 heldBy:
-  - HintsTest::readingRecordsIsAnsweredAsWellAsWritingThem
+  - HintsTest::readingRecordsIsAnswered
 ---
 
 # R-KNW-045 — Reading records is covered as its own subject

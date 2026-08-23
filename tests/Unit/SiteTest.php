@@ -311,7 +311,7 @@ final class SiteTest extends TestCase
      */
     #[Decision('D-DOC-031')]
     #[Test]
-    public function everyPageIsRailedUnderALabelRatherThanItsHeading(): void
+    public function everyPageIsRailedUnderALabel(): void
     {
         $source = Paths::root() . '/' . Site::SOURCE;
         $sentences = [];

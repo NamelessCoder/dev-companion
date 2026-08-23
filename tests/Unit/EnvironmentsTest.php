@@ -119,7 +119,7 @@ final class EnvironmentsTest extends TestCase
      */
     #[Decision('D-EVI-006')]
     #[Test]
-    public function aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing(): void
+    public function aVersionNoInstallationIsMadeOfSaysWhy(): void
     {
         foreach (Versions::covered() as $version) {
             self::assertSame(
@@ -199,7 +199,7 @@ final class EnvironmentsTest extends TestCase
      * at the setup step against a service that was never started.
      */
     #[Test]
-    public function everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn(): void
+    public function everyLineIsSetUpOnAFile(): void
     {
         self::assertSame('sqlite', Environments::DEFAULT_DRIVER);
 
@@ -403,7 +403,7 @@ final class EnvironmentsTest extends TestCase
     #[Decision('D-EVI-006')]
     #[Test]
     #[DataProvider('everyStateDdevReportsAProjectIn')]
-    public function anInstallationThatIsThereIsStartedRatherThanBuiltAgain(?string $status, ?array $expected): void
+    public function anInstallationThatIsThereIsStarted(?string $status, ?array $expected): void
     {
         self::assertSame($expected, Environments::resume($status));
     }
@@ -464,7 +464,7 @@ final class EnvironmentsTest extends TestCase
         self::assertContains('--server-type=other', $setup);
         // `--host=` and `--dbname=` were here while the installation was in a
         // database service. On sqlite the setup asks for neither, and
-        // `everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn` is what
+        // `everyLineIsSetUpOnAFile` is what
         // holds them out.
         foreach (['--driver=', '--admin-username=', '--admin-user-password=', '--create-site='] as $option) {
             self::assertNotSame(
@@ -516,7 +516,7 @@ final class EnvironmentsTest extends TestCase
      */
     #[Decision('D-EVI-004')]
     #[Test]
-    public function everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine(): void
+    public function everyStepOfTheBuildRunsInTheProject(): void
     {
         foreach (Environments::build(Environments::branch()) as $what => $command) {
             self::assertNotSame('', trim((string) $what), 'a step of the build says nothing about itself');

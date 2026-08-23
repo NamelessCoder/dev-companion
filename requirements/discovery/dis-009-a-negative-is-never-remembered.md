@@ -6,7 +6,7 @@ heldBy:
   - InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound
   - Typo3CliTest::aStoppedProjectIsAskedAgainAfterItStarts
   - Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts
-  - Typo3CliTest::anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence
+  - Typo3CliTest::anUnsupportedAnswerReadsTheCaveatOnce
   - Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalf
 ---
 

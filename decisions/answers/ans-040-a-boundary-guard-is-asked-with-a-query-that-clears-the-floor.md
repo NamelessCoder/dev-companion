@@ -4,7 +4,7 @@ title: 'A boundary guard is asked with a query that clears the floor'
 date: 2026-08-03
 status: open
 coveredBy:
-  - ScopeTest::whatARuleAnswerWithheldIsNamedRatherThanMissing
+  - ScopeTest::whatARuleAnswerWithheldIsNamed
 ---
 
 # D-ANS-040 — A boundary guard is asked with a query that clears the floor
@@ -19,7 +19,7 @@ one entry away from failing on a corpus that got better.
 
 ## Evidence
 
-- `whatARuleAnswerWithheldIsNamedRatherThanMissing` asked
+- `whatARuleAnswerWithheldIsNamed` asked
   `review readiness for my site package`, and the section it depends on —
   `Review Readiness`, withheld outside the core — covered 0.508 of that query
   against a floor of 0.5. Eight thousandths.

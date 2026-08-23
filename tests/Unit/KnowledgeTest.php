@@ -311,7 +311,7 @@ final class KnowledgeTest extends TestCase
      */
     #[Decision('D-KNW-095')]
     #[Test]
-    public function theBootRunIsOrderedInTheDocumentAndNotInTheHint(): void
+    public function theBootRunIsOrderedInTheDocument(): void
     {
         self::assertStringContainsString(
             '## The Order the Steps Go In',
@@ -545,7 +545,7 @@ final class KnowledgeTest extends TestCase
 
     #[Requirement('R-ANS-007')]
     #[Test]
-    public function aTermMatchesAWordRatherThanAnythingThatContainsIt(): void
+    public function aTermMatchesAWholeWord(): void
     {
         // "set" used to match "offset" and "reset", "site" to match
         // "composite". Stems still match every form of their word.
@@ -856,7 +856,7 @@ final class KnowledgeTest extends TestCase
 
     #[Decision('D-ANS-037')]
     #[Test]
-    public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
+    public function anUnrelatedQueryAnswersWithNothing(): void
     {
         self::assertSame([], Documents::search('quantum entanglement pineapple'));
 
@@ -915,7 +915,7 @@ final class KnowledgeTest extends TestCase
     #[Requirement('R-ANS-006')]
     #[Decision('D-ANS-037')]
     #[Test]
-    public function aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary(): void
+    public function aMissInsideTheCoreNamesTheWords(): void
     {
         $result = Registry::call('typo3_rule_lookup', [
             'query' => 'review of core patch replacing GD error thumbnails with SVG placeholder',
@@ -1176,7 +1176,7 @@ final class KnowledgeTest extends TestCase
      * enabling one.
      */
     #[Test]
-    public function theMovesTheCommitRulesStopAreStillStatedAsWellAsTheRules(): void
+    public function theMovesTheCommitRulesStopAreStillStated(): void
     {
         $body = Documents::read('core/contribution/commit-messages');
 
@@ -1321,7 +1321,7 @@ final class KnowledgeTest extends TestCase
      * alone would otherwise be told the page it was handed matched nothing.
      */
     #[Test]
-    public function aMatchedOpeningIsNamedForWhatItIsRatherThanAsAHeading(): void
+    public function aMatchedOpeningIsNamedForWhatItIs(): void
     {
         $headings = count(Documents::headings('core/testing/proving-a-rendering'));
 

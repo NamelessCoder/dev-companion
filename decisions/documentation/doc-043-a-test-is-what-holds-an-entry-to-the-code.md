@@ -5,7 +5,7 @@ date: 2026-08-22
 status: open
 restsOn: [D-DOC-041, D-DOC-042]
 coveredBy:
-  - DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn
+  - DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOut
   - DecisionsTest::everyEntryATestHoldsIsNamedFromTheFailingEnd
 ---
 
@@ -44,7 +44,7 @@ Nothing else couples the two.
 
 - A report beside the outgrown one in `bin/cli decisions:check`, most references
   first. `Decisions::uncovered()` is the reading and
-  `DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOutRatherThanFailedOn`
+  `DecisionsTest::anEntryNamingThisCodeWithNoTestIsReadOut`
   holds it.
 - Nothing fails. Most entries here decide something about process and no test
   could keep them, which the format says in as many words — a demand for

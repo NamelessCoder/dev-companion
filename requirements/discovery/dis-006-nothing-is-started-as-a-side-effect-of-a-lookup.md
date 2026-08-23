@@ -3,7 +3,7 @@ id: R-DIS-006
 title: 'Nothing is started as a side effect of a lookup'
 status: held
 heldBy:
-  - Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted
+  - Typo3CliTest::aDdevProjectThatIsNotRunningIsReported
 ---
 
 # R-DIS-006 — Nothing is started as a side effect of a lookup

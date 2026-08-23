@@ -134,7 +134,7 @@ final class TerTest extends TestCase
 
     #[Test]
     #[DataProvider('namesTheRegistryDoesNotTake')]
-    public function aNameThatIsNotAKeyIsAnsweredAboutTheNameAndNothingIsRead(string $name): void
+    public function aNameThatIsNotAKeyIsAnsweredAboutTheName(string $name): void
     {
         $asked = 0;
         Ter::useReader(function () use (&$asked): string {
@@ -176,7 +176,7 @@ final class TerTest extends TestCase
      * to it.
      */
     #[Test]
-    public function aKeyNothingIsPublishedUnderIsAnAnswerRatherThanAFailure(): void
+    public function aKeyNothingIsPublishedUnderIsAnAnswer(): void
     {
         Ter::useReader(static fn(): string => '[[]]');
 
@@ -209,7 +209,7 @@ final class TerTest extends TestCase
      * that it is not published — the two readings a release audit turns on.
      */
     #[Test]
-    public function aVersionIsUnansweredRatherThanUnpublishedWhereNothingWasRead(): void
+    public function aVersionIsUnansweredWhereNothingWasRead(): void
     {
         Ter::useReader(static fn(): ?string => null);
 

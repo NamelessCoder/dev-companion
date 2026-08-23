@@ -50,7 +50,7 @@ final class ConfigurationLookupTest extends TestCase
     }
 
     #[Test]
-    public function aPathTheInstallationDoesNotHaveIsAnsweredRatherThanRefused(): void
+    public function aPathTheInstallationDoesNotHaveIsAnswered(): void
     {
         $this->discover(['SYS' => ['fluid' => []]]);
 

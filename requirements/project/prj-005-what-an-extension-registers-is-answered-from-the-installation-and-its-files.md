@@ -7,7 +7,7 @@ heldBy:
   - ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs
   - ProjectTest::aRegistrationBuiltInALoopIsNotDeterminable
   - ProjectTest::anExtensionTheInstallationLacksIsAMissWithTheKeysItHas
-  - ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt
+  - ProjectTest::theContentElementsAnExtensionAddsAreNamed
   - ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles
   - ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor
 ---

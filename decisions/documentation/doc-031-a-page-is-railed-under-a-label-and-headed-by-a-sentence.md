@@ -4,7 +4,7 @@ title: A page is railed under a label and headed by a sentence
 date: 2026-08-12
 status: open
 coveredBy:
-  - SiteTest::everyPageIsRailedUnderALabelRatherThanItsHeading
+  - SiteTest::everyPageIsRailedUnderALabel
 ---
 
 # D-DOC-031 — A page is railed under a label and headed by a sentence

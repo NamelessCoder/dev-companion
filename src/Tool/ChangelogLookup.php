@@ -236,9 +236,14 @@ final class ChangelogLookup extends ReadOnlyTool
         $read = false;
         if ($matching === [] && $terms !== []) {
             $narrowed = array_map(
-                static fn(array $entry): array => $entry['publishedIn'] === 'manual'
-                    ? $entry + ['title' => $entry['stated']]
-                    : $entry + ['identifiers' => implode(' ', Changelog::identifiers($entry))],
+                static function (array $entry): array {
+                    if ($entry['publishedIn'] === 'manual') {
+                        return $entry + ['title' => $entry['stated']];
+                    }
+
+                    /** @var array{file: string} $entry */
+                    return $entry + ['identifiers' => implode(' ', Changelog::identifiers($entry))];
+                },
                 self::titled($narrowed),
             );
             $matching = LabelSearch::carryingEvery($narrowed, $terms);

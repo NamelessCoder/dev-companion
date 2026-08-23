@@ -93,7 +93,7 @@ final class Checkouts
      * inherited — which is what git wants, and why it was written separately
      * in the first place. It is a parameter rather than two implementations.
      *
-     * @param array<int, string> $command
+     * @param list<string> $command
      *
      * @return array{0: int, 1: string}
      */

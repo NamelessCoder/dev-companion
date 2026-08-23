@@ -80,7 +80,7 @@ final class Scenarios
                 // Read as cells rather than as the text of a row: a table is
                 // padded to the width of its widest cell, so where the column
                 // stands is not where its name ends — `D-DOC-001`.
-                $first = Wrap::cells($line)[0] ?? '';
+                $first = Wrap::cells($line)[0];
                 if (!$inTable) {
                     $inTable = $first === $column;
 

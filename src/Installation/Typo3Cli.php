@@ -877,7 +877,7 @@ final class Typo3Cli
     }
 
     /**
-     * @param array<int, string> $command
+     * @param list<string> $command
      * @return array{ok: bool, exitCode: int, output: string, error: string}
      */
     private static function execute(array $command, string $workingDirectory): array

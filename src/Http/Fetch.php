@@ -139,6 +139,13 @@ final class Fetch
      */
     public function read(string $url, array $headers = [], ?string $agent = null): array
     {
+        // A read of nowhere is a read that did not happen, and it is answered
+        // as one rather than handed to curl: what a caller has is a URL it
+        // composed, and an empty one means the composing went wrong.
+        if ($url === '') {
+            return ['status' => 0, 'body' => null, 'etag' => null];
+        }
+
         if ($this->transport !== null) {
             $body = ($this->transport)($url);
 
@@ -166,7 +173,7 @@ final class Fetch
             CURLOPT_MAXREDIRS => self::MAX_REDIRECTS,
             CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT,
             CURLOPT_TIMEOUT => self::TIMEOUT,
-            CURLOPT_USERAGENT => $agent ?? 'typo3-dev-companion/' . Factory::SERVER_VERSION,
+            CURLOPT_USERAGENT => $agent ?: 'typo3-dev-companion/' . Factory::SERVER_VERSION,
             CURLOPT_HTTPHEADER => $headers,
             // The empty string is every encoding this build of curl can undo,
             // and curl undoes it before the body is returned.

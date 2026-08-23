@@ -64,10 +64,18 @@ final class Factory
             ->setInstructions(Coverage::instructions($notice));
 
         foreach (Registry::definitions() as $definition) {
+            // The two schemas as the SDK spells them. A tool declares them as
+            // JSON Schema and `tests/Contract/` is what holds it to that; the
+            // shape below is the SDK's reading of the same thing, and nothing
+            // between here and the tool carries it.
+            /** @var array{type: 'object', properties: array<string, mixed>, required: array<string>|null} $inputSchema */
+            $inputSchema = $definition['inputSchema'];
+            /** @var array{type: 'object', properties?: array<string, mixed>, required?: array<string>|null, additionalProperties?: array<string, mixed>|bool, description?: string}|null $outputSchema */
+            $outputSchema = $definition['outputSchema'];
             $tool = new Tool(
                 $definition['name'],
                 null,
-                $definition['inputSchema'],
+                $inputSchema,
                 $definition['description'],
                 new ToolAnnotations(
                     readOnlyHint: $definition['annotations']['readOnlyHint'],
@@ -75,7 +83,7 @@ final class Factory
                     idempotentHint: $definition['annotations']['idempotentHint'],
                     openWorldHint: $definition['annotations']['openWorldHint'],
                 ),
-                outputSchema: $definition['outputSchema'],
+                outputSchema: $outputSchema,
             );
             $builder->add($tool, new ToolHandler($definition['name']));
         }

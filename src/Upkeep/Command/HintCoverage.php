@@ -150,7 +150,7 @@ final class HintCoverage
             $reference,
             $mean,
             $lengths[intdiv(count($lengths), 2)] ?? 0,
-            max($lengths),
+            max([0, ...$lengths]),
             count(array_filter($lengths, static fn(int $n): bool => $n > $reference)),
             count($lengths),
             Hints::MAX_MEAN_BODY_WORDS - $mean,

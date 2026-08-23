@@ -935,8 +935,9 @@ final class Forge
      */
     private function api(string $url, string $key, int $heldFor = self::HELD_FOR): array
     {
+        /** @var array{status: int, part: ?array<mixed>, total: int, cause: ?string}|null $held */
         $held = Recent::held($url, $heldFor);
-        if (is_array($held)) {
+        if ($held !== null) {
             return $held;
         }
 

@@ -23,7 +23,7 @@ interface CommandRunner
      * command, and the client would wait forever for an answer to a request
      * the server never saw. git is the exception and says so at its call.
      *
-     * @param array<int, string> $command the executable and its arguments, unquoted — no shell is involved
+     * @param list<string> $command the executable and its arguments, unquoted — no shell is involved
      * @param ?string $workingDirectory where to run it, or null for this process's own
      * @param ?int $timeoutSeconds how long to wait before terminating it, or null to wait
      * @param bool $inheritStdin let the child read this process's stdin, which only git wants

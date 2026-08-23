@@ -19,6 +19,8 @@ use TYPO3\DevCompanion\Search\Text;
  * domains having nowhere to go: it went into `general.json`, whose domain is
  * selected by every query there is. The file is the subject now — one per
  * subject, named after it — and no hint is `any`.
+ *
+ * @phpstan-type Hint array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, category: string, scope: ?Scope}
  */
 final class Hints
 {
@@ -131,7 +133,7 @@ final class Hints
 
     /**
      * @param int|array<int, int>|null $target
-     * @return array<int, array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, category: string, scope: ?Scope}>
+     * @return array<int, Hint>
      */
     public static function load(int|array|null $target = null): array
     {
@@ -233,9 +235,9 @@ final class Hints
      * makes the other read as the whole answer. Which majors a statement holds
      * on it says beside itself, as always.
      *
-     * @param array<int, array<string, mixed>> $hints
+     * @param array<int, Hint> $hints
      * @param int|array<int, int>|null $target
-     * @return array<int, array<string, mixed>>
+     * @return array<int, Hint>
      */
     public static function forVersion(array $hints, int|array|null $target): array
     {
@@ -273,7 +275,7 @@ final class Hints
      * with their own answer instead of waiting for a matching query.
      *
      * @param int|array<int, int>|null $target
-     * @return array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, category: string, scope: ?Scope}|null
+     * @return Hint|null
      */
     public static function byId(string $id, int|array|null $target = null): ?array
     {
@@ -517,9 +519,9 @@ final class Hints
      * ruled out. Only the task text is read: a path carries its own domain in
      * its extension.
      *
-     * @param array<int, array<string, mixed>> $outside
-     * @param array<int, array<string, mixed>> $inDomain
-     * @return array<int, array<string, mixed>>
+     * @param array<int, Hint> $outside
+     * @param array<int, Hint> $inDomain
+     * @return array<int, Hint>
      */
     private static function crossingTheGate(array $outside, array $inDomain, string $task): array
     {
@@ -725,7 +727,7 @@ final class Hints
      * The fields of a hint the matcher reads, keyed the way FIELD_WEIGHTS
      * names them.
      *
-     * @param array<string, mixed> $hint
+     * @param Hint $hint
      * @return array<string, string>
      */
     private static function searchable(array $hint): array
@@ -771,7 +773,7 @@ final class Hints
      * the task text is asked for the word and the paths for the prefix, and a
      * pattern in both is still one match.
      *
-     * @param array{appliesTo: array<int, string>} $hint
+     * @param Hint $hint
      */
     private static function scoreKeywords(array $hint, string $task, string $paths): int
     {

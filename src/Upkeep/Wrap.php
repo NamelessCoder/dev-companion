@@ -216,7 +216,7 @@ final class Wrap
      * drawn diagram, a quotation of a table, a row somebody has half written.
      *
      * @param list<string> $rows
-     * @return list<string>
+     * @return ($rows is non-empty-list<string> ? non-empty-list<string> : list<string>)
      */
     public static function padded(array $rows): array
     {
@@ -256,13 +256,11 @@ final class Wrap
     /**
      * What one row holds, by the pipes that are not part of a cell.
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     public static function cells(string $row): array
     {
-        $trimmed = trim($row);
-
-        return array_map(trim(...), preg_split('/(?<!\\\\)\|/', trim($trimmed, '|')) ?: []);
+        return array_map(trim(...), preg_split('/(?<!\\\\)\|/', trim(trim($row), '|')) ?: ['']);
     }
 
     /**
@@ -522,10 +520,8 @@ final class Wrap
             return [$paragraph[0]];
         }
 
-        preg_match('/^(\s*)/', $paragraph[0], $match);
-        $first = $match[1];
-        if ($item) {
-            preg_match(self::MARKER, $paragraph[0], $match);
+        $first = preg_match('/^(\s*)/', $paragraph[0], $match) === 1 ? $match[1] : '';
+        if ($item && preg_match(self::MARKER, $paragraph[0], $match) === 1) {
             // The marker is carried by the opening prefix, so the text it
             // belongs to starts after it.
             $first = $match[1] . $match[2] . $match[3];

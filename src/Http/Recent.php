@@ -25,6 +25,9 @@ final class Recent
     /**
      * What was held under this key and is still young enough, or null.
      *
+     * The store holds whatever it was handed and cannot say what that was, so
+     * a caller reading its own answer back declares the shape it put in.
+     *
      * @return mixed the held answer, null where there is none to give
      */
     public static function held(string $key, int $seconds): mixed

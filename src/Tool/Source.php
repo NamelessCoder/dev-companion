@@ -61,6 +61,7 @@ enum Source: string
      * they mean to typo3_server_scope, which is asked once and by choice.
      *
      * @param array<int, self> $sources
+     * @return non-empty-string
      */
     public static function clause(array $sources): string
     {

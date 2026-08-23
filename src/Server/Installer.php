@@ -949,14 +949,14 @@ final class Installer
 
     private function expectedTomlSection(string $key): string
     {
-        $server = $this->jsonServer();
+        ['command' => $command, 'args' => $args] = $this->startedBy(null);
 
         return sprintf(
             "[%s.%s]\ncommand = %s\nargs = %s\n",
             $key,
             self::SERVER,
-            json_encode($server['command'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-            json_encode($server['args'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            json_encode($command, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            json_encode($args, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
         );
     }
 

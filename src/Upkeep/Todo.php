@@ -20,7 +20,7 @@ use TYPO3\DevCompanion\Paths;
  * `todo/readme.md` is that form — the stages, the labelled lines, the one
  * paragraph under them — and this reads it rather than restating it.
  *
- * @phpstan-type Section array{title: string, kind: string, priority: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, priority: string, path: non-empty-string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
@@ -669,7 +669,10 @@ final class Todo
                 continue;
             }
             if (preg_match('/^\s/', $line) === 1 && $fields !== []) {
-                $fields[count($fields) - 1][1] .= ' ' . trim($line);
+                // Put back rather than appended to, so the pair stays a pair:
+                // an append through an offset is what loses the shape.
+                [$label, $value] = array_pop($fields);
+                $fields[] = [$label, $value . ' ' . trim($line)];
                 continue;
             }
             if (preg_match('/^\*\*([A-Z][a-z]+(?: [a-z]+)?):\*\*\s*(.*)$/', trim($line), $matches) !== 1) {

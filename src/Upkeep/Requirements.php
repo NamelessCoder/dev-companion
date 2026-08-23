@@ -68,7 +68,7 @@ final class Requirements
     /**
      * Every requirement, keyed and sorted by id.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: list<string>}>
      */
     public static function all(): array
     {
@@ -131,7 +131,7 @@ final class Requirements
     /**
      * The requirements of one group, in the order its listing shows them.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: list<string>}>
      */
     public static function group(string $group): array
     {
@@ -206,7 +206,7 @@ final class Requirements
      * emphasised says so where it renders. Bolding `open` in here is what made
      * every caller strip the asterisks back off.
      *
-     * @param array{status: string, heldBy: string, tests: array<int, string>} $requirement
+     * @param array{status: string, heldBy: string, tests: list<string>} $requirement
      */
     public static function state(array $requirement): RequirementState
     {
@@ -254,7 +254,7 @@ final class Requirements
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, written: string, title: string, status: string, judged: string, restsOn: array<int, string>, statement: string, heldBy: string, tests: list<string>}
      */
     public static function read(string $path): array
     {

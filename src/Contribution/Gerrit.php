@@ -264,8 +264,9 @@ final class Gerrit
         }
 
         $url = self::HOST . '/changes/' . $number . '/comments';
+        /** @var list<array<string, mixed>>|null $held */
         $held = Recent::held($url, self::HELD_FOR);
-        if (is_array($held)) {
+        if ($held !== null) {
             return $held;
         }
 
@@ -335,8 +336,9 @@ final class Gerrit
         }
 
         $url = self::HOST . '/changes/' . $number . '/revisions/current/related';
+        /** @var list<array<string, mixed>>|null $held */
         $held = Recent::held($url, self::HELD_FOR);
-        if (is_array($held)) {
+        if ($held !== null) {
             return $held;
         }
 
@@ -447,8 +449,9 @@ final class Gerrit
     {
         $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(self::MOST, $limit))
             . self::CURRENT_REVISION . $options;
+        /** @var array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}|null $held */
         $held = Recent::held($url, self::HELD_FOR);
-        if (is_array($held)) {
+        if ($held !== null) {
             return $held;
         }
 

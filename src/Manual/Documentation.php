@@ -88,6 +88,9 @@ final class Documentation
      */
     private const UNDILUTED_WORDS = 3;
 
+    /** What this reader prints as a block of its own, which is also what makes a `dd` more than a value. */
+    private const BLOCKS = './/h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd';
+
     /** @param \Closure(string): ?string|null $fetch */
     private readonly Fetch $reader;
 
@@ -504,7 +507,7 @@ final class Documentation
 
         $xpath = new \DOMXPath($document);
         $parts = [];
-        foreach ($xpath->query('//article[@role="main"]//p') ?: [] as $node) {
+        foreach (self::elements($xpath, '//article[@role="main"]//p') as $node) {
             $text = trim((string) preg_replace('/\s+/u', ' ', $node->textContent));
             if ($text === '') {
                 continue;
@@ -526,9 +529,9 @@ final class Documentation
         }
 
         $xpath = new \DOMXPath($document);
-        $heading = $xpath->query('//article[@role="main"]//h1[1]')->item(0)
-            ?? $xpath->query('//h1[1]')->item(0)
-            ?? $xpath->query('//title[1]')->item(0);
+        $heading = self::first($xpath, '//article[@role="main"]//h1[1]')
+            ?? self::first($xpath, '//h1[1]')
+            ?? self::first($xpath, '//title[1]');
 
         return $heading === null ? '' : self::plain($heading->textContent);
     }
@@ -545,8 +548,8 @@ final class Documentation
         }
 
         $xpath = new \DOMXPath($document);
-        $article = $xpath->query('//article[@role="main"]')->item(0);
-        if (!$article instanceof \DOMElement) {
+        $article = self::first($xpath, '//article[@role="main"]');
+        if ($article === null) {
             return '';
         }
 
@@ -557,13 +560,8 @@ final class Documentation
         // order.
         /** @var \SplObjectStorage<\DOMElement, null> $paired */
         $paired = new \SplObjectStorage();
-        $query = './/h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd';
-        foreach ($xpath->query($query, $article) ?: [] as $node) {
-            if (!$node instanceof \DOMElement) {
-                continue;
-            }
-            $nestedList = $xpath->query('ancestor::li', $node);
-            if (in_array($node->tagName, ['p', 'li'], true) && $nestedList !== false && $nestedList->length > 0) {
+        foreach (self::elements($xpath, self::BLOCKS, $article) as $node) {
+            if (in_array($node->tagName, ['p', 'li'], true) && self::elements($xpath, 'ancestor::li', $node) !== []) {
                 continue;
             }
             if ($node->tagName === 'dd' && ($paired->contains($node) || !self::isLeaf($xpath, $node))) {
@@ -579,11 +577,11 @@ final class Documentation
             } else {
                 $text = self::plain($node->textContent);
                 if ($node->tagName === 'dt' && strlen($text) > 300) {
-                    $names = $xpath->query(
+                    $name = self::first(
+                        $xpath,
                         './/*[contains(concat(" ", normalize-space(@class), " "), " sig-name ")]',
                         $node,
                     );
-                    $name = $names === false ? null : $names->item(0);
                     $text = $name === null ? '' : self::plain($name->textContent);
                 }
                 $block = match ($node->tagName) {
@@ -644,9 +642,40 @@ final class Documentation
      */
     private static function isLeaf(\DOMXPath $xpath, \DOMElement $node): bool
     {
-        $blocks = $xpath->query('.//h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt|.//dd', $node);
+        return self::elements($xpath, self::BLOCKS, $node) === [];
+    }
 
-        return $blocks === false || $blocks->length === 0;
+    /**
+     * The elements a query matches, and nothing else.
+     *
+     * `DOMXPath::query()` answers `false` on a query it cannot compile, and a
+     * list that may hold a namespace node. Neither carries an element's text or
+     * its tag name, so what leaves here is elements or nothing and a caller
+     * reads one case instead of three.
+     *
+     * @return list<\DOMElement>
+     */
+    private static function elements(\DOMXPath $xpath, string $query, ?\DOMNode $context = null): array
+    {
+        $nodes = $xpath->query($query, $context);
+        if ($nodes === false) {
+            return [];
+        }
+
+        $elements = [];
+        foreach ($nodes as $node) {
+            if ($node instanceof \DOMElement) {
+                $elements[] = $node;
+            }
+        }
+
+        return $elements;
+    }
+
+    /** The first element a query matches, where anything else is nothing. */
+    private static function first(\DOMXPath $xpath, string $query, ?\DOMNode $context = null): ?\DOMElement
+    {
+        return self::elements($xpath, $query, $context)[0] ?? null;
     }
 
     private static function plain(string $text): string

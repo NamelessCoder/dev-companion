@@ -166,7 +166,7 @@ final class CheckoutUpdate
      * One git command, with whatever it had to say placed under the step it
      * belongs to.
      *
-     * @param array<int, string> $command
+     * @param list<string> $command
      */
     private static function git(OutputInterface $output, array $command): int
     {

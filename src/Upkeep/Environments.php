@@ -436,7 +436,7 @@ final class Environments
      * the directory registers it back. An installation is minutes and a
      * hundred packages; the containers are seconds.
      *
-     * @return array<int, string>|null
+     * @return list<string>|null
      */
     public static function resume(?string $status): ?array
     {
@@ -526,7 +526,7 @@ final class Environments
      * means there is no database volume to leave. `delete` is still the one
      * that takes what a name is holding, and taking the directory is `rm -rf`.
      *
-     * @return array<int, string>
+     * @return list<string>
      */
     public static function discard(string $project): array
     {
@@ -567,7 +567,7 @@ final class Environments
      * timeout, unlike the console: a step here is a `composer create-project` of
      * a hundred packages.
      *
-     * @param array<int, string> $command
+     * @param list<string> $command
      *
      * @return array{0: int, 1: string}
      */
@@ -596,7 +596,7 @@ final class Environments
      * sqlite is the whole of it: the file is `var/sqlite/` below the project
      * and nothing named after the project outlives an `rm -rf`.
      *
-     * @return array<string, array<int, string>>
+     * @return array<string, list<string>>
      */
     public static function build(string $branch, string $driver = self::DEFAULT_DRIVER): array
     {

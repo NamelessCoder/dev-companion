@@ -230,7 +230,17 @@ final class CommitMessage
      * commit hook owns and an amend must keep — are carried through untouched.
      *
      * @return array{
-     *     input: array<string, mixed>,
+     *     input: array{
+     *         changeType: string,
+     *         summary: string,
+     *         issues: array<int, string>,
+     *         relatedIssues: array<int, string>,
+     *         releases: array<int, string>,
+     *         body: string,
+     *         draftPrefixes: array<int, string>,
+     *         isBreaking: ?bool,
+     *         extraTrailers: array<int, string>
+     *     },
      *     checks: array<int, array{level: string, code: string, message: string}>
      * }
      */

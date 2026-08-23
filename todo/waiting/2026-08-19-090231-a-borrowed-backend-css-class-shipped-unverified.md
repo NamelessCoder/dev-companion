@@ -3,11 +3,12 @@
 **Serves:** feedback/2026-08-19-090231-a-borrowed-backend-css-class-shipped-unverified.md
 **Priority:** normal
 **Waiting on:** nothing of its own. What this feedback still needs is
-    `skills/typo3-extension-asset-build/` published, and that is the review and
-    the baseline run `todo/waiting/2026-08-19-090200` already carries. No second
-    question is asked here, and `bin/cli todo:waiting` should not put one. The
-    publishing commit is where this feedback is archived with
-    `bin/cli feedback:archive`, and the sibling names that step.
+    `skills/typo3-extension-asset-build/` published, and the review that was the
+    condition of it was given on 2026-08-24 — `todo/open/2026-08-19-090200`
+    carries what it said and the rework it asks for. No second question is asked
+    here, and `bin/cli todo:waiting` should not put one. The publishing commit
+    is where this feedback is archived with `bin/cli feedback:archive`, and the
+    sibling names that step.
 
 Both halves the feedback asked for are answered, and only the delivery of the
 second one is left.

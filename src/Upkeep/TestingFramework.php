@@ -12,10 +12,8 @@ use TYPO3\DevCompanion\Knowledge\Versions;
  *
  * The package has a release cycle of its own and `.checkouts/` does not contain
  * it, so a statement about it is verified against a tag rather than against a
- * branch — `D-KNW-002`. Which tag belongs to which major is the core's own
- * `require-dev` pin and is not recorded here. What is paired is the line and not
- * the tag, so a release inside a line is picked up by `checkouts:update` rather
- * than by an entry somebody has to maintain.
+ * branch. Which tag that is is derived from the core's own `require-dev` pin
+ * rather than recorded here — `D-KNW-106`.
  */
 final class TestingFramework
 {

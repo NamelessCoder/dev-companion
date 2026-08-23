@@ -103,4 +103,4 @@ runtime, and the failure is silent. The rules below follow from it.
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in ``files``, and the range is derived
   from those as well — a rewrite that keeps the directory and moves what is in
-  it is otherwise exactly what a range on existence cannot see (``D-CAT-002``).
+  it is otherwise exactly what a range on existence cannot see (``D-CAT-007``).

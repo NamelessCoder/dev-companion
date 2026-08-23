@@ -22,7 +22,7 @@ use TYPO3\DevCompanion\Upkeep\TestingFramework;
  *
  * typo3/testing-framework is kept here too, because a statement about the
  * harness a project extension tests in is verified against a tag of that
- * package rather than against a core branch — `D-KNW-002`, and
+ * package rather than against a core branch — `D-KNW-106`, and
  * `Upkeep\TestingFramework` for which line pairs with which major.
  */
 #[AsCommand(

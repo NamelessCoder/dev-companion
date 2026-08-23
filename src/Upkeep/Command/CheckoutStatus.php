@@ -15,7 +15,7 @@ use TYPO3\DevCompanion\Upkeep\TestingFramework;
  *
  * typo3/testing-framework is reported beside the core branches, because a
  * statement about the harness a project extension tests in is verified against
- * a tag of that package rather than against a core branch (D-KNW-002).
+ * a tag of that package rather than against a core branch (D-KNW-106).
  */
 #[AsCommand(
     name: 'checkouts:status',

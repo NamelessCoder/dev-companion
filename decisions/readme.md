@@ -264,6 +264,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### knowledge
 
+- [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
@@ -363,6 +364,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a subject this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
+[D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knowledge/knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
@@ -484,12 +486,14 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### catalog
 
+- [`D-CAT-007`][D-CAT-007] — A reference entry's range is derived from what it promises · 2026-08-23
 - [`D-CAT-006`][D-CAT-006] — A class-shaped query is answered by a second range · 2026-08-21
 - [`D-CAT-005`][D-CAT-005] — A reference entry names a form to imitate · 2026-08-18
 - [`D-CAT-004`][D-CAT-004] — The component index holds what the core files as a component · 2026-08-11
 - [`D-CAT-003`][D-CAT-003] — The component index is curated; its contract comes from the installation · 2026-07-30
 - [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · confirmed
 
+[D-CAT-007]: catalog/cat-007-a-reference-entrys-range-is-derived-from-what-it-promises.md
 [D-CAT-006]: catalog/cat-006-a-class-shaped-query-is-answered-by-a-second-range.md
 [D-CAT-005]: catalog/cat-005-a-reference-entry-names-a-form-to-imitate.md
 [D-CAT-004]: catalog/cat-004-the-component-index-holds-what-the-core-files-as-a-component.md
@@ -942,12 +946,12 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 - [`D-AUD-002`][D-AUD-002] — A client is offered the `all` or the `project` profile · 2026-07-29 → D-AUD-004
-- [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated · 2026-07-29
+- [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated · 2026-07-29 → D-CAT-007
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 → D-DIS-007
 - [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
 - [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29 → D-GUI-010
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29 → D-KNW-006
-- [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
+- [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29 → D-KNW-106
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005

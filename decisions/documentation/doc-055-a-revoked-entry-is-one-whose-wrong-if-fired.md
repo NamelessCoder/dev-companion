@@ -86,3 +86,27 @@ dead ends.
 - A session writes a `Revoked on` for work it carried out anyway. The rule would
   then be one nobody applies at the moment it is needed, and a report over the
   dated sections is the lever left.
+
+## Since then
+
+The four revocations the last **Wrong if** names were read against the
+repository on 2026-08-23, and two of them wanted a successor. What `D-CAT-002`
+left standing is what decides whether a worked example is checked by its
+directory or by the files inside it, which `D-CAT-007` states; the pairing
+`D-KNW-002`'s revocation corrected is derived per branch in
+`Upkeep\TestingFramework`, which `D-KNW-106` states. Both entries now name their
+successor.
+
+The other two are carried by a requirement, so the rule above is one word too
+narrow. `R-SCO-002` holds what `D-SCO-001` left standing — the test run guide
+declining rather than adapting — and `R-SCO-004` holds what `D-SCO-004` left,
+the two backend UI categories withheld where a task names the frontend. Each is
+held by a test that reads the sentence the revocation kept, which is a stronger
+carrier than an entry naming it. So what carries a surviving part is an entry of
+either kind, and `revokedBy` names it only where that entry is a decision: the
+field takes one decision id and nothing else.
+
+`D-DIS-003` was read for the same question and belongs on neither list. Its two
+`Revoked on` sections replace the mechanism whole — the exit code stopped being
+the signal, and no producer of the stdout noise the second one described was
+ever established — and what took its place is in its own **Since then**.

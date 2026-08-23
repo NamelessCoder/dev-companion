@@ -3,6 +3,7 @@ id: D-CAT-002
 title: 'The index of worked examples is curated'
 date: 2026-07-29
 status: revoked
+revokedBy: D-CAT-007
 ---
 
 # D-CAT-002 — The index of worked examples is curated

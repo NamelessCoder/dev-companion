@@ -35,3 +35,15 @@ declines because its answer shape is a core suite invocation; the
 `typo3-extension-testing` skill takes the other branch, verifies the checkout's
 harness, and routes setup or repair through the extension-test hint and
 versioned documentation before adding coverage.
+
+## Since then
+
+The half that still holds is carried by a requirement rather than by a decision,
+and no successor is owed. `R-SCO-002` is what says a scope outside the core
+changes the payload entry by entry, and
+`ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests` calls this
+guide from a site package and asserts that no suite and no `CI=true` come back —
+its own comment is the reason above, that every suite here is a
+`Build/Scripts/runTests.sh` invocation and looks copy-pasteable where the script
+is not. What the decline hands over instead is named in it:
+`project-extension-tests`, `browser-tests` and `extension-static-analysis`.

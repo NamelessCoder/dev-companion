@@ -41,7 +41,7 @@ final class CatalogCheck
     /**
      * What the hints about typo3/testing-framework rest on, per file of the
      * package, so a release changing one of them fails here rather than ageing
-     * quietly into a wrong answer (`D-KNW-002`). Existence carries the statement
+     * quietly into a wrong answer (`D-KNW-106`). Existence carries the statement
      * that the four boilerplate files are there to be copied; each needle
      * carries one sentence of `project-extension-tests`, named beside it, and
      * what no needle covers is not guarded.
@@ -159,11 +159,10 @@ final class CatalogCheck
      * Whether the testing-framework release each branch pins still says what the
      * hints about it say.
      *
-     * `D-KNW-002` verified those statements against tags and named its own gap in
-     * doing so: a release changing one of them inside a line would be noticed by
-     * nobody. Nothing about the pairing is recorded — the core pins the line per
-     * branch in its own require-dev, the newest tag on that line is what the
-     * worktree holds, and both are re-derived here.
+     * Which release each covered major is read against is derived rather than
+     * recorded (`D-KNW-106`), and the needles below are what closes the gap
+     * `D-KNW-002` named in reading against a tag at all: a release that changes
+     * one of the statements inside a line.
      */
     private static function verifyTestingFramework(OutputInterface $output, string $checkouts): int
     {
@@ -199,12 +198,12 @@ final class CatalogCheck
         $output->writeln('');
 
         if ($problems === 0) {
-            $output->writeln('Every statement about the harness still reads as D-KNW-002 read it.');
+            $output->writeln('Every statement about the harness still reads as project-extension-tests states it.');
 
             return 0;
         }
 
-        $output->writeln(sprintf('%d statement(s) about the harness no longer read as D-KNW-002 read them.', $problems));
+        $output->writeln(sprintf('%d statement(s) about the harness no longer read as project-extension-tests states them.', $problems));
 
         return 1;
     }
@@ -844,11 +843,10 @@ final class CatalogCheck
      * entry whose recorded range no longer says so.
      *
      * A directory that moved leaves an answer pointing at nothing, and the caller
-     * reads the miss as "I looked in the wrong place". Existence of the directory
-     * was the whole test until it caught nothing on the entry `D-CAT-002` named
-     * itself, so an entry whose sentence promises a shape names the files that
-     * carry it in `files`, and a version has the example when it has all of them.
-     * What no file covers is prose a human has to reread.
+     * reads the miss as "I looked in the wrong place". Where the directory alone
+     * would claim a major the shape is not on, the entry names the files that
+     * carry it in `files` and a version has the example when it has all of them
+     * — `D-CAT-007`.
      *
      * @param array<int, array<string, mixed>> $references
      */

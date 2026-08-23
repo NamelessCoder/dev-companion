@@ -72,3 +72,8 @@ Both halves are held rather than argued.
 escape — the second asserts the clause in the notice and then calls with it,
 because a notice offering an escape and a notice apologising for one are the
 same string to everything except a caller who tries it.
+
+What carries the withholding is `R-SCO-004`, and no successor decision is owed.
+It names the two categories as the backend interface's and says they are
+withheld with the reason where a task names the frontend, which is this entry's
+statement; the two tests above are among the five that hold it.

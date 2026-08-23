@@ -24,6 +24,7 @@ supports:
 
     bin/cli                   # every command it carries, grouped by subject
     bin/cli todo:next         # the one todo that is due now, and nothing else
+    bin/cli entries:lookup <path>  # what is written about the code you are about to change
     bin/cli repository:check  # requirements, decisions, scenarios and the todos against their formats
     bin/cli help <command>    # what one command takes, and what each argument is
 
@@ -245,6 +246,16 @@ Tests
 and runs the test suite: the search and ranking logic, every tool against its
 declared schemas and annotations, and the stdio entrypoint driven as a real
 subprocess. CI runs the same command on every supported PHP version.
+
+A test that holds a decision or a requirement says so where it is:
+``#[Decision('D-DOC-048')]`` and ``#[Requirement('R-COD-003')]`` over the
+method, or over the class where the class as a whole is the answer.
+``bin/cli decisions:cover`` and ``bin/cli requirements:cover`` write the entry's
+``coveredBy`` and ``heldBy`` from those attributes, and the checks fail on a
+copy that says anything else — so the entry cannot name a test that was renamed
+away. A failing run ends with the entries the failures were holding, each with
+its title and its path, which is what sends the session that made a test red to
+the entry rather than to the assertion.
 
 The guidelines are php-cs-fixer's, configured in ``.php-cs-fixer.dist.php`` and
 nowhere else: PER-CS 3.0 plus the handful of rules this repository writes by —

@@ -212,8 +212,10 @@ what produced an entry. How each one is written has a page of its own —
   changes, so it is written down with what holds it to that: a test, or
   ``not guarded``. A requirement that has been accepted but not yet implemented
   is in the same group, marked **open** — decided and not done. Add the entry in
-  the commit that works the feedback off, and name the test in the same commit
-  that writes it. An entry is deleted only when the requirement is withdrawn.
+  the commit that works the feedback off; the test declares the entry it holds
+  with ``#[Requirement]``, and ``bin/cli requirements:cover`` writes that into
+  the entry, so the two are named in the one commit and in one place. An entry
+  is deleted only when the requirement is withdrawn.
 * ``decisions/`` — what the change rests on. When it rests on an assumption that
   could later turn out wrong, record what was assumed, what evidence there was
   at the time, and what would show it to be wrong. One decision is one file, in

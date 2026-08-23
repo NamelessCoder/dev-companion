@@ -18,6 +18,13 @@ a revoked one is readable from the requirement written on top of it —
 :doc:`what a requirement is <requirements>`. Where an entry goes and how it is
 written is :doc:`writing-a-decision`.
 
+What holds an entry is a test, where one can. It declares the id it holds with
+``#[Decision]``, ``coveredBy`` is generated from that, and a failing run names
+the entry it was holding — so a session that changes the behaviour is sent to
+what rested on it. Most entries are about process and nothing runs over them;
+``bin/cli decisions:check`` reads out the ones that point at this repository's
+code and name no test, and fails on none of them.
+
 A feedback is one occasion on which a decision gets made. It is not what this
 directory is for: the entry is read long after that question was answered, and
 what gets decided as readily arrives from a review, a recorded run, or a

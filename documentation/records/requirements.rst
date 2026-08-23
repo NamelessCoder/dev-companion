@@ -35,7 +35,10 @@ What the state means
   of ``held`` turns out to be. It is the honest answer for a requirement no test
   can hold, and it is the one worth seeing in a listing, because from afar it
   looks exactly like ``held``.
-* **held** — built, and the tests it names hold it there.
+* **held** — built, and the tests it names hold it there. They name themselves:
+  a test carries ``#[Requirement]`` and ``bin/cli requirements:cover`` writes
+  ``heldBy`` from it, so the state follows the tests rather than a list somebody
+  keeps.
 
 They are the ``RequirementState`` enum. ``bin/cli requirements:check`` cannot
 fail on **open** or **not guarded**; both are legitimate, and

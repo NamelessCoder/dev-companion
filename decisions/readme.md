@@ -633,7 +633,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07 · confirmed
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a workflow ends in a change · 2026-08-04
-- [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04
 - [`D-SKL-017`][D-SKL-017] — A named check is established against the package it lands on · 2026-08-04
 - [`D-SKL-018`][D-SKL-018] — The guide of the chosen layer arrives with the brief · 2026-08-04
 - [`D-SKL-019`][D-SKL-019] — An absent surface is asked for by the id of its convention · 2026-08-04
@@ -700,7 +699,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-022]: task-skills/skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: task-skills/skl-021-triage-and-fetching-a-patch-are-two-workflows.md
 [D-SKL-014]: task-skills/skl-014-the-commit-step-is-named-where-a-workflow-ends-in-a-change.md
-[D-SKL-016]: task-skills/skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-SKL-017]: task-skills/skl-017-a-named-check-is-established-against-the-package-it-lands-on.md
 [D-SKL-018]: task-skills/skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
 [D-SKL-019]: task-skills/skl-019-an-absent-surface-is-asked-for-by-the-id-of-its-convention.md
@@ -931,6 +929,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-023`][D-DOC-023] — The site is built to the TYPO3 Support App design system · 2026-08-09 → D-DOC-024
 - [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
 - [`D-SKL-015`][D-SKL-015] — A step is skipped only where it has already run · 2026-08-04 → D-SKL-034
+- [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04 → D-SKL-064
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03 → D-ANS-096
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a subject this server owns · 2026-08-03 → D-KNW-044
@@ -968,6 +967,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-023]: documentation/doc-023-the-site-is-built-to-the-typo3-support-app-design-system.md
 [D-DIS-015]: discovery/dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md
 [D-SKL-015]: task-skills/skl-015-a-step-is-skipped-only-where-it-has-already-run.md
+[D-SKL-016]: task-skills/skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-subject-this-server-owns.md

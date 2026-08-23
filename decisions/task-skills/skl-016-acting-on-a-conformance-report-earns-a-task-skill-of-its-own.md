@@ -2,7 +2,8 @@
 id: D-SKL-016
 title: Acting on a conformance report earns a task skill of its own
 date: 2026-08-04
-status: open
+status: revoked
+revokedBy: D-SKL-064
 ---
 
 # D-SKL-016 — Acting on a conformance report earns a task skill of its own
@@ -111,3 +112,25 @@ removing it left the work with no owner at all.
 - The skill is published and no session loads it, because nobody words the
   request this way. Then the shape was hypothesised, and the bar
   `writing-a-skill.md` sets was the thing to wait for.
+
+## Revoked on 2026-08-23
+
+The first **Wrong if** happened and was acted on. `8a67338a` on 2026-08-19 made
+the audit and the work that answers it one skill: `typo3-extension-cleanup` and
+`typo3-extension-conformance` are published as `typo3-extension-health`, which
+writes its own surface list from `references/checklist.md` and then works the
+agreed list off. So the two are one skill rather than two, which is what that
+bullet said would settle it, and the word "conformance" appears nowhere in the
+published workflow.
+
+What holds instead is
+[`D-SKL-064`](skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md),
+written by that commit. What this entry established stands inside it and is not
+repeated here: the request had no route, no published workflow owned "the whole
+repository", and each item still crosses into the skill that owns it —
+`R-SKL-003`, which `typo3-extension-health` step 10 carries as "Invoke the skill
+that owns them".
+
+The strikethrough in **Decided** points at a **Since then** this entry never
+gained; the reversal it names is the worklist staying in the session rather than
+being committed, and step 8 of the published skill is where that now reads.

@@ -56,7 +56,6 @@ one is added.
 - [`D-SKL-022`][D-SKL-022] — A handoff between skills is an instruction rather than a closing sentence · 2026-08-07 · confirmed
 - [`D-SKL-021`][D-SKL-021] — Triage and fetching a patch are two workflows · 2026-08-05
 - [`D-SKL-014`][D-SKL-014] — The commit step is named where a workflow ends in a change · 2026-08-04
-- [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04
 - [`D-SKL-017`][D-SKL-017] — A named check is established against the package it lands on · 2026-08-04
 - [`D-SKL-018`][D-SKL-018] — The guide of the chosen layer arrives with the brief · 2026-08-04
 - [`D-SKL-019`][D-SKL-019] — An absent surface is asked for by the id of its convention · 2026-08-04
@@ -123,7 +122,6 @@ one is added.
 [D-SKL-022]: skl-022-a-handoff-between-skills-is-an-instruction-rather-than-a-closing-sentence.md
 [D-SKL-021]: skl-021-triage-and-fetching-a-patch-are-two-workflows.md
 [D-SKL-014]: skl-014-the-commit-step-is-named-where-a-workflow-ends-in-a-change.md
-[D-SKL-016]: skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-SKL-017]: skl-017-a-named-check-is-established-against-the-package-it-lands-on.md
 [D-SKL-018]: skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
 [D-SKL-019]: skl-019-an-absent-surface-is-asked-for-by-the-id-of-its-convention.md
@@ -145,8 +143,10 @@ one is added.
 
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says it is a file · 2026-08-14 → D-SKL-042
 - [`D-SKL-015`][D-SKL-015] — A step is skipped only where it has already run · 2026-08-04 → D-SKL-034
+- [`D-SKL-016`][D-SKL-016] — Acting on a conformance report earns a task skill of its own · 2026-08-04 → D-SKL-064
 - [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured · 2026-08-03 → D-SKL-043
 
 [D-SKL-040]: skl-040-a-skill-whose-product-is-a-report-says-it-is-a-file.md
 [D-SKL-015]: skl-015-a-step-is-skipped-only-where-it-has-already-run.md
+[D-SKL-016]: skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md
 [D-SKL-011]: skl-011-the-call-plan-a-skill-writes-down-is-measured.md

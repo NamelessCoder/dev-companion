@@ -62,3 +62,23 @@ shipped regression.
   file rather than left to the reader.
 - A finding of this shape is missed again with the sentence in place. Then the
   lever is the audit's evidence rule rather than the re-check's wording.
+
+## Since then
+
+The sentence survived the merge and moved. `8a67338a` on 2026-08-19 made the
+audit and its fixes one skill, and what was step 12 is step 14 of
+`typo3-extension-health`: "Re-run the audit above on the worked list rather than
+re-reading the files it changed: a file that reads correctly can still be
+rewritten by the environment that owns it, and the difference only shows once
+that environment runs again."
+
+That wording answers half of the first **Wrong if** before it can fire. The
+re-run is bound to the worked list rather than to everything, and the
+environment that owns the file is named in the sentence rather than left to the
+reader — which is what the bullet said the narrowing would have to be. What it
+does not bound is what re-running the audit on that list costs, and no session
+has reported the cost either way.
+
+Nothing reports the second one. No feedback after 2026-08-04 describes a
+reverting fix reported as closed, and none of the five that mention a re-check
+at all is about this step.

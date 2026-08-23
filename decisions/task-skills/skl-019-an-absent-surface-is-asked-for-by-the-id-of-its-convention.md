@@ -56,3 +56,22 @@ asking the convention that says an extension has one.
 - A session asks the hint by id, gets the convention, and still reports absence
   as clean. Then the lever is the skill's "absence is not a defect" sentence
   rather than the lookup.
+
+## Since then
+
+The row still carries the id and it survived a merge. `8a67338a` on 2026-08-19
+made the audit and its fixes one skill, and
+`skills/typo3-extension-health/references/checklist.md` opens the Quality row
+with documentation and the lookup beside it — `typo3_hint_lookup` with
+`id=extension-documentation`, "which says what a manual consists of and that it
+ships with the package". It is the only id the checklist names.
+
+So the first **Wrong if** is standing rather than fired. Four nouns in that same
+row are still bare — the test suite, the check layer, deprecations and upgrade
+readiness — and the check layer is the one that has an answer elsewhere, in the
+section below it that names each entry by what it establishes. Nothing reports a
+second miss, which is what the bullet waits for; what it says then is that the
+row needs every id rather than the one that failed.
+
+The second one has no report either. No feedback since names a session that
+asked `extension-documentation` by id and still published an absence as clean.

@@ -115,3 +115,20 @@ is right to skip five tools.
   correction. Then the wording was not what lost, and the cause is the schema a
   deferring client has to load before it may call anything — judged in
   `D-SKL-060` and `D-AUD-011`, whose card waits in `todo/waiting/`.
+
+## Since then
+
+The correction is in `skills/base.md` under "What each runtime lookup adds after
+the extension answer", and it says the distinction rather than the pairing:
+"`typo3_extension_describe` in step 2 says what one package registers. The five
+below say what the installation resolved, which is a different fact even where
+the words are the same, so step 2 has made none of these calls." Each of the
+five then names what step 2 could not have had — the inherited module
+properties, every installed package's icons, the resolved labels, the global
+Fluid prefixes, the configuration after every extension has had its say.
+
+Nothing measures it yet. No recorded run since carries an audit made with the
+corrected base, so neither the first **Wrong if** — the five returning what step
+2 already had — nor the second, the extra calls changing no finding, has
+evidence either way. The third is waiting on the card in `todo/waiting/` that
+`D-AUD-011` holds.

@@ -70,3 +70,18 @@ guesses at one.
 - Correctness turns out to move in the other direction. Nothing here has been
   measured for it, and a server that makes a session predictable and wrong is
   not one this sentence should recommend.
+
+## Since then
+
+The sentence is in `documentation/readme.rst` and says all three halves this
+decided: "What it buys a session is a ceiling rather than a lower average: a
+lookup that would otherwise take a handful of turns and cost whatever the search
+happens to cost arrives in one call, at a price that varies little. It is not a
+discount, and nothing here has been measured for whether it makes an agent more
+correct." No number, and the third **Wrong if** is named in the promise rather
+than left for a reader to find.
+
+None of the three can be settled here. Each needs a second comparison on another
+project — a lower median, or a spread that collapses without the server — and
+`scenarios/runs/` still holds three recorded forward runs, none of them that
+measurement.

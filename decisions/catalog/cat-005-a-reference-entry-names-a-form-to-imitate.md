@@ -79,3 +79,18 @@ next caller needs is the ordering, and a path does not carry one.
   the wrong lever.
 - An entry is written for a directory nobody imitates and a session reports it
   as the answer to a fact question. The line is then drawn in the wrong place.
+
+## Since then
+
+The two entries are still not written and nothing asks for them again.
+`knowledge/catalog/references.json` holds the same seven, and the probe this
+entry rests on returns the same numbers on 2026-08-23: "frontend middleware
+order per major, what each stage has assembled" reaches
+`routing-request-handling` at `appliesTo(10) + text(146)`, alone.
+
+No second session has paid for it. The feedback that asked, `2026-08-18-081228`,
+is archived, and no report since names the frontend's middleware declaration as
+something it went looking for. So all three **Wrong if** are undisturbed, and
+the one that would fire first — a session reaching the hint and still not
+knowing what to write — is the reading the **Assumed** says nothing has
+measured.

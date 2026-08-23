@@ -109,3 +109,20 @@ templates carry — a false positive it held for two round trips.
 - The two shapes turn out to need different steps far enough that the page reads
   as two procedures under one heading, which would say the boundary was drawn
   around the wrong thing.
+
+## Since then
+
+The document is where this put it,
+`knowledge/documents/any/testing/proving-a-condition.md`, beside the browser
+check.
+
+The third **Wrong if** is the one a reading answers, and it has not fired. The
+page runs as one procedure in six steps — what does not answer it, the marker
+only the branch produces, a marker put there on purpose, which URL is requested,
+the negative control, and what stands between two runs — rather than as two
+under one heading. The two shapes share every step and differ in which marker is
+available, which is the boundary this was drawn around.
+
+The other two wait on a session. Nothing since 2026-08-18 reports a flipped
+verdict served from a cache on a covered line, or a session that had the
+document and grepped for the first thing that looked related.

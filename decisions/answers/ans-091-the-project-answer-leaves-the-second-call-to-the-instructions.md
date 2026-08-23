@@ -107,3 +107,16 @@ the sentence rather than the answer of the call that fired.
 - A session reports finishing this answer without knowing what to call next.
   Then the answer owes a next step whatever the ratio says, and the count was
   never the question.
+
+## Since then
+
+The imperative is where this left it. `Coverage::instructions()` still carries
+"Then call typo3_task_guide for the workflow the task belongs to; it hands the
+parts that have their own workflow to the skill that owns them", and
+`typo3_project_describe` has gained no imperative of its own.
+
+All three **Wrong if** need a run rather than a reading, and none has been
+recorded: `scenarios/runs/` holds the same three forward runs as before, none of
+them a second count of the two calls, and no feedback since 2026-08-21 reports
+either a tool called because the project answer named it or a session finishing
+that answer without knowing what to call next.

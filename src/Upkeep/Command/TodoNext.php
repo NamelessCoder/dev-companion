@@ -292,7 +292,14 @@ final class TodoNext
         $reading = '';
         $working = $run === [];
         foreach ($run as $command) {
-            if (!str_starts_with($command, 'bin/cli ')) {
+            // A shell line starts with `bin/cli` too, and what the console is
+            // handed is a line rather than a shell: the pipe in
+            // `bin/cli decisions:list | grep revoked` arrives as an argument,
+            // the command refuses the lot, and the session's first call prints
+            // that refusal where its todo was. So a plain invocation is run and
+            // anything a shell would have to read is named, like every other
+            // command this repository does not own.
+            if (!str_starts_with($command, 'bin/cli ') || preg_match('/[|;&<>`$]/', $command) === 1) {
                 $reading .= $command . "\n";
                 $working = true;
                 continue;

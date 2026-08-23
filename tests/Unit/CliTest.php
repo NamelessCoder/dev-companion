@@ -107,6 +107,37 @@ final class CliTest extends TestCase
     }
 
     /**
+     * A `Run:` line the console cannot take is named rather than run.
+     *
+     * A shell line starts with `bin/cli` too, and `todo:next` hands the console
+     * a line rather than a shell: the pipe arrives as an argument, the command
+     * refuses the lot, and what the session reads at its first call is that
+     * refusal instead of its todo. It happened on
+     * `bin/cli decisions:list | grep revoked`.
+     */
+    #[Test]
+    public function aRunLineTheConsoleCannotTakeIsNamedRatherThanRun(): void
+    {
+        // `todo:next` refuses a worktree standing on no claim before it reads
+        // any cadence, and the suite runs in the worktrees — as above.
+        $this->ownQueue();
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(['ok' => true, 'exitCode' => 0, 'output' => "/repo/.git\n", 'error' => '']);
+        Checkouts::useRunner($git);
+
+        $piped = self::MARKER . '-piped';
+        $this->recurATodo('14 days', $piped, 'bin/cli decisions:list | grep revoked', '2026-01-01');
+
+        $buffer = new BufferedOutput();
+        $status = Cli::application()->doRun(new StringInput('todo:next'), $buffer);
+        $printed = $buffer->fetch();
+
+        self::assertSame(0, $status);
+        self::assertStringStartsWith($piped, trim($printed));
+        self::assertStringContainsString('bin/cli decisions:list | grep revoked', $printed);
+    }
+
+    /**
      * The one directory listing a session should never have to make.
      *
      * A todo is finished by deleting or trimming the file it is, and that file

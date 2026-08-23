@@ -54,6 +54,5 @@ condition, and the submission steps under it rather than dropped. That is the
 demotion this decided, met in the one text it was predicted to be met in. What
 keeps it cheap is that the condition is a sentence the contributor settles from
 their own intent, and naming a sysext path in the same session turns it into a
-stated match;
-`ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules` and
+stated match; `ScopeTest::aCoreTaskNamingNoPathKeepsTheSubmissionRules` and
 `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission` hold both halves.

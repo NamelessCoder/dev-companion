@@ -43,10 +43,9 @@ Nothing about that is wrong, which is why nothing had counted it.
 
 - A report in `bin/cli decisions:check`, beside the problems and not among them.
   `Decisions::outgrown()` is the reading and
-  `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut` holds
-  it. The command still exits 0, because a long history is legitimate and a
-  check that fails on one would be answered by writing shorter accounts of the
-  same readings.
+  `DecisionsTest::anEntryOutgrownByItsHistoryIsReadOut` holds it. The command
+  still exits 0, because a long history is legitimate and a check that fails on
+  one would be answered by writing shorter accounts of the same readings.
 - The longest three are named and the rest counted, so the report does not
   become a list that grows with the corpus.
 - The measure is lines rather than sections. Nineteen short confirmations and

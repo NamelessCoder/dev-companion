@@ -17,7 +17,7 @@ coveredBy:
 closest first, instead of from a second read of the corpus in file order.**
 
 The fourth **Wrong if** of
-[`D-KNW-055`](../knowledge/knw-055-the-first-check-a-standalone-extension-gets-is-a-gap.md)
+[`D-KNW-055`](../knowledge/knw-055-the-first-check-a-standalone-extension-gets-is-a-subject-this-server-owns.md)
 fired and disproved the remedy it named. A session stopped reading the index,
 and the id it needed was in it — three from the bottom, while the matcher had
 just ranked it seventh.

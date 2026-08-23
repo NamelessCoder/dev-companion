@@ -34,7 +34,7 @@ session got the assessment wrong.
   `fluid-resource-uris` in `knowledge/hints/fluid.json`, which states that the
   publisher applies it and that every resource URI carries one since 14. Cache
   invalidation is `todo/open/2026-08-02-211403` on
-  [`D-KNW-027`](../knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md).
+  [`D-KNW-027`](../knowledge/knw-027-which-caches-a-change-invalidates-is-a-subject-this-server-owns.md).
   The rendered preview is `todo/open/2026-08-02-200948` on
   [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies-it.md).
 - The checklist had nothing of this kind. Five items — confirm the branch,

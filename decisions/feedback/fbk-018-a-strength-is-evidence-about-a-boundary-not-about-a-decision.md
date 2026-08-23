@@ -284,10 +284,9 @@ names the XLF files among the four whose absence is answered. `ToolResult` says
 the text is the primary answer and the data is what a client composes with.
 [`R-ANS-002`](../../requirements/answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md)
 states the same rule in the other direction, for a client that renders the data
-and drops the text.
-`ProjectTest::whatAnExtensionDoesNotShipIsAnswered` asserts the
-present case in both halves of the answer and the absent case in the data alone,
-which is why nothing failed.
+and drops the text. `ProjectTest::whatAnExtensionDoesNotShipIsAnswered` asserts
+the present case in both halves of the answer and the absent case in the data
+alone, which is why nothing failed.
 
 Step 4, wording. Not step 1a, because `Extension::artifacts()` already returns
 the key; not 1b, because no verb and no order is missing; not step 2, because
@@ -563,12 +562,12 @@ entry points, `164734` six substring hits that read as "the manual has nothing",
 one costs is the reading the caller supplies where the answer stops.
 
 One keep-request rested on nothing and is held now:
-`PackageSourcesTest::theTagListTravelsWithAHit`. `tags` is not
-among the keys `ChangelogLookup::outputSchema()` requires and the hit path was
-in no assertion, so the list a sweep's second and third call are read off could
-have been dropped without a failure. The other two are held already — the
-`deprecatedFiles` shape by `D-ANS-009`'s three tests, and the module attribution
-by `extension` being a required key of the answer.
+`PackageSourcesTest::theTagListTravelsWithAHit`. `tags` is not among the keys
+`ChangelogLookup::outputSchema()` requires and the hit path was in no assertion,
+so the list a sweep's second and third call are read off could have been dropped
+without a failure. The other two are held already — the `deprecatedFiles` shape
+by `D-ANS-009`'s three tests, and the module attribution by `extension` being a
+required key of the answer.
 
 The feedback is trimmed to the wording half and stays open behind the card that
 carries it. No statement about TYPO3 was established here: the re-runs read this
@@ -624,17 +623,17 @@ file.
 
 Two guards were written, which is the keep-request in the only form this
 repository has for one.
-`KnowledgeTest::theMovesTheCommitRulesStopAreStillStated` holds
-the clause refusing the demand and the one refusing the branch list; the
-obligation beside them was held twice over already, and it is the refusing half
-that a summarising rewrite drops.
-`SkillTest::aTriageIsHeldToWhatItsMeasurementsActuallyMeasured` holds the
-triage's three measurement rules and the sentence that sends a reproduction to
-be shown red. Five reports credit that block — this one and `2026-08-05-033954`,
-`2026-08-07-065401`, `2026-08-07-130037` and `2026-08-07-233418` in the archive
-— and its third bullet is itself the answer to the last of those, so a rewrite
-could have taken out four sentences the corpus asks for without a failure. What
-that costs is now the last **Wrong if** above.
+`KnowledgeTest::theMovesTheCommitRulesStopAreStillStated` holds the clause
+refusing the demand and the one refusing the branch list; the obligation beside
+them was held twice over already, and it is the refusing half that a summarising
+rewrite drops. `SkillTest::aTriageIsHeldToWhatItsMeasurementsActuallyMeasured`
+holds the triage's three measurement rules and the sentence that sends a
+reproduction to be shown red. Five reports credit that block — this one and
+`2026-08-05-033954`, `2026-08-07-065401`, `2026-08-07-130037` and
+`2026-08-07-233418` in the archive — and its third bullet is itself the answer
+to the last of those, so a rewrite could have taken out four sentences the
+corpus asks for without a failure. What that costs is now the last **Wrong if**
+above.
 
 Two of these sentences are asked for twice in one debrief.
 `feedback/2026-08-08-224455` reviewed Gerrit 95179 in a worktree of the same
@@ -764,12 +763,11 @@ second direction lives in, which is the half a summarising rewrite drops. The
 plugin-type statement was in no assertion either and is held by the test named
 below. The conditions hint was guarded for the variable list, the event and the
 silent failure, and not for the clause that refuses the obvious substitution;
-that clause is added to
-`whichGlobalsAConditionCanReadIsBoundToItsMajor`. The two
-failure modes the report would not change are guarded already —
-`PackageSourcesTest::theTagListTravelsWithAHit` for the tag
-list, and `KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre` for the miss
-that lists every document id.
+that clause is added to `whichGlobalsAConditionCanReadIsBoundToItsMajor`. The
+two failure modes the report would not change are guarded already —
+`PackageSourcesTest::theTagListTravelsWithAHit` for the tag list, and
+`KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre` for the miss that lists
+every document id.
 
 `aPluginTypeArgumentIsAnsweredWithTheConstantThatSatisfiesIt` holds what was
 added, on both sides of the boundary: the constant on every covered major, and
@@ -836,15 +834,14 @@ boundary it names and the guard it left. `D-DOC-041` is why they were judged.
   axis was read off `SetupService::getAvailableDistributions()` rather than
   supplied by the reader. The boundary is what an answer hands the caller to
   check against what it asks the caller to believe.
-  `aBootBriefCarriesTheTestThatDecidesABranch` and three
-  assertions beside it hold what it asked be kept.
+  `aBootBriefCarriesTheTestThatDecidesABranch` and three assertions beside it
+  hold what it asked be kept.
 - `2026-08-18-074305` on 2026-08-18, after five corpora in which the credit was
   misplaced and the first in which it was not. The boundary is what a session
   can settle when the answer arrives against what it would have to be reminded
   of later, and its caveat prices `D-SKL-051` rather than contradicting it.
   `ProjectTest::everySiteIsNamedWithTheBaseAndTheRootPageItCarries` and
-  `theSetupItemsArriveUnderTheirGuard` hold the
-  two.
+  `theSetupItemsArriveUnderTheirGuard` hold the two.
 - `2026-08-18-080743` on 2026-08-18. The praised exclusion is true, which the
   reading of `2026-08-01-121852` above requires be checked rather than assumed.
   The boundary is what an orientation answer is worth to a caller that has

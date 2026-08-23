@@ -91,6 +91,7 @@ one is added.
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02 · confirmed
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for · 2026-08-02
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 · confirmed
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The manual ranking is diluted by an ordinary title's length · 2026-08-02
@@ -182,6 +183,7 @@ one is added.
 [D-ANS-025]: ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed.md
 [D-ANS-028]: ans-028-a-two-letter-query-word-is-searched-for.md
+[D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-030]: ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
 [D-ANS-031]: ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: ans-032-the-manual-ranking-is-diluted-by-an-ordinary-titles-length.md
@@ -194,11 +196,9 @@ one is added.
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
-- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
 [D-ANS-081]: ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-manual-index.md
 [D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-a-caller-who-has-not-chosen-passes.md
-[D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

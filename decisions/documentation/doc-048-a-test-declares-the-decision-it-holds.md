@@ -40,10 +40,10 @@ it drifted: the entry named the test and the test said nothing back.
 - `bin/cli decisions:cover` writes the copy and `bin/cli decisions:check` fails
   where the file says anything else, naming the command. A test declaring an id
   no entry has fails the same check.
-- The prose naming is gone with the reading that measured it, which was 60
-  lines of `Upkeep\Sources` and a report in `decisions:check`. A comment saying
-  what the attribute above it says is the second copy `AGENTS.md` sends to the
-  id instead.
+- The prose naming is gone with the reading that measured it, which was 60 lines
+  of `Upkeep\Sources` and a report in `decisions:check`. A comment saying what
+  the attribute above it says is the second copy `AGENTS.md` sends to the id
+  instead.
 - Read from the text rather than through reflection, like the rest of
   `Upkeep\Sources`: loading every test class to ask about it is a cost every
   check run would pay.

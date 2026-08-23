@@ -2,8 +2,7 @@
 id: D-ANS-029
 title: The scanner matcher is stated on the route a removal takes
 date: 2026-08-02
-status: revoked
-revokedBy: D-ANS-035
+status: confirmed
 ---
 
 # D-ANS-029 — The scanner matcher is stated on the route a removal takes
@@ -112,11 +111,10 @@ public method, because not every removed public method is a breaking removal —
 tag claims, so the sentence is stated on the tag. `R-ANS-017` demanded delivery
 rather than content and stands unchanged.
 
-## Revoked on 2026-08-03
+## Since then
 
-`## Breaking Changes` now states the matcher, so the route this entry is about
-no longer passes a section that stops at the marker and the changelog file. What
-the rule says is
+`## Breaking Changes` states the matcher now, so the route this entry measured
+no longer stops at the marker and the changelog file. What the rule says is
 [`D-ANS-035`](ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md),
-whose **Wrong if** is a different list: what can go wrong now is a tag nobody
-backs, not a section that says nothing.
+whose **Wrong if** is a different list — what can go wrong from there is a tag
+nobody backs, not a section that says nothing.

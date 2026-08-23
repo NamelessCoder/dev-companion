@@ -99,4 +99,4 @@ translation file missing that declaration does, so nothing in it fires on a
 `skills/typo3-extension-conformance` asks every returned rule to be read in.
 That is a gap rather than a wording failure, because the fact it needs is a
 runtime consequence that changed in v14, and it has an entry of its own in
-[`D-KNW-050`](knw-050-what-a-missing-target-language-costs-is-a-gap.md).
+[`D-KNW-050`](knw-050-what-a-missing-target-language-costs-is-a-subject-this-server-owns.md).

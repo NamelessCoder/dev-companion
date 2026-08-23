@@ -43,7 +43,7 @@ one is added.
 
 - [`D-DIS-015`][D-DIS-015] — The installed entrypoint is named relatively wherever it exists · 2026-08-08 → D-DIS-016
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 → D-DIS-012
-- [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
+- [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 → D-DIS-007
 - [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
 
 [D-DIS-015]: dis-015-the-installed-entrypoint-is-named-relatively-wherever-it-exists.md

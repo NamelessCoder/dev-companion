@@ -19,10 +19,9 @@ one entry away from failing on a corpus that got better.
 
 ## Evidence
 
-- `whatARuleAnswerWithheldIsNamed` asked
-  `review readiness for my site package`, and the section it depends on —
-  `Review Readiness`, withheld outside the core — covered 0.508 of that query
-  against a floor of 0.5. Eight thousandths.
+- `whatARuleAnswerWithheldIsNamed` asked `review readiness for my site package`,
+  and the section it depends on — `Review Readiness`, withheld outside the core
+  — covered 0.508 of that query against a floor of 0.5. Eight thousandths.
 - Four sections about the Gerrit push were added to `typo3-gerrit-workflow` for
   `R-KNW-057`, and the same section fell to 0.462. Nothing about it changed: the
   new sections say `reviewers`, `Under Review` and `git-review`, so `review`

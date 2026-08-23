@@ -69,7 +69,7 @@ answers the task with a core patch checklist.
 - **The boundary has been read once already.** `doesNotCover` excludes "Running
   an installation: server and container setup, deployment, backups, the
   editorial use of the backend".
-  [`D-KNW-027`](../knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md)
+  [`D-KNW-027`](../knowledge/knw-027-which-caches-a-change-invalidates-is-a-subject-this-server-owns.md)
   read that line as running "at the container and the webserver", and placed the
   console commands of `installation-upgrade` inside it. The DDEV file this
   cluster turns on is one this server already reads: `D-DIS-007` names the

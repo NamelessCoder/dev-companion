@@ -21,10 +21,9 @@ so what a reader cannot resolve from it is not resolvable at all.
 - Read on 2026-08-23 over 1353 test methods. The median name is ten words; 243
   run past twelve, and 83 join two claims with `RatherThan`, `AndNot`, `ButNot`,
   `NotOnly` or `AsWellAs`.
-- The join is what a reader takes apart.
-  `everyLineIsSetUpOnAFile` states a case and the
-  case it is told apart from; the second is a sentence in the docblock and never
-  a word in the name.
+- The join is what a reader takes apart. `everyLineIsSetUpOnAFile` states a case
+  and the case it is told apart from; the second is a sentence in the docblock
+  and never a word in the name.
 - The titles fail the same way and differently. "Three audiences, not one"
   counts without naming what is counted, "Activation is the client's" refers to
   what only the body introduces, and "What the scope excludes is not what the

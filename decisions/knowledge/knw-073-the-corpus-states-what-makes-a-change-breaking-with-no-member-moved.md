@@ -20,7 +20,7 @@ two questions are a member that moved and a member that did not.
 ## Evidence
 
 - The sweep is
-  [`D-KNW-072`](knw-072-what-makes-a-change-breaking-without-a-member-moving-is-a-gap.md)'s
+  [`D-KNW-072`](knw-072-what-makes-a-change-breaking-without-a-member-moving-is-a-subject-this-server-owns.md)'s
   **Confirmed on**, read across the four covered checkouts on the same day. What
   it settled is that the two entries the card started from are the rule, that
   `Howto.rst` says "may break or **affect** third-party code", and that no

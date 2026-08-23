@@ -48,8 +48,8 @@ boundary:
 ## Decided
 
 - All three prose sources now say what is actually true, and the contradiction
-  is guarded: `ScopeTest::aTopicWithAHintIsNotDeclined` fails
-  if the declared scope excludes a subject that has a hint.
+  is guarded: `ScopeTest::aTopicWithAHintIsNotDeclined` fails if the declared
+  scope excludes a subject that has a hint.
 
 ## Assumed
 
@@ -67,15 +67,14 @@ boundary:
 ## Since then
 
 The three places **Wrong if** names are read too, by
-`ScopeTest::noSurfaceClaimsTheCoreAlone`. Its corpus
-is every tool description, `readme.md`, every architecture hint, and the scope's
-own purpose, routing and instructions. It matches the claim in both the wordings
-it was found in. One names who it turns away — "out of this server's scope"
-beside an extension, a project, an installation. The other names nobody and
-confines the server instead, which is what "scoped to contributing to the core"
-and "only knows the core's own conventions" were. All three surfaces were
-already clean on 2026-08-01, so the guard holds a boundary rather than reporting
-a breach.
+`ScopeTest::noSurfaceClaimsTheCoreAlone`. Its corpus is every tool description,
+`readme.md`, every architecture hint, and the scope's own purpose, routing and
+instructions. It matches the claim in both the wordings it was found in. One
+names who it turns away — "out of this server's scope" beside an extension, a
+project, an installation. The other names nobody and confines the server
+instead, which is what "scoped to contributing to the core" and "only knows the
+core's own conventions" were. All three surfaces were already clean on
+2026-08-01, so the guard holds a boundary rather than reporting a breach.
 
 ## Since then
 
@@ -88,10 +87,9 @@ the work is not
 ## Confirmed on 2026-08-22
 
 The guard is there and reads what it claims:
-`ScopeTest::noSurfaceClaimsTheCoreAlone` over the tool
-descriptions, the readme, the hints and the scope's own text, with
-`aTopicWithAHintIsNotDeclined` beside it. The claim has
-reappeared in none of them.
+`ScopeTest::noSurfaceClaimsTheCoreAlone` over the tool descriptions, the readme,
+the hints and the scope's own text, with `aTopicWithAHintIsNotDeclined` beside
+it. The claim has reappeared in none of them.
 
 **Wrong if** has been overtaken by its own remedy. It prescribed renaming
 `outsideCore`, and the section above records that the flag was removed instead

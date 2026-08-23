@@ -3,6 +3,7 @@ id: D-DIS-002
 title: Discovery honours the declared vendor-dir and bin-dir
 date: 2026-07-29
 status: revoked
+revokedBy: D-DIS-007
 ---
 
 # D-DIS-002 — Discovery honours the declared vendor-dir and bin-dir

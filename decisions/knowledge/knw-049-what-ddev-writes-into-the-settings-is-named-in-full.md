@@ -54,7 +54,7 @@ the ladder, on a hint that already exists, and it is queued as
   when its database container is omitted is a property of DDEV's generator; this
   run read one generated file and started nothing.
 - The boundary was already read this way.
-  [`D-KNW-010`](knw-010-what-the-core-reads-from-the-environment-is-a-gap-this-server-owns.md)
+  [`D-KNW-010`](knw-010-what-the-core-reads-from-the-environment-is-a-subject-this-server-owns.md)
   reads `doesNotCover`'s "Running an installation: server and container setup,
   deployment, backups" as excluding the operating of an installation rather than
   what its configuration files contain. The four DDEV statements sit in
@@ -140,7 +140,7 @@ file being written, where this entry's confirmation found only
 `disable_settings_management`. The reading was of the writer rather than of what
 calls it, and nothing here settles which of the two is right, so the statement
 of this entry stands and
-[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-gap-this-server-owns.md)
+[`D-KNW-085`](knw-085-when-ddev-writes-additional-php-is-a-subject-this-server-owns.md)
 carries the question.
 
 That entry has since been read against DDEV v1.25.1's own source and the

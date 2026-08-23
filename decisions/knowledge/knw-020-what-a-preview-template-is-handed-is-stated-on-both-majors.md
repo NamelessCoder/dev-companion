@@ -12,7 +12,7 @@ coveredBy:
 **The corpus states what a preview template is handed on each major, and what a
 field read off the record resolves to.**
 
-[`D-KNW-014`](knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
+[`D-KNW-014`](knw-014-the-record-a-v14-preview-template-is-handed-is-a-subject-this-server-owns.md)
 is the finding: a session arrived at a template with one variable in it and
 nothing here said what that variable was. This entry is what took its place —
 the statements are on `content-elements`, and what they can now be wrong about

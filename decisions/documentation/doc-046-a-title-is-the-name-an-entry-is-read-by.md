@@ -90,3 +90,13 @@ a character count; what it costs is the reader guessing which entry is meant.
 The file names moved with them: mean 68 characters to 63, longest 118 to 98, and
 the 128 over eighty are 37. That is the pressure `D-DOC-047` assumed and it
 worked in the direction it was meant to.
+
+The family this entry left to the report was retitled on the other half of the
+rule. The 38 entries titled "… is a gap this server owns" named the deficiency
+rather than what was settled, and
+[`D-DOC-056`](doc-056-a-subject-this-server-owns-is-named-affirmatively.md) is
+what moved them to "… is a subject this server owns". The word count went the
+way this entry said a sweep would — 38 titles longer — and the trade was the one
+it did not price: the distinguishing half is the subject and it was kept
+verbatim, so what the six words buy is a listing that reads as one kind of
+entry.

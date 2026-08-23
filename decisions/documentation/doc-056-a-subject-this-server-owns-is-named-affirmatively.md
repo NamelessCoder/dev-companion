@@ -1,0 +1,76 @@
+---
+id: D-DOC-056
+title: 'A subject this server owns is named affirmatively'
+date: 2026-08-23
+status: open
+---
+
+# D-DOC-056 — A subject this server owns is named affirmatively
+
+**The 38 entries that judged a subject to be inside this server's boundary are
+titled "… is a subject this server owns", where they named the deficiency
+instead.**
+
+The title rule says an entry names what will be done and not the gap it closes,
+and the largest family in the corpus was the exception.
+
+## Evidence
+
+- The rule is
+  [`writing-a-decision.rst`](../../documentation/records/writing-a-decision.rst)'s:
+  a title "says what will be done, in the affirmative. Not the deficiency it
+  corrects", and "a listing where some titles name a fix and others name a gap
+  is read as two kinds of entry when there is one".
+- 38 titles carried "is a gap" or "is a gap this server owns", read on
+  2026-08-23. It is the largest title family in the corpus.
+- Every one of them decided the same thing. Each is a step 1a or 1b judgement —
+  the subject is inside this server's boundary and the work is queued — and
+  their statements say so in one of three wordings: "inside this server's
+  boundary and missing from it", "Nothing below `knowledge/` says …", and "The
+  corpus states …" written of what the queued work would land.
+- The affirmative form was already in the corpus, on entries of exactly this
+  kind: `D-KNW-063` "What a TCA type stores is a subject this server owns", and
+  `D-KNW-071` "… is a procedure this server carries" for the two that queue a
+  document rather than hints.
+- What the old form cost is the listing. 38 settled judgements read as open
+  deficiencies, and against them the entries that wrote the corpus statement —
+  `D-KNW-073`, `078`, `079`, `084`, `090`, `104` — read as the only ones that
+  had done anything.
+
+## Decided
+
+- The tail becomes "is a subject this server owns", and "is a procedure this
+  server carries" for `D-KNW-102`, whose queued work is a document.
+- The subject half is kept verbatim, because that is what a reader scans and
+  what tells the 38 apart. `D-KNW-026` is the one exception: "Where a one-off
+  script may not be written" is a negation, and it becomes "Where a one-off
+  script belongs".
+- The length report gets 38 entries longer and that is accepted. `D-DOC-002` and
+  `D-DOC-046` both leave the word count to the report, and consistency across a
+  family is what a listing is read for; a shorter tail that dropped "this
+  server" would have taken the claim with it.
+- `bin/cli decisions:rename` did the move — 38 files, 109 references rewritten —
+  so no path was written by hand.
+- The statements are not touched. Several say "The corpus states …" of work that
+  was queued rather than landed, which is a claim about a tense rather than
+  about a title, and it is not what this sweep read for.
+
+## Assumed
+
+- That all 38 are the one kind. Each statement was read for this; no **Decided**
+  section was reread past the first bullets that name the ladder step.
+- That "subject" is the word. It is `D-KNW-063`'s and it is what
+  `knowledge/server-scope.json` calls the things it covers, so it was taken
+  rather than chosen.
+
+## Wrong if
+
+- A session looks for an entry by the words "is a gap" and finds none. The
+  family was findable under a wrong name and is now findable under the right
+  one, and nothing redirects the old one.
+- An entry lands whose judgement is that a subject is **outside** the boundary.
+  "is a subject this server owns" would then have a counterpart nobody has
+  named, and the family would be half a vocabulary.
+- The tail turns out to carry no information a reader uses, so 38 listings end
+  in six identical words. The lever would be dropping it entirely and leaving
+  the subject alone, which is shorter than what was rejected here.

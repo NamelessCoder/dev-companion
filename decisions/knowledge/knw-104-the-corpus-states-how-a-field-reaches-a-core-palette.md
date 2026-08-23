@@ -14,7 +14,7 @@ why the concatenation fails without saying so — the rule unbound, the reshapin
 that broke it bound.**
 
 The gap is
-[`D-KNW-103`](knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-gap.md),
+[`D-KNW-103`](knw-103-how-an-extension-adds-a-field-to-a-core-palette-is-a-subject-this-server-owns.md),
 and what closes it is a statement in `tca.json` rather than the per-version TCA
 dump the feedback asked for.
 

@@ -57,9 +57,9 @@ used to answer.
 - What it moves, over the same 302 whole queries — 41 prompts, 66 titles, 208
   patterns: **0 changed their first hit and 0 entries left a top-6 answer**; 71
   gained entries below what was already there. The 12 recoverable queries of the
-  [`D-ANS-002`](ans-002-rarity-field-length-and-corpus-length-decide-a-lookups-rank.md) sweep
-  answer as they were recorded to, both negative controls included, 943 tests
-  pass, and `bin/cli hints:coverage` prints the same page.
+  [`D-ANS-002`](ans-002-rarity-field-length-and-corpus-length-decide-a-lookups-rank.md)
+  sweep answer as they were recorded to, both negative controls included, 943
+  tests pass, and `bin/cli hints:coverage` prints the same page.
 - The two alternatives that change the number instead of the question, measured
   the same way. Raising `UNDILUTED_WORDS` to 422 — the value that clears the
   longest hint — buys the same 153 one-term queries and answers «how do I write

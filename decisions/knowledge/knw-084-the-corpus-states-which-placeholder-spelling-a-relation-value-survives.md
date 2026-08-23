@@ -21,7 +21,7 @@ site.
 ## Evidence
 
 - The reading is
-  [`D-KNW-081`](knw-081-what-a-new-placeholder-may-contain-is-a-gap.md)'s
+  [`D-KNW-081`](knw-081-what-a-new-placeholder-may-contain-is-a-subject-this-server-owns.md)'s
   **Confirmed on**, taken on `.checkouts/12.4`, `13.4`, `14.3` and `main`.
 - The statement is unbound. The split block is identical on all four branches,
   and each of them has the same four remap entries that consume the value.

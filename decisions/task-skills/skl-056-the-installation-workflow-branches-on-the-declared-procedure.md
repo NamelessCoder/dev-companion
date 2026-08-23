@@ -52,10 +52,9 @@ an environment and nothing else falls on the wrong side of each.
 - `D-SKL-012`'s third **Assumed** reads booting and creating as sharing the
   install sequence and differing "in the first step". This is the first report
   of one repository standing in both.
-- `SkillTest::anInstallationIsBuiltInDependencyOrder`
-  asserts both branch headings and
-  `## Prove it, and how far depends on who wrote the sequence` verbatim, so the
-  wording and its guard move together.
+- `SkillTest::anInstallationIsBuiltInDependencyOrder` asserts both branch
+  headings and `## Prove it, and how far depends on who wrote the sequence`
+  verbatim, so the wording and its guard move together.
 
 ## Decided
 

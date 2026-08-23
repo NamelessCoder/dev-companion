@@ -56,9 +56,9 @@ offers, and one model recorded four feedback in 49 seconds carrying none.
 - The union buys nothing the string branch does not. `Channel::toolNames()`
   splits a string on `[\s,;]+`, the argument description already says "Several
   may be named, as a list or separated by commas", and
-  `FeedbackTest::severalToolsStaySeveralTools` covers the comma
-  form on its own. `15405e5`, which introduced the list, wanted names that stay
-  apart — not a second declared type.
+  `FeedbackTest::severalToolsStaySeveralTools` covers the comma form on its own.
+  `15405e5`, which introduced the list, wanted names that stay apart — not a
+  second declared type.
 - This is not a delivery gap. `documentation/clients/tools.md:1812` renders the
   argument as *(string or array)* and `tools/list` carries the union unaltered,
   so what the session read was accurate.

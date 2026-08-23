@@ -12,7 +12,7 @@ coveredBy:
 **What a backend preview shows is the element's own payload, and the corpus
 states it as the field kinds a preview draws from rather than as a summary.**
 
-[`D-KNW-025`](knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md)
+[`D-KNW-025`](knw-025-what-a-backend-preview-owes-the-editor-is-a-subject-this-server-owns.md)
 is the finding, and this entry is what took its place: the exposure is now a
 statement that could go false rather than one that is missing.
 

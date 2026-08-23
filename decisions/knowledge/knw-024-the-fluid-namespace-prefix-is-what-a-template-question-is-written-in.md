@@ -29,7 +29,7 @@ and `fluid.json` was filtered out before a single hint was scored.
   `fluid-templates` entry gained the branch rule and the same probe still
   matched nothing, because the gate is in front of the scoring rather than
   inside it.
-- [`D-KNW-016`](knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap.md)
+- [`D-KNW-016`](knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-subject-this-server-owns.md)
   read this the other way — *routing is not what failed* — on the strength of
   `fluid template conditional link`, which carries the word and reaches the
   entry at `appliesTo(14)`. Both readings are of the same corpus and only the

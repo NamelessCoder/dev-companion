@@ -71,7 +71,7 @@ reference is, and the lookup does not carry it.
   and so the statement it queues is written once.
 - Not queued a second time: what a v14 preview template is handed, and whether a
   relation field is iterable, are already
-  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-subject-this-server-owns.md)
   and the todo in hand for it. This feedback reports both and neither is worked
   again here.
 - Not step 3, and not step 4. The query reaches the hint it should reach, and

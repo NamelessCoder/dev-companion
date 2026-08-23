@@ -20,7 +20,7 @@ query returns and what the object built from one of them looks like.
 ## Evidence
 
 - The reading is
-  [`D-KNW-074`](knw-074-the-shape-a-record-sourced-row-has-is-a-gap-this-server-owns.md)'s
+  [`D-KNW-074`](knw-074-the-shape-a-record-sourced-row-has-is-a-subject-this-server-owns.md)'s
   **Confirmed on**, taken across `.checkouts/13.4`, `14.3` and `main` on the
   same day. What it settled is that `SystemProperties` is the same file on all
   three, that `pages` is an exception from 14, and that the property access
@@ -46,7 +46,7 @@ query returns and what the object built from one of them looks like.
   be told where it does not hold.
 - The domains are `php` alone. What a Fluid template gets when a record is
   assigned to it is
-  [`D-KNW-075`](knw-075-how-fluid-resolves-an-object-path-is-a-gap-this-server-owns.md)'s
+  [`D-KNW-075`](knw-075-how-fluid-resolves-an-object-path-is-a-subject-this-server-owns.md)'s
   question, and claiming it here would answer a template question from a reading
   of the PHP objects.
 - `appliesTo` carries the class and accessor names and the moved field names,

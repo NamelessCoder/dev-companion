@@ -32,7 +32,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
 
 - Two of those four are already judged, and by another card than this one. The
   record variable is
-  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md),
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-subject-this-server-owns.md),
   step 1a, with `todo/progress/2026-08-02-133246` serving `002745`. The Fluid
   half and the functional-test half are unjudged, with their own cards in
   `todo/open/`.
@@ -106,7 +106,7 @@ lands on something:
 - **what a v14 preview template receives, and how a field resolves** —
   [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md),
   from
-  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
+  [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-subject-this-server-owns.md)
 - **`typo3_documentation_lookup` reaching the Record objects page** — `002928`,
   whose premise
   [`D-ANS-021`](../answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)
@@ -467,13 +467,13 @@ summary handed it is the one that had not landed yet. It has since.
 
 - **13 round trips: what a condition can see, which global is populated when,
   and the event ahead of matching** — archived `080532`, judged in
-  [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-is-a-gap.md)
+  [`D-KNW-101`](../knowledge/knw-101-what-a-typoscript-condition-can-reach-is-a-subject-this-server-owns.md)
 - **1 of those 13 ruling out a request-scoped service, and 2 on constructor
   injection through `makeInstance`** — archived `080604`, judged in
-  [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-gap.md)
+  [`D-KNW-100`](../knowledge/knw-100-how-an-extension-extends-a-typoscript-condition-is-a-subject-this-server-owns.md)
 - **7 round trips proving the verdict against the running frontend, filed
   separately by the session itself** — archived `081100`, judged in
-  [`D-KNW-102`](../knowledge/knw-102-proving-a-condition-verdict-against-an-installation-is-a-gap.md)
+  [`D-KNW-102`](../knowledge/knw-102-proving-a-condition-verdict-against-an-installation-is-a-procedure-this-server-carries.md)
 - **2 locating changelog entries by listing a directory, where
   `typo3_changelog_lookup` would have searched by words** — `113308`, which the
   eighth summary already sent its discoverability half to

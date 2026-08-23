@@ -27,7 +27,7 @@ order. Nothing here states that boundary.
   swallows the inline then-branch / f:link.typolink output* — reaches
   `fluid-templates` at `appliesTo(16) + text(132)`, and that entry now carries
   the branch rule with the working markup as its example.
-  [`D-KNW-016`](../knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap.md)
+  [`D-KNW-016`](../knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-subject-this-server-owns.md)
   wrote the statement and
   [`D-KNW-024`](../knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
   is what makes a query written in Fluid tags reach it. `003448` is archived. So

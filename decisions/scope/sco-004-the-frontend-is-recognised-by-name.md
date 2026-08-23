@@ -67,8 +67,7 @@ answer this server writes.
 ## Since then
 
 Both halves are held rather than argued.
-`ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections` is
-the loss and
+`ScopeTest::aCoreContributorOnFrontendLosesTheBackendUiSections` is the loss and
 `ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack` is the
 escape — the second asserts the clause in the notice and then calls with it,
 because a notice offering an escape and a notice apologising for one are the

@@ -444,6 +444,7 @@ final class CommitMessageTest extends TestCase
         self::assertNotContains('security-keyword', array_column($parsed['checks'], 'code'));
     }
 
+    #[Decision('D-GUI-010')]
     #[Test]
     public function aSecurityCommitAssembledForTheCoreIsRefusedToo(): void
     {
@@ -458,6 +459,7 @@ final class CommitMessageTest extends TestCase
         self::assertContains('security-keyword', array_column($result['checks'], 'code'));
     }
 
+    #[Decision('D-GUI-010')]
     #[Test]
     public function aWorkflowNobodyKnowsIsTheProjectOne(): void
     {

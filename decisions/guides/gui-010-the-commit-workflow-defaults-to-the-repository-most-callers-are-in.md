@@ -3,6 +3,9 @@ id: D-GUI-010
 title: The commit workflow defaults to the repository most callers are in
 date: 2026-08-04
 status: open
+coveredBy:
+  - CommitMessageTest::aSecurityCommitAssembledForTheCoreIsRefusedToo
+  - CommitMessageTest::aWorkflowNobodyKnowsIsTheProjectOne
 ---
 
 # D-GUI-010 — The commit workflow defaults to the repository most callers are in

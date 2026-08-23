@@ -3,6 +3,8 @@ id: D-KNW-056
 title: A file skeleton is shipped as a version-bound document section
 date: 2026-08-04
 status: open
+coveredBy:
+  - KnowledgeTest::codeFencesSurviveTheSectionSplit
 ---
 
 # D-KNW-056 — A file skeleton is shipped as a version-bound document section

@@ -251,6 +251,34 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * A document id is `<scope>/<topic>/<name>`, and the scope is the directory.
+     *
+     * Moving a document between the scope directories is how it is rescoped, so
+     * nothing else states it and the two cannot drift apart. A fourth segment
+     * or a directory that is not a scope means a caller who learned to read one
+     * `typo3://guides/` URI cannot predict the next — `D-KNW-058`.
+     */
+    #[Decision('D-KNW-058')]
+    #[Test]
+    public function everyDocumentIsScopeThenTopicThenName(): void
+    {
+        $scopes = implode('|', array_map(static fn(Scope $scope): string => $scope->value, Scope::cases()));
+
+        foreach (Documents::documents() as $document) {
+            self::assertMatchesRegularExpression(
+                '#^(' . $scopes . ')/[a-z0-9-]+/[a-z0-9-]+$#',
+                $document['id'],
+                $document['id'] . ' is not a scope, a topic and a name',
+            );
+            self::assertSame(
+                explode('/', $document['id'])[0],
+                Documents::scopeOf($document['id'])->value,
+                $document['id'] . ' is scoped by something other than the directory it sits in',
+            );
+        }
+    }
+
+    /**
      * The card a client lists is the front matter plus who the document is for,
      * so a document declares itself once and nothing states it a second time —
      * `D-KNW-057`.
@@ -886,6 +914,7 @@ final class KnowledgeTest extends TestCase
         }
     }
 
+    #[Decision('D-KNW-056')]
     #[Test]
     public function codeFencesSurviveTheSectionSplit(): void
     {

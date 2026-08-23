@@ -3,6 +3,8 @@ id: D-KNW-058
 title: The document namespace is scope first and derived from the file
 date: 2026-08-04
 status: open
+coveredBy:
+  - KnowledgeTest::everyDocumentIsScopeThenTopicThenName
 ---
 
 # D-KNW-058 — The document namespace is scope first and derived from the file

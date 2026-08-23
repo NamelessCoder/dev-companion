@@ -3894,4 +3894,28 @@ final class SkillTest extends TestCase
 
         return $skills;
     }
+    /**
+     * A copy of `skills/` taken by hand is unsupported, and the readme says so.
+     *
+     * The base is written into each skill by the installer, and every skill
+     * opens on it — so a hand-copied tree loses the order every task starts in
+     * and the session never learns that. `D-SKL-036` decided against making the
+     * copy fail louder, which leaves this sentence as the whole of the warning
+     * and puts it where somebody about to copy the directory is reading.
+     */
+    #[Decision('D-SKL-036')]
+    #[Test]
+    public function theReadmeSaysAHandCopiedSkillIsUnsupported(): void
+    {
+        $readme = (string) file_get_contents(Paths::root() . '/readme.md');
+
+        self::assertStringContainsString('only supported way to get the skills', $readme);
+        self::assertStringContainsString('references/base.md', $readme);
+
+        // And what the sentence rests on: the file it says is missing is one
+        // the installer writes rather than one the directory carries.
+        self::assertFileDoesNotExist(Paths::root() . '/skills/typo3-core-patch-review/references/base.md');
+        self::assertFileExists(Paths::root() . '/skills/base.md');
+    }
+
 }

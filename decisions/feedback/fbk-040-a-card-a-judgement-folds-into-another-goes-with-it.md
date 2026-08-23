@@ -3,6 +3,9 @@ id: D-FBK-040
 title: 'A card a judgement folds into another goes with it'
 date: 2026-08-03
 status: open
+coveredBy:
+  - TodoTest::noJudgementLeavesBehindTheCardItReplaced
+  - TodoTest::theCardAJudgementReplacedIsFoundByTheStepItStillCarries
 ---
 
 # D-FBK-040 — A card a judgement folds into another goes with it

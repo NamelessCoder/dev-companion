@@ -3,6 +3,9 @@ id: D-ANS-060
 title: 'A bare word in `appliesTo` reaches a path segment'
 date: 2026-08-07
 status: open
+coveredBy:
+  - HintsTest::anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem
+  - HintsTest::pruningThePathPatternsLeftBothSubjectsReachable
 ---
 
 # D-ANS-060 — A bare word in `appliesTo` reaches a path segment

@@ -3,6 +3,8 @@ id: D-ANS-062
 title: An anonymous read cannot tell a restricted change from an absent one
 date: 2026-08-07
 status: open
+coveredBy:
+  - GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate
 ---
 
 # D-ANS-062 — An anonymous read cannot tell a restricted change from an absent one

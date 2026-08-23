@@ -373,6 +373,7 @@ final class FeedbackTest extends TestCase
         self::assertSame([], $redaction->removed);
     }
 
+    #[Decision('D-FBK-019')]
     #[Requirement('R-FBK-011')]
     #[Test]
     public function aValueGoesAndTheNameThatSaysWhatItWasStays(): void
@@ -389,6 +390,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(['the value of `installToolPassword`'], $redaction->removed);
     }
 
+    #[Decision('D-FBK-019')]
     #[Requirement('R-FBK-011')]
     #[Test]
     public function aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt(): void
@@ -402,6 +404,7 @@ final class FeedbackTest extends TestCase
         self::assertSame(['the password in a URL'], $redaction->removed);
     }
 
+    #[Decision('D-FBK-019')]
     #[Requirement('R-FBK-011')]
     #[Test]
     public function aLongBase64ValueIsTakenOutAndAWordIsNot(): void

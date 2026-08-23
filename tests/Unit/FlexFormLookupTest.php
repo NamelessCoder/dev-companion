@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
 use TYPO3\DevCompanion\Installation\Typo3Cli;
 use TYPO3\DevCompanion\Installation\Typo3Runtime;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Fixture;
 
@@ -56,6 +57,7 @@ final class FlexFormLookupTest extends TestCase
         }
     }
 
+    #[Decision('D-ANS-095')]
     #[Test]
     public function theStructureIsTheOneTheInstallationResolved(): void
     {

@@ -3,6 +3,8 @@ id: D-ANS-003
 title: Retrieval stays lexical and runtime inspection stays narrow
 date: 2026-07-30
 status: confirmed
+coveredBy:
+  - StructureTest::retrievalIsLexicalAndNothingHereOpensADatabase
 ---
 
 # D-ANS-003 — Retrieval stays lexical and runtime inspection stays narrow

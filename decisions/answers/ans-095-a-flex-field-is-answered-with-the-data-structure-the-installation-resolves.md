@@ -3,6 +3,8 @@ id: D-ANS-095
 title: A flex field is answered with the data structure the installation resolves
 date: 2026-08-21
 status: open
+coveredBy:
+  - FlexFormLookupTest::theStructureIsTheOneTheInstallationResolved
 ---
 
 # D-ANS-095 — A flex field is answered with the data structure the installation resolves

@@ -124,6 +124,7 @@ final class HintsTest extends TestCase
      * own words answered nothing — `D-ANS-060`. The negative is what this holds:
      * which hint *should* answer here is a subject the corpus does not carry.
      */
+    #[Decision('D-ANS-060')]
     #[Requirement('R-ANS-026')]
     #[Test]
     public function anExtbasePersistencePathIsNotAnsweredWithAnotherSubsystem(): void
@@ -203,6 +204,7 @@ final class HintsTest extends TestCase
      * the bare `storage`. Both were measured before the patterns went, and this
      * is what keeps them measured.
      */
+    #[Decision('D-ANS-060')]
     #[Requirement('R-ANS-026')]
     #[Test]
     public function pruningThePathPatternsLeftBothSubjectsReachable(): void

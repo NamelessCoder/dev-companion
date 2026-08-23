@@ -938,6 +938,7 @@ final class GerritTest extends TestCase
      * and this server reads Gerrit without credentials, so nothing in that
      * answer could have said otherwise.
      */
+    #[Decision('D-ANS-062')]
     #[Requirement('R-ANS-027')]
     #[Test]
     public function anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate(): void

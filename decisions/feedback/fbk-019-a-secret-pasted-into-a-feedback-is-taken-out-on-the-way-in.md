@@ -3,6 +3,10 @@ id: D-FBK-019
 title: A secret pasted into a feedback is taken out on the way in
 date: 2026-08-02
 status: open
+coveredBy:
+  - FeedbackTest::aLongBase64ValueIsTakenOutAndAWordIsNot
+  - FeedbackTest::aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt
+  - FeedbackTest::aValueGoesAndTheNameThatSaysWhatItWasStays
 ---
 
 # D-FBK-019 — A secret pasted into a feedback is taken out on the way in

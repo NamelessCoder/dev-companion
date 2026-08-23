@@ -3,6 +3,8 @@ id: D-ANS-044
 title: 'The environment answer carries the lifecycle it declares'
 date: 2026-08-03
 status: open
+coveredBy:
+  - ProjectTest::theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked
 ---
 
 # D-ANS-044 — The environment answer carries the lifecycle it declares

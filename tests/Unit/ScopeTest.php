@@ -322,6 +322,7 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('checkout', $instructions);
     }
 
+    #[Decision('D-ANS-004')]
     #[Requirement('R-ANS-013')]
     #[Requirement('R-DIS-025')]
     #[Decision('D-AUD-011')]

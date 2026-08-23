@@ -97,6 +97,7 @@ final class TodoTest extends TestCase
      * and sharing no word with it — which is one claimed session, spent
      * arriving where the repository already was (`D-FBK-040`).
      */
+    #[Decision('D-FBK-040')]
     #[Requirement('R-FBK-014')]
     #[Test]
     public function noJudgementLeavesBehindTheCardItReplaced(): void
@@ -121,6 +122,7 @@ final class TodoTest extends TestCase
      * than a pair — what is wrong is an unjudged card beside a judged one, not
      * two cards.
      */
+    #[Decision('D-FBK-040')]
     #[Requirement('R-FBK-014')]
     #[Test]
     public function theCardAJudgementReplacedIsFoundByTheStepItStillCarries(): void

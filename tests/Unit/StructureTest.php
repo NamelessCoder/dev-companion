@@ -8,6 +8,7 @@ use PhpCsFixer\ConfigInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Editorconfig;
 
@@ -285,4 +286,38 @@ final class StructureTest extends TestCase
 
         return $sources;
     }
+    /**
+     * Retrieval is lexical, and nothing here speaks to a database.
+     *
+     * `D-ANS-003` decided both halves and nothing held either: an embedding
+     * library would arrive as a dependency, and a generic SQL or schema tool
+     * would arrive as a connection opened in this process. What the entry rests
+     * on is that version, scope, binding and source decide what may be
+     * returned, which a semantic match cannot see.
+     *
+     * The dependency list is asserted whole rather than searched for names a
+     * library might have. A sixth one is a deliberate act, and this is where it
+     * is read against the entry.
+     */
+    #[Decision('D-ANS-003')]
+    #[Test]
+    public function retrievalIsLexicalAndNothingHereOpensADatabase(): void
+    {
+        $manifest = json_decode((string) file_get_contents(Paths::root() . '/composer.json'), true);
+        self::assertIsArray($manifest);
+        self::assertSame(
+            ['php', 'ext-curl', 'ext-dom', 'mcp/sdk', 'symfony/finder', 'symfony/yaml'],
+            array_keys($manifest['require']),
+            'the runtime dependencies changed, and D-ANS-003 is what a retrieval library would be added against',
+        );
+
+        foreach (Finder::create()->files()->in(Paths::root() . '/src')->name('*.php') as $file) {
+            self::assertDoesNotMatchRegularExpression(
+                '/new PDO\b|mysqli_|Doctrine\\DBAL/',
+                (string) file_get_contents($file->getPathname()),
+                $file->getFilename() . ' opens a database connection, which is the tool D-ANS-003 declined',
+            );
+        }
+    }
+
 }

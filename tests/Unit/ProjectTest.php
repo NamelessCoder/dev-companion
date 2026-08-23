@@ -108,6 +108,7 @@ final class ProjectTest extends TestCase
         self::assertSame('guides', array_key_last(array_diff_key($answer, ['answeredBy' => null])));
     }
 
+    #[Decision('D-ANS-013')]
     #[Requirement('R-PRJ-008')]
     #[Decision('D-KNW-055')]
     #[Test]
@@ -777,6 +778,7 @@ final class ProjectTest extends TestCase
         self::assertSame('8.0', Project::describe()['environment']['php']);
     }
 
+    #[Decision('D-ANS-044')]
     #[Requirement('R-PRJ-009')]
     #[Test]
     public function theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked(): void
@@ -1485,6 +1487,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('its own subdirectories included', $result->text);
     }
 
+    #[Decision('D-ANS-045')]
     #[Requirement('R-ANS-020')]
     #[Test]
     public function everyDirectoryBelowClassesIsInTheAnswer(): void
@@ -1522,6 +1525,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString("find Classes -name '*.php' | wc -l", $result->text);
     }
 
+    #[Decision('D-ANS-045')]
     #[Requirement('R-ANS-020')]
     #[Test]
     public function aFluidRootIsRenderedAsADirectory(): void

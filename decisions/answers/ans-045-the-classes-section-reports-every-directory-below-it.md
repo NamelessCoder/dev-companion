@@ -3,6 +3,9 @@ id: D-ANS-045
 title: 'The Classes section reports every directory below it'
 date: 2026-08-03
 status: open
+coveredBy:
+  - ProjectTest::aFluidRootIsRenderedAsADirectory
+  - ProjectTest::everyDirectoryBelowClassesIsInTheAnswer
 ---
 
 # D-ANS-045 — The Classes section reports every directory below it

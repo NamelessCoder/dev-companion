@@ -29,6 +29,12 @@ Before the first change
   that covers it today — because the honest form of most steps here is "the
   assertion this needs is next to one that already exists", and that assertion
   decides the shape of the change.
+* **What is written about the code it touches.**
+  ``bin/cli entries:lookup <path>`` answers that in one call: the decisions and
+  requirements that name the classes at that path, and the test classes that
+  name them with the entries they hold. What it finds is what somebody wrote in
+  backticks — an entry describing the behaviour without naming the class is not
+  in the answer, so a quiet one is not a statement that nothing was decided.
 * **What was already established.** The archived feedback, the recorded run, the
   decision that touched the same ground. A question this repository answered
   three weeks ago is answered in a file, and re-deciding it is how two entries

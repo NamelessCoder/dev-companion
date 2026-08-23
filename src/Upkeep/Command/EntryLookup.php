@@ -1,0 +1,84 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TYPO3\DevCompanion\Upkeep\Command;
+
+use Symfony\Component\Console\Attribute\Argument;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\DevCompanion\Upkeep\Entries;
+
+/**
+ * What is written down about the code at a path, before it is changed.
+ *
+ * The attributes answer from the failing end: a red test names the entries that
+ * rested on it. That is after the change. This is the call a session makes
+ * before one — the entries naming the class it is about to edit, and the tests
+ * that would print them.
+ */
+#[AsCommand(
+    name: 'entries:lookup',
+    description: 'the decisions and requirements written about the code at a path',
+)]
+final class EntryLookup
+{
+    /** How many entries a test class is listed with rather than counted. */
+    private const LISTED = 8;
+
+    public function __invoke(
+        OutputInterface $output,
+        #[Argument(description: 'a file or a directory below src/ or tests/')]
+        string $path = '',
+    ): int {
+        if ($path === '') {
+            $output->writeln('Name a file or a directory: bin/cli entries:lookup src/Knowledge/Hints.php');
+
+            return 1;
+        }
+
+        $classes = Entries::declaredBelow($path);
+        if ($classes === []) {
+            $output->writeln($path . ' declares no class this repository reads.');
+
+            return 1;
+        }
+
+        $output->writeln(sprintf('%s — %s', $path, implode(', ', $classes)));
+        $entries = Entries::all();
+
+        $naming = Entries::naming($classes);
+        $output->writeln('');
+        $output->writeln($naming === []
+            ? 'Nothing is written about it. What that means is that nothing was, not that anything is settled.'
+            : sprintf('%d entries name it', count($naming)));
+        foreach ($naming as $id => $named) {
+            $entry = $entries[$id];
+            $output->writeln(sprintf('  %-11s %-11s %s', $id, $entry['status'], $entry['title']));
+            $output->writeln(sprintf('  %-23s %s — %s', '', $entry['file'], implode(', ', $named)));
+        }
+
+        $tests = Entries::testsNaming($classes);
+        if ($tests !== []) {
+            $output->writeln('');
+            $output->writeln(sprintf(
+                '%d test classes name it, holding %d entries between them',
+                count($tests),
+                count(array_unique(array_merge(...array_values($tests)))),
+            ));
+            foreach ($tests as $test => $ids) {
+                // The ids where a reader can hold them, the count where a
+                // hundred of them would be the whole answer's length. What a
+                // long one says is how much rides on the class, and the entries
+                // themselves are what the failure prints.
+                $output->writeln(sprintf(
+                    '  %-28s %s',
+                    $test,
+                    count($ids) > self::LISTED ? count($ids) . ' entries' : implode(', ', $ids),
+                ));
+            }
+        }
+
+        return 0;
+    }
+}

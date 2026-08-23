@@ -794,6 +794,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-047`][D-DOC-047] — An entry is filed under the title it has · 2026-08-23
 - [`D-DOC-048`][D-DOC-048] — A test declares the decision it holds · 2026-08-23
 - [`D-DOC-049`][D-DOC-049] — A requirement's tests are declared where the test is · 2026-08-23
+- [`D-DOC-050`][D-DOC-050] — What is written about a class is a lookup · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -839,6 +840,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-047]: documentation/doc-047-an-entry-is-filed-under-the-title-it-has.md
 [D-DOC-048]: documentation/doc-048-a-test-declares-the-decision-it-holds.md
 [D-DOC-049]: documentation/doc-049-a-requirements-tests-are-declared-where-the-test-is.md
+[D-DOC-050]: documentation/doc-050-what-is-written-about-a-class-is-a-lookup.md
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md

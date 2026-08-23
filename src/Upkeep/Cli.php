@@ -19,6 +19,7 @@ use TYPO3\DevCompanion\Upkeep\Command\DecisionRename;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionRenumber;
 use TYPO3\DevCompanion\Upkeep\Command\DocumentationPrepare;
 use TYPO3\DevCompanion\Upkeep\Command\DocumentationPreview;
+use TYPO3\DevCompanion\Upkeep\Command\EntryLookup;
 use TYPO3\DevCompanion\Upkeep\Command\EnvironmentCreate;
 use TYPO3\DevCompanion\Upkeep\Command\EnvironmentStatus;
 use TYPO3\DevCompanion\Upkeep\Command\FeedbackArchive;
@@ -138,6 +139,7 @@ final class Cli
         $application->addCommand(new KnowledgeFormat());
         $application->addCommand(new CheckoutUpdate());
         $application->addCommand(new CheckoutStatus());
+        $application->addCommand(new EntryLookup());
         $application->addCommand(new EnvironmentCreate());
         $application->addCommand(new EnvironmentStatus());
         $application->addCommand(new RepositoryCheck());

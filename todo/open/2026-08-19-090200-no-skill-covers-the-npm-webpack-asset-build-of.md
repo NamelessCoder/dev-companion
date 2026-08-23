@@ -35,9 +35,13 @@ came from them and two from the reading beside it:
   anything is changed. It is the most expensive instruction in the workflow and
   it is not what somebody who knows the repository does, so it goes — see below
   for what takes its place.
-- The borrowed-class verification stands after the change rather than before it,
-  so the class is already written when the answer arrives. Whether that is the
-  order the work goes in is the one review question still open.
+- **The borrowed-class step asks the wrong question.** The draft has the query
+  name the class rather than the component around it, and the maintainer read
+  that as useless: the class is not helpful without the rest of the markup.
+  `table-fit` is the wrapper `div` around a `.table`, so a caller told the name
+  exists still does not know where it goes — which is what the `EXT:blog`
+  session got wrong. It also stands after the change rather than before it, and
+  that ordering is the smaller half of the same finding.
 - Step 6 of the order and step 1 of **Closing the change** say the same thing.
 
 ## What replaces the baseline build
@@ -61,6 +65,27 @@ What this trades away is stated rather than hidden. A maintainer skips the
 up-front build because they know what their repository does on a clean run; an
 agent in a repository it has never opened does not, and it learns the answer
 later and with a change already on top of it.
+
+## What the borrowed-class finding costs
+
+The instruction inverts. A borrowed class is a position in a markup structure
+rather than a token, so the query names the **component** and the class is
+located inside the answer. Where the entry is withheld on a declared major, the
+class answer says the name is written there and nothing about where it goes, and
+that is a pointer to the core Sass rather than the end of the step.
+
+It reaches further than the skill, and that part is not settled here:
+
+- `D-CAT-006`'s first **Assumed** is what this refutes — that a caller naming a
+  class is asking whether the class exists. The `table-fit` caller was asking
+  where it goes, and the class-shaped answer cannot say. A **Since then** on
+  that entry records the reading.
+- The catalog's own shape carries the same conflation. `table-fit` sits in
+  `modifiers` beside `table-striped`, and the entry's markup puts one on the
+  wrapper and the other on the table. Nothing in the data tells them apart, so a
+  caller reading the modifier list is invited to make the mistake. Whether that
+  is repaired, and how far it reaches across the entries, is a catalog question
+  rather than a skill one.
 
 ## What the review's third finding costs
 

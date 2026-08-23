@@ -66,3 +66,27 @@ whether that class is still there.
 - The two ranges keep agreeing. Today the second one buys 4 entries and costs a
   field on 21, and a core release that lets the custom properties arrive with
   their classes would take even that away.
+
+## Since then
+
+The first **Assumed** was refuted on 2026-08-24, reviewing the asset build
+workflow that routes to this answer. A caller naming a class is not necessarily
+asking whether it exists: the `table-fit` caller was asking where it goes, and
+the class-shaped answer cannot say. The maintainer put it as the class not being
+helpful without the rest of the markup.
+
+`table-fit` is the wrapper `div` around a `.table`, which the entry's own markup
+shows and its class list does not. So the block answers the name and the range
+truthfully and still leaves the caller able to attach it to the wrong element —
+which is what `feedback/2026-08-19-090231` did, and what a hit here would have
+waved through.
+
+The entry's shape carries the same conflation one level up. `table-fit` sits in
+`modifiers` beside `table-striped`, and the markup puts one on the wrapper and
+the other on the table. Nothing distinguishes a class that goes on the root
+element from one that goes around it, so a caller reading the modifier list is
+invited to make that mistake before any binding is reached.
+
+Nothing is decided here. What is recorded is that the query is not the evidence
+this entry assumed it was, and that the repair — if there is one — is about
+where a class sits rather than about which versions carry it.

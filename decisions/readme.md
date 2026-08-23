@@ -264,7 +264,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### knowledge
 
-- [`D-KNW-105`][D-KNW-105] — What a not-found means once a site answered is a subject this server owns · 2026-08-19
+- [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
 - [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a subject this server owns · 2026-08-18 · confirmed
@@ -358,12 +358,12 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a subject this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
-- [`D-KNW-026`][D-KNW-026] — Where a one-off script belongs is a subject this server owns · 2026-08-02
+- [`D-KNW-026`][D-KNW-026] — The one-off script rule is owed the place it does not name · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a subject this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a subject this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
-[D-KNW-105]: knowledge/knw-105-what-a-not-found-means-once-a-site-answered-is-a-subject-this-server-owns.md
+[D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knowledge/knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
 [D-KNW-085]: knowledge/knw-085-when-ddev-writes-additional-php-is-a-subject-this-server-owns.md
@@ -457,7 +457,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-022]: knowledge/knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md
 [D-KNW-023]: knowledge/knw-023-which-page-may-hold-a-record-is-a-subject-this-server-owns.md
 [D-KNW-024]: knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
-[D-KNW-026]: knowledge/knw-026-where-a-one-off-script-belongs-is-a-subject-this-server-owns.md
+[D-KNW-026]: knowledge/knw-026-the-one-off-script-rule-is-owed-the-place-it-does-not-name.md
 [D-KNW-027]: knowledge/knw-027-which-caches-a-change-invalidates-is-a-subject-this-server-owns.md
 [D-KNW-028]: knowledge/knw-028-how-a-file-becomes-a-processed-one-is-a-subject-this-server-owns.md
 [D-KNW-004]: knowledge/knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
@@ -809,6 +809,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-054`][D-DOC-054] — A held decision is read when its behaviour moves · 2026-08-23
 - [`D-DOC-055`][D-DOC-055] — A revoked entry is one whose Wrong if fired · 2026-08-23
 - [`D-DOC-056`][D-DOC-056] — A subject this server owns is named affirmatively · 2026-08-23
+- [`D-DOC-057`][D-DOC-057] — The decision corpus carries no duplicate pair · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -861,6 +862,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-054]: documentation/doc-054-a-held-decision-is-read-when-its-behaviour-moves.md
 [D-DOC-055]: documentation/doc-055-a-revoked-entry-is-one-whose-wrong-if-fired.md
 [D-DOC-056]: documentation/doc-056-a-subject-this-server-owns-is-named-affirmatively.md
+[D-DOC-057]: documentation/doc-057-the-decision-corpus-carries-no-duplicate-pair.md
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md

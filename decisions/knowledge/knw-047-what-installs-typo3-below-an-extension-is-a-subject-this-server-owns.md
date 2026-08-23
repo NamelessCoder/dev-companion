@@ -35,7 +35,7 @@ time.
   `project.json`, and only to name the document root — the ground
   [`D-KNW-045`](knw-045-the-document-root-is-named-by-what-configures-and-serves-it.md)
   and
-  [`D-KNW-026`](knw-026-where-a-one-off-script-belongs-is-a-subject-this-server-owns.md)
+  [`D-KNW-026`](knw-026-the-one-off-script-rule-is-owed-the-place-it-does-not-name.md)
   stand on.
 - The second claim holds, read in `.checkouts/14.3`.
   `typo3/sysext/core/composer.json` line 92 and the root `composer.json` line

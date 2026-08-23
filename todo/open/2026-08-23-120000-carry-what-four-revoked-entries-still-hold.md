@@ -5,9 +5,11 @@
 **Run:** bin/cli decisions:list | grep revoked
 
 `D-DOC-055` settled that where a revoked entry has a part that still holds, a
-decision covering that part is what carries it and `revokedBy` names it. Two
-entries were that pattern with the link missing and now name their successor:
-`D-DIS-002` → `D-DIS-007`, `D-KNW-001` → `D-KNW-006`.
+decision covering that part is what carries it and `revokedBy` names it. The
+reading behind it is `D-DOC-003`, which dropped an `amended` state for exactly
+these entries: the dated line says what fell, and a successor carries what
+stands. Two entries were that pattern with the link missing and now name their
+successor: `D-DIS-002` → `D-DIS-007`, `D-KNW-001` → `D-KNW-006`.
 
 Four are left where the entry's own `Revoked on` names a part that still holds
 and no decision carries it. Each needs one reading against what the repository

@@ -1,11 +1,11 @@
 ---
 id: D-KNW-026
-title: 'Where a one-off script belongs is a subject this server owns'
+title: 'The one-off script rule is owed the place it does not name'
 date: 2026-08-02
 status: open
 ---
 
-# D-KNW-026 — Where a one-off script belongs is a subject this server owns
+# D-KNW-026 — The one-off script rule is owed the place it does not name
 
 **The corpus places a one-off script and names only `var/` as the wrong place,
 so nothing here stood between a session and a PHP file in the webroot.**

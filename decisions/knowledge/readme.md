@@ -7,7 +7,7 @@ rather than how it is found.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-KNW-105`][D-KNW-105] — What a not-found means once a site answered is a subject this server owns · 2026-08-19
+- [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
 - [`D-KNW-084`][D-KNW-084] — The corpus states which placeholder spelling a relation value survives · 2026-08-18
 - [`D-KNW-085`][D-KNW-085] — When DDEV writes additional.php is a subject this server owns · 2026-08-18 · confirmed
@@ -101,12 +101,12 @@ one is added.
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a subject this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
-- [`D-KNW-026`][D-KNW-026] — Where a one-off script belongs is a subject this server owns · 2026-08-02
+- [`D-KNW-026`][D-KNW-026] — The one-off script rule is owed the place it does not name · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a subject this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a subject this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
-[D-KNW-105]: knw-105-what-a-not-found-means-once-a-site-answered-is-a-subject-this-server-owns.md
+[D-KNW-105]: knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
 [D-KNW-084]: knw-084-the-corpus-states-which-placeholder-spelling-a-relation-value-survives.md
 [D-KNW-085]: knw-085-when-ddev-writes-additional-php-is-a-subject-this-server-owns.md
@@ -200,7 +200,7 @@ one is added.
 [D-KNW-022]: knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md
 [D-KNW-023]: knw-023-which-page-may-hold-a-record-is-a-subject-this-server-owns.md
 [D-KNW-024]: knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
-[D-KNW-026]: knw-026-where-a-one-off-script-belongs-is-a-subject-this-server-owns.md
+[D-KNW-026]: knw-026-the-one-off-script-rule-is-owed-the-place-it-does-not-name.md
 [D-KNW-027]: knw-027-which-caches-a-change-invalidates-is-a-subject-this-server-owns.md
 [D-KNW-028]: knw-028-how-a-file-becomes-a-processed-one-is-a-subject-this-server-owns.md
 [D-KNW-004]: knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md

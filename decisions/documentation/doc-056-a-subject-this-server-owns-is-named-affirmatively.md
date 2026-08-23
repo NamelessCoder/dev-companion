@@ -57,8 +57,6 @@ and the largest family in the corpus was the exception.
 
 ## Assumed
 
-- That all 38 are the one kind. Each statement was read for this; no **Decided**
-  section was reread past the first bullets that name the ladder step.
 - That "subject" is the word. It is `D-KNW-063`'s and it is what
   `knowledge/server-scope.json` calls the things it covers, so it was taken
   rather than chosen.
@@ -74,3 +72,24 @@ and the largest family in the corpus was the exception.
 - The tail turns out to carry no information a reader uses, so 38 listings end
   in six identical words. The lever would be dropping it entirely and leaving
   the subject alone, which is shorter than what was rejected here.
+
+## Since then
+
+The **Decided** sections were read on 2026-08-23, which the entry had left as an
+assumption, and two of the 38 were not the one kind.
+
+`D-KNW-026` names step 2 rather than step 1a: the one-off script rule was
+already in the corpus, and what was missing is a clause it does not name and a
+way to reach it. It is titled "The one-off script rule is owed the place it does
+not name", so the family it is read beside is the placement judgements rather
+than the boundary ones.
+
+`D-KNW-105` names no step and decides where a hint goes and what it is curated
+on. The hint is `page-not-found-within-a-site` and two tests declare the entry,
+so it wrote the corpus rather than judging a boundary; it is titled "The corpus
+states what a not-found means once a site answered", which is the form
+`D-KNW-104` and its four siblings already carry.
+
+The other 36 hold. Each names step 1a, four of them with a step 2 or step 4 half
+beside it, and `D-KNW-074`, `D-KNW-092` and `D-KNW-099` name the queueing
+without numbering the rung.

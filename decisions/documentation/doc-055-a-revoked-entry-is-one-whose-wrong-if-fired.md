@@ -51,7 +51,12 @@ dead ends.
   part is what carries it, and `revokedBy` names it.** `D-DIS-002` left the DDEV
   half to the queue and `D-DIS-007` took it; `D-KNW-001`'s domain half was
   answered by `D-KNW-006`. Both were that pattern with the link missing, and
-  both now name their successor.
+  both now name their successor. This is the second half of what
+  [`D-DOC-003`](doc-003-a-decision-says-what-came-back.md) settled: it weighed
+  an `amended` state for the partly-wrong entries and dropped it, because a
+  state saying "some of this is safe" does not say which. What it left the
+  reader is the revocation's own dated line, and what this adds is the entry
+  that carries the half still standing.
 - Not a check. Whether a **Wrong if** fired is a reading, and nothing here can
   hold a dated section's prose to one. What keeps this is the session writing
   the section asking which of the two it is.

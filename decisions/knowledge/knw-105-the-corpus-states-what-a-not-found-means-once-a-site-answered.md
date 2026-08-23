@@ -1,6 +1,6 @@
 ---
 id: D-KNW-105
-title: 'What a not-found means once a site answered is a subject this server owns'
+title: 'The corpus states what a not-found means once a site answered'
 date: 2026-08-19
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
-# D-KNW-105 — What a not-found means once a site answered is a subject this server owns
+# D-KNW-105 — The corpus states what a not-found means once a site answered
 
 **The corpus explains a not-found by naming the site that should have answered,
 and says nothing about the page that would not come.**

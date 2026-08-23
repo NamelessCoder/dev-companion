@@ -16,7 +16,7 @@ left behind.**
 The docroot DDEV serves below `/var/www/html` is named with it, because that is
 the path the session that reported this had in front of it.
 
-[`D-KNW-026`](knw-026-where-a-one-off-script-belongs-is-a-subject-this-server-owns.md)
+[`D-KNW-026`](knw-026-the-one-off-script-rule-is-owed-the-place-it-does-not-name.md)
 queued the lookup rather than writing the sentence, because where a Composer
 installation's document root is and what DDEV serves are questions no reading of
 this repository answers. This is what the lookup returned, and it moved the

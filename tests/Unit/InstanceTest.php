@@ -71,6 +71,7 @@ final class InstanceTest extends TestCase
         self::assertSame(['core', 'my_sitepackage'], array_keys(Instance::packages()));
     }
 
+    #[Decision('D-DIS-004')]
     #[Requirement('R-AUD-004')]
     #[Test]
     public function theTypo3VersionIsReadFromTheCorePackage(): void
@@ -239,6 +240,7 @@ final class InstanceTest extends TestCase
     /**
      * @param array<string, mixed> $manifest what the root's composer.json declares
      */
+    #[Decision('D-ANS-085')]
     #[Requirement('R-PRJ-011')]
     #[Decision('D-DIS-019')]
     #[Test]

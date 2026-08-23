@@ -137,6 +137,7 @@ final class ScenariosTest extends TestCase
      * workflow to another, and a row per half is what says the second one
      * arrives too — `D-SKL-066` — `D-GUI-018`.
      */
+    #[Decision('D-GUI-015')]
     #[Decision('D-GUI-018')]
     #[Decision('D-SKL-066')]
     #[Test]

@@ -3,6 +3,8 @@ id: D-SKL-029
 title: "Precedent is listed by the changelog's own axes"
 date: 2026-08-09
 status: open
+coveredBy:
+  - SkillTest::aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords
 ---
 
 # D-SKL-029 — Precedent is listed by the changelog's own axes

@@ -3,6 +3,9 @@ id: D-SKL-024
 title: A description names the task and leaves the steps to the body
 date: 2026-08-08
 status: confirmed
+coveredBy:
+  - SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement
+  - SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout
 ---
 
 # D-SKL-024 — A description names the task and leaves the steps to the body

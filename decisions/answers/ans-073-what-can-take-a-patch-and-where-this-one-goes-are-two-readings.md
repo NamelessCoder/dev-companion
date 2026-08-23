@@ -3,6 +3,9 @@ id: D-ANS-073
 title: What can take a patch and where this one goes are two readings
 date: 2026-08-10
 status: open
+coveredBy:
+  - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
+  - CommitMessageTest::aMaintainedLineFurtherBackSaysWhatItClaims
 ---
 
 # D-ANS-073 — What can take a patch and where this one goes are two readings

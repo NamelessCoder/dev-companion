@@ -110,6 +110,7 @@ final class CommitMessageTest extends TestCase
      * Each block is its own run, so the caller reads which lines went where
      * rather than one report covering the whole body.
      */
+    #[Decision('D-GUI-003')]
     #[Requirement('R-GUI-007')]
     #[Test]
     public function eachJoinedRunIsReportedOnItsOwn(): void
@@ -652,6 +653,7 @@ final class CommitMessageTest extends TestCase
      * and a line that opens is a branch created after it was read —
      * `D-ANS-058`.
      */
+    #[Decision('D-ANS-073')]
     #[Decision('D-ANS-058')]
     #[Test]
     public function aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead(): void
@@ -678,6 +680,7 @@ final class CommitMessageTest extends TestCase
      * line and the one back from it, and an older one is earned by the severity
      * of the defect rather than by the defect being present there.
      */
+    #[Decision('D-ANS-073')]
     #[Test]
     public function aMaintainedLineFurtherBackSaysWhatItClaims(): void
     {

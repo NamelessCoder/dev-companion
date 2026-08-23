@@ -1479,6 +1479,7 @@ final class KnowledgeTest extends TestCase
      * has to be a case of it, and a statement may not claim `uncertain`, which
      * belongs to a path nothing placed rather than to a sentence somebody wrote.
      */
+    #[Decision('D-KNW-005')]
     #[Requirement('R-SCO-006')]
     #[Decision('D-KNW-003')]
     #[Test]

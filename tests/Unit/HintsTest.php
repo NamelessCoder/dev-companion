@@ -73,6 +73,7 @@ final class HintsTest extends TestCase
      * itself and nothing crosses. A phrase let past on its own puts them back —
      * `D-ANS-084`.
      */
+    #[Decision('D-KNW-067')]
     #[Requirement('R-ANS-031')]
     #[Decision('D-ANS-084')]
     #[Test]
@@ -1240,6 +1241,7 @@ final class HintsTest extends TestCase
      * A rewrite that keeps the policy and drops the two refusals leaves a hint
      * that reads complete and stops neither session.
      */
+    #[Decision('D-KNW-066')]
     #[Test]
     public function theBrowserTargetKeepsTheArgumentsItRefuses(): void
     {
@@ -1263,6 +1265,7 @@ final class HintsTest extends TestCase
      * `css-container-queries` is asserted beside it because it used to carry a
      * second, coarser copy of the policy, which is the one such a query reached.
      */
+    #[Decision('D-KNW-066')]
     #[Test]
     public function aQueryNamingAModernCssFeatureReachesTheBrowserTarget(): void
     {
@@ -4789,6 +4792,7 @@ final class HintsTest extends TestCase
         self::assertContains('backend-modules', array_column($result['matchedHints'], 'id'));
     }
 
+    #[Decision('D-KNW-001')]
     #[Requirement('R-KNW-039')]
     #[Test]
     public function aBackendModuleInASitepackageDoesNotBecomeFrontendWork(): void
@@ -4823,6 +4827,7 @@ final class HintsTest extends TestCase
      * backend-only, because a sitepackage layout is written in the words of the
      * backend it is administered from.
      */
+    #[Decision('D-KNW-001')]
     #[Test]
     public function aBackendTaskIsNotAnsweredWithTheSitepackageLayout(): void
     {
@@ -5360,6 +5365,7 @@ final class HintsTest extends TestCase
      * obligation and its axes, and the arm that changes nothing names it among
      * what a re-run would owe.
      */
+    #[Decision('D-GUI-013')]
     #[Test]
     public function aBriefForAChangeNamesTheDeprecationSweepItOwes(): void
     {
@@ -6061,6 +6067,7 @@ final class HintsTest extends TestCase
      * the review is about to find out — so the surface is stated rather than
      * matched.
      */
+    #[Decision('D-GUI-004')]
     #[Requirement('R-GUI-010')]
     #[Test]
     public function aReviewBriefNamesWhatTheChangeRemoves(): void

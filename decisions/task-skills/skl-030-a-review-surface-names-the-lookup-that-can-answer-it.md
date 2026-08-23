@@ -3,6 +3,8 @@ id: D-SKL-030
 title: A review surface names the lookup that can answer it
 date: 2026-08-09
 status: open
+coveredBy:
+  - SkillTest::aReviewSurfaceNamesTheLookupThatCanAnswerIt
 ---
 
 # D-SKL-030 — A review surface names the lookup that can answer it

@@ -3,6 +3,8 @@ id: D-SKL-028
 title: 'A triage reaching for a previous attempt is routed to it'
 date: 2026-08-09
 status: open
+coveredBy:
+  - SkillTest::aTriageSaysWhatThePreviousAttemptCostBeforeItHandsOver
 ---
 
 # D-SKL-028 — A triage reaching for a previous attempt is routed to it

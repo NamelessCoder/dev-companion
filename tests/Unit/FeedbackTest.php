@@ -485,6 +485,7 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('[cut: 100 characters past the 4000-character limit]', $contents);
     }
 
+    #[Decision('D-FBK-049')]
     #[Requirement('R-FBK-015')]
     #[Test]
     public function aFieldExactlyOnTheCapIsNotMarked(): void
@@ -510,6 +511,7 @@ final class FeedbackTest extends TestCase
      * `D-FBK-049`. The file cannot say it, because the `...` a listing shows is
      * all a title may carry, so the answer is the only place it is said at all.
      */
+    #[Decision('D-FBK-049')]
     #[Requirement('R-FBK-015')]
     #[Test]
     public function aSubjectShortenedForLengthSaysSoInTheAnswer(): void

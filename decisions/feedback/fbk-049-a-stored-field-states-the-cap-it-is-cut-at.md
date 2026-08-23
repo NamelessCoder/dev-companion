@@ -3,6 +3,9 @@ id: D-FBK-049
 title: A stored field states the cap it is cut at
 date: 2026-08-18
 status: open
+coveredBy:
+  - FeedbackTest::aFieldExactlyOnTheCapIsNotMarked
+  - FeedbackTest::aSubjectShortenedForLengthSaysSoInTheAnswer
 ---
 
 # D-FBK-049 — A stored field states the cap it is cut at

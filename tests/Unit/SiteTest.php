@@ -398,6 +398,7 @@ final class SiteTest extends TestCase
      * thirds of that size in the column it sits in. Two of them carried 12px
      * labels, which nothing but a measurement would have caught.
      */
+    #[Decision('D-DOC-023')]
     #[Test]
     public function noDrawingSetsTypeBelowTheFloor(): void
     {

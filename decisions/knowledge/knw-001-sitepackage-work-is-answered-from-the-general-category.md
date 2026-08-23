@@ -3,6 +3,9 @@ id: D-KNW-001
 title: Sitepackage work is answered from the General category
 date: 2026-07-29
 status: revoked
+coveredBy:
+  - HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork
+  - HintsTest::aBackendTaskIsNotAnsweredWithTheSitepackageLayout
 ---
 
 # D-KNW-001 — Sitepackage work is answered from the General category

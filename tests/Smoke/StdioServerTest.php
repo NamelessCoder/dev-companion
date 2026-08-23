@@ -201,6 +201,7 @@ final class StdioServerTest extends TestCase
      * channel is — `D-FBK-048`. What it hands over is the file the page
      * includes, which is what holds the two to one text.
      */
+    #[Decision('D-FBK-048')]
     #[Test]
     public function theDebriefIsAvailableAsAPromptTakingNoArguments(): void
     {
@@ -463,6 +464,7 @@ final class StdioServerTest extends TestCase
      * dropped, both `oneOf` branches failed, and the message named two
      * arguments the call had not been about — `D-ANS-053`.
      */
+    #[Decision('D-ANS-053')]
     #[Test]
     public function aCallNamingAnArgumentTheToolDoesNotHaveIsRejectedByThatName(): void
     {

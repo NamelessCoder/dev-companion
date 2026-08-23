@@ -3,6 +3,8 @@ id: D-GUI-003
 title: The wrapping conflict is resolved in the answer rather than in silence
 date: 2026-08-03
 status: open
+coveredBy:
+  - CommitMessageTest::eachJoinedRunIsReportedOnItsOwn
 ---
 
 # D-GUI-003 — The wrapping conflict is resolved in the answer rather than in silence

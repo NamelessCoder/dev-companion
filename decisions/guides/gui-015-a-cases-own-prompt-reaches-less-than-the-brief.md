@@ -3,6 +3,8 @@ id: D-GUI-015
 title: "A case's own prompt reaches less than the brief"
 date: 2026-08-19
 status: open
+coveredBy:
+  - ScenariosTest::aCasesOwnPromptConfirmsTheIntentItIsWrittenAbout
 ---
 
 # D-GUI-015 — A case's own prompt reaches less than the brief

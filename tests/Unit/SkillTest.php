@@ -643,6 +643,7 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('improve', self::description('typo3-extension-health'));
     }
 
+    #[Decision('D-SKL-003')]
     #[Requirement('R-SKL-004')]
     #[Requirement('R-SKL-005')]
     #[Test]
@@ -1233,6 +1234,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-SKL-029')]
     #[Test]
     public function aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords(): void
     {
@@ -1494,6 +1496,7 @@ final class SkillTest extends TestCase
      * names the changes the journal mentions, so a merged-then-reverted history
      * is visible before the checkout is opened (`R-ANS-029`).
      */
+    #[Decision('D-SKL-028')]
     #[Test]
     public function aTriageSaysWhatThePreviousAttemptCostBeforeItHandsOver(): void
     {
@@ -1726,6 +1729,7 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-SKL-030')]
     #[Requirement('R-SKL-022')]
     #[Test]
     public function aReviewSurfaceNamesTheLookupThatCanAnswerIt(): void
@@ -2193,6 +2197,7 @@ final class SkillTest extends TestCase
      * written down in the authoring contract rather than assertable over the
      * directory, because which sides a skill owns is not in the file.
      */
+    #[Decision('D-SKL-024')]
     #[Requirement('R-SKL-010')]
     #[Test]
     public function aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement(): void
@@ -2238,6 +2243,7 @@ final class SkillTest extends TestCase
      * it was written back (`D-SKL-026`). So both halves are held: the word a
      * user types, and the body that has to answer once it did.
      */
+    #[Decision('D-SKL-024')]
     #[Test]
     public function aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout(): void
     {
@@ -2645,6 +2651,7 @@ final class SkillTest extends TestCase
      * discharge names what answers instead, in the words `DISCHARGE` carries,
      * and a routing is any other mention — `D-SKL-055`.
      */
+    #[Decision('D-ANS-083')]
     #[Decision('D-SKL-055')]
     #[Test]
     public function everyDischargedCallIsWrittenAsOneAndRoutedNowhere(): void
@@ -3036,6 +3043,7 @@ final class SkillTest extends TestCase
      * wording and nothing else, which is why they are held here — `D-SKL-056` —
      * `D-KNW-105`.
      */
+    #[Decision('D-SKL-059')]
     #[Requirement('R-KNW-072')]
     #[Decision('D-KNW-092')]
     #[Decision('D-KNW-105')]
@@ -3673,6 +3681,7 @@ final class SkillTest extends TestCase
      * That the moment is the right one is a reading of the workflow rather than
      * a property of a file.
      */
+    #[Decision('D-SKL-022')]
     #[Requirement('R-SKL-018')]
     #[Decision('D-SKL-053')]
     #[Test]

@@ -432,6 +432,7 @@ final class ScopeTest extends TestCase
      * given: `feedback/2026-08-18-113425` quotes it back and reports finishing
      * without learning that any guide exists.
      */
+    #[Decision('D-AUD-007')]
     #[Test]
     public function theIndexNamesTheCallThatReadsAWholeProcedure(): void
     {
@@ -1199,6 +1200,7 @@ final class ScopeTest extends TestCase
      * the purpose, the instructions a client is handed, the readme — the demand
      * is the affirmative one, and `R-AUD-001` is what it is.
      */
+    #[Decision('D-SCO-006')]
     #[Requirement('R-AUD-001')]
     #[Test]
     public function everyDescriptionOfTheServerNamesAllThreeAudiences(): void
@@ -1231,6 +1233,7 @@ final class ScopeTest extends TestCase
      * wording, which is as weak as wording always is, so the three sentences the
      * decision recorded are run through the matcher first.
      */
+    #[Decision('D-SCO-006')]
     #[Requirement('R-AUD-001')]
     #[Test]
     public function noSurfaceClaimsTheCoreAlone(): void

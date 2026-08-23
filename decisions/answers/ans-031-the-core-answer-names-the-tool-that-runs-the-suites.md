@@ -3,6 +3,8 @@ id: D-ANS-031
 title: The core answer names the tool that runs the suites
 date: 2026-08-02
 status: open
+coveredBy:
+  - ProjectTest::whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt
 ---
 
 # D-ANS-031 — The core answer names the tool that runs the suites

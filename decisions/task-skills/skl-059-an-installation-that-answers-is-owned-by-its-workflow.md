@@ -3,6 +3,8 @@ id: D-SKL-059
 title: 'An installation that answers is owned by its workflow'
 date: 2026-08-18
 status: open
+coveredBy:
+  - SkillTest::anInstallationIsBuiltInDependencyOrder
 ---
 
 # D-SKL-059 — An installation that answers is owned by its workflow

@@ -3,6 +3,9 @@ id: D-ANS-082
 title: The project answer states how its three PHP numbers relate
 date: 2026-08-18
 status: open
+coveredBy:
+  - ProjectTest::aFloorTheEnvironmentRunsIsSaidToBeRun
+  - ProjectTest::theThreePhpNumbersAreRelated
 ---
 
 # D-ANS-082 — The project answer states how its three PHP numbers relate

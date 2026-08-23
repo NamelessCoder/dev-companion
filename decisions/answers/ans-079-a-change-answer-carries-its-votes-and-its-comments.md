@@ -3,6 +3,9 @@ id: D-ANS-079
 title: 'A change answer carries its votes and its comments'
 date: 2026-08-14
 status: open
+coveredBy:
+  - GerritTest::aChangeCarriesTheVoteEachLabelStandsAt
+  - GerritTest::aChangeWithNoCommentCostsNoCallToFindThatOut
 ---
 
 # D-ANS-079 — A change answer carries its votes and its comments

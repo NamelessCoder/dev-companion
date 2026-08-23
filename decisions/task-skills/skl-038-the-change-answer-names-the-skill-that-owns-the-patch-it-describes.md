@@ -3,6 +3,8 @@ id: D-SKL-038
 title: The change answer names the skill that owns the patch it describes
 date: 2026-08-14
 status: open
+coveredBy:
+  - GerritTest::aNamedChangeIsHandedTheWorkflowsThatOwnIt
 ---
 
 # D-SKL-038 — The change answer names the skill that owns the patch it describes

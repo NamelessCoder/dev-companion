@@ -3,6 +3,8 @@ id: D-DIS-004
 title: The version comes from the core package, not from the console
 date: 2026-07-29
 status: confirmed
+coveredBy:
+  - InstanceTest::theTypo3VersionIsReadFromTheCorePackage
 ---
 
 # D-DIS-004 — The version comes from the core package, not from the console

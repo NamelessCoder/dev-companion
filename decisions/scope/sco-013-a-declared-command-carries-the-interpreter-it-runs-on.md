@@ -3,6 +3,9 @@ id: D-SCO-013
 title: 'A declared command carries the interpreter it runs on'
 date: 2026-08-19
 status: open
+coveredBy:
+  - ProjectTest::aNodeAWorkflowDecidesElsewhereIsStatedBack
+  - ProjectTest::theNodeThoseNpmCommandsRunOnIsStatedBesideThem
 ---
 
 # D-SCO-013 — A declared command carries the interpreter it runs on

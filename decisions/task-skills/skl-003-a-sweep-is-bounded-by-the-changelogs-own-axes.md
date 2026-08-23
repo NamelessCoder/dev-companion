@@ -3,6 +3,8 @@ id: D-SKL-003
 title: "A sweep is bounded by the changelog's own axes"
 date: 2026-08-02
 status: open
+coveredBy:
+  - SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface
 ---
 
 # D-SKL-003 — A sweep is bounded by the changelog's own axes

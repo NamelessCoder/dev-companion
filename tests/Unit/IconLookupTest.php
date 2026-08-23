@@ -109,6 +109,7 @@ final class IconLookupTest extends TestCase
      * validate every identifier before emitting it, so three icons in one
      * template were three round trips — `D-ANS-078`.
      */
+    #[Decision('D-ANS-078')]
     #[Test]
     public function severalIdentifiersAreAnsweredOneByOneInOneCall(): void
     {

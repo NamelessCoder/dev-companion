@@ -720,6 +720,7 @@ final class GerritTest extends TestCase
      * server, and that Code-Review stands at nothing although somebody is on
      * it. Both are the label state rather than a count of patch sets.
      */
+    #[Decision('D-ANS-079')]
     #[Test]
     public function aChangeCarriesTheVoteEachLabelStandsAt(): void
     {
@@ -763,6 +764,7 @@ final class GerritTest extends TestCase
      * was made anyway, so the second one is spent only where there is something
      * to fetch.
      */
+    #[Decision('D-ANS-079')]
     #[Test]
     public function aChangeWithNoCommentCostsNoCallToFindThatOut(): void
     {
@@ -997,6 +999,7 @@ final class GerritTest extends TestCase
      * loaded and the tool never called, and this answer — the one call it did
      * make — handed it the ref it then fetched the patch set with by hand.
      */
+    #[Decision('D-SKL-038')]
     #[Test]
     public function aNamedChangeIsHandedTheWorkflowsThatOwnIt(): void
     {

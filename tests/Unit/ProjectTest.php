@@ -249,6 +249,7 @@ final class ProjectTest extends TestCase
         );
     }
 
+    #[Decision('D-ANS-082')]
     #[Requirement('R-PRJ-010')]
     #[Test]
     public function theThreePhpNumbersAreRelated(): void
@@ -287,6 +288,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Nothing was executed on any of these versions', $text);
     }
 
+    #[Decision('D-ANS-082')]
     #[Requirement('R-PRJ-010')]
     #[Test]
     public function aFloorTheEnvironmentRunsIsSaidToBeRun(): void
@@ -389,6 +391,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('No environment here states a PHP', $text);
     }
 
+    #[Decision('D-ANS-086')]
     #[Requirement('R-PRJ-012')]
     #[Test]
     public function aDeclaredCommandSaysWhetherItStartsOnThePhpThatWouldRunIt(): void
@@ -443,6 +446,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('nothing in that check stops them', $text);
     }
 
+    #[Decision('D-ANS-086')]
     #[Requirement('R-PRJ-012')]
     #[Test]
     public function whereNothingConfiguresAnEnvironmentTheBoundIsStated(): void
@@ -485,6 +489,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('They do not start', $text);
     }
 
+    #[Decision('D-SCO-013')]
     #[Requirement('R-PRJ-013')]
     #[Test]
     public function theNodeThoseNpmCommandsRunOnIsStatedBesideThem(): void
@@ -558,6 +563,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('Nothing was run to find it out', $text);
     }
 
+    #[Decision('D-SCO-013')]
     #[Requirement('R-PRJ-013')]
     #[Test]
     public function aNodeAWorkflowDecidesElsewhereIsStatedBack(): void
@@ -1023,6 +1029,7 @@ final class ProjectTest extends TestCase
         self::assertSame(['unsupported'], array_keys($result->data));
     }
 
+    #[Decision('D-ANS-085')]
     #[Requirement('R-PRJ-001')]
     #[Decision('D-DIS-019')]
     #[Test]
@@ -1113,6 +1120,7 @@ final class ProjectTest extends TestCase
         self::assertStringNotContainsString('typo3_test_run_guide', $text);
     }
 
+    #[Decision('D-ANS-031')]
     #[Requirement('R-ANS-018')]
     #[Test]
     public function whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt(): void

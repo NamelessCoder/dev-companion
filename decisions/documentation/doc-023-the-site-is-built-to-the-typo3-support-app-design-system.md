@@ -4,7 +4,8 @@ title: The site is built to the TYPO3 Support App design system
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-024
-coveredBy: []
+coveredBy:
+  - SiteTest::noDrawingSetsTypeBelowTheFloor
 ---
 
 # D-DOC-023 — The site is built to the TYPO3 Support App design system

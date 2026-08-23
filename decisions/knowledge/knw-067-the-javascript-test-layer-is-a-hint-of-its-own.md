@@ -3,6 +3,8 @@ id: D-KNW-067
 title: 'The JavaScript test layer is a hint of its own'
 date: 2026-08-10
 status: open
+coveredBy:
+  - HintsTest::aTypeScriptTestPathIsNotAnsweredWithPhpunit
 ---
 
 # D-KNW-067 — The JavaScript test layer is a hint of its own

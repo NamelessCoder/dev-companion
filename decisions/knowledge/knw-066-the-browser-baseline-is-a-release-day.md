@@ -3,6 +3,9 @@ id: D-KNW-066
 title: 'The browser baseline is a release day'
 date: 2026-08-10
 status: open
+coveredBy:
+  - HintsTest::aQueryNamingAModernCssFeatureReachesTheBrowserTarget
+  - HintsTest::theBrowserTargetKeepsTheArgumentsItRefuses
 ---
 
 # D-KNW-066 — The browser baseline is a release day

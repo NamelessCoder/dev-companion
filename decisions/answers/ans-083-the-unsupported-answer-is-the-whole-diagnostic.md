@@ -3,6 +3,8 @@ id: D-ANS-083
 title: 'The unsupported answer is the whole diagnostic'
 date: 2026-08-17
 status: open
+coveredBy:
+  - SkillTest::everyDischargedCallIsWrittenAsOneAndRoutedNowhere
 ---
 
 # D-ANS-083 — The unsupported answer is the whole diagnostic

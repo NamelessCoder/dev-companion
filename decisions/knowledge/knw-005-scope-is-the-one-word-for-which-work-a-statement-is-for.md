@@ -3,6 +3,8 @@ id: D-KNW-005
 title: '`Scope` is the one word for which work a statement is for'
 date: 2026-08-02
 status: confirmed
+coveredBy:
+  - KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares
 ---
 
 # D-KNW-005 — `Scope` is the one word for which work a statement is for

@@ -3,6 +3,9 @@ id: D-ANS-085
 title: The project answer is read from the repository's own files
 date: 2026-08-18
 status: open
+coveredBy:
+  - InstanceTest::aProjectRootIsRecognisedByWhatItsOwnManifestDeclares
+  - ProjectTest::theRepositoryIsDescribedBeforeAnythingIsInstalledInIt
 ---
 
 # D-ANS-085 — The project answer is read from the repository's own files

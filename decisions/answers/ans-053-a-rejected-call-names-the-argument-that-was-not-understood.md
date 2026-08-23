@@ -3,6 +3,8 @@ id: D-ANS-053
 title: A rejected call names the argument that was not understood
 date: 2026-08-04
 status: open
+coveredBy:
+  - StdioServerTest::aCallNamingAnArgumentTheToolDoesNotHaveIsRejectedByThatName
 ---
 
 # D-ANS-053 — A rejected call names the argument that was not understood

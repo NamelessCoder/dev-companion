@@ -17,7 +17,7 @@ the sentence rather than the answer of the call that fired.
 ## Evidence
 
 - **The count.** The benchmark of 2026-08-19,
-  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients.md):
+  [`D-SKL-033`](../task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md):
   seventeen project tasks, eleven `typo3_project_describe` calls and one
   `typo3_task_guide`. Read again in this checkout on 2026-08-21,
   `src/Tool/ProjectDescribe.php` names `typo3_rule_lookup` for the guides it
@@ -84,7 +84,7 @@ the sentence rather than the answer of the call that fired.
 
 - **That the run which would settle the ratio can be had.** The benchmark is
   outside this repository and was read here rather than made here —
-  [`D-EVI-008`](../evidence/evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md)
+  [`D-EVI-008`](../evidence/evi-008-the-server-collapses-the-spread-of-a-lookup-rather-than-its-median.md)
   says as much of the comparison beside it — so the alternative to waiting may
   be no measurement rather than a later one.
 - **That one imperative at the foot of an answer and a list of sixteen ids in

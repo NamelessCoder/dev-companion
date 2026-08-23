@@ -45,7 +45,7 @@ boundary:
 ## Decided
 
 - All three prose sources now say what is actually true, and the contradiction
-  is guarded: `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers` fails
+  is guarded: `ScopeTest::aTopicWithAHintIsNotDeclined` fails
   if the declared scope excludes a subject that has a hint.
 
 ## Assumed
@@ -64,7 +64,7 @@ boundary:
 ## Since then
 
 The three places **Wrong if** names are read too, by
-`ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor`. Its corpus
+`ScopeTest::noSurfaceClaimsTheCoreAlone`. Its corpus
 is every tool description, `readme.md`, every architecture hint, and the scope's
 own purpose, routing and instructions. It matches the claim in both the wordings
 it was found in. One names who it turns away — "out of this server's scope"
@@ -80,14 +80,14 @@ The **Assumed** was right and the pull was the name. On 2026-08-02 `outsideCore`
 was removed rather than renamed: one enum, `Knowledge\Scope`, says which kind of
 work an answer is for, and there is no longer a field whose only content is what
 the work is not
-([`D-KNW-005`](../knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md)).
+([`D-KNW-005`](../knowledge/knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md)).
 
 ## Confirmed on 2026-08-22
 
 The guard is there and reads what it claims:
-`ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor` over the tool
+`ScopeTest::noSurfaceClaimsTheCoreAlone` over the tool
 descriptions, the readme, the hints and the scope's own text, with
-`whatTheScopeExcludesIsNotWhatTheServerAnswers` beside it. The claim has
+`aTopicWithAHintIsNotDeclined` beside it. The claim has
 reappeared in none of them.
 
 **Wrong if** has been overtaken by its own remedy. It prescribed renaming

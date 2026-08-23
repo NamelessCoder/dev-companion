@@ -183,6 +183,25 @@ outside this checkout can see — a tool name, a directory name, a CLI subject �
 because those are known by clients installed months ago and by paths people
 wrote down, while prose can be rewritten this afternoon.
 
+**A name carries one claim, and names its own subject.** It is read where
+nothing else is — a failure list, a directory of hundreds of entries, a listing
+in a client — so a reader who has not opened the file has to know from it what
+is meant. Three ways it stops doing that, and each is a defect:
+
+- **Two claims in one name.**
+  `everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn` states a case and the
+  case it is being told apart from; the second half is what the docblock is for.
+  `bin/cli prose:check` counts the names and the titles that do this, worst
+  first.
+- **A subject the name never says.** "Three audiences, not one" counts without
+  naming what is counted, and "Activation is the client's" refers to something
+  only the body introduces. What the reader is left with is the shape of a
+  statement and none of it.
+- **A negation where the affirmative is what is meant.** "What the scope
+  excludes is not what the server answers" is read twice; "A subject the
+  not-covered list omits is in scope" is read once. It is the prose rule below,
+  where it is read most.
+
 A directory below `src/` is named in the **singular**, for what one of the
 things in it is: `Tool/` holds one tool per class, `Command/` one command,
 `Manual/` one manual. The plural splits every name in two — a class lands in
@@ -442,6 +461,13 @@ bin/cli knowledge:format <path>   # only that part of it
   `bin/cli entries:lookup <path>`: the entries naming the classes at that path,
   and the tests that hold them. The attributes answer from the failing end; this
   is the call before the change rather than after it — `D-DOC-050`.
+- **A test asserts the demand, not its absence.** Where a requirement says what
+  must be there, the assertion says it too:
+  `ScopeTest::everyDescriptionOfTheServerNamesAllThreeAudiences` reads the three
+  places a reader meets the server whole. A negative assertion is what is left
+  where the affirmative cannot be stated over the population — the same
+  requirement's other test reads three hundred surfaces, and a hint about
+  backend CSS names the core and nothing else, correctly.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.

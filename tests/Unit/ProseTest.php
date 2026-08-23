@@ -532,4 +532,34 @@ final class ProseTest extends TestCase
     {
         return trim((string) preg_replace('/\s+/', ' ', $markdown));
     }
+    /**
+     * The names a reader has to take apart are read out, two-claim ones first.
+     *
+     * Nothing fails on it, for the reason the title report does not: a long
+     * name can be the honest one — `D-DOC-051`.
+     */
+    #[Decision('D-DOC-051')]
+    #[Test]
+    public function theNamesThatCarryTwoClaimsAreReadOut(): void
+    {
+        $names = Prose::names();
+
+        self::assertNotSame([], $names, 'every test name is within the measure, which the report would have to say');
+
+        $joined = array_column($names, 'joined');
+        self::assertSame(
+            array_values(array_filter($joined)),
+            array_slice($joined, 0, count(array_filter($joined))),
+            'a name joining two claims is reported below one that is only long',
+        );
+
+        foreach ($names as $name) {
+            self::assertTrue(
+                $name['joined'] !== '' || $name['words'] > Prose::NAME_WORDS,
+                $name['name'] . ' is reported and is neither joined nor over the measure',
+            );
+            self::assertStringContainsString($name['joined'], $name['name']);
+        }
+    }
+
 }

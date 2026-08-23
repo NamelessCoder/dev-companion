@@ -60,7 +60,7 @@ one is added.
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
 - [`D-KNW-032`][D-KNW-032] — The corpus is filed by question, and two splits were taken back · 2026-08-03
 - [`D-KNW-033`][D-KNW-033] — No hint carries `any` · 2026-08-03
-- [`D-KNW-034`][D-KNW-034] — The file is the subject · 2026-08-03
+- [`D-KNW-034`][D-KNW-034] — The corpus is one file per subject, named after it · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
 - [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload · 2026-08-03
@@ -80,7 +80,7 @@ one is added.
 - [`D-KNW-052`][D-KNW-052] — The order a Fluid template name resolves in is a gap · 2026-08-03 · confirmed
 - [`D-KNW-053`][D-KNW-053] — The root-package layout is stated from an installation · 2026-08-03
 - [`D-KNW-054`][D-KNW-054] — What booting a declared installation takes is one hint · 2026-08-03
-- [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02 · confirmed
+- [`D-KNW-005`][D-KNW-005] — `Scope` is the one word for which work a statement is for · 2026-08-02 · confirmed
 - [`D-KNW-006`][D-KNW-006] — A backend word adds no domain to a backend-only task · 2026-08-02 · confirmed
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
@@ -156,7 +156,7 @@ one is added.
 [D-KNW-031]: knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md
 [D-KNW-032]: knw-032-the-corpus-is-filed-by-question-and-two-splits-were-taken-back.md
 [D-KNW-033]: knw-033-no-hint-carries-any.md
-[D-KNW-034]: knw-034-the-file-is-the-subject.md
+[D-KNW-034]: knw-034-the-corpus-is-one-file-per-subject-named-after-it.md
 [D-KNW-035]: knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
 [D-KNW-036]: knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
 [D-KNW-037]: knw-037-a-content-element-preview-draws-the-elements-own-payload.md
@@ -176,7 +176,7 @@ one is added.
 [D-KNW-052]: knw-052-the-order-a-fluid-template-name-resolves-in-is-a-gap.md
 [D-KNW-053]: knw-053-the-root-package-layout-is-stated-from-an-installation.md
 [D-KNW-054]: knw-054-what-booting-a-declared-installation-takes-is-one-hint.md
-[D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
+[D-KNW-005]: knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md
 [D-KNW-006]: knw-006-a-backend-word-adds-no-domain-to-a-backend-only-task.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-008]: knw-008-tooling-is-a-row-the-answer-crosses-not-a-dimension-the-corpus-stores.md

@@ -1,11 +1,11 @@
 ---
 id: D-ANS-059
-title: 'What this server holds carried the task'
+title: What a core session named as load-bearing came from outside
 date: 2026-08-05
 status: open
 ---
 
-# D-ANS-059 — What this server holds carried the task
+# D-ANS-059 — What a core session named as load-bearing came from outside
 
 **One core session reported its boundary between what this server computes and
 what it reads over somebody else's API, and every cost it named was on the

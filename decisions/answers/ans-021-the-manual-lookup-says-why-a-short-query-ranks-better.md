@@ -1,11 +1,11 @@
 ---
 id: D-ANS-021
-title: 'A manual query is told what short buys'
+title: The manual lookup says why a short query ranks better
 date: 2026-08-02
 status: open
 ---
 
-# D-ANS-021 — A manual query is told what short buys
+# D-ANS-021 — The manual lookup says why a short query ranks better
 
 **The live-manual search ranks a table of contents, so a query that names its
 subject spends its weight on everything else.**

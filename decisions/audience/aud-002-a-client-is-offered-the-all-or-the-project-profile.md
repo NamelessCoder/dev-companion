@@ -1,12 +1,12 @@
 ---
 id: D-AUD-002
-title: Two profiles, because a third one would have been the same set
+title: A client is offered the `all` or the `project` profile
 date: 2026-07-29
 status: revoked
 revokedBy: D-AUD-004
 ---
 
-# D-AUD-002 — Two profiles, because a third one would have been the same set
+# D-AUD-002 — A client is offered the `all` or the `project` profile
 
 **A client is offered one of two profiles, `all` and `project`, and the tools
 left out are named per tool rather than derived from the `provenance` of what

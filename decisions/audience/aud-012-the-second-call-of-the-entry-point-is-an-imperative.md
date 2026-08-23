@@ -19,7 +19,7 @@ do and one a sentence about a tool, and a run counted them eleven to one.
 ## Evidence
 
 - The benchmark of 2026-08-19,
-  [`D-SKL-033`](../task-skills/skl-033-activation-is-the-clients.md)
+  [`D-SKL-033`](../task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
   is where it is recorded: seventeen project tasks in Claude Code 2.1.234 on
   `claude-opus-5`, eleven `typo3_project_describe` calls and one
   `typo3_task_guide`.

@@ -58,6 +58,20 @@ final class Prose
     public const TITLE_WORDS = 12;
 
     /**
+     * How many words a name carries before a reader has to take it apart. The
+     * corpus reads at ten, and what is reported is what runs past that by two.
+     */
+    public const NAME_WORDS = 12;
+
+    /**
+     * What puts two claims in one name. A name states what has to hold; the
+     * case it is being told apart from is the docblock's — `D-DOC-051`.
+     *
+     * @var array<int, string>
+     */
+    private const JOINED = ['RatherThan', 'AndNot', 'ButNot', 'NotOnly', 'AsWellAs'];
+
+    /**
      * The files this repository writes about itself.
      *
      * `feedback/` is deliberately absent. A feedback is a session's report
@@ -152,6 +166,50 @@ final class Prose
         usort($titles, static fn(array $a, array $b): int => [$b['joined'], $b['words']] <=> [$a['joined'], $a['words']]);
 
         return $titles;
+    }
+
+    /**
+     * The test names a reader has to take apart, the two-claim ones first.
+     *
+     * A name is read in a failure list, where it is all there is: the file and
+     * the line say where, and the name says what was supposed to hold. One that
+     * joins two claims with `RatherThan` or `AndNot` states a case and its
+     * counter-case at once, and the second half is what the docblock is for.
+     *
+     * Reported and never failed on, like the titles above: a long name can be
+     * the honest one, and what the count is for is a corpus drifting back.
+     *
+     * @return list<array{name: string, file: string, words: int, joined: string}>
+     */
+    public static function names(): array
+    {
+        $names = [];
+        foreach (Finder::create()->files()->in(Paths::root() . '/tests')->name('*.php')->sortByName() as $file) {
+            preg_match_all('/\n    (?:public|private|protected) function (\w+)\(/', (string) file_get_contents($file->getPathname()), $found);
+            foreach ($found[1] as $name) {
+                $joined = '';
+                foreach (self::JOINED as $join) {
+                    if (str_contains($name, $join)) {
+                        $joined = $join;
+                        break;
+                    }
+                }
+                preg_match_all('/[A-Z][a-z0-9]*|^[a-z0-9]+/', $name, $words);
+                if ($joined === '' && count($words[0]) <= self::NAME_WORDS) {
+                    continue;
+                }
+                $names[] = [
+                    'name' => $name,
+                    'file' => $file->getFilename(),
+                    'words' => count($words[0]),
+                    'joined' => $joined,
+                ];
+            }
+        }
+
+        usort($names, static fn(array $a, array $b): int => [$b['joined'] !== '', $b['words']] <=> [$a['joined'] !== '', $a['words']]);
+
+        return $names;
     }
 
     /**

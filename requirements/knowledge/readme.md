@@ -22,7 +22,7 @@ when it is added.
 - [`R-KNW-012`][R-KNW-012] — Whether an extension is part of the core is answerable · held
 - [`R-KNW-013`][R-KNW-013] — A statement lives in the category it is asked from · held
 - [`R-KNW-014`][R-KNW-014] — A file list covers the one on its way out · held
-- [`R-KNW-015`][R-KNW-015] — Building the harness is covered, not assumed · held
+- [`R-KNW-015`][R-KNW-015] — Building the test harness is covered as its own subject · held
 - [`R-KNW-016`][R-KNW-016] — The test kind that needs a browser is covered · held
 - [`R-KNW-017`][R-KNW-017] — A convention read off the core carries its condition · held
 - [`R-KNW-018`][R-KNW-018] — Where an artifact can be verified is part of the answer · held
@@ -97,7 +97,7 @@ when it is added.
 [R-KNW-012]: knw-012-whether-an-extension-is-part-of-the-core-is-answerable.md
 [R-KNW-013]: knw-013-a-statement-lives-in-the-category-it-is-asked-from.md
 [R-KNW-014]: knw-014-a-file-list-covers-the-one-on-its-way-out.md
-[R-KNW-015]: knw-015-building-the-harness-is-covered-not-assumed.md
+[R-KNW-015]: knw-015-building-the-test-harness-is-covered-as-its-own-subject.md
 [R-KNW-016]: knw-016-the-test-kind-that-needs-a-browser-is-covered.md
 [R-KNW-017]: knw-017-a-convention-read-off-the-core-carries-its-condition.md
 [R-KNW-018]: knw-018-where-an-artifact-can-be-verified-is-part-of-the-answer.md

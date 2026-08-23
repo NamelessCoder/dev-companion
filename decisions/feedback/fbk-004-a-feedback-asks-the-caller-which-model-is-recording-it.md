@@ -1,11 +1,11 @@
 ---
 id: D-FBK-004
-title: The model is asked, because nothing else here can say it
+title: A feedback asks the caller which model is recording it
 date: 2026-07-31
 status: confirmed
 ---
 
-# D-FBK-004 — The model is asked, because nothing else here can say it
+# D-FBK-004 — A feedback asks the caller which model is recording it
 
 **`typo3_feedback_record` asks the caller which model is recording the feedback,
 declares the field required, and writes `unknown` rather than refusing the

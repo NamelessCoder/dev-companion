@@ -18,14 +18,14 @@ test. Both are legitimate, nothing fails on either, and
 
 ### audience
 
-- [`R-AUD-001`][R-AUD-001] — Three audiences, not one · held
+- [`R-AUD-001`][R-AUD-001] — Core, extension and site work are each served · held
 - [`R-AUD-002`][R-AUD-002] — The audience is a property of the task · held
 - [`R-AUD-003`][R-AUD-003] — Commit conventions differ by audience · held
 - [`R-AUD-004`][R-AUD-004] — The knowledge is bound to versions · held
 - [`R-AUD-005`][R-AUD-005] — An answer says who it obliges · held
 - [`R-AUD-006`][R-AUD-006] — The query language is English · held
 
-[R-AUD-001]: audience/aud-001-three-audiences-not-one.md
+[R-AUD-001]: audience/aud-001-core-extension-and-site-work-are-each-served.md
 [R-AUD-002]: audience/aud-002-the-audience-is-a-property-of-the-task.md
 [R-AUD-003]: audience/aud-003-commit-conventions-differ-by-audience.md
 [R-AUD-004]: audience/aud-004-the-knowledge-is-bound-to-versions.md
@@ -46,7 +46,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-DIS-010`][R-DIS-010] — Reachable and ready are two questions · held
 - [`R-DIS-011`][R-DIS-011] — The entrypoint installs its own client configuration · held
 - [`R-DIS-012`][R-DIS-012] — Codex setup installs the server and its skills · held
-- [`R-DIS-013`][R-DIS-013] — Which agent clients can be installed into · held
+- [`R-DIS-013`][R-DIS-013] — Every supported agent client can be installed into · held
 - [`R-DIS-014`][R-DIS-014] — An installed skill is a workflow, not a prompt fragment · held
 - [`R-DIS-015`][R-DIS-015] — The DDEV client entry names an entrypoint that exists · held
 - [`R-DIS-016`][R-DIS-016] — A repository that serves two majors is answered for both · held
@@ -72,7 +72,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-DIS-010]: discovery/dis-010-reachable-and-ready-are-two-questions.md
 [R-DIS-011]: discovery/dis-011-the-entrypoint-installs-its-own-client-configuration.md
 [R-DIS-012]: discovery/dis-012-codex-setup-installs-the-server-and-its-skills.md
-[R-DIS-013]: discovery/dis-013-which-agent-clients-can-be-installed-into.md
+[R-DIS-013]: discovery/dis-013-every-supported-agent-client-can-be-installed-into.md
 [R-DIS-014]: discovery/dis-014-an-installed-skill-is-a-workflow-not-a-prompt-fragment.md
 [R-DIS-015]: discovery/dis-015-the-ddev-client-entry-names-an-entrypoint-that-exists.md
 [R-DIS-016]: discovery/dis-016-a-repository-that-serves-two-majors-is-answered-for-both.md
@@ -225,7 +225,7 @@ test. Both are legitimate, nothing fails on either, and
 ### project
 
 - [`R-PRJ-001`][R-PRJ-001] — The project is describable from its files alone · held
-- [`R-PRJ-002`][R-PRJ-002] — One unreadable site costs that site and no other · held
+- [`R-PRJ-002`][R-PRJ-002] — One unreadable site configuration costs that site and no other · held
 - [`R-PRJ-003`][R-PRJ-003] — The installed changelog answers what a version changed · held
 - [`R-PRJ-004`][R-PRJ-004] — An upgrade is answered as an order of operations · held
 - [`R-PRJ-005`][R-PRJ-005] — What an extension registers is answered from the installation and its files · held
@@ -239,7 +239,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-PRJ-013`][R-PRJ-013] — The project answer states the Node its declared commands run on · held
 
 [R-PRJ-001]: project/prj-001-the-project-is-describable-from-its-files-alone.md
-[R-PRJ-002]: project/prj-002-one-unreadable-site-costs-that-site-and-no-other.md
+[R-PRJ-002]: project/prj-002-one-unreadable-site-configuration-costs-that-site-and-no-other.md
 [R-PRJ-003]: project/prj-003-the-installed-changelog-answers-what-a-version-changed.md
 [R-PRJ-004]: project/prj-004-an-upgrade-is-answered-as-an-order-of-operations.md
 [R-PRJ-005]: project/prj-005-what-an-extension-registers-is-answered-from-the-installation-and-its-files.md
@@ -261,7 +261,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-SCO-005`][R-SCO-005] — Every tool applies the same outside-the-core check · held
 - [`R-SCO-006`][R-SCO-006] — Every topic says which kind of work it is for · held
 - [`R-SCO-007`][R-SCO-007] — Only the caller shortens the tool list · held
-- [`R-SCO-008`][R-SCO-008] — What the scope excludes is not what the server answers · held
+- [`R-SCO-008`][R-SCO-008] — A subject the not-covered list omits is in scope · held
 - [`R-SCO-009`][R-SCO-009] — Individual tools can be excluded · held
 
 [R-SCO-001]: scope/sco-001-outside-the-core-is-recognised-from-structure-not-wording.md
@@ -271,7 +271,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-SCO-005]: scope/sco-005-every-tool-applies-the-same-outside-the-core-check.md
 [R-SCO-006]: scope/sco-006-every-topic-says-which-kind-of-work-it-is-for.md
 [R-SCO-007]: scope/sco-007-only-the-caller-shortens-the-tool-list.md
-[R-SCO-008]: scope/sco-008-what-the-scope-excludes-is-not-what-the-server-answers.md
+[R-SCO-008]: scope/sco-008-a-subject-the-not-covered-list-omits-is-in-scope.md
 [R-SCO-009]: scope/sco-009-individual-tools-can-be-excluded.md
 
 ### guides
@@ -358,7 +358,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-KNW-012`][R-KNW-012] — Whether an extension is part of the core is answerable · held
 - [`R-KNW-013`][R-KNW-013] — A statement lives in the category it is asked from · held
 - [`R-KNW-014`][R-KNW-014] — A file list covers the one on its way out · held
-- [`R-KNW-015`][R-KNW-015] — Building the harness is covered, not assumed · held
+- [`R-KNW-015`][R-KNW-015] — Building the test harness is covered as its own subject · held
 - [`R-KNW-016`][R-KNW-016] — The test kind that needs a browser is covered · held
 - [`R-KNW-017`][R-KNW-017] — A convention read off the core carries its condition · held
 - [`R-KNW-018`][R-KNW-018] — Where an artifact can be verified is part of the answer · held
@@ -433,7 +433,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-KNW-012]: knowledge/knw-012-whether-an-extension-is-part-of-the-core-is-answerable.md
 [R-KNW-013]: knowledge/knw-013-a-statement-lives-in-the-category-it-is-asked-from.md
 [R-KNW-014]: knowledge/knw-014-a-file-list-covers-the-one-on-its-way-out.md
-[R-KNW-015]: knowledge/knw-015-building-the-harness-is-covered-not-assumed.md
+[R-KNW-015]: knowledge/knw-015-building-the-test-harness-is-covered-as-its-own-subject.md
 [R-KNW-016]: knowledge/knw-016-the-test-kind-that-needs-a-browser-is-covered.md
 [R-KNW-017]: knowledge/knw-017-a-convention-read-off-the-core-carries-its-condition.md
 [R-KNW-018]: knowledge/knw-018-where-an-artifact-can-be-verified-is-part-of-the-answer.md

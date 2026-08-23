@@ -15,6 +15,7 @@ earns one.
 - [`D-DOC-048`][D-DOC-048] — A test declares the decision it holds · 2026-08-23
 - [`D-DOC-049`][D-DOC-049] — A requirement's tests are declared where the test is · 2026-08-23
 - [`D-DOC-050`][D-DOC-050] — What is written about a class is a lookup · 2026-08-23
+- [`D-DOC-051`][D-DOC-051] — A name carries one claim · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -44,7 +45,7 @@ earns one.
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
-- [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
+- [`D-DOC-014`][D-DOC-014] — A record directory keeps its listing and the site carries its description · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
@@ -61,6 +62,7 @@ earns one.
 [D-DOC-048]: doc-048-a-test-declares-the-decision-it-holds.md
 [D-DOC-049]: doc-049-a-requirements-tests-are-declared-where-the-test-is.md
 [D-DOC-050]: doc-050-what-is-written-about-a-class-is-a-lookup.md
+[D-DOC-051]: doc-051-a-name-carries-one-claim.md
 [D-DOC-038]: doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md
@@ -90,7 +92,7 @@ earns one.
 [D-DOC-011]: doc-011-a-schema-is-written-as-the-shape-it-validates.md
 [D-DOC-012]: doc-012-the-second-root-is-an-installation-this-repository-writes.md
 [D-DOC-013]: doc-013-a-commit-here-is-three-keywords-and-a-condensed-subject.md
-[D-DOC-014]: doc-014-a-working-directory-holds-entries-and-the-documentation-describes-them.md
+[D-DOC-014]: doc-014-a-record-directory-keeps-its-listing-and-the-site-carries-its-description.md
 [D-DOC-003]: doc-003-a-decision-says-what-came-back.md
 [D-DOC-004]: doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md

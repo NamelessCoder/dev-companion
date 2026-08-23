@@ -82,7 +82,7 @@ sentence.
   session about to write the file, rather than of one asking where files go.
 - The introspection half stays where it was assigned.
   `feedback/2026-08-01-003933` owns it, and
-  [`D-SKL-004`](../task-skills/skl-004-what-a-task-does-when-the-lookups-run-out.md)
+  [`D-SKL-004`](../task-skills/skl-004-a-question-no-lookup-settles-is-read-from-the-installed-source.md)
   puts it in `skills/base.md` rather than in this corpus, so the two sentences
   are in one place each and neither is written twice.
 

@@ -1,11 +1,11 @@
 ---
 id: D-ANS-085
-title: 'The project answer is owed by the repository'
+title: The project answer is read from the repository's own files
 date: 2026-08-18
 status: open
 ---
 
-# D-ANS-085 — The project answer is owed by the repository
+# D-ANS-085 — The project answer is read from the repository's own files
 
 **`typo3_project_describe` answers what the repository's own files declare
 wherever it finds a project root, and withholds only the three fields that are

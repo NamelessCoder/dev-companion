@@ -1,6 +1,6 @@
 # Scope — core conventions where they apply, and nowhere else
 
-These are how [`R-AUD-001`](../audience/aud-001-three-audiences-not-one.md) and
+These are how [`R-AUD-001`](../audience/aud-001-core-extension-and-site-work-are-each-served.md) and
 [`R-AUD-002`](../audience/aud-002-the-audience-is-a-property-of-the-task.md) are met
 in the tools that exist today. One vocabulary carries it: the `Scope` enum —
 `core`, `project`, `extension`, `any`, `uncertain` — which replaced the
@@ -17,7 +17,7 @@ when it is added.
 - [`R-SCO-005`][R-SCO-005] — Every tool applies the same outside-the-core check · held
 - [`R-SCO-006`][R-SCO-006] — Every topic says which kind of work it is for · held
 - [`R-SCO-007`][R-SCO-007] — Only the caller shortens the tool list · held
-- [`R-SCO-008`][R-SCO-008] — What the scope excludes is not what the server answers · held
+- [`R-SCO-008`][R-SCO-008] — A subject the not-covered list omits is in scope · held
 - [`R-SCO-009`][R-SCO-009] — Individual tools can be excluded · held
 
 [R-SCO-001]: sco-001-outside-the-core-is-recognised-from-structure-not-wording.md
@@ -27,5 +27,5 @@ when it is added.
 [R-SCO-005]: sco-005-every-tool-applies-the-same-outside-the-core-check.md
 [R-SCO-006]: sco-006-every-topic-says-which-kind-of-work-it-is-for.md
 [R-SCO-007]: sco-007-only-the-caller-shortens-the-tool-list.md
-[R-SCO-008]: sco-008-what-the-scope-excludes-is-not-what-the-server-answers.md
+[R-SCO-008]: sco-008-a-subject-the-not-covered-list-omits-is-in-scope.md
 [R-SCO-009]: sco-009-individual-tools-can-be-excluded.md

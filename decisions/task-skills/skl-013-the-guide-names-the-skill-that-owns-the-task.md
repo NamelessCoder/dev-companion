@@ -193,7 +193,7 @@ repository right are not core work.
 ### 2026-08-19 — the first Wrong if, in another project and the same client
 
 The benchmark
-[`D-SKL-033`](skl-033-activation-is-the-clients.md)
+[`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
 records for that date carries one `typo3_task_guide` call among seventeen
 project tasks. It answered `skills: ["typo3-content-element-development"]` with
 the line this entry put above the payload, and the session went on through

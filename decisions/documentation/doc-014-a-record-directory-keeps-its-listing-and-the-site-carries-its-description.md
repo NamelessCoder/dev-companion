@@ -1,11 +1,11 @@
 ---
 id: D-DOC-014
-title: A working directory holds entries, and the documentation describes them
+title: A record directory keeps its listing and the site carries its description
 date: 2026-08-03
 status: open
 ---
 
-# D-DOC-014 — A working directory holds entries, and the documentation describes them
+# D-DOC-014 — A record directory keeps its listing and the site carries its description
 
 **`requirements/` and `decisions/` are working directories: each readme carries
 what a command writes into it and a line pointing at the page that describes the

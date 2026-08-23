@@ -1,11 +1,11 @@
 ---
 id: D-ANS-063
-title: 'A core session defends its option list'
+title: An option list is what the caller did not know to ask for
 date: 2026-08-07
 status: open
 ---
 
-# D-ANS-063 — A core session defends its option list
+# D-ANS-063 — An option list is what the caller did not know to ask for
 
 **Three strength reports out of one day of core work name the same two kinds of
 answer as load-bearing.** One is an option a session would not have known to ask

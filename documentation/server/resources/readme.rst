@@ -58,7 +58,7 @@ The four shapes
 Two families rather than one, because the documents alone serve one audience.
 Most of that corpus is the core's own process, and most of the workflows are the
 work outside it, so offering both is what leaves each of the three audiences of
-`R-AUD-001 <../../../requirements/audience/aud-001-three-audiences-not-one.md>`_
+`R-AUD-001 <../../../requirements/audience/aud-001-core-extension-and-site-work-are-each-served.md>`_
 something to pick.
 
 Which of them an entry holds for is read off ``knowledge/server-scope.json`` and

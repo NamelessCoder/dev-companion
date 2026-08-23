@@ -34,6 +34,6 @@ one is added.
 
 ### Revoked, and kept as the record
 
-- [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
+- [`D-AUD-002`][D-AUD-002] — A client is offered the `all` or the `project` profile · 2026-07-29 → D-AUD-004
 
-[D-AUD-002]: aud-002-two-profiles-because-a-third-one-would-have-been-the-same-set.md
+[D-AUD-002]: aud-002-a-client-is-offered-the-all-or-the-project-profile.md

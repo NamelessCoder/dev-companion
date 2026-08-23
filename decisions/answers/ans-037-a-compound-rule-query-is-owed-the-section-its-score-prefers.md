@@ -69,7 +69,7 @@ task sentence is not one.
   a section's heading and body, so the document title is in no searched field —
   `## Summary Line` does not contain the words *commit* or *message*, which
   stand in the title and the preamble of `typo3-commit-messages.md`. This is
-  [`D-ANS-021`](ans-021-a-manual-query-is-told-what-short-buys.md)'s finding on
+  [`D-ANS-021`](ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)'s finding on
   a second corpus, and worse in one way: there the subject term was merely
   cheap, here it is absent from the field being searched.
 - Where a compound query does miss, the caller is told the wrong reason.

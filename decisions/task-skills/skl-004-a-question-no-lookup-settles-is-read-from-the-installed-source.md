@@ -1,13 +1,13 @@
 ---
 id: D-SKL-004
-title: 'What a task does when the lookups run out'
+title: A question no lookup settles is read from the installed source
 date: 2026-08-02
 status: open
 coveredBy:
   - SkillTest::theInstalledSourceIsTheStepAfterTheLookups
 ---
 
-# D-SKL-004 — What a task does when the lookups run out
+# D-SKL-004 — A question no lookup settles is read from the installed source
 
 **The order's answer to a question no lookup settles is a finding that says so.
 A session that has to produce working markup cannot write one, and the installed

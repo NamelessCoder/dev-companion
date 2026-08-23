@@ -45,7 +45,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
   `fluid-templates`, `content-elements`, `frontend-records` with
   `tca-schema-api`, and `project-extension-tests` — so the joined query misses
   three of the four hints its own parts find. That is
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  [`D-ANS-021`](../answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)
   measured on a hint probe rather than on the manual.
 - Nothing about TYPO3 was established here, deliberately. Whether an `f:else`
   really forces an explicit `f:then`, and what `project-extension-tests` already
@@ -109,7 +109,7 @@ lands on something:
   [`D-KNW-014`](../knowledge/knw-014-the-record-a-v14-preview-template-is-handed-is-a-gap.md)
 - **`typo3_documentation_lookup` reaching the Record objects page** — `002928`,
   whose premise
-  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  [`D-ANS-021`](../answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)
   rejected
 - **the Fluid conditional, and object access on the record** — `003448` and
   `003000`; the record half is `R-KNW-041`
@@ -174,7 +174,7 @@ skill's words.
   `D-KNW-017` records the withdrawal and reads the trigger out
 
 Its own query reaches less than its halves do, which is the pattern
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+[`D-ANS-021`](../answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)
 names and `002951` already showed on a probe. Re-run in this checkout on
 2026-08-02, `bin/cli hints:probe` matches nothing for the feedback's own `Query`
 line, nothing for either clause of its **Suggestion** in the words it wrote them
@@ -298,7 +298,7 @@ which is where this repository already keeps a per-run cost reading.
 The summary's own query reaches less than its halves do, for the fourth time.
 `bin/cli hints:probe` on it matches `content-elements` and `sitepackage-layout`
 and nothing else, against the 21 hints the session fetched by id — the dilution
-[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+[`D-ANS-021`](../answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md)
 names, measured on a probe as it was on `002951`.
 
 This feedback is archived by the commit that writes the measurement, and that
@@ -355,11 +355,11 @@ mapping unusually exact, because the feedback names the pairs itself:
 
 - **"which calls would you not make again" → the two `typo3_project_describe`
   answers** — archived `070333`, judged in
-  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository.md)
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-read-from-the-repositorys-own-files.md)
 - **"which documents did you read whole" → the guides** — archived `070538`,
   which names the page it wanted; its list-was-never-rendered half was trimmed
   on 2026-08-18 into
-  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-owed-by-the-repository.md)
+  [`D-ANS-085`](../answers/ans-085-the-project-answer-is-read-from-the-repositorys-own-files.md)
   and `074226`
 - **"what did you never put to it" → `typo3_extension_describe`** — archived
   `070611`, corrected and taken further by `071500`

@@ -138,6 +138,19 @@ final class ProseCheck
             $output->writeln(sprintf('  %3d  %-11s %s', $title['words'], $title['id'], $title['title']));
         }
 
+        $names = Prose::names();
+        $joined = array_values(array_filter($names, static fn(array $name): bool => $name['joined'] !== ''));
+        $output->writeln('');
+        $output->writeln(sprintf(
+            '%d test names run past %d words, %d of them joining two claims outright.',
+            count($names),
+            Prose::NAME_WORDS,
+            count($joined),
+        ));
+        foreach (array_slice($names, 0, self::NAMED) as $name) {
+            $output->writeln(sprintf('  %3d  %-30s %s', $name['words'], $name['file'], $name['name']));
+        }
+
         $leads = Prose::leadsOverTheMeasure();
         if ($leads === []) {
             $output->writeln('');

@@ -1,11 +1,11 @@
 ---
 id: D-KNW-005
-title: One `Scope` replaced the four vocabularies
+title: '`Scope` is the one word for which work a statement is for'
 date: 2026-08-02
 status: confirmed
 ---
 
-# D-KNW-005 — One `Scope` replaced the four vocabularies
+# D-KNW-005 — `Scope` is the one word for which work a statement is for
 
 **`binding`, `provenance`, `audience` and the `outsideCore` boolean are one
 backed enum, `Knowledge\Scope`, with the cases `core`, `project`, `extension`,

@@ -1,11 +1,11 @@
 ---
 id: D-ANS-073
-title: 'Which lines can take a patch is not where it belongs'
+title: What can take a patch and where this one goes are two readings
 date: 2026-08-10
 status: open
 ---
 
-# D-ANS-073 — Which lines can take a patch is not where it belongs
+# D-ANS-073 — What can take a patch and where this one goes are two readings
 
 **A bug fix and a task reach the development line and the one release line back
 from it, and no further without severity.**

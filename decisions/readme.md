@@ -90,7 +90,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-090`][D-ANS-090] — A matched set larger than a page is answered by its shape · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate · 2026-08-18
-- [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository · 2026-08-18
+- [`D-ANS-085`][D-ANS-085] — The project answer is read from the repository's own files · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries its votes and its comments · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
@@ -101,7 +101,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-076`][D-ANS-076] — A search matching one page answers with the page · 2026-08-11
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
 - [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes · 2026-08-10
-- [`D-ANS-073`][D-ANS-073] — Which lines can take a patch is not where it belongs · 2026-08-10
+- [`D-ANS-073`][D-ANS-073] — What can take a patch and where this one goes are two readings · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it · 2026-08-09
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs · 2026-08-08
@@ -112,13 +112,13 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment · 2026-08-07
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
-- [`D-ANS-063`][D-ANS-063] — A core session defends its option list · 2026-08-07
+- [`D-ANS-063`][D-ANS-063] — An option list is what the caller did not know to ask for · 2026-08-07
 - [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue its commit message names · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
 - [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named · 2026-08-05
 - [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup · 2026-08-05 · confirmed
-- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task · 2026-08-05
+- [`D-ANS-059`][D-ANS-059] — What a core session named as load-bearing came from outside · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is · 2026-08-04
@@ -142,7 +142,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched as itself · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — An unsupported question is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
-- [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02 · confirmed
+- [`D-ANS-007`][D-ANS-007] — `unsupported` and `unavailable` are two answers, and `cause` says why · 2026-08-02 · confirmed
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
@@ -156,7 +156,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element · 2026-08-02 · confirmed
 - [`D-ANS-019`][D-ANS-019] — Three registration kinds are read the way core reads them · 2026-08-02 · confirmed
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
-- [`D-ANS-021`][D-ANS-021] — A manual query is told what short buys · 2026-08-02
+- [`D-ANS-021`][D-ANS-021] — The manual lookup says why a short query ranks better · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02 · confirmed
@@ -166,7 +166,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The manual ranking is diluted by an ordinary title's length · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
-- [`D-ANS-002`][D-ANS-002] — Three numbers decide what a lookup answers · 2026-07-30 · confirmed
+- [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
@@ -181,7 +181,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-090]: answers/ans-090-a-matched-set-larger-than-a-page-is-answered-by-its-shape.md
 [D-ANS-082]: answers/ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-084]: answers/ans-084-a-curated-phrase-crosses-the-domain-gate.md
-[D-ANS-085]: answers/ans-085-the-project-answer-is-owed-by-the-repository.md
+[D-ANS-085]: answers/ans-085-the-project-answer-is-read-from-the-repositorys-own-files.md
 [D-ANS-083]: answers/ans-083-the-unsupported-answer-is-the-whole-diagnostic.md
 [D-ANS-079]: answers/ans-079-a-change-answer-carries-its-votes-and-its-comments.md
 [D-ANS-080]: answers/ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
@@ -192,7 +192,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-076]: answers/ans-076-a-search-matching-one-page-answers-with-the-page.md
 [D-ANS-071]: answers/ans-071-the-environment-answer-names-the-project-and-what-its-files-serve.md
 [D-ANS-072]: answers/ans-072-a-tool-description-says-which-questions-it-takes.md
-[D-ANS-073]: answers/ans-073-which-lines-can-take-a-patch-is-not-where-it-belongs.md
+[D-ANS-073]: answers/ans-073-what-can-take-a-patch-and-where-this-one-goes-are-two-readings.md
 [D-ANS-068]: answers/ans-068-a-change-answer-carries-the-ref-that-fetches-the-patch-set.md
 [D-ANS-070]: answers/ans-070-a-document-is-handed-over-by-the-call-that-reads-it.md
 [D-ANS-064]: answers/ans-064-an-issue-answer-holds-what-a-triage-needs.md
@@ -203,13 +203,13 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-060]: answers/ans-060-a-bare-word-in-appliesto-reaches-a-path-segment.md
 [D-ANS-061]: answers/ans-061-an-answer-that-names-a-document-hands-it-over.md
 [D-ANS-062]: answers/ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md
-[D-ANS-063]: answers/ans-063-a-core-session-defends-its-option-list.md
+[D-ANS-063]: answers/ans-063-an-option-list-is-what-the-caller-did-not-know-to-ask-for.md
 [D-ANS-054]: answers/ans-054-the-backlog-is-a-third-way-into-the-tracker.md
 [D-ANS-055]: answers/ans-055-a-change-answers-for-an-issue-its-commit-message-names.md
 [D-ANS-056]: answers/ans-056-a-search-hit-is-filled-from-the-issue-it-is.md
 [D-ANS-057]: answers/ans-057-what-hangs-off-an-issue-is-named.md
 [D-ANS-058]: answers/ans-058-the-release-lines-a-trailer-claims-are-a-lookup.md
-[D-ANS-059]: answers/ans-059-what-this-server-holds-carried-the-task.md
+[D-ANS-059]: answers/ans-059-what-a-core-session-named-as-load-bearing-came-from-outside.md
 [D-ANS-048]: answers/ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: answers/ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: answers/ans-050-a-curated-needle-matches-the-word-it-is.md
@@ -233,7 +233,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-047]: answers/ans-047-a-word-behind-a-namespace-prefix-is-searched-as-itself.md
 [D-ANS-005]: answers/ans-005-an-unsupported-question-is-answered-in-a-shape-of-its-own.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
-[D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-one-word-for-why.md
+[D-ANS-007]: answers/ans-007-unsupported-and-unavailable-are-two-answers-and-cause-says-why.md
 [D-ANS-008]: answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
 [D-ANS-009]: answers/ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-the-file.md
 [D-ANS-010]: answers/ans-010-does-it-still-work-is-a-question-for-the-manual-not-the-changelog.md
@@ -247,7 +247,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-018]: answers/ans-018-a-plugin-is-a-kind-of-content-element.md
 [D-ANS-019]: answers/ans-019-three-registration-kinds-are-read-the-way-core-reads-them.md
 [D-ANS-020]: answers/ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
-[D-ANS-021]: answers/ans-021-a-manual-query-is-told-what-short-buys.md
+[D-ANS-021]: answers/ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md
 [D-ANS-022]: answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md
 [D-ANS-024]: answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
@@ -257,7 +257,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-031]: answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: answers/ans-032-the-manual-ranking-is-diluted-by-an-ordinary-titles-length.md
 [D-ANS-004]: answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
-[D-ANS-002]: answers/ans-002-three-numbers-decide-what-a-lookup-answers.md
+[D-ANS-002]: answers/ans-002-rarity-field-length-and-corpus-length-decide-a-lookups-rank.md
 [D-ANS-003]: answers/ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md
 
 ### knowledge
@@ -315,7 +315,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
 - [`D-KNW-032`][D-KNW-032] — The corpus is filed by question, and two splits were taken back · 2026-08-03
 - [`D-KNW-033`][D-KNW-033] — No hint carries `any` · 2026-08-03
-- [`D-KNW-034`][D-KNW-034] — The file is the subject · 2026-08-03
+- [`D-KNW-034`][D-KNW-034] — The corpus is one file per subject, named after it · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
 - [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload · 2026-08-03
@@ -335,7 +335,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-052`][D-KNW-052] — The order a Fluid template name resolves in is a gap · 2026-08-03 · confirmed
 - [`D-KNW-053`][D-KNW-053] — The root-package layout is stated from an installation · 2026-08-03
 - [`D-KNW-054`][D-KNW-054] — What booting a declared installation takes is one hint · 2026-08-03
-- [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02 · confirmed
+- [`D-KNW-005`][D-KNW-005] — `Scope` is the one word for which work a statement is for · 2026-08-02 · confirmed
 - [`D-KNW-006`][D-KNW-006] — A backend word adds no domain to a backend-only task · 2026-08-02 · confirmed
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
@@ -411,7 +411,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-031]: knowledge/knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md
 [D-KNW-032]: knowledge/knw-032-the-corpus-is-filed-by-question-and-two-splits-were-taken-back.md
 [D-KNW-033]: knowledge/knw-033-no-hint-carries-any.md
-[D-KNW-034]: knowledge/knw-034-the-file-is-the-subject.md
+[D-KNW-034]: knowledge/knw-034-the-corpus-is-one-file-per-subject-named-after-it.md
 [D-KNW-035]: knowledge/knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
 [D-KNW-036]: knowledge/knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
 [D-KNW-037]: knowledge/knw-037-a-content-element-preview-draws-the-elements-own-payload.md
@@ -431,7 +431,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-052]: knowledge/knw-052-the-order-a-fluid-template-name-resolves-in-is-a-gap.md
 [D-KNW-053]: knowledge/knw-053-the-root-package-layout-is-stated-from-an-installation.md
 [D-KNW-054]: knowledge/knw-054-what-booting-a-declared-installation-takes-is-one-hint.md
-[D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
+[D-KNW-005]: knowledge/knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md
 [D-KNW-006]: knowledge/knw-006-a-backend-word-adds-no-domain-to-a-backend-only-task.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-008]: knowledge/knw-008-tooling-is-a-row-the-answer-crosses-not-a-dimension-the-corpus-stores.md
@@ -553,7 +553,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### evidence
 
 - [`D-EVI-007`][D-EVI-007] — A case no test holds says so with its exit code · 2026-08-18
-- [`D-EVI-008`][D-EVI-008] — What the server buys is a ceiling rather than a lower average · 2026-08-18
+- [`D-EVI-008`][D-EVI-008] — The server collapses the spread of a lookup rather than its median · 2026-08-18
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
 - [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared with its database · 2026-08-02
@@ -562,7 +562,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31 · confirmed
 
 [D-EVI-007]: evidence/evi-007-a-case-no-test-holds-says-so-with-its-exit-code.md
-[D-EVI-008]: evidence/evi-008-what-the-server-buys-is-a-ceiling-rather-than-a-lower-average.md
+[D-EVI-008]: evidence/evi-008-the-server-collapses-the-spread-of-a-lookup-rather-than-its-median.md
 [D-EVI-006]: evidence/evi-006-one-installation-per-covered-version-kept-and-started.md
 [D-EVI-004]: evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
 [D-EVI-005]: evidence/evi-005-a-registration-nothing-can-reach-is-cleared-with-its-database.md
@@ -606,7 +606,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
-- [`D-SKL-033`][D-SKL-033] — Activation is the client's · 2026-08-11
+- [`D-SKL-033`][D-SKL-033] — Whether a skill is activated is the client's and the model's · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step is skippable on what the session holds · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage reaching for a previous attempt is routed to it · 2026-08-09
@@ -636,7 +636,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-013`][D-SKL-013] — The guide names the skill that owns the task · 2026-08-03
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes · 2026-08-02
-- [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out · 2026-08-02
+- [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-067]: task-skills/skl-067-maintaining-a-packages-asset-build-earns-a-task-skill.md
@@ -673,7 +673,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-043]: task-skills/skl-043-a-rule-query-carries-two-subjects.md
 [D-SKL-035]: task-skills/skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: task-skills/skl-036-a-skill-runs-where-the-installer-put-it.md
-[D-SKL-033]: task-skills/skl-033-activation-is-the-clients.md
+[D-SKL-033]: task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md
 [D-SKL-034]: task-skills/skl-034-a-step-is-skippable-on-what-the-session-holds.md
 [D-SKL-032]: task-skills/skl-032-a-probe-is-worth-what-the-session-can-run.md
 [D-SKL-028]: task-skills/skl-028-a-triage-reaching-for-a-previous-attempt-is-routed-to-it.md
@@ -703,7 +703,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-013]: task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed-not-the-list-it-closes-on.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
-[D-SKL-004]: task-skills/skl-004-what-a-task-does-when-the-lookups-run-out.md
+[D-SKL-004]: task-skills/skl-004-a-question-no-lookup-settles-is-read-from-the-installed-source.md
 [D-SKL-001]: task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md
 
 ### feedback
@@ -745,7 +745,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
 - [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
-- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31 · confirmed
+- [`D-FBK-004`][D-FBK-004] — A feedback asks the caller which model is recording it · 2026-07-31 · confirmed
 
 [D-FBK-051]: feedback/fbk-051-what-the-ter-already-holds-is-a-lookup-of-its-own.md
 [D-FBK-050]: feedback/fbk-050-a-packages-release-policy-is-asked-rather-than-derived.md
@@ -784,7 +784,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-FBK-010]: feedback/fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-001]: feedback/fbk-001-the-backlog-is-read-out-rather-than-enforced.md
 [D-FBK-002]: feedback/fbk-002-the-order-of-the-work-is-declared-not-inferred.md
-[D-FBK-004]: feedback/fbk-004-the-model-is-asked-because-nothing-else-here-can-say-it.md
+[D-FBK-004]: feedback/fbk-004-a-feedback-asks-the-caller-which-model-is-recording-it.md
 
 ### documentation
 
@@ -795,6 +795,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-048`][D-DOC-048] — A test declares the decision it holds · 2026-08-23
 - [`D-DOC-049`][D-DOC-049] — A requirement's tests are declared where the test is · 2026-08-23
 - [`D-DOC-050`][D-DOC-050] — What is written about a class is a lookup · 2026-08-23
+- [`D-DOC-051`][D-DOC-051] — A name carries one claim · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -824,7 +825,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
-- [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
+- [`D-DOC-014`][D-DOC-014] — A record directory keeps its listing and the site carries its description · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back · 2026-08-02 · confirmed
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02 · confirmed
@@ -841,6 +842,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-048]: documentation/doc-048-a-test-declares-the-decision-it-holds.md
 [D-DOC-049]: documentation/doc-049-a-requirements-tests-are-declared-where-the-test-is.md
 [D-DOC-050]: documentation/doc-050-what-is-written-about-a-class-is-a-lookup.md
+[D-DOC-051]: documentation/doc-051-a-name-carries-one-claim.md
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md
@@ -870,7 +872,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-011]: documentation/doc-011-a-schema-is-written-as-the-shape-it-validates.md
 [D-DOC-012]: documentation/doc-012-the-second-root-is-an-installation-this-repository-writes.md
 [D-DOC-013]: documentation/doc-013-a-commit-here-is-three-keywords-and-a-condensed-subject.md
-[D-DOC-014]: documentation/doc-014-a-working-directory-holds-entries-and-the-documentation-describes-them.md
+[D-DOC-014]: documentation/doc-014-a-record-directory-keeps-its-listing-and-the-site-carries-its-description.md
 [D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back.md
 [D-DOC-004]: documentation/doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
@@ -923,7 +925,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
-- [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
+- [`D-AUD-002`][D-AUD-002] — A client is offered the `all` or the `project` profile · 2026-07-29 → D-AUD-004
 - [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated · 2026-07-29
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
 - [`D-DIS-003`][D-DIS-003] — A label query is words and the console is asked with a regex · 2026-07-29
@@ -963,7 +965,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md
 [D-KNW-003]: knowledge/knw-003-provenance-is-not-the-third-spelling-of-binding-and-stays.md
 [D-ANS-001]: answers/ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md
-[D-AUD-002]: audience/aud-002-two-profiles-because-a-third-one-would-have-been-the-same-set.md
+[D-AUD-002]: audience/aud-002-a-client-is-offered-the-all-or-the-project-profile.md
 [D-CAT-002]: catalog/cat-002-the-index-of-worked-examples-is-curated.md
 [D-DIS-002]: discovery/dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
 [D-DIS-003]: discovery/dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md

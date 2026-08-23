@@ -1,14 +1,14 @@
 ---
 id: R-SCO-008
-title: 'What the scope excludes is not what the server answers'
+title: A subject the not-covered list omits is in scope
 status: held
 heldBy:
+  - ScopeTest::aTopicWithAHintIsNotDeclined
   - ScopeTest::noExclusionDeniesASourceTheServerReads
   - ScopeTest::theDeclaredInterpreterIsNotDeclined
-  - ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers
 ---
 
-# R-SCO-008 — What the scope excludes is not what the server answers
+# R-SCO-008 — A subject the not-covered list omits is in scope
 
 **The declared scope says what the server does, and the not-covered list is
 exhaustive.**

@@ -1,11 +1,11 @@
 ---
 id: D-ANS-002
-title: 'Three numbers decide what a lookup answers'
+title: Rarity, field length and corpus length decide a lookup's rank
 date: 2026-07-30
 status: confirmed
 ---
 
-# D-ANS-002 — Three numbers decide what a lookup answers
+# D-ANS-002 — Rarity, field length and corpus length decide a lookup's rank
 
 **An unknown term, a diluted long field and a per-corpus reference length decide
 what a lookup answers.**

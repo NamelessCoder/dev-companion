@@ -44,7 +44,7 @@ is here; nothing carries a word either session typed, so nothing fired.
 - The `EXT:blog` session read the skill listing and called nothing. So the
   description in that listing is the only lever that reaches a session which
   never asks — activation is the client's, and
-  [`D-SKL-033`](skl-033-activation-is-the-clients.md)
+  [`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
   is where that boundary was drawn.
 
 ## Decided

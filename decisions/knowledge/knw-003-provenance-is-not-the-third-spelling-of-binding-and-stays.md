@@ -60,4 +60,4 @@ and it was never an obligation: it says where an answer is read from, which
 `source` on the same topic already said. It is gone as a value, the four topics
 that carried it are `any`, and all four vocabularies — `binding`, `provenance`,
 `audience` and the `outsideCore` boolean — are the `Knowledge\Scope` enum. See
-[`D-KNW-005`](knw-005-one-scope-replaced-the-four-vocabularies.md).
+[`D-KNW-005`](knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md).

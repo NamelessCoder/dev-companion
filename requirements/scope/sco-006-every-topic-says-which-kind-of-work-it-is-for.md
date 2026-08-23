@@ -19,7 +19,7 @@ it.
 
 Where an answer is read from is a different question and `source` already
 answers it, so `installation` stopped being a value of this field on 2026-08-02
-([`D-KNW-005`](../../decisions/knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md)).
+([`D-KNW-005`](../../decisions/knowledge/knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md)).
 
 ## From
 

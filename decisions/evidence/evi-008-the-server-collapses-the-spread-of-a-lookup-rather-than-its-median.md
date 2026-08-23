@@ -1,11 +1,11 @@
 ---
 id: D-EVI-008
-title: What the server buys is a ceiling rather than a lower average
+title: The server collapses the spread of a lookup rather than its median
 date: 2026-08-18
 status: open
 ---
 
-# D-EVI-008 — What the server buys is a ceiling rather than a lower average
+# D-EVI-008 — The server collapses the spread of a lookup rather than its median
 
 **Measured against sessions without it, this server left the median cost of a
 lookup roughly unchanged and collapsed the spread — so the promise says

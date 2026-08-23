@@ -7,7 +7,7 @@ See [the requirements readme](../readme.md) for how an entry is written and
 when it is added.
 
 - [`R-PRJ-001`][R-PRJ-001] — The project is describable from its files alone · held
-- [`R-PRJ-002`][R-PRJ-002] — One unreadable site costs that site and no other · held
+- [`R-PRJ-002`][R-PRJ-002] — One unreadable site configuration costs that site and no other · held
 - [`R-PRJ-003`][R-PRJ-003] — The installed changelog answers what a version changed · held
 - [`R-PRJ-004`][R-PRJ-004] — An upgrade is answered as an order of operations · held
 - [`R-PRJ-005`][R-PRJ-005] — What an extension registers is answered from the installation and its files · held
@@ -21,7 +21,7 @@ when it is added.
 - [`R-PRJ-013`][R-PRJ-013] — The project answer states the Node its declared commands run on · held
 
 [R-PRJ-001]: prj-001-the-project-is-describable-from-its-files-alone.md
-[R-PRJ-002]: prj-002-one-unreadable-site-costs-that-site-and-no-other.md
+[R-PRJ-002]: prj-002-one-unreadable-site-configuration-costs-that-site-and-no-other.md
 [R-PRJ-003]: prj-003-the-installed-changelog-answers-what-a-version-changed.md
 [R-PRJ-004]: prj-004-an-upgrade-is-answered-as-an-order-of-operations.md
 [R-PRJ-005]: prj-005-what-an-extension-registers-is-answered-from-the-installation-and-its-files.md

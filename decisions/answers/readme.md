@@ -19,7 +19,7 @@ one is added.
 - [`D-ANS-090`][D-ANS-090] — A matched set larger than a page is answered by its shape · 2026-08-19
 - [`D-ANS-082`][D-ANS-082] — The project answer states how its three PHP numbers relate · 2026-08-18
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate · 2026-08-18
-- [`D-ANS-085`][D-ANS-085] — The project answer is owed by the repository · 2026-08-18
+- [`D-ANS-085`][D-ANS-085] — The project answer is read from the repository's own files · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic · 2026-08-17
 - [`D-ANS-079`][D-ANS-079] — A change answer carries its votes and its comments · 2026-08-14
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
@@ -30,7 +30,7 @@ one is added.
 - [`D-ANS-076`][D-ANS-076] — A search matching one page answers with the page · 2026-08-11
 - [`D-ANS-071`][D-ANS-071] — The environment answer names the project and what its files serve · 2026-08-10
 - [`D-ANS-072`][D-ANS-072] — A tool description says which questions it takes · 2026-08-10
-- [`D-ANS-073`][D-ANS-073] — Which lines can take a patch is not where it belongs · 2026-08-10
+- [`D-ANS-073`][D-ANS-073] — What can take a patch and where this one goes are two readings · 2026-08-10
 - [`D-ANS-068`][D-ANS-068] — A change answer carries the ref that fetches the patch set · 2026-08-09
 - [`D-ANS-070`][D-ANS-070] — A document is handed over by the call that reads it · 2026-08-09
 - [`D-ANS-064`][D-ANS-064] — An issue answer holds what a triage needs · 2026-08-08
@@ -41,13 +41,13 @@ one is added.
 - [`D-ANS-060`][D-ANS-060] — A bare word in `appliesTo` reaches a path segment · 2026-08-07
 - [`D-ANS-061`][D-ANS-061] — An answer that names a document hands it over · 2026-08-07
 - [`D-ANS-062`][D-ANS-062] — An anonymous read cannot tell a restricted change from an absent one · 2026-08-07
-- [`D-ANS-063`][D-ANS-063] — A core session defends its option list · 2026-08-07
+- [`D-ANS-063`][D-ANS-063] — An option list is what the caller did not know to ask for · 2026-08-07
 - [`D-ANS-054`][D-ANS-054] — The backlog is a third way into the tracker · 2026-08-05 · confirmed
 - [`D-ANS-055`][D-ANS-055] — A change answers for an issue its commit message names · 2026-08-05
 - [`D-ANS-056`][D-ANS-056] — A search hit is filled from the issue it is · 2026-08-05
 - [`D-ANS-057`][D-ANS-057] — What hangs off an issue is named · 2026-08-05
 - [`D-ANS-058`][D-ANS-058] — The release lines a trailer claims are a lookup · 2026-08-05 · confirmed
-- [`D-ANS-059`][D-ANS-059] — What this server holds carried the task · 2026-08-05
+- [`D-ANS-059`][D-ANS-059] — What a core session named as load-bearing came from outside · 2026-08-05
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is · 2026-08-04
@@ -71,7 +71,7 @@ one is added.
 - [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched as itself · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — An unsupported question is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
-- [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02 · confirmed
+- [`D-ANS-007`][D-ANS-007] — `unsupported` and `unavailable` are two answers, and `cause` says why · 2026-08-02 · confirmed
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
@@ -85,7 +85,7 @@ one is added.
 - [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element · 2026-08-02 · confirmed
 - [`D-ANS-019`][D-ANS-019] — Three registration kinds are read the way core reads them · 2026-08-02 · confirmed
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
-- [`D-ANS-021`][D-ANS-021] — A manual query is told what short buys · 2026-08-02
+- [`D-ANS-021`][D-ANS-021] — The manual lookup says why a short query ranks better · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02 · confirmed
@@ -95,7 +95,7 @@ one is added.
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The manual ranking is diluted by an ordinary title's length · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
-- [`D-ANS-002`][D-ANS-002] — Three numbers decide what a lookup answers · 2026-07-30 · confirmed
+- [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-091]: ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
@@ -110,7 +110,7 @@ one is added.
 [D-ANS-090]: ans-090-a-matched-set-larger-than-a-page-is-answered-by-its-shape.md
 [D-ANS-082]: ans-082-the-project-answer-states-how-its-three-php-numbers-relate.md
 [D-ANS-084]: ans-084-a-curated-phrase-crosses-the-domain-gate.md
-[D-ANS-085]: ans-085-the-project-answer-is-owed-by-the-repository.md
+[D-ANS-085]: ans-085-the-project-answer-is-read-from-the-repositorys-own-files.md
 [D-ANS-083]: ans-083-the-unsupported-answer-is-the-whole-diagnostic.md
 [D-ANS-079]: ans-079-a-change-answer-carries-its-votes-and-its-comments.md
 [D-ANS-080]: ans-080-a-change-answer-names-the-siblings-that-share-its-change-id.md
@@ -121,7 +121,7 @@ one is added.
 [D-ANS-076]: ans-076-a-search-matching-one-page-answers-with-the-page.md
 [D-ANS-071]: ans-071-the-environment-answer-names-the-project-and-what-its-files-serve.md
 [D-ANS-072]: ans-072-a-tool-description-says-which-questions-it-takes.md
-[D-ANS-073]: ans-073-which-lines-can-take-a-patch-is-not-where-it-belongs.md
+[D-ANS-073]: ans-073-what-can-take-a-patch-and-where-this-one-goes-are-two-readings.md
 [D-ANS-068]: ans-068-a-change-answer-carries-the-ref-that-fetches-the-patch-set.md
 [D-ANS-070]: ans-070-a-document-is-handed-over-by-the-call-that-reads-it.md
 [D-ANS-064]: ans-064-an-issue-answer-holds-what-a-triage-needs.md
@@ -132,13 +132,13 @@ one is added.
 [D-ANS-060]: ans-060-a-bare-word-in-appliesto-reaches-a-path-segment.md
 [D-ANS-061]: ans-061-an-answer-that-names-a-document-hands-it-over.md
 [D-ANS-062]: ans-062-an-anonymous-read-cannot-tell-a-restricted-change-from-an-absent-one.md
-[D-ANS-063]: ans-063-a-core-session-defends-its-option-list.md
+[D-ANS-063]: ans-063-an-option-list-is-what-the-caller-did-not-know-to-ask-for.md
 [D-ANS-054]: ans-054-the-backlog-is-a-third-way-into-the-tracker.md
 [D-ANS-055]: ans-055-a-change-answers-for-an-issue-its-commit-message-names.md
 [D-ANS-056]: ans-056-a-search-hit-is-filled-from-the-issue-it-is.md
 [D-ANS-057]: ans-057-what-hangs-off-an-issue-is-named.md
 [D-ANS-058]: ans-058-the-release-lines-a-trailer-claims-are-a-lookup.md
-[D-ANS-059]: ans-059-what-this-server-holds-carried-the-task.md
+[D-ANS-059]: ans-059-what-a-core-session-named-as-load-bearing-came-from-outside.md
 [D-ANS-048]: ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: ans-050-a-curated-needle-matches-the-word-it-is.md
@@ -162,7 +162,7 @@ one is added.
 [D-ANS-047]: ans-047-a-word-behind-a-namespace-prefix-is-searched-as-itself.md
 [D-ANS-005]: ans-005-an-unsupported-question-is-answered-in-a-shape-of-its-own.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
-[D-ANS-007]: ans-007-two-shapes-for-not-answered-one-word-for-why.md
+[D-ANS-007]: ans-007-unsupported-and-unavailable-are-two-answers-and-cause-says-why.md
 [D-ANS-008]: ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
 [D-ANS-009]: ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-the-file.md
 [D-ANS-010]: ans-010-does-it-still-work-is-a-question-for-the-manual-not-the-changelog.md
@@ -176,7 +176,7 @@ one is added.
 [D-ANS-018]: ans-018-a-plugin-is-a-kind-of-content-element.md
 [D-ANS-019]: ans-019-three-registration-kinds-are-read-the-way-core-reads-them.md
 [D-ANS-020]: ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
-[D-ANS-021]: ans-021-a-manual-query-is-told-what-short-buys.md
+[D-ANS-021]: ans-021-the-manual-lookup-says-why-a-short-query-ranks-better.md
 [D-ANS-022]: ans-022-the-matcher-takes-a-hyphenated-compound-apart-measured-over-the-corpus-first.md
 [D-ANS-024]: ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
@@ -186,7 +186,7 @@ one is added.
 [D-ANS-031]: ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: ans-032-the-manual-ranking-is-diluted-by-an-ordinary-titles-length.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
-[D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
+[D-ANS-002]: ans-002-rarity-field-length-and-corpus-length-decide-a-lookups-rank.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md
 
 ### Revoked, and kept as the record

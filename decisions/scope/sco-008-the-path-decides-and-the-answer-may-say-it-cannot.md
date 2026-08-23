@@ -82,4 +82,4 @@ carrying it already carried the scope beside it. Scope::audienceOf() is
 `Scope::of()` and answers a case of the `Knowledge\Scope` enum rather than a
 string, with `outside-core` split into `project` and `extension` — the three
 audiences `R-AUD-001` names. See
-[`D-KNW-005`](../knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md).
+[`D-KNW-005`](../knowledge/knw-005-scope-is-the-one-word-for-which-work-a-statement-is-for.md).

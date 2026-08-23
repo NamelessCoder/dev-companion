@@ -41,7 +41,7 @@ one is added.
 - [`D-SKL-043`][D-SKL-043] — A rule query carries two subjects · 2026-08-14
 - [`D-SKL-035`][D-SKL-035] — A new skill is measured against a run without it · 2026-08-12
 - [`D-SKL-036`][D-SKL-036] — A skill runs where the installer put it · 2026-08-12
-- [`D-SKL-033`][D-SKL-033] — Activation is the client's · 2026-08-11
+- [`D-SKL-033`][D-SKL-033] — Whether a skill is activated is the client's and the model's · 2026-08-11
 - [`D-SKL-034`][D-SKL-034] — A step is skippable on what the session holds · 2026-08-11
 - [`D-SKL-032`][D-SKL-032] — A probe is worth what the session can run · 2026-08-10
 - [`D-SKL-028`][D-SKL-028] — A triage reaching for a previous attempt is routed to it · 2026-08-09
@@ -71,7 +71,7 @@ one is added.
 - [`D-SKL-013`][D-SKL-013] — The guide names the skill that owns the task · 2026-08-03
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes · 2026-08-02
-- [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out · 2026-08-02
+- [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill.md
@@ -108,7 +108,7 @@ one is added.
 [D-SKL-043]: skl-043-a-rule-query-carries-two-subjects.md
 [D-SKL-035]: skl-035-a-new-skill-is-measured-against-a-run-without-it.md
 [D-SKL-036]: skl-036-a-skill-runs-where-the-installer-put-it.md
-[D-SKL-033]: skl-033-activation-is-the-clients.md
+[D-SKL-033]: skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md
 [D-SKL-034]: skl-034-a-step-is-skippable-on-what-the-session-holds.md
 [D-SKL-032]: skl-032-a-probe-is-worth-what-the-session-can-run.md
 [D-SKL-028]: skl-028-a-triage-reaching-for-a-previous-attempt-is-routed-to-it.md
@@ -138,7 +138,7 @@ one is added.
 [D-SKL-013]: skl-013-the-guide-names-the-skill-that-owns-the-task.md
 [D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed-not-the-list-it-closes-on.md
 [D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
-[D-SKL-004]: skl-004-what-a-task-does-when-the-lookups-run-out.md
+[D-SKL-004]: skl-004-a-question-no-lookup-settles-is-read-from-the-installed-source.md
 [D-SKL-001]: skl-001-the-order-a-task-starts-in-is-one-file.md
 
 ### Revoked, and kept as the record

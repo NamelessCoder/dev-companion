@@ -1,12 +1,12 @@
 ---
 id: R-KNW-015
-title: 'Building the harness is covered, not assumed'
+title: Building the test harness is covered as its own subject
 status: held
 heldBy:
   - HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll
 ---
 
-# R-KNW-015 — Building the harness is covered, not assumed
+# R-KNW-015 — Building the test harness is covered as its own subject
 
 **Where a core answer assumes a harness the core already has, building that
 harness is covered as its own subject.**

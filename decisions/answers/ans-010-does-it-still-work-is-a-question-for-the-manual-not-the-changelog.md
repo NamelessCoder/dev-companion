@@ -133,7 +133,7 @@ the lookups. Neither followed the routing first, so neither is the case that
 **Wrong if** asks about. What the pair shows is that the wording above decides
 this only for a reviewing session: "the finding says the question could not be
 settled" is not a sentence a session building a template can write.
-[`D-SKL-004`](../task-skills/skl-004-what-a-task-does-when-the-lookups-run-out.md)
+[`D-SKL-004`](../task-skills/skl-004-a-question-no-lookup-settles-is-read-from-the-installed-source.md)
 carries that half, and holds the sentence it queues to the distinction this
 entry rests on — one installation's implementation is not what TYPO3 supports.
 

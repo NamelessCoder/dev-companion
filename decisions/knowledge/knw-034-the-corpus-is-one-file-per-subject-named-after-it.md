@@ -1,6 +1,6 @@
 ---
 id: D-KNW-034
-title: 'The file is the subject'
+title: The corpus is one file per subject, named after it
 date: 2026-08-03
 status: open
 coveredBy:
@@ -8,7 +8,7 @@ coveredBy:
   - HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt
 ---
 
-# D-KNW-034 — The file is the subject
+# D-KNW-034 — The corpus is one file per subject, named after it
 
 **The corpus is one file per subject, and the `javascript` domain that no path
 detected and no hint carried is gone.**

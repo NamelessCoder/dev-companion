@@ -1037,7 +1037,7 @@ final class ScopeTest extends TestCase
     #[Requirement('R-AUD-001')]
     #[Requirement('R-SCO-008')]
     #[Test]
-    public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
+    public function aTopicWithAHintIsNotDeclined(): void
     {
         // The declared scope still ruled out project and extension work, and
         // upgrading an installation, while both had hints of their own. A
@@ -1191,6 +1191,37 @@ final class ScopeTest extends TestCase
     ];
 
     /**
+     * The three audiences are named where the server describes itself.
+     *
+     * The other assertion says what may not be claimed, and that is all it can
+     * say across three hundred surfaces: a hint about backend CSS names the
+     * core and nothing else, correctly. Where a reader meets the server whole —
+     * the purpose, the instructions a client is handed, the readme — the demand
+     * is the affirmative one, and `R-AUD-001` is what it is.
+     */
+    #[Requirement('R-AUD-001')]
+    #[Test]
+    public function everyDescriptionOfTheServerNamesAllThreeAudiences(): void
+    {
+        $whole = [
+            'the purpose in server-scope.json' => Coverage::read()['purpose'],
+            'the instructions' => Coverage::instructions(),
+            'readme.md' => (string) file_get_contents(Paths::root() . '/readme.md'),
+        ];
+
+        foreach ($whole as $surface => $text) {
+            $lowered = mb_strtolower($text);
+            foreach (['core', 'extension', 'site'] as $audience) {
+                self::assertStringContainsString(
+                    $audience,
+                    $lowered,
+                    $surface . ' describes the server without naming ' . $audience . ' work',
+                );
+            }
+        }
+    }
+
+    /**
      * The same assertion as above, in the surfaces the not-covered list is not.
      *
      * That list is where the claim was written down last, not where it lived:
@@ -1202,7 +1233,7 @@ final class ScopeTest extends TestCase
      */
     #[Requirement('R-AUD-001')]
     #[Test]
-    public function noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor(): void
+    public function noSurfaceClaimsTheCoreAlone(): void
     {
         foreach (self::THE_CLAIM_AS_IT_WAS_FOUND as $sentence) {
             self::assertNotSame(

@@ -1,13 +1,13 @@
 ---
 id: D-ANS-007
-title: Two shapes for "not answered", one word for why
+title: '`unsupported` and `unavailable` are two answers, and `cause` says why'
 date: 2026-08-02
 status: confirmed
 coveredBy:
   - DocumentationTest::aVersionOutsideTheCoveredOnesIsNotAskedFor
 ---
 
-# D-ANS-007 — Two shapes for "not answered", one word for why
+# D-ANS-007 — `unsupported` and `unavailable` are two answers, and `cause` says why
 
 **`typo3_documentation_lookup` keeps `status`, and its `unavailable` object
 carries a `cause` — the same word the installation answer uses, with values of

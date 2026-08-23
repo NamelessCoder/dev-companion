@@ -4,8 +4,7 @@ title: API stability is worth a lookup and git state is not
 date: 2026-08-03
 status: revoked
 revokedBy: D-FBK-038
-coveredBy:
-  - ScopeTest::noExclusionDeniesASourceTheServerReads
+coveredBy: []
 ---
 
 # D-FBK-037 — API stability is worth a lookup and git state is not

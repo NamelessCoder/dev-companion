@@ -4,9 +4,7 @@ title: The prose is not bound; it says which half it is
 date: 2026-07-29
 status: revoked
 revokedBy: D-VER-005
-coveredBy:
-  - KnowledgeTest::noProseDocumentDatesAStatementInItsSentence
-  - KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave
+coveredBy: []
 ---
 
 # D-VER-002 — The prose is not bound; it says which half it is

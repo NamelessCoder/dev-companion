@@ -187,7 +187,6 @@ final class DocumentationTest extends TestCase
      * — `D-ANS-026`.
      */
     #[Requirement('R-DOC-003')]
-    #[Decision('D-ANS-023')]
     #[Decision('D-ANS-026')]
     #[Test]
     public function aViewHelperQuestionReachesTheManualOutsideTheCollection(): void
@@ -299,7 +298,6 @@ final class DocumentationTest extends TestCase
  * `D-ANS-023`, `D-ANS-026`.
  */
     #[Requirement('R-DOC-003')]
-    #[Decision('D-ANS-023')]
     #[Decision('D-ANS-026')]
     #[Test]
     public function aPageOfThatManualIsReadBackAtItsOwnBase(): void

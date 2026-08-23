@@ -4,8 +4,7 @@ title: A feedback brings its card in the commit that brings it in
 date: 2026-08-02
 status: revoked
 revokedBy: D-FBK-045
-coveredBy:
-  - TodoTest::everyOpenFeedbackIsOnTheBoard
+coveredBy: []
 ---
 
 # D-FBK-022 — A feedback brings its card in the commit that brings it in

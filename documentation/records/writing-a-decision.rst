@@ -223,6 +223,15 @@ wrong now is a book that moves, and what could go wrong before was a book that
 is missing. Rewriting the old entry would throw away the finding while keeping
 its number, and nothing afterwards could tell the two apart.
 
+Revoking takes the tests with it. A test declaring a revoked entry claims to
+hold something this server says it stopped doing, so ``bin/cli decisions:check``
+fails on one and names ``revokedBy`` — the ``#[Decision]`` attribute moves to
+the successor, or goes.
+`D-DOC-052 <../../decisions/documentation/doc-052-a-revoked-entry-names-no-test.md>`_
+is what that was measured against: of the eleven revoked entries a test
+declared, nine named a test the successor already carried and one named a test
+that disproves it.
+
 ``confirmed`` stays what it is for: an entry whose statement survives the
 reading. A decision about the shape of an answer, or about which source a
 question is put to, is as true after somebody goes back to it as before, and

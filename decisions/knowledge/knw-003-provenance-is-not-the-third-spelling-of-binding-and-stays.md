@@ -4,8 +4,7 @@ title: '`provenance` is not the third spelling of `binding`, and stays'
 date: 2026-07-30
 status: revoked
 revokedBy: D-KNW-005
-coveredBy:
-  - KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares
+coveredBy: []
 ---
 
 # D-KNW-003 — `provenance` is not the third spelling of `binding`, and stays

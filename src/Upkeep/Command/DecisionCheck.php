@@ -123,6 +123,14 @@ final class DecisionCheck
                 $successors[$id] = $decision['revokedBy'];
             }
 
+            // A revoked entry names no test: its statement no longer describes
+            // this server, so a test declaring it claims to hold something the
+            // repository says it stopped doing — `D-DOC-052`.
+            if (DecisionStatus::tryFrom($decision['status']) === DecisionStatus::Revoked && $decision['tests'] !== []) {
+                $problems[] = $id . ' is revoked and ' . count($decision['tests']) . ' tests declare they hold it'
+                    . ($decision['revokedBy'] === '' ? '' : ' — the attribute belongs on ' . $decision['revokedBy']);
+            }
+
             $dated = Decisions::datedLines($decision['fields']);
             $latest = $dated === [] ? '' : $dated[count($dated) - 1];
             $later = Decisions::fieldFor($decision['status']);

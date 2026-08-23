@@ -74,7 +74,6 @@ final class TodoTest extends TestCase
     #[Requirement('R-FBK-007')]
     #[Decision('D-FBK-016')]
     #[Decision('D-FBK-017')]
-    #[Decision('D-FBK-022')]
     #[Decision('D-FBK-045')]
     #[Test]
     public function everyOpenFeedbackIsOnTheBoard(): void

@@ -272,6 +272,26 @@ final class DecisionsTest extends TestCase
     }
 
     /**
+     * A revoked entry names no test, because its statement is no longer true.
+     *
+     * Nine of the eleven that did on 2026-08-23 named a test the successor
+     * already declared, and one named a test that disproves it — `D-DOC-052`.
+     */
+    #[Decision('D-DOC-052')]
+    #[Test]
+    public function aRevokedEntryNamesNoTest(): void
+    {
+        $claimed = [];
+        foreach (Decisions::all() as $id => $decision) {
+            if (DecisionStatus::tryFrom($decision['status']) === DecisionStatus::Revoked && $decision['tests'] !== []) {
+                $claimed[] = $id . ' is revoked and declared by ' . implode(', ', $decision['tests']);
+            }
+        }
+
+        self::assertSame([], $claimed, 'a revoked statement is held by a test that would have to prove it');
+    }
+
+    /**
      * The two ends are one source: the attribute is written and `coveredBy` is
      * generated from it.
      *

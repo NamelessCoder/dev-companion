@@ -4,8 +4,7 @@ title: 'The call plan a skill writes down is measured'
 date: 2026-08-03
 status: revoked
 revokedBy: D-SKL-043
-coveredBy:
-  - SkillTest::aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn
+coveredBy: []
 ---
 
 # D-SKL-011 — The call plan a skill writes down is measured

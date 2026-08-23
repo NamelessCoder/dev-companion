@@ -456,7 +456,9 @@ bin/cli knowledge:format <path>   # only that part of it
   matter is the copy, so a renamed test rewrites the entry instead of orphaning
   a name in it. The checks fail on a copy that says anything else and on an
   attribute naming an id no entry has, and a failing test prints every entry
-  that rested on it — `D-DOC-048`, `D-DOC-049`.
+  that rested on it — `D-DOC-048`, `D-DOC-049`. A revoked decision is declared
+  by nothing: when one is revoked, the attribute moves to the entry that revoked
+  it — `D-DOC-052`.
 - **What is written about the code you are about to change** is
   `bin/cli entries:lookup <path>`: the entries naming the classes at that path,
   and the tests that hold them. The attributes answer from the failing end; this

@@ -4,8 +4,7 @@ title: 'The site opens on the readme'
 date: 2026-08-09
 status: revoked
 revokedBy: D-DOC-026
-coveredBy:
-  - SiteTest::aDirectorysOwnPageIsPublishedAsItsIndex
+coveredBy: []
 ---
 
 # D-DOC-018 — The site opens on the readme

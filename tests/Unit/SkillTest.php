@@ -523,7 +523,6 @@ final class SkillTest extends TestCase
 
     #[Requirement('R-SKL-005')]
     #[Requirement('R-SKL-017')]
-    #[Decision('D-SKL-015')]
     #[Decision('D-SKL-034')]
     #[Test]
     public function theWorkflowStepRunsInEverySession(): void
@@ -728,7 +727,6 @@ final class SkillTest extends TestCase
     }
 
     #[Requirement('R-SKL-005')]
-    #[Decision('D-SKL-015')]
     #[Decision('D-SKL-034')]
     #[Decision('D-SKL-037')]
     #[Test]
@@ -1365,7 +1363,6 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('Autowire', $skill);
     }
 
-    #[Decision('D-SKL-011')]
     #[Decision('D-SKL-043')]
     #[Test]
     public function aRuleQueryCarriesTwoSubjectsAndAThirdIsACallOfItsOwn(): void

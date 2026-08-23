@@ -466,7 +466,6 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Requirement('R-KNW-023')]
-    #[Decision('D-VER-002')]
     #[Decision('D-VER-005')]
     #[Test]
     public function noProseDocumentDatesAStatementInItsSentence(): void
@@ -490,7 +489,6 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Requirement('R-KNW-024')]
-    #[Decision('D-VER-002')]
     #[Decision('D-VER-005')]
     #[Test]
     public function noProseDocumentNamesACheckOnlySomeBranchesHave(): void
@@ -1481,7 +1479,6 @@ final class KnowledgeTest extends TestCase
      */
     #[Decision('D-KNW-005')]
     #[Requirement('R-SCO-006')]
-    #[Decision('D-KNW-003')]
     #[Test]
     public function everyScopeInTheCorpusIsOneTheEnumDeclares(): void
     {

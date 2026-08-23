@@ -1995,7 +1995,6 @@ final class HintsTest extends TestCase
     #[Requirement('R-ANS-031')]
     #[Requirement('R-KNW-021')]
     #[Decision('D-ANS-025')]
-    #[Decision('D-ANS-081')]
     #[Decision('D-ANS-084')]
     #[Decision('D-KNW-024')]
     #[Test]
@@ -2277,7 +2276,6 @@ final class HintsTest extends TestCase
     }
 
     #[Requirement('R-KNW-021')]
-    #[Decision('D-ANS-081')]
     #[Decision('D-ANS-084')]
     #[Test]
     public function theCuratedVocabularyStillDecidesWhereItWasWritten(): void
@@ -4794,7 +4792,6 @@ final class HintsTest extends TestCase
         self::assertContains('backend-modules', array_column($result['matchedHints'], 'id'));
     }
 
-    #[Decision('D-KNW-001')]
     #[Requirement('R-KNW-039')]
     #[Test]
     public function aBackendModuleInASitepackageDoesNotBecomeFrontendWork(): void
@@ -4829,7 +4826,6 @@ final class HintsTest extends TestCase
      * backend-only, because a sitepackage layout is written in the words of the
      * backend it is administered from.
      */
-    #[Decision('D-KNW-001')]
     #[Test]
     public function aBackendTaskIsNotAnsweredWithTheSitepackageLayout(): void
     {

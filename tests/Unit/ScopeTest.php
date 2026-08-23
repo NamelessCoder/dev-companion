@@ -1090,7 +1090,6 @@ final class ScopeTest extends TestCase
      * anything read, and the sentence was in the `why` — `D-FBK-037`.
      */
     #[Requirement('R-SCO-008')]
-    #[Decision('D-FBK-037')]
     #[Test]
     public function noExclusionDeniesASourceTheServerReads(): void
     {

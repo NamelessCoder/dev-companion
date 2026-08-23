@@ -116,7 +116,7 @@ final class CliTest extends TestCase
      * `bin/cli decisions:list | grep revoked`.
      */
     #[Test]
-    public function aRunLineTheConsoleCannotTakeIsNamedRatherThanRun(): void
+    public function aRunLineTheConsoleCannotTakeIsNamed(): void
     {
         // `todo:next` refuses a worktree standing on no claim before it reads
         // any cadence, and the suite runs in the worktrees — as above.

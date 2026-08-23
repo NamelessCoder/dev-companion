@@ -16,3 +16,8 @@ to — which is why they went unread for as long as they existed, and why a
 requirement sat there unbuilt from the day the directory was created. A
 requirement no test can hold is a legitimate answer; one nobody has judged is
 not.
+
+The decisions this asks about are the ones no test declares. An entry a test
+holds is read by whoever makes that test fail, because the failure prints it —
+`D-DOC-054` — so the listing names the oldest of the rest and this todo is
+pointed at those.

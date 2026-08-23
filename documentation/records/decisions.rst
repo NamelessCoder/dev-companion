@@ -44,6 +44,15 @@ The status is not a workflow. ``open`` does not mean unbuilt — it means the
 that way, which is what makes the state easy to stop seeing, and
 :doc:`bin/cli unresolved:list <index>` is what reads them out.
 
+Going back is no longer something a session schedules for an entry a test
+declares. The failure prints it, so the reading happens when the behaviour moves
+and it happens to whoever moved it — ``bin/cli unresolved:list`` counts the open
+entries, the ones nobody has been back to, and the ones no test holds, and names
+the oldest of the last kind.
+`D-DOC-054 <../../decisions/documentation/doc-054-a-held-decision-is-read-when-its-behaviour-moves.md>`_
+is what that was measured against: of 155 entries nobody had been back to, 120
+are declared by a test.
+
 It covers two cases, and only one of them is work. A reading that settles the
 **Wrong if** changes the status; a reading that settles neither leaves it open
 and adds a **Since then**, which is the whole of what separates an entry

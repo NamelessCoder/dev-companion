@@ -798,6 +798,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-051`][D-DOC-051] — A name carries one claim · 2026-08-23
 - [`D-DOC-052`][D-DOC-052] — A revoked entry names no test · 2026-08-23
 - [`D-DOC-053`][D-DOC-053] — What no test holds is unheld for a reason in the entry · 2026-08-23
+- [`D-DOC-054`][D-DOC-054] — A held decision is read when its behaviour moves · 2026-08-23
 - [`D-DOC-038`][D-DOC-038] — A requirement carries the day it was judged · 2026-08-22
 - [`D-DOC-039`][D-DOC-039] — An open decision somebody has been back to is counted apart · 2026-08-22
 - [`D-DOC-040`][D-DOC-040] — A renamed tool is corrected where the name is a claim · 2026-08-22
@@ -847,6 +848,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-DOC-051]: documentation/doc-051-a-name-carries-one-claim.md
 [D-DOC-052]: documentation/doc-052-a-revoked-entry-names-no-test.md
 [D-DOC-053]: documentation/doc-053-what-no-test-holds-is-unheld-for-a-reason-in-the-entry.md
+[D-DOC-054]: documentation/doc-054-a-held-decision-is-read-when-its-behaviour-moves.md
 [D-DOC-038]: documentation/doc-038-a-requirement-carries-the-day-it-was-judged.md
 [D-DOC-039]: documentation/doc-039-an-open-decision-somebody-has-been-back-to-is-counted-apart.md
 [D-DOC-040]: documentation/doc-040-a-renamed-tool-is-corrected-where-the-name-is-a-claim.md

@@ -130,6 +130,33 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
+     * Which open decisions still wait for a reader: the ones no test declares.
+     *
+     * An entry a test holds is read by whoever makes that test fail, because
+     * the failure prints it. So `held` is what narrows a listing of 155 to the
+     * 35 a session can still be owed — `D-DOC-054`.
+     */
+    #[Decision('D-DOC-054')]
+    #[Test]
+    public function anOpenDecisionATestHoldsIsNotWaitingForAReader(): void
+    {
+        $decisions = Decisions::all();
+        $open = Unresolved::decisions();
+
+        $held = array_filter($open, static fn(array $d): bool => $d['held']);
+        self::assertNotSame([], $held, 'no open decision is held by a test, which the report would have to say instead');
+        self::assertNotSame($open, array_values($held), 'every open decision is held, which the report would have to say instead');
+
+        foreach ($open as $decision) {
+            self::assertSame(
+                $decisions[$decision['id']]['tests'] !== [],
+                $decision['held'],
+                $decision['id'] . ' is reported as ' . ($decision['held'] ? 'held' : 'unheld') . ', and its front matter says otherwise',
+            );
+        }
+    }
+
+    /**
      * The oldest open decision is the one the repository has moved furthest
      * away from, so it is the candidate the report names. Decisions::all() is
      * newest first for the listings, and this is the one caller that wants the

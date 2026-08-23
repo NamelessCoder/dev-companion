@@ -117,7 +117,13 @@ final class Unresolved
      * kind. So the reading carries both and the caller names the oldest nobody
      * has opened, which is the one a session can still do something about.
      *
-     * @return array<int, array{id: string, date: string, title: string, revisited: bool}>
+     * `held` is what narrows that further, and it is why going back stopped
+     * being a scheduled task: a decision a test declares is read when somebody
+     * changes the behaviour, because the failure prints the entry — `D-DOC-044`.
+     * What is left for a reader is the entry nothing fires on, and the oldest
+     * of those is what the listing names — `D-DOC-054`.
+     *
+     * @return array<int, array{id: string, date: string, title: string, revisited: bool, held: bool}>
      */
     public static function decisions(): array
     {
@@ -132,6 +138,7 @@ final class Unresolved
                 'date' => $decision['date'],
                 'title' => $decision['title'],
                 'revisited' => $decision['revisited'],
+                'held' => $decision['tests'] !== [],
             ];
         }
 

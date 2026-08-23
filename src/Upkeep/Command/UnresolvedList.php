@@ -87,6 +87,11 @@ final class UnresolvedList
         $standing = Unresolved::decisions();
         $total = count(Decisions::all());
         $unread = array_values(array_filter($standing, static fn(array $d): bool => !$d['revisited']));
+        // The ones a reader is still owed. A decision a test declares is read
+        // when somebody changes the behaviour, because the failure prints the
+        // entry — so what waits for a session is the entry nothing fires on
+        // (`D-DOC-054`).
+        $waiting = array_values(array_filter($unread, static fn(array $d): bool => !$d['held']));
         if ($unread === []) {
             $output->writeln(sprintf('All %d decisions have been back-checked.', $total));
 
@@ -94,13 +99,15 @@ final class UnresolvedList
         }
 
         $output->writeln(sprintf(
-            "%d of %d decisions are open, and %d of those nobody has been back to.\n"
-            . 'The oldest of them is %s (%s). bin/cli decisions:list has them all.',
+            "%d of %d decisions are open, %d of those nobody has been back to, and %d of those are held by no test.\n"
+            . '%s bin/cli decisions:list has them all.',
             count($standing),
             $total,
             count($unread),
-            $unread[0]['id'],
-            $unread[0]['date'],
+            count($waiting),
+            $waiting === []
+                ? 'Every one of them is read when its behaviour moves.'
+                : sprintf('The oldest waiting on a reader is %s (%s).', $waiting[0]['id'], $waiting[0]['date']),
         ));
 
         return $unjudged === [] && $sorting ? 0 : 1;

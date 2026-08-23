@@ -2,7 +2,7 @@
 id: D-DOC-009
 title: Prose names what counts rather than the count
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-DOC-009 — Prose names what counts rather than the count
@@ -48,3 +48,19 @@ repository fails when they turn.
   survives a review, which would mean the rule is not where an author reads it.
 - Somebody strips the numbers out of a decision to satisfy this, which is the
   opposite: an undated, unsourced claim replacing dated evidence.
+
+## Confirmed on 2026-08-23
+
+Neither **Wrong if** fired, swept over the three places the first one names. The
+only numbers in `readme.md` are the covered majors, and the ones in `AGENTS.md`
+are thresholds and entry ids — the 30 words `prose:check` counts, the 80 columns
+`prose:format` wraps at, the ten lines a comment may spend on an entry — with
+"34 files holding 120 hints" standing where it always did, as the example of the
+defect. Three tool descriptions carry a number and none of them counts anything
+that grows: `typo3_forge_lookup` says its limit stops at 50,
+`typo3_commit_message_guide` wraps a body at 72, and `typo3_flexform_lookup`
+names two TYPO3 majors.
+
+The second one held too. `D-KNW-032` still carries the sweep it was written from
+— 66 hints to 120, a mean body from 297 words to 174 — dated and sourced where
+this entry says such a number belongs.

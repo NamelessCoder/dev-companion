@@ -98,3 +98,24 @@ worktree starts without dependencies.
   was written as a step rather than as a precondition. This is the one still
   open: the corpus and the document say "once, in a checkout that has no
   `vendor/`", and nothing checks that a reader hears it that way.
+
+## Since then
+
+The third **Wrong if** is still the open one and it is stated against rather
+than left to the reader. `knowledge/documents/core/testing/scripts.md` says it
+in the words the bullet asks for — "this is a precondition and not a step: a
+checkout that already has `vendor/` needs it again only after `composer.json` or
+`composer.lock` changed" — and `typo3_test_run_guide` carries the same condition
+in its own note.
+
+What arrived beside it is the case on the other side of that sentence, and it
+came from a session rather than from this entry. `feedback/2026-08-07-130007`
+reports a `vendor/` that exists and predates a `composer.json` change, surfacing
+as a Symfony `InvalidArgumentException` naming a class that is plainly in its
+file; the document now carries that symptom and says the fix is
+`runTests.sh -s composer -- dumpautoload` rather than another install. So the
+expensive answer is named for the one case that needs it.
+
+Nothing reports the failure the bullet describes — a reader running the install
+in a checkout that already had one — and no reading here can produce it. The
+first two were checked when this was written and nothing has moved them.

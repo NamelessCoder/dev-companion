@@ -66,3 +66,24 @@ out is the declared schema, so nothing downstream parses anything.
 - A caller reads the text of one of these answers to decide something the data
   half already says. Then the shape is not carrying what it promises, and the
   fix is in the schema rather than in the prose.
+
+## Since then
+
+Read on 2026-08-23, and the first **Wrong if** does not wait for its first case:
+one was here before this entry was. `Manual\Documentation` reads
+`docs.typo3.org`, which publishes no API, and it has parsed the rendered pages
+since `7d29c77a` on 2026-07-30 — three days earlier. So "no HTML is scraped"
+describes `Contribution/`, where both sources this was measured on live, rather
+than the lookups that reach a host as a class.
+
+The other half holds everywhere, the manual included. `status` is `answered`,
+`empty` or `unavailable` on all four sources that reach a host — the tracker,
+the review server, the manual and the registry — `Result\Unreachable` carries
+the cause vocabulary, and `D-ANS-007` is where the manual's `status` and `cause`
+were settled against the installation answer's.
+
+What is left is the scope of the statement, and no reading here settles it:
+either this means the sources that publish an API, in which case the entry is
+revoked and a successor states the boundary the manual sits outside, or the
+manual is an exception nobody has written down. `Fetch::decode()` is untouched
+either way — it is the JSON reader, and the manual never asks it.

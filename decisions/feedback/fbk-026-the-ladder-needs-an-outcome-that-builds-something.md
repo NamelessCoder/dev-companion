@@ -69,3 +69,27 @@ decide exactly that.
 - The corpus stops distinguishing anything, because every feedback becomes a
   feature. The signal is *taken on* being reached with one session behind it
   more than once.
+
+## Since then
+
+*Taken on* was reached four times in the 208 feedback judged since, read on
+2026-08-23: `D-FBK-037` for an API-stability lookup, `D-FBK-051` for the TER,
+`D-SKL-050` for producing a distribution's content and `D-SKL-063` for reviewing
+a change against a package. Three shipped — `Publication\Ter`,
+`skills/typo3-distribution-content/` and `skills/typo3-extension-patch-review/`
+— and none of them has been read back as the wrong shape.
+
+The first **Wrong if** happened once and cost a card. `D-FBK-037` was taken on
+and revoked the same day: the core's own changelogs say the `@internal` marker
+is an input rather than the decision, so a lookup reporting it would have
+answered beside the question, and `D-FBK-038` carries the rule that replaced it.
+Nothing was built, which is the mechanism catching itself one step before the
+cost the bullet names rather than one step after it.
+
+The second one fired in the letter. Two of the four rest on one session each —
+`D-SKL-050` on 2026-08-17's pair and `D-SKL-063` on 2026-08-18's — where
+`D-FBK-051` names three sessions across three weeks. What each of the two
+carries instead of a second session is a reading of what the corpus and the
+skills do not cover, which is not the ask this entry warned about; four in 208
+is also not a corpus that stopped distinguishing. So the signal is worth
+watching rather than acted on, and the number to watch it against is here.

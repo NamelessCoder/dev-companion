@@ -65,3 +65,24 @@ The two measures could not both be right. This repository's own
 - A commit here genuinely needs `[DOCS]` or `[SECURITY]` — a security advisory
   against this server would be the case, and that keyword is then not the core's
   alone.
+
+## Since then
+
+Measured over the 779 commits on `main` since 2026-08-04. The keyword half held
+without an exception: 668 `[TASK]`, 70 `[FEATURE]`, 41 `[BUGFIX]`, no `[DOCS]`,
+no `[SECURITY]`, no `[!!!]`, and not one subject without a keyword — against 139
+of 926 carrying none when this was written. The second **Wrong if** has not
+fired either; no change here has needed one of the core's two.
+
+The first one has. 397 of the 779 subjects are 52 characters or longer, at a
+median of 58 and a ninetieth percentile of 62, and the three weeks run 56%, 42%
+and 55%, so nothing is converging. What did move is the other number: exactly
+one subject is past 72, where 708 of 926 used to be past 52 at a median of 61.
+
+So the practice follows `Knowledge\CommitMessage`'s two severities rather than
+one demand — it warns above 52 with "Under 52 characters is preferred" and fails
+above 72 — and `AGENTS.md` states both numbers as one rule. Which of the three
+that asks for is not a reading: the wording follows the tool, or 52 becomes the
+number this repository can hold and the tool is what says so, or the
+`commit-msg` hook comes back and refuses. The measurement above is what any of
+them would be decided on.

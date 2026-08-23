@@ -61,3 +61,24 @@ follows for what gets built.
   the recipe was the right answer.
 - The rule starts justifying tools for tasks nobody repeats. The signal is a
   `taken on` whose evidence names one session and no count.
+
+## Since then
+
+Read on 2026-08-23, and neither **Wrong if** has fired in a way that asks for a
+change.
+
+The first one has no field data and what stands in for it points the other way.
+The recorded answers under `documentation/server/tools/`, which
+`bin/cli tools:record` writes by calling every tool, carry sixteen `answered`
+across the five lookups that reach a host and one `unavailable` — and that one
+is `targetVersion: "999"`, a version outside the covered set, refused before
+anything was asked of `docs.typo3.org`. No feedback in either directory reports
+one of these tools answering that it could not answer.
+
+The second one is measured under
+[`D-FBK-026`](fbk-026-the-ladder-needs-an-outcome-that-builds-something.md),
+whose second **Wrong if** watches the same signal from the ladder's side: four
+takings-on since, two of them resting on one session each. Both of those two
+carry the count this bullet asks for — what the corpus and the skills do not
+cover, read rather than asserted — so what is missing is a second session and
+not the reading.

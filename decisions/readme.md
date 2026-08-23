@@ -838,8 +838,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-017`][D-DOC-017] — The documentation is published from a copy this repository writes · 2026-08-06
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
 - [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked · 2026-08-04
-- [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
-- [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
+- [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03 · confirmed
+- [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03 · confirmed
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03

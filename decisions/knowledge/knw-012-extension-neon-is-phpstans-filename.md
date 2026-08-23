@@ -70,3 +70,20 @@ phpstan-phpunit include an extension's configuration actually has.
 - typo3/testing-framework ships an `extension.neon` on a line a covered major
   pins. `bin/cli checkouts:update` is what would bring it in, and nothing reads
   for that filename.
+
+## Since then
+
+Both **Wrong if** were read on 2026-08-23 and neither has fired. No release line
+a covered major pins ships an `extension.neon`: 8.3.3, 9.6.1 and `main` at
+`6cd6802` carry `Build/phpstan/phpstan.neon` and the baseline beside it and
+nothing else, and `main` has moved on from the `27587653` above without bringing
+one in. All three still include
+`../../.Build/vendor/phpstan/phpstan-phpunit/extension.neon`, which is the line
+the hint keeps. The feedback's own query still reaches
+`extension-static-analysis` and nothing else, at `appliesTo(7) + text(209)`.
+
+The first one is not settled and no reading here can settle it: it waits for a
+feedback that reports the phpstan-phpunit include as the line an extension does
+not need, and `feedback/archive/2026-07-31-193626` is still the only report in
+either directory that names the file at all. So the entry stays open, and what
+would answer it is a second report rather than another reading.

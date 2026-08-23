@@ -103,3 +103,22 @@ the live one.
   cost the reporting session was telling a test database from the live one. The
   `_ft` suffix is what answers that, and a clause written without it is the same
   gap one sentence longer.
+
+## Since then
+
+The clause landed in `e164f44e` on 2026-08-03, on `project-extension-tests`, and
+it settles the first and the third **Wrong if** in the writing. It opens on the
+`_ft<7 hex>` suffix, which is what tells a leftover from the live database, and
+it names the two cases that carry no such name — `$initializeDatabase = false`,
+and the sqlite file under `typo3temp/var/tests/functional-sqlite-dbs/` whose
+cleanup is deleting the directory. The sentence before it says what nothing
+drops and when a database is reclaimed.
+
+The second one did not fire, read on 2026-08-23. The hint is 654 words where
+this entry measured 981, so the clause arrived in a hint that has since got
+shorter rather than longer, and it is still reached:
+`clean up functional test databases` returns it at `appliesTo(15) + text(165)`.
+One phrasing still reaches nothing at all — `too many test databases left over`
+matches no hint and comes back as the index — which is a reachability reading
+rather than a missing statement, and the words that phrasing uses are the
+evidence for it.

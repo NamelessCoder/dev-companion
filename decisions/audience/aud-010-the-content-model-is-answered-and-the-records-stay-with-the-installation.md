@@ -54,3 +54,21 @@ the line from which tools happen to exist.
   backend user to a client session a solved problem rather than an open one.
 - The model half turns out to be answered wrongly because it never sees a row —
   a schema question whose real answer depends on what is stored.
+
+## Since then
+
+The `doesNotCover` entry is there, naming the record, the trust model and where
+the work goes instead — the backend, or the installation's own console.
+
+The first **Wrong if** met its first real case and came out the other way.
+`feedback/2026-08-21-074351` arrives at a task that wants a flex field resolved
+against a real row and reads the boundary itself: "Loading a real row is a
+record read and is outside the scope this server declares — an emulated record
+with caller-supplied values stays inside it." What was built from it holds that
+line: `typo3_flexform_lookup` takes `table`, `field` and a `record` of
+caller-supplied column values, and no uid. So a session did arrive at the
+boundary, and it neither stopped there nor crossed it.
+
+The other two are unchanged. No session reports a schema answer that was wrong
+for want of a row, and nothing about an identity contract has been adopted since
+`D-SCO-010` read the draft.

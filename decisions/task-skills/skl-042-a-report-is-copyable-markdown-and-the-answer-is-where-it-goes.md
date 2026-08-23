@@ -64,3 +64,19 @@ issue, a chat — and rich rendering is what it does not survive.
   ask" is the wrong default.
 - A report turns out to be long enough that nobody copies it at all, which would
   make the deliverable the thing to shorten rather than the form to fix.
+
+## Since then
+
+All four skills whose product is a report carry the sentence, and a test holds
+the set rather than one file:
+`SkillTest::aReportIsCopyableMarkdownAndTheAnswerIsWhereItGoes` reads
+`typo3-core-patch-review`, `typo3-extension-health`, `typo3-core-issue-triage`
+and `typo3-extension-patch-review` for both halves — the form, and what makes it
+the form, "rendered output is what does not survive being moved".
+`typo3-extension-conformance`, which the reporting feedback named beside triage,
+is inside `typo3-extension-health` since `8a67338a`.
+
+None of the three **Wrong if** has a report behind it. Nothing since 2026-08-14
+describes a review handed over in a form the reader could not lift out, a user
+asking for the report at a path, or a report nobody copied because of its
+length.

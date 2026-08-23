@@ -88,3 +88,16 @@ switched off.
 - A session reports treating "conventions used nearby" as the authority with the
   pointer already in the same hint. Then this is delivery rather than wording,
   and the rule belongs where the task passes instead.
+
+## Since then
+
+The sentence and the three rules are in `backend-typescript`, and the second
+**Wrong if** is read rather than waited on. `Build/eslint.config.mjs` on all
+four covered branches carries the same three: `no-inferrable-types` off,
+`no-explicit-any` off, `member-ordering` at `error` — 12.4 at lines 53, 57 and
+60, and 13.4, 14.3 and `main` at 51, 55 and 58. So the hint states them unbound
+and that is what the branches say; no `since` is owed today.
+
+The other two need a session. Nothing since 2026-08-14 reports reading the
+config by hand for a rule that is on, or treating the neighbouring file as the
+authority with the pointer in the same hint.

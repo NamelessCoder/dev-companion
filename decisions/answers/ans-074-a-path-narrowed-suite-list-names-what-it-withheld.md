@@ -79,3 +79,19 @@ suite name this server holds.
 - A session reads it as an offer and calls again with the path set unchanged,
   which would say the sentence reads as the escape hatch beside it rather than
   as a condition.
+
+## Since then
+
+The sentence is built and is in the answer. Called on 2026-08-23 with one
+TypeScript path at `targetVersion: 15.0`, `typo3_test_run_guide` says: "Narrowed
+to the typescript domain(s) the given paths touch. … No given path reached php,
+fluid, typoscript, xliff, docs and css, which leaves 20 suites out. A path
+landing in one of those domains means calling again." Named by domain and
+counted, never enumerated, and `withheld` carries the same two fields in the
+data half.
+
+All three **Wrong if** wait on a session and none has reported. No feedback
+since 2026-08-11 describes a path set growing mid-session, reads the withheld
+line as noise, or calls again with the paths unchanged — so what the sentence
+does to a session's habit is still unmeasured, which the **Assumed** above
+already said nothing had measured.

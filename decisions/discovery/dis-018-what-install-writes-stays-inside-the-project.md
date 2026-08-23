@@ -50,3 +50,19 @@ somewhere else is not.
   being the argument against writing there.
 - Somebody wants both — a shared entry for the team and a private one for their
   own checkout — which is the choice the rejected argument would have carried.
+
+## Since then
+
+The floor is still under every answer, read on 2026-08-23: the installer says
+the entry's command "is valid on this machine only, while the file it is in is
+the one that client documents as shared and committed. Add it to the project's
+.gitignore, or let each person run this install."
+
+Nothing reports the first **Wrong if**. No feedback since 2026-08-12 describes a
+committed entry that would not start on somebody else's machine.
+
+What has moved is the population the second one is an argument about.
+`Installer::AGENTS` names thirteen clients where this entry counted eleven, and
+whether more than one of them documents a private per-project scope is a survey
+of their documentation rather than a reading here. That survey is what the
+bullet asks for, and the number it was decided on is no longer the number.

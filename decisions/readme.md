@@ -487,6 +487,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### catalog
 
 - [`D-CAT-008`][D-CAT-008] — A component entry's classes carry a derived position and range · 2026-08-24
+- [`D-CAT-009`][D-CAT-009] — The catalog lists what the styleguide lists · 2026-08-24
 - [`D-CAT-007`][D-CAT-007] — A reference entry's range is derived from what it promises · 2026-08-23
 - [`D-CAT-006`][D-CAT-006] — A class-shaped query is answered by a second range · 2026-08-21
 - [`D-CAT-005`][D-CAT-005] — A reference entry names a form to imitate · 2026-08-18
@@ -495,6 +496,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · confirmed
 
 [D-CAT-008]: catalog/cat-008-a-component-entrys-classes-carry-a-derived-position-and-range.md
+[D-CAT-009]: catalog/cat-009-the-catalog-lists-what-the-styleguide-lists.md
 [D-CAT-007]: catalog/cat-007-a-reference-entrys-range-is-derived-from-what-it-promises.md
 [D-CAT-006]: catalog/cat-006-a-class-shaped-query-is-answered-by-a-second-range.md
 [D-CAT-005]: catalog/cat-005-a-reference-entry-names-a-form-to-imitate.md

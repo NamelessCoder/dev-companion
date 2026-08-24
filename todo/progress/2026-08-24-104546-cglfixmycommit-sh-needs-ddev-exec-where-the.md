@@ -1,7 +1,9 @@
-# No hint covers how EXT:impexp writes records on import; hint_lookup answers with test and distrib...
+# cglFixMyCommit.sh needs "ddev exec" where the core checkout declares a DDEV environment
 
-**Serves:** feedback/2026-08-24-110812-no-hint-covers-how-ext-impexp-writes-records-on.md
+**Serves:** feedback/2026-08-24-104546-cglfixmycommit-sh-needs-ddev-exec-where-the.md
 **Priority:** low
+**Branch:** todo/cglfixmycommit-sh-needs-ddev-exec-where-the
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

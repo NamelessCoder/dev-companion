@@ -1,7 +1,9 @@
-# typo3_gerrit_lookup cannot search: "is anyone already working on this file" went to the REST API ...
+# No hint covers how EXT:impexp writes records on import; hint_lookup answers with test and distrib...
 
-**Serves:** feedback/2026-08-24-110833-typo3-gerrit-lookup-cannot-search-is-anyone.md
+**Serves:** feedback/2026-08-24-110812-no-hint-covers-how-ext-impexp-writes-records-on.md
 **Priority:** low
+**Branch:** todo/no-hint-covers-how-ext-impexp-writes-records-on
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -63,6 +63,8 @@
       "rendered html changed",
       "changed default typoscript",
       "which changelog type",
+      "does this bugfix owe a changelog entry",
+      "removed configuration option",
       "backport"
     ],
     "hints": [

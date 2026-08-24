@@ -96,3 +96,13 @@ boundary: `typo3_gerrit_lookup` is a network reader whose answer misled a
 review, and `D-ANS-062` is what came of it. The split holds — what the server
 computes was not reported wrong in any of the three — and the network side has
 now been reported on twice more.
+
+`feedback/2026-08-24-100635` names `breaking-not-assessed` again, seventeen days
+later and from a task the three above do not cover: reviewing a Gerrit change
+and then reworking it as its author. It reports the same mechanism — the check
+said the classification had been assumed and that the tool cannot see the diff,
+and the session enumerated what the diff removed before passing `isBreaking`.
+That is a second task shape rather than a fourth report of one, and it puts a
+third kind on the boundary beside the option list and the project fact: what the
+tool states it cannot know. The first **Wrong if** has not happened, and the
+same session's costs are judged in `D-KNW-073`.

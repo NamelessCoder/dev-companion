@@ -1154,7 +1154,14 @@ final class KnowledgeTest extends TestCase
             $body,
         );
         self::assertStringContainsString(
-            'Demanding one of a `BUGFIX` that removes nothing public is a review defect of its own',
+            'Demanding one of a `BUGFIX` that changes none of the three is a review defect of its own',
+            $body,
+        );
+        // The condition the refusal used to carry was `removes nothing public`,
+        // which is what a fix removing a configured option passes while owing
+        // an entry all the same — `feedback/2026-08-24-100635`, `D-KNW-073`.
+        self::assertStringContainsString(
+            'changes nothing an installation renders, is configured by, or has documented',
             $body,
         );
     }
@@ -1207,10 +1214,11 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function theMovesTheCommitRulesStopAreStillStated(): void
     {
-        $body = Documents::read('core/contribution/commit-messages');
+        // Unwrapped, since the refusal crosses a line break.
+        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
 
         self::assertStringContainsString(
-            'Demanding one of a `BUGFIX` that removes nothing public is a',
+            'Demanding one of a `BUGFIX` that changes none of the three is a',
             $body,
             'the changelog section states the obligation without the demand it refuses',
         );

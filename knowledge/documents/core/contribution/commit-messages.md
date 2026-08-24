@@ -204,8 +204,9 @@ list.
   those the core files as breaking, and where the boundary against `Important`
   runs, is `typo3_hint_lookup` with the id `breaking-without-a-moved-member`.
 - A casual bug fix owes no entry, because its commit message carries the
-  information. Demanding one of a `BUGFIX` that removes nothing public is a
-  review defect of its own.
+  information. Casual is the fix that changes nothing an installation renders,
+  is configured by, or has documented. Demanding one of a `BUGFIX` that changes
+  none of the three is a review defect of its own.
 - `Task` is a commit message keyword and not a changelog type. Those four are
   the whole list, and `checkRst` fails a title opening with anything else.
 - `Documentation/Changelog/Howto.rst` in the core checkout is the authority on

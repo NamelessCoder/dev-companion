@@ -2740,6 +2740,44 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('breaking-without-a-moved-member', $bodies);
     }
 
+    /**
+     * D-KNW-073. The reader who has already ruled the word Breaking out.
+     *
+     * The rule landed and did not take. Its pointer sat under `Breaking` in a
+     * section whose lead exempted a `BUGFIX` by its keyword, so a review of a
+     * fix that stopped reading a configured option read past both and judged
+     * the obligation alone — `feedback/2026-08-24-100635`. What is held is the
+     * entry point for the question of whether an entry is owed at all, beside
+     * the one for which type it is.
+     */
+    #[Decision('D-KNW-073')]
+    #[Test]
+    public function theQuestionWhetherAnEntryIsOwedReachesTheTestThatDecidesIt(): void
+    {
+        foreach ([
+            'does this bugfix owe a changelog entry',
+            'removed configuration option is that breaking',
+        ] as $task) {
+            $reached = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('breaking-without-a-moved-member', $reached, $task);
+        }
+
+        // The section the reporting session's own rule lookup landed on, which
+        // now says what a fix has to change nothing of to be the casual one.
+        // The bullet above it carries the hint, so the reader who fails a test
+        // has the route one line up rather than in another document.
+        $bodies = (string) preg_replace(
+            '/\s+/',
+            ' ',
+            implode("\n", array_column(Documents::search('changelog entry review readiness'), 'body')),
+        );
+        self::assertStringContainsString(
+            'changes nothing an installation renders, is configured by, or has documented',
+            $bodies,
+        );
+        self::assertStringContainsString('breaking-without-a-moved-member', $bodies);
+    }
+
     #[Requirement('R-KNW-001')]
     #[Test]
     public function aPathAloneReachesTheHintForTheSubsystemItIsIn(): void

@@ -158,4 +158,4 @@ when it is added.
 [R-KNW-072]: knw-072-which-interpreter-a-covered-version-needs-is-answerable-before-anything-is-installed.md
 [R-KNW-073]: knw-073-a-step-that-reads-from-a-cache-says-what-invalidates-it.md
 [R-KNW-074]: knw-074-a-prescribed-command-whose-success-is-unconditional-carries-its-discriminator.md
-[R-KNW-075]: knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainer-s.md
+[R-KNW-075]: knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainers.md

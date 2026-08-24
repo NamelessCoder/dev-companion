@@ -112,7 +112,7 @@ one is added.
 
 [D-KNW-107]: knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
-[D-KNW-110]: knw-110-a-core-commit-message-carries-three-trailers-and-the-hook-s-change-id.md
+[D-KNW-110]: knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
 [D-KNW-106]: knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

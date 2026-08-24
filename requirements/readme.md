@@ -498,7 +498,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-KNW-072]: knowledge/knw-072-which-interpreter-a-covered-version-needs-is-answerable-before-anything-is-installed.md
 [R-KNW-073]: knowledge/knw-073-a-step-that-reads-from-a-cache-says-what-invalidates-it.md
 [R-KNW-074]: knowledge/knw-074-a-prescribed-command-whose-success-is-unconditional-carries-its-discriminator.md
-[R-KNW-075]: knowledge/knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainer-s.md
+[R-KNW-075]: knowledge/knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainers.md
 
 ### code
 

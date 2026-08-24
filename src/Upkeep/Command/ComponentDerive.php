@@ -9,12 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Knowledge\Versions;
 use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Upkeep\BackendCss;
-use TYPO3\DevCompanion\Upkeep\Catalogs;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
-use TYPO3\DevCompanion\Upkeep\CustomElements;
+use TYPO3\DevCompanion\Upkeep\ComponentDerivation;
 use TYPO3\DevCompanion\Upkeep\Json;
-use TYPO3\DevCompanion\Upkeep\StyleguideListing;
 
 /**
  * Where each of a component's classes sits, and which majors it holds on.
@@ -39,24 +37,15 @@ final class ComponentDerive
 
     public function __invoke(OutputInterface $output): int
     {
-        $checkouts = Checkouts::directory();
-        $styles = [];
-        $elements = [];
-        $listings = [];
+        $checkouts = [];
         $missing = [];
         foreach (Versions::covered() as $version) {
-            $checkout = $checkouts . '/' . $version['branch'];
-            $css = BackendCss::of($checkout);
-            if ($css === null) {
+            $checkout = Checkouts::directory() . '/' . $version['branch'];
+            if (BackendCss::of($checkout) === null) {
                 $missing[] = $version['branch'];
                 continue;
             }
-            $styles[$version['major']] = $css;
-            $elements[$version['major']] = CustomElements::of($checkout);
-            $listing = StyleguideListing::of($checkout);
-            if ($listing !== null) {
-                $listings[$version['major']] = $listing;
-            }
+            $checkouts[$version['major']] = $checkout;
         }
         if ($missing !== []) {
             Cli::errors($output)->writeln(sprintf(
@@ -67,220 +56,27 @@ final class ComponentDerive
             return 2;
         }
 
-        $components = Catalogs::read('components');
-        $known = self::known($components, $elements);
+        $derived = ComponentDerivation::from($checkouts);
+        self::write(self::CLASSES, $derived['classes']);
+        self::write(self::ELEMENTS, $derived['elements']);
+        self::write(self::LISTING, $derived['listing']);
 
-        $classes = [];
-        foreach ($components as $component) {
-            $root = $component['rootClass'] ?? null;
-            if (!is_string($root) || $root === '') {
-                continue;
-            }
-            foreach (self::classesOf($component) as $class) {
-                $classes[] = self::derive($class, $root, (string) $component['name'], $styles, $known);
-            }
-        }
-
-        self::write(self::CLASSES, $classes);
-        self::write(self::ELEMENTS, self::derivedElements($elements));
-        self::write(self::LISTING, self::derivedListing($listings));
-
-        $placed = count(array_filter($classes, static fn(array $c): bool => $c['positions'] !== []));
+        $placed = count(array_filter($derived['classes'], static fn(array $c): bool => $c['positions'] !== []));
         $output->writeln(sprintf(
             '%d classes, %d of them placed, and %d custom elements, over %s',
-            count($classes),
+            count($derived['classes']),
             $placed,
-            count(self::derivedElements($elements)),
+            count($derived['elements']),
             implode(', ', array_column(Versions::covered(), 'branch')),
         ));
+        $ships = ComponentDerivation::listing($checkouts);
         $output->writeln(sprintf(
             '%d components listed by the styleguide, which %s ships',
-            count(self::derivedListing($listings)),
-            $listings === [] ? 'no covered major' : 'major ' . implode(', ', array_keys($listings)),
+            count($derived['listing']),
+            $ships === [] ? 'no covered major' : 'major ' . implode(', ', $ships),
         ));
 
         return 0;
-    }
-
-    /**
-     * @param array<string, mixed> $component
-     * @return list<string>
-     */
-    private static function classesOf(array $component): array
-    {
-        $names = [];
-        foreach (['variants', 'modifiers', 'subComponents'] as $field) {
-            foreach ($component[$field] ?? [] as $name) {
-                if (is_string($name) && $name !== '') {
-                    $names[$name] = true;
-                }
-            }
-        }
-
-        return array_keys($names);
-    }
-
-    /**
-     * @param array<int, array<string, mixed>> $components
-     * @param array<int, array<string, string>> $elements
-     * @return list<string>
-     */
-    private static function known(array $components, array $elements): array
-    {
-        $known = [];
-        foreach ($components as $component) {
-            if (isset($component['rootClass']) && is_string($component['rootClass'])) {
-                $known['.' . $component['rootClass']] = true;
-            }
-            foreach (self::classesOf($component) as $class) {
-                $known['.' . $class] = true;
-            }
-        }
-        foreach ($elements as $tags) {
-            foreach (array_keys($tags) as $tag) {
-                $known[$tag] = true;
-            }
-        }
-        ksort($known);
-
-        return array_keys($known);
-    }
-
-    /**
-     * @param array<int, BackendCss> $styles
-     * @param list<string> $known
-     * @return array<string, mixed>
-     */
-    private static function derive(string $class, string $root, string $component, array $styles, array $known): array
-    {
-        $present = [];
-        $positions = [];
-        $within = [];
-        foreach ($styles as $major => $css) {
-            if (!$css->carries($class)) {
-                continue;
-            }
-            $present[] = $major;
-            $position = $css->position($class, $root);
-            if ($position !== null) {
-                $positions[$position][] = $major;
-            }
-            foreach ($css->stylesWithin($class, $known) as $name) {
-                $within[$name][] = $major;
-            }
-        }
-
-        $entry = [
-            'class' => $class,
-            'component' => $component,
-            'since' => $present === [] ? null : min($present),
-            'positions' => self::ranged($positions, 'position'),
-            'stylesWithin' => self::ranged($within, 'name'),
-        ];
-        $until = self::until($present);
-        if ($until !== null) {
-            $entry['until'] = $until;
-        }
-
-        return $entry;
-    }
-
-    /**
-     * @param array<string, non-empty-list<int>> $byValue
-     * @return list<array<string, mixed>>
-     */
-    private static function ranged(array $byValue, string $key): array
-    {
-        $out = [];
-        foreach ($byValue as $value => $majors) {
-            $entry = [$key => $value, 'since' => min($majors)];
-            $until = self::until($majors);
-            if ($until !== null) {
-                $entry['until'] = $until;
-            }
-            $out[] = $entry;
-        }
-
-        return $out;
-    }
-
-    /**
-     * The last major a fact holds on, or null where it reaches the newest one.
-     * An open range is written as an absent `until` throughout `knowledge/`, so
-     * a fact that is still true says nothing rather than naming today's major.
-     *
-     * @param list<int> $majors
-     */
-    private static function until(array $majors): ?int
-    {
-        $covered = Versions::majors();
-        if ($majors === [] || $covered === []) {
-            return null;
-        }
-
-        return max($majors) < max($covered) ? max($majors) : null;
-    }
-
-    /**
-     * What the styleguide of each major lists, which is the public API
-     * boundary: a component it lists may be used and one it does not list may
-     * not. Only the listing is written — whether a single class is
-     * demonstrated cannot be read out of the templates, because a demo renders
-     * its markup through a ViewHelper or a web component as often as it writes
-     * it, and what is written is as often the styleguide's own page furniture.
-     *
-     * @param array<int, StyleguideListing> $listings
-     * @return list<array<string, mixed>>
-     */
-    private static function derivedListing(array $listings): array
-    {
-        $seen = [];
-        foreach ($listings as $major => $listing) {
-            foreach ($listing->components() as $component) {
-                $seen[$component][] = $major;
-            }
-        }
-        ksort($seen);
-
-        $out = [];
-        foreach ($seen as $component => $majors) {
-            $entry = ['component' => $component, 'since' => min($majors)];
-            $until = self::until($majors);
-            if ($until !== null) {
-                $entry['until'] = $until;
-            }
-            $out[] = $entry;
-        }
-
-        return $out;
-    }
-
-    /**
-     * @param array<int, array<string, string>> $elements
-     * @return list<array<string, mixed>>
-     */
-    private static function derivedElements(array $elements): array
-    {
-        $seen = [];
-        foreach ($elements as $major => $tags) {
-            foreach ($tags as $tag => $source) {
-                $seen[$tag]['majors'][] = $major;
-                $seen[$tag]['source'] = $source;
-            }
-        }
-        ksort($seen);
-
-        $out = [];
-        foreach ($seen as $tag => $found) {
-            $entry = ['tag' => $tag, 'source' => $found['source'], 'since' => min($found['majors'])];
-            $until = self::until($found['majors']);
-            if ($until !== null) {
-                $entry['until'] = $until;
-            }
-            $out[] = $entry;
-        }
-
-        return $out;
     }
 
     /** @param list<array<string, mixed>> $records */

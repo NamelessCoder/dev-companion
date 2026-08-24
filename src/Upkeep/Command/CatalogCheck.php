@@ -14,6 +14,7 @@ use TYPO3\DevCompanion\Tool\TranslationDomainLookup;
 use TYPO3\DevCompanion\Upkeep\Catalogs;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
+use TYPO3\DevCompanion\Upkeep\ComponentDerivation;
 use TYPO3\DevCompanion\Upkeep\TestingFramework;
 
 /**
@@ -93,7 +94,53 @@ final class CatalogCheck
             self::verifyTestingFramework($output, $checkouts),
             self::verifyTestSuites($output, $checkouts, TestSuiteHints::load()),
             self::verifyTranslationDomains($output, $checkouts),
+            self::verifyDerived($output, $checkouts),
         );
+    }
+
+    /**
+     * Whether the derived files still say what the checkouts say.
+     *
+     * `components:derive` writes them and nothing else does, so the only way
+     * they go wrong is by not being run after a core release. Re-deriving and
+     * comparing is the whole check, and it is cheap: the sources are committed
+     * files — `D-CAT-008`.
+     */
+    private static function verifyDerived(OutputInterface $output, string $checkouts): int
+    {
+        $output->writeln('Derived classes and elements');
+        $paths = [];
+        foreach (Versions::covered() as $version) {
+            $paths[$version['major']] = $checkouts . '/' . $version['branch'];
+        }
+
+        $derived = ComponentDerivation::from($paths);
+        $stale = [];
+        foreach (['classes' => 'component-classes', 'elements' => 'custom-elements', 'listing' => 'styleguide-listing'] as $key => $file) {
+            if (Catalogs::read($file) !== json_decode((string) json_encode($derived[$key]), true)) {
+                $stale[] = $file . '.json';
+            }
+        }
+        if ($stale !== []) {
+            Cli::errors($output)->writeln(sprintf(
+                '  %s no longer says what the checkouts say — run bin/cli components:derive',
+                implode(', ', $stale),
+            ));
+
+            return 1;
+        }
+
+        $ships = ComponentDerivation::listing($paths);
+        $output->writeln(sprintf(
+            '  %d classes and %d elements read as they are recorded, and %d components are listed by the styleguide on major %s.',
+            count($derived['classes']),
+            count($derived['elements']),
+            count($derived['listing']),
+            $ships === [] ? 'none' : implode(', ', $ships),
+        ));
+        $output->writeln('');
+
+        return 0;
     }
 
     /**

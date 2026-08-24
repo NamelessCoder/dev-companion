@@ -273,6 +273,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### knowledge
 
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
+- [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -374,6 +375,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · confirmed
 
 [D-KNW-107]: knowledge/knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
+[D-KNW-108]: knowledge/knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
 [D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

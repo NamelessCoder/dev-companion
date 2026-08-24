@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100427-task-guide-returns-extension-and-project-scoped.md, D-ANS-097, R-ANS-033
 **Priority:** normal
+**Branch:** todo/task-guide-returns-extension-and-project-scoped
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 by re-running the call: the diagnosis and both measurements
 are in `D-ANS-097`, what must hold is `R-ANS-033`, and the feedback's

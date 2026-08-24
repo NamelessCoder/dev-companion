@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100400-no-hint-says-what-backend-typescript-may-know.md
 **Priority:** normal
+**Branch:** todo/no-hint-says-what-backend-typescript-may-know
+**Claimed:** 2026-08-24
 
 Judged as step 1a on 2026-08-24 and taken on as a hint of its own: `D-KNW-107`
 carries the evidence, and the reading is what is left. Read `.checkouts/` for

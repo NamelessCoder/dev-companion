@@ -1413,7 +1413,14 @@ final class KnowledgeTest extends TestCase
      *
      * `feedback/2026-08-24-110851` asked for `signed-off-by` and was handed
      * `any/testing/proving-a-condition` whole, six kilobytes on proving a
-     * TypoScript condition, on one body carrying "signed in".
+     * TypoScript condition, on one body carrying "signed in". The other half of
+     * that feedback wrote the trailer rule, so the query now reaches the
+     * section it was asking for — and the unrelated page is still a cut, which
+     * is the floor doing its work rather than the corpus doing it.
+     *
+     * `icon` is the thin match that is left, and the second instance
+     * `D-ANS-101` names in its evidence: one section, and the whole
+     * commit-message page handed over on the word appearing once.
      *
      * What the floor costs, measured over `Documents::topics()` on 2026-08-24
      * at `targetVersion=15.0`: of the corpus's 103 subjects, 25 reach one page
@@ -1424,16 +1431,32 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function onlyMoreThanOneMatchedSectionHandsThePageOver(): void
     {
-        $thin = Registry::call('typo3_rule_lookup', [
+        $reported = Registry::call('typo3_rule_lookup', [
             'query' => 'signed-off-by',
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame([], $reported->data['matchedHeadings'], 'a page is handed over on the reported query');
+        self::assertSame(
+            ['Trailers A Core Commit Does Not Carry', 'Which URL Is Requested'],
+            array_column($reported->data['matches'], 'heading'),
+        );
+        self::assertStringNotContainsString(
+            Documents::read('any/testing/proving-a-condition'),
+            $reported->text,
+            'a page is pushed on the evidence of one word',
+        );
+
+        $thin = Registry::call('typo3_rule_lookup', [
+            'query' => 'icon',
             'targetVersion' => '15.0',
         ]);
 
         self::assertSame(1, $thin->data['matchCount']);
         self::assertSame([], $thin->data['matchedHeadings']);
-        self::assertSame('Which URL Is Requested', $thin->data['matches'][0]['heading']);
+        self::assertSame('Changed Signatures', $thin->data['matches'][0]['heading']);
         self::assertStringNotContainsString(
-            Documents::read('any/testing/proving-a-condition'),
+            Documents::read('core/contribution/commit-messages'),
             $thin->text,
             'a page is pushed on the evidence of one word',
         );

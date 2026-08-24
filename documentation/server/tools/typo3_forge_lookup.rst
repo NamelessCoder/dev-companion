@@ -52,7 +52,10 @@ Takes
     # full-text search over subject, description and comments: it answers the issues
     # whose text matches them — which is how a duplicate nobody has linked is
     # found at all, since the relations of an issue only carry what somebody linked
-    # by hand. That also says what it cannot do: a person's name matches only where
+    # by hand. Every word has to be in the same issue, so a term nobody would have
+    # written — a method name, a class — empties the answer whatever else is in
+    # it: pass the two or three words that name the subject rather than every word
+    # you have. That also says what it cannot do: a person's name matches only where
     # somebody wrote it, so it mixes the issues they filed with the issues a third
     # party mentioned them in and misses the rest — pass the name as reportedBy or
     # assignedTo with open to enumerate a person's issues. Nothing is ranked and one
@@ -94,9 +97,12 @@ Takes
     # one word at a time, so a half-remembered name reaches the right area and a
     # word naming several — "backend" — selects all of them and says which. That
     # is the way in for "are there known bugs in the RTE" and "the oldest issues in
-    # the backend UI", which no wording of the report itself reaches. The categories
-    # that exist come back with every answer, so a word matching none is corrected
-    # without a second call. Narrows open and is ignored by issue and query.
+    # the backend UI", which no wording of the report itself reaches. It answers
+    # "has this already been reported" as well: enumerate the area the report in
+    # hand is about and read the subjects, which is what reaches a duplicate
+    # somebody else worded. The categories that exist come back with every answer,
+    # so a word matching none is corrected without a second call. Narrows open and
+    # is ignored by issue and query.
     category: string  # optional
     # Only issues filed before this day, as YYYY-MM-DD. Narrows open and is ignored
     # by issue and query.

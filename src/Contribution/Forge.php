@@ -132,6 +132,17 @@ final class Forge
         'Topic' => 12,
     ];
 
+    /**
+     * The transport every instance built without one takes.
+     *
+     * `ForgeLookup` builds its own, so a test driving the tool itself — its
+     * text half, which is where a caller reads what to do about a miss — has
+     * nowhere else to hand a transport in. `R-COD-003`.
+     *
+     * @var (\Closure(string): ?string)|null
+     */
+    private static ?\Closure $transport = null;
+
     private readonly Fetch $fetch;
 
     /**
@@ -144,8 +155,19 @@ final class Forge
     /** @param (\Closure(string): ?string)|null $transport */
     public function __construct(?\Closure $transport = null)
     {
-        $this->fetch = new Fetch($transport);
-        $this->review = new Gerrit($transport);
+        $this->fetch = new Fetch($transport ?? self::$transport);
+        $this->review = new Gerrit($transport ?? self::$transport);
+    }
+
+    /**
+     * What a test hands in, so nothing it drives reaches forge.typo3.org. Null
+     * puts the host back.
+     *
+     * @param (\Closure(string): ?string)|null $reader
+     */
+    public static function useReader(?\Closure $reader): void
+    {
+        self::$transport = $reader;
     }
 
     /**

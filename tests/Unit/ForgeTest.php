@@ -12,6 +12,7 @@ use TYPO3\DevCompanion\Http\Recent;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\ForgeLookup;
+use TYPO3\DevCompanion\Tool\Registry;
 
 /**
  * The tracker is somebody else's host, so what is held here is what this side
@@ -26,6 +27,7 @@ final class ForgeTest extends TestCase
     public function forgetWhatWasHeld(): void
     {
         Recent::forget();
+        Forge::useReader(null);
     }
 
     /**
@@ -572,6 +574,35 @@ final class ForgeTest extends TestCase
         self::assertSame('empty', $answer['status']);
         self::assertSame([], $answer['results']);
         self::assertNull($answer['cause']);
+    }
+
+    /**
+     * What the miss offers is the other way into the tracker and not another
+     * wording. Rewording is the loop the caller is already in: the session
+     * `D-ANS-038` was written on went round eight times and was settled by the
+     * enumeration on its ninth call, so the call it could have composed from
+     * what it already held is named in the answer.
+     */
+    #[Requirement('R-ANS-006')]
+    #[Decision('D-ANS-038')]
+    #[Test]
+    public function aMissNamesTheEnumerationAsACallToCompose(): void
+    {
+        Forge::useReader(static fn(): string => (string) json_encode([
+            'results' => [],
+            'total_count' => 0,
+            'offset' => 0,
+            'limit' => 15,
+        ]));
+
+        $result = Registry::call('typo3_forge_lookup', ['query' => 'writePagesOrder importNewIdPids']);
+
+        self::assertSame('empty', $result->data['status']);
+        self::assertStringContainsString('open "stale" with category', $result->text);
+        // The rule that makes an identifier query empty whatever else is in it,
+        // which is the other half of what the caller does next
+        // (`feedback/2026-08-24-163235`).
+        self::assertStringContainsString('Every word has to be in the same issue', $result->text);
     }
 
     /**

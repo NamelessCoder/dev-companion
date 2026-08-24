@@ -67,7 +67,7 @@ final class ForgeLookup extends ReadOnlyTool
                 'query' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Words to search the tracker for, for example "image cache busting". A full-text search over subject, description and comments: it answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. That also says what it cannot do: a person\'s name matches only where somebody wrote it, so it mixes the issues they filed with the issues a third party mentioned them in and misses the rest — pass the name as reportedBy or assignedTo with open to enumerate a person\'s issues. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue, query or open, never two of them.',
+                    'description' => 'Words to search the tracker for, for example "image cache busting". A full-text search over subject, description and comments: it answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Every word has to be in the same issue, so a term nobody would have written — a method name, a class — empties the answer whatever else is in it: pass the two or three words that name the subject rather than every word you have. That also says what it cannot do: a person\'s name matches only where somebody wrote it, so it mixes the issues they filed with the issues a third party mentioned them in and misses the rest — pass the name as reportedBy or assignedTo with open to enumerate a person\'s issues. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue, query or open, never two of them.',
                 ],
                 'open' => [
                     'type' => 'string',
@@ -88,7 +88,7 @@ final class ForgeLookup extends ReadOnlyTool
                 'category' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Only issues the core files under this area, in your own words: "rte", "backend ui", "workspaces", "fluid". Matched against the project\'s own category names one word at a time, so a half-remembered name reaches the right area and a word naming several — "backend" — selects all of them and says which. That is the way in for "are there known bugs in the RTE" and "the oldest issues in the backend UI", which no wording of the report itself reaches. The categories that exist come back with every answer, so a word matching none is corrected without a second call. Narrows open and is ignored by issue and query.',
+                    'description' => 'Only issues the core files under this area, in your own words: "rte", "backend ui", "workspaces", "fluid". Matched against the project\'s own category names one word at a time, so a half-remembered name reaches the right area and a word naming several — "backend" — selects all of them and says which. That is the way in for "are there known bugs in the RTE" and "the oldest issues in the backend UI", which no wording of the report itself reaches. It answers "has this already been reported" as well: enumerate the area the report in hand is about and read the subjects, which is what reaches a duplicate somebody else worded. The categories that exist come back with every answer, so a word matching none is corrected without a second call. Narrows open and is ignored by issue and query.',
                 ],
                 'createdBefore' => [
                     'type' => 'string',
@@ -445,6 +445,11 @@ final class ForgeLookup extends ReadOnlyTool
      * is invisible to a word match, so nothing matching is a statement about
      * the query and never about whether the bug was reported — `D-ANS-038`
      * names reading it the other way as the failure this is written against.
+     *
+     * What it offers is the other way in and not another wording. A session
+     * that read a rewording went round eight times and was settled by the
+     * enumeration on its ninth call, so `open` with `category` is named here as
+     * a call to compose (`R-ANS-006`).
      */
     private static function searched(string $query, int $limit): ToolResult
     {
@@ -475,8 +480,13 @@ final class ForgeLookup extends ReadOnlyTool
             return ToolResult::create(
                 'TYPO3 issue tracker: no issue matches "' . $answer['query'] . '" at ' . Forge::HOST . ".\n"
                 . 'These words matched nothing, which is not that nobody reported it: an issue worded differently is '
-                . 'invisible to a full-text search. Ask again in the words a reporter would have used — or, where the '
-                . 'words are a person, as reportedBy or assignedTo with open.',
+                . "invisible to a full-text search.\n"
+                . 'Every word has to be in the same issue, so a term nobody would have written — a method name, a '
+                . "class — empties the answer whatever else is in it. Ask again with the words that name the subject.\n"
+                . 'What no wording of the report reaches is enumerated instead: open "stale" with category in your own '
+                . "words for the area — \"import export\", \"rte\" — and limit 50.\n"
+                . "Reading those subjects is what settles whether somebody already reported this.\n"
+                . 'Where the words are a person, pass them as reportedBy or assignedTo with open.',
                 $data,
             );
         }

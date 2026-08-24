@@ -971,6 +971,47 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * The areas asked for rather than arrived at by a word that failed.
+     *
+     * Somebody filling in the Category field of a new report wants the list and
+     * has no subject to narrow by, and the only route to it was a word wrong
+     * enough to name none — `D-KNW-113`. It reads no issue, because the
+     * enumeration is the answer and not a filter on one.
+     */
+    #[Decision('D-KNW-113')]
+    #[Test]
+    public function theAreasAreEnumeratedWithoutAWordThatHasToFail(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $answer = $forge->open('oldest', '', '*', '', '', 2);
+
+        self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, '/issues.json')));
+        self::assertSame('answered', $answer['status']);
+        self::assertSame([], $answer['categoriesUsed']);
+        self::assertContains('RTE (rtehtmlarea + ckeditor)', $answer['categories']);
+        self::assertContains('Frontend', $answer['categories']);
+    }
+
+    /**
+     * A project that did not answer is an outage and not a project with no
+     * areas, which is what an empty list read as the vocabulary would say.
+     */
+    #[Decision('D-KNW-113')]
+    #[Test]
+    public function areasThatCouldNotBeReadAreSaidToBeUnreachable(): void
+    {
+        $forge = new Forge(static fn(): ?string => null);
+
+        $answer = $forge->open('oldest', '', '*', '', '', 2);
+
+        self::assertSame('unavailable', $answer['status']);
+        self::assertSame('source-not-answering', $answer['cause']);
+        self::assertSame([], $answer['categories']);
+    }
+
+    /**
      * A word naming no area is an answer about the word. Sent on unfiltered it
      * would come back as the whole backlog, which reads as "everything is about
      * the RTE" and is the one mistake this path can make — `D-ANS-054`.

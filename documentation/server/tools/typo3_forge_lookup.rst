@@ -22,18 +22,20 @@ matches text, so a name reaches the issues that mention the person and not the
 issues that are theirs. status widens that enumeration past the unresolved ones,
 which is what a person's history needs, and involving answers both sides of a
 person at once — the tracker ANDs its filters, so what somebody filed or holds
-cannot be asked of it directly. Or pass breakdown with any of those to be
-answered how the matched set is distributed — per status, per tracker, per area,
-per year — instead of a page of it, which is what a set of hundreds is answered
-by: limit stops at 50 and nothing pages past it. Each entry carries its number,
-subject, tracker, status and URL, and an enumerated one also carries the issues
-it is filed against with their subjects, the files hanging off it, and the
-changes on review.typo3.org whose commit message names it — the three that say a
-row was answered elsewhere or already attempted, without reading it whole. A
-call carries issue, query or open, never two of them. An issue that does not
-exist is answered as such, and so is a tracker that could not be reached.
-Reading only, and no credential: commenting, assigning and closing stay yours.
-Answers from: network.
+cannot be asked of it directly. The areas the core files issues under are the
+project's own list, read from it live. Pass category as "*" for that list on its
+own — the spelling the Category field of a new report takes. Or pass breakdown
+with any of those to be answered how the matched set is distributed — per
+status, per tracker, per area, per year — instead of a page of it, which is what
+a set of hundreds is answered by: limit stops at 50 and nothing pages past it.
+Each entry carries its number, subject, tracker, status and URL, and an
+enumerated one also carries the issues it is filed against with their subjects,
+the files hanging off it, and the changes on review.typo3.org whose commit
+message names it — the three that say a row was answered elsewhere or already
+attempted, without reading it whole. A call carries issue, query or open, never
+two of them. An issue that does not exist is answered as such, and so is a
+tracker that could not be reached. Reading only, and no credential: commenting,
+assigning and closing stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -100,9 +102,13 @@ Takes
     # the backend UI", which no wording of the report itself reaches. It answers
     # "has this already been reported" as well: enumerate the area the report in
     # hand is about and read the subjects, which is what reaches a duplicate
-    # somebody else worded. The categories that exist come back with every answer,
-    # so a word matching none is corrected without a second call. Narrows open and
-    # is ignored by issue and query.
+    # somebody else worded. A word naming none or several is answered with every
+    # area the project has, so a half-remembered one is corrected without a second
+    # call, and categoriesUsed names the tracker's own spelling of the areas it did
+    # reach — which is what a report being filed by hand has to carry. Pass "*"
+    # for that list on its own, which reads no issues and is how the areas are
+    # enumerated without a subject to narrow by. Narrows open and is ignored by
+    # issue and query.
     category: string  # optional
     # Only issues filed before this day, as YYYY-MM-DD. Narrows open and is ignored
     # by issue and query.
@@ -191,11 +197,11 @@ Answers with
     total: integer
     # Every area the core files its issues under, read from the project itself, so a
     # category word that matched none or several is corrected from the answer rather
-    # than from a second call. Answered where a category word was passed and did not
-    # resolve to exactly one area, which is the only call it does that work on.
-    # Empty otherwise, which is not a statement about the project —
-    # typo3_server_scope carries the vocabulary for a caller that wants it without a
-    # question.
+    # than from a second call. Answered where category was passed and did not
+    # resolve to exactly one area, and where it was passed as "*", which asks for
+    # this list and reads no issues. Empty otherwise, which is not a statement about
+    # the project: nothing else here carries the vocabulary, because the project
+    # administers it and a copy would go stale against the source this reads.
     categories: [string]
     # The categories the category word resolved to, in the tracker's own spelling.
     # Empty where none was asked for — and empty where the word matched none,

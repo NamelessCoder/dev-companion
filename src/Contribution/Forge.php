@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Contribution;
 
 use TYPO3\DevCompanion\Http\Fetch;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Result\Unreachable;
 use TYPO3\DevCompanion\Search\Text;
 
 /**
@@ -24,6 +25,17 @@ final class Forge
 
     /** The core's own project on the tracker, which is the one this reads. */
     public const PROJECT = 'typo3cms-core';
+
+    /**
+     * The `category` word that asks for the areas themselves.
+     *
+     * The tracker's own wildcard, which this file already passes it as
+     * `status_id`. No area is named for it, so it cannot take a subject's place.
+     */
+    public const EVERY_AREA = '*';
+
+    /** Where the project answers its own areas, which is the only read `*` does. */
+    private const AREAS_URL = self::HOST . '/projects/' . self::PROJECT . '.json?include=issue_categories';
 
     /**
      * Seconds an answered read is held for.
@@ -443,6 +455,24 @@ final class Forge
         bool $breakdown = false,
     ): array {
         $categories = $this->categories();
+        // The vocabulary asked for on purpose, and no issue read at all. Every
+        // other call is answered with the areas only where a word named none or
+        // several, which is what keeps 54 names off the answers nobody asked
+        // them of (`feedback/2026-08-19-134717`) — and left the enumeration
+        // reachable by a wrong word alone (`D-KNW-113`).
+        if ($category === self::EVERY_AREA) {
+            return [
+                'status' => $categories === [] ? 'unavailable' : 'answered',
+                'url' => self::AREAS_URL,
+                'total' => 0,
+                'categories' => array_keys($categories),
+                'categoriesUsed' => [],
+                'people' => [],
+                'breakdown' => null,
+                'results' => [],
+                'cause' => $categories === [] ? Unreachable::NOT_ANSWERING : null,
+            ];
+        }
         $used = $category === '' ? [] : self::named($categories, $category);
 
         $filters = [
@@ -767,8 +797,7 @@ final class Forge
      */
     public function categories(): array
     {
-        $url = self::HOST . '/projects/' . self::PROJECT . '.json?include=issue_categories';
-        $answer = $this->api($url, 'project', self::LISTS_HELD_FOR);
+        $answer = $this->api(self::AREAS_URL, 'project', self::LISTS_HELD_FOR);
 
         $categories = [];
         $listed = $answer['part']['issue_categories'] ?? null;

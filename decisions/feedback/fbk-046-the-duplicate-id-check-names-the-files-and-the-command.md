@@ -5,6 +5,7 @@ date: 2026-08-14
 status: open
 coveredBy:
   - DecisionsTest::aDuplicateIdNamesBothFilesAndTheCommandThatMovesOne
+  - RenumberTest::aMentionThisBranchWroteMovesAndIsReportedApart
   - RequirementsTest::aDuplicateIdNamesBothFilesAndThatNothingMovesOne
 ---
 

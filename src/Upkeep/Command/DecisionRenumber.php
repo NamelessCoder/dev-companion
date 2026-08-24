@@ -79,12 +79,27 @@ final class DecisionRenumber
             $output->writeln(sprintf('    %s (%d)', $file, count($lines)));
         }
 
+        if ($report['branch'] !== []) {
+            $output->writeln('');
+            $output->writeln(sprintf(
+                '%d more moved: a line this branch added means this branch\'s entry. Read them.',
+                count($report['branch']),
+            ));
+            foreach ($this->byFile($report['branch']) as $file => $lines) {
+                $output->writeln('');
+                $output->writeln('    ' . $file);
+                foreach ($lines as $line) {
+                    $output->writeln(sprintf('    %5d  %s', $line['line'], $line['text']));
+                }
+            }
+        }
+
         $output->writeln('');
         if ($report['named'] === []) {
             $output->writeln('Nothing else names ' . $report['from'] . '.');
         } else {
             $output->writeln(sprintf(
-                '%d name %s and no file says which entry is meant. Read each against',
+                '%d name %s, stand on `main` as well, and no file says which entry is meant. Read each against',
                 count($report['named']),
                 $report['from'],
             ));

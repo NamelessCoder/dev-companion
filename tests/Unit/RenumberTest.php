@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Directory;
+use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Links;
 use TYPO3\DevCompanion\Upkeep\Renumber;
 
@@ -35,9 +38,24 @@ final class RenumberTest extends TestCase
 
     private string $root = '';
 
+    /**
+     * The corpus is a directory and not a checkout, so the git this now asks is
+     * stubbed rather than run — `R-COD-003`. Answering "no such ref" is the
+     * state every case but one is written against: nothing is settled from who
+     * wrote a line, and every ambiguous mention is reported.
+     */
+    #[Before]
+    public function answerNoRepository(): void
+    {
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(['ok' => false, 'exitCode' => 1, 'output' => '', 'error' => '']);
+        Checkouts::useRunner($git);
+    }
+
     #[After]
     public function removeTheCorpus(): void
     {
+        Checkouts::useRunner(null);
         if ($this->root !== '') {
             Directory::remove($this->root);
             $this->root = '';
@@ -160,6 +178,49 @@ final class RenumberTest extends TestCase
     }
 
     /**
+     * The half a person used to do by hand, four times in one day.
+     *
+     * A todo card written by the session that wrote the entry names the id in
+     * prose and no link path, so nothing in the file says which of the two
+     * entries is meant. What says it is that `main` does not carry the line: the
+     * entry it would otherwise mean already had the number when the line was
+     * written — `D-FBK-046`.
+     */
+    #[Decision('D-FBK-046')]
+    #[Test]
+    public function aMentionThisBranchWroteMovesAndIsReportedApart(): void
+    {
+        $root = $this->corpus();
+        $card = $root . '/todo/open/2026-08-24-100000-a-fixture-card.md';
+        mkdir(dirname($card), 0o777, true);
+        file_put_contents($card, "# A fixture card\n\nJudged as `D-GUI-901`: the step below.\n");
+
+        // `main` carries the sibling entry naming the same id and not the card,
+        // which is the state a collision leaves behind.
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturnCallback(
+            static fn(array $command): array => match (true) {
+                $command === ['git', 'rev-parse', '--verify', '--quiet', 'main']
+                    => ['ok' => true, 'exitCode' => 0, 'output' => "abc123\n", 'error' => ''],
+                default => ['ok' => false, 'exitCode' => 128, 'output' => '', 'error' => ''],
+            },
+        );
+        Checkouts::useRunner($git);
+
+        $report = Renumber::decision($root, $this->entry($root), self::TO);
+
+        self::assertContains(
+            'todo/open/2026-08-24-100000-a-fixture-card.md:3',
+            array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['branch']),
+        );
+        self::assertStringContainsString('`D-GUI-903`', (string) file_get_contents($card));
+        self::assertNotContains(
+            'todo/open/2026-08-24-100000-a-fixture-card.md:3',
+            array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['named']),
+        );
+    }
+
+    /**
      * The whole of what the command is worth. A line naming the old id is
      * rewritten or reported and never neither, and once the call is over the
      * lines still naming it are the reported ones exactly — so a person handed
@@ -174,7 +235,10 @@ final class RenumberTest extends TestCase
 
         $report = Renumber::decision($root, $this->entry($root), self::TO);
 
-        $moved = array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['moved']);
+        $moved = array_map(
+            static fn(array $r): string => $r['file'] . ':' . $r['line'],
+            [...$report['moved'], ...$report['branch']],
+        );
         $named = array_map(static fn(array $r): string => $r['file'] . ':' . $r['line'], $report['named']);
 
         self::assertNotSame([], $before);

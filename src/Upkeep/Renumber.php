@@ -17,6 +17,12 @@ use Symfony\Component\Finder\Finder;
  * silently wrong there. A reference is therefore moved only where the file
  * itself says which entry is meant, which is a link path, and every other one is
  * reported: moved or named, never silently left — `D-DOC-015`.
+ *
+ * The one other thing a file says is who wrote the line. A mention this branch
+ * added means this branch's entry, because the entry it would otherwise mean
+ * was already on `main` when the line was written — which is what the report
+ * used to send a person to `git diff` for, and is now settled here and reported
+ * apart from the rest — `D-FBK-046`.
  */
 final class Renumber
 {
@@ -27,7 +33,7 @@ final class Renumber
      * What one call did: the entry it moved, the references it settled from a
      * link path, and the ones only a person can.
      *
-     * @return array{from: string, to: string, file: string, moved: list<array{file: string, line: int, text: string}>, named: list<array{file: string, line: int, text: string}>}
+     * @return array{from: string, to: string, file: string, moved: list<array{file: string, line: int, text: string}>, branch: list<array{file: string, line: int, text: string}>, named: list<array{file: string, line: int, text: string}>}
      */
     public static function decision(string $root, string $file, string $to): array
     {
@@ -88,13 +94,90 @@ final class Renumber
             }
         }
 
+        [$branch, $named] = self::branchLines($root, $from, $to, $named);
+
         return [
             'from' => $from,
             'to' => $to,
             'file' => self::relative($root, $entry),
             'moved' => $moved,
+            'branch' => $branch,
             'named' => $named,
         ];
+    }
+
+    /**
+     * The mentions this branch wrote, rewritten, and the ones it did not.
+     *
+     * A line naming the old id is ambiguous between two entries only while both
+     * were reachable when it was written. One the branch added was written when
+     * the other entry was already on `main` under that number, so it means the
+     * entry that is moving. The comparison is the line rather than a diff hunk:
+     * a file `main` does not carry is the branch's whole, and a line its version
+     * does not carry is one the branch wrote.
+     *
+     * Where git cannot answer — no `main`, no repository — nothing is moved and
+     * every mention is reported, which is what this did before.
+     *
+     * @param list<array{file: string, line: int, text: string}> $named
+     * @return array{0: list<array{file: string, line: int, text: string}>, 1: list<array{file: string, line: int, text: string}>}
+     */
+    private static function branchLines(string $root, string $from, string $to, array $named): array
+    {
+        if ($named === []) {
+            return [[], []];
+        }
+        [$code] = Checkouts::run(['git', 'rev-parse', '--verify', '--quiet', 'main'], $root);
+        if ($code !== 0) {
+            return [[], $named];
+        }
+
+        $onMain = [];
+        $branch = [];
+        $rest = [];
+        foreach ($named as $mention) {
+            if (!array_key_exists($mention['file'], $onMain)) {
+                [$status, $output] = Checkouts::run(['git', 'show', 'main:' . $mention['file']], $root);
+                $onMain[$mention['file']] = $status === 0 ? $output : '';
+            }
+            if (str_contains($onMain[$mention['file']], $mention['text'])) {
+                $rest[] = $mention;
+                continue;
+            }
+            $branch[] = $mention;
+        }
+
+        foreach (self::byFile($branch) as $file => $mentions) {
+            $path = $root . '/' . $file;
+            $lines = explode("\n", (string) file_get_contents($path));
+            foreach ($mentions as $mention) {
+                $number = $mention['line'] - 1;
+                if (isset($lines[$number])) {
+                    $lines[$number] = (string) preg_replace(
+                        '/\b' . preg_quote($from, '/') . '(?![0-9a-z])/',
+                        $to,
+                        $lines[$number],
+                    );
+                }
+            }
+            file_put_contents($path, implode("\n", $lines));
+        }
+
+        return [$branch, $rest];
+    }
+
+    /**
+     * @param list<array{file: string, line: int, text: string}> $mentions
+     * @return array<string, list<array{file: string, line: int, text: string}>>
+     */
+    private static function byFile(array $mentions): array
+    {
+        $byFile = [];
+        foreach ($mentions as $mention) {
+            $byFile[$mention['file']][] = $mention;
+        }
+
+        return $byFile;
     }
 
     /**

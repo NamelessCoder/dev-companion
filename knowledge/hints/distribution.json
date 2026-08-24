@@ -158,7 +158,36 @@
       "Images do not come along with the reference: --include-related=sys_file is what admits the sys_file record, and the bytes hang off that record rather than off the sys_file_reference. Naming sys_file under --table admits nothing, because a page tree holds no sys_file rows. The reference table still has to be named as well, under --table or under --include-related, and --include-related=sys_file_metadata is what brings the alt texts and titles with it.",
       "Where the bytes then go is --save-files-outside-export-file: beside the export instead of base64 inside it, into a directory named after the file plus .files, each under its own sha1. That is the shape for an artifact that is committed. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
       "The export keeps the basename of the filename argument and drops the rest: EXT:my_package/Initialisation/data becomes data, and the file lands in the default import-export folder below fileadmin. Nothing rejects the path that was dropped, and the success message names where the file went. A package artifact is moved into place afterwards, its .files directory with it. EXT:<key>/Initialisation/data.xml is the form that works for impexp:import, which resolves its argument through GeneralUtility::getFileAbsFileName().",
-      "impexp:export answers [OK] whatever it left out, so the artifact is what says whether it worked. A correct one has a files_fal section beside header and records, and its .files directory holds one file per image."
+      "impexp:export answers [OK] whatever it left out, so the artifact is what says whether it worked. A correct one has a files_fal section beside header and records, and its .files directory holds one file per image.",
+      "impexp-import-placement is the other half, for a file being read back rather than written: what decides the page an imported record lands on."
+    ]
+  },
+  {
+    "id": "impexp-import-placement",
+    "title": "Where an impexp Import Puts the Records It Writes",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "impexp/Classes/Import.php",
+      "impexp:import",
+      "--update-records",
+      "--ignore-pid",
+      "writePagesOrder",
+      "flatInversePageTree",
+      "header.pagetree",
+      "imported page on the wrong pid",
+      "imported records landed on the import target",
+      "imported translations on the wrong page",
+      "import moved the page tree flat"
+    ],
+    "hints": [
+      "Import::writePages() decides the page: it takes each page's pid out of header.records.pages, maps it through importNewIdPids, and falls back to the import target where that lookup misses. addSingle() fills the map as each page is added, so the write order is what decides whether a parent resolves at all. A page reached before its parent lands on the import target rather than in the tree, and nothing reports it.",
+      "header.pagetree is read as a tree by the import and appended to as a flat marker set by the export. Export writes every page translation into it under its own uid, so the record counts as inside the page tree; ImportExport::flatInversePageTree() reads the same section as a real tree, reverses each level and hands every top level node the pid -1. The appended nodes come out of it first, carrying that -1 into the lookup above.",
+      "addSingle() sets a pid only for a record it creates. Where the record maps onto an existing uid it unsets pid instead, so an update cannot move a page through the datamap — which is what writePagesOrder() is for, a correction pass that moves the written pages with a cmdmap afterwards.",
+      "That pass is narrower than it looks: writePagesOrder() returns unless the import is an update, and its move is guarded by $pagePid >= 0, so every node carrying -1 is outside it as well. A record the fallback placed on the import target stays there.",
+      "impexp:import --update-records is what turns update mode on: records with a matching uid are updated in place instead of inserted, and the correction pass runs. --ignore-pid turns that pass off again through doRespectPid() and works only together with --update-records. The same switch per record is --import-mode \"<table>:<uid>=ignore_pid\", against which =respect_pid is the exception.",
+      "initial-content-references is the other reason an imported record points somewhere unexpected: which relations survive the import at all."
     ]
   }
 ]

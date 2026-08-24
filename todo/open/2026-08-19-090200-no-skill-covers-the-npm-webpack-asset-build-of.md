@@ -3,12 +3,13 @@
 **Serves:** feedback/2026-08-19-090200-no-skill-covers-the-npm-webpack-asset-build-of.md
 **Priority:** normal
 
-Work the review of 2026-08-24 into
-`skills/typo3-extension-asset-build/SKILL.md`: the one verification section
-becomes a backend half and a frontend half, because the two are checked
-differently and only the backend one is written. What each half says is below,
-and the frontend one routes to the document `todo/open/2026-08-24-000156` writes
-rather than restating it.
+Write the frontend half's route into
+`skills/typo3-extension-asset-build/SKILL.md`. The rest of the review is worked
+in as of 2026-08-24: the verification is a backend half and a frontend half, the
+borrowed-class step names the component and stands before the change, the
+baseline build is gone and the duplicated rebuild instruction with it. What the
+frontend half still says in its own words is how an asset reaches a page, and
+that is the document `todo/open/2026-08-24-000156` writes.
 
 Judged 1b on 2026-08-21 — the shape is missing. `D-SKL-067` holds the evidence,
 the boundary the workflow owns and what it stops at.
@@ -160,8 +161,10 @@ these decided a step of the draft:
 
 ## What is left, in the order it goes
 
-1. The rework above. Its frontend half waits on the document, and the rest of it
-   does not.
+1. The frontend half's route, which waits on the document. The rest of the
+   rework landed on 2026-08-24, and `D-CAT-008` is what made the borrowed-class
+   step answerable at all: `typo3_component_lookup` returns where each class
+   sits now, so "verified against every declared major" has something to return.
 2. The baseline run `D-SKL-035` buys was read again on 2026-08-24 and is
    arguably already paid: that decision asks for the same task in an environment
    where the skill is not installed, and `feedback/2026-08-19-090200` and

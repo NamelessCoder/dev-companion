@@ -3,7 +3,8 @@
     "id": "site-sets",
     "title": "Site Sets",
     "domains": [
-      "typoscript"
+      "typoscript",
+      "php"
     ],
     "appliesTo": [
       "Configuration/Sets/",
@@ -14,7 +15,13 @@
       ".typoscript",
       "how does an extension ship typoscript",
       "welcome page instead of the site set",
-      "site set typoscript has no effect"
+      "site set typoscript has no effect",
+      "dependencies key",
+      "under dependencies",
+      "config/sites/",
+      "site configuration",
+      "typoscript root",
+      "getSets"
     ],
     "hints": [
       {
@@ -23,6 +30,18 @@
       },
       {
         "text": "Next to config.yaml the set may hold setup.typoscript, settings.definitions.yaml, settings.yaml, labels.xlf, page.tsconfig and route-enhancers.yaml. Only config.yaml is required.",
+        "since": 13
+      },
+      {
+        "text": "A site takes a set up by naming it under dependencies in its own config/sites/<identifier>/config.yaml. The key is spelled dependencies and nothing in that file is called sets, while the accessor is Site::getSets() — so the one relationship is asked for under one word and read under another.",
+        "since": 13
+      },
+      {
+        "text": "The site entity's other sources are keyed the same way. The settings key of that config.yaml becomes Site::getSettings(), and the site's own TypoScript and page TSconfig come from setup.typoscript, constants.typoscript and page.tsconfig lying beside config.yaml rather than from any key in it.",
+        "since": 13
+      },
+      {
+        "text": "A site naming a set, or holding a setup.typoscript, constants.typoscript or page.tsconfig of its own, is a TypoScript root: its frontend renders without a sys_template record on the root page. A site with none of them and no such record errors out instead of rendering. Site::isTypoScriptRoot() is the core's own test for that: the dependencies list is not empty, or one of those files sits beside config.yaml. It is @internal, so core code and a core functional test call it and everything else reads it as the description of when that record can go.",
         "since": 13
       },
       "TypoScript files use the .typoscript extension.",

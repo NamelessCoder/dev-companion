@@ -251,6 +251,7 @@ Text:
     - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
     - project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
     - sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
+    - site-sets — Site Sets (TypoScript)
     - fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
     - tca-schema-api — TCA Schema API (PHP)
     - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
@@ -666,6 +667,11 @@ Data:
                 "id": "sitepackage-initial-content",
                 "title": "Shipping Initial Content with an Extension",
                 "category": "PHP"
+            },
+            {
+                "id": "site-sets",
+                "title": "Site Sets",
+                "category": "TypoScript"
             },
             {
                 "id": "fal-storages-drivers",
@@ -1518,6 +1524,7 @@ Text:
     - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
     - project-extension-tests — Setting a Test Suite Up in an Extension (PHP)
     - sitepackage-initial-content — Shipping Initial Content with an Extension (PHP)
+    - site-sets — Site Sets (TypoScript)
     - fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
     - system-extension-boundaries — System Extension Boundaries (PHP)
     - tca-schema-api — TCA Schema API (PHP)
@@ -1838,6 +1845,11 @@ Data:
                 "id": "sitepackage-initial-content",
                 "title": "Shipping Initial Content with an Extension",
                 "category": "PHP"
+            },
+            {
+                "id": "site-sets",
+                "title": "Site Sets",
+                "category": "TypoScript"
             },
             {
                 "id": "fal-storages-drivers",

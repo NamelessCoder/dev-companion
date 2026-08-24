@@ -3151,6 +3151,63 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('backend settings editor', $text);
     }
 
+    /**
+     * A site's own `config.yaml` is YAML, and YAML detects as PHP, so a question
+     * about which key in it becomes which accessor is a PHP query however much
+     * it is about sets. That is why `site-sets` is asked from both domains: filed
+     * under TypoScript alone it was not a candidate for the question the
+     * reporting session had, and the three hints it did get back are the ones
+     * `D-KNW-115` measured.
+     */
+    #[Decision('D-KNW-115')]
+    #[Test]
+    #[DataProvider('siteConfigurationKeyQueries')]
+    public function theKeyASiteNamesItsSetsUnderIsAnsweredBySiteSets(string $task): void
+    {
+        $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+
+        self::assertSame('site-sets', $ids[0] ?? null, $task . ' reaches ' . implode(', ', $ids));
+
+        $text = self::statementsOf('site-sets');
+        self::assertStringContainsString('naming it under dependencies', $text);
+        self::assertStringContainsString('the accessor is Site::getSets()', $text);
+        self::assertStringContainsString('becomes Site::getSettings()', $text);
+        self::assertStringContainsString('renders without a sys_template record', $text);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function siteConfigurationKeyQueries(): array
+    {
+        return [
+            'the question the reporting session had' => [
+                'What in config/sites/<id>/config.yaml makes Site::isTypoScriptRoot() return true, '
+                . 'and which YAML key becomes Site::getSets()?',
+            ],
+            'the key and the accessor' => ['site config.yaml dependencies key sets Site::getSets'],
+            'the word the caller starts from' => ['which yaml key in a site configuration names its site sets'],
+        ];
+    }
+
+    /**
+     * The word the two subjects share, kept from carrying one into the other.
+     *
+     * `dependencies` is a bare word in a question about a `composer.json`, and
+     * curating it onto `site-sets` put that hint first on this query — where the
+     * hint that answers it had no curated phrase to match at all. What reaches
+     * `site-sets` is the key in its two spelled-out forms.
+     */
+    #[Decision('D-KNW-115')]
+    #[Test]
+    public function aComposerDependencyQuestionIsAnsweredByTheRepositoryHint(): void
+    {
+        $ids = array_column(
+            Hints::find([], 'what composer dependencies does my extension declare', 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertSame('extension-repository-dependencies', $ids[0] ?? null, implode(', ', $ids));
+    }
+
     #[Requirement('R-KNW-032')]
     #[Test]
     public function projectSystemConfigurationStatesItsOwnershipBoundary(): void

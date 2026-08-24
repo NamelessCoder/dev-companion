@@ -3,6 +3,9 @@ id: D-KNW-115
 title: The key a site names its sets under is stated with the sets
 date: 2026-08-24
 status: open
+coveredBy:
+  - HintsTest::aComposerDependencyQuestionIsAnsweredByTheRepositoryHint
+  - HintsTest::theKeyASiteNamesItsSetsUnderIsAnsweredBySiteSets
 ---
 
 # D-KNW-115 — The key a site names its sets under is stated with the sets
@@ -131,3 +134,44 @@ other file of that name — so a reader who gets that far is one file off.
 - The next session needs the key while writing a core functional test, as this
   one did, and does not reach a hint about site sets from that task at all. What
   is missing would be in the core testing documents rather than in the corpus.
+
+## Since then
+
+The statement is in `site-sets`, with the direction the corpus stated in neither
+half: a site names its sets under `dependencies` in its own `config.yaml`, that
+list is what the site entity's `getSets()` returns, `settings` reaches
+`getSettings()`, and the site's own TypoScript and page TSconfig come from
+`setup.typoscript`, `constants.typoscript` and `page.tsconfig` beside the file
+rather than from a key in it. The entity and `SiteConfiguration` read line for
+line the same on `.checkouts/13.4` and `.checkouts/main`, and `.checkouts/12.4`
+has neither the key nor the accessor, so the statements are bound from 13. The
+fourth **Wrong if** did not happen: `SiteConfiguration` hands the raw
+configuration to the constructor, which keeps the list, and `SetRegistry`
+resolves only what those names contain.
+
+`isTypoScriptRoot()` is stated, with its marker and with what it decides. The
+corpus already states an `@internal` member where a caller needs one, which
+`assets.json` does, and what this one buys is the consequence rather than the
+method: a site naming a set or holding one of those files renders without a
+`sys_template` record on its root page, and a site with neither errors out
+instead of rendering. That holds on both covered lines from a different class
+each — `TypoScriptFrontendInitialization` on 13, `PageInformationFactory` on
+main — so the statement names the behaviour and not the message.
+
+The placement alone did not make the question reachable, and the domain is what
+did. A site's `config.yaml` is YAML, `Domains` reads YAML as PHP, and a hint
+filed under TypoScript alone is no candidate for a PHP query unless the task
+spells out a curated phrase no PHP hint claims — "site configuration" is claimed
+by `routing-request-handling`. So `site-sets` is asked from `php` as well, as
+fifteen hints already are, and the reporting session's own question returns it
+first. What that risks is a PHP query answered with `site-sets` in place of the
+hint that was about it: the bare word `dependencies`, curated onto the hint, put
+it above `extension-repository-dependencies` on a `composer.json` question,
+which is why the key is curated as "dependencies key" and "under dependencies"
+instead.
+
+`fresh-instance-seeding` keeps its sentence and owes no pointer. Its reader is
+asking what fills a fresh instance, and `site-sets` says nothing about that, so
+a pointer there would name no consequence for the reader who is holding that
+question — which is what `D-KNW-087` asks of the pointers that exist rather than
+a reason to write one.

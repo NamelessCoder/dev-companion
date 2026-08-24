@@ -12,6 +12,7 @@ heldBy:
   - SkillTest::theDeprecationSweepIsSkippedWhereNoTypo3ApiIsTouched
   - SkillTest::theDeprecationSweepRunsFromTheExtensionsSurface
   - SkillTest::theInstalledSourceIsTheStepAfterTheLookups
+  - SkillTest::theReportNamesTheStepsOfTheOrderItDidNotReach
   - SkillTest::theWorkflowStepRunsInEverySession
 ---
 
@@ -37,8 +38,14 @@ is what the task produces — a triage, a reproduction and a review are
 illustrations of it rather than the list it is read off. The exemption ends
 where the workflow produces a change: a review asked to make the change is that
 other workflow, and it starts the order again holding the files it is about to
-write. A report names the step it did not reach, under either exemption, because
-a step passed over in silence cannot be told from one that was dropped.
+write.
+
+The order closes on the report, which names every step of it the session did not
+reach and what stood in for that step. That obligation stands after the order
+rather than inside each step it covers. A session taking an exemption reads the
+exempting paragraph least carefully, and this is the one instruction of it that
+has to survive into a document written later. A step passed over in silence
+cannot be told from one that was dropped.
 
 The workflow step carries none. It is run in every session, this skill's own
 tasks included, because the brief is built from the caller's paths as well as

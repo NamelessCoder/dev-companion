@@ -798,12 +798,50 @@ final class SkillTest extends TestCase
             'The exemption ends where the workflow produces a change',
             self::flat($base),
         );
-        // And the half the sighting reported against itself. Step 2 asks it
-        // already; nothing asked it of the step that goes unrun.
-        self::assertStringContainsString(
-            'A report names the step it did not reach',
-            self::flat($base),
+    }
+
+    #[Requirement('R-SKL-005')]
+    #[Decision('D-SKL-074')]
+    #[Test]
+    public function theReportNamesTheStepsOfTheOrderItDidNotReach(): void
+    {
+        // Three sessions from three task shapes took an exemption and named the
+        // step nowhere — a DDEV boot, a change that skipped steps 2, 4 and 5,
+        // and the patch review of `feedback/2026-08-24-110949`. The obligation
+        // was stated twice and both copies stood inside a step it exempts,
+        // which is the paragraph a session taking the exemption reads least
+        // carefully (`D-SKL-074`).
+        $base = self::flat((string) file_get_contents(Paths::root() . '/skills/base.md'));
+
+        $obligation = strpos($base, 'the report names every step of this order it did not reach');
+        self::assertNotFalse($obligation, 'the base never asks a report to name the steps it skipped');
+
+        // Where it stands is the whole of the change: after the reading the
+        // order ends on, so a session meets it once the work it reports about
+        // is done rather than in the middle of the step it is about.
+        self::assertGreaterThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $obligation,
+            'the obligation to name a skipped step stands inside the order rather than after it',
         );
+
+        // And what it covers is every step, not the one exemption it was
+        // written under: step 2 has nothing to call where step 1 reported no
+        // extension, and step 4 is discharged by a brief that carried
+        // everything the lookup matched.
+        self::assertStringContainsString(
+            'That is an answer already in the session, a condition that made the step empty, or an exemption',
+            $base,
+        );
+        self::assertStringContainsString(
+            'A step passed over in silence cannot be told from one that was dropped',
+            $base,
+        );
+
+        // Written once. Both earlier copies stood in a step, and a reader who
+        // met one of them had no reason to look for the other.
+        self::assertSame(1, substr_count($base, 'names every step of this order it did not reach'));
+        self::assertStringNotContainsString('under either exemption', $base);
     }
 
     #[Requirement('R-SKL-005')]

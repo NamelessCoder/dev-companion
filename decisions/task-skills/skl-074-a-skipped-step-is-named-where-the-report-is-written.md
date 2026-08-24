@@ -3,6 +3,8 @@ id: D-SKL-074
 title: 'A skipped step is named where the report is written'
 date: 2026-08-24
 status: open
+coveredBy:
+  - SkillTest::theReportNamesTheStepsOfTheOrderItDidNotReach
 ---
 
 # D-SKL-074 — A skipped step is named where the report is written
@@ -109,3 +111,14 @@ sessions from three task shapes took the exemption and reported nothing.
 - The next sighting comes from a session that read its skill's *Report* section
   and not the base's order. Then the obligation belonged in the skill after all,
   and "written once" is what it cost.
+
+## Since then
+
+The two statements the entry left open were answered by writing it. Step 5's
+closing sentence is gone and step 2 keeps its "Say so.", so what a step asks
+locally stayed local and the obligation over the order did not stay in either.
+The sentence now stands last in *The order*, after **Then** read the checkout,
+and it covers every step rather than the two exemptions it was written under — a
+step discharged by an earlier answer is named for the same reason a skipped one
+is. `SkillTest::theReportNamesTheStepsOfTheOrderItDidNotReach` holds where it
+stands, which is what the old assertion could not.

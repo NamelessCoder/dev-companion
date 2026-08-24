@@ -37,8 +37,7 @@ skip the ones that matter too.
 
    Where step 1 reported none — a core checkout is the case, since it names the
    project's own extensions and not TYPO3's — that answer is this step, and
-   there is nothing to call. Say so. A step passed over in silence cannot be
-   told from one that was dropped.
+   there is nothing to call. Say so.
 3. **`typo3_task_guide`** with a short English task, the paths it touches, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
@@ -133,12 +132,14 @@ skip the ones that matter too.
    as — one PHP file edited along the way puts it back among the ordinary ones,
    and a skip there costs the deprecation no finding would have walked into.
 
-   A report names the step it did not reach, under either exemption, which is
-   what step 2 already asks of itself.
-
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a
 verdict that has already formed.
+
+**Last**, the report names every step of this order it did not reach, and what
+stood in for it. That is an answer already in the session, a condition that made
+the step empty, or an exemption. A step passed over in silence cannot be told
+from one that was dropped.
 
 ## When the lookups run out
 

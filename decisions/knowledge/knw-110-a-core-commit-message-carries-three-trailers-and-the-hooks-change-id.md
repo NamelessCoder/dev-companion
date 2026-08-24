@@ -77,3 +77,19 @@ rule rather than the conflict behind it.
   half no test can hold.
 - The core's `AGENTS.md` drops the demand. Then the conflict this entry is
   written against is gone, and what stays is a list nobody disputes.
+
+## Since then
+
+The core's `AGENTS.md` was measured on 2026-08-24 rather than taken from
+`D-KNW-109`, because two sessions read it differently on the same day. It landed
+in `781c852587` on 2026-07-28 and stands at the bare repository's `main`,
+`9dd4e1bfd7`. So the file is a month old and deliberately added, not the
+days-old arrival `D-KNW-109` assumed, and the conflict this entry rules on is
+the durable kind rather than one a revert would end.
+
+The other reading was an absence that is not there: a session working the
+changelog guide reported no `AGENTS.md` in `origin/main`, which is a ref no
+worktree below `.checkouts/` carries — `git ls-tree main -- AGENTS.md` in
+`.checkouts/typo3.git` answers the file. It withheld a sentence rather than
+writing a wrong one, so nothing false reached the corpus.
+

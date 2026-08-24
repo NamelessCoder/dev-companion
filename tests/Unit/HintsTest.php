@@ -115,6 +115,63 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The two paths of `feedback/2026-08-24-100400`, which is the call that
+     * session says it did not make because it did not expect an answer to
+     * exist. `D-KNW-107` assumed the `appliesTo` is what decides whether the
+     * hint arrives at all, so the paths alone are what this asks with: the hint
+     * has to be reachable from either half of the module, and the PHP half is
+     * the one `backend-typescript` never covered.
+     */
+    #[Decision('D-KNW-107')]
+    #[Test]
+    public function eitherHalfOfABackendModuleReachesWhichSideResolvesAResource(): void
+    {
+        $fromBoth = Hints::find(
+            [
+                'Build/Sources/TypeScript/form/backend/form-wizard/steps/settings-step.ts',
+                'typo3/sysext/form/Classes/Controller/FormManagerController.php',
+            ],
+            '',
+            8,
+        );
+        $fromThePhp = Hints::find(['typo3/sysext/form/Classes/Controller/FormManagerController.php'], '', 8);
+
+        self::assertContains('backend-client-server-boundary', array_column($fromBoth['matchedHints'], 'id'));
+        self::assertContains('backend-client-server-boundary', array_column($fromThePhp['matchedHints'], 'id'));
+    }
+
+    /**
+     * What the reading of `.checkouts/` settled, against the rule the feedback
+     * proposed. "Backend TypeScript must not hold an `EXT:` path" is
+     * contradicted by the same subsystem — the form manager's select carries
+     * every `newFormTemplates` path the server handed it — so the statement is
+     * the distinction between carrying such a value and working one out.
+     *
+     * The core removed the one place it worked one out, which is why the
+     * closing statement is bound: `form-manager/view-model.ts` sets the blank
+     * mode's `templatePath` to a literal on 12.4 and 13.4, and the wizard
+     * rewrite dropped it rather than moving it into the module's payload.
+     */
+    #[Decision('D-KNW-107')]
+    #[Test]
+    public function whatTheClientMayCarryIsSaidApartFromWhatItMayDecide(): void
+    {
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('backend-client-server-boundary', $major)['hints'], 'text'),
+        );
+
+        self::assertStringContainsString('Carrying a resource path is not the same as deciding one', $on(14));
+        self::assertStringContainsString('the client carrying what the server gave it', $on(14));
+        self::assertStringContainsString('1329233410', $on(14));
+
+        self::assertStringContainsString('the only literal EXT: resource path', $on(12));
+        self::assertStringContainsString('the only literal EXT: resource path', $on(13));
+        self::assertStringNotContainsString('the only literal EXT: resource path', $on(14));
+        self::assertStringContainsString('No backend TypeScript source resolves a resource by path', $on(14));
+    }
+
+    /**
      * `R-ANS-026`: a path says which subsystem the question is about.
      *
      * Two sessions passed the Extbase persistence paths and got FAL storages

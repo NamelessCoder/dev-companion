@@ -291,6 +291,7 @@ Text:
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+    - backend-client-server-boundary — Which Side of a Backend Module Resolves a Resource (PHP)
     - site-base-collision — Which Site Answers When Two Bases Collide (PHP)
     - initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
     - dependency-injection — Wiring a Service (PHP)
@@ -863,6 +864,11 @@ Data:
             {
                 "id": "fal-processing",
                 "title": "Which Processor Claims a File, and What Runs Below It",
+                "category": "PHP"
+            },
+            {
+                "id": "backend-client-server-boundary",
+                "title": "Which Side of a Backend Module Resolves a Resource",
                 "category": "PHP"
             },
             {
@@ -1548,6 +1554,7 @@ Text:
     - php-versions — Which PHP a TYPO3 Version Requires and Is Tested On (PHP)
     - datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
     - fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
+    - backend-client-server-boundary — Which Side of a Backend Module Resolves a Resource (PHP)
     - site-base-collision — Which Site Answers When Two Bases Collide (PHP)
     - initial-content-import-once — Why a Changed Data File Does Not Arrive (PHP)
     - dependency-injection — Wiring a Service (PHP)
@@ -2033,6 +2040,11 @@ Data:
             {
                 "id": "fal-processing",
                 "title": "Which Processor Claims a File, and What Runs Below It",
+                "category": "PHP"
+            },
+            {
+                "id": "backend-client-server-boundary",
+                "title": "Which Side of a Backend Module Resolves a Resource",
                 "category": "PHP"
             },
             {

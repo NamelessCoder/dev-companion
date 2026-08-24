@@ -91,5 +91,46 @@
       "navigationComponent is inherited from the parent module unless the registration turns it off with inheritNavigationComponentFromMainModule, so a module's own Modules.php does not say whether it is page-tree navigated. Reading the registration files alone gives the wrong answer for every module that inherits.",
       "TYPO3\\CMS\\Backend\\Routing\\Route takes a path and an options array; TYPO3\\CMS\\Core\\Routing\\Route takes a path, defaults, requirements and then options. Passing backend route options to the core class puts them where defaults belong, getOption() returns null with no error, and a test built that way asserts nothing."
     ]
+  },
+  {
+    "id": "backend-client-server-boundary",
+    "title": "Which Side of a Backend Module Resolves a Resource",
+    "domains": [
+      "php",
+      "typescript"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "Classes/Controller/",
+      "which layer",
+      "resource path",
+      "template path",
+      "templatePath",
+      "initial data",
+      "inline settings",
+      "AjaxRequest",
+      "getFormManagerAppInitialData",
+      "isValidTemplatePath",
+      "ElementBrowserRegistry",
+      "IconController",
+      "what the client sends",
+      "what the controller resolves",
+      "backend module javascript"
+    ],
+    "hints": [
+      "A backend module's TypeScript holds the editor's own state, and the identifiers and endpoint URLs its own PHP handed it. Which server-side resource a UI concept stands for is resolved by the controller.",
+      "The core's modules are built that way throughout. <typo3-backend-icon identifier=\"actions-close\"> names an icon and never a file: IconController::getIcon() resolves the identifier through IconFactory, and the client's fallback for one that does not resolve is another identifier, default-not-found. The element browser is opened with a mode, and ElementBrowserRegistry::getElementBrowser() resolves the class behind it, throwing exception 1647241086 where nothing is registered under that name.",
+      "Carrying a resource path is not the same as deciding one. Option values the module's initial data supplied and the form submits back unchanged are the client carrying what the server gave it. A literal path, a suffix match on a file name, or a mapping from a UI mode to a resource is the client deciding, and the deciding is the half that belongs on the other side.",
+      "The controller resolves and validates such a value on arrival whatever the client sent, so a client that works the same answer out again buys nothing. FormManagerController::createAction() matches the submitted templatePath against the same newFormTemplates configuration getFormManagerAppInitialData() put into the module's payload, and throws a FormException — exception 1329233410 — where it does not appear there.",
+      {
+        "text": "The form manager is where the core breaks this itself: form-manager/view-model.ts sets templatePath to a literal EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml for its blank mode, and that is the only literal EXT: resource path in the whole backend TypeScript tree.",
+        "until": 13
+      },
+      {
+        "text": "No backend TypeScript source resolves a resource by path any more. The form manager was the last one, and the wizard rewrite dropped its hardcoded blank-form template rather than moving it into the payload the module is handed; the only EXT: reference left in the tree is an LLL: label key inside a Fluid title attribute.",
+        "since": 14
+      },
+      "backend-typescript answers what builds the source and where its unit tests go. This one answers what the built module may decide."
+    ]
   }
 ]

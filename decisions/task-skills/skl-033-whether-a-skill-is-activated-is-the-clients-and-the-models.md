@@ -188,7 +188,7 @@ rows are one arm on one model variant, and not a property of the request shape.
 
 ### 2026-08-24 — a second German brief on the same variant, and one word of match
 
-[`feedback/2026-08-24-133515`](../../feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
+[`feedback/2026-08-24-133515`](../../feedback/archive/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
 is the same checkout again on `claude-opus-5[1m]`, opening in German with "bitte
 schaue dir das hier an und baue eine patch mit tests dafür" and an artifact URL.
 A core patch followed, green, with no skill opened and no call made. So the

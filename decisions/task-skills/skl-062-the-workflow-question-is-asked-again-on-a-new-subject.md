@@ -5,6 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - HintsTest::aBriefNamesTheActsTheWorkflowQuestionIsAskedAgainAt
+  - ScopeTest::theSecondCallIsAskedAgainAtTheCallersOwnActs
 ---
 
 # D-SKL-062 — The workflow question is asked again on a new subject
@@ -140,7 +141,7 @@ what happens when the task is no longer the one the brief was composed for.
 
 ### 2026-08-24 — the acts were taken by a session the placement cannot reach
 
-[`feedback/2026-08-24-133515`](../../feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
+[`feedback/2026-08-24-133515`](../../feedback/archive/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
 is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`: a core patch carried
 to green — two classes changed, a test added to an existing case, a new
 functional test case, unit, functional, cgl and phpstan all run — with zero
@@ -171,3 +172,38 @@ The session named two acts of its own, and one of them is outside the four: the
 first edit to code the package ships. It is nameable without seeing the checkout
 the way the other four are, and whether it belongs beside them is part of the
 same step rather than something this reading settles.
+
+### 2026-08-24 — the imperative carries the acts, and the skill clause gives way
+
+**`instructions.start` now reads "Then call typo3_task_guide for the workflow
+the task belongs to, and again at the first test, check, commit or shipped file
+the task did not name."** The second half of that sentence was "it hands the
+parts that have their own workflow to the skill that owns them", and that is
+what gave way.
+
+The clause was a description of what the call returns, which is the mood
+`D-AUD-012` counted at one call against eleven. No test held it, and what it
+claims is delivered where a caller can act on it: `D-SKL-013` put the skill name
+into the guide's own answer. Its measured effect on this channel is nothing
+twice — the benchmark of `D-SKL-033` had it in context and opened no skill, and
+[`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
+reports reading that sentence "as a tool to call, not as a reason to open a
+skill".
+
+**The room was 8 characters, not 20.** The largest assembly is the caller that
+excluded every tool in a project whose skills are stale, where the prefix naming
+the tools is longer than the index it replaces: 2040 characters of the 2048 on
+2026-08-24, where the reading above measured the notice alone. The rewrite is
+2045, and the acts are said in four words each because that is what fits.
+
+**The fifth act joins, merged with the fourth: the first edit to code or
+documentation the package ships.** It is the act the reporting session took
+first — before the test case, before `runTests.sh`, and before the wasted
+container run its feedback names. What keeps it from firing on every patch is
+the condition that already stood on the clause: a subject the task did not name.
+
+**One sentence in two places, against the Decided bullet above.** The two reach
+sessions that do not overlap — the brief a session that called once, the
+`instructions` one that called nothing — and this queued step exists because the
+second was left unserved. What that costs is one act list to keep true in two
+wordings, and they are as close as 8 characters allow.

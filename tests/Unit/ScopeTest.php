@@ -337,10 +337,10 @@ final class ScopeTest extends TestCase
         // `D-AUD-011`, `D-DIS-013`.
         self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
-        // The largest assembly, re-measured on 2026-08-19: nothing excluded, in
-        // a project whose task skills nobody has updated. 2028 characters, of
-        // which the index entry for typo3_commit_message_guide is 96 and the
-        // imperative `D-AUD-012` put on the second call 2.
+        // Re-measured on 2026-08-24: 2033 characters, of which the index entry
+        // for typo3_commit_message_guide is 96 and the imperative `D-AUD-012`
+        // put on the second call 2. The largest assembly is the last case
+        // below and not this one, which is what `D-SKL-062` had to fit in.
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen(Coverage::instructions(Installer::NOTICE)),
@@ -348,12 +348,10 @@ final class ScopeTest extends TestCase
         );
 
         // The prefix naming what was excluded is measured too, because it grows
-        // with the list and a caller may exclude most of the server. Both cases
-        // below used to be the worst one: the index was prose and named four
-        // tools whatever the caller had left. Now it is data, the entries of an
-        // excluded tool go with it, and the index it drops is longer than the
-        // prefix naming every tool that replaces it — 1913 characters, and 1998
-        // where the notice comes too.
+        // with the list and a caller may exclude most of the server. The last
+        // of the four is the largest assembly there is — 1960 characters, and
+        // 2045 where the notice comes too, measured on 2026-08-24 — because the
+        // prefix naming every tool is longer than the index it replaces.
         putenv(ExcludedTools::VARIABLE . '=' . implode(',', array_column(Registry::definitions(), 'name')));
         self::assertLessThanOrEqual(
             Coverage::INSTRUCTIONS_BUDGET,
@@ -526,6 +524,29 @@ final class ScopeTest extends TestCase
 
         self::assertStringContainsString('Start every task with typo3_project_describe', $instructions);
         self::assertStringContainsString('Then call typo3_task_guide', $instructions);
+    }
+
+    /**
+     * `D-SKL-062`. The same imperative covers the acts, not only the opening.
+     *
+     * A core patch was carried to green with zero calls to this server
+     * (`feedback/2026-08-24-133515`), and the acts it took were named in
+     * `TaskGuide::answer()` alone — which rides on an answer nobody asked for.
+     * The instructions are the channel a session that calls nothing still
+     * reads, so the acts are said here in the short form the budget allows and
+     * in the brief in full.
+     */
+    #[Decision('D-AUD-012')]
+    #[Decision('D-SKL-062')]
+    #[Test]
+    public function theSecondCallIsAskedAgainAtTheCallersOwnActs(): void
+    {
+        $instructions = Coverage::instructions();
+
+        self::assertStringContainsString(
+            'and again at the first test, check, commit or shipped file the task did not name',
+            $instructions,
+        );
     }
 
     #[Test]

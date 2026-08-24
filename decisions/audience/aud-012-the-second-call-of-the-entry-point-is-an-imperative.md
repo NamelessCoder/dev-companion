@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - ScopeTest::bothCallsOfTheEntryPointAreToldInTheImperative
   - ScopeTest::theInstructionsFitWhatAClientKeeps
+  - ScopeTest::theSecondCallIsAskedAgainAtTheCallersOwnActs
 ---
 
 # D-AUD-012 — The second call of the entry point is an imperative
@@ -87,3 +88,9 @@ them.
 [`D-ANS-091`](../answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)
 is the reading, with what would make the answer the lever after all — which is
 this entry's first **Wrong if**, still uncounted.
+
+On 2026-08-24 the sentence's second half became the acts to call again at, where
+it described what the call returns:
+[`D-SKL-062`](../task-skills/skl-062-the-workflow-question-is-asked-again-on-a-new-subject.md)
+has what that displaced and what it bought. The mood is untouched, so the first
+**Wrong if** is still what a second run of the counted shape answers.

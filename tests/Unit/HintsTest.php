@@ -5805,8 +5805,11 @@ final class HintsTest extends TestCase
      * directories and the repository's own check suite, none of them named in
      * that opening (`feedback/2026-08-18-081159`). Measured before the change,
      * the brief for each of those sub-steps names the skill and the guide that
-     * own it — so what was missing is the moment, and the brief is where it is
-     * said, the `instructions` being 2038 characters of the 2048 a client keeps.
+     * own it — so what was missing is the moment.
+     *
+     * This is the half that reaches a session which called once. The other half
+     * reaches one that called nothing and is a clause of `instructions.start`,
+     * held by `ScopeTest::theSecondCallIsAskedAgainAtTheCallersOwnActs`.
      */
     #[Requirement('R-GUI-014')]
     #[Decision('D-SKL-062')]
@@ -5825,7 +5828,7 @@ final class HintsTest extends TestCase
             'test directory',
             'a check the repository declares',
             'branch or commit',
-            'the documentation the package ships',
+            'code or documentation the package ships',
         ] as $act) {
             self::assertStringContainsString($act, $when['typo3_task_guide']);
         }

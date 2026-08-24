@@ -1036,6 +1036,7 @@ final class GerritTest extends TestCase
      * 95179 carries exactly that comment, which is why neither field is read
      * here into an answer of "nobody answered" — `D-ANS-079`.
      */
+    #[Decision('D-ANS-079')]
     #[Test]
     public function aCommentCarriesItsThread(): void
     {
@@ -1104,6 +1105,7 @@ final class GerritTest extends TestCase
      * carry the copy condition a rebase dropped a vote by, which is the one
      * thing the log is worth fetching for.
      */
+    #[Decision('D-ANS-079')]
     #[Test]
     public function theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated(): void
     {

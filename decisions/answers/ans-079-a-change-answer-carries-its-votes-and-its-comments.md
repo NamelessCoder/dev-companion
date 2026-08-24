@@ -6,6 +6,8 @@ status: open
 coveredBy:
   - GerritTest::aChangeCarriesTheVoteEachLabelStandsAt
   - GerritTest::aChangeWithNoCommentCostsNoCallToFindThatOut
+  - GerritTest::aCommentCarriesItsThread
+  - GerritTest::theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated
 ---
 
 # D-ANS-079 — A change answer carries its votes and its comments
@@ -118,3 +120,47 @@ NoteDB meta ref as git history instead.
   thread rather than the comment.
 - The vote state turns out to be unreadable without the copy conditions, so
   every caller asks for the messages as well and the split bought nothing.
+
+## Since then
+
+On 2026-08-24 a session reviewed change 95179 — the change the comments above
+were measured on — and reported the answer as having settled the whole review
+question in one call. `feedback/2026-08-24-122330` is that report, and the third
+**Wrong if** is what it bears on: it watches for a caller reading `unresolved`
+as "nobody answered" and reporting a comment somebody replied to.
+
+That caller did not. It separated Mathias Brodala's unresolved request for an
+Important RST from Georg Ringer's, resolved by its own author, and it read the
+owner's own reply "sure! will check it later" as still open. The reply that
+stays unresolved is the case **Decided** refuses to judge, and handing over both
+fields was enough — the answer does not owe the thread.
+
+The first **Wrong if** did not fire either. The same session used the labels to
+see that the owner held Code-Review-1 on their own change, which is a procedural
+reading rather than a verdict borrowed from a vote.
+
+The second **Assumed** gains a third change. `feedback/2026-08-24-173151` read
+change 76606, abandoned, whose one inline comment is Benni Mack's "wrong
+approach :(" on `/PATCHSET_LEVEL` — and that comment is what stopped the session
+writing a patch in the shape already rejected. The count is now none on 93319,
+three on 95179 and one on 76606.
+
+Neither is a confirmation, so the entry stays open: an account of a run is not a
+recorded one (`D-FBK-018`). What they carry instead is which fields may not be
+quietly dropped (`D-ANS-059`), and both name the same three — the `unresolved`
+and reply pair, the per-voter labels, and the `messages: "people"` split that
+drops the pipeline reports. Two of the tests that hold them declared nothing:
+`GerritTest::aCommentCarriesItsThread` named this entry in its docblock alone,
+and `theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated` holds both the log
+call and the bot count. Both declare it now, so a failure prints the entry that
+rested on them.
+
+The judging run re-ran
+`typo3_gerrit_lookup(change: "95179", messages: "people")` against
+`review.typo3.org` the same day. Every named field came back: the query echoed
+as `change:I4a7557ccf3dc68bd6dc7dc40a5fa269bad0f6aa8`, the commit of patch set
+2, the two labels with their voters, `chain: []`, and four comments carrying
+`unresolved` and `inReplyTo`. The answer also carries issue 81619 with its
+tracker, status and subject, which `D-ANS-098` landed after the session ran — so
+the join is now in the change answer, and the tracker call the session made is
+still what carries the reporter's own framing.

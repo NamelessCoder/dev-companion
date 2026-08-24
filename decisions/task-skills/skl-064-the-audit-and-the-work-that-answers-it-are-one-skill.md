@@ -4,7 +4,7 @@ title: The audit and the work that answers it are one skill
 date: 2026-08-19
 status: open
 coveredBy:
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn
   - SkillTest::everyPublishedSkillIsNamedByAnIntent
   - SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange
 ---

@@ -1,7 +1,8 @@
 ---
 date: 2026-08-19T09:02:00+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-24
 model: claude-opus-5[1m]
 tool: typo3-extension-upgrade, typo3-extension-health, typo3-extension-testing
 directory: /home/benji/projects/blog

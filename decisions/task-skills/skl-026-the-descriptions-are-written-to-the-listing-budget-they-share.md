@@ -4,7 +4,7 @@ title: The descriptions are written to the listing budget they share
 date: 2026-08-08
 status: open
 coveredBy:
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn
 ---
 
 # D-SKL-026 — The descriptions are written to the listing budget they share
@@ -64,7 +64,7 @@ spends is taken off the skill that gets listed by its name alone.
   traded for.
 - The total is held by a test rather than stated in prose, because a number in a
   sentence is true on the day it is written — `R-SKL-021` and
-  `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare`.
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn`.
 - Trimming further was rejected. What is left is the sides and the triggers, and
   the combination that still does not fit — 6000 against a bundled listing of
   5997 — does not fit at any length, because the floor is over the budget with

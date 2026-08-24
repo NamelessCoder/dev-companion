@@ -5,7 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - SkillTest::aDefectInsideTheDeclaredRangeMatchesTheRemovalSkill
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn
 ---
 
 # D-SKL-061 — The upgrade description is reachable from a defect
@@ -59,7 +59,7 @@ carries the activation states a premise the task does not meet.
   is not a statement.
 - **What the listing has left.** 3572 characters of the 3600 ceiling on
   2026-08-18, measured over `Installer::skills()` the way
-  `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare` measures it, with
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` measures it, with
   the upgrade description at 267 of them.
 
 ## Decided
@@ -122,7 +122,7 @@ is being crossed rather than resolving one. `R-SKL-007` was widened with it, and
 what the skill says it owns is no longer the crossing alone.
 
 What the trade actually had to fit is smaller than this entry says. Measured the
-way `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare` measures — which
+way `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` measures — which
 counts the description as the front matter writes it, quotes included — the
 listing stood at 3597 of the 3600 the ratchet allows before this change and at
 3595 after, and the upgrade description went from 269 characters to 266. So the

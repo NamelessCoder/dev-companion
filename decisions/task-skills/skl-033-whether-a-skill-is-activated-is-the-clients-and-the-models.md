@@ -4,7 +4,7 @@ title: Whether a skill is activated is the client's and the model's
 date: 2026-08-11
 status: open
 coveredBy:
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn
 ---
 
 # D-SKL-033 — Whether a skill is activated is the client's and the model's
@@ -40,7 +40,7 @@ not fire, so the wording is not what is left to suspect.
   as what "hands the parts that have their own workflow to the skill that owns
   them". Neither tool was called before call 14.
 - **What the twelve cost today.** 3537 characters of listing against the 3600
-  `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare` allows, measured on
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, measured on
   2026-08-11.
 
 ## Decided

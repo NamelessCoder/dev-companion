@@ -882,5 +882,37 @@
       "typo3_hint_lookup with id=events-extension-points, for the registration each covered line has and what an event class owes its listeners",
       "typo3_extension_describe, for what the extension dispatching the event already registers"
     ]
+  },
+  {
+    "id": "asset-build",
+    "title": "Asset build",
+    "skill": "typo3-extension-asset-build",
+    "guide": "any/assets/how-an-asset-reaches-a-page",
+    "match": [
+      "npm",
+      "package.json",
+      "dependabot",
+      "webpack",
+      "vite",
+      "grunt",
+      "sass",
+      "asset build",
+      "rebuild the assets",
+      "built css",
+      "built javascript"
+    ],
+    "rulesQuery": "asset reaches a page",
+    "checklist": [
+      "Run the build commands as typo3_project_describe reported them, in the directory the manifest they came from sits in and on the Node it names.",
+      "Verify a core class or icon the output borrows before writing it, one call per declared major, and read where the class sits rather than that the name exists.",
+      "After the rebuild, check every mapped path in Configuration/JavaScriptModules.php against the file the build wrote, and the route each frontend output reaches a page by.",
+      "Commit the rebuilt artefacts together with the source that produced them, where the repository tracks its output."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_component_lookup with the targetVersion of each declared major, for where a borrowed class sits",
+      "typo3_rule_lookup with documentId=\"any/assets/how-an-asset-reaches-a-page\", for the route an output reaches a page by and what proves it still carries",
+      "typo3_hint_lookup id=public-assets, for how Resources/Public is published and what makes a file resolvable at all"
+    ]
   }
 ]

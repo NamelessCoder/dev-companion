@@ -2284,13 +2284,20 @@ final class SkillTest extends TestCase
     }
 
     /**
-     * The descriptions are read in one listing and paid for out of one budget:
-     * Claude Code allows all of them together the characters in one percent of
-     * the context window, and where they do not fit it drops whole descriptions
-     * rather than shortening them, least-used first — which is every skill this
-     * server publishes on a fresh install (`D-SKL-026`). So what is held is
-     * their total, in the client's own arithmetic: `- <name>: <description>`,
-     * one newline between entries — `D-SKL-061`.
+     * A description is held to a length of its own, and the listing is not held
+     * to a total.
+     *
+     * The total was a ratchet, and `D-SKL-064` said what it could not do: no
+     * fixed sum absorbs another skill, so every publication spent itself
+     * arguing about the descriptions written before it. Twice it was raised
+     * instead, which made it a record of what had happened. What it was for is
+     * kept here — a description that grows without bound is what crowds a
+     * listing — and what it could not do is given up: how many skills this
+     * server publishes is decided by which domains earn one.
+     *
+     * The client still drops whole descriptions where they do not fit, least
+     * used first (`D-SKL-026`), so the sum is a real limit somewhere. Nobody
+     * has measured where since 2026-08-08, and this cap does not pretend to.
      */
     #[Decision('D-SKL-033')]
     #[Requirement('R-SKL-021')]
@@ -2298,37 +2305,22 @@ final class SkillTest extends TestCase
     #[Decision('D-SKL-054')]
     #[Decision('D-SKL-061')]
     #[Decision('D-SKL-064')]
+    #[Decision('D-SKL-070')]
     #[Test]
-    public function everyDescriptionIsWrittenToTheBudgetTheyShare(): void
+    public function everyDescriptionIsWrittenToALengthOfItsOwn(): void
     {
-        // What the listing costs today, with room for a rename. It is a
-        // ratchet rather than a limit read off a client: how much of the budget
-        // is left over is decided by the client's own bundled skills, which
-        // took 5997 characters of the 6000 a 200k session had on 2026-08-08.
-        // It was 3600 until the thirteenth and fourteenth skills were
-        // published, which no fixed total can absorb — `D-SKL-064` is what
-        // moved it and what it costs.
-        $ceiling = 3970;
+        // What thirteen of the fourteen were already written to on 2026-08-24,
+        // and what the fourteenth came down to in order to be published.
+        $longest = 360;
 
-        // What a client reads, which is `Installer::skills()` and not the
-        // directory. A draft is published to nobody and costs no listing
-        // anything, so counting it here would charge the twelve published
-        // descriptions for a workflow nobody can load — and the charge would
-        // fall on the session that writes the draft rather than on the one that
-        // decides to publish it, which is where the trade actually is
-        // (`D-SKL-054`). A run that asks for `--drafts` pays for them in that
-        // one project, deliberately.
-        $published = Installer::skills();
-        $listing = count($published) - 1;
-        foreach ($published as $name) {
-            $listing += mb_strlen($name) + 4 + mb_strlen(self::description($name));
+        foreach (Installer::skills() as $name) {
+            $description = self::description($name);
+            self::assertLessThanOrEqual(
+                $longest,
+                mb_strlen($description),
+                $name . ' describes itself in ' . mb_strlen($description) . ' characters, and a client that runs out drops whole descriptions',
+            );
         }
-
-        self::assertLessThanOrEqual(
-            $ceiling,
-            $listing,
-            'the listing costs ' . $listing . ' characters, and a client that runs out drops whole descriptions',
-        );
     }
 
     /**

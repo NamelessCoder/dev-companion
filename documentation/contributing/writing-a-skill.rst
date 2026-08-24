@@ -115,7 +115,7 @@ The rules
 * Its front matter carries the standard's fields and nothing else —
   ``SkillTest::everyFrontMatterFieldIsOneTheStandardDefines``
 * Every description is written to the budget all of them share —
-  ``SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare``
+  ``SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn``
 * A draft says so in its own front matter until it is published —
   ``SkillTest::aDraftSaysSoInItsOwnFrontMatter``
 * It starts from the base before it reaches for anything of its own —

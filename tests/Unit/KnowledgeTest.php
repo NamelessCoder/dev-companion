@@ -740,6 +740,7 @@ final class KnowledgeTest extends TestCase
             'tca-field' => 'Add a TCA column to a table an extension already ships',
             'site-setting' => 'Add a setting to the site set a sitepackage ships',
             'event-listener' => 'Register an event listener for the PSR-14 event a package dispatches',
+            'asset-build' => 'Update the npm dependencies of this extension and rebuild its assets',
         ];
 
         $cases = [];

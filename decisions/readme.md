@@ -588,6 +588,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### task-skills
 
+- [`D-SKL-070`][D-SKL-070] — A description is held to a length of its own · 2026-08-24
 - [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill · 2026-08-21
 - [`D-SKL-068`][D-SKL-068] — An audit's list is established against the work already in flight · 2026-08-21
 - [`D-SKL-069`][D-SKL-069] — Each runtime lookup says what it adds after the extension answer · 2026-08-21
@@ -654,6 +655,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
+[D-SKL-070]: task-skills/skl-070-a-description-is-held-to-a-length-of-its-own.md
 [D-SKL-067]: task-skills/skl-067-maintaining-a-packages-asset-build-earns-a-task-skill.md
 [D-SKL-068]: task-skills/skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md
 [D-SKL-069]: task-skills/skl-069-each-runtime-lookup-says-what-it-adds-after-the-extension-answer.md

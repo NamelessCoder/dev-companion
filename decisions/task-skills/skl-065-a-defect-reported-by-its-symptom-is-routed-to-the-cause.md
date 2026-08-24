@@ -67,7 +67,7 @@ absence of a workflow behind it.
   with it. That argument is the answer the diagnosis is looking for.
 - **The listing has no room for a fourteenth description.** The thirteen
   published ones cost 3966 characters against the 3970
-  `SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare` allows, measured on
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, measured on
   2026-08-19 with that test's own arithmetic.
 
 ## Decided

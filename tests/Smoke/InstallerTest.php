@@ -145,6 +145,7 @@ final class InstallerTest extends TestCase
                     'typo3-core-patch-review',
                     'typo3-development-installation',
                     'typo3-distribution-content',
+                    'typo3-extension-asset-build',
                     'typo3-extension-documentation',
                     'typo3-extension-health',
                     'typo3-extension-patch-review',

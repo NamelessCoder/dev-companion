@@ -5,7 +5,7 @@ date: 2026-08-18
 status: open
 coveredBy:
   - SkillTest::aDraftSaysSoInItsOwnFrontMatter
-  - SkillTest::everyDescriptionIsWrittenToTheBudgetTheyShare
+  - SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn
 ---
 
 # D-SKL-054 — The listing budget is what a client reads
@@ -29,7 +29,7 @@ charged for room in a listing it does not appear in.
 - `Installer::skills()` is the directory minus what declares itself a draft, and
   it is what every other consumer already reads: `Sdk\Skills` serves it,
   `ScopeTest` announces it, `SkillTest::everyPublishedSkillIsNamedByAnIntent`
-  routes to it. `everyDescriptionIsWrittenToTheBudgetTheyShare` was the one
+  routes to it. `everyDescriptionIsWrittenToALengthOfItsOwn` was the one
   assertion reading the directory instead.
 - A draft is published to nobody, which
   `InstallerTest::aDraftIsPublishedOnlyWhereTheRunAsksForIt`

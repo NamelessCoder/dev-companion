@@ -7,6 +7,7 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24
 - [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
@@ -99,6 +100,7 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-097]: ans-097-a-bounded-answer-spends-its-slots-on-the-hints-that-bind-its-caller.md
 [D-ANS-096]: ans-096-an-outside-source-is-read-in-the-form-it-publishes.md
 [D-ANS-091]: ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: ans-092-the-project-answer-says-how-its-declared-suites-are-run.md

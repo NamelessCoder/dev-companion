@@ -26,8 +26,6 @@ Three of four were about repository kinds this is not. project-build-and-scripts
 
 Cost was low — I read them and used only backend-typescript — but it is three quarters of the hint payload, and it arrived after the server had already been told, in the previous call of the same session, what kind of repository this is. The scopes array in the answer proves the classification was available at the moment the hints were selected.
 
-Separately in the same answer: intents included site-setting with confidence "weak" for a change to two TypeScript files, and checklist then carried four site-set-settings items conditioned on it. Also noise.
-
 ## Query
 
 typo3_task_guide(task="Review a bugfix patch for the TYPO3 form manager new-form wizard: the settings step must pick the template matching the Blank/Predefined mode chosen in step 1", changeType="audit", targetVersion="15", paths=["Build/Sources/TypeScript/form/backend/form-wizard/steps/settings-step.ts","typo3/sysext/form/Resources/Public/JavaScript/backend/form-wizard/steps/settings-step.js"]) — preceded in the same session by typo3_project_describe returning kind="core-checkout".
@@ -37,5 +35,3 @@ typo3_task_guide(task="Review a bugfix patch for the TYPO3 form manager new-form
 Filter hints by their own scope field against the scope task_guide already computed per path. Where every path resolves to scope "core", drop hints declaring scope "extension" or "project"; where they resolve to extension or project, drop the core-only ones. Hints with scope null stay, since they are the ones that transfer.
 
 If dropping them outright is too strong, return them under a separate key — the answer already has an omittedHints mechanism for hints it left out, and the same shape would work here: "hints that apply to other repository kinds", so a caller can ask for them rather than read past them.
-
-The weak-confidence intents deserve a floor too. site-setting fired on two .ts files with no YAML anywhere in the path set, and it pulled four conditional checklist items along with it. Either suppress weak intents whose condition cannot possibly be met by the given paths, or stop expanding their checklist items until the intent is at least "moderate".

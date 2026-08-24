@@ -183,3 +183,18 @@ on `PAGEVIEW` — and `MatchedHints::scopeNotice()` already turns that into "no
 condition of a patch" beside them. `bin/cli hints:coverage` is byte-identical
 before and after, so no hint became unreachable, and the order is unchanged.
 
+## Since then
+
+On 2026-08-24 the scope tier this entry set aside was measured again, on two
+calls where it does change the order. What the reading above found was two
+scope-bearing hints sitting below the ones that answer; what these two show is
+the same hints sitting above them. In a brief for two core paths,
+`extension-asset-build` and `project-build-and-scripts` fill two of the four
+slots and push `backend-ui` and `javascript-unit-tests` into `omittedHints`; in
+one for two paths under `packages/`, `core-tests` ranks first, above the hint
+that binds there.
+
+So "filling slots nothing better competes for" holds where the answer lists
+everything it matched and not where it carries the strongest few. `D-ANS-097` is
+what carries the question from here.
+

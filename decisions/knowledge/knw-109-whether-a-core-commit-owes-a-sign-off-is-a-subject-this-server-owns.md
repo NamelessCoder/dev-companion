@@ -1,0 +1,84 @@
+---
+id: D-KNW-109
+title: Whether a core commit owes a sign-off is a subject this server owns
+date: 2026-08-24
+status: open
+---
+
+# D-KNW-109 — Whether a core commit owes a sign-off is a subject this server owns
+
+**`core/contribution/commit-messages` states which of the core's own sources
+asks for the `Signed-off-by:` trailer, because its agent instructions demand it
+and one merged commit in a hundred carries it.**
+
+The page lists the trailers through `Change-Id:` and stops. A reviewer holding a
+patch without the trailer has to decide whether that blocks submission, and the
+three sources that answer disagree with each other.
+
+## Evidence
+
+- `bin/cli hints:probe "signed-off-by"` reaches nothing: 101 hints were
+  candidates and none matched. A search of `knowledge/` and `skills/` for the
+  trailer, the DCO and `git commit -s` returns hits in `feedback/` and `todo/`
+  and nowhere else.
+- Read in `.checkouts/main` at `9dd4e1bfd7`, dated 2026-08-23 and fetched for
+  this judgement because the worktree stood at 2026-08-18 and `AGENTS.md` had
+  landed in between. The core's own `AGENTS.md` says "Sign off every commit —
+  `git commit -s` appends the `Signed-off-by:` trailer, or set
+  `git config format.signOff true`", certifies it against the Developer
+  Certificate of Origin, and its footer example carries the trailer between
+  `Releases:` and `Change-Id:`.
+- `Build/git-hooks/commit-msg` is the other half of that sentence. Line 44 is
+  `/^Signed-off-by:/d`, over the copy the `Change-Id` is hashed from, so the
+  trailer neither disturbs an existing `Change-Id` nor is checked by anything
+  the hook validates.
+- `CONTRIBUTING.md` at the same revision says nothing about signing.
+- 5 of the last 500 commits on `origin/main` carry the trailer — one in a
+  hundred.
+- Three sessions from `/home/benji/projects/typo3-cms` on 2026-08-24 arrived at
+  it. `feedback/2026-08-24-110851` settled it from the checkout by hand to rank
+  a missing trailer as worth changing rather than blocking;
+  `feedback/2026-08-24-133602` had two drafts carrying the trailer struck by the
+  user; `feedback/2026-08-24-133515` names those same two strikes among the
+  costs of a patch session that called this server for nothing.
+
+## Decided
+
+- Written, and into `core/contribution/commit-messages` beside the trailers it
+  already lists rather than as a hint. The question arrives while a footer is
+  being written, and that page is what answers a footer.
+- What it states is which source asks for it rather than one rule. The core's
+  `AGENTS.md` demands it, the hook checks it against nothing, and the merged
+  history barely carries it; all three hold at once, and a caller holding only
+  the first emits a trailer a maintainer strikes.
+- `git commit -s` and `format.signOff` are named with the hook's own treatment
+  of the `Change-Id`, because that is the fear that keeps a contributor from
+  adding the trailer to an amend.
+- The reading above is the section's evidence, so the work verifies rather than
+  establishes. What is still owed is the official Contribution Guide, which was
+  not read here.
+- Not what `typo3_commit_message_guide` returns. `feedback/2026-08-24-133602`
+  asks for that, its lever is the guide's footer answer rather than this page,
+  and it is unjudged with its own card standing.
+
+## Assumed
+
+- That the core's `AGENTS.md` stays. It was days old at this reading, and a
+  statement about it is a statement about a file one commit removes.
+- That the share stays low. One in a hundred over 500 commits is what makes "not
+  enforced" the honest reading, and a project that starts enforcing it turns the
+  section round.
+
+## Wrong if
+
+- The section is written from `AGENTS.md` alone and a caller emits a trailer a
+  reviewer strikes. That is `feedback/2026-08-24-133602` happening again with
+  this server's answer behind it.
+- A caller reads the section as leave for omitting the trailer and a core
+  maintainer asks for it. Then the practice is not what the merged history
+  counts.
+- Gerrit or the hook starts requiring it. Then it is a rule, and the section is
+  a paragraph about a conflict between sources that no longer exists.
+- The trailer turns out to be asked for outside the two files read here — the
+  Contribution Guide, a review convention nobody wrote down. Then the section
+  names a smaller set of sources than the question has.

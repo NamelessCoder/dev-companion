@@ -108,3 +108,13 @@ This is the fourth **Wrong if** arriving from the other side. What it names is a
 document growing until a page stops being an answer; what happened is the corpus
 growing until a query stops being concentrated. Neither caps anything yet, and
 the count in **How often it fires** is what a further document moves.
+
+A judging run put the premise under **Decided** on 2026-08-24.
+`feedback/2026-08-24-110851` searched `signed-off-by` and was handed
+`any/testing/proving-a-condition` whole, on one section matching one term — the
+corpus carries a "signed in" and nothing about the trailer. "A search whose hits
+all sit in one page has established which page answers the task" was measured on
+searches with several hits and holds of them; a search with one hit satisfies
+the same condition and establishes nothing.
+[`D-ANS-101`](ans-101-a-concentrated-search-is-more-than-one-match.md) puts a
+floor under the count and leaves the rest of this entry standing.

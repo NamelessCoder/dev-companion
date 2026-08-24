@@ -82,6 +82,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-098`][D-ANS-098] — A change answer names the issues its commit message resolves · 2026-08-24
 - [`D-ANS-099`][D-ANS-099] — A suite that stages the working tree is offered marked rather than withheld · 2026-08-24
 - [`D-ANS-100`][D-ANS-100] — The review server is searched by words and by path · 2026-08-24
+- [`D-ANS-101`][D-ANS-101] — A concentrated search is more than one match · 2026-08-24
 - [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
@@ -178,6 +179,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-098]: answers/ans-098-a-change-answer-names-the-issues-its-commit-message-resolves.md
 [D-ANS-099]: answers/ans-099-a-suite-that-stages-the-working-tree-is-offered-marked-rather-than-withheld.md
 [D-ANS-100]: answers/ans-100-the-review-server-is-searched-by-words-and-by-path.md
+[D-ANS-101]: answers/ans-101-a-concentrated-search-is-more-than-one-match.md
 [D-ANS-096]: answers/ans-096-an-outside-source-is-read-in-the-form-it-publishes.md
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: answers/ans-092-the-project-answer-says-how-its-declared-suites-are-run.md
@@ -274,6 +276,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
+- [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -376,6 +379,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-KNW-107]: knowledge/knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knowledge/knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
+[D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
 [D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

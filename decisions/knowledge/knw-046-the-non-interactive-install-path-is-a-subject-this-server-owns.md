@@ -141,3 +141,10 @@ called both correct and useful, so the placement is not what cost it anything.
 What it paid for is one question further out: the line that carries those
 variables into the container the command runs in, which is
 [`D-KNW-094`](knw-094-how-a-variable-reaches-a-console-command-is-a-subject-this-server-owns.md).
+
+`feedback/2026-08-24-140130` was judged against this entry on 2026-08-24 and
+went to one of its own,
+[`D-KNW-116`](knw-116-the-page-object-typo3-setup-leaves-behind-is-a-subject-this-server-owns.md).
+The hint reached that session as this entry intended, and the `--create-site`
+statement stops one file short of what the command writes: a welcome page object
+that outranks the site's sets.

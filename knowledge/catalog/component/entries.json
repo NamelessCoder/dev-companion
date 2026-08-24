@@ -1043,8 +1043,7 @@
       "select",
       "form select",
       "dropdown list",
-      "option",
-      "combobox"
+      "option"
     ],
     "sassPaths": [
       "Build/Sources/Sass/component/forms/_form-select.scss"

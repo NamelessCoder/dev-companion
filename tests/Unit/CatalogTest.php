@@ -290,6 +290,47 @@ final class CatalogTest extends TestCase
     }
 
     /**
+     * Where the backend declares an element, that is the answer: an element
+     * carries its own position and cannot be attached to the wrong node, which
+     * is the whole of what went wrong with a borrowed class — `D-CAT-009`.
+     */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    public function anElementTheQueryNamesIsOfferedAsTheWayIn(): void
+    {
+        $result = Registry::call('typo3_component_lookup', ['query' => 'combobox', 'targetVersion' => '14.3']);
+
+        self::assertContains('typo3-backend-combobox', array_column($result->data['elements'], 'tag'));
+        self::assertStringContainsString('declares a custom element for this', $result->text);
+        self::assertStringContainsString('combobox-element.ts', $result->text);
+    }
+
+    /**
+     * The core declares many more elements than it demonstrates, and the ones
+     * no demo writes are the backend's own. Handing one over is the mistake the
+     * listing exists to prevent.
+     */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    public function anElementNoDemoWritesIsNotOffered(): void
+    {
+        $result = Registry::call('typo3_component_lookup', ['query' => 'grid editor', 'targetVersion' => '14.3']);
+
+        self::assertSame([], $result->data['elements']);
+        self::assertStringNotContainsString('typo3-backend-grid-editor', $result->text);
+    }
+
+    /** An element that arrived late is not offered on a version that does not have it. */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    public function anElementIsNotOfferedBeforeItsDemoWroteIt(): void
+    {
+        $later = Registry::call('typo3_component_lookup', ['query' => 'combobox', 'targetVersion' => '13.4']);
+
+        self::assertSame([], $later->data['elements']);
+    }
+
+    /**
      * A class belongs to one component, because what is derived about it is
      * derived relative to that component's root: the same name under two
      * entries would be placed twice and differently, and the answer keyed by

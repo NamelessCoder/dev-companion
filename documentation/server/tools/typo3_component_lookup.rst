@@ -149,6 +149,24 @@ Answers with
         # The same range as a sentence, empty when the entry holds on every covered
         # version.
         verifiedOn: string
+    # Custom elements the query named that a styleguide demo writes on the target
+    # version. An element carries its own position, so where one exists it is the
+    # way in and a class is the way round it. Only what a demo writes is offered:
+    # the core declares many more and the rest are the backend's own.
+    elements:
+      - # The custom element the query named.
+        tag: string
+        # The TypeScript file that declares it in the core.
+        source: string
+        # The TYPO3 major this entry starts holding at, or null when it holds on
+        # every covered version.
+        since: integer or null  # optional
+        # The TYPO3 major it stops holding after, or null when nothing has replaced
+        # it.
+        until: integer or null  # optional
+        # The same range as a sentence, empty when the entry holds on every covered
+        # version.
+        verifiedOn: string
     checklist:  # optional
       title: string
       intro: string  # optional
@@ -1236,6 +1254,7 @@ Data:
         ],
         "withheld": [],
         "coveredClasses": [],
+        "elements": [],
         "componentSource": "installation",
         "catalog": {
             "repository": "https://github.com/TYPO3/typo3",
@@ -1426,6 +1445,7 @@ Data:
         ],
         "withheld": [],
         "coveredClasses": [],
+        "elements": [],
         "checklist": {
             "title": "Component Definition of Done",
             "intro": "Applies to every backend component. Verify each item before a component change is complete.",
@@ -1486,6 +1506,7 @@ Data:
         "components": [],
         "withheld": [],
         "coveredClasses": [],
+        "elements": [],
         "componentSource": "installation",
         "catalog": {
             "repository": "https://github.com/TYPO3/typo3",

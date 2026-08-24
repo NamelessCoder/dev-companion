@@ -454,6 +454,7 @@ Text:
     The Node those npm commands run on. This repository declares 24.14, in Build/.nvmrc. Its Build/package.json admits >=24.14.0 <25.0.0, which that pin is the lowest version of. No workflow below .github/workflows/ sets Node up, so nothing here says which one CI runs them on. All of it read from these files. Nothing was run to find it out, and the Node your own shell has is not among them.
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+    - any/assets/how-an-asset-reaches-a-page — How a Package's Asset Reaches a Page
     - any/backend/using-the-styleguide — Using the Backend Styleguide
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
@@ -624,6 +625,10 @@ Data:
         "patches": [],
         "guides": [
             {
+                "id": "any/assets/how-an-asset-reaches-a-page",
+                "title": "How a Package's Asset Reaches a Page"
+            },
+            {
                 "id": "any/backend/using-the-styleguide",
                 "title": "Using the Backend Styleguide"
             },
@@ -715,6 +720,7 @@ Text:
     - composer test (composer.json) — unknown: phpunit -c Build/phpunit.xml
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+    - any/assets/how-an-asset-reaches-a-page — How a Package's Asset Reaches a Page
     - any/backend/using-the-styleguide — Using the Backend Styleguide
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
@@ -798,6 +804,10 @@ Data:
         ],
         "patches": [],
         "guides": [
+            {
+                "id": "any/assets/how-an-asset-reaches-a-page",
+                "title": "How a Package's Asset Reaches a Page"
+            },
             {
                 "id": "any/backend/using-the-styleguide",
                 "title": "Using the Backend Styleguide"

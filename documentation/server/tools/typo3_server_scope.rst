@@ -209,6 +209,10 @@ Text:
     Where the styleguide lives on each major and how it is installed where the core does not ship it, what its listing settles — a component it lists is public and one it does not is not to be used — and the two ways a demo is misread: an example is complete, so nothing in it says which parts are required, and a demo renders through ViewHelpers and web components, so the classes in its template are neither all of what a component uses nor only that. It names what places a class instead.
     Tools: typo3_rule_lookup, typo3_component_lookup
     Source: typo3://guides/any/backend/using-the-styleguide (any)
+    ## Which route a package's own CSS or JavaScript takes into a page, and what proves it still carries
+    Every route and the check that belongs to it: the backend import map, which is a file and compares statically; a backend module's PageRenderer calls; TypoScript includeCSS, which no file settles because the resolved setup for one site decides it; the AssetCollector behind f:asset.css, where a call outside the rendered section registers nothing and produces no 404 either; and the later arrivals f:asset.module and f:asset.styleAttr. It closes on what to do after a rebuild renamed, moved or dropped an output.
+    Tools: typo3_rule_lookup, typo3_hint_lookup
+    Source: typo3://guides/any/assets/how-an-asset-reaches-a-page (any)
     ## Running a package's own suite against a TYPO3 major it declares and the installation does not have
     The procedure, as it was carried out: what the repository's CI already covers and what pushing proves, the Composer root of its own the other major is resolved into and the manifest that root carries, what the working installation keeps, what the second root resolves differently from it, whether the database survives, which checks are worth re-running there, and what a resolved tree is not. It installs nothing itself, and it says what a claim about what renders on the other major would additionally cost.
     Tools: typo3_rule_lookup, typo3_hint_lookup
@@ -508,6 +512,16 @@ Data:
                     "typo3_component_lookup"
                 ],
                 "source": "typo3://guides/any/backend/using-the-styleguide",
+                "scope": "any"
+            },
+            {
+                "topic": "Which route a package's own CSS or JavaScript takes into a page, and what proves it still carries",
+                "depth": "Every route and the check that belongs to it: the backend import map, which is a file and compares statically; a backend module's PageRenderer calls; TypoScript includeCSS, which no file settles because the resolved setup for one site decides it; the AssetCollector behind f:asset.css, where a call outside the rendered section registers nothing and produces no 404 either; and the later arrivals f:asset.module and f:asset.styleAttr. It closes on what to do after a rebuild renamed, moved or dropped an output.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_hint_lookup"
+                ],
+                "source": "typo3://guides/any/assets/how-an-asset-reaches-a-page",
                 "scope": "any"
             },
             {

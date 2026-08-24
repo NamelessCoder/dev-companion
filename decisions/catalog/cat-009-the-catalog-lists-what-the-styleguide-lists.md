@@ -5,6 +5,9 @@ date: 2026-08-24
 status: open
 coveredBy:
   - CatalogTest::aComponentNoStyleguidePageDemonstratesIsNotAnswered
+  - CatalogTest::anElementIsNotOfferedBeforeItsDemoWroteIt
+  - CatalogTest::anElementNoDemoWritesIsNotOffered
+  - CatalogTest::anElementTheQueryNamesIsOfferedAsTheWayIn
   - CatalogTest::everyEntryNamesTheActionsThatDemonstrateIt
 ---
 

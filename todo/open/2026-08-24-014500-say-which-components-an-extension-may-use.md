@@ -42,6 +42,18 @@ unavoidable; the loops are fed from a file.
 
 What still has no source is 12.4, where the styleguide is not in the core.
 
+## What is done
+
+The maintainer read the list on 2026-08-24 and answered every question in it —
+`D-CAT-009` carries the seven answers and what came of each. The entries are
+curated to the listing, and the elements answer from `component/elements.json`:
+a query naming one is told the tag, where the core declares it and the majors it
+holds on, and only the fourteen a styleguide demo writes are offered.
+
+What is left is what that reading uncovered rather than what it asked:
+`developerTools` and `exception` are on the listing and are not components, and
+`D-CAT-009`'s **Since then** counts them.
+
 ## The list to read
 
 `todo/reference/which-components-and-elements-are-listed.md` holds every

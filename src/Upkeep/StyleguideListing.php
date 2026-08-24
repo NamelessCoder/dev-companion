@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Upkeep;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * The components the styleguide of one core checkout lists.
  *
@@ -27,13 +29,17 @@ final class StyleguideListing
 {
     private const CONTROLLER = '/typo3/sysext/styleguide/Classes/Controller/ComponentsController.php';
 
+    /** Templates and the partials they render, which is where a demo's markup is written. */
+    private const TEMPLATES = '/typo3/sysext/styleguide/Resources/Private';
+
     /** The action that lists the rest, which is the page and not a component. */
     private const OVERVIEW = 'componentsOverview';
 
     /** @var list<string> */
     private array $components;
 
-    public function __construct(string $controller)
+    /** @param list<string> $templates the demo templates, as they are written */
+    public function __construct(string $controller, private readonly array $templates = [])
     {
         $this->components = self::listed($controller);
     }
@@ -41,9 +47,45 @@ final class StyleguideListing
     /** Null where the checkout ships no styleguide, which 12.4 and older do not. */
     public static function of(string $checkout): ?self
     {
-        $path = rtrim($checkout, '/') . self::CONTROLLER;
+        $root = rtrim($checkout, '/');
+        $path = $root . self::CONTROLLER;
+        if (!is_file($path)) {
+            return null;
+        }
 
-        return is_file($path) ? new self((string) file_get_contents($path)) : null;
+        $templates = [];
+        $directory = $root . self::TEMPLATES;
+        if (is_dir($directory)) {
+            foreach (Finder::create()->files()->in($directory)->name('*.html') as $file) {
+                $templates[] = $file->getContents();
+            }
+        }
+
+        return new self((string) file_get_contents($path), $templates);
+    }
+
+    /**
+     * Whether a demo writes this element.
+     *
+     * A tag survives being read out of a template where a class name does not:
+     * a demo loops over the variants it assigns and builds `badge-{variant}`,
+     * and it never builds a tag name the same way. Read on 2026-08-24, this
+     * finds 13 of the 137 the core declares — `D-CAT-009`.
+     */
+    public function demonstrates(string $tag): bool
+    {
+        // The tag has to end where the name ends, or `content-navigation`
+        // reads `content-navigation-toggle` as itself; and what follows it is
+        // whitespace as often as `>`, because a demo puts the attributes on the
+        // next line.
+        $written = '/<' . preg_quote($tag, '/') . '(?=[\s>\/])/';
+        foreach ($this->templates as $template) {
+            if (preg_match($written, $template) === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** @return list<string> */

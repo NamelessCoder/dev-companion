@@ -2,691 +2,828 @@
   {
     "tag": "typo3-backend-alert",
     "source": "Build/Sources/TypeScript/backend/element/alert-element.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-bookmark-button",
     "source": "Build/Sources/TypeScript/backend/bookmark/element/bookmark-button-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-bookmark-manager-button",
     "source": "Build/Sources/TypeScript/backend/bookmark/bookmark-manager.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-bookmark-manager-content",
     "source": "Build/Sources/TypeScript/backend/bookmark/bookmark-manager.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-bookmark-menu",
     "source": "Build/Sources/TypeScript/backend/bookmark/toolbar/bookmark-menu-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-clipboard-panel",
     "source": "Build/Sources/TypeScript/backend/clipboard-panel.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-color-picker",
     "source": "Build/Sources/TypeScript/backend/color-picker.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-color-scheme-switch",
     "source": "Build/Sources/TypeScript/backend/color-scheme-switch.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-column-selector-button",
     "source": "Build/Sources/TypeScript/backend/column-selector-button.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-combobox",
     "source": "Build/Sources/TypeScript/backend/element/combobox-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-combobox-choice",
     "source": "Build/Sources/TypeScript/backend/element/combobox-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-component-filestorage-browser",
     "source": "Build/Sources/TypeScript/backend/tree/file-storage-browser.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-component-filestorage-browser-tree",
     "source": "Build/Sources/TypeScript/backend/tree/file-storage-browser.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-component-page-browser",
     "source": "Build/Sources/TypeScript/backend/tree/page-browser.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-component-page-browser-tree",
     "source": "Build/Sources/TypeScript/backend/tree/page-browser.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-component-page-position-select",
     "source": "Build/Sources/TypeScript/backend/tree/page-position-select.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-component-page-position-select-tree",
     "source": "Build/Sources/TypeScript/backend/tree/page-position-select.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-content-navigation",
     "source": "Build/Sources/TypeScript/backend/viewport/content-navigation.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-content-navigation-toggle",
     "source": "Build/Sources/TypeScript/backend/viewport/content-navigation-toggle.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-context-menu",
     "source": "Build/Sources/TypeScript/backend/context-menu.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-contextual-record-edit-trigger",
     "source": "Build/Sources/TypeScript/backend/element/contextual-record-edit-trigger.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-datetime",
     "source": "Build/Sources/TypeScript/backend/element/datetime-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-dispatch-modal-button",
     "source": "Build/Sources/TypeScript/backend/element/dispatch-modal-button.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-drag-tooltip",
     "source": "Build/Sources/TypeScript/backend/drag-tooltip.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-draggable-resizable",
     "source": "Build/Sources/TypeScript/backend/element/draggable-resizable-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-editable-page-title",
     "source": "Build/Sources/TypeScript/backend/element/editable-page-title.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-editable-setting",
     "source": "Build/Sources/TypeScript/backend/settings/editor/editable-setting.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-form-selecttree",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/select-tree.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-form-selecttree-toolbar",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/select-tree-toolbar.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-form-wizard",
     "source": "Build/Sources/TypeScript/form/backend/form-wizard/form-wizard.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-formengine-char-counter",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/extra/char-counter.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-formengine-online-media-form",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/online-media-form-element.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-formengine-suggest-result-container",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/suggest/result-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-formengine-suggest-result-item",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/suggest/result-item.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-formengine-suggest-result-list",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/suggest/result-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-grid-editor",
     "source": "Build/Sources/TypeScript/backend/grid-editor.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-icon",
     "source": "Build/Sources/TypeScript/backend/element/icon-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-link-browser-download",
     "source": "Build/Sources/TypeScript/backend/element/link-browser-download-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search",
     "source": "Build/Sources/TypeScript/backend/live-search/element/backend-search.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-hint",
     "source": "Build/Sources/TypeScript/backend/live-search/element/hint.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-option-item",
     "source": "Build/Sources/TypeScript/backend/live-search/element/search-option-item.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-action-list",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/action/action-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-container",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/result-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/item.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-action",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/action/action.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-action-container",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/action/action-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-container",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/item-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-default",
     "source": "Build/Sources/TypeScript/backend/live-search/element/provider/default-result-item.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-detail-container",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/result-detail-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-item-page-provider",
     "source": "Build/Sources/TypeScript/backend/live-search/element/provider/page-provider-result-item.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-list",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/item/item-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-page",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/result-pagination.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-live-search-result-pagination",
     "source": "Build/Sources/TypeScript/backend/live-search/element/result/result-pagination.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-localization-button",
     "source": "Build/Sources/TypeScript/backend/localization/localization-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-localization-wizard",
     "source": "Build/Sources/TypeScript/backend/localization/localization-wizard.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-modal",
     "source": "Build/Sources/TypeScript/backend/modal.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-module-router",
     "source": "Build/Sources/TypeScript/backend/module/router.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-filestorage-tree",
     "source": "Build/Sources/TypeScript/backend/tree/file-storage-tree-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-navigation-component-filestoragetree",
     "source": "Build/Sources/TypeScript/backend/tree/file-storage-tree-container.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-formeditor-tree",
     "source": "Build/Sources/TypeScript/form/backend/form-editor-tree.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-formeditortree",
     "source": "Build/Sources/TypeScript/form/backend/form-editor-tree-container.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-pagetree",
     "source": "Build/Sources/TypeScript/backend/tree/page-tree-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-pagetree-toolbar",
     "source": "Build/Sources/TypeScript/backend/tree/page-tree-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-navigation-component-pagetree-tree",
     "source": "Build/Sources/TypeScript/backend/tree/page-tree-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-navigation-switcher",
     "source": "Build/Sources/TypeScript/backend/viewport/resizable-navigation.ts",
     "since": 12,
-    "until": 13
+    "until": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-new-content-element-wizard",
     "source": "Build/Sources/TypeScript/backend/new-content-element-wizard.ts",
     "since": 12,
-    "until": 12
+    "until": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-new-content-element-wizard-button",
     "source": "Build/Sources/TypeScript/backend/new-content-element-wizard-button.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-new-page-wizard-button",
     "source": "Build/Sources/TypeScript/backend/page-wizard/new-page-wizard-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-new-record-wizard",
     "source": "Build/Sources/TypeScript/backend/new-record-wizard.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-page-layout-sticky-language-header",
     "source": "Build/Sources/TypeScript/backend/layout-module/sticky-language-header.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-page-layout-toggle-hidden",
     "source": "Build/Sources/TypeScript/backend/layout-module/toggle-hidden-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-page-wizard",
     "source": "Build/Sources/TypeScript/backend/page-wizard/page-wizard.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-pagination",
     "source": "Build/Sources/TypeScript/backend/element/pagination.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-progress-bar",
     "source": "Build/Sources/TypeScript/backend/element/progress-bar-element.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-progress-tracker",
     "source": "Build/Sources/TypeScript/backend/element/progress-tracker-element.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-security-csp-reports",
     "source": "Build/Sources/TypeScript/backend/security/element/csp-reports.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-security-sudo-mode",
     "source": "Build/Sources/TypeScript/backend/security/element/sudo-mode.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-security-sudo-mode-form",
     "source": "Build/Sources/TypeScript/backend/security/element/sudo-mode.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-settings-editor",
     "source": "Build/Sources/TypeScript/backend/settings/editor.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-sidebar-toggle",
     "source": "Build/Sources/TypeScript/backend/element/sidebar-toggle-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-spinner",
     "source": "Build/Sources/TypeScript/backend/element/spinner-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-status-indicator",
     "source": "Build/Sources/TypeScript/backend/element/status-indicator-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-backend-switch-user",
     "source": "Build/Sources/TypeScript/backend/switch-user.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-tab-scroller",
     "source": "Build/Sources/TypeScript/backend/tab.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-thumbnail",
     "source": "Build/Sources/TypeScript/backend/element/thumbnail-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-tree-node-toggle",
     "source": "Build/Sources/TypeScript/backend/tree/tree-node-toggle.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": 13
   },
   {
     "tag": "typo3-backend-tree-toolbar",
     "source": "Build/Sources/TypeScript/backend/tree/tree-toolbar.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-wizard",
     "source": "Build/Sources/TypeScript/backend/wizard/wizard.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-workspace-selector",
     "source": "Build/Sources/TypeScript/workspaces/element/workspace-selector-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-backend-workspace-top-indicator",
     "source": "Build/Sources/TypeScript/workspaces/element/workspace-top-indicator-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-breadcrumb",
     "source": "Build/Sources/TypeScript/backend/element/breadcrumb.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": 14
   },
   {
     "tag": "typo3-copy-to-clipboard",
     "source": "Build/Sources/TypeScript/backend/copy-to-clipboard.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-dashboard",
     "source": "Build/Sources/TypeScript/dashboard/dashboard.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-dashboard-bookmarks-widget",
     "source": "Build/Sources/TypeScript/dashboard/widget/bookmarks-widget-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-dashboard-widget",
     "source": "Build/Sources/TypeScript/dashboard/dashboard.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-dashboard-widget-refresh",
     "source": "Build/Sources/TypeScript/dashboard/widget-refresh.ts",
     "since": 12,
-    "until": 12
+    "until": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-dashboard-wizard",
     "source": "Build/Sources/TypeScript/dashboard/dashboard-wizard.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-extension-toggle-button",
     "source": "Build/Sources/TypeScript/extensionmanager/extension-toggle-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-extensionmanager-dependency-check",
     "source": "Build/Sources/TypeScript/extensionmanager/dependency-check.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-extensionmanager-distribution-image",
     "source": "Build/Sources/TypeScript/extensionmanager/distribution-image.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-date-editor",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/date-editor.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-element-selector",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/form-element-selector.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-form-element-stage-item",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/form-element-stage-item.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-form-element-stage-item-toolbar",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/form-element-stage-item-toolbar.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-page-stage-item",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/page-stage-item.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-form-property-grid-editor",
     "source": "Build/Sources/TypeScript/form/backend/form-editor/component/property-grid-editor.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-formengine-table-wizard",
     "source": "Build/Sources/TypeScript/backend/form-engine/element/table-wizard-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-formengine-updater",
     "source": "Build/Sources/TypeScript/backend/form-engine/request-update.ts",
     "since": 12,
-    "until": 12
+    "until": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-iframe-module",
     "source": "Build/Sources/TypeScript/backend/module/iframe.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-extension-matrix",
     "source": "Build/Sources/TypeScript/install/renderable/language-packs.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-flashmessage",
     "source": "Build/Sources/TypeScript/install/renderable/flash-message.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-infobox",
     "source": "Build/Sources/TypeScript/install/renderable/info-box.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-language-matrix",
     "source": "Build/Sources/TypeScript/install/renderable/language-packs.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-offset-group",
     "source": "Build/Sources/TypeScript/install/renderable/offset-group.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-install-wrap-group",
     "source": "Build/Sources/TypeScript/install/renderable/wrap-group.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-login-refresh-progress-bar",
     "source": "Build/Sources/TypeScript/backend/login-refresh.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-mfa-totp-url-info-button",
     "source": "Build/Sources/TypeScript/core/authentication/mfa-provider/totp.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-notification-clear-all",
     "source": "Build/Sources/TypeScript/backend/notification.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-notification-message",
     "source": "Build/Sources/TypeScript/backend/notification.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-open-document-menu",
     "source": "Build/Sources/TypeScript/opendocs/toolbar/open-document-menu-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-opendocs-recent-documents-widget",
     "source": "Build/Sources/TypeScript/opendocs/widget/recent-documents-widget-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-qrcode",
     "source": "Build/Sources/TypeScript/backend/element/qrcode-element.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-qrcode-modal-button",
     "source": "Build/Sources/TypeScript/backend/element/qrcode-modal-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-recordlist-record-download-button",
     "source": "Build/Sources/TypeScript/backend/record-download-button.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-rte-ckeditor-ckeditor5",
     "source": "Build/Sources/TypeScript/rte-ckeditor/ckeditor5.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-scheduler-editable-group-name",
     "source": "Build/Sources/TypeScript/scheduler/scheduler-editable-group-name.ts",
     "since": 12,
-    "until": 13
+    "until": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-scheduler-new-task-wizard-button",
     "source": "Build/Sources/TypeScript/scheduler/new-scheduler-task-wizard-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-scheduler-setup-check-button",
     "source": "Build/Sources/TypeScript/scheduler/setup-check-button.ts",
-    "since": 14
+    "since": 14,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-styleguide-theme-switcher",
     "source": "Build/Sources/TypeScript/styleguide/element/theme-switcher-element.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-sysnote-delete-button",
     "source": "Build/Sources/TypeScript/sys-note/element/delete-button.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-t3editor-codemirror",
     "source": "Build/Sources/TypeScript/backend/code-editor/element/code-mirror-element.ts",
-    "since": 12
+    "since": 12,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-comment-view",
     "source": "Build/Sources/TypeScript/workspaces/renderable/comment-view.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-diff-view",
     "source": "Build/Sources/TypeScript/workspaces/renderable/diff-view.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-history-view",
     "source": "Build/Sources/TypeScript/workspaces/renderable/history-view.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-record-information",
     "source": "Build/Sources/TypeScript/workspaces/renderable/record-information.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-record-table",
     "source": "Build/Sources/TypeScript/workspaces/renderable/record-table.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   },
   {
     "tag": "typo3-workspaces-send-to-stage-form",
     "source": "Build/Sources/TypeScript/workspaces/renderable/send-to-stage-form.ts",
-    "since": 13
+    "since": 13,
+    "demonstratedSince": null
   }
 ]

@@ -53,7 +53,7 @@ final class ComponentDerivation
 
         return [
             'classes' => $classes,
-            'elements' => self::derivedElements($elements),
+            'elements' => self::derivedElements($elements, $listings),
             'listing' => self::derivedListing($listings),
         ];
     }
@@ -231,15 +231,19 @@ final class ComponentDerivation
 
     /**
      * @param array<int, array<string, string>> $elements
+     * @param array<int, StyleguideListing> $listings
      * @return list<array<string, mixed>>
      */
-    private static function derivedElements(array $elements): array
+    private static function derivedElements(array $elements, array $listings): array
     {
         $seen = [];
         foreach ($elements as $major => $tags) {
             foreach ($tags as $tag => $source) {
                 $seen[$tag]['majors'][] = $major;
                 $seen[$tag]['source'] = $source;
+                if (isset($listings[$major]) && $listings[$major]->demonstrates($tag)) {
+                    $seen[$tag]['demonstrated'][] = $major;
+                }
             }
         }
         ksort($seen);
@@ -251,6 +255,9 @@ final class ComponentDerivation
             if ($until !== null) {
                 $entry['until'] = $until;
             }
+            // What the styleguide writes is what a package may use — `D-CAT-009`.
+            // Null where no demo names it, which is most of them.
+            $entry['demonstratedSince'] = isset($found['demonstrated']) ? min($found['demonstrated']) : null;
             $out[] = $entry;
         }
 

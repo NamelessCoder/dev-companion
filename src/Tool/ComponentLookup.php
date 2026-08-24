@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tool;
 
 use TYPO3\DevCompanion\Knowledge\Catalog\ComponentClasses;
 use TYPO3\DevCompanion\Knowledge\Catalog\Components;
+use TYPO3\DevCompanion\Knowledge\Catalog\CustomElements;
 use TYPO3\DevCompanion\Knowledge\Catalog\InstalledComponents;
 use TYPO3\DevCompanion\Knowledge\Catalog\Meta as CatalogMeta;
 use TYPO3\DevCompanion\Knowledge\Versions;
@@ -82,6 +83,10 @@ final class ComponentLookup extends ReadOnlyTool
                 'stylesWithin' => Schema::listOf(Schema::string(), 'What the core styles inside this class on this version: what it may hold, never what it requires.'),
                 'sassPaths' => Schema::listOf(Schema::string(), 'Where the core writes it.'),
             ] + Schema::verifiedOn(), ['class', 'component', 'title', 'position', 'stylesWithin', 'sassPaths', 'verifiedOn']), 'Classes the query named that were verified on the target version although their entry was not, each with where it sits. No markup and no custom properties, because those are what withheld the entry.'),
+            'elements' => Schema::listOf(Schema::object([
+                'tag' => Schema::string('The custom element the query named.'),
+                'source' => Schema::string('The TypeScript file that declares it in the core.'),
+            ] + Schema::verifiedOn(), ['tag', 'source', 'verifiedOn']), 'Custom elements the query named that a styleguide demo writes on the target version. An element carries its own position, so where one exists it is the way in and a class is the way round it. Only what a demo writes is offered: the core declares many more and the rest are the backend\'s own.'),
             'checklist' => Schema::object([
                 'title' => Schema::string(),
                 'intro' => Schema::string(),
@@ -89,7 +94,7 @@ final class ComponentLookup extends ReadOnlyTool
             ], ['title', 'items']),
             'componentSource' => ['type' => 'string', 'enum' => ['installation', 'catalog'], 'description' => 'installation when the class and custom-property contract was read from the active TYPO3 packages; catalog when the bundled snapshot answered.'],
             'catalog' => Schema::catalogProvenance(),
-        ], ['matchCount', 'components', 'withheld', 'coveredClasses', 'componentSource', 'catalog']);
+        ], ['matchCount', 'components', 'withheld', 'coveredClasses', 'elements', 'componentSource', 'catalog']);
     }
 
     /**
@@ -133,6 +138,33 @@ final class ComponentLookup extends ReadOnlyTool
                 . 'it goes rather than saying it goes anywhere.',
             $target,
         );
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * The elements the query named, said as the way in they are.
+     *
+     * An element carries its own position and its own contract, so a caller who
+     * has one does not need a class placed for them — which is why this stands
+     * above the classes in the answer rather than beside them (`D-CAT-009`).
+     *
+     * @param list<array<string, mixed>> $elements
+     */
+    private static function elementNote(array $elements): string
+    {
+        $lines = ['The backend declares a custom element for this, which is the way in:'];
+        foreach ($elements as $element) {
+            $lines[] = sprintf(
+                '- `<%s>` — %s, declared in %s.',
+                $element['tag'],
+                $element['verifiedOn'] === '' ? 'on every version this catalog covers' : $element['verifiedOn'],
+                $element['source'],
+            );
+        }
+        $lines[] = 'An element cannot be attached to the wrong node, so prefer it over composing the markup '
+            . 'from classes. Only elements a styleguide demo writes are offered here; the backend declares '
+            . 'many more and those are its own.';
 
         return implode("\n", $lines);
     }
@@ -185,12 +217,15 @@ final class ComponentLookup extends ReadOnlyTool
         $withheldNote = Provenance::withheldNote($withheld, $target);
         $sourceNote = Provenance::sourceNote($installed);
         $covered = Components::coveredClasses($withheld, $query, $target);
+        $elements = CustomElements::named($query, $target);
+        $elementNote = $elements === [] ? '' : self::elementNote($elements);
         $coveredNote = $covered === [] ? '' : self::coveredClassNote($covered, (int) $target);
 
         if ($components === []) {
             return ToolResult::create(
                 sprintf(
-                    "No TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s%s",
+                    "%sNo TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s%s",
+                    $elementNote === '' ? '' : $elementNote . "\n\n",
                     $withheld === [] ? '' : sprintf(' verified on TYPO3 v%d', (int) $target),
                     (string) $query,
                     $installed
@@ -207,6 +242,7 @@ final class ComponentLookup extends ReadOnlyTool
                     'components' => [],
                     'withheld' => Provenance::withheldRecords($withheld),
                     'coveredClasses' => $covered,
+                    'elements' => $elements,
                     'componentSource' => $installed ? 'installation' : 'catalog',
                     'catalog' => Provenance::catalogRecord($installed),
                 ],
@@ -241,6 +277,7 @@ final class ComponentLookup extends ReadOnlyTool
                     ] + Provenance::sourceRecord($c) + Provenance::verifiedRecord($c), $components),
                     'withheld' => Provenance::withheldRecords($withheld),
                     'coveredClasses' => $covered,
+                    'elements' => $elements,
                     'componentSource' => $installed ? 'installation' : 'catalog',
                     'catalog' => Provenance::catalogRecord($installed),
                 ],
@@ -362,6 +399,9 @@ final class ComponentLookup extends ReadOnlyTool
                     $target,
                 );
         }
+        if ($elementNote !== '') {
+            $blocks[] = $elementNote;
+        }
         $blocks[] = $sourceNote;
 
         return ToolResult::create(implode("\n\n", $blocks), [
@@ -392,6 +432,7 @@ final class ComponentLookup extends ReadOnlyTool
             }, $described),
             'withheld' => Provenance::withheldRecords($withheld),
             'coveredClasses' => $covered,
+            'elements' => $elements,
             'checklist' => $checklist,
             'componentSource' => $installed ? 'installation' : 'catalog',
             'catalog' => Provenance::catalogRecord($installed),

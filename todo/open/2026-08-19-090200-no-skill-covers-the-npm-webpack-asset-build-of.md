@@ -3,12 +3,10 @@
 **Serves:** feedback/2026-08-19-090200-no-skill-covers-the-npm-webpack-asset-build-of.md
 **Priority:** normal
 
-Ask the maintainer whether the workflow is published on the review alone, the
-way `typo3-extension-patch-review` and `typo3-distribution-content` were
-(`D-SKL-064`), or whether it waits for a run. The review is worked in whole as
-of 2026-08-24 and so is the frontend half's route, so nothing else is owed
-before the publishing commit — and that commit owes the listing budget, which is
-step 3 below.
+Publish the workflow. The maintainer answered on 2026-08-24 that it goes on the
+review alone, as `typo3-extension-patch-review` and `typo3-distribution-content`
+did (`D-SKL-064`), so nothing but the listing budget stands in front of the
+publishing commit — and that budget is what has to be settled first, below.
 
 Judged 1b on 2026-08-21 — the shape is missing. `D-SKL-067` holds the evidence,
 the boundary the workflow owns and what it stops at.
@@ -157,6 +155,28 @@ these decided a step of the draft:
   is construction rather than judgment and keeps no checklist. `composer ci` is
   green.
 - The review, given on 2026-08-24 and written above.
+
+## The budget cannot be found by shortening, measured 2026-08-24
+
+The maintainer chose to shorten rather than raise the ceiling, and shortening
+does not reach. The listing costs 3944 of 3970 and this description costs 461,
+so 435 have to come out of fourteen descriptions.
+
+An honest trim of the four longest — the draft's own, `typo3-extension-health`,
+`typo3-distribution-content` and `typo3-extension-patch-review` — yields 67, and
+that is with no routing token removed. The other ten are lists of triggers:
+`data.xml`, `Playwright`, `PHPStan`, `Gerrit`, `TCA`, `sitepackage`. Every
+further character comes out of one of those, and a description reaches a session
+by exactly those words.
+
+`typo3-core-patch-checkout` is left out of the count deliberately. `D-SKL-026`'s
+**Since then** records a session that stopped activating it the last time its
+clause was cut.
+
+So this is `D-SKL-064`'s third **Wrong if** a second time: the next skill is
+blocked by the ratchet again, and the question `D-SKL-026` left open — how much
+listing a client actually keeps, which nobody has measured since 2026-08-08 — is
+what has to be answered rather than deferred once more.
 
 ## What is left, in the order it goes
 

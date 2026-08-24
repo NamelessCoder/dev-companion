@@ -68,7 +68,7 @@ one is added.
 - [`D-KNW-033`][D-KNW-033] — No hint carries `any` · 2026-08-03
 - [`D-KNW-034`][D-KNW-034] — The corpus is one file per subject, named after it · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
-- [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
+- [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03 · confirmed
 - [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload · 2026-08-03
 - [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file · 2026-08-03
 - [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose · 2026-08-03

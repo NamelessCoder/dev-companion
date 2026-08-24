@@ -178,7 +178,7 @@ Text:
     `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
 
     Checks and fixes coding guideline issues in the latest committed patch.
-    Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
+    Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
     ## lintPhp
     Command from the TYPO3 core root:
@@ -477,7 +477,7 @@ Data:
                 "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
                 "domains": [
                     "php"
                 ],

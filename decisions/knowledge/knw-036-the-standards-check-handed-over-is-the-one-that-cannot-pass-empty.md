@@ -2,7 +2,7 @@
 id: D-KNW-036
 title: The standards check handed over is the one that cannot pass empty
 date: 2026-08-03
-status: open
+status: confirmed
 coveredBy:
   - KnowledgeTest::aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold
 ---
@@ -89,3 +89,35 @@ that trusted it reported a standards check as passed having run none.
 - A caller in a normal checkout reads the worktree condition and stops using
   `cglGit` at all, which would mean the qualification cost the fast path rather
   than making it safe.
+
+## Confirmed on 2026-08-24
+
+A core patch session in `/home/benji/projects/typo3-cms` reached for the direct
+invocation this entry rejected, and its user corrected it to the container
+twice. It filed four feedback in thirty-five minutes doing so —
+`2026-08-24-104546`, `-111637`, `-111728` and `-112010` — and the last one
+settles the thread on the reading this entry already held: `cglGit` is that
+script, so the container costs nothing and removes the host-PHP condition. None
+of the three **Wrong if** above had happened. The session had run `cglGit` in
+the review and still did not know the two were one command.
+
+What it took the session four round trips and two corrections to establish was
+the identity, which the corpus stated in
+`knowledge/documents/core/testing/scripts.md` and nowhere the task passed. The
+suite entry in `knowledge/test-suite-hints.json` carried the worktree condition
+and not this, against the rule `R-KNW-049` states in its own second paragraph:
+nothing carries a caller from the entry that offers a command to a sentence
+elsewhere in the corpus. The entry now says what the suite runs, in the sentence
+before the condition.
+
+The last feedback also asked for the direct script to be named for the two file
+lists the suite cannot pass, `-f cache` and `-f stdin`. That is refused: it puts
+the invocation back into the corpus carrying the host-PHP condition this entry
+was written to keep out, and neither is what the thread went wrong on.
+
+Naming the script moved one recorded answer, which is the price of saying it
+here. `typo3_task_guide` keeps the four best-scoring suites and matches a query
+term as a substring, so `cglFixMyCommit` scores on the "Fix" of "Fix the query
+that reads the events" and takes `composerInstall` out of that answer. The name
+is what the sentence is for, so it stays; what a matcher does with a script name
+is a finding about the matcher.

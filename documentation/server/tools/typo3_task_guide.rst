@@ -401,7 +401,7 @@ Text:
     ## cglGit
     `CI=true ./Build/Scripts/runTests.sh -s cglGit`
     Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
-    Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
+    Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -801,7 +801,7 @@ Data:
                 "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
                 "domains": [
                     "php"
                 ],
@@ -944,7 +944,7 @@ Text:
     ## cglGit
     `CI=true ./Build/Scripts/runTests.sh -s cglGit`
     Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
-    Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
+    Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -1037,7 +1037,7 @@ Data:
                 "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
                 "domains": [
                     "php"
                 ],
@@ -1183,15 +1183,16 @@ Text:
     ## e2e-browser
     `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
     Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
+    ## cglGit
+    `CI=true ./Build/Scripts/runTests.sh -s cglGit`
+    Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
+    Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
     ## checkExtensionScannerRst
     `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
     Use when a deprecation or breaking change adds extension scanner matchers.
     ## checkIntegrityPhp
     `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.
-    ## composerInstall
-    `CI=true ./Build/Scripts/runTests.sh -s composerInstall`
-    Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -1405,6 +1406,18 @@ Data:
                 "versions": "TYPO3 v14 and newer"
             },
             {
+                "suite": "cglGit",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+                "runs": "change",
+                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
+                "description": "Checks and fixes coding guideline issues in the latest committed patch.",
+                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
+            },
+            {
                 "suite": "checkExtensionScannerRst",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
                 "runs": "check",
@@ -1428,20 +1441,6 @@ Data:
                     "php"
                 ],
                 "versions": "TYPO3 v13 and newer"
-            },
-            {
-                "suite": "composerInstall",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
-                "runs": "change",
-                "targeted": null,
-                "description": "Installs the PHP dependencies of the checkout it is run in, into its own vendor/ and bin/, inside the container.",
-                "whenToUse": "Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.",
-                "domains": [
-                    "php",
-                    "fluid",
-                    "typoscript"
-                ],
-                "versions": ""
             }
         ],
         "checklist": [

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122413-three-skills-matched-the-request-word-for-word.md, D-SKL-038
 **Priority:** normal
+**Branch:** todo/three-skills-matched-the-request-word-for-word
+**Claimed:** 2026-08-24
 
 `GerritLookup::workflow()` names `typo3-core-patch-review` and
 `typo3-core-patch-checkout` on every answered `change` form, and a session that

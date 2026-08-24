@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md
 **Priority:** low
+**Branch:** todo/a-full-core-patch-session-ran-green-with-zero
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -287,6 +287,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-112`][D-KNW-112] — The invocation notes say where runTests.sh stops reading its own options · 2026-08-24
 - [`D-KNW-113`][D-KNW-113] — Reporting a core issue is a subject this server owns · 2026-08-24
 - [`D-KNW-114`][D-KNW-114] — What a core patch owes PHPStan is a subject this server owns · 2026-08-24
+- [`D-KNW-115`][D-KNW-115] — The key a site names its sets under is stated with the sets · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -394,6 +395,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-112]: knowledge/knw-112-the-invocation-notes-say-where-runtests-sh-stops-reading-its-own-options.md
 [D-KNW-113]: knowledge/knw-113-reporting-a-core-issue-is-a-subject-this-server-owns.md
 [D-KNW-114]: knowledge/knw-114-what-a-core-patch-owes-phpstan-is-a-subject-this-server-owns.md
+[D-KNW-115]: knowledge/knw-115-the-key-a-site-names-its-sets-under-is-stated-with-the-sets.md
 [D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

@@ -57,6 +57,11 @@ Answers with
         summary: string  # optional
         rootClass: string
         variants: [string]  # optional
+        # Classes the core stylesheet writes on the element around this component on
+        # the target version, taken out of the three lists below because none of
+        # those names a wrapper. Attaching one to the component itself changes
+        # nothing and fails nowhere.
+        wrapping: [string]  # optional
         modifiers: [string]  # optional
         subComponents: [string]  # optional
         customProperties: [string]  # optional

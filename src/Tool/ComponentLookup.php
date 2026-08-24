@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Tool;
 
+use TYPO3\DevCompanion\Knowledge\Catalog\ComponentClasses;
 use TYPO3\DevCompanion\Knowledge\Catalog\Components;
 use TYPO3\DevCompanion\Knowledge\Catalog\InstalledComponents;
 use TYPO3\DevCompanion\Knowledge\Catalog\Meta as CatalogMeta;
@@ -56,6 +57,7 @@ final class ComponentLookup extends ReadOnlyTool
                 'summary' => Schema::string(),
                 'rootClass' => Schema::string(),
                 'variants' => Schema::listOf(Schema::string()),
+                'wrapping' => Schema::listOf(Schema::string(), 'Classes the core stylesheet writes on the element around this component on the target version, taken out of the three lists below because none of those names a wrapper. Attaching one to the component itself changes nothing and fails nowhere.'),
                 'modifiers' => Schema::listOf(Schema::string()),
                 'subComponents' => Schema::listOf(Schema::string()),
                 'customProperties' => Schema::listOf(Schema::string()),
@@ -133,6 +135,28 @@ final class ComponentLookup extends ReadOnlyTool
         );
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * The component's classes the core's stylesheet writes above it, which is
+     * the one grouping a curated list gets wrong in a way that ships: a wrapper
+     * attached to the element it should wrap changes nothing and fails nowhere.
+     *
+     * @param array<string, mixed> $component
+     * @return list<string>
+     */
+    private static function wrapping(array $component, ?int $target): array
+    {
+        $wrapping = [];
+        foreach (['variants', 'modifiers', 'subComponents'] as $field) {
+            foreach ($component[$field] ?? [] as $class) {
+                if (is_string($class) && ComponentClasses::position($class, $target) === 'around') {
+                    $wrapping[] = $class;
+                }
+            }
+        }
+
+        return $wrapping;
     }
 
     /**
@@ -226,7 +250,7 @@ final class ComponentLookup extends ReadOnlyTool
         // Only the best matches are described in full; the rest stay in the count.
         $described = array_slice($components, 0, 3);
 
-        $blocks = array_map(static function (array $c): string {
+        $blocks = array_map(static function (array $c) use ($target): string {
             $lines = ['## ' . $c['title'] . ' (`' . $c['rootClass'] . '`)'];
             if (($c['matchedIn'] ?? []) !== []) {
                 $lines[] = 'Matched in: ' . implode(', ', $c['matchedIn']);
@@ -253,9 +277,18 @@ final class ComponentLookup extends ReadOnlyTool
                     $lines[] = $label . ': ' . implode(', ', $items);
                 }
             };
-            $appendList('Variants', $c['variants']);
-            $appendList('Modifiers', $c['modifiers']);
-            $appendList('Sub-components', $c['subComponents']);
+            // A class the stylesheet writes above the component is not a
+            // modifier of it, whichever list it was curated into: `table-fit`
+            // sat beside `table-striped` and is the element around the table —
+            // `D-CAT-008`. The lists keep everything the derivation has no
+            // opinion on, because a curated grouping is worth more than the
+            // silence that would replace it.
+            $wrapping = self::wrapping($c, $target);
+            $appendList('Wrapping the component', $wrapping);
+            $keep = static fn(array $items): array => array_values(array_diff($items, $wrapping));
+            $appendList('Variants', $keep($c['variants']));
+            $appendList('Modifiers', $keep($c['modifiers']));
+            $appendList('Sub-components', $keep($c['subComponents']));
             $appendList('Custom properties', $c['customProperties']);
             if (($c['_installed'] ?? false) === true) {
                 $cataloguedClasses = array_merge(
@@ -335,22 +368,28 @@ final class ComponentLookup extends ReadOnlyTool
             'query' => $query,
             'targetVersion' => $target,
             'matchCount' => count($components),
-            'components' => array_map(static fn(array $c): array => [
-                'name' => $c['name'],
-                'title' => $c['title'],
-                'summary' => $c['summary'],
-                'rootClass' => $c['rootClass'],
-                'variants' => $c['variants'],
-                'modifiers' => $c['modifiers'],
-                'subComponents' => $c['subComponents'],
-                'customProperties' => $c['customProperties'],
-                'markup' => $c['markup'],
-                'examples' => $c['examples'],
-                'sassPath' => $c['sassPath'],
-                'sassPaths' => $c['sassPaths'],
-                'demoPath' => $c['demoPath'],
-                'matchedIn' => $c['matchedIn'] ?? [],
-            ] + Provenance::sourceRecord($c) + Provenance::verifiedRecord($c), $described),
+            'components' => array_map(static function (array $c) use ($target): array {
+                $wrapping = self::wrapping($c, $target);
+                $keep = static fn(array $items): array => array_values(array_diff($items, $wrapping));
+
+                return [
+                    'name' => $c['name'],
+                    'title' => $c['title'],
+                    'summary' => $c['summary'],
+                    'rootClass' => $c['rootClass'],
+                    'wrapping' => $wrapping,
+                    'variants' => $keep($c['variants']),
+                    'modifiers' => $keep($c['modifiers']),
+                    'subComponents' => $keep($c['subComponents']),
+                    'customProperties' => $c['customProperties'],
+                    'markup' => $c['markup'],
+                    'examples' => $c['examples'],
+                    'sassPath' => $c['sassPath'],
+                    'sassPaths' => $c['sassPaths'],
+                    'demoPath' => $c['demoPath'],
+                    'matchedIn' => $c['matchedIn'] ?? [],
+                ] + Provenance::sourceRecord($c) + Provenance::verifiedRecord($c);
+            }, $described),
             'withheld' => Provenance::withheldRecords($withheld),
             'coveredClasses' => $covered,
             'checklist' => $checklist,

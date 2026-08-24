@@ -487,6 +487,22 @@ final class CatalogTest extends TestCase
 
     #[Decision('D-CAT-008')]
     #[Test]
+    public function aWrapperIsNotListedAmongTheModifiersOfWhatItWraps(): void
+    {
+        // `table-fit` was curated into `modifiers` beside `table-striped`, and
+        // one goes on the table while the other goes around it. The lists keep
+        // every class the derivation has no opinion on.
+        $result = Registry::call('typo3_component_lookup', ['query' => 'table', 'targetVersion' => '14.3']);
+        $table = $result->data['components'][0];
+
+        self::assertSame(['table-fit'], $table['wrapping']);
+        self::assertNotContains('table-fit', $table['modifiers']);
+        self::assertContains('table-striped', $table['modifiers']);
+        self::assertStringContainsString('Wrapping the component: table-fit', $result->text);
+    }
+
+    #[Decision('D-CAT-008')]
+    #[Test]
     public function whatIsStyledWithinAClassIsNotWhatItRequires(): void
     {
         // A progress bar is styled below `.table-fit` from v14 and belongs

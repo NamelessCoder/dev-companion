@@ -16,6 +16,7 @@ coveredBy:
   - BackendCssTest::whatIsStyledWithinHoldsOnlyNamesTheCallerNamed
   - BackendCssTest::whatIsStyledWithinIsSeparateFromWhereTheClassSits
   - CatalogTest::aClassIsAnsweredOnAMajorItsEntrysListDoesNotReach
+  - CatalogTest::aWrapperIsNotListedAmongTheModifiersOfWhatItWraps
   - CatalogTest::whatIsStyledWithinAClassIsNotWhatItRequires
   - StyleguideListingTest::aCheckoutShippingNoStyleguideAnswersNothing
   - StyleguideListingTest::aComponentTheStyleguideDoesNotListIsNotListed

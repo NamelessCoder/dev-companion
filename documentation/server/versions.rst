@@ -91,14 +91,19 @@ runtime, and the failure is silent. The rules below follow from it.
   reads as unchanged — the entry records a digest of what each covered demo
   said, and the same command fails on a rewrite no name would show
   (``D-CAT-001``).
-* **A class the query names is a second question, and carries a second range.**
+* **A class the query names is a second question, and carries its own range.**
   What withholds an entry is usually a custom property that arrived after the
   classes beside it, and a caller that borrowed one backend class is asking
-  whether that class is there rather than for something to paste. So an entry
-  records ``classesSince``/``classesUntil`` for its class list, derived by the
-  same command from the same checkouts, and a class named outright is answered
-  below the entry's own binding — as a name, its range and the Sass file it is
-  written in, never as markup (``D-CAT-006``).
+  where that class goes rather than for something to paste. So each class
+  carries the majors it is written on and where it sits — around the component,
+  on it, or inside it — and a class named outright is answered below the entry's
+  own binding, never as markup (``D-CAT-006``, ``D-CAT-008``).
+* **Where a class sits is itself version-bound, and it is derived.**
+  ``bin/cli components:derive`` reads the ``backend.css`` each covered branch
+  commits and writes the position and the range of every class the catalog
+  names; ``bin/cli catalog:check`` re-derives and fails where what is committed
+  has fallen behind. Reading four committed files is the verification, so no
+  installation is involved and no range is kept by hand (``D-CAT-008``).
 * **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in ``files``, and the range is derived

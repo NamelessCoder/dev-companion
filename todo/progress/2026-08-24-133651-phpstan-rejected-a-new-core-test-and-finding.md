@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133651-phpstan-rejected-a-new-core-test-and-finding.md
 **Priority:** low
+**Branch:** todo/phpstan-rejected-a-new-core-test-and-finding
+**Claimed:** 2026-08-24
 
 Trimmed on 2026-08-24 to the part the PHPStan work left. The narrowing idiom is
 the `core-static-analysis` hint and the hint-versus-rule routing is a clause in

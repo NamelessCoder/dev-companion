@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100604-suites-are-not-marked-by-whether-they-rewrite.md
 **Priority:** normal
+**Branch:** todo/suites-are-not-marked-by-whether-they-rewrite
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as step 1a with the shape missing beside it, and written up
 as `D-ANS-099`, which carries the measurements and what the values owe:

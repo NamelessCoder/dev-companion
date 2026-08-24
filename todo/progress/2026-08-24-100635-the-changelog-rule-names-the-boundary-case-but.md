@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100635-the-changelog-rule-names-the-boundary-case-but.md
 **Priority:** low
+**Branch:** todo/the-changelog-rule-names-the-boundary-case-but
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100534-steps-both-skills-prescribe-that-i-skipped.md, D-SKL-072
 **Priority:** normal
+**Branch:** todo/steps-both-skills-prescribe-that-i-skipped
+**Claimed:** 2026-08-24
 
 Judged as step 2 of the ladder, delivery: the order exists and is correct, and
 nothing the caller reads names it at the crossing where it has to run a second

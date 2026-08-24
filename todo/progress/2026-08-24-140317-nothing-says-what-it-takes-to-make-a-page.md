@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-140317-nothing-says-what-it-takes-to-make-a-page.md
 **Priority:** normal
+**Branch:** todo/nothing-says-what-it-takes-to-make-a-page
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-25 as `D-KNW-118`: step 1a, queued. `site-sets`,
 `installation-setup` and `fresh-instance-seeding` each carry one way a page

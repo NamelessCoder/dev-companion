@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-140259-changelog-lookup-was-unusable-before-composer.md
 **Priority:** normal
+**Branch:** todo/say-which-state-the-repository-is-in-where-no-installation-is-reached
+**Claimed:** 2026-08-24
 
 Carry the state `typo3_project_describe` already reports into
 `Result\Unsupported`, so a tool that cannot reach an installation says whether

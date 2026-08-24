@@ -29,9 +29,9 @@ final class References
      */
     public static function load(): array
     {
-        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('references.json')), true);
+        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('reference', 'entries.json')), true);
         if (!is_array($decoded)) {
-            throw new \RuntimeException('Invalid catalog/references.json');
+            throw new \RuntimeException('Invalid catalog/reference/entries.json');
         }
 
         return array_map(static fn(array $entry): array => [

@@ -260,15 +260,15 @@ Text:
     ## Backend UI components: markup, variants, custom properties
     A curated searchable subset, not every CSS class in the core. When targetVersion is the active installation, installed backend CSS and JavaScript supply presence, classes and custom properties, and a matching installed styleguide example supplies markup. The bundled version-bound snapshot is the fallback and still supplies names, summaries and keywords.
     Tools: typo3_component_lookup
-    Source: installed EXT:backend and EXT:styleguide files; knowledge/catalog/components.json as index and fallback — read from the installation being worked in, not from a bundled snapshot. (any)
+    Source: installed EXT:backend and EXT:styleguide files; knowledge/catalog/component/entries.json as index and fallback — read from the installation being worked in, not from a bundled snapshot. (any)
     ## Which extensions the TYPO3 core ships, and on which versions
     Every system extension of every covered TYPO3 line, by extension key and Composer package name, with what it is for and the range it is shipped on. Derived from one checkout per covered version, so it answers for an extension that is not installed — which is the case the question is asked in. A miss says the name is not a system extension there, never that it does not exist.
     Tools: typo3_system_extension_lookup
-    Source: knowledge/catalog/system-extensions.json (any)
+    Source: knowledge/catalog/system-extension/entries.json (any)
     ## Where the core keeps its own worked examples
     An index rather than the examples themselves: one line per directory on what it is a reference for, the Composer package an installation can read it from, and the versions it exists on. It is what a hint is a summary of, so it is the better answer where a hint is thin or where a subject has none yet.
     Tools: typo3_reference_list
-    Source: knowledge/catalog/references.json (any)
+    Source: knowledge/catalog/reference/entries.json (any)
     ## Translation domains: how the domain of an XLF file is derived
     Complete and computed, not a snapshot: the core's own path-to-domain rules ported here — the class that holds them is TranslationDomainMapper on one branch and TranslationDomainResolver on the next, so compare against whichever your checkout has, so any XLF path in any extension resolves — including a file that does not exist yet. Where the installation being read is older than translation domains, the full LLL:EXT: reference is the answer instead: the domain form renders nothing there.
     Tools: typo3_translation_domain_lookup
@@ -631,7 +631,7 @@ Data:
                 "tools": [
                     "typo3_component_lookup"
                 ],
-                "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/components.json as index and fallback — read from the installation being worked in, not from a bundled snapshot.",
+                "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/component/entries.json as index and fallback — read from the installation being worked in, not from a bundled snapshot.",
                 "scope": "any"
             },
             {
@@ -640,7 +640,7 @@ Data:
                 "tools": [
                     "typo3_system_extension_lookup"
                 ],
-                "source": "knowledge/catalog/system-extensions.json",
+                "source": "knowledge/catalog/system-extension/entries.json",
                 "scope": "any"
             },
             {
@@ -649,7 +649,7 @@ Data:
                 "tools": [
                     "typo3_reference_list"
                 ],
-                "source": "knowledge/catalog/references.json",
+                "source": "knowledge/catalog/reference/entries.json",
                 "scope": "any"
             },
             {

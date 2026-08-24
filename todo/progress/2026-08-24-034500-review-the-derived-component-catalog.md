@@ -14,8 +14,8 @@ it names what it settled.
 ## What is on it
 
 - `bin/cli components:derive` reads the `backend.css` each covered branch
-  commits and writes `component-classes.json`, `custom-elements.json` and
-  `styleguide-listing.json`: 242 classes with 39 of them placed, 137 custom
+  commits and writes `component/classes.json`, `component/elements.json` and
+  `component/styleguide.json`: 242 classes with 39 of them placed, 137 custom
   elements, 31 listed components, in under half a second and without an
   installation. `components:check` re-derives and fails where the committed
   files have fallen behind.

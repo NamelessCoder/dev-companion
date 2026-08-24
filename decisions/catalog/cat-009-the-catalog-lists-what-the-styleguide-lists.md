@@ -58,7 +58,7 @@ Read on 2026-08-24 against `.checkouts/14.3` and the derived files.
   summaries and root classes are drafted from the templates and the Sass and
   corrected by the maintainer; everything else is derived (`D-CAT-008`).
 - The custom elements become an answerable dimension of their own, out of
-  `custom-elements.json`. An element cannot be attached to the wrong node, so
+  `component/elements.json`. An element cannot be attached to the wrong node, so
   where one exists it is the answer and the class is the way round it.
 - Rejected: keeping the five with a marking. Rejected too: mapping one entry to
   one action, which would leave a caller asking about radio buttons with

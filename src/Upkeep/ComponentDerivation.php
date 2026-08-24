@@ -37,7 +37,7 @@ final class ComponentDerivation
             }
         }
 
-        $components = Catalogs::read('components');
+        $components = Catalogs::read('component/entries');
         $known = self::known($components, $elements);
 
         $classes = [];

@@ -300,7 +300,7 @@ final class CatalogTest extends TestCase
     public function noClassIsListedByTwoEntries(): void
     {
         $owners = [];
-        foreach (Catalogs::read('components') as $entry) {
+        foreach (Catalogs::read('component/entries') as $entry) {
             $classes = array_merge($entry['variants'], $entry['modifiers'], $entry['subComponents']);
             foreach ($classes as $class) {
                 $owners[$class][] = $entry['name'];
@@ -319,8 +319,8 @@ final class CatalogTest extends TestCase
     #[Test]
     public function everyEntryNamesTheActionsThatDemonstrateIt(): void
     {
-        $listed = array_column(Catalogs::read('styleguide-listing'), 'component');
-        foreach (Catalogs::read('components') as $entry) {
+        $listed = array_column(Catalogs::read('component/styleguide'), 'component');
+        foreach (Catalogs::read('component/entries') as $entry) {
             $actions = $entry['styleguideActions'] ?? [];
             self::assertNotSame([], $actions, $entry['name'] . ' names no styleguide action');
             foreach ($actions as $action) {
@@ -596,7 +596,7 @@ final class CatalogTest extends TestCase
         // digests against the checkouts, this holds them to versions.json and to
         // the entries that have a demo to digest at all.
         $majors = Versions::majors();
-        foreach (Catalogs::read('components') as $entry) {
+        foreach (Catalogs::read('component/entries') as $entry) {
             $digests = $entry['markupDigests'] ?? [];
             if (($entry['demoPath'] ?? '') === '') {
                 self::assertSame([], $digests, $entry['name'] . ' digests a demo it does not name');
@@ -675,7 +675,7 @@ final class CatalogTest extends TestCase
         // Cards.fluid.html has three examples carrying `card`, and the first is
         // the `<form>` of switches. The entry's own markup spells card-title,
         // which is the sub-component that example does not have.
-        $card = array_values(array_filter(Catalogs::read('components'), static fn(array $c): bool => $c['name'] === 'card'))[0];
+        $card = array_values(array_filter(Catalogs::read('component/entries'), static fn(array $c): bool => $c['name'] === 'card'))[0];
 
         self::assertSame('card-title', $card['demoSelector'] ?? null);
         self::assertStringContainsString($card['demoSelector'], $card['markup'], 'the selector names something the entry itself shows');
@@ -736,7 +736,7 @@ final class CatalogTest extends TestCase
     public function anEntryThatDerivesNothingNamesADemoAndSelectsNothingInIt(): void
     {
         $suppressed = [];
-        foreach (Catalogs::read('components') as $entry) {
+        foreach (Catalogs::read('component/entries') as $entry) {
             if (($entry['demoDerives'] ?? true) !== false) {
                 continue;
             }
@@ -759,7 +759,7 @@ final class CatalogTest extends TestCase
         // being applied; a selector no example could carry withholds the
         // derived markup on every version at once, and that is the failure this
         // field's fallback makes quiet.
-        foreach (Catalogs::read('components') as $entry) {
+        foreach (Catalogs::read('component/entries') as $entry) {
             $selector = $entry['demoSelector'] ?? null;
             if ($selector === null) {
                 continue;

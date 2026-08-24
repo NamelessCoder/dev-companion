@@ -29,11 +29,11 @@ use TYPO3\DevCompanion\Upkeep\Json;
 )]
 final class ComponentDerive
 {
-    private const CLASSES = '/knowledge/catalog/component-classes.json';
+    private const CLASSES = '/knowledge/catalog/component/classes.json';
 
-    private const ELEMENTS = '/knowledge/catalog/custom-elements.json';
+    private const ELEMENTS = '/knowledge/catalog/component/elements.json';
 
-    private const LISTING = '/knowledge/catalog/styleguide-listing.json';
+    private const LISTING = '/knowledge/catalog/component/styleguide.json';
 
     public function __invoke(OutputInterface $output): int
     {

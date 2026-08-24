@@ -27,7 +27,7 @@ final class SystemExtensions
      */
     public static function load(): array
     {
-        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('system-extensions.json')), true);
+        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('system-extension', 'entries.json')), true);
         if (!is_array($decoded)) {
             throw new \RuntimeException('Invalid catalog/system-extensions.json');
         }

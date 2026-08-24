@@ -29,7 +29,7 @@ final class SystemExtensionCheck
     {
         $checkouts = Checkouts::directory();
 
-        return self::verifySystemExtensions($output, $checkouts, Catalogs::read('system-extensions'));
+        return self::verifySystemExtensions($output, $checkouts, Catalogs::read('system-extension/entries'));
     }
 
     /**

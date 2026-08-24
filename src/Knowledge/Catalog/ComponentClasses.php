@@ -97,7 +97,7 @@ final class ComponentClasses
             return self::$byClass;
         }
 
-        $path = Paths::catalogFile('component-classes.json');
+        $path = Paths::catalogFile('component', 'classes.json');
         $decoded = is_file($path) ? json_decode((string) file_get_contents($path), true) : [];
         $byClass = [];
         foreach (is_array($decoded) ? $decoded : [] as $entry) {

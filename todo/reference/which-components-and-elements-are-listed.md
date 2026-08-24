@@ -4,7 +4,7 @@ The rule is the maintainer's, 2026-08-24: **what the styleguide lists is public
 API, and what it does not list is not to be used or suggested.** Below is every
 candidate on both sides of it, generated from `knowledge/catalog/` and
 `.checkouts/14.3` so the names are exact. What comes out of the reading goes
-into `components.json`, and this page is consumed by that commit.
+into `component/entries.json`, and this page is consumed by that commit.
 
 The counts are what the derivation reports today. A class count of zero means
 the entry names a custom element rather than a class, or names classes the

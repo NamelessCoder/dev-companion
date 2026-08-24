@@ -9,7 +9,7 @@ use TYPO3\DevCompanion\Paths;
 
 /**
  * Loads and ranks the curated TYPO3 backend component index from
- * catalog/components.json. Where the active installation can be read,
+ * catalog/component/entries.json. Where the active installation can be read,
  * InstalledComponents replaces its contract fields with evidence from the
  * installed backend CSS, JavaScript, and styleguide templates.
  *
@@ -54,9 +54,9 @@ final class Components
      */
     public static function load(): array
     {
-        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('components.json')), true);
+        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('component', 'entries.json')), true);
         if (!is_array($decoded)) {
-            throw new \RuntimeException('Invalid catalog/components.json');
+            throw new \RuntimeException('Invalid catalog/component/entries.json');
         }
 
         return array_map(static function (array $entry): array {
@@ -196,15 +196,15 @@ final class Components
 
     /**
      * The shared "Definition of Done" that applies to every backend component.
-     * Maintained once in catalog/component-checklist.json, not per component.
+     * Maintained once in catalog/component/checklist.json, not per component.
      *
      * @return array{title: string, intro: string, items: array<int, string>}
      */
     public static function checklist(): array
     {
-        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('component-checklist.json')), true);
+        $decoded = json_decode((string) file_get_contents(Paths::catalogFile('component', 'checklist.json')), true);
         if (!is_array($decoded)) {
-            throw new \RuntimeException('Invalid catalog/component-checklist.json');
+            throw new \RuntimeException('Invalid catalog/component/checklist.json');
         }
 
         return [

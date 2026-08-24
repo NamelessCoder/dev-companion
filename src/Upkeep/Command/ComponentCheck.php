@@ -34,8 +34,8 @@ final class ComponentCheck
         $checkouts = Checkouts::directory();
 
         return max(
-            self::verifyBindings($output, $checkouts, Catalogs::read('components')),
-            self::verifyMarkup($output, $checkouts, Catalogs::read('components')),
+            self::verifyBindings($output, $checkouts, Catalogs::read('component/entries')),
+            self::verifyMarkup($output, $checkouts, Catalogs::read('component/entries')),
             self::verifyDerived($output, $checkouts),
         );
     }
@@ -365,9 +365,9 @@ final class ComponentCheck
 
         $derived = ComponentDerivation::from($paths);
         $stale = [];
-        foreach (['classes' => 'component-classes', 'elements' => 'custom-elements', 'listing' => 'styleguide-listing'] as $key => $file) {
+        foreach (['classes' => 'component/classes', 'elements' => 'component/elements', 'listing' => 'component/styleguide'] as $key => $file) {
             if (Catalogs::read($file) !== json_decode((string) json_encode($derived[$key]), true)) {
-                $stale[] = $file . '.json';
+                $stale[] = basename($file) . '.json';
             }
         }
         if ($stale !== []) {

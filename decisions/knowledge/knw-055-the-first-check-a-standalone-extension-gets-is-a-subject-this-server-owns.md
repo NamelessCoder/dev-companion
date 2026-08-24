@@ -47,9 +47,9 @@ analyser and nothing else in that layer.
   text at 167 and no `appliesTo` needle. `"php-cs-fixer"` reaches nothing out of
   81 candidates, `"code style fixer extension"` returns `public-assets` on text,
   and `"editorconfig"` returns six hints whose strongest match is 26. A grep
-  over `knowledge/` for the packages finds them in `catalog/references.json` and
-  in the core-scripts document, neither of which is an answer about an
-  extension.
+  over `knowledge/` for the packages finds them in
+  `catalog/reference/entries.json` and in the core-scripts document, neither of
+  which is an answer about an extension.
 - **The one hint that exists is the analyser's.** `extension-static-analysis` in
   `knowledge/hints/testing.json` was read whole: six statements, all PHPStan —
   the configuration's place, `tmpDir`, `bootstrapFiles` for `LF` and `CR`, the

@@ -31,11 +31,11 @@ says so.
   its own.
 - The `browser-tests` hint carries the layout — `e2e/` per module, `fixtures/`
   for page objects, `helper/` for the login setup — and no selector.
-- `knowledge/catalog/components.json` is read off the core's Sass and answers
-  what an author builds: a root class, its variants, its custom properties and
-  markup to write. The session read that description and passed the tool over,
-  which is the finding it reported as an unverified assumption. The assumption
-  held.
+- `knowledge/catalog/component/entries.json` is read off the core's Sass and
+  answers what an author builds: a root class, its variants, its custom
+  properties and markup to write. The session read that description and passed
+  the tool over, which is the finding it reported as an unverified assumption.
+  The assumption held.
 - [writing-a-skill.md](../../documentation/contributing/writing-a-skill.rst)
   keeps backend markup out of a published skill, so
   `skills/typo3-extension-testing/references/playwright.md` cannot carry it

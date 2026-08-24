@@ -33,8 +33,9 @@ to the hints is a sentence somebody remembered to write.
   expands it is prose somebody wrote by hand, which is the failure `D-KNW-008`
   named: a cell nothing routes to is reachable only by guessing its words.
 - The relationship is already modelled once. Every entry in
-  `knowledge/catalog/references.json` carries a `hint` naming the convention it
-  is a worked example of, and `typo3_reference_list` answers with it.
+  `knowledge/catalog/reference/entries.json` carries a `hint` naming the
+  convention it is a worked example of, and `typo3_reference_list` answers with
+  it.
 - What a document is for is not something its body can be searched for. Eight
   realistic queries all reach the new PHPUnit document, and which section they
   land on is decided lexically: "set up tests for my extension" lands on the

@@ -101,9 +101,9 @@ runtime, and the failure is silent. The rules below follow from it.
 * **Where a class sits is itself version-bound, and it is derived.**
   ``bin/cli components:derive`` reads the ``backend.css`` each covered branch
   commits and writes the position and the range of every class the catalog
-  names; ``bin/cli components:check`` re-derives and fails where what is committed
-  has fallen behind. Reading four committed files is the verification, so no
-  installation is involved and no range is kept by hand (``D-CAT-008``).
+  names; ``bin/cli components:check`` re-derives and fails where what is
+  committed has fallen behind. Reading four committed files is the verification,
+  so no installation is involved and no range is kept by hand (``D-CAT-008``).
 * **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in ``files``, and the range is derived

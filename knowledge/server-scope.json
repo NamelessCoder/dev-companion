@@ -260,7 +260,7 @@
       "tools": [
         "typo3_component_lookup"
       ],
-      "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/components.json as index and fallback — read from the installation being worked in, not from a bundled snapshot.",
+      "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/component/entries.json as index and fallback — read from the installation being worked in, not from a bundled snapshot.",
       "scope": "any"
     },
     {
@@ -269,7 +269,7 @@
       "tools": [
         "typo3_system_extension_lookup"
       ],
-      "source": "knowledge/catalog/system-extensions.json",
+      "source": "knowledge/catalog/system-extension/entries.json",
       "scope": "any"
     },
     {
@@ -278,7 +278,7 @@
       "tools": [
         "typo3_reference_list"
       ],
-      "source": "knowledge/catalog/references.json",
+      "source": "knowledge/catalog/reference/entries.json",
       "scope": "any"
     },
     {

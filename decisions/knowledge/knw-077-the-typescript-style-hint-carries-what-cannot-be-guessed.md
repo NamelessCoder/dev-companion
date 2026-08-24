@@ -62,11 +62,11 @@ switched off.
 - No tool. The caller reads one file from its own checkout, which is what
   [`D-FBK-027`](../feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md)
   excludes; the round trips are one, and the pointer is what makes it one.
-- No entry in `knowledge/catalog/references.json` beside `Build/php-cs-fixer`.
-  That catalog holds what somebody reads to imitate, and the PHP one is there
-  because a project adopts the core's rule set; nobody adopts the core's ESLint
-  configuration outside the core, so this is a pointer for a core patch and
-  belongs in the hint that a core patch already reaches.
+- No entry in `knowledge/catalog/reference/entries.json` beside
+  `Build/php-cs-fixer`. That catalog holds what somebody reads to imitate, and
+  the PHP one is there because a project adopts the core's rule set; nobody
+  adopts the core's ESLint configuration outside the core, so this is a pointer
+  for a core patch and belongs in the hint that a core patch already reaches.
 
 ## Assumed
 

@@ -28,7 +28,7 @@ sees them and cannot carry a dot. The feedback is queued at `normal`.
 - The subject is absent rather than thin. `ExpressionLanguage` occurs nowhere
   below `knowledge/` or `skills/`, `knowledge/hints/` has no file for
   TypoScript, `knowledge/task-intents.json` carries no condition intent, and
-  `knowledge/catalog/references.json` lists nothing under
+  `knowledge/catalog/reference/entries.json` lists nothing under
   `typo3/sysext/core/Classes/ExpressionLanguage/`.
 - One neighbour answers and stops short.
   `"condition provider constructor injection makeInstance public service Autoconfigure"`

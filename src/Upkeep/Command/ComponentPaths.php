@@ -38,7 +38,7 @@ final class ComponentPaths
             return 2;
         }
 
-        $components = Catalogs::read('components');
+        $components = Catalogs::read('component/entries');
         $output->writeln('Components');
         $problems = 0;
         foreach ($components as $component) {

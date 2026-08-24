@@ -29,7 +29,7 @@ final class ReferenceCheck
     {
         $checkouts = Checkouts::directory();
 
-        return self::verifyReferences($output, $checkouts, Catalogs::read('references'));
+        return self::verifyReferences($output, $checkouts, Catalogs::read('reference/entries'));
     }
 
     /**

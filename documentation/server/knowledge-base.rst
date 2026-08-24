@@ -16,7 +16,7 @@ network, no database. What is read from an installation instead, and why, is
   ``labels.json``, ``site-sets.json`` and many more. Each entry names the
   domains it is asked from in its own ``domains`` field, so the file says what
   the hint is about and the tag says which query reaches it
-* ``catalog/`` — the component catalog (``components.json``,
+* ``catalog/`` — the component catalog (``component/entries.json``,
   ``component-checklist.json``, ``references.json``, ``meta.json``) and the
   shipped system extensions (``system-extensions.json``)
 * ``test-suite-hints.json``, ``task-intents.json``, ``icon-concepts.json``,

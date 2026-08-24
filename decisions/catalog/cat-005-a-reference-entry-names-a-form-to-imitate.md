@@ -7,8 +7,8 @@ status: open
 
 # D-CAT-005 — A reference entry names a form to imitate
 
-**A directory earns an entry in `knowledge/catalog/references.json` where a
-caller reads it before writing one of the same shape, not where a fact happens
+**A directory earns an entry in `knowledge/catalog/reference/entries.json` where
+a caller reads it before writing one of the same shape, not where a fact happens
 to be declared in it.**
 
 A session that had read the frontend's middleware registration on two branches
@@ -21,7 +21,7 @@ next caller needs is the ordering, and a path does not carry one.
   `typo3/sysext/frontend/Configuration/RequestMiddlewares.php` and
   `typo3/sysext/frontend/Classes/Event/` beside the document it proposes,
   because "neither is discoverable as a reference today". Neither is in the
-  seven entries of `knowledge/catalog/references.json`.
+  seven entries of `knowledge/catalog/reference/entries.json`.
 - Both are already named by the corpus, from the hint that also answers the
   question they were wanted for. `routing-request-handling` carries
   `Configuration/RequestMiddlewares.php` in its `appliesTo` and states that
@@ -83,8 +83,8 @@ next caller needs is the ordering, and a path does not carry one.
 ## Since then
 
 The two entries are still not written and nothing asks for them again.
-`knowledge/catalog/references.json` holds the same seven, and the probe this
-entry rests on returns the same numbers on 2026-08-23: "frontend middleware
+`knowledge/catalog/reference/entries.json` holds the same seven, and the probe
+this entry rests on returns the same numbers on 2026-08-23: "frontend middleware
 order per major, what each stage has assembled" reaches
 `routing-request-handling` at `appliesTo(10) + text(146)`, alone.
 

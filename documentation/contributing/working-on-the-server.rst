@@ -69,7 +69,7 @@ is not recorded anywhere: each covered branch pins it in its own
 ``require-dev``, and one worktree per pinned line is checked out at that line's
 newest tag. So a statement about the harness is verified in
 ``.checkouts/testing-framework/<line>`` the way a statement about the core is
-verified in ``.checkouts/<branch>``, and ``bin/cli catalog:check`` re-reads
+verified in ``.checkouts/<branch>``, and ``bin/cli components:check`` re-reads
 both.
 
 Scenario environments

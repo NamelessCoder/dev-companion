@@ -392,7 +392,7 @@ The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 Answered
 --------
 
-Recorded on 2026-08-21 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-24 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
 14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
@@ -454,6 +454,7 @@ Text:
     The Node those npm commands run on. This repository declares 24.14, in Build/.nvmrc. Its Build/package.json admits >=24.14.0 <25.0.0, which that pin is the lowest version of. No workflow below .github/workflows/ sets Node up, so nothing here says which one CI runs them on. All of it read from these files. Nothing was run to find it out, and the Node your own shell has is not among them.
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+    - any/backend/using-the-styleguide — Using the Backend Styleguide
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
     - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
@@ -623,6 +624,10 @@ Data:
         "patches": [],
         "guides": [
             {
+                "id": "any/backend/using-the-styleguide",
+                "title": "Using the Backend Styleguide"
+            },
+            {
                 "id": "any/security/reporting-a-vulnerability",
                 "title": "Reporting a TYPO3 Vulnerability"
             },
@@ -710,6 +715,7 @@ Text:
     - composer test (composer.json) — unknown: phpunit -c Build/phpunit.xml
 
     Whole procedures this server carries, each one typo3_rule_lookup with that documentId — no resource list needed, and none of them is answered by a search over sections:
+    - any/backend/using-the-styleguide — Using the Backend Styleguide
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
     - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
@@ -792,6 +798,10 @@ Data:
         ],
         "patches": [],
         "guides": [
+            {
+                "id": "any/backend/using-the-styleguide",
+                "title": "Using the Backend Styleguide"
+            },
             {
                 "id": "any/security/reporting-a-vulnerability",
                 "title": "Reporting a TYPO3 Vulnerability"

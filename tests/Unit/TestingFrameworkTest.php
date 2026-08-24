@@ -16,7 +16,7 @@ use TYPO3\DevCompanion\Upkeep\TestingFramework;
  * a tag rather than against a core branch, and which tag that is is derived
  * from the core's own pin — `D-KNW-106`. This holds the one step of that
  * derivation which needs no repository to try; everything else is a git call,
- * and `bin/cli catalog:check` is where it is exercised.
+ * and `bin/cli versions:check` is where it is exercised.
  */
 final class TestingFrameworkTest extends TestCase
 {

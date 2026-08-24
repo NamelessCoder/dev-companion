@@ -142,7 +142,7 @@ final class Versions
      * answer is the same for every spelling that admits any 13.x. Which majors
      * are worth asking about is the caller's — the covered ones for
      * `typo3/cms-core`, the ones a Fluid engine could be spelled for in
-     * `bin/cli catalog:check`.
+     * `bin/cli components:check`.
      */
     public static function admits(?string $constraint, int $major): bool
     {

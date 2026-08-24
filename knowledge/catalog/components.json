@@ -504,7 +504,9 @@
     "markupDigests": {
       "14": "caa37f1f27cc",
       "15": "caa37f1f27cc"
-    }
+    },
+    "since": 14,
+    "classesSince": 14
   },
   {
     "name": "form-check",
@@ -1050,7 +1052,9 @@
     "markupDigests": {
       "14": "732174d59925",
       "15": "732174d59925"
-    }
+    },
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "status-indicator",

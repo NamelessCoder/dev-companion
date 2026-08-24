@@ -12,7 +12,7 @@ use TYPO3\DevCompanion\Process\SystemRunner;
  * Where the core checkouts live, and the git this repository reads them with.
  *
  * Two commands stand on this — `checkouts:update` creates them, `checkouts:status`
- * reports what is there — and two more read them: `catalog:check` verifies
+ * reports what is there — and two more read them: `components:check` and its three siblings verify
  * against one, `tools:record` answers from one. What they share is the
  * directory and the one way a command in here runs git: captured rather than
  * streamed, so a command decides what of it reaches its caller.

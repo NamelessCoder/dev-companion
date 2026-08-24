@@ -12,7 +12,7 @@ use TYPO3\DevCompanion\Knowledge\Hints;
 /**
  * What one query reaches in the hint corpus, and why.
  *
- * `catalog:check` exists because a core update invalidates a catalog entry
+ * `components:check` exists because a core update invalidates an entry
  * silently. A hint decays the same way and even more quietly: nothing about it
  * changes, the query nobody phrased right simply comes back empty, and the
  * caller reads that as "this server does not know" rather than as "I said it

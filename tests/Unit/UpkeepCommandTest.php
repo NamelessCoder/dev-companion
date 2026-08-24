@@ -105,7 +105,11 @@ final class UpkeepCommandTest extends TestCase
     #[DataProvider('commandClasses')]
     public function everyCommandIsNamedSubjectThenVerb(string $class, string $name): void
     {
-        self::assertMatchesRegularExpression('/^[a-z]+:[a-z]+$/', $name, 'a command is named <subject>:<verb>');
+        // A hyphen inside the subject is spelling rather than structure:
+        // `system-extensions` is what this repository calls them everywhere
+        // else, and a second word invented to avoid the hyphen would be a third
+        // name for one thing. The verb stays one word.
+        self::assertMatchesRegularExpression('/^[a-z]+(-[a-z]+)*:[a-z]+$/', $name, 'a command is named <subject>:<verb>');
     }
 
     /**

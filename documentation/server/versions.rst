@@ -85,7 +85,7 @@ runtime, and the failure is silent. The rules below follow from it.
   ``since``/``until`` there is the whole entry rather than one sentence, and
   ``targetVersion`` withholds it instead of qualifying it — a class that does
   not exist fails in a browser, silently. The binding is derived, not judged:
-  ``bin/cli catalog:check`` re-reads every covered checkout and reports each
+  ``bin/cli components:check`` re-reads every covered checkout and reports each
   entry whose recorded range no longer matches, so a core update invalidates it
   loudly. It is derived from names, so a demo rewritten around the same classes
   reads as unchanged — the entry records a digest of what each covered demo
@@ -101,7 +101,7 @@ runtime, and the failure is silent. The rules below follow from it.
 * **Where a class sits is itself version-bound, and it is derived.**
   ``bin/cli components:derive`` reads the ``backend.css`` each covered branch
   commits and writes the position and the range of every class the catalog
-  names; ``bin/cli catalog:check`` re-derives and fails where what is committed
+  names; ``bin/cli components:check`` re-derives and fails where what is committed
   has fallen behind. Reading four committed files is the verification, so no
   installation is involved and no range is kept by hand (``D-CAT-008``).
 * **A directory is not evidence that what it demonstrates is inside it.** Where

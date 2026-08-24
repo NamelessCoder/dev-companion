@@ -409,7 +409,7 @@ final class VersionsTest extends TestCase
     #[Test]
     public function aPinToOneMajorIsTellableFromAConstraintThatSpansTwo(): void
     {
-        // What `bin/cli catalog:check` asks of the Fluid constraint in each core
+        // What `bin/cli versions:check` asks of the Fluid constraint in each core
         // checkout, and the reason D-VER-003 needs no engine axis: the pin is what
         // makes the TYPO3 major carry the engine, so a constraint that stops
         // pinning has to be tellable from one that never did. Asked over engine

@@ -141,7 +141,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-24 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
@@ -205,6 +205,10 @@ Text:
     The reading that settles it: which declaration says who the question is about, what the changelog settles and where it stops, the invocations that read one symbol off the branch carrying the other major, and the path the installed copy spells differently. Beside them what a compatibility argument owes where nothing can be run. It reads no core source itself and states no signature: a bundled one is wrong at the next release, and a wrong one is believed as readily as a right one.
     Tools: typo3_rule_lookup, typo3_hint_lookup
     Source: typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed (extension)
+    ## What the backend styleguide states about a component, and what it leaves unstated
+    Where the styleguide lives on each major and how it is installed where the core does not ship it, what its listing settles — a component it lists is public and one it does not is not to be used — and the two ways a demo is misread: an example is complete, so nothing in it says which parts are required, and a demo renders through ViewHelpers and web components, so the classes in its template are neither all of what a component uses nor only that. It names what places a class instead.
+    Tools: typo3_rule_lookup, typo3_component_lookup
+    Source: typo3://guides/any/backend/using-the-styleguide (any)
     ## Running a package's own suite against a TYPO3 major it declares and the installation does not have
     The procedure, as it was carried out: what the repository's CI already covers and what pushing proves, the Composer root of its own the other major is resolved into and the manifest that root carries, what the working installation keeps, what the second root resolves differently from it, whether the database survives, which checks are worth re-running there, and what a resolved tree is not. It installs nothing itself, and it says what a claim about what renders on the other major would additionally cost.
     Tools: typo3_rule_lookup, typo3_hint_lookup
@@ -495,6 +499,16 @@ Data:
                 ],
                 "source": "typo3://guides/extension/compatibility/a-declared-major-that-is-not-installed",
                 "scope": "extension"
+            },
+            {
+                "topic": "What the backend styleguide states about a component, and what it leaves unstated",
+                "depth": "Where the styleguide lives on each major and how it is installed where the core does not ship it, what its listing settles — a component it lists is public and one it does not is not to be used — and the two ways a demo is misread: an example is complete, so nothing in it says which parts are required, and a demo renders through ViewHelpers and web components, so the classes in its template are neither all of what a component uses nor only that. It names what places a class instead.",
+                "tools": [
+                    "typo3_rule_lookup",
+                    "typo3_component_lookup"
+                ],
+                "source": "typo3://guides/any/backend/using-the-styleguide",
+                "scope": "any"
             },
             {
                 "topic": "Running a package's own suite against a TYPO3 major it declares and the installation does not have",

@@ -30,7 +30,7 @@ final class TranslationDomainLookup extends ReadOnlyTool
      * nothing, silently and at runtime, which is why this is the one version
      * fact the code carries rather than the knowledge base. Public because it is
      * one number in one place (`D-DIS-004`), held to what it claims by
-     * `VersionsTest` and by `bin/cli catalog:check`.
+     * `VersionsTest` and by `bin/cli versions:check`.
      */
     public const SINCE = 14;
 

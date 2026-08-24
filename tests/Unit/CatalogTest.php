@@ -22,7 +22,7 @@ use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tests\Support\TemporaryInstallation;
 use TYPO3\DevCompanion\Tool\Registry;
 use TYPO3\DevCompanion\Upkeep\Catalogs;
-use TYPO3\DevCompanion\Upkeep\Command\CatalogCheck;
+use TYPO3\DevCompanion\Upkeep\Command\VersionCheck;
 
 final class CatalogTest extends TestCase
 {
@@ -466,7 +466,7 @@ final class CatalogTest extends TestCase
     public function everyRecordedBindingNamesACoveredVersion(): void
     {
         // A binding outside the covered range withholds an entry from every
-        // caller or from none, and both are silent — bin/cli catalog:check is what
+        // caller or from none, and both are silent — bin/cli components:check is what
         // holds the numbers to the checkouts, this holds them to versions.json.
         $majors = Versions::majors();
         foreach (Components::load() as $component) {
@@ -592,7 +592,7 @@ final class CatalogTest extends TestCase
     public function everyEntryWithADemoRecordsWhatItRead(): void
     {
         // The binding is derived from names, so a demo rewritten around the same
-        // classes reads as unchanged — bin/cli catalog:check compares these
+        // classes reads as unchanged — bin/cli components:check compares these
         // digests against the checkouts, this holds them to versions.json and to
         // the entries that have a demo to digest at all.
         $majors = Versions::majors();
@@ -988,7 +988,7 @@ final class CatalogTest extends TestCase
             '        ;;',
         ]);
 
-        $offered = CatalogCheck::suitesIn($script);
+        $offered = VersionCheck::suitesIn($script);
 
         self::assertContains('e2e-prepare', $offered, 'a dispatched suite the usage text does not list is read as absent');
         self::assertContains('e2e', $offered);

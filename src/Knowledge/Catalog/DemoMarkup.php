@@ -10,7 +10,7 @@ namespace TYPO3\DevCompanion\Knowledge\Catalog;
  * The styleguide wraps each copyable example in `sg:example`, so what a demo
  * says about a component is those blocks rather than the page around them. Two
  * callers read it: the component answer, where an installed styleguide replaces
- * the snapshot markup, and `bin/cli catalog:check`, which digests what each
+ * the snapshot markup, and `bin/cli components:check`, which digests what each
  * checkout carries so a rewrite that leaves every class name in place is noticed
  * (D-CAT-001).
  */

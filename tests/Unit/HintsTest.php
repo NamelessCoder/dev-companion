@@ -5169,7 +5169,7 @@ final class HintsTest extends TestCase
      * aPathNamedInTheQueryNarrowsTheSuitesAsAnExplicitPathWould — and the
      * invocation itself by nothing: `targeted` could have been dropped from
      * every entry in knowledge/test-suite-hints.json and no test would have
-     * noticed, while `catalog:check` verifies the `-s <suite>` of a command and
+     * noticed, while `versions:check` verifies the `-s <suite>` of a command and
      * not its options.
      *
      * All three are read in `.checkouts/main/Build/Scripts/runTests.sh`: line 6

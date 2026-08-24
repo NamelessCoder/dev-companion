@@ -177,7 +177,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-21 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-24 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
@@ -205,23 +205,19 @@ Text:
     - breadcrumb — Breadcrumbs
     - button — Buttons
     - button-group — Button Groups
-    - callout — Callout
     - card — Cards
     - dropdown — Dropdown
-    - dropzone — Dropzone
+    - form — Form Layout
     - form-check — Checkboxes, Radios, Switches
-    - infobox — Infobox (ViewHelper)
+    - infobox — Infobox
     - input — Form Inputs
     - list-group — List Groups
     - modal — Modal
-    - module — Backend Module Chrome
     - nav — Navs / Tabs
-    - note — Notes
     - pagination — Pagination
     - panel — Panels
-    - popover — Popover
     - progress-bar — Progress Indicators
-    - recordsearchbox — Record Search Box
+    - select — Select
     - status-indicator — Status Indicator
     - table — Tables
     - tree — Trees
@@ -235,7 +231,7 @@ Data:
     {
         "query": null,
         "targetVersion": 14,
-        "matchCount": 26,
+        "matchCount": 22,
         "components": [
             {
                 "name": "alert",
@@ -462,44 +458,6 @@ Data:
                 "verifiedOn": "TYPO3 v14 and newer"
             },
             {
-                "name": "callout",
-                "title": "Callout",
-                "summary": "Inline contextual message block with a leading icon. Backing component for the be.infobox ViewHelper. Variants map to TYPO3 state tokens.",
-                "rootClass": "callout",
-                "sassPath": "Build/Sources/Sass/component/_callout.scss",
-                "sassPaths": [
-                    "Build/Sources/Sass/component/_callout.scss"
-                ],
-                "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
-                "classes": [
-                    "callout",
-                    "callout-body",
-                    "callout-content",
-                    "callout-danger",
-                    "callout-default",
-                    "callout-icon",
-                    "callout-info",
-                    "callout-notice",
-                    "callout-primary",
-                    "callout-secondary",
-                    "callout-sm",
-                    "callout-success",
-                    "callout-title",
-                    "callout-warning"
-                ],
-                "sourceFiles": [
-                    "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_callout.scss",
-                    "EXT:styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html"
-                ],
-                "markupSource": "installation",
-                "contractVersion": "14.3.7-dev",
-                "describesVersion": "14.3.7-dev",
-                "since": 13,
-                "until": null,
-                "verifiedOn": "TYPO3 v13 and newer"
-            },
-            {
                 "name": "card",
                 "title": "Cards",
                 "summary": "Flexible content container for grouping elements. Compose the container with optional header, body, and footer child elements.",
@@ -596,36 +554,124 @@ Data:
                 "verifiedOn": "TYPO3 v13 and newer"
             },
             {
-                "name": "dropzone",
-                "title": "Dropzone",
-                "summary": "Drop target for file uploads. The .dropzone box holds a .dropzone-hint with icon, title and message, a .dropzone-mask covering the drop area, and a .dropzone-close button. Upload state is switched by adding .drop-status-ok or .drop-in-progress.",
-                "rootClass": "dropzone",
-                "sassPath": "Build/Sources/Sass/component/_dropzone.scss",
+                "name": "form",
+                "title": "Form Layout",
+                "summary": "Layout around backend form controls: rows and groups, the label, the hint and description text, sections, and the validation state classes. The controls themselves are their own components.",
+                "rootClass": "form",
+                "sassPath": "Build/Sources/Sass/component/_form.scss",
                 "sassPaths": [
-                    "Build/Sources/Sass/component/_dropzone.scss"
+                    "Build/Sources/Sass/component/_form.scss",
+                    "Build/Sources/Sass/component/forms/_form-group.scss",
+                    "Build/Sources/Sass/component/forms/_form-label.scss",
+                    "Build/Sources/Sass/component/forms/_form-row.scss",
+                    "Build/Sources/Sass/component/forms/_form-grid.scss",
+                    "Build/Sources/Sass/component/forms/_form-hint.scss",
+                    "Build/Sources/Sass/component/forms/_form-text.scss",
+                    "Build/Sources/Sass/component/forms/_form-section.scss",
+                    "Build/Sources/Sass/component/forms/_form-validation.scss"
                 ],
-                "demoPath": null,
+                "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Form.fluid.html",
                 "classes": [
-                    "drop-in-progress",
-                    "drop-status-ok",
-                    "dropzone",
-                    "dropzone-close",
-                    "dropzone-hint",
-                    "dropzone-hint-body",
-                    "dropzone-hint-icon",
-                    "dropzone-hint-title",
-                    "dropzone-mask"
+                    "form",
+                    "form-check",
+                    "form-check-card-container",
+                    "form-check-card-container-headline",
+                    "form-check-card-container-small",
+                    "form-check-inline",
+                    "form-check-input",
+                    "form-check-label",
+                    "form-check-label-body",
+                    "form-check-label-header",
+                    "form-check-label-header-inherit",
+                    "form-check-label-icon",
+                    "form-check-label-icon-checked",
+                    "form-check-label-icon-indeterminate",
+                    "form-check-label-icon-unchecked",
+                    "form-check-label-label-body",
+                    "form-check-size-input",
+                    "form-check-type-card",
+                    "form-check-type-icon-toggle",
+                    "form-check-type-labeled-toggle",
+                    "form-check-type-toggle",
+                    "form-control",
+                    "form-control-adapt",
+                    "form-control-clearable",
+                    "form-control-clearable-wrapper",
+                    "form-control-explanation",
+                    "form-control-holder",
+                    "form-control-sm",
+                    "form-control-wrap",
+                    "form-description",
+                    "form-grid",
+                    "form-group",
+                    "form-group-dashed",
+                    "form-group-search-result",
+                    "form-hint",
+                    "form-hint--danger",
+                    "form-hint--default",
+                    "form-hint--info",
+                    "form-hint--notice",
+                    "form-hint--primary",
+                    "form-hint--secondary",
+                    "form-hint--success",
+                    "form-hint--warning",
+                    "form-inline",
+                    "form-irre-object",
+                    "form-irre-object--deleted",
+                    "form-label",
+                    "form-labellabel",
+                    "form-multigroup-wrap",
+                    "form-range",
+                    "form-range-input",
+                    "form-range-sm",
+                    "form-row",
+                    "form-row-lg",
+                    "form-row-md",
+                    "form-row-sm",
+                    "form-row-xl",
+                    "form-row-xxl",
+                    "form-section",
+                    "form-section-description",
+                    "form-section-headline",
+                    "form-select",
+                    "form-select-sm",
+                    "form-slim",
+                    "form-switch",
+                    "form-text",
+                    "form-wizard-icon-list",
+                    "form-wizard-icon-list-item",
+                    "form-wizards-item-aside",
+                    "form-wizards-item-bottom",
+                    "form-wizards-item-element",
+                    "form-wizards-items-aside",
+                    "form-wizards-items-top",
+                    "form-wizards-wrap",
+                    "has-change",
+                    "has-error",
+                    "has-success",
+                    "has-warning",
+                    "is-invalid",
+                    "is-valid"
                 ],
                 "sourceFiles": [
                     "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_dropzone.scss"
+                    "Build/Sources/Sass/component/_form.scss",
+                    "Build/Sources/Sass/component/forms/_form-group.scss",
+                    "Build/Sources/Sass/component/forms/_form-label.scss",
+                    "Build/Sources/Sass/component/forms/_form-row.scss",
+                    "Build/Sources/Sass/component/forms/_form-grid.scss",
+                    "Build/Sources/Sass/component/forms/_form-hint.scss",
+                    "Build/Sources/Sass/component/forms/_form-text.scss",
+                    "Build/Sources/Sass/component/forms/_form-section.scss",
+                    "Build/Sources/Sass/component/forms/_form-validation.scss",
+                    "EXT:styleguide/Resources/Private/Templates/Backend/Components/Form.fluid.html"
                 ],
-                "markupSource": "catalog",
+                "markupSource": "installation",
                 "contractVersion": "14.3.7-dev",
-                "describesVersion": "15.0",
-                "since": 13,
+                "describesVersion": "14.3.7-dev",
+                "since": 14,
                 "until": null,
-                "verifiedOn": "TYPO3 v13 and newer"
+                "verifiedOn": "TYPO3 v14 and newer"
             },
             {
                 "name": "form-check",
@@ -674,8 +720,8 @@ Data:
             },
             {
                 "name": "infobox",
-                "title": "Infobox (ViewHelper)",
-                "summary": "Fluid ViewHelper that renders a callout. Use the state argument with a ContextualFeedbackSeverity enum (NOTICE->notice, INFO->info, OK->success, WARNING->warning, ERROR->danger).",
+                "title": "Infobox",
+                "summary": "Inline contextual message block with a leading icon, rendered by the be.infobox ViewHelper. Variants map to TYPO3 state tokens, and the state argument takes a ContextualFeedbackSeverity enum (NOTICE->notice, INFO->info, OK->success, WARNING->warning, ERROR->danger).",
                 "rootClass": "callout",
                 "sassPath": "Build/Sources/Sass/component/_callout.scss",
                 "sassPaths": [
@@ -706,9 +752,9 @@ Data:
                 "markupSource": "installation",
                 "contractVersion": "14.3.7-dev",
                 "describesVersion": "14.3.7-dev",
-                "since": null,
+                "since": 13,
                 "until": null,
-                "verifiedOn": ""
+                "verifiedOn": "TYPO3 v13 and newer"
             },
             {
                 "name": "input",
@@ -732,8 +778,6 @@ Data:
                     "form-control-holder",
                     "form-control-sm",
                     "form-control-wrap",
-                    "form-label",
-                    "form-text",
                     "input-group",
                     "input-group-icon",
                     "input-group-sm",
@@ -854,48 +898,6 @@ Data:
                 "verifiedOn": "TYPO3 v14 and newer"
             },
             {
-                "name": "module",
-                "title": "Backend Module Chrome",
-                "summary": "The chrome ModuleTemplate renders around every backend module: a docheader navigation bar, a docheader button bar, and the module body. A module does not author it — it renders into the Module layout's Content section and fills the docheader through getDocHeaderComponent(). These classes and custom properties are what a restyling of that chrome, or a module layout of an extension's own as EXT:install and EXT:info ship, is written against. module-layout-wide is the default; the narrow one is set by ModuleTemplate::setLayout(), which is @internal.",
-                "rootClass": "module",
-                "sassPath": "Build/Sources/Sass/component/_module.scss",
-                "sassPaths": [
-                    "Build/Sources/Sass/component/_module.scss"
-                ],
-                "demoPath": null,
-                "classes": [
-                    "module",
-                    "module-action-item",
-                    "module-action-item-body",
-                    "module-action-item-title",
-                    "module-action-list",
-                    "module-body",
-                    "module-body-container",
-                    "module-docheader",
-                    "module-docheader-buttons",
-                    "module-docheader-column",
-                    "module-docheader-column-breadcrumb",
-                    "module-docheader-column-grow",
-                    "module-docheader-container",
-                    "module-docheader-navigation",
-                    "module-docheader-wrapper",
-                    "module-layout-normal",
-                    "module-layout-wide",
-                    "module-loading-indicator",
-                    "module-styleguide"
-                ],
-                "sourceFiles": [
-                    "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_module.scss"
-                ],
-                "markupSource": "catalog",
-                "contractVersion": "14.3.7-dev",
-                "describesVersion": "15.0",
-                "since": 14,
-                "until": null,
-                "verifiedOn": "TYPO3 v14 and newer"
-            },
-            {
                 "name": "nav",
                 "title": "Navs / Tabs",
                 "summary": "Navigation list, with .nav-tabs and .nav-pills variants. The tab pattern adds role=\"tablist\"/role=\"tab\", aria-selected, and data-typo3-tab wiring.",
@@ -927,48 +929,6 @@ Data:
                 "since": 14,
                 "until": null,
                 "verifiedOn": "TYPO3 v14 and newer"
-            },
-            {
-                "name": "note",
-                "title": "Notes",
-                "summary": "Editor-facing note box with a header bar and a body. Variants follow the TYPO3 state tokens; the note-category-<n> classes map the sys_note record categories onto them.",
-                "rootClass": "note",
-                "sassPath": "Build/Sources/Sass/component/_note.scss",
-                "sassPaths": [
-                    "Build/Sources/Sass/component/_note.scss"
-                ],
-                "demoPath": null,
-                "classes": [
-                    "note",
-                    "note-actions",
-                    "note-body",
-                    "note-category-0",
-                    "note-category-1",
-                    "note-category-2",
-                    "note-category-3",
-                    "note-category-4",
-                    "note-danger",
-                    "note-default",
-                    "note-header",
-                    "note-header-bar",
-                    "note-info",
-                    "note-list",
-                    "note-notice",
-                    "note-primary",
-                    "note-secondary",
-                    "note-success",
-                    "note-warning"
-                ],
-                "sourceFiles": [
-                    "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_note.scss"
-                ],
-                "markupSource": "catalog",
-                "contractVersion": "14.3.7-dev",
-                "describesVersion": "15.0",
-                "since": 13,
-                "until": null,
-                "verifiedOn": "TYPO3 v13 and newer"
             },
             {
                 "name": "pagination",
@@ -1063,33 +1023,6 @@ Data:
                 "verifiedOn": "TYPO3 v14 and newer"
             },
             {
-                "name": "popover",
-                "title": "Popover",
-                "summary": "Small overlay attached to a trigger element, used for contextual help. Elevated with the flyout shadow token.",
-                "rootClass": "popover",
-                "sassPath": "Build/Sources/Sass/component/_popover.scss",
-                "sassPaths": [
-                    "Build/Sources/Sass/component/_popover.scss"
-                ],
-                "demoPath": null,
-                "classes": [
-                    "popover",
-                    "popover-arrow",
-                    "popover-body",
-                    "popover-header"
-                ],
-                "sourceFiles": [
-                    "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_popover.scss"
-                ],
-                "markupSource": "catalog",
-                "contractVersion": "14.3.7-dev",
-                "describesVersion": "15.0",
-                "since": 13,
-                "until": null,
-                "verifiedOn": "TYPO3 v13 and newer"
-            },
-            {
                 "name": "progress-bar",
                 "title": "Progress Indicators",
                 "summary": "Backend progress bar web component. Set value/max and an accessible label; severity (-1 info, 0 ok, 1 warning, 2 error) colors the bar.",
@@ -1111,31 +1044,30 @@ Data:
                 "verifiedOn": "TYPO3 v13 and newer"
             },
             {
-                "name": "recordsearchbox",
-                "title": "Record Search Box",
-                "summary": "Backend search input with an optional levels selector, built on the Bootstrap input-group. Used to filter record listings; not a styleguide component.",
-                "rootClass": "recordsearchbox-container",
-                "sassPath": "Build/Sources/Sass/component/_recordsearchbox.scss",
+                "name": "select",
+                "title": "Select",
+                "summary": "Styled select control for a backend form. One size modifier; the states and the label around it come from the form layout.",
+                "rootClass": "form-select",
+                "sassPath": "Build/Sources/Sass/component/forms/_form-select.scss",
                 "sassPaths": [
-                    "Build/Sources/Sass/component/_recordsearchbox.scss"
+                    "Build/Sources/Sass/component/forms/_form-select.scss"
                 ],
-                "demoPath": "typo3/sysext/backend/Resources/Private/Templates/RecordSearchBox.fluid.html",
+                "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Select.fluid.html",
                 "classes": [
-                    "form-control",
-                    "input-group",
-                    "recordsearchbox-container"
+                    "form-select",
+                    "form-select-sm"
                 ],
                 "sourceFiles": [
                     "EXT:backend/Resources/Public/Css/backend.css",
-                    "Build/Sources/Sass/component/_recordsearchbox.scss",
-                    "EXT:backend/Resources/Private/Templates/RecordSearchBox.fluid.html"
+                    "Build/Sources/Sass/component/forms/_form-select.scss",
+                    "EXT:styleguide/Resources/Private/Templates/Backend/Components/Select.fluid.html"
                 ],
-                "markupSource": "catalog",
+                "markupSource": "installation",
                 "contractVersion": "14.3.7-dev",
-                "describesVersion": "15.0",
-                "since": null,
+                "describesVersion": "14.3.7-dev",
+                "since": 13,
                 "until": null,
-                "verifiedOn": ""
+                "verifiedOn": "TYPO3 v13 and newer"
             },
             {
                 "name": "status-indicator",
@@ -1406,6 +1338,7 @@ Data:
                 "title": "Badges",
                 "summary": "Small inline status, label, or count indicator. Variants map to TYPO3 state tokens.",
                 "rootClass": "badge",
+                "wrapping": [],
                 "variants": [
                     "badge-primary",
                     "badge-secondary",

@@ -9,7 +9,7 @@ use TYPO3\DevCompanion\Knowledge\Versions;
 /**
  * What `components:derive` writes, built from a set of core checkouts.
  *
- * Apart from the command so that `catalog:check` can build the same thing and
+ * Apart from the command so that `components:check` can build the same thing and
  * compare it against what is committed: derived data nothing re-reads is
  * curated data with a longer path to going stale — `D-CAT-008`.
  */

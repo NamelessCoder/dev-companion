@@ -15,6 +15,12 @@ coveredBy:
   - BackendCssTest::selectorsInsideAMediaQueryAreRead
   - BackendCssTest::whatIsStyledWithinHoldsOnlyNamesTheCallerNamed
   - BackendCssTest::whatIsStyledWithinIsSeparateFromWhereTheClassSits
+  - StyleguideListingTest::aCheckoutShippingNoStyleguideAnswersNothing
+  - StyleguideListingTest::aComponentTheStyleguideDoesNotListIsNotListed
+  - StyleguideListingTest::aControllerWithoutTheListAnswersNothing
+  - StyleguideListingTest::anAssignedVariantIsNotAComponent
+  - StyleguideListingTest::theListedComponentsAreWhatTheControllerOffers
+  - StyleguideListingTest::theOverviewIsNotAComponent
 ---
 
 # D-CAT-008 — A component entry's classes carry a derived position and range

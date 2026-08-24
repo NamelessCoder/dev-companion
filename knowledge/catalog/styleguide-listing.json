@@ -1,0 +1,126 @@
+[
+  {
+    "component": "avatar",
+    "since": 13
+  },
+  {
+    "component": "badges",
+    "since": 13
+  },
+  {
+    "component": "breadcrumbs",
+    "since": 14
+  },
+  {
+    "component": "buttons",
+    "since": 13
+  },
+  {
+    "component": "cards",
+    "since": 13
+  },
+  {
+    "component": "checkboxes",
+    "since": 13
+  },
+  {
+    "component": "comboboxes",
+    "since": 14
+  },
+  {
+    "component": "contentNavigation",
+    "since": 14
+  },
+  {
+    "component": "datetime",
+    "since": 14
+  },
+  {
+    "component": "developerTools",
+    "since": 13
+  },
+  {
+    "component": "dropdown",
+    "since": 13
+  },
+  {
+    "component": "exception",
+    "since": 14
+  },
+  {
+    "component": "flashMessages",
+    "since": 13
+  },
+  {
+    "component": "form",
+    "since": 13
+  },
+  {
+    "component": "infobox",
+    "since": 13
+  },
+  {
+    "component": "input",
+    "since": 13
+  },
+  {
+    "component": "listGroups",
+    "since": 14
+  },
+  {
+    "component": "modal",
+    "since": 13
+  },
+  {
+    "component": "navs",
+    "since": 13
+  },
+  {
+    "component": "notifications",
+    "since": 13
+  },
+  {
+    "component": "pagination",
+    "since": 13
+  },
+  {
+    "component": "panels",
+    "since": 13
+  },
+  {
+    "component": "progressIndicators",
+    "since": 13
+  },
+  {
+    "component": "progressTrackers",
+    "since": 13
+  },
+  {
+    "component": "radio",
+    "since": 14
+  },
+  {
+    "component": "select",
+    "since": 13
+  },
+  {
+    "component": "statusIndicators",
+    "since": 14
+  },
+  {
+    "component": "tab",
+    "since": 13
+  },
+  {
+    "component": "tables",
+    "since": 13
+  },
+  {
+    "component": "textarea",
+    "since": 13
+  },
+  {
+    "component": "trees",
+    "since": 13
+  }
+]

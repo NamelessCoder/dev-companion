@@ -14,6 +14,7 @@ use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\CustomElements;
 use TYPO3\DevCompanion\Upkeep\Json;
+use TYPO3\DevCompanion\Upkeep\StyleguideListing;
 
 /**
  * Where each of a component's classes sits, and which majors it holds on.
@@ -34,11 +35,14 @@ final class ComponentDerive
 
     private const ELEMENTS = '/knowledge/catalog/custom-elements.json';
 
+    private const LISTING = '/knowledge/catalog/styleguide-listing.json';
+
     public function __invoke(OutputInterface $output): int
     {
         $checkouts = Checkouts::directory();
         $styles = [];
         $elements = [];
+        $listings = [];
         $missing = [];
         foreach (Versions::covered() as $version) {
             $checkout = $checkouts . '/' . $version['branch'];
@@ -49,6 +53,10 @@ final class ComponentDerive
             }
             $styles[$version['major']] = $css;
             $elements[$version['major']] = CustomElements::of($checkout);
+            $listing = StyleguideListing::of($checkout);
+            if ($listing !== null) {
+                $listings[$version['major']] = $listing;
+            }
         }
         if ($missing !== []) {
             Cli::errors($output)->writeln(sprintf(
@@ -75,6 +83,7 @@ final class ComponentDerive
 
         self::write(self::CLASSES, $classes);
         self::write(self::ELEMENTS, self::derivedElements($elements));
+        self::write(self::LISTING, self::derivedListing($listings));
 
         $placed = count(array_filter($classes, static fn(array $c): bool => $c['positions'] !== []));
         $output->writeln(sprintf(
@@ -83,6 +92,11 @@ final class ComponentDerive
             $placed,
             count(self::derivedElements($elements)),
             implode(', ', array_column(Versions::covered(), 'branch')),
+        ));
+        $output->writeln(sprintf(
+            '%d components listed by the styleguide, which %s ships',
+            count(self::derivedListing($listings)),
+            $listings === [] ? 'no covered major' : 'major ' . implode(', ', array_keys($listings)),
         ));
 
         return 0;
@@ -205,6 +219,40 @@ final class ComponentDerive
         }
 
         return max($majors) < max($covered) ? max($majors) : null;
+    }
+
+    /**
+     * What the styleguide of each major lists, which is the public API
+     * boundary: a component it lists may be used and one it does not list may
+     * not. Only the listing is written — whether a single class is
+     * demonstrated cannot be read out of the templates, because a demo renders
+     * its markup through a ViewHelper or a web component as often as it writes
+     * it, and what is written is as often the styleguide's own page furniture.
+     *
+     * @param array<int, StyleguideListing> $listings
+     * @return list<array<string, mixed>>
+     */
+    private static function derivedListing(array $listings): array
+    {
+        $seen = [];
+        foreach ($listings as $major => $listing) {
+            foreach ($listing->components() as $component) {
+                $seen[$component][] = $major;
+            }
+        }
+        ksort($seen);
+
+        $out = [];
+        foreach ($seen as $component => $majors) {
+            $entry = ['component' => $component, 'since' => min($majors)];
+            $until = self::until($majors);
+            if ($until !== null) {
+                $entry['until'] = $until;
+            }
+            $out[] = $entry;
+        }
+
+        return $out;
     }
 
     /**

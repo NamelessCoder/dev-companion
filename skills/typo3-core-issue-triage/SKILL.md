@@ -253,6 +253,12 @@ what does not survive being moved. Write it to a file only where the caller asks
 for one, at a path outside the checkout the reproduction ran in, whose tree this
 workflow leaves as it found it.
 
+**A verdict that ends the issue carries the comment it is closed with.** Three
+of them do, and the checklist says which, what that comment holds and which
+markup the tracker renders — Forge is not markdown. The comment stands in the
+answer beside the verdict it rests on. Filing it is the maintainer's act: this
+workflow holds no credential and comments on nothing.
+
 ## What a previous attempt cost
 
 Where the issue was fixed once and the fix taken back out, the verdict is not
@@ -320,6 +326,7 @@ all of it was reconstructed.
 This skill owns saying what is still true about an issue: choosing it out of the
 backlog, reading the report against the branch, reproducing it or failing to,
 and the verdict that comes out. It stops at the tracker — nothing here comments,
-assigns, closes or reopens anything, and the verdict is written for the person
-who will. Judging a patch somebody pushed is `typo3-core-patch-review`, which
-reads the diff rather than the report.
+assigns, closes or reopens anything, and the verdict, with the comment that
+closes the issue, is written for the person who will. Judging a patch somebody
+pushed is `typo3-core-patch-review`, which reads the diff rather than the
+report.

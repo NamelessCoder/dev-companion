@@ -1599,6 +1599,82 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * A triage that ends an issue hands over the comment it is closed with.
+     *
+     * What the wording states was read off the tracker and the core's own
+     * contribution guide on 2026-08-24, not recalled. Forge's status list
+     * carries no resolution field and three statuses that close — Resolved,
+     * Closed and Rejected — the guide ties Resolved to a patch merged under the
+     * issue's own number and Closed to a report that no longer reproduces, and
+     * `Resolves:` closes on merge for a feature and a task alone, which is why a
+     * fixed bug is still open and needs the comment at all. The maintainer's own
+     * closings that day name the change, the commit and the change number per
+     * branch, and the first release each is in. `body[data-text-formatting]` on
+     * forge.typo3.org says `textile`, so the block that is pasted there is not
+     * the markdown the report around it is.
+     */
+    #[Decision('D-SKL-073')]
+    #[Test]
+    public function aVerdictThatEndsTheIssueCarriesTheCommentThatClosesIt(): void
+    {
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**A verdict that ends the issue carries the comment it is closed with.**',
+            $skill,
+        );
+        // The markup, because the answer's own form is markdown and the block
+        // that leaves it is read by something else.
+        self::assertStringContainsString('Forge is not markdown', $skill);
+        // The boundary the deliverable does not move: the text is the triage's
+        // and the act is not.
+        self::assertStringContainsString('Filing it is the maintainer\'s act', $skill);
+
+        $checklist = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/references/checklist.md',
+        ));
+
+        self::assertStringContainsString('# The comment that closes it', $checklist);
+        // The three that owe it, and the three that do not — a closing written
+        // for a verdict that should have asked the reporter a question is the
+        // trap this deliverable brings with it.
+        self::assertStringContainsString(
+            '**Gone**, **Superseded** and **Not a defect** end the issue',
+            $checklist,
+        );
+        self::assertStringContainsString('The other three hand over nothing', $checklist);
+        self::assertStringContainsString(
+            '**A security defect** owes the tracker nothing',
+            $checklist,
+            'the verdict that withholds the answer is offered a closing comment',
+        );
+
+        // What the comment carries that the status cannot, and where the release
+        // it names comes from.
+        self::assertStringContainsString('Forge carries no resolution field', $checklist);
+        self::assertStringContainsString('`git tag --contains <commit>`', $checklist);
+        self::assertStringContainsString(
+            'The `Releases:` trailer names the branches the change was written for',
+            $checklist,
+        );
+        self::assertStringContainsString('**Resolved** where the merged patch was filed under this issue', $checklist);
+        self::assertStringContainsString('**Rejected** where the branch behaves as the project intends', $checklist);
+        // Why an issue whose fix is merged and named is still sitting there.
+        self::assertStringContainsString(
+            'A merged patch closes its own issue for a feature and a task, and not for a bugfix',
+            $checklist,
+        );
+        self::assertStringContainsString('renders Textile rather than Markdown', $checklist);
+
+        // The sentence that was read as a stop before the text as well as
+        // before the act, gone rather than softened.
+        self::assertStringNotContainsString('the triage supplies what it rests on and stops', $checklist);
+        self::assertStringContainsString('Whether the verdict ends the issue', $checklist);
+    }
+
+    /**
      * `R-SKL-020`. Both core workflows end in public and neither carried a branch
      * for the case where the finding is a security defect: the failure is not
      * that the session judges wrong, it is that nothing asks the question, so

@@ -3,6 +3,8 @@ id: D-SKL-073
 title: A verdict that ends an issue carries the comment that closes it
 date: 2026-08-24
 status: open
+coveredBy:
+  - SkillTest::aVerdictThatEndsTheIssueCarriesTheCommentThatClosesIt
 ---
 
 # D-SKL-073 — A verdict that ends an issue carries the comment that closes it
@@ -92,3 +94,35 @@ the text as well as before the act.
   question. Writing "not reproducible as written" up as "gone" is the trap the
   checklist already names, and a deliverable that only exists on the closing
   side is a reason to reach for it.
+
+## Since then
+
+The step 1a this entry queued was read on 2026-08-24, from the tracker and from
+the core's own contribution guide rather than from recall, and the wording it
+settled is in `skills/typo3-core-issue-triage`.
+
+`forge.typo3.org/issue_statuses.json` carries ten statuses and no resolution
+field: the status is the whole of it, and three of them close — Resolved, Closed
+and Rejected. The guide's `HandlingIssues/TicketWorkflow` ties Resolved to a
+patch merged under the issue's own number and Closed to a report that no longer
+reproduces, is outdated or rests on an abandoned patch. Rejected it does not
+describe at all, and #110297, the most recent rejected core bug, was closed with
+"we don't see that as a bug".
+
+`Appendix/CommitMessage` says `Resolves: #<issue>` closes the issue on merge for
+a feature and a task commit, which is why a fixed **bug** is still open and owes
+this comment at all. `Releases:` names the branches a change was written for and
+not the release that carries it, which `git tag --contains` answers.
+
+Three core issues closed on 2026-08-24 are what the shape was read off — #93375,
+#88263 and #82784, each set to Closed rather than Resolved because the change
+that ended it was filed under another issue. Each names that issue, the commit
+and its change number per branch, the first release each commit is in, and the
+branch a fix never reached. #82784 names no commit and states what did not
+reproduce instead, which is the shape a **Gone** verdict with no named change
+hands over.
+
+The markup was read off the tracker rather than off the guide:
+`body[data-text-formatting]` on an issue page says `textile`. So the report
+stays markdown and the block that is pasted into Forge is not, which settles the
+form half of the first assumption above.

@@ -13,6 +13,10 @@ directory: /home/benji/projects/typo3-cms
 
 Task: review Gerrit change 95179 and work off its review comments; that ended in running the frontend functional suite against a data provider I had edited.
 
+Trimmed on 2026-08-24. The question this opens with is answered: typo3_test_run_guide does cover argument order, and re-run with this session's own suite and path it returns `-s functional -d sqlite -- <path/to/Test.php>` as the targeted form and `-s unit -- --filter fixPermissionsSetsGroup <path>` as a worked example. The description line the suggestion asks for is refused in D-KNW-112, because this session had the tool as a bare name and never fetched the schema the line would sit in — D-AUD-003. That the review skill names this tool at the verification step and did not open is feedback/2026-08-24-122413's card. What is left is what no source here states:
+
+- Where runTests.sh stops reading its own options. `getopts` stops at the first non-option word on all four covered branches, so a path before `--` reaches phpunit along with everything after it and phpunit reads `--filter` as a test file. The corpus says what happens after the separator and nothing about a word before it, while the sibling failure in the same block is named by the line it prints.
+
 I wanted to run one data-provider test in one file. I wrote:
 
   CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php -- --filter stdWrap_override

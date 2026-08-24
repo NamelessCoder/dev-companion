@@ -107,3 +107,13 @@ suggestion asked for is `knowledge/server-scope.json`, which routes a session
 taking an issue on to both lookups in that order. What is left of `145217` is
 the word search, carried by `todo/progress/2026-08-03-125637` — the same card
 that carries `144511` — and that commit archives both.
+
+The third **Wrong if** named `typo3_gerrit_lookup` as where the split would show
+first, and on 2026-08-24 it is where the same shape was asked for.
+`feedback/2026-08-24-110833` reports a triage that could ask the review server
+neither which changes are open on a file nor whether anybody ever tried a fix,
+and answered both with `curl`. `D-ANS-100` takes it on under the rule this entry
+set: a further way into one tool, answering the question it already answers, in
+the shape it already answers in. So the **Wrong if** is engaged rather than
+fired, and what would fire it is that search growing filters and an answer of
+its own.

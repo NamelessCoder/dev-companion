@@ -726,6 +726,80 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-114`. Setting the analysis up and satisfying it are two questions,
+     * and only the first had an answer: a core patch that PHPStan rejected
+     * reached a hint about `tmpDir` and `bootstrapFiles`.
+     *
+     * The narrowing is read off `.checkouts/main` at `3cbdea24dd` and holds on
+     * every covered major: `TypoScriptStringFactory`, `Bootstrap` and
+     * `RedirectServiceTest` narrow `CacheManager::getCache()` with an inline
+     * `@var`, the annotation is written throughout `Classes/` and `Tests/`, and
+     * `assert($value instanceof …)` is written nowhere — so the idiom is the
+     * codebase's rather than those files'.
+     */
+    #[Decision('D-KNW-114')]
+    #[Test]
+    public function aPhpstanFindingOnACorePatchReachesTheNarrowingItAsksFor(): void
+    {
+        // The words the reporting session had: the rejected call, the two types
+        // the message named, and the fix it did not know was the fix.
+        $ids = array_column(Hints::find(
+            [],
+            'phpstan argument.type CacheManager getCache returns FrontendInterface expects PhpFrontend',
+            6,
+        )['matchedHints'], 'id');
+
+        self::assertSame('core-static-analysis', $ids[0] ?? null);
+
+        $text = self::statementsOf('core-static-analysis');
+
+        // What the fix is, and the site the session found by hand.
+        self::assertStringContainsString('/** @var Type $variable */', $text);
+        self::assertStringContainsString('TypoScriptStringFactory', $text);
+        // And what it is not, which is the half a finding never states.
+        self::assertStringContainsString('not with a cast and not with an `instanceof` check', $text);
+
+        // The four rules the core writes itself, each named where a caller
+        // would read its identifier off the failure.
+        foreach ([
+            'instanceof.unneededNotNullSubstitute',
+            'unserialize.',
+            'custom.namedArguments',
+            'attribute.forbidden.classScope',
+        ] as $identifier) {
+            self::assertStringContainsString($identifier, $text);
+        }
+
+        // The baseline, which is where the session's second grep went.
+        self::assertStringContainsString('phpstanGenerateBaseline', $text);
+    }
+
+    /**
+     * The two rules the core had not written yet, and the file that carries the
+     * baseline rule at all — `12.4` has no `AGENTS.md`, and its configuration
+     * registers `UnneededInstanceOfRule` alone.
+     */
+    #[Decision('D-KNW-114')]
+    #[Test]
+    public function aRuleTheBranchDoesNotRegisterIsWithheldFromIt(): void
+    {
+        $on = static fn(int $major): string => implode("\n", array_column(
+            (array) Hints::byId('core-static-analysis', $major)['hints'],
+            'text',
+        ));
+
+        self::assertStringNotContainsString('unserialize.', $on(12));
+        self::assertStringNotContainsString('phpstanGenerateBaseline', $on(12));
+        self::assertStringContainsString('unserialize.', $on(13));
+        self::assertStringNotContainsString('custom.namedArguments', $on(13));
+        self::assertStringContainsString('custom.namedArguments', $on(14));
+
+        // The narrowing is not one of them: it is what every covered major
+        // writes, so a caller on the oldest one still gets the fix.
+        self::assertStringContainsString('/** @var Type $variable */', $on(12));
+    }
+
+    /**
      * `D-KNW-055`, the half of the static-quality layer the corpus had.
      *
      * Read back out of an installed `typo3/coding-standards` v0.9.0, because the

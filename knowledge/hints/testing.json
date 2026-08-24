@@ -350,6 +350,60 @@
     ]
   },
   {
+    "id": "core-static-analysis",
+    "title": "Satisfying PHPStan in a Core Patch",
+    "domains": [
+      "php"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "Build/phpstan/",
+      "phpstan",
+      "phpstan.neon",
+      "phpstan-baseline.neon",
+      "static analysis",
+      "phpstan finding",
+      "argument.type",
+      "narrow a type",
+      "@var annotation",
+      "instanceof",
+      "named arguments",
+      "unserialize",
+      "level 5",
+      "custom rules",
+      "baseline entry",
+      "treatPhpDocTypesAsCertain",
+      "getCache",
+      "FrontendInterface",
+      "PhpFrontend"
+    ],
+    "hints": [
+      "Where a signature is wider than what the code actually has, the core narrows with a `/** @var Type $variable */` line directly above the assignment, not with a cast and not with an `instanceof` check. `CacheManager::getCache()` is declared to return `FrontendInterface`, so handing its result to a parameter typed `PhpFrontend` is an `argument.type` finding; `TYPO3\\CMS\\Core\\TypoScript\\TypoScriptStringFactory` and `TYPO3\\CMS\\Core\\Core\\Bootstrap` narrow it that way in production code and `RedirectServiceTest` does the same in a functional test. The inline `@var` is written throughout `Classes/` and `Tests/` while `assert($value instanceof …)` is written nowhere, so it is the codebase's idiom rather than the habit of those files.",
+      "An `instanceof` check belongs where the value arrives from outside and the code cannot know which it is: `ContainerBuilder::createDependencyInjectionContainer()` takes a `FrontendInterface` parameter and throws where it is not a `PhpFrontend`. Where the call itself decides what comes back, the same check guards a case that cannot happen.",
+      "A `@var` narrows within the declared type and may not contradict it — `PHPDoc tag @var with type X is not subtype of native type Y` is `varTag.nativeType`. The analysis runs at level 5 with `treatPhpDocTypesAsCertain: false`, so the annotation is taken for the argument check without a later condition on the same value being reported as always true.",
+      "A service taken from the container is typed already: `bnf/phpstan-psr-container` reads a `ContainerInterface::get()` call by the class name handed in, and a functional test case is itself a `ContainerInterface`, so `$this->get(CacheManager::class)` is a `CacheManager`. A cache taken by a string identifier is typed by nothing, which is why the container call in front of `getCache('typoscript')` needs no annotation and the assignment behind it does.",
+      "`instanceof` against a variable already typed `X|null` is rejected by the core's own `UnneededInstanceOfRule` with `Unneeded instanceof on X|null. Use a null check instead.`, under the identifier `instanceof.unneededNotNullSubstitute`. What it asks for is `!== null`.",
+      {
+        "text": "`unserialize()` is called with its `$options` argument and `allowed_classes` set to `false` or to a list of class names. `UnserializeRule` rejects the call that omits the argument, the one passing `true`, a `max_depth` that is not an integer, and any other key; its identifiers all begin `unserialize.`.",
+        "since": 13
+      },
+      {
+        "text": "A named argument in a method or static call is rejected by `NamedArgumentUsageRule` under `custom.namedArguments`, and the message names every optional parameter the call skipped. `TYPO3\\CMS\\Core\\Tests`, `TYPO3\\CMS\\Extbase\\Tests` and `TYPO3\\CMS\\Frontend\\Tests` are exempt, and a constructor call is neither a method nor a static call, so `new Foo(bar: 1)` passes anywhere.",
+        "since": 14
+      },
+      {
+        "text": "`#[WithoutErrorHandler]` is forbidden on a class and on a method by `ForbidAttributeRule`, under `attribute.forbidden.classScope` and `attributes.forbidden.methodScope`.",
+        "since": 14
+      },
+      "Only `typo3/sysext/` is analysed, from `Build/phpstan/phpstan.neon`, so no finding comes out of `Build/` or the repository root. Three things inside it are excluded and stay excluded: the install tool's ExtensionScanner matcher fixtures, every `ext_emconf.php`, and the Extbase reflection fixture whose syntax is broken on purpose.",
+      "The configuration includes `phpstan-baseline.neon` before everything else, so a finding recorded there is one that already existed. Whether a file carries an entry is read from the `path:` keys, which are written relative to `Build/phpstan/` as `../../typo3/sysext/…`; finding none is the ordinary answer and means the run reported the patch's own finding rather than an inherited one.",
+      {
+        "text": "The core's own `AGENTS.md` forbids silencing a new static-analysis finding in `Build/phpstan/phpstan-baseline.neon`, because the baseline is meant to shrink, and allows regenerating it with `-s phpstanGenerateBaseline` only after a PHPStan update.",
+        "since": 13
+      }
+    ]
+  },
+  {
     "id": "extension-coding-standards",
     "title": "Setting Up the Coding Standards Fixer for an Extension",
     "domains": [

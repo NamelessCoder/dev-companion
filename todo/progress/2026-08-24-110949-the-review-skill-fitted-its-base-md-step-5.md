@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110949-the-review-skill-fitted-its-base-md-step-5.md
 **Priority:** normal
+**Branch:** todo/the-review-skill-fitted-its-base-md-step-5
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as step 4, placement, in `D-SKL-074`: *a report names the
 step it did not reach* stands inside the step it exempts, and three sessions

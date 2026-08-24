@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122249-nothing-answers-where-a-changelog-rst-goes-when.md
 **Priority:** normal
+**Branch:** todo/nothing-answers-where-a-changelog-rst-goes-when
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as the ladder's step 2 and written up in `D-KNW-111`: the
 placement rule for a backport was here three times over and correct, and the one

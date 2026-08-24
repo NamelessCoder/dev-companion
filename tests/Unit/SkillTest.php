@@ -3814,6 +3814,54 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The crossing out of a review is the one moment the base has to run a
+     * second time, and the session arrives at it having walked that base once
+     * and discharged it — `D-SKL-072`. A session that crossed correctly then
+     * wrote a core patch without the sweep and without hints on the paths it
+     * edited, because the paragraph it read named a skill and no call.
+     *
+     * Three, and each with the argument the review has just established: the
+     * successor's own step 1 already says to work through the base, and what
+     * that sentence cannot carry is which arguments changed at the crossing.
+     */
+    #[Decision('D-SKL-072')]
+    #[Test]
+    public function theCrossingOutOfAReviewNamesTheCallsTheOrderRestartsWith(): void
+    {
+        $skill = (string) file_get_contents(Paths::root() . '/skills/typo3-core-patch-review/SKILL.md');
+        $section = strstr($skill, '## Where the review ends and the rework begins');
+        self::assertIsString($section, 'the review skill has no crossing section to restart the order in');
+        $crossing = self::flat($section);
+
+        foreach ([
+            'typo3_task_guide' => 'change type about to be written',
+            'typo3_hint_lookup' => 'paths about to be edited',
+            'typo3_changelog_lookup' => 'deprecation sweep',
+        ] as $tool => $argument) {
+            self::assertStringContainsString(
+                '`' . $tool . '`',
+                $crossing,
+                'the crossing out of the review does not name ' . $tool,
+            );
+            self::assertStringContainsString(
+                $argument,
+                $crossing,
+                'the crossing names ' . $tool . ' without the argument the review established',
+            );
+        }
+
+        // Three calls and not a checklist, which is what the count is for: a
+        // list is skipped as one item, and the three here are the ones the
+        // crossing changes the answer to rather than the order it restarts.
+        preg_match_all('/`(typo3_\w+)`/', $crossing, $matches);
+        self::assertSame(
+            ['typo3_task_guide', 'typo3_hint_lookup', 'typo3_changelog_lookup'],
+            array_values(array_unique($matches[1])),
+            'the crossing out of the review names other calls than the three the order restarts with',
+        );
+    }
+
+    /**
      * One skill's front matter, as a reader of the standard gets it rather than
      * as a pattern here finds it.
      *

@@ -256,6 +256,14 @@ column, wrote a functional test, ran seven suites and amended the commit, all
 still inside this skill. Nothing broke and the tree stayed clean, which is why
 nothing marked the crossing.
 
+**Three of its calls take an argument this review has just established, and that
+is what makes them a restart rather than a repeat.** `typo3_task_guide` with the
+change type about to be written, `typo3_hint_lookup` with the paths about to be
+edited, and the deprecation sweep — `typo3_changelog_lookup` with
+`type: deprecation`, which a review is exempt from and a change is not. The base
+was walked once at the start of this review, against files nobody was going to
+write.
+
 **A remark about a finding's weight is not that instruction.** "That is a reason
 to reject it", "I think the tests should show that", "that one blocks it" — each
 reaffirms a finding and commissions nothing, so what it asks for is the finding

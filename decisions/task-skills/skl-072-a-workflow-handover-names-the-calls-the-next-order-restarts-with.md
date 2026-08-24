@@ -3,7 +3,8 @@ id: D-SKL-072
 title: 'A workflow handover names the calls the next order restarts with'
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - SkillTest::theCrossingOutOfAReviewNamesTheCallsTheOrderRestartsWith
 ---
 
 # D-SKL-072 — A workflow handover names the calls the next order restarts with

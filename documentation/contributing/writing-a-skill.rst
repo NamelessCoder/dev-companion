@@ -325,6 +325,19 @@ Where the moment is something the reader says, the step names the sentence that
 fires it and the sentence that does not — and that half is the author's, like
 the sides a description names.
 
+**A crossing that restarts the order names the calls whose arguments changed.**
+The successor opens on the base, and a session that has just walked it reads
+that step as answered: a core review crossed into the patch workflow as
+instructed and then wrote the patch without the deprecation sweep and without
+hints on the paths it edited
+(`D-SKL-072 <../../decisions/task-skills/skl-072-a-workflow-handover-names-the-calls-the-next-order-restarts-with.md>`_,
+held by
+``SkillTest::theCrossingOutOfAReviewNamesTheCallsTheOrderRestartsWith``). What
+the paragraph names is the calls the crossing changes the answer to, as calls
+rather than as the order to restart, and three of them rather than a checklist.
+Which crossings restart an order is the author's, like the sides a description
+names.
+
 **A workflow that ends in public stops once more before it gets there.** Where
 the last step publishes — a tracker entry, a pushed change, a release — the
 skill asks before that step whether what it found is a security defect, and

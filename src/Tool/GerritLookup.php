@@ -399,15 +399,20 @@ final class GerritLookup extends ReadOnlyTool
     }
 
     /**
-     * The workflow a patch set in front of a caller is in, where there is one.
+     * The workflow a patch set in front of a caller is in, and the order it
+     * takes, where there is one.
      *
      * A review session that opened no skill asked this tool for a change and was
      * handed a ref, a remote and nothing about the work it had just begun
-     * (`D-SKL-038`). Naming the two workflows costs three lines at the one
-     * moment the caller is certainly reading, which is the placement `D-ANS-061`
-     * earned. The `change` form alone, because a search has no one workflow to
-     * name whichever way it was asked. Separated from `answer()` so it can be held without a
-     * review server.
+     * (`D-SKL-038`). Naming the two workflows was the first answer to that and
+     * it was one step short: a second session read the names, opened neither,
+     * and reviewed change 95179 and rebased it by hand
+     * (`feedback/2026-08-24-122413`). So the order is here too, in the shape
+     * `TestRunGuide::SCRIPTS_GUIDE` took — the whole of it is still the skill,
+     * and what the answer carries is the steps that decide the result. The
+     * `change` form alone, because a search has no one workflow to name
+     * whichever way it was asked. Separated from `answer()` so it can be held
+     * without a review server.
      */
     public static function workflow(string $status, string $change): ?string
     {
@@ -415,11 +420,19 @@ final class GerritLookup extends ReadOnlyTool
             return null;
         }
 
-        return 'A patch set in front of you opens one of two workflows: `typo3-core-patch-review` reviews it, '
-            . 'and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one '
-            . "this task is before reading the diff.\n"
-            . 'Both start at `typo3_project_describe`: which installation this checkout is, what it runs, and '
-            . 'which whole procedures this server carries.';
+        return "## What a patch set in front of you opens\n"
+            . 'One of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` '
+            . 'fetches it into a checkout and backs out again. Open the one this task is before reading the '
+            . "diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:\n"
+            . '- Establish the patch before judging it: the changed paths, the branch it targets, the commit '
+            . "message and the issue it names. The target branch decides which conventions apply.\n"
+            . '- Three ways in, and a branch of your own naming is none of them: the branch the change '
+            . 'targets, a worktree beside the checkout, or current code on `review/<change number>`. The '
+            . "third makes a commit that exists nowhere else, so say which of the two each result is about.\n"
+            . "- A patch that no longer applies is the finding. Resolving past it produces a patch nobody wrote.\n"
+            . '- Reading is the whole of the review: voting, commenting and uploading stay yours. An '
+            . 'instruction to change the patch — fix it, amend it, answer the comments — ends the review and '
+            . 'opens `typo3-core-patch-development`.';
     }
 
     /**

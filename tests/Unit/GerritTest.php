@@ -1228,6 +1228,10 @@ final class GerritTest extends TestCase
      * was short of: no skill opened, `typo3_project_describe`'s schema was
      * loaded and the tool never called, and this answer — the one call it did
      * make — handed it the ref it then fetched the patch set with by hand.
+     *
+     * `feedback/2026-08-24-122413` is the one that shows the names alone were
+     * short too: it read this tail on change 95179, opened neither skill, and
+     * both reviewed and rebased by hand. So the order is asserted beside them.
      */
     #[Decision('D-SKL-038')]
     #[Test]
@@ -1243,6 +1247,18 @@ final class GerritTest extends TestCase
         // And not the tool two sessions finished a task without calling:
         // naming one nobody invokes is what `D-ANS-061` ruled out.
         self::assertStringNotContainsString('typo3_server_scope', $said);
+
+        // The order itself, which is what a session that opens neither skill
+        // has to act on. Each of the three is a step the reporting session
+        // took by hand and took differently: it judged the diff without
+        // establishing the branch, it carried the patch onto a branch of its
+        // own naming, and it rebased onto current code as a matter of course.
+        self::assertStringContainsString('the branch it targets', $said);
+        self::assertStringContainsString('review/<change number>', $said);
+        self::assertStringContainsString('no longer applies is the finding', $said);
+        // Where the review ends, which is the half of that request the two
+        // named workflows do not own.
+        self::assertStringContainsString('typo3-core-patch-development', $said);
 
         // The issue form takes none of it. "Has somebody already fixed this"
         // precedes triage, patch development and review alike, so there is no

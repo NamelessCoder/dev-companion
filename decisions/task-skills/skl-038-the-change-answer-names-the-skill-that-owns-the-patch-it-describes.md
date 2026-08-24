@@ -162,3 +162,28 @@ content delivered at the moment of asking working where a name did not. That
 session is also the second **Wrong if**'s first case: it held both skills open,
 called this tool for change 91127, and reported the answer as what worked rather
 than the tail as noise.
+
+The order was built into the tail on 2026-08-24. `workflow()` keeps the two
+names and the call, and carries four steps under them: establish the patch
+before judging it, the three ways in and that a branch of your own naming is
+none of them, that a patch which no longer applies is the finding, and that an
+instruction to change the patch ends the review. Each is a step the reporting
+session took by hand and took differently — it judged the diff without
+establishing the target branch, it carried the patch onto `bugfix-81619`, and it
+rebased onto `origin/main` as a matter of course. The last one names
+`typo3-core-patch-development`, which is the third skill that session's request
+matched and neither named workflow owns;
+`SkillTest::everySkillNamedByAToolIsPublished` reads that name too.
+
+What it costs is measured rather than estimated. `bin/cli tools:measure` on the
+recording of the same day: `typo3_gerrit_lookup` went from 8,510 bytes of text
+over three calls to 9,952, which is 721 bytes on each of the two `change`
+answers and 6.1% of the tool, and its place in the listing did not move. The
+whole of both workflows stays in the skills, and what the answer carries is the
+steps that decide the result.
+
+The second **Wrong if** is what that spends, and it stands unchanged as the
+thing to watch: a longer tail is a larger interruption for a session that
+already holds the skill, and its first case reported the answer as what worked
+rather than the tail as noise. It was read against the tail of two lines, so the
+next case is read against this one.

@@ -404,8 +404,12 @@ Text:
 
     The fetch goes to the review server rather than to `origin`: a core clone fetches from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach FETCH_HEAD` is what puts the checkout on the patch set afterwards.
 
-    A patch set in front of you opens one of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff.
-    Both start at `typo3_project_describe`: which installation this checkout is, what it runs, and which whole procedures this server carries.
+    ## What a patch set in front of you opens
+    One of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:
+    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. The target branch decides which conventions apply.
+    - Three ways in, and a branch of your own naming is none of them: the branch the change targets, a worktree beside the checkout, or current code on `review/<change number>`. The third makes a commit that exists nowhere else, so say which of the two each result is about.
+    - A patch that no longer applies is the finding. Resolving past it produces a patch nobody wrote.
+    - Reading is the whole of the review: voting, commenting and uploading stay yours. An instruction to change the patch — fix it, amend it, answer the comments — ends the review and opens `typo3-core-patch-development`.
 
 Data:
 
@@ -660,8 +664,12 @@ Text:
 
     The fetch goes to the review server rather than to `origin`: a core clone fetches from the GitHub mirror, where `refs/changes/…` does not exist. `git switch --detach FETCH_HEAD` is what puts the checkout on the patch set afterwards.
 
-    A patch set in front of you opens one of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff.
-    Both start at `typo3_project_describe`: which installation this checkout is, what it runs, and which whole procedures this server carries.
+    ## What a patch set in front of you opens
+    One of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:
+    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. The target branch decides which conventions apply.
+    - Three ways in, and a branch of your own naming is none of them: the branch the change targets, a worktree beside the checkout, or current code on `review/<change number>`. The third makes a commit that exists nowhere else, so say which of the two each result is about.
+    - A patch that no longer applies is the finding. Resolving past it produces a patch nobody wrote.
+    - Reading is the whole of the review: voting, commenting and uploading stay yours. An instruction to change the patch — fix it, amend it, answer the comments — ends the review and opens `typo3-core-patch-development`.
 
 Data:
 

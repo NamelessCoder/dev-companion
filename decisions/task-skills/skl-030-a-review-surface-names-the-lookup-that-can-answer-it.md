@@ -112,3 +112,50 @@ documentation team, identically on 12.4, 13.4, 14.3 and `main`. So the claim the
 review shipped was half right and drew the wrong conclusion from it: outside the
 repository is where the follow-up goes rather than a reason none is owed. The
 routing is `R-SKL-022`.
+
+## Since then
+
+The same Gerrit change came back on 2026-08-24 and lost the same call, this time
+before any surface was read. `feedback/2026-08-24-122434` is a session working
+off the review comments on 95179 and drafting the Important changelog entry they
+asked for. It wrote "and applies every other value, 0 included, as documented",
+then deleted "as documented" because it did not know whether the TypoScript
+Reference states what `override` does with a falsy value, and shipped the weaker
+sentence. `typo3_documentation_lookup` went uncalled again, and its account of
+why is that it read the name as the `Documentation/` folders inside the system
+extensions.
+
+This entry's first **Wrong if** did not fire. Nothing was reported assessed,
+because no skill activated in that session at all —
+`feedback/2026-08-24-122413`, from the same debrief, is that finding and carries
+its own card. The route stands where this entry put it and the session never
+reached it, which is the boundary of the second **Assumed**: a route at a
+surface is taken by a session that reads the surface.
+
+The description is not the lever the feedback asks it to be. It asks that the
+first line say the tool reaches docs.typo3.org and name the TypoScript Reference
+and the TCA Reference; the **Decided** above put the four books there on
+2026-08-09, and `54874311` added "This reaches docs.typo3.org, unlike the
+bundled convention lookups" on 2026-08-22, two days before the session ran.
+Every tool arrived at it as a bare name with its schema deferred, so none of
+that text was in its context —
+[`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point-because-the-tool-descriptions-never-arrive.md)
+read from the cost of a call refused rather than from a delivery that failed.
+
+Both questions the feedback says it would have asked were re-run here on
+2026-08-24 through `DocumentationLookup::answer()` at `targetVersion: "13.4"`,
+in the words it wrote them in. Each returns `Functions/Stdwrap.html` first,
+under the sentence saying nothing covers half the query and to ask with the
+subject alone. The page read back carries both halves the session wanted.
+`override` — "If override returns something other than "" or zero (trimmed), the
+content is loaded with this" — so the patch makes the documented sentence false,
+which is this entry's own reading from August and what the changelog entry could
+have said instead. `ifEmpty` — "Zeros are treated as empty values" — against
+`ifBlank` — "Zeros are not treated as blank values". So the session's second
+finding, `stdWrap_ifEmpty` treating `0` as empty and handed to its user as
+another issue rather than as a verdict, is documented intent, and the property
+for the behaviour it expected is named beside it on the same page.
+
+The feedback is archived with this and nothing is built for it. What it reports
+is this entry's route, delivered to a session that read no surface, and the
+lever it names was already pulled.

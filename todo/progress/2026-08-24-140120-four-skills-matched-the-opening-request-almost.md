@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md
 **Priority:** low
+**Branch:** todo/four-skills-matched-the-opening-request-almost
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

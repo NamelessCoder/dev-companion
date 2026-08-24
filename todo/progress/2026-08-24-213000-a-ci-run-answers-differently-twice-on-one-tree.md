@@ -2,6 +2,8 @@
 
 **Serves:** tests/
 **Priority:** normal
+**Branch:** todo/a-ci-run-answers-differently-twice-on-one-tree
+**Claimed:** 2026-08-24
 
 `CoreFixtureTest::everyAnswerThatDoesNotMoveWithARootIsDerivedFromOne` failed
 once on `typo3_rule_lookup` moving between roots on `rules: hit` and

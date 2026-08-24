@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md, D-SKL-062
 **Priority:** normal
+**Branch:** todo/a-full-core-patch-session-ran-green-with-zero
+**Claimed:** 2026-08-24
 
 `D-SKL-062`'s re-ask is built and rides on `TaskGuide::answer()`'s `nextTools`,
 so a session that calls nothing never sees it — and one took two of its four

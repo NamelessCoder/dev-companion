@@ -42,6 +42,15 @@ unavoidable; the loops are fed from a file.
 
 What still has no source is 12.4, where the styleguide is not in the core.
 
+## The list to read
+
+`todo/reference/which-components-and-elements-are-listed.md` holds every
+candidate on both sides of the rule, generated so the names are exact: the 16
+entries an action matches, the 10 it does not, the 15 listed components with no
+entry, and the custom elements split 13 to 124 by whether a styleguide template
+writes the tag. That last split is readable without rendering, because a tag is
+written literally where a class name is built in a loop.
+
 ## What it costs to be wrong
 
 Calling something public that the core changes at will is how an extension

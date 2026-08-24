@@ -10,7 +10,7 @@ so the path is silently 14-and-newer for the whole catalog.
 
 ## What it costs today
 
-`bin/cli catalog:check` digests a demo only where the file is there, so a
+`bin/cli components:check` digests a demo only where the file is there, so a
 rewrite on 13.4 moves under every entry without anything reporting it. Nothing
 fails, and that is the problem: the check reads as covering four majors and
 covers two.

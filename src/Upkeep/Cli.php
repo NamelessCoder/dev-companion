@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutStatus;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutUpdate;
+use TYPO3\DevCompanion\Upkeep\Command\CheckoutVerify;
 use TYPO3\DevCompanion\Upkeep\Command\ComponentCheck;
 use TYPO3\DevCompanion\Upkeep\Command\ComponentDerive;
 use TYPO3\DevCompanion\Upkeep\Command\ComponentPaths;
@@ -146,6 +147,7 @@ final class Cli
         $application->addCommand(new VersionCheck());
         $application->addCommand(new KnowledgeFormat());
         $application->addCommand(new CheckoutUpdate());
+        $application->addCommand(new CheckoutVerify());
         $application->addCommand(new CheckoutStatus());
         $application->addCommand(new EntryLookup());
         $application->addCommand(new EnvironmentCreate());

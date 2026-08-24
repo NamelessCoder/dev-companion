@@ -28,11 +28,9 @@ final class RepositoryCheck
 {
     /**
      * The checks this runs, which are the ones that need nothing but this
-     * checkout. The four checks against .checkouts/ —
-     * `components:check`, `references:check`, `system-extensions:check` and
-     * `versions:check` — read a clone this checkout may not have, and
-     * `hints:coverage` reports gaps rather than failures, so all of them are
-     * asked for by name.
+     * checkout. `checkouts:verify` and the four checks under it read a
+     * clone this checkout may not have, and `hints:coverage` reports gaps
+     * rather than failures, so both are asked for by name.
      */
     private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo', 'tools', 'links', 'prose'];
 

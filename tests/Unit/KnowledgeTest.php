@@ -1293,13 +1293,15 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function aCutScriptSectionSaysHowToReadThePageWhole(): void
     {
-        // Not the query the report made. That one used to come back cut and
-        // now reaches `The Pre-Commit Hook` whole, because the answer it went
-        // looking for was written. What is held here is the rule rather than
-        // that call: a section this tool had to cut carries the way to the
-        // rest of the page.
+        // Neither the query the report made nor the one that replaced it: the
+        // first came back cut and reaches `The Pre-Commit Hook` whole, and the
+        // second reaches the section the install symptoms were moved into
+        // (`D-ANS-102`). What is held here is the rule rather than any of those
+        // calls: a section this tool had to cut carries the way to the rest of
+        // the page. `Common Commands` is the one that is still longer than the
+        // budget.
         $result = Registry::call('typo3_script_lookup', [
-            'task' => 'install dependencies vendor composer autoload',
+            'task' => 'run the unit and functional suites in the container',
             'targetVersion' => '15',
         ]);
 

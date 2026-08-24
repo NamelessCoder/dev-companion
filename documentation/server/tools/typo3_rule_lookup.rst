@@ -409,7 +409,7 @@ Text:
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
     - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
     - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
-    - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, The Pre-Commit Hook, Script Notes
+    - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, When a Suite Fails for the Install Rather Than the Code, The Pre-Commit Hook, Script Notes
     - Settling an API Question on a Declared Major That Is Not Installed: Which Majors the Question Is About, What the Changelog Settles and What It Does Not, Reading the Branch, What Reading Proves, and What It Does Not
     - Running a Package on a Declared Major That Is Not Installed: Ask What CI Already Covers, Before Installing Anything, A Composer Root of Its Own, What It Writes, and What the Installation Keeps, What the Second Root Resolves Differently, Whether the Database Survives, Which Checks Are Worth Re-running There, What the Second Root Does Not Give, What Is Left Behind
     - Setting Up an Extension Manual: Documentation/guides.xml, Documentation/Index.rst, The two conventional files, Rendering it before it is published
@@ -559,6 +559,7 @@ Data:
                 "topics": [
                     "Invoking runTests.sh",
                     "Common Commands",
+                    "When a Suite Fails for the Install Rather Than the Code",
                     "The Pre-Commit Hook",
                     "Script Notes"
                 ]

@@ -154,7 +154,7 @@ Text:
     - `-b docker|podman` selects the container runtime; podman is the default.
 
     ## Common Commands
-    Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 61% of the query terms
+    Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 67% of the query terms
 
     ### Install Dependencies
 
@@ -179,20 +179,8 @@ Text:
     Either way this is a precondition and not a step: a checkout that already has
     `vendor/` needs it again only after `composer.json` or `composer.lock` changed.
 
-    That last sentence has a symptom of its own, and it is no more readable than the
-    first. A `vendor/` that exists but predates a `composer.json` change fails as a
-    Symfony dependency-injection `InvalidArgumentException` naming a class that is
-    plainly present in its file — "Expected to find class … while importing services
-    from resource ../Classes/\*, but it was not found". The generated
-    `vendor/composer/autoload_psr4.php` has no mapping for it, because the mapping
-    arrived with the fixture and nothing regenerated it. It shows up first on the
-    `TYPO3Tests\*` fixture extensions, which `composer.json` declares one PSR-4
-    entry each for. The message points at the fixture rather than at the autoloader.
-    The fix is not a reinstall:
-
-    ```bash
-    CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload
-    ```
+    Each of those two changes has a symptom of its own, and neither names the
+    install: *When a Suite Fails for the Install Rather Than the Code* below.
 
     ### Run PHP Unit Tests
 
@@ -213,10 +201,26 @@ Text:
     persistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`
     to reproduce DBMS-specific behaviour.
 
+    ### Run Coding Standards
+
+    ```bash
+    CI=true ./Build/Scripts/runTests.sh -s cgl -n
+    ```
+
+    Checks coding guidelines for all core PHP files and reports without changing
+    them; drop `-n` to have them fixed. `-s cglGit` runs
+    `Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,
+    but only from a normal checkout: that script asks git for its file list inside
+    the container, and a git worktree keeps its gitdir outside the mounted
+    directory, so git fails, the list comes back empty and the suite reports SUCCESS
+    having read no file. `-s cgl` asks git nothing and works from either.
+
+    ### Run PHPStan
+
     (section truncated — read core/testing/scripts whole for the rest)
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/testing/scripts — TYPO3 Core Script Help: 2 of its 4 headings are not above — The Pre-Commit Hook, Script Notes.
+    - core/testing/scripts — TYPO3 Core Script Help: 3 of its 5 headings are not above — When a Suite Fails for the Install Rather Than the Code, The Pre-Commit Hook, Script Notes.
 
     These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 
@@ -236,7 +240,7 @@ Data:
                 "body": "`Build/Scripts/runTests.sh` runs every suite inside a container and is started\nfrom the core checkout root.\n\n- Prefix scripted or non-interactive runs with `CI=true`. It drops the\n  interactive container flags, skips the SIGINT trap, and picks the CI phpstan\n  configuration. Without a TTY the script removes the interactive flags on its\n  own, but `CI=true` is the explicit form.\n- Everything after `--` is passed through unchanged: to phpunit for the test\n  suites, to npm for `-s npm`, to composer for `-s composer`.\n- Run one file or one method while iterating; a full suite costs minutes per\n  round.\n- `./Build/Scripts/runTests.sh -h` lists the suites and option values the\n  checked-out branch supports.\n\n```bash\n# one unit test file\nCI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one unit test method\nCI=true ./Build/Scripts/runTests.sh -s unit -- --filter fixPermissionsSetsGroup typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one functional test file, sqlite (default)\nCI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/impexp/Tests/Functional/Export/ExportTest.php\n```\n\nFrequently needed options:\n\n- `-d sqlite|mariadb|mysql|postgres` selects the database for `-s functional`\n  and for whichever installer suite the branch carries. sqlite is the default\n  and the fastest.\n- `-a mysqli|pdo_mysql` selects the driver for mysql and mariadb.\n- `-i <version>` pins a database version, for example `-d mariadb -i 11.4`.\n- `-p <php minor>` selects the PHP version of the container.\n- `-n` turns the `cgl` suites, and any other suite the branch lists under it,\n  into a dry run that only reports.\n- `-c <chunk>/<total>` splits `-s functional`, and the browser suite where the\n  branch has one, into chunks.\n- `-x` (with optional `-y <port>`) enables xdebug towards a listening IDE.\n- `-b docker|podman` selects the container runtime; podman is the default.",
                 "versions": "",
                 "coverage": 1,
-                "score": 14,
+                "score": 18,
                 "truncated": false
             },
             {
@@ -244,10 +248,10 @@ Data:
                 "title": "TYPO3 Core Script Help",
                 "uri": "typo3://guides/core/testing/scripts",
                 "heading": "Common Commands",
-                "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\nThat last sentence has a symptom of its own, and it is no more readable than the\nfirst. A `vendor/` that exists but predates a `composer.json` change fails as a\nSymfony dependency-injection `InvalidArgumentException` naming a class that is\nplainly present in its file — \"Expected to find class … while importing services\nfrom resource ../Classes/\\*, but it was not found\". The generated\n`vendor/composer/autoload_psr4.php` has no mapping for it, because the mapping\narrived with the fixture and nothing regenerated it. It shows up first on the\n`TYPO3Tests\\*` fixture extensions, which `composer.json` declares one PSR-4\nentry each for. The message points at the fixture rather than at the autoloader.\nThe fix is not a reinstall:\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload\n```\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.",
+                "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\nEach of those two changes has a symptom of its own, and neither names the\ninstall: *When a Suite Fails for the Install Rather Than the Code* below.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan",
                 "versions": "",
-                "coverage": 0.61,
-                "score": 9,
+                "coverage": 0.668,
+                "score": 12,
                 "truncated": true
             }
         ],
@@ -269,7 +273,7 @@ Text:
 
 .. code-block:: text
 
-    No section of the TYPO3 core script notes matched "quantum entanglement pineapple". They cover: Invoking runTests.sh, Common Commands, The Pre-Commit Hook, Script Notes.
+    No section of the TYPO3 core script notes matched "quantum entanglement pineapple". They cover: Invoking runTests.sh, Common Commands, When a Suite Fails for the Install Rather Than the Code, The Pre-Commit Hook, Script Notes.
 
 Data:
 

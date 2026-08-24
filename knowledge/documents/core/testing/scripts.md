@@ -79,20 +79,8 @@ PHP the branch requires; the containerised form is why `runTests.sh` exists.
 Either way this is a precondition and not a step: a checkout that already has
 `vendor/` needs it again only after `composer.json` or `composer.lock` changed.
 
-That last sentence has a symptom of its own, and it is no more readable than the
-first. A `vendor/` that exists but predates a `composer.json` change fails as a
-Symfony dependency-injection `InvalidArgumentException` naming a class that is
-plainly present in its file — "Expected to find class … while importing services
-from resource ../Classes/\*, but it was not found". The generated
-`vendor/composer/autoload_psr4.php` has no mapping for it, because the mapping
-arrived with the fixture and nothing regenerated it. It shows up first on the
-`TYPO3Tests\*` fixture extensions, which `composer.json` declares one PSR-4
-entry each for. The message points at the fixture rather than at the autoloader.
-The fix is not a reinstall:
-
-```bash
-CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload
-```
+Each of those two changes has a symptom of its own, and neither names the
+install: *When a Suite Fails for the Install Rather Than the Code* below.
 
 ### Run PHP Unit Tests
 
@@ -194,6 +182,35 @@ Runs npm commands inside the TYPO3 core test environment.
 
 Useful package scripts for frontend and CSS work include `run build`,
 `run build-css`, `run lint`, and `run watch:build`.
+
+## When a Suite Fails for the Install Rather Than the Code
+
+A `vendor/` that exists but predates a change to `composer.json` or
+`composer.lock` fails in classes the patch never touched. Each of the two has a
+symptom that points somewhere else, and they take different fixes.
+
+A changed `composer.json` fails as a Symfony dependency-injection
+`InvalidArgumentException` naming a class that is plainly present in its file —
+"Expected to find class … while importing services from resource ../Classes/\*,
+but it was not found". The generated `vendor/composer/autoload_psr4.php` has no
+mapping for it, because the mapping arrived with the fixture and nothing
+regenerated it. It shows up first on the `TYPO3Tests\*` fixture extensions,
+which `composer.json` declares one PSR-4 entry each for. The message points at
+the fixture rather than at the autoloader, and the fix is not a reinstall:
+
+```bash
+CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload
+```
+
+A changed `composer.lock` fails as assertions about behaviour the checkout does
+not state, which reads like a broken patch: the installed package is an older
+release than the lock names. `typo3_project_describe` says whether that is what
+happened, holding the lock against `vendor/composer/installed.json` and naming
+the packages the two disagree about. Here the fix is the reinstall:
+
+```bash
+CI=true ./Build/Scripts/runTests.sh -s composerInstall
+```
 
 ## The Pre-Commit Hook
 

@@ -1,7 +1,9 @@
-# three skills matched the request word for word and none of them activated
+# I dropped a sentence from a changelog rather than ask whether the behaviour is documented
 
-**Serves:** feedback/2026-08-24-122413-three-skills-matched-the-request-word-for-word.md
+**Serves:** feedback/2026-08-24-122434-i-dropped-a-sentence-from-a-changelog-rather.md
 **Priority:** low
+**Branch:** todo/i-dropped-a-sentence-from-a-changelog-rather
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

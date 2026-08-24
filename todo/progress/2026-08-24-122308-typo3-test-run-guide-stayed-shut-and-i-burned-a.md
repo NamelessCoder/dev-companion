@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122308-typo3-test-run-guide-stayed-shut-and-i-burned-a.md
 **Priority:** normal
+**Branch:** todo/typo3-test-run-guide-stayed-shut-and-i-burned-a
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as the ladder's step 1a and written up in `D-KNW-112`: the
 tool does answer argument order and the session never loaded its description, so

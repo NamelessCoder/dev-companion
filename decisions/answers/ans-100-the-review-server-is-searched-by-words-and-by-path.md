@@ -3,6 +3,13 @@ id: D-ANS-100
 title: The review server is searched by words and by path
 date: 2026-08-24
 status: open
+coveredBy:
+  - GerritTest::aPathIsMatchedAsItselfRatherThanAsAPattern
+  - GerritTest::aSearchAsksForNothingBeyondThePatchSetEachHitStandsAt
+  - GerritTest::aSearchWithNoWordsAndNoPathAsksTheServerNothing
+  - GerritTest::aWordIsAValueRatherThanSyntax
+  - GerritTest::anEmptySearchSaysWhatItCannotSeparate
+  - GerritTest::theWordsAndThePathBecomeOneQueryTheCallerCanRerun
 ---
 
 # D-ANS-100 — The review server is searched by words and by path
@@ -87,3 +94,40 @@ stand open on a file, and whether anybody ever tried a fix.
   of the 22 measured are one — a link adjustment across every manual, and a
   tree-wide PHP simplification — and a list where most entries touch the path
   incidentally is a count that says nothing.
+
+## Since then
+
+Built on 2026-08-24 as `query`, `path` and `open` on `typo3_gerrit_lookup`, and
+what the composition costs was measured while building it. A hit at this
+boundary is 1.6 KB: the 22 open changes on `typo3/sysext/impexp` came back at
+34.4 KB with `o=CURRENT_REVISION` alone and at 54.2 KB with `o=CURRENT_COMMIT`
+beside it, so leaving the commit message out — which nothing on this path reads
+— is 0.9 KB a hit.
+
+The form the two arguments come to was measured rather than assumed, and each
+part of it is a query that fails without failing. A path is matched whole:
+`file:^typo3/sysext/impexp` answers nothing while `file:^typo3/sysext/impexp/.*`
+answers a full page, so the path itself and what is under it are two
+alternatives — and the second carries no `^`, because that character is Gerrit's
+marker for a regex rather than part of one. The value is quoted, because
+unquoted the `|` belongs to Gerrit's own parser and the alternation silently
+answers nothing. Appending a bare `.*` instead of the alternation would make the
+path a prefix, which `file:^typo3/sysext/fluid.*` shows: it answers changes
+touching `fluid_styled_content` alone. A word is quoted for the same reason —
+`fail?` answers `400 no viable alternative at character '?'` bare, and quoted it
+answers nothing, which is a search that matched.
+
+**The third Wrong if fired.** The full-text match reaches the commit message and
+not the changed lines: change 89000 added `writePagesOrder`, a search for that
+name answers nothing, and the words of its own subject answer it. That is the
+reading the report this entry serves got wrong — it took a zero for
+`flatInversePageTree` as nobody having attempted the fix, when what it
+established is that no commit message names it. It does not revoke the search,
+because the message is what a triage searches anyway; what it changes is the
+answer, and the sentence saying it goes into `indistinguishable` beside the
+anonymous-read caveat the second **Wrong if** owes. The two are separated there:
+a search by words carries the message-not-diff sentence and a search by path
+does not, because a caller who passed no words would be reading about an
+argument it did not use.
+
+The first and the fourth are unsettled and will be settled by use.

@@ -61,8 +61,8 @@
       "scope": "core"
     },
     {
-      "topic": "Whether a patch for an issue already exists on the review server, and what state the review of it is in",
-      "depth": "The anonymous Gerrit REST API, read live: change number, Change-Id, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id, which is what a backport on a release branch keeps and all that links it to the original. A change read by name also carries the value every voter holds per label, the comments left on it with their patch set, file, line and thread state, and on request the review log, where the copy condition that dropped a vote is written. The Forge issues its commit message names come with it, each with its subject, tracker and status, which is the join between the patch and the tracker. A change pushed as private is not visible to it.",
+      "topic": "Whether a patch already exists on the review server, what state the review of it is in, and which changes touch a path or name a wording",
+      "depth": "The anonymous Gerrit REST API, read live: change number, Change-Id, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. Either handle answers the same set: the change and the changes carrying its Change-Id, which is what a backport on a release branch keeps and all that links it to the original. A change read by name also carries the value every voter holds per label, the comments left on it with their patch set, file, line and thread state, and on request the review log, where the copy condition that dropped a vote is written. The Forge issues its commit message names come with it, each with its subject, tracker and status, which is the join between the patch and the tracker. Words and a repository path are the third way in, composed into one query here: they answer the same fields for every change matching them, in any state or narrowed to what is still under review. That is the surface a checkout cannot see, because a clone carries what landed and says nothing about what is open. The words are matched against the commit message rather than against the diff. A change pushed as private is not visible to it.",
       "tools": [
         "typo3_gerrit_lookup"
       ],
@@ -448,6 +448,10 @@
     {
       "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",
       "call": "typo3_forge_lookup for the issue and its comments, then typo3_forge_lookup again with query in the words the issue uses for the other issues describing the same thing — its relations carry only what somebody linked by hand — then typo3_gerrit_lookup with the same number for whether a patch exists already"
+    },
+    {
+      "when": "Before writing a patch for a file, and when asking whether a fix has been attempted before — neither is answerable from a checkout, since a clone carries what landed and says nothing about what is open",
+      "call": "typo3_gerrit_lookup with path for the changes touching it and open for the ones still under review, then again with query in the words a commit message would use"
     },
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",

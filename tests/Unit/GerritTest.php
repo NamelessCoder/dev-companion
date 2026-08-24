@@ -1104,7 +1104,7 @@ final class GerritTest extends TestCase
     #[Test]
     public function anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate(): void
     {
-        $said = GerritLookup::indistinguishable('empty', 'I7701923d80dbd29377213fa71c74ecad88cf7d31');
+        $said = GerritLookup::indistinguishable('empty', 'change');
 
         self::assertNotNull($said);
         self::assertStringContainsString('without credentials', $said);
@@ -1112,10 +1112,10 @@ final class GerritTest extends TestCase
 
         // A search over commit messages is a claim about a query, not about a
         // record the caller is holding, and it has its own sentence.
-        self::assertNull(GerritLookup::indistinguishable('empty', ''));
+        self::assertNull(GerritLookup::indistinguishable('empty', 'issue'));
         // Nothing to hedge where something came back.
-        self::assertNull(GerritLookup::indistinguishable('answered', '95162'));
-        self::assertNull(GerritLookup::indistinguishable('unavailable', '95162'));
+        self::assertNull(GerritLookup::indistinguishable('answered', 'change'));
+        self::assertNull(GerritLookup::indistinguishable('unavailable', 'change'));
     }
 
     /**
@@ -1133,7 +1133,7 @@ final class GerritTest extends TestCase
     #[Test]
     public function aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer(): void
     {
-        $said = GerritLookup::indistinguishable('empty', '', [
+        $said = GerritLookup::indistinguishable('empty', 'issue', [
             'author' => 'Gerrit Code Review',
             'url' => 'https://review.typo3.org/c/Packages/TYPO3.CMS/+/95162',
         ]);
@@ -1146,7 +1146,7 @@ final class GerritTest extends TestCase
         self::assertStringNotContainsString('nothing here separates them', $said);
 
         // Still nothing to say where the review server answered.
-        self::assertNull(GerritLookup::indistinguishable('answered', '', [
+        self::assertNull(GerritLookup::indistinguishable('answered', 'issue', [
             'author' => 'Gerrit Code Review',
             'url' => 'https://review.typo3.org/c/Packages/TYPO3.CMS/+/95162',
         ]));
@@ -1183,6 +1183,193 @@ final class GerritTest extends TestCase
         // Nothing to hand over where nothing came back.
         self::assertNull(GerritLookup::workflow('empty', '95169'));
         self::assertNull(GerritLookup::workflow('unavailable', '95169'));
+    }
+
+    /**
+     * Two of the 22 changes `status:open file:^typo3/sysext/impexp/…` answered
+     * on 2026-08-24, in the fields `o=CURRENT_REVISION` alone brings back. The
+     * first is the reporting session's own patch, which is the surface this
+     * search is for.
+     */
+    private const MATCHED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Import pages in their export order",'
+        . '"status":"NEW","updated":"2026-08-24 09:41:02.000000000","_number":95393,'
+        . '"change_id":"I55fced4b84048a812adc7dca6d7f66261ef147b5","current_revision_number":1,'
+        . '"current_revision":"7c1d9a0b2e4f6a8c0e2d4b6f8a0c2e4d6b8f0a2c"},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[TASK] Clean up ext:impexp worker classes",'
+        . '"status":"MERGED","updated":"2026-08-19 14:02:55.000000000","_number":89000,'
+        . '"change_id":"I96efca966eeb72cb3f41c24917cb7c08c204d37a","current_revision_number":4,'
+        . '"current_revision":"e02be2c6672f09e8ca570924e13aff37efc89ff2"}]';
+
+    /**
+     * The words, the path and the narrowing are composed into one query here,
+     * and the answer carries it so the caller can ask it again — `D-ANS-100`.
+     *
+     * Every part of the form was measured against review.typo3.org on
+     * 2026-08-24. A word is quoted because Gerrit's parser reads punctuation
+     * before the index does; the path is matched whole, so the path itself and
+     * everything under it are two alternatives, and the second carries no `^`
+     * because that character is the marker for a regex rather than part of one.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function theWordsAndThePathBecomeOneQueryTheCallerCanRerun(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::MATCHED;
+        });
+
+        $answer = $gerrit->changesMatching('impexp translation', 'typo3/sysext/impexp', true, 25);
+
+        self::assertSame(
+            'status:open "impexp" "translation" file:"^typo3/sysext/impexp/.*|typo3/sysext/impexp"',
+            $answer['query'],
+        );
+        self::assertSame([95393, 89000], array_column($answer['changes'], 'number'));
+        self::assertStringContainsString('n=25', $asked[0]);
+        // Every state without it, which is what "has anybody ever tried this"
+        // needs: an abandoned or merged attempt is the answer to that.
+        self::assertStringNotContainsString(
+            'status:open',
+            $gerrit->changesMatching('impexp translation', '', false, 25)['query'],
+        );
+    }
+
+    /**
+     * A path is matched as itself rather than as a pattern — `D-ANS-100`.
+     *
+     * An unescaped `.` matches any character, so a path naming `Import.php`
+     * would answer changes touching `ImportXphp` as well.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function aPathIsMatchedAsItselfRatherThanAsAPattern(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::MATCHED);
+
+        self::assertSame(
+            'file:"^typo3/sysext/impexp/Classes/Import\\\\.php/.*|typo3/sysext/impexp/Classes/Import\\\\.php"',
+            $gerrit->changesMatching('', 'typo3/sysext/impexp/Classes/Import.php')['query'],
+        );
+        // A path the caller wrote with slashes around it names the same place.
+        self::assertSame(
+            'file:"^typo3/sysext/impexp/.*|typo3/sysext/impexp"',
+            $gerrit->changesMatching('', '/typo3/sysext/impexp/')['query'],
+        );
+    }
+
+    /**
+     * A word is a value rather than syntax — `D-ANS-100`.
+     *
+     * `why does impexp fail?` answers `400 no viable alternative at character
+     * '?'` bare, and quoted it answers nothing: a search that matched, rather
+     * than a call that failed.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function aWordIsAValueRatherThanSyntax(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::MATCHED);
+
+        self::assertSame(
+            '"why" "does" "impexp" "fail?"',
+            $gerrit->changesMatching('why  does impexp fail?', '')['query'],
+        );
+    }
+
+    /**
+     * The boundary is the issue search's, and the commit message is outside it:
+     * the 22 open changes on `typo3/sysext/impexp` came back at 34.4 KB with
+     * the current revision alone and at 54.2 KB with `o=CURRENT_COMMIT` beside
+     * it, measured on 2026-08-24 — `D-ANS-100`.
+     *
+     * So a hit says the review was not read rather than that there is none of
+     * it, and reading one by name is what answers that.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function aSearchAsksForNothingBeyondThePatchSetEachHitStandsAt(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::MATCHED;
+        });
+
+        $change = $gerrit->changesMatching('impexp', '')['changes'][0];
+
+        self::assertCount(1, $asked);
+        self::assertStringContainsString('o=CURRENT_REVISION', $asked[0]);
+        self::assertStringNotContainsString('o=CURRENT_COMMIT', $asked[0]);
+        self::assertStringNotContainsString('o=DETAILED_LABELS', $asked[0]);
+        self::assertSame(1, $change['patchSet']);
+        self::assertSame('7c1d9a0b2e4f6a8c0e2d4b6f8a0c2e4d6b8f0a2c', $change['commit']);
+        self::assertSame('refs/changes/93/95393/1', $change['fetch']['ref']);
+        self::assertNull($change['labels']);
+        self::assertNull($change['comments']);
+        self::assertNull($change['chain']);
+        self::assertNull($change['issues']);
+        self::assertArrayNotHasKey('message', $change);
+    }
+
+    /**
+     * A search naming nothing to match is not a query for the whole server —
+     * `D-ANS-100`.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function aSearchWithNoWordsAndNoPathAsksTheServerNothing(): void
+    {
+        $asked = 0;
+        $gerrit = new Gerrit(function () use (&$asked): string {
+            ++$asked;
+
+            return self::MATCHED;
+        });
+
+        $answer = $gerrit->changesMatching('  ', ' / ', true);
+
+        self::assertSame(0, $asked);
+        self::assertSame('empty', $answer['status']);
+        self::assertSame('', $answer['query']);
+    }
+
+    /**
+     * An empty search is not an absence, and what it fails to separate is
+     * different for the two ways of asking it — `D-ANS-100`.
+     *
+     * The words have a trap of their own beside the anonymous read.
+     * `feedback/2026-08-24-110833` searched for `flatInversePageTree`, got
+     * nothing, and reported that nobody had ever attempted the fix — but the
+     * match is against the commit message rather than the diff: change 89000
+     * added `writePagesOrder`, and searching that name answers nothing while
+     * the words of its own subject answer it. Measured on 2026-08-24.
+     */
+    #[Decision('D-ANS-100')]
+    #[Test]
+    public function anEmptySearchSaysWhatItCannotSeparate(): void
+    {
+        $words = GerritLookup::indistinguishable('empty', 'query');
+        $path = GerritLookup::indistinguishable('empty', 'path');
+
+        self::assertNotNull($words);
+        self::assertStringContainsString('without credentials', $words);
+        self::assertStringContainsString('rather than against the diff', $words);
+        self::assertStringContainsString('89000', $words);
+
+        self::assertNotNull($path);
+        self::assertStringContainsString('without credentials', $path);
+        self::assertStringContainsString('nothing here separates them', $path);
+        // The diff caveat is about words the caller did not pass.
+        self::assertStringNotContainsString('commit message', $path);
+
+        // Nothing to hedge where something came back.
+        self::assertNull(GerritLookup::indistinguishable('answered', 'query'));
+        self::assertNull(GerritLookup::indistinguishable('unavailable', 'path'));
     }
 
     #[Test]

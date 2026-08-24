@@ -8,28 +8,35 @@ in, from the review server at review.typo3.org. Pass issue with a Forge issue
 number to search the commit messages of every change for it — the question "has
 somebody already fixed this" — or change with the Change-Id from a commit
 message, or the change number a review URL ends with, to read the one it names.
-Answers with the change number, its Change-Id, subject, status, target branch,
-review URL, and the patch set that is current on the server with the commit it
-is — which is what says whether a checkout is the revision under review. A
-change is answered together with the changes sharing its Change-Id, whichever
-handle named it — that is how a backport on a release branch is reached. It also
-carries the relation chain it sits in: the changes stacked on it and the changes
-it is built on, each with its number, its status and its subject, which is what
-says whether the change is one part of a larger feature and how far that feature
-has got. The two relations are different — a chain is changes built on one
-another, a shared Change-Id is one patch on several branches. A change read by
-name also carries the Forge issues its commit message names in its Resolves: and
-Related: trailers, each with its subject, tracker and status. That is the join
-between the patch and the tracker, and it is where a second issue named nowhere
-else in the review is seen. Each change also carries the ref that patch set is
-fetchable by and the review server to fetch it over, so getting it into a
-checkout takes no second lookup. A change read by name carries the review it is
-in as well: the value every voter holds per label and whether the submit rule is
-satisfied, and every comment left on it with its patch set, its file and line,
-whether the thread is unresolved and which comment it replies to. That is where
-a comment somebody left on an earlier patch set and nobody answered is read. Why
-a vote is gone is in the review log instead, which messages asks for. A call
-carries issue or change, never both. This reaches the network, and it reads:
+Or search the server without holding either: query takes words matched against
+the commit messages, path takes a repository path and answers the changes
+touching it, the two combine, and open narrows them to what is still under
+review. That is the direction a triage opens with — is anybody working on this
+file, and did anybody ever try this fix — and it is the review surface a
+checkout cannot see, since a core clone carries what landed and says nothing
+about what is open. Answers with the change number, its Change-Id, subject,
+status, target branch, review URL, and the patch set that is current on the
+server with the commit it is — which is what says whether a checkout is the
+revision under review. A change is answered together with the changes sharing
+its Change-Id, whichever handle named it — that is how a backport on a release
+branch is reached. It also carries the relation chain it sits in: the changes
+stacked on it and the changes it is built on, each with its number, its status
+and its subject, which is what says whether the change is one part of a larger
+feature and how far that feature has got. The two relations are different — a
+chain is changes built on one another, a shared Change-Id is one patch on
+several branches. A change read by name also carries the Forge issues its commit
+message names in its Resolves: and Related: trailers, each with its subject,
+tracker and status. That is the join between the patch and the tracker, and it
+is where a second issue named nowhere else in the review is seen. Each change
+also carries the ref that patch set is fetchable by and the review server to
+fetch it over, so getting it into a checkout takes no second lookup. A change
+read by name carries the review it is in as well: the value every voter holds
+per label and whether the submit rule is satisfied, and every comment left on it
+with its patch set, its file and line, whether the thread is unresolved and
+which comment it replies to. That is where a comment somebody left on an earlier
+patch set and nobody answered is read. Why a vote is gone is in the review log
+instead, which messages asks for. A call carries issue, change, or a search by
+query and path, never two of those. This reaches the network, and it reads:
 reviewing, voting and uploading stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
@@ -43,16 +50,45 @@ Takes
 
     # Forge issue number, with or without the leading #, for example "105403".
     # Searches every change whose commit message names it, which is where Resolves:
-    # and Related: put it. A call carries issue or change, never both.
+    # and Related: put it. A call carries issue, change, or a search by query and
+    # path, never two of those.
     issue: string  # optional
     # One change to read, named either by the Change-Id its commit message carries,
     # for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change
     # number a review URL ends with, for example "89011". Prefer the Change-Id where
     # the commit is in front of you: it is part of the patch being read, it survives
     # being amended into a new patch set, and it cannot be mistaken for the Forge
-    # issue number the way a bare change number can. A call carries issue or change,
-    # never both.
+    # issue number the way a bare change number can. A call carries issue, change,
+    # or a search by query and path, never two of those.
     change: string  # optional
+    # Words to search the review server for, for example "impexp translation". Every
+    # word has to appear, and what they are matched against is the commit message
+    # — the subject and the body, so a change whose subject does not carry the
+    # word is still found. They are not matched against the diff: change 89000 added
+    # writePagesOrder and a search for that name answers nothing, so a zero says no
+    # commit message names the word rather than that nobody has touched the code.
+    # Ask again in the words a commit message would use, and pass path for the
+    # changes that touch a file whatever they are called. Combine it with path to
+    # narrow one by the other, and with open for what is still under review. A call
+    # carries issue, change, or a search by query and path, never two of those.
+    query: string  # optional
+    # A path in the repository, for example "typo3/sysext/impexp" or
+    # "typo3/sysext/impexp/Classes/Import.php". Answers the changes that touch it
+    # — the path itself and everything under it — which is the surface a
+    # checkout cannot see: a core clone carries what landed and says nothing about
+    # what is open. It is the way to ask whether somebody is already working on a
+    # file before writing a patch for it, and with open it is that question exactly.
+    # Without open it reaches the abandoned and the merged changes too, which is
+    # where an earlier attempt at the same fix is found. Combine it with query to
+    # narrow one by the other. A call carries issue, change, or a search by query
+    # and path, never two of those.
+    path: string  # optional
+    # Narrow a search to the changes that are still under review. False, the
+    # default, reaches every state — which is what "has anybody ever tried this"
+    # needs, since an abandoned or merged attempt is the answer to it. True is "who
+    # is working on this now". Narrows query and path, and is ignored by issue and
+    # change.
+    open: boolean  # optional
     # One of: none, people, all. The review log of a change: every message its patch
     # sets and its reviewers left. Ask for it to find out why a vote is gone —
     # Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the
@@ -62,12 +98,12 @@ Takes
     # drops what a service user wrote, which on that change is 20 of 46 messages and
     # every one of them a CI pipeline report. "all" keeps them. How many were
     # dropped is answered whichever you ask for. Narrows change and is ignored by
-    # issue.
+    # every other way in.
     messages: string  # optional
     limit: integer  # optional
 
 The call carries exactly one of these sets of arguments: ``issue`` — or
-``change``.
+``change`` — or ``query`` — or ``path``.
 
 Answers with
 ------------
@@ -121,16 +157,16 @@ Answers with
           # there.
           remote: string
         # What the change stands at, one entry per label. Null where the review was
-        # not read, which is every hit of an issue search: a list with zeros in it
+        # not read, which is every hit a search answers: a list with zeros in it
         # means nobody has voted, and that is a different answer.
         labels: array or null  # optional
         # How many comments the change carries, which the review server states
         # whether or not they were read.
         commentCount: integer  # optional
         # The comments left on the change, oldest first. Empty means it carries
-        # none. Null means they were not read: an issue search asks for none, and a
-        # change lookup whose comment call did not answer says so here rather than
-        # with an empty list — hold it against commentCount.
+        # none. Null means they were not read: a search asks for none, and a change
+        # lookup whose comment call did not answer says so here rather than with an
+        # empty list — hold it against commentCount.
         comments: array or null  # optional
         # The relation chain this change sits in, child first: above it the changes
         # stacked on it, then itself, then the changes it is built on. This is the
@@ -138,18 +174,18 @@ Answers with
         # built on one another, a shared Change-Id is one patch on several branches,
         # and reading the two as one set overstates both. Empty means the change
         # stands alone, which is the ordinary case. Null means the chain was not
-        # read: an issue search asks for none, and a change lookup whose call did
-        # not answer says so here rather than with an empty list.
+        # read: a search asks for none, and a change lookup whose call did not
+        # answer says so here rather than with an empty list.
         chain: array or null  # optional
         # The Forge issues this change's commit message names in its Resolves: and
         # Related: trailers, each filled with what says whether to read it. That is
         # the join between the patch and the tracker, and it is where a second issue
         # nobody mentioned elsewhere is seen. Empty means the message names none.
-        # Null means the message was not read: an issue search asks for none of
-        # this, and the caller already holds the number there.
+        # Null means the message was not read: a search asks for none of this, and
+        # reading one hit by name is what answers it there.
         issues: array or null  # optional
         # The review log, oldest first, where messages asked for it. Null otherwise,
-        # which is the default and every hit of an issue search.
+        # which is the default and every hit a search answers.
         messages: array or null  # optional
         # How many of the log a service user wrote, which messages: "people" is what
         # drops. Answered whichever way it was asked, so a log full of pipeline

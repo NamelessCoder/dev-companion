@@ -96,6 +96,70 @@ final class Gerrit
     }
 
     /**
+     * The changes matching words, a path, or both.
+     *
+     * The question a triage opens with is neither handle: whether anybody has an
+     * open change on a file, and whether anybody ever tried this fix.
+     * `feedback/2026-08-24-110833` answered both with calls it composed itself,
+     * because a core clone carries what landed and says nothing about what is
+     * open (`D-ANS-100`).
+     *
+     * The boundary is the issue search's, and the commit message is outside it:
+     * a hit is 1.6 KB without it and 2.5 KB with it, and nothing on this path
+     * reads it (`D-ANS-100`).
+     *
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     */
+    public function changesMatching(string $words, string $path, bool $open = false, int $limit = 10): array
+    {
+        $query = self::matching($words, $path, $open);
+        if ($query === '') {
+            return ['status' => 'empty', 'query' => '', 'changes' => [], 'dropped' => 0, 'cause' => null];
+        }
+
+        return $this->search($query, $limit);
+    }
+
+    /**
+     * The one query the words, the path and the narrowing come to.
+     *
+     * Composed here rather than passed through, so what reaches the server is a
+     * query this side can state and the caller can rerun. Every part of the form
+     * was measured, and each is a query that fails without failing — the
+     * quoting, the two alternatives a path becomes, and the `^` that is Gerrit's
+     * marker rather than part of the pattern are all `D-ANS-100`.
+     */
+    private static function matching(string $words, string $path, bool $open): string
+    {
+        $terms = [];
+        foreach (preg_split('~\s+~', trim($words), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
+            $terms[] = self::quoted($word);
+        }
+        $file = trim(trim($path), '/');
+        if ($file !== '') {
+            $whole = self::escaped($file);
+            $terms[] = 'file:' . self::quoted('^' . $whole . '/.*|' . $whole);
+        }
+        if ($terms === []) {
+            return '';
+        }
+
+        return implode(' ', $open ? ['status:open', ...$terms] : $terms);
+    }
+
+    /** One value Gerrit's query parser reads as a value and not as syntax. */
+    private static function quoted(string $value): string
+    {
+        return '"' . addcslashes($value, '"\\') . '"';
+    }
+
+    /** One path RE2 matches as itself rather than as a pattern. */
+    private static function escaped(string $path): string
+    {
+        return preg_replace('~[\\\\.+*?()\[\]{}^$|]~', '\\\\$0', $path) ?? $path;
+    }
+
+    /**
      * How many issues one batched query names.
      *
      * Measured against review.typo3.org on 2026-08-08: 36 issue numbers asked

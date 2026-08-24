@@ -12,14 +12,18 @@ package.json it has, the Build/package.json a repository keeps its frontend
 build in included — each marked a check that hands the code back as it was, a
 change that rewrites something, or unknown where the declared body does not say.
 Read from files only, no console and no database, so it answers on a fresh clone
-as well. Before composer install has run it says so in installed, and only four
-fields wait for that install: the TYPO3 version, the PHP floor the core
-requires, the PHP bound Composer wrote into the install, and the extension list.
-It states how those PHP numbers stand to each other, which none of them says
-alone: whether the floor this project declares clears what the installed core
-requires, and whether anything configured here ever runs that floor or only some
-higher version inside the range. It also says whether the interpreter that would
-run the commands below clears the bound at all. Under it every one of them
+as well. It also says whether what is installed is what composer.lock names,
+package by package. A vendor directory a month older than the lock satisfies
+installed, and the suite run after it fails in classes your change never
+touched. Where the two disagree it names the packages and the command that
+reinstalls them. Before composer install has run it says so in installed, and
+only four fields wait for that install: the TYPO3 version, the PHP floor the
+core requires, the PHP bound Composer wrote into the install, and the extension
+list. It states how those PHP numbers stand to each other, which none of them
+says alone: whether the floor this project declares clears what the installed
+core requires, and whether anything configured here ever runs that floor or only
+some higher version inside the range. It also says whether the interpreter that
+would run the commands below clears the bound at all. Under it every one of them
 aborts in Composer's platform check before its own tool starts, which is what
 marking a command a check never said. It also names the environment the
 repository configures to run itself in: a DDEV project states the PHP its
@@ -67,6 +71,33 @@ Answers with
     # and installedPhpBound are null and extensions is empty, and none of the four
     # tells you that on its own.
     installed: boolean  # optional
+    # Whether what is installed below the vendor directory is what composer.lock
+    # names, compared package by package and version by version. The one thing
+    # installed cannot say. A vendor directory a month older than the lock satisfies
+    # that boolean, and the suite run after it fails in classes your change never
+    # touched. The modification times are not read: a lock a rebase rewrote is newer
+    # than the install it describes, and nothing there is stale. Locked dev packages
+    # are compared only where the metadata says the install took them, so a --no-dev
+    # install is not reported as a drift. Empty packages where state is anything but
+    # differs.
+    installedAgainstLock:  # optional
+      # One of: matches, differs, not-installed, no-lock. matches: every package
+      # composer.lock names is installed at that version, so a failure here is not a
+      # stale install. differs: packages says which of them are not, and the install
+      # is behind or ahead of the lock. not-installed: there is a lock and no
+      # Composer metadata below the vendor directory to hold it against, so the
+      # packages it names are not on disk. no-lock: this root has no composer.lock,
+      # so nothing states which versions it fixed.
+      state: string
+      packages:
+        - # The Composer package name, as both files spell it.
+          package: string
+          # The version composer.lock names. Null where the lock names this package
+          # nowhere and it is installed anyway.
+          locked: string or null
+          # The version installed below the vendor directory. Null where the lock
+          # names it and nothing is installed under that name.
+          installed: string or null
     # The TYPO3 version installed here, read from the core package. Null where
     # nothing is installed yet, which installed is what says.
     typo3Version: string or null  # optional
@@ -386,8 +417,9 @@ Answers with
         console: string
 
 The answer carries exactly one of these sets of fields: ``root``, ``installed``,
-``phpRelation``, ``node``, ``environment``, ``extensions``, ``sites``,
-``commands``, ``patches``, ``guides``, ``answeredBy`` — or ``unsupported``.
+``installedAgainstLock``, ``phpRelation``, ``node``, ``environment``,
+``extensions``, ``sites``, ``commands``, ``patches``, ``guides``, ``answeredBy``
+— or ``unsupported``.
 
 Answered
 --------
@@ -423,6 +455,8 @@ Text:
 .. code-block:: text
 
     <installation> — core-checkout, TYPO3 14.3.7-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
+
+    There is a composer.lock here and no Composer metadata below the vendor directory it declares, so the packages it names are not on disk at all. Run "CI=true ./Build/Scripts/runTests.sh -s composerInstall" before any suite here. What a run reports otherwise is the absent install rather than the code.
 
     Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
@@ -480,6 +514,10 @@ Data:
         "root": "<installation>",
         "kind": "core-checkout",
         "installed": true,
+        "installedAgainstLock": {
+            "state": "not-installed",
+            "packages": []
+        },
         "typo3Version": "14.3.7-dev",
         "phpConstraint": "^8.2",
         "coreConstraint": null,
@@ -705,6 +743,8 @@ Text:
 
     <installation> — composer-project, TYPO3 14.3.0, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
+    There is no composer.lock here, so nothing states which versions this project fixed and nothing says whether what is installed below the vendor directory is still them.
+
     Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
     Extensions that are not TYPO3's own:
@@ -746,6 +786,10 @@ Data:
         "root": "<installation>",
         "kind": "composer-project",
         "installed": true,
+        "installedAgainstLock": {
+            "state": "no-lock",
+            "packages": []
+        },
         "typo3Version": "14.3.0",
         "phpConstraint": "^8.2",
         "coreConstraint": "^14.3",

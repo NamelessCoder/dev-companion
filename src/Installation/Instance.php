@@ -37,6 +37,18 @@ final class Instance
      */
     public const KIND_EXTENSION_REPOSITORY = 'extension-repository';
 
+    /** Every package composer.lock names is installed below the vendor directory at that version. */
+    public const LOCK_MATCHES = 'matches';
+
+    /** One of them is at another version, absent, or installed and locked nowhere. */
+    public const LOCK_DIFFERS = 'differs';
+
+    /** There is a lock and no installed metadata below the vendor directory to hold it against. */
+    public const LOCK_NOT_INSTALLED = 'not-installed';
+
+    /** This root has no composer.lock, so nothing here states which versions it fixed. */
+    public const LOCK_ABSENT = 'no-lock';
+
     /** Found by walking up from the directory the server was started in. */
     public const VIA_DISCOVERY = 'discovery';
 
@@ -461,6 +473,85 @@ final class Instance
         $id = (int) $matches[2] + ($matches[1] === '>' ? 1 : 0);
 
         return $id <= 0 ? null : sprintf('%d.%d.%d', intdiv($id, 10000), intdiv($id % 10000, 100), $id % 100);
+    }
+
+    /**
+     * Where the packages installed below this root and the ones composer.lock
+     * names disagree, which nothing else in an answer about this project says.
+     *
+     * A vendor directory that predates the lock satisfies `installed`, and the
+     * suite run that follows fails in classes the caller's own change never
+     * touched (`D-ANS-102`). The versions are what is compared, not the
+     * modification times: a lock written by a rebase that changed nothing in it
+     * is newer than the install it describes, and nothing there is stale.
+     *
+     * Locked dev packages count only where `installed.json` says the install
+     * took them. `composer install --no-dev` leaves every one of them locked and
+     * absent, which is a deployment rather than a drift.
+     *
+     * @return array{state: string, packages: array<int, array{package: string, locked: ?string, installed: ?string}>}
+     */
+    public static function installedAgainstLock(string $root): array
+    {
+        $lock = self::readJson($root . '/composer.lock');
+        if ($lock === []) {
+            return ['state' => self::LOCK_ABSENT, 'packages' => []];
+        }
+
+        $file = self::vendorDirectory($root) . '/composer/installed.json';
+        if (!is_file($file)) {
+            return ['state' => self::LOCK_NOT_INSTALLED, 'packages' => []];
+        }
+
+        $metadata = self::readJson($file);
+        $installed = self::lockedVersions($metadata['packages'] ?? $metadata);
+        $locked = self::lockedVersions($lock['packages'] ?? []);
+        $lockedForDevelopment = self::lockedVersions($lock['packages-dev'] ?? []);
+        $expected = ($metadata['dev'] ?? true) === false ? $locked : $locked + $lockedForDevelopment;
+
+        $drift = [];
+        foreach ($expected as $package => $version) {
+            if (!array_key_exists($package, $installed)) {
+                $drift[] = ['package' => $package, 'locked' => $version, 'installed' => null];
+
+                continue;
+            }
+            // An entry stating no version is one this cannot hold against
+            // anything, and it is installed either way.
+            if ($installed[$package] !== null && $version !== null && $installed[$package] !== $version) {
+                $drift[] = ['package' => $package, 'locked' => $version, 'installed' => $installed[$package]];
+            }
+        }
+        foreach ($installed as $package => $version) {
+            // Held against both halves of the lock whichever of them was
+            // installed: a dev package the install left out is the absent case
+            // above, and reporting it here as well would say it twice.
+            if (!array_key_exists($package, $locked) && !array_key_exists($package, $lockedForDevelopment)) {
+                $drift[] = ['package' => $package, 'locked' => null, 'installed' => $version];
+            }
+        }
+        usort($drift, static fn(array $one, array $other): int => strcmp($one['package'], $other['package']));
+
+        return ['state' => $drift === [] ? self::LOCK_MATCHES : self::LOCK_DIFFERS, 'packages' => $drift];
+    }
+
+    /**
+     * The version each entry states, by package name — the shape composer.lock
+     * and installed.json both write their package lists in.
+     *
+     * @return array<string, ?string>
+     */
+    private static function lockedVersions(mixed $entries): array
+    {
+        $versions = [];
+        foreach (is_array($entries) ? $entries : [] as $entry) {
+            $name = is_array($entry) ? $entry['name'] ?? null : null;
+            if (is_string($name) && $name !== '') {
+                $versions[$name] = is_string($entry['version'] ?? null) ? $entry['version'] : null;
+            }
+        }
+
+        return $versions;
     }
 
     /** The major of that version as a number, for comparing it with another. */

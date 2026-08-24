@@ -37,6 +37,13 @@ final class ProjectDescribe extends ReadOnlyTool
         . 'extension list are read out of the installed tree and arrive once composer install has run. Everything '
         . 'else here is read from the files as they stand.';
 
+    /**
+     * How many drifting packages the text names before it says how many it left
+     * out. A lock a rebase moved drifts by more packages than a reader can use,
+     * and the data beside the text carries every one of them.
+     */
+    private const LOCK_PACKAGES_LISTED = 10;
+
     public static function name(): string
     {
         return 'typo3_project_describe';
@@ -50,7 +57,7 @@ final class ProjectDescribe extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and in every package.json it has, the Build/package.json a repository keeps its frontend build in included — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Where the repository declares npm commands it answers the same question for Node: what the package.json declaring them admits in engines.node, what the .nvmrc beside it pins, what an actions/setup-node step below .github/workflows/ sets up, what a DDEV project states as its nodejs_version, and how those stand to each other. Each of the first two is named with the file it came from, because the manifest is in Build/ in a repository laid out the way the core is. A version one of them names outright is read; one a matrix or another file decides is handed back as the workflow states it, unresolved. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the repository this server was started in and the TYPO3 installation it has made: its TYPO3 and PHP constraints, including the PHP floor the installed core requires and not only the one this project declares, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and in every package.json it has, the Build/package.json a repository keeps its frontend build in included — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone as well. It also says whether what is installed is what composer.lock names, package by package. A vendor directory a month older than the lock satisfies installed, and the suite run after it fails in classes your change never touched. Where the two disagree it names the packages and the command that reinstalls them. Before composer install has run it says so in installed, and only four fields wait for that install: the TYPO3 version, the PHP floor the core requires, the PHP bound Composer wrote into the install, and the extension list. It states how those PHP numbers stand to each other, which none of them says alone: whether the floor this project declares clears what the installed core requires, and whether anything configured here ever runs that floor or only some higher version inside the range. It also says whether the interpreter that would run the commands below clears the bound at all. Under it every one of them aborts in Composer\'s platform check before its own tool starts, which is what marking a command a check never said. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Where the repository declares npm commands it answers the same question for Node: what the package.json declaring them admits in engines.node, what the .nvmrc beside it pins, what an actions/setup-node step below .github/workflows/ sets up, what a DDEV project states as its nodejs_version, and how those stand to each other. Each of the first two is named with the file it came from, because the manifest is in Build/ in a repository laid out the way the core is. A version one of them names outright is read; one a matrix or another file decides is handed back as the workflow states it, unresolved. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -64,6 +71,18 @@ final class ProjectDescribe extends ReadOnlyTool
             'root' => Schema::nullableString('Absolute path of the repository this describes. Null when no project root was found to describe.'),
             'kind' => Schema::string('core-checkout or composer-project. What the root declares itself to be, not whether anything is installed in it — installed says that.'),
             'installed' => ['type' => 'boolean', 'description' => 'Whether the packages this repository declares are installed below it. False is a clone nobody has run composer install in, which is the state a boot or an installation task starts in — everything else here is read from the repository\'s own files and answers either way. What false costs is the four fields that come out of the installed tree: typo3Version, corePhpConstraint and installedPhpBound are null and extensions is empty, and none of the four tells you that on its own.'],
+            'installedAgainstLock' => Schema::object([
+                'state' => [
+                    'type' => 'string',
+                    'enum' => [Instance::LOCK_MATCHES, Instance::LOCK_DIFFERS, Instance::LOCK_NOT_INSTALLED, Instance::LOCK_ABSENT],
+                    'description' => 'matches: every package composer.lock names is installed at that version, so a failure here is not a stale install. differs: packages says which of them are not, and the install is behind or ahead of the lock. not-installed: there is a lock and no Composer metadata below the vendor directory to hold it against, so the packages it names are not on disk. no-lock: this root has no composer.lock, so nothing states which versions it fixed.',
+                ],
+                'packages' => Schema::listOf(Schema::object([
+                    'package' => Schema::string('The Composer package name, as both files spell it.'),
+                    'locked' => Schema::nullableString('The version composer.lock names. Null where the lock names this package nowhere and it is installed anyway.'),
+                    'installed' => Schema::nullableString('The version installed below the vendor directory. Null where the lock names it and nothing is installed under that name.'),
+                ], ['package', 'locked', 'installed'])),
+            ], ['state', 'packages'], 'Whether what is installed below the vendor directory is what composer.lock names, compared package by package and version by version. The one thing installed cannot say. A vendor directory a month older than the lock satisfies that boolean, and the suite run after it fails in classes your change never touched. The modification times are not read: a lock a rebase rewrote is newer than the install it describes, and nothing there is stale. Locked dev packages are compared only where the metadata says the install took them, so a --no-dev install is not reported as a drift. Empty packages where state is anything but differs.'),
             'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package. Null where nothing is installed yet, which installed is what says.'),
             'phpConstraint' => Schema::nullableString('What composer.json requires of PHP. What the project declares, not what runs it — see environment.'),
             'coreConstraint' => Schema::nullableString('What it requires of typo3/cms-core.'),
@@ -162,7 +181,7 @@ final class ProjectDescribe extends ReadOnlyTool
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
             'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures this server carries, named here because this is the call every task starts with. They are also served as typo3://guides resources, and a client that lists no resources renders none of them — four sessions in one week finished without learning they exist. Each is one typo3_rule_lookup call by documentId, which needs no resource list; a search over sections answers a question and never hands one of these over whole.'),
             'answeredBy' => Schema::answeredBy(self::answersFrom()),
-        ], ['root', 'installed', 'phpRelation', 'node', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
+        ], ['root', 'installed', 'installedAgainstLock', 'phpRelation', 'node', 'environment', 'extensions', 'sites', 'commands', 'patches', 'guides', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -191,6 +210,10 @@ final class ProjectDescribe extends ReadOnlyTool
         if (!$project['installed']) {
             $lines[] = '';
             $lines[] = self::NOTHING_INSTALLED;
+        } else {
+            foreach (self::lock($project['installedAgainstLock'], $project['kind'], $project['environment']) as $line) {
+                $lines[] = $line;
+            }
         }
 
         $relation = self::relation($project['phpRelation'], $project['environment'], $project['installedPhpBound']);
@@ -404,6 +427,91 @@ final class ProjectDescribe extends ReadOnlyTool
         }
 
         return sprintf(', and the installed core requires %s — the lowest a package here may declare', $constraint);
+    }
+
+    /**
+     * Whether what is installed is what composer.lock names, which `installed`
+     * never said.
+     *
+     * A vendor directory older than the lock satisfies that boolean, and the
+     * suite run after it fails in classes the caller's own change never touched
+     * — two sessions from two task shapes spent a full run each attributing
+     * those failures (`D-ANS-102`). Said where the two agree as well, for the
+     * reason `relation()` states its own numbers: a line the answer drops when
+     * nothing is wrong cannot be told from one it never computed, and what a
+     * review takes from this is exactly that attribution.
+     *
+     * Called only where something is installed. Where nothing is, the paragraph
+     * above says so and this would say it a second time.
+     *
+     * @param array{state: string, packages: array<int, array{package: string, locked: ?string, installed: ?string}>} $lock
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @return array<int, string>
+     */
+    private static function lock(array $lock, string $kind, ?array $environment): array
+    {
+        if ($lock['state'] === Instance::LOCK_ABSENT) {
+            return ['', 'There is no composer.lock here, so nothing states which versions this project fixed and '
+                . 'nothing says whether what is installed below the vendor directory is still them.'];
+        }
+
+        $command = self::install($kind, $environment);
+        if ($lock['state'] === Instance::LOCK_NOT_INSTALLED) {
+            return ['', sprintf(
+                'There is a composer.lock here and no Composer metadata below the vendor directory it declares, so '
+                    . 'the packages it names are not on disk at all. Run "%s" before any suite here. What a run '
+                    . 'reports otherwise is the absent install rather than the code.',
+                $command,
+            )];
+        }
+        if ($lock['state'] === Instance::LOCK_MATCHES) {
+            return ['', 'Every package composer.lock names is installed below the vendor directory at that version, '
+                . 'so a failure here is the code and not a stale install.'];
+        }
+
+        $lines = ['', sprintf(
+            'What is installed below the vendor directory is not what composer.lock names. A suite run here fails in '
+                . 'classes your own change never touched, which is the evidence a review is least able to attribute '
+                . '— run "%s" first. The versions were compared and the modification times were not. The %d that '
+                . 'disagree:',
+            $command,
+            count($lock['packages']),
+        )];
+        foreach (array_slice($lock['packages'], 0, self::LOCK_PACKAGES_LISTED) as $package) {
+            $lines[] = sprintf('- %s — %s', $package['package'], match (true) {
+                $package['installed'] === null => sprintf('locked %s, not installed', (string) $package['locked']),
+                $package['locked'] === null => sprintf('installed %s, locked nowhere', $package['installed']),
+                default => sprintf('locked %s, installed %s', $package['locked'], $package['installed']),
+            });
+        }
+        if (count($lock['packages']) > self::LOCK_PACKAGES_LISTED) {
+            $lines[] = sprintf(
+                '- and %d more, left out of this list and carried whole in the data beside it.',
+                count($lock['packages']) - self::LOCK_PACKAGES_LISTED,
+            );
+        }
+
+        return $lines;
+    }
+
+    /**
+     * The command that makes the install what the lock names.
+     *
+     * Not one command everywhere: the core installs its dependencies through
+     * the script its suites are run by, and a Composer project that configures
+     * DDEV installs them in that project rather than in the caller's own shell.
+     *
+     * @param array{via: string, php: ?string, node: ?string, source: string, project: ?string, hostnames: array<int, string>, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     */
+    private static function install(string $kind, ?array $environment): string
+    {
+        if ($kind === Instance::KIND_CORE_CHECKOUT) {
+            return 'CI=true ./Build/Scripts/runTests.sh -s composerInstall';
+        }
+
+        return $environment !== null && $environment['via'] === Typo3Cli::VIA_DDEV && !$environment['entered']
+            ? 'ddev composer install'
+            : 'composer install';
     }
 
     /**

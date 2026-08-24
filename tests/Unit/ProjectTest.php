@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Installation\Instance;
@@ -78,6 +79,174 @@ final class ProjectTest extends TestCase
             ['composer t3g:cgl', 'composer t3g:phpstan'],
             array_column($project['commands'], 'command'),
         );
+    }
+
+    #[Decision('D-ANS-102')]
+    #[Test]
+    public function theAnswerNamesThePackagesTheInstallAndTheLockDisagreeOn(): void
+    {
+        // A review of an impexp patch reset onto origin/main, which brought a
+        // changed composer.lock while vendor/symfony/yaml stayed a month old.
+        // The unit run then failed three times in SiteWriterTest, and four
+        // calls and two full suite runs went into "not my patch, stale vendor"
+        // (feedback/2026-08-24-110908).
+        $root = $this->composerProject('vendor', '13.4.33');
+        $this->lock($root, [
+            ['name' => 'typo3/cms-core', 'version' => '13.4.33'],
+            ['name' => 'symfony/console', 'version' => '7.3.1'],
+            ['name' => 'symfony/yaml', 'version' => '7.3.1'],
+        ]);
+        $this->installed($root, [['name' => 'symfony/yaml', 'version' => '7.2.0']]);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertTrue($project['installed'], 'the boolean stays what it was: the packages are there');
+        self::assertSame([
+            'state' => Instance::LOCK_DIFFERS,
+            'packages' => [
+                ['package' => 'symfony/console', 'locked' => '7.3.1', 'installed' => null],
+                ['package' => 'symfony/yaml', 'locked' => '7.3.1', 'installed' => '7.2.0'],
+            ],
+        ], $project['installedAgainstLock']);
+
+        $text = Registry::call('typo3_project_describe', [])->text;
+        self::assertStringContainsString('symfony/yaml — locked 7.3.1, installed 7.2.0', $text);
+        self::assertStringContainsString('symfony/console — locked 7.3.1, not installed', $text);
+        self::assertStringContainsString('"composer install"', $text, 'the sentence names no command to fix it');
+    }
+
+    /**
+     * @param array<int, array<string, string>>|null $locked what composer.lock names beside the core
+     * @param array<int, array<string, string>> $installed what is installed beside it
+     * @param array<int, array{package: string, locked: ?string, installed: ?string}> $packages
+     */
+    #[DataProvider('installsAgainstTheirLock')]
+    #[Decision('D-ANS-102')]
+    #[Test]
+    public function theInstallIsHeldAgainstTheLockPackageByPackage(
+        ?array $locked,
+        array $installed,
+        bool $tookDevPackages,
+        string $state,
+        array $packages,
+    ): void {
+        $root = $this->composerProject('vendor', '13.4.33');
+        if ($locked !== null) {
+            $this->lock($root, [['name' => 'typo3/cms-core', 'version' => '13.4.33'], ...$locked], [
+                ['name' => 'phpunit/phpunit', 'version' => '11.5.0'],
+            ]);
+        }
+        $this->installed($root, $installed, $tookDevPackages);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            ['state' => $state, 'packages' => $packages],
+            Project::describe()['installedAgainstLock'],
+        );
+    }
+
+    /** @return iterable<string, array{0: array<int, array<string, string>>|null, 1: array<int, array<string, string>>, 2: bool, 3: string, 4: array<int, array{package: string, locked: ?string, installed: ?string}>}> */
+    public static function installsAgainstTheirLock(): iterable
+    {
+        yield 'every locked package installed at the version it names' => [
+            [['name' => 'symfony/yaml', 'version' => '7.3.1']],
+            [['name' => 'symfony/yaml', 'version' => '7.3.1']],
+            false,
+            Instance::LOCK_MATCHES,
+            [],
+        ];
+        // What --no-dev leaves behind: every dev package locked and none of
+        // them installed, which is a deployment rather than a drift.
+        yield 'a dev package the install was told to leave out' => [
+            [],
+            [],
+            false,
+            Instance::LOCK_MATCHES,
+            [],
+        ];
+        yield 'a dev package missing from an install that took them' => [
+            [],
+            [],
+            true,
+            Instance::LOCK_DIFFERS,
+            [['package' => 'phpunit/phpunit', 'locked' => '11.5.0', 'installed' => null]],
+        ];
+        yield 'a package installed that the lock names nowhere' => [
+            [],
+            [['name' => 'symfony/yaml', 'version' => '7.3.1']],
+            false,
+            Instance::LOCK_DIFFERS,
+            [['package' => 'symfony/yaml', 'locked' => null, 'installed' => '7.3.1']],
+        ];
+        yield 'no lock stating which versions this project fixed' => [
+            null,
+            [],
+            false,
+            Instance::LOCK_ABSENT,
+            [],
+        ];
+    }
+
+    #[Decision('D-ANS-102')]
+    #[Test]
+    public function aCheckoutWhoseLockedPackagesAreNotOnDiskIsToldWhatInstallsThem(): void
+    {
+        // The core checkout is the one where nothing below vendor/ is not the
+        // same thing as nothing installed: its system extensions are tracked
+        // files, so `installed` is true in a clone that has never run an
+        // install — and the suite run fails for the vendor rather than for the
+        // patch either way.
+        $root = $this->coreCheckout('15.0.0-dev');
+        $this->lock($root, [['name' => 'symfony/yaml', 'version' => '7.3.1']]);
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertTrue($project['installed']);
+        self::assertSame(
+            ['state' => Instance::LOCK_NOT_INSTALLED, 'packages' => []],
+            $project['installedAgainstLock'],
+        );
+        self::assertStringContainsString(
+            '"CI=true ./Build/Scripts/runTests.sh -s composerInstall"',
+            Registry::call('typo3_project_describe', [])->text,
+            'the core installs its dependencies through the script its suites are run by',
+        );
+    }
+
+    /**
+     * What composer.lock states, in the two sections Composer writes it in.
+     *
+     * @param array<int, array<string, string>> $packages
+     * @param array<int, array<string, string>> $development
+     */
+    private function lock(string $root, array $packages, array $development = []): void
+    {
+        $this->declare($root . '/composer.lock', json_encode(
+            ['packages' => $packages, 'packages-dev' => $development],
+            JSON_THROW_ON_ERROR,
+        ));
+    }
+
+    /**
+     * What Composer wrote about the install, the core package included so the
+     * root is still one this server locates.
+     *
+     * @param array<int, array<string, string>> $packages
+     */
+    private function installed(string $root, array $packages, bool $tookDevPackages = false): void
+    {
+        $this->declare($root . '/vendor/composer/installed.json', json_encode([
+            'packages' => [[
+                'name' => 'typo3/cms-core',
+                'version' => '13.4.33',
+                'type' => 'typo3-cms-framework',
+                'install-path' => '../typo3/cms-core',
+                'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+            ], ...$packages],
+            'dev' => $tookDevPackages,
+        ], JSON_THROW_ON_ERROR));
     }
 
     /**

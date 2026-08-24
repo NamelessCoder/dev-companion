@@ -99,6 +99,7 @@ final class Project
      *     root: string,
      *     kind: string,
      *     installed: bool,
+     *     installedAgainstLock: array{state: string, packages: array<int, array{package: string, locked: ?string, installed: ?string}>},
      *     typo3Version: ?string,
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
@@ -134,6 +135,10 @@ final class Project
             // and empty here, and none of them says on its own that nothing is
             // installed rather than that there was nothing to find (`D-ANS-085`).
             'installed' => Instance::packages() !== [],
+            // What that boolean cannot say: a vendor directory older than the
+            // lock satisfies it, and the drift is a field beside it rather than
+            // a third state inside it (`D-ANS-102`).
+            'installedAgainstLock' => Instance::installedAgainstLock($root),
             'typo3Version' => Instance::typo3Version(),
             'phpConstraint' => $php,
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),

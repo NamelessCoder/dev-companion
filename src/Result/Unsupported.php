@@ -14,7 +14,10 @@ use TYPO3\DevCompanion\Installation\Typo3Cli;
  * this directory there is none to ask — which the server knows precisely and
  * can say, so it says that and nothing else. No count, no flag, no empty list
  * standing in for a result, because every one of those is read as the answer by
- * a client that got as far as the fields.
+ * a client that got as far as the fields. What it says beside the cause is
+ * which state the repository the caller stands in is in, which claims nothing
+ * about the question that was asked and is what tells a precondition from a
+ * dead end (`D-ANS-105`).
  *
  * Kept in one place because the distinction it draws is the same every time: an
  * empty result and an unsupported question look identical, and only one of them
@@ -30,6 +33,26 @@ final class Unsupported
 
     /** One was found and its console did not answer. */
     public const NOT_ANSWERING = 'installation-not-answering';
+
+    /** Packages are installed below the root that was found, so an install is not what is missing. */
+    public const REPOSITORY_INSTALLED = 'installed';
+
+    /** The repository declares TYPO3 and nothing is installed below it yet. */
+    public const REPOSITORY_NOT_INSTALLED = 'not-installed';
+
+    /** Nothing the walk reached declares TYPO3, so nothing installed here would answer the question. */
+    public const REPOSITORY_UNDECLARED = 'undeclared';
+
+    /**
+     * What the text says where the repository is waiting for its install.
+     *
+     * The state and what changes it, never an instruction to install: a caller
+     * that reads a refusal as a prescription installs a repository nobody asked
+     * it to (`D-ANS-105`). Worded as `typo3_project_describe` words the same
+     * state, because one state said two ways is two states to a reader.
+     */
+    private const INSTALL_PENDING = 'This repository declares TYPO3 and nothing is installed below it yet, so this '
+        . 'answer changes once composer install has run.';
 
     /**
      * @param array<string, mixed> $echo the caller's own arguments handed back,
@@ -63,10 +86,21 @@ final class Unsupported
             default => self::NO_INSTALLATION,
         };
 
+        $repositoryState = self::repositoryState($misconfiguration);
+
         $text = sprintf('This is not answerable here, which is not the same as an empty answer: %s.', $reason);
+        if ($diagnosis !== '') {
+            $text .= "\n" . $diagnosis;
+        }
+        // Said in the text for the one state that ends by itself, and in the
+        // data for all of them. A sentence on every refusal charges the callers
+        // it tells nothing new.
+        if ($repositoryState === self::REPOSITORY_NOT_INSTALLED) {
+            $text .= "\n" . self::INSTALL_PENDING;
+        }
 
         return ToolResult::create(
-            $diagnosis === '' ? $text : $text . "\n" . $diagnosis,
+            $text,
             $echo + [
                 // The reason travels as data, not only in the text beside it: a
                 // client that renders structuredContent alone would otherwise
@@ -74,6 +108,9 @@ final class Unsupported
                 'unsupported' => [
                     'cause' => $cause,
                     'reason' => $reason,
+                    // What stopped this call says nothing about whether the
+                    // state ends, so the state is beside it.
+                    'repositoryState' => $repositoryState,
                     'diagnosis' => $diagnosis,
                     // Where it looked and what was set wrong belong here too.
                     // typo3_server_scope carried both, and this answer is the
@@ -89,5 +126,30 @@ final class Unsupported
                 ],
             ],
         );
+    }
+
+    /**
+     * Which state the repository the caller stands in is in, or null where
+     * nothing was looked at.
+     *
+     * `cause` says what stopped this call and never whether that state ends, so
+     * a refusal before `composer install` read as permanent and the session
+     * answered the two hours after it out of a core checkout it happened to
+     * have (`D-ANS-105`). What places a repository stays `Instance::project()`:
+     * widened here, an ordinary PHP checkout would be told an install is
+     * pending.
+     */
+    private static function repositoryState(string $misconfiguration): ?string
+    {
+        if (Instance::project() !== null) {
+            return Instance::packages() === [] ? self::REPOSITORY_NOT_INSTALLED : self::REPOSITORY_INSTALLED;
+        }
+
+        // A named root that could not be used searched nothing, and an
+        // entrypoint that handed no directory in placed nothing. Neither has
+        // seen a repository to report the state of.
+        return $misconfiguration !== '' || Instance::startedFrom() === null
+            ? null
+            : self::REPOSITORY_UNDECLARED;
     }
 }

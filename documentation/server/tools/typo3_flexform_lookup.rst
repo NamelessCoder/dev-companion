@@ -147,6 +147,16 @@ Answers with
       cause: string
       # What stopped it, in the words the attempt produced.
       reason: string
+      # One of: installed, not-installed, undeclared, null. Which state the
+      # repository the caller stands in is in, which the cause does not say.
+      # installed: packages are installed below the root that was found, so an
+      # install is not what is missing here. not-installed: the repository declares
+      # TYPO3 and nothing is installed below it yet, so this call is answerable once
+      # composer install has run. undeclared: nothing in the directories walked
+      # declares TYPO3, so an install here would answer nothing. Null where nothing
+      # was looked at: a named root that could not be used, or an entrypoint that
+      # handed no directory in.
+      repositoryState: string or null  # optional
       # What the reason means where the message alone does not say it — a console
       # that starts and then fails on a missing table has a database without a
       # schema, not a broken installation. Empty where nothing beyond the reason is

@@ -3,6 +3,11 @@ id: D-ANS-105
 title: The unsupported answer says what would make it answerable
 date: 2026-08-25
 status: open
+coveredBy:
+  - UnsupportedTest::aNamedRootThatCouldNotBeUsedClaimsNothingAboutTheRepository
+  - UnsupportedTest::aRefusalBeforeTheInstallSaysThatTheStateEnds
+  - UnsupportedTest::aRepositoryDeclaringNoTypo3IsNotToldAnInstallIsPending
+  - UnsupportedTest::anInstalledRepositoryIsNotToldAnInstallIsPending
 ---
 
 # D-ANS-105 — The unsupported answer says what would make it answerable
@@ -111,3 +116,19 @@ and failed, and none of it says the state changes.
 - A caller reads the state as an instruction and installs a repository it was
   not asked to install. Then the refusal has become a prescription, and what the
   answer owes is the state rather than the remedy.
+
+## Since then
+
+The three questions this entry left to the todo were settled on 2026-08-25, in
+the change that carried it out. `repositoryState` is the field that carries the
+state, beside `cause` and nullable: `installed`, `not-installed`, `undeclared`,
+and null where a named root that could not be used left nothing searched.
+`Instance::project()` is reused as it stands, with `Instance::packages()`
+deciding which of the first two a repository is in — so a checkout declaring
+nothing about TYPO3 is answered `undeclared`, which is the second **Wrong if**.
+
+What the text gains is the state. One sentence, in the one state that ends by
+itself — "this answer changes once composer install has run" — saying what
+changes rather than what to run. `settings.root` keeps the line it had: it names
+the variable that names an installation root, and a sentence telling a caller to
+set it is the prescription the third **Wrong if** is about.

@@ -90,3 +90,21 @@ the session is a size mismatch between two counts.
 - A requirement id collides and the two paths are not enough, because moving one
   by hand is the dangerous half. That is `D-DOC-015`'s fourth **Wrong if**
   reached from this side.
+
+## Since then
+
+Confirmed on 2026-08-24 by a day of five sessions at once: four collisions over
+about fifteen cards, three of them on `D-KNW-113` and one on `D-KNW-114`. Each
+was repaired from the assertion's own message, without the page being opened —
+which is what the entry set out to buy. The rate is what `2026-08-13-234208`
+measured at three parallel, so raising the count did not raise the share.
+
+What the message does not cover is the second half of the repair.
+`decisions:renumber` rewrites every path naming the entry's file and prints the
+prose that names the id in backticks — "written up in `D-KNW-113`" in the todo
+card the same session wrote — and moves none of it. That is deliberate and it is
+stated, but at this rate it is the common case rather than the exception: every
+one of the four needed one edit by hand afterwards, and a session that trusts
+the command's silence about its own success ships a card pointing at somebody
+else's entry.
+

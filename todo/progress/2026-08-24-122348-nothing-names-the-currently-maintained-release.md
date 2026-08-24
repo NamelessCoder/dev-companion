@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122348-nothing-names-the-currently-maintained-release.md
 **Priority:** normal
+**Branch:** todo/nothing-names-the-currently-maintained-release
+**Claimed:** 2026-08-24
 
 Choose the call that carries the lines and add the field:
 `typo3_project_describe`, which every session is told to call first and which

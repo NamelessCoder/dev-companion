@@ -285,6 +285,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
 - [`D-KNW-111`][D-KNW-111] — The changelog procedure is a guide of its own · 2026-08-24
 - [`D-KNW-112`][D-KNW-112] — The invocation notes say where runTests.sh stops reading its own options · 2026-08-24
+- [`D-KNW-113`][D-KNW-113] — Reporting a core issue is a subject this server owns · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -390,6 +391,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
 [D-KNW-111]: knowledge/knw-111-the-changelog-procedure-is-a-guide-of-its-own.md
 [D-KNW-112]: knowledge/knw-112-the-invocation-notes-say-where-runtests-sh-stops-reading-its-own-options.md
+[D-KNW-113]: knowledge/knw-113-reporting-a-core-issue-is-a-subject-this-server-owns.md
 [D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

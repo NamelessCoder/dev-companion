@@ -9,6 +9,7 @@ coveredBy:
   - CatalogTest::anElementNoDemoWritesIsNotOffered
   - CatalogTest::anElementTheQueryNamesIsOfferedAsTheWayIn
   - CatalogTest::everyEntryNamesTheActionsThatDemonstrateIt
+  - CatalogTest::noEntryAnswersForAMajorItsStyleguideDidNotListItOn
 ---
 
 # D-CAT-009 — The catalog lists what the styleguide lists
@@ -108,3 +109,23 @@ names both.
 
 What was left was two entries, `form` and `select`, written on 2026-08-24 and
 still to be corrected by the maintainer.
+
+The three questions the todo left open were settled on the same reading.
+
+**Listing a component makes its classes answerable**, because the entry is the
+unit. Whether one class is demonstrated cannot be read out of a template — a
+demo renders through ViewHelpers and web components, and what it does write is
+as often its own page furniture — and a marking derived from that reading was
+built, measured wrong in both directions, and taken out again. A tag survives
+the same reading, which is why the elements carry one and the classes do not.
+
+**Below the oldest major any styleguide ships on, the selection made above it
+applies.** The listing cannot be read there at all, and withholding everything
+would take the answer away from the caller this catalog was repaired for: a
+class that exists on the older major is still answered, and only which
+components are catalogued rests on the listing.
+
+**The boundary binds by version and nothing crosses it.** Measured over the
+twenty-two entries: every one answers from the major its own listing starts on
+or later, and `CatalogTest::noEntryAnswersForAMajorItsStyleguideDidNotListItOn`
+holds it from here rather than leaving it measured once.

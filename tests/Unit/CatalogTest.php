@@ -290,6 +290,41 @@ final class CatalogTest extends TestCase
     }
 
     /**
+     * An entry is in the catalog because the styleguide lists it, so it may not
+     * answer for a major the styleguide had not listed it on yet — that would
+     * be offering as public what nothing had said was — `D-CAT-009`.
+     *
+     * The floor is the oldest major any styleguide ships on. Below it the
+     * listing cannot be read at all, so what applies there is the selection
+     * made above it, and a class that exists on the older major is still
+     * answered: the caller borrowing it is the one this catalog was repaired
+     * for.
+     */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    public function noEntryAnswersForAMajorItsStyleguideDidNotListItOn(): void
+    {
+        $listed = [];
+        foreach (Catalogs::read('component/styleguide') as $action) {
+            $listed[$action['component']] = (int) $action['since'];
+        }
+        $floor = min($listed);
+
+        foreach (Catalogs::read('component/entries') as $entry) {
+            $earliest = min(array_map(
+                static fn(string $action): int => $listed[$action] ?? PHP_INT_MAX,
+                $entry['styleguideActions'],
+            ));
+            $answers = max((int) ($entry['since'] ?? 0), $floor);
+            self::assertGreaterThanOrEqual(
+                $earliest,
+                $answers,
+                $entry['name'] . ' answers from v' . $answers . ' and is listed from v' . $earliest,
+            );
+        }
+    }
+
+    /**
      * The styleguide renamed its templates, so a branch older than the rename
      * spells a demo `.html` where the entry records `.fluid.html`. Reading only
      * the recorded spelling digested no demo at all on that major, and the

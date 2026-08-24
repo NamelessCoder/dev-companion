@@ -11,10 +11,10 @@ runTests.sh. It answers outside a core checkout too — setting up an extension
 manual, PHPUnit in an extension, Playwright in a project — and there the
 core-only documents are withheld and named rather than dropped in silence. What
 comes back is the sections that matched, each naming the document it was cut
-from — or, where every match is in one document, that document whole, because
-the rest of the page regularly answers the next thing. Pass a documentId back
-instead of a query to read any page whole; it needs no resource list. Answers
-from: knowledge.
+from — or, where more than one of them is in one document, that document whole,
+because the rest of the page regularly answers the next thing. Pass a documentId
+back instead of a query to read any page whole; it needs no resource list.
+Answers from: knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -67,9 +67,11 @@ Answers with
         # The TYPO3 majors this section holds for, in words. Empty means every
         # covered major, which is what a section that declares nothing says.
         versions: string  # optional
-        # Share of the query terms the section covers, 0 to 1.
+        # Share of the query terms the section covers, 0 to 1. Zero where no search
+        # ranked this record, which is a page the caller named by documentId.
         coverage: number
-        # Weighted match score; headings weigh more than body text.
+        # Weighted match score; headings weigh more than body text. Zero where no
+        # search ranked this record.
         score: integer
         # Whether the body was cut; read the resource for the rest.
         truncated: boolean
@@ -92,11 +94,11 @@ Answers with
     # third-party one; or uncertain, which means nothing in the call placed the work
     # and what came back is the core's own.
     scope: string
-    # The headings the query matched, where every match was in one document and the
-    # answer is that document whole rather than the excerpts. Empty on every other
-    # answer, whose matches carry their own heading each. The text above a page's
-    # first heading is no heading and is not one of them. A query that matched only
-    # that leaves this empty, and the answer names it in words.
+    # The headings the query matched, where more than one match was in one document
+    # and the answer is that document whole rather than the excerpts. Empty on every
+    # other answer, whose matches carry their own heading each. The text above a
+    # page's first heading is no heading and is not one of them; where it is one of
+    # the matches, the answer names it in words.
     matchedHeadings: [string]
     # Documents that matched and were left out because they answer for the core
     # repository alone. Empty inside the core. Each is still readable in full as its

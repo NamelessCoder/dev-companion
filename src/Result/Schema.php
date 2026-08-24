@@ -233,8 +233,10 @@ final class Schema
             'heading' => self::string('Heading of the matched section.'),
             'body' => self::string('The section as written, formatting included.'),
             'versions' => self::string('The TYPO3 majors this section holds for, in words. Empty means every covered major, which is what a section that declares nothing says.'),
-            'coverage' => ['type' => 'number', 'description' => 'Share of the query terms the section covers, 0 to 1.'],
-            'score' => self::integer('Weighted match score; headings weigh more than body text.'),
+            'coverage' => ['type' => 'number', 'description' => 'Share of the query terms the section covers, 0 to 1. '
+                . 'Zero where no search ranked this record, which is a page the caller named by documentId.'],
+            'score' => self::integer('Weighted match score; headings weigh more than body text. Zero where no search '
+                . 'ranked this record.'),
             'truncated' => ['type' => 'boolean', 'description' => 'Whether the body was cut; read the resource for the rest.'],
         ], ['documentId', 'title', 'uri', 'heading', 'body', 'coverage', 'score', 'truncated']);
     }

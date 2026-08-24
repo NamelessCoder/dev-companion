@@ -9,7 +9,7 @@ one is added.
 
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
-- [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24
+- [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -112,7 +112,7 @@ one is added.
 
 [D-KNW-107]: knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
-[D-KNW-109]: knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
+[D-KNW-110]: knw-110-a-core-commit-message-carries-three-trailers-and-the-hook-s-change-id.md
 [D-KNW-106]: knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
@@ -215,6 +215,7 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24 → D-KNW-110
 - [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a subject this server owns · 2026-08-03 → D-KNW-044
 - [`D-KNW-014`][D-KNW-014] — The record a v14 preview template is handed is a subject this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
@@ -223,6 +224,7 @@ one is added.
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29 → D-KNW-006
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29 → D-KNW-106
 
+[D-KNW-109]: knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
 [D-KNW-040]: knw-040-what-asserts-a-rendered-output-is-a-subject-this-server-owns.md
 [D-KNW-014]: knw-014-the-record-a-v14-preview-template-is-handed-is-a-subject-this-server-owns.md
 [D-KNW-015]: knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md

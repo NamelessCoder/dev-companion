@@ -278,7 +278,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
-- [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24
+- [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -381,7 +381,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-KNW-107]: knowledge/knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knowledge/knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
-[D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
+[D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hook-s-change-id.md
 [D-KNW-106]: knowledge/knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knowledge/knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knowledge/knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md
@@ -948,6 +948,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### Revoked, and kept as the record
 
+- [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24 → D-KNW-110
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says it is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme · 2026-08-09 → D-DOC-026
@@ -986,6 +987,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name · 2026-07-29
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
+[D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-it-is-a-file.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme.md

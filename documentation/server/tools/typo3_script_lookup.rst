@@ -55,9 +55,11 @@ Answers with
         # The TYPO3 majors this section holds for, in words. Empty means every
         # covered major, which is what a section that declares nothing says.
         versions: string  # optional
-        # Share of the query terms the section covers, 0 to 1.
+        # Share of the query terms the section covers, 0 to 1. Zero where no search
+        # ranked this record, which is a page the caller named by documentId.
         coverage: number
-        # Weighted match score; headings weigh more than body text.
+        # Weighted match score; headings weigh more than body text. Zero where no
+        # search ranked this record.
         score: integer
         # Whether the body was cut; read the resource for the rest.
         truncated: boolean

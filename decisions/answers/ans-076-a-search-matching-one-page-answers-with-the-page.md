@@ -118,3 +118,11 @@ searches with several hits and holds of them; a search with one hit satisfies
 the same condition and establishes nothing.
 [`D-ANS-101`](ans-101-a-concentrated-search-is-more-than-one-match.md) puts a
 floor under the count and leaves the rest of this entry standing.
+
+The floor is in since 2026-08-24, and the statement above holds of a search with
+more than one hit. What it costs was measured on the same corpus this entry
+counted: of 103 subjects, 25 reach one page and 12 of those reach one section,
+so a ninth of them is answered with the section and the offer. The reported pair
+is among them — its second call matches `Release Targets` and nothing else — so
+this entry's own founding calls are two cuts now, and the first answer naming
+what the second went looking for is what saves that round trip.

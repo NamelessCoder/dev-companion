@@ -1370,6 +1370,10 @@ final class KnowledgeTest extends TestCase
      * `Release Targets` among its three; the second call is the one whose
      * matches all sit in one page. Both halves the entry bought are still
      * bought, on the other call.
+     *
+     * The reported second call matches one section and is below `D-ANS-101`'s
+     * floor. The query here is that call widened by two subjects the same
+     * session had live: three sections, one page, the round trip still removed.
      */
     #[Decision('D-ANS-076')]
     #[Test]
@@ -1388,15 +1392,11 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('## Release Targets', $first->text);
 
         $second = Registry::call('typo3_rule_lookup', [
-            'query' => 'Releases trailer which branches take a patch today maintained versions',
+            'query' => 'Releases trailer maintained versions changelog entry breaking change deprecation',
             'targetVersion' => '15.0',
         ]);
-        // Two headings since `D-KNW-110` wrote the trailer rule into the same
-        // page, which the word `Releases:` reaches. What the entry holds is
-        // that matches confined to one page answer with the page, and two of
-        // them in one page is that case rather than an exception to it.
         self::assertSame(
-            ['Release Targets', 'Trailers A Core Commit Does Not Carry'],
+            ['Release Targets', 'Changelog Files', 'Changed Signatures'],
             $second->data['matchedHeadings'],
         );
         self::assertSame(1, $second->data['matchCount']);
@@ -1409,13 +1409,86 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The floor `D-ANS-101` puts under `D-ANS-076`.
+     *
+     * `feedback/2026-08-24-110851` asked for `signed-off-by` and was handed
+     * `any/testing/proving-a-condition` whole, six kilobytes on proving a
+     * TypoScript condition, on one body carrying "signed in".
+     *
+     * What the floor costs, measured over `Documents::topics()` on 2026-08-24
+     * at `targetVersion=15.0`: of the corpus's 103 subjects, 25 reach one page
+     * and 12 of those reach exactly one section. So a ninth of the subjects is
+     * answered with the section and the offer where the page came before.
+     */
+    #[Decision('D-ANS-101')]
+    #[Test]
+    public function onlyMoreThanOneMatchedSectionHandsThePageOver(): void
+    {
+        $thin = Registry::call('typo3_rule_lookup', [
+            'query' => 'signed-off-by',
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame(1, $thin->data['matchCount']);
+        self::assertSame([], $thin->data['matchedHeadings']);
+        self::assertSame('Which URL Is Requested', $thin->data['matches'][0]['heading']);
+        self::assertStringNotContainsString(
+            Documents::read('any/testing/proving-a-condition'),
+            $thin->text,
+            'a page is pushed on the evidence of one word',
+        );
+        // The cut owes the offer, which is how the page is still reachable.
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $thin->text);
+
+        $query = 'Releases trailer maintained versions changelog entry breaking change deprecation';
+        $page = Registry::call('typo3_rule_lookup', ['query' => $query, 'targetVersion' => '15.0']);
+
+        self::assertGreaterThan(1, count(Documents::search($query, [], 6, [15])));
+        self::assertSame(1, $page->data['matchCount']);
+        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $page->text);
+    }
+
+    /**
+     * The pair a match is ranked by, on the two answers that hand a page over.
+     *
+     * The session above read the `score: 0` beside its answer as "nothing
+     * matched" and was right by accident: the zero was a constant, and the
+     * search had scored that match 48. The `coverage: 1.0` beside it was the
+     * constant nothing caught, since it asserts that the page covers the whole
+     * query — `D-ANS-101`.
+     */
+    #[Decision('D-ANS-101')]
+    #[Test]
+    public function aPageRecordCarriesWhatTheSearchMeasured(): void
+    {
+        $query = 'Releases trailer maintained versions changelog entry breaking change deprecation';
+        $page = Registry::call('typo3_rule_lookup', ['query' => $query, 'targetVersion' => '15.0']);
+        $matched = Documents::search($query, [], 6, [15]);
+
+        self::assertSame($matched[0]['score'], $page->data['matches'][0]['score']);
+        self::assertSame(round($matched[0]['coverage'], 3), $page->data['matches'][0]['coverage']);
+        // The query this page answers four fifths of, where the constant
+        // asserted all of it.
+        self::assertLessThan(1.0, $page->data['matches'][0]['coverage']);
+
+        // A page the caller named was matched against nothing, and both halves
+        // of the pair say so.
+        $named = Registry::call('typo3_rule_lookup', ['documentId' => 'core/contribution/commit-messages']);
+        self::assertSame(0, $named->data['matches'][0]['score']);
+        self::assertSame(0.0, $named->data['matches'][0]['coverage']);
+    }
+
+    /**
      * The two calls reported on 2026-08-14, which read "of which the query
      * matched The Probe, ." — the text above a page's first heading is a
      * section this corpus returns, and it carries no heading.
      *
-     * It is named for what it is rather than dropped: a query that matched it
-     * alone would otherwise be told the page it was handed matched nothing.
+     * It is named for what it is rather than dropped, which the second call
+     * holds. The first matched the opening alone, and a page has one such
+     * section, so `D-ANS-101`'s floor makes that answer the cut — where the
+     * excerpt is named by the document's own title.
      */
+    #[Decision('D-ANS-101')]
     #[Test]
     public function aMatchedOpeningIsNamedForWhatItIs(): void
     {
@@ -1426,9 +1499,15 @@ final class KnowledgeTest extends TestCase
             'targetVersion' => '15.0',
         ]);
         self::assertSame([], $opening->data['matchedHeadings']);
-        self::assertStringContainsString(
-            sprintf('%d headings, of which the query matched none, and the opening above the first heading.', $headings),
+        self::assertStringNotContainsString(
+            Documents::read('core/testing/proving-a-rendering'),
             $opening->text,
+            'one matched section is below the floor and the page is not handed over',
+        );
+        self::assertStringContainsString('## Proving What a Rendering Change Renders', $opening->text);
+        self::assertSame(
+            'Proving What a Rendering Change Renders',
+            $opening->data['matches'][0]['heading'],
         );
 
         $both = Registry::call('typo3_rule_lookup', [

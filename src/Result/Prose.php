@@ -45,18 +45,23 @@ final class Prose
     /**
      * The page every match came out of, instead of the matches.
      *
-     * A search whose hits all sit in one document has established which page
-     * answers the task, and cutting it there buys nothing: the second search is
-     * the expensive part, not the text (`D-ANS-076`). The page is handed over as
-     * written, which is what `documentId` does and for the same reason — a
-     * section left out for a major it does not hold on is a hole in a page, and
-     * every bound section carries its own range under its heading.
+     * A search whose several hits all sit in one document has established which
+     * page answers the task, and cutting it there buys nothing: the second
+     * search is the expensive part, not the text (`D-ANS-076`). How many hits
+     * that takes is the caller's floor rather than this renderer's —
+     * `D-ANS-101`. The page is handed over as written, which is what
+     * `documentId` does and for the same reason — a section left out for a
+     * major it does not hold on is a hole in a page, and every bound section
+     * carries its own range under its heading.
+     *
+     * One of the matches may be the text above the first heading, which carries
+     * no heading; all of them cannot, since a page has one such section and the
+     * floor takes two.
      *
      * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
      */
     public static function wholePage(string $documentId, array $results): string
     {
-        $matched = self::matchedHeadings($results);
         $headings = Documents::headings($documentId);
 
         return self::BOUND_ELSEWHERE . "\n\n"
@@ -67,7 +72,7 @@ final class Prose
                 $results[0]['title'],
                 Documents::uri($documentId),
                 count($headings),
-                $matched === [] ? 'none' : implode(', ', $matched),
+                implode(', ', self::matchedHeadings($results)),
                 self::matchedTheOpening($results) ? ', and the opening above the first heading' : '',
             )
             . Documents::read($documentId);
@@ -101,24 +106,53 @@ final class Prose
     }
 
     /**
-     * One whole document as the single match it is, for the two answers that
-     * hand a page over rather than excerpts from it.
+     * The page a search concentrated in, as the one record its answer carries.
+     *
+     * The pair it is ranked by is the best-ranked match's, which is the section
+     * the ordering put the answer on. It was the constants `0` and `1.0` until
+     * `D-ANS-101`: a session read the score as "nothing matched" and was right
+     * by accident, and the coverage asserted that the page answers the whole
+     * query on a client that may validate the declared schema and act on it.
+     *
+     * @param array<int, array{id: string, title: string, heading: string, body: string, since: ?int, until: ?int, score: int, coverage: float, truncated: bool}> $results
+     * @return array<int, array<string, mixed>>
+     */
+    public static function pageRecords(string $documentId, array $results): array
+    {
+        return self::pageRecord(
+            $documentId,
+            $results[0]['title'],
+            $results[0]['score'],
+            round($results[0]['coverage'], 3),
+        );
+    }
+
+    /**
+     * The page a caller named by documentId, as the one record that answer
+     * carries.
+     *
+     * No search ran, so both halves of the pair are zero rather than a
+     * measurement nothing made — `D-ANS-101`.
      *
      * @return array<int, array<string, mixed>>
      */
-    public static function pageRecords(string $documentId, string $title): array
+    public static function namedPageRecords(string $documentId, string $title): array
     {
-        $body = Documents::read($documentId);
+        return self::pageRecord($documentId, $title, 0, 0.0);
+    }
 
+    /** @return array<int, array<string, mixed>> */
+    private static function pageRecord(string $documentId, string $title, int $score, float $coverage): array
+    {
         return [[
             'documentId' => $documentId,
             'title' => $title,
             'uri' => Documents::uri($documentId),
             'heading' => $title,
-            'body' => $body,
+            'body' => Documents::read($documentId),
             'versions' => '',
-            'coverage' => 1.0,
-            'score' => 0,
+            'coverage' => $coverage,
+            'score' => $score,
             'truncated' => false,
         ]];
     }

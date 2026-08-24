@@ -422,6 +422,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-KNW-072`][R-KNW-072] — Which interpreter a covered version needs is answerable before anything is installed · held
 - [`R-KNW-073`][R-KNW-073] — A step that reads from a cache says what invalidates it · held
 - [`R-KNW-074`][R-KNW-074] — A prescribed command whose success is unconditional carries its discriminator · held
+- [`R-KNW-075`][R-KNW-075] — A change to the core commit trailer rule is the maintainer's · **open**
 
 [R-KNW-001]: knowledge/knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knowledge/knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -497,6 +498,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-KNW-072]: knowledge/knw-072-which-interpreter-a-covered-version-needs-is-answerable-before-anything-is-installed.md
 [R-KNW-073]: knowledge/knw-073-a-step-that-reads-from-a-cache-says-what-invalidates-it.md
 [R-KNW-074]: knowledge/knw-074-a-prescribed-command-whose-success-is-unconditional-carries-its-discriminator.md
+[R-KNW-075]: knowledge/knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainer-s.md
 
 ### code
 

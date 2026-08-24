@@ -3,6 +3,10 @@ id: D-ANS-101
 title: A concentrated search is more than one match
 date: 2026-08-24
 status: open
+coveredBy:
+  - KnowledgeTest::aMatchedOpeningIsNamedForWhatItIs
+  - KnowledgeTest::aPageRecordCarriesWhatTheSearchMeasured
+  - KnowledgeTest::onlyMoreThanOneMatchedSectionHandsThePageOver
 ---
 
 # D-ANS-101 — A concentrated search is more than one match
@@ -38,14 +42,29 @@ hit has established that one word landed somewhere.
 - The two constants disagree, and the wrong one is not the one that read as
   wrong. `coverage: 1.0` asserts that the page covers the whole query, and a
   client validating the declared `outputSchema()` may act on it.
+- **The same shape in this server's own curated queries.** `rulesQuery: "icon"`
+  in `knowledge/task-intents.json` reaches one section — `Changed Signatures` of
+  `core/contribution/commit-messages`, score 48, coverage 1.00 — and hands the
+  whole commit-message page over on the word appearing in it once.
+- **What the floor costs, measured over `Documents::topics()` on 2026-08-24 at
+  `targetVersion=15.0`.** Of the corpus's 103 subjects, 25 reach one page and 12
+  of those reach exactly one section: a ninth of the subjects is answered with
+  the section and the offer where the page came before. Those 12 score 191 to
+  618 against the 48 of both thin matches, because each names a heading
+  outright; the count does not tell them apart and the score would.
+- **The reported pair of `D-ANS-076` is below the floor.**
+  `feedback/2026-08-10-182523`'s second call matches one section,
+  `Release Targets`, at score 212 — so the entry's own founding pair is now two
+  cuts, and what removes the round trip there is the offer that names the page
+  rather than the page.
 
 ## Decided
 
 - A floor on how many sections matched, not on the score. Score and coverage are
   already what `search()` keeps a match by, and what fails here is a page handed
-  over on the evidence of one word. What the floor is is measured by the work,
-  against `Documents::topics()`, which says how many of the corpus's own
-  subjects reach exactly one section.
+  over on the evidence of one word. The floor is two sections, which is the only
+  height a count has here: one is what both thin matches have, and the
+  measurement above is what it costs.
 - The measured score and coverage go into the page record. A field the schema
   declares is a claim, and a constant standing in for a measurement is the one
   kind of wrong nothing downstream detects.
@@ -55,19 +74,23 @@ hit has established that one word landed somewhere.
 - Below the floor the answer is the cut, with the offer to read the page whole
   that `Prose::sections()` already carries. Nothing is withheld; the page stops
   being pushed.
-- What the `documentId` path reports is part of the work rather than settled
-  here. A caller who named the page was matched against nothing, and `coverage`
-  and `score` are required by the declared schema — so a nullable pair is a
-  contract change, and the alternative is a record saying the page was named.
+- The `documentId` path reports zero on both halves of the pair, and the schema
+  says what that zero is: no search ranked this record. Nothing is nullable, so
+  no client that reads a number gets null, and the `coverage: 1.0` that asserted
+  a full-query answer where no query was asked is gone. A page the caller named
+  is the one record here whose zero score is not a measurement standing in for a
+  strong match.
 - `D-ANS-076` stands. Two thirds of queries reach more than one page and are
   untouched, and the round trip it removed stays removed; what moves is the
   bottom of its range.
 
 ## Assumed
 
-- That a one-hit search is rare enough for the floor to cost little. Not
-  measured here; `Documents::topics()` and `bin/cli tools:record` are where it
-  is.
+- That a caller's queries look less like the corpus's own headings than the 12
+  above do. Each of those names a heading word for word, which is what a subject
+  list is and not what a session types. The queries this server has on record
+  are the nine curated `rulesQuery` values, where the one reaching a single
+  section is the thin one.
 - That the hyphen and the six-character stem are right elsewhere.
   `signed-off-by` is one word to `meaningful()` by the same rule that keeps
   `f:if` and `EXT:core` whole, and this entry changes what is done with a thin

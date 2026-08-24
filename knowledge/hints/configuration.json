@@ -135,6 +135,23 @@
       "It refuses a database that already has tables, with exception 1669747200 naming how many it found; --force overwrites the settings files and never the schema. That check is on the server-database path only — the sqlite path calculates a fresh file and never reaches it. Without --force the run stops earlier still, on config/system/settings.php already existing, which is exception 1669747685 and which --no-interaction answers with no. So the guard an idempotent installer needs is that file: test for it yourself rather than reading an exit code.",
       "--create-site <url> and TYPO3_SETUP_CREATE_SITE create the root page and its site configuration under config/sites/.",
       {
+        "text": "The same run writes config/sites/<identifier>/setup.typoscript, a welcome page = PAGE with the TYPO3 logo and the content of the root page in it. A site's own TypoScript is applied after the sets it depends on — SysTemplateTreeBuilder hangs the set includes below the site's include node, and a node's own lines are read after its children — so the file replaces every path it assigns and leaves the rest of what the sets built standing. An installation whose rendering comes from a set deletes that file or replaces its content.",
+        "since": 14
+      },
+      {
+        "text": "That override is silent: the page answers HTTP 200, the log stays empty, and the set really is loaded. What tells it apart from a set that was never applied is a marker on a path the welcome file does not assign — a page.5 = TEXT added to the set renders in the first case and is missing in the second.",
+        "since": 14
+      },
+      {
+        "text": "The command inserts a root sys_template row instead, titled Main TypoScript Rendering, carrying clear = 3 and the same welcome page object in its config, and it writes no site TypoScript file.",
+        "until": 13
+      },
+      {
+        "text": "That row is the harder collision, because a sys_template that clears resets the AST: a site carrying sets loses everything they contributed rather than the paths the row itself names. The same clash inside a functional test is extension-test-site.",
+        "since": 13,
+        "until": 13
+      },
+      {
         "text": "Neither that pair nor --distribution is read where a distribution is already active, and shipping Initialisation/data.xml or Initialisation/data.t3d is the whole test for being one. In Composer mode every required package is active, so requiring such a package makes both inert: the command warns that they have no effect, writes no site configuration, and the installation has no way to be told its own URL.",
         "since": 14
       },

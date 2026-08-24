@@ -12,7 +12,9 @@
       "setup.typoscript",
       "constants.typoscript",
       ".typoscript",
-      "how does an extension ship typoscript"
+      "how does an extension ship typoscript",
+      "welcome page instead of the site set",
+      "site set typoscript has no effect"
     ],
     "hints": [
       {
@@ -25,6 +27,10 @@
       },
       "TypoScript files use the .typoscript extension.",
       "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
+      {
+        "text": "What a set contributes is overridden by what the installation was created with: typo3 setup --create-site leaves a welcome page object behind that is read after every set, and installation-setup says where that object sits on each major and how to be rid of it.",
+        "since": 13
+      },
       "site-set-settings is what replaces constants, and it is why a site's own values are kept in one place: settings.yaml and the inline settings key are alternatives rather than layers, so the first backend save drops what was written inline. site-set-labels-and-layouts is what a set declares beside TypoScript, and a page layout column it ships without an identifier is a column the frontend template cannot reach. site-set-migration is the registration the move leaves behind in ext_localconf.php, which nothing reports and no scanner sees."
     ]
   },

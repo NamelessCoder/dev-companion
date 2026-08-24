@@ -46,12 +46,11 @@ than about the path.
 
 - The path carries the pid and a random suffix, which is what the rest of the
   suite already does. The rule stands in the method that builds the path,
-  because that is where somebody would shorten it back; the measurement is
-  here.
+  because that is where somebody would shorten it back; the measurement is here.
 - Rejected: a check reading the other test files for a fixed temporary path.
   `R-COD-003` is deliberately not guarded, for the reason `D-COD-004` gives — a
-  suite that greps itself reports on its own shape instead of on this server's
-  — and this rule would be the same shape.
+  suite that greps itself reports on its own shape instead of on this server's —
+  and this rule would be the same shape.
 - `coveredBy` is empty because the failure needs two processes and the suite is
   one. What the fix rests on is the reproduction above, which nothing here runs
   again.

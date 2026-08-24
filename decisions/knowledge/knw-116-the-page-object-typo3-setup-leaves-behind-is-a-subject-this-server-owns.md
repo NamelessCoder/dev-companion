@@ -3,7 +3,8 @@ id: D-KNW-116
 title: The page object typo3 setup leaves behind is a subject this server owns
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - HintsTest::whatCreateSiteLeavesRenderingThePageIsAnsweredPerMajor
 ---
 
 # D-KNW-116 — The page object typo3 setup leaves behind is a subject this server owns
@@ -18,7 +19,7 @@ core for a CSS length out of the rendered markup.
 
 ## Evidence
 
-- [`feedback/2026-08-24-140130`](../../feedback/2026-08-24-140130-typo3-setup-create-site-also-writes-a-site.md)
+- [`feedback/2026-08-24-140130`](../../feedback/archive/2026-08-24-140130-typo3-setup-create-site-also-writes-a-site.md)
   quotes the hint correctly. `installation-setup` carries "--create-site \<url\>
   and TYPO3_SETUP_CREATE_SITE create the root page and its site configuration
   under config/sites/", and no statement of that hint says what else lands
@@ -122,3 +123,23 @@ core for a CSS length out of the rendered markup.
 - A second `typo3 setup` run behind `--force` rewrites the file over a site
   whose rendering was corrected. The statement would owe the re-run as well as
   the first install, and what it says about taking the file out is not enough.
+
+## Since then
+
+The statement was written on 2026-08-24, bound twice as decided, and the reading
+the entry deferred settled the first **Wrong if**: the `13.4` row does reach a
+set, and `12.4` has no sets to reach. `SysTemplateTreeBuilder` hangs the sets
+below the site's own include node, `IncludeTreeTraverser` reads a node's
+children before the node's own lines, and `IncludeTreeAstBuilderVisitor` resets
+the AST for a `SysTemplateInclude` with the clear flag and for nothing else — so
+the row discards what the sets built and the file on `14.3` and `main` replaces
+only the paths it assigns. Sets exist from `13`, so the clearing half is bound
+to that major alone and the row itself to both. The **Assumed** about `main`
+held: its `createSite()` is `14.3`'s but for the injected services.
+
+The re-run behind `--force` is half settled. `SetupCommand` calls `createSite()`
+whenever a URL is given and no distribution is active, with no guard on a site,
+a root page or a file that already exists, so a second run that reaches that
+step writes both again. Whether it reaches it is the database check the run
+stops at first, which is `D-KNW-046`'s subject and an installation's answer
+rather than a checkout's. The other two **Wrong if** are a forward run's.

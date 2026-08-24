@@ -6928,6 +6928,52 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('project-extension-tests', $statements);
     }
 
+    /**
+     * Read in `.checkouts/` on 2026-08-24. `SetupService::createSite()` writes
+     * `config/sites/<identifier>/setup.typoscript` and inserts no
+     * `sys_template` on `14.3` and on `main`, and inserts the row and writes no
+     * file on `12.4` and `13.4`. Which of the two wins is
+     * `SysTemplateTreeBuilder`: the sets hang below the site's include node,
+     * `IncludeTreeTraverser` reads a node's children before the node's own
+     * lines, and only a `SysTemplateInclude` with the clear flag resets the AST
+     * — `D-KNW-116`.
+     */
+    #[Decision('D-KNW-116')]
+    #[Test]
+    public function whatCreateSiteLeavesRenderingThePageIsAnsweredPerMajor(): void
+    {
+        $on = static fn(int $major): string => implode("\n", array_column(
+            (array) Hints::byId('installation-setup', $major)['hints'],
+            'text',
+        ));
+
+        foreach ([14, 15] as $major) {
+            self::assertStringContainsString('config/sites/<identifier>/setup.typoscript', $on($major));
+            self::assertStringContainsString('applied after the sets it depends on', $on($major));
+            self::assertStringNotContainsString('sys_template', $on($major));
+        }
+
+        foreach ([12, 13] as $major) {
+            self::assertStringContainsString('root sys_template row', $on($major));
+            self::assertStringNotContainsString('setup.typoscript', $on($major));
+        }
+
+        // The row is the harder half, and it is only a collision where sets
+        // exist at all — which is one of the two majors that carry it.
+        self::assertStringContainsString('resets the AST', $on(13));
+        self::assertStringNotContainsString('resets the AST', $on(12));
+
+        // What the caller pays for is that none of it fails, so the symptom is
+        // stated with the marker that tells an overridden set from one that was
+        // never loaded.
+        self::assertStringContainsString('answers HTTP 200', $on(14));
+        self::assertStringContainsString('page.5 = TEXT', $on(14));
+
+        // A session whose set does not render arrives on the symptom words,
+        // which the probe answers with the set hint rather than the install one.
+        self::assertStringContainsString('installation-setup', self::statementsOf('site-sets'));
+    }
+
     #[Requirement('R-ANS-011')]
     #[Test]
     public function aRepeatableContentElementIsRoutedThroughWhatItOwns(): void

@@ -290,8 +290,13 @@ Two things put a feedback on the other side of that line, and either is enough:
 
 * **The change touches ``src/``, a tool's declared schema, or a skill's
   contract.** Those are reviewed rather than improvised.
-* **Something about TYPO3 has to be looked up.** Then it is a todo, however
-  small, because the run that judged it has read nothing but this repository.
+* **Something about TYPO3 is still to be looked up.** Then it is a todo, however
+  small, because the run that judged it has read nothing but this repository. A
+  lookup the judging run already made is not that: where it read the checkout
+  and holds the evidence, queueing sends the next session to read the same files
+  again, which is what
+  `D-FBK-052 <../../decisions/feedback/fbk-052-a-judgement-that-holds-the-evidence-makes-the-change.md>`_
+  measured.
 
 Already answered
 ~~~~~~~~~~~~~~~~

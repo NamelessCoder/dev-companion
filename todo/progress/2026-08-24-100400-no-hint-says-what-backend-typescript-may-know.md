@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100400-no-hint-says-what-backend-typescript-may-know.md
 **Priority:** low
+**Branch:** todo/no-hint-says-what-backend-typescript-may-know
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

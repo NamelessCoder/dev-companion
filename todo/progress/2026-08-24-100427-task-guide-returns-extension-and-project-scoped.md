@@ -1,7 +1,9 @@
-# The scratch-probe procedure's `git checkout --` destroys the change under development
+# task_guide returns extension- and project-scoped hints for a repository already established as a ...
 
-**Serves:** feedback/2026-08-24-100329-the-scratch-probe-procedure-s-git-checkout.md
+**Serves:** feedback/2026-08-24-100427-task-guide-returns-extension-and-project-scoped.md
 **Priority:** low
+**Branch:** todo/task-guide-returns-extension-and-project-scoped
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

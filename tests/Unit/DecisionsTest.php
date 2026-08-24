@@ -271,7 +271,10 @@ final class DecisionsTest extends TestCase
         $missed = [];
         foreach (Decisions::all() as $decision) {
             foreach ($decision['tests'] as $test) {
-                [$class, $method] = explode('::', $test);
+                // A name without a method is a class holding the entry
+                // throughout, which the attribute allows and the front matter
+                // writes as the bare class.
+                [$class, $method] = array_pad(explode('::', $test), 2, '');
                 if (!in_array($decision['id'], array_column(Decisions::restingOn($class, $method), 'id'), true)) {
                     $missed[] = $decision['id'] . ' names ' . $test . ' and is not held from it';
                 }

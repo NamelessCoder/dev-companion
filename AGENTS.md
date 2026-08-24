@@ -450,7 +450,7 @@ bin/cli knowledge:format <path>   # only that part of it
   heading moves and the link still lands on the page.
 - **A test that holds a decision or a requirement declares it**:
   `#[Decision('D-DOC-048')]` and `#[Requirement('R-COD-003')]` over the method
-  it is held by, repeated on each where a class holds one throughout.
+  it is held by, or over the class where the whole class is the answer.
   `bin/cli decisions:cover` and `bin/cli requirements:cover` write that entry's
   `coveredBy` or `heldBy` from them — the attribute is the source and the front
   matter is the copy, so a renamed test rewrites the entry instead of orphaning

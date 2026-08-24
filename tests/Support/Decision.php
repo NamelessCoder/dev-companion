@@ -14,9 +14,12 @@ namespace TYPO3\DevCompanion\Tests\Support;
  * attribute it is data, and `bin/cli decisions:cover` generates the entry's
  * `coveredBy` from it, so the two halves cannot say different things.
  *
- * One per decision, repeated where a test holds more than one.
+ * One per decision, repeated where a test holds more than one, and over the
+ * class where the whole class is the answer — `BackendCssTest` is eleven
+ * methods about one entry, and naming it eleven times says nothing the class
+ * does not.
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 final class Decision
 {
     public function __construct(public string $id) {}

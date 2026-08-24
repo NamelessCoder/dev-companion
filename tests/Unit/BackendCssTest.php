@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Upkeep\BackendCss;
 
+#[Decision('D-CAT-008')]
 final class BackendCssTest extends TestCase
 {
     /**
@@ -17,7 +18,6 @@ final class BackendCssTest extends TestCase
      * table and is the element above it, and reading the class off its own name
      * is what shipped it onto the wrong node.
      */
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aWrapperIsPlacedAboveTheClassItWraps(): void
     {
@@ -26,7 +26,6 @@ final class BackendCssTest extends TestCase
         self::assertSame('around', $css->position('table-fit', 'table'));
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aModifierWrittenOnTheSameElementIsPlacedOnIt(): void
     {
@@ -35,7 +34,6 @@ final class BackendCssTest extends TestCase
         self::assertSame('on', $css->position('panel-heading', 'panel'));
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aPartWrittenBeneathTheRootIsPlacedBelowIt(): void
     {
@@ -49,7 +47,6 @@ final class BackendCssTest extends TestCase
      * Saying `on` here would be a guess: nothing in the stylesheet writes the
      * two names together, and the derivation states what it read.
      */
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aClassNoSelectorPlacesHasNoPosition(): void
     {
@@ -64,7 +61,6 @@ final class BackendCssTest extends TestCase
      * `.table`, and matching it as one placed every bordered table inside a
      * wrapper that does not exist.
      */
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aLongerNameIsNotTheClassItStartsWith(): void
     {
@@ -73,7 +69,6 @@ final class BackendCssTest extends TestCase
         self::assertNull($css->position('table-fit', 'table'));
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     public function whatIsStyledWithinIsSeparateFromWhereTheClassSits(): void
     {
@@ -86,7 +81,6 @@ final class BackendCssTest extends TestCase
     }
 
     /** Only what the caller already knows, so an implementation detail beneath a wrapper stays out. */
-    #[Decision('D-CAT-008')]
     #[Test]
     public function whatIsStyledWithinHoldsOnlyNamesTheCallerNamed(): void
     {
@@ -100,7 +94,6 @@ final class BackendCssTest extends TestCase
      * head as a selector put `@media (min-width:768px)` in the list, where it
      * matched nothing and cost every lookup a pass over it.
      */
-    #[Decision('D-CAT-008')]
     #[Test]
     public function selectorsInsideAMediaQueryAreRead(): void
     {
@@ -109,7 +102,6 @@ final class BackendCssTest extends TestCase
         self::assertSame(['.table-fit>.table'], $css->selectors());
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aCommentIsNotASelector(): void
     {
@@ -118,7 +110,6 @@ final class BackendCssTest extends TestCase
         self::assertSame(['.table'], $css->selectors());
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     #[DataProvider('combinators')]
     public function everyCombinatorPlacesTheClassTheSameWay(string $selector): void
@@ -139,7 +130,6 @@ final class BackendCssTest extends TestCase
         ];
     }
 
-    #[Decision('D-CAT-008')]
     #[Test]
     public function aClassTheStylesheetNeverWritesIsNotCarried(): void
     {

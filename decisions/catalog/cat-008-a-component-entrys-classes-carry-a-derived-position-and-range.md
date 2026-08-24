@@ -4,17 +4,7 @@ title: A component entry's classes carry a derived position and range
 date: 2026-08-24
 status: open
 coveredBy:
-  - BackendCssTest::aClassNoSelectorPlacesHasNoPosition
-  - BackendCssTest::aClassTheStylesheetNeverWritesIsNotCarried
-  - BackendCssTest::aCommentIsNotASelector
-  - BackendCssTest::aLongerNameIsNotTheClassItStartsWith
-  - BackendCssTest::aModifierWrittenOnTheSameElementIsPlacedOnIt
-  - BackendCssTest::aPartWrittenBeneathTheRootIsPlacedBelowIt
-  - BackendCssTest::aWrapperIsPlacedAboveTheClassItWraps
-  - BackendCssTest::everyCombinatorPlacesTheClassTheSameWay
-  - BackendCssTest::selectorsInsideAMediaQueryAreRead
-  - BackendCssTest::whatIsStyledWithinHoldsOnlyNamesTheCallerNamed
-  - BackendCssTest::whatIsStyledWithinIsSeparateFromWhereTheClassSits
+  - BackendCssTest
   - CatalogTest::aClassIsAnsweredOnAMajorItsEntrysListDoesNotReach
   - CatalogTest::aWrapperIsNotListedAmongTheModifiersOfWhatItWraps
   - CatalogTest::noClassIsListedByTwoEntries

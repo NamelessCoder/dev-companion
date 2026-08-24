@@ -5,6 +5,7 @@ date: 2026-08-18
 status: confirmed
 coveredBy:
   - HintsTest::theDdevSettingsAnswerSaysWhenThatFileIsWritten
+  - HintsTest::theRoutesOutOfAGeneratedAdditionalPhpAreOrdered
 ---
 
 # D-KNW-085 — When DDEV writes additional.php is a subject this server owns
@@ -143,3 +144,43 @@ session's own subject — "DDEV additional.php trustedHostsPattern first start
 fresh clone" — reaches `project-configuration-files` first at
 `appliesTo(37) + text(366)`, against the `text(335)` this entry recorded before
 the statement landed.
+
+## Since then
+
+The ordering this entry decided did not land in the wording, and the next
+session read the pair flat. Judged on 2026-08-24 from
+`feedback/2026-08-24-140222`, a session setting a DDEV development installation
+up for a TYPO3 extension.
+
+The confirmation above says the statement names starting again as the way out
+and the committed project-owned file as the other. What both surfaces were
+written with is a semicolon and an "or": "starts it again afterwards; a
+project-owned additional.php is the other way out", and "— or commit a
+project-owned additional.php that is there from the first request". Neither
+carries an order, neither says what the second costs, and the reporting session
+took it for the route to a single-command start. It committed
+`config/system/additional.php` with all four sections, set
+`disable_settings_management: true`, un-ignored the path, and had the commit
+rejected by the user against a reference repository that leaves the file
+generated.
+
+Step 4 of the ladder on that half, and step 2 on the other. The answer for the
+repository the session was actually in exists here and did not reach the brief:
+`extension-repository-installation` states that the Composer root is the package
+and that `config/` with `settings.php`, `additional.php` and `sites/` belongs in
+`.gitignore`. The brief had placed `Configuration/Sets/…/config.yaml` as an
+extension path in its own opening paragraph and then handed over the
+`installation-operations` checklist, which is `scope: project` throughout. The
+re-run of the feedback's own query on 2026-08-24 returned both items unchanged.
+
+Closed on the spot rather than queued. Nothing about DDEV or TYPO3 is looked up
+by it: the ordering is this entry's own reading, and what an extension
+repository does with `config/` is `extension-repository-installation`, read
+against `/home/benji/projects/syntax` on 2026-08-04 and recorded in `D-KNW-049`.
+What is added is the order, the cost and the pointer, in the hint and in the
+checklist item, and `R-KNW-076` holds both.
+
+No gate on the intent itself. `installation-operations` is right for an
+extension repository in everything but that clause — the hooks, the setup order,
+the seeding and the two starts all hold there — so the repair is the clause
+rather than a scope condition that would withhold the whole checklist.

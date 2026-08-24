@@ -83,6 +83,7 @@ when it is added.
 - [`R-KNW-073`][R-KNW-073] — A step that reads from a cache says what invalidates it · held
 - [`R-KNW-074`][R-KNW-074] — A prescribed command whose success is unconditional carries its discriminator · held
 - [`R-KNW-075`][R-KNW-075] — A change to the core commit trailer rule is the maintainer's · **open**
+- [`R-KNW-076`][R-KNW-076] — The two routes out of a generated additional.php are given in order · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -159,3 +160,4 @@ when it is added.
 [R-KNW-073]: knw-073-a-step-that-reads-from-a-cache-says-what-invalidates-it.md
 [R-KNW-074]: knw-074-a-prescribed-command-whose-success-is-unconditional-carries-its-discriminator.md
 [R-KNW-075]: knw-075-a-change-to-the-core-commit-trailer-rule-is-the-maintainers.md
+[R-KNW-076]: knw-076-the-two-routes-out-of-a-generated-additional-php-are-given-in-order.md

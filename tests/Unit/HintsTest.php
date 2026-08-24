@@ -3381,6 +3381,51 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-076`. The restart and the committed file were stated as a
+     * coordinate pair — "starts it again afterwards; a project-owned
+     * additional.php is the other way out" — and a session in an extension
+     * repository read the second as an equally weighted alternative, committed
+     * `config/system/` and was corrected by the user it was working for.
+     * `D-KNW-085` had already decided the ordering; what did not land was the
+     * wording that carries it.
+     *
+     * Both surfaces are held, for the reason `D-KNW-085` states: repairing one
+     * leaves the other offering the pair flat.
+     */
+    #[Requirement('R-KNW-076')]
+    #[Decision('D-KNW-085')]
+    #[Test]
+    public function theRoutesOutOfAGeneratedAdditionalPhpAreOrdered(): void
+    {
+        $text = self::statementsOf('project-configuration-files');
+
+        // The restart is the route, and it is over rather than repeated.
+        self::assertStringContainsString('that second start ends the ordering for good', $text);
+
+        // The committed file is the second choice, and what it costs is said.
+        self::assertStringContainsString('the other way out rather than the first', $text);
+        self::assertStringContainsString('puts installation state under version control', $text);
+
+        // Which repository may pay that cost, and which one may not.
+        self::assertStringContainsString('deploys from the checkout', $text);
+        self::assertStringContainsString('config/ is ignored whole', $text);
+        self::assertStringContainsString('extension-repository-installation', $text);
+
+        $checklist = implode("\n", Registry::call('typo3_task_guide', [
+            'task' => 'Set up a DDEV development installation for a TYPO3 extension so its site set '
+                . 'can be verified in a real frontend',
+            'changeType' => 'operations',
+            'paths' => ['.ddev/config.yaml', 'composer.json', 'Configuration/Sets/Example/config.yaml'],
+        ])->data['checklist']);
+
+        self::assertStringContainsString('the other way out rather than the first', $checklist);
+        self::assertStringContainsString(
+            'typo3_hint_lookup with id=extension-repository-installation',
+            $checklist,
+        );
+    }
+
+    /**
      * `D-FBK-018`. What a boot brief is credited with is not the verdict but the
      * file, command or number the caller can check the verdict against. Each of
      * the three was in no assertion, so the decidable half could have been

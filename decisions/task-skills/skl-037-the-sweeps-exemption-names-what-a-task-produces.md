@@ -103,3 +103,18 @@ the three and fell through it again.
   crossing.
 - A review names the step it did not reach and a reader still cannot tell it
   from one that walked past it. Then the naming is not what the report owed.
+
+## Since then
+
+**2026-08-24.** The property held on a third shape and the naming did not.
+`feedback/2026-08-24-110949` is a core patch review of a local commit in
+EXT:impexp: it read the exemption as the property it is written as, applied it
+to a review and took it correctly, then wrote a report that does not name the
+step — which is the first **Assumed** met and the fourth **Decided** failing.
+Two sessions from `/home/benji/projects/blog` reported the same on 2026-08-18,
+so the naming half is three sightings against and the property half none. All
+three name where the sentence stands rather than what it says, and the placement
+is
+[`D-SKL-074`](skl-074-a-skipped-step-is-named-where-the-report-is-written.md),
+queued. What is untested is the third **Wrong if**: no report has named a
+skipped step yet, so nothing has said whether naming it is legible to a reader.

@@ -172,3 +172,16 @@ correction to be met by, so the recommendation is unchanged. What is answered is
 the weight: the gate is now asked with four directories and four task shapes
 behind it, and the four sightings above landed after every correction this entry
 weighs.
+
+One more piece of that corpus is carved out the way `D-SKL-072` was.
+`feedback/2026-08-24-110949` is a third sighting of the obligation the
+2026-08-18 note above carries — *a report names the step it did not reach* —
+this time from a core patch review, and it is judged as a placement and queued
+in
+[`D-SKL-074`](skl-074-a-skipped-step-is-named-where-the-report-is-written.md):
+the sentence moves to where a report is written rather than staying inside the
+step it exempts. That is an obligation already written moved to where it is
+discharged rather than a form added, so the case against a fourth intervention
+stands. What it buys this entry is a measurement — a report that still names
+nothing with that line in front of it says the placement was not the lever, and
+the gate is what is left.

@@ -3,11 +3,16 @@
 ``typo3_hint_lookup``
 =====================
 
-Return hints for TYPO3 core paths or task topics, grouped by section. Where the
-paths read as a project or third-party extension the hints still come back,
-because the conventions transfer. The "Backend CSS" and "Backend TypeScript and
-JavaScript" sections describe the TYPO3 backend interface and are withheld, with
-the reason, where the task names the frontend. Answers from: knowledge.
+Return hints for TYPO3 core paths or task topics, grouped by section. A hint is
+a convention at the code itself — what to write at this path, which idiom a
+subsystem is written in, what a finding on it costs. A procedure carried out in
+steps is typo3_rule_lookup instead: the commit message conventions, the
+changelog entry a change owes, the Gerrit push and amend workflow, setting an
+extension manual up. Where the paths read as a project or third-party extension
+the hints still come back, because the conventions transfer. The "Backend CSS"
+and "Backend TypeScript and JavaScript" sections describe the TYPO3 backend
+interface and are withheld, with the reason, where the task names the frontend.
+Answers from: knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 
@@ -246,6 +251,7 @@ Text:
     - icon-usage — Rendering and Registering Icons (PHP)
     - record-routing — Routing a Record Detail View (PHP)
     - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
+    - core-static-analysis — Satisfying PHPStan in a Core Patch (PHP)
     - datahandler-seeding — Seeding Records with a Script (PHP)
     - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
     - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
@@ -641,6 +647,11 @@ Data:
             {
                 "id": "routing-request-handling",
                 "title": "Routing, Middleware, and Request Handling",
+                "category": "PHP"
+            },
+            {
+                "id": "core-static-analysis",
+                "title": "Satisfying PHPStan in a Core Patch",
                 "category": "PHP"
             },
             {
@@ -1519,6 +1530,7 @@ Text:
     - icon-usage — Rendering and Registering Icons (PHP)
     - record-routing — Routing a Record Detail View (PHP)
     - routing-request-handling — Routing, Middleware, and Request Handling (PHP)
+    - core-static-analysis — Satisfying PHPStan in a Core Patch (PHP)
     - datahandler-seeding — Seeding Records with a Script (PHP)
     - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
     - extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
@@ -1819,6 +1831,11 @@ Data:
             {
                 "id": "routing-request-handling",
                 "title": "Routing, Middleware, and Request Handling",
+                "category": "PHP"
+            },
+            {
+                "id": "core-static-analysis",
+                "title": "Satisfying PHPStan in a Core Patch",
                 "category": "PHP"
             },
             {

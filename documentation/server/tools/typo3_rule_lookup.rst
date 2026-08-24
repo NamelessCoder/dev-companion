@@ -12,9 +12,11 @@ manual, PHPUnit in an extension, Playwright in a project — and there the
 core-only documents are withheld and named rather than dropped in silence. What
 comes back is the sections that matched, each naming the document it was cut
 from — or, where more than one of them is in one document, that document whole,
-because the rest of the page regularly answers the next thing. Pass a documentId
-back instead of a query to read any page whole; it needs no resource list.
-Answers from: knowledge.
+because the rest of the page regularly answers the next thing. What the code
+itself has to look like — the convention at a path being changed, the idiom a
+subsystem is written in — is typo3_hint_lookup instead. Pass a documentId back
+instead of a query to read any page whole; it needs no resource list. Answers
+from: knowledge.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: false``
 

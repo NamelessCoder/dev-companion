@@ -3,6 +3,8 @@ id: D-ANS-072
 title: 'A tool description says which questions it takes'
 date: 2026-08-10
 status: open
+coveredBy:
+  - ScopeTest::theTwoLookupsThatBothReadAsAConventionNameEachOther
 ---
 
 # D-ANS-072 — A tool description says which questions it takes
@@ -95,3 +97,9 @@ serving that feedback rather than made here. The routing block of
 `knowledge/server-scope.json` already splits the two for a core patch — hints by
 the paths being changed, rules for the Gerrit workflow — and a session that
 calls nothing never reaches it.
+
+That clause landed on 2026-08-24. `typo3_hint_lookup` now says what a hint is —
+a convention at the code itself — and hands the procedures to
+`typo3_rule_lookup` by name; `typo3_rule_lookup` hands back what the code has to
+look like. `ScopeTest` holds both halves, so a description that drops the other
+name fails rather than misroutes.

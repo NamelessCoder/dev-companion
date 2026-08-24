@@ -452,6 +452,22 @@ final class ScopeTest extends TestCase
     }
 
     /**
+     * `D-ANS-072` was written for `typo3_script_lookup` and holds on the pair
+     * that carries most of the corpus. Both names read as "how does this
+     * codebase do X", a session that could not choose grepped its checkout
+     * instead, and only a description can tell two adjacent tools apart.
+     */
+    #[Decision('D-ANS-072')]
+    #[Test]
+    public function theTwoLookupsThatBothReadAsAConventionNameEachOther(): void
+    {
+        $described = array_column(Registry::definitions(), 'description', 'name');
+
+        self::assertStringContainsString('typo3_rule_lookup', $described['typo3_hint_lookup']);
+        self::assertStringContainsString('typo3_hint_lookup', $described['typo3_rule_lookup']);
+    }
+
+    /**
      * The room that entry was paid out of, and the reason the index is data.
      *
      * A caller that had excluded most of the server was still told which four

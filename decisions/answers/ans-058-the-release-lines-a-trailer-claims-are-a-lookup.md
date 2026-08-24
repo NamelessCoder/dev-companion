@@ -116,3 +116,22 @@ therefore rare and permitted, which makes it the release managers' call and not
 a set the check can hold. It is written into
 `knowledge/documents/core/contribution/commit-messages.md` as prose, and the
 check still reports the branch alone.
+
+## Since then
+
+The first **Wrong if** has its event, and it says less than it reads.
+`feedback/2026-08-24-122348` is a session that established the maintained lines
+from `git branch -r` and a listing of `Documentation/Changelog/` nineteen days
+after this lookup was written, and reported that the server offered no way to
+check them. It reached the right lines and said itself that the inference fails
+on a shallow clone or a stale remote.
+
+What it does not show is that the answer arrives too late in the task. The
+session called three tools, opened no skill and never called `typo3_task_guide`
+— its sibling `feedback/2026-08-24-122413` records that — so the guide that
+carries this fact was not called either. The statement holds and the design is
+untested: what would settle this **Wrong if** is a session that calls
+`typo3_commit_message_guide` and goes to the checkout anyway.
+
+Where the fact reaches a caller from is a placement and is queued as
+[`D-ANS-104`](ans-104-the-maintained-release-lines-are-placed-where-a-task-names-a-branch.md).

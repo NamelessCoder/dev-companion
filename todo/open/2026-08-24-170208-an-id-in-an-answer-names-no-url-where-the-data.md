@@ -1,7 +1,7 @@
 # An id in an answer names no URL where the data half already carries one
 
 **Serves:** feedback/2026-08-24-170208-an-id-in-an-answer-names-no-url-where-the-data.md
-**Priority:** low
+**Priority:** normal
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half
@@ -11,3 +11,6 @@ yet — because the commit that closes a feedback is the one place nobody can
 search afterwards. `documentation/records/judging.rst` is the ladder and the one
 question it opens with, and what this feedback actually says is in the file it
 serves rather than here.
+
+The maintainer filed this one on 2026-08-24 asking for it to be worked now,
+which is what the priority says and the only thing it rests on.

@@ -20,7 +20,8 @@ property of the repository in front of you and of the majors it declares.
 
 1. Work through [references/base.md](references/base.md). It fixes what this
    package is, which majors it declares, and what it runs its build with.
-2. Establish which of the output is committed, and how it reaches a page, below.
+2. Establish which of the output is committed, and which route each file reaches
+   a page by, below.
 3. Verify every core surface the change will borrow, before writing it, below.
 4. Change what the task asks for, and stop where the library's own migration
    begins.
@@ -162,6 +163,10 @@ still names the file the build now writes.
 - A rebuild that renames, hashes or moves an output breaks that route as
   silently as it breaks the import map, and there is no exception either. The
   symptom is a page rendered without the styles.
+- `typo3_rule_lookup` with `documentId="any/assets/how-an-asset-reaches-a-page"`
+  for the routes and the check that belongs to each. Which route a file takes is
+  what step 2 established; whether that route still names the file the build now
+  writes is what this step is.
 - `typo3_hint_lookup` for `Resources/Public/` paths, which reaches
   `public-assets`: how a package's public files are published into the document
   root, and what makes one resolvable at all. That is version-bound, and a build

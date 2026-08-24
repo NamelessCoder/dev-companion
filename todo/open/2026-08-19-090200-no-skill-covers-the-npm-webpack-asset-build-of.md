@@ -3,13 +3,12 @@
 **Serves:** feedback/2026-08-19-090200-no-skill-covers-the-npm-webpack-asset-build-of.md
 **Priority:** normal
 
-Write the frontend half's route into
-`skills/typo3-extension-asset-build/SKILL.md`. The rest of the review is worked
-in as of 2026-08-24: the verification is a backend half and a frontend half, the
-borrowed-class step names the component and stands before the change, the
-baseline build is gone and the duplicated rebuild instruction with it. What the
-frontend half still says in its own words is how an asset reaches a page, and
-that is the document `todo/open/2026-08-24-000156` writes.
+Ask the maintainer whether the workflow is published on the review alone, the
+way `typo3-extension-patch-review` and `typo3-distribution-content` were
+(`D-SKL-064`), or whether it waits for a run. The review is worked in whole as
+of 2026-08-24 and so is the frontend half's route, so nothing else is owed
+before the publishing commit — and that commit owes the listing budget, which is
+step 3 below.
 
 Judged 1b on 2026-08-21 — the shape is missing. `D-SKL-067` holds the evidence,
 the boundary the workflow owns and what it stops at.

@@ -992,6 +992,7 @@ Text:
     - Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors.
 
     Read at length, as a resource:
+    - typo3://guides/any/assets/how-an-asset-reaches-a-page (extension-asset-build — How a Package's Asset Reaches a Page)
     - typo3://guides/any/backend/using-the-styleguide (css-styleguide-demos — Using the Backend Styleguide)
 
     What matched above is a guess at your words. The rest of these domains, closest first, requestable by id:
@@ -1421,6 +1422,10 @@ Data:
         ],
         "availableHintsWithheld": 0,
         "documents": [
+            {
+                "uri": "typo3://guides/any/assets/how-an-asset-reaches-a-page",
+                "hint": "extension-asset-build"
+            },
             {
                 "uri": "typo3://guides/any/backend/using-the-styleguide",
                 "hint": "css-styleguide-demos"

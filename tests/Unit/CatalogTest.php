@@ -290,6 +290,28 @@ final class CatalogTest extends TestCase
     }
 
     /**
+     * A class belongs to one component, because what is derived about it is
+     * derived relative to that component's root: the same name under two
+     * entries would be placed twice and differently, and the answer keyed by
+     * the class would carry whichever reading came last — `D-CAT-008`.
+     */
+    #[Decision('D-CAT-008')]
+    #[Test]
+    public function noClassIsListedByTwoEntries(): void
+    {
+        $owners = [];
+        foreach (Catalogs::read('components') as $entry) {
+            $classes = array_merge($entry['variants'], $entry['modifiers'], $entry['subComponents']);
+            foreach ($classes as $class) {
+                $owners[$class][] = $entry['name'];
+            }
+        }
+        foreach ($owners as $class => $entries) {
+            self::assertCount(1, $entries, $class . ' is listed by ' . implode(' and ', $entries));
+        }
+    }
+
+    /**
      * Every entry names the styleguide actions that demonstrate it, because
      * that listing is why it is in the catalog at all — `D-CAT-009`.
      */

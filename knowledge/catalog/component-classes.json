@@ -776,6 +776,263 @@
     "stylesWithin": []
   },
   {
+    "class": "form-inline",
+    "component": "form",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-slim",
+    "component": "form",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-group",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-row",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-group",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-grid",
+    "component": "form",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-check",
+        "since": 14
+      },
+      {
+        "name": ".form-group",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-group",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".btn-toolbar",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-label",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel-group",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-check",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-group-dashed",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-multigroup-wrap",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-select",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "form-label",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-description",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "form-hint",
+    "component": "form",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-text",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-description",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-section",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-group",
+        "since": 13,
+        "until": 13
+      }
+    ]
+  },
+  {
+    "class": "form-section-headline",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-section-description",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-section-description",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "has-change",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-control",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-label",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "has-error",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".btn-toolbar",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-label",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "has-success",
+    "component": "form",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-label",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "has-warning",
+    "component": "form",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-label",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "is-invalid",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-check-label",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-label",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "is-valid",
+    "component": "form",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-check-label",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-label",
+        "since": 13
+      }
+    ]
+  },
+  {
     "class": "form-switch",
     "component": "form-check",
     "since": 12,
@@ -1151,6 +1408,20 @@
         "since": 12
       },
       {
+        "name": ".form-select",
+        "since": 12
+      },
+      {
+        "name": ".is-invalid",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".is-valid",
+        "since": 12,
+        "until": 12
+      },
+      {
         "name": ".form-check-type-toggle",
         "since": 13
       },
@@ -1159,20 +1430,6 @@
         "since": 13
       }
     ]
-  },
-  {
-    "class": "form-label",
-    "component": "input",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "form-text",
-    "component": "input",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
   },
   {
     "class": "list-group-flush",
@@ -1422,7 +1679,13 @@
     "component": "nav",
     "since": 12,
     "positions": [],
-    "stylesWithin": []
+    "stylesWithin": [
+      {
+        "name": ".form-section",
+        "since": 12,
+        "until": 13
+      }
+    ]
   },
   {
     "class": "page-item",
@@ -1717,6 +1980,10 @@
         "since": 12
       },
       {
+        "name": ".form-section",
+        "since": 12
+      },
+      {
         "name": ".nav-tabs",
         "since": 12,
         "until": 13
@@ -1736,6 +2003,13 @@
         "since": 13
       }
     ]
+  },
+  {
+    "class": "form-select-sm",
+    "component": "select",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
   },
   {
     "class": "status-indicator-primary",

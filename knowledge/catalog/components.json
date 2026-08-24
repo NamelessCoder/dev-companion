@@ -39,7 +39,8 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_alert.scss",
     "styleguideActions": [
-      "flashMessages"
+      "flashMessages",
+      "notifications"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/FlashMessages.fluid.html",
     "markupDigests": {
@@ -443,6 +444,69 @@
     "classesSince": 13
   },
   {
+    "name": "form",
+    "title": "Form Layout",
+    "summary": "Layout around backend form controls: rows and groups, the label, the hint and description text, sections, and the validation state classes. The controls themselves are their own components.",
+    "rootClass": "form",
+    "variants": [],
+    "modifiers": [
+      "form-inline",
+      "form-slim"
+    ],
+    "subComponents": [
+      "form-row",
+      "form-grid",
+      "form-group",
+      "form-group-dashed",
+      "form-multigroup-wrap",
+      "form-label",
+      "form-hint",
+      "form-text",
+      "form-description",
+      "form-section",
+      "form-section-headline",
+      "form-section-description",
+      "has-change",
+      "has-error",
+      "has-success",
+      "has-warning",
+      "is-invalid",
+      "is-valid"
+    ],
+    "customProperties": [],
+    "markup": "<div class=\"form-row\">\n  <div class=\"form-group\">\n    <label for=\"example\" class=\"form-label\">Name</label>\n    <input class=\"form-control\" type=\"text\" id=\"example\" name=\"example\" value=\"\">\n  </div>\n</div>",
+    "examples": [],
+    "styleguideActions": [
+      "form"
+    ],
+    "sassPath": "Build/Sources/Sass/component/_form.scss",
+    "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Form.fluid.html",
+    "keywords": [
+      "form",
+      "form layout",
+      "form group",
+      "form row",
+      "form label",
+      "validation state",
+      "fieldset"
+    ],
+    "sassPaths": [
+      "Build/Sources/Sass/component/_form.scss",
+      "Build/Sources/Sass/component/forms/_form-group.scss",
+      "Build/Sources/Sass/component/forms/_form-label.scss",
+      "Build/Sources/Sass/component/forms/_form-row.scss",
+      "Build/Sources/Sass/component/forms/_form-grid.scss",
+      "Build/Sources/Sass/component/forms/_form-hint.scss",
+      "Build/Sources/Sass/component/forms/_form-text.scss",
+      "Build/Sources/Sass/component/forms/_form-section.scss",
+      "Build/Sources/Sass/component/forms/_form-validation.scss"
+    ],
+    "markupDigests": {
+      "14": "caa37f1f27cc",
+      "15": "caa37f1f27cc"
+    }
+  },
+  {
     "name": "form-check",
     "title": "Checkboxes, Radios, Switches",
     "summary": "Checkbox/radio control with several presentation types: default, switch, toggle, icon-toggle, and card. Pair .form-check-input with .form-check-label.",
@@ -573,11 +637,7 @@
       "form-control-sm",
       "input-group"
     ],
-    "subComponents": [
-      "form-label",
-      "form-text",
-      "input-group"
-    ],
+    "subComponents": [],
     "customProperties": [
       "--typo3-input-bg",
       "--typo3-input-color",
@@ -593,7 +653,8 @@
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-control.scss",
     "styleguideActions": [
-      "input"
+      "input",
+      "textarea"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
     "demoDerives": false,
@@ -763,7 +824,8 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_nav.scss",
     "styleguideActions": [
-      "navs"
+      "navs",
+      "tab"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Navs.fluid.html",
     "markupDigests": {
@@ -931,6 +993,64 @@
     "sassPaths": [],
     "since": 13,
     "classesSince": 13
+  },
+  {
+    "name": "select",
+    "title": "Select",
+    "summary": "Styled select control for a backend form. One size modifier; the states and the label around it come from the form layout.",
+    "rootClass": "form-select",
+    "variants": [],
+    "modifiers": [
+      "form-select-sm"
+    ],
+    "subComponents": [],
+    "customProperties": [
+      "--typo3-form-select-bg",
+      "--typo3-form-select-border-color",
+      "--typo3-form-select-border-radius",
+      "--typo3-form-select-border-width",
+      "--typo3-form-select-color",
+      "--typo3-form-select-disabled-bg",
+      "--typo3-form-select-disabled-border-color",
+      "--typo3-form-select-disabled-color",
+      "--typo3-form-select-disabled-opacity",
+      "--typo3-form-select-focus-bg",
+      "--typo3-form-select-focus-border-color",
+      "--typo3-form-select-focus-color",
+      "--typo3-form-select-font-size",
+      "--typo3-form-select-hover-bg",
+      "--typo3-form-select-hover-border-color",
+      "--typo3-form-select-hover-color",
+      "--typo3-form-select-icon-size",
+      "--typo3-form-select-line-height",
+      "--typo3-form-select-min-height",
+      "--typo3-form-select-padding-x",
+      "--typo3-form-select-padding-y",
+      "--typo3-form-select-transition"
+    ],
+    "markup": "<select class=\"form-select\" id=\"example\" name=\"example\">\n  <option selected>Open this select menu</option>\n  <option value=\"1\">One</option>\n</select>",
+    "examples": [
+      "<select class=\"form-select form-select-sm\" id=\"example\" name=\"example\">\n  <option selected>Small select</option>\n</select>"
+    ],
+    "styleguideActions": [
+      "select"
+    ],
+    "sassPath": "Build/Sources/Sass/component/forms/_form-select.scss",
+    "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Select.fluid.html",
+    "keywords": [
+      "select",
+      "form select",
+      "dropdown list",
+      "option",
+      "combobox"
+    ],
+    "sassPaths": [
+      "Build/Sources/Sass/component/forms/_form-select.scss"
+    ],
+    "markupDigests": {
+      "14": "732174d59925",
+      "15": "732174d59925"
+    }
   },
   {
     "name": "status-indicator",

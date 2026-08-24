@@ -12,7 +12,7 @@
     "systemExtensions": "Every system extension of every covered TYPO3 line, read off one checkout per version: the extension key, the Composer package name to require it by, what it is for, and the majors that ship it. Complete rather than curated — `bin/cli catalog:check` re-derives it, so a release that adds or drops one is reported."
   },
   "counts": {
-    "components": 20,
+    "components": 22,
     "systemExtensions": 38
   }
 }

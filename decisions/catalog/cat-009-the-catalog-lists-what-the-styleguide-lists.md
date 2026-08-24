@@ -84,3 +84,24 @@ Read on 2026-08-24 against `.checkouts/14.3` and the derived files.
   than the component.
 - The listing turns out to be a menu rather than a boundary, and something on it
   is internal. Then what the styleguide lists is evidence and not the rule.
+
+## Since then
+
+The third **Wrong if** is partly realised, and it was realised the same day.
+Reading the eleven actions no entry covered showed that two of them are not
+components: `developerTools` demonstrates the `f:debug` ViewHelper, and
+`exception` has no component template at all — the action raises one to show how
+it is displayed. So the listing is a menu of pages with a few non-components
+among them, and the rule holds with those two counted rather than as an
+unqualified equivalence.
+
+Four more of the eleven demonstrate a web component and no class at all —
+`comboboxes`, `contentNavigation`, `datetime` and `progressTrackers` — and are
+answered from the element dimension rather than as entries. Two were already
+covered by an entry under another name: `textarea` writes `.form-control`, which
+is `input`, and `tab` writes `.tab-pane`, which `_nav.scss` styles beside the
+nav. `notifications` renders the same markup as the flash messages, so `alert`
+names both.
+
+What was left was two entries, `form` and `select`, written on 2026-08-24 and
+still to be corrected by the maintainer.

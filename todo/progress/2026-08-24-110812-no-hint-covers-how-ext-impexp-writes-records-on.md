@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110812-no-hint-covers-how-ext-impexp-writes-records-on.md
 **Priority:** normal
+**Branch:** todo/no-hint-covers-how-ext-impexp-writes-records-on
+**Claimed:** 2026-08-24
 
 Judged as step 1a on 2026-08-24 and taken on as a hint of its own: `D-KNW-108`
 carries the evidence and the boundary, and the writing is what is left. Write

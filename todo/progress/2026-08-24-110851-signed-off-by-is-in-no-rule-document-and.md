@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110851-signed-off-by-is-in-no-rule-document-and.md
 **Priority:** low
+**Branch:** todo/signed-off-by-is-in-no-rule-document-and
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

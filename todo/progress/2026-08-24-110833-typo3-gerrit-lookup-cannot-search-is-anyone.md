@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110833-typo3-gerrit-lookup-cannot-search-is-anyone.md
 **Priority:** normal
+**Branch:** todo/typo3-gerrit-lookup-cannot-search-is-anyone
+**Claimed:** 2026-08-24
 
 Add `query` and `path` to `typo3_gerrit_lookup` as a third alternative beside
 `issue` and `change`, with `open` narrowing the search to what is under review:

@@ -16,6 +16,7 @@ one is added.
 - [`D-KNW-114`][D-KNW-114] — What a core patch owes PHPStan is a subject this server owns · 2026-08-24
 - [`D-KNW-115`][D-KNW-115] — The key a site names its sets under is stated with the sets · 2026-08-24
 - [`D-KNW-116`][D-KNW-116] — The page object typo3 setup leaves behind is a subject this server owns · 2026-08-24
+- [`D-KNW-117`][D-KNW-117] — The invocation notes say what one missing path costs a run · 2026-08-24
 - [`D-KNW-106`][D-KNW-106] — A hint about typo3/testing-framework is read at the line the core pins · 2026-08-23
 - [`D-KNW-105`][D-KNW-105] — The corpus states what a not-found means once a site answered · 2026-08-19
 - [`D-KNW-083`][D-KNW-083] — The shared-root collision is stated for the partial root as well · 2026-08-18
@@ -125,6 +126,7 @@ one is added.
 [D-KNW-114]: knw-114-what-a-core-patch-owes-phpstan-is-a-subject-this-server-owns.md
 [D-KNW-115]: knw-115-the-key-a-site-names-its-sets-under-is-stated-with-the-sets.md
 [D-KNW-116]: knw-116-the-page-object-typo3-setup-leaves-behind-is-a-subject-this-server-owns.md
+[D-KNW-117]: knw-117-the-invocation-notes-say-what-one-missing-path-costs-a-run.md
 [D-KNW-106]: knw-106-a-hint-about-typo3-testing-framework-is-read-at-the-line-the-core-pins.md
 [D-KNW-105]: knw-105-the-corpus-states-what-a-not-found-means-once-a-site-answered.md
 [D-KNW-083]: knw-083-the-shared-root-collision-is-stated-for-the-partial-root-as-well.md

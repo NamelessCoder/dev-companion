@@ -1,0 +1,85 @@
+---
+id: D-KNW-117
+title: 'The invocation notes say what one missing path costs a run'
+date: 2026-08-24
+status: open
+coveredBy:
+  - HintsTest::theInvocationNoteSaysWhatOneMissingPathCostsARun
+---
+
+# D-KNW-117 — The invocation notes say what one missing path costs a run
+
+**Nothing validates the paths a suite is handed, and phpunit resolves all of
+them before it builds anything, so the first one that does not exist ends the
+whole run.**
+
+A caller assembling a path list learns that an entry is not there by paying a
+container start for it. The corpus says how to narrow a run and nothing about
+what a wrong path in that list costs.
+
+## Evidence
+
+- Measured on 2026-08-24 with this repository's own phpunit, 11.5.56 — the
+  version `.checkouts/13.4` and `.checkouts/14.3` pin. Handed an existing test
+  file followed by `typo3/sysext/tstemplate/Tests/Functional`, it printed
+  `Test file "typo3/sysext/tstemplate/Tests/Functional" not found` and ran
+  nothing, the file that exists included.
+- The mechanism is `PHPUnit\TextUI\Configuration\TestSuiteBuilder::build()`. It
+  runs `realpath()` over every CLI argument into one list before a suite is
+  built, and the first argument that resolves to `false` throws
+  `TestFileNotFoundException`, whose message is that line. Read on 10.5.63,
+  11.5.56 and 13.3.0 — what `.checkouts/12.4`, `.checkouts/13.4` with
+  `.checkouts/14.3`, and `.checkouts/main` pin in their `composer.lock` — and
+  the resolving loop is the same on all three.
+- The script checks nothing of its own. On all four covered branches
+  `functional)` builds
+  `COMMAND=(bin/phpunit -c Build/phpunit/FunctionalTests.xml --exclude-group not-${DBMS} "$@")`
+  after `shift $((OPTIND - 1))`, and the redis and memcached containers — and
+  the database container where the DBMS has one — are started before that
+  command runs.
+- The list of system extensions is what this rejects. On `.checkouts/main` at
+  `3cbdea24dd`, five carry no `Tests/Functional` at all — `belog`,
+  `filemetadata`, `opendocs`, `reports` and `tstemplate`. One commit changes
+  that list, one `ls` in the caller's own checkout answers it, and
+  [`D-FBK-027`](../feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md)
+  names a fact of that shape as what does not earn a place here.
+- It settles the second **Assumed** of
+  [`D-KNW-112`](knw-112-the-invocation-notes-say-where-runtests-sh-stops-reading-its-own-options.md),
+  which wrote the neighbouring note without running the failing command. The
+  message is phpunit's, from `TestFileNotFoundException`, and the two notes
+  describe two causes of one line.
+
+## Decided
+
+- The statement goes into `invocation.notes`, beside the option-parsing note
+  that produces the same message from the other cause. Both are about what
+  phpunit is handed, and the reader who meets the line needs the pair.
+- What the note carries is the mechanism and the price: nothing checks the
+  paths, one that does not exist ends the run, the paths beside it never run,
+  and the container start is already paid when that happens.
+- The five system extensions are not written down, and neither is any other
+  count of them. The note names the case — a system extension carrying no
+  `Tests/Functional` — and leaves the enumeration to the checkout.
+- The statement is unbound. The resolving loop is the same on every phpunit the
+  covered branches pin, so no `since` and no `until`.
+- The note is held by a test naming this entry, as the notes beside it are.
+  Nothing sweeps the wording, so what a test holds is that the mechanism, the
+  all-or-nothing and the cost are still stated.
+
+## Assumed
+
+- That the container start is what the caller pays. The reporting session's
+  account is that the run "died before a test ran"; nothing here timed one.
+- That a caller assembling a list reads the notes before it runs. Every note in
+  this block rests on that, and what is measured is a session that reached
+  neither.
+
+## Wrong if
+
+- A session reports the same failure having read the answer. Then the cost
+  belongs beside the targeted command rather than among the notes.
+- A phpunit the core pins stops resolving the list up front and runs the paths
+  that exist. The note would name a cost nobody pays any more.
+- A session reads the two notes as one trap and drops a path that was there,
+  when the cause was the option written after it. Then the shared message needs
+  one note that separates the causes rather than two that share it.

@@ -5555,6 +5555,25 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The other cause of that same line, and the one an `ls` would have caught:
+     * a path that is not there ends the run before a test — `D-KNW-117`.
+     */
+    #[Decision('D-KNW-117')]
+    #[Test]
+    public function theInvocationNoteSaysWhatOneMissingPathCostsARun(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString('resolves every entry before it builds a suite', $notes, 'the mechanism');
+        self::assertStringContainsString('the paths beside it never run', $notes, 'that one entry ends all of it');
+        self::assertStringContainsString(
+            'costs a whole container start rather than a failing test',
+            $notes,
+            'what the caller pays'
+        );
+    }
+
+    /**
      * `R-KNW-055`, the other half. `TestSuiteHints::invocation()` is emitted
      * with every `typo3_test_run_guide` answer, so the iterate-narrowly note
      * reaches the one caller it is wrong for whether or not they asked about

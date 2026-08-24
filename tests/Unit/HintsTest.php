@@ -6096,6 +6096,70 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The needles are the act in the words sessions write it in (`D-GUI-014`).
+     *
+     * That entry assumed a session which is only looking says so in its five
+     * original needles, and recorded the assumption as unmeasured. Measured on
+     * 2026-08-24 it does not hold: the phrasing of the page's own title, "in a
+     * real browser", missed "in a browser", because a needle matches as one
+     * word-bounded phrase. The intent reached none of the 49 scenario prompts.
+     *
+     * Each case below is a phrasing a filed session used —
+     * `feedback/2026-08-24-140239` for the first three.
+     */
+    #[Decision('D-GUI-014')]
+    #[Test]
+    #[DataProvider('lookingAtAChangeIsAskedForInTheseWords')]
+    public function aBriefRecognizesLookingHoweverTheSessionPhrasedIt(string $task): void
+    {
+        $brief = Registry::call('typo3_task_guide', ['task' => $task]);
+
+        self::assertContains('browser-check', array_column($brief->data['intents'], 'id'));
+        self::assertContains('any/testing/browser-check', array_column($brief->data['guides'], 'id'));
+    }
+
+    /** @return array<string, array{string}> */
+    public static function lookingAtAChangeIsAskedForInTheseWords(): array
+    {
+        return [
+            'the title of the page itself' => ['verify the extension rendering in a real browser'],
+            'verification named for the frontend' => ['we need the tests and also the frontend verification'],
+            'the rendering named as correct' => ['check that the extension renders correctly on the frontend'],
+            'looking named as looking' => ['look at the rendered page and confirm the banner appears'],
+            'the site opened' => ['open the site and confirm the consent banner shows up'],
+        ];
+    }
+
+    /**
+     * The widened needles stay the act rather than the subject (`D-GUI-014`).
+     *
+     * Its first **Wrong if** is a brief naming the page to a session writing a
+     * suite, and its second is one that needs the probe instead. Both stay held
+     * with the vocabulary above in the corpus.
+     */
+    #[Decision('D-GUI-014')]
+    #[Test]
+    #[DataProvider('theseAreOtherWorkThanLooking')]
+    public function aWidenedNeedleReachesNeitherTheSuiteNorTheProbe(string $task): void
+    {
+        $brief = Registry::call('typo3_task_guide', ['task' => $task]);
+
+        self::assertNotContains('browser-check', array_column($brief->data['intents'], 'id'));
+    }
+
+    /** @return array<string, array{string}> */
+    public static function theseAreOtherWorkThanLooking(): array
+    {
+        return [
+            'a playwright suite' => ['write playwright specs for the editor journey'],
+            'end-to-end coverage' => ['add e2e coverage for the login form'],
+            'browser coverage for a page' => ['add browser coverage for the important page and its form'],
+            'a visual regression suite' => ['set up visual regression tests'],
+            'the rendering probe' => ['prove what lib.parseFunc_RTE actually renders with a throwaway functional test'],
+        ];
+    }
+
+    /**
      * A review request that names a change routes the review (`D-SKL-039`).
      *
      * Run on 2026-08-14, this named `typo3-core-patch-development`: "breaking"

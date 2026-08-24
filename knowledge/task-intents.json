@@ -315,9 +315,19 @@
     "match": [
       "in the browser",
       "in a browser",
+      "real browser",
       "browser check",
       "screenshot",
-      "visually"
+      "visually",
+      "frontend verification",
+      "verify the frontend",
+      "look at the rendered",
+      "look at the page",
+      "open the site",
+      "open the page",
+      "renders correctly",
+      "see it render",
+      "confirm it renders"
     ],
     "rulesQuery": "",
     "checklist": [

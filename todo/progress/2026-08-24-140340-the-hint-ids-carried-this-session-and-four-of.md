@@ -1,7 +1,9 @@
-# changelog_lookup was unusable before composer install and I never learned it became usable after
+# The hint ids carried this session and four of them must not be changed
 
-**Serves:** feedback/2026-08-24-140259-changelog-lookup-was-unusable-before-composer.md
+**Serves:** feedback/2026-08-24-140340-the-hint-ids-carried-this-session-and-four-of.md
 **Priority:** low
+**Branch:** todo/the-hint-ids-carried-this-session-and-four-of
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

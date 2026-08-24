@@ -75,3 +75,23 @@ feedback that names the tool since, `2026-08-19-090401`, reports a client that
 delivered every tool as a bare name with no schema and a session that called
 none of them — a cause on the client's side, which `D-AUD-011` owns, rather than
 the word "script" misrouting a session that read the description.
+
+The pattern recurred one pair over, on 2026-08-24. `feedback/2026-08-24-133651`
+reports a session that could not tell whether "what is this codebase's idiom for
+X" goes to `typo3_hint_lookup` or to `typo3_rule_lookup`, and read both
+descriptions after the fact to find out. Neither names the other: the first
+opens "Return hints for TYPO3 core paths or task topics, grouped by section",
+the second "Search the TYPO3 rules and procedures this server carries, by
+topic", and both plausibly take the question. So this entry's **Decided** — two
+adjacent tools that only their descriptions can tell apart — holds on the pair
+that carries most of the corpus, where it was written for `typo3_script_lookup`.
+
+What it is not is this entry's **Wrong if**. Nothing in that report says the
+word "hint" or the word "rule" misrouted it; the session called neither tool and
+grepped its checkout instead, which is what `feedback/2026-08-24-133515` reports
+for the whole of the same session. The lever is a clause in each description
+naming what the other takes, and it touches `src/`, so it is queued on the card
+serving that feedback rather than made here. The routing block of
+`knowledge/server-scope.json` already splits the two for a core patch — hints by
+the paths being changed, rules for the Gerrit workflow — and a session that
+calls nothing never reaches it.

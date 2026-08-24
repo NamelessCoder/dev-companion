@@ -68,6 +68,16 @@ final class CommitMessage
     private const KNOWN_TRAILERS = ['resolves', 'related', 'releases'];
 
     /**
+     * Trailers a core commit message may not carry.
+     *
+     * The core's own `AGENTS.md` demands the sign-off and this project does not
+     * follow that demand, so a caller reading the checkout emits a trailer a
+     * reviewer strikes — `D-KNW-110`. The other two are what an agent adds
+     * about itself, which the author field already says.
+     */
+    private const REFUSED_TRAILERS = ['signed-off-by', 'co-authored-by', 'claude-session'];
+
+    /**
      * Prefixes that say the change is not offered for merge yet.
      *
      * They stand before the keyword where `[!!!]` stands and are not keywords:
@@ -344,6 +354,23 @@ final class CommitMessage
             [$name, $value] = array_map('trim', explode(':', $trailer, 2));
             $key = strtolower($name);
             if (!in_array($key, self::KNOWN_TRAILERS, true)) {
+                if ($workflow === self::WORKFLOW_CORE && in_array($key, self::REFUSED_TRAILERS, true)) {
+                    $checks[] = [
+                        'level' => 'error',
+                        'code' => 'refused-trailer',
+                        'message' => sprintf(
+                            'The %s: line is off the draft. A core commit message carries %s and the Change-Id the '
+                                . 'hook writes, and nothing else — whatever the checkout you are working in says.',
+                            $name,
+                            implode(', ', array_map(ucfirst(...), self::KNOWN_TRAILERS)),
+                        ),
+                    ];
+                    // Dropped rather than carried through: the draft this
+                    // returns is committed as it stands, so a refused trailer
+                    // left in it would be the answer contradicting its own
+                    // check.
+                    continue;
+                }
                 $extraTrailers[] = $trailer;
                 continue;
             }

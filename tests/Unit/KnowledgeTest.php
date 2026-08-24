@@ -1231,18 +1231,16 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
-     * The sign-off, whose sources disagree with each other.
+     * The trailers a core commit message carries, and the three it does not.
      *
-     * `feedback/2026-08-24-110851` asked for the trailer, got one unrelated page
-     * back, read this document whole and found nothing, and settled it from the
-     * checkout by hand. What the section owes is which source asks rather than
-     * one rule: a caller holding the core's `AGENTS.md` alone emits a trailer a
-     * reviewer strikes, and one holding the merged history alone calls the
-     * question settled.
+     * `feedback/2026-08-24-110851` asked for the sign-off and got one unrelated
+     * page back. `feedback/2026-08-24-133602` had two drafts carrying the
+     * trailer struck by the maintainer, who then settled it: the sign-off is
+     * not set, and neither is an agent's own attribution trailer.
      */
-    #[Decision('D-KNW-109')]
+    #[Decision('D-KNW-110')]
     #[Test]
-    public function theSignOffAnswerNamesEverySourceTheQuestionHas(): void
+    public function theTrailerAnswerStatesTheRuleAndWhatLeavesItUnenforced(): void
     {
         // The report's own call, version and all.
         $result = Registry::call('typo3_rule_lookup', [
@@ -1251,22 +1249,31 @@ final class KnowledgeTest extends TestCase
         ]);
 
         self::assertSame(
-            ['core/contribution/commit-messages', 'Sign-Off'],
+            ['core/contribution/commit-messages', 'Trailers A Core Commit Does Not Carry'],
             [$result->data['matches'][0]['documentId'] ?? null, $result->data['matches'][0]['heading'] ?? null],
         );
 
-        // Unwrapped, since three of the four cross a line break.
+        // Unwrapped, since each of them crosses a line break.
         $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
-        self::assertStringContainsString('`AGENTS.md` demands it', $body, 'nothing says which source asks for it');
         self::assertStringContainsString(
-            'The official Contribution Guide is silent',
+            '`Signed-off-by:` is not set',
             $body,
-            'the source a contributor is pointed at is not among the ones answered for',
+            'the rule the maintainer settled is not stated',
         );
         self::assertStringContainsString(
-            'Nothing checks whether the trailer is there',
+            '`Co-Authored-By:` is not set either',
             $body,
-            'the hook is named without what it does not do with the trailer',
+            'the trailer an agent writes about itself is left out of the rule',
+        );
+        self::assertStringContainsString(
+            "Changing any of this is the maintainer's call",
+            $body,
+            'nothing says who the rule belongs to, which is what sends a session to the checkout instead',
+        );
+        self::assertStringContainsString(
+            'Nothing in the checkout enforces the rule',
+            $body,
+            'the rule stands without what leaves a reviewer striking the line rather than a check rejecting it',
         );
         self::assertStringContainsString(
             'about one commit in a hundred on `main`',
@@ -1384,7 +1391,14 @@ final class KnowledgeTest extends TestCase
             'query' => 'Releases trailer which branches take a patch today maintained versions',
             'targetVersion' => '15.0',
         ]);
-        self::assertSame(['Release Targets'], $second->data['matchedHeadings']);
+        // Two headings since `D-KNW-110` wrote the trailer rule into the same
+        // page, which the word `Releases:` reaches. What the entry holds is
+        // that matches confined to one page answer with the page, and two of
+        // them in one page is that case rather than an exception to it.
+        self::assertSame(
+            ['Release Targets', 'Trailers A Core Commit Does Not Carry'],
+            $second->data['matchedHeadings'],
+        );
         self::assertSame(1, $second->data['matchCount']);
         self::assertSame('core/contribution/commit-messages', $second->data['matches'][0]['documentId']);
         self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $second->text);

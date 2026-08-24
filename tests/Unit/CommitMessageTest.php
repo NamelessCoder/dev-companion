@@ -594,6 +594,34 @@ final class CommitMessageTest extends TestCase
         self::assertSame([], $parsed['input']['extraTrailers']);
     }
 
+    /**
+     * The three the maintainer struck, and the workflow that keeps them.
+     *
+     * A refused trailer comes off the draft rather than being reported beside
+     * it, because the draft is committed as it stands — `D-KNW-110`.
+     */
+    #[Decision('D-KNW-110')]
+    #[Test]
+    public function aCoreDraftRefusesTheTrailersTheProjectDoesNotSet(): void
+    {
+        $message = "[BUGFIX] Keep the identifier out of the client\n\nBody.\n\nResolves: #1\nReleases: main\n"
+            . "Signed-off-by: A <a@b.c>\nCo-Authored-By: B <b@b.c>\nClaude-Session: https://example.test/x\n";
+
+        $core = CommitMessage::parse($message, CommitMessage::WORKFLOW_CORE);
+        self::assertSame(
+            ['refused-trailer', 'refused-trailer', 'refused-trailer'],
+            array_values(array_filter(
+                array_column($core['checks'], 'code'),
+                static fn(string $code): bool => $code === 'refused-trailer',
+            )),
+        );
+        self::assertSame([], $core['input']['extraTrailers'], 'a refused trailer reaches the draft');
+
+        $project = CommitMessage::parse($message, CommitMessage::WORKFLOW_PROJECT);
+        self::assertNotContains('refused-trailer', array_column($project['checks'], 'code'));
+        self::assertCount(3, $project['input']['extraTrailers']);
+    }
+
     #[Test]
     public function anEmptyMessageIsRejected(): void
     {

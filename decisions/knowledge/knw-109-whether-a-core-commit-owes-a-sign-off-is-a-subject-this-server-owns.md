@@ -2,9 +2,8 @@
 id: D-KNW-109
 title: Whether a core commit owes a sign-off is a subject this server owns
 date: 2026-08-24
-status: open
-coveredBy:
-  - KnowledgeTest::theSignOffAnswerNamesEverySourceTheQuestionHas
+status: revoked
+revokedBy: D-KNW-110
 ---
 
 # D-KNW-109 — Whether a core commit owes a sign-off is a subject this server owns
@@ -111,3 +110,17 @@ its footer example, the silence of `CONTRIBUTING.md`, `/^Signed-off-by:/d` on
 line 44 of `Build/git-hooks/commit-msg`, and 5 of the last 500 commits on
 `main`. The entry stays open on its two assumptions, which are about what the
 core does next rather than about what it does.
+
+## Revoked on 2026-08-24
+
+The maintainer settled the question the same day: the sign-off is not set on a
+core patch, and neither is an agent's own attribution trailer. So the statement
+above describes a section that no longer exists — what the page states is the
+rule, and the sources this entry weighed stand under it as why nothing enforces
+it. `D-KNW-110` is what a reader builds on, and the evidence here is what it
+rests on.
+
+The first **Wrong if** fired in the direction it did not name. It watched for a
+section written from `AGENTS.md` alone; what happened is that naming every
+source left the caller to choose, and the choice is what the two struck drafts
+were.

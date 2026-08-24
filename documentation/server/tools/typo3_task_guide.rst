@@ -379,7 +379,7 @@ Text:
       against the changelog.
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 9 of its 11 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Sign-Off, Changed Signatures, Changelog Files.
+    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 9 of its 11 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Trailers A Core Commit Does Not Carry, Changed Signatures, Changelog Files.
 
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`

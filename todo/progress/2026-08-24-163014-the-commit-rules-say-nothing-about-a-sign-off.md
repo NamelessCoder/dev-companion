@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110851-signed-off-by-is-in-no-rule-document-and.md, D-KNW-109
 **Priority:** normal
+**Branch:** todo/the-commit-rules-say-nothing-about-a-sign-off
+**Claimed:** 2026-08-24
 
 Write the sign-off section into
 `knowledge/documents/core/contribution/commit-messages.md`, beside the trailers

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110851-signed-off-by-is-in-no-rule-document-and.md, D-ANS-101
 **Priority:** normal
+**Branch:** todo/a-rule-lookup-hands-a-page-over-on-one-thin-match
+**Claimed:** 2026-08-24
 
 Put the floor and the measurement into `RuleLookup::oneDocument()` and
 `Prose::pageRecords()` as `D-ANS-101` decides — the page only where more than

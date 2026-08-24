@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122308-typo3-test-run-guide-stayed-shut-and-i-burned-a.md
 **Priority:** low
+**Branch:** todo/typo3-test-run-guide-stayed-shut-and-i-burned-a
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

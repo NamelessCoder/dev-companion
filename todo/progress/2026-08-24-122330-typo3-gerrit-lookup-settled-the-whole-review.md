@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-122330-typo3-gerrit-lookup-settled-the-whole-review.md
 **Priority:** low
+**Branch:** todo/typo3-gerrit-lookup-settled-the-whole-review
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

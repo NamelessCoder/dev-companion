@@ -259,7 +259,8 @@ final class ComponentCheck
 
                     return 2;
                 }
-                if (!is_file($file)) {
+                $file = self::demoFile($file);
+                if ($file === null) {
                     continue;
                 }
                 $selector = (string) ($component['demoSelector'] ?? '');
@@ -323,6 +324,24 @@ final class ComponentCheck
         $output->writeln(sprintf('%d demo(s) no longer read as the entry records — reread them and record what they show.', $problems));
 
         return 1;
+    }
+
+    /**
+     * The demo as this checkout spells it, or nothing where it has none.
+     *
+     * A branch older than the rename carries `.html` where the entry records
+     * `.fluid.html`, and reading only the recorded spelling digested no demo at
+     * all on that major — which read as four checkouts covered and was two.
+     */
+    private static function demoFile(string $path): ?string
+    {
+        foreach (DemoMarkup::spellings($path) as $spelling) {
+            if (is_file($spelling)) {
+                return $spelling;
+            }
+        }
+
+        return null;
     }
 
     /**

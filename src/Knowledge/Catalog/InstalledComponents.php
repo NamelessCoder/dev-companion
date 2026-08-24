@@ -242,10 +242,15 @@ final class InstalledComponents
             return null;
         }
         $package = $packages[$matches[1]] ?? null;
-        if ($package === null || !is_file($package . '/' . $matches[2])) {
+        if ($package === null) {
             return null;
         }
+        foreach (DemoMarkup::spellings($matches[2]) as $inside) {
+            if (is_file($package . '/' . $inside)) {
+                return [$package . '/' . $inside, 'EXT:' . $matches[1] . '/' . $inside];
+            }
+        }
 
-        return [$package . '/' . $matches[2], 'EXT:' . $matches[1] . '/' . $matches[2]];
+        return null;
     }
 }

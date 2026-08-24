@@ -290,6 +290,42 @@ final class CatalogTest extends TestCase
     }
 
     /**
+     * The styleguide renamed its templates, so a branch older than the rename
+     * spells a demo `.html` where the entry records `.fluid.html`. Reading only
+     * the recorded spelling digested no demo at all on that major, and the
+     * check read as covering four checkouts while covering two.
+     */
+    #[Decision('D-CAT-001')]
+    #[Test]
+    public function aDemoIsFoundUnderEitherSpelling(): void
+    {
+        self::assertSame(
+            ['a/Avatar.fluid.html', 'a/Avatar.html'],
+            DemoMarkup::spellings('a/Avatar.fluid.html'),
+        );
+        self::assertSame(['a/Avatar.html'], DemoMarkup::spellings('a/Avatar.html'));
+    }
+
+    /**
+     * And every entry records what it read on every covered major that has the
+     * demo, rather than on the newest two.
+     */
+    #[Decision('D-CAT-001')]
+    #[Test]
+    public function everyDemoIsDigestedOnEveryMajorThatCarriesIt(): void
+    {
+        $onOlderMajors = 0;
+        foreach (Catalogs::read('component/entries') as $entry) {
+            foreach (array_keys($entry['markupDigests'] ?? []) as $major) {
+                if ((int) $major < 14) {
+                    ++$onOlderMajors;
+                }
+            }
+        }
+        self::assertGreaterThan(0, $onOlderMajors, 'no entry records what a demo said before the rename');
+    }
+
+    /**
      * Where the backend declares an element, that is the answer: an element
      * carries its own position and cannot be attached to the wrong node, which
      * is the whole of what went wrong with a borrowed class — `D-CAT-009`.

@@ -44,6 +44,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/FlashMessages.fluid.html",
     "markupDigests": {
+      "13": "0950c0b6d576",
       "14": "0950c0b6d576",
       "15": "0950c0b6d576"
     },
@@ -89,6 +90,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Avatar.fluid.html",
     "markupDigests": {
+      "13": "56d3d2db85f7",
       "14": "56d3d2db85f7",
       "15": "56d3d2db85f7"
     },
@@ -150,6 +152,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Badges.fluid.html",
     "markupDigests": {
+      "13": "4138e8239d28",
       "14": "4138e8239d28",
       "15": "4138e8239d28"
     },
@@ -264,6 +267,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
     "markupDigests": {
+      "13": "5ffc72a3fa5f",
       "14": "75dcbc4dc37f",
       "15": "75dcbc4dc37f"
     },
@@ -306,6 +310,7 @@
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
     "demoDerives": false,
     "markupDigests": {
+      "13": "edaff2d88de2",
       "14": "03204ba7a30b",
       "15": "03204ba7a30b"
     },
@@ -369,6 +374,7 @@
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Cards.fluid.html",
     "demoSelector": "card-title",
     "markupDigests": {
+      "13": "6085970431df",
       "14": "a0243d079471",
       "15": "a0243d079471"
     },
@@ -427,6 +433,7 @@
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Dropdown.fluid.html",
     "demoDerives": false,
     "markupDigests": {
+      "13": "85617c158f22",
       "14": "60c7277a7bc0",
       "15": "60c7277a7bc0"
     },
@@ -502,6 +509,7 @@
       "Build/Sources/Sass/component/forms/_form-validation.scss"
     ],
     "markupDigests": {
+      "13": "01930f81fed5",
       "14": "caa37f1f27cc",
       "15": "caa37f1f27cc"
     },
@@ -546,6 +554,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Checkboxes.fluid.html",
     "markupDigests": {
+      "13": "8c97f241412f",
       "14": "27f5acfb5d82",
       "15": "27f5acfb5d82"
     },
@@ -608,6 +617,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
     "markupDigests": {
+      "13": "520a1397778c",
       "14": "4928ad423340",
       "15": "4928ad423340"
     },
@@ -661,6 +671,7 @@
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
     "demoDerives": false,
     "markupDigests": {
+      "13": "ef5bfbdf6c87",
       "14": "c32b71d0639d",
       "15": "c32b71d0639d"
     },
@@ -778,6 +789,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Modal.fluid.html",
     "markupDigests": {
+      "13": "b848b3cca842",
       "14": "b848b3cca842",
       "15": "b848b3cca842"
     },
@@ -831,6 +843,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Navs.fluid.html",
     "markupDigests": {
+      "13": "6319fcb7d10d",
       "14": "c93a049d6e00",
       "15": "c93a049d6e00"
     },
@@ -879,6 +892,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Pagination.fluid.html",
     "markupDigests": {
+      "13": "b09fe90327fb",
       "14": "b09fe90327fb",
       "15": "b09fe90327fb"
     },
@@ -947,6 +961,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Panels.fluid.html",
     "markupDigests": {
+      "13": "89b62551116b",
       "14": "e3b63079d343",
       "15": "e3b63079d343"
     },
@@ -982,6 +997,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/ProgressIndicators.fluid.html",
     "markupDigests": {
+      "13": "6806e650ed91",
       "14": "6806e650ed91",
       "15": "6806e650ed91"
     },
@@ -1049,6 +1065,7 @@
       "Build/Sources/Sass/component/forms/_form-select.scss"
     ],
     "markupDigests": {
+      "13": "0844a63ebdc2",
       "14": "732174d59925",
       "15": "732174d59925"
     },
@@ -1158,6 +1175,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Tables.fluid.html",
     "markupDigests": {
+      "13": "986dca615100",
       "14": "986dca615100",
       "15": "986dca615100"
     },
@@ -1211,6 +1229,7 @@
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Trees.fluid.html",
     "markupDigests": {
+      "13": "36b019b2ce89",
       "14": "36b019b2ce89",
       "15": "36b019b2ce89"
     },

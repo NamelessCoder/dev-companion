@@ -17,6 +17,25 @@ namespace TYPO3\DevCompanion\Knowledge\Catalog;
 final class DemoMarkup
 {
     /**
+     * The names one demo file has, newest spelling first.
+     *
+     * The styleguide renamed its templates from `.html` to `.fluid.html`, so an
+     * entry records one spelling and a checkout of an older major carries the
+     * other. Said here once rather than as a field on each of the entries: the
+     * rename is one fact about a release, not one fact per component.
+     *
+     * @return list<string>
+     */
+    public static function spellings(string $path): array
+    {
+        if (!str_ends_with($path, '.fluid.html')) {
+            return [$path];
+        }
+
+        return [$path, substr($path, 0, -strlen('.fluid.html')) . '.html'];
+    }
+
+    /**
      * Every copyable example that carries this component, page chrome left out,
      * at most four. A demo whose examples name no component of that root class
      * answers with all of them; one that wraps nothing in `sg:example` answers

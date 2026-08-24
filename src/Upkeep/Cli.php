@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Upkeep\Command\CatalogCheck;
 use TYPO3\DevCompanion\Upkeep\Command\CatalogPaths;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutStatus;
 use TYPO3\DevCompanion\Upkeep\Command\CheckoutUpdate;
+use TYPO3\DevCompanion\Upkeep\Command\ComponentDerive;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionCheck;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionCover;
 use TYPO3\DevCompanion\Upkeep\Command\DecisionIndex;
@@ -136,6 +137,7 @@ final class Cli
         $application->addCommand(new HintCoverage());
         $application->addCommand(new CatalogCheck());
         $application->addCommand(new CatalogPaths());
+        $application->addCommand(new ComponentDerive());
         $application->addCommand(new KnowledgeFormat());
         $application->addCommand(new CheckoutUpdate());
         $application->addCommand(new CheckoutStatus());

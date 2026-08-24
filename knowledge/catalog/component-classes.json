@@ -1,0 +1,2403 @@
+[
+  {
+    "class": "alert-info",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-success",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-warning",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-danger",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-notice",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-dismissible",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".alert-actions",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "alert-inner",
+    "component": "alert",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-content",
+    "component": "alert",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-title",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-body",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-message",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "alert-actions",
+    "component": "alert",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-size-small",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-size-medium",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-size-large",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-size-mega",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-image",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "avatar-icon",
+    "component": "avatar",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-primary",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-secondary",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-info",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-success",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-warning",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-danger",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-notice",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-default",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-pill",
+    "component": "badge",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-space-start",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-space-end",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-stable",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-experimental",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-beta",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-alpha",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-deprecated",
+    "component": "badge",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "badge-list",
+    "component": "badge",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "breadcrumb-condensed",
+    "component": "breadcrumb",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "breadcrumb-collapsible",
+    "component": "breadcrumb",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".breadcrumb-element",
+        "since": 14
+      },
+      {
+        "name": ".breadcrumb-item",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "breadcrumb-item",
+    "component": "breadcrumb",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 14
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".breadcrumb-element",
+        "since": 14
+      },
+      {
+        "name": "typo3-backend-icon",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "breadcrumb-element",
+    "component": "breadcrumb",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-primary",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-secondary",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-info",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-success",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-warning",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-danger",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-notice",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-default",
+    "component": "button",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-link",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-sm",
+    "component": "button",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-block",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-block-vertical",
+    "component": "button",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-borderless",
+    "component": "button",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-icon",
+    "component": "button",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-align-start",
+    "component": "button",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-align-end",
+    "component": "button",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "btn-group-sm",
+    "component": "button-group",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".btn",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "btn-group-vertical",
+    "component": "button-group",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".btn",
+        "since": 12
+      },
+      {
+        "name": ".btn-group",
+        "since": 12
+      },
+      {
+        "name": ".dropdown-toggle",
+        "since": 12
+      },
+      {
+        "name": ".dropdown",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "btn-toolbar",
+    "component": "button-group",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".input-group",
+        "since": 12,
+        "until": 13
+      }
+    ]
+  },
+  {
+    "class": "btn-toolbar-nowrap",
+    "component": "button-group",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-default",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-info",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-success",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-warning",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-danger",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-notice",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-sm",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".callout-title",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "callout-icon",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-title",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-content",
+    "component": "callout",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-body",
+    "component": "callout",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-size-small",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [],
+    "until": 13
+  },
+  {
+    "class": "card-size-medium",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-size-large",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-disabled",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-container",
+    "component": "card",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".card",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "card-header",
+    "component": "card",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".card-header-body",
+        "since": 12
+      },
+      {
+        "name": ".card-icon",
+        "since": 12
+      },
+      {
+        "name": ".card-longdesc",
+        "since": 12
+      },
+      {
+        "name": ".card-subtitle",
+        "since": 12
+      },
+      {
+        "name": ".card-title",
+        "since": 12
+      },
+      {
+        "name": ".list-group",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "card-header-body",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-icon",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-image",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".card-image-badge",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "card-image-badge",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-title",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-subtitle",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-longdesc",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-body",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "card-text",
+    "component": "card",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [],
+    "until": 12
+  },
+  {
+    "class": "card-footer",
+    "component": "card",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-toggle-no-chevron",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-toggle-link",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-toggle",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 14
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": "typo3-backend-icon",
+        "since": 13
+      },
+      {
+        "name": ".dropdown-menu",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "dropdown-menu",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 14
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-control",
+        "since": 13
+      },
+      {
+        "name": ".dropdown",
+        "since": 14
+      },
+      {
+        "name": ".dropdown-toggle",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "dropdown-item",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-divider",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-header",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropdown-divider",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "dropdown-headline",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropdown-divider",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "dropdown-list",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropdown-item",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "dropdown-table",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropdown-row",
+    "component": "dropdown",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "drop-status-ok",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropzone-hint-icon",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "drop-in-progress",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropzone-hint-icon",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "dropzone-mask",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-close",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-hint",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "position": "on",
+        "since": 13
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-hint-media",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [],
+    "until": 12
+  },
+  {
+    "class": "dropzone-hint-icon",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-hint-body",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-hint-title",
+    "component": "dropzone",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "dropzone-hint-message",
+    "component": "dropzone",
+    "since": null,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-switch",
+    "component": "form-check",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-type-toggle",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-type-icon-toggle",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon-checked",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon-unchecked",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-type-labeled-toggle",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-type-card",
+    "component": "form-check",
+    "since": 14,
+    "positions": [
+      {
+        "position": "on",
+        "since": 14
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 14
+      },
+      {
+        "name": ".form-check-label",
+        "since": 14
+      },
+      {
+        "name": ".form-check-label-body",
+        "since": 14
+      },
+      {
+        "name": ".form-check-label-header",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-check-inline",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-input",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-input",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-label",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-check-label-icon-checked",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon-unchecked",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "form-check-label",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".form-check-label-icon",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".form-check-label-icon-checked",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-icon-unchecked",
+        "since": 12
+      },
+      {
+        "name": ".form-check-label-body",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-check-label-icon",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-check-label-icon-checked",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-check-label-icon-unchecked",
+    "component": "form-check",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-check-label-header",
+    "component": "form-check",
+    "since": 14,
+    "positions": [
+      {
+        "position": "below",
+        "since": 14
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-check-label-body",
+    "component": "form-check",
+    "since": 14,
+    "positions": [
+      {
+        "position": "below",
+        "since": 14
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-check-card-container",
+    "component": "form-check",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".form-check-type-card",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "form-control-sm",
+    "component": "input",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "input-group",
+    "component": "input",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".btn",
+        "since": 12
+      },
+      {
+        "name": ".dropdown-menu",
+        "since": 12
+      },
+      {
+        "name": ".dropdown-toggle",
+        "since": 12
+      },
+      {
+        "name": ".form-control",
+        "since": 12
+      },
+      {
+        "name": ".form-check-type-toggle",
+        "since": 13
+      },
+      {
+        "name": "typo3-backend-color-picker",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "form-label",
+    "component": "input",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "form-text",
+    "component": "input",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "list-group-flush",
+    "component": "list-group",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".list-group-item",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "list-group-item",
+    "component": "list-group",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "list-group-item-action",
+    "component": "list-group",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "list-group-button",
+    "component": "list-group",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-size-small",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-size-medium",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-size-large",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-size-full",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-size-expand",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-position-top",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-position-bottom",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-position-start",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-position-end",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-position-sheet",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-style-light",
+    "component": "modal",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-style-dark",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "modal-type-iframe",
+    "component": "modal",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "t3js-modal-trigger",
+    "component": "modal",
+    "since": null,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-layout-wide",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-layout-normal",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-loading-indicator",
+    "component": "module",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-docheader",
+    "component": "module",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".dropdown-menu",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "module-docheader-navigation",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-docheader-buttons",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-docheader-column",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-docheader-column-grow",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-docheader-column-breadcrumb",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "module-body",
+    "component": "module",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": "typo3-backend-settings-editor",
+        "since": 13
+      },
+      {
+        "name": ".callout",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "module-body-container",
+    "component": "module",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "nav-tabs",
+    "component": "nav",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".dropdown-menu",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".nav",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".nav-item",
+        "since": 12
+      },
+      {
+        "name": ".nav-link",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "nav-pills",
+    "component": "nav",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".nav",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".nav-item",
+        "since": 12
+      },
+      {
+        "name": ".nav-link",
+        "since": 12
+      },
+      {
+        "name": ".nav-tabs",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "nav-tabs-scroll",
+    "component": "nav",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "nav-item",
+    "component": "nav",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".nav",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".nav-link",
+        "since": 12
+      },
+      {
+        "name": ".nav-tabs",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "nav-link",
+    "component": "nav",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "tab-content",
+    "component": "nav",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-primary",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-secondary",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-info",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-success",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-warning",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-danger",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-notice",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-default",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-category-0",
+    "component": "note",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-category-1",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-category-2",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-category-3",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-category-4",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-list",
+    "component": "note",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".note",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "note-header",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-header-bar",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-title",
+    "component": "note",
+    "since": null,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-actions",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "note-body",
+    "component": "note",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "page-item",
+    "component": "pagination",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".page-link",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "page-link",
+    "component": "pagination",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "paginator-input",
+    "component": "pagination",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 12,
+        "until": 12
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-default",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".panel-body",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel-collapse",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel-heading",
+        "since": 12,
+        "until": 12
+      }
+    ]
+  },
+  {
+    "class": "panel-feature",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-important",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-breaking",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-deprecation",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-condensed",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-active",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-hidden",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".panel-heading",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "panel-has-progress",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".panel-progress",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "panel-group",
+    "component": "panel",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".panel",
+        "since": 12
+      },
+      {
+        "name": ".panel-heading",
+        "since": 13
+      },
+      {
+        "name": ".alert",
+        "since": 14
+      },
+      {
+        "name": ".panel-collapse",
+        "since": 14
+      },
+      {
+        "name": ".table-fit",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "panel-heading",
+    "component": "panel",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 13
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".panel-body",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel-collapse",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".panel-title",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "panel-heading-row",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".panel-button",
+        "since": 13
+      },
+      {
+        "name": ".panel-actions",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "panel-heading-column",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-title",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-body",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-footer",
+    "component": "panel",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-actions",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-button",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-badge",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-icon",
+    "component": "panel",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-progress",
+    "component": "panel",
+    "since": 12,
+    "positions": [
+      {
+        "position": "on",
+        "since": 13
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "panel-collapse",
+    "component": "panel",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 13
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".alert",
+        "since": 12
+      },
+      {
+        "name": ".nav-tabs",
+        "since": 12,
+        "until": 13
+      },
+      {
+        "name": ".panel-body",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": ".tab-content",
+        "since": 12,
+        "until": 13
+      },
+      {
+        "name": ".table-fit",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "input-group",
+    "component": "recordsearchbox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".btn",
+        "since": 12
+      },
+      {
+        "name": ".dropdown-menu",
+        "since": 12
+      },
+      {
+        "name": ".dropdown-toggle",
+        "since": 12
+      },
+      {
+        "name": ".form-control",
+        "since": 12
+      },
+      {
+        "name": ".form-check-type-toggle",
+        "since": 13
+      },
+      {
+        "name": "typo3-backend-color-picker",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "form-control",
+    "component": "recordsearchbox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-primary",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-secondary",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-info",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-success",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-warning",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-danger",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-notice",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-default",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-live",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-loading",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-active",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-online",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-running",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator-disabled",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "status-indicator",
+    "component": "status-indicator",
+    "since": 14,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-striped",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-striped-columns",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-bordered",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-hover",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-sm",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-fit",
+    "component": "table",
+    "since": 12,
+    "positions": [
+      {
+        "position": "around",
+        "since": 12
+      }
+    ],
+    "stylesWithin": [
+      {
+        "name": ".table",
+        "since": 12
+      },
+      {
+        "name": ".table-bordered",
+        "since": 12,
+        "until": 12
+      },
+      {
+        "name": "typo3-backend-progress-bar",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "class": "table-center",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-vertical-top",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-active",
+    "component": "table",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "table-selected",
+    "component": "table",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "nodes-container",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "nodes-list",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-icon",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-label",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-name",
+    "component": "tree",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-toggle",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": "typo3-backend-icon",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "node-content",
+    "component": "tree",
+    "since": 13,
+    "positions": [
+      {
+        "position": "below",
+        "since": 13
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-action",
+    "component": "tree",
+    "since": 12,
+    "positions": [
+      {
+        "position": "below",
+        "since": 13
+      }
+    ],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-note",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "node-loading",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": "typo3-backend-icon",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "class": "tree-toolbar",
+    "component": "tree",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  }
+]

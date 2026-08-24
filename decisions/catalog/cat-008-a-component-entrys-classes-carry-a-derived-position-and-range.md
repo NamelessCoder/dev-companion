@@ -3,6 +3,18 @@ id: D-CAT-008
 title: A component entry's classes carry a derived position and range
 date: 2026-08-24
 status: open
+coveredBy:
+  - BackendCssTest::aClassNoSelectorPlacesHasNoPosition
+  - BackendCssTest::aClassTheStylesheetNeverWritesIsNotCarried
+  - BackendCssTest::aCommentIsNotASelector
+  - BackendCssTest::aLongerNameIsNotTheClassItStartsWith
+  - BackendCssTest::aModifierWrittenOnTheSameElementIsPlacedOnIt
+  - BackendCssTest::aPartWrittenBeneathTheRootIsPlacedBelowIt
+  - BackendCssTest::aWrapperIsPlacedAboveTheClassItWraps
+  - BackendCssTest::everyCombinatorPlacesTheClassTheSameWay
+  - BackendCssTest::selectorsInsideAMediaQueryAreRead
+  - BackendCssTest::whatIsStyledWithinHoldsOnlyNamesTheCallerNamed
+  - BackendCssTest::whatIsStyledWithinIsSeparateFromWhereTheClassSits
 ---
 
 # D-CAT-008 — A component entry's classes carry a derived position and range
@@ -29,9 +41,18 @@ Measured on 2026-08-24 against `.checkouts/` 12.4, 13.4, 14.3 and main.
 - The classes that can be misapplied are the ones it places. On 14.3 it makes 8
   of them a wrapper around the root class and 12 a descendant of it, and the 122
   it leaves free are modifiers that carry no position to get wrong.
-- **The structure is itself version-bound.** `table-fit` is not written above
-  `.table` on 12.4 and is from 13.4 — on the two majors the extension that
-  reported this declares.
+- **A position can be version-bound.** `.dropdown-menu` is written above
+  `.dropdown` from 14 and not before, and `.panel-heading` shares an element
+  with `.panel` from 13. Both are read off the selectors and neither is in the
+  entry. A first reading of this said `table-fit` was one of them, off a
+  truncated listing; it is written above `.table` on all four.
+- **The derivation places 40 of the 242 curated names and leaves 203 unplaced.**
+  A position exists only where the core happened to write a selector carrying
+  one, and it can be lost: `.card-header` is placed below `.card` on 12.4 and on
+  no later major, because the CSS flattened while the class stayed nested. So
+  this answers the wrapper cases it was written for and is not a structural map.
+  Partial and true still beats the lists, which call `table-fit` a modifier of
+  `.table` and are wrong rather than silent.
 - A range per class falls out of the same reading. 168 names hold on all four
   majors and 70 on fewer, and 17 of 26 entries carry classes whose ranges
   differ, so one `classesSince` per entry is too coarse for two thirds of them.
@@ -49,7 +70,7 @@ Measured on 2026-08-24 against `.checkouts/` 12.4, 13.4, 14.3 and main.
 ## Decided
 
 - The classes and the elements are derived, per covered major, by
-  `bin/cli catalog:derive`, and written to files of their own so that nothing
+  `bin/cli components:derive`, and written to files of their own so that nothing
   hand-edited sits in what a command overwrites. `catalog:check` verifies the
   committed result against the checkouts, as it does for everything else.
 - Each class carries where it sits relative to its component's root — around it,
@@ -64,6 +85,11 @@ Measured on 2026-08-24 against `.checkouts/` 12.4, 13.4, 14.3 and main.
 - The curation stays, and stops holding facts. What a person decides is which
   components are worth answering about, their titles, their summaries and the
   one worked example; what a machine decides is every fact about a class.
+- **`variants`, `modifiers` and `subComponents` stop meaning a position.** The
+  three names claim one, and for 203 classes nothing verified it — `table-fit`
+  sat in `modifiers` and `card-container` in `subComponents` while both are the
+  element above. They are the component's class names, and where a class sits is
+  the derived field or nothing.
 - A document says how the styleguide is used: what it is, that it is a system
   extension from 13.4 and an installable package before that, where its demos
   live, and that its examples are complete and cannot be subtracted from.
@@ -86,6 +112,11 @@ Measured on 2026-08-24 against `.checkouts/` 12.4, 13.4, 14.3 and main.
 - That `backend.css` stays committed. It is a build artefact in the core's own
   repository, and a release that stopped committing it would take the source
   away.
+- That the curated selection stands in for a statement this entry does not make.
+  `D-CAT-004` selects on what the core files as a component — a Sass partial, a
+  custom element — and not everything it admits is for an extension to use. What
+  settles that is the styleguide rather than the selection, and
+  `todo/open/2026-08-24-014500` carries it.
 
 ## Wrong if
 
@@ -97,5 +128,8 @@ Measured on 2026-08-24 against `.checkouts/` 12.4, 13.4, 14.3 and main.
 - A class-shaped question is still answered with a name and a range. That is
   what `D-CAT-006` left, and the position is what this adds; if the answer does
   not carry it, nothing here reached the caller.
+- The 203 unplaced classes are what callers actually ask about, and the answer
+  is silent for them where the lists at least guessed. What would show it is a
+  feedback naming a class the derivation left unplaced.
 - The core ships a component manifest. This entry is written to be thrown away
   then, and the position field is what would be kept.

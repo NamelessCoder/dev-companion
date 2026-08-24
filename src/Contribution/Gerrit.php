@@ -33,10 +33,22 @@ final class Gerrit
 
     private readonly Fetch $fetch;
 
+    /** @var (\Closure(string): ?string)|null */
+    private readonly ?\Closure $transport;
+
+    /**
+     * The tracker, asked one question: what the issues a commit message names
+     * are about (`D-ANS-098`). Built where that question is asked rather than in
+     * the constructor, because `Forge` builds a `Gerrit` of its own and two
+     * constructors calling each other never return.
+     */
+    private ?Forge $tracker = null;
+
     /** @param (\Closure(string): ?string)|null $transport */
     public function __construct(?\Closure $transport = null)
     {
         $this->fetch = new Fetch($transport);
+        $this->transport = $transport;
     }
 
     /**
@@ -185,13 +197,15 @@ final class Gerrit
      *
      * The relation chain comes with them, on every change the answer carries,
      * because a change read alone says a feature exists where the stack under
-     * it says what the feature consists of (`D-ANS-094`).
+     * it says what the feature consists of (`D-ANS-094`). So do the issues the
+     * commit message names, which is what joins the patch to the tracker
+     * (`D-ANS-098`).
      *
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
     public function change(string $change, int $limit = 1, string $messages = 'none'): array
     {
-        $options = self::REVIEW . ($messages === 'none' ? '' : self::MESSAGES);
+        $options = self::REVIEW . self::CURRENT_COMMIT . ($messages === 'none' ? '' : self::MESSAGES);
         $handle = trim($change);
         $answer = $this->search('change:' . $handle, $limit, $options);
 
@@ -236,8 +250,105 @@ final class Gerrit
                 $answer['changes'][$index]['messages'] = $written;
             }
         }
+        $answer['changes'] = $this->issues($answer['changes']);
 
         return $answer;
+    }
+
+    /**
+     * Every change, carrying the issues its commit message names, each filled
+     * with what says whether to read it.
+     *
+     * The message is the only thing joining a patch to the tracker, and a
+     * session that does not know a second issue is named has nothing to notice
+     * by: `feedback/2026-08-24-100458` walked four calls to reach an issue the
+     * first change already named (`D-ANS-098`). One bulk read for every change
+     * in the answer rather than one per issue, which is the read a relation is
+     * already filled by (`R-ANS-029`); where the tracker cannot be reached the
+     * numbers stand with the fields empty, because the handle is what the walk
+     * needs.
+     *
+     * @param list<array<string, mixed>> $changes
+     * @return list<array<string, mixed>>
+     */
+    private function issues(array $changes): array
+    {
+        $numbers = [];
+        foreach ($changes as $index => $change) {
+            $message = is_string($change['message'] ?? null) ? $change['message'] : '';
+            // Read for the issues and not part of the answer: a commit message
+            // is prose the caller reads on the review page, and what the walk
+            // needs out of it is the handles.
+            unset($changes[$index]['message']);
+            if ($message === '') {
+                continue;
+            }
+            $changes[$index]['issues'] = self::trailers($message);
+            $numbers = [...$numbers, ...array_column($changes[$index]['issues'], 'issue')];
+        }
+        if ($numbers === []) {
+            return $changes;
+        }
+
+        $fields = $this->tracker()->fields($numbers);
+        foreach ($changes as $index => $change) {
+            foreach ($change['issues'] ?? [] as $at => $named) {
+                $read = $fields[$named['issue']] ?? null;
+                $changes[$index]['issues'][$at]['subject'] = $read['subject'] ?? '';
+                $changes[$index]['issues'][$at]['tracker'] = $read['tracker'] ?? '';
+                $changes[$index]['issues'][$at]['status'] = $read['status'] ?? '';
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * The issues a commit message's `Resolves:` and `Related:` trailers name.
+     *
+     * The two are told apart because they are different claims: what the patch
+     * closes, and what it touches. Only those lines are read, so a number in a
+     * URL or in a quoted log line is not an issue this answer invents — the
+     * `Reviewed-on:` trailer a merged change gains ends in the change's own
+     * number, which is the one that would be wrong most often.
+     *
+     * A trailer naming no number names no issue. The current patch set of
+     * change 91563 carries the line `Resolves: #` with nothing after it, and an
+     * issue nobody can look up is worse than none.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private static function trailers(string $message): array
+    {
+        if (preg_match_all('~^(Resolves|Related):(.*)$~mi', $message, $lines, PREG_SET_ORDER) === false) {
+            return [];
+        }
+
+        $named = [];
+        foreach ($lines as $line) {
+            preg_match_all('~#(\d+)~', $line[2], $found);
+            foreach ($found[1] as $number) {
+                // The first trailer naming an issue is the claim it is answered
+                // with, which is `Resolves:` where a message carries both: the
+                // core writes what it closes above what it touches.
+                $named[(int) $number] ??= [
+                    'issue' => (int) $number,
+                    'trailer' => strtolower($line[1]),
+                    'subject' => '',
+                    'tracker' => '',
+                    'status' => '',
+                    'url' => Forge::HOST . '/issues/' . (int) $number,
+                ];
+            }
+        }
+
+        return array_values($named);
+    }
+
+    /** The tracker, built where an answer needs it and not before. */
+    private function tracker(): Forge
+    {
+        return $this->tracker ??= new Forge($this->transport);
     }
 
     /**
@@ -390,10 +501,12 @@ final class Gerrit
     /**
      * The option that adds the commit message to the current revision.
      *
-     * Asked for only where the answer has to be held against what the message
-     * says, which is the issue search: a query naming a change is answered with
-     * that change and has nothing to check. Verified against `review.typo3.org`
-     * on 2026-08-05, over the same anonymous path as everything else.
+     * Both forms ask for it and read it for different things: the issue search
+     * holds what the server matched against what the message says, and a change
+     * lookup lifts the issues its trailers name out of it (`D-ANS-098`). No
+     * second round trip, and 1.4 KB on the 13.1 KB change 95015 answers with —
+     * measured against `review.typo3.org` on 2026-08-24, over the same
+     * anonymous path as everything else.
      */
     private const CURRENT_COMMIT = '&o=CURRENT_COMMIT';
 
@@ -470,7 +583,7 @@ final class Gerrit
             if (is_array($entry)) {
                 $change = self::change_($entry);
                 // What was not asked for cannot be in the answer, and the
-                // commit message is asked for by one query alone.
+                // commit message is asked for by the queries that read it.
                 if (!str_contains($options, self::CURRENT_COMMIT)) {
                     unset($change['message']);
                 }
@@ -524,8 +637,9 @@ final class Gerrit
         return [
             'number' => $number,
             // What `o=CURRENT_COMMIT` adds, where it was asked for. Read to
-            // decide whether the change is about the issue, and dropped before
-            // the answer is handed over.
+            // decide whether the change is about the issue and to lift the
+            // issues it names out of it, and dropped before the answer is
+            // handed over.
             'message' => is_string($commit['message'] ?? null) ? $commit['message'] : '',
             // The one handle that survives a rebase onto another branch, and
             // what a reviewer holds the commit in front of it against.
@@ -558,6 +672,10 @@ final class Gerrit
             // Filled by `change()`, each from an endpoint of its own.
             'comments' => null,
             'chain' => null,
+            // Filled by `change()` out of the commit message, so null is a
+            // message that did not come back rather than a patch naming no
+            // issue — which is the empty list.
+            'issues' => null,
             'messages' => is_array($entry['messages'] ?? null) ? self::messages($entry['messages']) : null,
             // Counted by `change()`, before the filter it is the measure of.
             'botMessageCount' => null,

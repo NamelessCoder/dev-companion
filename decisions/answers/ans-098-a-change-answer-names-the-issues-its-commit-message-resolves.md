@@ -3,7 +3,12 @@ id: D-ANS-098
 title: 'A change answer names the issues its commit message resolves'
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - GerritTest::aChangeCarriesTheIssuesItsCommitMessageNames
+  - GerritTest::aTrailerWithNoNumberBehindItNamesNoIssue
+  - GerritTest::anIssueSearchAsksForNoneOfTheReview
+  - GerritTest::theCommitMessageIsReadByBothFormsAndHandedBackByNeither
+  - GerritTest::theTextHalfNamesTheIssuesAndWhatEachTrailerClaims
 ---
 
 # D-ANS-098 — A change answer names the issues its commit message resolves

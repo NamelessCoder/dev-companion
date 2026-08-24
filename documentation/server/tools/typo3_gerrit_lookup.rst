@@ -17,17 +17,20 @@ carries the relation chain it sits in: the changes stacked on it and the changes
 it is built on, each with its number, its status and its subject, which is what
 says whether the change is one part of a larger feature and how far that feature
 has got. The two relations are different — a chain is changes built on one
-another, a shared Change-Id is one patch on several branches. Each change also
-carries the ref that patch set is fetchable by and the review server to fetch it
-over, so getting it into a checkout takes no second lookup. A change read by
-name carries the review it is in as well: the value every voter holds per label
-and whether the submit rule is satisfied, and every comment left on it with its
-patch set, its file and line, whether the thread is unresolved and which comment
-it replies to. That is where a comment somebody left on an earlier patch set and
-nobody answered is read. Why a vote is gone is in the review log instead, which
-messages asks for. A call carries issue or change, never both. This reaches the
-network, and it reads: reviewing, voting and uploading stay yours. Answers from:
-network.
+another, a shared Change-Id is one patch on several branches. A change read by
+name also carries the Forge issues its commit message names in its Resolves: and
+Related: trailers, each with its subject, tracker and status. That is the join
+between the patch and the tracker, and it is where a second issue named nowhere
+else in the review is seen. Each change also carries the ref that patch set is
+fetchable by and the review server to fetch it over, so getting it into a
+checkout takes no second lookup. A change read by name carries the review it is
+in as well: the value every voter holds per label and whether the submit rule is
+satisfied, and every comment left on it with its patch set, its file and line,
+whether the thread is unresolved and which comment it replies to. That is where
+a comment somebody left on an earlier patch set and nobody answered is read. Why
+a vote is gone is in the review log instead, which messages asks for. A call
+carries issue or change, never both. This reaches the network, and it reads:
+reviewing, voting and uploading stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -138,6 +141,13 @@ Answers with
         # read: an issue search asks for none, and a change lookup whose call did
         # not answer says so here rather than with an empty list.
         chain: array or null  # optional
+        # The Forge issues this change's commit message names in its Resolves: and
+        # Related: trailers, each filled with what says whether to read it. That is
+        # the join between the patch and the tracker, and it is where a second issue
+        # nobody mentioned elsewhere is seen. Empty means the message names none.
+        # Null means the message was not read: an issue search asks for none of
+        # this, and the caller already holds the number there.
+        issues: array or null  # optional
         # The review log, oldest first, where messages asked for it. Null otherwise,
         # which is the default and every hit of an issue search.
         messages: array or null  # optional
@@ -230,6 +240,7 @@ Data:
                 "commentCount": 0,
                 "comments": null,
                 "chain": null,
+                "issues": null,
                 "messages": null,
                 "botMessageCount": null
             }
@@ -265,6 +276,9 @@ Text:
     Verified: satisfied · Stefan Bürk +1 · Christian Kuhn +2 · core-ci +1 · Benni Mack +1
     Code-Review: satisfied · Stefan Bürk +1 · Christian Kuhn +2 · core-ci 0 · Benni Mack +1
 
+    ### Issues named in the commit message (1)
+    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w
+
     ### Comments (1, 0 unresolved)
 
     - Christian Kuhn · patch set 3 · resolved
@@ -278,6 +292,11 @@ Text:
     Last moved: 2025-04-09 19:01:53.000000000
     Verified: satisfied · Christian Kuhn +2 · core-ci +1
     Code-Review: satisfied · Christian Kuhn +2 · core-ci 0
+
+    ### Issues named in the commit message (1)
+    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w
+
+    The issues above are what the commit message names, and a status there is the issue's own rather than this change's. Pass one to `typo3_forge_lookup` as `issue` to read it whole, which is where a maintainer said why something was closed or reassigned.
 
     `unresolved` is the flag on the thread as its last writer left it, not a judgement that nobody answered: a comment can carry a reply and stay unresolved, and one can be resolved with nothing written under it. Which of them this review would otherwise make a second time is yours to read.
 
@@ -385,6 +404,16 @@ Data:
                     }
                 ],
                 "chain": [],
+                "issues": [
+                    {
+                        "issue": 106535,
+                        "trailer": "resolves",
+                        "subject": "Raise --dev phpunit/phpunit:^11.5.17 -w",
+                        "tracker": "Task",
+                        "status": "Closed",
+                        "url": "https://forge.typo3.org/issues/106535"
+                    }
+                ],
                 "messages": null,
                 "botMessageCount": null
             },
@@ -440,6 +469,16 @@ Data:
                 "commentCount": 0,
                 "comments": [],
                 "chain": [],
+                "issues": [
+                    {
+                        "issue": 106535,
+                        "trailer": "resolves",
+                        "subject": "Raise --dev phpunit/phpunit:^11.5.17 -w",
+                        "tracker": "Task",
+                        "status": "Closed",
+                        "url": "https://forge.typo3.org/issues/106535"
+                    }
+                ],
                 "messages": null,
                 "botMessageCount": null
             }
@@ -677,6 +716,7 @@ Data:
                         "chainedAt": 16
                     }
                 ],
+                "issues": [],
                 "messages": null,
                 "botMessageCount": null
             }

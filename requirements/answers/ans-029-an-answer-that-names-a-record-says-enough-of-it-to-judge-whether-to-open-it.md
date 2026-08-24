@@ -10,6 +10,7 @@ heldBy:
   - ForgeTest::aReviewChangeIsLiftedOutOfTheProseThatCarriesIt
   - ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt
   - ForgeTest::theRelationsOfAWholePageAreFilledInOneCall
+  - GerritTest::aChangeCarriesTheIssuesItsCommitMessageNames
 ---
 
 # R-ANS-029 — An answer that names a record says enough of it to judge whether to open it

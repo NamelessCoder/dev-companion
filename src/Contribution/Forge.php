@@ -321,7 +321,9 @@ final class Forge
      * The fields of a set of issues, read in one request.
      *
      * What makes filling a search page and an issue's relations cheaper than
-     * explaining why they are bare.
+     * explaining why they are bare. The review server fills the issues a commit
+     * message names from here too, which is what it is public for
+     * (`D-ANS-098`).
      *
      * An empty answer is what could not be reached, and every caller here reads
      * it as "leave what came back alone".
@@ -329,7 +331,7 @@ final class Forge
      * @param list<mixed> $numbers
      * @return array<int, array<string, mixed>>
      */
-    private function fields(array $numbers): array
+    public function fields(array $numbers): array
     {
         $fields = [];
         foreach ($this->issuesOf($numbers) as $entry) {

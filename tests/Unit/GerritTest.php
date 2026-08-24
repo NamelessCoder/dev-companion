@@ -85,6 +85,42 @@ final class GerritTest extends TestCase
         . '"a1b2c3d4e5f60718293a4b5c6d7e8f9012345678":{"commit":{"message":"[BUGFIX] Parallel execution of non-parallel scheduler task\n\nClose a time window in Scheduler::executeTask().\n\nResolves: #106318\nReleases: main, 13.4\nChange-Id: I1264b5c248dd9aa5402383a498d82650932f29e4\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/88556\n"}}}}]';
 
     /**
+     * Change 95375 as `change:95375` answered it on 2026-08-24 with
+     * `o=CURRENT_COMMIT`, its message trimmed to the first paragraph and the
+     * trailers: the patch `feedback/2026-08-24-100458` set out to review, whose
+     * commit message names all three issues that session took four calls to
+     * reach.
+     */
+    private const NAMING = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Build a blank form from the blank start template",'
+        . '"status":"NEW","_number":95375,"change_id":"I84e6ed9d47c9e8c734c00941c0a06aa5f7ea8414",'
+        . '"current_revision_number":2,"current_revision":"4938c8ce9b57d41283adda8e54ea5f6c427b45de","revisions":{'
+        . '"4938c8ce9b57d41283adda8e54ea5f6c427b45de":{"commit":{"message":"[BUGFIX] Build a blank form from the blank start template\n\nThe \"create new form\" wizard lets editors pick \"Blank\" or \"Predefined\"\nin step 1.\n\nResolves: #110493\nRelated: #110331\nRelated: #107080\nReleases: main, 14.3\nChange-Id: I84e6ed9d47c9e8c734c00941c0a06aa5f7ea8414\n"}}}}]';
+
+    /**
+     * What `/issues.json?issue_id=110493,110331,107080&status_id=*` answered on
+     * 2026-08-24, trimmed to the four fields that are read. One call for the
+     * whole set, which is the read a relation is already filled by.
+     */
+    private const TRACKED = '{"issues":['
+        . '{"id":110493,"tracker":{"id":1,"name":"Bug"},"status":{"id":8,"name":"Under Review"},'
+        . '"subject":"Bug: Form wizard always selects first template regardless of Blank/Predefined mode"},'
+        . '{"id":110331,"tracker":{"id":2,"name":"Feature"},"status":{"id":8,"name":"Under Review"},'
+        . '"subject":"Improve form template selection in \"Create new form\""},'
+        . '{"id":107080,"tracker":{"id":1,"name":"Bug"},"status":{"id":8,"name":"Under Review"},'
+        . '"subject":"Form prototype not selectable with blank form"}],"total_count":3}';
+
+    /** The change, the tracker, and a chain nothing is stacked in. */
+    private static function naming(string $url): string
+    {
+        if (str_contains($url, 'forge.typo3.org')) {
+            return self::TRACKED;
+        }
+
+        return str_contains($url, '/related') ? ")]}'\n" . '{"changes":[]}' : self::NAMING;
+    }
+
+    /**
      * The one the query was for, and not the one that shares its number.
      *
      * Both skills that call this treat a hit as grounds to stop working, so a
@@ -198,29 +234,32 @@ final class GerritTest extends TestCase
     }
 
     /**
-     * The commit message is what the filter reads, so it is asked for — and
-     * only where there is something to hold against it. A caller naming a
-     * change has named it — `D-ANS-055`.
+     * The commit message is asked for by both forms and read by each for its
+     * own thing: the search holds what the server matched against what the
+     * message says (`D-ANS-055`), and a change lookup lifts the issues its
+     * trailers name out of it (`D-ANS-098`).
+     *
+     * Neither hands it back. The answer is which changes exist and what state
+     * they are in, and the message is prose the caller reads on the review page.
      */
     #[Decision('D-ANS-055')]
+    #[Decision('D-ANS-098')]
     #[Test]
-    public function theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt(): void
+    public function theCommitMessageIsReadByBothFormsAndHandedBackByNeither(): void
     {
         $asked = [];
         $gerrit = new Gerrit(function (string $url) use (&$asked): string {
             $asked[] = $url;
 
-            return self::BOTH;
+            return str_contains($url, 'forge.typo3.org') ? '{"issues":[],"total_count":0}' : self::BOTH;
         });
 
         $gerrit->changesForIssue('88556');
         $gerrit->change('95108');
 
-        self::assertStringContainsString('o=CURRENT_COMMIT', $asked[0]);
-        self::assertStringNotContainsString('o=CURRENT_COMMIT', $asked[1]);
-        // What was read to decide is not what was asked for. The answer is
-        // which changes exist, and the commit is what a checkout is held
-        // against.
+        $queries = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '?q=')));
+        self::assertStringContainsString('o=CURRENT_COMMIT', $queries[0]);
+        self::assertStringContainsString('o=CURRENT_COMMIT', $queries[1]);
         self::assertArrayNotHasKey('message', $gerrit->changesForIssue('88556')['changes'][0]);
         self::assertArrayNotHasKey('message', $gerrit->change('95108')['changes'][0]);
     }
@@ -674,6 +713,123 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * The commit message is what joins a patch to the tracker, and the answer
+     * carried neither — `D-ANS-098`.
+     *
+     * `feedback/2026-08-24-100458` walked change 95375 to change 95015 to issue
+     * #107080 to an abandoned patch that answered the question it had been
+     * asked twice. Its first call already held all three issues, inside a
+     * message this tool did not hand over, and the session read the second
+     * `Resolves:` line by eye and nearly missed it.
+     *
+     * The two trailers are told apart because they are different claims: what
+     * the patch closes, and what it touches.
+     */
+    #[Decision('D-ANS-098')]
+    #[Requirement('R-ANS-029')]
+    #[Test]
+    public function aChangeCarriesTheIssuesItsCommitMessageNames(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::naming($url);
+        });
+
+        $change = $gerrit->change('95375')['changes'][0];
+
+        self::assertStringContainsString('o=CURRENT_COMMIT', $asked[0]);
+        self::assertSame([110493, 110331, 107080], array_column($change['issues'], 'issue'));
+        self::assertSame(['resolves', 'related', 'related'], array_column($change['issues'], 'trailer'));
+        // Filled with what says whether to read one, which a bare number is the
+        // failure `R-ANS-029` exists against.
+        self::assertSame([
+            'issue' => 107080,
+            'trailer' => 'related',
+            'subject' => 'Form prototype not selectable with blank form',
+            'tracker' => 'Bug',
+            'status' => 'Under Review',
+            'url' => 'https://forge.typo3.org/issues/107080',
+        ], $change['issues'][2]);
+        // One read of the tracker for the whole set, and the message itself is
+        // not what comes back.
+        self::assertSame(
+            ['https://forge.typo3.org/issues.json?issue_id=110493%2C110331%2C107080&status_id=%2A&limit=3'],
+            array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, 'forge'))),
+        );
+        self::assertArrayNotHasKey('message', $change);
+    }
+
+    /**
+     * A trailer naming no number names no issue, and a message carrying no
+     * trailer names none either — `D-ANS-098`.
+     *
+     * Both are on the review server as it stands. Patch set 46 of change 91563
+     * carries the line `Resolves: #` with nothing after it, and change 95350
+     * was abandoned with a message that names no issue at all — an issue
+     * nobody can look up is worse than none, and neither costs a call to the
+     * tracker to find that out.
+     */
+    #[Decision('D-ANS-098')]
+    #[Test]
+    public function aTrailerWithNoNumberBehindItNamesNoIssue(): void
+    {
+        $empty = ")]}'\n"
+            . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[WIP][FEATURE] Introduce Action API",'
+            . '"status":"NEW","_number":91563,"current_revision_number":46,"current_revision":"ad7dc9be0e8",'
+            . '"revisions":{"ad7dc9be0e8":{"commit":{"message":"[WIP][FEATURE] Introduce Action API\n\nReleases: main\nResolves: #\nChange-Id: I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2\n"}}}}]';
+        $none = ")]}'\n"
+            . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[TASK] Skip database setup for database-free functional tests",'
+            . '"status":"ABANDONED","_number":95350,"current_revision_number":1,"current_revision":"56bb0a89",'
+            . '"revisions":{"56bb0a89":{"commit":{"message":"[TASK] Skip database setup for database-free functional tests\n\nMark 25 functional test classes as not requiring database setup.\n\nChange-Id: I7d53b24b881f0970ed35f21976b945311a2c45d9\n"}}}}]';
+
+        $asked = [];
+        $answering = static function (string $change) use (&$asked): \Closure {
+            return function (string $url) use (&$asked, $change): string {
+                $asked[] = $url;
+
+                return str_contains($url, '/related') ? ")]}'\n" . '{"changes":[]}' : $change;
+            };
+        };
+
+        $said = (new Gerrit($answering($empty)))->change('91563')['changes'][0];
+        $silent = (new Gerrit($answering($none)))->change('95350')['changes'][0];
+
+        self::assertSame([], $said['issues']);
+        self::assertSame([], $silent['issues']);
+        self::assertSame([], array_filter($asked, static fn(string $url): bool => str_contains($url, 'forge')));
+    }
+
+    /**
+     * The issues are what the caller walks on, so the text half names them with
+     * the claim each trailer makes — `D-ANS-098`.
+     */
+    #[Decision('D-ANS-098')]
+    #[Test]
+    public function theTextHalfNamesTheIssuesAndWhatEachTrailerClaims(): void
+    {
+        $change = (new Gerrit(static fn(string $url): string => self::naming($url)))
+            ->change('95375')['changes'][0];
+
+        $said = implode("\n", GerritLookup::issues($change, true));
+
+        self::assertStringContainsString('Issues named in the commit message (3)', $said);
+        self::assertStringContainsString('- resolves #110493 — Bug · Under Review', $said);
+        self::assertStringContainsString('- related #107080 — Bug · Under Review · Form prototype not selectable', $said);
+        // Nothing to print for a message that names none, which is what a patch
+        // outside the core's own process ordinarily is.
+        self::assertSame([], GerritLookup::issues(['issues' => []], true));
+        // And an issue search asked for none of it, so silence there is not a
+        // claim that the message was read and named nothing.
+        self::assertSame([], GerritLookup::issues(['issues' => null], false));
+        self::assertStringContainsString(
+            'did not come back',
+            implode("\n", GerritLookup::issues(['issues' => null], true)),
+        );
+    }
+
+    /**
      * The review half of change 93319, as review.typo3.org answered it on
      * 2026-08-14 with the labels, the accounts and the messages asked for.
      *
@@ -849,7 +1005,11 @@ final class GerritTest extends TestCase
      * exists, it is answered with up to 25 changes, and the comments are a call
      * each — so a hit says the review was not read rather than that there is
      * none of it.
+     *
+     * The issues its message names are left out for the other reason: the
+     * caller of a search is holding the issue number already (`D-ANS-098`).
      */
+    #[Decision('D-ANS-098')]
     #[Test]
     public function anIssueSearchAsksForNoneOfTheReview(): void
     {
@@ -867,6 +1027,7 @@ final class GerritTest extends TestCase
         self::assertNull($change['labels']);
         self::assertNull($change['comments']);
         self::assertNull($change['messages']);
+        self::assertNull($change['issues']);
     }
 
     /**

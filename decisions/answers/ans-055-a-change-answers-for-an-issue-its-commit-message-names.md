@@ -7,7 +7,7 @@ coveredBy:
   - GerritTest::aChangeMatchedByItsNumberIsNotAnswered
   - GerritTest::aChangeWhoseMessageDidNotComeBackIsJudgedByItsNumberAlone
   - GerritTest::anAnswerOfNothingButFalsePositivesIsEmpty
-  - GerritTest::theCommitMessageIsAskedForWhereTheAnswerIsHeldAgainstIt
+  - GerritTest::theCommitMessageIsReadByBothFormsAndHandedBackByNeither
   - GerritTest::theNumberInAReviewUrlIsNotTheIssueBeingNamed
 ---
 

@@ -3,6 +3,9 @@ id: D-CAT-009
 title: The catalog lists what the styleguide lists
 date: 2026-08-24
 status: open
+coveredBy:
+  - CatalogTest::aComponentNoStyleguidePageDemonstratesIsNotAnswered
+  - CatalogTest::everyEntryNamesTheActionsThatDemonstrateIt
 ---
 
 # D-CAT-009 — The catalog lists what the styleguide lists

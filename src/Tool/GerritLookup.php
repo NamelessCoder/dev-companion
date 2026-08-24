@@ -186,7 +186,8 @@ final class GerritLookup extends ReadOnlyTool
                         ],
                         'patchSet' => Schema::integer('The patch set the entry stands at now.'),
                         'chainedAt' => Schema::integer('The patch set of the entry that the chain is built on. Lower than patchSet means the stack holds the older one and that change has moved on since, so act on the entry by its number rather than on the patch set named here.'),
-                    ], ['number', 'status', 'subject', 'thisChange', 'patchSet', 'chainedAt']),
+                        'url' => Schema::string('Where a person reads that change.'),
+                    ], ['number', 'status', 'subject', 'thisChange', 'patchSet', 'chainedAt', 'url']),
                 ],
                 'issues' => [
                     'type' => ['array', 'null'],
@@ -688,6 +689,7 @@ final class GerritLookup extends ReadOnlyTool
             if (self::behind($related)) {
                 $said[] = sprintf('chained at patch set %d, now at %d', $related['chainedAt'], $related['patchSet']);
             }
+            $said[] = $related['url'];
             $lines[] = '- ' . implode(' · ', $said);
         }
 
@@ -723,12 +725,12 @@ final class GerritLookup extends ReadOnlyTool
 
         $lines = ['', sprintf('### Issues named in the commit message (%d)', count($entry['issues']))];
         foreach ($entry['issues'] as $named) {
-            $lines[] = rtrim(sprintf(
+            $lines[] = sprintf(
                 '- %s #%d — %s',
                 $named['trailer'],
                 $named['issue'],
-                implode(' · ', array_filter([$named['tracker'], $named['status'], $named['subject']])),
-            ), ' —');
+                implode(' · ', array_filter([$named['tracker'], $named['status'], $named['subject'], $named['url']])),
+            );
         }
 
         return $lines;

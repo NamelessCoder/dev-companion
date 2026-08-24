@@ -11,6 +11,7 @@ use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Http\Recent;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
+use TYPO3\DevCompanion\Tool\ForgeLookup;
 
 /**
  * The tracker is somebody else's host, so what is held here is what this side
@@ -234,6 +235,28 @@ final class ForgeTest extends TestCase
         self::assertSame('Bug', $relations[0]['tracker']);
         self::assertSame('Closed', $relations[0]['status']);
         self::assertSame('https://forge.typo3.org/issues/105953', $relations[1]['url']);
+    }
+
+    /**
+     * The relation is where this answer names an issue by its number alone, and
+     * a person handed one has nothing to open — `D-ANS-103`. The record has held
+     * the URL since the relation was filled at all, and the line printed less
+     * than it printed from.
+     */
+    #[Decision('D-ANS-103')]
+    #[Test]
+    public function theRelationLineCarriesTheUrlOfTheIssueItNames(): void
+    {
+        $forge = new Forge(fn(string $url): string => (string) json_encode(
+            str_contains($url, 'issue_id=') ? self::RELATED : ['issue' => self::ISSUE],
+        ));
+
+        $relations = $forge->issue('110348')['issue']['relations'];
+
+        self::assertSame(
+            'Relation: duplicates #105953 — Task · New · Rework AdminPanel · https://forge.typo3.org/issues/105953',
+            ForgeLookup::relationLine($relations[1]),
+        );
     }
 
     /**

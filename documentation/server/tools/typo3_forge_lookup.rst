@@ -572,7 +572,7 @@ Text:
     Assigned to nobody.
     Target version: Candidate for patchlevel
     Reported against TYPO3 12, PHP 8.2 — which is what the reporter had, not what it still reproduces on.
-    Relation: relates #96466 — Bug · Rejected · RTE parse func paragraph duplication bug
+    Relation: relates #96466 — Bug · Rejected · RTE parse func paragraph duplication bug · https://forge.typo3.org/issues/96466
 
     ## Reported
     <pre><code class="html">
@@ -1073,8 +1073,8 @@ Text:
     Assigned to nobody.
     Target version: Candidate for patchlevel
     Reported against TYPO3 8, PHP 7.2 — which is what the reporter had, not what it still reproduces on.
-    Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features
-    Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements"
+    Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features · https://forge.typo3.org/issues/90676
+    Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements" · https://forge.typo3.org/issues/70759
 
     ## Reported
     Hi,
@@ -1432,30 +1432,30 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2493 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2498 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
     ## #14277 Start/Stop time for pages is ignored in standard menu objects
     Feature · Accepted · Frontend · filed by Michael Stucki · unassigned · filed 2004-08-20 · last touched 2025-04-04 · https://forge.typo3.org/issues/14277
-    Relation: relates #16815 — Bug · Closed · Sitemap ignoring "Start" and "End" flags
-    Relation: relates #98964 — Bug · Closed · Menu object caching creates too many records resulting in huge cache_hash table
+    Relation: relates #16815 — Bug · Closed · Sitemap ignoring "Start" and "End" flags · https://forge.typo3.org/issues/16815
+    Relation: relates #98964 — Bug · Closed · Menu object caching creates too many records resulting in huge cache_hash table · https://forge.typo3.org/issues/98964
     Review: change 61395 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395
 
     ## #14858 extended clipboard: setCopyMode can`t be set to copy by default
     Bug · New · Backend User Interface · filed by Sacha Vorbeck · unassigned · filed 2005-07-11 · last touched 2026-01-23 · https://forge.typo3.org/issues/14858
-    Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features
-    Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements"
+    Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features · https://forge.typo3.org/issues/90676
+    Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements" · https://forge.typo3.org/issues/70759
     Review: change 70962 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962
     Review: change 38419 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419
 
     ## #15984 menu.showAccessRestrictedPages doesn't replace link for  "include subpages"
     Bug · Accepted · Frontend · filed by Wolfgang Sassik · unassigned · filed 2006-04-05 · last touched 2026-04-15 · https://forge.typo3.org/issues/15984
-    Relation: relates #22860 — Bug · Closed · typolinkLinkAccessRestrictedPages_addParams doesn't work on restricted subpages
-    Relation: relates #26484 — Bug · Closed · extend to subpages in page properties in access tab does not work correctly
-    Relation: relates #78825 — Bug · Closed · Wrong pid determination when opening a nested access restriced page
-    Relation: precedes #32756 — Bug · Closed · Massive Memory Leak in 4.5.8+ / 4.6
+    Relation: relates #22860 — Bug · Closed · typolinkLinkAccessRestrictedPages_addParams doesn't work on restricted subpages · https://forge.typo3.org/issues/22860
+    Relation: relates #26484 — Bug · Closed · extend to subpages in page properties in access tab does not work correctly · https://forge.typo3.org/issues/26484
+    Relation: relates #78825 — Bug · Closed · Wrong pid determination when opening a nested access restriced page · https://forge.typo3.org/issues/78825
+    Relation: precedes #32756 — Bug · Closed · Massive Memory Leak in 4.5.8+ / 4.6 · https://forge.typo3.org/issues/32756
     Files (1): 3129.diff
     Review: change 2545 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545
     Review: change 2544 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
@@ -1470,7 +1470,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2493,
+        "total": 2498,
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1654,8 +1654,8 @@ Text:
 
     ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
     Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Benedikt Imminger · unassigned · filed 2019-01-11 · last touched 2019-01-11 · https://forge.typo3.org/issues/87400
-    Relation: relates #87314 — Feature · New · allowedAttribs / allowAttributes usage in config
-    Relation: relates #92943 — Bug · Closed · RTE ckeditor does not respect YAML configuration
+    Relation: relates #87314 — Feature · New · allowedAttribs / allowAttributes usage in config · https://forge.typo3.org/issues/87314
+    Relation: relates #92943 — Bug · Closed · RTE ckeditor does not respect YAML configuration · https://forge.typo3.org/issues/92943
     Files (1): RTE Bug.mov
 
     ## #97817 RTE removes line with empty, allowed tags when saving
@@ -1663,11 +1663,11 @@ Text:
 
     ## #88690 Translated content elements are not available in linkbrowser of the ckeditor in free mode
     Bug · New · RTE (rtehtmlarea + ckeditor) · filed by Ronny Hauptvogel · unassigned · filed 2019-07-05 · last touched 2023-03-05 · https://forge.typo3.org/issues/88690
-    Relation: relates #89701 — Bug · Closed · Link wizard lists only content elements of the default language
-    Relation: relates #90138 — Feature · Closed · Language and mode (free or connected) should be handled in the links module when creating an anchor to content
-    Relation: relates #91160 — Bug · Closed · Links to content element (anchor) in link wizard not possible when not in default language
-    Relation: relates #88382 — Bug · Closed · Link wizard lists all content elements of a page regardless of source language
-    Relation: relates #92809 — Bug · Accepted · Anchor Links in Link Wizard not translated correctly
+    Relation: relates #89701 — Bug · Closed · Link wizard lists only content elements of the default language · https://forge.typo3.org/issues/89701
+    Relation: relates #90138 — Feature · Closed · Language and mode (free or connected) should be handled in the links module when creating an anchor to content · https://forge.typo3.org/issues/90138
+    Relation: relates #91160 — Bug · Closed · Links to content element (anchor) in link wizard not possible when not in default language · https://forge.typo3.org/issues/91160
+    Relation: relates #88382 — Bug · Closed · Link wizard lists all content elements of a page regardless of source language · https://forge.typo3.org/issues/88382
+    Relation: relates #92809 — Bug · Accepted · Anchor Links in Link Wizard not translated correctly · https://forge.typo3.org/issues/92809
 
 Data:
 
@@ -1927,8 +1927,8 @@ Text:
 
     ## #18374 XCLASSing USER_INT objects does not work
     Bug · Closed · Communication · filed by Frank Nägler · assigned to Oliver Hader · filed 2008-03-05 · last touched 2010-08-06 · https://forge.typo3.org/issues/18374
-    Relation: relates #17883 — Bug · Closed · Nested USER_INT, COA_INT, etc. objects are not rendered
-    Relation: relates #18504 — Bug · Closed · XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline
+    Relation: relates #17883 — Bug · Closed · Nested USER_INT, COA_INT, etc. objects are not rendered · https://forge.typo3.org/issues/17883
+    Relation: relates #18504 — Bug · Closed · XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline · https://forge.typo3.org/issues/18504
     Files (2): 0007759_41.patch, 0007759_42.patch
 
 Data:
@@ -2114,20 +2114,20 @@ Text:
 
     ## #89259 Create new icons and replace icons for "Page enabled in menus" context menu
     Task · Accepted · Backend User Interface · filed by Frank Nägler · assigned to Benjamin Kott · filed 2019-09-25 · last touched 2019-09-25 · https://forge.typo3.org/issues/89259
-    Relation: relates #85918 — Feature · Closed · Show "Page enabled in menus" in ContextMenu for pages
-    Relation: relates #102497 — Task · New · Unify display and grouping of context menus
+    Relation: relates #85918 — Feature · Closed · Show "Page enabled in menus" in ContextMenu for pages · https://forge.typo3.org/issues/85918
+    Relation: relates #102497 — Task · New · Unify display and grouping of context menus · https://forge.typo3.org/issues/102497
     Files (1): image.png
 
     ## #89326 Prevent duplicate redirects in auto redirects
     Bug · Accepted · Link Handling & Redirect Handling · filed by Guido Schmechel · assigned to Frank Nägler · filed 2019-10-01 · last touched 2023-11-09 · https://forge.typo3.org/issues/89326
-    Relation: relates #89325 — Task · New · Prevent duplicate redirects in backend module
-    Relation: relates #89301 — Task · Accepted · Streamline automatic slug & redirects handling
-    Relation: relates #92448 — Bug · New · changing slug again after reverting an auto update causes wrong URLs on sub pages
+    Relation: relates #89325 — Task · New · Prevent duplicate redirects in backend module · https://forge.typo3.org/issues/89325
+    Relation: relates #89301 — Task · Accepted · Streamline automatic slug & redirects handling · https://forge.typo3.org/issues/89301
+    Relation: relates #92448 — Bug · New · changing slug again after reverting an auto update causes wrong URLs on sub pages · https://forge.typo3.org/issues/92448
 
     ## #104918 Drag & Drop to create pages in pagetree is not usable anymore
     Bug · Accepted · Pagetree · filed by Frank Nägler · unassigned · filed 2024-09-11 · last touched 2024-10-15 · https://forge.typo3.org/issues/104918
-    Relation: relates #104697 — Bug · Accepted · Unexpected behaviour - placing new items in the page tree. Safari Desktop
-    Relation: duplicates #106028 — Bug · Closed · Cannot create/move page at end of tree using d&d
+    Relation: relates #104697 — Bug · Accepted · Unexpected behaviour - placing new items in the page tree. Safari Desktop · https://forge.typo3.org/issues/104697
+    Relation: duplicates #106028 — Bug · Closed · Cannot create/move page at end of tree using d&d · https://forge.typo3.org/issues/106028
 
 Data:
 

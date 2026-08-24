@@ -542,6 +542,9 @@ final class Gerrit
                 'chainedAt' => isset($entry['_revision_number']) && is_numeric($entry['_revision_number'])
                     ? (int) $entry['_revision_number']
                     : 0,
+                // The same two fields a change URL is built from, which this
+                // endpoint answers per entry — `D-ANS-103`.
+                'url' => self::url($related, is_string($entry['project'] ?? null) ? $entry['project'] : ''),
             ];
         }
 
@@ -715,7 +718,7 @@ final class Gerrit
             'commit' => is_string($entry['current_revision'] ?? null) ? $entry['current_revision'] : '',
             'project' => $project,
             'updated' => is_string($entry['updated'] ?? null) ? $entry['updated'] : '',
-            'url' => $number > 0 ? self::HOST . '/c/' . $project . '/+/' . $number : self::HOST,
+            'url' => self::url($number, $project),
             // Null where the server named no patch set: a ref names one, and
             // there is nothing to fetch by a zero.
             'fetch' => $patchSet > 0 && $number > 0 ? [
@@ -744,6 +747,26 @@ final class Gerrit
             // Counted by `change()`, before the filter it is the measure of.
             'botMessageCount' => null,
         ];
+    }
+
+    /**
+     * Where a person reads one change.
+     *
+     * The path names the project where the payload carries one, because that is
+     * the form Gerrit redirects to. Where it carries none the number stands
+     * alone and the review server resolves it: a path naming no project renders
+     * a page about nothing, and asserting one this side does not know is the
+     * same answer worn as a fact — `D-ANS-103`.
+     */
+    private static function url(int $number, string $project): string
+    {
+        if ($number < 1) {
+            return self::HOST;
+        }
+
+        return $project === ''
+            ? self::HOST . '/c/' . $number
+            : self::HOST . '/c/' . $project . '/+/' . $number;
     }
 
     /**

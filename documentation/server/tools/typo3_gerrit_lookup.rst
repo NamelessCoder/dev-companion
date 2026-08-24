@@ -313,7 +313,7 @@ Text:
     Code-Review: satisfied · Stefan Bürk +1 · Christian Kuhn +2 · core-ci 0 · Benni Mack +1
 
     ### Issues named in the commit message (1)
-    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w
+    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w · https://forge.typo3.org/issues/106535
 
     ### Comments (1, 0 unresolved)
 
@@ -330,7 +330,7 @@ Text:
     Code-Review: satisfied · Christian Kuhn +2 · core-ci 0
 
     ### Issues named in the commit message (1)
-    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w
+    - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w · https://forge.typo3.org/issues/106535
 
     The issues above are what the commit message names, and a status there is the issue's own rather than this change's. Pass one to `typo3_forge_lookup` as `issue` to read it whole, which is where a maintainer said why something was closed or reassigned.
 
@@ -551,21 +551,21 @@ Text:
     Code-Review: not satisfied · core-ci 0
 
     ### Relation chain (15 changes, 13 stacked on this one and 1 under it)
-    - 92197 · NEW · [WIP][FEATURE] Provide Record Actions
-    - 92196 · NEW · [WIP][TASK] Add record serializer
-    - 88507 · NEW · [WIP][FEATURE] AI suggest demo using tools API
-    - 93599 · NEW · [WIP][TASK] Migrate resource endpoints to Actions API
-    - 92191 · NEW · [TASK] Migrate PageTree to Action API
-    - 92322 · NEW · [TASK] Migrate dashboard to Actions API
-    - 92724 · ABANDONED · [WIP][FEATURE] Implement OAuth authorization server
-    - 92323 · MERGED · [TASK] Avoid `json_encode()` workarounds in Settings API · chained at patch set 8, now at 10
-    - 92224 · NEW · [WIP][FEATURE] Add MCP Server demo based on Actions API
-    - 92223 · NEW · [WIP][FEATURE] Provide AI Tool provider based on Actions API
-    - 91486 · NEW · [WIP][FEATURE] Implement API Hub
-    - 93423 · NEW · [TASK] Implement standalone redirect route option
-    - 91666 · NEW · [WIP][FEATURE] Provide OpenAPI spec w/ Swagger UI for Actions API
-    - 91563 · NEW · [WIP][FEATURE] Introduce Action API · this change
-    - 93064 · NEW · [TASK] Introduce JSON SchemaBuilder and Schema based Hydrator
+    - 92197 · NEW · [WIP][FEATURE] Provide Record Actions · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92197
+    - 92196 · NEW · [WIP][TASK] Add record serializer · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92196
+    - 88507 · NEW · [WIP][FEATURE] AI suggest demo using tools API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/88507
+    - 93599 · NEW · [WIP][TASK] Migrate resource endpoints to Actions API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599
+    - 92191 · NEW · [TASK] Migrate PageTree to Action API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191
+    - 92322 · NEW · [TASK] Migrate dashboard to Actions API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322
+    - 92724 · ABANDONED · [WIP][FEATURE] Implement OAuth authorization server · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92724
+    - 92323 · MERGED · [TASK] Avoid `json_encode()` workarounds in Settings API · chained at patch set 8, now at 10 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92323
+    - 92224 · NEW · [WIP][FEATURE] Add MCP Server demo based on Actions API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224
+    - 92223 · NEW · [WIP][FEATURE] Provide AI Tool provider based on Actions API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223
+    - 91486 · NEW · [WIP][FEATURE] Implement API Hub · https://review.typo3.org/c/Packages/TYPO3.CMS/+/91486
+    - 93423 · NEW · [TASK] Implement standalone redirect route option · https://review.typo3.org/c/Packages/TYPO3.CMS/+/93423
+    - 91666 · NEW · [WIP][FEATURE] Provide OpenAPI spec w/ Swagger UI for Actions API · https://review.typo3.org/c/Packages/TYPO3.CMS/+/91666
+    - 91563 · NEW · [WIP][FEATURE] Introduce Action API · this change · https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563
+    - 93064 · NEW · [TASK] Introduce JSON SchemaBuilder and Schema based Hydrator · https://review.typo3.org/c/Packages/TYPO3.CMS/+/93064
 
     A relation chain is a stack of different changes built on one another, listed child first: what stands above a change is stacked on it, and what stands below it is what it is built on. Each entry's status is that entry's own, so a MERGED entry says that change landed and says nothing about the change you asked for. Gerrit relates a chain by the commits, which is not the Change-Id relation a backport keeps, and neither set contains the other.
 
@@ -637,7 +637,8 @@ Data:
                         "subject": "[WIP][FEATURE] Provide Record Actions",
                         "thisChange": false,
                         "patchSet": 9,
-                        "chainedAt": 9
+                        "chainedAt": 9,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92197"
                     },
                     {
                         "number": 92196,
@@ -645,7 +646,8 @@ Data:
                         "subject": "[WIP][TASK] Add record serializer",
                         "thisChange": false,
                         "patchSet": 9,
-                        "chainedAt": 9
+                        "chainedAt": 9,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92196"
                     },
                     {
                         "number": 88507,
@@ -653,7 +655,8 @@ Data:
                         "subject": "[WIP][FEATURE] AI suggest demo using tools API",
                         "thisChange": false,
                         "patchSet": 13,
-                        "chainedAt": 13
+                        "chainedAt": 13,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/88507"
                     },
                     {
                         "number": 93599,
@@ -661,7 +664,8 @@ Data:
                         "subject": "[WIP][TASK] Migrate resource endpoints to Actions API",
                         "thisChange": false,
                         "patchSet": 2,
-                        "chainedAt": 2
+                        "chainedAt": 2,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599"
                     },
                     {
                         "number": 92191,
@@ -669,7 +673,8 @@ Data:
                         "subject": "[TASK] Migrate PageTree to Action API",
                         "thisChange": false,
                         "patchSet": 18,
-                        "chainedAt": 18
+                        "chainedAt": 18,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191"
                     },
                     {
                         "number": 92322,
@@ -677,7 +682,8 @@ Data:
                         "subject": "[TASK] Migrate dashboard to Actions API",
                         "thisChange": false,
                         "patchSet": 11,
-                        "chainedAt": 11
+                        "chainedAt": 11,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322"
                     },
                     {
                         "number": 92724,
@@ -685,7 +691,8 @@ Data:
                         "subject": "[WIP][FEATURE] Implement OAuth authorization server",
                         "thisChange": false,
                         "patchSet": 6,
-                        "chainedAt": 6
+                        "chainedAt": 6,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92724"
                     },
                     {
                         "number": 92323,
@@ -693,7 +700,8 @@ Data:
                         "subject": "[TASK] Avoid `json_encode()` workarounds in Settings API",
                         "thisChange": false,
                         "patchSet": 10,
-                        "chainedAt": 8
+                        "chainedAt": 8,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92323"
                     },
                     {
                         "number": 92224,
@@ -701,7 +709,8 @@ Data:
                         "subject": "[WIP][FEATURE] Add MCP Server demo based on Actions API",
                         "thisChange": false,
                         "patchSet": 19,
-                        "chainedAt": 19
+                        "chainedAt": 19,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224"
                     },
                     {
                         "number": 92223,
@@ -709,7 +718,8 @@ Data:
                         "subject": "[WIP][FEATURE] Provide AI Tool provider based on Actions API",
                         "thisChange": false,
                         "patchSet": 16,
-                        "chainedAt": 16
+                        "chainedAt": 16,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223"
                     },
                     {
                         "number": 91486,
@@ -717,7 +727,8 @@ Data:
                         "subject": "[WIP][FEATURE] Implement API Hub",
                         "thisChange": false,
                         "patchSet": 29,
-                        "chainedAt": 29
+                        "chainedAt": 29,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91486"
                     },
                     {
                         "number": 93423,
@@ -725,7 +736,8 @@ Data:
                         "subject": "[TASK] Implement standalone redirect route option",
                         "thisChange": false,
                         "patchSet": 7,
-                        "chainedAt": 7
+                        "chainedAt": 7,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93423"
                     },
                     {
                         "number": 91666,
@@ -733,7 +745,8 @@ Data:
                         "subject": "[WIP][FEATURE] Provide OpenAPI spec w/ Swagger UI for Actions API",
                         "thisChange": false,
                         "patchSet": 23,
-                        "chainedAt": 23
+                        "chainedAt": 23,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91666"
                     },
                     {
                         "number": 91563,
@@ -741,7 +754,8 @@ Data:
                         "subject": "[WIP][FEATURE] Introduce Action API",
                         "thisChange": true,
                         "patchSet": 46,
-                        "chainedAt": 46
+                        "chainedAt": 46,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563"
                     },
                     {
                         "number": 93064,
@@ -749,7 +763,8 @@ Data:
                         "subject": "[TASK] Introduce JSON SchemaBuilder and Schema based Hydrator",
                         "thisChange": false,
                         "patchSet": 16,
-                        "chainedAt": 16
+                        "chainedAt": 16,
+                        "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93064"
                     }
                 ],
                 "issues": [],

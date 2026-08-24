@@ -419,20 +419,22 @@ final class ForgeLookup extends ReadOnlyTool
     }
 
     /**
-     * One relation, with the subject that decides whether to read it — so which
-     * of them is worth an issue read is settled here rather than by reading all
-     * of them.
+     * One relation, with the subject that decides whether to read it and the
+     * URL that reaches it — so which of them is worth an issue read is settled
+     * here rather than by reading all of them, and the number a reader repeats
+     * carries where it points (`D-ANS-103`). Separated from the two answers it
+     * is printed in so it can be held without a tracker.
      *
      * @param array<string, mixed> $relation
      */
-    private static function relationLine(array $relation): string
+    public static function relationLine(array $relation): string
     {
-        return rtrim(sprintf(
+        return sprintf(
             'Relation: %s #%d — %s',
             $relation['relation'],
             $relation['issue'],
-            implode(' · ', array_filter([$relation['tracker'], $relation['status'], $relation['subject']])),
-        ), ' —');
+            implode(' · ', array_filter([$relation['tracker'], $relation['status'], $relation['subject'], $relation['url']])),
+        );
     }
 
     /**

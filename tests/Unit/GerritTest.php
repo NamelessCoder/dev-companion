@@ -690,6 +690,71 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * A chain entry is the one record in this answer that arrived as a bare
+     * number, and the endpoint answers the project beside it — so the URL is
+     * built here from the same two fields a change URL is built from
+     * (`D-ANS-103`).
+     *
+     * An entry naming no project falls back to the number alone, which the
+     * review server resolves. The canonical path asserts a project and renders
+     * a page whether or not the change is there, so composing one out of
+     * nothing answers a caller with a page about nothing.
+     */
+    #[Decision('D-ANS-103')]
+    #[Test]
+    public function aChainEntryCarriesTheUrlBuiltFromItsProjectAndNumber(): void
+    {
+        $chain = (new Gerrit(static fn(string $url): string => self::stacked($url)))
+            ->change('91563')['changes'][0]['chain'];
+
+        self::assertSame(
+            'https://review.typo3.org/c/Packages/TYPO3.CMS/+/92323',
+            $chain[1]['url'],
+        );
+
+        // The same chain URL, so what was held for the first reading is what the
+        // second would be answered with.
+        Recent::forget();
+        $unnamed = new Gerrit(static fn(string $url): string => str_contains($url, '/related')
+            ? ")]}'\n" . '{"changes":[{"commit":{"subject":"[TASK] Something"},"_change_number":92323,'
+                . '"_revision_number":1,"_current_revision_number":1,"status":"NEW"}]}'
+            : self::STACKED);
+
+        self::assertSame(
+            'https://review.typo3.org/c/92323',
+            $unnamed->change('91563')['changes'][0]['chain'][0]['url'],
+        );
+    }
+
+    /**
+     * An agent repeating an id to a person renders it as a link, and a bare
+     * number gives it nothing to render but a guess — `D-ANS-103`.
+     *
+     * Both lines print from a record that already holds the URL for the issues
+     * and now holds it for the chain, so what the two halves say is one thing.
+     */
+    #[Decision('D-ANS-103')]
+    #[Test]
+    public function everyIdTheTextHalfNamesCarriesTheUrlThatReachesIt(): void
+    {
+        $stacked = (new Gerrit(static fn(string $url): string => self::stacked($url)))
+            ->change('91563')['changes'][0];
+        $naming = (new Gerrit(static fn(string $url): string => self::naming($url)))
+            ->change('95375')['changes'][0];
+
+        self::assertStringContainsString(
+            '- 92323 · MERGED · [TASK] Avoid `json_encode()` workarounds in Settings API · chained at patch set 8, '
+                . 'now at 10 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92323',
+            implode("\n", GerritLookup::chain($stacked, true)),
+        );
+        self::assertStringContainsString(
+            '- related #107080 — Bug · Under Review · Form prototype not selectable with blank form · '
+                . 'https://forge.typo3.org/issues/107080',
+            implode("\n", GerritLookup::issues($naming, true)),
+        );
+    }
+
+    /**
      * The two relations are told apart where both are in one answer. A stack is
      * different changes built on one another; a shared Change-Id is one patch
      * on several branches, and reading the first as the second would say the

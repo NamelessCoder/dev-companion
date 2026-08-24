@@ -1,7 +1,8 @@
 ---
 date: 2026-08-24T14:01:20+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-24
 model: claude-opus-5[1m]
 tool: typo3-extension-health, typo3-extension-upgrade, typo3-extension-documentation, typo3-extension-patch-review
 directory: /home/benji/projects/ext-usercentrics

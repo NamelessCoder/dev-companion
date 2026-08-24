@@ -216,3 +216,24 @@ before it.
   handed over, with the ownership paragraph beneath it.
   `SkillTest::aSkillThatHandsOverSaysToInvokeTheSuccessor` reads a successor per
   skill rather than one name for all of them.
+
+## Since then
+
+On 2026-08-24 an extension-side crossing fired, and it is the first one reported
+since the three that did not.
+[`feedback/archive/2026-08-24-140120`](../../feedback/archive/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md)
+ran `typo3-development-installation` in an extension checkout and loaded
+`typo3-extension-testing` before writing `Tests/Functional`, naming that skill's
+**When the task turns to a suite** section as what did it. The section opens
+"The moment this task grows a test, invoke `typo3-extension-testing` before
+editing a test file or building the installation a suite boots" — the imperative
+and the moment beside it, which is what the 2026-08-09 reading found the
+three-successor closing sentence of 2026-08-17 to be missing.
+
+Nobody asked that session about the crossing, so it is evidence about where the
+boundary runs rather than a confirmation — `D-FBK-018`. What it places is which
+of this server's two ways into a skill was working in that session: the crossing
+inside an active one fired, and the client's own listing reached the same
+session with four matching descriptions and opened none of them.
+[`D-SKL-033`](skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md)
+is where that half is read.

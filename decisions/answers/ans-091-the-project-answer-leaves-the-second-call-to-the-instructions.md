@@ -120,3 +120,25 @@ recorded: `scenarios/runs/` holds the same three forward runs as before, none of
 them a second count of the two calls, and no feedback since 2026-08-21 reports
 either a tool called because the project answer named it or a session finishing
 that answer without knowing what to call next.
+
+### 2026-08-24 — asked for again, by a session that made neither call
+
+[`feedback/archive/2026-08-24-140120`](../../feedback/archive/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md)
+proposes the sentence this entry declined, in its strongest form: that this
+answer name the task skills fitting the repository kind it has just described,
+because a skills list "costs one more field and lands in the very first call
+every workflow makes".
+
+That premise is what the session's own account takes back. It made no first
+call. `typo3_project_describe` was reached several turns into the task and from
+inside a skill that named it, so a skills field would have arrived after each of
+the four skills it would have named was already needed. The position this entry
+declines is one four sessions have passed over, and this is a fifth that would
+have read it late.
+
+No **Wrong if** is met. Nobody counted the two calls, because both were zero at
+the opening; the session did not finish this answer without knowing what to call
+next, because it did not begin with it; and no tool was called because this
+answer named one. What the zero opening is evidence about is the instruction
+channel rather than this answer, and it is read at
+[`D-SKL-033`](../task-skills/skl-033-whether-a-skill-is-activated-is-the-clients-and-the-models.md).

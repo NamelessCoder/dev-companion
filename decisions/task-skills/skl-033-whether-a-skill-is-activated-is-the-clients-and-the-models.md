@@ -210,3 +210,52 @@ The rest of that report is about the entry point rather than about a skill
 listing, and it is judged at
 [`D-SKL-062`](skl-062-the-workflow-question-is-asked-again-on-a-new-subject.md).
 
+### 2026-08-24 — the shape arrives outside the core checkout, and the channel beside it did not fire
+
+[`feedback/archive/2026-08-24-140120`](../../feedback/archive/2026-08-24-140120-four-skills-matched-the-opening-request-almost.md)
+is the first row here that is not core work.
+`/home/benji/projects/ext-usercentrics` on `claude-opus-5[1m]`, opening in
+German with "diese extension ist in einem schweren zustand, wir wollen das
+bereinigen, wir wollen compat zu typo3 v13 und v14 herstellen in einer version".
+Four published skills cover what the session did over the whole task and none of
+them opened: `typo3-extension-health`, `typo3-extension-upgrade`,
+`typo3-extension-documentation` and `typo3-extension-patch-review`. Two others
+opened late, and the session reports both as fitting.
+
+What it adds to the count is a description carrying the entry point in the
+brief's own shape and being passed over anyway.
+[`typo3-extension-health`](../../skills/typo3-extension-health/SKILL.md) opens
+on "Review a TYPO3 project, sitepackage or extension against its checkout and
+active installation and put it right — 'look over my repository and fix it'",
+against a brief whose first clause asks for the repository to be cleaned up. So
+the wording lever this entry declined for `typo3-core-patch-review` has already
+been pulled on another skill, written to the request rather than to the
+activity, and that one did not fire either.
+
+**The channel the 2026-08-19 reading leaned on did not deliver here.** That
+section left the project's own agent instruction file untaken because the run
+which met the third **Wrong if** showed the `instructions` working beside it —
+eleven `typo3_project_describe` calls against one `typo3_task_guide`. This
+session made neither at its opening. Its first calls of any kind were
+`typo3_changelog_lookup` and `typo3_ter_lookup`, several turns in, and
+`typo3_project_describe` was reached only from inside a skill that named it. The
+reason for leaving that file untaken rests on one benchmark arm, and this is one
+session against it.
+
+It stays untaken, on the count. One session is not the eleven to one
+re-measured, and this one names why it started where it did: the brief opened as
+a reading of the checkout, which is what the last sentence of the `instructions`
+assigns to the caller. What would settle it is a run counting the two calls on a
+brief of that shape, which is
+[`D-ANS-091`](../answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md)'s
+first **Wrong if** and is not what this row is.
+
+The session's other proposal is a sentence in the `instructions` naming
+`typo3-extension-health` and `typo3-extension-upgrade` for a repository-wide
+request. Measured in this checkout on 2026-08-24, the longest assembly is 2028
+characters of the 2048 `D-AUD-011` holds. Twenty characters are free and the
+sentence names two skills and three request shapes, so it is unaffordable before
+it is weighed — and whether 2048 is still the boundary to design against is what
+[`todo/waiting/2026-08-19-090401`](../../todo/waiting/2026-08-19-090401-tools-arrived-as-bare-names-with-no-schemas-and.md)
+is waiting on.
+

@@ -308,13 +308,18 @@ final class CatalogTest extends TestCase
         foreach (Catalogs::read('component/styleguide') as $action) {
             $listed[$action['component']] = (int) $action['since'];
         }
-        $floor = min($listed);
+        self::assertNotSame([], $listed, 'no styleguide listing was derived at all');
+        $floor = PHP_INT_MAX;
+        foreach ($listed as $since) {
+            $floor = min($floor, $since);
+        }
 
         foreach (Catalogs::read('component/entries') as $entry) {
-            $earliest = min(array_map(
-                static fn(string $action): int => $listed[$action] ?? PHP_INT_MAX,
-                $entry['styleguideActions'],
-            ));
+            self::assertNotSame([], $entry['styleguideActions'], $entry['name'] . ' names no styleguide action');
+            $earliest = PHP_INT_MAX;
+            foreach ($entry['styleguideActions'] as $action) {
+                $earliest = min($earliest, $listed[$action] ?? PHP_INT_MAX);
+            }
             $answers = max((int) ($entry['since'] ?? 0), $floor);
             self::assertGreaterThanOrEqual(
                 $earliest,

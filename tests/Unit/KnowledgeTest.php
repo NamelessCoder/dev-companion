@@ -1231,6 +1231,51 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The sign-off, whose sources disagree with each other.
+     *
+     * `feedback/2026-08-24-110851` asked for the trailer, got one unrelated page
+     * back, read this document whole and found nothing, and settled it from the
+     * checkout by hand. What the section owes is which source asks rather than
+     * one rule: a caller holding the core's `AGENTS.md` alone emits a trailer a
+     * reviewer strikes, and one holding the merged history alone calls the
+     * question settled.
+     */
+    #[Decision('D-KNW-109')]
+    #[Test]
+    public function theSignOffAnswerNamesEverySourceTheQuestionHas(): void
+    {
+        // The report's own call, version and all.
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'signed-off-by',
+            'targetVersion' => '15.0',
+        ]);
+
+        self::assertSame(
+            ['core/contribution/commit-messages', 'Sign-Off'],
+            [$result->data['matches'][0]['documentId'] ?? null, $result->data['matches'][0]['heading'] ?? null],
+        );
+
+        // Unwrapped, since three of the four cross a line break.
+        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
+        self::assertStringContainsString('`AGENTS.md` demands it', $body, 'nothing says which source asks for it');
+        self::assertStringContainsString(
+            'The official Contribution Guide is silent',
+            $body,
+            'the source a contributor is pointed at is not among the ones answered for',
+        );
+        self::assertStringContainsString(
+            'Nothing checks whether the trailer is there',
+            $body,
+            'the hook is named without what it does not do with the trailer',
+        );
+        self::assertStringContainsString(
+            'about one commit in a hundred on `main`',
+            $body,
+            'the practice is left out, which is the half that stops a struck trailer',
+        );
+    }
+
+    /**
      * The third of them, and the one that already returned the guide.
      *
      * It returns a cut, and `truncated: true` is the field a caller has no way

@@ -101,6 +101,35 @@ Guide.
   the other. The two differ by one operator and give opposite answers about
   whether features reach a release line.
 
+## Sign-Off
+
+One source in the core repository asks for the `Signed-off-by:` trailer and the
+others do not. Which of them a contributor is following is what decides whether
+a patch carries it, so all four are named here.
+
+- The core repository's own `AGENTS.md` demands it. `git commit -s` appends the
+  trailer, `git config format.signOff true` appends it to every commit, and its
+  example footer carries it between `Releases:` and `Change-Id:`.
+- What it certifies is the Developer Certificate of Origin (DCO): that you wrote
+  the patch, or otherwise have the right to submit it under the project's
+  licence.
+- The official Contribution Guide is silent. Its commit message appendix lists
+  the trailers and stops before this one, its Git setup page names every config
+  a contributor sets and not `format.signOff`, and the page that walks through
+  writing a patch commits with `git commit -a`.
+- `CONTRIBUTING.md` says nothing about signing either.
+- `Build/git-hooks/commit-msg` deletes `^Signed-off-by:` from the copy it hashes
+  the `Change-Id` from, and that is the whole of the hook's dealing with the
+  trailer. Nothing checks whether the trailer is there.
+- So adding one while amending leaves an existing `Change-Id` standing, which is
+  the fear that keeps the trailer off a patch set already pushed.
+- The merged history barely carries it: about one commit in a hundred on `main`,
+  which `git log -500 --format=%b | grep -c '^Signed-off-by:'` counts.
+- The trailer therefore blocks nothing in either direction. A patch missing it
+  is not held up for that, and a reviewer striking one that is there is reading
+  the same history. Where the checkout you are working in states a rule, that
+  rule is the answer.
+
 ## Breaking Changes
 
 - Breaking changes must use `[!!!]` before the keyword.

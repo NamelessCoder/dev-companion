@@ -286,7 +286,7 @@ Text:
     question, and the branch closes it.
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 6 of its 10 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Changed Signatures.
+    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 7 of its 11 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Sign-Off, Changed Signatures.
     - core/contribution/rules — TYPO3 Core Contribution Rules: 4 of its 5 headings are not above — Contribution Flow, Code Style, Testing, Documentation.
     - extension/compatibility/a-declared-major-that-is-not-installed — Settling an API Question on a Declared Major That Is Not Installed: 3 of its 4 headings are not above — Which Majors the Question Is About, Reading the Branch, What Reading Proves, and What It Does Not.
 
@@ -309,7 +309,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 119,
+                "score": 120,
                 "truncated": false
             },
             {
@@ -402,7 +402,7 @@ Text:
     - Reporting a TYPO3 Vulnerability: Who Receives a Report, What the Report Carries, What Is Not Done With It, A Finding That Is Already Public
     - Looking at a Change in a Real Browser: Which Installation Shows It, Reaching a DDEV Site From a Container, Where the Harness and Its Output Go
     - Proving a TypoScript Condition Verdict: What Does Not Answer It, The Marker Only the Branch Produces, A Marker Put There on Purpose, Which URL Is Requested, The Negative Control, What Stands Between Two Runs
-    - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Breaking Changes, Changed Signatures, Deprecations, Changelog Files
+    - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Sign-Off, Breaking Changes, Changed Signatures, Deprecations, Changelog Files
     - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Carry a Change Onto Current Code, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
     - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
@@ -497,6 +497,7 @@ Data:
                     "Body",
                     "Relationships",
                     "Release Targets",
+                    "Sign-Off",
                     "Breaking Changes",
                     "Changed Signatures",
                     "Deprecations",

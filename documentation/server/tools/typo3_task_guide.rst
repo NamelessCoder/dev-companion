@@ -379,7 +379,7 @@ Text:
       against the changelog.
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 8 of its 10 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Changed Signatures, Changelog Files.
+    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 9 of its 11 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Sign-Off, Changed Signatures, Changelog Files.
 
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
@@ -734,7 +734,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 70,
+                "score": 71,
                 "truncated": false
             },
             {
@@ -1019,7 +1019,7 @@ Data:
                 "body": "- Unit tests are expected for isolated behavior.\n- Functional tests are expected for persistence, configuration, routing, backend\n  behavior, or integration with TYPO3 services.\n- End-to-end tests, the `e2e` suite, are useful when the change affects editor\n  or administrator workflows and only breaks in the assembled backend. They\n  replaced the former acceptance suites.\n- Document tests that could not be executed and why.",
                 "versions": "",
                 "coverage": 0.5,
-                "score": 33,
+                "score": 34,
                 "truncated": false
             }
         ],

@@ -3,7 +3,12 @@ id: D-KNW-111
 title: The changelog procedure is a guide of its own
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes
+  - KnowledgeTest::aQueryForTheChangelogObligationReachesTheSectionThatStatesIt
+  - KnowledgeTest::aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage
+  - KnowledgeTest::theChangelogProcedureIsFoundUnderItsOwnName
+  - KnowledgeTest::theMovesTheCommitRulesStopAreStillStated
 ---
 
 # D-KNW-111 — The changelog procedure is a guide of its own
@@ -17,7 +22,7 @@ sat in a page named for a different subject.
 
 ## Evidence
 
-- [`feedback/2026-08-24-122249`](../../feedback/2026-08-24-122249-nothing-answers-where-a-changelog-rst-goes-when.md)
+- [`feedback/2026-08-24-122249`](../../feedback/archive/2026-08-24-122249-nothing-answers-where-a-changelog-rst-goes-when.md)
   reviewed a Gerrit change whose substance was an `Important` entry for a
   backport. It read `Documentation/Changelog/Howto.rst` in two ranges and two
   neighbouring entries by hand, and called none of `typo3_task_guide`,
@@ -93,3 +98,32 @@ sat in a page named for a different subject.
   section no longer sits in the page a commit-message query returns.
   `KnowledgeTest::aChangelogQuestionIsToldWhichTypeTheChangeOwes` is what would
   show it.
+
+## Since then
+
+The split was made on 2026-08-24 and the third **Wrong if** happened
+immediately. Moved under headings named for what each states — "Which Change
+Owes an Entry" — the page was unreachable for `changelog file`, the query that
+used to return the section by its heading, and
+`aChangelogQuestionIsToldWhichTypeTheChangeOwes` went red. The headings name
+their subject as well as their claim now, and the test declares this entry
+beside `D-KNW-039`.
+
+The byte level was read in `.checkouts/` the same day, and it is the core's own
+template rather than a convention to be inferred from neighbouring entries:
+`Build/rstTemplates/rstTemplate<Type>.rst`, one per type, substituted by
+`runTests.sh -s watchRst core interactive` with the issue, the title and a
+`date +%s` timestamp. The four templates are byte-identical on `12.4`, `13.4`,
+`14.3` and `main`, as is `Build/Scripts/validateRstFiles.php`, so the second
+**Wrong if** did not happen and none of it carries a binding.
+
+Both reports were wrong about the two facts they had guessed at, which is why
+neither was copied. The include directive takes one or two spaces — the
+validator's own regex is `\.\. {1,2}include::` — and the `15.0` directory of
+`main` carried 17 files with one space against 18 with two, where one report
+said every file used two. The title fence is not measured against the title: the
+validator asks for two or more `=` above and below, the shipped templates carry
+a 68-character row whatever the title is, and 12 of the 494 entries in the eight
+newest directories on `main` are shorter than their own title and are merged and
+rendered. The other report patched its fence to the byte on a rule nothing
+states.

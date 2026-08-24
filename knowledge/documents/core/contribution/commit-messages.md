@@ -206,40 +206,15 @@ subclass declaring the old signature fatals as it loads.
   against, by the Extension Scanner in the Install Tool. Both directories ship
   with a Composer installation.
 
-## Changelog Files
+## The Changelog Entry a Message Announces
 
-This is the changelog obligation per change type: which change types owe a
-changelog entry, which owe none, and what the entry a review asks for has to be.
-A `BUGFIX` owes none, a `TASK` owes none, and the four types below are the whole
-list.
-
-- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
-  the directory of the minor version the change is released in. A backport goes
-  into the `<lts>.x` directory of the oldest branch it reaches, in every branch
-  that carries it.
-- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.
-- The type is the first of four that describes the change: `Breaking` where it
-  moves or removes core functionality that may break or affect third-party code,
-  `Deprecation` where it marks core functionality for a planned removal,
-  `Feature` where it adds functionality, and `Important` for anything else that
-  may require manual action. `Important` is the last resort, and the only one of
-  the four an LTS release may carry.
-- `Breaking` reaches past a moved PHP member. `affect` in that definition covers
-  a change in what an installation renders or is configured by, and which of
-  those the core files as breaking, and where the boundary against `Important`
-  runs, is `typo3_hint_lookup` with the id `breaking-without-a-moved-member`.
-- A casual bug fix owes no entry, because its commit message carries the
-  information. Casual is the fix that changes nothing an installation renders,
-  is configured by, or has documented. Demanding one of a `BUGFIX` that changes
-  none of the three is a review defect of its own.
-- `Task` is a commit message keyword and not a changelog type. Those four are
-  the whole list, and `checkRst` fails a title opening with anything else.
-- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on
-  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the
-  piece a file is missing.
-- The skeleton the file has to have, down to the tags it ends on, is
-  `typo3_hint_lookup` with the id `documentation-changelog`.
-- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.
-- These rules are for writing an entry. An installation reads them instead: the
-  same files ship with the core package, and `typo3 upgrade:list` and
-  `typo3 upgrade:run` are what acts on the migrations behind them.
+- A breaking change, a deprecation, a feature and anything else that may require
+  manual action carry a changelog file in the same patch. A casual bug fix
+  carries none, because the commit message is what informs the reader.
+- Which of the four types that is, which directory the file goes into when the
+  change is backported, what it is named and what reports one that is wrong is
+  one page: `typo3_rule_lookup` with `documentId="core/contribution/changelog"`,
+  which also stands as
+  `typo3://guides/core/contribution/changelog`.
+- The `Releases:` trailer and that directory are one reading: the oldest branch
+  the trailer names is the release whose directory the file goes into.

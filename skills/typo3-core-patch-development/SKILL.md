@@ -169,10 +169,15 @@ Two things decide whether that verification means anything:
 
 ## The changelog entry the change owes
 
-`typo3_rule_lookup` says which changes need one, what it is named, and where it
-lives. Decide it from the change type rather than from habit: writing an entry
-for a change that owes none is as much a review finding as omitting one that
-does.
+The procedure is one page: `typo3_rule_lookup` with
+`documentId="core/contribution/changelog"`, which also stands as
+`typo3://guides/core/contribution/changelog`. It says which of the four types
+the change owes, which release directory the file goes into, what it is named
+and what checks it. Decide the type from what the change does rather than from
+habit: writing an entry for a change that owes none is as much a review finding
+as omitting one that does. The directory follows the branches the patch reaches
+rather than the branch it is written on, so a backport does not go where the
+release under development goes.
 
 ## Commit and push
 

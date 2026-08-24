@@ -595,6 +595,7 @@ final class KnowledgeTest extends TestCase
 
     #[Requirement('R-KNW-051')]
     #[Decision('D-KNW-039')]
+    #[Decision('D-KNW-111')]
     #[Test]
     public function aChangelogQuestionIsToldWhichTypeTheChangeOwes(): void
     {
@@ -621,6 +622,32 @@ final class KnowledgeTest extends TestCase
             'Task-',
             implode("\n", $intent['checklist'] ?? []),
             'the changelog intent hands over a prefix checkRst rejects',
+        );
+    }
+
+    #[Decision('D-KNW-111')]
+    #[Test]
+    public function theChangelogProcedureIsFoundUnderItsOwnName(): void
+    {
+        // D-KNW-111. Two sessions read the guides list, saw no name for the
+        // changelog and assembled the conventions from the core checkout, while
+        // the rules sat in the page named for commit messages. The split pays
+        // only if the changelog query still lands, so both ends are held: the
+        // page carries its own id, and a backport question reaches it.
+        self::assertContains(
+            'core/contribution/changelog',
+            array_column(Documents::documents(), 'id'),
+        );
+
+        $matches = Documents::search('which directory does a backported changelog file go into');
+        self::assertContains('core/contribution/changelog', array_column($matches, 'id'));
+        self::assertStringContainsString('<lts>.x', implode("\n", array_column($matches, 'body')));
+
+        // A message-shaped query lands on the commit-message page, which names
+        // the page carrying the entry the message announces.
+        self::assertStringContainsString(
+            'documentId="core/contribution/changelog"',
+            Documents::read('core/contribution/commit-messages'),
         );
     }
 
@@ -1003,7 +1030,7 @@ final class KnowledgeTest extends TestCase
             $whole->data['matches'][0]['documentId'],
         );
         // Whole means whole: the section two queries missed is in it.
-        self::assertStringContainsString('## Changelog Files', $whole->text);
+        self::assertStringContainsString('## Release Targets', $whole->text);
         self::assertSame(Documents::read('core/contribution/commit-messages'), $whole->text);
     }
 
@@ -1125,10 +1152,12 @@ final class KnowledgeTest extends TestCase
      *
      * `feedback/2026-08-07-132446` asked twice and got `Release Targets` both
      * times, from a section that never uses the word in that sense. The section
-     * that answers is in the same document and was written in the corpus's
-     * words rather than the caller's: `bug fix` where the commit keyword is
-     * `BUGFIX`, and nothing naming the thing being asked for as an obligation.
+     * that answers was written in the corpus's words rather than the caller's:
+     * `bug fix` where the commit keyword is `BUGFIX`, and nothing naming the
+     * thing being asked for as an obligation. It is a page of its own since
+     * `D-KNW-111`, and the query has to reach it there.
      */
+    #[Decision('D-KNW-111')]
     #[Test]
     public function aQueryForTheChangelogObligationReachesTheSectionThatStatesIt(): void
     {
@@ -1136,7 +1165,10 @@ final class KnowledgeTest extends TestCase
             'query' => 'bugfix changelog entry obligation and review readiness',
         ]);
 
-        self::assertContains('Changelog Files', array_column($result->data['matches'], 'heading'));
+        self::assertContains(
+            'Which Change Owes a Changelog File',
+            array_column($result->data['matches'], 'heading'),
+        );
         // The two it used to answer with instead.
         self::assertNotContains('Release Targets', array_column($result->data['matches'], 'heading'));
 
@@ -1147,7 +1179,7 @@ final class KnowledgeTest extends TestCase
         // safe: an answer cut to `A BUGFIX owes none` settles the common case
         // and leaves a review with nothing to say about the exception. Matched
         // against the corpus unwrapped, since both cross a line break.
-        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
+        $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/changelog'));
         self::assertStringContainsString('A `BUGFIX` owes none', $body);
         self::assertStringContainsString(
             '`Important` is the last resort, and the only one of the four an LTS release may carry',
@@ -1211,16 +1243,20 @@ final class KnowledgeTest extends TestCase
      * summarising rewrite drops first, because both stop an action rather than
      * enabling one.
      */
+    #[Decision('D-KNW-111')]
     #[Test]
     public function theMovesTheCommitRulesStopAreStillStated(): void
     {
         // Unwrapped, since the refusal crosses a line break.
         $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
+        // The changelog half moved to its own page with `D-KNW-111`; both
+        // sentences are still owed, one per page.
+        $changelog = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/changelog'));
 
         self::assertStringContainsString(
             'Demanding one of a `BUGFIX` that changes none of the three is a',
-            $body,
-            'the changelog section states the obligation without the demand it refuses',
+            $changelog,
+            'the changelog page states the obligation without the demand it refuses',
         );
         self::assertStringContainsString(
             '`git branch -r` reaches',
@@ -1376,8 +1412,15 @@ final class KnowledgeTest extends TestCase
      * The reported second call matches one section and is below `D-ANS-101`'s
      * floor. The query here is that call widened by two subjects the same
      * session had live: three sections, one page, the round trip still removed.
+     *
+     * It moved a second time when `D-KNW-111` cut the changelog sections out
+     * into `core/contribution/changelog`, because a query naming the trailer
+     * and the entry at once now reaches both pages by construction. The one
+     * page it holds is the new one, on the words a session already editing the
+     * file asks with.
      */
     #[Decision('D-ANS-076')]
+    #[Decision('D-KNW-111')]
     #[Test]
     public function aSearchWhoseMatchesAreAllInOnePageAnswersWithThePage(): void
     {
@@ -1387,23 +1430,27 @@ final class KnowledgeTest extends TestCase
         ]);
 
         self::assertSame(
-            ['core/contribution/commit-messages', 'core/contribution/gerrit-workflow'],
+            [
+                'core/contribution/changelog',
+                'core/contribution/commit-messages',
+                'core/contribution/gerrit-workflow',
+            ],
             array_values(array_unique(array_column($first->data['matches'], 'documentId'))),
         );
         // What the second call went for is in the answer to the first.
         self::assertStringContainsString('## Release Targets', $first->text);
 
         $second = Registry::call('typo3_rule_lookup', [
-            'query' => 'Releases trailer maintained versions changelog entry breaking change deprecation',
+            'query' => 'changelog rst file template sections checkRst',
             'targetVersion' => '15.0',
         ]);
         self::assertSame(
-            ['Release Targets', 'Changelog Files', 'Changed Signatures'],
+            ['What a Changelog File Carries', 'What a Changelog File Is Called'],
             $second->data['matchedHeadings'],
         );
         self::assertSame(1, $second->data['matchCount']);
-        self::assertSame('core/contribution/commit-messages', $second->data['matches'][0]['documentId']);
-        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $second->text);
+        self::assertSame('core/contribution/changelog', $second->data['matches'][0]['documentId']);
+        self::assertStringContainsString(Documents::read('core/contribution/changelog'), $second->text);
 
         // The offer to read the page is what a cut answer owes, and there is
         // no cut in the answer that is a page.
@@ -1465,12 +1512,12 @@ final class KnowledgeTest extends TestCase
         // The cut owes the offer, which is how the page is still reachable.
         self::assertStringContainsString('typo3_rule_lookup with documentId', $thin->text);
 
-        $query = 'Releases trailer maintained versions changelog entry breaking change deprecation';
+        $query = 'changelog rst file template sections checkRst';
         $page = Registry::call('typo3_rule_lookup', ['query' => $query, 'targetVersion' => '15.0']);
 
         self::assertGreaterThan(1, count(Documents::search($query, [], 6, [15])));
         self::assertSame(1, $page->data['matchCount']);
-        self::assertStringContainsString(Documents::read('core/contribution/commit-messages'), $page->text);
+        self::assertStringContainsString(Documents::read('core/contribution/changelog'), $page->text);
     }
 
     /**

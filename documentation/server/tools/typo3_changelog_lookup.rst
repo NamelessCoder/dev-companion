@@ -4,21 +4,24 @@
 ==========================
 
 Search the TYPO3 changelog: one entry per breaking change, deprecation, feature
-and important note, in the version it was released in. Answers "what did this
-version deprecate", "what changed about X", "which release introduced Y". This
-is the first stop when building on a major you have not built on recently: what
-separates a current answer from a two-major-old one is written down here and
-almost nowhere else. A deprecation carries the version it stops working in where
-the entry states one, and the rule that answers the rest beside it. The versions
-the installation ships are read from the core package on disk; the ones above
-its own major are read from docs.typo3.org, which is what an upgrade to a
-version you have not installed is asking for. Every word of the query has to be
-carried by an entry; narrow further with type and version. A version and a type
-with the query omitted list whole under a raised limit, which is the deprecation
-sweep of one major in a single call. A method or class you found in the code is
-a query of its own: an identifier reaches the entries naming it, whether or not
-the change was titled after it — inside the installed versions, which are the
-ones whose text is on disk. Answers from: packages, network.
+and important note, in the version it was released in. This reads the entries;
+writing one for a core patch of your own is the other direction and is
+typo3_rule_lookup with documentId "core/contribution/changelog". Answers "what
+did this version deprecate", "what changed about X", "which release introduced
+Y". This is the first stop when building on a major you have not built on
+recently: what separates a current answer from a two-major-old one is written
+down here and almost nowhere else. A deprecation carries the version it stops
+working in where the entry states one, and the rule that answers the rest beside
+it. The versions the installation ships are read from the core package on disk;
+the ones above its own major are read from docs.typo3.org, which is what an
+upgrade to a version you have not installed is asking for. Every word of the
+query has to be carried by an entry; narrow further with type and version. A
+version and a type with the query omitted list whole under a raised limit, which
+is the deprecation sweep of one major in a single call. A method or class you
+found in the code is a query of its own: an identifier reaches the entries
+naming it, whether or not the change was titled after it — inside the installed
+versions, which are the ones whose text is on disk. Answers from: packages,
+network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 

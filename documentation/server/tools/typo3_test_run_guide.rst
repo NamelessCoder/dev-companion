@@ -276,6 +276,22 @@ Text:
     Verifies that all .rst files referenced by the extension scanner exist.
     Use when a deprecation or breaking change adds extension scanner matchers.
 
+    ## checkRstRenderingSingle
+    Command from the TYPO3 core root:
+    `./Build/Scripts/runTests.sh -s checkRstRenderingSingle core`
+    Running it: check — it reports and hands the checkout back as it was.
+
+    Renders one system extension's Documentation/ with the documentation team's container into Documentation-GENERATED-temp/ and reports what the renderer rejects.
+    Use where a ReST change has to be looked at rather than validated: checkRst reads the structure of a file and says nothing about how the page comes out.
+
+    ## watchRst
+    Command from the TYPO3 core root:
+    `./Build/Scripts/runTests.sh -s watchRst core interactive`
+    Running it: change — it rewrites files in the checkout.
+
+    Creates a changelog file from the core's own template and serves the rendered page locally, reloading it as the file is saved.
+    Use when writing a changelog entry: interactive asks for the type, the issue number and the title and writes the file from Build/rstTemplates/, and a path in place of it opens that file instead. It writes into the directory of the release the branch develops, so a backport's file is moved afterwards.
+
     ## build
     Command from the TYPO3 core root:
     `CI=true ./Build/Scripts/runTests.sh -s build`
@@ -626,6 +642,30 @@ Data:
                 "domains": [
                     "docs",
                     "php"
+                ],
+                "versions": ""
+            },
+            {
+                "suite": "checkRstRenderingSingle",
+                "command": "./Build/Scripts/runTests.sh -s checkRstRenderingSingle core",
+                "runs": "check",
+                "targeted": null,
+                "description": "Renders one system extension's Documentation/ with the documentation team's container into Documentation-GENERATED-temp/ and reports what the renderer rejects.",
+                "whenToUse": "Use where a ReST change has to be looked at rather than validated: checkRst reads the structure of a file and says nothing about how the page comes out.",
+                "domains": [
+                    "docs"
+                ],
+                "versions": ""
+            },
+            {
+                "suite": "watchRst",
+                "command": "./Build/Scripts/runTests.sh -s watchRst core interactive",
+                "runs": "change",
+                "targeted": null,
+                "description": "Creates a changelog file from the core's own template and serves the rendered page locally, reloading it as the file is saved.",
+                "whenToUse": "Use when writing a changelog entry: interactive asks for the type, the issue number and the title and writes the file from Build/rstTemplates/, and a path in place of it opens that file instead. It writes into the directory of the release the branch develops, so a backport's file is moved afterwards.",
+                "domains": [
+                    "docs"
                 ],
                 "versions": ""
             },
@@ -1250,7 +1290,7 @@ Text:
     - A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
     - The node suites need none of that. `-s build`, `-s lintTypescript`, `-s lintScss`, `-s lintHtml`, `-s unitJavascript` and `-s npm` run npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked, and install the `node_modules` they need themselves. So a fresh clone and a bare git worktree run them without a composerInstall first, which is how a build is run for a checkout that has to stay as it is. That is read off the suite bodies rather than measured from a run.
 
-    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 22 suites out. A path landing in one of those domains means calling again.
+    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 24 suites out. A path landing in one of those domains means calling again.
 
     ## e2e-prepare
     Command from the TYPO3 core root:
@@ -1359,7 +1399,7 @@ Data:
                 "docs",
                 "typescript"
             ],
-            "suites": 22
+            "suites": 24
         },
         "suites": [
             {

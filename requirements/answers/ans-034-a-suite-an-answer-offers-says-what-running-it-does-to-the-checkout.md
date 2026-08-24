@@ -1,9 +1,12 @@
 ---
 id: R-ANS-034
 title: 'A suite an answer offers says what running it does to the checkout'
-status: open
+status: held
 judged: 2026-08-24
 restsOn: [D-ANS-099]
+heldBy:
+  - HintsTest::aTypeScriptChangeIsOfferedTheSuiteThatStagesTheWorkingTree
+  - HintsTest::everySuiteSaysWhatRunningItDoesToTheCheckout
 ---
 
 # R-ANS-034 — A suite an answer offers says what running it does to the checkout
@@ -14,9 +17,14 @@ checkout, in the values a declared command already carries.**
 A task told not to change files runs the checks that hand the code back as they
 found it and no others — `D-EVI-003` — and reads that off `runs` on every
 command `typo3_project_describe` lists, which `R-PRJ-007` puts there. Where the
-checks are `runTests.sh` suites, which is every core patch, nothing carries the
-property and the instruction is one the caller has to settle by reading the
-script.
+checks are `runTests.sh` suites, which is every core patch, the caller had to
+settle that by reading the script.
+
+The field is `runs` on the suite record, in the values `R-PRJ-007` gives them —
+`check`, `change` and `unknown` — plus `git` for a suite that runs git over the
+working tree. It is read off the suite's body in `Build/Scripts/runTests.sh` and
+never by running it, and the text half says it beside the command, because that
+is where a caller about to paste one is reading.
 
 The name does not carry it and never will. `build` regenerates the committed
 JavaScript and `lintTypescript` reads it, one word each; `checkGruntClean` is a

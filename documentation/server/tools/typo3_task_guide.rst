@@ -207,7 +207,21 @@ Answers with
       - suite: string
         # Full command, run from the core root.
         command: string
-        # Narrowed form for iterating on a single file or test.
+        # One of: check, change, git, unknown. What running the command does to the
+        # checkout, read off the suite's body in Build/Scripts/runTests.sh rather
+        # than by running it. The values typo3_project_describe gives a declared
+        # command, plus one for the suites that run git. check: it reports and hands
+        # the files back as they were, so a task told not to change files can run it
+        # — installing its own node_modules or writing a cache is not a change.
+        # change: it rewrites files, generated or installed. git: it runs git over
+        # the working tree, so `git add *` stages what it finds, untracked files
+        # included, and a suite of this kind may discard uncommitted edits first.
+        # unknown: the body does not say, which is what a test suite is, because it
+        # runs the core's own code.
+        runs: string
+        # Narrowed form for iterating on a single file or test. It can run
+        # differently from command — `-s cgl -n` reports where `-s cgl` rewrites
+        # — and runs above answers for command.
         targeted: string or null
         description: string  # optional
         whenToUse: string  # optional
@@ -746,6 +760,7 @@ Data:
             {
                 "suite": "unit",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
+                "runs": "unknown",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
                 "description": "PHP unit tests.",
                 "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
@@ -757,6 +772,7 @@ Data:
             {
                 "suite": "functional",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
+                "runs": "unknown",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>",
                 "description": "PHP functional tests, sqlite by default.",
                 "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
@@ -770,6 +786,7 @@ Data:
             {
                 "suite": "cgl",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
+                "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues for all core PHP files.",
                 "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
@@ -781,6 +798,7 @@ Data:
             {
                 "suite": "cglGit",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+                "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
                 "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
@@ -1016,6 +1034,7 @@ Data:
             {
                 "suite": "cglGit",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+                "runs": "change",
                 "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
                 "description": "Checks and fixes coding guideline issues in the latest committed patch.",
                 "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
@@ -1373,6 +1392,7 @@ Data:
             {
                 "suite": "e2e-browser",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
+                "runs": "unknown",
                 "targeted": null,
                 "description": "The e2e suite in Playwright's own UI, served from the container.",
                 "whenToUse": "Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.",
@@ -1387,6 +1407,7 @@ Data:
             {
                 "suite": "checkExtensionScannerRst",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
+                "runs": "check",
                 "targeted": null,
                 "description": "Verifies that all .rst files referenced by the extension scanner exist.",
                 "whenToUse": "Use when a deprecation or breaking change adds extension scanner matchers.",
@@ -1399,6 +1420,7 @@ Data:
             {
                 "suite": "checkIntegrityPhp",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
+                "runs": "check",
                 "targeted": null,
                 "description": "Checks core PHP files against the registered integrity rules.",
                 "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.",
@@ -1410,6 +1432,7 @@ Data:
             {
                 "suite": "composerInstall",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
+                "runs": "change",
                 "targeted": null,
                 "description": "Installs the PHP dependencies of the checkout it is run in, into its own vendor/ and bin/, inside the container.",
                 "whenToUse": "Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.",

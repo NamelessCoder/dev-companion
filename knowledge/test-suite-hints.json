@@ -2,14 +2,16 @@
   "invocation": {
     "preconditions": [
       "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
-      "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container."
+      "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.",
+      "The node suites need none of that. `-s build`, `-s lintTypescript`, `-s lintScss`, `-s lintHtml`, `-s unitJavascript` and `-s npm` run npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked, and install the `node_modules` they need themselves. So a fresh clone and a bare git worktree run them without a composerInstall first, which is how a build is run for a checkout that has to stay as it is. That is read off the suite bodies rather than measured from a run."
     ],
     "notes": [
       "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.",
       "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
       "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
       "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
-      "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.",
+      "`./Build/Scripts/runTests.sh -h` is how a suite is confirmed to exist on the branch: it lists the suites and option values that branch supports. Grepping the case label in the script misses a glob — the label is `build*)` on 13.4 and up, and `buildCss)` and `buildJavascript)` on 12.4, so a search for `build)` finds nothing on any covered branch.",
+      "A suite this answer does not list can still run git over the working tree: `checkIsoDatabase` and `checkCharsets` regenerate a table, discard uncommitted edits to composer.json and composer.lock, and stage everything with `git add *`.",
       "`PLAYWRIGHT_USE_EXISTING_INSTANCE=1` in the environment keeps the instance a previous `-s e2e-prepare` installed: the run skips the composer install of the test instance and starts in seconds instead of minutes. Only the branches that carry the e2e suites read it.",
       "A session with no terminal reaches the suites that wait by allocating one: `script -qec '<the runTests.sh command>' /dev/null` (util-linux), with stdin from something that stays open and never writes, such as a fifo. `/dev/null` as stdin ends the wait immediately and `/dev/zero` floods the terminal with NUL bytes."
     ],
@@ -86,6 +88,7 @@
     {
       "suite": "unit",
       "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "runs": "unknown",
       "domains": [
         "php"
       ],
@@ -97,6 +100,7 @@
     {
       "suite": "functional",
       "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "runs": "unknown",
       "domains": [
         "php",
         "fluid",
@@ -110,6 +114,7 @@
     {
       "suite": "cgl",
       "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
+      "runs": "change",
       "domains": [
         "php"
       ],
@@ -120,6 +125,7 @@
     {
       "suite": "cglGit",
       "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+      "runs": "change",
       "domains": [
         "php"
       ],
@@ -130,6 +136,7 @@
     {
       "suite": "lintPhp",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintPhp",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -139,6 +146,7 @@
     {
       "suite": "phpstan",
       "command": "CI=true ./Build/Scripts/runTests.sh -s phpstan",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -148,6 +156,7 @@
     {
       "suite": "lintServicesYaml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -157,6 +166,7 @@
     {
       "suite": "lintYaml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintYaml",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -167,6 +177,7 @@
       "suite": "checkIntegrityPhp",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -176,6 +187,7 @@
     {
       "suite": "checkComposer",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkComposer",
+      "runs": "check",
       "domains": [
         "php"
       ],
@@ -186,6 +198,7 @@
       "suite": "checkIntegritySetLabels",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
+      "runs": "check",
       "domains": [
         "typoscript"
       ],
@@ -195,6 +208,7 @@
     {
       "suite": "lintHtml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintHtml",
+      "runs": "check",
       "domains": [
         "fluid"
       ],
@@ -205,6 +219,7 @@
       "suite": "checkIntegrityXliff",
       "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
+      "runs": "check",
       "domains": [
         "xliff"
       ],
@@ -215,6 +230,7 @@
       "suite": "normalizeXliff",
       "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff",
+      "runs": "change",
       "domains": [
         "xliff"
       ],
@@ -224,6 +240,7 @@
     {
       "suite": "checkRst",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+      "runs": "check",
       "domains": [
         "docs"
       ],
@@ -233,6 +250,7 @@
     {
       "suite": "checkExtensionScannerRst",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
+      "runs": "check",
       "domains": [
         "docs",
         "php"
@@ -243,18 +261,20 @@
     {
       "suite": "build",
       "command": "CI=true ./Build/Scripts/runTests.sh -s build",
+      "runs": "change",
       "domains": [
         "typescript",
         "css"
       ],
       "base": true,
-      "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
+      "description": "Frontend build for TypeScript, Sass, Contrib, and assets. It rewrites the committed JavaScript and CSS below typo3/sysext/*/Resources/Public/, and its npm install can rewrite Build/package-lock.json.",
       "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change.",
       "since": 13
     },
     {
       "suite": "buildCss",
       "command": "CI=true ./Build/Scripts/runTests.sh -s buildCss",
+      "runs": "change",
       "domains": [
         "css"
       ],
@@ -266,6 +286,7 @@
     {
       "suite": "buildJavascript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s buildJavascript",
+      "runs": "change",
       "domains": [
         "typescript"
       ],
@@ -277,6 +298,7 @@
     {
       "suite": "lintScss",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "runs": "check",
       "domains": [
         "css"
       ],
@@ -287,6 +309,7 @@
     {
       "suite": "build-css",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
+      "runs": "change",
       "domains": [
         "css"
       ],
@@ -296,6 +319,7 @@
     {
       "suite": "lintTypescript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "runs": "check",
       "domains": [
         "typescript"
       ],
@@ -306,6 +330,7 @@
     {
       "suite": "unitJavascript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
+      "runs": "unknown",
       "domains": [
         "typescript"
       ],
@@ -314,9 +339,20 @@
       "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output. `typo3_hint_lookup` for `javascript-unit-tests` says where the file goes, what discovers it and what it imports."
     },
     {
+      "suite": "checkGruntClean",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkGruntClean",
+      "runs": "git",
+      "domains": [
+        "typescript"
+      ],
+      "description": "Rebuilds the committed JavaScript and reports whether it still matches its TypeScript sources.",
+      "whenToUse": "Use for a change below Build/Sources/TypeScript, where the committed JavaScript has to stay in sync with its source. Its body deletes every generated .js below typo3/sysext and runs the frontend build. Then it runs `git add *` over the whole working tree and asks git status whether anything is left, so it stages every file the checkout holds, untracked ones included. Run it in a checkout whose index you can throw away, and not in one holding work of your own. A git worktree is not the way out: its gitdir sits outside the mounted directory, so the git calls fail inside the container and the suite reports failure rather than an answer."
+    },
+    {
       "suite": "e2e",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
+      "runs": "unknown",
       "domains": [
         "php",
         "typescript",
@@ -329,6 +365,7 @@
       "suite": "e2e-prepare",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-prepare",
+      "runs": "unknown",
       "domains": [
         "php",
         "typescript",
@@ -342,6 +379,7 @@
       "suite": "e2e-browser",
       "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
+      "runs": "unknown",
       "domains": [
         "php",
         "typescript",
@@ -354,6 +392,7 @@
     {
       "suite": "composerInstall",
       "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
+      "runs": "change",
       "domains": [
         "php",
         "fluid",
@@ -365,6 +404,7 @@
     {
       "suite": "npm",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
+      "runs": "unknown",
       "domains": [
         "typescript",
         "css"
@@ -375,6 +415,7 @@
     {
       "suite": "composer",
       "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- <composer command>",
+      "runs": "unknown",
       "domains": [
         "php"
       ],

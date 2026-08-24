@@ -29,7 +29,7 @@ final class TestRunGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Say what this core checkout needs before a test can run at all, and which Build/Scripts/runTests.sh commands to run once it can. Ask it before checking for vendor/bin/phpunit by hand: the suites run in containers, so the shell\'s PHP is not the interpreter they run under and a missing vendor directory means considerably less than it looks like. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. Which suites the script offers changes between majors, so a suite that branch does not have is left out rather than handed over as a command. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.';
+        return 'Say what this core checkout needs before a test can run at all, and which Build/Scripts/runTests.sh commands to run once it can. Ask it before checking for vendor/bin/phpunit by hand: the suites run in containers, so the shell\'s PHP is not the interpreter they run under and a missing vendor directory means considerably less than it looks like. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. Every suite comes back marked by what running it does to the checkout: a check that hands it back as it was, a change that rewrites files, git where the suite runs `git add *` over the working tree, or unknown where the body does not say. A task told not to change files reads that before it pastes a command, and the frontend build is a change rather than a check. Which suites the script offers changes between majors, so a suite that branch does not have is left out rather than handed over as a command. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.';
     }
 
     public static function inputSchema(): array
@@ -167,7 +167,12 @@ final class TestRunGuide extends ReadOnlyTool
             );
         } else {
             foreach ($hints as $hint) {
-                $block = ['## ' . $hint['suite'], 'Command from the TYPO3 core root:', '`' . $hint['command'] . '`'];
+                $block = [
+                    '## ' . $hint['suite'],
+                    'Command from the TYPO3 core root:',
+                    '`' . $hint['command'] . '`',
+                    self::runsLine($hint['runs']),
+                ];
                 if ($hint['targeted'] !== null) {
                     $block[] = 'Targeted run while iterating:';
                     $block[] = '`' . $hint['targeted'] . '`';
@@ -200,6 +205,25 @@ final class TestRunGuide extends ReadOnlyTool
             'suites' => TestSuiteHints::records($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);
+    }
+
+    /**
+     * What running the command above does to the checkout, beside the command
+     * rather than under the description.
+     *
+     * A review told to change nothing was offered `-s build` first and worked
+     * out by hand that it regenerates the committed JavaScript (`R-ANS-034`).
+     * The word is the one the data carries, so a caller reading the text filters
+     * on the same value as one reading `runs`.
+     */
+    private static function runsLine(string $runs): string
+    {
+        return 'Running it: ' . match ($runs) {
+            'check' => 'check — it reports and hands the checkout back as it was.',
+            'change' => 'change — it rewrites files in the checkout.',
+            'git' => 'git — it runs git over the working tree, so the index and uncommitted edits are at stake.',
+            default => 'unknown — the body does not say what it does to the checkout.',
+        };
     }
 
     /**

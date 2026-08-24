@@ -5254,6 +5254,106 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * Every suite carries what running it does to the checkout, and the four
+     * readings the mark has to tell apart.
+     *
+     * `build` is the one the review in `feedback/2026-08-24-100604` was offered
+     * first with nothing saying it regenerates the committed JavaScript,
+     * `lintTypescript` reads the same files and rewrites none, and `unit` is
+     * the test suite `R-PRJ-007` already calls unknown.
+     */
+    #[Requirement('R-ANS-034')]
+    #[Decision('D-ANS-099')]
+    #[Test]
+    public function everySuiteSaysWhatRunningItDoesToTheCheckout(): void
+    {
+        $runs = array_column(TestSuiteHints::load(), 'runs', 'suite');
+
+        self::assertSame(
+            [],
+            array_diff(array_unique($runs), ['check', 'change', 'git', 'unknown']),
+            'a suite is marked with something typo3_project_describe does not say either',
+        );
+        self::assertSame('change', $runs['build'], 'the suite that rewrites the committed JavaScript');
+        self::assertSame('check', $runs['lintTypescript'], 'the suite that reads it and rewrites nothing');
+        self::assertSame('unknown', $runs['unit'], 'a test suite runs the core\'s own code');
+    }
+
+    /**
+     * The suite that stages the working tree is offered rather than withheld,
+     * and the mark is beside the command in the text as well — `D-ANS-099`.
+     *
+     * The paths are the ones the feedback called with. It found
+     * `checkGruntClean` by reading Build/Scripts/runTests.sh, and its `git add
+     * *` would have staged an untracked file sitting at the repository root.
+     */
+    #[Requirement('R-ANS-034')]
+    #[Decision('D-ANS-099')]
+    #[Test]
+    public function aTypeScriptChangeIsOfferedTheSuiteThatStagesTheWorkingTree(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => [
+                'Build/Sources/TypeScript/form/backend/form-wizard/steps/settings-step.ts',
+                'typo3/sysext/form/Resources/Public/JavaScript/backend/form-wizard/steps/settings-step.js',
+            ],
+            'targetVersion' => 'main',
+        ]);
+
+        self::assertSame('git', array_column($answer->data['suites'], 'runs', 'suite')['checkGruntClean'] ?? null);
+        self::assertStringContainsString(
+            "`CI=true ./Build/Scripts/runTests.sh -s checkGruntClean`\n"
+            . 'Running it: git — it runs git over the working tree',
+            $answer->text,
+        );
+        self::assertStringContainsString(
+            "`CI=true ./Build/Scripts/runTests.sh -s build`\nRunning it: change",
+            $answer->text,
+        );
+    }
+
+    /**
+     * How a suite is confirmed to exist on a branch, and the glob that makes
+     * the obvious grep answer nothing.
+     *
+     * The session in `feedback/2026-08-24-100604` grepped `^    build)`, found
+     * nothing, and came one step from filing a correct answer as wrong. The
+     * note also names the two git-running suites this list leaves out, which
+     * `-h` does hand over — `D-ANS-099`.
+     */
+    #[Decision('D-ANS-099')]
+    #[Test]
+    public function theNoteOnConfirmingASuiteSaysWhyGreppingTheCaseLabelMisses(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString('is how a suite is confirmed to exist on the branch', $notes);
+        self::assertStringContainsString('`build*)`', $notes);
+        self::assertStringContainsString('`buildJavascript)`', $notes);
+        self::assertStringContainsString('checkIsoDatabase', $notes);
+        self::assertStringContainsString('checkCharsets', $notes);
+    }
+
+    /**
+     * Both halves of what a checkout without vendor/ can run.
+     *
+     * The half that fails was already there; the half that works is what the
+     * review assembled by hand — a bare worktree for the suites that touch
+     * neither vendor/ nor bin/, so the tree under review stays as it is
+     * (`D-ANS-099`).
+     */
+    #[Decision('D-ANS-099')]
+    #[Test]
+    public function thePreconditionSaysWhatABareWorktreeRunsWithoutASetup(): void
+    {
+        $preconditions = implode("\n", TestSuiteHints::invocation()['preconditions']);
+
+        self::assertStringContainsString('-s composerInstall', $preconditions, 'the half a PHP suite fails on');
+        self::assertStringContainsString('The node suites need none of that', $preconditions);
+        self::assertStringContainsString('bare git worktree', $preconditions);
+    }
+
+    /**
      * The three things that make a suite command runnable unattended, on the
      * patch a session reported them from.
      *

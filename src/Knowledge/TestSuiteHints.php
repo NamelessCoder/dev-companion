@@ -10,6 +10,8 @@ use TYPO3\DevCompanion\Paths;
  * Loads and ranks runTests.sh suite hints from test-suite-hints.json, plus the
  * invocation notes (CI=true, targeted runs, option flags) that apply to every
  * suite.
+ *
+ * @phpstan-type Suite array{suite: string, command: string, runs: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}
  */
 final class TestSuiteHints
 {
@@ -22,7 +24,7 @@ final class TestSuiteHints
     /**
      * @return array{
      *     invocation: array{preconditions: array<int, string>, notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
-     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}>
+     *     suites: array<int, Suite>
      * }
      */
     private static function data(): array
@@ -55,6 +57,7 @@ final class TestSuiteHints
             'suites' => array_map(static fn(array $entry): array => [
                 'suite' => (string) $entry['suite'],
                 'command' => (string) $entry['command'],
+                'runs' => (string) $entry['runs'],
                 'description' => (string) $entry['description'],
                 'whenToUse' => (string) $entry['whenToUse'],
                 'domains' => array_map('strval', $entry['domains'] ?? []),
@@ -66,7 +69,7 @@ final class TestSuiteHints
         ];
     }
 
-    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}> */
+    /** @return array<int, Suite> */
     public static function load(?int $target = null): array
     {
         $suites = self::data()['suites'];
@@ -194,7 +197,7 @@ final class TestSuiteHints
     /**
      * Matched suites as data, with the range each one exists on.
      *
-     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}> $hints
+     * @param array<int, Suite> $hints
      * @return array<int, array<string, mixed>>
      */
     public static function records(array $hints): array
@@ -202,6 +205,7 @@ final class TestSuiteHints
         return array_map(static fn(array $hint): array => [
             'suite' => $hint['suite'],
             'command' => $hint['command'],
+            'runs' => $hint['runs'],
             'targeted' => $hint['targeted'],
             'description' => $hint['description'],
             'whenToUse' => $hint['whenToUse'],
@@ -219,7 +223,7 @@ final class TestSuiteHints
      * Sass build recommended.
      *
      * @param array<int, string> $domains
-     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}>
+     * @return array<int, Suite>
      */
     public static function find(?string $query, array $domains = [], ?int $target = null): array
     {

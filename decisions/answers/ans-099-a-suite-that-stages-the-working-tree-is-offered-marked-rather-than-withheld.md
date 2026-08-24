@@ -3,7 +3,11 @@ id: D-ANS-099
 title: 'A suite that stages the working tree is offered marked rather than withheld'
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - HintsTest::aTypeScriptChangeIsOfferedTheSuiteThatStagesTheWorkingTree
+  - HintsTest::everySuiteSaysWhatRunningItDoesToTheCheckout
+  - HintsTest::theNoteOnConfirmingASuiteSaysWhyGreppingTheCaseLabelMisses
+  - HintsTest::thePreconditionSaysWhatABareWorktreeRunsWithoutASetup
 ---
 
 # D-ANS-099 — A suite that stages the working tree is offered marked rather than withheld
@@ -125,3 +129,25 @@ the instruction is one the caller has to settle by reading the script.
   answer, in which case the field says nothing where it is needed most.
 - A session grepping for a suite is misled again with the `-h` note rewritten,
   which would say the note is not where the session was looking.
+
+## Since then
+
+Built on 2026-08-24. The fourth value is called `git`, because what the three
+suites have in common is the command they run and not one effect of it: two
+discard uncommitted edits before the `git add *` they all end in. Every suite in
+`knowledge/test-suite-hints.json` carries `runs`, read off its body in
+`.checkouts/` on the same day.
+
+`checkIsoDatabase` and `checkCharsets` stayed out of the suite list. Nothing
+narrows to them — the hints are a curated set, and a php-domain entry would
+offer them to every PHP patch, which is this entry's third **Wrong if**. They
+are named in an invocation note instead, because `runTests.sh -h` does hand them
+over.
+
+The third ask was settled by reading rather than left open. The node suites run
+npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked,
+and install their own `node_modules`, so a bare worktree runs them and a PHP
+suite still needs `-s composerInstall` there first. `invocation.preconditions`
+says both halves and says which of the two was read rather than run.
+`checkGruntClean` is the exception the same reading found: from a worktree its
+git calls fail inside the container, the way `cglGit`'s already do.

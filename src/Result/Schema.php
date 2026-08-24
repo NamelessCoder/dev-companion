@@ -320,12 +320,17 @@ final class Schema
         return self::object([
             'suite' => self::string(),
             'command' => self::string('Full command, run from the core root.'),
-            'targeted' => self::nullableString('Narrowed form for iterating on a single file or test.'),
+            'runs' => [
+                'type' => 'string',
+                'enum' => ['check', 'change', 'git', 'unknown'],
+                'description' => 'What running the command does to the checkout, read off the suite\'s body in Build/Scripts/runTests.sh rather than by running it. The values typo3_project_describe gives a declared command, plus one for the suites that run git. check: it reports and hands the files back as they were, so a task told not to change files can run it — installing its own node_modules or writing a cache is not a change. change: it rewrites files, generated or installed. git: it runs git over the working tree, so `git add *` stages what it finds, untracked files included, and a suite of this kind may discard uncommitted edits first. unknown: the body does not say, which is what a test suite is, because it runs the core\'s own code.',
+            ],
+            'targeted' => self::nullableString('Narrowed form for iterating on a single file or test. It can run differently from command — `-s cgl -n` reports where `-s cgl` rewrites — and runs above answers for command.'),
             'description' => self::string(),
             'whenToUse' => self::string(),
             'domains' => self::listOf(self::string()),
             'versions' => self::nullableString('The TYPO3 majors whose runTests.sh has this suite, where that is not all of them. Null means every covered version.'),
-        ], ['suite', 'command', 'targeted', 'versions']);
+        ], ['suite', 'command', 'runs', 'targeted', 'versions']);
     }
 
     /**

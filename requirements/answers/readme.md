@@ -41,6 +41,7 @@ when it is added.
 - [`R-ANS-031`][R-ANS-031] — A symptom reaches the hint that explains it · held
 - [`R-ANS-032`][R-ANS-032] — The instructions index the question each tool answers · held
 - [`R-ANS-033`][R-ANS-033] — A path names the repository it is in · held
+- [`R-ANS-034`][R-ANS-034] — A suite an answer offers says what running it does to the checkout · **open**
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -76,3 +77,4 @@ when it is added.
 [R-ANS-031]: ans-031-a-symptom-reaches-the-hint-that-explains-it.md
 [R-ANS-032]: ans-032-the-instructions-index-the-question-each-tool-answers.md
 [R-ANS-033]: ans-033-a-path-names-the-repository-it-is-in.md
+[R-ANS-034]: ans-034-a-suite-an-answer-offers-says-what-running-it-does-to-the-checkout.md

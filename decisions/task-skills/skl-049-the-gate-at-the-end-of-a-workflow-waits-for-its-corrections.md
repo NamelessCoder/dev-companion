@@ -154,3 +154,21 @@ sightings is about them, so the case against a fourth intervention against the
 same three stands. What is gone is the narrower half of it: a gate is no longer
 an intervention against one build, and the question the card carries is now
 asked with two task shapes and two directories behind it rather than one.
+
+**2026-08-24.** The second **Wrong if** fired again, from a third task shape and
+a third directory. `feedback/2026-08-24-100534` is a core patch review in
+`/home/benji/projects/typo3-cms` reworked into a patch, and it reports five
+prescribed calls not made, naming two of them as instructions that were present,
+correct and in its context. Two siblings from the same day say the same:
+`feedback/2026-08-24-140239` read none of the pages named to it, and
+`feedback/2026-08-24-133515` wrote a whole core patch with zero calls to this
+server.
+
+One of the five is judged as a placement and queued —
+[`D-SKL-072`](skl-072-a-workflow-handover-names-the-calls-the-next-order-restarts-with.md),
+the crossing between two core skills naming the calls the order restarts with.
+The other four are the shape this entry carries and none of them has a
+correction to be met by, so the recommendation is unchanged. What is answered is
+the weight: the gate is now asked with four directories and four task shapes
+behind it, and the four sightings above landed after every correction this entry
+weighs.

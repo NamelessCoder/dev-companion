@@ -1,7 +1,9 @@
-# Suites are not marked by whether they rewrite the tree, and I nearly filed `-s build` as nonexistent
+# Steps both skills prescribe that I skipped, which the server cannot see from the calls made
 
-**Serves:** feedback/2026-08-24-100604-suites-are-not-marked-by-whether-they-rewrite.md
+**Serves:** feedback/2026-08-24-100534-steps-both-skills-prescribe-that-i-skipped.md
 **Priority:** low
+**Branch:** todo/steps-both-skills-prescribe-that-i-skipped
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-100458-the-forge-to-gerrit-chain-reached-an-abandoned.md
 **Priority:** normal
+**Branch:** todo/the-forge-to-gerrit-chain-reached-an-abandoned
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as step 2, delivery, and written up as `D-ANS-098`, which
 carries the measurements and what the field owes: build it. Have

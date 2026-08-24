@@ -991,6 +991,9 @@ Text:
     - Avoid a generic name that can collide globally. There is one stylesheet and no scoping, so a .header or a .content in a component partial is a name taken from everybody.
     - Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors.
 
+    Read at length, as a resource:
+    - typo3://guides/any/backend/using-the-styleguide (css-styleguide-demos — Using the Backend Styleguide)
+
     What matched above is a guess at your words. The rest of these domains, closest first, requestable by id:
     - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
     - css-color-surface-tokens — Color and Surface Tokens (Backend CSS)
@@ -1417,7 +1420,12 @@ Data:
             }
         ],
         "availableHintsWithheld": 0,
-        "documents": []
+        "documents": [
+            {
+                "uri": "typo3://guides/any/backend/using-the-styleguide",
+                "hint": "css-styleguide-demos"
+            }
+        ]
     }
 
 hints: miss

@@ -308,7 +308,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 114,
+                "score": 116,
                 "truncated": false
             },
             {
@@ -396,6 +396,7 @@ Text:
     No knowledge section matched "quantum entanglement pineapple".
 
     This knowledge base covers:
+    - Using the Backend Styleguide: Where the Styleguide Lives, Installing the Styleguide Where the Core Does Not Ship It, Reading It Without the Module, What an Example States, and What It Does Not, What a Template Writes Is Not What the Demo Shows, What Places a Class
     - Reporting a TYPO3 Vulnerability: Who Receives a Report, What the Report Carries, What Is Not Done With It, A Finding That Is Already Public
     - Looking at a Change in a Real Browser: Which Installation Shows It, Reaching a DDEV Site From a Container, Where the Harness and Its Output Go
     - Proving a TypoScript Condition Verdict: What Does Not Answer It, The Marker Only the Branch Produces, A Marker Put There on Purpose, Which URL Is Requested, The Negative Control, What Stands Between Two Runs
@@ -427,6 +428,18 @@ Data:
         "withheldDocuments": [],
         "alsoInHints": [],
         "documents": [
+            {
+                "id": "any/backend/using-the-styleguide",
+                "title": "Using the Backend Styleguide",
+                "topics": [
+                    "Where the Styleguide Lives",
+                    "Installing the Styleguide Where the Core Does Not Ship It",
+                    "Reading It Without the Module",
+                    "What an Example States, and What It Does Not",
+                    "What a Template Writes Is Not What the Demo Shows",
+                    "What Places a Class"
+                ]
+            },
             {
                 "id": "any/security/reporting-a-vulnerability",
                 "title": "Reporting a TYPO3 Vulnerability",

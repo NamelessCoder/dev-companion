@@ -29,8 +29,4 @@ Task text, verbatim and in German: "bitte schaue dir das hier an und baue eine p
 
 ## Suggestion
 
-Two things would have changed this session.
-
-First, skill descriptions that survive a non-English trigger. If skill matching is lexical on the description, a German or French one-line request will not reach typo3-core-patch-development however well it fits. Either the descriptions carry the obvious multilingual anchors (Patch, Änderung, Fehler, Test) or the selection step translates first — the same instruction the server already gives callers for its own tools ("Query this server in English whatever language you speak with the user") is not something a skill-selection step can follow, because no tool call happens there.
-
-Second, a re-entry point for a task that reveals itself late. The prescribed "start every task with typo3_project_describe" only works if the first turn already looks like TYPO3 work. A session that starts with "look at this URL" and lands in typo3/sysext/core/Classes/ ten calls later has no prompt to go back. Something that fires on the checkout — first edit under typo3/sysext/*/Classes/, or first invocation of Build/Scripts/runTests.sh — would have caught this one, and would have caught it before the wasted test run and the wrong commit footer rather than after.
+A re-entry point for a task that reveals itself late. The prescribed "start every task with typo3_project_describe" only works if the first turn already looks like TYPO3 work. A session that starts with "look at this URL" and lands in typo3/sysext/core/Classes/ ten calls later has no prompt to go back. Something that fires on the checkout — first edit under typo3/sysext/*/Classes/, or first invocation of Build/Scripts/runTests.sh — would have caught this one, and would have caught it before the wasted test run and the wrong commit footer rather than after.

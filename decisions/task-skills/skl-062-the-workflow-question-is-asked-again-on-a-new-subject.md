@@ -137,3 +137,37 @@ outside the core as readily as in it — the acts are the caller's own, so none 
 them is a step `Scope::isCoreOnly()` drops. What is not written is a second copy
 in the checklist: the checklist is the order of this task, and asking again is
 what happens when the task is no longer the one the brief was composed for.
+
+### 2026-08-24 — the acts were taken by a session the placement cannot reach
+
+[`feedback/2026-08-24-133515`](../../feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
+is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`: a core patch carried
+to green — two classes changed, a test added to an existing case, a new
+functional test case, unit, functional, cgl and phpstan all run — with zero
+calls to this server and no skill opened.
+
+Two of the four acts were taken. The new functional test case is the first file
+under a test directory, and `Build/Scripts/runTests.sh` is the first run of a
+check the repository declares. The sentence naming them sits in
+`TaskGuide::answer()`'s `nextTools` and reached nothing, because it rides on an
+answer and no answer was asked for.
+
+That is the placement's first recorded cost, and it is narrower than the
+**Decided** bullet reads. A session that calls once is served. A session that
+calls nothing is not, and it is the case `D-AUD-003` named as the reason the
+entry point sits in the `instructions` at all.
+
+None of the three **Wrong if** fires: each describes the re-ask arriving and not
+working, and here it did not arrive.
+
+The room was re-measured in this worktree on 2026-08-24 — 1943 characters plain,
+2028 in the case `ScopeTest::theInstructionsFitWhatAClientKeeps` sizes against,
+of the 2048 `R-ANS-013` holds. So the trade above stands as a trade: twenty
+characters is not a sentence. What nobody has weighed is binding the imperative
+already there to the acts as well as to the opening, which is a rewrite rather
+than an addition, and that is the queued step.
+
+The session named two acts of its own, and one of them is outside the four: the
+first edit to code the package ships. It is nameable without seeing the checkout
+the way the other four are, and whether it belongs beside them is part of the
+same step rather than something this reading settles.

@@ -186,3 +186,27 @@ The statement holds, and this is the first evidence for it that is not an
 absence. What it corrects is how the benchmark above reads: eighty-two empty
 rows are one arm on one model variant, and not a property of the request shape.
 
+### 2026-08-24 — a second German brief on the same variant, and one word of match
+
+[`feedback/2026-08-24-133515`](../../feedback/2026-08-24-133515-a-full-core-patch-session-ran-green-with-zero.md)
+is the same checkout again on `claude-opus-5[1m]`, opening in German with "bitte
+schaue dir das hier an und baue eine patch mit tests dafür" and an artifact URL.
+A core patch followed, green, with no skill opened and no call made. So the
+pairing the section above records is two to one rather than one to one, and the
+variant, the language and the brief still differ together — the confound is
+where it was, and what would settle it is the same German brief on
+`claude-opus-5`.
+
+What this row adds is a limit on what the third **Wrong if** counts. It counts a
+description delivered "in the request's own words", and this request shares one
+content word with
+[`typo3-core-patch-development`](../../skills/typo3-core-patch-development/SKILL.md)'s
+— `patch` — where the 2026-08-10 brief shared two of the first four. It names no
+subject at all: that this was TYPO3 core work was said by the checkout, which no
+description match reads. So the row counts toward the shape more weakly than the
+founding one, and nothing here changes.
+
+The rest of that report is about the entry point rather than about a skill
+listing, and it is judged at
+[`D-SKL-062`](skl-062-the-workflow-question-is-asked-again-on-a-new-subject.md).
+

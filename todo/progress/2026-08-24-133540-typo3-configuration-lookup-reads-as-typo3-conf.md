@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133540-typo3-configuration-lookup-reads-as-typo3-conf.md
 **Priority:** low
+**Branch:** todo/typo3-configuration-lookup-reads-as-typo3-conf
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

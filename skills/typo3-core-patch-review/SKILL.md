@@ -179,13 +179,22 @@ suite is the same sentence with the words taken out.
 
 **A scratch probe is one of the things it may run.** Add a temporary fixture
 column, a model property or a test of your own, run a targeted suite against it,
-read what it prints, and put the tree back — `git checkout --` on what you
-touched, then `git status` to confirm it is clean. The patch under review is not
+read what it prints, and put the tree back. The patch under review is not
 edited, which is the boundary that matters; a probe writes files and restores
 them, and the restoration is verified rather than assumed. This is what turns
 "this would presumably throw" into a pasted error, and dropped-candidate
 findings are where it earns most: what disproves a path is what makes it
 impossible, and a probe is often the only thing that can.
+
+**Put the tree back to what the probe found, which is not always what is
+committed.** `git checkout -- <path>` restores the file from the index, and in a
+review the index holds the patch set. On a file that carries nothing else, that
+is the probe undone. On a file that also carries a change you were asked for, it
+is the change undone with it, and nothing reports the loss. Where the file
+carries work of your own, copy it aside before the probe and back afterwards, or
+`git add <path>` first so the restore lands on your work. Verify with
+`git diff --stat <path>` rather than with `git status`. A clean status is the
+confirmation on a file you were not editing, and the loss on one you were.
 
 **A diff that changes what the frontend renders is a class of patch where
 reading is not evidence at all.** TypoScript defaults, TypoScript declared in an

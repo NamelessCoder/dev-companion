@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-SKL-070`][D-SKL-070] — A description is held to a length of its own · 2026-08-24
+- [`D-SKL-071`][D-SKL-071] — A probe is put back to the state it found · 2026-08-24
 - [`D-SKL-067`][D-SKL-067] — Maintaining a package's asset build earns a task skill · 2026-08-21
 - [`D-SKL-068`][D-SKL-068] — An audit's list is established against the work already in flight · 2026-08-21
 - [`D-SKL-069`][D-SKL-069] — Each runtime lookup says what it adds after the extension answer · 2026-08-21
@@ -75,6 +76,7 @@ one is added.
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
 [D-SKL-070]: skl-070-a-description-is-held-to-a-length-of-its-own.md
+[D-SKL-071]: skl-071-a-probe-is-put-back-to-the-state-it-found.md
 [D-SKL-067]: skl-067-maintaining-a-packages-asset-build-earns-a-task-skill.md
 [D-SKL-068]: skl-068-an-audits-list-is-established-against-the-work-already-in-flight.md
 [D-SKL-069]: skl-069-each-runtime-lookup-says-what-it-adds-after-the-extension-answer.md

@@ -1233,6 +1233,39 @@ final class SkillTest extends TestCase
         );
     }
 
+    #[Decision('D-SKL-071')]
+    #[Test]
+    public function aProbeIsPutBackToTheStateItFound(): void
+    {
+        // `feedback/2026-08-24-100329` followed the restore literally while the
+        // probed file also carried the change the session had just been asked
+        // for, and `git checkout --` took both, because the index held the
+        // patch set. Re-run in a scratch repository on 2026-08-24: unstaged
+        // work plus a probe restores to the commit, the same work staged first
+        // restores to the work, and `git stash push <path>` leaves the file at
+        // the commit as well — so the stash the report offers restores nothing
+        // either (`D-SKL-071`).
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**Put the tree back to what the probe found, which is not always what is committed.**',
+            $skill,
+        );
+        // Where the restore lands, which is what makes the two routes under it
+        // one rule rather than a preference between two commands.
+        self::assertStringContainsString(
+            '`git checkout -- <path>` restores the file from the index, '
+                . 'and in a review the index holds the patch set',
+            $skill,
+        );
+        // And the check, which is the half that pointed the wrong way: the file
+        // was clean afterwards, exactly as the sentence below asked for.
+        self::assertStringContainsString('Verify with `git diff --stat <path>`', $skill);
+        self::assertStringNotContainsString('`git status` to confirm it is clean', $skill);
+    }
+
     #[Decision('D-SKL-029')]
     #[Test]
     public function aPrecedentIsListedByTypeAndVersionBeforeItIsAskedForInWords(): void

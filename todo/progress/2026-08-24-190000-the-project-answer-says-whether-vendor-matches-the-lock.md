@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110908-installed-true-does-not-notice-a-vendor.md, D-ANS-102
 **Priority:** normal
+**Branch:** todo/the-project-answer-says-whether-vendor-matches-the-lock
+**Claimed:** 2026-08-24
 
 Read the package versions out of `composer.lock` and out of
 `vendor/composer/installed.json` in `Project::describe()`, and report where the

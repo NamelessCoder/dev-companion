@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-140130-typo3-setup-create-site-also-writes-a-site.md
 **Priority:** normal
+**Branch:** todo/typo3-setup-create-site-also-writes-a-site
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as `D-KNW-116`: step 1a, queued. The session read
 `installation-setup`, which is the hint that owns the subject, so what is

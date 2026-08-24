@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133540-typo3-configuration-lookup-reads-as-typo3-conf.md
 **Priority:** normal
+**Branch:** todo/typo3-configuration-lookup-reads-as-typo3-conf
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as the ladder's step 2 with a step 1a remainder, and
 written up in `D-KNW-115`: the sentence saying a site's own `config.yaml` names

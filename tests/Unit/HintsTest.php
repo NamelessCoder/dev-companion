@@ -7268,6 +7268,61 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('installation-setup', self::statementsOf('site-sets'));
     }
 
+    /**
+     * Read in `.checkouts/` on 2026-08-25. `SetupService::createSite()` fills
+     * the site's `dependencies` on `14.3` and `main` and writes the
+     * `sys_template` row with the static includes on `12.4` and `13.4`;
+     * `ImportSiteConfigurationsOnPackageInitialization` returns before reading
+     * `Initialisation/Site/` unless the content import left an `Import` behind,
+     * which `12.4`'s `InstallUtility` does not require; and
+     * `PackageManager::getPackageKeyFromManifest()` falls back to the directory
+     * name up to `13.4` and throws 1348146451 from `14.3` on — `D-KNW-118`.
+     */
+    #[Decision('D-KNW-118')]
+    #[Test]
+    public function whereADevelopmentInstallationGetsItsPageObjectIsStated(): void
+    {
+        $on = static fn(int $major): string => implode("\n", array_column(
+            (array) Hints::byId('development-installation-page-object', $major)['hints'],
+            'text',
+        ));
+
+        // Something is rendering that page already, so the first step is the
+        // one `D-KNW-116` owns rather than a second object beside the first.
+        self::assertStringContainsString('installation-setup', $on(14));
+
+        // Where the site takes the replacement up is one key, and whether that
+        // key is written already is what the majors differ in.
+        foreach ([13, 14, 15] as $major) {
+            self::assertStringContainsString('under dependencies', $on($major));
+        }
+        self::assertStringContainsString('typo3/fluid-styled-content-css', $on(14));
+        self::assertStringNotContainsString('typo3/fluid-styled-content-css', $on(13));
+        self::assertStringContainsString('no dependencies key at all', $on(13));
+
+        // The route that looks like it saves that edit and imports nothing.
+        self::assertStringContainsString('Initialisation/Site/', $on(13));
+        self::assertStringNotContainsString('Initialisation/Site/', $on(12));
+
+        // What names the extension the demo set is shipped in, which the report
+        // this serves had taken for the directory's own doing.
+        self::assertStringContainsString('extra.typo3/cms.extension-key', $on(14));
+        self::assertStringContainsString('1348146451', $on(14));
+        self::assertStringNotContainsString('1348146451', $on(13));
+        self::assertStringContainsString("directory's own name", $on(13));
+
+        // Two packaging paths, and the attribute reaches one of them.
+        self::assertStringContainsString('export-ignore', $on(14));
+        self::assertStringContainsString('extension-ter-release', $on(14));
+
+        // A session whose set renders nothing arrives on the set hint, and one
+        // at the seeding step of the workflow arrives on the seeding hint.
+        self::assertStringContainsString(
+            'development-installation-page-object',
+            self::statementsOf('site-sets', 'fresh-instance-seeding'),
+        );
+    }
+
     #[Requirement('R-ANS-011')]
     #[Test]
     public function aRepeatableContentElementIsRoutedThroughWhatItOwns(): void

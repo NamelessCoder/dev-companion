@@ -1,7 +1,8 @@
 ---
 date: 2026-08-24T14:03:17+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-24
 model: claude-opus-5[1m]
 tool: typo3_hint_lookup, typo3-development-installation
 directory: /home/benji/projects/ext-usercentrics

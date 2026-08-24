@@ -27,7 +27,60 @@
         "text": "A site set fills nothing by itself. Configuration/Sets/<name>/config.yaml carries TypoScript, page TSconfig, settings and labels, and it reaches an installation only where a site's own config.yaml names it under dependencies — so a package shipping sets alone needs a site to exist before any of it applies.",
         "since": 13
       },
-      "A package declaring none of them still fills the instance, by a procedure only its own manual writes down — a backend module to click through, or steps to follow by hand. Nothing the package registers says which module that is, so the manual is the source rather than the file listing, and the absence of everything above is what says to read it."
+      "A package declaring none of them still fills the instance, by a procedure only its own manual writes down — a backend module to click through, or steps to follow by hand. Nothing the package registers says which module that is, so the manual is the source rather than the file listing, and the absence of everything above is what says to read it.",
+      "development-installation-page-object is the neighbouring question: what gives a development installation a page object where the package ships none, rather than what fills that instance with content."
+    ]
+  },
+  {
+    "id": "development-installation-page-object",
+    "title": "Where a Development Installation Gets Its Page Object",
+    "domains": [
+      "typoscript",
+      "php"
+    ],
+    "appliesTo": [
+      "development installation page does not render",
+      "extension ships no page TypoScript",
+      "the extension defines no page object",
+      "nothing renders the extension in a browser",
+      "demo site set",
+      "development-only extension",
+      "keep demo TypoScript out of the release",
+      "export-ignore",
+      ".gitattributes",
+      "Composer path repository",
+      "extension key and directory name"
+    ],
+    "hints": [
+      "An extension that renders into a page without defining one has no page object to give a development installation, and an installation the setup command created has one rendering already. So the work is replacing that object rather than supplying the first: installation-setup names the file or the record it was left in on each major, and taking that out is the first step whatever replaces it.",
+      {
+        "text": "A site set is the form of the replacement that outlives the installation, because it is a file in a package rather than a row in the database or a file below the installation's own configuration directory. It renders only where the site's config.yaml names it under dependencies, so the demo page object is written once and the site gains one line.",
+        "since": 13
+      },
+      {
+        "text": "The setup command writes that dependencies key itself, carrying typo3/fluid-styled-content and typo3/fluid-styled-content-css where fluid_styled_content is active. The development set is appended to what is already there.",
+        "since": 14
+      },
+      {
+        "text": "The command writes no dependencies key at all and puts the static includes on the sys_template row instead, so a site that is to render from a set gains the key as well as the entry in it.",
+        "until": 13
+      },
+      {
+        "text": "Shipping the site configuration from the development extension does not save that edit. Initialisation/Site/ is read only where the same package's own data file was imported in the same run, so a package carrying that directory alone has it copied nowhere and says nothing about it.",
+        "since": 13
+      },
+      "A development-only extension is where the demo page object lives without being released: a second package in the same repository, required through a Composer path repository in the root manifest, holding that page object and the template it renders and nothing the released extension needs.",
+      "Its directory does not decide its extension key. extra.typo3/cms.extension-key in its own composer.json is what names it, and a Composer installation reads its package list from the artefact typo3/cms-composer-installers writes rather than from a directory listing.",
+      {
+        "text": "A classic installation falls back to the directory's own name where that key is missing, which is the one place the directory decides anything.",
+        "until": 13
+      },
+      {
+        "text": "A classic installation refuses a typo3-cms- package that carries no such key, with exception 1348146451.",
+        "since": 14
+      },
+      "Keeping that directory out of the release is two lists rather than one. An export-ignore attribute in .gitattributes takes it out of git archive, and so out of the source archive a git host builds and Composer installs from; what the TER artefact holds is decided by Tailor's conf/ExcludeFromPackaging.php and never by that attribute, which is extension-ter-release.",
+      "fresh-instance-seeding is the other half of an empty installation, the ways a package fills one with content. site-sets is what a set may hold and how a site takes one up."
     ]
   },
   {

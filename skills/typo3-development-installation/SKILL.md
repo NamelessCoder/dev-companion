@@ -135,7 +135,12 @@ answers** below.
    root is a site configuration whose base is not this installation's URL, which
    is the importer's doing and not the package's. Read what actually landed with
    `typo3_configuration_lookup`, correct it in the installation's own site
-   configuration, and verify it again there.
+   configuration, and verify it again there. Content is the second question at
+   this step and not the first: a package that renders into a page and defines
+   none leaves the installation rendering something else, and
+   `typo3_hint_lookup` with `id=development-installation-page-object` owns where
+   the page object that replaces it comes from and where it lives so it is not
+   released.
 5. **Decide what the install wrote into the repository.** The installation's
    configuration, its writable state and its document root land in the Composer
    root, which is the versioned repository itself. `typo3_hint_lookup` owns

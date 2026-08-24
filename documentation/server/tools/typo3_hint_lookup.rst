@@ -292,6 +292,7 @@ Text:
     - typoscript-conditions — What a TypoScript Condition Is Handed (TypoScript)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+    - development-installation-page-object — Where a Development Installation Gets Its Page Object (TypoScript)
     - impexp-import-placement — Where an impexp Import Puts the Records It Writes (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
@@ -853,6 +854,11 @@ Data:
                 "id": "installation-setup",
                 "title": "What typo3 setup Takes and What It Refuses",
                 "category": "PHP"
+            },
+            {
+                "id": "development-installation-page-object",
+                "title": "Where a Development Installation Gets Its Page Object",
+                "category": "TypoScript"
             },
             {
                 "id": "impexp-import-placement",
@@ -1573,6 +1579,7 @@ Text:
     - typoscript-conditions — What a TypoScript Condition Is Handed (TypoScript)
     - project-configuration-files — What the Installation Is Configured By (PHP)
     - installation-setup — What typo3 setup Takes and What It Refuses (PHP)
+    - development-installation-page-object — Where a Development Installation Gets Its Page Object (TypoScript)
     - impexp-import-placement — Where an impexp Import Puts the Records It Writes (PHP)
     - breaking-without-a-moved-member — Whether a Change Is Breaking When No Member Moved (PHP)
     - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
@@ -2047,6 +2054,11 @@ Data:
                 "id": "installation-setup",
                 "title": "What typo3 setup Takes and What It Refuses",
                 "category": "PHP"
+            },
+            {
+                "id": "development-installation-page-object",
+                "title": "Where a Development Installation Gets Its Page Object",
+                "category": "TypoScript"
             },
             {
                 "id": "impexp-import-placement",

@@ -3,7 +3,8 @@ id: D-KNW-118
 title: How a development installation renders a package that ships no page TypoScript is a subject this server owns
 date: 2026-08-25
 status: open
-coveredBy: []
+coveredBy:
+  - HintsTest::whereADevelopmentInstallationGetsItsPageObjectIsStated
 ---
 
 # D-KNW-118 — How a development installation renders a package that ships no page TypoScript is a subject this server owns
@@ -139,3 +140,47 @@ architecture reversals.
 - A second session hits this and reaches for a `sys_template` row by hand
   anyway. Then what was missing is which of the three ways to take rather than
   that there are three.
+
+## Since then
+
+The statement landed on 2026-08-25 as `development-installation-page-object`,
+and the reading settled the first **Wrong if** as a step rather than as a
+subject: a set does supply the page object, and it supplies it only once what
+`--create-site` left is gone, which is `D-KNW-116`'s half and the first sentence
+of this one. The list of ways stayed at three, and the reading added what each
+of them costs rather than a fourth.
+
+`SetupService::createSite()` writes the site's own `dependencies` on `14.3` and
+`main` — `typo3/fluid-styled-content` and `typo3/fluid-styled-content-css` where
+`fluid_styled_content` is active — so the development set is appended to a key
+that exists. `13.4` writes no such key and puts the same static includes on the
+`sys_template` row, so a site there gains the key as well as the entry.
+
+The route that looked like it would spare that edit does not exist.
+`ImportSiteConfigurationsOnPackageInitialization` returns before it reads
+`Initialisation/Site/` unless `ImportContentOnPackageInitialization` left an
+`Import` in the event storage, on `13.4`, `14.3` and `main` alike — so a package
+shipping the directory and no data file has it copied nowhere and logs nothing.
+`12.4` is the other side of that boundary:
+`InstallUtility::importSiteConfiguration()` takes the import as an optional
+argument and copies the directory either way.
+
+The third **Wrong if** came out affirmative rather than empty. The directory
+does not decide the extension key: `extra.typo3/cms.extension-key` names it,
+`Bootstrap::createPackageCache()` reads a Composer installation's packages from
+`ComposerPackageArtifact` and scans no directory on any covered major, and
+`PackageManager::getPackageKeyFromManifest()` falls back to the directory's own
+name up to `13.4` and throws 1348146451 from `14.3` on. So the correction the
+feedback's session took in its own project is a convention, and what the
+statement says is where the key actually comes from.
+
+The packaging half is stated as two lists. `git archive` honours an
+`export-ignore` attribute, measured on a throwaway repository on 2026-08-25: a
+`Build/` directory named by the attribute is absent from the archive while
+`.gitattributes` itself is in it. The step from there to the dist a Composer
+install downloads rests on the source archive a git host builds being that
+command, which was not measured — Tailor is in no checkout here either, and the
+TER half is `extension-ter-release`'s statement rather than a second reading.
+The statement also assumes the demo set assigns `page`; one assigning only paths
+the welcome object leaves alone renders beside it, which is `D-KNW-116`'s
+reading and is not repeated here.

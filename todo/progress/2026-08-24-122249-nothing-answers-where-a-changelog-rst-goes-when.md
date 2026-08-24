@@ -1,7 +1,9 @@
-# Four wordings of a duplicate search returned nothing; the category enumeration answered on the fi...
+# nothing answers where a changelog RST goes when the change is backported
 
-**Serves:** feedback/2026-08-24-110926-four-wordings-of-a-duplicate-search-returned.md
+**Serves:** feedback/2026-08-24-122249-nothing-answers-where-a-changelog-rst-goes-when.md
 **Priority:** low
+**Branch:** todo/nothing-answers-where-a-changelog-rst-goes-when
+**Claimed:** 2026-08-24
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

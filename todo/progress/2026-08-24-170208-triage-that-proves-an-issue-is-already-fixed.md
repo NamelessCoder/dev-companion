@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-170208-triage-that-proves-an-issue-is-already-fixed.md
 **Priority:** normal
+**Branch:** todo/triage-that-proves-an-issue-is-already-fixed
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as step 4, wording, in `D-SKL-073`: the verdict, its
 evidence and the copyable form all arrive, and the checklist's last bullet —

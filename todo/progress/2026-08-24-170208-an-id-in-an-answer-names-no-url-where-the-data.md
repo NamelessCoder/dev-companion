@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-170208-an-id-in-an-answer-names-no-url-where-the-data.md, D-ANS-103
 **Priority:** normal
+**Branch:** todo/an-id-in-an-answer-names-no-url-where-the-data
+**Claimed:** 2026-08-24
 
 Print the URL on the three lines that name a record by number and carry none:
 `ForgeLookup::relationLine` and `GerritLookup::issues` from the `url` their

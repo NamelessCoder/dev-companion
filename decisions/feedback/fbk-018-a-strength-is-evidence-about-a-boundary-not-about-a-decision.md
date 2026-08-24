@@ -849,3 +849,94 @@ boundary it names and the guard it left. `D-DOC-041` is why they were judged.
   changed an action.
   `ScopeTest::theExclusionForPhpSourceKeepsItsQualification`
   holds it.
+
+## Confirmed on 2026-08-25
+
+The 2026-08-03 section reads a strength that proposes a feature against the
+feature. This is the mirror of it: a keep-request for a field that had been
+taken off the very calls the report names, six days before the report was
+written.
+
+`feedback/2026-08-24-140340` credits five hints with one extension version
+serving v13.4 and v14 in `/home/benji/projects/ext-usercentrics`, with both test
+layers and a browser-verifiable installation. It asks that the ids stay stable,
+that the sentences predicting a failure stay in them, and that `availableHints`
+and `omittedHints` not be dropped.
+
+The quotations are checked before the boundary is. The reporting checkout is
+another project, so all of it was re-run on 2026-08-25 through
+`bin/typo3-dev-companion` from this repository's own `.checkouts/14.3`, and
+every sentence comes back verbatim:
+
+- `project-configuration-files` — the first start in a clone whose dependencies
+  are not installed leaving no `additional.php`, exception 1396795884, the
+  detection running before the post-start hooks, and the regeneration that
+  overwrites the file while restoring an `/additional.php` ignore entry.
+- `extension-test-site` — the absent `SiteBasedTestTrait` with the
+  export-ignored `Tests/` behind it, `$this->get(SiteWriter::class)->write()`,
+  the file-backed caches and the `CacheManager::flushCaches()` that makes the
+  class deterministic, and the green `--filter` run that is evidence of nothing.
+- `project-extension-tests` — the five `typo3Database*` variables, and the
+  account that has to create a database per test class, which under DDEV is
+  root.
+- `extension-repository-installation` — `extra.typo3/cms.app-dir` moving
+  nothing, with Composer's own message and the `config/` and `var/` that land in
+  the versioned tree.
+- `extension-manifest` — the two fields whose absence still evaluates
+  `ext_emconf.php`, and the suite running `failOnDeprecation` that surfaces it.
+
+**Half the keep-request had already been refused.** `1a22d214` withheld
+`availableHints` from a call that names an id on 2026-08-18; `D-ANS-075` is the
+order it is printed in and `R-ANS-030` why the count survives where the list
+does not. All four id calls the report's own Query line names answer with an
+empty index today — 103, 101, 103 and 103 neighbours withheld, each under the
+sentence naming the parameter that asks for them. The report says every hint
+answer lists the field. Which revision that session's client launched is
+recorded nowhere here, so what is settled is narrower: against this server the
+field is not where those ids can have come from.
+
+**The other field holds, and it is the one that did the work.** An operations
+brief for this task shape names `project-configuration-files` in `omittedHints`,
+beside `installation-setup`, `project-build-and-scripts`, `installation-boot`
+and `browser-tests-outside-core`. The task text is this run's own, since no
+feedback records the one that was sent, so what reproduces is the mechanism
+rather than the call.
+
+The praise implies more than it quotes. It puts the whole value in an id that
+could not be guessed from its name, and names the two phrases it would have
+searched instead. Both rank `project-configuration-files` first — on its
+statements, where neither phrase is in its title — and a call that matches
+carries the index in full, because withholding it is what naming an id does. So
+the reachability credited to the index is the matcher's. That is the sixth
+corpus in which a strength misplaces its credit, and the first in which the
+misplaced half is the half asked to be kept.
+
+The boundary is **what the corpus states about an artifact that exists against
+what it would have to state about a shape somebody has to build.** Every
+sentence credited here is a behaviour readable off something already in front of
+the session: DDEV's settings generator, the `Tests/` the core package
+export-ignores, the database `Testbase` creates per class, Composer's message
+about `app-dir`, the predicate that decides whether `ext_emconf.php` is read.
+The cost side is the same session three minutes earlier.
+`feedback/2026-08-24-140317` names three of these five ids and reports that none
+of them says how a page comes to render for an extension that ships no page
+TypoScript, and what it ended at is three designs the user rejected in turn
+rather than a behaviour anybody could have read. Five predictions landed because
+there was something to predict; the sixth question had nothing behind it.
+
+Three keep-requests rested on nobody rewriting the file and are held now.
+`HintsTest::aTestSiteIsWrittenWithWhatMakesTheClassDeterministic` holds the
+four sentences the report credits its first green functional run to;
+`aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs` gains the credentials and
+the account, which its own docblock named and nothing asserted; and
+`theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre` gains the predicate
+and `failOnDeprecation`, without which the entry states a rule and not the
+failure it is met by. The other two were held already —
+`theDdevSettingsAnswerSaysWhenThatFileIsWritten` for the exception and the hook
+ordering, `installingTypo3BeneathTheExtensionNamesTheInertKey` for the message
+and the ignored directories. The ids need no guard of their own: each is named
+in assertions a rename fails.
+
+The feedback is closed by this commit and nothing is queued. No statement about
+TYPO3 was established here: the re-runs read this server's answers, and each
+sentence guarded above was verified where it was written.

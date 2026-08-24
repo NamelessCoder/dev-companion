@@ -4207,6 +4207,14 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('typo3DatabasePort', $text);
         self::assertStringContainsString('This version of PHPUnit requires PHP', $text);
         self::assertStringContainsString('composer/platform_check.php', $text);
+
+        // The other two the docblock names. The message a missing credential
+        // stops with names no variable, so the five are the answer; and the
+        // per-class database is what the account has to be allowed to create.
+        foreach (['Driver', 'Host', 'Name', 'Username', 'Password'] as $credential) {
+            self::assertStringContainsString('typo3Database' . $credential, $text);
+        }
+        self::assertStringContainsString('root rather than the user the site itself runs as', $text);
     }
 
     /**
@@ -4968,6 +4976,27 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('setUpFrontendRootPage', $text);
     }
 
+    /**
+     * `feedback/2026-08-24-140340` credits these four sentences with a suite
+     * that was green on its first run, and none of them was asserted: the trait
+     * that is not shipped, the call that replaces it, the flush the class needs,
+     * and the symptom that makes a green `--filter` run evidence of nothing.
+     */
+    #[Test]
+    public function aTestSiteIsWrittenWithWhatMakesTheClassDeterministic(): void
+    {
+        $text = self::statementsOf('extension-test-site');
+
+        self::assertStringContainsString('SiteBasedTestTrait is not available', $text);
+        self::assertStringContainsString('export-ignored', $text, 'why the trait cannot be reached');
+        self::assertStringContainsString('$this->get(SiteWriter::class)->write(', $text, 'what replaces it');
+
+        // The state that outlives the truncation, and the run that hides it.
+        self::assertStringContainsString('file backends', $text);
+        self::assertStringContainsString('CacheManager::flushCaches()', $text);
+        self::assertStringContainsString('run alone with --filter', $text);
+    }
+
     #[Requirement('R-KNW-014')]
     #[Test]
     public function theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre(): void
@@ -4984,6 +5013,12 @@ final class HintsTest extends TestCase
         $current = implode("\n", array_column((array) Hints::byId('extension-manifest', 14)['hints'], 'text'));
         self::assertStringContainsString('providesPackages', $current);
         self::assertStringContainsString('extra.typo3/cms.version', $current);
+
+        // Which half is the predicate, and where it surfaces. Declaring one
+        // field of the two still reads the file, and a suite that fails on a
+        // deprecation is what a session meets that reading first.
+        self::assertStringContainsString('Declaring one of the two and not the other', $current);
+        self::assertStringContainsString('failOnDeprecation', $current);
     }
 
     /**

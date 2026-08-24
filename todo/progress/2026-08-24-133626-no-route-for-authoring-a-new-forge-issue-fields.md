@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-133626-no-route-for-authoring-a-new-forge-issue-fields.md
 **Priority:** normal
+**Branch:** todo/no-route-for-authoring-a-new-forge-issue-fields
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as `D-KNW-113`: step 1a for the fields, the target-version
 convention and the markup, step 2 for the areas, and taken on. What the session

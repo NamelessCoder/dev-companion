@@ -178,10 +178,14 @@ final class CoreFixtureTest extends TestCase
      * the same from both because neither root has what it looks for would pass
      * this by accident, which is the one way a measurement like this comes out
      * green for no reason.
+     *
+     * The path names this process. A fixed name below `sys_get_temp_dir()` is
+     * shared with every other worktree running `composer ci` at that moment,
+     * and each of them removes the root the others are reading — `D-COD-006`.
      */
     private function variantRoot(): string
     {
-        $root = sys_get_temp_dir() . '/typo3-dev-companion-core-variant';
+        $root = sys_get_temp_dir() . '/typo3-dev-companion-core-variant-' . getmypid() . '-' . bin2hex(random_bytes(6));
         $core = $root . '/typo3/sysext/core';
         $backend = $root . '/typo3/sysext/backend';
         $major = explode('.', CoreFixture::typo3Version())[0];

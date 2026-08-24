@@ -6500,6 +6500,103 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * D-ANS-097 and R-ANS-033, the core direction: `feedback/2026-08-24-100427`
+     * re-run. The brief spent two of its four slots on a build in somebody
+     * else's repository — `extension-asset-build` and `project-build-and-scripts`
+     * answer a query about a build in the words any build is described in —
+     * while the two core hints these paths name sat in `omittedHints`.
+     */
+    #[Requirement('R-ANS-033')]
+    #[Decision('D-ANS-097')]
+    #[Test]
+    public function aCoreBriefSpendsItsSlotsOnTheCoreHints(): void
+    {
+        $paths = [
+            'Build/Sources/TypeScript/form/backend/form-wizard/steps/settings-step.ts',
+            'typo3/sysext/form/Resources/Public/JavaScript/backend/form-wizard/steps/settings-step.js',
+        ];
+        $task = 'Review a bugfix patch for the TYPO3 form manager new-form wizard: the settings step must '
+            . 'pick the template matching the Blank/Predefined mode chosen in step 1';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'audit',
+            'targetVersion' => '15',
+            'paths' => $paths,
+        ]);
+
+        self::assertSame(['core', 'core'], array_column($brief->data['scopes'], 'scope'));
+        foreach ($brief->data['hints'] as $hint) {
+            self::assertContains(
+                $hint['scope'],
+                [null, Scope::Core->value, Scope::Any->value],
+                $hint['id'] . ' is declared for another repository and took a slot in a core brief',
+            );
+        }
+        self::assertContains('backend-typescript', array_column($brief->data['hints'], 'id'));
+
+        // Demoted rather than dropped: each is one call away by id, which is
+        // the whole of what the tier may cost.
+        $left = array_column($brief->data['omittedHints'], 'id');
+        self::assertContains('extension-asset-build', $left);
+        self::assertContains('project-build-and-scripts', $left);
+    }
+
+    /**
+     * The mirror, measured the same day and worse: `core-tests` ranked first on
+     * a functional-test task in a distributed extension, above
+     * `project-extension-tests`, which is the hint that binds there
+     * (`feedback/2026-08-24-140340`).
+     */
+    #[Requirement('R-ANS-033')]
+    #[Decision('D-ANS-097')]
+    #[Test]
+    public function anExtensionBriefSpendsItsSlotsOnTheExtensionHints(): void
+    {
+        $paths = [
+            'packages/my_extension/Classes/Domain/Repository/ThingRepository.php',
+            'packages/my_extension/Tests/Functional/Domain/Repository/ThingRepositoryTest.php',
+        ];
+        $task = 'Add functional test coverage for the extension';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'test',
+            'targetVersion' => '14',
+            'paths' => $paths,
+        ]);
+        $lookup = Registry::call('typo3_hint_lookup', [
+            'task' => $task,
+            'targetVersion' => '14',
+            'paths' => $paths,
+            'limit' => HintLookup::MAX_HINTS,
+        ]);
+
+        self::assertSame(['extension', 'extension'], array_column($brief->data['scopes'], 'scope'));
+        $carried = array_column($brief->data['hints'], 'id');
+        foreach ($brief->data['hints'] as $hint) {
+            self::assertContains(
+                $hint['scope'],
+                [null, Scope::Any->value, Scope::Project->value, Scope::Extension->value],
+                $hint['id'] . ' is declared for the core and took a slot in an extension brief',
+            );
+        }
+        self::assertContains('project-extension-tests', $carried);
+
+        $left = array_column($brief->data['omittedHints'], 'id');
+        self::assertContains('core-tests', $left);
+
+        // The tier moves a hint and leaves the answer whole: what the brief
+        // carries and what it names between them are what the lookup holds for
+        // these paths, in another order.
+        $held = array_column($lookup->data['hints'], 'id');
+        sort($held);
+        $reachable = array_merge($carried, $left);
+        sort($reachable);
+        self::assertSame($held, $reachable);
+    }
+
     #[Requirement('R-PRJ-004')]
     #[Decision('D-KNW-032')]
     #[Test]

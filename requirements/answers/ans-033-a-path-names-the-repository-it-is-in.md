@@ -1,8 +1,11 @@
 ---
 id: R-ANS-033
 title: A path names the repository it is in
-status: open
+status: held
 restsOn: [D-ANS-097]
+heldBy:
+  - HintsTest::aCoreBriefSpendsItsSlotsOnTheCoreHints
+  - HintsTest::anExtensionBriefSpendsItsSlotsOnTheExtensionHints
 ---
 
 # R-ANS-033 — A path names the repository it is in
@@ -27,5 +30,10 @@ readings.
 
 ## Held by
 
-not guarded — the ranking is queued rather than built, and the two calls
-measured in `D-ANS-097` are what a test would assert.
+- `HintsTest::aCoreBriefSpendsItsSlotsOnTheCoreHints`, the call the demand came
+  from: every hint the brief carries for the two core paths declares `core` or
+  declares nothing, and the two it moved down are named in `omittedHints`
+- `HintsTest::anExtensionBriefSpendsItsSlotsOnTheExtensionHints`, the mirror,
+  and the half a scope assertion cannot state — what the brief carries and what
+  it names between them are what `typo3_hint_lookup` holds for those paths, so
+  the tier moved a hint rather than losing one

@@ -293,8 +293,8 @@ final class TaskGuide extends ReadOnlyTool
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
             'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. A review, a triage, a boot and a diagnosis name only the workflows that change nothing either: the kind of change under review is still recognized in intents, and the workflow for writing one is not the one you are in. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
             'guides' => Schema::listOf(Schema::guideReference(), 'The whole procedures the recognized work is written up in, the same corpus typo3_project_describe lists at orientation and this server serves as typo3://guides resources. Named rather than carried: a brief is one call inside a procedure, and the page is one typo3_rule_lookup call by documentId. Empty means no page here is the write-up of what was recognized, which is not a statement that none of them is worth reading — the whole list is in that orientation call.'),
-            'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
-            'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
+            'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A hint declaring a different kind of repository from the paths given ranks below the ones that bind them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
+            'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. A hint declared for another kind of repository is here for that reason rather than for having matched weakly. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
             'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root.'),
             'conditionalChecks' => Schema::listOf(Schema::object([
@@ -395,22 +395,27 @@ final class TaskGuide extends ReadOnlyTool
         $targets = Versions::targets($stated);
         // Matched per group, because a hint matched for a core path and one
         // matched for an extension path are answers to different questions.
+        //
+        // Matched at the lookup's own ceiling and cut here rather than there:
+        // the tier below decides which hints a brief carries, and applied to a
+        // slice already taken it would only reorder what it was meant to
+        // choose. The same list is what the brief names as left rather than
+        // counts (R-GUI-012), so the pointer names what that tool holds for
+        // these paths.
         $found = [];
         $held = [];
         foreach ($groups as $group) {
-            $matched = Hints::find($group['paths'], $task, self::HINTS_PER_GROUP, null, $targets);
-            $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
-            // The same match a second time at the lookup's own ceiling, so that
-            // what the slice above dropped can be named rather than counted
-            // (R-GUI-012). Matched rather than looked up, because the pointer
-            // has to name what that tool would answer for these paths.
-            foreach (Hints::find($group['paths'], $task, HintLookup::MAX_HINTS, null, $targets)['matchedHints'] as $hint) {
+            $matched = Hints::find($group['paths'], $task, HintLookup::MAX_HINTS, null, $targets);
+            $ranked = self::bindingFirst($matched['matchedHints'], $group['scope']);
+            foreach ($ranked as $hint) {
                 $held[(string) $hint['id']] ??= [
                     'id' => (string) $hint['id'],
                     'title' => (string) $hint['title'],
                     'category' => (string) $hint['category'],
                 ];
             }
+            $matched['matchedHints'] = array_slice($ranked, 0, self::HINTS_PER_GROUP);
+            $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $hints = MatchedHints::merged($found);
         // Per call rather than per group: a hint the brief carries for one group
@@ -817,6 +822,38 @@ final class TaskGuide extends ReadOnlyTool
         }
 
         return $records;
+    }
+
+    /**
+     * The matched hints with the ones declared for another repository last.
+     *
+     * A brief carries `HINTS_PER_GROUP` per group, and there a hint about
+     * somebody else's repository takes the place of one the caller is obliged
+     * by: a build is described in the same words wherever it runs, so
+     * `extension-asset-build` outranked `backend-typescript` on a core patch
+     * (`D-ANS-097`, `R-ANS-033`). Nothing is dropped — `D-KNW-007` stands, and
+     * what moves past the slice the brief names in `omittedHints`.
+     *
+     * What is demoted is what `MatchedHints::scopeNotice()` has something to say
+     * about, so the order and the notice above a block answer one question and
+     * not two. Within each tier the matcher's own ranking stands.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    private static function bindingFirst(array $hints, Scope $of): array
+    {
+        $binding = [];
+        $elsewhere = [];
+        foreach ($hints as $hint) {
+            if (MatchedHints::scopeNotice($hint, $of) === null) {
+                $binding[] = $hint;
+                continue;
+            }
+            $elsewhere[] = $hint;
+        }
+
+        return array_merge($binding, $elsewhere);
     }
 
     /**

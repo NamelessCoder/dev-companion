@@ -123,9 +123,10 @@ Answers with
         title: string
     # What typo3_hint_lookup answers for these paths, quoted whole and carried here
     # — the strongest few per group of paths, not everything it holds on them. A
-    # rule taken from one of these belongs to that lookup, so a report citing it
-    # names typo3_hint_lookup and a caller who needs more of the subject calls it
-    # directly. What was left is named in omittedHints.
+    # hint declaring a different kind of repository from the paths given ranks below
+    # the ones that bind them. A rule taken from one of these belongs to that
+    # lookup, so a report citing it names typo3_hint_lookup and a caller who needs
+    # more of the subject calls it directly. What was left is named in omittedHints.
     hints:
       - id: string
         title: string
@@ -163,9 +164,11 @@ Answers with
             # throws throws in a sitepackage too.
             scope: string or null
     # What typo3_hint_lookup also holds for these paths and this brief did not
-    # carry, named rather than counted. Empty means what it carries is everything
-    # that matched. A subject listed here and not in hints is one the brief did not
-    # reach, so it is the gap the pointer to that lookup stands for.
+    # carry, named rather than counted. A hint declared for another kind of
+    # repository is here for that reason rather than for having matched weakly.
+    # Empty means what it carries is everything that matched. A subject listed here
+    # and not in hints is one the brief did not reach, so it is the gap the pointer
+    # to that lookup stands for.
     omittedHints:
       - # Ask for this hint outright by passing it as id.
         id: string

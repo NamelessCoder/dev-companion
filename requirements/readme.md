@@ -121,7 +121,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-030`][R-ANS-030] — A bound on an answer is asked for and never applied by default · held
 - [`R-ANS-031`][R-ANS-031] — A symptom reaches the hint that explains it · held
 - [`R-ANS-032`][R-ANS-032] — The instructions index the question each tool answers · held
-- [`R-ANS-033`][R-ANS-033] — A path names the repository it is in · **open**
+- [`R-ANS-033`][R-ANS-033] — A path names the repository it is in · held
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md

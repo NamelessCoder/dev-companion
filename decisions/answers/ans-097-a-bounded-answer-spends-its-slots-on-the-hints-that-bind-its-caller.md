@@ -3,6 +3,9 @@ id: D-ANS-097
 title: A bounded answer spends its slots on the hints that bind its caller
 date: 2026-08-24
 status: open
+coveredBy:
+  - HintsTest::aCoreBriefSpendsItsSlotsOnTheCoreHints
+  - HintsTest::anExtensionBriefSpendsItsSlotsOnTheExtensionHints
 ---
 
 # D-ANS-097 — A bounded answer spends its slots on the hints that bind its caller
@@ -88,3 +91,21 @@ obliged by.
 - The order changes and the payload does not — the same four ids in the same
   four slots. That would say the ceiling rather than the ranking is what has to
   move.
+
+## Since then
+
+**Built on 2026-08-24, and the payload moved.** The core call now carries
+`public-assets`, `backend-typescript`, `backend-ui` and `javascript-unit-tests`,
+with `extension-asset-build` and `project-build-and-scripts` named in
+`omittedHints`; the extension call carries `project-extension-tests` and leaves
+`core-tests` there. So the third **Wrong if** is settled and the two above it
+are not: both turn on a later caller's report.
+
+The tier is `TaskGuide::bindingFirst()`, and what it demotes is what
+`MatchedHints::scopeNotice()` has something to say about — so the order and the
+notice above a block answer one question, and `D-KNW-007`'s rule that `project`
+and `extension` are not told apart from each other holds for both. The brief
+matches once at `HintLookup::MAX_HINTS` and cuts to `HINTS_PER_GROUP` itself,
+where it used to match twice: applied to a slice already taken, the tier would
+reorder the four rather than choose them. `bin/cli hints:coverage` is
+byte-identical.

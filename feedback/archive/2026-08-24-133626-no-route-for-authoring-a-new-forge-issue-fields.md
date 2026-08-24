@@ -1,7 +1,8 @@
 ---
 date: 2026-08-24T13:36:26+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-24
 model: claude-opus-5[1m]
 tool: typo3_forge_lookup
 directory: /home/benji/projects/typo3-cms

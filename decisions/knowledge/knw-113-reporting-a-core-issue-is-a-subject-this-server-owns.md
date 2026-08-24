@@ -3,7 +3,10 @@ id: D-KNW-113
 title: Reporting a core issue is a subject this server owns
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - ForgeTest::areasThatCouldNotBeReadAreSaidToBeUnreachable
+  - ForgeTest::theAreasAreEnumeratedWithoutAWordThatHasToFail
+  - KnowledgeTest::aReportBeingWrittenIsToldWhichMarkupTheDescriptionRenders
 ---
 
 # D-KNW-113 — Reporting a core issue is a subject this server owns
@@ -18,7 +21,7 @@ here says which one the field renders.
 
 ## Evidence
 
-- [`feedback/2026-08-24-133626`](../../feedback/2026-08-24-133626-no-route-for-authoring-a-new-forge-issue-fields.md)
+- [`feedback/2026-08-24-133626`](../../feedback/archive/2026-08-24-133626-no-route-for-authoring-a-new-forge-issue-fields.md)
   delivered a metadata table — Tracker, Category, Target version, TYPO3 Version,
   PHP Version, Complexity, Is Regression, Sprint Focus — with every field name
   recalled and none verified. It names three guesses: the Category value, the
@@ -101,3 +104,45 @@ here says which one the field renders.
   `D-KNW-111`'s first **Wrong if** is the same shape.
 - The page carries the area names after all and they drift from what the tracker
   answers. That is the copy this entry refused, and the drift is silent.
+
+## Since then
+
+**The first assumption was wrong and the first Wrong if did not follow from
+it.** `https://forge.typo3.org/projects/typo3cms-core/issues/new` redirects to
+the login, so the form cannot be read without an account — but what the page
+states was read off the filed issues instead, which anybody can read again with
+a URL.
+
+- The field set is `custom_fields` on any issue: `/issues/<number>.json` answers
+  every field visible for that tracker, empty ones included. The trackers and
+  the areas are
+  `/projects/typo3cms-core.json?include=trackers,issue_categories`.
+- Mandatory was settled by the filter rather than by the form. `TYPO3 Version`
+  is unset on 2156 bugs and the newest of them was filed on 2013-05-15, so
+  nothing in over a decade got past without it. Every other custom field is
+  unset on the majority: `PHP Version` on 21082 bugs, `Complexity` on 32133,
+  `Is Regression` on 24283, and `Category` on 14042, one of them filed the same
+  day. Measured 2026-08-24 with `cf_<id>=!*` on `/issues.json`.
+- The markup was settled by rendering rather than by a setting. The project's
+  own description is stored as `h3. Current Development` and served as `<h3>`,
+  which is Textile. On issue 110433 the reporter's Markdown fences came back as
+  literal backticks in a paragraph, and their pasted diff was read as markup —
+  `++` and `-` around the lines between them became an `<ins>` span, taking the
+  removed lines into it. Inside `<pre>` nothing needs escaping: `<type>` on
+  issue 110527 arrived as `<type>`.
+- The target version is not the reporter's. It is unset on 21443 of 36602 bugs,
+  and both `next-patchlevel` and `Candidate for patchlevel` are in current use
+  with no anonymous source saying which a given bugfix takes. So the page says
+  to leave it empty, which is the answer the feedback guessed at.
+
+**The route to the areas is `category="*"` and not a wider default.**
+`D-ANS-054` answers them only where a word named none or several, which
+`feedback/2026-08-19-134717` is why. The wildcard is the tracker's own idiom,
+already passed here as `status_id`, no area is named for it, and it reads no
+issue at all — so the enumeration is asked for rather than arrived at, and every
+other call is unchanged.
+
+**The triage skill keeps its own Textile sentence.** It is about the comment
+that closes a bugfix and tells the triager to keep it plain, which holds whether
+or not they know Textile's syntax; routing it to this page would spend a call to
+reach a page about writing a report instead.

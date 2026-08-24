@@ -368,6 +368,42 @@
     ]
   },
   {
+    "id": "reporting",
+    "title": "Reporting a core issue",
+    "guideCore": "core/contribution/reporting-an-issue",
+    "changesNothing": true,
+    "scope": "core",
+    "condition": "if the report is filed on forge.typo3.org",
+    "match": [
+      "report a bug",
+      "report an issue",
+      "file a bug",
+      "file an issue",
+      "new forge issue",
+      "issue title",
+      "issue description",
+      "create an issue",
+      "open an issue"
+    ],
+    "matchWeak": [
+      "forge issue",
+      "reporting"
+    ],
+    "rulesQuery": "",
+    "checklist": [
+      "File it on the TYPO3 Core project at forge.typo3.org under tracker Bug, and fill TYPO3 Version with the major it was seen on. That is the one field a Bug does not go without; PHP Version, Complexity, Is Regression, Sprint Focus and Tags are optional and most reports leave them empty.",
+      "The description renders Textile and not Markdown: h2. for a heading, # and * for the two kinds of list, @Foo::bar()@ for an identifier, and <pre><code class=\"php\"> for a block. Three backticks render as three backticks, and a diff pasted as plain text is read as markup and rewritten.",
+      "Take the Category value from the project's own list rather than from memory. It is administered on the tracker and a name recalled from another project is a field nobody can file under.",
+      "Leave Target version empty. It says which release a fix is scheduled for, which is settled when somebody takes the fix on and not when the defect is described."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_rule_lookup with documentId=core/contribution/reporting-an-issue, for the fields, the markup and the order the description is written in",
+      "typo3_forge_lookup with category=\"*\" for the areas the Category field takes, in the tracker's own spelling",
+      "typo3_forge_lookup with query in the words of the symptom, for whether somebody has reported it already"
+    ]
+  },
+  {
     "id": "submission",
     "title": "Patch submission",
     "scope": "core",

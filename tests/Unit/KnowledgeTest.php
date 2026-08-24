@@ -651,6 +651,33 @@ final class KnowledgeTest extends TestCase
         );
     }
 
+    #[Decision('D-KNW-113')]
+    #[Test]
+    public function aReportBeingWrittenIsToldWhichMarkupTheDescriptionRenders(): void
+    {
+        // D-KNW-113. A session wrote a Forge issue out of its recollection of
+        // the form and wrapped every code block in raw <pre> because nothing
+        // here said which markup the field renders — a hedge for one line it
+        // could have been told. The markup is what that session could not
+        // derive at all, so it is the end the query is held at.
+        $matches = Documents::search('does a forge issue description render textile or markdown');
+
+        self::assertContains('core/contribution/reporting-an-issue', array_column($matches, 'id'));
+        $bodies = implode("\n", array_column($matches, 'body'));
+        self::assertStringContainsString('Textile', $bodies);
+        self::assertStringContainsString('<pre><code class="php">', $bodies);
+
+        // The three fields it guessed, in the page that answers them.
+        $page = Documents::read('core/contribution/reporting-an-issue');
+        foreach (['TYPO3 Version', 'Category', 'Target version'] as $field) {
+            self::assertStringContainsString($field, $page, 'the page names no ' . $field);
+        }
+        // The areas are the tracker's and are named by the call that reads
+        // them, because a copy of an administered list goes stale in silence.
+        self::assertStringContainsString('category="*"', $page);
+        self::assertStringNotContainsString('Linkvalidator', $page);
+    }
+
     #[Requirement('R-ANS-017')]
     #[Decision('D-ANS-035')]
     #[Test]
@@ -752,6 +779,7 @@ final class KnowledgeTest extends TestCase
             'browser-tests' => 'Add a Playwright end-to-end spec for the login form',
             'browser-check' => 'Look at the change in the browser on the installation that shows it',
             'coding-standards' => 'Set up php-cs-fixer with the TYPO3 coding standards',
+            'reporting' => 'Write the issue title and the issue description for a core bug nobody has filed yet',
             'submission' => 'Push the patch to Gerrit for review',
             'patch-checkout' => 'Check out the patch from review and see whether it still applies',
             'triage' => 'Triage an old open core bug report and say whether it still happens',

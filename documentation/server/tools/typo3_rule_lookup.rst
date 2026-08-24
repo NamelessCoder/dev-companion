@@ -282,7 +282,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 106,
+                "score": 108,
                 "truncated": false
             },
             {
@@ -378,6 +378,7 @@ Text:
     - The Changelog Entry a Core Patch Owes: Which Change Owes a Changelog File, Where a Changelog File Goes, What a Changelog File Is Called, What a Changelog File Carries, What Checks a Changelog File, Reading Changelog Entries Instead of Writing One
     - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Trailers A Core Commit Does Not Carry, Breaking Changes, Changed Signatures, Deprecations, The Changelog Entry a Message Announces
     - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Carry a Change Onto Current Code, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
+    - Filing a TYPO3 Core Bug Report: What a Report Carries, The Area, The Target Version, The Markup, What the Description Says
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
     - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
     - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
@@ -504,6 +505,17 @@ Data:
                     "Update an Existing Patch",
                     "The Forge Issue a Change Hangs Off",
                     "Release Branches and Backports"
+                ]
+            },
+            {
+                "id": "core/contribution/reporting-an-issue",
+                "title": "Filing a TYPO3 Core Bug Report",
+                "topics": [
+                    "What a Report Carries",
+                    "The Area",
+                    "The Target Version",
+                    "The Markup",
+                    "What the Description Says"
                 ]
             },
             {

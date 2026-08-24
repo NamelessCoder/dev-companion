@@ -43,7 +43,7 @@ final class CatalogTest extends TestCase
         // v15 custom-property contract were handed to a v13 backend as fact.
         Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
 
-        $result = Registry::call('typo3_catalog_scope', []);
+        $result = Registry::call('typo3_snapshot_scope', []);
         self::assertSame('13.4.33', $result->data['catalog']['installedVersion']);
         self::assertStringContainsString('13.4.33', (string) $result->data['catalog']['skew']);
         self::assertStringContainsString('13.4.33', $result->text);
@@ -116,7 +116,7 @@ final class CatalogTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject('vendor', Meta::read()['source']['version'] . '.0'));
 
-        $result = Registry::call('typo3_catalog_scope', []);
+        $result = Registry::call('typo3_snapshot_scope', []);
         self::assertNull($result->data['catalog']['skew']);
     }
 
@@ -171,7 +171,7 @@ final class CatalogTest extends TestCase
         self::assertSame(Meta::read()['source']['version'], $fallback->data['components'][0]['describesVersion']);
         self::assertStringContainsString('bundled TYPO3 15.0 fallback', $fallback->text);
 
-        $scope = Registry::call('typo3_catalog_scope', []);
+        $scope = Registry::call('typo3_snapshot_scope', []);
         self::assertSame('installation', $scope->data['componentSource']);
         self::assertStringContainsString('Installed component contract', $scope->text);
 
@@ -421,7 +421,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion(): void
     {
-        $result = Registry::call('typo3_catalog_scope', ['targetVersion' => '14']);
+        $result = Registry::call('typo3_snapshot_scope', ['targetVersion' => '14']);
 
         self::assertSame(14, $result->data['targetVersion']);
         self::assertSame(count(Components::load()), $result->data['verifiedCount']);
@@ -429,16 +429,16 @@ final class CatalogTest extends TestCase
 
         // The custom-property contract the catalog describes arrived after
         // 12.4, so most of it is not verified there and the scope says so.
-        $onTwelve = Registry::call('typo3_catalog_scope', ['targetVersion' => '12.4']);
+        $onTwelve = Registry::call('typo3_snapshot_scope', ['targetVersion' => '12.4']);
         self::assertLessThan(count(Components::load()), $onTwelve->data['verifiedCount']);
         self::assertStringContainsString('Withheld for TYPO3 v12', $onTwelve->text);
     }
 
     #[Requirement('R-ANS-003')]
     #[Test]
-    public function theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout(): void
+    public function theSnapshotScopeSeparatesEntryValidityFromItsSourceCheckout(): void
     {
-        $result = Registry::call('typo3_catalog_scope', ['targetVersion' => '14.3']);
+        $result = Registry::call('typo3_snapshot_scope', ['targetVersion' => '14.3']);
 
         self::assertStringContainsString('For TYPO3 v14', $result->text);
         self::assertStringContainsString('Each component entry owns this validity range', $result->text);

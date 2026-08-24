@@ -39,7 +39,7 @@ checkout instead, and said so in
   which is the round trip a call would have taken off it.
 - Nothing a caller reads *before* calling states the curation rule. The
   description names badge, card, search box and input-group; the rule itself is
-  in the miss text and in `typo3_catalog_scope`, both of them one call further
+  in the miss text and in `typo3_snapshot_scope`, both of them one call further
   in than the decision to skip.
 - The `css-components` hint already carries the core's directory vocabulary —
   `component/` one partial per component, `component/scaffold/` the topbar and

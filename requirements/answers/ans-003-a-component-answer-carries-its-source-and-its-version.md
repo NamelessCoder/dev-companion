@@ -6,8 +6,8 @@ heldBy:
   - CatalogTest::aStatedVersionSaysWhatItDidToTheAnswer
   - CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor
   - CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead
-  - CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout
   - CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot
+  - CatalogTest::theSnapshotScopeSeparatesEntryValidityFromItsSourceCheckout
   - ToolContractTest
 ---
 

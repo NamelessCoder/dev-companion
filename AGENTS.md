@@ -334,7 +334,7 @@ because the verb is what tells a caller which shape the answer has:
 - `list` — an enumeration of what is there, no query needed:
   `typo3_feedback_list`.
 - `scope` — what a source covers and where its boundary runs:
-  `typo3_server_scope`, `typo3_catalog_scope`.
+  `typo3_server_scope`, `typo3_snapshot_scope`.
 - `describe` — what one thing the caller names is and what it registers:
   `typo3_project_describe`, `typo3_extension_describe`.
 - `record` — the tool writes into this server's own checkout:

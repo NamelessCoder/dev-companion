@@ -294,7 +294,7 @@
       "topic": "How current the catalogs are",
       "depth": "Whether component contracts came from the active installation or the bundled fallback, plus the core revision, branch, and verification date behind that fallback.",
       "tools": [
-        "typo3_catalog_scope"
+        "typo3_snapshot_scope"
       ],
       "source": "knowledge/catalog/meta.json",
       "scope": "any"
@@ -368,7 +368,7 @@
     {
       "topic": "Whether an uncatalogued component or CSS class exists on your branch",
       "why": "The active installation supplies the contract for curated component entries, but the searchable index is deliberately a subset rather than every class in backend.css. Without an installation, even those entries fall back to one pinned core snapshot.",
-      "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
+      "instead": "Call typo3_snapshot_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
     },
     {
       "topic": "Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
@@ -411,7 +411,7 @@
     },
     {
       "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-      "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision."
+      "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision."
     },
     {
       "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
@@ -489,7 +489,7 @@
     },
     {
       "when": "A catalog lookup found nothing that should exist",
-      "call": "typo3_catalog_scope, then typo3_feedback_record"
+      "call": "typo3_snapshot_scope, then typo3_feedback_record"
     },
     {
       "when": "Needing the translation domain an XLF file resolves to",

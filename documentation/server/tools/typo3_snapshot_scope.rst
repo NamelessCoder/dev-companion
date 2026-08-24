@@ -1,7 +1,7 @@
-.. _typo3_catalog_scope:
+.. _typo3_snapshot_scope:
 
-``typo3_catalog_scope``
-=======================
+``typo3_snapshot_scope``
+========================
 
 Report whether component contracts come from the active installation or the
 bundled fallback, which TYPO3 core revision the fallback catalogs were taken

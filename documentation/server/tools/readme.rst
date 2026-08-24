@@ -63,14 +63,6 @@ at all in the state the machine is in.
         module tree, its labels, its access level, the route each one answers on
         and every sub-route it registers.
 
-    .. card:: :doc:`typo3_catalog_scope <typo3_catalog_scope>`
-        :label: Scope
-        :action: Open reference
-
-        Report whether component contracts come from the active installation or
-        the bundled fallback, which TYPO3 core revision the fallback catalogs
-        were taken from, what they cover, and how to re-check them.
-
     .. card:: :doc:`typo3_changelog_lookup <typo3_changelog_lookup>`
         :label: Lookup
         :action: Open reference
@@ -209,6 +201,14 @@ at all in the state the machine is in.
 
         Orientation for this server.
 
+    .. card:: :doc:`typo3_snapshot_scope <typo3_snapshot_scope>`
+        :label: Scope
+        :action: Open reference
+
+        Report whether component contracts come from the active installation or
+        the bundled fallback, which TYPO3 core revision the fallback catalogs
+        were taken from, what they cover, and how to re-check them.
+
     .. card:: :doc:`typo3_system_extension_lookup <typo3_system_extension_lookup>`
         :label: Lookup
         :action: Open reference
@@ -247,7 +247,6 @@ at all in the state the machine is in.
     :hidden:
 
     typo3_backend_module_lookup
-    typo3_catalog_scope
     typo3_changelog_lookup
     typo3_commit_message_guide
     typo3_component_lookup
@@ -269,6 +268,7 @@ at all in the state the machine is in.
     typo3_schema_lookup
     typo3_script_lookup
     typo3_server_scope
+    typo3_snapshot_scope
     typo3_system_extension_lookup
     typo3_task_guide
     typo3_ter_lookup

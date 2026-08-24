@@ -37,5 +37,5 @@ it names what it settled.
 - The frontend half of the asset build workflow, which waits on a document —
   `todo/open/2026-08-24-000156`.
 - The directory `knowledge/catalog/`, which holds three subjects under one word,
-  and the tool `typo3_catalog_scope`. The commands were split on 2026-08-24 and
+  and the tool `typo3_snapshot_scope`. The commands were split on 2026-08-24 and
   those two were not.

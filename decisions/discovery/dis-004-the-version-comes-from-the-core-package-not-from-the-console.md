@@ -67,7 +67,7 @@ number in one place.
 
 The second **Wrong if** is live, and reading for the first one is what showed
 it. `TranslationDomainLookup` asks `Instance::typo3Major()` directly and takes
-`path` alone, while `SystemExtensionLookup`, `TestRunGuide`, `CatalogScope` and
+`path` alone, while `SystemExtensionLookup`, `TestRunGuide`, `SnapshotScope` and
 `DocumentationLookup` all take a `targetVersion` through `Versions::target()`.
 The feature that would close it is queued as
 `todo/360-let-the-translation-domain-answer-be-asked-for-a`.

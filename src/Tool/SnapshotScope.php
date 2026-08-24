@@ -16,11 +16,11 @@ use TYPO3\DevCompanion\Result\ToolResult;
  * What the component catalog is worth: where the contracts come from, which
  * core revision the fallback was taken from, and what a miss means.
  */
-final class CatalogScope extends ReadOnlyTool
+final class SnapshotScope extends ReadOnlyTool
 {
     public static function name(): string
     {
-        return 'typo3_catalog_scope';
+        return 'typo3_snapshot_scope';
     }
 
     /** @return array<int, Source> */

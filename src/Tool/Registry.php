@@ -53,7 +53,7 @@ final class Registry
         TerLookup::class,
         ProjectDescribe::class,
         ExtensionDescribe::class,
-        CatalogScope::class,
+        SnapshotScope::class,
         CommitMessageGuide::class,
     ];
 

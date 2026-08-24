@@ -19,7 +19,7 @@ use TYPO3\DevCompanion\Knowledge\Versions;
 final class Provenance
 {
     /** Appended when a catalog lookup finds nothing at all. */
-    public const MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
+    public const MISS_NOTE = 'Call typo3_snapshot_scope for what this snapshot covers.';
 
     /** Which of the two sources supplied the class and custom-property contract. */
     public static function sourceNote(bool $installed): string

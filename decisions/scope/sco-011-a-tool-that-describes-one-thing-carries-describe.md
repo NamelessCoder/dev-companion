@@ -25,7 +25,7 @@ also the two carrying the verb wrongly, so one rename settles both.
 
 - The four descriptions say which verb each tool actually has.
   `typo3_server_scope` opens "Orientation for this server: what it covers and at
-  which depth, what it deliberately does not cover", and `typo3_catalog_scope`
+  which depth, what it deliberately does not cover", and `typo3_snapshot_scope`
   "Report whether component contracts come from the active installation or the
   bundled fallback … what they cover". Both state the coverage of a source.
 - typo3_project_scope opens "Describe the project around the TYPO3 installation
@@ -43,7 +43,7 @@ also the two carrying the verb wrongly, so one rename settles both.
 
 ## Decided
 
-- Two tools move, not four. `typo3_server_scope` and `typo3_catalog_scope` keep
+- Two tools move, not four. `typo3_server_scope` and `typo3_snapshot_scope` keep
   the verb, because what they answer is what the verb promises. Renaming them as
   well would have cost four contract breaks to fix a collision that only two of
   them are in.

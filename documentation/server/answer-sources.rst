@@ -47,14 +47,14 @@ The files the installed packages ship, read rather than executed. Answers on a
 fresh clone and with the containers down; what a package registers by running is
 not in it.
 
-:doc:`typo3_catalog_scope <tools/typo3_catalog_scope>`,
 :doc:`typo3_changelog_lookup <tools/typo3_changelog_lookup>`,
 :doc:`typo3_component_lookup <tools/typo3_component_lookup>`,
 :doc:`typo3_extension_describe <tools/typo3_extension_describe>`,
 :doc:`typo3_fluid_namespace_list <tools/typo3_fluid_namespace_list>`,
 :doc:`typo3_icon_lookup <tools/typo3_icon_lookup>`,
 :doc:`typo3_label_lookup <tools/typo3_label_lookup>`,
-:doc:`typo3_project_describe <tools/typo3_project_describe>`.
+:doc:`typo3_project_describe <tools/typo3_project_describe>`,
+:doc:`typo3_snapshot_scope <tools/typo3_snapshot_scope>`.
 
 .. _answer-sources-knowledge:
 
@@ -64,7 +64,6 @@ knowledge
 The knowledge base inside this package. Needs nothing running, and is bound to
 TYPO3 versions rather than to an installation.
 
-:doc:`typo3_catalog_scope <tools/typo3_catalog_scope>`,
 :doc:`typo3_commit_message_guide <tools/typo3_commit_message_guide>`,
 :doc:`typo3_component_lookup <tools/typo3_component_lookup>`,
 :doc:`typo3_hint_lookup <tools/typo3_hint_lookup>`,
@@ -72,6 +71,7 @@ TYPO3 versions rather than to an installation.
 :doc:`typo3_rule_lookup <tools/typo3_rule_lookup>`,
 :doc:`typo3_script_lookup <tools/typo3_script_lookup>`,
 :doc:`typo3_server_scope <tools/typo3_server_scope>`,
+:doc:`typo3_snapshot_scope <tools/typo3_snapshot_scope>`,
 :doc:`typo3_system_extension_lookup <tools/typo3_system_extension_lookup>`,
 :doc:`typo3_task_guide <tools/typo3_task_guide>`,
 :doc:`typo3_test_run_guide <tools/typo3_test_run_guide>`,

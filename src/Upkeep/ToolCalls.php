@@ -284,7 +284,7 @@ final class ToolCalls
             ]],
             'project' => ['typo3_project_describe', []],
             'extension' => ['typo3_extension_describe', ['extension' => 'backend']],
-            'catalog scope' => ['typo3_catalog_scope', []],
+            'catalog scope' => ['typo3_snapshot_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',
                 'summary' => 'Show hidden records in the import preview',

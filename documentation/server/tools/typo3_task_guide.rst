@@ -419,7 +419,7 @@ Text:
     - The branch you are on and the branches the change is meant for
       git branch --show-current. In the normal case the patch targets main and the merging core team member handles the backport; push to a release branch only when the bug does not exist on main.
     - Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch
-      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision.
+      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision.
     - Whether an icon identifier is registered, and which one spells the shape you want
       Ask typo3_icon_lookup: it reads the registry of the installation this server was started in, the T3Icons set and every installed package included. Where there is no reachable installation, the same three places can be read by hand — typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of each package, and typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family.
     - Whether a label for this wording already exists
@@ -827,7 +827,7 @@ Data:
             },
             {
                 "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision."
+                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision."
             },
             {
                 "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
@@ -945,7 +945,7 @@ Text:
     - The branch you are on and the branches the change is meant for
       git branch --show-current. In the normal case the patch targets main and the merging core team member handles the backport; push to a release branch only when the bug does not exist on main.
     - Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch
-      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision.
+      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision.
     - Whether an icon identifier is registered, and which one spells the shape you want
       Ask typo3_icon_lookup: it reads the registry of the installation this server was started in, the T3Icons set and every installed package included. Where there is no reachable installation, the same three places can be read by hand — typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of each package, and typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family.
     - Whether a label for this wording already exists
@@ -1049,7 +1049,7 @@ Data:
             },
             {
                 "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision."
+                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision."
             },
             {
                 "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
@@ -1195,7 +1195,7 @@ Text:
     - The branch you are on and the branches the change is meant for
       git branch --show-current. In the normal case the patch targets main and the merging core team member handles the backport; push to a release branch only when the bug does not exist on main.
     - Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch
-      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision.
+      Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision.
     - Whether an icon identifier is registered, and which one spells the shape you want
       Ask typo3_icon_lookup: it reads the registry of the installation this server was started in, the T3Icons set and every installed package included. Where there is no reachable installation, the same three places can be read by hand — typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of each package, and typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family.
     - Whether a label for this wording already exists
@@ -1449,7 +1449,7 @@ Data:
             },
             {
                 "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision."
+                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision."
             },
             {
                 "establish": "Whether an icon identifier is registered, and which one spells the shape you want",

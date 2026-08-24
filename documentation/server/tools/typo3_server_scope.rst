@@ -275,7 +275,7 @@ Text:
     Source: src/Knowledge/Catalog/TranslationDomain.php, knowledge/hints/labels.json (any)
     ## How current the catalogs are
     Whether component contracts came from the active installation or the bundled fallback, plus the core revision, branch, and verification date behind that fallback.
-    Tools: typo3_catalog_scope
+    Tools: typo3_snapshot_scope
     Source: knowledge/catalog/meta.json (any)
     ## What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration, the columns TYPO3 derives for a table, and the data structure one of its flex fields resolves to
     Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry, and the effective configuration, whose command arrived in TYPO3 14.2 and would leave the two LTS lines holding "command is not defined" — or where the command carries less than the registry — the backend modules, whose navigation component is inherited and whose routes it does not export — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. The columns a table gets from its TCA are read the same way and have no file to fall back on: they are what the core would create, so only the core can say them. A type=flex column is resolved through that installation's own FlexFormTools, from a record emulated out of values the caller passes, so what comes back is what the backend form would build rather than what the referenced file says. Every answer identifies its source, so a fallback stays visible.
@@ -318,7 +318,7 @@ Text:
     Instead: typo3_hint_lookup withholds the Backend CSS and Backend TypeScript and JavaScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP, and the sitepackage layout. The styling itself is documented at https://docs.typo3.org.
     ## Whether an uncatalogued component or CSS class exists on your branch
     The active installation supplies the contract for curated component entries, but the searchable index is deliberately a subset rather than every class in backend.css. Without an installation, even those entries fall back to one pinned core snapshot.
-    Instead: Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index.
+    Instead: Call typo3_snapshot_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index.
     ## Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries
     The review API is read without a credential, so a draft and a private change are outside it. The diff is not read over the API at all — the answer carries the ref that fetches the patch set, and the checkout is where a diff is read. Nothing here writes to Gerrit.
     Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, which patch set is current with the commit it is, what every voter holds per label and what was commented on it — hold that commit against your own HEAD, and fetch the ref for the diff. It also answers the two relations a change stands in: the changes sharing its Change-Id, so a backport already pushed to a release branch is in the same answer, and the relation chain it sits in, so a change that is one part of a stacked feature is not read as the whole of it. Voting, commenting and uploading stay yours: the web UI and git, and typo3://guides/core/contribution/gerrit-workflow carries those.
@@ -352,7 +352,7 @@ Text:
     - Needing the official API, reference or tutorial documentation for a covered TYPO3 version → typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result
     - Writing or amending the commit message → typo3_commit_message_guide, whose default is a repository of your own
     - Pushing for review, amending a patch set, or backporting → typo3_rule_lookup with a Gerrit query
-    - A catalog lookup found nothing that should exist → typo3_catalog_scope, then typo3_feedback_record
+    - A catalog lookup found nothing that should exist → typo3_snapshot_scope, then typo3_feedback_record
     - Needing the translation domain an XLF file resolves to → typo3_translation_domain_lookup with the path
     - About to write user-facing text or invent a label key → typo3_label_lookup with words from the wording and the XLF resource used at the consuming code
     - About to reference an icon identifier in the backend — TCA, a module, a content element wizard, a backend template. The registry is the backend's; frontend rendering has no access to it. → typo3_icon_lookup
@@ -384,10 +384,10 @@ Text:
     Tools: typo3_server_scope, typo3_label_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_schema_lookup, typo3_flexform_lookup, typo3_backend_module_lookup, typo3_icon_lookup, typo3_extension_describe
     ## Answers from packages
     The files the installed packages ship, read rather than executed. Answers on a fresh clone and with the containers down; what a package registers by running is not in it.
-    Tools: typo3_component_lookup, typo3_label_lookup, typo3_fluid_namespace_list, typo3_icon_lookup, typo3_changelog_lookup, typo3_project_describe, typo3_extension_describe, typo3_catalog_scope
+    Tools: typo3_component_lookup, typo3_label_lookup, typo3_fluid_namespace_list, typo3_icon_lookup, typo3_changelog_lookup, typo3_project_describe, typo3_extension_describe, typo3_snapshot_scope
     ## Answers from knowledge
     The knowledge base inside this package. Needs nothing running, and is bound to TYPO3 versions rather than to an installation.
-    Tools: typo3_server_scope, typo3_rule_lookup, typo3_script_lookup, typo3_task_guide, typo3_test_run_guide, typo3_hint_lookup, typo3_component_lookup, typo3_system_extension_lookup, typo3_reference_list, typo3_translation_domain_lookup, typo3_catalog_scope, typo3_commit_message_guide
+    Tools: typo3_server_scope, typo3_rule_lookup, typo3_script_lookup, typo3_task_guide, typo3_test_run_guide, typo3_hint_lookup, typo3_component_lookup, typo3_system_extension_lookup, typo3_reference_list, typo3_translation_domain_lookup, typo3_snapshot_scope, typo3_commit_message_guide
     ## Answers from network
     A service outside this machine. An unreachable one is said out loud rather than answered as empty.
     Tools: typo3_documentation_lookup, typo3_forge_lookup, typo3_gerrit_lookup, typo3_changelog_lookup, typo3_ter_lookup
@@ -665,7 +665,7 @@ Data:
                 "topic": "How current the catalogs are",
                 "depth": "Whether component contracts came from the active installation or the bundled fallback, plus the core revision, branch, and verification date behind that fallback.",
                 "tools": [
-                    "typo3_catalog_scope"
+                    "typo3_snapshot_scope"
                 ],
                 "source": "knowledge/catalog/meta.json",
                 "scope": "any"
@@ -739,7 +739,7 @@ Data:
             {
                 "topic": "Whether an uncatalogued component or CSS class exists on your branch",
                 "why": "The active installation supplies the contract for curated component entries, but the searchable index is deliberately a subset rather than every class in backend.css. Without an installation, even those entries fall back to one pinned core snapshot.",
-                "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
+                "instead": "Call typo3_snapshot_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
             },
             {
                 "topic": "Gerrit beyond what an anonymous read answers: the diff of a patch set, a draft comment nobody published, what CI did beyond the line its bot posted, and anything a private change carries",
@@ -782,7 +782,7 @@ Data:
             },
             {
                 "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_catalog_scope names the fallback revision."
+                "how": "Call typo3_component_lookup for curated backend components: it reads the active installation when the target matches. For uncatalogued code or another target branch, grep the checkout; typo3_snapshot_scope names the fallback revision."
             },
             {
                 "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
@@ -860,7 +860,7 @@ Data:
             },
             {
                 "when": "A catalog lookup found nothing that should exist",
-                "call": "typo3_catalog_scope, then typo3_feedback_record"
+                "call": "typo3_snapshot_scope, then typo3_feedback_record"
             },
             {
                 "when": "Needing the translation domain an XLF file resolves to",
@@ -989,7 +989,7 @@ Data:
                     "typo3_changelog_lookup",
                     "typo3_project_describe",
                     "typo3_extension_describe",
-                    "typo3_catalog_scope"
+                    "typo3_snapshot_scope"
                 ]
             },
             {
@@ -1006,7 +1006,7 @@ Data:
                     "typo3_system_extension_lookup",
                     "typo3_reference_list",
                     "typo3_translation_domain_lookup",
-                    "typo3_catalog_scope",
+                    "typo3_snapshot_scope",
                     "typo3_commit_message_guide"
                 ]
             },

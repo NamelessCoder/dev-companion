@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-110926-four-wordings-of-a-duplicate-search-returned.md
 **Priority:** normal
+**Branch:** todo/four-wordings-of-a-duplicate-search-returned
+**Claimed:** 2026-08-24
 
 Judged on 2026-08-24 as the ladder's step 4, wording, and written up in the last
 **Since then** of `D-ANS-038`: the empty answer of a `query` offers a rewording

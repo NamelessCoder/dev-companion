@@ -253,3 +253,39 @@ it is the right page anyway, because that page's second paragraph hands the
 reader on to the sibling `a-declared-major-that-is-not-installed` for the
 question it does not answer. Naming the running page reaches both, and naming
 the reading page would reach one.
+
+### 2026-08-24 — the second Wrong if is satisfied, and a guide is withheld by the change type
+
+**Three sessions report a page named to them and unread, once from each
+placement this entry and its neighbours built.** That is the second **Wrong if**
+above, and one report was the case it was written for.
+
+- `feedback/2026-08-24-140239` had `project/installation/booting-a-clone` named
+  twice — in the `guides` field of the brief and in the `documents` field of the
+  installation-setup hint — and opened neither. The recognition half of that
+  feedback is settled in
+  [`D-GUI-014`](gui-014-looking-at-a-change-is-an-intent-of-its-own.md); this is
+  the half that is left.
+- `feedback/2026-08-24-173211` read the `guides` array at orientation,
+  registered that two pages existed, and assembled both procedures by hand.
+- `feedback/2026-08-24-183345` had the page named inside the review skill's own
+  body, in a sentence it quotes back, and skipped it.
+
+So the pointer has now failed from the orientation answer, from the brief and
+from a skill body. What that says is what this entry's **Assumed** already put
+at risk: a guide named mid-task is read where the same list at orientation was
+not, and nothing measures it. **The question this raises is not one a judging
+run may answer** — whether a page has to be handed over whole rather than named
+is a change to what every brief weighs, and this rung is
+`documentation/records/judging.rst`'s step 5.
+
+**A second cost, measured the same day: a brief that changes nothing withholds a
+guide the caller asked for.** `TaskIntents::owned()` lets only an intent
+carrying `changesNothing` name a page, which is `D-SKL-039`'s reasoning applied
+to guides. Run in this worktree, "boot the environment and add functional tests"
+with `changeType="operations"` confirms `tests` and names
+`extension/testing/phpunit` nowhere. That reasoning was written for a review,
+where the words of the change under review are not the caller's own work; an
+operations brief has no change under review, and there the words are exactly
+what the caller is doing. Whether the two cases may share one filter is the
+other half of the question above.

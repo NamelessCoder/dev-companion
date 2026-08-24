@@ -76,8 +76,10 @@ final class ComponentLookup extends ReadOnlyTool
                 'class' => Schema::string('A class the query named outright.'),
                 'component' => Schema::string('The withheld entry it belongs to.'),
                 'title' => Schema::string(),
+                'position' => ['type' => ['string', 'null'], 'enum' => ['around', 'on', 'below', null], 'description' => 'Where the class sits relative to the component root on this version, read off the core stylesheet: around wraps it, on is the root element itself, below is an element inside it. Null where no selector places it, which is not a licence to put it anywhere.'],
+                'stylesWithin' => Schema::listOf(Schema::string(), 'What the core styles inside this class on this version: what it may hold, never what it requires.'),
                 'sassPaths' => Schema::listOf(Schema::string(), 'Where the core writes it.'),
-            ] + Schema::verifiedOn(), ['class', 'component', 'title', 'sassPaths', 'verifiedOn']), 'Classes the query named that were verified on the target version although their entry was not. The class name is all of it — no markup and no custom properties, because those are what withheld the entry.'),
+            ] + Schema::verifiedOn(), ['class', 'component', 'title', 'position', 'stylesWithin', 'sassPaths', 'verifiedOn']), 'Classes the query named that were verified on the target version although their entry was not, each with where it sits. No markup and no custom properties, because those are what withheld the entry.'),
             'checklist' => Schema::object([
                 'title' => Schema::string(),
                 'intro' => Schema::string(),
@@ -91,13 +93,16 @@ final class ComponentLookup extends ReadOnlyTool
     /**
      * What a withheld entry still answers about a class the query named.
      *
-     * Written as its own block rather than beside the component, and carrying the
-     * name and nothing else, so a caller cannot read a covered class as a covered
-     * component — `D-CAT-006`.
+     * Written as its own block rather than beside the component, and carrying no
+     * markup, so a caller cannot read a covered class as a covered component —
+     * `D-CAT-006`. It does carry where the class sits, because a name on its own
+     * is what let `table-fit` be attached to the table it belongs around —
+     * `D-CAT-008`.
      *
      * @param array<int, array{
-     *     class: string, component: string, title: string,
-     *     sassPaths: array<int, string>, since: ?int, until: ?int, verifiedOn: string
+     *     class: string, component: string, title: string, position: ?string,
+     *     stylesWithin: list<string>, sassPaths: array<int, string>,
+     *     since: ?int, until: ?int, verifiedOn: string
      * }> $covered
      */
     private static function coveredClassNote(array $covered, int $target): string
@@ -105,21 +110,44 @@ final class ComponentLookup extends ReadOnlyTool
         $lines = [sprintf('Still answered for TYPO3 v%d, one class at a time:', $target)];
         foreach ($covered as $class) {
             $lines[] = sprintf(
-                '- `%s` — a class of the %s component (%s), verified on %s%s.',
+                '- `%s` — a class of the %s component (%s), %s, verified on %s%s.',
                 $class['class'],
                 $class['component'],
                 $class['title'],
+                self::placed($class['position'], $class['component']),
                 $class['verifiedOn'] === '' ? 'every version this catalog covers' : $class['verifiedOn'],
                 $class['sassPaths'] === [] ? '' : ', in ' . implode(', ', $class['sassPaths']),
             );
+            if ($class['stylesWithin'] !== []) {
+                $lines[] = sprintf(
+                    '  The core styles %s inside it, which is what it may hold and not what it needs.',
+                    implode(', ', array_map(static fn(string $n): string => '`' . $n . '`', $class['stylesWithin'])),
+                );
+            }
         }
         $lines[] = sprintf(
-            'The class name is the whole answer. Its entry is withheld above, so the markup and the custom '
-                . 'properties around it were never verified on TYPO3 v%d and none of them is handed over here.',
+            'No markup is handed over. Each entry is withheld above, so what surrounds these classes was never '
+                . 'verified on TYPO3 v%d, and where a class is not placed the stylesheet says nothing about where '
+                . 'it goes rather than saying it goes anywhere.',
             $target,
         );
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * Where the class sits, in the words the derivation reads off the core's own
+     * selectors. A class the stylesheet never writes beside its component is
+     * left unplaced rather than guessed at.
+     */
+    private static function placed(?string $position, string $component): string
+    {
+        return match ($position) {
+            'around' => sprintf('written on the element wrapping the %s', $component),
+            'on' => sprintf('written on the %s element itself', $component),
+            'below' => sprintf('written on an element inside the %s', $component),
+            default => 'placed by no selector the core writes, so where it goes is not answered here',
+        };
     }
 
     public static function answer(array $args): ToolResult

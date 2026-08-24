@@ -90,3 +90,14 @@ invited to make that mistake before any binding is reached.
 Nothing is decided here. What is recorded is that the query is not the evidence
 this entry assumed it was, and that the repair — if there is one — is about
 where a class sits rather than about which versions carry it.
+
+The range this entry decided was replaced on 2026-08-24. **The second range
+covers the class list, not one class** was taken because 120 class-to-version
+pairs would be re-derived by hand on every core release; `D-CAT-008` derives
+them from a file the core commits on every branch, so the objection fell rather
+than the reasoning. What that buys is measured there: 17 of 26 entries hold
+classes whose ranges differ, and `table-fit` is answered on 12.4 where the
+aggregate withheld it — the caller this entry was written for.
+
+The rest of the entry stands. Only the classes the query named come back, they
+come back as a block of their own, and they carry nothing to paste.

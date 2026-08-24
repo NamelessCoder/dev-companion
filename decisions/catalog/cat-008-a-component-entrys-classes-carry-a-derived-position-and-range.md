@@ -15,6 +15,8 @@ coveredBy:
   - BackendCssTest::selectorsInsideAMediaQueryAreRead
   - BackendCssTest::whatIsStyledWithinHoldsOnlyNamesTheCallerNamed
   - BackendCssTest::whatIsStyledWithinIsSeparateFromWhereTheClassSits
+  - CatalogTest::aClassIsAnsweredOnAMajorItsEntrysListDoesNotReach
+  - CatalogTest::whatIsStyledWithinAClassIsNotWhatItRequires
   - StyleguideListingTest::aCheckoutShippingNoStyleguideAnswersNothing
   - StyleguideListingTest::aComponentTheStyleguideDoesNotListIsNotListed
   - StyleguideListingTest::aControllerWithoutTheListAnswersNothing

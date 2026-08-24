@@ -117,7 +117,7 @@ Answers with
         # version.
         verifiedOn: string
     # Classes the query named that were verified on the target version although
-    # their entry was not. The class name is all of it — no markup and no custom
+    # their entry was not, each with where it sits. No markup and no custom
     # properties, because those are what withheld the entry.
     coveredClasses:
       - # A class the query named outright.
@@ -125,6 +125,14 @@ Answers with
         # The withheld entry it belongs to.
         component: string
         title: string
+        # One of: around, on, below, null. Where the class sits relative to the
+        # component root on this version, read off the core stylesheet: around wraps
+        # it, on is the root element itself, below is an element inside it. Null
+        # where no selector places it, which is not a licence to put it anywhere.
+        position: string or null
+        # What the core styles inside this class on this version: what it may hold,
+        # never what it requires.
+        stylesWithin: [string]
         # Where the core writes it.
         sassPaths: [string]
         # The TYPO3 major this entry starts holding at, or null when it holds on

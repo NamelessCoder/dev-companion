@@ -442,8 +442,13 @@ final class CatalogTest extends TestCase
         self::assertSame(0, $result->data['matchCount'], 'the component itself is still not handed over');
         self::assertSame(['table'], array_column($result->data['withheld'], 'name'));
         self::assertSame(['table-fit'], array_column($result->data['coveredClasses'], 'class'));
-        self::assertSame('TYPO3 v13 and newer', $result->data['coveredClasses'][0]['verifiedOn']);
+        self::assertSame('TYPO3 v12 and newer', $result->data['coveredClasses'][0]['verifiedOn']);
         self::assertStringContainsString('Still answered for TYPO3 v13, one class at a time', $result->text);
+
+        // And where it goes, which the name alone never said: the session that
+        // reported this attached the wrapper to the table — `D-CAT-008`.
+        self::assertSame('around', $result->data['coveredClasses'][0]['position']);
+        self::assertStringContainsString('written on the element wrapping the table', $result->text);
 
         // And the two cannot be read as one another: what comes back is the name
         // and where the core writes it, never something to paste.
@@ -461,11 +466,41 @@ final class CatalogTest extends TestCase
         $topic = Registry::call('typo3_component_lookup', ['query' => 'table', 'targetVersion' => '13.4']);
         self::assertSame(['table'], array_column($topic->data['coveredClasses'], 'class'), 'only the root class was named');
 
-        $below = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '12.4']);
-        self::assertSame([], $below->data['coveredClasses'], 'the class list itself was never verified on 12.4');
-
         $unstated = Registry::call('typo3_component_lookup', ['query' => 'table-fit']);
         self::assertSame([], $unstated->data['coveredClasses'], 'nothing is withheld, so the entry answers');
+    }
+
+    #[Decision('D-CAT-008')]
+    #[Test]
+    public function aClassIsAnsweredOnAMajorItsEntrysListDoesNotReach(): void
+    {
+        // `table-fit` is written on 12.4 and four of the table entry's other
+        // classes are not, so the list binds at 13 and the aggregate range said
+        // nothing to the caller who asked on 12 — which is the caller
+        // `feedback/2026-08-19-090231` was. The range is the class's own now.
+        $result = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '12.4']);
+
+        self::assertSame(['table-fit'], array_column($result->data['coveredClasses'], 'class'));
+        self::assertSame('around', $result->data['coveredClasses'][0]['position']);
+        self::assertSame('TYPO3 v12 and newer', $result->data['coveredClasses'][0]['verifiedOn']);
+    }
+
+    #[Decision('D-CAT-008')]
+    #[Test]
+    public function whatIsStyledWithinAClassIsNotWhatItRequires(): void
+    {
+        // A progress bar is styled below `.table-fit` from v14 and belongs
+        // there by nothing, so the answer says which of the two it is.
+        $result = Registry::call('typo3_component_lookup', ['query' => 'table-fit', 'targetVersion' => '14.3']);
+        $covered = $result->data['coveredClasses'];
+
+        if ($covered !== []) {
+            self::assertContains('.table', $covered[0]['stylesWithin']);
+            self::assertStringContainsString('what it may hold and not what it needs', $result->text);
+
+            return;
+        }
+        self::assertSame(1, $result->data['matchCount'], 'the entry answers whole on the version it binds to');
     }
 
     #[Test]

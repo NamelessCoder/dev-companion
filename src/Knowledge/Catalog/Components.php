@@ -138,10 +138,17 @@ final class Components
      * reading is the installed packages themselves, so a class they do not carry
      * is absent rather than unverified, and there is no second range to consult.
      *
+     * The range is the class's own where `components:derive` wrote one, and the
+     * entry's whole list where it did not. Per class is what `D-CAT-006`
+     * reached for and declined to keep by hand: 17 of 26 entries hold classes
+     * whose ranges differ, so the aggregate withholds a class that was there
+     * all along — `D-CAT-008`.
+     *
      * @param array<int, array<string, mixed>> $withheld
      * @return array<int, array{
-     *     class: string, component: string, title: string,
-     *     sassPaths: array<int, string>, since: ?int, until: ?int, verifiedOn: string
+     *     class: string, component: string, title: string, position: ?string,
+     *     stylesWithin: list<string>, sassPaths: array<int, string>,
+     *     since: ?int, until: ?int, verifiedOn: string
      * }>
      */
     public static function coveredClasses(array $withheld, ?string $query, ?int $target): array
@@ -153,9 +160,7 @@ final class Components
 
         $covered = [];
         foreach ($withheld as $component) {
-            if (($component['_installed'] ?? false) === true
-                || !Versions::holds($component['classesSince'], $component['classesUntil'], $target)
-            ) {
+            if (($component['_installed'] ?? false) === true) {
                 continue;
             }
 
@@ -166,14 +171,22 @@ final class Components
                 $component['subComponents'],
             );
             foreach (array_intersect($classes, $named) as $class) {
+                $range = ComponentClasses::knows($class)
+                    ? ComponentClasses::range($class)
+                    : ['since' => $component['classesSince'], 'until' => $component['classesUntil']];
+                if (!Versions::holds($range['since'], $range['until'], $target)) {
+                    continue;
+                }
                 $covered[] = [
                     'class' => $class,
                     'component' => (string) $component['name'],
                     'title' => (string) $component['title'],
+                    'position' => ComponentClasses::position($class, $target),
+                    'stylesWithin' => ComponentClasses::stylesWithin($class, $target),
                     'sassPaths' => $component['sassPaths'],
-                    'since' => $component['classesSince'],
-                    'until' => $component['classesUntil'],
-                    'verifiedOn' => Versions::label($component['classesSince'], $component['classesUntil']),
+                    'since' => $range['since'],
+                    'until' => $range['until'],
+                    'verifiedOn' => Versions::label($range['since'], $range['until']),
                 ];
             }
         }

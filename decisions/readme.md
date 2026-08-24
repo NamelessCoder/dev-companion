@@ -79,6 +79,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### answers
 
 - [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24
+- [`D-ANS-098`][D-ANS-098] — A change answer names the issues its commit message resolves · 2026-08-24
 - [`D-ANS-096`][D-ANS-096] — An outside source is read in the form it publishes · 2026-08-23
 - [`D-ANS-091`][D-ANS-091] — The project answer leaves the second call to the instructions · 2026-08-21
 - [`D-ANS-092`][D-ANS-092] — The project answer says how its declared suites are run · 2026-08-21
@@ -172,6 +173,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-097]: answers/ans-097-a-bounded-answer-spends-its-slots-on-the-hints-that-bind-its-caller.md
+[D-ANS-098]: answers/ans-098-a-change-answer-names-the-issues-its-commit-message-resolves.md
 [D-ANS-096]: answers/ans-096-an-outside-source-is-read-in-the-form-it-publishes.md
 [D-ANS-091]: answers/ans-091-the-project-answer-leaves-the-second-call-to-the-instructions.md
 [D-ANS-092]: answers/ans-092-the-project-answer-says-how-its-declared-suites-are-run.md

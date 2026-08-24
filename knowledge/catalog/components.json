@@ -38,6 +38,9 @@
       "<f:flashMessages queueIdentifier=\"my.queue\" />"
     ],
     "sassPath": "Build/Sources/Sass/component/_alert.scss",
+    "styleguideActions": [
+      "flashMessages"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/FlashMessages.fluid.html",
     "markupDigests": {
       "14": "0950c0b6d576",
@@ -80,6 +83,9 @@
       "<be:avatar showIcon=\"true\" />"
     ],
     "sassPath": "Build/Sources/Sass/component/_avatar.scss",
+    "styleguideActions": [
+      "avatar"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Avatar.fluid.html",
     "markupDigests": {
       "14": "56d3d2db85f7",
@@ -138,6 +144,9 @@
       "<ul class=\"badge-list\">\n  <li><span class=\"badge badge-success\">success</span></li>\n  <li><span class=\"badge badge-danger\">danger</span></li>\n</ul>"
     ],
     "sassPath": "Build/Sources/Sass/component/_badges.scss",
+    "styleguideActions": [
+      "badges"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Badges.fluid.html",
     "markupDigests": {
       "14": "4138e8239d28",
@@ -183,6 +192,9 @@
     "markup": "<ol class=\"breadcrumb\">\n  <li class=\"breadcrumb-item\"><a href=\"#\">Root</a></li>\n  <li class=\"breadcrumb-item active\" aria-current=\"page\">Current</li>\n</ol>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_breadcrumb.scss",
+    "styleguideActions": [
+      "breadcrumbs"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Breadcrumbs.fluid.html",
     "markupDigests": {
       "14": "fab35fd8ef72",
@@ -246,6 +258,9 @@
       "<button class=\"btn btn-primary btn-sm\">Primary</button>"
     ],
     "sassPath": "Build/Sources/Sass/component/_buttons.scss",
+    "styleguideActions": [
+      "buttons"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
     "markupDigests": {
       "14": "75dcbc4dc37f",
@@ -284,6 +299,9 @@
       "<div class=\"btn-toolbar\">\n  <div class=\"btn-group\">...</div>\n  <div class=\"btn-group\">...</div>\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/_button-group.scss",
+    "styleguideActions": [
+      "buttons"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
     "demoDerives": false,
     "markupDigests": {
@@ -302,60 +320,6 @@
     ],
     "since": 14,
     "classesSince": 14
-  },
-  {
-    "name": "callout",
-    "title": "Callout",
-    "summary": "Inline contextual message block with a leading icon. Backing component for the be.infobox ViewHelper. Variants map to TYPO3 state tokens.",
-    "rootClass": "callout",
-    "variants": [
-      "callout-default",
-      "callout-info",
-      "callout-success",
-      "callout-warning",
-      "callout-danger",
-      "callout-notice"
-    ],
-    "modifiers": [
-      "callout-sm"
-    ],
-    "subComponents": [
-      "callout-icon",
-      "callout-title",
-      "callout-content",
-      "callout-body"
-    ],
-    "customProperties": [
-      "--typo3-callout-bg",
-      "--typo3-callout-color",
-      "--typo3-callout-border-color",
-      "--typo3-callout-border-radius",
-      "--typo3-callout-icon-bg",
-      "--typo3-callout-icon-color",
-      "--typo3-callout-padding-x",
-      "--typo3-callout-padding-y"
-    ],
-    "markup": "<div class=\"callout callout-info\">\n  <div class=\"callout-icon\"><span class=\"icon-emphasized\"><!-- icon --></span></div>\n  <div class=\"callout-content\">\n    <div class=\"callout-title\">Title</div>\n    <div class=\"callout-body\">Message</div>\n  </div>\n</div>",
-    "examples": [],
-    "sassPath": "Build/Sources/Sass/component/_callout.scss",
-    "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
-    "markupDigests": {
-      "14": "4928ad423340",
-      "15": "4928ad423340"
-    },
-    "keywords": [
-      "callout",
-      "infobox",
-      "info box",
-      "notice",
-      "message",
-      "hint"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_callout.scss"
-    ],
-    "since": 13,
-    "classesSince": 13
   },
   {
     "name": "card",
@@ -398,6 +362,9 @@
       "<div class=\"card card-size-medium\">\n  <div class=\"card-header\"><h1 class=\"card-title\">Action Card</h1></div>\n  <div class=\"card-body\"><p class=\"card-text\">...</p></div>\n  <div class=\"card-footer\">\n    <a class=\"btn btn-primary\" href=\"#\">Action 1</a>\n  </div>\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/_card.scss",
+    "styleguideActions": [
+      "cards"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Cards.fluid.html",
     "demoSelector": "card-title",
     "markupDigests": {
@@ -453,6 +420,9 @@
     "markup": "<div class=\"dropdown\">\n  <button class=\"btn btn-default dropdown-toggle\" popovertarget=\"menu-1\">Dropdown</button>\n  <ul id=\"menu-1\" class=\"dropdown-menu\" popover>\n    <li><a class=\"dropdown-item\" href=\"#\">Action</a></li>\n  </ul>\n</div>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_dropdown.scss",
+    "styleguideActions": [
+      "dropdown"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Dropdown.fluid.html",
     "demoDerives": false,
     "markupDigests": {
@@ -468,60 +438,6 @@
     ],
     "sassPaths": [
       "Build/Sources/Sass/component/_dropdown.scss"
-    ],
-    "since": 13,
-    "classesSince": 13
-  },
-  {
-    "name": "dropzone",
-    "title": "Dropzone",
-    "summary": "Drop target for file uploads. The .dropzone box holds a .dropzone-hint with icon, title and message, a .dropzone-mask covering the drop area, and a .dropzone-close button. Upload state is switched by adding .drop-status-ok or .drop-in-progress.",
-    "rootClass": "dropzone",
-    "variants": [],
-    "modifiers": [
-      "drop-status-ok",
-      "drop-in-progress"
-    ],
-    "subComponents": [
-      "dropzone-mask",
-      "dropzone-close",
-      "dropzone-hint",
-      "dropzone-hint-media",
-      "dropzone-hint-icon",
-      "dropzone-hint-body",
-      "dropzone-hint-title",
-      "dropzone-hint-message"
-    ],
-    "customProperties": [
-      "--dropzone-color",
-      "--dropzone-bg",
-      "--dropzone-border-color",
-      "--dropzone-border-width",
-      "--dropzone-border-radius",
-      "--dropzone-padding-x",
-      "--dropzone-padding-y",
-      "--dropzone-spacing",
-      "--dropzone-icon-color",
-      "--dropzone-icon-bg",
-      "--dropzone-icon-size",
-      "--dropzone-close-width",
-      "--dropzone-close-height"
-    ],
-    "markup": "<div class=\"dropzone\">\n  <div class=\"dropzone-mask\"></div>\n  <button type=\"button\" class=\"dropzone-close\"></button>\n  <div class=\"dropzone-hint\">\n    <div class=\"dropzone-hint-media\">\n      <span class=\"dropzone-hint-icon\"></span>\n    </div>\n    <div class=\"dropzone-hint-body\">\n      <h3 class=\"dropzone-hint-title\">Drop files here</h3>\n      <p class=\"dropzone-hint-message\">or click to select them</p>\n    </div>\n  </div>\n</div>",
-    "examples": [
-      "<div class=\"dropzone drop-in-progress\">\n  <div class=\"dropzone-hint\">\n    <div class=\"dropzone-hint-media\"><span class=\"dropzone-hint-icon\"></span></div>\n    <div class=\"dropzone-hint-body\"><p class=\"dropzone-hint-message\">Uploading…</p></div>\n  </div>\n</div>"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_dropzone.scss"
-    ],
-    "demoPath": null,
-    "keywords": [
-      "dropzone",
-      "drop zone",
-      "drag and drop",
-      "drag upload",
-      "file upload",
-      "upload"
     ],
     "since": 13,
     "classesSince": 13
@@ -558,6 +474,10 @@
       "<div class=\"form-check\">\n  <input class=\"form-check-input\" type=\"radio\" name=\"r\" id=\"radio-1\">\n  <label class=\"form-check-label\" for=\"radio-1\">Label</label>\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-check.scss",
+    "styleguideActions": [
+      "checkboxes",
+      "radio"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Checkboxes.fluid.html",
     "markupDigests": {
       "14": "27f5acfb5d82",
@@ -580,36 +500,68 @@
   },
   {
     "name": "infobox",
-    "title": "Infobox (ViewHelper)",
-    "summary": "Fluid ViewHelper that renders a callout. Use the state argument with a ContextualFeedbackSeverity enum (NOTICE->notice, INFO->info, OK->success, WARNING->warning, ERROR->danger).",
+    "title": "Infobox",
+    "summary": "Inline contextual message block with a leading icon, rendered by the be.infobox ViewHelper. Variants map to TYPO3 state tokens, and the state argument takes a ContextualFeedbackSeverity enum (NOTICE->notice, INFO->info, OK->success, WARNING->warning, ERROR->danger).",
     "rootClass": "callout",
-    "variants": [],
-    "modifiers": [],
-    "subComponents": [],
-    "customProperties": [],
+    "variants": [
+      "callout-default",
+      "callout-info",
+      "callout-success",
+      "callout-warning",
+      "callout-danger",
+      "callout-notice"
+    ],
+    "modifiers": [
+      "callout-sm"
+    ],
+    "subComponents": [
+      "callout-icon",
+      "callout-title",
+      "callout-content",
+      "callout-body"
+    ],
+    "customProperties": [
+      "--typo3-callout-bg",
+      "--typo3-callout-color",
+      "--typo3-callout-border-color",
+      "--typo3-callout-border-radius",
+      "--typo3-callout-icon-bg",
+      "--typo3-callout-icon-color",
+      "--typo3-callout-padding-x",
+      "--typo3-callout-padding-y"
+    ],
     "markup": "<f:be.infobox title=\"Title\" state=\"{f:constant(name: 'TYPO3\\CMS\\Core\\Type\\ContextualFeedbackSeverity::WARNING')}\">Message</f:be.infobox>",
     "examples": [
       "<f:be.infobox title=\"Title\" iconName=\"actions-brand-typo3\">Message</f:be.infobox>",
-      "<f:be.infobox title=\"Title\" disableIcon=\"true\">Message</f:be.infobox>"
+      "<f:be.infobox title=\"Title\" disableIcon=\"true\">Message</f:be.infobox>",
+      "<div class=\"callout callout-info\">\n  <div class=\"callout-icon\"><span class=\"icon-emphasized\"><!-- icon --></span></div>\n  <div class=\"callout-content\">\n    <div class=\"callout-title\">Title</div>\n    <div class=\"callout-body\">Message</div>\n  </div>\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/_callout.scss",
+    "styleguideActions": [
+      "infobox"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
     "markupDigests": {
       "14": "4928ad423340",
       "15": "4928ad423340"
     },
     "keywords": [
+      "callout",
       "infobox",
       "info box",
+      "notice",
+      "message",
+      "hint",
       "be.infobox",
       "viewhelper",
       "severity",
-      "ContextualFeedbackSeverity",
-      "callout"
+      "ContextualFeedbackSeverity"
     ],
     "sassPaths": [
       "Build/Sources/Sass/component/_callout.scss"
-    ]
+    ],
+    "since": 13,
+    "classesSince": 13
   },
   {
     "name": "input",
@@ -640,6 +592,9 @@
       "<div class=\"input-group\">\n  <input class=\"form-control\" type=\"search\" name=\"searchTerm\">\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-control.scss",
+    "styleguideActions": [
+      "input"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
     "demoDerives": false,
     "markupDigests": {
@@ -695,6 +650,9 @@
       "<div class=\"list-group\">\n  <a href=\"#\" class=\"list-group-item list-group-item-action\">Default item</a>\n</div>"
     ],
     "sassPath": "Build/Sources/Sass/component/_list-group.scss",
+    "styleguideActions": [
+      "listGroups"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/ListGroups.fluid.html",
     "markupDigests": {
       "14": "4d2cf3ddc444",
@@ -752,6 +710,9 @@
       "<button type=\"button\" class=\"btn btn-default t3js-modal-trigger\" data-severity=\"warning\">Open warning modal</button>"
     ],
     "sassPath": "Build/Sources/Sass/component/_modal.scss",
+    "styleguideActions": [
+      "modal"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Modal.fluid.html",
     "markupDigests": {
       "14": "b848b3cca842",
@@ -766,73 +727,6 @@
     ],
     "sassPaths": [
       "Build/Sources/Sass/component/_modal.scss"
-    ],
-    "since": 14,
-    "classesSince": 14
-  },
-  {
-    "name": "module",
-    "title": "Backend Module Chrome",
-    "summary": "The chrome ModuleTemplate renders around every backend module: a docheader navigation bar, a docheader button bar, and the module body. A module does not author it — it renders into the Module layout's Content section and fills the docheader through getDocHeaderComponent(). These classes and custom properties are what a restyling of that chrome, or a module layout of an extension's own as EXT:install and EXT:info ship, is written against. module-layout-wide is the default; the narrow one is set by ModuleTemplate::setLayout(), which is @internal.",
-    "rootClass": "module",
-    "variants": [],
-    "modifiers": [
-      "module-layout-wide",
-      "module-layout-normal"
-    ],
-    "subComponents": [
-      "module-loading-indicator",
-      "module-docheader",
-      "module-docheader-navigation",
-      "module-docheader-buttons",
-      "module-docheader-column",
-      "module-docheader-column-grow",
-      "module-docheader-column-breadcrumb",
-      "module-body",
-      "module-body-container"
-    ],
-    "customProperties": [
-      "--module-color",
-      "--module-bg",
-      "--module-width",
-      "--module-layout-wide-width",
-      "--module-layout-normal-width",
-      "--module-docheader-zindex",
-      "--module-docheader-padding-y",
-      "--module-docheader-padding-x",
-      "--module-docheader-padding",
-      "--module-docheader-spacing-y",
-      "--module-docheader-spacing-x",
-      "--module-docheader-spacing",
-      "--module-docheader-bg",
-      "--module-docheader-border-color",
-      "--module-docheader-border-width",
-      "--module-docheader-column-height",
-      "--module-docheader-bar-height",
-      "--module-docheader-scroll-offset",
-      "--module-docheader-height",
-      "--module-docheader-box-shadow",
-      "--module-body-padding-y",
-      "--module-body-padding-x",
-      "--module-body-padding"
-    ],
-    "markup": "<!-- ModuleTemplate renders this from EXT:backend Layouts/Module.fluid.html and Partials/DocHeader.fluid.html; a module renders into it rather than writing it: -->\n<div class=\"module module-layout-wide\" data-module-id=\"{moduleId}\" data-module-name=\"{moduleName}\">\n  <div class=\"module-loading-indicator\"></div>\n  <div class=\"module-docheader module-docheader-navigation t3js-module-docheader-navigation\">\n    <div class=\"module-docheader-column module-docheader-column-breadcrumb\"></div>\n  </div>\n  <div class=\"module-docheader module-docheader-buttons t3js-module-docheader-buttons\">\n    <div class=\"module-docheader-column module-docheader-column-grow\">\n      <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"\"></div>\n    </div>\n  </div>\n  <div class=\"module-body t3js-module-body\">\n    <div class=\"module-body-container t3js-module-body-container\"></div>\n  </div>\n</div>",
-    "examples": [
-      "<html xmlns:f=\"http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers\" data-namespace-typo3-fluid=\"true\">\n<f:layout name=\"Module\" />\n<f:section name=\"Content\">\n  <h1>Module title</h1>\n</f:section>\n</html>"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_module.scss"
-    ],
-    "demoPath": null,
-    "keywords": [
-      "module",
-      "module chrome",
-      "docheader",
-      "module docheader",
-      "module body",
-      "moduletemplate",
-      "module layout",
-      "backend module"
     ],
     "since": 14,
     "classesSince": 14
@@ -868,6 +762,9 @@
       "<ul class=\"nav\">\n  <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" href=\"#\">Active</a></li>\n  <li class=\"nav-item\"><a class=\"nav-link disabled\" aria-disabled=\"true\">Disabled</a></li>\n</ul>"
     ],
     "sassPath": "Build/Sources/Sass/component/_nav.scss",
+    "styleguideActions": [
+      "navs"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Navs.fluid.html",
     "markupDigests": {
       "14": "c93a049d6e00",
@@ -886,69 +783,6 @@
     ],
     "since": 14,
     "classesSince": 14
-  },
-  {
-    "name": "note",
-    "title": "Notes",
-    "summary": "Editor-facing note box with a header bar and a body. Variants follow the TYPO3 state tokens; the note-category-<n> classes map the sys_note record categories onto them.",
-    "rootClass": "note",
-    "variants": [
-      "note-primary",
-      "note-secondary",
-      "note-info",
-      "note-success",
-      "note-warning",
-      "note-danger",
-      "note-notice",
-      "note-default"
-    ],
-    "modifiers": [
-      "note-category-0",
-      "note-category-1",
-      "note-category-2",
-      "note-category-3",
-      "note-category-4"
-    ],
-    "subComponents": [
-      "note-list",
-      "note-header",
-      "note-header-bar",
-      "note-title",
-      "note-actions",
-      "note-body"
-    ],
-    "customProperties": [
-      "--typo3-note-color",
-      "--typo3-note-bg",
-      "--typo3-note-border-color",
-      "--typo3-note-border-width",
-      "--typo3-note-border-radius",
-      "--typo3-note-padding-x",
-      "--typo3-note-padding-y",
-      "--typo3-note-header-bg",
-      "--typo3-note-header-color",
-      "--typo3-note-header-padding-x",
-      "--typo3-note-header-padding-y",
-      "--typo3-note-box-shadow"
-    ],
-    "markup": "<div class=\"note\">\n  <div class=\"note-header\">\n    <div class=\"note-header-bar\">\n      <div class=\"note-title\">Title</div>\n      <div class=\"note-actions\"></div>\n    </div>\n  </div>\n  <div class=\"note-body\">\n    <p>Body text.</p>\n  </div>\n</div>",
-    "examples": [
-      "<div class=\"note-list\">\n  <div class=\"note note-category-1\">\n    <div class=\"note-header\"><div class=\"note-header-bar\"><div class=\"note-title\">Instruction</div></div></div>\n    <div class=\"note-body\"><p>Body text.</p></div>\n  </div>\n</div>"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_note.scss"
-    ],
-    "demoPath": null,
-    "keywords": [
-      "note",
-      "notes",
-      "sys_note",
-      "internal note",
-      "annotation",
-      "memo"
-    ],
-    "since": 13,
-    "classesSince": 13
   },
   {
     "name": "pagination",
@@ -976,6 +810,9 @@
     "markup": "<ul class=\"pagination\">\n  <li class=\"page-item disabled\"><span class=\"page-link\">Previous</span></li>\n  <li class=\"page-item active\"><a class=\"page-link\" href=\"#\">1</a></li>\n  <li class=\"page-item\"><a class=\"page-link\" href=\"#\">2</a></li>\n</ul>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_pagination.scss",
+    "styleguideActions": [
+      "pagination"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Pagination.fluid.html",
     "markupDigests": {
       "14": "b09fe90327fb",
@@ -1041,6 +878,9 @@
     "markup": "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n    <h2 class=\"panel-title\">Panel title</h2>\n  </div>\n  <div class=\"panel-body\">Panel body</div>\n</div>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_panel.scss",
+    "styleguideActions": [
+      "panels"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Panels.fluid.html",
     "markupDigests": {
       "14": "e3b63079d343",
@@ -1060,41 +900,6 @@
     "classesSince": 13
   },
   {
-    "name": "popover",
-    "title": "Popover",
-    "summary": "Small overlay attached to a trigger element, used for contextual help. Elevated with the flyout shadow token.",
-    "rootClass": "popover",
-    "variants": [],
-    "modifiers": [],
-    "subComponents": [],
-    "customProperties": [
-      "--typo3-popover-bg",
-      "--typo3-popover-color",
-      "--typo3-popover-border-color",
-      "--typo3-popover-border-radius",
-      "--typo3-popover-max-width",
-      "--typo3-popover-header-bg",
-      "--typo3-popover-body-padding-x",
-      "--typo3-popover-body-padding-y"
-    ],
-    "markup": "<button class=\"btn btn-default\" data-bs-toggle=\"popover\" data-bs-title=\"Title\" data-bs-content=\"Content\">Toggle popover</button>",
-    "examples": [],
-    "sassPath": "Build/Sources/Sass/component/_popover.scss",
-    "demoPath": null,
-    "keywords": [
-      "popover",
-      "tooltip",
-      "overlay",
-      "hint",
-      "help"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_popover.scss"
-    ],
-    "since": 13,
-    "classesSince": 13
-  },
-  {
     "name": "progress-bar",
     "title": "Progress Indicators",
     "summary": "Backend progress bar web component. Set value/max and an accessible label; severity (-1 info, 0 ok, 1 warning, 2 error) colors the bar.",
@@ -1108,6 +913,9 @@
       "<typo3-backend-progress-bar value=\"5\" max=\"10\" label=\"warning\" severity=\"1\"></typo3-backend-progress-bar>"
     ],
     "sassPath": null,
+    "styleguideActions": [
+      "progressIndicators"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/ProgressIndicators.fluid.html",
     "markupDigests": {
       "14": "6806e650ed91",
@@ -1123,39 +931,6 @@
     "sassPaths": [],
     "since": 13,
     "classesSince": 13
-  },
-  {
-    "name": "recordsearchbox",
-    "title": "Record Search Box",
-    "summary": "Backend search input with an optional levels selector, built on the Bootstrap input-group. Used to filter record listings; not a styleguide component.",
-    "rootClass": "recordsearchbox-container",
-    "variants": [],
-    "modifiers": [],
-    "subComponents": [
-      "input-group",
-      "form-control"
-    ],
-    "customProperties": [],
-    "markup": "<div class=\"recordsearchbox-container\" data-recordsearchbox-container>\n  <form action=\"{formUrl}\" method=\"post\">\n    <div class=\"input-group\">\n      <label for=\"recordsearchbox-searchterm\" class=\"visually-hidden\">Search</label>\n      <input data-recordsearchbox-input class=\"form-control\" type=\"search\" name=\"searchTerm\" id=\"recordsearchbox-searchterm\">\n    </div>\n  </form>\n</div>",
-    "examples": [],
-    "sassPath": "Build/Sources/Sass/component/_recordsearchbox.scss",
-    "demoPath": "typo3/sysext/backend/Resources/Private/Templates/RecordSearchBox.fluid.html",
-    "markupDigests": {
-      "14": "fc03e29b6016",
-      "15": "fc03e29b6016"
-    },
-    "keywords": [
-      "recordsearchbox",
-      "search",
-      "search box",
-      "input-group",
-      "input group",
-      "filter",
-      "form-control"
-    ],
-    "sassPaths": [
-      "Build/Sources/Sass/component/_recordsearchbox.scss"
-    ]
   },
   {
     "name": "status-indicator",
@@ -1196,6 +971,9 @@
     ],
     "sassPaths": [
       "Build/Sources/Sass/component/_status-indicator.scss"
+    ],
+    "styleguideActions": [
+      "statusIndicators"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/StatusIndicators.fluid.html",
     "demoDerives": false,
@@ -1252,6 +1030,9 @@
     "markup": "<div class=\"table-fit\">\n  <table class=\"table table-striped\">\n    <thead><tr><th>Head 1</th><th>Head 2</th></tr></thead>\n    <tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody>\n  </table>\n</div>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_table.scss",
+    "styleguideActions": [
+      "tables"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Tables.fluid.html",
     "markupDigests": {
       "14": "986dca615100",
@@ -1302,6 +1083,9 @@
     "markup": "<!-- Rendered by the backend tree web component; node rows use: -->\n<div class=\"node\">\n  <span class=\"node-icon\"><!-- icon --></span>\n  <span class=\"node-label\"><span class=\"node-name\">Page title</span></span>\n</div>",
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_tree.scss",
+    "styleguideActions": [
+      "trees"
+    ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Trees.fluid.html",
     "markupDigests": {
       "14": "36b019b2ce89",

@@ -486,88 +486,6 @@
     "stylesWithin": []
   },
   {
-    "class": "callout-default",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-info",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-success",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-warning",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-danger",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-notice",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-sm",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": ".callout-title",
-        "since": 12
-      }
-    ]
-  },
-  {
-    "class": "callout-icon",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-title",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-content",
-    "component": "callout",
-    "since": 13,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "callout-body",
-    "component": "callout",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
     "class": "card-size-small",
     "component": "card",
     "since": 12,
@@ -858,105 +776,6 @@
     "stylesWithin": []
   },
   {
-    "class": "drop-status-ok",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": ".dropzone-hint-icon",
-        "since": 12,
-        "until": 12
-      }
-    ]
-  },
-  {
-    "class": "drop-in-progress",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": ".dropzone-hint-icon",
-        "since": 12,
-        "until": 12
-      }
-    ]
-  },
-  {
-    "class": "dropzone-mask",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-close",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [
-      {
-        "position": "below",
-        "since": 12,
-        "until": 12
-      }
-    ],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-hint",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [
-      {
-        "position": "below",
-        "since": 12,
-        "until": 12
-      },
-      {
-        "position": "on",
-        "since": 13
-      }
-    ],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-hint-media",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [],
-    "until": 12
-  },
-  {
-    "class": "dropzone-hint-icon",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-hint-body",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-hint-title",
-    "component": "dropzone",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "dropzone-hint-message",
-    "component": "dropzone",
-    "since": null,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
     "class": "form-switch",
     "component": "form-check",
     "since": 12,
@@ -1216,6 +1035,88 @@
     ]
   },
   {
+    "class": "callout-default",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-info",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-success",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-warning",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-danger",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-notice",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-sm",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": [
+      {
+        "name": ".callout-title",
+        "since": 12
+      }
+    ]
+  },
+  {
+    "class": "callout-icon",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-title",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-content",
+    "component": "infobox",
+    "since": 13,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
+    "class": "callout-body",
+    "component": "infobox",
+    "since": 12,
+    "positions": [],
+    "stylesWithin": []
+  },
+  {
     "class": "form-control-sm",
     "component": "input",
     "since": 12,
@@ -1405,97 +1306,6 @@
     "stylesWithin": []
   },
   {
-    "class": "module-layout-wide",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-layout-normal",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-loading-indicator",
-    "component": "module",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-docheader",
-    "component": "module",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": ".dropdown-menu",
-        "since": 12
-      }
-    ]
-  },
-  {
-    "class": "module-docheader-navigation",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-docheader-buttons",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-docheader-column",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-docheader-column-grow",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-docheader-column-breadcrumb",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "module-body",
-    "component": "module",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": "typo3-backend-settings-editor",
-        "since": 13
-      },
-      {
-        "name": ".callout",
-        "since": 14
-      }
-    ]
-  },
-  {
-    "class": "module-body-container",
-    "component": "module",
-    "since": 14,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
     "class": "nav-tabs",
     "component": "nav",
     "since": 12,
@@ -1610,149 +1420,6 @@
   {
     "class": "tab-content",
     "component": "nav",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-primary",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-secondary",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-info",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-success",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-warning",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-danger",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-notice",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-default",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-category-0",
-    "component": "note",
-    "since": 13,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-category-1",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-category-2",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-category-3",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-category-4",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-list",
-    "component": "note",
-    "since": 12,
-    "positions": [
-      {
-        "position": "around",
-        "since": 12
-      }
-    ],
-    "stylesWithin": [
-      {
-        "name": ".note",
-        "since": 12
-      }
-    ]
-  },
-  {
-    "class": "note-header",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-header-bar",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-title",
-    "component": "note",
-    "since": null,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-actions",
-    "component": "note",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
-  },
-  {
-    "class": "note-body",
-    "component": "note",
     "since": 12,
     "positions": [],
     "stylesWithin": []
@@ -2069,45 +1736,6 @@
         "since": 13
       }
     ]
-  },
-  {
-    "class": "input-group",
-    "component": "recordsearchbox",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": [
-      {
-        "name": ".btn",
-        "since": 12
-      },
-      {
-        "name": ".dropdown-menu",
-        "since": 12
-      },
-      {
-        "name": ".dropdown-toggle",
-        "since": 12
-      },
-      {
-        "name": ".form-control",
-        "since": 12
-      },
-      {
-        "name": ".form-check-type-toggle",
-        "since": 13
-      },
-      {
-        "name": "typo3-backend-color-picker",
-        "since": 13
-      }
-    ]
-  },
-  {
-    "class": "form-control",
-    "component": "recordsearchbox",
-    "since": 12,
-    "positions": [],
-    "stylesWithin": []
   },
   {
     "class": "status-indicator-primary",

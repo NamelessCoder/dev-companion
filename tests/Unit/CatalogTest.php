@@ -129,7 +129,7 @@ final class CatalogTest extends TestCase
         mkdir($backendCss, 0o777, true);
         file_put_contents(
             $backendCss . '/backend.css',
-            '.badge { --typo3-badge-bg: green; } .badge-success {} .badge-installed {} .dropzone {}',
+            '.badge { --typo3-badge-bg: green; } .badge-success {} .badge-installed {} .panel {}',
         );
 
         $styleguide = $root . '/typo3/sysext/styleguide';
@@ -164,7 +164,7 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('Other installed classes: badge-installed', $result->text);
         self::assertStringContainsString('installed TYPO3 14.3.5 packages', $result->text);
 
-        $fallback = Registry::call('typo3_component_lookup', ['query' => 'dropzone']);
+        $fallback = Registry::call('typo3_component_lookup', ['query' => 'panel']);
         self::assertSame('installation', $fallback->data['componentSource']);
         self::assertSame('14.3.5', $fallback->data['components'][0]['contractVersion']);
         self::assertSame('catalog', $fallback->data['components'][0]['markupSource']);
@@ -255,10 +255,56 @@ final class CatalogTest extends TestCase
     public static function theQueriesThatUsedToReturnSomethingElseFirst(): array
     {
         return [
-            'dropzone, which returned nothing at all' => ['dropzone'],
-            'note, which returned the Tree by its node-note sub-component' => ['note'],
+            // Two more cases stood here, `dropzone` and `note`. Both entries
+            // came out with `D-CAT-009` — the styleguide demonstrates neither —
+            // and what they used to hold is asserted below as the miss it is
+            // now.
             'status indicator, which returned Badge' => ['status indicator'],
         ];
+    }
+
+    /**
+     * A surface the styleguide does not demonstrate is one the core keeps to
+     * itself, and the catalog answers nothing about it rather than answering
+     * with a warning — a marking that says "not public" and hands the class
+     * over anyway is read as the class.
+     */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    #[DataProvider('theComponentsTheStyleguideDoesNotDemonstrate')]
+    public function aComponentNoStyleguidePageDemonstratesIsNotAnswered(string $name): void
+    {
+        self::assertNotContains($name, array_column(Components::find($name), 'name'));
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theComponentsTheStyleguideDoesNotDemonstrate(): array
+    {
+        return [
+            'dropzone' => ['dropzone'],
+            'module, the chrome around a backend module' => ['module'],
+            'note' => ['note'],
+            'popover' => ['popover'],
+            'recordsearchbox' => ['recordsearchbox'],
+        ];
+    }
+
+    /**
+     * Every entry names the styleguide actions that demonstrate it, because
+     * that listing is why it is in the catalog at all — `D-CAT-009`.
+     */
+    #[Decision('D-CAT-009')]
+    #[Test]
+    public function everyEntryNamesTheActionsThatDemonstrateIt(): void
+    {
+        $listed = array_column(Catalogs::read('styleguide-listing'), 'component');
+        foreach (Catalogs::read('components') as $entry) {
+            $actions = $entry['styleguideActions'] ?? [];
+            self::assertNotSame([], $actions, $entry['name'] . ' names no styleguide action');
+            foreach ($actions as $action) {
+                self::assertContains($action, $listed, $entry['name'] . ' names ' . $action . ', which no styleguide lists');
+            }
+        }
     }
 
     #[Requirement('R-ANS-010')]
@@ -271,13 +317,14 @@ final class CatalogTest extends TestCase
         self::assertSame([], Components::find('content element preview heading text'));
 
         // What the query names is still the answer, however the rest of the
-        // sentence reads — the coverage rule is for what nobody named. Which of
-        // the two leads is not asserted: the module chrome was catalogued after
-        // this case was written (D-CAT-004), so the sentence now names two
-        // components and covers the chrome by two words out of three.
+        // sentence reads — the coverage rule is for what nobody named. The
+        // module chrome was catalogued after this case was written
+        // (`D-CAT-004`) and came out again with `D-CAT-009`, because the
+        // styleguide does not demonstrate it, so the sentence names one
+        // component now.
         $named = array_column(Components::find('add a badge to the module header'), 'name');
         self::assertContains('badge', $named);
-        self::assertContains('module', $named);
+        self::assertNotContains('module', $named);
         // And a class is a way in of its own: it is what the miss suggests.
         self::assertNotSame([], Components::find('input-group'));
     }

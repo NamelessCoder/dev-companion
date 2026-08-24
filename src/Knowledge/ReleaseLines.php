@@ -129,6 +129,19 @@ final class ReleaseLines
         };
     }
 
+    /**
+     * The day a branch leaves regular support, or null where this file carries
+     * no such line — the development branch, and anything it never heard of.
+     *
+     * The date as data beside `describe()`'s sentence, because an answer
+     * carrying it in prose alone makes every reader of the data half write the
+     * regex that takes it out again.
+     */
+    public static function maintainedUntil(string $branch): ?string
+    {
+        return self::released($branch)['maintainedUntil'] ?? null;
+    }
+
     /** Where the list was read, so a caller can read it again rather than trust this one. */
     public static function source(): string
     {

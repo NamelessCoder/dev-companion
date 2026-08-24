@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
   - CommitMessageTest::aMaintainedLineFurtherBackSaysWhatItClaims
+  - GerritTest::thePlacementNamesTheToolThatReadsATrailerAgainstThoseLines
 ---
 
 # D-ANS-073 — What can take a patch and where this one goes are two readings

@@ -36,8 +36,15 @@ with its patch set, its file and line, whether the thread is unresolved and
 which comment it replies to. That is where a comment somebody left on an earlier
 patch set and nobody answered is read. Why a vote is gone is in the review log
 instead, which messages asks for. A call carries issue, change, or a search by
-query and path, never two of those. This reaches the network, and it reads:
-reviewing, voting and uploading stay yours. Answers from: network.
+query and path, never two of those. Beside the branch each change targets it
+names the branches that take a patch today, each with the day its regular
+support ends — the list a Releases: trailer may name, which a core clone
+supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing
+about which of them is still maintained. Which of those lines a change belongs
+on is not answered here: that is the author's claim, and
+typo3_commit_message_guide with workflow="core" is what reads a trailer against
+them. This reaches the network, and it reads: reviewing, voting and uploading
+stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -193,6 +200,34 @@ Answers with
         # rather than a change no bot has been near. Null where the log was not
         # read.
         botMessageCount: integer or null  # optional
+    # The branches that take a patch today, from a list this server ships rather
+    # than from the review server, so it is answered whatever the status above says.
+    # It is what a Releases: trailer may name, and a core clone supplies it nowhere:
+    # git branch -r reaches back to TYPO3_3-6 and says nothing about which of those
+    # is still maintained. Which of these lines a change belongs on is not here —
+    # that is the author's claim, and typo3_commit_message_guide with
+    # workflow="core" is what reads a trailer against them.
+    releaseLines:
+      # Newest first, the development line at the head.
+      branches:
+        - # The branch, spelled as a Releases: trailer spells it and as the branch
+          # field of a change above does.
+          branch: string
+          # One of: development, maintained. development: the line every core change
+          # is written against first. maintained: in regular support, so a patch
+          # pushed here is released from this branch. A line out of regular support
+          # is not in this list at all — what it releases comes from the ELTS
+          # partners rather than from the branch.
+          state: string
+          # The day regular support ends, as the release calendar states it. Null on
+          # the development line, which has no such date.
+          maintainedUntil: string or null
+      # Where the calendar was read, so it can be read again rather than trusted.
+      source: string
+      # The day it was read. A branch released since is one this list could not
+      # carry, and a change above targeting a branch that is absent here is either
+      # that or a line out of regular support.
+      readAt: string
     # Why nothing was answered, where status says unavailable. Null otherwise.
     unavailable:
       # One of: source-not-answering, source-not-parseable. source-not-answering:
@@ -211,7 +246,7 @@ Answered
 --------
 
 Recorded on 2026-08-24 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
+core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
 — vendor/autoload.php is not there either, and composer install writes both.
@@ -243,6 +278,8 @@ Text:
     Patch set 3 · e82b930e6e0587842427496c5ce01f625b27fb66
     Fetch: git fetch https://review.typo3.org/Packages/TYPO3.CMS refs/changes/40/95040/3
     Last moved: 2026-08-02 20:40:50.000000000
+
+    The branches that take a patch today, whichever one the change above targets: main is the development line, which every core change is written against first; 14.3 is in regular support until 2029-06-30; 13.4 is in regular support until 2027-12-31. Read from https://get.typo3.org/api/v1/major/ on 2026-08-05; a core clone carries no such list, since "git branch -r" reaches back to TYPO3_3-6 and says nothing about which of those is still maintained. Which of these a change belongs on is the author's claim rather than a consequence of the list — `typo3_commit_message_guide` with `workflow="core"` is what reads a `Releases:` trailer against them.
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
@@ -281,6 +318,27 @@ Data:
                 "botMessageCount": null
             }
         ],
+        "releaseLines": {
+            "branches": [
+                {
+                    "branch": "main",
+                    "state": "development",
+                    "maintainedUntil": null
+                },
+                {
+                    "branch": "14.3",
+                    "state": "maintained",
+                    "maintainedUntil": "2029-06-30"
+                },
+                {
+                    "branch": "13.4",
+                    "state": "maintained",
+                    "maintainedUntil": "2027-12-31"
+                }
+            ],
+            "source": "https://get.typo3.org/api/v1/major/",
+            "readAt": "2026-08-05"
+        },
         "indistinguishable": null,
         "unavailable": null
     }
@@ -339,6 +397,8 @@ Text:
     A vote a later patch set dropped is absent here rather than zero, and the copy condition that dropped it is written in the review log alone — ask again with `messages: "people"` where a label stands at nothing and you need to know whether it ever stood elsewhere.
 
     More than one change above carries the same Change-Id. That is what a backport keeps, so they are one patch on the branches each of them names. Gerrit relates them by nothing else, and the state of one says nothing about the state of the other.
+
+    The branches that take a patch today, whichever one the change above targets: main is the development line, which every core change is written against first; 14.3 is in regular support until 2029-06-30; 13.4 is in regular support until 2027-12-31. Read from https://get.typo3.org/api/v1/major/ on 2026-08-05; a core clone carries no such list, since "git branch -r" reaches back to TYPO3_3-6 and says nothing about which of those is still maintained. Which of these a change belongs on is the author's claim rather than a consequence of the list — `typo3_commit_message_guide` with `workflow="core"` is what reads a `Releases:` trailer against them.
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
@@ -519,6 +579,27 @@ Data:
                 "botMessageCount": null
             }
         ],
+        "releaseLines": {
+            "branches": [
+                {
+                    "branch": "main",
+                    "state": "development",
+                    "maintainedUntil": null
+                },
+                {
+                    "branch": "14.3",
+                    "state": "maintained",
+                    "maintainedUntil": "2029-06-30"
+                },
+                {
+                    "branch": "13.4",
+                    "state": "maintained",
+                    "maintainedUntil": "2027-12-31"
+                }
+            ],
+            "source": "https://get.typo3.org/api/v1/major/",
+            "readAt": "2026-08-05"
+        },
         "indistinguishable": null,
         "unavailable": null
     }
@@ -572,6 +653,8 @@ Text:
     An entry chained at an earlier patch set than it stands at now has moved on since the stack was built on it. Read it by its number rather than acting on the patch set the chain names.
 
     A vote a later patch set dropped is absent here rather than zero, and the copy condition that dropped it is written in the review log alone — ask again with `messages: "people"` where a label stands at nothing and you need to know whether it ever stood elsewhere.
+
+    The branches that take a patch today, whichever one the change above targets: main is the development line, which every core change is written against first; 14.3 is in regular support until 2029-06-30; 13.4 is in regular support until 2027-12-31. Read from https://get.typo3.org/api/v1/major/ on 2026-08-05; a core clone carries no such list, since "git branch -r" reaches back to TYPO3_3-6 and says nothing about which of those is still maintained. Which of these a change belongs on is the author's claim rather than a consequence of the list — `typo3_commit_message_guide` with `workflow="core"` is what reads a `Releases:` trailer against them.
 
     Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 
@@ -772,6 +855,27 @@ Data:
                 "botMessageCount": null
             }
         ],
+        "releaseLines": {
+            "branches": [
+                {
+                    "branch": "main",
+                    "state": "development",
+                    "maintainedUntil": null
+                },
+                {
+                    "branch": "14.3",
+                    "state": "maintained",
+                    "maintainedUntil": "2029-06-30"
+                },
+                {
+                    "branch": "13.4",
+                    "state": "maintained",
+                    "maintainedUntil": "2027-12-31"
+                }
+            ],
+            "source": "https://get.typo3.org/api/v1/major/",
+            "readAt": "2026-08-05"
+        },
         "indistinguishable": null,
         "unavailable": null
     }

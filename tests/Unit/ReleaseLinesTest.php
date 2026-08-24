@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 use TYPO3\DevCompanion\Tests\Support\Decision;
+use TYPO3\DevCompanion\Tests\Support\Requirement;
 
 /**
  * Which branches take a patch, and what the list is worth on a day nobody read
@@ -84,6 +85,22 @@ final class ReleaseLinesTest extends TestCase
     public function anUnknownBranchIsDescribedAsItself(): void
     {
         self::assertSame('15.0', ReleaseLines::describe('15.0', new \DateTimeImmutable('2026-08-05')));
+    }
+
+    /**
+     * The date `describe()` puts in a sentence, as data — `R-ANS-035` answers
+     * with both halves, and a reader of the second one would otherwise write the
+     * regex that takes it back out.
+     */
+    #[Requirement('R-ANS-035')]
+    #[Test]
+    public function theDayRegularSupportEndsIsReadableWithoutTheSentence(): void
+    {
+        self::assertSame('2027-12-31', ReleaseLines::maintainedUntil('13.4'));
+        // The development line and a branch this file never heard of: neither
+        // has such a day, and null is what says so.
+        self::assertNull(ReleaseLines::maintainedUntil('main'));
+        self::assertNull(ReleaseLines::maintainedUntil('13.5'));
     }
 
     /**

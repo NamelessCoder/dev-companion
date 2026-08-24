@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\DevCompanion\Contribution\Gerrit;
 use TYPO3\DevCompanion\Http\Recent;
+use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\GerritLookup;
@@ -1464,5 +1465,88 @@ final class GerritTest extends TestCase
 
         self::assertSame('unavailable', $answer['status']);
         self::assertSame('source-not-parseable', $answer['cause']);
+    }
+
+    /**
+     * `R-ANS-035`. The change answer names a branch and named nothing else, and
+     * the session rewriting a `Releases:` trailer rebuilt the rest from
+     * `git branch -r` against a remote 59 commits behind
+     * (`feedback/2026-08-24-122348`).
+     *
+     * Held against `ReleaseLines` rather than against the branches it carries
+     * today: the file is a calendar, and a test naming 14.3 would fail on the
+     * day 13.4 leaves regular support rather than on the day this placement
+     * breaks.
+     */
+    #[Requirement('R-ANS-035')]
+    #[Decision('D-ANS-104')]
+    #[Test]
+    public function theBranchesThatTakeAPatchStandBesideTheOneAChangeTargets(): void
+    {
+        $answer = GerritLookup::releaseLines();
+        $said = implode("\n", $answer['lines']);
+
+        self::assertSame(
+            ReleaseLines::releasable(),
+            array_column($answer['record']['branches'], 'branch'),
+        );
+        foreach ($answer['record']['branches'] as $line) {
+            self::assertStringContainsString($line['branch'], $said);
+            self::assertSame(ReleaseLines::state($line['branch']), $line['state']);
+            self::assertSame(ReleaseLines::maintainedUntil($line['branch']), $line['maintainedUntil']);
+        }
+
+        // The development line is the head of the list and has no such date,
+        // which is the one entry where a null is the answer rather than a gap.
+        self::assertSame(ReleaseLines::DEVELOPMENT, $answer['record']['branches'][0]['state']);
+        self::assertNull($answer['record']['branches'][0]['maintainedUntil']);
+
+        // Every window is in the text as well, so the two halves say the same:
+        // a maintained line reads as an oversight or as a typo depending on when
+        // its support ends, and only the date carries that.
+        foreach ($answer['record']['branches'] as $line) {
+            if ($line['maintainedUntil'] !== null) {
+                self::assertStringContainsString($line['maintainedUntil'], $said);
+            }
+        }
+
+        // Where the calendar came from, so a caller can read it again rather
+        // than trust this one.
+        self::assertStringContainsString(ReleaseLines::source(), $said);
+        self::assertStringContainsString(ReleaseLines::readAt(), $said);
+    }
+
+    /**
+     * `D-ANS-073`. The lines and their windows, never which of them this change
+     * belongs on: that reading is the author's claim about severity, and the
+     * answer hands over the tool that reads a trailer against them instead of
+     * making it.
+     */
+    #[Requirement('R-ANS-035')]
+    #[Decision('D-ANS-073')]
+    #[Test]
+    public function thePlacementNamesTheToolThatReadsATrailerAgainstThoseLines(): void
+    {
+        $said = implode("\n", GerritLookup::releaseLines()['lines']);
+
+        self::assertStringContainsString('typo3_commit_message_guide', $said);
+        self::assertStringContainsString('workflow="core"', $said);
+        self::assertStringContainsString('Releases:', $said);
+        // The claim is the author's, said in as many words.
+        self::assertStringContainsString('the author\'s claim', $said);
+    }
+
+    /**
+     * The list comes from a file this server ships rather than from the review
+     * server, so it is answered on every path through the tool — an empty search
+     * and an unreachable host included. Its schema says so, which is what a
+     * client validating `structuredContent` holds it to.
+     */
+    #[Requirement('R-ANS-035')]
+    #[Test]
+    public function theListIsAnsweredWhateverTheReviewServerDid(): void
+    {
+        self::assertContains('releaseLines', GerritLookup::outputSchema()['required']);
+        self::assertNotSame([], GerritLookup::releaseLines()['record']['branches']);
     }
 }

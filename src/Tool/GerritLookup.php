@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tool;
 
 use TYPO3\DevCompanion\Contribution\Forge;
 use TYPO3\DevCompanion\Contribution\Gerrit;
+use TYPO3\DevCompanion\Knowledge\ReleaseLines;
 use TYPO3\DevCompanion\Result\Schema;
 use TYPO3\DevCompanion\Result\ToolResult;
 use TYPO3\DevCompanion\Result\Unreachable;
@@ -44,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or search the server without holding either: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, or a search by query and path, never two of those. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or search the server without holding either: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, or a search by query and path, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -226,6 +227,22 @@ final class GerritLookup extends ReadOnlyTool
                         . 'been near. Null where the log was not read.',
                 ],
             ]), 'The changes that matched, newest activity first.'),
+            'releaseLines' => Schema::object([
+                'branches' => Schema::listOf(Schema::object([
+                    'branch' => Schema::string('The branch, spelled as a Releases: trailer spells it and as the branch field of a change above does.'),
+                    'state' => [
+                        'type' => 'string',
+                        'enum' => [ReleaseLines::DEVELOPMENT, ReleaseLines::MAINTAINED],
+                        'description' => 'development: the line every core change is written against first. '
+                            . 'maintained: in regular support, so a patch pushed here is released from this branch. '
+                            . 'A line out of regular support is not in this list at all — what it releases comes '
+                            . 'from the ELTS partners rather than from the branch.',
+                    ],
+                    'maintainedUntil' => Schema::nullableString('The day regular support ends, as the release calendar states it. Null on the development line, which has no such date.'),
+                ], ['branch', 'state', 'maintainedUntil']), 'Newest first, the development line at the head.'),
+                'source' => Schema::string('Where the calendar was read, so it can be read again rather than trusted.'),
+                'readAt' => Schema::string('The day it was read. A branch released since is one this list could not carry, and a change above targeting a branch that is absent here is either that or a line out of regular support.'),
+            ], ['branches', 'source', 'readAt'], 'The branches that take a patch today, from a list this server ships rather than from the review server, so it is answered whatever the status above says. It is what a Releases: trailer may name, and a core clone supplies it nowhere: git branch -r reaches back to TYPO3_3-6 and says nothing about which of those is still maintained. Which of these lines a change belongs on is not here — that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them.'),
             'unavailable' => Schema::unavailable([
                 'source-not-answering' => 'review.typo3.org did not answer this time, and the same call may answer '
                     . 'the next.',
@@ -244,7 +261,64 @@ final class GerritLookup extends ReadOnlyTool
                     . 'progress is invisible to it and looks exactly like one nobody pushed. Null means empty '
                     . 'really does mean nothing matched.',
             ],
-        ], ['status', 'source', 'query', 'changes', 'unavailable', 'indistinguishable']);
+        ], ['status', 'source', 'query', 'changes', 'releaseLines', 'unavailable', 'indistinguishable']);
+    }
+
+    /**
+     * The branches that take a patch today, beside the branch each change names.
+     *
+     * The one thing this answer said nothing about while naming a branch: a
+     * session rewriting a `Releases:` trailer was told the change targets `main`
+     * and rebuilt the rest from `git branch -r` and a listing of the changelog
+     * folders — an inference that holds in a full clone and nowhere else
+     * (`D-ANS-104`). Which of the lines a change belongs on stays out, because
+     * that is the author's claim rather than a consequence of the list
+     * (`D-ANS-073`), and the tool that reads a trailer against them is named
+     * instead. Separated from `answer()` so it can be held without a review
+     * server.
+     *
+     * @return array{
+     *     lines: list<string>,
+     *     record: array{
+     *         branches: list<array{branch: string, state: string, maintainedUntil: ?string}>,
+     *         source: string,
+     *         readAt: string
+     *     }
+     * }
+     */
+    public static function releaseLines(): array
+    {
+        $branches = [];
+        $said = [];
+        foreach (ReleaseLines::releasable() as $branch) {
+            $state = ReleaseLines::state($branch);
+            $branches[] = [
+                'branch' => $branch,
+                'state' => $state,
+                'maintainedUntil' => ReleaseLines::maintainedUntil($branch),
+            ];
+            $said[] = $state === ReleaseLines::DEVELOPMENT
+                ? $branch . ' is the development line, which every core change is written against first'
+                : ReleaseLines::describe($branch);
+        }
+
+        return [
+            'lines' => ['', sprintf(
+                'The branches that take a patch today, whichever one the change above targets: %s. Read from %s on '
+                    . '%s; a core clone carries no such list, since "git branch -r" reaches back to TYPO3_3-6 and '
+                    . 'says nothing about which of those is still maintained. Which of these a change belongs on is '
+                    . 'the author\'s claim rather than a consequence of the list — `typo3_commit_message_guide` with '
+                    . '`workflow="core"` is what reads a `Releases:` trailer against them.',
+                implode('; ', $said),
+                ReleaseLines::source(),
+                ReleaseLines::readAt(),
+            )],
+            'record' => [
+                'branches' => $branches,
+                'source' => ReleaseLines::source(),
+                'readAt' => ReleaseLines::readAt(),
+            ],
+        ];
     }
 
     /**
@@ -424,12 +498,14 @@ final class GerritLookup extends ReadOnlyTool
             ? self::reviewPostedOnIssue($issue)
             : null;
         $indistinguishable = self::indistinguishable($answer['status'], $direction, $review);
+        $releaseLines = self::releaseLines();
 
         $data = [
             'status' => $answer['status'],
             'source' => Gerrit::HOST,
             'query' => $answer['query'],
             'changes' => $answer['changes'],
+            'releaseLines' => $releaseLines['record'],
             'indistinguishable' => $indistinguishable,
             'unavailable' => Unreachable::of($answer['cause'], self::UNREACHABLE),
         ];
@@ -531,6 +607,11 @@ final class GerritLookup extends ReadOnlyTool
                     . 'so they are one patch on the branches each of them names. Gerrit relates them by nothing '
                     . 'else, and the state of one says nothing about the state of the other.';
             }
+            // Printed where a change came back, because that is where a branch
+            // was named — the placement `D-ANS-104` asks for. A search that
+            // matched nothing named none, and the data half carries the list
+            // either way.
+            $lines = [...$lines, ...$releaseLines['lines']];
             // The one thing this answer knows and the checkout does not: which
             // revision the review is of. Nothing here can read a local `HEAD`,
             // so the comparison is the caller's and the sentence is what says

@@ -3,7 +3,8 @@ id: D-ANS-104
 title: The maintained release lines are placed where a task names a branch
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - GerritTest::theBranchesThatTakeAPatchStandBesideTheOneAChangeTargets
 ---
 
 # D-ANS-104 — The maintained release lines are placed where a task names a branch
@@ -74,11 +75,11 @@ for it.
   [`D-ANS-073`](ans-073-what-can-take-a-patch-and-where-this-one-goes-are-two-readings.md)
   is the boundary a placed answer is held to: it states the lines and their
   windows, never which of them a change belongs on.
-- No requirement and no test yet, which is what `coveredBy: []` says here. The
-  demand is carrier-shaped —
+- The requirement is written with the placement rather than before it, because
+  the demand is carrier-shaped —
   [`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it-not-only-what-it-declares.md)
-  and `R-ANS-018` are each written on the answer that carries them — so it is
-  written with the placement rather than before it.
+  and `R-ANS-018` are each written on the answer that carries them. It is
+  [`R-ANS-035`](../../requirements/answers/ans-035-an-answer-that-names-a-target-branch-names-the-lines-that-take-a-patch.md).
 - The feedback is trimmed rather than archived. Its first claim, that nothing
   names the maintained branches, is answered; the placement it asks for in the
   same breath is not.
@@ -111,3 +112,20 @@ for it.
   that 13.4 is in regular support until 2027-12-31 is answered a question this
   judgement priced only for a core patch, and the boundary would then be wider
   than the feedback that moved it.
+
+## Since then
+
+**2026-08-24.** The carrier is `typo3_gerrit_lookup`, and the placement is the
+`releaseLines` field of its answer: the branches that take a patch today, newest
+first, each with its state and the day its regular support ends, beside the
+`branch` every change in that answer already carried. `typo3_project_describe`
+was the other candidate and was not taken. It is the call every session is told
+to start with, which is the wider reach, but its subject is the repository the
+server was started in, and the release calendar is a fact about TYPO3 rather
+than about that repository — it names a version where this decision's own title
+asks for a branch. Choosing it would also have handed the core's release
+branches to every site developer and extension author who calls it, which is the
+third **Wrong if** above, taken deliberately rather than observed.
+
+Nothing here settles any of the three. Whether the fact is now taken rather than
+rebuilt is a forward run's reading, not this one's.

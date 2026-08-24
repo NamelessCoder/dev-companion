@@ -14,8 +14,8 @@ coveredBy:
 # D-ANS-098 — A change answer names the issues its commit message resolves
 
 **`typo3_gerrit_lookup` answers a change with the Forge issues its commit
-message names, filled with the subject, tracker and status `R-ANS-029` asks
-of any record an answer names.**
+message names, filled with the subject, tracker and status `R-ANS-029` asks of
+any record an answer names.**
 
 The message is what joins a patch to the tracker, and the answer carries
 neither. A session walking from a change to the issue behind it reads the
@@ -48,8 +48,8 @@ message names a second.
   already passes it, reads the message in `Gerrit::names()` and unsets it before
   answering.
 - What it costs, measured against review.typo3.org on 2026-08-24 on that same
-  query: 95015 11.7 KB to 13.1 KB, 95375 15.9 KB to 17.5 KB, 91563 6.7 KB to
-  7.5 KB, 90176 5.7 KB to 6.3 KB. No second endpoint and no second round trip.
+  query: 95015 11.7 KB to 13.1 KB, 95375 15.9 KB to 17.5 KB, 91563 6.7 KB to 7.5
+  KB, 90176 5.7 KB to 6.3 KB. No second endpoint and no second round trip.
 - The tracker side is one call for the whole set. `Forge::issuesOf()` reads
   `/issues.json?issue_id=…&status_id=*`, which answered #110493, #110331 and
   #107080 with tracker, status and subject in 0.25 seconds and 5.4 KB on
@@ -72,8 +72,8 @@ message names a second.
 
 - Step 2, delivery, in the reading `D-ANS-068` gave it: the answering side of
   the tool the session did call is the lever, and the fact is one flag on a
-  query this tool already makes. Not step 1b — unlike the chain `D-ANS-094`
-  took on, no endpoint here goes unreached.
+  query this tool already makes. Not step 1b — unlike the chain `D-ANS-094` took
+  on, no endpoint here goes unreached.
 - Queued rather than taken on. The tool, the query and the parsing all exist,
   and what changes is a field on an answer — but it touches `src/` and the
   declared `outputSchema`, which are reviewed rather than improvised.
@@ -95,8 +95,8 @@ message names a second.
   the message there to drop the false positives the index answers with.
 - A trailer naming no number names no issue. The empty one is dropped rather
   than answered as an issue nobody can look up.
-- What the field is called, how the text half prints it, and which seam the
-  bulk read is reached through belong to the work.
+- What the field is called, how the text half prints it, and which seam the bulk
+  read is reached through belong to the work.
 
 ## Assumed
 

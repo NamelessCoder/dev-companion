@@ -51,8 +51,8 @@ only one this server points at.
   a statement about TYPO3.
 - **The description route is closed.** The twelve published descriptions cost
   3595 characters of the 3600
-  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, measured
-  the way that test measures on 2026-08-18. `D-SKL-033` decided against paying
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, measured the
+  way that test measures on 2026-08-18. `D-SKL-033` decided against paying
   listing characters for more request shapes, and mid-task entry points written
   into a description are more of them.
 - **The second session of the shape.**

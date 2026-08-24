@@ -51,8 +51,8 @@ gives half of it away in its closing sentence.
   from its create-and-boot half.
 - **A fourteenth description has 25 characters to fit into.** The twelve
   published descriptions cost 3575 of the 3600
-  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, counted
-  from `Installer::skills()` on 2026-08-18. The thirteenth,
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` allows, counted from
+  `Installer::skills()` on 2026-08-18. The thirteenth,
   `typo3-distribution-content`, is drafted and its publishing card sits in
   `todo/waiting/` with the room undecided.
 - **Half of what the feedback lists has no order to write down.** Resetting a

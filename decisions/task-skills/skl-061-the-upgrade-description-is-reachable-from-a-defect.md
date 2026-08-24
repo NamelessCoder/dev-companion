@@ -59,8 +59,8 @@ carries the activation states a premise the task does not meet.
   is not a statement.
 - **What the listing has left.** 3572 characters of the 3600 ceiling on
   2026-08-18, measured over `Installer::skills()` the way
-  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` measures it, with
-  the upgrade description at 267 of them.
+  `SkillTest::everyDescriptionIsWrittenToALengthOfItsOwn` measures it, with the
+  upgrade description at 267 of them.
 
 ## Decided
 

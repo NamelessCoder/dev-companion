@@ -142,3 +142,13 @@ The second **Wrong if** is untouched and stays the thing to watch:
 `ProjectDescribe::whereTheyRun()` still answers `ddev exec <command>`, which is
 now the right answer, and a boot session that still types the variables the
 wrong way after this would be a fault in that answer rather than in the hint.
+
+## Since then
+
+The reading measured the forms the feedback named, and a session has since paid
+for one it did not: a command written across several lines inside the `bash -c`
+string. None of the four **Wrong if** covers that — DDEV did not change and the
+statement that landed is still right about what it says — so what is open is a
+case rather than a correction. It is judged in
+[`D-KNW-119`](knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md),
+which takes the same subject one form further and carries the card.

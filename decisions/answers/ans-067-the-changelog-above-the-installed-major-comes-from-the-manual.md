@@ -98,3 +98,18 @@ so the entries a caller is upgrading *to* were the ones the tool could not show.
   installation's highest version and the host's are the same. Nothing withholds
   the read in that case today: the skip is by named version, not by comparing
   the two highest.
+
+## Since then
+
+`feedback/2026-08-24-140259` is a session refused by the gate the last
+**Decided** keeps: it asked for v14 Fluid entries before `composer install` had
+run and was told there was no installation. Read on 2026-08-25 as evidence
+against that line and it is not. Its query,
+`registerTagAttribute registerUniversalTagAttributes`, run against
+`.checkouts/13.4` with the host answering, returns one entry — the 13.3
+Deprecation "Fluid standalone methods", `matchedIn: "body"` and
+`answeredBy: "packages"` — while the six manual versions from 15.0 down to 14.0
+contribute nothing, exactly as the decided line about identifiers in a body says
+they would. An ungated manual half would have answered that session the same
+nothing. What it was owed instead is
+[`D-ANS-105`](ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md).

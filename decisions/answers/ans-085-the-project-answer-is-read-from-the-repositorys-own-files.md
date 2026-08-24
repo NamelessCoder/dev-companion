@@ -138,3 +138,12 @@ answer describing a repository with nothing installed in it, and the
 `no-installation` one where there was no repository to describe. Nothing here
 has been read back from a session on a real clone, which is what the four
 **Wrong if** above are still waiting for.
+
+The last **Decided** — that this reaches `typo3_project_describe` and no other
+tool — has a session's cost against it since 2026-08-24.
+`feedback/2026-08-24-140259` hit the uninstalled state through
+`typo3_changelog_lookup`, read `cause: no-installation` as permanent, and
+answered the next two hours of API questions out of a core git checkout. The
+line still holds for what those tools answer about the installation, and what
+moves is the state of the repository they are refusing in:
+[`D-ANS-105`](ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md).

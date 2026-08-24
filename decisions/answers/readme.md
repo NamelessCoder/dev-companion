@@ -7,6 +7,7 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-ANS-105`][D-ANS-105] — The unsupported answer says what would make it answerable · 2026-08-25
 - [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24
 - [`D-ANS-098`][D-ANS-098] — A change answer names the issues its commit message resolves · 2026-08-24
 - [`D-ANS-099`][D-ANS-099] — A suite that stages the working tree is offered marked rather than withheld · 2026-08-24
@@ -107,6 +108,7 @@ one is added.
 - [`D-ANS-002`][D-ANS-002] — Rarity, field length and corpus length decide a lookup's rank · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-105]: ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md
 [D-ANS-097]: ans-097-a-bounded-answer-spends-its-slots-on-the-hints-that-bind-its-caller.md
 [D-ANS-098]: ans-098-a-change-answer-names-the-issues-its-commit-message-resolves.md
 [D-ANS-099]: ans-099-a-suite-that-stages-the-working-tree-is-offered-marked-rather-than-withheld.md

@@ -166,3 +166,23 @@ Nothing about this entry changes. The eleven to one is one run, a second of the
 same shape is what would settle it, and `D-AUD-012` carries that as its first
 **Wrong if**.
 
+### 2026-08-24 — a session of the counted shape opened both skills
+
+`feedback/2026-08-24-183420` and `feedback/2026-08-24-183447` are one session in
+`/home/benji/projects/typo3-cms` on `claude-opus-5`, reviewing Gerrit change
+91127. It activated `typo3-core-patch-checkout` and `typo3-core-patch-review`,
+reports both as fitting, and names no user prompt and no interrupt — unlike the
+2026-08-10 session this entry was written from, where the skill opened at call
+14 after "warum fragst du das review tool nicht an?".
+
+Six hours earlier in the same checkout, `feedback/2026-08-24-122413` reviewed
+change 95179 on `claude-opus-5[1m]` and opened nothing. Same client, same day,
+same task shape, and nothing this server publishes differed between the two.
+What the record separates them by is the model variant, which is one pair of
+sessions and not something to read a cause out of — the two tasks differ in
+their briefs as well, and one of them was written in German.
+
+The statement holds, and this is the first evidence for it that is not an
+absence. What it corrects is how the benchmark above reads: eighty-two empty
+rows are one arm on one model variant, and not a property of the request shape.
+

@@ -132,3 +132,33 @@ twice, wrote the manuals by hand and shipped no test, and each of those three
 absences has a published skill that owns it. That is one tool and one moment
 again — the caller named the extension, asked, and is holding the object — and
 `D-SKL-053` carries the reading and the boundary.
+
+The first **Wrong if** fired on 2026-08-24. `feedback/2026-08-24-122413` is a
+review of Gerrit change 95179 in `/home/benji/projects/typo3-cms` on
+`claude-opus-5[1m]`, and
+`typo3_gerrit_lookup(change: "95179", messages: "people")` was among its first
+calls. No skill opened at any point in that session, and `typo3_task_guide` was
+never called either. The tail was in the answer it read: `workflow()` fires on
+every answered `change` form, it landed here on 2026-08-14, and the session
+quotes the `instructions` in the wording `D-AUD-012` gave them on 2026-08-19 —
+so the server it talked to is later than both. Re-run in this checkout on
+2026-08-24, the same call still ends on the two workflow names.
+
+What the session reports is the answer's completeness rather than its tail: the
+lookup "answered that so completely in one call that the work then looked like a
+sequence of concrete edits rather than a workflow needing a procedure". It names
+neither skill, so whether it read that far is not established. What is
+established is that both names stood on the answer it then worked from, and that
+neither was opened.
+
+So the name is one step short of the handover, and what the **Wrong if** already
+named as what is left is queued rather than decided here:
+`todo/open/2026-08-24-122413`, at `normal`, weighs the order itself in the
+answer in the shape `TestRunGuide::SCRIPTS_GUIDE` took. Two readings in the same
+corpus bear on it. `feedback/2026-08-24-183447` is a session that read
+`core/contribution/gerrit-workflow` whole and reports it as the model of a
+document read — the procedure end to end, and no search after it — which is
+content delivered at the moment of asking working where a name did not. That
+session is also the second **Wrong if**'s first case: it held both skills open,
+called this tool for change 91127, and reported the answer as what worked rather
+than the tail as noise.

@@ -5408,6 +5408,22 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The mechanism behind the failure the separator note above never
+     * describes: an option after a path is handed to phpunit rather than read
+     * — `D-KNW-112`.
+     */
+    #[Decision('D-KNW-112')]
+    #[Test]
+    public function theInvocationNoteSaysWhereTheOptionParsingStops(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString('stops reading its own options at the first word that is not one', $notes);
+        self::assertStringContainsString('shift $((OPTIND - 1))', $notes);
+        self::assertStringContainsString('Test file "--filter" not found', $notes, 'the line the failing run prints');
+    }
+
+    /**
      * `R-KNW-055`, the other half. `TestSuiteHints::invocation()` is emitted
      * with every `typo3_test_run_guide` answer, so the iterate-narrowly note
      * reaches the one caller it is wrong for whether or not they asked about

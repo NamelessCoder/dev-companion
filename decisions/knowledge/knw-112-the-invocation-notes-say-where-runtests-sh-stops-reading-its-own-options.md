@@ -3,7 +3,8 @@ id: D-KNW-112
 title: 'The invocation notes say where runTests.sh stops reading its own options'
 date: 2026-08-24
 status: open
-coveredBy: []
+coveredBy:
+  - HintsTest::theInvocationNoteSaysWhereTheOptionParsingStops
 ---
 
 # D-KNW-112 — The invocation notes say where runTests.sh stops reading its own options
@@ -29,8 +30,8 @@ not read, and nothing to search on once phpunit had refused.
   passes `"$@"` to the phpunit command. `getopts` stops at the first non-option
   word, so `-s functional -d sqlite <path> -- --filter x` leaves
   `<path> -- --filter x` for phpunit and phpunit reads `--filter` as a test
-  file. Only the option letters differ across the four — `13.4` carries `t:` and
-  `12.4` carries `g` — and the parsing is the same on all of them.
+  file. Only the option letters differ across the four — `12.4` and `13.4` carry
+  `g`, `13.4` carries `t:` as well — and the parsing is the same on all of them.
 - Nothing in `knowledge/` or `skills/` says it. Searched on 2026-08-24: the one
   note about the separator is "Everything after `--` is handed to the underlying
   tool unchanged", which describes the working form and says nothing about a
@@ -72,9 +73,11 @@ not read, and nothing to search on once phpunit had refused.
   wording.
 - The statement is unbound. The parser is the same on all four covered branches,
   so no `since` and no `until`.
-- `coveredBy: []` because nothing runs over an invocation note's wording. What
-  would catch its absence is the next session to write the command, which is
-  what the **Wrong if** below is about.
+- The note is held by a test naming this entry, as the two notes beside it are.
+  Nothing sweeps the wording of a note, so what a test can hold is that this one
+  is still there: the parsing rule, `shift $((OPTIND - 1))`, and the line the
+  failing run prints. Whether the wording lands is what the **Wrong if** below
+  is about, and no test reaches that.
 
 ## Assumed
 

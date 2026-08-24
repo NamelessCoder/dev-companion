@@ -15,7 +15,7 @@ it names what it settled.
 
 - `bin/cli components:derive` reads the `backend.css` each covered branch
   commits and writes `component/classes.json`, `component/elements.json` and
-  `component/styleguide.json`: 242 classes with 39 of them placed, 137 custom
+  `component/styleguide.json`: 219 classes with 36 of them placed, 137 custom
   elements, 31 listed components, in under half a second and without an
   installation. `components:check` re-derives and fails where the committed
   files have fallen behind.
@@ -26,6 +26,11 @@ it names what it settled.
 - `knowledge/documents/any/backend/using-the-styleguide.md`, and the styleguide
   listing read as the public API boundary.
 - The asset build draft, with the review of 2026-08-24 worked in.
+- The curation the maintainer read on 2026-08-24: 22 entries where there were
+  26, each naming the styleguide actions that demonstrate it — `D-CAT-009`.
+- The naming, worked off whole: `checkouts:verify` over four checks named for
+  what they read, `knowledge/catalog/` filed under three subjects, and
+  `typo3_snapshot_scope` for the tool that answers for the bundled snapshot.
 
 ## What it does not do, and where each is written
 

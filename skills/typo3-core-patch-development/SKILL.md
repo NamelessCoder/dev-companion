@@ -30,7 +30,7 @@ somebody else's checkout with nothing to report it.
    behaviour being complained about, and reach it when a query on the wording
    does not; and the **notes**, where a maintainer said why. Establish which of
    those you have before writing code: what the reporter saw, what the branch
-   does today, and what the project intends the API to be for. Two of that
+   does today, and what the project intends the API to be for. Three of that
    reading are acts, and what they produce goes into the assessment before any
    code:
    - **Read the closure reason and the target version for what the conversation
@@ -45,6 +45,13 @@ somebody else's checkout with nothing to report it.
      behaviour the reported code had and the replacement does not. An
      alternative closes an issue only if it does the same work, and what it
      drops is usually the capability the reporter was reaching for.
+   - **Enumerate the points the issue requires, the ones only a comment names
+     included.** A subject naming two things over comments naming three is the
+     ordinary case, and the comment is the list. One patch covers all of them,
+     or each point it leaves is given an issue of its own here, before any code:
+     a split part needs a number, and the `Resolves:` trailer and the changelog
+     file name each take one. A point that is riskier to change is an argument
+     for giving it its own issue rather than for dropping it.
 
 4. `typo3_gerrit_lookup` with the same issue number, **before any code is
    written**. Its cheapest outcome is the one that cancels the work and it costs
@@ -144,6 +151,12 @@ afterwards confirms what you already wrote.
 Keep the patch one change. What else you noticed is another issue and another
 patch; a diff that fixes two things is a diff a reviewer has to accept or reject
 as one.
+
+That narrows the work and never the points the issue lists. Those were settled
+while it was assessed: all of them are in this patch, or the ones that are not
+already have issues of their own. A point dropped here is dropped invisibly,
+because `Resolves:` closes the issue on every point it names and nobody reopens
+a closed one.
 
 Find out whether the area is moving before you build on it, and fetch and rebase
 onto the branch you target before you finalise. A patch written against code

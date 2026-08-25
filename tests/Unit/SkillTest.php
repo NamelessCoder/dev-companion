@@ -1848,6 +1848,72 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('a change that has to announce itself, or a breaking one', $skill);
     }
 
+    /**
+     * The scope half of the same assessment. `R-SKL-016` has the notes read for
+     * the status, the relations and the maintainer's reason, and the list of
+     * what the issue requires is the fourth thing they carry (`D-SKL-075`).
+     */
+    #[Requirement('R-SKL-027')]
+    #[Decision('D-SKL-075')]
+    #[Test]
+    public function aPatchCoversEveryPointItsIssueLists(): void
+    {
+        // Forge #106584 with this skill active: its subject names two
+        // ViewHelpers, note 3 names three and note 5 confirms them, and the
+        // session shipped `href` and `src` and reported `f:image` `alt` as a
+        // follow-up "needing its own issue". Re-run on 2026-08-25,
+        // `typo3_forge_lookup issue=106584 notes=people` answers all three, so
+        // the third point reached the caller in one call and did — what was
+        // missing is what the order says to do with it, and the correction came
+        // from the user (`feedback/2026-08-24-162543`).
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-development/SKILL.md',
+        ));
+
+        // The list is made where it is read, as a third act of the step that
+        // reads the issue rather than as a rung of its own: `D-SKL-010`'s
+        // **Wrong if** is that a skill growing a sentence per feedback stops
+        // being an order.
+        self::assertStringContainsString(
+            '**Enumerate the points the issue requires, the ones only a comment names included.**',
+            $skill,
+        );
+        // Both outcomes, because only one of the two was the failure.
+        self::assertStringContainsString(
+            'One patch covers all of them, or each point it leaves is given an issue of its own here, '
+            . 'before any code',
+            $skill,
+        );
+        // Why the split cannot wait until the patch is written: each part needs
+        // a number, and `core/contribution/commit-messages` and
+        // `core/contribution/changelog` each demand one.
+        self::assertStringContainsString(
+            'the `Resolves:` trailer and the changelog file name each take one',
+            $skill,
+        );
+        // Risk is what the filing session dropped the third point for.
+        self::assertStringContainsString(
+            'riskier to change is an argument for giving it its own issue rather than for dropping it',
+            $skill,
+        );
+        self::assertLessThan(
+            strpos($skill, '## Make the change'),
+            strpos($skill, '**Enumerate the points the issue requires'),
+        );
+
+        // "Keep the patch one change" is read at the moment the narrowing is
+        // decided and argues for it there, so the other direction stands beside
+        // it and not in the assessment alone.
+        $narrowing = strpos($skill, 'That narrows the work and never the points the issue lists');
+        self::assertNotFalse($narrowing, 'the skill does not say what keeping the patch one change narrows');
+        self::assertGreaterThan((int) strpos($skill, 'Keep the patch one change'), $narrowing);
+        // What a silent narrowing costs, which nothing outside the session sees.
+        self::assertStringContainsString(
+            'closes the issue on every point it names and nobody reopens a closed one',
+            $skill,
+        );
+    }
+
     #[Requirement('R-SKL-013')]
     #[Decision('D-SKL-007')]
     #[Test]

@@ -217,8 +217,16 @@ Text:
     `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     Running it: check — it reports and hands the checkout back as it was.
 
-    Checks core PHP files against the registered integrity rules.
-    Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.
+    Reads typo3/sysext/*/Classes, Tests/Unit and Tests/Functional for the conventions neither lintPhp nor cgl covers: the exception code on every throw, the annotations, the namespace against the path, the test method prefix and the final test class.
+    Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
+
+    ## listExceptionCodes
+    Command from the TYPO3 core root:
+    `CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes`
+    Running it: check — it reports and hands the checkout back as it was.
+
+    Prints every exception code found below typo3/ as JSON. It runs the duplicate check with the flag that only prints, which skips both failure paths, so it exits successfully whatever it finds.
+    Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one.
 
     ## checkComposer
     Command from the TYPO3 core root:
@@ -554,12 +562,24 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
                 "runs": "check",
                 "targeted": null,
-                "description": "Checks core PHP files against the registered integrity rules.",
-                "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.",
+                "description": "Reads typo3/sysext/*/Classes, Tests/Unit and Tests/Functional for the conventions neither lintPhp nor cgl covers: the exception code on every throw, the annotations, the namespace against the path, the test method prefix and the final test class.",
+                "whenToUse": "Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.",
                 "domains": [
                     "php"
                 ],
                 "versions": "TYPO3 v13 and newer"
+            },
+            {
+                "suite": "listExceptionCodes",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes",
+                "runs": "check",
+                "targeted": null,
+                "description": "Prints every exception code found below typo3/ as JSON. It runs the duplicate check with the flag that only prints, which skips both failure paths, so it exits successfully whatever it finds.",
+                "whenToUse": "Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
             },
             {
                 "suite": "checkComposer",
@@ -1296,7 +1316,7 @@ Text:
     - A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
     - The node suites need none of that. `-s build`, `-s lintTypescript`, `-s lintScss`, `-s lintHtml`, `-s unitJavascript` and `-s npm` run npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked, and install the `node_modules` they need themselves. So a fresh clone and a bare git worktree run them without a composerInstall first, which is how a build is run for a checkout that has to stay as it is. That is read off the suite bodies rather than measured from a run.
 
-    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 24 suites out. A path landing in one of those domains means calling again.
+    Narrowed to the css domain(s) the given paths touch. Suites outside them cannot fail on this change; call again without paths to see all of them. No given path reached php, fluid, typoscript, xliff, docs and typescript, which leaves 25 suites out. A path landing in one of those domains means calling again.
 
     ## e2e-prepare
     Command from the TYPO3 core root:
@@ -1406,7 +1426,7 @@ Data:
                 "docs",
                 "typescript"
             ],
-            "suites": 24
+            "suites": 25
         },
         "suites": [
             {

@@ -262,6 +262,7 @@ Text:
     - tca-schema-api — TCA Schema API (PHP)
     - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
     - content-element-preview — The Backend Preview of a Content Element (Fluid)
+    - core-exception-codes — The Exception Code Every Core Throw Carries (PHP)
     - extension-declarative-files — The Files an Extension Is Configured By (PHP)
     - extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
     - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
@@ -704,6 +705,11 @@ Data:
                 "id": "content-element-preview",
                 "title": "The Backend Preview of a Content Element",
                 "category": "Fluid"
+            },
+            {
+                "id": "core-exception-codes",
+                "title": "The Exception Code Every Core Throw Carries",
+                "category": "PHP"
             },
             {
                 "id": "extension-declarative-files",
@@ -1549,6 +1555,7 @@ Text:
     - tca-formengine — TCA, FormEngine, and Backend Forms (PHP)
     - datahandler-testing — Testing DataHandler Behaviour (PHP)
     - content-element-preview — The Backend Preview of a Content Element (Fluid)
+    - core-exception-codes — The Exception Code Every Core Throw Carries (PHP)
     - extension-declarative-files — The Files an Extension Is Configured By (PHP)
     - extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
     - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
@@ -1904,6 +1911,11 @@ Data:
                 "id": "content-element-preview",
                 "title": "The Backend Preview of a Content Element",
                 "category": "Fluid"
+            },
+            {
+                "id": "core-exception-codes",
+                "title": "The Exception Code Every Core Throw Carries",
+                "category": "PHP"
             },
             {
                 "id": "extension-declarative-files",

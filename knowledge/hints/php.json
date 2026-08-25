@@ -1,5 +1,44 @@
 [
   {
+    "id": "core-exception-codes",
+    "title": "The Exception Code Every Core Throw Carries",
+    "domains": [
+      "php"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "throw new",
+      "throw an exception",
+      "throws",
+      "exception code",
+      "undefined exception code",
+      "duplicate exception code",
+      "Undefined Exception Codes detected",
+      "checkIntegrityPhp",
+      "checkExceptionCodes",
+      "listExceptionCodes",
+      "phpIntegrityChecker"
+    ],
+    "hints": [
+      "Every throw in the core carries a unique ten-digit integer exception code, by convention the unix timestamp the throw was written at. It is the second constructor argument of a PHP exception, and the code: named argument where a core exception class takes the parameter somewhere else.",
+      "A fixture is read exactly as production code is, so a throw written for one needs its code too.",
+      {
+        "text": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp is what reports it, as Undefined, Duplicated or Malformed Exception Codes detected, each with the file and the line. Malformed is the code that is not an integer of that length. Which directories it reads is in the suite's own entry, which typo3_test_run_guide returns.",
+        "since": 13
+      },
+      {
+        "text": "A code taken from an exception that was caught is left alone: getCode() in the code argument passes.",
+        "since": 13
+      },
+      {
+        "text": "CI=true ./Build/Scripts/runTests.sh -s checkExceptionCodes is what reports it, over every *.php below typo3/, and it stops at the first throw it finds without a code.",
+        "until": 12
+      },
+      "The suite named for listing exception codes checks nothing: -s listExceptionCodes prints them as JSON and exits successfully whether one is missing or used twice. It is how to see which codes are taken, and the suites above are what confirm a throw has one.",
+      "The core's own pre-merge pipeline runs the checking suite, so a throw written without a code fails there before a person reads the patch."
+    ]
+  },
+  {
     "id": "php-versions",
     "title": "Which PHP a TYPO3 Version Requires and Is Tested On",
     "domains": [

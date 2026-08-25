@@ -386,24 +386,12 @@ Text:
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
+    - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     - `CI=true ./Build/Scripts/runTests.sh -s checkRst`
     - `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
-    ## unit
-    `CI=true ./Build/Scripts/runTests.sh -s unit`
-    Targeted: `CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>`
-    Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.
-    ## functional
-    `CI=true ./Build/Scripts/runTests.sh -s functional`
-    Targeted: `CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>`
-    Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.
-    ## cgl
-    `CI=true ./Build/Scripts/runTests.sh -s cgl`
-    Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
-    Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.
-    ## cglGit
-    `CI=true ./Build/Scripts/runTests.sh -s cglGit`
-    Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
-    Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
+    ## checkIntegrityPhp
+    `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
+    Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -754,60 +742,23 @@ Data:
         "checks": [
             "CI=true ./Build/Scripts/runTests.sh -s unit",
             "CI=true ./Build/Scripts/runTests.sh -s functional",
+            "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
             "CI=true ./Build/Scripts/runTests.sh -s checkRst",
             "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
         ],
         "conditionalChecks": [],
         "testSuites": [
             {
-                "suite": "unit",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
-                "runs": "unknown",
-                "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
-                "description": "PHP unit tests.",
-                "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
+                "suite": "checkIntegrityPhp",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
+                "runs": "check",
+                "targeted": null,
+                "description": "Reads typo3/sysext/*/Classes, Tests/Unit and Tests/Functional for the conventions neither lintPhp nor cgl covers: the exception code on every throw, the annotations, the namespace against the path, the test method prefix and the final test class.",
+                "whenToUse": "Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.",
                 "domains": [
                     "php"
                 ],
-                "versions": ""
-            },
-            {
-                "suite": "functional",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-                "runs": "unknown",
-                "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>",
-                "description": "PHP functional tests, sqlite by default.",
-                "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
-                "domains": [
-                    "php",
-                    "fluid",
-                    "typoscript"
-                ],
-                "versions": ""
-            },
-            {
-                "suite": "cgl",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
-                "runs": "change",
-                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
-                "description": "Checks and fixes coding guideline issues for all core PHP files.",
-                "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
-                "domains": [
-                    "php"
-                ],
-                "versions": ""
-            },
-            {
-                "suite": "cglGit",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-                "runs": "change",
-                "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
-                "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-                "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. It is `Build/Scripts/cglFixMyCommit.sh` in the container, so running that script directly buys nothing and puts it on the host's PHP rather than on the one the branch pins. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
-                "domains": [
-                    "php"
-                ],
-                "versions": ""
+                "versions": "TYPO3 v13 and newer"
             }
         ],
         "checklist": [
@@ -941,8 +892,12 @@ Text:
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
+    - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     - `CI=true ./Build/Scripts/runTests.sh -s lintScss`
     - `CI=true ./Build/Scripts/runTests.sh -s build`
+    ## listExceptionCodes
+    `CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes`
+    Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one.
     ## cglGit
     `CI=true ./Build/Scripts/runTests.sh -s cglGit`
     Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
@@ -1028,11 +983,24 @@ Data:
         "checks": [
             "CI=true ./Build/Scripts/runTests.sh -s unit",
             "CI=true ./Build/Scripts/runTests.sh -s functional",
+            "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
             "CI=true ./Build/Scripts/runTests.sh -s lintScss",
             "CI=true ./Build/Scripts/runTests.sh -s build"
         ],
         "conditionalChecks": [],
         "testSuites": [
+            {
+                "suite": "listExceptionCodes",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes",
+                "runs": "check",
+                "targeted": null,
+                "description": "Prints every exception code found below typo3/ as JSON. It runs the duplicate check with the flag that only prints, which skips both failure paths, so it exits successfully whatever it finds.",
+                "whenToUse": "Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one.",
+                "domains": [
+                    "php"
+                ],
+                "versions": ""
+            },
             {
                 "suite": "cglGit",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
@@ -1182,6 +1150,10 @@ Text:
     Relevant TYPO3 core checks:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
+    - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
+    ## checkIntegrityPhp
+    `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
+    Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
     ## e2e-browser
     `CI=true ./Build/Scripts/runTests.sh -s e2e-browser`
     Use to watch a spec run and step through it. It prints the UI URL and the instance URL beside it, then waits on a keypress it reads from /dev/tty. Like e2e-prepare it needs a controlling terminal; a run that has none removes both containers and still reports SUCCESS.
@@ -1192,9 +1164,6 @@ Text:
     ## checkExtensionScannerRst
     `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
     Use when a deprecation or breaking change adds extension scanner matchers.
-    ## checkIntegrityPhp
-    `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
-    Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.
 
     Suggested checklist:
     - Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
@@ -1388,10 +1357,23 @@ Data:
         "rules": [],
         "checks": [
             "CI=true ./Build/Scripts/runTests.sh -s unit",
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
+            "CI=true ./Build/Scripts/runTests.sh -s functional",
+            "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp"
         ],
         "conditionalChecks": [],
         "testSuites": [
+            {
+                "suite": "checkIntegrityPhp",
+                "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
+                "runs": "check",
+                "targeted": null,
+                "description": "Reads typo3/sysext/*/Classes, Tests/Unit and Tests/Functional for the conventions neither lintPhp nor cgl covers: the exception code on every throw, the annotations, the namespace against the path, the test method prefix and the final test class.",
+                "whenToUse": "Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.",
+                "domains": [
+                    "php"
+                ],
+                "versions": "TYPO3 v13 and newer"
+            },
             {
                 "suite": "e2e-browser",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s e2e-browser",
@@ -1431,18 +1413,6 @@ Data:
                     "php"
                 ],
                 "versions": ""
-            },
-            {
-                "suite": "checkIntegrityPhp",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
-                "runs": "check",
-                "targeted": null,
-                "description": "Checks core PHP files against the registered integrity rules.",
-                "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.",
-                "domains": [
-                    "php"
-                ],
-                "versions": "TYPO3 v13 and newer"
             }
         ],
         "checklist": [

@@ -183,8 +183,31 @@
       "domains": [
         "php"
       ],
-      "description": "Checks core PHP files against the registered integrity rules.",
-      "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers."
+      "base": true,
+      "description": "Reads typo3/sysext/*/Classes, Tests/Unit and Tests/Functional for the conventions neither lintPhp nor cgl covers: the exception code on every throw, the annotations, the namespace against the path, the test method prefix and the final test class.",
+      "whenToUse": "Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line."
+    },
+    {
+      "suite": "checkExceptionCodes",
+      "until": 12,
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkExceptionCodes",
+      "runs": "check",
+      "domains": [
+        "php"
+      ],
+      "base": true,
+      "description": "Reads every *.php below typo3/ for a throw without a ten-digit exception code and for a code used twice, and stops at the first one it finds.",
+      "whenToUse": "Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it. It is the exception-code half of checkIntegrityPhp on the branches that have no integrity checker."
+    },
+    {
+      "suite": "listExceptionCodes",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes",
+      "runs": "check",
+      "domains": [
+        "php"
+      ],
+      "description": "Prints every exception code found below typo3/ as JSON. It runs the duplicate check with the flag that only prints, which skips both failure paths, so it exits successfully whatever it finds.",
+      "whenToUse": "Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one."
     },
     {
       "suite": "checkComposer",

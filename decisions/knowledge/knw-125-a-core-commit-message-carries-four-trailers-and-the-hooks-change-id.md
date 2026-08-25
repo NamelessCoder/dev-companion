@@ -49,9 +49,10 @@ two places to be wrong.
 - The same file says "Do not credit tooling or assistants in commit messages",
   which is the core's own ground for the two trailers that stay refused. The
   maintainer's ruling of 2026-08-24 had been the only source for it.
-- That file was read at `781c852587` out of the object database rather than the
-  working tree, because `.checkouts/main` stops at `3cbdea24dd` of 2026-08-07
-  and the commit adding it came later. It is on the core's `main`.
+- Read at `fc0b542e52` of 2026-08-21, and identical on `13.4` and `14.3`. The
+  file does not exist on `12.4`, so the core states this to an agent on the
+  maintained lines and not on the oldest one — which changes nothing about the
+  rule, because the rule is the maintainer's rather than that file's.
 - The core's `AGENTS.md` states one half of what the hook does with the line:
   "The hook preserves the trailer and only ignores it when computing the
   `Change-Id`." What it leaves out is the half below, which is what this corpus

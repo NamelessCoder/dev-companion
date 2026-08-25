@@ -1,0 +1,100 @@
+---
+id: D-KNW-124
+title: Frontend render pipeline state is a gap this server owns
+date: 2026-08-25
+status: open
+---
+
+# D-KNW-124 — Frontend render pipeline state is a gap this server owns
+
+**Where the frontend request pipeline fills and empties `PageRenderer`, and what
+`reset()` leaves standing, is inside this server's boundary and missing from
+it.**
+
+The corpus answers what a page template is handed and how a rendering is proved,
+and nothing about the state the renderer holds between the two. A session
+reviewing a change to the pipeline itself is handed the middleware conventions,
+which do not bear on the diff.
+
+## Evidence
+
+- Re-run on 2026-08-25 against the corpus as it is now. `bin/cli hints:probe`
+  with the feedback's own questions — "when is PageRenderer bodyContent
+  populated and cleared during a frontend request" and "does
+  config.disableAllHeaderCode skip PageRenderer head assembly" — matches nothing
+  and returns the whole index. The third, "which PageRenderer properties does
+  reset() not reset", reaches `persistence-reading` on text alone.
+- The vocabulary is absent. `bodyContent`, `renderPageWithUncachedObjects`,
+  `disableAllHeaderCode`, `metaTagRegistry`, `jsLibs` and `JsonRenderer` occur
+  nowhere below `knowledge/` or `skills/`.
+- The path-scoped call is the one that missed. Probed with
+  `typo3/sysext/core/Classes/Page/PageRenderer.php` and
+  `typo3/sysext/frontend/Classes/Http/RequestHandler.php`, the first hit is
+  `system-extension-boundaries`, whose `appliesTo` is `typo3/sysext/` — the hint
+  that applies to every core file. `routing-request-handling` follows it on
+  `/Http/`, and it states PSR-7, middleware registration and request scope.
+- The neighbours are each about something else. `frontend-page-rendering`
+  answers which template renders the page, `page-cache-flushing` which cache
+  serves a stale one, and `proving-a-rendering` how a throwaway functional test
+  is built.
+- `knowledge/server-scope.json` puts this on the answering side. Its
+  `doesNotCover` entry for PHP source as code excludes a signature and an
+  `@internal` annotation and says what is answered instead: "typo3_hint_lookup
+  says what the subsystem is built to."
+- The session read it out of the checkout instead, in ten methods across
+  `RequestHandler.php` and `PageRenderer.php`, and it cost about a third of the
+  session. What it found changed the commit message of the patch under review.
+
+## Decided
+
+- Built, as a hint of its own rather than more sentences on
+  `frontend-page-rendering`. One hint is one question (`D-KNW-030`): that one
+  answers which template renders a page, this one what the request does to the
+  renderer while it runs, and they are reached by different paths —
+  `Classes/Page/`, `frontend/Classes/Http/` and the callers of both, against
+  `PAGEVIEW` and a backend layout.
+- The boundary is the state the renderer holds across the phases of one request:
+  which phase fills `bodyContent`, that `renderPageWithUncachedObjects()`
+  empties it and deliberately does not `reset()`, that the uncached content
+  objects run with the rest of the state still populated, and what `reset()`
+  clears against what it leaves standing. How a rendering is proved stays with
+  `proving-a-rendering`, and how an asset reaches a page with
+  `how-an-asset-reaches-a-page`.
+- Bound per major rather than written flat, because the reading already shows a
+  boundary the feedback did not. Read on all four covered lines: 12.4 has no
+  `bodyContent` property at all; 13.4 clears it in `reset()` alone; 14.3 and
+  `main` clear it in `renderPageWithUncachedObjects()` as well, at
+  `PageRenderer.php:1068` and `:1000`. So the symptom the reported patch names
+  is gone on 14 and up and stands on 13.4.
+- `reset()` on `main` clears `bodyContent`, `jsFiles`, `jsInline`, `jsLibs`,
+  `cssFiles`, `cssInline`, `inlineComments`, `headerData`, `footerData` and the
+  JavaScript renderer, and touches neither `cssLibs` nor the meta tag registry.
+  The asymmetry is real and the enumeration per major is the reading.
+- The test fixture trap goes to `core-tests`, where the same silence already
+  cost a session (`D-KNW-070`). What sets `disableAllHeaderCode = 1` is
+  `EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript`, the
+  shared base, and not the `SiteHandling/Fixtures/JsonRenderer.typoscript`
+  layered on it that the feedback names — so no test loading that base can fail
+  on anything the renderer assembles into `<head>`.
+
+## Assumed
+
+- That a review session reaches this by path. The call that missed was
+  path-scoped, so the `appliesTo` paths decide whether the hint arrives at all.
+- That the phase order is one hint rather than a document. It is a mechanism a
+  reviewer holds while reading a diff, not a procedure carried out step by step,
+  which is what the documents below `knowledge/documents/` are for.
+- That the 12.4 shape is worth a statement. The property is absent there, so the
+  question a caller on that line asks has another answer rather than none.
+
+## Wrong if
+
+- A session with the hint installed still goes to the checkout for the same
+  facts, which would say the gap was routing rather than knowledge.
+- The enumeration turns out to differ on every covered line, so the hint is a
+  table of versions rather than statements a reviewer can hold.
+- `proving-a-rendering` turns out to be where sessions arrive anyway, which
+  would make this a section of that document rather than a hint — its "Printing
+  What a Service Holds Mid-Request" section already carries one sentence of the
+  lifecycle, as the caveat that a `bodyContent` of length 0 is the probe
+  standing in the wrong moment.

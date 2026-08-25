@@ -13,6 +13,7 @@ one is added.
 - [`D-KNW-121`][D-KNW-121] — What registering an argument costs a tag-based ViewHelper is a subject this server owns · 2026-08-25
 - [`D-KNW-122`][D-KNW-122] — A procedure document is routed by the evidence a task needs · 2026-08-25
 - [`D-KNW-123`][D-KNW-123] — The corpus tells a widened signature apart from a widened visibility · 2026-08-25
+- [`D-KNW-124`][D-KNW-124] — Frontend render pipeline state is a gap this server owns · 2026-08-25
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
 - [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
@@ -129,6 +130,7 @@ one is added.
 [D-KNW-121]: knw-121-what-registering-an-argument-costs-a-tag-based-viewhelper-is-a-subject-this-server-owns.md
 [D-KNW-122]: knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md
 [D-KNW-123]: knw-123-the-corpus-tells-a-widened-signature-apart-from-a-widened-visibility.md
+[D-KNW-124]: knw-124-frontend-render-pipeline-state-is-a-gap-this-server-owns.md
 [D-KNW-107]: knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
 [D-KNW-110]: knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md

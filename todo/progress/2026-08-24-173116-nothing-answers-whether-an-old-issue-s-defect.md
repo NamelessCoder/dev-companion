@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-173116-nothing-answers-whether-an-old-issue-s-defect.md
 **Priority:** normal
+**Branch:** todo/nothing-answers-whether-an-old-issue-s-defect
+**Claimed:** 2026-08-25
 
 Judged on 2026-08-25 as `documentation/records/judging.rst` step 3 and written
 up under the entry of that date in `D-SKL-038`, which is where the reading, the

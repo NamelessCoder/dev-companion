@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-173131-which-releases-contain-a-given-fix-took-four.md
 **Priority:** normal
+**Branch:** todo/which-releases-contain-a-given-fix-took-four
+**Claimed:** 2026-08-25
 
 Judged on 2026-08-25 as the ladder's step 1b, a missing shape, and taken on. The
 reading is

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-173151-reading-an-abandoned-change-s-inline-comments.md, D-ANS-069
 **Priority:** normal
+**Branch:** todo/reading-an-abandoned-change-s-inline-comments
+**Claimed:** 2026-08-25
 
 Add `status` to each entry of `reviews` on the enumeration path.
 `Forge::reviewed()` already runs the batched review query and already receives

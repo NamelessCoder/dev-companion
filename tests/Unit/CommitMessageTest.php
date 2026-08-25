@@ -351,6 +351,29 @@ final class CommitMessageTest extends TestCase
         self::assertNotContains('breaking-not-assessed', array_column($result['checks'], 'code'));
     }
 
+    #[Decision('D-KNW-123')]
+    #[Test]
+    public function theAssumedClassificationBindsWideningToTheSignature(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Do a thing',
+            'issue' => '1',
+            'releases' => ['main'],
+            'workflow' => CommitMessage::WORKFLOW_CORE,
+        ]);
+
+        $message = $this->checksWithCode($result['checks'], 'breaking-not-assessed')[0]['message'];
+
+        self::assertStringContainsString('whose signature it narrows or widens', $message);
+        self::assertStringContainsString('A widened visibility is not one of them', $message);
+        // What each move owes is the corpus's to say, so the check enumerates
+        // the members and hands the obligations on — R-GUI-011 asks for the
+        // classification to be named and for no paragraph beside it.
+        self::assertStringNotContainsString('extension scanner matcher', $message);
+        self::assertStringContainsString('typo3_rule_lookup(query "breaking change")', $message);
+    }
+
     /** @return array<string, array{0: array<string, mixed>}> */
     public static function theWaysACallerAnswersTheClassification(): array
     {

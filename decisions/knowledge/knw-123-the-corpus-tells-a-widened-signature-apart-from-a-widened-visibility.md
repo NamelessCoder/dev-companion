@@ -3,6 +3,9 @@ id: D-KNW-123
 title: The corpus tells a widened signature apart from a widened visibility
 date: 2026-08-25
 status: open
+coveredBy:
+  - CommitMessageTest::theAssumedClassificationBindsWideningToTheSignature
+  - KnowledgeTest::aPromotedMemberIsAnsweredAsTheMoveTheCoreFilesNothingFor
 ---
 
 # D-KNW-123 — The corpus tells a widened signature apart from a widened visibility

@@ -824,6 +824,24 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('getRendererInstances', $bodies);
     }
 
+    #[Decision('D-KNW-123')]
+    #[Test]
+    public function aPromotedMemberIsAnsweredAsTheMoveTheCoreFilesNothingFor(): void
+    {
+        // The section said what a widened parameter owes and nothing about a
+        // widened visibility, so a reviewer holding a protected-to-public
+        // promotion read a submittable patch as unsubmittable. The sweep that
+        // settled it is in the entry: promotions carry no changelog file and
+        // reach maintained release lines, which a breaking change cannot.
+        $bodies = implode("\n", array_column(Documents::search('breaking change'), 'body'));
+
+        self::assertStringContainsString('promoted from protected to public', $bodies);
+        self::assertStringContainsString('which a breaking change cannot', $bodies);
+        // The direction the changelog does carry, so the reader is not left to
+        // read the silence as an omission.
+        self::assertStringContainsString('Deprecation-86047', $bodies);
+    }
+
     /**
      * R-KNW-057. The query is the skill's own step arriving: `typo3-core-patch-
      * development` makes the visible-or-unlisted question mandatory and tells

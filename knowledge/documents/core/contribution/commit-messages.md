@@ -190,6 +190,14 @@ subclass declaring the old signature fatals as it loads.
 - Nothing in a core checkout reports any of this. No core class has to override
   the method, so the unit, functional, coding-guidelines and static-analysis
   runs are all green on the change.
+- A member promoted from protected to public is not a signature change and owes
+  none of it. The core promotes one in a plain `[TASK]` or `[BUGFIX]` commit
+  carrying no changelog file, and such a patch reaches a maintained release
+  line, which a breaking change cannot. The changelog holds the move in the
+  other direction only: `Deprecation-86047` narrows public members of
+  `TypoScriptFrontendController` to protected. A subclass that re-declares the
+  member as protected fatals with "Access level … must be public", and the core
+  files nothing for that either.
 
 ## Deprecations
 

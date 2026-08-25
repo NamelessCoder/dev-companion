@@ -2764,7 +2764,7 @@ final class HintsTest extends TestCase
             'workflow' => CommitMessage::WORKFLOW_CORE,
         ])['checks'];
         $message = implode("\n", array_column($check, 'message'));
-        self::assertStringContainsString('removed, narrowed or widened', $message);
+        self::assertStringContainsString('whose signature it narrows or widens', $message);
         self::assertStringContainsString('whether or not the parameter is optional', $message);
     }
 

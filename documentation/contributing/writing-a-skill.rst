@@ -340,6 +340,15 @@ Where the moment is something the reader says, the step names the sentence that
 fires it and the sentence that does not — and that half is the author's, like
 the sides a description names.
 
+**A crossing the reader's sentence fires names the act that begins the work
+too.** A sentence has to be recognised, and a core review quoted this crossing
+and then edited the files it had just reviewed without taking it
+(`D-SKL-077 <../../decisions/task-skills/skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md>`_,
+held by ``SkillTest::theCrossingOutOfAReviewNamesTheEditThatBeginsTheRework``).
+What the skill permits and is not that act is named beside it: a scratch probe,
+put back and leaving no diff. The section drawing that boundary is pointed at
+rather than copied.
+
 **A crossing that restarts the order names the calls whose arguments changed.**
 The successor opens on the base, and a session that has just walked it reads
 that step as answered: a core review crossed into the patch workflow as

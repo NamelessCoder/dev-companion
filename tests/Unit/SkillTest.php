@@ -4109,6 +4109,58 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The crossing is written to be recognised in what the reader says, and
+     * both failures on record are readings of that sentence — one crossed on a
+     * remark about a finding's weight, and one stayed under review rules
+     * through a sentence the enumeration does not reach (`D-SKL-077`).
+     *
+     * So the act is named beside it: the first edit to a file meant to survive
+     * is observable from inside the session, where a sentence to recognise is
+     * not. The probe is what that act is not, and the boundary between them
+     * stands in the verification section, which the crossing points at rather
+     * than copies.
+     */
+    #[Decision('D-SKL-077')]
+    #[Test]
+    public function theCrossingOutOfAReviewNamesTheEditThatBeginsTheRework(): void
+    {
+        $skill = (string) file_get_contents(Paths::root() . '/skills/typo3-core-patch-review/SKILL.md');
+        $section = strstr($skill, '## Where the review ends and the rework begins');
+        self::assertIsString($section, 'the review skill has no crossing section to name the act in');
+        $crossing = self::flat($section);
+
+        self::assertMatchesRegularExpression(
+            '/first edit[^.]*meant to survive[^.]*`typo3-core-patch-development`/',
+            $crossing,
+            'the crossing out of the review names no act that asks whether the successor should be running',
+        );
+        self::assertMatchesRegularExpression(
+            '/probe is not[^.]*no diff/',
+            $crossing,
+            'the crossing names the act without telling a scratch probe from it',
+        );
+
+        // Pointed at, not copied: what a probe owes is the verification
+        // section's, and a second copy of it here is the one that goes stale.
+        self::assertStringContainsString(
+            'the restoration is verified rather than assumed',
+            self::flat(strstr($skill, '## Where the review ends and the rework begins', true) ?: ''),
+            'the boundary the crossing points at has left the verification section',
+        );
+
+        // The enumerated phrases stay. One session crossed on "fertigstellen",
+        // which is "finish it" in the reader's own words, and a trigger that
+        // has run is not traded for one that has not.
+        foreach (['finish it', 'fix it', 'amend it', 'write the test'] as $phrase) {
+            self::assertStringContainsString(
+                '"' . $phrase . '"',
+                $crossing,
+                'the crossing out of the review no longer names the instruction "' . $phrase . '"',
+            );
+        }
+    }
+
+    /**
      * One skill's front matter, as a reader of the standard gets it rather than
      * as a pattern here finds it.
      *

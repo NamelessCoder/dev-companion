@@ -258,6 +258,13 @@ column, wrote a functional test, ran seven suites and amended the commit, all
 still inside this skill. Nothing broke and the tree stayed clean, which is why
 nothing marked the crossing.
 
+**Before the first edit to a file meant to survive, ask whether
+`typo3-core-patch-development` should be running.** A sentence has to be
+recognised, and one has arrived in words this enumeration does not reach. An
+edit is an act you are already performing. A scratch probe is not that edit: it
+is put back and leaves no diff, and the verification section above is where its
+boundary is drawn.
+
 **Three of its calls take an argument this review has just established, and that
 is what makes them a restart rather than a repeat.** `typo3_task_guide` with the
 change type about to be written, `typo3_hint_lookup` with the paths about to be

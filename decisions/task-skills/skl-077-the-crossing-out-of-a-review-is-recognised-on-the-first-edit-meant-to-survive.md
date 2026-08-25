@@ -3,6 +3,8 @@ id: D-SKL-077
 title: 'The crossing out of a review is recognised on the first edit meant to survive'
 date: 2026-08-25
 status: open
+coveredBy:
+  - SkillTest::theCrossingOutOfAReviewNamesTheEditThatBeginsTheRework
 ---
 
 # D-SKL-077 — The crossing out of a review is recognised on the first edit meant to survive
@@ -16,7 +18,7 @@ holding it reports noticing its own next act instead.
 ## Evidence
 
 - **The sighting.**
-  [`feedback/2026-08-24-183420`](../../feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md),
+  [`feedback/archive/2026-08-24-183420`](../../feedback/archive/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md),
   `/home/benji/projects/typo3-cms`: Gerrit change 91127 reviewed under
   `typo3-core-patch-review`. The session quotes the crossing section, states
   that it read it, and then removed three `markTestSkipped` calls from

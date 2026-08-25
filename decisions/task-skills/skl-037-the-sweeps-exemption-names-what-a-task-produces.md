@@ -122,7 +122,7 @@ skipped step yet, so nothing has said whether naming it is legible to a reader.
 ## Since then
 
 **2026-08-25.** The second **Wrong if** is half met.
-[`feedback/2026-08-24-183420`](../../feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
+[`feedback/archive/2026-08-24-183420`](../../feedback/archive/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
 is a core patch review asked to take three skipped tests back in: the session
 carried on under `typo3-core-patch-review`, wrote what it measured as 154 lines
 of test code and a fixture page, and never ran the sweep. What the **Wrong if**

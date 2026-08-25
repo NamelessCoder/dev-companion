@@ -125,7 +125,7 @@ session arrives at it holding a base it walked once and discharged.
 
 **2026-08-25.** What this clause reaches is bounded by the crossing it hangs
 off, and this is the first sighting of that bound.
-[`feedback/2026-08-24-183420`](../../feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
+[`feedback/archive/2026-08-24-183420`](../../feedback/archive/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
 is a core patch review that was asked to change the patch and never invoked
 `typo3-core-patch-development`, so the paragraph carrying the three calls was
 read as review prose rather than at a crossing. The session names the

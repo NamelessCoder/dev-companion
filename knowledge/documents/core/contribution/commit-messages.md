@@ -108,8 +108,9 @@ A core commit message carries `Resolves:`, `Related:`, `Releases:`,
 those five.
 
 - `Signed-off-by:` is set on every TYPO3 core patch. `git commit -s` writes it
-  from your git identity, and `git commit --amend -s` adds it to a patch set
-  that went out without one.
+  from your git identity, `git config format.signOff true` makes that the
+  default, and `git commit --amend -s` adds it to a patch set that went out
+  without one.
 - The line is the Developer Certificate of Origin rather than a second author
   field. Signing it says the contribution may be published under GPL v2 and
   violates nobody else's rights.
@@ -126,10 +127,11 @@ those five.
 - Changing any of this is the maintainer's call. A session that believes a
   trailer is owed asks before writing one, rather than reading the answer out of
   whichever file it happens to be holding.
-- Nothing in the checkout enforces the rule in either direction. The one line in
-  `Build/git-hooks/commit-msg` naming `Signed-off-by:` deletes it, the official
-  Contribution Guide's appendix lists the trailers and stops before it, and
-  `CONTRIBUTING.md` is silent.
+- The checkout asks for the trailer in one place and checks it nowhere. The
+  core's `AGENTS.md` says to sign off every commit and names the certificate,
+  the one line in `Build/git-hooks/commit-msg` naming `Signed-off-by:` deletes
+  it, the official Contribution Guide's appendix lists the trailers and stops
+  before it, and `CONTRIBUTING.md` is silent.
 - The merged history is the practice the rule replaces: it carries the sign-off
   on about one commit in a hundred on `main`, which
   `git log -500 --format=%b | grep -c '^Signed-off-by:'` counts. So a patch

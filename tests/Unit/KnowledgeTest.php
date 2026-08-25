@@ -1472,9 +1472,14 @@ final class KnowledgeTest extends TestCase
             'nothing says who the rule belongs to, which is what sends a session to the checkout instead',
         );
         self::assertStringContainsString(
-            'Nothing in the checkout enforces the rule',
+            'asks for the trailer in one place and checks it nowhere',
             $body,
             'the rule stands without what leaves a reviewer striking the line rather than a check rejecting it',
+        );
+        self::assertStringContainsString(
+            '`AGENTS.md` says to sign off every commit',
+            $body,
+            'the one file in the checkout that asks for the trailer is not named as agreeing',
         );
         self::assertStringContainsString(
             'about one commit in a hundred on `main`',

@@ -40,9 +40,22 @@ two places to be wrong.
   published under GPL v2 and … does not violate the rights of third parties",
   an obligation that "is indivisible and is not diminished by the use of an AI
   tool".
-- The core's own `AGENTS.md` demands the trailer and cites the certificate.
-  `D-KNW-110` was written against that file; the rule now agrees with it, so the
-  conflict two sessions reported is gone rather than resolved.
+- The core's own `AGENTS.md` asks for it: "Sign off every commit — `git commit
+  -s` appends the `Signed-off-by:` trailer, or set `git config format.signOff
+  true` to get it automatically", certifying the right to submit under the
+  project's licence. `D-KNW-110` was written against that file; the rule now
+  agrees with it, so the conflict two sessions reported is gone rather than
+  resolved.
+- The same file says "Do not credit tooling or assistants in commit messages",
+  which is the core's own ground for the two trailers that stay refused. The
+  maintainer's ruling of 2026-08-24 had been the only source for it.
+- That file was read at `781c852587` out of the object database rather than the
+  working tree, because `.checkouts/main` stops at `3cbdea24dd` of 2026-08-07
+  and the commit adding it came later. It is on the core's `main`.
+- The core's `AGENTS.md` states one half of what the hook does with the line:
+  "The hook preserves the trailer and only ignores it when computing the
+  `Change-Id`." What it leaves out is the half below, which is what this corpus
+  adds rather than repeats.
 - `Build/git-hooks/commit-msg` builds `clean_message` by removing any diff,
   every `^Signed-off-by:` line and every comment line, and returns without
   writing a `Change-Id` where that leaves nothing. So a message that is only a

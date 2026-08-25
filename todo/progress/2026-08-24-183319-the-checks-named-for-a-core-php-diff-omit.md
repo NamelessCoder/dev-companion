@@ -1,7 +1,9 @@
-# breaking-not-assessed calls a widened protected member breaking; the core's own history does not
+# the checks named for a core PHP diff omit checkIntegrityPhp, and the two tools that name suites d...
 
-**Serves:** feedback/2026-08-24-183209-breaking-not-assessed-calls-a-widened-protected.md
+**Serves:** feedback/2026-08-24-183319-the-checks-named-for-a-core-php-diff-omit.md
 **Priority:** low
+**Branch:** todo/the-checks-named-for-a-core-php-diff-omit
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

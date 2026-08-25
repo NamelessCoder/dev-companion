@@ -1,7 +1,9 @@
-# no way to triage the review backlog: no ordering by age, no size, no vote state in a search
+# the guides list was returned and never pulled on; I hand-assembled the changelog rules instead
 
-**Serves:** feedback/2026-08-24-183253-no-way-to-triage-the-review-backlog-no-ordering.md
+**Serves:** feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md
 **Priority:** low
+**Branch:** todo/the-guides-list-was-returned-and-never-pulled
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

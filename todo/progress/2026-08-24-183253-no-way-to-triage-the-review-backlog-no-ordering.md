@@ -1,7 +1,9 @@
-# core/testing/proving-a-rendering was listed, was exactly what I needed, and I never opened it
+# no way to triage the review backlog: no ordering by age, no size, no vote state in a search
 
-**Serves:** feedback/2026-08-24-183345-core-testing-proving-a-rendering-was-listed-was.md
+**Serves:** feedback/2026-08-24-183253-no-way-to-triage-the-review-backlog-no-ordering.md
 **Priority:** low
+**Branch:** todo/no-way-to-triage-the-review-backlog-no-ordering
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

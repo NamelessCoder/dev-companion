@@ -1,7 +1,9 @@
-# task_guide schema was fetched and never called; both matching skills stayed shut all session
+# breaking-not-assessed calls a widened protected member breaking; the core's own history does not
 
-**Serves:** feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md
+**Serves:** feedback/2026-08-24-183209-breaking-not-assessed-calls-a-widened-protected.md
 **Priority:** low
+**Branch:** todo/breaking-not-assessed-calls-a-widened-protected
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

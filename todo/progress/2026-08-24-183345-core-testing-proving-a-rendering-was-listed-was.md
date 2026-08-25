@@ -1,7 +1,9 @@
-# the guides list was returned and never pulled on; I hand-assembled the changelog rules instead
+# core/testing/proving-a-rendering was listed, was exactly what I needed, and I never opened it
 
-**Serves:** feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md
+**Serves:** feedback/2026-08-24-183345-core-testing-proving-a-rendering-was-listed-was.md
 **Priority:** low
+**Branch:** todo/core-testing-proving-a-rendering-was-listed-was
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

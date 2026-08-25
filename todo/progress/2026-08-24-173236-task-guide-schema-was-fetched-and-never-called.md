@@ -1,7 +1,9 @@
-# the checks named for a core PHP diff omit checkIntegrityPhp, and the two tools that name suites d...
+# task_guide schema was fetched and never called; both matching skills stayed shut all session
 
-**Serves:** feedback/2026-08-24-183319-the-checks-named-for-a-core-php-diff-omit.md
+**Serves:** feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md
 **Priority:** low
+**Branch:** todo/task-guide-schema-was-fetched-and-never-called
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

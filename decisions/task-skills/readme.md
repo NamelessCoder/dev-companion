@@ -7,6 +7,7 @@ order it works.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-SKL-075`][D-SKL-075] — A patch narrows the work, not the list of points it closes on · 2026-08-25
 - [`D-SKL-070`][D-SKL-070] — A description is held to a length of its own · 2026-08-24
 - [`D-SKL-071`][D-SKL-071] — A probe is put back to the state it found · 2026-08-24
 - [`D-SKL-072`][D-SKL-072] — A workflow handover names the calls the next order restarts with · 2026-08-24
@@ -78,6 +79,7 @@ one is added.
 - [`D-SKL-004`][D-SKL-004] — A question no lookup settles is read from the installed source · 2026-08-02
 - [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file · 2026-08-01 · confirmed
 
+[D-SKL-075]: skl-075-a-patch-narrows-the-work-not-the-list-of-points-it-closes-on.md
 [D-SKL-070]: skl-070-a-description-is-held-to-a-length-of-its-own.md
 [D-SKL-071]: skl-071-a-probe-is-put-back-to-the-state-it-found.md
 [D-SKL-072]: skl-072-a-workflow-handover-names-the-calls-the-next-order-restarts-with.md

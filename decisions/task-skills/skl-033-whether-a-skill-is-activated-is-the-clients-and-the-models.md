@@ -286,3 +286,29 @@ not a description the model chose against, so the wording is what is left to
 suspect there rather than what has been ruled out —
 [`D-SKL-076`](skl-076-a-description-names-both-jobs-a-skills-body-owns.md).
 
+### 2026-08-25 — the first row that names its own cause, and it is outside anything published here
+
+Every row above reads a skill's silence off an absence. This one is read off the
+session's own account.
+[`feedback/2026-08-24-173236`](../../feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
+is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, sent to work off
+another old Forge issue. `typo3-core-issue-triage` and
+`typo3-core-patch-development` were both in its listing, it names the first as
+describing "verbatim the work I did four times over by hand", and it invoked
+`Skill` at no point. Why, in its own words: its operating instructions for that
+session carried "Do not call the AgentTool unless the user requested it. Do not
+use workflows or deep-research unless the user requested it", and it generalised
+that caution to skills, which the instruction does not cover.
+
+**Nothing this server publishes reaches that.** A description competes for the
+choice; this session reports a rule it read as forbidding the call before any
+description was weighed. So the row counts toward the third **Wrong if** and
+carries a cause the entry could not see from the outside, which is the reading
+the **Assumed** above stops at: a model passing over a matching description may
+be choosing, failing to match, or held off the tool by its own client.
+
+What it does not license is reading the earlier rows this way. One session's
+reconstruction of its own reasoning is what it believed afterwards, and the
+eighty-two empty rows of the benchmark were an arm nobody debriefed. Everything
+**Decided** stands.
+

@@ -92,3 +92,61 @@ one exemption and it is not a published skill that cannot be routed to: a draft
 is out of the set, because a draft reachable by routing is one nobody chose —
 `D-SKL-064`. Nothing reports the second one either; no feedback since says an
 intent for triage pulled patch work into it.
+
+### 2026-08-25 — the intent names the skill, and the word people call the tracker by reaches it weakly
+
+[`feedback/2026-08-24-173236`](../../feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
+asks for one thing to be re-run: the bare task text "fetch another old issue
+from Forge, create a branch, work it off". Its session loaded
+`typo3_task_guide`'s schema, never called the tool, and reports that a call
+would have routed it to `typo3-core-issue-triage`. Run in this checkout on
+2026-08-25, that text matches `triage` weakly and answers `skills: []`. The call
+it says it should have made names no skill.
+
+Two gates decide a core-scoped intent, and the brief fails both.
+
+- **The scope.** `Scope::CORE_WORK` is matched with `str_contains`, so the
+  tracker's own name is carried as `'forge '` and the trailing space is what
+  keeps "forget" out. The comma in "from Forge," sits where that space has to
+  be. The same sentence with "from Forge and" reads as `core`, which is the
+  whole of the difference.
+- **The needle.** `forge` is in the triage intent's `matchWeak`, beside
+  `reproduce`, `unresolved` and `old issue`, and a weak intent names no skill.
+  So the brief that clears the scope gate is answered with none either: "fetch
+  another old issue from Forge and create a branch, work it off" reads as
+  `core`, matches `triage` weakly, and answers `skills: []`.
+
+`forge.typo3.org` is a strong needle and "triage Forge 15984" answers
+`typo3-core-issue-triage`, so what fails is the brief that names the tracker the
+way a contributor does and never states the verb. This entry's **Decided** named
+that vocabulary — "tracker, Forge number, backlog" — and the section above
+reports the hole closed on a task text that carries the word "core" three times.
+
+**The word is read as the tracker's name on both gates, and the repair is
+queued.** `Text::containsWord` is what the intent matcher already uses for this,
+and it keeps "forget" out by the rule rather than by a space. Which needles the
+triage intent takes is the todo's reading rather than this one's: bare `forge`
+in `match` is one shape, the phrases around it — "issue from forge", "forge
+issue" — are another, and the second is what `reporting` already carries, so the
+choice is about what else starts matching. It is queued because half of it is
+`src/Knowledge/Scope.php`, and the card serving that feedback carries it at
+`normal`.
+
+**Against the feedback's own suggestion**, which is to move the triage clause to
+the front of `typo3_task_guide`'s description so that a session scanning it
+calls the tool. What that buys on this brief is the answer above. The
+description is also byte-identical to the one seven later sessions in the same
+checkout did call the tool on — `feedback/2026-08-24-183319`,
+`feedback/2026-08-24-205113`, `feedback/2026-08-24-205223`,
+`feedback/2026-08-25-105300`, `feedback/2026-08-25-105324`,
+`feedback/2026-08-25-110726` and `feedback/2026-08-25-110753`, each naming an
+argument it was called with.
+
+The rest of that report is answered.
+[`D-SKL-038`](skl-038-the-change-answer-names-the-skill-that-owns-the-patch-it-describes.md)
+built `ForgeLookup::workflow()` on 2026-08-25, after the report: a page of the
+backlog now names `typo3-core-issue-triage` and `typo3_changelog_lookup`, which
+are the skill and the "sharpest miss" this session says nothing reached it with.
+It stands at the moment the feedback names — holding the oldest-bugs list, about
+to choose — and the skill hands over to `typo3-core-patch-development` itself,
+which is the second skill that stayed shut.

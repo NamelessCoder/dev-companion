@@ -11,7 +11,7 @@ one is added.
 - [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
 - [`D-KNW-121`][D-KNW-121] — What registering an argument costs a tag-based ViewHelper is a subject this server owns · 2026-08-25
-- [`D-KNW-122`][D-KNW-122] — A procedure document is routed by the evidence a task needs · 2026-08-25
+- [`D-KNW-122`][D-KNW-122] — The corpus tells a widened signature apart from a widened visibility · 2026-08-25
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
 - [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
@@ -126,7 +126,7 @@ one is added.
 [D-KNW-119]: knw-119-the-corpus-tells-apart-the-failures-one-usage-synopsis-presents-alike.md
 [D-KNW-120]: knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md
 [D-KNW-121]: knw-121-what-registering-an-argument-costs-a-tag-based-viewhelper-is-a-subject-this-server-owns.md
-[D-KNW-122]: knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md
+[D-KNW-122]: knw-122-the-corpus-tells-a-widened-signature-apart-from-a-widened-visibility.md
 [D-KNW-107]: knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
 [D-KNW-110]: knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md

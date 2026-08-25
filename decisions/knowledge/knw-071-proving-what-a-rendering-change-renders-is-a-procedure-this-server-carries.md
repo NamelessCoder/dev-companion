@@ -126,3 +126,14 @@ The third did not hold either, and one section pair carries what differs: until
 `$coreExtensionsToLoad` and the static include, either alone leaving
 `LogicException` 1641989097; since 13 the frontend registers it and the probe
 needs neither. The rest of the procedure holds on all four.
+
+The second **Wrong if** held on 2026-08-25. A review of Gerrit 91127 had the
+document installed, read the review skill's paragraph naming it, skipped it
+because the diff was PHP, and spent six container rounds on the harness. So the
+gap was the route, as that **Wrong if** predicted: what the page is filed under
+is the class of diff, and what needs it is the class of evidence.
+[`D-KNW-122`](knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md)
+is that reading. The statement here stands — the procedure was the right shape
+and the page answered once it was opened — and the **Decided** bullet that
+turned out under-specified is the one granting that it is reached from where the
+probe is already granted.

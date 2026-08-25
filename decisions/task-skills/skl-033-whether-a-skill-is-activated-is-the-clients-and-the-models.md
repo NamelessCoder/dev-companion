@@ -261,7 +261,7 @@ is waiting on.
 
 ### 2026-08-25 — one session, one description that matched and one that said nothing
 
-[`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
+[`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
 is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]` again, opening in
 German with "bitte suche forge issues im asset renderer bereich" and then "ok
 suche einen den man einfach fixen kann und es mit tests belegen kann". It found

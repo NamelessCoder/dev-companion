@@ -186,7 +186,7 @@ The clause was a description of what the call returns, which is the mood
 claims is delivered where a caller can act on it: `D-SKL-013` put the skill name
 into the guide's own answer. Its measured effect on this channel is nothing
 twice — the benchmark of `D-SKL-033` had it in context and opened no skill, and
-[`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
+[`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
 reports reading that sentence "as a tool to call, not as a reason to open a
 skill".
 

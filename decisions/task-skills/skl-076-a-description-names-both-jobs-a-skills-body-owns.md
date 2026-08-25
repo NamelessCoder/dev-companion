@@ -3,6 +3,8 @@ id: D-SKL-076
 title: A description names both jobs a skill's body owns
 date: 2026-08-25
 status: open
+coveredBy:
+  - SkillTest::aBacklogSearchMatchesTheSkillThatOwnsTheCandidates
 ---
 
 # D-SKL-076 — A description names both jobs a skill's body owns
@@ -17,7 +19,7 @@ this repository has since given up.
 ## Evidence
 
 - **The session.**
-  [`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md),
+  [`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md),
   `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, opening "bitte suche
   forge issues im asset renderer bereich". Six `typo3_forge_lookup` searches and
   four candidate issues followed, and no skill was opened at any point. That is
@@ -84,3 +86,28 @@ this repository has since given up.
 - Reading the eight untouched descriptions against their bodies turns up no
   second case. Then this is a property of one skill rather than a rule worth a
   page.
+
+## Since then
+
+### 2026-08-25 — the eight were read, and the third Wrong if did not fire
+
+Their section headings were read against their descriptions, the way the five
+trimmed ones were. Seven run one task to one deliverable: an element
+implemented, a distribution that comes up, a rebuilt output, a page, a verdict,
+a harness that runs, a package on the majors it declares. Four sections read as
+a second job at the heading and are steps of the one task once the section is
+open — the upgrade sweep's work list, which that section calls "the work" and
+which the change closes on; the content-element lookup on a symptom; the
+asset-build verification of a core surface before it is borrowed; and the
+distribution's seeding, which the export it feeds is named for.
+
+The eighth is the second case. `typo3-extension-health` hands a report over and
+stops until the list is agreed, which is a deliverable somebody asks for in
+words of its own — and its description names both halves, because `D-SKL-064`
+merged two skills and said so in as many words. So the shape holds for more than
+one skill and the rule is written on the page; what the reading did not turn up
+is a second description that misses one.
+
+The **Assumed** above is discharged by this and the entry stays `open`: what is
+left is the two **Wrong if** a session opening the changed description would
+answer.

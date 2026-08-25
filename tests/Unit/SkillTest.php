@@ -2497,6 +2497,43 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The fourth sighting, and a job rather than a step or a premise. Three
+     * trims read "find the candidates in the backlog" as a summary of the body
+     * and took it out, and a session that searched the backlog six times opened
+     * nothing (`D-SKL-076`). The body hands that list over as a deliverable of
+     * its own, so both halves are held: the words a backlog request arrives in,
+     * and the section that has to answer once they did.
+     */
+    #[Decision('D-SKL-076')]
+    #[Test]
+    public function aBacklogSearchMatchesTheSkillThatOwnsTheCandidates(): void
+    {
+        $triage = self::description('typo3-core-issue-triage');
+        self::assertStringContainsString('backlog', $triage);
+        self::assertStringContainsString('worth working on', $triage);
+
+        // Named after the job it was read as a case of, the backlog request
+        // meets a premise it does not hold — one issue somebody already has,
+        // which is `D-SKL-061`'s failure and not a wording.
+        self::assertLessThan(
+            (int) mb_strpos($triage, 'still true'),
+            (int) mb_strpos($triage, 'backlog'),
+            'the triage description names the backlog after the issue it is read as a case of',
+        );
+
+        $body = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-issue-triage/SKILL.md',
+        ));
+        self::assertStringContainsString('## Find the candidates', $body);
+        // What makes that section a job rather than a first step, and the half
+        // a trigger alone would route a backlog request into a body without.
+        self::assertStringContainsString(
+            'Triaging a backlog and triaging an issue are two different jobs',
+            $body,
+        );
+    }
+
+    /**
      * A description is held to a length of its own, and the listing is not held
      * to a total.
      *

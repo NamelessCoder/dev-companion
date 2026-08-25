@@ -204,6 +204,21 @@ answers against ``This skill owns …`` and the crossings in the body, and a
 crossing that names one side while the description names both is the file
 disagreeing with itself in somebody else's project.
 
+And where the body owns **two jobs**, the description names both. A job is not a
+side of one thing and not a step: it produces a deliverable somebody can be
+handed and stops, and a user asks for it in words of its own.
+``typo3-core-issue-triage`` opens on a backlog whose candidates are handed over
+before any issue is chosen, and its description named only the issue — so a
+session that searched that backlog six times opened nothing
+(`D-SKL-076 <../../decisions/task-skills/skl-076-a-description-names-both-jobs-a-skills-body-owns.md>`_,
+held by ``SkillTest::aBacklogSearchMatchesTheSkillThatOwnsTheCandidates``).
+Three trims took the clause out in stages, each reading it as a summary of the
+body, which is what the rule above asks for and what a job is the exception to.
+Which jobs a body owns is a reading of the body, so nothing holds this over the
+directory either: ``typo3-extension-health`` is the other case, and the report
+it hands over before a file is changed stands in its description already
+(`D-SKL-064 <../../decisions/task-skills/skl-064-the-audit-and-the-work-that-answers-it-are-one-skill.md>`_).
+
 **The budget every description shares.** A client reads all of the descriptions
 in one listing against one character budget — in Claude Code, one percent of the
 context window converted at three or four bytes to the token, so 6000 characters

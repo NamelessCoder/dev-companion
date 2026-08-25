@@ -113,7 +113,7 @@ so the next trim cannot make the same trade unseen.
 A session opened with "bitte suche forge issues im asset renderer bereich",
 searched the backlog six times, read four candidates and opened
 `typo3-core-issue-triage` at no point
-([`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)).
+([`feedback/2026-08-24-163220`](../../feedback/archive/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)).
 The brief names the cut step — "find the candidates in the backlog" — and the
 skill it named stopped matching, which is the second **Wrong if** verbatim.
 

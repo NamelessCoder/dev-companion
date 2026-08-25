@@ -101,30 +101,55 @@ Guide.
   the other. The two differ by one operator and give opposite answers about
   whether features reach a release line.
 
-## Trailers A Core Commit Does Not Carry
+## The Trailers A Core Commit Carries
 
-A core commit message carries `Resolves:`, `Related:`, `Releases:` and the
-`Change-Id:` the hook writes, and no trailer beyond those four.
+A core commit message carries `Resolves:`, `Related:`, `Releases:`,
+`Signed-off-by:` and the `Change-Id:` the hook writes, and no trailer beyond
+those five.
 
-- `Signed-off-by:` is not set on a TYPO3 core patch. The core repository's own
-  `AGENTS.md` demands it and cites the Developer Certificate of Origin; this
-  project does not follow that demand, and a patch arriving with the trailer has
-  it struck.
-- `Co-Authored-By:` is not set either, and neither is a trailer naming the agent
-  or the session a patch was written in. Who held the keyboard is the author
-  field and the review, not a line in the message.
+- `Signed-off-by:` is set on every TYPO3 core patch. `git commit -s` writes it
+  from your git identity, and `git commit --amend -s` adds it to a patch set
+  that went out without one.
+- The line is the Developer Certificate of Origin rather than a second author
+  field. Signing it says the contribution may be published under GPL v2 and
+  violates nobody else's rights.
+- That warranty is yours whatever wrote the code. An AI tool does not divide it
+  and does not diminish it, and a contribution nobody will stand behind is one
+  that is not merged.
+- The rule comes from the TYPO3 Association board's statement on GPL and
+  AI-generated code of 2026-07-20, which recommends the certificate as what
+  makes a contributor's provenance representation explicit and auditable. The
+  board put it as a recommendation to consider; this project requires it.
+- `Co-Authored-By:` is not set, and neither is a trailer naming the agent or the
+  session a patch was written in. Who held the keyboard is the author field and
+  the review, not a line in the message.
 - Changing any of this is the maintainer's call. A session that believes a
   trailer is owed asks before writing one, rather than reading the answer out of
   whichever file it happens to be holding.
-- Nothing in the checkout enforces the rule in either direction.
-  `Build/git-hooks/commit-msg` deletes `^Signed-off-by:` from the copy it hashes
-  the `Change-Id` from and checks for nothing, the official Contribution Guide's
-  appendix lists the trailers and stops before it, `CONTRIBUTING.md` is silent,
-  and the merged history carries it on about one commit in a hundred on `main`,
-  which `git log -500 --format=%b | grep -c '^Signed-off-by:'` counts.
-- So the trailer is struck by a reviewer rather than rejected by a check, and
-  the patch set that carried it stays valid: the hook's own deletion is why
-  amending one in or out leaves an existing `Change-Id` standing.
+- Nothing in the checkout enforces the rule in either direction. The one line in
+  `Build/git-hooks/commit-msg` naming `Signed-off-by:` deletes it, the official
+  Contribution Guide's appendix lists the trailers and stops before it, and
+  `CONTRIBUTING.md` is silent.
+- The merged history is the practice the rule replaces: it carries the sign-off
+  on about one commit in a hundred on `main`, which
+  `git log -500 --format=%b | grep -c '^Signed-off-by:'` counts. So a patch
+  without one is struck by a reviewer rather than rejected by a check.
+
+## What The Commit Hook Writes
+
+`Build/git-hooks/commit-msg` adds the `Change-Id:` line, and it reads a stripped
+copy of the message to decide whether to.
+
+- The copy is the message with every `Signed-off-by:` line, every comment line
+  and any diff taken out. Where that leaves nothing, the hook returns and no
+  `Change-Id` is written.
+- So a message that is only a sign-off counts as an empty one and gets no id,
+  which is why the line is removed at all. Gerrit refuses a change that carries
+  no `Change-Id`.
+- The id is hashed from that same copy, so the trailer never enters it.
+- An existing `Change-Id:` is left standing whatever else is amended, because
+  the hook returns as soon as it finds one. Amending a sign-off in or out keeps
+  the patch set valid.
 
 ## Breaking Changes
 

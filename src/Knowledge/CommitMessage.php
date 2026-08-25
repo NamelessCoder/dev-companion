@@ -32,11 +32,13 @@ final class CommitMessage
      * was drafted as — so it is dropped before the checks run and the field
      * reports as missing again. Otherwise the one moment a caller asks about
      * the message they are actually going to commit is the moment this class
-     * calls it clean. Neither value is one anybody could have meant: no Forge
-     * issue is numbered ISSUE_NUMBER and no branch is called RELEASE_TARGET.
+     * calls it clean. No value is one anybody could have meant: no Forge issue
+     * is numbered ISSUE_NUMBER, no branch is called RELEASE_TARGET, and nobody
+     * signs off as YOUR_NAME.
      */
     public const ISSUE_PLACEHOLDER = '#ISSUE_NUMBER';
     public const RELEASE_PLACEHOLDER = 'RELEASE_TARGET';
+    public const SIGN_OFF_PLACEHOLDER = 'YOUR_NAME <YOUR_EMAIL>';
 
     /**
      * The core's own workflow: Forge issues, release targets, Gerrit.
@@ -70,12 +72,12 @@ final class CommitMessage
     /**
      * Trailers a core commit message may not carry.
      *
-     * The core's own `AGENTS.md` demands the sign-off and this project does not
-     * follow that demand, so a caller reading the checkout emits a trailer a
-     * reviewer strikes — `D-KNW-110`. The other two are what an agent adds
-     * about itself, which the author field already says.
+     * What an agent adds about itself, which the author field already says. The
+     * sign-off was refused beside them until the Association's board recommended
+     * the Developer Certificate of Origin and the maintainer made it required —
+     * `D-KNW-125`.
      */
-    private const REFUSED_TRAILERS = ['signed-off-by', 'co-authored-by', 'claude-session'];
+    private const REFUSED_TRAILERS = ['co-authored-by', 'claude-session'];
 
     /**
      * Prefixes that say the change is not offered for merge yet.
@@ -179,6 +181,14 @@ final class CommitMessage
             $trailers[] = $trailer;
         }
 
+        // Last, where `git commit -s` writes it. A placeholder rather than the
+        // author field: the certificate is an attestation about provenance and
+        // this class cannot make one on somebody's behalf — `D-KNW-125`.
+        $signedOff = preg_grep('/^Signed-off-by:/i', $trailers) !== [];
+        if ($isCore && !$signedOff) {
+            $trailers[] = 'Signed-off-by: ' . self::SIGN_OFF_PLACEHOLDER;
+        }
+
         if ($trailers !== []) {
             $parts[] = '';
             $parts = array_merge($parts, $trailers);
@@ -197,6 +207,7 @@ final class CommitMessage
                 $isDeprecation,
                 $releases,
                 $workflow,
+                $signedOff,
             ),
         ];
     }
@@ -369,6 +380,11 @@ final class CommitMessage
                     // returns is committed as it stands, so a refused trailer
                     // left in it would be the answer contradicting its own
                     // check.
+                    continue;
+                }
+                if ($key === 'signed-off-by' && $value === self::SIGN_OFF_PLACEHOLDER) {
+                    // The draft's own placeholder read back: an unsigned message
+                    // rather than a signed one, so it reports as missing again.
                     continue;
                 }
                 $extraTrailers[] = $trailer;
@@ -568,7 +584,8 @@ final class CommitMessage
         ?bool $isBreaking,
         ?bool $isDeprecation,
         array $releases,
-        string $workflow
+        string $workflow,
+        bool $signedOff
     ): array {
         $checks = [];
         $isCore = $workflow === self::WORKFLOW_CORE;
@@ -582,6 +599,21 @@ final class CommitMessage
 
         if ($isCore && $issues === []) {
             $checks[] = ['level' => 'error', 'code' => 'missing-issue', 'message' => 'A Forge issue is required. Add a Resolves: #12345 line.'];
+        }
+
+        if ($isCore && !$signedOff) {
+            $checks[] = [
+                'level' => 'error',
+                'code' => 'missing-sign-off',
+                'message' => sprintf(
+                    'The draft carries "Signed-off-by: %s". Replace it by committing with git commit -s, which '
+                        . 'writes the line from your git identity. The trailer is the Developer Certificate of '
+                        . 'Origin: it says you may publish the contribution under GPL v2 and that it violates '
+                        . 'nobody else\'s rights, which is yours to state and stays yours where an AI tool wrote '
+                        . 'the code.',
+                    self::SIGN_OFF_PLACEHOLDER,
+                ),
+            ];
         }
 
         if ($isCore && $releases === []) {

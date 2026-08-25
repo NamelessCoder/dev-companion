@@ -2,10 +2,8 @@
 id: D-KNW-110
 title: A core commit message carries three trailers and the hook's Change-Id
 date: 2026-08-24
-status: open
-coveredBy:
-  - CommitMessageTest::aCoreDraftRefusesTheTrailersTheProjectDoesNotSet
-  - KnowledgeTest::theTrailerAnswerStatesTheRuleAndWhatLeavesItUnenforced
+status: revoked
+revokedBy: D-KNW-125
 ---
 
 # D-KNW-110 — A core commit message carries three trailers and the hook's Change-Id
@@ -123,3 +121,22 @@ on Gerrit change 91127, where the trailer had survived eight patch sets, and it
 kept the line and said why. Whether the rule reaches an amend is `R-KNW-075`'s
 question and the maintainer's to answer.
 
+## Revoked on 2026-08-25
+
+The maintainer required the sign-off on every core patch, on the TYPO3
+Association board's statement on GPL and AI-generated code of 2026-07-20 — a
+recommendation nobody here had read when this entry was written. So the trailer
+this entry strikes is the trailer a core commit now carries, and `D-KNW-125` is
+what a reader builds on.
+
+The second **Wrong if** fired word for word: the maintainer set a sign-off on a
+core patch. What it did not anticipate is the direction — it was written
+watching for a case the ruling was too narrow for, and what arrived was a source
+that changed the ruling's own grounds.
+
+Everything else here stands and is carried into `D-KNW-125` rather than left
+behind: the three trailers that did not move, the ruling on `Co-Authored-By:`
+and an agent's own session trailer, the core-only boundary, and the shape of the
+refusal — a trailer the rule refuses comes off the draft rather than being
+reported beside it, because the draft is committed as it stands. Which trailers
+a core commit carries is one rule, so it is stated in one entry.

@@ -299,9 +299,9 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-122`][D-KNW-122] — A procedure document is routed by the evidence a task needs · 2026-08-25
 - [`D-KNW-123`][D-KNW-123] — The corpus tells a widened signature apart from a widened visibility · 2026-08-25
 - [`D-KNW-124`][D-KNW-124] — Frontend render pipeline state is a gap this server owns · 2026-08-25
+- [`D-KNW-125`][D-KNW-125] — A core commit message carries four trailers and the hook's Change-Id · 2026-08-25
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24
-- [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24
 - [`D-KNW-111`][D-KNW-111] — The changelog procedure is a guide of its own · 2026-08-24
 - [`D-KNW-112`][D-KNW-112] — The invocation notes say where runTests.sh stops reading its own options · 2026-08-24
 - [`D-KNW-113`][D-KNW-113] — Reporting a core issue is a subject this server owns · 2026-08-24
@@ -416,9 +416,9 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-122]: knowledge/knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md
 [D-KNW-123]: knowledge/knw-123-the-corpus-tells-a-widened-signature-apart-from-a-widened-visibility.md
 [D-KNW-124]: knowledge/knw-124-frontend-render-pipeline-state-is-a-gap-this-server-owns.md
+[D-KNW-125]: knowledge/knw-125-a-core-commit-message-carries-four-trailers-and-the-hooks-change-id.md
 [D-KNW-107]: knowledge/knw-107-which-side-of-a-backend-module-resolves-a-resource-path-is-a-subject-this-server-owns.md
 [D-KNW-108]: knowledge/knw-108-where-an-impexp-import-puts-the-records-it-writes-is-a-subject-this-server-owns.md
-[D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
 [D-KNW-111]: knowledge/knw-111-the-changelog-procedure-is-a-guide-of-its-own.md
 [D-KNW-112]: knowledge/knw-112-the-invocation-notes-say-where-runtests-sh-stops-reading-its-own-options.md
 [D-KNW-113]: knowledge/knw-113-reporting-a-core-issue-is-a-subject-this-server-owns.md
@@ -1009,6 +1009,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### Revoked, and kept as the record
 
 - [`D-KNW-109`][D-KNW-109] — Whether a core commit owes a sign-off is a subject this server owns · 2026-08-24 → D-KNW-110
+- [`D-KNW-110`][D-KNW-110] — A core commit message carries three trailers and the hook's Change-Id · 2026-08-24 → D-KNW-125
 - [`D-ANS-081`][D-ANS-081] — A symptom is answered across the domain it was observed in · 2026-08-18 → D-ANS-084
 - [`D-SKL-040`][D-SKL-040] — A skill whose product is a report says it is a file · 2026-08-14 → D-SKL-042
 - [`D-DOC-018`][D-DOC-018] — The site opens on the readme · 2026-08-09 → D-DOC-026
@@ -1048,6 +1049,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-KNW-109]: knowledge/knw-109-whether-a-core-commit-owes-a-sign-off-is-a-subject-this-server-owns.md
+[D-KNW-110]: knowledge/knw-110-a-core-commit-message-carries-three-trailers-and-the-hooks-change-id.md
 [D-ANS-081]: answers/ans-081-a-symptom-is-answered-across-the-domain-it-was-observed-in.md
 [D-SKL-040]: task-skills/skl-040-a-skill-whose-product-is-a-report-says-it-is-a-file.md
 [D-DOC-018]: documentation/doc-018-the-site-opens-on-the-readme.md

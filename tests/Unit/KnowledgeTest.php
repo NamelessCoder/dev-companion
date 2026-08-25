@@ -1411,14 +1411,15 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
-     * The trailers a core commit message carries, and the three it does not.
+     * The trailers a core commit message carries, and the two it does not.
      *
      * `feedback/2026-08-24-110851` asked for the sign-off and got one unrelated
-     * page back. `feedback/2026-08-24-133602` had two drafts carrying the
-     * trailer struck by the maintainer, who then settled it: the sign-off is
-     * not set, and neither is an agent's own attribution trailer.
+     * page back. The certificate is required since `D-KNW-125`, so the page has
+     * to state the obligation, what signing it claims, and where the rule comes
+     * from — a caller who reads only the merged history finds the practice the
+     * rule replaces.
      */
-    #[Decision('D-KNW-110')]
+    #[Decision('D-KNW-125')]
     #[Test]
     public function theTrailerAnswerStatesTheRuleAndWhatLeavesItUnenforced(): void
     {
@@ -1429,19 +1430,39 @@ final class KnowledgeTest extends TestCase
         ]);
 
         self::assertSame(
-            ['core/contribution/commit-messages', 'Trailers A Core Commit Does Not Carry'],
+            ['core/contribution/commit-messages', 'The Trailers A Core Commit Carries'],
             [$result->data['matches'][0]['documentId'] ?? null, $result->data['matches'][0]['heading'] ?? null],
         );
 
         // Unwrapped, since each of them crosses a line break.
         $body = (string) preg_replace('/\s+/', ' ', Documents::read('core/contribution/commit-messages'));
         self::assertStringContainsString(
-            '`Signed-off-by:` is not set',
+            '`Signed-off-by:` is set on every TYPO3 core patch',
             $body,
             'the rule the maintainer settled is not stated',
         );
         self::assertStringContainsString(
-            '`Co-Authored-By:` is not set either',
+            'git commit -s',
+            $body,
+            'the rule stands without the command that carries it out',
+        );
+        self::assertStringContainsString(
+            'published under GPL v2',
+            $body,
+            'nothing says what signing the certificate claims',
+        );
+        self::assertStringContainsString(
+            'An AI tool does not divide it',
+            $body,
+            'the warranty is stated without the case the board wrote the recommendation for',
+        );
+        self::assertStringContainsString(
+            '2026-07-20',
+            $body,
+            'the rule names no source, which is what sends a session to the checkout instead',
+        );
+        self::assertStringContainsString(
+            '`Co-Authored-By:` is not set',
             $body,
             'the trailer an agent writes about itself is left out of the rule',
         );
@@ -1458,7 +1479,7 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString(
             'about one commit in a hundred on `main`',
             $body,
-            'the practice is left out, which is the half that stops a struck trailer',
+            'the practice the rule replaces is left out, which is what a caller counts for themselves',
         );
     }
 
@@ -1608,8 +1629,13 @@ final class KnowledgeTest extends TestCase
      * `any/testing/proving-a-condition` whole, six kilobytes on proving a
      * TypoScript condition, on one body carrying "signed in". The other half of
      * that feedback wrote the trailer rule, so the query now reaches the
-     * section it was asking for — and the unrelated page is still a cut, which
+     * sections it was asking for — and the unrelated page is still a cut, which
      * is the floor doing its work rather than the corpus doing it.
+     *
+     * Two of the three cuts are one page since `D-KNW-125` split the hook's own
+     * mechanics off the rule, and the page is still not handed over: the third
+     * match is another document, and a concentrated answer is every match
+     * coming from one.
      *
      * `icon` is the thin match that is left, and the second instance
      * `D-ANS-101` names in its evidence: one section, and the whole
@@ -1631,7 +1657,7 @@ final class KnowledgeTest extends TestCase
 
         self::assertSame([], $reported->data['matchedHeadings'], 'a page is handed over on the reported query');
         self::assertSame(
-            ['Trailers A Core Commit Does Not Carry', 'Which URL Is Requested'],
+            ['The Trailers A Core Commit Carries', 'What The Commit Hook Writes', 'Which URL Is Requested'],
             array_column($reported->data['matches'], 'heading'),
         );
         self::assertStringNotContainsString(

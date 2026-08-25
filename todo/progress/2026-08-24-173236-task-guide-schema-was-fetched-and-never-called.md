@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md
 **Priority:** normal
+**Branch:** todo/task-guide-schema-was-fetched-and-never-called
+**Claimed:** 2026-08-25
 
 Judged on 2026-08-25 as the ladder's step 3, and the evidence is in the
 `2026-08-25` section of

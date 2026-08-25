@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183253-no-way-to-triage-the-review-backlog-no-ordering.md, feedback/2026-08-24-205050-typo3-gerrit-lookup-cannot-filter-changes-by.md
 **Priority:** normal
+**Branch:** todo/no-way-to-triage-the-review-backlog-no-ordering
+**Claimed:** 2026-08-25
 
 Build what `D-ANS-107` decided: a way into `typo3_gerrit_lookup` beside `query`
 and `path` that enumerates the open changes of `Packages/TYPO3.CMS`, ordered

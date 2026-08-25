@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183319-the-checks-named-for-a-core-php-diff-omit.md
 **Priority:** normal
+**Branch:** todo/the-checks-named-for-a-core-php-diff-omit
+**Claimed:** 2026-08-25
 
 Say in the declared schemas what each of the three suite lists is a narrowing
 of, and which one is the list to run. `typo3_task_guide`'s `checks` is

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183345-core-testing-proving-a-rendering-was-listed-was.md, D-KNW-122
 **Priority:** normal
+**Branch:** todo/core-testing-proving-a-rendering-was-listed-was
+**Claimed:** 2026-08-25
 
 Judged on 2026-08-25 as the ladder's step 3, routing, and the reading is in
 [`D-KNW-122`](../../decisions/knowledge/knw-122-a-procedure-document-is-routed-by-the-evidence-a-task-needs.md).

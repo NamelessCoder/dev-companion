@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183209-breaking-not-assessed-calls-a-widened-protected.md, D-KNW-123
 **Priority:** normal
+**Branch:** todo/breaking-not-assessed-calls-a-widened-protected
+**Claimed:** 2026-08-25
 
 Judged step 4 and step 1a in `D-KNW-123`, which holds the sweep so it is not run
 again: the core promotes a member from protected to public in plain commits with

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-162543-cover-every-point-a-forge-issue-lists-or-split.md, D-SKL-075
 **Priority:** normal
+**Branch:** todo/settle-a-core-patch-s-scope-against-every-point-its
+**Claimed:** 2026-08-25
 
 Step 4 of the ladder, wording: `typo3-core-patch-development` fired, its step 3
 carried all three points of Forge #106584, and the session shipped two of them.

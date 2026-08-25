@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-163235-multi-term-query-returns-zero-where-a-single.md
 **Priority:** low
+**Branch:** todo/multi-term-query-returns-zero-where-a-single
+**Claimed:** 2026-08-25
 
 Half of this feedback was answered on 2026-08-24: the `query` description and
 the miss now say that every word has to be in the same issue, and the

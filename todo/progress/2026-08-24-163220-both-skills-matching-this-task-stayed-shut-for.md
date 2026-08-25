@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md
 **Priority:** low
+**Branch:** todo/both-skills-matching-this-task-stayed-shut-for
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

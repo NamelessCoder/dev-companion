@@ -187,3 +187,57 @@ thing to watch: a longer tail is a larger interruption for a session that
 already holds the skill, and its first case reported the answer as what worked
 rather than the tail as noise. It was read against the tail of two lines, so the
 next case is read against this one.
+
+### 2026-08-25 — the backlog answer is a second moment, and the bullet that declined it was written for the issue form
+
+`feedback/2026-08-24-173116` is `/home/benji/projects/typo3-cms` on
+`claude-opus-5[1m]`, sent to fetch another old Forge issue and work it off. It
+enumerated the backlog with `typo3_forge_lookup(open: "oldest")`, chose ten
+candidates itself, and found four of them already fixed — by reading code, by
+`git log -S`, and by writing throwaway functional tests. What it reports is that
+no call answers whether a report still reproduces, so a triage of the old
+backlog picks blind and verifies by hand.
+
+The order that removes most of that cost was published in its checkout and
+stayed shut.
+[`typo3-core-issue-triage`](../../skills/typo3-core-issue-triage/SKILL.md) opens
+on finding the candidates, states that age is a candidate and never a finding,
+carries the five readings of
+[`D-SKL-031`](skl-031-a-triage-picks-a-candidate-on-where-the-symptom-shows.md),
+and hands the list over rather than choosing from it. The session did the
+opposite of each. `feedback/2026-08-24-173236` is the same session's other
+report and names it from the transcript: the skill was in its listing,
+`typo3_task_guide`'s schema was loaded and the tool never called, and
+`typo3_changelog_lookup` was never reached at all.
+
+**Decided** declines this tail for `typo3_forge_lookup`, and what this section
+corrects is the reach of that bullet rather than its reasoning. It rules on "has
+somebody already fixed this", which precedes triage, patch development and
+review alike, and adds the tracker as that question one host over. The `issue`
+form is that question. The `open` form is not: it enumerates the core's backlog,
+one workflow owns a caller holding it, and the `triage` intent in
+`knowledge/task-intents.json` already routes that call to
+`typo3-core-issue-triage`. So this is the ladder's step 3 with step 2's repair —
+the route is in the data, and the placement that reaches the session is the
+answer it did call, which is `D-ANS-061` again.
+
+**The `open` form takes the tail and the `issue` form keeps none of it**, in the
+shape `GerritLookup::workflow()` took above: the skill name, and under it the
+readings that decide a candidate. The card serving `feedback/2026-08-24-173116`
+carries it at `normal`. What it costs is measured rather than estimated —
+`bin/cli tools:measure` in this checkout on 2026-08-25 reads
+`typo3_forge_lookup` at 33,879 bytes of text over 14 calls, against the 721
+bytes the Gerrit tail put on each change answer.
+
+The feedback's own two suggestions are not built, and the boundary is why. A
+call naming which of an issue's classes still exist in the checkout reads PHP
+source as code, and one surfacing merged commits as candidate fixes runs git;
+`knowledge/server-scope.json` declares both as what this server does not do.
+What stays inside that boundary is `typo3_changelog_lookup` for whether the area
+was reworked since the report, and `typo3_gerrit_lookup` for whether a patch
+exists — steps 5 and 4 of the skill, and the two calls the session names as the
+ones it never made. Its third fallback, a statement in `typo3_server_scope` that
+reproduction belongs to the checkout, is declined for the reason **Decided**
+already gives: the enumeration answer has said so since 2026-08-05, that
+sentence stood in the answer this session worked from, and naming a tool nobody
+invokes is what `D-ANS-061` ruled out.

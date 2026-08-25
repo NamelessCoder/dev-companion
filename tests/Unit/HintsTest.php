@@ -5267,7 +5267,9 @@ final class HintsTest extends TestCase
             // never reused, so it says nothing about a branch. A doktype value
             // is the same: it is the number in the pages row and in the page
             // tree, and 254 has been the folder for longer than any covered
-            // branch. None of them dates the statement against a TYPO3 branch,
+            // branch. So is an exit status, which is what the shell was handed
+            // and is a POSIX range no TYPO3 release moves. None of them dates
+            // the statement against a TYPO3 branch,
             // which is the only thing this is looking for. Each is worth
             // carrying because it is the symptom a caller arrives with — so each
             // is written with its word in front, "HTTP 404" and "doktype 254"
@@ -5293,10 +5295,11 @@ final class HintsTest extends TestCase
                 [
                     '/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i',
                     '/\bexception \d{10}\b/i', '/\bdoktype \d{1,3}\b/i',
+                    '/\bexit (status|code) (above )?\d{1,3}\b/i',
                     '/\bPHP \^?\d+\.\d+(\.\d+)?/i',
                     "/'0000-00-00 00:00:00'|'0000-00-00'|'00:00:00'/",
                 ],
-                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype', 'PHP', 'zero-date'],
+                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype', 'exit status', 'PHP', 'zero-date'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 

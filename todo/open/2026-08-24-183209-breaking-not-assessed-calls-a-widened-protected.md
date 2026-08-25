@@ -1,9 +1,9 @@
 # breaking-not-assessed calls a widened protected member breaking; the core's own history does not
 
-**Serves:** feedback/2026-08-24-183209-breaking-not-assessed-calls-a-widened-protected.md, D-KNW-122
+**Serves:** feedback/2026-08-24-183209-breaking-not-assessed-calls-a-widened-protected.md, D-KNW-123
 **Priority:** normal
 
-Judged step 4 and step 1a in `D-KNW-122`, which holds the sweep so it is not run
+Judged step 4 and step 1a in `D-KNW-123`, which holds the sweep so it is not run
 again: the core promotes a member from protected to public in plain commits with
 no changelog file, and three of them reach a maintained release line. Rewrite
 the `breaking-not-assessed` message in `src/Knowledge/CommitMessage.php` so

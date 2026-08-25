@@ -1,11 +1,11 @@
 ---
-id: D-KNW-122
+id: D-KNW-123
 title: The corpus tells a widened signature apart from a widened visibility
 date: 2026-08-25
 status: open
 ---
 
-# D-KNW-122 — The corpus tells a widened signature apart from a widened visibility
+# D-KNW-123 — The corpus tells a widened signature apart from a widened visibility
 
 **The third breaking move is a changed signature alone, and a member promoted
 from protected to public owes nothing the core files as breaking.**

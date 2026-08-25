@@ -1,7 +1,9 @@
-# reading an abandoned change's inline comments stopped me repeating a rejected approach
+# which releases contain a given fix took four git calls per issue and no tool answers it
 
-**Serves:** feedback/2026-08-24-173151-reading-an-abandoned-change-s-inline-comments.md
+**Serves:** feedback/2026-08-24-173131-which-releases-contain-a-given-fix-took-four.md
 **Priority:** low
+**Branch:** todo/which-releases-contain-a-given-fix-took-four
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-173116-nothing-answers-whether-an-old-issue-s-defect.md
 **Priority:** low
+**Branch:** todo/nothing-answers-whether-an-old-issue-s-defect
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

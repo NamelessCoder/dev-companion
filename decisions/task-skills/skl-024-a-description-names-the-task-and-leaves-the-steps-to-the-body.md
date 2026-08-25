@@ -105,3 +105,30 @@ it back in exchange for the requests the description used to list. That trade is
 body now carries the worktree path the description promises.
 `SkillTest::aWorktreeTaskMatchesTheSkillThatOwnsTheCheckout` holds both halves,
 so the next trim cannot make the same trade unseen.
+
+## Since then
+
+### 2026-08-25 — the second Wrong if fired, on the clause cut from triage
+
+A session opened with "bitte suche forge issues im asset renderer bereich",
+searched the backlog six times, read four candidates and opened
+`typo3-core-issue-triage` at no point
+([`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)).
+The brief names the cut step — "find the candidates in the backlog" — and the
+skill it named stopped matching, which is the second **Wrong if** verbatim.
+
+The statement stands and what fired is narrower than it. "Find the candidates"
+was not a step of the task this description names: the body hands the backlog
+over as a deliverable of its own and says the two are different jobs, which
+`D-SKL-031` settled the day after the cut. So the clause was carrying a second
+task rather than summarising the first, and a cut that reads a job as a step
+removes what nothing else in the description says.
+[`D-SKL-076`](skl-076-a-description-names-both-jobs-a-skills-body-owns.md) is
+what that is decided as, and it is where the case is queued.
+
+The other five skills were read for the same thing on 2026-08-25, by their
+section headings against their descriptions. Each runs one task through to one
+deliverable — a pushed patch, a checkout in a stated state, a report, a module,
+a running installation — and where a body branches, as the installation skill
+does on whether a procedure is declared, both branches end at that same one. So
+triage is the case rather than the first of several.

@@ -259,3 +259,30 @@ it is weighed — and whether 2048 is still the boundary to design against is wh
 [`todo/waiting/2026-08-19-090401`](../../todo/waiting/2026-08-19-090401-tools-arrived-as-bare-names-with-no-schemas-and.md)
 is waiting on.
 
+### 2026-08-25 — one session, one description that matched and one that said nothing
+
+[`feedback/2026-08-24-163220`](../../feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md)
+is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]` again, opening in
+German with "bitte suche forge issues im asset renderer bereich" and then "ok
+suche einen den man einfach fixen kann und es mit tests belegen kann". It found
+an issue, wrote the patch, the tests and the changelog entry, and opened no
+skill. Neither `typo3_project_describe` nor `typo3_task_guide` was called, which
+is the eleven-to-one of the 2026-08-19 reading measured the other way once more.
+
+The row counts for the patch half alone.
+[`typo3-core-patch-development`](../../skills/typo3-core-patch-development/SKILL.md)'s
+description names the changelog entry, the checks and the push to Gerrit — three
+of the things the session went on to reconstruct by hand — and it stayed shut.
+That is this entry's shape, and the session's proposal for it is the lever this
+entry declines: a trigger for being about to change a file in the core checkout
+is another request shape, and the 2026-08-24-140120 row is one already written
+that way and passed over.
+
+The triage half is not this entry's, and it is why the report is judged
+elsewhere. `typo3-core-issue-triage`'s description says nothing about picking an
+issue out of the backlog, which is the first sentence of this brief and the
+first section of that skill's body. A description that never names the job is
+not a description the model chose against, so the wording is what is left to
+suspect there rather than what has been ruled out —
+[`D-SKL-076`](skl-076-a-description-names-both-jobs-a-skills-body-owns.md).
+

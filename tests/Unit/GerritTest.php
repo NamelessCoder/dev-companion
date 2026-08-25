@@ -405,6 +405,212 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * What `commit:cf227b18e20` answered on 2026-08-25, trimmed to the fields
+     * that are read and its message to one paragraph and the trailers.
+     *
+     * Change 89740, merged on `main`. Its `Releases:` line is the one the
+     * reporting session reached after four git calls per commit, and after
+     * telling the user a release set that line contradicts — `D-ANS-106`.
+     */
+    private const FIXED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Allow replacing files with different mime-type and extension",'
+        . '"status":"MERGED","updated":"2025-07-08 08:39:40.000000000","_number":89740,'
+        . '"change_id":"I7e09432feea63d481f356a074ac7e1eb4a422064","current_revision_number":6,'
+        . '"current_revision":"cf227b18e205a3720599f07ac98a8747c7008398","revisions":{'
+        . '"cf227b18e205a3720599f07ac98a8747c7008398":{"commit":{"message":"[BUGFIX] Allow replacing files with different mime-type and extension\n\nReplacing an existing file.pdf with another file.png was denied.\n\nResolves: #106890\nReleases: main, 13.4, 12.4\nChange-Id: I7e09432feea63d481f356a074ac7e1eb4a422064\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89740\n"}}}}]';
+
+    /**
+     * The three changes `change:I7e09432feea63d481f356a074ac7e1eb4a422064`
+     * answered the same day, most recently moved first: the patch on `main` and
+     * the two backports, each carrying the same trailer.
+     *
+     * 90012 at `aaec618cf33` is the backport hash the session went to
+     * `git log origin/13.4 -S` for, and 90014 is the 12.4 change it never found
+     * at all.
+     */
+    private const BACKPORTED = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"12.4","subject":"[BUGFIX] Allow replacing files with different mime-type and extension",'
+        . '"status":"MERGED","updated":"2025-07-08 08:39:51.000000000","_number":90014,'
+        . '"change_id":"I7e09432feea63d481f356a074ac7e1eb4a422064","current_revision_number":5,'
+        . '"current_revision":"4a046b51e5130b29655c78e4c0e6fe50e172371c","revisions":{'
+        . '"4a046b51e5130b29655c78e4c0e6fe50e172371c":{"commit":{"message":"[BUGFIX] Allow replacing files with different mime-type and extension\n\nResolves: #106890\nReleases: main, 13.4, 12.4\nChange-Id: I7e09432feea63d481f356a074ac7e1eb4a422064\n"}}}},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"13.4","subject":"[BUGFIX] Allow replacing files with different mime-type and extension",'
+        . '"status":"MERGED","updated":"2025-07-08 08:39:45.000000000","_number":90012,'
+        . '"change_id":"I7e09432feea63d481f356a074ac7e1eb4a422064","current_revision_number":3,'
+        . '"current_revision":"aaec618cf335f094b361856e9e357c46a5c08508","revisions":{'
+        . '"aaec618cf335f094b361856e9e357c46a5c08508":{"commit":{"message":"[BUGFIX] Allow replacing files with different mime-type and extension\n\nResolves: #106890\nReleases: main, 13.4, 12.4\nChange-Id: I7e09432feea63d481f356a074ac7e1eb4a422064\n"}}}},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Allow replacing files with different mime-type and extension",'
+        . '"status":"MERGED","updated":"2025-07-08 08:39:40.000000000","_number":89740,'
+        . '"change_id":"I7e09432feea63d481f356a074ac7e1eb4a422064","current_revision_number":6,'
+        . '"current_revision":"cf227b18e205a3720599f07ac98a8747c7008398","revisions":{'
+        . '"cf227b18e205a3720599f07ac98a8747c7008398":{"commit":{"message":"[BUGFIX] Allow replacing files with different mime-type and extension\n\nResolves: #106890\nReleases: main, 13.4, 12.4\nChange-Id: I7e09432feea63d481f356a074ac7e1eb4a422064\n"}}}}]';
+
+    /** What the issue all three resolve answered on 2026-08-25. */
+    private const RESOLVED = '{"issues":[{"id":106890,"tracker":{"id":1,"name":"Bug"},'
+        . '"status":{"id":5,"name":"Closed"},'
+        . '"subject":"Replacing a file in filelist with different file extension"}],"total_count":1}';
+
+    /** The commit, the siblings its Change-Id finds, the tracker, and no stack. */
+    private static function fixed(string $url): string
+    {
+        if (str_contains($url, 'forge.typo3.org')) {
+            return self::RESOLVED;
+        }
+        if (str_contains($url, '/related')) {
+            return ")]}'\n" . '{"changes":[]}';
+        }
+
+        return str_contains($url, 'q=commit') ? self::FIXED : self::BACKPORTED;
+    }
+
+    /**
+     * A commit is the handle a checkout hands over, and it reads on exactly as
+     * a change number does — `D-ANS-106`.
+     *
+     * `feedback/2026-08-24-173131` held three hashes and had no way to ask
+     * about them: `change:` refuses one, so the session spent four git calls
+     * per commit and six where a backport was involved. One call answers the
+     * change, the two backports and the branch each of them targets.
+     */
+    #[Decision('D-ANS-106')]
+    #[Test]
+    public function aCommitFromACheckoutNamesTheChangeItIsAPatchSetOf(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::fixed($url);
+        });
+
+        $answer = $gerrit->commit('cf227b18e20', 10);
+
+        $queries = array_values(array_filter($asked, static fn(string $url): bool => str_contains($url, '?q=')));
+        // The abbreviated hash as it was pasted, under the operator that takes
+        // one: `change:cc880c67777` answers HTTP 400 `Invalid change format`.
+        self::assertStringContainsString('q=commit%3Acf227b18e20', $queries[0]);
+        self::assertStringContainsString('q=change%3AI7e09432feea63d481f356a074ac7e1eb4a422064', $queries[1]);
+        self::assertSame([89740, 90014, 90012], array_column($answer['changes'], 'number'));
+        self::assertSame(['main', '12.4', '13.4'], array_column($answer['changes'], 'branch'));
+        // The backport hash the session went to `git log origin/13.4 -S` for.
+        self::assertSame('aaec618cf335f094b361856e9e357c46a5c08508', $answer['changes'][2]['commit']);
+        // And the read a change number gets, on the change the commit named.
+        self::assertSame([106890], array_column($answer['changes'][0]['issues'], 'issue'));
+    }
+
+    /**
+     * The trailer is in the message the answer already fetches, and it is the
+     * authority the session reached last — `D-ANS-106`.
+     *
+     * It cost that session a correction: it read `git branch -r --contains` on
+     * the `main` commit, told the user the fix was in 14.0 and 13.4, and took
+     * it back a turn later when the trailer said 12.4 as well.
+     */
+    #[Decision('D-ANS-106')]
+    #[Test]
+    public function aChangeNamesTheBranchesItsReleasesTrailerClaims(): void
+    {
+        $gerrit = new Gerrit(static fn(string $url): string => self::fixed($url));
+
+        $answer = $gerrit->commit('cf227b18e20', 10);
+
+        self::assertSame(['main', '13.4', '12.4'], $answer['changes'][0]['releases']);
+        // On every change the answer carries, because a backport states its own.
+        self::assertSame(['main', '13.4', '12.4'], $answer['changes'][2]['releases']);
+        // No call of its own: the message it is read from is the one the issues
+        // beside it are read from.
+        self::assertArrayNotHasKey('message', $answer['changes'][0]);
+
+        // The issue direction reads the same message, so it carries it too —
+        // which is the direction a triage holding an issue number is in.
+        $searched = (new Gerrit(static fn(): string => self::BOTH))->changesForIssue('88556')['changes'][0];
+
+        self::assertSame(['main', '14.3', '13.4'], $searched['releases']);
+    }
+
+    /**
+     * A message with no such trailer claims nothing, and a message that was not
+     * read says nothing — `D-ANS-106`.
+     *
+     * The first is every change outside the core project, and change 95350 is
+     * one on it: it was abandoned with a message naming no branch. The second
+     * is the search by words and path, which asks for no message at all, and an
+     * empty list there would be this side inventing what it never read.
+     */
+    #[Decision('D-ANS-106')]
+    #[Test]
+    public function aMessageThatWasNotReadClaimsNothingRatherThanNoBranches(): void
+    {
+        $none = ")]}'\n"
+            . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[TASK] Skip database setup for database-free functional tests",'
+            . '"status":"ABANDONED","_number":95350,"current_revision_number":1,"current_revision":"56bb0a89",'
+            . '"revisions":{"56bb0a89":{"commit":{"message":"[TASK] Skip database setup for database-free functional tests\n\nChange-Id: I7d53b24b881f0970ed35f21976b945311a2c45d9\n"}}}}]';
+
+        $silent = new Gerrit(static fn(string $url): string => str_contains($url, '/related')
+            ? ")]}'\n" . '{"changes":[]}'
+            : $none);
+
+        self::assertSame([], $silent->change('95350')['changes'][0]['releases']);
+        self::assertNull(
+            (new Gerrit(static fn(): string => self::MATCHED))->changesMatching('impexp', '')['changes'][0]['releases'],
+        );
+    }
+
+    /**
+     * The two claims stand side by side, and the text half says which is which
+     * — `D-ANS-106`, `D-ANS-073`.
+     *
+     * A trailer says where the author meant the patch to go; a change on a
+     * branch is a patch that is there. A reader taking the first for the second
+     * reports a fix as released on a branch nobody pushed it to.
+     */
+    #[Decision('D-ANS-106')]
+    #[Decision('D-ANS-073')]
+    #[Test]
+    public function theTextHalfTellsTheTrailerApartFromWhatWasPushed(): void
+    {
+        $changes = (new Gerrit(static fn(string $url): string => self::fixed($url)))
+            ->commit('cf227b18e20', 10)['changes'];
+
+        self::assertSame(['Releases: main, 13.4, 12.4'], GerritLookup::releases($changes[0]));
+
+        $said = implode("\n", GerritLookup::releaseClaim($changes));
+
+        self::assertStringContainsString('the author\'s claim', $said);
+        self::assertStringContainsString('sharing a Change-Id', $said);
+        // The version half, which is a second source and stays outside this
+        // answer rather than being inferred from a branch.
+        self::assertStringContainsString('Which release carries it is neither', $said);
+
+        // Nothing to print for a message that claims none, and nothing to say
+        // about trailers where no change carried one.
+        self::assertSame([], GerritLookup::releases(['releases' => []]));
+        self::assertSame([], GerritLookup::releases(['releases' => null]));
+        self::assertSame([], GerritLookup::releaseClaim([['releases' => null], ['releases' => []]]));
+    }
+
+    /**
+     * A hash reaches the review server only where somebody pushed it, so an
+     * empty answer there is not "this commit is in no change" — `D-ANS-106`.
+     */
+    #[Requirement('R-ANS-027')]
+    #[Decision('D-ANS-106')]
+    #[Test]
+    public function anEmptyAnswerForACommitSaysWhatItCannotSeparate(): void
+    {
+        $said = GerritLookup::indistinguishable('empty', 'commit');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('without credentials', $said);
+        self::assertStringContainsString('never pushed for review', $said);
+        // The way back in, which is the one that reaches a change whatever
+        // commit its patch set stands at.
+        self::assertStringContainsString('`query`', $said);
+
+        self::assertNull(GerritLookup::indistinguishable('answered', 'commit'));
+    }
+
+    /**
      * The other handle asks the whole question in one query, so nothing is
      * asked twice — including where that query answers one change, which is a
      * patch nobody has backported yet — `D-ANS-080`.

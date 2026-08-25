@@ -3,7 +3,12 @@ id: D-ANS-106
 title: A commit in a checkout is a handle the review lookup takes
 date: 2026-08-25
 status: open
-coveredBy: []
+coveredBy:
+  - GerritTest::aChangeNamesTheBranchesItsReleasesTrailerClaims
+  - GerritTest::aCommitFromACheckoutNamesTheChangeItIsAPatchSetOf
+  - GerritTest::aMessageThatWasNotReadClaimsNothingRatherThanNoBranches
+  - GerritTest::anEmptyAnswerForACommitSaysWhatItCannotSeparate
+  - GerritTest::theTextHalfTellsTheTrailerApartFromWhatWasPushed
 ---
 
 # D-ANS-106 — A commit in a checkout is a handle the review lookup takes
@@ -96,3 +101,22 @@ told the user a fix had reached two branches where the trailer said three.
   taking the trailer for the outcome would say the pairing is not enough.
 - The handle is added and nothing passes it, which would make this step 3 and
   the routing the lever rather than the schema.
+
+## Since then
+
+Built the same day the card was taken up. `commit` is the fourth way in,
+`releases` is a field on every change whose commit message came back, and the
+routing that says the handle is there is in the tool description, in the scope's
+`routing` and in the triage intent's tools. The `commit:` query and the trailer
+were read against `review.typo3.org` again while the tests were written, and the
+fixtures in `GerritTest` are that reading: change 89740 at
+`cf227b18e205a3720599f07ac98a8747c7008398`, its backports 90012 on `13.4` at
+`aaec618cf33` and 90014 on `12.4`, and the `Releases: main, 13.4, 12.4` all
+three of them carry.
+
+The issue direction carries the field too, which the decision above neither
+asked for nor ruled out: that search already fetches the commit message to hold
+what the server matched against what it says, so one rule covers every path —
+the trailer is read wherever the message came back, and `null` is a message that
+was not. What stays outside is the search by words and by path, which asks for
+no message at all.

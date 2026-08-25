@@ -8,43 +8,49 @@ in, from the review server at review.typo3.org. Pass issue with a Forge issue
 number to search the commit messages of every change for it — the question "has
 somebody already fixed this" — or change with the Change-Id from a commit
 message, or the change number a review URL ends with, to read the one it names.
-Or search the server without holding either: query takes words matched against
-the commit messages, path takes a repository path and answers the changes
-touching it, the two combine, and open narrows them to what is still under
-review. That is the direction a triage opens with — is anybody working on this
-file, and did anybody ever try this fix — and it is the review surface a
-checkout cannot see, since a core clone carries what landed and says nothing
-about what is open. Answers with the change number, its Change-Id, subject,
-status, target branch, review URL, and the patch set that is current on the
-server with the commit it is — which is what says whether a checkout is the
-revision under review. A change is answered together with the changes sharing
-its Change-Id, whichever handle named it — that is how a backport on a release
-branch is reached. It also carries the relation chain it sits in: the changes
-stacked on it and the changes it is built on, each with its number, its status
-and its subject, which is what says whether the change is one part of a larger
-feature and how far that feature has got. The two relations are different — a
-chain is changes built on one another, a shared Change-Id is one patch on
-several branches. A change read by name also carries the Forge issues its commit
-message names in its Resolves: and Related: trailers, each with its subject,
-tracker and status. That is the join between the patch and the tracker, and it
-is where a second issue named nowhere else in the review is seen. Each change
-also carries the ref that patch set is fetchable by and the review server to
-fetch it over, so getting it into a checkout takes no second lookup. A change
-read by name carries the review it is in as well: the value every voter holds
-per label and whether the submit rule is satisfied, and every comment left on it
-with its patch set, its file and line, whether the thread is unresolved and
-which comment it replies to. That is where a comment somebody left on an earlier
-patch set and nobody answered is read. Why a vote is gone is in the review log
-instead, which messages asks for. A call carries issue, change, or a search by
-query and path, never two of those. Beside the branch each change targets it
-names the branches that take a patch today, each with the day its regular
-support ends — the list a Releases: trailer may name, which a core clone
-supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing
-about which of them is still maintained. Which of those lines a change belongs
-on is not answered here: that is the author's claim, and
-typo3_commit_message_guide with workflow="core" is what reads a trailer against
-them. This reaches the network, and it reads: reviewing, voting and uploading
-stay yours. Answers from: network.
+Or commit with a hash out of a checkout, abbreviated as git log prints it or
+whole, which is the handle a session working in a clone actually holds — the
+review server refuses one passed as change. Or search the server without holding
+any of them: query takes words matched against the commit messages, path takes a
+repository path and answers the changes touching it, the two combine, and open
+narrows them to what is still under review. That is the direction a triage opens
+with — is anybody working on this file, and did anybody ever try this fix — and
+it is the review surface a checkout cannot see, since a core clone carries what
+landed and says nothing about what is open. Answers with the change number, its
+Change-Id, subject, status, target branch, review URL, and the patch set that is
+current on the server with the commit it is — which is what says whether a
+checkout is the revision under review. A change is answered together with the
+changes sharing its Change-Id, whichever handle named it — that is how a
+backport on a release branch is reached, and how a commit hash answers which
+branches carry the fix. Every change whose commit message was read also names
+the branches its Releases: trailer claims. The trailer is the author's claim
+about where the patch belongs and the siblings beside it are what was pushed, so
+read the two together rather than one for the other. It also carries the
+relation chain it sits in: the changes stacked on it and the changes it is built
+on, each with its number, its status and its subject, which is what says whether
+the change is one part of a larger feature and how far that feature has got. The
+two relations are different — a chain is changes built on one another, a shared
+Change-Id is one patch on several branches. A change read by name also carries
+the Forge issues its commit message names in its Resolves: and Related:
+trailers, each with its subject, tracker and status. That is the join between
+the patch and the tracker, and it is where a second issue named nowhere else in
+the review is seen. Each change also carries the ref that patch set is fetchable
+by and the review server to fetch it over, so getting it into a checkout takes
+no second lookup. A change read by name carries the review it is in as well: the
+value every voter holds per label and whether the submit rule is satisfied, and
+every comment left on it with its patch set, its file and line, whether the
+thread is unresolved and which comment it replies to. That is where a comment
+somebody left on an earlier patch set and nobody answered is read. Why a vote is
+gone is in the review log instead, which messages asks for. A call carries
+issue, change, commit, or a search by query and path, never two of those. Beside
+the branch each change targets it names the branches that take a patch today,
+each with the day its regular support ends — the list a Releases: trailer may
+name, which a core clone supplies nowhere, since git branch -r reaches back to
+TYPO3_3-6 and says nothing about which of them is still maintained. Which of
+those lines a change belongs on is not answered here: that is the author's
+claim, and typo3_commit_message_guide with workflow="core" is what reads a
+trailer against them. This reaches the network, and it reads: reviewing, voting
+and uploading stay yours. Answers from: network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -57,8 +63,8 @@ Takes
 
     # Forge issue number, with or without the leading #, for example "105403".
     # Searches every change whose commit message names it, which is where Resolves:
-    # and Related: put it. A call carries issue, change, or a search by query and
-    # path, never two of those.
+    # and Related: put it. A call carries issue, change, commit, or a search by
+    # query and path, never two of those.
     issue: string  # optional
     # One change to read, named either by the Change-Id its commit message carries,
     # for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change
@@ -66,8 +72,17 @@ Takes
     # the commit is in front of you: it is part of the patch being read, it survives
     # being amended into a new patch set, and it cannot be mistaken for the Forge
     # issue number the way a bare change number can. A call carries issue, change,
-    # or a search by query and path, never two of those.
+    # commit, or a search by query and path, never two of those.
     change: string  # optional
+    # A commit hash out of a checkout, abbreviated as git log prints it or whole,
+    # for example "cf227b18e20". Answers the change that commit is a patch set of,
+    # and with it the changes sharing its Change-Id — which is how a hash in your
+    # own history reaches the backports beside it and the branches each of them
+    # targets. Pass a hash here rather than as change: the review server answers
+    # "Invalid change format" to a commit passed as change, which arrives as the
+    # server not answering at all. A call carries issue, change, commit, or a search
+    # by query and path, never two of those.
+    commit: string  # optional
     # Words to search the review server for, for example "impexp translation". Every
     # word has to appear, and what they are matched against is the commit message
     # — the subject and the body, so a change whose subject does not carry the
@@ -77,7 +92,8 @@ Takes
     # Ask again in the words a commit message would use, and pass path for the
     # changes that touch a file whatever they are called. Combine it with path to
     # narrow one by the other, and with open for what is still under review. A call
-    # carries issue, change, or a search by query and path, never two of those.
+    # carries issue, change, commit, or a search by query and path, never two of
+    # those.
     query: string  # optional
     # A path in the repository, for example "typo3/sysext/impexp" or
     # "typo3/sysext/impexp/Classes/Import.php". Answers the changes that touch it
@@ -87,14 +103,14 @@ Takes
     # file before writing a patch for it, and with open it is that question exactly.
     # Without open it reaches the abandoned and the merged changes too, which is
     # where an earlier attempt at the same fix is found. Combine it with query to
-    # narrow one by the other. A call carries issue, change, or a search by query
-    # and path, never two of those.
+    # narrow one by the other. A call carries issue, change, commit, or a search by
+    # query and path, never two of those.
     path: string  # optional
     # Narrow a search to the changes that are still under review. False, the
     # default, reaches every state — which is what "has anybody ever tried this"
     # needs, since an abandoned or merged attempt is the answer to it. True is "who
-    # is working on this now". Narrows query and path, and is ignored by issue and
-    # change.
+    # is working on this now". Narrows query and path, and is ignored by issue,
+    # change and commit.
     open: boolean  # optional
     # One of: none, people, all. The review log of a change: every message its patch
     # sets and its reviewers left. Ask for it to find out why a vote is gone —
@@ -104,13 +120,13 @@ Takes
     # since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people"
     # drops what a service user wrote, which on that change is 20 of 46 messages and
     # every one of them a CI pipeline report. "all" keeps them. How many were
-    # dropped is answered whichever you ask for. Narrows change and is ignored by
-    # every other way in.
+    # dropped is answered whichever you ask for. Narrows change and commit, and is
+    # ignored by every other way in.
     messages: string  # optional
     limit: integer  # optional
 
 The call carries exactly one of these sets of arguments: ``issue`` — or
-``change`` — or ``query`` — or ``path``.
+``change`` — or ``commit`` — or ``query`` — or ``path``.
 
 Answers with
 ------------
@@ -191,6 +207,15 @@ Answers with
         # Null means the message was not read: a search asks for none of this, and
         # reading one hit by name is what answers it there.
         issues: array or null  # optional
+        # The branches this change's commit message names in its Releases: trailer,
+        # spelled as the trailer spells them. It is the author's claim about which
+        # branches the patch belongs on, written before it went to any of them —
+        # what was pushed is the changes above sharing a Change-Id, one per branch
+        # and each with its own status, so a branch named here with no change
+        # targeting it is a backport nobody has pushed. Empty means the message
+        # carries no such trailer, which every change outside the core project is.
+        # Null means the message was not read, which is a search by words or path.
+        releases: array or null  # optional
         # The review log, oldest first, where messages asked for it. Null otherwise,
         # which is the default and every hit a search answers.
         messages: array or null  # optional

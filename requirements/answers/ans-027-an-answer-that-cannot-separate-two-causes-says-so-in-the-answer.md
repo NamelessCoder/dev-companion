@@ -5,6 +5,7 @@ status: held
 restsOn: [D-ANS-062]
 heldBy:
   - GerritTest::aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer
+  - GerritTest::anEmptyAnswerForACommitSaysWhatItCannotSeparate
   - GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate
 ---
 

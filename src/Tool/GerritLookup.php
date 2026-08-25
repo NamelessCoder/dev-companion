@@ -45,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or search the server without holding either: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, or a search by query and path, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, or a search by query and path, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -57,33 +57,38 @@ final class GerritLookup extends ReadOnlyTool
                 'issue' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Forge issue number, with or without the leading #, for example "105403". Searches every change whose commit message names it, which is where Resolves: and Related: put it. A call carries issue, change, or a search by query and path, never two of those.',
+                    'description' => 'Forge issue number, with or without the leading #, for example "105403". Searches every change whose commit message names it, which is where Resolves: and Related: put it. A call carries issue, change, commit, or a search by query and path, never two of those.',
                 ],
                 'change' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'One change to read, named either by the Change-Id its commit message carries, for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change number a review URL ends with, for example "89011". Prefer the Change-Id where the commit is in front of you: it is part of the patch being read, it survives being amended into a new patch set, and it cannot be mistaken for the Forge issue number the way a bare change number can. A call carries issue, change, or a search by query and path, never two of those.',
+                    'description' => 'One change to read, named either by the Change-Id its commit message carries, for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change number a review URL ends with, for example "89011". Prefer the Change-Id where the commit is in front of you: it is part of the patch being read, it survives being amended into a new patch set, and it cannot be mistaken for the Forge issue number the way a bare change number can. A call carries issue, change, commit, or a search by query and path, never two of those.',
+                ],
+                'commit' => [
+                    'type' => 'string',
+                    'minLength' => 1,
+                    'description' => 'A commit hash out of a checkout, abbreviated as git log prints it or whole, for example "cf227b18e20". Answers the change that commit is a patch set of, and with it the changes sharing its Change-Id — which is how a hash in your own history reaches the backports beside it and the branches each of them targets. Pass a hash here rather than as change: the review server answers "Invalid change format" to a commit passed as change, which arrives as the server not answering at all. A call carries issue, change, commit, or a search by query and path, never two of those.',
                 ],
                 'query' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Words to search the review server for, for example "impexp translation". Every word has to appear, and what they are matched against is the commit message — the subject and the body, so a change whose subject does not carry the word is still found. They are not matched against the diff: change 89000 added writePagesOrder and a search for that name answers nothing, so a zero says no commit message names the word rather than that nobody has touched the code. Ask again in the words a commit message would use, and pass path for the changes that touch a file whatever they are called. Combine it with path to narrow one by the other, and with open for what is still under review. A call carries issue, change, or a search by query and path, never two of those.',
+                    'description' => 'Words to search the review server for, for example "impexp translation". Every word has to appear, and what they are matched against is the commit message — the subject and the body, so a change whose subject does not carry the word is still found. They are not matched against the diff: change 89000 added writePagesOrder and a search for that name answers nothing, so a zero says no commit message names the word rather than that nobody has touched the code. Ask again in the words a commit message would use, and pass path for the changes that touch a file whatever they are called. Combine it with path to narrow one by the other, and with open for what is still under review. A call carries issue, change, commit, or a search by query and path, never two of those.',
                 ],
                 'path' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'A path in the repository, for example "typo3/sysext/impexp" or "typo3/sysext/impexp/Classes/Import.php". Answers the changes that touch it — the path itself and everything under it — which is the surface a checkout cannot see: a core clone carries what landed and says nothing about what is open. It is the way to ask whether somebody is already working on a file before writing a patch for it, and with open it is that question exactly. Without open it reaches the abandoned and the merged changes too, which is where an earlier attempt at the same fix is found. Combine it with query to narrow one by the other. A call carries issue, change, or a search by query and path, never two of those.',
+                    'description' => 'A path in the repository, for example "typo3/sysext/impexp" or "typo3/sysext/impexp/Classes/Import.php". Answers the changes that touch it — the path itself and everything under it — which is the surface a checkout cannot see: a core clone carries what landed and says nothing about what is open. It is the way to ask whether somebody is already working on a file before writing a patch for it, and with open it is that question exactly. Without open it reaches the abandoned and the merged changes too, which is where an earlier attempt at the same fix is found. Combine it with query to narrow one by the other. A call carries issue, change, commit, or a search by query and path, never two of those.',
                 ],
                 'open' => [
                     'type' => 'boolean',
                     'default' => false,
-                    'description' => 'Narrow a search to the changes that are still under review. False, the default, reaches every state — which is what "has anybody ever tried this" needs, since an abandoned or merged attempt is the answer to it. True is "who is working on this now". Narrows query and path, and is ignored by issue and change.',
+                    'description' => 'Narrow a search to the changes that are still under review. False, the default, reaches every state — which is what "has anybody ever tried this" needs, since an abandoned or merged attempt is the answer to it. True is "who is working on this now". Narrows query and path, and is ignored by issue, change and commit.',
                 ],
                 'messages' => [
                     'type' => 'string',
                     'enum' => ['none', 'people', 'all'],
                     'default' => 'none',
-                    'description' => 'The review log of a change: every message its patch sets and its reviewers left. Ask for it to find out why a vote is gone — Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the message of the upload that dropped it, and the labels afterwards look exactly like a change nobody has voted on. "none" leaves it out and is the default, since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people" drops what a service user wrote, which on that change is 20 of 46 messages and every one of them a CI pipeline report. "all" keeps them. How many were dropped is answered whichever you ask for. Narrows change and is ignored by every other way in.',
+                    'description' => 'The review log of a change: every message its patch sets and its reviewers left. Ask for it to find out why a vote is gone — Gerrit writes "Outdated Votes: * Code-Review+1 (copy condition: ...)" into the message of the upload that dropped it, and the labels afterwards look exactly like a change nobody has voted on. "none" leaves it out and is the default, since it is 57.9 KB against 14.3 KB on a change with 21 patch sets. "people" drops what a service user wrote, which on that change is 20 of 46 messages and every one of them a CI pipeline report. "all" keeps them. How many were dropped is answered whichever you ask for. Narrows change and commit, and is ignored by every other way in.',
                 ],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 25, 'default' => 10],
             ],
@@ -94,6 +99,7 @@ final class GerritLookup extends ReadOnlyTool
             'oneOf' => [
                 ['required' => ['issue']],
                 ['required' => ['change']],
+                ['required' => ['commit']],
                 ['required' => ['query']],
                 ['required' => ['path'], 'not' => ['required' => ['query']]],
             ],
@@ -206,6 +212,17 @@ final class GerritLookup extends ReadOnlyTool
                         'status' => Schema::string('Where the issue stands, which is the tracker\'s own state and not the state of this change.'),
                         'url' => Schema::string('Where a person reads it.'),
                     ], ['issue', 'trailer', 'subject', 'tracker', 'status', 'url']),
+                ],
+                'releases' => [
+                    'type' => ['array', 'null'],
+                    'description' => 'The branches this change\'s commit message names in its Releases: trailer, '
+                        . 'spelled as the trailer spells them. It is the author\'s claim about which branches the '
+                        . 'patch belongs on, written before it went to any of them — what was pushed is the changes '
+                        . 'above sharing a Change-Id, one per branch and each with its own status, so a branch named '
+                        . 'here with no change targeting it is a backport nobody has pushed. Empty means the message '
+                        . 'carries no such trailer, which every change outside the core project is. Null means the '
+                        . 'message was not read, which is a search by words or path.',
+                    'items' => Schema::string(),
                 ],
                 'messages' => [
                     'type' => ['array', 'null'],
@@ -347,7 +364,7 @@ final class GerritLookup extends ReadOnlyTool
      * can be held without a review server.
      *
      * @param string $direction the argument the caller passed, since what an
-     *     empty answer fails to separate is different for each of the four
+     *     empty answer fails to separate is different for each of them
      * @param array{author: string, url: string}|null $review what Gerrit posted
      *     on the issue, where a search for one came back empty and the tracker
      *     had a note
@@ -382,6 +399,12 @@ final class GerritLookup extends ReadOnlyTool
             'change' => $anonymous . 'Such a change answers exactly like one that does not exist, so this is either '
                 . '"no such change" or "not one an anonymous reader may see", and nothing here separates them. Where '
                 . 'the id came from a commit you have, the second is the more likely of the two.',
+            // A hash reaches the review server only where somebody pushed it,
+            // and a checkout carries commits nobody did — `D-ANS-106`.
+            'commit' => $anonymous . 'A commit that was never pushed for review answers exactly the same, so this is '
+                . '"no patch set is this commit" or "not one an anonymous reader may see", and nothing here '
+                . 'separates them. Ask again with `query` in the words of the commit subject, which reaches the '
+                . 'change whatever commit its patch set stands at.',
             // The word direction's own trap, and the one that reads as an
             // established negative: `feedback/2026-08-24-110833` took a zero for
             // an identifier as nobody having attempted the fix — `D-ANS-100`.
@@ -479,19 +502,21 @@ final class GerritLookup extends ReadOnlyTool
     {
         $issue = is_string($args['issue'] ?? null) ? trim($args['issue']) : '';
         $change = is_string($args['change'] ?? null) ? trim($args['change']) : '';
+        $commit = is_string($args['commit'] ?? null) ? trim($args['commit']) : '';
         $query = is_string($args['query'] ?? null) ? trim($args['query']) : '';
         $path = is_string($args['path'] ?? null) ? trim($args['path']) : '';
         $open = (bool) ($args['open'] ?? false);
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 10;
         $messages = is_string($args['messages'] ?? null) ? trim($args['messages']) : 'none';
 
-        // Which of the four the caller passed, which is what decides the query,
+        // Which of the five the caller passed, which is what decides the query,
         // what a hit carries, and what an empty answer fails to separate. The
         // words carry the search where both were given, because their caveat is
         // the wider one.
         $direction = match (true) {
             $issue !== '' => 'issue',
             $change !== '' => 'change',
+            $commit !== '' => 'commit',
             $query !== '' => 'query',
             default => 'path',
         };
@@ -500,6 +525,7 @@ final class GerritLookup extends ReadOnlyTool
         $answer = match ($direction) {
             'issue' => $gerrit->changesForIssue($issue, $limit),
             'change' => $gerrit->change($change, $limit, $messages),
+            'commit' => $gerrit->commit($commit, $limit, $messages),
             default => $gerrit->changesMatching($query, $path, $open, $limit),
         };
 
@@ -512,6 +538,11 @@ final class GerritLookup extends ReadOnlyTool
             : null;
         $indistinguishable = self::indistinguishable($answer['status'], $direction, $review);
         $releaseLines = self::releaseLines();
+        // Whether the caller named one change, which is what asked for the
+        // review, the chain, the issues and the trailer. A commit names one as
+        // squarely as a change number does, so silence about any of them means
+        // the same thing on both — `D-ANS-106`.
+        $byName = $direction === 'change' || $direction === 'commit';
 
         $data = [
             'status' => $answer['status'],
@@ -530,6 +561,7 @@ final class GerritLookup extends ReadOnlyTool
             $lines[] = match ($direction) {
                 'issue' => 'No change names this issue in its commit message. This reads the review server anonymously, so a change pushed as private is invisible here — the answer is that nothing public exists, not that nobody has fixed it.',
                 'change' => 'No change an anonymous reader may see matches this ' . (self::isChangeId($change) ? 'Change-Id' : 'change number') . '.',
+                'commit' => 'No change an anonymous reader may see was pushed with this commit.',
                 default => 'No change an anonymous reader may see matches this search.',
             };
             if ($indistinguishable !== null) {
@@ -568,6 +600,7 @@ final class GerritLookup extends ReadOnlyTool
                 if ($entry['updated'] !== '') {
                     $lines[] = 'Last moved: ' . $entry['updated'];
                 }
+                $lines = [...$lines, ...self::releases($entry)];
                 foreach ($entry['labels'] ?? [] as $label) {
                     $voted = true;
                     $lines[] = self::vote($label);
@@ -583,9 +616,9 @@ final class GerritLookup extends ReadOnlyTool
                 // search would otherwise make about every hit it answers.
                 $lines = [
                     ...$lines,
-                    ...self::issues($entry, $direction === 'change'),
-                    ...self::chain($entry, $direction === 'change'),
-                    ...self::comments($entry, $direction === 'change'),
+                    ...self::issues($entry, $byName),
+                    ...self::chain($entry, $byName),
+                    ...self::comments($entry, $byName),
                     ...self::log($entry, $messages),
                 ];
             }
@@ -620,6 +653,9 @@ final class GerritLookup extends ReadOnlyTool
                     . 'so they are one patch on the branches each of them names. Gerrit relates them by nothing '
                     . 'else, and the state of one says nothing about the state of the other.';
             }
+            // What the trailer above is worth, before the lines it names are
+            // held against the ones that take a patch today.
+            $lines = [...$lines, ...self::releaseClaim($answer['changes'])];
             // Printed where a change came back, because that is where a branch
             // was named — the placement `D-ANS-104` asks for. A search that
             // matched nothing named none, and the data half carries the list
@@ -647,7 +683,7 @@ final class GerritLookup extends ReadOnlyTool
             // A search is the one direction whose set has no natural end, so a
             // full page is as likely to be where the answer stopped as where the
             // matches did, and a caller counting it reports the limit.
-            if ($direction !== 'change' && count($answer['changes']) === $limit) {
+            if (!$byName && count($answer['changes']) === $limit) {
                 $lines[] = '';
                 $lines[] = sprintf(
                     'The answer stopped at the %d asked for, so this is a page of what matched rather than the whole '
@@ -828,6 +864,62 @@ final class GerritLookup extends ReadOnlyTool
         }
 
         return $lines;
+    }
+
+    /**
+     * The branches this change's commit message claims, on the line under it.
+     *
+     * The fact the reporting session reached last, after four git calls per
+     * commit, and reached only after telling the user a release set the trailer
+     * contradicted (`D-ANS-106`). Nothing is printed where the trailer names
+     * none, which every change outside the core project is, and nothing where
+     * the message was not read — what that silence means is said once below
+     * rather than per change. Separated from `answer()` so it can be held
+     * without a review server.
+     *
+     * @param array<string, mixed> $entry
+     * @return list<string>
+     */
+    public static function releases(array $entry): array
+    {
+        $claimed = $entry['releases'] ?? [];
+        if (!is_array($claimed) || $claimed === []) {
+            return [];
+        }
+
+        return ['Releases: ' . implode(', ', $claimed)];
+    }
+
+    /**
+     * What a `Releases:` trailer claims and what it does not settle.
+     *
+     * Two claims stand in this answer and a reader taking the first for the
+     * second reports a fix as released where nobody pushed it: a trailer says
+     * where the author meant the patch to go, and a change on a branch is a
+     * patch that is there (`D-ANS-073`, `D-ANS-106`). Printed once, and only
+     * where a trailer was read, because it is about the lines above rather
+     * than about trailers. Separated from `answer()` so it can be held without
+     * a review server.
+     *
+     * @param list<array<string, mixed>> $changes
+     * @return list<string>
+     */
+    public static function releaseClaim(array $changes): array
+    {
+        $claimed = array_filter(
+            $changes,
+            static fn(array $entry): bool => is_array($entry['releases'] ?? null) && $entry['releases'] !== [],
+        );
+        if ($claimed === []) {
+            return [];
+        }
+
+        return ['', 'A `Releases:` line is the author\'s claim about which branches the patch belongs on, written '
+            . 'before it went to any of them. What was pushed is the changes above sharing a Change-Id, one per '
+            . 'branch and each with a status of its own — so a branch the trailer names with no change targeting it '
+            . 'is a backport nobody has pushed, and a merged change is on its branch whatever the trailer says. '
+            . 'Which release carries it is neither: that is the first release cut from the branch after the change '
+            . 'merged, which this server does not read.'];
     }
 
     /**

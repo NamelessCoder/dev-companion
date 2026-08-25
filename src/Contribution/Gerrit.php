@@ -78,6 +78,10 @@ final class Gerrit
         $named = [];
         foreach ($answer['changes'] as $change) {
             if (self::names($change, $number)) {
+                $message = is_string($change['message'] ?? null) ? $change['message'] : '';
+                if ($message !== '') {
+                    $change['releases'] = self::releases($message);
+                }
                 // The message was read to decide this and is not part of the
                 // answer: what a caller asked for is which changes exist, and
                 // the commit is what it holds a checkout against.
@@ -250,10 +254,39 @@ final class Gerrit
      * One change by its number or its Change-Id, the changes sharing that id,
      * and the review they are in.
      *
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     */
+    public function change(string $change, int $limit = 1, string $messages = 'none'): array
+    {
+        return $this->named('change:', $change, $limit, $messages);
+    }
+
+    /**
+     * The same answer for the one handle a checkout hands over: a commit.
+     *
+     * A session triaging old issues holds hashes out of `git log` and nothing
+     * else, and `change:` refuses one — `change:cc880c67777` answers HTTP 400
+     * `Invalid change format`, which reads here as the review server not
+     * answering at all (`D-ANS-106`). `commit:` takes it, abbreviated as a
+     * caller pastes it, and what it names is one change; the siblings the query
+     * after it finds are the backports, which is the set the question "which
+     * branches carry this fix" is actually about.
+     *
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     */
+    public function commit(string $commit, int $limit = 1, string $messages = 'none'): array
+    {
+        return $this->named('commit:', $commit, $limit, $messages);
+    }
+
+    /**
+     * One change the caller named, the changes sharing its Change-Id, and the
+     * review they are in.
+     *
      * Nothing is filtered here. A caller naming a change has named it, and the
      * answer is that change whatever its commit message says. What the handle
      * decided until `D-ANS-080` is whether the backport is in the answer at all,
-     * so the second query is what makes the two handles answer the same set, and
+     * so the second query is what makes the handles answer the same set, and
      * it is asked whether there is a sibling or not because only the answer
      * says. The votes come with it and the comments are one further call, made
      * only where the change says it carries one (`D-ANS-079`). The review log is
@@ -263,15 +296,17 @@ final class Gerrit
      * because a change read alone says a feature exists where the stack under
      * it says what the feature consists of (`D-ANS-094`). So do the issues the
      * commit message names, which is what joins the patch to the tracker
-     * (`D-ANS-098`).
+     * (`D-ANS-098`), and the branches its `Releases:` trailer claims
+     * (`D-ANS-106`).
      *
+     * @param string $operator the Gerrit query prefix the handle belongs to
      * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
      */
-    public function change(string $change, int $limit = 1, string $messages = 'none'): array
+    private function named(string $operator, string $change, int $limit, string $messages): array
     {
         $options = self::REVIEW . self::CURRENT_COMMIT . ($messages === 'none' ? '' : self::MESSAGES);
         $handle = trim($change);
-        $answer = $this->search('change:' . $handle, $limit, $options);
+        $answer = $this->search($operator . $handle, $limit, $options);
 
         $named = $answer['changes'][0] ?? null;
         $id = is_string($named['changeId'] ?? null) ? $named['changeId'] : '';
@@ -299,6 +334,10 @@ final class Gerrit
         foreach ($answer['changes'] as $index => $found) {
             $answer['changes'][$index]['comments'] = $this->comments($found['number'], $found['commentCount']);
             $answer['changes'][$index]['chain'] = $this->chain($found['number']);
+            $message = is_string($found['message'] ?? null) ? $found['message'] : '';
+            if ($message !== '') {
+                $answer['changes'][$index]['releases'] = self::releases($message);
+            }
             if (!is_array($found['messages'])) {
                 continue;
             }
@@ -407,6 +446,37 @@ final class Gerrit
         }
 
         return array_values($named);
+    }
+
+    /**
+     * The branches a commit message's `Releases:` trailer names.
+     *
+     * The line the reporting session reached last and had already contradicted:
+     * it read `git branch -r --contains` on the `main` commit, said two
+     * branches, and the trailer said three (`D-ANS-106`). It is one claim and
+     * the changes sharing the Change-Id are the other, which is why this is a
+     * field of its own rather than something folded into them.
+     *
+     * A branch is whatever the author wrote between the commas, because the
+     * spelling is the branch's — `main`, `13.4` — and a name nothing here
+     * recognises is still what the trailer says.
+     *
+     * @return list<string>
+     */
+    private static function releases(string $message): array
+    {
+        preg_match_all('~^Releases:(.*)$~mi', $message, $lines);
+
+        $named = [];
+        foreach ($lines[1] as $line) {
+            foreach (preg_split('~[,\s]+~', trim($line), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $branch) {
+                if (!in_array($branch, $named, true)) {
+                    $named[] = $branch;
+                }
+            }
+        }
+
+        return $named;
     }
 
     /** The tracker, built where an answer needs it and not before. */
@@ -743,6 +813,10 @@ final class Gerrit
             // message that did not come back rather than a patch naming no
             // issue — which is the empty list.
             'issues' => null,
+            // The same, for the branches the `Releases:` trailer claims. Filled
+            // wherever the message came back, which is a change read by name
+            // and an issue search alike.
+            'releases' => null,
             'messages' => is_array($entry['messages'] ?? null) ? self::messages($entry['messages']) : null,
             // Counted by `change()`, before the filter it is the measure of.
             'botMessageCount' => null,

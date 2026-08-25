@@ -7,6 +7,7 @@ coveredBy:
   - CommitMessageTest::aBranchTheListDoesNotCarryIsAWarningSayingWhenItWasRead
   - CommitMessageTest::aMaintainedLineFurtherBackSaysWhatItClaims
   - GerritTest::thePlacementNamesTheToolThatReadsATrailerAgainstThoseLines
+  - GerritTest::theTextHalfTellsTheTrailerApartFromWhatWasPushed
 ---
 
 # D-ANS-073 — What can take a patch and where this one goes are two readings

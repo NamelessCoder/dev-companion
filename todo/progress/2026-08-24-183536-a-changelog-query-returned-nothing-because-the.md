@@ -1,7 +1,9 @@
-# I never asked where PageRenderer state is filled and cleared in the FE pipeline, and it was the w...
+# a changelog query returned nothing because the question was a rule, not a change event
 
-**Serves:** feedback/2026-08-24-183609-i-never-asked-where-pagerenderer-state-is.md
+**Serves:** feedback/2026-08-24-183536-a-changelog-query-returned-nothing-because-the.md
 **Priority:** low
+**Branch:** todo/a-changelog-query-returned-nothing-because-the
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

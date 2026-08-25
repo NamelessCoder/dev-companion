@@ -1,7 +1,9 @@
-# refused-trailer contradicts the core repository's own AGENTS.md on Signed-off-by
+# what worked and must not be broken: the gerrit-workflow page, and forge_lookup surfacing the aban...
 
-**Serves:** feedback/2026-08-24-183512-refused-trailer-contradicts-the-core-repository.md
+**Serves:** feedback/2026-08-24-183447-what-worked-and-must-not-be-broken-the-gerrit.md
 **Priority:** low
+**Branch:** todo/what-worked-and-must-not-be-broken-the-gerrit
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

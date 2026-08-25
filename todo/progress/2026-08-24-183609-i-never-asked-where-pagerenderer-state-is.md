@@ -1,7 +1,9 @@
-# what worked and must not be broken: the gerrit-workflow page, and forge_lookup surfacing the aban...
+# I never asked where PageRenderer state is filled and cleared in the FE pipeline, and it was the w...
 
-**Serves:** feedback/2026-08-24-183447-what-worked-and-must-not-be-broken-the-gerrit.md
+**Serves:** feedback/2026-08-24-183609-i-never-asked-where-pagerenderer-state-is.md
 **Priority:** low
+**Branch:** todo/i-never-asked-where-pagerenderer-state-is
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

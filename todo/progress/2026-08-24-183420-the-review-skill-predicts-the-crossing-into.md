@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md, D-SKL-077
 **Priority:** normal
+**Branch:** todo/the-review-skill-predicts-the-crossing-into
+**Claimed:** 2026-08-25
 
 Judged as step 4 of the ladder, on the trigger rather than on the paragraph: the
 crossing is written to be recognised in what the reader says, and both failures

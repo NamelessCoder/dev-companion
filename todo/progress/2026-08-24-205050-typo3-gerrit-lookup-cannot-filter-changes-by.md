@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-205050-typo3-gerrit-lookup-cannot-filter-changes-by.md
 **Priority:** normal
+**Branch:** todo/typo3-gerrit-lookup-cannot-filter-changes-by
+**Claimed:** 2026-08-25
 
 Give `typo3_gerrit_lookup`'s `backlog` a person filter that excludes, beside the
 `owner`, `reviewedBy` and `involving` that select. What it answers is "changes I

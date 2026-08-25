@@ -1,7 +1,9 @@
-# a changelog query returned nothing because the question was a rule, not a change event
+# refused-trailer contradicts the core repository's own AGENTS.md on Signed-off-by
 
-**Serves:** feedback/2026-08-24-183536-a-changelog-query-returned-nothing-because-the.md
+**Serves:** feedback/2026-08-24-183512-refused-trailer-contradicts-the-core-repository.md
 **Priority:** low
+**Branch:** todo/refused-trailer-contradicts-the-core-repository
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

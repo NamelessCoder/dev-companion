@@ -127,3 +127,21 @@ a 68-character row whatever the title is, and 12 of the 494 entries in the eight
 newest directories on `main` are shorter than their own title and are merged and
 rendered. The other report patched its fence to the byte on a rule nothing
 states.
+
+A third session is on record, and it was judged on 2026-08-25.
+[`feedback/2026-08-24-163321`](../../feedback/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md)
+was filed at 16:33 and the split landed at 21:02, so it had no such page. It
+built its `Important` file from a neighbouring entry in `14.3/`, naming the
+`.. _important-<issue>-<timestamp>:` label as the part it would not have
+guessed, and it wrote the fence at a length it corrected in a second pass — 72
+against 71. That is the second independent session to spend a round on a length
+nothing demands, which is what the hint now tells a caller not to do.
+
+It also says why it never called `typo3_changelog_lookup`: the description read
+as consuming changelogs rather than authoring one. The same commit answered
+that, and the description now names the authoring direction and the
+`core/contribution/changelog` documentId. The lookup was re-run on 2026-08-25
+and returns the page.
+
+The first **Wrong if** stays unanswered by all three: none of them had the guide
+in its list.

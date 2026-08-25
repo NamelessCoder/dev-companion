@@ -84,6 +84,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-106`][D-ANS-106] — A commit in a checkout is a handle the review lookup takes · 2026-08-25
 - [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25
 - [`D-ANS-108`][D-ANS-108] — A suite the pre-merge pipeline gates is a base check of its domain · 2026-08-25
+- [`D-ANS-109`][D-ANS-109] — The backlog names what one person could still review · 2026-08-25
 - [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24
 - [`D-ANS-098`][D-ANS-098] — A change answer names the issues its commit message resolves · 2026-08-24
 - [`D-ANS-099`][D-ANS-099] — A suite that stages the working tree is offered marked rather than withheld · 2026-08-24
@@ -188,6 +189,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-106]: answers/ans-106-a-commit-in-a-checkout-is-a-handle-the-review-lookup-takes.md
 [D-ANS-107]: answers/ans-107-the-review-backlog-is-enumerated-the-way-the-tracker-is.md
 [D-ANS-108]: answers/ans-108-a-suite-the-pre-merge-pipeline-gates-is-a-base-check-of-its-domain.md
+[D-ANS-109]: answers/ans-109-the-backlog-names-what-one-person-could-still-review.md
 [D-ANS-097]: answers/ans-097-a-bounded-answer-spends-its-slots-on-the-hints-that-bind-its-caller.md
 [D-ANS-098]: answers/ans-098-a-change-answer-names-the-issues-its-commit-message-resolves.md
 [D-ANS-099]: answers/ans-099-a-suite-that-stages-the-working-tree-is-offered-marked-rather-than-withheld.md

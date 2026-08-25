@@ -142,8 +142,8 @@ of 74 to 74, because `negativeVotes: false` already drops what a failed pipeline
 leaves, so the argument would have been a second name for a filter that is
 already there.
 
-What is still unbuilt is the exclusion the second report's whole session rested
-on — `-owner:` and `-reviewedby:`, "not mine and I have not voted on it". This
-entry decided three person filters and that is what was built;
-`feedback/2026-08-24-205050` was trimmed to the exclusion and left open rather
-than archived.
+The exclusion the second report's whole session rested on — `-owner:` and
+`-reviewedby:`, "not mine and I have not voted on it" — was left out here,
+because this entry decided three person filters and every one of them selects.
+It is `reviewableBy` since the same day, and `D-ANS-109` is where the fourth
+filter and its name were settled.

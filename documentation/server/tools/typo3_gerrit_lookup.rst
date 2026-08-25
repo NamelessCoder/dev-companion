@@ -23,30 +23,32 @@ branch, by date and by person. That is where a review session starts: "which
 open reviews have been sitting a long time", "which of them are small and almost
 voted through", "which are mine" and "which have I already voted on" are
 maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none
-of them is answerable by words in a commit message. Answers with the change
-number, its Change-Id, subject, status, target branch, review URL, and the patch
-set that is current on the server with the commit it is — which is what says
-whether a checkout is the revision under review. Every change, whichever way it
-was reached, also carries how many lines it adds and removes, whether it still
-merges, when it was pushed, how many comment threads are unresolved, and what
-each label stands at — the size, the age and the vote state a reviewer picks a
-change by. A change is answered together with the changes sharing its Change-Id,
-whichever handle named it — that is how a backport on a release branch is
-reached, and how a commit hash answers which branches carry the fix. Every
-change whose commit message was read also names the branches its Releases:
-trailer claims. The trailer is the author's claim about where the patch belongs
-and the siblings beside it are what was pushed, so read the two together rather
-than one for the other. It also carries the relation chain it sits in: the
-changes stacked on it and the changes it is built on, each with its number, its
-status and its subject, which is what says whether the change is one part of a
-larger feature and how far that feature has got. The two relations are different
-— a chain is changes built on one another, a shared Change-Id is one patch on
-several branches. A change read by name also carries the Forge issues its commit
-message names in its Resolves: and Related: trailers, each with its subject,
-tracker and status. That is the join between the patch and the tracker, and it
-is where a second issue named nowhere else in the review is seen. Each change
-also carries the ref that patch set is fetchable by and the review server to
-fetch it over, so getting it into a checkout takes no second lookup. A change
+of them is answerable by words in a commit message. "Which of them could I
+review" is reviewableBy, the one person filter that takes a person out — what
+they pushed and what they voted on both leave the answer. Answers with the
+change number, its Change-Id, subject, status, target branch, review URL, and
+the patch set that is current on the server with the commit it is — which is
+what says whether a checkout is the revision under review. Every change,
+whichever way it was reached, also carries how many lines it adds and removes,
+whether it still merges, when it was pushed, how many comment threads are
+unresolved, and what each label stands at — the size, the age and the vote state
+a reviewer picks a change by. A change is answered together with the changes
+sharing its Change-Id, whichever handle named it — that is how a backport on a
+release branch is reached, and how a commit hash answers which branches carry
+the fix. Every change whose commit message was read also names the branches its
+Releases: trailer claims. The trailer is the author's claim about where the
+patch belongs and the siblings beside it are what was pushed, so read the two
+together rather than one for the other. It also carries the relation chain it
+sits in: the changes stacked on it and the changes it is built on, each with its
+number, its status and its subject, which is what says whether the change is one
+part of a larger feature and how far that feature has got. The two relations are
+different — a chain is changes built on one another, a shared Change-Id is one
+patch on several branches. A change read by name also carries the Forge issues
+its commit message names in its Resolves: and Related: trailers, each with its
+subject, tracker and status. That is the join between the patch and the tracker,
+and it is where a second issue named nowhere else in the review is seen. Each
+change also carries the ref that patch set is fetchable by and the review server
+to fetch it over, so getting it into a checkout takes no second lookup. A change
 read by name carries the review it is in as well: the value every voter holds
 per label and whether the submit rule is satisfied, and every comment left on it
 with its patch set, its file and line, whether the thread is unresolved and
@@ -200,6 +202,20 @@ Takes
     # two together means changes somebody pushed AND voted on, which is a set nobody
     # wants. Narrows backlog and is ignored by every other way in.
     involving: string  # optional
+    # Only changes this person neither pushed nor has voted on, named the same way
+    # as owner. That is "which of these could I review" — everybody else's open
+    # work minus what I have already judged — and it is the one question the three
+    # filters above cannot be combined into, since each of them selects. It is not a
+    # reading of who may review: nothing here reads the review server's permissions,
+    # and what is taken out is this person's own changes and own votes. It composes
+    # with the three that select, so owner with this one is what somebody else could
+    # review of a third person's queue; the same name here and on involving answers
+    # nothing, because those are the two halves of one set. A name the review server
+    # cannot place takes nothing out and answers the whole backlog, which is the
+    # opposite of what a misspelling does to owner — check it against a change of
+    # theirs before reading a wide answer as "nothing of theirs is in here". Narrows
+    # backlog and is ignored by every other way in.
+    reviewableBy: string  # optional
     limit: integer  # optional
 
 The call carries exactly one of these sets of arguments: ``issue`` — or

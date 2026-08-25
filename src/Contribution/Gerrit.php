@@ -202,6 +202,7 @@ final class Gerrit
         string $owner = '',
         string $reviewedBy = '',
         string $involving = '',
+        string $reviewableBy = '',
         int $limit = 10,
     ): array {
         $query = self::waiting(
@@ -214,6 +215,7 @@ final class Gerrit
             $owner,
             $reviewedBy,
             $involving,
+            $reviewableBy,
         );
 
         $changes = [];
@@ -274,6 +276,7 @@ final class Gerrit
         string $owner,
         string $reviewedBy,
         string $involving,
+        string $reviewableBy,
     ): string {
         $terms = ['project:' . self::quoted(self::PROJECT), 'status:open', '-is:wip'];
         if ($maxSize > 0) {
@@ -308,6 +311,14 @@ final class Gerrit
         // filters, so `D-ANS-089` had to union two answers by hand.
         if ($involving !== '') {
             $terms[] = '(owner:' . self::quoted($involving) . ' OR reviewedby:' . self::quoted($involving) . ')';
+        }
+        // The complement of that union, and both operators together: what a
+        // reviewer with time asks for is the changes that are neither theirs nor
+        // already judged by them, and either half alone is a set nobody asked
+        // for — `D-ANS-109`.
+        if ($reviewableBy !== '') {
+            $terms[] = '-owner:' . self::quoted($reviewableBy);
+            $terms[] = '-reviewedby:' . self::quoted($reviewableBy);
         }
 
         return implode(' ', $terms);

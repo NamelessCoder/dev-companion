@@ -45,7 +45,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists and what state its review is in, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Or commit with a hash out of a checkout, abbreviated as git log prints it or whole, which is the handle a session working in a clone actually holds — the review server refuses one passed as change. Or search the server without holding any of them: query takes words matched against the commit messages, path takes a repository path and answers the changes touching it, the two combine, and open narrows them to what is still under review. That is the direction a triage opens with — is anybody working on this file, and did anybody ever try this fix — and it is the review surface a checkout cannot see, since a core clone carries what landed and says nothing about what is open. Or backlog to enumerate the core\'s open changes without holding a handle or a wording — oldest pushed or longest untouched, narrowed by size, by vote state, by whether it still merges, by branch, by date and by person. That is where a review session starts: "which open reviews have been sitting a long time", "which of them are small and almost voted through", "which are mine" and "which have I already voted on" are maxSize, minCodeReview, negativeVotes, mergeable, owner and reviewedBy, and none of them is answerable by words in a commit message. "Which of them could I review" is reviewableBy, the one person filter that takes a person out — what they pushed and what they voted on both leave the answer. Answers with the change number, its Change-Id, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. Every change, whichever way it was reached, also carries how many lines it adds and removes, whether it still merges, when it was pushed, how many comment threads are unresolved, and what each label stands at — the size, the age and the vote state a reviewer picks a change by. A change is answered together with the changes sharing its Change-Id, whichever handle named it — that is how a backport on a release branch is reached, and how a commit hash answers which branches carry the fix. Every change whose commit message was read also names the branches its Releases: trailer claims. The trailer is the author\'s claim about where the patch belongs and the siblings beside it are what was pushed, so read the two together rather than one for the other. It also carries the relation chain it sits in: the changes stacked on it and the changes it is built on, each with its number, its status and its subject, which is what says whether the change is one part of a larger feature and how far that feature has got. The two relations are different — a chain is changes built on one another, a shared Change-Id is one patch on several branches. A change read by name also carries the Forge issues its commit message names in its Resolves: and Related: trailers, each with its subject, tracker and status. That is the join between the patch and the tracker, and it is where a second issue named nowhere else in the review is seen. Each change also carries the ref that patch set is fetchable by and the review server to fetch it over, so getting it into a checkout takes no second lookup. A change read by name carries the review it is in as well: the value every voter holds per label and whether the submit rule is satisfied, and every comment left on it with its patch set, its file and line, whether the thread is unresolved and which comment it replies to. That is where a comment somebody left on an earlier patch set and nobody answered is read. Why a vote is gone is in the review log instead, which messages asks for. A call carries issue, change, commit, a search by query and path, or backlog, never two of those. Beside the branch each change targets it names the branches that take a patch today, each with the day its regular support ends — the list a Releases: trailer may name, which a core clone supplies nowhere, since git branch -r reaches back to TYPO3_3-6 and says nothing about which of them is still maintained. Which of those lines a change belongs on is not answered here: that is the author\'s claim, and typo3_commit_message_guide with workflow="core" is what reads a trailer against them. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
 
@@ -140,6 +140,11 @@ final class GerritLookup extends ReadOnlyTool
                     'type' => 'string',
                     'minLength' => 1,
                     'description' => 'Only changes this person is on either side of — pushed or voted on, as one set. Passed instead of owner and reviewedBy, not beside them: passing those two together means changes somebody pushed AND voted on, which is a set nobody wants. Narrows backlog and is ignored by every other way in.',
+                ],
+                'reviewableBy' => [
+                    'type' => 'string',
+                    'minLength' => 1,
+                    'description' => 'Only changes this person neither pushed nor has voted on, named the same way as owner. That is "which of these could I review" — everybody else\'s open work minus what I have already judged — and it is the one question the three filters above cannot be combined into, since each of them selects. It is not a reading of who may review: nothing here reads the review server\'s permissions, and what is taken out is this person\'s own changes and own votes. It composes with the three that select, so owner with this one is what somebody else could review of a third person\'s queue; the same name here and on involving answers nothing, because those are the two halves of one set. A name the review server cannot place takes nothing out and answers the whole backlog, which is the opposite of what a misspelling does to owner — check it against a change of theirs before reading a wide answer as "nothing of theirs is in here". Narrows backlog and is ignored by every other way in.',
                 ],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 25, 'default' => 10],
             ],
@@ -609,11 +614,12 @@ final class GerritLookup extends ReadOnlyTool
         $owner = is_string($args['owner'] ?? null) ? trim($args['owner']) : '';
         $reviewedBy = is_string($args['reviewedBy'] ?? null) ? trim($args['reviewedBy']) : '';
         $involving = is_string($args['involving'] ?? null) ? trim($args['involving']) : '';
+        $reviewableBy = is_string($args['reviewableBy'] ?? null) ? trim($args['reviewableBy']) : '';
         // A person filter is a narrowing of the enumeration and the schema says
         // so. Passing one without `backlog` is a call no schema allows, and what
         // a client that validates nothing would otherwise reach is a search for
         // the empty string rather than the question it plainly asked.
-        if ($backlog === '' && ($owner !== '' || $reviewedBy !== '' || $involving !== '')) {
+        if ($backlog === '' && ($owner !== '' || $reviewedBy !== '' || $involving !== '' || $reviewableBy !== '')) {
             $backlog = 'oldest';
         }
 
@@ -646,6 +652,7 @@ final class GerritLookup extends ReadOnlyTool
                 owner: $owner,
                 reviewedBy: $reviewedBy,
                 involving: $involving,
+                reviewableBy: $reviewableBy,
                 limit: $limit,
             ),
             default => $gerrit->changesMatching($query, $path, $open, $limit),
@@ -708,7 +715,7 @@ final class GerritLookup extends ReadOnlyTool
             $moved = false;
             $tracked = false;
             if ($direction === 'backlog') {
-                $lines = [...$lines, ...self::page($data['backlog'], count($answer['changes']))];
+                $lines = [...$lines, ...self::page($data['backlog'], count($answer['changes']), $reviewableBy)];
             }
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
@@ -903,9 +910,11 @@ final class GerritLookup extends ReadOnlyTool
      * review server.
      *
      * @param array<string, mixed> $backlog
+     * @param string $reviewableBy the person the enumeration was asked to leave
+     *     out, whose misspelling widens this answer rather than emptying it
      * @return list<string>
      */
-    public static function page(array $backlog, int $shown): array
+    public static function page(array $backlog, int $shown, string $reviewableBy = ''): array
     {
         $lines = [sprintf(
             '%d of %d open core changes, %s first.',
@@ -925,6 +934,18 @@ final class GerritLookup extends ReadOnlyTool
                 . 'limit, because more of one order is more of the same end.';
         } else {
             $lines[] = 'That is the whole set on these filters.';
+        }
+        if ($reviewableBy !== '') {
+            // The trap the empty-answer caveat cannot carry: this filter fails
+            // wide. A name the review server cannot place takes nothing out, and
+            // the answer is then the backlog wearing the shape of a filtered one
+            // — `D-ANS-109`.
+            $lines[] = sprintf(
+                'What "%s" pushed and voted on is out of this. A name the review server cannot place takes nothing '
+                    . 'out, so where a change of theirs is in the list above, the spelling reached nobody rather than '
+                    . 'this being everything left.',
+                $reviewableBy,
+            );
         }
         $lines[] = 'Age is a candidate and never a finding. The oldest changes are regularly the largest and the ones '
             . 'that no longer merge, so maxSize and mergeable are what turn this order into a shortlist — and what a '

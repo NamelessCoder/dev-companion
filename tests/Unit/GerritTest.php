@@ -2216,4 +2216,55 @@ final class GerritTest extends TestCase
             self::assertArrayHasKey($filter, $schema['properties']);
         }
     }
+
+    /**
+     * The complement of `involving`, under the name that says what the answer
+     * is: the open changes one person neither pushed nor voted on.
+     *
+     * Both operators go in together, because half of it is a set no report has
+     * asked for, and it composes with the filters that select rather than
+     * replacing them — `D-ANS-109`.
+     */
+    #[Decision('D-ANS-109')]
+    #[Test]
+    public function theChangesAPersonHasNotTouchedAreOneQuery(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::OPEN;
+        });
+
+        $query = $gerrit->backlog(owner: 'Frank Nägler', reviewableBy: 'Benjamin Kott')['query'];
+
+        self::assertCount(1, $asked);
+        self::assertStringEndsWith(
+            'owner:"Frank Nägler" -owner:"Benjamin Kott" -reviewedby:"Benjamin Kott"',
+            $query,
+        );
+        self::assertArrayHasKey('reviewableBy', GerritLookup::inputSchema()['properties']);
+    }
+
+    /**
+     * This filter's own trap is the inverse of the one the empty answer carries.
+     *
+     * A name the review server cannot place takes nothing out: `-owner:` and
+     * `-reviewedby:` on `zzzznotauser` answered all 444 open core changes on
+     * 2026-08-25, where `owner:` on the same word answers none. So the wide
+     * answer is where it has to be said — `D-ANS-109`.
+     */
+    #[Decision('D-ANS-109')]
+    #[Test]
+    public function aPageThatLeftSomebodyOutSaysWhatAMisspeltNameLooksLike(): void
+    {
+        $backlog = ['order' => 'oldest', 'read' => 414, 'complete' => true];
+
+        $left = implode("\n", GerritLookup::page($backlog, 25, 'Benjamin Kott'));
+        $everybody = implode("\n", GerritLookup::page($backlog, 25));
+
+        self::assertStringContainsString('What "Benjamin Kott" pushed and voted on is out of this.', $left);
+        self::assertStringContainsString('the spelling reached nobody', $left);
+        self::assertStringNotContainsString('reached nobody', $everybody);
+    }
 }

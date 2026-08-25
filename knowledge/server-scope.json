@@ -479,7 +479,7 @@
     },
     {
       "when": "Starting a review session without a change in hand — which open reviews have been sitting a long time, which are small and almost voted through, which are mine and which have I already voted on. A checkout answers none of it and the review server sorts by last activity alone.",
-      "call": "typo3_gerrit_lookup with backlog \"oldest\" or \"stale\", narrowed by maxSize, minCodeReview, negativeVotes, mergeable, branch, updatedBefore, owner, reviewedBy or involving, then again with change on the number picked off the page for its votes, its comment threads and the patch set to fetch"
+      "call": "typo3_gerrit_lookup with backlog \"oldest\" or \"stale\", narrowed by maxSize, minCodeReview, negativeVotes, mergeable, branch, updatedBefore, owner, reviewedBy, involving or reviewableBy, then again with change on the number picked off the page for its votes, its comment threads and the patch set to fetch"
     },
     {
       "when": "Holding a commit hash and asking which branches carry that fix — closing an issue as fixed, or saying where a backport went. A clone answers it in several git calls per commit, and the Releases: trailer that settles it is what it reaches last.",

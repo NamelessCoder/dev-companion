@@ -915,6 +915,39 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('refs/changes/', $fetch);
         self::assertStringContainsString('not on GitHub', $fetch, 'nothing says which remote carries the ref');
         self::assertStringContainsString('remote.origin.pushurl', $fetch, 'nothing says what to fetch from instead');
+        // The date is the half `feedback/2026-08-24-183447` names as what made
+        // it trust the page over its own habit without testing the claim: a
+        // rule it could have been wrong about, with the day somebody was not.
+        self::assertStringContainsString('Measured on 2026-08-05', $fetch, 'the claim no longer says when it held');
+        self::assertStringContainsString('refs/changes/02/95102/2', $fetch, 'nothing says which ref was measured');
+    }
+
+    /**
+     * Where the carry lands, and how it is taken back.
+     *
+     * `D-SKL-041` gave the local result a name because the alternative is the
+     * contribution guide's own cherry-pick page, which runs after
+     * `git reset --hard origin/main` and writes somebody else's patch onto the
+     * branch tracking the core. `feedback/2026-08-24-183447` used the branch
+     * form, the https URL and the undo, and nothing here held any of the three.
+     */
+    #[Decision('D-SKL-041')]
+    #[Test]
+    public function theCarryOntoCurrentCodeNamesTheBranchItLandsOnAndTheUndo(): void
+    {
+        $carry = implode(
+            "\n",
+            array_column(Documents::search('carry a gerrit change onto current code'), 'body'),
+        );
+
+        self::assertStringContainsString('git switch -c review/', $carry, 'nothing says the carry goes on a branch');
+        self::assertStringContainsString('origin/main', $carry, 'nothing says where that branch starts');
+        self::assertStringContainsString('git branch -D', $carry, 'nothing says how the carry is taken back');
+        self::assertStringContainsString('refuses to drop it as merged', $carry, 'nothing says why -d will not do');
+        // The URL a reader without an account can actually fetch over, which
+        // the ssh one above it is not.
+        self::assertStringContainsString('https://review.typo3.org/Packages/TYPO3.CMS', $carry);
+        self::assertStringContainsString('no account configured', $carry, 'nothing says the https URL needs none');
     }
 
     #[Decision('D-ANS-037')]

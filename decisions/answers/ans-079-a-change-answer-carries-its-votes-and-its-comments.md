@@ -2,7 +2,7 @@
 id: D-ANS-079
 title: 'A change answer carries its votes and its comments'
 date: 2026-08-14
-status: open
+status: confirmed
 coveredBy:
   - GerritTest::aChangeCarriesTheVoteEachLabelStandsAt
   - GerritTest::aChangeWithNoCommentCostsNoCallToFindThatOut
@@ -116,9 +116,10 @@ NoteDB meta ref as git history instead.
   than a comment.
 - The comments come back empty on most reviewed changes, which would say the
   call belongs behind a parameter beside the messages rather than in the answer.
-- A caller reads `unresolved` as "unanswered" anyway and reports a comment
+- ~~A caller reads `unresolved` as "unanswered" anyway and reports a comment
   somebody replied to. Then the fields are not enough and the answer owes the
-  thread rather than the comment.
+  thread rather than the comment.~~ Fired on 2026-08-25, in the section at the
+  foot.
 - The vote state turns out to be unreadable without the copy conditions, so
   every caller asks for the messages as well and the split bought nothing.
 
@@ -165,3 +166,52 @@ as `change:I4a7557ccf3dc68bd6dc7dc40a5fa269bad0f6aa8`, the commit of patch set
 tracker, status and subject, which `D-ANS-098` landed after the session ran — so
 the join is now in the change answer, and the tracker call the session made is
 still what carries the reporter's own framing.
+
+## Confirmed on 2026-08-25
+
+**The third Wrong if fired, and this answer's own two counts of one thing are
+what settle it.**
+
+`feedback/2026-08-24-183447` reviewed change 91127 and reports ranking the
+comment threads itself, from "a top-level comment flagged unresolved with two
+resolved replies under it". It asks that the answer mark the threads that are
+unresolved **and** top-level. That is the reading **Decided** refuses to make,
+made by the caller instead, and it is wrong on both changes the report names.
+
+Re-run on 2026-08-25 through `bin/typo3-dev-companion`:
+
+- Change 91127 is MERGED at patch set 11 since 08:31 that morning, with the 14.3
+  backport 95409 beside it; the report read patch set 8. One of its seven
+  comments carries `unresolved: true` — Oliver Klee's "Is there any way this can
+  be covered with a functional test?" on patch set 4 — and it is the one the
+  report ranked. Torben Hansen answered it and Klee closed it with "Ack.", both
+  `false`, and the review server states `unresolved_comment_count: 0`.
+- Change 85224 prints both numbers, eight lines apart:
+  `2 unresolved of 12 comments` on the standing line,
+  `### Comments (12, 4 unresolved)` under it. The first is the review server's;
+  the second is `GerritLookup::comments()` tallying the per-comment flag.
+- The two threads the server counts there are Timo Webler's, top-level and never
+  answered, and Christian Weiske's reply under Benjamin Franzke's `-1 for now`.
+  The head of that second thread carries `unresolved: false`. So the pair the
+  report asks be marked selects a settled thread on 91127 and misses the open
+  one on 85224.
+
+**The flag is on the comment its own writer left it on, and the thread's state
+is the flag on the thread's last comment.** Reading the reply chains of both
+changes by that rule reproduces the review server's count exactly, 0 of 7 and 2
+of 12 — which is two changes and a derivation rather than a rule read off
+Gerrit's own documentation, and confirming it there is the card's first step.
+
+This answer states the thread's rule on the per-comment field. The schema calls
+`unresolved` "the flag on the thread, as whoever wrote or answered it last left
+it" and the paragraph under the comments says the same, so a caller doing what
+the words say reads each flag as its thread's state. `standing()` renders the
+count that is right and is silent at zero, which is why 91127 showed the wrong
+number alone.
+
+**Queued rather than closed**, because the count, the schema description and the
+paragraph are all `src/`. What the entry decided stands: this server does not
+judge whether a comment was answered. What moves is that the thread is no longer
+left to be derived — the reply relation and the order are already in the answer,
+and which shape states it is the todo's. The card carries the work at `normal`,
+which one session's misreading and a self-contradicting count set together.

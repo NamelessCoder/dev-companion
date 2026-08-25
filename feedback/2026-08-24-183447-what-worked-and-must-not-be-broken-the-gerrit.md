@@ -29,6 +29,6 @@ typo3_rule_lookup(documentId: "core/contribution/gerrit-workflow"); typo3_forge_
 
 ## Suggestion
 
-Keep all four as they are. Specifically: keep the measured, dated statements in the gerrit-workflow page ("Measured on 2026-08-05: refs/changes/02/95102/2 resolved over the Gerrit URL and returned nothing at all over the GitHub one") — that form is what made me trust it over my own habit without testing it first. Keep the `reviews` array on a forge issue and the comment threads on a gerrit change; those two together are what let a reviewer reconstruct why a patch looks the way it does.
-
 The one addition worth considering: on a change with several comment threads, say which are unresolved *and* top-level, or mark the thread a reader should answer. The flag is there; the ranking is the step I took myself.
+
+*Trimmed on 2026-08-25. The keep half was answered: all four calls reproduce, and the three sentences of the gerrit-workflow page that rested on no assertion are held by `KnowledgeTest::theFetchDirectionNamesTheRemoteTheChangeRefIsOn` and `theCarryOntoCurrentCodeNamesTheBranchItLandsOnAndTheUndo`. The pair asked for above is refused as stated and the defect under it is queued — `D-ANS-079` has the measurement, `D-FBK-018` the reading.*

@@ -1016,3 +1016,50 @@ trimmed to that half and stays open behind it.
 
 No statement about TYPO3 was established here: the re-runs read this server's
 answers, and the discarded field was read in `Forge::reviewed()`.
+
+## Confirmed on 2026-08-25
+
+`feedback/2026-08-24-183447` is the strength the section above named as the
+second session on the same chain, and its own lever is a proposal the data
+refutes. It credits four answers from a review of change 91127 and asks for one
+addition: that a change with several comment threads say which are unresolved
+**and** top-level.
+
+The 2026-08-03 section reads such a proposal against the feature. Here the
+feature is absent, as in the 2026-08-21 section, and reading the ask against the
+data is what disposed of it: the pair it names selects a settled thread on 91127
+and misses the open one on 85224, and the answer prints two disagreeing counts
+of the same thing. Neither is in the report. `D-ANS-079` carries the
+measurement, where its third **Wrong if** fired.
+
+**A proposal is checked against the data the reporting session derived it
+from.** Reading it against the feature says whether the thing exists; reading it
+against the data says whether it would have been right — and a strength's
+proposal is a reading the session made and this repository can redo, which is
+what separates it from the account of the run around it.
+
+The quotations are checked before the boundary is, re-run on 2026-08-25 through
+`bin/typo3-dev-companion`. The `reviews` array of #103215 still lists 85224
+beside 91127, now with the backport 95409; Benjamin Franzke's inline comment on
+85224 comes back word for word and his `Code-Review-1` is gone from the labels
+and readable in the log alone, which is `D-ANS-079`'s own mechanism; the
+gerrit-workflow document returns whole with all four sentences the report used;
+and `typo3_project_describe` in `.checkouts/main` answers `core-checkout`,
+`15.0.0-dev`, no extensions.
+
+The boundary is **what an answer states against what it hands over to be worked
+out**. Everything credited is stated: the ref with the remote it is on, the
+`reviews` array, the patch set with its commit, the kind of checkout. The one
+cost is the one reading the session had to make itself, and it made it wrong.
+
+Three keep-requests rested on nobody rewriting the file and are held now.
+`KnowledgeTest::theFetchDirectionNamesTheRemoteTheChangeRefIsOn` gains the dated
+measurement, which the report names as what made it trust the page over its own
+habit without testing the claim; the remote and the ref were held already.
+`theCarryOntoCurrentCodeNamesTheBranchItLandsOnAndTheUndo` holds the rest of
+what it used — the https URL that needs no account, the `review/<change>` branch
+with where it starts, and the `git branch -D` undo with the reason `-d` will not
+do. Nothing asserted that section of the document at all, and `D-SKL-041`, whose
+subject it is, declared no test.
+
+The feedback is trimmed to the ranking half and stays open behind its card.

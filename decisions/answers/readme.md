@@ -34,7 +34,7 @@ one is added.
 - [`D-ANS-084`][D-ANS-084] — A curated phrase crosses the domain gate · 2026-08-18
 - [`D-ANS-085`][D-ANS-085] — The project answer is read from the repository's own files · 2026-08-18
 - [`D-ANS-083`][D-ANS-083] — The unsupported answer is the whole diagnostic · 2026-08-17
-- [`D-ANS-079`][D-ANS-079] — A change answer carries its votes and its comments · 2026-08-14
+- [`D-ANS-079`][D-ANS-079] — A change answer carries its votes and its comments · 2026-08-14 · confirmed
 - [`D-ANS-080`][D-ANS-080] — A change answer names the siblings that share its Change-Id · 2026-08-14
 - [`D-ANS-077`][D-ANS-077] — The module answer carries the resolved navigation component and each module's routes · 2026-08-12
 - [`D-ANS-078`][D-ANS-078] — The icon lookup validates a list of identifiers in one call · 2026-08-12

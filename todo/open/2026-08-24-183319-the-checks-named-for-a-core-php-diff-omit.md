@@ -13,4 +13,4 @@ again by `query` wherever one scores, which is what returned a single suite for
 `query="functional"`. `Schema::listOf(Schema::testSuiteRecord())` in
 `TaskGuide::outputSchema()` carries no description at all, and `checks` says
 only "Commands to run, ready to execute from the core root". The judgement is
-`D-ANS-107`, which answered the other half of this feedback.
+`D-ANS-108`, which answered the other half of this feedback.

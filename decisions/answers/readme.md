@@ -10,6 +10,7 @@ one is added.
 - [`D-ANS-105`][D-ANS-105] — The unsupported answer says what would make it answerable · 2026-08-25
 - [`D-ANS-106`][D-ANS-106] — A commit in a checkout is a handle the review lookup takes · 2026-08-25
 - [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25
+- [`D-ANS-108`][D-ANS-108] — A suite the pre-merge pipeline gates is a base check of its domain · 2026-08-25
 - [`D-ANS-097`][D-ANS-097] — A bounded answer spends its slots on the hints that bind its caller · 2026-08-24
 - [`D-ANS-098`][D-ANS-098] — A change answer names the issues its commit message resolves · 2026-08-24
 - [`D-ANS-099`][D-ANS-099] — A suite that stages the working tree is offered marked rather than withheld · 2026-08-24
@@ -113,6 +114,7 @@ one is added.
 [D-ANS-105]: ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md
 [D-ANS-106]: ans-106-a-commit-in-a-checkout-is-a-handle-the-review-lookup-takes.md
 [D-ANS-107]: ans-107-the-review-backlog-is-enumerated-the-way-the-tracker-is.md
+[D-ANS-108]: ans-108-a-suite-the-pre-merge-pipeline-gates-is-a-base-check-of-its-domain.md
 [D-ANS-097]: ans-097-a-bounded-answer-spends-its-slots-on-the-hints-that-bind-its-caller.md
 [D-ANS-098]: ans-098-a-change-answer-names-the-issues-its-commit-message-resolves.md
 [D-ANS-099]: ans-099-a-suite-that-stages-the-working-tree-is-offered-marked-rather-than-withheld.md

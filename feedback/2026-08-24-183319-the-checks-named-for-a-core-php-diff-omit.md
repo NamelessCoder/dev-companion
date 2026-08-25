@@ -10,7 +10,7 @@ directory: /home/benji/projects/typo3-cms
 # the checks named for a core PHP diff omit checkIntegrityPhp, and the two tools that name suites d...
 
 Trimmed on 2026-08-25. The half about `checkIntegrityPhp` and the exception code
-is answered — `D-ANS-107`, which also records that the suggestion about
+is answered — `D-ANS-108`, which also records that the suggestion about
 `listExceptionCodes` does not hold, since `-p` makes that suite exit
 successfully whatever it finds. The working-tree paragraph is withdrawn by
 `feedback/2026-08-24-183711`, which carries its own card. What is left is below.

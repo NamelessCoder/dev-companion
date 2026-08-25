@@ -1,11 +1,11 @@
 ---
-id: D-ANS-107
+id: D-ANS-108
 title: A suite the pre-merge pipeline gates is a base check of its domain
 date: 2026-08-25
 status: open
 ---
 
-# D-ANS-107 — A suite the pre-merge pipeline gates is a base check of its domain
+# D-ANS-108 — A suite the pre-merge pipeline gates is a base check of its domain
 
 **`checkIntegrityPhp` and `checkExceptionCodes` are base suites of the `php`
 domain, because the core's own pre-merge pipeline runs them over every patch

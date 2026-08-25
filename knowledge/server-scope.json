@@ -554,6 +554,10 @@
       "call": "typo3_fluid_namespace_list"
     },
     {
+      "when": "Needing which arguments a Fluid ViewHelper registers, with the type, the default and whether it takes arbitrary ones beyond them",
+      "call": "typo3_documentation_lookup with the tag name such as f:asset.css and the targetVersion"
+    },
+    {
       "when": "About to recommend a command, or asking what this project consists of",
       "call": "typo3_project_describe"
     },

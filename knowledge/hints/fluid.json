@@ -193,7 +193,9 @@
     "appliesTo": [
       "Classes/ViewHelpers/",
       "viewhelper",
-      "view helper"
+      "view helper",
+      "registered arguments",
+      "tag attribute"
     ],
     "hints": [
       "The current shape is a final class extending AbstractViewHelper with initializeArguments(): void declaring every argument through registerArgument(), and a typed render(): string. Dependencies are constructor-injected.",
@@ -212,6 +214,12 @@
       },
       {
         "text": "A value that does not match the type declared in registerArgument() stops the render here too — \"The argument \"x\" was registered with type \"array\", but is of type \"string\"\" — and the lenient check this branch runs has one hole in it: every empty value passes whatever the type says. An empty string therefore reaches an array-typed argument as a string, and what happens next is that ViewHelper's own cast rather than an error — so the render succeeds and the output is wrong.",
+        "until": 13
+      },
+      "Only an argument no registerArgument() call declares reaches $this->additionalArguments on a tag-based ViewHelper, and initialize() pushes those onto the TagBuilder before render() runs. So registering such an attribute takes it out of $this->tag->getAttributes() too, and a ViewHelper that reads its own attributes back stops finding the value, with nothing raised.",
+      "TagBuilder emits its attributes in the order they were added, and initialize() adds the unregistered ones before render() runs. So an attribute that becomes a registered argument also moves in the rendered tag, to wherever the render puts it back.",
+      {
+        "text": "registerTagAttribute() declares an argument and has initialize() put it on the tag, so registering an attribute this way does not take it off the rendered tag. It and registerUniversalTagAttributes() are deprecated.",
         "until": 13
       },
       "ViewHelpers are covered by functional tests under Tests/Functional/ViewHelpers/, not unit tests: a ViewHelper needs a rendering context, so a unit test asserts the wrong thing.",

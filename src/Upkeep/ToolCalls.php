@@ -153,6 +153,12 @@ final class ToolCalls
             'forge: nothing matches these words' => ['typo3_forge_lookup', [
                 'query' => 'quantumflux transponder',
             ]],
+            // Both of the last two are class names and the tracker knows one of
+            // them, which is what says the miss reads the words rather than
+            // advising about them (`D-ANS-038`).
+            'forge: which of the words emptied the answer' => ['typo3_forge_lookup', [
+                'query' => 'file renderer RendererRegistry FileRendererInterface',
+            ]],
             'forge: the oldest issues nobody has resolved' => ['typo3_forge_lookup', [
                 'open' => 'oldest',
                 'limit' => 3,

@@ -4,6 +4,7 @@ title: 'A miss says what there would have been to find'
 status: held
 heldBy:
   - ForgeTest::aMissNamesTheEnumerationAsACallToCompose
+  - ForgeTest::aMissNamesWhatEachWordReachesOnItsOwn
   - HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt
   - HintsTest::aMissNamesWhatThereWouldHaveBeenToFind
   - HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo

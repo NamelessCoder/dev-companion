@@ -67,7 +67,7 @@ final class ForgeLookup extends ReadOnlyTool
                 'query' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Words to search the tracker for, for example "image cache busting". A full-text search over subject, description and comments: it answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Every word has to be in the same issue, so a term nobody would have written — a method name, a class — empties the answer whatever else is in it: pass the two or three words that name the subject rather than every word you have. That also says what it cannot do: a person\'s name matches only where somebody wrote it, so it mixes the issues they filed with the issues a third party mentioned them in and misses the rest — pass the name as reportedBy or assignedTo with open to enumerate a person\'s issues. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue, query or open, never two of them.',
+                    'description' => 'Words to search the tracker for, for example "image cache busting". A full-text search over subject, description and comments: it answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Every word has to be in the same issue, so a term nobody would have written — a method name, a class — empties the answer whatever else is in it: pass the two or three words that name the subject rather than every word you have. Which word did it is not guessable from either end — two class names look alike and the tracker may know only one — so a miss asks each of them on its own and answers what it reached, in terms. That also says what it cannot do: a person\'s name matches only where somebody wrote it, so it mixes the issues they filed with the issues a third party mentioned them in and misses the rest — pass the name as reportedBy or assignedTo with open to enumerate a person\'s issues. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue, query or open, never two of them.',
                 ],
                 'open' => [
                     'type' => 'string',
@@ -150,6 +150,10 @@ final class ForgeLookup extends ReadOnlyTool
             'url' => Schema::string('What was read, so the same question can be asked again by hand. A union is two reads and both are named, separated by a space.'),
             'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number and where the open issues were enumerated.'),
             'total' => Schema::integer('How many issues matched in total, of which results carries at most limit. Where the two differ the answer is a page and not the set, and asking for more of it is a narrower filter rather than a bigger limit. Zero where an issue was read by number.'),
+            'terms' => Schema::listOf(Schema::object([
+                'word' => Schema::string('One word of the query, as it was passed.'),
+                'total' => Schema::integer('How many issues that word reaches on its own. Zero is a word no issue on the tracker carries, which empties every query it is in whatever else is in it.'),
+            ], ['word', 'total']), 'What each word of the query reaches on its own, which is what says which of them emptied the answer. Two class names look alike from here and the tracker may know only one, so this is read rather than guessed at. Asked on a miss alone and one read per word, which is why the query has to hold more than one word and no more than a few: a long one is answered by passing fewer words rather than by counting them. Empty otherwise, and short of the query where the tracker stopped answering partway through it.'),
             'categories' => Schema::listOf(Schema::string(), 'Every area the core files its issues under, read from the project itself, so a category word that matched none or several is corrected from the answer rather than from a second call. Answered where category was passed and did not resolve to exactly one area, and where it was passed as "*", which asks for this list and reads no issues. Empty otherwise, which is not a statement about the project: nothing else here carries the vocabulary, because the project administers it and a copy would go stale against the source this reads.'),
             'categoriesUsed' => Schema::listOf(Schema::string(), 'The categories the category word resolved to, in the tracker\'s own spelling. Empty where none was asked for — and empty where the word matched none, which is answered as no issues and is a statement about the word rather than about the backlog.'),
             'people' => Schema::listOf(Schema::object([
@@ -236,7 +240,7 @@ final class ForgeLookup extends ReadOnlyTool
                 'source-not-parseable' => 'something answered with a page rather than with the API, which is what '
                     . 'the bot protection in front of it looks like from here.',
             ]),
-        ], ['status', 'source', 'url', 'query', 'total', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
+        ], ['status', 'source', 'url', 'query', 'total', 'terms', 'categories', 'categoriesUsed', 'people', 'breakdown', 'issue', 'results', 'unavailable']);
     }
 
     /**
@@ -323,6 +327,7 @@ final class ForgeLookup extends ReadOnlyTool
             'url' => $answer['url'],
             'query' => '',
             'total' => 0,
+            'terms' => [],
             'categories' => [],
             'categoriesUsed' => [],
             'people' => [],
@@ -450,6 +455,9 @@ final class ForgeLookup extends ReadOnlyTool
      * that read a rewording went round eight times and was settled by the
      * enumeration on its ninth call, so `open` with `category` is named here as
      * a call to compose (`R-ANS-006`).
+     *
+     * Which of the caller's own words emptied it is the one thing no advice
+     * here can supply, so it is read from the tracker rather than guessed at.
      */
     private static function searched(string $query, int $limit): ToolResult
     {
@@ -461,6 +469,7 @@ final class ForgeLookup extends ReadOnlyTool
             'url' => $answer['url'],
             'query' => $answer['query'],
             'total' => $answer['total'],
+            'terms' => $answer['terms'],
             'categories' => [],
             'categoriesUsed' => [],
             'people' => [],
@@ -477,18 +486,22 @@ final class ForgeLookup extends ReadOnlyTool
             );
         }
         if ($answer['status'] === 'empty') {
-            return ToolResult::create(
-                'TYPO3 issue tracker: no issue matches "' . $answer['query'] . '" at ' . Forge::HOST . ".\n"
-                . 'These words matched nothing, which is not that nobody reported it: an issue worded differently is '
-                . "invisible to a full-text search.\n"
-                . 'Every word has to be in the same issue, so a term nobody would have written — a method name, a '
-                . "class — empties the answer whatever else is in it. Ask again with the words that name the subject.\n"
-                . 'What no wording of the report reaches is enumerated instead: open "stale" with category in your own '
-                . "words for the area — \"import export\", \"rte\" — and limit 50.\n"
-                . "Reading those subjects is what settles whether somebody already reported this.\n"
-                . 'Where the words are a person, pass them as reportedBy or assignedTo with open.',
-                $data,
-            );
+            return ToolResult::create(implode("\n", array_merge(
+                [
+                    'TYPO3 issue tracker: no issue matches "' . $answer['query'] . '" at ' . Forge::HOST . '.',
+                    'These words matched nothing, which is not that nobody reported it: an issue worded differently is '
+                        . 'invisible to a full-text search.',
+                    'Every word has to be in the same issue, so one word nobody wrote empties the answer whatever '
+                        . 'else is in it.',
+                ],
+                self::reached($answer['terms']),
+                [
+                    'What no wording of the report reaches is enumerated instead: open "stale" with category in your own '
+                        . 'words for the area — "import export", "rte" — and limit 50.',
+                    'Reading those subjects is what settles whether somebody already reported this.',
+                    'Where the words are a person, pass them as reportedBy or assignedTo with open.',
+                ],
+            )), $data);
         }
 
         $lines = [
@@ -520,6 +533,57 @@ final class ForgeLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * What each word reached on its own, which is what says which of them
+     * emptied the answer.
+     *
+     * The generic advice cannot: it names a class as the kind of term that
+     * empties a query, and on the query this was written from one class name
+     * reached five issues while the other reached none (`D-ANS-038`). So the
+     * counts lead and the advice is what is left where none were read.
+     *
+     * @param list<array{word: string, total: int}> $terms
+     * @return list<string>
+     */
+    private static function reached(array $terms): array
+    {
+        if ($terms === []) {
+            return ['Ask again with the two or three words that name the subject: a term nobody would have written — '
+                . 'a method name, a class — is regularly the one that emptied it.'];
+        }
+
+        $absent = [];
+        $narrowest = null;
+        foreach ($terms as $term) {
+            if ($term['total'] === 0) {
+                $absent[] = '"' . $term['word'] . '"';
+            } elseif ($narrowest === null || $term['total'] < $narrowest['total']) {
+                $narrowest = $term;
+            }
+        }
+
+        $lines = [sprintf('Asked one word at a time: %s.', implode(' · ', array_map(
+            static fn(array $term): string => sprintf('"%s" reaches %d', $term['word'], $term['total']),
+            $terms,
+        )))];
+        if ($absent !== []) {
+            $lines[] = sprintf(
+                'No issue on the tracker carries %s. A query %s is in is empty whatever else is in it, so drop %s.',
+                implode(' or ', $absent),
+                count($absent) === 1 ? 'it' : 'one of them',
+                count($absent) === 1 ? 'it' : 'them',
+            );
+        }
+        if ($narrowest !== null) {
+            $lines[] = sprintf(
+                '"%s" is the narrowest of the rest and reaches something: ask it on its own, then read the subjects.',
+                $narrowest['word'],
+            );
+        }
+
+        return $lines;
     }
 
     /**
@@ -635,6 +699,7 @@ final class ForgeLookup extends ReadOnlyTool
             'url' => $answer['url'],
             'query' => '',
             'total' => $answer['total'],
+            'terms' => [],
             'categories' => $answer['categories'],
             'categoriesUsed' => $answer['categoriesUsed'],
             'people' => $answer['people'],

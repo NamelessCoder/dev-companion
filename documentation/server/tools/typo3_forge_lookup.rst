@@ -57,13 +57,16 @@ Takes
     # by hand. Every word has to be in the same issue, so a term nobody would have
     # written — a method name, a class — empties the answer whatever else is in
     # it: pass the two or three words that name the subject rather than every word
-    # you have. That also says what it cannot do: a person's name matches only where
-    # somebody wrote it, so it mixes the issues they filed with the issues a third
-    # party mentioned them in and misses the rest — pass the name as reportedBy or
-    # assignedTo with open to enumerate a person's issues. Nothing is ranked and one
-    # wording does not settle it: ask again in the reporter's words as well as your
-    # own, because an issue worded differently is invisible to this. A call carries
-    # issue, query or open, never two of them.
+    # you have. Which word did it is not guessable from either end — two class
+    # names look alike and the tracker may know only one — so a miss asks each of
+    # them on its own and answers what it reached, in terms. That also says what it
+    # cannot do: a person's name matches only where somebody wrote it, so it mixes
+    # the issues they filed with the issues a third party mentioned them in and
+    # misses the rest — pass the name as reportedBy or assignedTo with open to
+    # enumerate a person's issues. Nothing is ranked and one wording does not settle
+    # it: ask again in the reporter's words as well as your own, because an issue
+    # worded differently is invisible to this. A call carries issue, query or open,
+    # never two of them.
     query: string  # optional
     # One of: oldest, stale. Enumerate the core project's unresolved issues instead
     # of reading one or matching words: "oldest" orders them by when they were
@@ -195,6 +198,20 @@ Answers with
     # of it is a narrower filter rather than a bigger limit. Zero where an issue was
     # read by number.
     total: integer
+    # What each word of the query reaches on its own, which is what says which of
+    # them emptied the answer. Two class names look alike from here and the tracker
+    # may know only one, so this is read rather than guessed at. Asked on a miss
+    # alone and one read per word, which is why the query has to hold more than one
+    # word and no more than a few: a long one is answered by passing fewer words
+    # rather than by counting them. Empty otherwise, and short of the query where
+    # the tracker stopped answering partway through it.
+    terms:
+      - # One word of the query, as it was passed.
+        word: string
+        # How many issues that word reaches on its own. Zero is a word no issue on
+        # the tracker carries, which empties every query it is in whatever else is
+        # in it.
+        total: integer
     # Every area the core files its issues under, read from the project itself, so a
     # category word that matched none or several is corrected from the answer rather
     # than from a second call. Answered where category was passed and did not
@@ -451,8 +468,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-25 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
 — vendor/autoload.php is not there either, and composer install writes both.
@@ -511,6 +528,7 @@ Data:
         "url": "https://forge.typo3.org/issues/110348.json?include=journals,relations,attachments",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -878,6 +896,7 @@ Data:
         "url": "https://forge.typo3.org/issues/88556.json?include=journals,relations,attachments",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1159,6 +1178,7 @@ Data:
         "url": "https://forge.typo3.org/issues/14858.json?include=journals,relations,attachments",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1288,6 +1308,7 @@ Data:
         "url": "https://forge.typo3.org/issues/99999999.json?include=journals,relations,attachments",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1336,6 +1357,7 @@ Data:
         "url": "https://forge.typo3.org/search.json?q=cache%20busting&issues=1&limit=3",
         "query": "cache busting",
         "total": 15,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1407,7 +1429,13 @@ Text:
 .. code-block:: text
 
     TYPO3 issue tracker: no issue matches "quantumflux transponder" at https://forge.typo3.org.
-    These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search. Ask again in the words a reporter would have used — or, where the words are a person, as reportedBy or assignedTo with open.
+    These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search.
+    Every word has to be in the same issue, so one word nobody wrote empties the answer whatever else is in it.
+    Asked one word at a time: "quantumflux" reaches 0 · "transponder" reaches 0.
+    No issue on the tracker carries "quantumflux" or "transponder". A query one of them is in is empty whatever else is in it, so drop them.
+    What no wording of the report reaches is enumerated instead: open "stale" with category in your own words for the area — "import export", "rte" — and limit 50.
+    Reading those subjects is what settles whether somebody already reported this.
+    Where the words are a person, pass them as reportedBy or assignedTo with open.
 
 Data:
 
@@ -1419,6 +1447,78 @@ Data:
         "url": "https://forge.typo3.org/search.json?q=quantumflux%20transponder&issues=1&limit=15",
         "query": "quantumflux transponder",
         "total": 0,
+        "terms": [
+            {
+                "word": "quantumflux",
+                "total": 0
+            },
+            {
+                "word": "transponder",
+                "total": 0
+            }
+        ],
+        "categories": [],
+        "categoriesUsed": [],
+        "people": [],
+        "breakdown": null,
+        "issue": null,
+        "results": [],
+        "unavailable": null
+    }
+
+forge: which of the words emptied the answer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Called with:
+
+.. code-block:: json
+
+    {
+        "query": "file renderer RendererRegistry FileRendererInterface"
+    }
+
+Text:
+
+.. code-block:: text
+
+    TYPO3 issue tracker: no issue matches "file renderer RendererRegistry FileRendererInterface" at https://forge.typo3.org.
+    These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search.
+    Every word has to be in the same issue, so one word nobody wrote empties the answer whatever else is in it.
+    Asked one word at a time: "file" reaches 13944 · "renderer" reaches 1173 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
+    No issue on the tracker carries "FileRendererInterface". A query it is in is empty whatever else is in it, so drop it.
+    "RendererRegistry" is the narrowest of the rest and reaches something: ask it on its own, then read the subjects.
+    What no wording of the report reaches is enumerated instead: open "stale" with category in your own words for the area — "import export", "rte" — and limit 50.
+    Reading those subjects is what settles whether somebody already reported this.
+    Where the words are a person, pass them as reportedBy or assignedTo with open.
+
+Data:
+
+.. code-block:: json
+
+    {
+        "status": "empty",
+        "source": "https://forge.typo3.org",
+        "url": "https://forge.typo3.org/search.json?q=file%20renderer%20RendererRegistry%20FileRendererInterface&issues=1&limit=15",
+        "query": "file renderer RendererRegistry FileRendererInterface",
+        "total": 0,
+        "terms": [
+            {
+                "word": "file",
+                "total": 13944
+            },
+            {
+                "word": "renderer",
+                "total": 1173
+            },
+            {
+                "word": "RendererRegistry",
+                "total": 5
+            },
+            {
+                "word": "FileRendererInterface",
+                "total": 0
+            }
+        ],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1444,7 +1544,7 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2498 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2497 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1482,7 +1582,8 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2498,
+        "total": 2497,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [],
@@ -1691,6 +1792,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=updated_on%3Aasc&tracker_id=1&category_id=1001",
         "query": "",
         "total": 22,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [
             "RTE (rtehtmlarea + ckeditor)"
@@ -1843,6 +1945,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [
             "AdminPanel",
             "Authentication",
@@ -1953,6 +2056,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=%2A&sort=created_on%3Aasc&author_id=52",
         "query": "",
         "total": 621,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [
@@ -2077,6 +2181,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=15&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
         "total": 0,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [
@@ -2151,6 +2256,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&author_id=52&status_id=open&sort=updated_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&assigned_to_id=52&status_id=open&sort=updated_on%3Aasc",
         "query": "",
         "total": 5,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [
@@ -2317,6 +2423,7 @@ Data:
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&author_id=52&status_id=%2A&sort=created_on%3Aasc https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=100&assigned_to_id=52&status_id=%2A&sort=created_on%3Aasc",
         "query": "",
         "total": 764,
+        "terms": [],
         "categories": [],
         "categoriesUsed": [],
         "people": [

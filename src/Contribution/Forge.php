@@ -86,6 +86,18 @@ final class Forge
     private const HITS = 25;
 
     /**
+     * The most words a miss is asked about one at a time, and beyond it nothing
+     * is asked at all.
+     *
+     * A read takes about two and a half seconds against forge.typo3.org,
+     * measured on 2026-08-25, so the probe is what a caller waits through on
+     * the path that answered nothing. A query longer than this is one whose
+     * answer is to pass fewer words, which the miss says without reading
+     * anything.
+     */
+    private const TERMS = 6;
+
+    /**
      * The most issues an enumeration answers with. Higher than a search's,
      * because a triage picks candidates out of the set it is shown and a set
      * that has to be paged through is one nobody sees the shape of.
@@ -277,7 +289,7 @@ final class Forge
      * `issues=1` is what keeps wiki pages, forum posts and changesets out of an
      * answer whose entries are issue numbers.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', url: string, query: string, total: int, results: list<array<string, mixed>>, cause: ?string}
+     * @return array{status: 'answered'|'empty'|'unavailable', url: string, query: string, total: int, terms: list<array{word: string, total: int}>, results: list<array<string, mixed>>, cause: ?string}
      */
     public function search(string $query, int $limit = 15): array
     {
@@ -287,7 +299,7 @@ final class Forge
 
         $answer = $this->api($url, 'results');
         if ($answer['part'] === null) {
-            return ['status' => 'unavailable', 'url' => $url, 'query' => $words, 'total' => 0, 'results' => [], 'cause' => $answer['cause']];
+            return ['status' => 'unavailable', 'url' => $url, 'query' => $words, 'total' => 0, 'terms' => [], 'results' => [], 'cause' => $answer['cause']];
         }
 
         $results = [];
@@ -302,9 +314,59 @@ final class Forge
             'url' => $url,
             'query' => $words,
             'total' => $answer['total'],
+            'terms' => $results === [] ? $this->reach($words) : [],
             'results' => $this->filled($results),
             'cause' => null,
         ];
+    }
+
+    /**
+     * What each word of an emptied query reaches on its own.
+     *
+     * This is the half of a miss nothing on this side can supply. Two class
+     * names look alike from here and the tracker knows one of them:
+     * `RendererRegistry` reached 5 issues on 2026-08-25 and
+     * `FileRendererInterface` reached none, so the advice to drop the
+     * identifiers would have dropped the word that answers (`D-ANS-038`).
+     *
+     * One read per word rather than one re-read of the query with the AND off.
+     * That re-read is a single call and answers something else: the union is
+     * ordered by issue number and its size is the commonest word's, so the same
+     * four words answered 14673 that day with none of the five in the first
+     * page of them.
+     *
+     * Asked on the miss alone, and each is held like any other read, so a
+     * session rewording around one term pays for it once.
+     *
+     * @return list<array{word: string, total: int}>
+     */
+    private function reach(string $query): array
+    {
+        $words = [];
+        foreach (preg_split('/\s+/', $query) ?: [] as $word) {
+            if ($word !== '') {
+                $words[strtolower($word)] = $word;
+            }
+        }
+        // One word has nothing to tell apart, and its count is the zero the
+        // caller is already holding.
+        if (count($words) < 2 || count($words) > self::TERMS) {
+            return [];
+        }
+
+        $reach = [];
+        foreach ($words as $word) {
+            $answer = $this->api(self::HOST . '/search.json?q=' . rawurlencode($word) . '&issues=1&limit=1', 'results');
+            // A host that stopped answering says nothing about the words left,
+            // and a miss that already answered is not turned into an outage by
+            // it.
+            if ($answer['part'] === null) {
+                return $reach;
+            }
+            $reach[] = ['word' => $word, 'total' => $answer['total']];
+        }
+
+        return $reach;
     }
 
     /**

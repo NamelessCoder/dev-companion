@@ -606,6 +606,86 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * Which of the caller's words emptied the answer is a fact only the tracker
+     * holds, so the miss reads it rather than advising around it.
+     *
+     * The query is the one `feedback/2026-08-24-163235` reported.
+     * `RendererRegistry` and `FileRendererInterface` are both class names and
+     * the tracker knew one of them on 2026-08-25, so the rule the miss already
+     * states — an identifier empties a query — would have thrown away the word
+     * that answers.
+     */
+    #[Requirement('R-ANS-006')]
+    #[Decision('D-ANS-038')]
+    #[Test]
+    public function aMissNamesWhatEachWordReachesOnItsOwn(): void
+    {
+        $reaches = ['renderer' => 1173, 'rendererregistry' => 5];
+        Forge::useReader(static function (string $url) use ($reaches): string {
+            $asked = strtolower(urldecode((string) parse_url($url, PHP_URL_QUERY)));
+            $total = 0;
+            foreach ($reaches as $word => $reach) {
+                if (str_contains($asked, 'q=' . $word . '&')) {
+                    $total = $reach;
+                }
+            }
+
+            return (string) json_encode(['results' => [], 'total_count' => $total, 'offset' => 0, 'limit' => 1]);
+        });
+
+        $result = Registry::call('typo3_forge_lookup', ['query' => 'renderer RendererRegistry FileRendererInterface']);
+
+        self::assertSame('empty', $result->data['status']);
+        self::assertSame(
+            [
+                ['word' => 'renderer', 'total' => 1173],
+                ['word' => 'RendererRegistry', 'total' => 5],
+                ['word' => 'FileRendererInterface', 'total' => 0],
+            ],
+            $result->data['terms'],
+        );
+        self::assertStringContainsString('No issue on the tracker carries "FileRendererInterface"', $result->text);
+        // The narrowest word that still reaches something, which is the call to
+        // make next and is not the one the identifier rule would have kept.
+        self::assertStringContainsString('"RendererRegistry" is the narrowest', $result->text);
+    }
+
+    /**
+     * One word has nothing to tell apart and a long query is answered by
+     * passing fewer words, so neither spends a read.
+     */
+    #[Decision('D-ANS-038')]
+    #[Test]
+    public function aMissOutsideTheBoundAsksTheTrackerNothingFurther(): void
+    {
+        $calls = 0;
+        $forge = new Forge(function () use (&$calls): string {
+            $calls++;
+
+            return (string) json_encode(['results' => [], 'total_count' => 0, 'offset' => 0, 'limit' => 15]);
+        });
+
+        self::assertSame([], $forge->search('RendererRegistry')['terms']);
+        self::assertSame([], $forge->search('one two three four five six seven')['terms']);
+        self::assertSame(2, $calls);
+    }
+
+    /**
+     * A search that answered spends nothing on the words: every word of it is
+     * in an issue by definition, and the counts would name no better call —
+     * the six common words `feedback/2026-08-24-163235` reported as answering
+     * one irrelevant issue reach between 337 and 4661 apiece.
+     */
+    #[Decision('D-ANS-038')]
+    #[Test]
+    public function aSearchThatAnsweredIsNotCountedWordByWord(): void
+    {
+        $forge = new Forge(fn(): string => (string) json_encode(self::HITS));
+
+        self::assertSame([], $forge->search('cache busting')['terms']);
+    }
+
+    /**
      * The protection sits in front of the whole host, so the search meets the
      * challenge page the issue read does, and answers it the same way.
      */

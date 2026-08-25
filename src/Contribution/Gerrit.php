@@ -16,10 +16,15 @@ use TYPO3\DevCompanion\Http\Recent;
  * and no credential: everything here is what the anonymous REST API serves,
  * while voting, uploading and abandoning are the caller's to do through git and
  * the web UI.
+ *
+ * @phpstan-type Answer array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, more: bool, cause: ?string}
  */
 final class Gerrit
 {
     public const HOST = 'https://review.typo3.org';
+
+    /** The one project this server is about, as the review server spells it. */
+    public const PROJECT = 'Packages/TYPO3.CMS';
 
     /**
      * Seconds a found change is held for.
@@ -68,7 +73,7 @@ final class Gerrit
      * against what the commit message actually says, and a change that does not
      * name the issue is not handed back.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     public function changesForIssue(string $issue, int $limit = 10): array
     {
@@ -112,13 +117,13 @@ final class Gerrit
      * a hit is 1.6 KB without it and 2.5 KB with it, and nothing on this path
      * reads it (`D-ANS-100`).
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     public function changesMatching(string $words, string $path, bool $open = false, int $limit = 10): array
     {
         $query = self::matching($words, $path, $open);
         if ($query === '') {
-            return ['status' => 'empty', 'query' => '', 'changes' => [], 'dropped' => 0, 'cause' => null];
+            return ['status' => 'empty', 'query' => '', 'changes' => [], 'dropped' => 0, 'more' => false, 'cause' => null];
         }
 
         return $this->search($query, $limit);
@@ -149,6 +154,163 @@ final class Gerrit
         }
 
         return implode(' ', $open ? ['status:open', ...$terms] : $terms);
+    }
+
+    /**
+     * The most rows one call answers with, measured against review.typo3.org on
+     * 2026-08-25: `n=1000` came back with 500 and said there was more.
+     */
+    private const PAGE = 500;
+
+    /**
+     * How many of those the enumeration reads before it stops.
+     *
+     * The whole open core backlog was 855 changes on 2026-08-25 — two calls,
+     * 1.1 MB and half a second — so this is headroom rather than a bound
+     * anybody has met, and the answer says where it cut.
+     */
+    private const PAGES = 4;
+
+    /**
+     * The changes the review backlog is waiting on, ordered by age.
+     *
+     * The question two sessions asked on one day and neither could put to this
+     * server: which open changes are old, small, voted on, still merging, and
+     * whose. Both wrote the predicates by hand and one scored 859 changes in a
+     * script of its own (`D-ANS-107`).
+     *
+     * The order is this side's and has to be. The review server sorts by last
+     * activity, offers no predicate on the created date and states no total, so
+     * oldest-first is the matched set read whole and sorted here — which is what
+     * the page bound above is for and what `read` and `complete` report.
+     *
+     * @param string $order `oldest` by when a change was filed, `stale` by when
+     *                      it last moved
+     * @param int $maxSize insertions plus deletions, 0 for no bound
+     * @param int $minCodeReview the lowest Code-Review vote the change must
+     *                           carry, 0 for no bound
+     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, more: bool, cause: ?string, read: int, complete: bool}
+     */
+    public function backlog(
+        string $order = 'oldest',
+        int $maxSize = 0,
+        int $minCodeReview = 0,
+        bool $negativeVotes = true,
+        bool $mergeable = false,
+        string $branch = '',
+        string $updatedBefore = '',
+        string $owner = '',
+        string $reviewedBy = '',
+        string $involving = '',
+        int $limit = 10,
+    ): array {
+        $query = self::waiting(
+            $maxSize,
+            $minCodeReview,
+            $negativeVotes,
+            $mergeable,
+            $branch,
+            $updatedBefore,
+            $owner,
+            $reviewedBy,
+            $involving,
+        );
+
+        $changes = [];
+        $answer = ['status' => 'empty', 'query' => $query, 'changes' => [], 'dropped' => 0, 'more' => false, 'cause' => null];
+        for ($read = 0; $read < self::PAGES; ++$read) {
+            $answer = $this->page($query, self::PAGE, $read * self::PAGE, '');
+            if ($answer['status'] === 'unavailable') {
+                return [...$answer, 'read' => count($changes), 'complete' => false];
+            }
+            $changes = [...$changes, ...$answer['changes']];
+            if (!$answer['more']) {
+                break;
+            }
+        }
+
+        // Ascending, so the front of the list is the end the caller asked for.
+        // Both fields are the one fixed-width timestamp the review server
+        // writes, which sorts as text.
+        $on = $order === 'stale' ? 'updated' : 'created';
+        usort($changes, static fn(array $one, array $other): int => strcmp((string) $one[$on], (string) $other[$on]));
+
+        return [
+            'status' => $changes === [] ? 'empty' : 'answered',
+            'query' => $query,
+            'changes' => array_slice($changes, 0, max(1, $limit)),
+            'dropped' => 0,
+            'more' => count($changes) > $limit,
+            'cause' => null,
+            'read' => count($changes),
+            'complete' => !$answer['more'],
+        ];
+    }
+
+    /**
+     * The one query the filters of a backlog come to.
+     *
+     * Composed here rather than passed through, the way the words and the path
+     * are (`D-ANS-100`): the operators, the quoting and the escaping stay on
+     * this side and the answer states what they produced.
+     *
+     * `-is:wip` is in every one of them and is not a filter a caller sets. A
+     * change its own author marked work in progress is not offered for review,
+     * which is what this enumerates — and it is 411 of the 855 open core changes
+     * measured on 2026-08-25, so leaving them in is a backlog that is half
+     * somebody else's drafts.
+     *
+     * `before:` is the date operator and it reads the last update rather than
+     * the creation: the review server indexes no created date at all, which is
+     * also why the ordering is this side's.
+     */
+    private static function waiting(
+        int $maxSize,
+        int $minCodeReview,
+        bool $negativeVotes,
+        bool $mergeable,
+        string $branch,
+        string $updatedBefore,
+        string $owner,
+        string $reviewedBy,
+        string $involving,
+    ): string {
+        $terms = ['project:' . self::quoted(self::PROJECT), 'status:open', '-is:wip'];
+        if ($maxSize > 0) {
+            $terms[] = 'delta:<=' . $maxSize;
+        }
+        if ($minCodeReview > 0) {
+            $terms[] = 'label:Code-Review>=' . $minCodeReview;
+        }
+        if (!$negativeVotes) {
+            // Both labels, because either one blocks: a Code-Review-1 is a
+            // reviewer objecting and a Verified-1 is the pipeline failing.
+            $terms[] = '-label:Code-Review<=-1';
+            $terms[] = '-label:Verified<=-1';
+        }
+        if ($mergeable) {
+            $terms[] = 'is:mergeable';
+        }
+        if ($branch !== '') {
+            $terms[] = 'branch:' . self::quoted($branch);
+        }
+        if ($updatedBefore !== '') {
+            $terms[] = 'before:' . self::quoted($updatedBefore);
+        }
+        if ($owner !== '') {
+            $terms[] = 'owner:' . self::quoted($owner);
+        }
+        if ($reviewedBy !== '') {
+            $terms[] = 'reviewedby:' . self::quoted($reviewedBy);
+        }
+        // One query rather than two reads, which is where this differs from the
+        // tracker: Gerrit's parser takes the alternation and Redmine ANDs its
+        // filters, so `D-ANS-089` had to union two answers by hand.
+        if ($involving !== '') {
+            $terms[] = '(owner:' . self::quoted($involving) . ' OR reviewedby:' . self::quoted($involving) . ')';
+        }
+
+        return implode(' ', $terms);
     }
 
     /** One value Gerrit's query parser reads as a value and not as syntax. */
@@ -254,7 +416,7 @@ final class Gerrit
      * One change by its number or its Change-Id, the changes sharing that id,
      * and the review they are in.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     public function change(string $change, int $limit = 1, string $messages = 'none'): array
     {
@@ -272,7 +434,7 @@ final class Gerrit
      * after it finds are the backports, which is the set the question "which
      * branches carry this fix" is actually about.
      *
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     public function commit(string $commit, int $limit = 1, string $messages = 'none'): array
     {
@@ -300,7 +462,7 @@ final class Gerrit
      * (`D-ANS-106`).
      *
      * @param string $operator the Gerrit query prefix the handle belongs to
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     private function named(string $operator, string $change, int $limit, string $messages): array
     {
@@ -693,13 +855,33 @@ final class Gerrit
     /**
      * @param string $options what this query asks for beyond the current
      *                        revision, as the query string carries it
-     * @return array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}
+     * @return Answer
      */
     private function search(string $query, int $limit, string $options = ''): array
     {
-        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(self::MOST, $limit))
-            . self::CURRENT_REVISION . $options;
-        /** @var array{status: 'answered'|'empty'|'unavailable', query: string, changes: list<array<string, mixed>>, dropped: int, cause: ?string}|null $held */
+        return $this->page($query, max(1, min(self::MOST, $limit)), 0, self::CURRENT_REVISION . $options);
+    }
+
+    /**
+     * One page of a query, as the review server hands it over.
+     *
+     * `more` is the server's own `_more_changes`, which it sets on the last row
+     * of a page it cut. It is read rather than inferred from the count: a set of
+     * exactly as many changes as were asked for is a whole set as often as a cut
+     * one, and only the flag separates them.
+     *
+     * @param int $skip how many matches to pass over, which is the only way past
+     *                  the first page — the review server offers no offset in
+     *                  any other form
+     * @param string $options everything this query asks for beyond the change
+     *                        itself, as the query string carries it
+     * @return Answer
+     */
+    private function page(string $query, int $take, int $skip, string $options): array
+    {
+        $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . $take
+            . ($skip > 0 ? '&S=' . $skip : '') . $options;
+        /** @var Answer|null $held */
         $held = Recent::held($url, self::HELD_FOR);
         if ($held !== null) {
             return $held;
@@ -707,17 +889,21 @@ final class Gerrit
 
         $body = $this->fetch->get($url, ['Accept: application/json']);
         if ($body === null) {
-            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'cause' => 'source-not-answering'];
+            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'more' => false, 'cause' => 'source-not-answering'];
         }
 
         $decoded = Fetch::decode($body);
         if ($decoded === null) {
-            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'cause' => 'source-not-parseable'];
+            return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'dropped' => 0, 'more' => false, 'cause' => 'source-not-parseable'];
         }
 
         $changes = [];
+        // The flag rides on the last row of a page the server cut and on no
+        // other, so what survives the loop is the end of what came back.
+        $more = false;
         foreach ($decoded as $entry) {
             if (is_array($entry)) {
+                $more = ($entry['_more_changes'] ?? false) === true;
                 $change = self::change_($entry);
                 // What was not asked for cannot be in the answer, and the
                 // commit message is asked for by the queries that read it.
@@ -733,6 +919,7 @@ final class Gerrit
             'query' => $query,
             'changes' => $changes,
             'dropped' => 0,
+            'more' => $more,
             'cause' => null,
         ];
         // Only a change that was found. "No change for this issue" is the
@@ -788,6 +975,17 @@ final class Gerrit
             'commit' => is_string($entry['current_revision'] ?? null) ? $entry['current_revision'] : '',
             'project' => $project,
             'updated' => is_string($entry['updated'] ?? null) ? $entry['updated'] : '',
+            // The five fields the review server sends unasked and this server
+            // dropped until `D-ANS-107`. Size, whether it still merges and how
+            // many threads are open are what a reviewer picks a change by, and
+            // `created` is the one date `updated` beside it does not carry: an
+            // old change touched last week is being worked on.
+            'created' => is_string($entry['created'] ?? null) ? $entry['created'] : '',
+            'insertions' => self::counted($entry['insertions'] ?? null),
+            'deletions' => self::counted($entry['deletions'] ?? null),
+            // Null where the server named nothing, which is what a merge it has
+            // not computed yet looks like. False is "it no longer applies".
+            'mergeable' => is_bool($entry['mergeable'] ?? null) ? $entry['mergeable'] : null,
             'url' => self::url($number, $project),
             // Null where the server named no patch set: a ref names one, and
             // there is nothing to fetch by a zero.
@@ -795,17 +993,16 @@ final class Gerrit
                 'ref' => self::ref($number, $patchSet),
                 'remote' => self::HOST . '/' . $project,
             ] : null,
-            // Null rather than empty where the review was not read at all: a
-            // search asks for none of it, and "nobody has voted" is a different
-            // answer to a reviewer than "nobody asked".
-            'labels' => is_array($entry['labels'] ?? null)
-                ? self::labels($entry['labels'], $entry['submit_records'] ?? null)
-                : null,
+            // Null rather than empty where neither the votes nor the submit
+            // rule came back, which is what a server too old to send either
+            // looks like. What each of the two fills is in `labels()`.
+            'labels' => self::labels($entry['labels'] ?? null, $entry['submit_records'] ?? null),
             // In the payload of every query, which is what lets the comments be
             // fetched only where there are some.
             'commentCount' => isset($entry['total_comment_count']) && is_numeric($entry['total_comment_count'])
                 ? (int) $entry['total_comment_count']
                 : 0,
+            'unresolvedCommentCount' => self::counted($entry['unresolved_comment_count'] ?? null) ?? 0,
             // Filled by `change()`, each from an endpoint of its own.
             'comments' => null,
             'chain' => null,
@@ -843,8 +1040,32 @@ final class Gerrit
             : self::HOST . '/c/' . $project . '/+/' . $number;
     }
 
+    /** One number the review server stated, or null where it stated none. */
+    private static function counted(mixed $value): ?int
+    {
+        return is_numeric($value) ? (int) $value : null;
+    }
+
     /**
-     * What each label stands at, and whether that is enough.
+     * The order the statuses of one label are read in when the rules disagree.
+     *
+     * The worst of them is what the label stands at, because that is what a
+     * caller acts on: `REJECT` is a vote blocking the change and `NEED` is a
+     * vote nobody has cast, and reading the second where the first holds is a
+     * candidate picked out of a backlog that cannot be submitted at all.
+     * `IMPOSSIBLE` sits between them — no vote available can satisfy the rule.
+     */
+    private const SEVERITY = ['REJECT', 'IMPOSSIBLE', 'NEED', 'OK'];
+
+    /**
+     * What each label stands at, who put it there, and whether that is enough.
+     *
+     * Two payloads fill this and they arrive apart. `submit_records` is on every
+     * row the review server sends, asked for or not, and it carries the state of
+     * each label the submit rule names; `o=DETAILED_LABELS` is what adds the
+     * voters, and it costs 0.9 KB a row, so a search does not ask for it
+     * (`D-ANS-107`). So a search answers the states with `votes` null, and a
+     * change read by name answers both.
      *
      * `all` is every voter with the value they hold, the zeros included: a
      * reviewer who was added and has not voted is a fact about the review.
@@ -853,12 +1074,11 @@ final class Gerrit
      * threshold read off the values would be right, and a rule that requires
      * the label at all is what makes the question mean anything.
      *
-     * @param array<string, mixed> $labels
-     * @return list<array<string, mixed>>
+     * @return list<array<string, mixed>>|null null where the row carried neither
      */
-    private static function labels(array $labels, mixed $records): array
+    private static function labels(mixed $labels, mixed $records): ?array
     {
-        $satisfied = [];
+        $states = [];
         foreach (is_array($records) ? $records : [] as $record) {
             $required = is_array($record) && is_array($record['labels'] ?? null) ? $record['labels'] : [];
             foreach ($required as $entry) {
@@ -869,33 +1089,66 @@ final class Gerrit
                 if ($name === '' || $status === 'MAY') {
                     continue;
                 }
-                $satisfied[$name] = ($satisfied[$name] ?? true) && $status === 'OK';
+                $held = $states[$name] ?? null;
+                $states[$name] = $held === null || self::worse($status, $held) ? $status : $held;
             }
         }
+        // Every label the voters name and every label a rule names, because
+        // either payload can carry one the other does not.
+        $named = [...array_keys(is_array($labels) ? $labels : []), ...array_keys($states)];
 
         $answer = [];
-        foreach ($labels as $name => $label) {
-            $votes = [];
-            foreach (is_array($label) && is_array($label['all'] ?? null) ? $label['all'] : [] as $vote) {
-                if (!is_array($vote)) {
-                    continue;
-                }
-                $votes[] = [
-                    'voter' => is_string($vote['name'] ?? null) ? $vote['name'] : '',
-                    'value' => isset($vote['value']) && is_numeric($vote['value']) ? (int) $vote['value'] : 0,
-                    // Empty on a reviewer who holds no vote, since nothing was
-                    // cast to carry a date.
-                    'on' => is_string($vote['date'] ?? null) ? $vote['date'] : '',
-                ];
-            }
+        foreach (array_unique($named) as $name) {
+            $name = (string) $name;
+            $label = is_array($labels) && is_array($labels[$name] ?? null) ? $labels[$name] : null;
             $answer[] = [
-                'label' => (string) $name,
-                'satisfied' => $satisfied[(string) $name] ?? null,
-                'votes' => $votes,
+                'label' => $name,
+                // Empty where no submit rule names this label, which is not the
+                // same as a rule it fails.
+                'state' => $states[$name] ?? '',
+                'satisfied' => isset($states[$name]) ? $states[$name] === 'OK' : null,
+                'votes' => $label === null ? null : self::votes($label),
             ];
+        }
+        if ($answer === []) {
+            return is_array($labels) ? [] : null;
         }
 
         return $answer;
+    }
+
+    /** Whether one label status is the more consequential of two. */
+    private static function worse(string $status, string $than): bool
+    {
+        $at = array_search($status, self::SEVERITY, true);
+        $held = array_search($than, self::SEVERITY, true);
+
+        return $at !== false && ($held === false || $at < $held);
+    }
+
+    /**
+     * Everyone on one label with the value they hold.
+     *
+     * @param array<string, mixed> $label
+     * @return list<array<string, mixed>>
+     */
+    private static function votes(array $label): array
+    {
+        $votes = [];
+        foreach (is_array($label['all'] ?? null) ? $label['all'] : [] as $vote) {
+            if (!is_array($vote)) {
+                continue;
+            }
+            $votes[] = [
+                'voter' => is_string($vote['name'] ?? null) ? $vote['name'] : '',
+                'value' => isset($vote['value']) && is_numeric($vote['value']) ? (int) $vote['value'] : 0,
+                // Empty on a reviewer who holds no vote, since nothing was
+                // cast to carry a date.
+                'on' => is_string($vote['date'] ?? null) ? $vote['date'] : '',
+            ];
+        }
+
+        return $votes;
     }
 
     /**

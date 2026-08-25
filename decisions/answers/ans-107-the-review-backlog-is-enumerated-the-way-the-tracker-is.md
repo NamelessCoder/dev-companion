@@ -3,7 +3,19 @@ id: D-ANS-107
 title: The review backlog is enumerated the way the tracker is
 date: 2026-08-25
 status: open
-coveredBy: []
+coveredBy:
+  - GerritTest::aBlockingVoteIsWhatALabelStandsAtWhereTheRulesDisagree
+  - GerritTest::aPageOfTheBacklogSaysHowMuchOfItThatIs
+  - GerritTest::aPersonOnEitherSideIsOneQuery
+  - GerritTest::aSearchAnswersWhatALabelStandsAtWithoutTheVotersBehindIt
+  - GerritTest::anEmptyBacklogSaysWhatItCannotSeparate
+  - GerritTest::everyBacklogFilterIsAnOperatorComposedHere
+  - GerritTest::everyRowCarriesTheSizeTheMergeAndTheAgeOfItsChange
+  - GerritTest::theChangesTheirAuthorsMarkedUnfinishedAreOutOfEveryEnumeration
+  - GerritTest::theEnumerationIsAWayInOfItsOwnAndTheFiltersNarrowIt
+  - GerritTest::theLineAPageIsScannedBySaysSizeMergeAndAge
+  - GerritTest::theOldestFirstOrderIsTheMatchedSetSortedHere
+  - GerritTest::theReadSaysHowManyItCoveredAndWhetherThatIsAllOfThem
 ---
 
 # D-ANS-107 — The review backlog is enumerated the way the tracker is

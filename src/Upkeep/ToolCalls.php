@@ -212,6 +212,16 @@ final class ToolCalls
             'gerrit: a change that is one part of a stack' => ['typo3_gerrit_lookup', [
                 'change' => '91563',
             ]],
+            // The shortlist two sessions built by hand on one day, in the four
+            // filters they each scored 855 changes on — `D-ANS-107`.
+            'gerrit: the open review backlog' => ['typo3_gerrit_lookup', [
+                'backlog' => 'oldest',
+                'maxSize' => 60,
+                'minCodeReview' => 1,
+                'negativeVotes' => false,
+                'mergeable' => true,
+                'limit' => 3,
+            ]],
             'documentation: search' => ['typo3_documentation_lookup', [
                 'queries' => ['page title event', 'page title provider'],
                 'targetVersion' => '14.3',

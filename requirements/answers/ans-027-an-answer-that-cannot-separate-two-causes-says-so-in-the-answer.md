@@ -7,6 +7,7 @@ heldBy:
   - GerritTest::aReviewNoteOnTheIssueTurnsTheHedgeIntoAnAnswer
   - GerritTest::anEmptyAnswerForACommitSaysWhatItCannotSeparate
   - GerritTest::anEmptyAnswerForANamedChangeSaysWhatItCannotSeparate
+  - GerritTest::anEmptyBacklogSaysWhatItCannotSeparate
 ---
 
 # R-ANS-027 — An answer that cannot separate two causes says so in the answer

@@ -1167,6 +1167,7 @@ final class GerritTest extends TestCase
         self::assertSame([
             [
                 'label' => 'Verified',
+                'state' => 'NEED',
                 'satisfied' => false,
                 'votes' => [
                     ['voter' => 'Oliver Klee', 'value' => 1, 'on' => '2026-08-13 18:16:10.000000000'],
@@ -1175,6 +1176,7 @@ final class GerritTest extends TestCase
             ],
             [
                 'label' => 'Code-Review',
+                'state' => 'NEED',
                 'satisfied' => false,
                 // A reviewer who was added and has not voted, which is not the
                 // same answer as nobody being on it.
@@ -1863,5 +1865,355 @@ final class GerritTest extends TestCase
     {
         self::assertContains('releaseLines', GerritLookup::outputSchema()['required']);
         self::assertNotSame([], GerritLookup::releaseLines()['record']['branches']);
+    }
+
+    /**
+     * Two rows of the open backlog as the review server sends them bare, in the
+     * shape `project:Packages/TYPO3.CMS status:open` answered on 2026-08-25:
+     * the six fields `D-ANS-107` is about, and no `labels` object, because
+     * nothing asked for one.
+     *
+     * The younger change stands first, which is the order the review server
+     * answers in — by last activity — and the opposite of both orders the
+     * enumeration is asked for.
+     */
+    private const OPEN = ")]}'\n"
+        . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Make CGL suites work in git worktrees",'
+        . '"status":"NEW","created":"2026-08-25 11:41:26.000000000","updated":"2026-08-25 11:48:01.000000000",'
+        . '"mergeable":true,"insertions":39,"deletions":6,"total_comment_count":0,"unresolved_comment_count":0,'
+        . '"_number":95413,"current_revision_number":1,"submit_records":[{"rule_name":"gerrit~DefaultSubmitRule",'
+        . '"status":"NOT_READY","labels":[{"label":"Verified","status":"NEED"},{"label":"Code-Review","status":"OK"}]}]},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"13.4","subject":"[BUGFIX] Ensure invalid pages do not stop DataHandler",'
+        . '"status":"NEW","created":"2025-08-13 09:12:00.000000000","updated":"2026-06-18 23:04:54.000000000",'
+        . '"mergeable":false,"insertions":7,"deletions":1,"total_comment_count":5,"unresolved_comment_count":2,'
+        . '"_number":90384,"current_revision_number":2,"submit_records":[{"rule_name":"gerrit~DefaultSubmitRule",'
+        . '"status":"NOT_READY","labels":[{"label":"Verified","status":"NEED"},{"label":"Code-Review","status":"REJECT"}]}]}]';
+
+    /**
+     * The filters are arguments composed into one query here, never a Gerrit
+     * query passed through — `D-ANS-107`, which is what `D-ANS-100` decided for
+     * the words and the path.
+     *
+     * Every operator in it was measured against review.typo3.org on 2026-08-25,
+     * anonymously and in one call each: `delta:<=60` cut the 855 open core
+     * changes to 329, `before:2025-01-01` to 54, and the whole almost-ready
+     * query below to 74.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function everyBacklogFilterIsAnOperatorComposedHere(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::OPEN);
+
+        $query = $gerrit->backlog(
+            maxSize: 60,
+            minCodeReview: 1,
+            negativeVotes: false,
+            mergeable: true,
+            branch: '13.4',
+            updatedBefore: '2025-01-01',
+            owner: 'Benjamin Kott',
+        )['query'];
+
+        self::assertSame(
+            'project:"Packages/TYPO3.CMS" status:open -is:wip delta:<=60 label:Code-Review>=1 -label:Code-Review<=-1 '
+                . '-label:Verified<=-1 is:mergeable branch:"13.4" before:"2025-01-01" owner:"Benjamin Kott"',
+            $query,
+        );
+    }
+
+    /**
+     * A draft is not offered for review, and it is half the backlog: 411 of the
+     * 855 open core changes carried the flag on 2026-08-25, so an enumeration
+     * that keeps them answers mostly somebody else's unfinished work.
+     *
+     * It is in the query rather than behind an argument, and the query is in the
+     * answer, so nothing is narrowed that the caller cannot read — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function theChangesTheirAuthorsMarkedUnfinishedAreOutOfEveryEnumeration(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::OPEN);
+
+        self::assertStringContainsString('-is:wip', $gerrit->backlog()['query']);
+        self::assertStringContainsString('-is:wip', $gerrit->backlog(order: 'stale', owner: 'nobody')['query']);
+    }
+
+    /**
+     * A person is one query rather than two reads, which is where this differs
+     * from the tracker: Gerrit's parser takes the alternation and Redmine ANDs
+     * its filters, so `D-ANS-089` had to union two answers by hand.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function aPersonOnEitherSideIsOneQuery(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::OPEN;
+        });
+
+        $answer = $gerrit->backlog(involving: 'Benjamin Kott');
+
+        self::assertCount(1, $asked);
+        self::assertStringContainsString(
+            '(owner:"Benjamin Kott" OR reviewedby:"Benjamin Kott")',
+            $answer['query'],
+        );
+    }
+
+    /**
+     * The ordering is this server's, over the set the filters matched.
+     *
+     * The review server sorts by last activity, indexes no created date and
+     * states no total for a query, so oldest-first cannot be asked of it at all
+     * — measured on 2026-08-25, where the whole open backlog was 855 changes,
+     * two calls and 1.1 MB. `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function theOldestFirstOrderIsTheMatchedSetSortedHere(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::OPEN);
+
+        $oldest = $gerrit->backlog(order: 'oldest');
+        $stale = $gerrit->backlog(order: 'stale');
+
+        // Pushed first, which is the reverse of what came back.
+        self::assertSame([90384, 95413], array_column($oldest['changes'], 'number'));
+        // Untouched longest, which on these two is the same order and is not on
+        // every set: the second was pushed a year later and moved a month ago.
+        self::assertSame([90384, 95413], array_column($stale['changes'], 'number'));
+        self::assertSame(2, $oldest['read']);
+        self::assertTrue($oldest['complete']);
+    }
+
+    /**
+     * The whole matched set is read before it is ordered, and the answer says
+     * how many rows that was and whether it is all of them.
+     *
+     * A page is 500 rows and the review server sets `_more_changes` on the last
+     * of one it cut, which is the only thing that says there is more: it states
+     * no total. A caller shown 25 of 855 that reads them as the backlog has
+     * measured the limit — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function theReadSaysHowManyItCoveredAndWhetherThatIsAllOfThem(): void
+    {
+        $pages = 0;
+        $gerrit = new Gerrit(function (string $url) use (&$pages): string {
+            ++$pages;
+            self::assertStringContainsString('n=500', $url);
+            if ($pages > 1) {
+                self::assertStringContainsString('&S=' . ($pages - 1) * 500, $url);
+            }
+
+            // Every page says there is another, on its last row, which is
+            // where the review server puts the flag and the only thing that
+            // says the set goes on: it states no total.
+            return str_replace('"_number":90384', '"_number":9038' . $pages . ',"_more_changes":true', self::OPEN);
+        });
+
+        $answer = $gerrit->backlog(limit: 1);
+
+        self::assertSame(4, $pages);
+        self::assertSame(8, $answer['read']);
+        self::assertFalse($answer['complete']);
+        self::assertCount(1, $answer['changes']);
+    }
+
+    /**
+     * Six fields the review server sends on every row and this server dropped
+     * until `D-ANS-107`: the size, whether it still merges, when it was pushed,
+     * how many threads are unresolved, and what the submit rule makes of each
+     * label.
+     *
+     * The row widens for every direction rather than for the enumeration alone,
+     * because the reading is the same wherever the change came from.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function everyRowCarriesTheSizeTheMergeAndTheAgeOfItsChange(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::OPEN);
+
+        $change = $gerrit->backlog(order: 'stale')['changes'][0];
+
+        self::assertSame(7, $change['insertions']);
+        self::assertSame(1, $change['deletions']);
+        self::assertFalse($change['mergeable']);
+        self::assertSame('2025-08-13 09:12:00.000000000', $change['created']);
+        self::assertSame(5, $change['commentCount']);
+        self::assertSame(2, $change['unresolvedCommentCount']);
+        // The same six on the way in that is not an enumeration.
+        $matching = $gerrit->changesMatching('worktrees', '')['changes'][0];
+        self::assertSame(39, $matching['insertions']);
+        self::assertTrue($matching['mergeable']);
+        self::assertSame('2026-08-25 11:41:26.000000000', $matching['created']);
+    }
+
+    /**
+     * `submit_records` is on every row and the voters are not, so a search
+     * answers what each label stands at with `votes` null — a list of zeros
+     * there would read as nobody having voted, which is a different answer.
+     *
+     * The per-voter tallies stay out of a search: `o=DETAILED_LABELS` is 0.9 KB
+     * a row, and a page of 500 is 666 KB bare against 1.14 MB with it, measured
+     * on 2026-08-25 — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function aSearchAnswersWhatALabelStandsAtWithoutTheVotersBehindIt(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::OPEN;
+        });
+
+        $labels = $gerrit->backlog(order: 'stale')['changes'][0]['labels'];
+
+        self::assertStringNotContainsString('o=DETAILED_LABELS', $asked[0]);
+        self::assertSame(['Verified', 'Code-Review'], array_column($labels, 'label'));
+        self::assertSame(['NEED', 'REJECT'], array_column($labels, 'state'));
+        self::assertSame([false, false], array_column($labels, 'satisfied'));
+        self::assertSame([null, null], array_column($labels, 'votes'));
+    }
+
+    /**
+     * A change nobody may submit and a change nobody has voted on are the pair a
+     * triage acts on, and "not satisfied" was what this said for both.
+     *
+     * `REJECT` is a vote blocking the change and `NEED` is a rule the votes have
+     * not met, so the worse of them is what the label stands at — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function aBlockingVoteIsWhatALabelStandsAtWhereTheRulesDisagree(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => str_replace(
+            '{"label":"Code-Review","status":"REJECT"}',
+            '{"label":"Code-Review","status":"NEED"},{"label":"Code-Review","status":"REJECT"},'
+                . '{"label":"Code-Review","status":"MAY"}',
+            self::OPEN,
+        ));
+
+        $labels = $gerrit->backlog(order: 'stale')['changes'][0]['labels'];
+        $said = array_map(
+            static fn(array $label): string => GerritLookup::vote($label),
+            $labels,
+        );
+
+        self::assertSame(['NEED', 'REJECT'], array_column($labels, 'state'));
+        self::assertSame(['Verified: needs a vote', 'Code-Review: a vote is blocking it'], $said);
+    }
+
+    /**
+     * What a page of the backlog is a page of, said before the rows.
+     *
+     * The size of the set leads, because a page read as the backlog is a triage
+     * that believes it has seen it. And age alone is the wrong shortlist: of the
+     * five oldest open core changes measured on 2026-08-25, three were over 250
+     * lines and three no longer merged — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function aPageOfTheBacklogSaysHowMuchOfItThatIs(): void
+    {
+        $page = implode("\n", GerritLookup::page(['order' => 'oldest', 'read' => 855, 'complete' => true], 25));
+        $whole = implode("\n", GerritLookup::page(['order' => 'stale', 'read' => 12, 'complete' => true], 12));
+        $cut = implode("\n", GerritLookup::page(['order' => 'oldest', 'read' => 2000, 'complete' => false], 25));
+
+        self::assertStringContainsString('25 of 855 open core changes, oldest pushed first.', $page);
+        self::assertStringContainsString('a page and not the set', $page);
+        self::assertStringContainsString('never a finding', $page);
+        self::assertStringContainsString('typo3-core-patch-review', $page);
+
+        self::assertStringContainsString('12 of 12 open core changes, longest untouched first.', $whole);
+        self::assertStringContainsString('the whole set on these filters', $whole);
+
+        self::assertStringContainsString('The read stopped at 2000 matches', $cut);
+        self::assertStringContainsString('one end of the set', $cut);
+    }
+
+    /**
+     * The three readings a review candidate is picked by, on the line a page is
+     * scanned by. Nothing is printed for a field the review server stated
+     * nothing for, because a size of zero and an unstated size are different
+     * claims — `D-ANS-107`.
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function theLineAPageIsScannedBySaysSizeMergeAndAge(): void
+    {
+        $gerrit = new Gerrit(static fn(): string => self::OPEN);
+        $changes = $gerrit->backlog(order: 'oldest')['changes'];
+
+        self::assertSame(
+            '+7 -1 · no longer merges · 2 unresolved of 5 comments · pushed 2025-08-13',
+            GerritLookup::standing($changes[0]),
+        );
+        self::assertSame('+39 -6 · merges · pushed 2026-08-25', GerritLookup::standing($changes[1]));
+
+        // A merged change carries no mergeability and an unstated size is not a
+        // zero, so neither is claimed.
+        self::assertSame('', GerritLookup::standing([
+            'insertions' => null,
+            'deletions' => null,
+            'mergeable' => null,
+            'commentCount' => 0,
+            'unresolvedCommentCount' => 0,
+            'created' => '',
+        ]));
+    }
+
+    /**
+     * The enumeration's own trap is the person filter. The review server answers
+     * a name it cannot place with an empty list and no error — measured on
+     * 2026-08-25, where `owner:zzzznotauser` came back HTTP 200 with `[]` — so
+     * "nobody by that name" arrives as "this person has nothing open".
+     */
+    #[Requirement('R-ANS-027')]
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function anEmptyBacklogSaysWhatItCannotSeparate(): void
+    {
+        $said = GerritLookup::indistinguishable('empty', 'backlog');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('without credentials', $said);
+        self::assertStringContainsString('cannot place', $said);
+        self::assertStringContainsString('owner, reviewedBy or involving', $said);
+
+        self::assertNull(GerritLookup::indistinguishable('answered', 'backlog'));
+    }
+
+    /**
+     * The enumeration is its own argument and the filters narrow it.
+     *
+     * `open` is a boolean narrowing `query` and `path`, and a boolean that grew
+     * the sibling tool's `"oldest" | "stale"` spelling would break every caller
+     * passing `true` — so the ways in are six and `backlog` is the sixth
+     * (`D-ANS-107`).
+     */
+    #[Decision('D-ANS-107')]
+    #[Test]
+    public function theEnumerationIsAWayInOfItsOwnAndTheFiltersNarrowIt(): void
+    {
+        $schema = GerritLookup::inputSchema();
+
+        self::assertSame(
+            [['issue'], ['change'], ['commit'], ['query'], ['path'], ['backlog']],
+            array_column($schema['oneOf'], 'required'),
+        );
+        self::assertSame('boolean', $schema['properties']['open']['type']);
+        foreach (['maxSize', 'minCodeReview', 'negativeVotes', 'mergeable', 'branch', 'updatedBefore', 'owner', 'reviewedBy', 'involving'] as $filter) {
+            self::assertArrayHasKey($filter, $schema['properties']);
+        }
     }
 }

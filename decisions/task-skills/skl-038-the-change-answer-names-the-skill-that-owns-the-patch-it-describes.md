@@ -4,6 +4,8 @@ title: The change answer names the skill that owns the patch it describes
 date: 2026-08-14
 status: open
 coveredBy:
+  - ForgeTest::aPageOfTheBacklogIsHandedTheWorkflowThatOwnsIt
+  - ForgeTest::theWorkflowStandsUnderThePageOfCandidates
   - GerritTest::aNamedChangeIsHandedTheWorkflowsThatOwnIt
 ---
 
@@ -241,3 +243,33 @@ reproduction belongs to the checkout, is declined for the reason **Decided**
 already gives: the enumeration answer has said so since 2026-08-05, that
 sentence stood in the answer this session worked from, and naming a tool nobody
 invokes is what `D-ANS-061` ruled out.
+
+Built on 2026-08-25. `ForgeLookup::workflow()` is the tail and stands under the
+rows of an enumeration: it names `typo3-core-issue-triage`, that handing the
+page over comes before choosing from it, and `D-SKL-031`'s five readings
+cheapest first. The two calls the reporting session says it never made are named
+with the readings they make cheap — `typo3_gerrit_lookup` with the first, and
+`typo3_changelog_lookup` after the five, since a rework is what turns a valid
+report into one about code that is gone. A breakdown gets none of it: it answers
+the shape of a set rather than the candidates in it, and the early return that
+prints it is above this.
+`ForgeTest::aPageOfTheBacklogIsHandedTheWorkflowThatOwnsIt` holds what it names
+and what it leaves out, and `theWorkflowStandsUnderThePageOfCandidates` holds
+the placement.
+
+What it costs is measured rather than estimated. The tail is 1,371 bytes, and
+`bin/cli tools:measure` in this checkout on 2026-08-25 reads
+`typo3_forge_lookup` at 33,879 bytes of text over 14 calls. Four of those
+recorded calls are enumerations that answered with rows — 3,342, 3,131, 2,750
+and 1,923 bytes — so the tail is 5,484 bytes on the tool, 16.2% of its text,
+against the 6.1% the Gerrit tail put on its own. The recorded pages are not
+re-recorded here, which is why the arithmetic is stated rather than a second
+`tools:measure` reading. Each of those four asked for three rows: the reporting
+session asked for 25, so what a triage actually holds carries the tail against a
+page several times that.
+
+The second **Wrong if** is what that spends, and this tail is twice the size of
+the one it was last read against. A session that already holds the triage skill
+open and asks a narrow question of the backlog is the case to watch, and the
+answer to it is the same one named there: a condition, the way the fetch
+sentence on the Gerrit answer is.

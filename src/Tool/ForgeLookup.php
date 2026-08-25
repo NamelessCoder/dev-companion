@@ -588,6 +588,43 @@ final class ForgeLookup extends ReadOnlyTool
     }
 
     /**
+     * The workflow a caller holding a page of the backlog is in, and the
+     * readings that decide a row.
+     *
+     * `D-SKL-038` is the placement, in the shape `GerritLookup::workflow()`
+     * took, and `D-SKL-031` the five readings. The two calls named with them are
+     * the ones `feedback/2026-08-24-173116` says it never made, having chosen
+     * ten candidates itself and found four of them already fixed. The `issue`
+     * form takes none of this, and a breakdown returns above it holding no
+     * candidates. Separated from `answer()` so it can be held without a tracker.
+     */
+    public static function workflow(string $status, string $order): ?string
+    {
+        if ($status !== 'answered' || trim($order) === '') {
+            return null;
+        }
+
+        return "## What a page of the backlog opens\n"
+            . '`typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes '
+            . 'before deciding anything about a row. Hand the page over rather than choosing from it: triaging a '
+            . 'backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is '
+            . "yours, read these in order and stop at the first that decides:\n"
+            . '- What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the '
+            . "checkout is opened. An abandoned change is a verdict somebody wrote down.\n"
+            . '- The category, against the branch you are standing on. One naming a subsystem the branch no longer '
+            . "ships settles the issue unread.\n"
+            . '- Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no '
+            . "installation; one that shows only after a backend interaction needs one standing up.\n"
+            . '- How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and '
+            . "several with the order between them is an interaction.\n"
+            . '- What the suite already models. A case added to a test file that exists is a reproduction with no '
+            . "fixture to build.\n"
+            . '`typo3_changelog_lookup` is what says whether the area was reworked since, which is what turns a valid '
+            . 'report into one about code that is gone. Say which reading decided, and say of the rows you passed '
+            . 'over that you passed over them.';
+    }
+
+    /**
      * The shape of a set rather than a page of it, which for a person is the
      * answer and not a summary of one.
      *
@@ -859,6 +896,13 @@ final class ForgeLookup extends ReadOnlyTool
                     $review['url'],
                 ]));
             }
+        }
+        // Under the rows and nowhere else. A breakdown returned above holds no
+        // candidates, and the paths that answered nothing have no row to decide.
+        $workflow = self::workflow($answer['status'], $order);
+        if ($workflow !== null) {
+            $lines[] = '';
+            $lines[] = $workflow;
         }
 
         return ToolResult::create(implode("\n", $lines), $data);

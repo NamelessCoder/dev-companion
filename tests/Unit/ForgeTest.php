@@ -1016,6 +1016,70 @@ final class ForgeTest extends TestCase
     }
 
     /**
+     * `D-SKL-038`. A caller holding a page of the backlog is in one workflow,
+     * and the readings that decide a row are `D-SKL-031`'s five.
+     *
+     * `feedback/2026-08-24-173116` is the session that shows what the answer was
+     * short of: it enumerated the backlog here, chose ten candidates itself and
+     * found four of them already fixed, by reading code and by writing throwaway
+     * tests. `typo3-core-issue-triage` was published in its checkout and stayed
+     * shut, and the two calls the tail names are the two it says it never made.
+     */
+    #[Decision('D-SKL-038')]
+    #[Test]
+    public function aPageOfTheBacklogIsHandedTheWorkflowThatOwnsIt(): void
+    {
+        $said = ForgeLookup::workflow('answered', 'oldest');
+
+        self::assertNotNull($said);
+        self::assertStringContainsString('typo3-core-issue-triage', $said);
+        // The five readings, cheapest first, which is what a row is decided on
+        // and what age is not.
+        self::assertStringContainsString('already happened to it', $said);
+        self::assertStringContainsString('The category, against the branch', $said);
+        self::assertStringContainsString('Where the symptom appears', $said);
+        self::assertStringContainsString('How far the mechanism reaches', $said);
+        self::assertStringContainsString('What the suite already models', $said);
+        // The two calls that make the first and the last of them cheap, which
+        // the reporting session made neither of.
+        self::assertStringContainsString('typo3_gerrit_lookup', $said);
+        self::assertStringContainsString('typo3_changelog_lookup', $said);
+        // And not the tool that session proposed a statement be put in: naming
+        // one nobody invokes is what `D-ANS-061` ruled out.
+        self::assertStringNotContainsString('typo3_server_scope', $said);
+
+        // The issue and the query forms enumerate nothing and take none of it.
+        // "Has somebody already fixed this" precedes triage, patch development
+        // and review alike, so there is no one workflow to name.
+        self::assertNull(ForgeLookup::workflow('answered', ''));
+        // Nothing to hand over where no row came back.
+        self::assertNull(ForgeLookup::workflow('empty', 'oldest'));
+        self::assertNull(ForgeLookup::workflow('unavailable', 'oldest'));
+    }
+
+    /**
+     * The tail stands under the rows and nowhere else.
+     *
+     * A breakdown is the shape of a set rather than the candidates in it, and
+     * an issue read by number is the other question — `D-SKL-038`.
+     */
+    #[Decision('D-SKL-038')]
+    #[Test]
+    public function theWorkflowStandsUnderThePageOfCandidates(): void
+    {
+        $asked = [];
+        Forge::useReader(self::tracker($asked));
+
+        $page = Registry::call('typo3_forge_lookup', ['open' => 'oldest', 'limit' => 2]);
+        $shape = Registry::call('typo3_forge_lookup', ['open' => 'oldest', 'limit' => 2, 'breakdown' => true]);
+        $issue = Registry::call('typo3_forge_lookup', ['issue' => '14858']);
+
+        self::assertStringContainsString('typo3-core-issue-triage', $page->text);
+        self::assertStringNotContainsString('typo3-core-issue-triage', $shape->text);
+        self::assertStringNotContainsString('typo3-core-issue-triage', $issue->text);
+    }
+
+    /**
      * A date the tracker cannot read is dropped rather than sent. Redmine
      * answers an unparseable filter with the unfiltered set, which is a set
      * about everything wearing the shape of a set about one thing.

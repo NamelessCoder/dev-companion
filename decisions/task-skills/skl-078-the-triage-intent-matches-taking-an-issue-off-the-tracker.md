@@ -1,5 +1,5 @@
 ---
-id: D-SKL-077
+id: D-SKL-078
 title: The triage intent matches taking an issue off the tracker
 date: 2026-08-25
 status: open
@@ -7,7 +7,7 @@ coveredBy:
   - SkillTest::takingAnIssueOffTheTrackerReachesTheTriageSkill
 ---
 
-# D-SKL-077 — The triage intent matches taking an issue off the tracker
+# D-SKL-078 — The triage intent matches taking an issue off the tracker
 
 **`triage` takes "from forge" and "off forge" as strong needles rather than the
 bare name, because a brief naming one issue somebody already chose is patch

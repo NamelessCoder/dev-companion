@@ -438,7 +438,7 @@ enum Scope: string
      * Each marker is read as the word it is, which is what the intent matcher
      * beside this gate already does. Substring matching asked a marker to carry
      * its own boundary — `forge ` with the space that keeps "forget" out — and
-     * a brief writing "from Forge," cleared neither gate (`D-SKL-077`).
+     * a brief writing "from Forge," cleared neither gate (`D-SKL-078`).
      *
      * @param array<int, string> $paths
      */

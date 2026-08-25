@@ -2543,9 +2543,9 @@ final class SkillTest extends TestCase
      * tracker rather than naming it: bare `forge` in `match` reads an issue
      * somebody already chose as a triage too, and the second call is what that
      * would have cost — a brief for work that changes nothing, over work that
-     * ends in a patch (`D-SKL-077`).
+     * ends in a patch (`D-SKL-078`).
      */
-    #[Decision('D-SKL-077')]
+    #[Decision('D-SKL-078')]
     #[Test]
     public function takingAnIssueOffTheTrackerReachesTheTriageSkill(): void
     {

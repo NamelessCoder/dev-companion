@@ -133,7 +133,7 @@ choice is about what else starts matching. It is queued because half of it is
 `normal`.
 
 Both halves landed the same day.
-[`D-SKL-077`](skl-077-the-triage-intent-matches-taking-an-issue-off-the-tracker.md)
+[`D-SKL-078`](skl-078-the-triage-intent-matches-taking-an-issue-off-the-tracker.md)
 is the reading that was left here: `isCoreWork()` matches each marker as a word,
 and the triage intent takes "from forge" and "off forge" rather than the bare
 name, which was measured to read a patch on one chosen issue as a triage as

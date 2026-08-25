@@ -758,15 +758,18 @@ final class ForgeTest extends TestCase
     ];
 
     /**
-     * What one batched query answers, in the shape review.typo3.org sends: the
-     * change that names the first row, and the change whose own number is the
-     * second row's — which is the false positive the `message:` index answers
-     * with whatever it was asked.
+     * What one batched query answers, in the shape review.typo3.org sends: two
+     * changes that name the first row, one of them given up, and the change
+     * whose own number is the second row's — which is the false positive the
+     * `message:` index answers with whatever it was asked.
      */
     private const CHANGES = ")]}'\n"
         . '[{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[FEATURE] Make the copy mode configurable",'
         . '"status":"NEW","_number":38419,"current_revision_number":3,"current_revision":"a1","revisions":{'
         . '"a1":{"commit":{"message":"[FEATURE] Make the copy mode configurable\n\nResolves: #14858\nChange-Id: I1\n"}}}},'
+        . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] An earlier attempt at the same thing",'
+        . '"status":"ABANDONED","_number":76606,"current_revision_number":1,"current_revision":"c3","revisions":{'
+        . '"c3":{"commit":{"message":"[BUGFIX] An earlier attempt at the same thing\n\nResolves: #14858\nChange-Id: I2\n"}}}},'
         . '{"project":"Packages/TYPO3.CMS","branch":"main","subject":"[BUGFIX] Something else entirely",'
         . '"status":"MERGED","_number":23633,"current_revision_number":9,"current_revision":"b2","revisions":{'
         . '"b2":{"commit":{"message":"[BUGFIX] Something else entirely\n\nResolves: #106318\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/23633\n"}}}}]';
@@ -943,11 +946,35 @@ final class ForgeTest extends TestCase
         // for here as it is for a single issue.
         self::assertStringContainsString('o=CURRENT_COMMIT', $review[0]);
 
-        self::assertSame([38419], array_column($results[0]['reviews'], 'change'));
+        self::assertSame([38419, 76606], array_column($results[0]['reviews'], 'change'));
         self::assertSame('https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419', $results[0]['reviews'][0]['url']);
         // Change 23633 is the second row's own number wearing a change's shape,
         // and its message names another issue entirely.
         self::assertSame([], $results[1]['reviews']);
+    }
+
+    /**
+     * The state of a change is in the payload the batched query already
+     * answered, and a row that drops it costs the caller a call to learn that
+     * the one attempt on the issue was given up (`D-ANS-069`).
+     *
+     * What it does not say is whether the issue is worth taking. The session
+     * that raised this read the review under an `ABANDONED` and fixed the issue
+     * anyway, because what was rejected was the approach.
+     */
+    #[Decision('D-ANS-069')]
+    #[Test]
+    public function aRowSaysWhichStateEachOfItsChangesIsIn(): void
+    {
+        $asked = [];
+        $forge = new Forge(self::tracker($asked));
+
+        $reviews = $forge->open('stale', '', '', '', '', 2)['results'][0]['reviews'];
+
+        self::assertSame(['NEW', 'ABANDONED'], array_column($reviews, 'status'));
+        // One query for the page, and the state came out of it rather than out
+        // of a second one.
+        self::assertCount(1, array_filter($asked, static fn(string $url): bool => str_contains($url, 'review.typo3.org')));
     }
 
     /**

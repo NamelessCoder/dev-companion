@@ -6,6 +6,7 @@ status: open
 coveredBy:
   - ForgeTest::aRowCarriesWhatTheOneCallAlreadyAnsweredAboutIt
   - ForgeTest::aRowSaysWhetherTheReviewServerHoldsAChangeThatNamesIt
+  - ForgeTest::aRowSaysWhichStateEachOfItsChangesIsIn
   - GerritTest::aPageOfIssuesIsOneQueryAndEachHitLandsOnTheIssueItNames
 ---
 
@@ -141,3 +142,20 @@ the argument rather than to skip the issue — this feedback's own session fixed
 #35069 after reading one.
 
 Queued rather than made here: it is `src/` and `ForgeLookup::outputSchema()`.
+
+**Built on 2026-08-25**, on the enumeration path alone. `Forge::reviewed()`
+keeps the `status` the batched query answers, the schema carries it per entry,
+and the row prints it beside the change number — no further call, and the issue
+path stands as the decided line above leaves it.
+
+What the wording had to answer is the first **Wrong if**, so the schema says *a
+state and not a verdict* and what an `ABANDONED` is grounds for: reading the
+argument on the change, where the objection was written down and is regularly to
+the approach rather than to the defect. The rendered paragraph above the rows
+says the same thing, because a caller reads the text half and not the schema.
+
+Recorded live the same day, in
+`documentation/server/tools/typo3_forge_lookup.rst`: the three oldest open
+issues carry six changes between them, four of them `ABANDONED` and two
+`MERGED`, and none still open. That is six calls a triage no longer makes to
+learn that every attempt on those rows has stopped.

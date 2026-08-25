@@ -31,11 +31,12 @@ a set of hundreds is answered by: limit stops at 50 and nothing pages past it.
 Each entry carries its number, subject, tracker, status and URL, and an
 enumerated one also carries the issues it is filed against with their subjects,
 the files hanging off it, and the changes on review.typo3.org whose commit
-message names it — the three that say a row was answered elsewhere or already
-attempted, without reading it whole. A call carries issue, query or open, never
-two of them. An issue that does not exist is answered as such, and so is a
-tracker that could not be reached. Reading only, and no credential: commenting,
-assigning and closing stay yours. Answers from: network.
+message names it, each with the state it is in — the three that say a row was
+answered elsewhere or already attempted, without reading it whole. A call
+carries issue, query or open, never two of them. An issue that does not exist is
+answered as such, and so is a tracker that could not be reached. Reading only,
+and no credential: commenting, assigning and closing stay yours. Answers from:
+network.
 
 ``readOnlyHint: true`` · ``destructiveHint: false`` · ``idempotentHint: true`` · ``openWorldHint: true``
 
@@ -444,16 +445,22 @@ Answers with
             # it is the caller's: nothing here fetches or transcribes one.
             url: string
         # The changes whose commit message names this issue, asked of the review
-        # server in one query for the whole page. A handle and not a verdict:
-        # whether a change is merged, open or abandoned is a typo3_gerrit_lookup
-        # call, and a change named here is what makes that call worth one. Empty
-        # where nothing on the review server names the issue and where the review
-        # server did not answer, which this does not separate — and empty on a
-        # search hit, where it is not asked.
+        # server in one query for the whole page, each with the state it is in. A
+        # state and not a verdict: what a reviewer objected to is the argument on
+        # the change, which is a typo3_gerrit_lookup call, and an ABANDONED is
+        # grounds to read that argument rather than to pass the issue over — the
+        # approach can be the rejected part while the defect is real. Empty where
+        # nothing on the review server names the issue and where the review server
+        # did not answer, which this does not separate — and empty on a search
+        # hit, where it is not asked.
         reviews:
           - # The change number on review.typo3.org, which is what
             # typo3_gerrit_lookup takes as change.
             change: integer
+            # NEW while the change is open, MERGED once it landed, ABANDONED when it
+            # was given up — where it stood when the page was read. Empty where
+            # the review server named no state.
+            status: string
             # Where a person reads the change.
             url: string
     # Why nothing was answered, where status says unavailable. Null otherwise.
@@ -1544,23 +1551,23 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2497 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2492 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
-    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
     ## #14277 Start/Stop time for pages is ignored in standard menu objects
     Feature · Accepted · Frontend · filed by Michael Stucki · unassigned · filed 2004-08-20 · last touched 2025-04-04 · https://forge.typo3.org/issues/14277
     Relation: relates #16815 — Bug · Closed · Sitemap ignoring "Start" and "End" flags · https://forge.typo3.org/issues/16815
     Relation: relates #98964 — Bug · Closed · Menu object caching creates too many records resulting in huge cache_hash table · https://forge.typo3.org/issues/98964
-    Review: change 61395 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395
+    Review: change 61395 · ABANDONED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395
 
     ## #14858 extended clipboard: setCopyMode can`t be set to copy by default
     Bug · New · Backend User Interface · filed by Sacha Vorbeck · unassigned · filed 2005-07-11 · last touched 2026-01-23 · https://forge.typo3.org/issues/14858
     Relation: relates #90676 — Epic · Accepted · Clipboard related bugs and features · https://forge.typo3.org/issues/90676
     Relation: duplicates #70759 — Feature · Closed · Changing the default clipboard option from  "move elements"  to "copy elements" · https://forge.typo3.org/issues/70759
-    Review: change 70962 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962
-    Review: change 38419 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419
+    Review: change 70962 · ABANDONED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962
+    Review: change 38419 · ABANDONED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419
 
     ## #15984 menu.showAccessRestrictedPages doesn't replace link for  "include subpages"
     Bug · Accepted · Frontend · filed by Wolfgang Sassik · unassigned · filed 2006-04-05 · last touched 2026-04-15 · https://forge.typo3.org/issues/15984
@@ -1569,9 +1576,9 @@ Text:
     Relation: relates #78825 — Bug · Closed · Wrong pid determination when opening a nested access restriced page · https://forge.typo3.org/issues/78825
     Relation: precedes #32756 — Bug · Closed · Massive Memory Leak in 4.5.8+ / 4.6 · https://forge.typo3.org/issues/32756
     Files (1): 3129.diff
-    Review: change 2545 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545
-    Review: change 2544 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
-    Review: change 1186 · https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186
+    Review: change 2545 · MERGED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545
+    Review: change 2544 · ABANDONED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
+    Review: change 1186 · MERGED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186
 
 Data:
 
@@ -1582,7 +1589,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2497,
+        "total": 2492,
         "terms": [],
         "categories": [],
         "categoriesUsed": [],
@@ -1623,6 +1630,7 @@ Data:
                 "reviews": [
                     {
                         "change": 61395,
+                        "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/61395"
                     }
                 ]
@@ -1660,10 +1668,12 @@ Data:
                 "reviews": [
                     {
                         "change": 70962,
+                        "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/70962"
                     },
                     {
                         "change": 38419,
+                        "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/38419"
                     }
                 ]
@@ -1725,14 +1735,17 @@ Data:
                 "reviews": [
                     {
                         "change": 2545,
+                        "status": "MERGED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/2545"
                     },
                     {
                         "change": 2544,
+                        "status": "ABANDONED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544"
                     },
                     {
                         "change": 1186,
+                        "status": "MERGED",
                         "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186"
                     }
                 ]
@@ -1762,7 +1775,7 @@ Text:
     TYPO3 issue tracker: 3 of 22 open issues of the TYPO3 Core project, tracker Bug, in RTE (rtehtmlarea + ckeditor), longest untouched first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
-    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
     An area is where an issue was filed and not everything it is about. A report about this one regularly sits under another area, so what came back is a floor rather than the set — query the words as well where the question is about a subject.
 
     ## #87400 CKEditor: assign correct CSS class to tags with entryHTMLparser_db
@@ -2032,7 +2045,7 @@ Text:
     TYPO3 issue tracker: 3 of 621 issues of the TYPO3 Core project whatever their status, filed by Frank Nägler, oldest filed first
     This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which answers how the whole set is distributed — there are no other words to narrow a person by, and a tracker or a date answers a smaller question than the one asked.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
-    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
     ## #15488 miscellaneous extensions dont work
     Bug · Closed · filed by Frank Nägler · unassigned · filed 2006-01-23 · last touched 2006-01-24 · https://forge.typo3.org/issues/15488
@@ -2227,7 +2240,7 @@ Text:
     TYPO3 issue tracker: 3 of 5 open issues of the TYPO3 Core project, filed by or assigned to Frank Nägler, longest untouched first
     This is a page and not the set, and limit stops at 50. What reaches the rest is breakdown, which answers how the whole set is distributed — there are no other words to narrow a person by, and a tracker or a date answers a smaller question than the one asked.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
-    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it. A change named here is a handle for typo3_gerrit_lookup and not a statement about its state, and a row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
+    A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
 
     ## #89259 Create new icons and replace icons for "Page enabled in menus" context menu
     Task · Accepted · Backend User Interface · filed by Frank Nägler · assigned to Benjamin Kott · filed 2019-09-25 · last touched 2019-09-25 · https://forge.typo3.org/issues/89259

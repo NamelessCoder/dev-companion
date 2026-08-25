@@ -259,8 +259,9 @@ final class Forge
     /**
      * The changes the review server holds for these rows, one query per twelve.
      *
-     * The handle is carried and not the state, because this list is read to
-     * choose what to read (`D-ANS-069`); where the review server cannot be
+     * The state comes with the handle, because the batched query already
+     * answers it per change and dropping it made a caller pay a call for what
+     * was in the payload (`D-ANS-069`); where the review server cannot be
      * reached the rows stand as they came back.
      *
      * @param list<array<string, mixed>> $results
@@ -273,6 +274,7 @@ final class Forge
             foreach ($changes[$entry['issue']] ?? [] as $change) {
                 $results[$at]['reviews'][] = [
                     'change' => $change['number'],
+                    'status' => is_string($change['status'] ?? null) ? $change['status'] : '',
                     'url' => $change['url'],
                 ];
             }

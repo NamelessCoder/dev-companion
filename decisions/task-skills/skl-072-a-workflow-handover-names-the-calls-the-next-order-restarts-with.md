@@ -120,3 +120,21 @@ session arrives at it holding a base it walked once and discharged.
   that changes documented behaviour. That report is inside the review's own body
   at its point of use, which a crossing clause does not reach, and it would say
   the pattern is wider than the handover.
+
+## Since then
+
+**2026-08-25.** What this clause reaches is bounded by the crossing it hangs
+off, and this is the first sighting of that bound.
+[`feedback/2026-08-24-183420`](../../feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
+is a core patch review that was asked to change the patch and never invoked
+`typo3-core-patch-development`, so the paragraph carrying the three calls was
+read as review prose rather than at a crossing. The session names the
+deprecation sweep as its concrete cost, in this clause's own terms — a review is
+exempt and a change is not — and did not run it. Whether the copy published into
+that project carried `db92a9ea` cannot be read from here, and it does not change
+the reading: an unfired crossing carries nothing either way.
+
+That is not the first **Wrong if**, which asks for a session that crosses. What
+it says is that the **Wrong if** cannot be reached until the trigger holds, and
+the trigger is judged in
+[`D-SKL-077`](skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md).

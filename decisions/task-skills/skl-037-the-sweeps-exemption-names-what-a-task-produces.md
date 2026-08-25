@@ -118,3 +118,18 @@ is
 [`D-SKL-074`](skl-074-a-skipped-step-is-named-where-the-report-is-written.md),
 queued. What is untested is the third **Wrong if**: no report has named a
 skipped step yet, so nothing has said whether naming it is legible to a reader.
+
+## Since then
+
+**2026-08-25.** The second **Wrong if** is half met.
+[`feedback/2026-08-24-183420`](../../feedback/2026-08-24-183420-the-review-skill-predicts-the-crossing-into.md)
+is a core patch review asked to take three skipped tests back in: the session
+carried on under `typo3-core-patch-review`, wrote what it measured as 154 lines
+of test code and a fixture page, and never ran the sweep. What the **Wrong if**
+also asks for is a deprecation landing in the amend, and none did — the session
+says so itself, and names its own "probably nothing for a test file" as the
+reasoning the exemption is written against. So the property this entry rests on
+is untouched, and the handover it rests on has now failed twice, seventeen days
+apart. Where the trigger is judged is
+[`D-SKL-077`](skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md),
+which carries the card.

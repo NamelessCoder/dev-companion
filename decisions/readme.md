@@ -648,7 +648,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-SKL-075`][D-SKL-075] — A patch narrows the work, not the list of points it closes on · 2026-08-25
 - [`D-SKL-076`][D-SKL-076] — A description names both jobs a skill's body owns · 2026-08-25
-- [`D-SKL-077`][D-SKL-077] — The crossing out of a review is recognised on the first edit meant to survive · 2026-08-25
+- [`D-SKL-077`][D-SKL-077] — The triage intent matches taking an issue off the tracker · 2026-08-25
 - [`D-SKL-070`][D-SKL-070] — A description is held to a length of its own · 2026-08-24
 - [`D-SKL-071`][D-SKL-071] — A probe is put back to the state it found · 2026-08-24
 - [`D-SKL-072`][D-SKL-072] — A workflow handover names the calls the next order restarts with · 2026-08-24
@@ -722,7 +722,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-SKL-075]: task-skills/skl-075-a-patch-narrows-the-work-not-the-list-of-points-it-closes-on.md
 [D-SKL-076]: task-skills/skl-076-a-description-names-both-jobs-a-skills-body-owns.md
-[D-SKL-077]: task-skills/skl-077-the-crossing-out-of-a-review-is-recognised-on-the-first-edit-meant-to-survive.md
+[D-SKL-077]: task-skills/skl-077-the-triage-intent-matches-taking-an-issue-off-the-tracker.md
 [D-SKL-070]: task-skills/skl-070-a-description-is-held-to-a-length-of-its-own.md
 [D-SKL-071]: task-skills/skl-071-a-probe-is-put-back-to-the-state-it-found.md
 [D-SKL-072]: task-skills/skl-072-a-workflow-handover-names-the-calls-the-next-order-restarts-with.md

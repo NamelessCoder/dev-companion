@@ -290,7 +290,7 @@ suspect there rather than what has been ruled out —
 
 Every row above reads a skill's silence off an absence. This one is read off the
 session's own account.
-[`feedback/2026-08-24-173236`](../../feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
+[`feedback/2026-08-24-173236`](../../feedback/archive/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
 is `/home/benji/projects/typo3-cms` on `claude-opus-5[1m]`, sent to work off
 another old Forge issue. `typo3-core-issue-triage` and
 `typo3-core-patch-development` were both in its listing, it names the first as

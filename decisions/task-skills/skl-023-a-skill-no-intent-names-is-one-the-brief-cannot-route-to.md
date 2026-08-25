@@ -95,7 +95,7 @@ intent for triage pulled patch work into it.
 
 ### 2026-08-25 — the intent names the skill, and the word people call the tracker by reaches it weakly
 
-[`feedback/2026-08-24-173236`](../../feedback/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
+[`feedback/2026-08-24-173236`](../../feedback/archive/2026-08-24-173236-task-guide-schema-was-fetched-and-never-called.md)
 asks for one thing to be re-run: the bare task text "fetch another old issue
 from Forge, create a branch, work it off". Its session loaded
 `typo3_task_guide`'s schema, never called the tool, and reports that a call
@@ -131,6 +131,13 @@ issue" — are another, and the second is what `reporting` already carries, so t
 choice is about what else starts matching. It is queued because half of it is
 `src/Knowledge/Scope.php`, and the card serving that feedback carries it at
 `normal`.
+
+Both halves landed the same day.
+[`D-SKL-077`](skl-077-the-triage-intent-matches-taking-an-issue-off-the-tracker.md)
+is the reading that was left here: `isCoreWork()` matches each marker as a word,
+and the triage intent takes "from forge" and "off forge" rather than the bare
+name, which was measured to read a patch on one chosen issue as a triage as
+well.
 
 **Against the feedback's own suggestion**, which is to move the triage clause to
 the front of `typo3_task_guide`'s description so that a session scanning it

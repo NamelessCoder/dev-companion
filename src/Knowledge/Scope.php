@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TYPO3\DevCompanion\Knowledge;
 
 use TYPO3\DevCompanion\Installation\Instance;
+use TYPO3\DevCompanion\Search\Text;
 
 /**
  * Which of the three kinds of work a path, or a statement about one, belongs to.
@@ -83,12 +84,8 @@ enum Scope: string
         // `typo3_project_describe` had just called `core-checkout` was answered
         // with the extension side of every intent it matched (`D-SKL-023`).
         'core issue', 'core bug', 'core checkout', 'core backlog', 'core tracker',
-        // The tracker as people name it: "Forge 15984", not the host. The
-        // trailing space is what keeps "forget" and "forgetting" out, which are
-        // the only other forms of the word this repository's own corpus
-        // carries — measured on 2026-08-08 across knowledge/, skills/,
-        // scenarios/ and src/.
-        'forge ',
+        // The tracker as people name it: "Forge 15984", not the host.
+        'forge',
     ];
 
     /**
@@ -438,13 +435,18 @@ enum Scope: string
      * own process as applying, that is not enough, so this asks for the
      * evidence rather than for the absence of the opposite.
      *
+     * Each marker is read as the word it is, which is what the intent matcher
+     * beside this gate already does. Substring matching asked a marker to carry
+     * its own boundary — `forge ` with the space that keeps "forget" out — and
+     * a brief writing "from Forge," cleared neither gate (`D-SKL-077`).
+     *
      * @param array<int, string> $paths
      */
     public static function isCoreWork(array $paths, string $text = ''): bool
     {
         $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::CORE_WORK as $marker) {
-            if (str_contains($haystack, $marker)) {
+            if (Text::containsWord($haystack, $marker)) {
                 return true;
             }
         }

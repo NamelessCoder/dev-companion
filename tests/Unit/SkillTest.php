@@ -2534,6 +2534,36 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * The same request in the words a contributor uses for the tracker, which
+     * has two gates to clear rather than one.
+     *
+     * `Scope::CORE_WORK` carried the word with a trailing space, so "from
+     * Forge," was no core work at all, and the needle was a weak one, which
+     * names no skill (`D-SKL-023`). What routes it is taking work off the
+     * tracker rather than naming it: bare `forge` in `match` reads an issue
+     * somebody already chose as a triage too, and the second call is what that
+     * would have cost — a brief for work that changes nothing, over work that
+     * ends in a patch (`D-SKL-077`).
+     */
+    #[Decision('D-SKL-077')]
+    #[Test]
+    public function takingAnIssueOffTheTrackerReachesTheTriageSkill(): void
+    {
+        $triage = Registry::call('typo3_task_guide', [
+            'task' => 'fetch another old issue from Forge, create a branch, work it off',
+        ])->data;
+
+        self::assertSame('core', $triage['scope']);
+        self::assertContains('typo3-core-issue-triage', $triage['skills']);
+
+        $patch = Registry::call('typo3_task_guide', [
+            'task' => 'fix Forge 15984 in the FormEngine',
+        ])->data;
+
+        self::assertContains('Keep the patch focused on the stated task.', $patch['checklist']);
+    }
+
+    /**
      * A description is held to a length of its own, and the listing is not held
      * to a total.
      *

@@ -1,8 +1,8 @@
 ---
 description: >-
-  How a throwaway functional test puts one snippet through the frontend, and how the HTML it produced is read at all.
+  How a throwaway functional test produces a rendering, how the HTML it produced is read at all, and how it is made to say which part of it changed.
 whenToUse: >-
-  When a change to TypoScript defaults, to ext_localconf TypoScript or to anything below lib.parseFunc has to be judged and the diff does not say what it renders. Asserting a response whose expected value is already known is the frontend request hint instead.
+  When a finding turns on what a rendering contains and nothing in the checkout produces it, so the value is the unknown rather than the expectation. A TypoScript change whose diff does not say what it renders is one case, and a PHP change to the frontend request pipeline, an error handler or a page renderer caller is the same one. Asserting a response whose expected value is already known is the frontend request hint instead.
 hints:
   - core-tests
   - extension-test-frontend-request
@@ -10,9 +10,12 @@ hints:
 
 # Proving What a Rendering Change Renders
 
-A TypoScript diff does not say what it renders, and where no test covers the
-constellation nothing else in the checkout says it either. What settles it is a
-throwaway functional test that renders one snippet and prints what came out.
+What a rendering contains is not in the diff that changed it, and where no test
+covers the constellation nothing else in the checkout says it either. What
+settles it is a throwaway functional test that renders one page and prints what
+came out. A TypoScript change is one subject and a PHP change to the request
+pipeline is the same one, because in both the value is the unknown rather than
+the expectation.
 
 This page is the harness. What `lib.parseFunc_RTE` does to a snippet is what the
 probe is for, and nothing here states it.
@@ -122,6 +125,83 @@ Asserting a sentinel — `self::assertSame('PROBE', $body)` — prints the whole
 body as the failure diff. It is the fallback where something does swallow
 output, and it costs a red run whose failure means nothing.
 
+## Saying Which Part of the Response Changed
+
+A response that came out different says that a rendering changed and not where.
+One marker per region says it, because each region lands in one place in the
+document:
+
+```
+page.10 = TEXT
+page.10.value = PROBE-BODY
+page.headerData.10 = TEXT
+page.headerData.10.value = <!-- PROBE-HEADERDATA -->
+page.footerData.10 = TEXT
+page.footerData.10.value = <!-- PROBE-FOOTERDATA -->
+page.meta.description = PROBE-META
+```
+
+The title, the meta tags and `headerData` render inside `<head>`, the body tag
+and the page content follow it, and `footerData` is the last thing before
+`</body>`. A marker that is missing altogether is a region that was never
+rendered, which is a different finding from one whose content moved.
+
+## Printing What a Service Holds Mid-Request
+
+Where the finding is about what a service held while the page was rendering, a
+`USER` object reads it from inside the request. Its class goes in a `Fixtures/`
+directory beside the probe, where the core's `autoload-dev` already maps the
+test namespace and the runner does not collect it as a test.
+
+```
+page.10 = USER
+page.10.userFunc = TYPO3\CMS\Frontend\Tests\Functional\Rendering\Fixtures\StateProbe->render
+```
+
+```php
+namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering\Fixtures;
+
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+final class StateProbe
+{
+    #[AsAllowedCallable]
+    public function render(): string
+    {
+        $state = GeneralUtility::makeInstance(PageRenderer::class)->getState();
+        fwrite(STDERR, "\n===STATE===\n" . strlen($state['bodyContent']) . "\n");
+
+        return 'PROBE-BODY';
+    }
+}
+```
+
+`getState()` is `@internal`, which a probe deleted at the end of the session may
+read and production code may not.
+
+`fwrite(STDERR, …)` rather than `echo`: the testing framework closes every
+output buffer the sub-request opened before it hands the response back, so what
+a content object echoed into one is gone. STDERR is not buffered and arrives
+whether the probe passes or fails. `echo` from the test body is unaffected,
+because by then the request is over.
+
+What such a probe reads is the state at that moment, which is rarely the state
+the response shows. Every content object runs before the rendered body is handed
+to the page renderer, and the renderer empties it again once the document is
+assembled — so a `bodyContent` of length 0 is the probe standing in the wrong
+moment rather than a body that never came out.
+
+## Why the userFunc Carries an Attribute
+
+**Since:** 14
+
+A `userFunc` is asserted before it is called, and a method without
+`#[AsAllowedCallable]` throws `AllowedCallableException` with code `1758626232`
+instead of rendering. The fixture is a class the core has no other reason to
+trust, so the attribute is what makes the probe run at all.
+
 ## Where lib.parseFunc_RTE Comes From
 
 **Since:** 13
@@ -157,7 +237,7 @@ after `--`, because a probe is run again after every change to it.
 
 ## Removing the Probe
 
-Delete the file when the question is answered, and confirm with `git status`
-that the checkout is clean. What the probe established goes into the review or
-the issue; the probe itself asserts nothing and is evidence of nothing once it
-is committed.
+Delete the test and any fixture it needed when the question is answered, and
+confirm with `git status` that the checkout is clean. What the probe established
+goes into the review or the issue; the probe itself asserts nothing and is
+evidence of nothing once it is committed.

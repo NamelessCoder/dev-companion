@@ -110,8 +110,8 @@
       "scope": "core"
     },
     {
-      "topic": "Proving what a change to TypoScript, ext_localconf TypoScript or lib.parseFunc renders",
-      "depth": "The throwaway functional test that renders one snippet and prints what came out: the cObj that puts a snippet through parseFunc, the operator forms a value has to be written in, how output is got out of a test that would otherwise print nothing, the targeted invocation, and where the RTE setup comes from per version. It says nothing about what parseFunc does to a snippet, which is what the probe is for.",
+      "topic": "Proving what a rendering contains, where a finding turns on it and no test in the checkout produces it",
+      "depth": "The throwaway functional test that renders one page and prints what came out: the cObj that puts a snippet through parseFunc, the operator forms a value has to be written in, how output is got out of a test that would otherwise print nothing, one marker per region so the response says which part of it changed, printing what a service holds from inside the request, the targeted invocation, and where the RTE setup comes from per version. It says nothing about what parseFunc does to a snippet, which is what the probe is for.",
       "tools": [
         "typo3_rule_lookup",
         "typo3_hint_lookup"
@@ -486,8 +486,8 @@
       "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
     },
     {
-      "when": "Judging a diff that changes TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc — the diff says what it sets and nothing about what comes out of it",
-      "call": "typo3_rule_lookup with documentId=\"core/testing/proving-a-rendering\" for the throwaway functional test that renders one snippet and prints it"
+      "when": "Settling a finding on what a rendering contains rather than on what a diff says — TypoScript defaults, TypoScript declared in an ext_localconf.php or anything below lib.parseFunc, and equally a PHP change to the frontend request pipeline, an error handler or a page renderer caller whose effect is only visible in the response",
+      "call": "typo3_rule_lookup with documentId=\"core/testing/proving-a-rendering\" for the throwaway functional test that renders one page, prints what came out, and marks each region so the response says which part changed"
     },
     {
       "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",

@@ -194,6 +194,14 @@ final class TestRunGuide extends ReadOnlyTool
             if ($browser !== []) {
                 $blocks[] = self::BROWSER_CHECK_GUIDE;
             }
+
+            // A functional suite says whether it passed and not what it
+            // rendered, and the page that says how to see the second one is
+            // gated on TypoScript everywhere else (`D-KNW-122`).
+            $functional = array_filter($hints, static fn(array $hint): bool => str_starts_with($hint['suite'], 'functional'));
+            if ($functional !== []) {
+                $blocks[] = self::RENDERING_PROBE_GUIDE;
+            }
         }
 
         $blocks[] = self::invocationBlock();
@@ -282,6 +290,25 @@ final class TestRunGuide extends ReadOnlyTool
         . "`host.docker.internal`.\n"
         . '- Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there '
         . 'lands in the next commit.';
+
+    /**
+     * The page a functional suite hands the caller over to, named where that
+     * suite is.
+     *
+     * A review of a PHP diff read the gate that names this page for TypoScript,
+     * skipped it, and then built the same harness by hand over six container
+     * rounds (`D-KNW-122`). A suite answers whether it passed; a finding about a
+     * rendering turns on what came out, which is the other question and the one
+     * a caller holds at the moment it writes the test.
+     */
+    public const RENDERING_PROBE_GUIDE = "## Seeing what it rendered rather than whether it passed\n"
+        . 'A functional suite answers pass or fail, and a finding that turns on what a rendering contains needs '
+        . 'the output itself. The procedure is one call away — typo3_rule_lookup with documentId '
+        . "\"core/testing/proving-a-rendering\", which needs no resource list.\n"
+        . '- How the output is got out of a run that would otherwise print nothing, and why what a content object '
+        . "echoes may never arrive.\n"
+        . '- One marker per region of the response, so a rendering says which part of it changed rather than that '
+        . 'it changed, and how what a service holds mid-request is printed.';
 
     /**
      * The invocation rules that apply to every suite. Emitted with every answer:

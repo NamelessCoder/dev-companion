@@ -405,6 +405,11 @@ Text:
     - The instance `-s e2e-prepare` installs is a styleguide and carries no content beyond the components it demonstrates. Where the defect needs content, the installation that has it is the one to look at, and a browser in a container reaches a running DDEV site over `ddev_default` rather than over `host.docker.internal`.
     - Where the harness and its screenshots go: `Build/typo3temp/` is not ignored, so one written there lands in the next commit.
 
+    ## Seeing what it rendered rather than whether it passed
+    A functional suite answers pass or fail, and a finding that turns on what a rendering contains needs the output itself. The procedure is one call away — typo3_rule_lookup with documentId "core/testing/proving-a-rendering", which needs no resource list.
+    - How the output is got out of a run that would otherwise print nothing, and why what a content object echoes may never arrive.
+    - One marker per region of the response, so a rendering says which part of it changed rather than that it changed, and how what a service holds mid-request is printed.
+
     ## Invoking runTests.sh
     - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent. What it does not do is stand in for a terminal: a suite that waits for a keypress reads /dev/tty itself, and its entry says what a run without one costs.
     - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.

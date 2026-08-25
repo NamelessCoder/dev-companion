@@ -1194,6 +1194,71 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * A functional suite hands over the page that says what it rendered.
+     *
+     * `feedback/2026-08-24-183345` reviewed a PHP diff — an error handler and a
+     * page renderer — read the review skill's gate, which names the page for
+     * TypoScript, and built the same harness by hand. The path below is that
+     * session's own, and the page is routed by the evidence the review needed
+     * rather than by the diff that made it necessary (`D-KNW-122`).
+     */
+    #[Decision('D-KNW-122')]
+    #[Requirement('R-ANS-028')]
+    #[Test]
+    public function theTestRunGuideNamesTheRenderingProbeWithTheFunctionalSuite(): void
+    {
+        $result = Registry::call('typo3_test_run_guide', [
+            'query' => 'functional',
+            'paths' => ['typo3/sysext/core/Classes/Error/PageErrorHandler/PageContentErrorHandler.php'],
+            'targetVersion' => '15',
+        ]);
+
+        self::assertContains('functional', array_column($result->data['suites'], 'suite'));
+        self::assertStringContainsString('core/testing/proving-a-rendering', $result->text);
+        self::assertStringContainsString('typo3_rule_lookup with documentId', $result->text);
+
+        // What it claims the page carries, held against the page.
+        $guide = Documents::read('core/testing/proving-a-rendering');
+        self::assertStringContainsString('fwrite(STDERR', $guide);
+        self::assertStringContainsString('PROBE-HEADERDATA', $guide);
+        self::assertStringContainsString('getState()', $guide);
+    }
+
+    /**
+     * The gate the page is reached by names the evidence rather than the diff.
+     *
+     * Four places named a TypoScript diff and the session that needed the page
+     * was reviewing PHP (`D-KNW-122`). Both halves are read here, because a page
+     * gated twice routes twice.
+     */
+    #[Decision('D-KNW-122')]
+    #[Test]
+    public function everyGateOnTheRenderingProbeNamesTheEvidence(): void
+    {
+        $gates = [];
+        foreach (Documents::documents() as $document) {
+            if ($document['id'] === 'core/testing/proving-a-rendering') {
+                $gates['whenToUse'] = $document['whenToUse'];
+            }
+        }
+        foreach (Coverage::read()['routing'] as $entry) {
+            if (str_contains($entry['call'], 'core/testing/proving-a-rendering')) {
+                $gates['routing'] = $entry['when'];
+            }
+        }
+        $gates['skill'] = (string) file_get_contents(Paths::root() . '/skills/typo3-core-patch-review/SKILL.md');
+
+        self::assertSame(['whenToUse', 'routing', 'skill'], array_keys($gates));
+        foreach ($gates as $name => $gate) {
+            self::assertMatchesRegularExpression(
+                '/request pipeline|error handler|page renderer/',
+                $gate,
+                $name . ' gates the page on the diff rather than on the evidence',
+            );
+        }
+    }
+
+    /**
      * The changelog obligation is reached by the words a patch author holds.
      *
      * `feedback/2026-08-07-132446` asked twice and got `Release Targets` both
@@ -1605,6 +1670,11 @@ final class KnowledgeTest extends TestCase
      * holds. The first matched the opening alone, and a page has one such
      * section, so `D-ANS-101`'s floor makes that answer the cut — where the
      * excerpt is named by the document's own title.
+     *
+     * Both queries are retuned from the ones that session sent: the page grew
+     * three sections in `D-KNW-122` and each of the recorded strings then
+     * matched a different set. What is held is the shape they were sent for, an
+     * opening matched alone and an opening matched beside one heading.
      */
     #[Decision('D-ANS-101')]
     #[Test]
@@ -1613,7 +1683,7 @@ final class KnowledgeTest extends TestCase
         $headings = count(Documents::headings('core/testing/proving-a-rendering'));
 
         $opening = Registry::call('typo3_rule_lookup', [
-            'query' => 'throwaway functional test renders one snippet and prints what came out TypoScript diff',
+            'query' => 'the constellation no test covers and the diff that changed the rendering',
             'targetVersion' => '15.0',
         ]);
         self::assertSame([], $opening->data['matchedHeadings']);
@@ -1629,7 +1699,7 @@ final class KnowledgeTest extends TestCase
         );
 
         $both = Registry::call('typo3_rule_lookup', [
-            'query' => 'throwaway functional test probe renders one snippet',
+            'query' => 'throwaway probe with one page row and one sys_template row',
             'targetVersion' => '15.0',
         ]);
         self::assertSame(['The Probe'], $both->data['matchedHeadings']);

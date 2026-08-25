@@ -308,7 +308,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 104,
+                "score": 105,
                 "truncated": false
             },
             {
@@ -407,7 +407,7 @@ Text:
     - Filing a TYPO3 Core Bug Report: What a Report Carries, The Area, The Target Version, The Markup, What the Description Says
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
     - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
-    - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
+    - Proving What a Rendering Change Renders: The Probe, Putting the Snippet Into TypoScript, Reading What It Rendered, Saying Which Part of the Response Changed, Printing What a Service Holds Mid-Request, Why the userFunc Carries an Attribute, Where lib.parseFunc_RTE Comes From, Running It, Removing the Probe
     - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, When a Suite Fails for the Install Rather Than the Code, The Pre-Commit Hook, Script Notes
     - Settling an API Question on a Declared Major That Is Not Installed: Which Majors the Question Is About, What the Changelog Settles and What It Does Not, Reading the Branch, What Reading Proves, and What It Does Not
     - Running a Package on a Declared Major That Is Not Installed: Ask What CI Already Covers, Before Installing Anything, A Composer Root of Its Own, What It Writes, and What the Installation Keeps, What the Second Root Resolves Differently, Whether the Database Survives, Which Checks Are Worth Re-running There, What the Second Root Does Not Give, What Is Left Behind
@@ -570,6 +570,9 @@ Data:
                     "The Probe",
                     "Putting the Snippet Into TypoScript",
                     "Reading What It Rendered",
+                    "Saying Which Part of the Response Changed",
+                    "Printing What a Service Holds Mid-Request",
+                    "Why the userFunc Carries an Attribute",
                     "Where lib.parseFunc_RTE Comes From",
                     "Running It",
                     "Removing the Probe"

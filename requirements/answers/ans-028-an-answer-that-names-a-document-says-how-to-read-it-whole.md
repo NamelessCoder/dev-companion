@@ -8,6 +8,7 @@ heldBy:
   - KnowledgeTest::aDocumentIdReadsTheWholePageWithoutAResourceList
   - KnowledgeTest::anUnknownDocumentIdNamesTheOnesThereAre
   - KnowledgeTest::theTestRunGuideNamesTheBrowserCheckDocumentWithTheE2eSuites
+  - KnowledgeTest::theTestRunGuideNamesTheRenderingProbeWithTheFunctionalSuite
   - KnowledgeTest::theTestRunGuideNamesTheScriptsDocument
 ---
 

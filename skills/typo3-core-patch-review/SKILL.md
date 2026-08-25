@@ -196,16 +196,18 @@ carries work of your own, copy it aside before the probe and back afterwards, or
 `git diff --stat <path>` rather than with `git status`. A clean status is the
 confirmation on a file you were not editing, and the loss on one you were.
 
-**A diff that changes what the frontend renders is a class of patch where
-reading is not evidence at all.** TypoScript defaults, TypoScript declared in an
-`ext_localconf.php`, anything below `lib.parseFunc`: the diff says what it sets
-and nothing about what comes out, and where no test covers the constellation the
-suites stay green on either side of it. What settles it is a throwaway
-functional test that renders one snippet and prints what came out, and building
-one is `typo3_rule_lookup` with `documentId="core/testing/proving-a-rendering"`
-— which cObj renders the snippet, which operator form takes markup that spans
-lines, and how the output is got out of a test that would otherwise print
-nothing.
+**A finding that turns on what the frontend rendered is one reading cannot
+settle.** TypoScript defaults, TypoScript declared in an `ext_localconf.php` and
+anything below `lib.parseFunc` are the obvious half, and a PHP change to the
+request pipeline, an error handler or a caller of the page renderer is the same
+case: what changed is what comes out, not what the file says. Where no test
+covers the constellation the suites stay green on either side of it. What
+settles it is a throwaway functional test that renders one page and prints what
+came out, and building one is `typo3_rule_lookup` with
+`documentId="core/testing/proving-a-rendering"` — how the output is got out of a
+run that would otherwise print nothing, one marker per region so the response
+says which part of it changed, and what a service holds while the request is
+still running.
 
 ## Commit shape and target branch
 

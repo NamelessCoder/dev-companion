@@ -3,6 +3,9 @@ id: D-KNW-122
 title: A procedure document is routed by the evidence a task needs
 date: 2026-08-25
 status: open
+coveredBy:
+  - KnowledgeTest::everyGateOnTheRenderingProbeNamesTheEvidence
+  - KnowledgeTest::theTestRunGuideNamesTheRenderingProbeWithTheFunctionalSuite
 ---
 
 # D-KNW-122 — A procedure document is routed by the evidence a task needs
@@ -101,3 +104,15 @@ skipped the page, and built the harness by hand over six container rounds.
 - The PHP-subject harness turns out far enough from the TypoScript one that the
   page becomes a table of subjects, which is `D-KNW-071`'s third **Wrong if** in
   a second form.
+
+## Since then
+
+The four gates were rewritten together and `typo3_test_run_guide` names the page
+wherever its answer carries a functional suite. The page kept one procedure:
+what the PHP subject needed was a marker per region of the response and a `USER`
+fixture printing what a service holds from inside the request, and both sit
+under the harness the TypoScript subject already had. What that fixture reads
+was the session's own finding, and `.checkouts/` says why — the rendered body
+reaches the page renderer after every content object has run, on every covered
+version, so a probe reading it from inside one measures the moment rather than
+the page.

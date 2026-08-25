@@ -8,7 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-KNW-118`][D-KNW-118] — How a development installation renders a package that ships no page TypoScript is a subject this server owns · 2026-08-25
-- [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25
+- [`D-KNW-119`][D-KNW-119] — The corpus tells apart the failures one usage synopsis presents alike · 2026-08-25 · confirmed
 - [`D-KNW-120`][D-KNW-120] — A hint that states a merge names the lookup that reads the result · 2026-08-25
 - [`D-KNW-107`][D-KNW-107] — Which side of a backend module resolves a resource path is a subject this server owns · 2026-08-24 · confirmed
 - [`D-KNW-108`][D-KNW-108] — Where an impexp import puts the records it writes is a subject this server owns · 2026-08-24

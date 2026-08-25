@@ -2,7 +2,7 @@
 id: D-KNW-119
 title: 'The corpus tells apart the failures one usage synopsis presents alike'
 date: 2026-08-25
-status: open
+status: confirmed
 coveredBy: []
 ---
 
@@ -91,3 +91,54 @@ all three came back looking like an argument error.
 - The two read halves turn out to differ across the covered majors far enough
   that one entry cannot hold them. Then they are separate statements and this
   entry's one card was the wrong shape.
+
+## Confirmed on 2026-08-25
+
+The statement was measured rather than read. On an `E-SITE` of 14.3.6, made here
+on mariadb, `--admin-user-password=password` answered with the four-line policy
+error, the `setup` synopsis and exit status 255.
+
+The multi-line half came out the other way round. A backslash continuation
+inside the quoted string survives the join and the command runs: DDEV wraps the
+whole argument in double quotes and escapes the ones inside it, the newline
+reaches the container's bash as a newline, and a backslash immediately before it
+is a line continuation there. Five lines of assignments, one of them a value
+with a space, all reached the command. What breaks is a line that ends without a
+backslash, and every assignment above that break is then spent on a command of
+its own. A backslash with a space after it is the same break, which bash reports
+as a space that is not a command.
+
+So the first **Wrong if** fired and its consequence did not follow. The loss
+happens in the container's bash reading the joined line, which is the subject
+the `ddev exec` statements already own, so the new statement went beside them.
+What the reporting session met was a broken continuation rather than a form
+`ddev exec` refuses, and the statement says which of the two a caller is looking
+at.
+
+The password half gained what only a run could say. `selectAndImportDatabase()`
+stands above `getAdminUserPassword()` in `execute()` on 12.4, 13.4 and 14.3
+alike, so the schema is written before the password is judged. Measured against
+an empty database: nought tables before the rejected run, forty-two after it.
+The next attempt is then refused by the table check that `--force` does not
+clear, which makes the insecure password a one-way failure on a server database.
+
+Both read halves hold on the other two majors.
+`getBackendUserPasswordValidationErrors()` is identical in the three checkouts
+and the `default` policy asks each of them for the same five things. `write()`
+dumps without `Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE` in all three, and
+symfony/yaml renders `{  }` at v6.4.26 as at v7.4.15. `symfony/console` prints
+the running command's synopsis and replaces an exit code above 255 at v6.4.27 —
+which is what 12.4 pins — as at v7.4.15.
+
+`dependencies` is the half that moved and it is bound `since: 14`. The
+installation made here carries `typo3/fluid-styled-content`, which is the one
+package `createSite()` reads, so the key came out as a list of two sets. The
+feedback's empty mapping is the case where that package is absent, and
+`errorHandling` and `routes` are the empty mappings on every covered major.
+
+What the run also turned up is outside this entry and unsettled.
+`bin/cli environment:create E-SITE 14.3 mariadb` stopped at its own `setup` step
+on forty-two tables, in a directory and under a project name that had never
+existed here. Which of the steps before it installed TYPO3 was not isolated, and
+a database volume left behind by a name somebody unlisted rather than deleted
+would produce the same thing. That is `E-SITE`'s build rather than the corpus.

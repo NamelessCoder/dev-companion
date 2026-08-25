@@ -127,13 +127,27 @@
       "ddev exec",
       "--raw",
       "web_environment",
-      "typo3DatabaseHost"
+      "typo3DatabaseHost",
+      "multi-line command",
+      "line continuation",
+      "usage synopsis",
+      "exit status 255",
+      "--admin-user-password",
+      "TYPO3_SETUP_ADMIN_PASSWORD",
+      "passwordPolicy"
     ],
     "hints": [
       "The command takes a connection type and writes a driver name, and the two spellings differ. --driver and TYPO3_DB_DRIVER accept mysqli, mysqliSocket, pdoMysql, pdoMysqlSocket, postgres or sqlite; config/system/settings.php then carries the DBAL driver behind it, so sqlite is persisted as pdo_sqlite and postgres as pdo_pgsql. Handing the persisted name back is refused with exception 1669905551, saying that connection type does not exist — the file the command wrote is not a source for the option that wrote it.",
       "sqlite is the connection type that needs nothing else. No host, port, dbname, username or password is read for it, and the file is calculated rather than named: var/sqlite/cms-<random>.sqlite where the project root sits above the document root, the config directory where it does not. The name is random per run, so a second run behind --force points settings.php at a new empty database and leaves the first file on disk.",
       "It refuses a database that already has tables, with exception 1669747200 naming how many it found; --force overwrites the settings files and never the schema. That check is on the server-database path only — the sqlite path calculates a fresh file and never reaches it. Without --force the run stops earlier still, on config/system/settings.php already existing, which is exception 1669747685 and which --no-interaction answers with no. So the guard an idempotent installer needs is that file: test for it yourself rather than reading an exit code.",
+      "An uncaught exception ends the run as the command's usage synopsis and exit status 255, whatever it was about. That surface is symfony/console and not TYPO3: renderThrowable prints the running command's synopsis for every throwable, and run() clamps an exit code above 255 to exit status 255, which every nine-digit TYPO3 exception code lands on. So a synopsis says nothing about the arguments, and the message printed above it is the whole of the cause.",
+      "--admin-user-password and TYPO3_SETUP_ADMIN_PASSWORD are validated against the policy named in BE/passwordPolicy, whose default asks for eight characters carrying an upper case letter, a lower case letter, a digit and a special character. A value that misses one stops the run with exception 1669747614, Administrator password not secure enough, listing what it missed. The check runs after the database has been imported, so the schema is already written when it stops: on a server database the next attempt is refused by the table check that --force does not clear, and on sqlite a fresh file is calculated instead.",
       "--create-site <url> and TYPO3_SETUP_CREATE_SITE create the root page and its site configuration under config/sites/.",
+      "The config.yaml it writes carries errorHandling and routes as empty flow mappings, errorHandling: {  } with the two spaces symfony/yaml renders an empty array with, because that file is dumped without the flag that would write an empty sequence instead. An edit looking for the key on a line of its own, with its entries below it, matches neither.",
+      {
+        "text": "dependencies is written the same way and is empty unless typo3/fluid-styled-content is active, which an extension repository's installation commonly is not. Where it is active the key carries that set and typo3/fluid-styled-content-css.",
+        "since": 14
+      },
       {
         "text": "The same run writes config/sites/<identifier>/setup.typoscript, a welcome page = PAGE with the TYPO3 logo and the content of the root page in it. A site's own TypoScript is applied after the sets it depends on — SysTemplateTreeBuilder hangs the set includes below the site's include node, and a node's own lines are read after its children — so the file replaces every path it assigns and leaves the rest of what the sets built standing. An installation whose rendering comes from a set deletes that file or replaces its content.",
         "since": 14
@@ -161,6 +175,7 @@
       },
       "Under DDEV the variables ride in on the command itself: ddev exec TYPO3_DB_DRIVER=mysqli TYPO3_SETUP_ADMIN_USERNAME=admin vendor/bin/typo3 setup --no-interaction sets them for that run, because ddev exec joins its arguments into one line and hands that line to bash inside the container. There is no --env option to reach for, and asking for one is refused for an unknown shorthand flag; the flags are --dir, --service, --user, --quiet and --raw. --raw is what takes the bash away, and typing it at all is what does it: --raw, --raw=true and --raw=false behave alike, the arguments are then handed to the container as they stand, and the assignment is looked for as a program with \"executable file not found in $PATH\". Its own help says the flag defaults to true, and the default nevertheless interprets with bash.",
       "That bash reads every argument, so anything it acts on is spent before TYPO3 sees it: a parenthesis in a regular expression stops the run as a syntax error, and --filter A|B loses its pipe to a pipeline. A value with a space is the quieter one — DDEV quotes such an argument as it builds the line, a quoted word is no assignment to bash, and TYPO3_PROJECT_NAME=Two Words becomes a command name that is not found. ddev exec bash -c 'TYPO3_PROJECT_NAME=\"Two Words\" vendor/bin/typo3 setup --no-interaction' is the form that carries all of them, because the quoting is then inside a string bash alone reads.",
+      "A line break survives that join where the quotes around it do not: DDEV wraps the whole argument in double quotes, so a newline reaches the container's bash as a newline. A backslash immediately before it is a line continuation there, so a command written across several lines runs as the same command on one line does. A line that ends without one ends the command, and every assignment above the break is spent on a command of its own — what reaches TYPO3 is the last line with its values missing, which comes back as the usage synopsis rather than as a shell error. A backslash with a space after it is that same break, and bash reports the space as a command that is not found.",
       "web_environment in the project's .ddev/config.yaml is a different set of variables, and an extension repository commonly carries typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername and typo3DatabasePassword there against a database named t3func. That is the family a functional test run reads, which is project-extension-tests, and setup reads none of it. So those lines in a file the caller is reading anyway say the container is configured for the tests, not that the installation is ready to be created.",
       "Which TYPO3_ variables the command reads, and why nothing reads them once it has run, is environment-runtime-readers."
     ]

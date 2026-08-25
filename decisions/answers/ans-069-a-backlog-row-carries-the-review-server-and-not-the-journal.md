@@ -105,3 +105,39 @@ Recorded live against forge.typo3.org and review.typo3.org the same day, in
 issues came back with 8 relations, one file and 6 changes between them, `#15984`
 among them with the four relations and the three changes `D-ANS-064` was written
 from.
+
+**Amended on 2026-08-25**, because the enumeration drops a status it is already
+holding, and the sentence above was written about a field that costs a call
+rather than about this one.
+
+The measurement here priced two things and refused both: the comment count, at
+one read per row, and the description, at 38.5 kB a page. `Forge::reviewed()`
+asks the review server the batched query the entry endorsed, and
+`Gerrit::change_()` hands it back `status`, `subject`, `patchSet` and `updated`
+per change. It keeps `number` and `url`. So carrying whether a change is merged,
+open or abandoned costs no further round trip on the enumeration path — the
+answer is in the payload and thrown away.
+
+The issue path is the other half and the decided line holds there unchanged.
+`Forge::issueOf()` lifts `reviews` out of the journal and asks the review server
+nothing, so a status on that answer is a Gerrit call the read does not make
+today.
+
+`feedback/2026-08-24-173151` is what raised it, from candidate selection: an
+issue whose only change was abandoned under a negative review is a different
+candidate from one nobody has attempted. `feedback/2026-08-24-183447` made the
+same jump on 85224 from a patch review, and `feedback/2026-08-24-173116` counted
+what the blind pick costs — one live issue in five candidates, each dead one
+paid for with a code read.
+
+**What does not move is the verdict.** The reporting session says the status was
+not what decided it: the inline comment was, `wrong approach :(` on
+`/PATCHSET_LEVEL`, and that is `/changes/<n>/comments`, one call per change. So
+the schema sentence *a handle and not a verdict* stays true of the half that did
+the work, and becomes false only of the status beside it. The first **Wrong if**
+above is what the wording has to answer when the field lands: a status is where
+the change stood when the row was read, and an `ABANDONED` is grounds to read
+the argument rather than to skip the issue — this feedback's own session fixed
+#35069 after reading one.
+
+Queued rather than made here: it is `src/` and `ForgeLookup::outputSchema()`.

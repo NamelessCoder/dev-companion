@@ -27,6 +27,6 @@ typo3_gerrit_lookup(change="76606", messages="people") after typo3_forge_lookup(
 
 ## Suggestion
 
-Keep it exactly as it is: abandoned changes reachable, inline comments included, messages="people" available, and reviews[] on the Forge answer carrying the change numbers that make the jump possible. The chain typo3_forge_lookup(issue) -> reviews[] -> typo3_gerrit_lookup(change, messages="people") is the highest-value path I used all session.
+Surface the review verdict in the Forge answer itself — an issue whose linked changes were all abandoned with a negative review is a materially different candidate from one nobody has attempted, and right now that costs a second call to find out.
 
-If anything is added, surface the review verdict in the Forge answer itself — an issue whose linked changes were all abandoned with a negative review is a materially different candidate from one nobody has attempted, and right now that costs a second call to find out.
+*Trimmed on 2026-08-25. The keep half was answered: all four calls reproduce, and the one thing that rested on no assertion — that an abandoned change is answered at all — is held by `GerritTest::anAbandonedChangeIsAnsweredWholeByBothWaysIn`. `D-FBK-018` carries the reading and `D-ANS-069` the finding under this half.*

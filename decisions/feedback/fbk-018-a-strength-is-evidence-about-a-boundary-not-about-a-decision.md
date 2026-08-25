@@ -925,8 +925,8 @@ rather than a behaviour anybody could have read. Five predictions landed because
 there was something to predict; the sixth question had nothing behind it.
 
 Three keep-requests rested on nobody rewriting the file and are held now.
-`HintsTest::aTestSiteIsWrittenWithWhatMakesTheClassDeterministic` holds the
-four sentences the report credits its first green functional run to;
+`HintsTest::aTestSiteIsWrittenWithWhatMakesTheClassDeterministic` holds the four
+sentences the report credits its first green functional run to;
 `aSuiteThatWillNotStartIsAnsweredBeforeTheHarnessIs` gains the credentials and
 the account, which its own docblock named and nothing asserted; and
 `theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre` gains the predicate
@@ -940,3 +940,79 @@ in assertions a rename fails.
 The feedback is closed by this commit and nothing is queued. No statement about
 TYPO3 was established here: the re-runs read this server's answers, and each
 sentence guarded above was verified where it was written.
+
+## Confirmed on 2026-08-25
+
+`feedback/2026-08-24-173151` is the first strength whose praise is a **chain**
+rather than an answer. It credits no single call: `typo3_forge_lookup` on #35069
+listing change 76606 under `reviews`, then
+`typo3_gerrit_lookup(change="76606", messages="people")` answering `ABANDONED`
+with one inline comment, and asks that the whole path stay reachable.
+
+The quotations are checked before the boundary is. Both calls were re-run on
+2026-08-25 through `bin/typo3-dev-companion`, and every one of them comes back
+word for word:
+
+- `reviews` on #35069 carries change 76606 at patch set 2, named 2022-11-15. It
+  now carries 95399 beside it, which is the reporting session's own push, twelve
+  minutes before it filed this.
+- Change 76606 answers `ABANDONED`, last moved 2024-12-12, with the one comment
+  on `/PATCHSET_LEVEL` — Benni Mack, `wrong approach :(` — and a log whose four
+  human messages are the upload, `Patch Set 1: Code-Review-1`, a second upload
+  and the abandon two years later. `messages="people"` held two `core-ci`
+  pipeline reports back.
+
+The first **Wrong if** did not fire. Every counterfactual is about a patch the
+session did *not* write, which is an action an answer stopped rather than a step
+it had to take instead, and its one suggestion is judged below rather than
+skipped.
+
+**The boundary is what a handle costs to follow against what following it
+returns.** Everything credited sits on the far side of one further call — the
+status, the inline comment, the review log — and what the Forge answer carries
+is the handle alone. That is
+[`D-ANS-069`](../answers/ans-069-a-backlog-row-carries-the-review-server-and-not-the-journal.md)'s
+decided line, and the same debrief reports the cost side of it:
+`2026-08-24-173116`, filed 35 seconds earlier from the same triage, counts one
+live issue per five candidates with each dead one paid for by a code read.
+
+Two sessions have now walked this chain from two task shapes, which is what
+makes it a property of the corpus rather than one reader's route.
+`2026-08-24-183447` reviewed change 91127 and jumped to the abandoned 85224 for
+Benjamin Franzke's `-1 for now`, which is the argument that made the change
+under review defensible.
+
+**What the praise implies is checkable and half of it is not held.** Of the four
+things asked to stay, three rest on assertions already: the comment thread with
+its `/PATCHSET_LEVEL` file and null line on `aCommentCarriesItsThread`, the
+`messages` filter on `theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated`,
+and `reviews` on `aReviewChangeIsLiftedOutOfTheProseThatCarriesIt` and on being
+a required key of `ForgeLookup::outputSchema()`. That an **abandoned** change is
+answered at all rested on nothing, and `changesMatching()` already takes a
+`status:open` narrowing, so the shape that would drop it is in the class.
+`anAbandonedChangeIsAnsweredWholeByBothWaysIn` holds it now, on the handle path
+and on the batched query a backlog row is filled from.
+
+One thing the report does not claim was found beside it. `o=DETAILED_LABELS` is
+asked on every named change, and 76606 came back with no label state at all, so
+the Code-Review-1 exists only as a message body — no `Outdated Votes` line marks
+its removal, which is the mechanism `D-ANS-079` names. Two of the four abandoned
+and merged changes read that day answer the same way. It is not a rule about
+abandonment: 85224 is abandoned and carries its `Verified` votes. What it means
+for a caller is that on a change that stopped, `messages` is where the negative
+review is, and it is opt-in.
+
+The suggestion is queued rather than closed, and the finding under it is one the
+entry it bears on never priced. `Forge::reviewed()` already makes the review
+query and already receives `status` per change; it keeps `number` and `url`.
+What the feedback asks for therefore costs nothing on the enumeration path,
+while on the issue path — where `reviews` is lifted out of the journal and the
+review server is not asked at all — the decided line holds unchanged. The
+verdict itself moves neither way: it is the inline comment, one
+`/changes/<n>/comments` per change, and the session's own account says that, not
+the status, is what stopped it. `D-ANS-069` carries the reading and the card
+carries the work at `normal`, which the corpus above set. The feedback is
+trimmed to that half and stays open behind it.
+
+No statement about TYPO3 was established here: the re-runs read this server's
+answers, and the discarded field was read in `Forge::reviewed()`.

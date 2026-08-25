@@ -1141,6 +1141,99 @@ final class GerritTest extends TestCase
     }
 
     /**
+     * Change 76606 as review.typo3.org answered it on 2026-08-25: abandoned two
+     * years after the review that stopped it, and sent with an empty `labels`
+     * object although `o=DETAILED_LABELS` asked for one.
+     */
+    private const STOPPED = '{"project":"Packages/TYPO3.CMS","branch":"main",'
+        . '"subject":"[WIP][BUGFIX] addQueryString.exclude overrides config.linkVars",'
+        . '"status":"ABANDONED","updated":"2024-12-12 09:02:43.000000000","_number":76606,'
+        . '"change_id":"Icf817319827f1b0fcf6a2d8932c5cb910fe55eb6","current_revision_number":2,'
+        . '"current_revision":"fb4d853efa009969a1f2665a7ad9ec2e0f4ab92d","total_comment_count":1,'
+        . '"revisions":{"fb4d853efa009969a1f2665a7ad9ec2e0f4ab92d":{"commit":{"message":'
+        . '"[WIP][BUGFIX] addQueryString.exclude overrides config.linkVars\n\nResolves: #35069\n'
+        . 'Change-Id: Icf817319827f1b0fcf6a2d8932c5cb910fe55eb6\n"}}}';
+
+    /** What the review options add to it, the empty label state included. */
+    private const STOPPING = ',"labels":{},"submit_records":[],"messages":['
+        . '{"author":{"name":"Benni Mack"},"date":"2022-11-15 12:23:42.000000000","_revision_number":1,'
+        . '"message":"Uploaded patch set 1."},'
+        . '{"author":{"name":"core-ci","tags":["SERVICE_USER"]},"date":"2022-11-15 12:31:16.000000000",'
+        . '"_revision_number":1,"message":"Patch Set 1: Verified+1"},'
+        . '{"author":{"name":"Benni Mack"},"date":"2022-11-15 13:02:13.000000000","_revision_number":1,'
+        . '"message":"Patch Set 1: Code-Review-1\n\n(1 comment)"},'
+        . '{"author":{"name":"Benni Mack"},"date":"2024-12-12 09:02:43.000000000","_revision_number":2,'
+        . '"message":"Abandoned"}]';
+
+    /** The one comment on it, filed against the change rather than a line. */
+    private const REJECTION = ")]}'\n" . '{"/PATCHSET_LEVEL":[{"id":"feb17490_1ccc116f",'
+        . '"author":{"_account_id":22037,"name":"Benni Mack"},"patch_set":1,"unresolved":false,'
+        . '"updated":"2022-11-15 13:02:13.000000000","message":"wrong approach :("}]}';
+
+    /** The change by either way in, its comment, and a chain it is not in. */
+    private static function stopped(string $url): string
+    {
+        if (str_contains($url, '/comments')) {
+            return self::REJECTION;
+        }
+        if (str_contains($url, '/related')) {
+            return ")]}'\n" . '{"changes":[]}';
+        }
+
+        return ")]}'\n[" . self::STOPPED . (str_contains($url, 'o=MESSAGES') ? self::STOPPING : '') . '}]';
+    }
+
+    /**
+     * An abandoned change is answered whole, by the number and by the issue its
+     * commit message names.
+     *
+     * This is the one state a narrowing would quietly take away, and it is the
+     * state the answer is worth most in: what a rejected change carries is the
+     * argument against the approach, which exists nowhere else.
+     * `feedback/2026-08-24-173151` and `feedback/2026-08-24-183447` each read
+     * one and each dropped a patch it would otherwise have written — the first
+     * on this very change, the second on 85224. `changesMatching()` takes a
+     * `status:open` narrowing, so the shape that would drop them is already in
+     * this class.
+     *
+     * The vote is the other half. `o=DETAILED_LABELS` was asked and the review
+     * server sent no label state at all, so the Code-Review-1 survives in the
+     * message log alone — which `messages` is opt-in for.
+     */
+    #[Decision('D-ANS-079')]
+    #[Test]
+    public function anAbandonedChangeIsAnsweredWholeByBothWaysIn(): void
+    {
+        $asked = [];
+        $gerrit = new Gerrit(function (string $url) use (&$asked): string {
+            $asked[] = $url;
+
+            return self::stopped($url);
+        });
+
+        $change = $gerrit->change('76606', 1, 'people')['changes'][0];
+
+        self::assertSame('ABANDONED', $change['status']);
+        self::assertSame('wrong approach :(', $change['comments'][0]['message']);
+        self::assertSame('/PATCHSET_LEVEL', $change['comments'][0]['file']);
+        // The review that stopped it is a message and not a vote: the label
+        // state came back empty on a change nobody will vote on again.
+        self::assertSame([], $change['labels']);
+        self::assertStringContainsString(
+            'Patch Set 1: Code-Review-1',
+            implode("\n", array_column($change['messages'], 'message')),
+        );
+        self::assertStringNotContainsString('status:', implode(' ', $asked));
+
+        // The batched query a backlog row is filled from reaches it too, which
+        // is what makes the jump from an issue to the argument possible at all.
+        $found = $gerrit->changesForIssues([35069]);
+
+        self::assertSame([76606], array_column($found[35069], 'number'));
+        self::assertSame('ABANDONED', $found[35069][0]['status']);
+    }
+
+    /**
      * Nothing public is not nothing. A change pushed as private answers this
      * search with an empty list, so the caller is told what was searched rather
      * than that no patch exists — the distinction the tool's own text carries.

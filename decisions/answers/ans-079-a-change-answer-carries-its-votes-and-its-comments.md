@@ -7,6 +7,7 @@ coveredBy:
   - GerritTest::aChangeCarriesTheVoteEachLabelStandsAt
   - GerritTest::aChangeWithNoCommentCostsNoCallToFindThatOut
   - GerritTest::aCommentCarriesItsThread
+  - GerritTest::anAbandonedChangeIsAnsweredWholeByBothWaysIn
   - GerritTest::theReviewLogIsAskedForAndTheServiceUsersHalfIsSeparated
 ---
 

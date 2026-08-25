@@ -289,3 +289,33 @@ where the words of the change under review are not the caller's own work; an
 operations brief has no change under review, and there the words are exactly
 what the caller is doing. Whether the two cases may share one filter is the
 other half of the question above.
+
+### 2026-08-25 — the fourth surface is a tool description, and it was in context
+
+**The question this entry raised about a page is reported for a tool, from the
+same debrief as one of the three above.** `feedback/2026-08-24-140421` skipped
+`typo3_extension_describe` in a session about one extension, and it had that
+tool named twice over: `skills/base.md` makes it step 2 of a fixed order, and
+the session had loaded its schema, which under a deferring client is what
+carries the `description` into context at all — the mechanism
+`feedback/2026-08-19-090401` describes for the same client.
+
+The wording was not what was missing, which is what makes this the same rung
+rather than step 4. Read on 2026-08-25, `base.md` step 2 already says *What it
+does not ship is answered too, and that is the half no file listing can give
+you*, which is aimed exactly at the session's own reason for skipping — it had
+read every file by hand. The tool's `description` names the deprecated-files
+verdict in full: the four files, the predicate each turns on, and why no
+changelog search over the extension's code reaches them,
+[`D-ANS-009`](../answers/ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-the-file.md).
+The session found that defect in the extension anyway, by another route, and
+names it as what one call would have handed it at the start.
+
+So the surface a tool is chosen on was in the session's context, complete, and
+the call was not made. What the feedback asks for instead is the same move this
+entry's question is about, transposed: fold the verdict into
+`typo3_project_describe`, the answer the session does make, rather than name the
+tool that carries it. That changes what an orientation answer volunteers to
+every caller, and the reason it is not decided here is this entry's — it is
+`documentation/records/judging.rst`'s step 5, and the question is up on that
+feedback's own card.

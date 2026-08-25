@@ -169,3 +169,23 @@ which is the direction the reporting session needed; a reader who has already
 reached `installation-boot` has its trusted-hosts statement in front of them.
 Its closing statement is one of the six `D-KNW-087` owns, and a fourth id
 appended to that formula is the change that entry is queued to make.
+
+## Since then
+
+The first **Assumed** is answered, and the first **Wrong if** did not fire.
+`feedback/archive/2026-08-24-140340` is a session that hit this failure — an
+HTTP 500 on every URL with an empty log, on a clone-like state — and it asked
+this server rather than going to curl for the diagnosis. What answered it was
+`project-configuration-files` fetched by id, and its account is *I knew what it
+was in one step instead of hunting*. So an agent at a failing site does ask, and
+the trusted-hosts case was reached from the corpus rather than from the page.
+
+That is a session's report rather than a recorded run, so nothing here is
+confirmed — `D-FBK-018`. It also does not say this entry's own hint was what
+reached the session, only that the corpus did, and by the neighbour rather than
+by the symptom. What the same debrief reports as still costing something is the
+step after the diagnosis: the session was left asking whether
+`SYS/trustedHostsPattern` was set and read `additional.php` for it.
+[`D-KNW-120`](knw-120-a-hint-that-states-a-merge-names-the-lookup-that-reads-the-result.md)
+is that half, placed on `project-configuration-files` for the reason above —
+this hint says what a failure writes down, not what a value resolves to.

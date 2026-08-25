@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-163321-the-repository-s-own-agents-md-routes-agents.md
 **Priority:** low
+**Branch:** todo/the-repository-s-own-agents-md-routes-agents
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

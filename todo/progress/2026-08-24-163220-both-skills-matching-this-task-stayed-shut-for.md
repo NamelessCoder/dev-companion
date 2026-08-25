@@ -2,6 +2,8 @@
 
 **Serves:** D-SKL-076, feedback/2026-08-24-163220-both-skills-matching-this-task-stayed-shut-for.md
 **Priority:** normal
+**Branch:** todo/both-skills-matching-this-task-stayed-shut-for
+**Claimed:** 2026-08-25
 
 Write the backlog job back into `skills/typo3-core-issue-triage/SKILL.md`'s
 description — picking an issue out of the backlog, in the words a user types for

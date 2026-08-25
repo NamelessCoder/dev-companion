@@ -145,3 +145,41 @@ and returns the page.
 
 The first **Wrong if** stays unanswered by all three: none of them had the guide
 in its list.
+
+### 2026-08-25 — the content half is re-run, and the third Wrong if is checked where the brief answers
+
+**The second session's feedback was judged on 2026-08-25, and the content half
+this entry took on is answered.**
+[`feedback/2026-08-24-173211`](../../feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md)
+counted six calls to establish the conventions, and each of them now lands in
+one.
+
+`typo3_rule_lookup` with that session's own subject as the query — *changelog
+entry conventions for a bugfix that changes rendered output* — returns one match
+and it is `core/contribution/changelog`, with the `documentation-changelog` hint
+named beside it. Its question was which type a bug fix that changes rendered
+output owes, and the matched section states it: an `Important`, on the same
+reading that a fix changing nothing an installation renders owes none. The
+byte-level items it listed are in the hint, the anchor timestamp included, which
+it said it had inferred from three neighbouring files.
+
+Its include-directive claim is refuted where it was made. Read in
+`.checkouts/main` on 2026-08-25, `validateRstFiles.php` matches
+`#^\.\. {1,2}include:: /Includes\.rst\.txt#m`, so the one space it wrote
+validated and the pass that rewrote the file to two bought nothing. That is the
+same reading recorded above, made again from the checkout rather than carried
+over.
+
+**The brief answers a changelog question no worse after the split than before.**
+That is the third **Wrong if**, checked where its test does not read.
+`typo3_task_guide` is the other place such a question is answered, and
+`TaskIntents::rules()` searches three documents at two sections per intent — so
+the page this entry created is outside what a brief can return, whatever it
+says. Measured in this worktree for a bugfix task naming a rendered change, the
+two sections are `core/contribution/rules#Documentation` and
+`core/contribution/commit-messages#Breaking Changes`. Against the corpus as it
+stood at `b9e29643^` they are the same two, so the split took nothing out of the
+brief: the changelog prose never won a slot there. Adding the page to
+`RULE_DOCUMENTS` leaves them unchanged as well, which is the repair that
+suggests itself and does nothing. What the brief carries instead is the first of
+its `nextTools`, naming the page by `documentId` and what it holds.

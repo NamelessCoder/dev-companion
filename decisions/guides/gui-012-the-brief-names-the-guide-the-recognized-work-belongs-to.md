@@ -319,3 +319,29 @@ tool that carries it. That changes what an orientation answer volunteers to
 every caller, and the reason it is not decided here is this entry's — it is
 `documentation/records/judging.rst`'s step 5, and the question is up on that
 feedback's own card.
+
+### 2026-08-25 — a core page outlives the reason `guideCore` is empty
+
+**A core intent names its guide in `tools` rather than in `guides`, and that is
+where the changelog page arrives.** The reason recorded here for leaving
+`guideCore` empty throughout — that the core pages an intent would name are the
+three contribution documents the rule sections in the same answer already name —
+stopped describing the corpus when
+[`D-KNW-111`](../knowledge/knw-111-the-changelog-procedure-is-a-guide-of-its-own.md)
+split `core/contribution/changelog` out as a fourth.
+
+Measured in this worktree while judging
+[`feedback/2026-08-24-173211`](../../feedback/2026-08-24-173211-the-guides-list-was-returned-and-never-pulled.md),
+whose first suggestion is that the brief name the guide covering the task it was
+asked about. For a core changelog task the brief's `guides` is empty and its
+rule sections come from `core/contribution/rules` and
+`core/contribution/commit-messages`, so nothing in either field is the page.
+`TaskIntents::RULE_DOCUMENTS` is why, and adding the page to it moves neither —
+the intent's two section slots go elsewhere on its own query.
+
+**The conclusion holds on the other reason the entry gives.** The `changelog`
+intent's `tools` names `typo3_rule_lookup` with the `documentId`, first in the
+list and with what the page carries, which is this entry's own rule that a guide
+is named as the call that reads it. A `guideCore` beside it would be a second
+pointer to one page in one answer, which is the third **Wrong if** here. So what
+is corrected is the reason and not the shape.

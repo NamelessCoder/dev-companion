@@ -93,3 +93,33 @@ worktree below `.checkouts/` carries — `git ls-tree main -- AGENTS.md` in
 `.checkouts/typo3.git` answers the file. It withheld a sentence rather than
 writing a wrong one, so nothing false reached the corpus.
 
+### 2026-08-25 — reported twice, and an amend is the case the ruling misses
+
+**Two sessions met the refusal after it landed and no `Wrong if` above fired:
+what they report is the price this entry named, plus one case it does not
+reach.**
+
+`feedback/2026-08-24-183512` and `feedback/2026-08-25-114636` come from
+`/home/benji/projects/typo3-cms` on two unrelated tasks. Both quote the
+`refused-trailer` error verbatim, both grant that the practice is what this
+entry says, and both went to `git log` to establish that for themselves — 2 of
+the last 200 commits and 3 of the last 200. Every fact they came back with is
+already in `core/contribution/commit-messages`, verified here and ruled on.
+Neither session read the page, because the check message states the rule and
+names none of what stands behind it: it overrules the core's `AGENTS.md` as
+"whatever the checkout you are working in says", so a session holding that file
+cannot tell whether the server knows about it. That half of the cost is this
+server's to take back, and the card serving both feedback carries it.
+
+The case the ruling does not reach is somebody else's patch set. What the
+maintainer ruled is that the sign-off is not **set**, and both entries weighed
+what a core commit message is written to carry. Measured again on 2026-08-25: a
+core message handed in with a `Signed-off-by:` and a `Change-Id:` comes back
+carrying the `Change-Id:` and not the sign-off, whoever wrote either. So a
+session amending another contributor's patch set is told to strike that person's
+Developer Certificate of Origin attestation, which is a different act from
+declining to write one's own. `feedback/2026-08-24-183512` stood exactly there
+on Gerrit change 91127, where the trailer had survived eight patch sets, and it
+kept the line and said why. Whether the rule reaches an amend is `R-KNW-075`'s
+question and the maintainer's to answer.
+

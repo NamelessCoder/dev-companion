@@ -42,6 +42,15 @@ final class TaskGuide extends ReadOnlyTool
     public const HINTS_PER_GROUP = 4;
 
     /**
+     * How many suites a brief carries, out of the list `typo3_test_run_guide`
+     * returns for the same paths.
+     *
+     * Named for the same reason as the constant above it: the schema says how
+     * many the answer carries, and it says the number the answer is sliced by.
+     */
+    public const SUITES_PER_BRIEF = 4;
+
+    /**
      * Whose the hints in a brief are, said where they are printed (R-GUI-009).
      *
      * They are `typo3_hint_lookup`'s corpus, matched by the same matcher and
@@ -296,13 +305,22 @@ final class TaskGuide extends ReadOnlyTool
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A hint declaring a different kind of repository from the paths given ranks below the ones that bind them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
             'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. A hint declared for another kind of repository is here for that reason rather than for having matched weakly. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
-            'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root.'),
+            'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root. They '
+                . 'are the base suites of the domains above, which run whatever the task turns out to be, plus the '
+                . 'ones the recognized work names. This is the list to run: testSuites is a second narrowing of the '
+                . 'same corpus, and a suite named there and not here is one to decide about.'),
             'conditionalChecks' => Schema::listOf(Schema::object([
                 'title' => Schema::string(),
                 'condition' => Schema::string(),
                 'checks' => Schema::listOf(Schema::string()),
             ], ['title', 'condition', 'checks']), 'Checks that only apply if the task really is the kind of work a weakly matched intent suggests.'),
-            'testSuites' => Schema::listOf(Schema::testSuiteRecord()),
+            'testSuites' => Schema::listOf(Schema::testSuiteRecord(), sprintf(
+                'The suites of those same domains that rank strongest against the task text, %d at most. A selection '
+                . 'to pick a targeted run from rather than a list to run — what the task owes in any case is checks '
+                . 'above, and neither list holds the other. typo3_test_run_guide called with these paths returns the '
+                . 'whole list these were ranked out of.',
+                self::SUITES_PER_BRIEF,
+            )),
             'checklist' => Schema::listOf(Schema::string()),
             'checkoutDiscovery' => Schema::listOf(Schema::object([
                 'establish' => Schema::string(),
@@ -424,7 +442,7 @@ final class TaskGuide extends ReadOnlyTool
             $held,
             array_flip(array_column($hints['matchedHints'], 'id')),
         ));
-        $testHints = array_slice(TestSuiteHints::find($task, $domains, $target), 0, 4);
+        $testHints = array_slice(TestSuiteHints::find($task, $domains, $target), 0, self::SUITES_PER_BRIEF);
 
         $lines = [];
         if ($outsideCore) {
@@ -584,11 +602,19 @@ final class TaskGuide extends ReadOnlyTool
                 . 'repository provides — the scripts in its composer.json, its package.json, and its CI '
                 . 'configuration are where its own suites are declared.';
         } else {
-            $lines[] = 'Relevant TYPO3 core checks:';
+            $lines[] = 'Relevant TYPO3 core checks — the list to run, whatever this task turns out to be:';
             foreach ($checks as $check) {
                 $lines[] = '- `' . $check . '`';
             }
             if ($testHints !== []) {
+                // The two lists sit next to each other and are two narrowings of
+                // one corpus, which is what the reporting session had no way to
+                // read: it took the shorter one for the authoritative one and
+                // the longer one for suites the first had dropped
+                // (`D-ANS-108`).
+                $lines[] = '';
+                $lines[] = 'Suites that match this task, strongest first. Each is one to decide about rather than '
+                    . 'one the list above left out, and typo3_test_run_guide holds the rest for these paths.';
                 foreach ($testHints as $hint) {
                     $lines[] = '## ' . $hint['suite'];
                     $lines[] = '`' . $hint['command'] . '`';
@@ -958,10 +984,10 @@ final class TaskGuide extends ReadOnlyTool
                 $target
             );
         $candidates[] = 'typo3_hint_lookup with the concrete file paths, once they are known';
-        // What the round trip buys, and nothing more: the suite list it returns
-        // is the `testSuites` above it again, so a caller that only needs which
-        // suites to run has them already (`D-KNW-067`).
-        $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation — the suites it lists are the testSuites above';
+        // What the round trip buys, and nothing more: the `testSuites` above are
+        // the strongest few of the list it returns, so what it adds is the rest
+        // of them and the invocation notes (`D-KNW-067`).
+        $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few';
         // The one step this brief describes and never pointed at. A caller who
         // read the routing table at the start of a session is committing hours
         // later, from this list — and outside the core it is the follow-up call

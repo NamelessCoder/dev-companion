@@ -197,7 +197,11 @@ Answers with
         score: integer
         # Whether the body was cut; read the resource for the rest.
         truncated: boolean
-    # Commands to run, ready to execute from the core root.
+    # Commands to run, ready to execute from the core root. They are the base suites
+    # of the domains above, which run whatever the task turns out to be, plus the
+    # ones the recognized work names. This is the list to run: testSuites is a
+    # second narrowing of the same corpus, and a suite named there and not here is
+    # one to decide about.
     checks: [string]
     # Checks that only apply if the task really is the kind of work a weakly matched
     # intent suggests.
@@ -205,6 +209,11 @@ Answers with
       - title: string
         condition: string
         checks: [string]
+    # The suites of those same domains that rank strongest against the task text, 4
+    # at most. A selection to pick a targeted run from rather than a list to run —
+    # what the task owes in any case is checks above, and neither list holds the
+    # other. typo3_test_run_guide called with these paths returns the whole list
+    # these were ranked out of.
     testSuites:  # optional
       - suite: string
         # Full command, run from the core root.
@@ -383,12 +392,14 @@ Text:
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 9 of its 11 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, Trailers A Core Commit Does Not Carry, Changed Signatures, The Changelog Entry a Message Announces.
 
-    Relevant TYPO3 core checks:
+    Relevant TYPO3 core checks — the list to run, whatever this task turns out to be:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
     - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     - `CI=true ./Build/Scripts/runTests.sh -s checkRst`
     - `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
+
+    Suites that match this task, strongest first. Each is one to decide about rather than one the list above left out, and typo3_test_run_guide holds the rest for these paths.
     ## checkIntegrityPhp
     `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
@@ -438,7 +449,7 @@ Text:
     - typo3_extension_describe — for what each extension in scope registers
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
     - typo3_hint_lookup — with the concrete file paths, once they are known
-    - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
+    - typo3_test_run_guide — for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few
     - typo3_task_guide — again, where the work enters a subject this task did not name — the first file under a test directory, the first run of a check the repository declares, the first branch or commit, the first edit to code or documentation the package ships
     - typo3_feedback_record — when one of these answers was wrong or incomplete
 
@@ -835,7 +846,7 @@ Data:
             },
             {
                 "tool": "typo3_test_run_guide",
-                "when": "for the targeted runTests.sh invocation — the suites it lists are the testSuites above"
+                "when": "for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few"
             },
             {
                 "tool": "typo3_task_guide",
@@ -889,12 +900,14 @@ Text:
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
     - core/contribution/rules — TYPO3 Core Contribution Rules: 4 of its 5 headings are not above — Contribution Flow, Code Style, Documentation, Review Readiness.
 
-    Relevant TYPO3 core checks:
+    Relevant TYPO3 core checks — the list to run, whatever this task turns out to be:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
     - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     - `CI=true ./Build/Scripts/runTests.sh -s lintScss`
     - `CI=true ./Build/Scripts/runTests.sh -s build`
+
+    Suites that match this task, strongest first. Each is one to decide about rather than one the list above left out, and typo3_test_run_guide holds the rest for these paths.
     ## listExceptionCodes
     `CI=true ./Build/Scripts/runTests.sh -s listExceptionCodes`
     Use it to see which codes are taken. It confirms nothing: a missing or duplicated code leaves this suite green, and checkIntegrityPhp is what reports one.
@@ -933,7 +946,7 @@ Text:
     - typo3_component_lookup — before writing backend markup or CSS classes
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
     - typo3_hint_lookup — with the concrete file paths, once they are known
-    - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
+    - typo3_test_run_guide — for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few
     - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and demands no Forge issue or release trailer
     - typo3_task_guide — again, where the work enters a subject this task did not name — the first file under a test directory, the first run of a check the repository declares, the first branch or commit, the first edit to code or documentation the package ships
     - typo3_feedback_record — when one of these answers was wrong or incomplete
@@ -1067,7 +1080,7 @@ Data:
             },
             {
                 "tool": "typo3_test_run_guide",
-                "when": "for the targeted runTests.sh invocation — the suites it lists are the testSuites above"
+                "when": "for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few"
             },
             {
                 "tool": "typo3_commit_message_guide",
@@ -1147,10 +1160,12 @@ Text:
     - A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.
     - Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept.
 
-    Relevant TYPO3 core checks:
+    Relevant TYPO3 core checks — the list to run, whatever this task turns out to be:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
     - `CI=true ./Build/Scripts/runTests.sh -s functional`
     - `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
+
+    Suites that match this task, strongest first. Each is one to decide about rather than one the list above left out, and typo3_test_run_guide holds the rest for these paths.
     ## checkIntegrityPhp
     `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
     Run it on any patch that writes PHP, test fixtures included — the core's own pre-merge pipeline runs it, so what it reports fails review before a person reads the patch. The one it reports most is the exception code: every throw needs a unique ten-digit integer, and undefined, duplicate and malformed ones each come back with the file and the line.
@@ -1199,7 +1214,7 @@ Text:
     - typo3_hint_lookup — with id=events-extension-points, for the registration each covered line has and what an event class owes its listeners
     - typo3_extension_describe — for what the extension dispatching the event already registers
     - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
-    - typo3_test_run_guide — for the targeted runTests.sh invocation — the suites it lists are the testSuites above
+    - typo3_test_run_guide — for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few
     - typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and demands no Forge issue or release trailer
     - typo3_task_guide — again, where the work enters a subject this task did not name — the first file under a test directory, the first run of a check the repository declares, the first branch or commit, the first edit to code or documentation the package ships
     - typo3_feedback_record — when one of these answers was wrong or incomplete
@@ -1472,7 +1487,7 @@ Data:
             },
             {
                 "tool": "typo3_test_run_guide",
-                "when": "for the targeted runTests.sh invocation — the suites it lists are the testSuites above"
+                "when": "for the targeted runTests.sh invocation — it lists every suite these domains hold, of which the testSuites above are the strongest few"
             },
             {
                 "tool": "typo3_commit_message_guide",

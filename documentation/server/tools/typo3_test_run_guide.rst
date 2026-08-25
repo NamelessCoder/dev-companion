@@ -72,6 +72,10 @@ Answers with
       # How many suites those domains hold on the target version. Counted rather
       # than listed: the list is what the narrowing exists to avoid.
       suites: integer
+    # Every suite of the domains above, and where query scores on some of them,
+    # those alone, strongest first. This is the list typo3_task_guide narrows two
+    # ways: its checks is what a task in these domains runs whatever it turns out to
+    # be, and its testSuites the strongest few against the task text.
     suites:
       - suite: string
         # Full command, run from the core root.

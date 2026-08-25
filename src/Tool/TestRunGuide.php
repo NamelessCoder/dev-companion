@@ -55,7 +55,10 @@ final class TestRunGuide extends ReadOnlyTool
                 'domains' => Schema::listOf(Schema::string(), 'Domains no given path reached. A path landing in one of them means calling again, because this answer holds for the path set it was given.'),
                 'suites' => Schema::integer('How many suites those domains hold on the target version. Counted rather than listed: the list is what the narrowing exists to avoid.'),
             ], ['domains', 'suites'], 'What the narrowing left out. Both empty where nothing was narrowed.'),
-            'suites' => Schema::listOf(Schema::testSuiteRecord()),
+            'suites' => Schema::listOf(Schema::testSuiteRecord(), 'Every suite of the domains above, and where query '
+                . 'scores on some of them, those alone, strongest first. This is the list typo3_task_guide narrows '
+                . 'two ways: its checks is what a task in these domains runs whatever it turns out to be, and its '
+                . 'testSuites the strongest few against the task text.'),
             'invocation' => Schema::object([
                 'preconditions' => Schema::listOf(Schema::string(), 'What has to be true before any suite runs: the container the script starts, and the vendor/ and bin/ the checkout may not have. This is the question a caller holds at the moment it starts checking for vendor/bin/phpunit by hand, and the shell\'s PHP is not the interpreter the answer is about.'),
                 'notes' => Schema::listOf(Schema::string()),

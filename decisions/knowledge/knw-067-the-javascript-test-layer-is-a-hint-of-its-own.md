@@ -86,3 +86,19 @@ layer out of the checkout itself.
 - A task that really does touch both layers loses its PHPUnit hints. The
   carve-out reads the paths, so naming one PHP path keeps them; a session that
   names neither is what would show the condition is the wrong one.
+
+## Since then
+
+On 2026-08-25 the two lists turned out to be identical only where the domains
+hold no more suites than a brief carries. Measured with the arguments of
+`feedback/2026-08-24-183319`, which names two PHP classes:
+`typo3_test_run_guide` returns eighteen suites for the `php` domain, and the
+`testSuites` beside them are `checkIntegrityPhp`, `cglGit`, `composerInstall`
+and `e2e` — the four strongest against that task text, of which one is also in
+`checks`.
+
+The TypeScript reading stands and the round trip is still worth what this entry
+says. What was written unbound is the `nextTools` sentence, which claimed the
+suites that tool lists are the `testSuites` above. It now says the brief carries
+the strongest few of what that call returns, so what the call adds is the rest
+of them beside the invocation notes.

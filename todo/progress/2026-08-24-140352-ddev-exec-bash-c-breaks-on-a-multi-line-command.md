@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-140352-ddev-exec-bash-c-breaks-on-a-multi-line-command.md
 **Priority:** normal
+**Branch:** todo/ddev-exec-bash-c-breaks-on-a-multi-line-command
+**Claimed:** 2026-08-25
 
 Measure in an installation made by `bin/cli environment:create E-SITE` what
 `ddev exec bash -c` does with a command written across several lines with

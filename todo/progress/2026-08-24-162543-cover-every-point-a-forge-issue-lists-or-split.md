@@ -1,7 +1,9 @@
-# Five tools I loaded or was pointed at and never called, and the one schema I guessed wrong
+# Cover every point a Forge issue lists, or split it into separate issues up front
 
-**Serves:** feedback/2026-08-24-140421-five-tools-i-loaded-or-was-pointed-at-and-never.md
+**Serves:** feedback/2026-08-24-162543-cover-every-point-a-forge-issue-lists-or-split.md
 **Priority:** low
+**Branch:** todo/cover-every-point-a-forge-issue-lists-or-split
+**Claimed:** 2026-08-25
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183447-what-worked-and-must-not-be-broken-the-gerrit.md, D-ANS-079
 **Priority:** normal
+**Branch:** todo/what-worked-and-must-not-be-broken-the-gerrit
+**Claimed:** 2026-08-26
 
 State the thread in the change answer instead of leaving it to be derived, and
 stop the text half contradicting the review server. `GerritLookup::comments()`

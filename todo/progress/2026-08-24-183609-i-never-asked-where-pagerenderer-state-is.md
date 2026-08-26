@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183609-i-never-asked-where-pagerenderer-state-is.md, D-KNW-124
 **Priority:** normal
+**Branch:** todo/i-never-asked-where-pagerenderer-state-is
+**Claimed:** 2026-08-26
 
 Judged step 1a in `D-KNW-124`, which holds what was already read so it is not
 read again: the vocabulary is absent, the path-scoped probe reaches the hint

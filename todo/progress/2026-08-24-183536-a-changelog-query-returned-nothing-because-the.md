@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-183536-a-changelog-query-returned-nothing-because-the.md
 **Priority:** normal
+**Branch:** todo/a-changelog-query-returned-nothing-because-the
+**Claimed:** 2026-08-26
 
 Name a tool where `typo3_changelog_lookup` comes back empty with no re-query to
 offer. The corpus sentence hangs on the offered subset today, and `Subsets`

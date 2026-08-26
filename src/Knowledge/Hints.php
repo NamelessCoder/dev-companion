@@ -94,8 +94,12 @@ final class Hints
      * query the hint does not carry: `coversEveryTerm()` is the other way past
      * the floor, and the two together are what keep the number a statement
      * about the query rather than about the hint's length.
+     *
+     * `bin/cli hints:probe` prints a hit's coverage against it, because how
+     * near the floor a hit stands is what says whether the next statement
+     * written into the corpus takes it away — `D-ANS-115`.
      */
-    private const MIN_COVERAGE = 0.5;
+    public const MIN_COVERAGE = 0.5;
 
     /**
      * Hint length that still counts for what its terms say.
@@ -446,9 +450,21 @@ final class Hints
             }
 
             // How it got here travels with it. Nothing in an answer reads it —
-            // `bin/cli hints` does, and a matcher that cannot say why it returned
-            // something is one nobody can tune without guessing.
-            $hint['matchedOn'] = ['keywords' => $keywords, 'score' => $score];
+            // `bin/cli hints:probe` does, and a matcher that cannot say why it
+            // returned something is one nobody can tune without guessing.
+            //
+            // The weights are the query's rather than this hint's, and they are
+            // here because the question a probe is opened with is which word
+            // decided: a term is worth what it separates within the candidates,
+            // so writing an unrelated statement that uses a common word makes
+            // that word cheaper for every query carrying it — `D-ANS-115`.
+            $hint['matchedOn'] = [
+                'keywords' => $keywords,
+                'score' => $score,
+                'coverage' => $coverage,
+                'terms' => $matchedTerms,
+                'weights' => $weights,
+            ];
             $scored[] = ['hint' => $hint, 'keywords' => $keywords, 'score' => $score];
         }
 

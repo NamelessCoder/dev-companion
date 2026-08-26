@@ -4230,7 +4230,14 @@ final class HintsTest extends TestCase
      * `$initializeDatabase = false` returns before `setUpTestDatabase()` is
      * reached, and under `pdo_sqlite` the per-class database is a file below
      * `functional-sqlite-dbs/` with no `_ft` name anywhere.
+     *
+     * All three queries match a curated pattern, which is what makes them a
+     * statement about this hint rather than about the rest of the corpus. The
+     * first one did not: it stood at a coverage of 0.5016 against a floor of
+     * 0.5 until an unrelated hint used the word "test" and took it under —
+     * `D-ANS-115` is the sweep and the repair.
      */
+    #[Decision('D-ANS-115')]
     #[Requirement('R-KNW-053')]
     #[Test]
     public function thePerClassDatabaseAnswerSaysWhatSurvivesTheRun(): void

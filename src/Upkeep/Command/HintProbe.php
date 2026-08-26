@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\DevCompanion\Knowledge\Hints;
+use TYPO3\DevCompanion\Search\TermSearch;
 
 /**
  * What one query reaches in the hint corpus, and why.
@@ -47,6 +48,22 @@ final class HintProbe
             return 0;
         }
 
+        // What each word of the query is worth, before any hint is named. A
+        // term is weighed by how few of the candidates carry it, so this is
+        // where a common word shows as the cheap one — and where the statement
+        // somebody has just written into the corpus shows what it cost every
+        // query carrying that word.
+        $weights = $result['matchedHints'][0]['matchedOn']['weights'];
+        if ($weights !== []) {
+            arsort($weights);
+            $words = TermSearch::words($query);
+            $output->writeln('');
+            $output->writeln('Terms:');
+            foreach ($weights as $term => $weight) {
+                $output->writeln(sprintf('  %-12s %.2f  %s', $term, $weight, $words[$term] ?? $term));
+            }
+        }
+
         $output->writeln('');
         foreach ($result['matchedHints'] as $hint) {
             // Which way in earned it. A hit on the curated vocabulary means
@@ -58,8 +75,41 @@ final class HintProbe
                 : sprintf('text only(%d)', $hint['matchedOn']['score']);
 
             $output->writeln(sprintf('  %-34s %-16s %s', $hint['id'], $hint['category'], $how));
+            $output->writeln(sprintf('      %s', self::admission($hint['matchedOn'])));
         }
 
         return 0;
+    }
+
+    /**
+     * Which of the three ways in admitted this hit, and how much room it left.
+     *
+     * The third is the fragile one: a coverage share is measured against
+     * weights the whole corpus decides, so an unrelated statement using one of
+     * these words moves it. The number is printed rather than a verdict on it,
+     * because a reader seeing 0.502 against 0.500 knows to look at what they
+     * have just written instead of at the assertion that failed — `D-ANS-115`.
+     *
+     * @param array{keywords: int, score: int, coverage: float, terms: array<string, string>, weights: array<string, float>} $matchedOn
+     */
+    private static function admission(array $matchedOn): string
+    {
+        if ($matchedOn['keywords'] > 0) {
+            return sprintf(
+                'admitted by the curated vocabulary; coverage %.3f is not asked',
+                $matchedOn['coverage'],
+            );
+        }
+
+        if (count($matchedOn['terms']) === count($matchedOn['weights'])) {
+            return 'admitted by carrying every term of the query';
+        }
+
+        return sprintf(
+            'admitted by coverage %.3f against a floor of %.3f, missing %s',
+            $matchedOn['coverage'],
+            Hints::MIN_COVERAGE,
+            implode(', ', array_keys(array_diff_key($matchedOn['weights'], $matchedOn['terms']))),
+        );
     }
 }

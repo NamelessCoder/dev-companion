@@ -903,6 +903,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### documentation
 
 - [`D-DOC-059`][D-DOC-059] — The recording report reads both its days in UTC · 2026-08-27
+- [`D-DOC-060`][D-DOC-060] — The worktree says a todo is in hand · 2026-08-27
+- [`D-DOC-061`][D-DOC-061] — A todo's id is derived rather than counted · 2026-08-27
 - [`D-DOC-058`][D-DOC-058] — A recording is reported against the day its sources moved · 2026-08-26
 - [`D-DOC-044`][D-DOC-044] — A failing test names the decisions it was holding · 2026-08-23
 - [`D-DOC-045`][D-DOC-045] — What a listing reads is front matter · 2026-08-23
@@ -958,6 +960,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-059]: documentation/doc-059-the-recording-report-reads-both-its-days-in-utc.md
+[D-DOC-060]: documentation/doc-060-the-worktree-says-a-todo-is-in-hand.md
+[D-DOC-061]: documentation/doc-061-a-todos-id-is-derived-rather-than-counted.md
 [D-DOC-058]: documentation/doc-058-a-recording-is-reported-against-the-day-its-sources-moved.md
 [D-DOC-044]: documentation/doc-044-a-failing-test-names-the-decisions-it-was-holding.md
 [D-DOC-045]: documentation/doc-045-what-a-listing-reads-is-front-matter.md

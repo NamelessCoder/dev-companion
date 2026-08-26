@@ -149,10 +149,10 @@ The first **Wrong if** was read against a report on 2026-08-26 and is not
 satisfied. `feedback/2026-08-24-183711` lost four untracked test files under
 `typo3/sysext/core/Tests/Functional/Error/PageErrorHandler/` across a run of
 `-s functional`, `-s unit`, `-s cgl -n`, `-s phpstan`, `-s checkIntegrityPhp`
-and `-s listExceptionCodes`. None of those is marked as reporting only:
-`unit` and `functional` are `unknown`, and the rest are `check` and touched no
-file the loss was under. The mark said what it could and the loss is what
-`unknown` covers.
+and `-s listExceptionCodes`. None of those is marked as reporting only: `unit`
+and `functional` are `unknown`, and the rest are `check` and touched no file the
+loss was under. The mark said what it could and the loss is what `unknown`
+covers.
 
 Which suite did it is not established here and the report does not claim one.
 Read in `.checkouts/` on 2026-08-26 across 12.4, 13.4, 14.3 and main: every
@@ -177,6 +177,12 @@ the script.
 
 The judgement stays in this entry rather than opening one of its own. `unknown`
 is a value of `runs`, and what a caller does about it is the same subject.
+
+The third **Wrong if** was read against `feedback/2026-08-24-205223` on
+2026-08-26 and is not satisfied: `checkGruntClean` came back on a change it does
+answer for, and the warning stopped a run that would have staged 23 branches of
+somebody's work. What that report found instead is that the warning is the last
+thing any answer says about the question, which is `D-ANS-113`.
 
 The third ask was settled by reading rather than left open. The node suites run
 npm inside `Build/`, whose `package.json` and `package-lock.json` are tracked,

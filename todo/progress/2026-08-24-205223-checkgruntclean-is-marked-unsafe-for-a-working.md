@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-205223-checkgruntclean-is-marked-unsafe-for-a-working.md, feedback/2026-08-25-110635-backporting-a-diff-that-touches-build-sources.md, D-ANS-113
 **Priority:** normal
+**Branch:** todo/checkgruntclean-is-marked-unsafe-for-a-working
+**Claimed:** 2026-08-26
 
 Judged on 2026-08-26 as the ladder's step 1a and written up in `D-ANS-113`: the
 `runs: git` warning on `checkGruntClean` is the last thing any answer says about

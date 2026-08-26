@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-224958-a-releases-line-naming-an-older-branch-sets-a.md
 **Priority:** low
+**Branch:** todo/a-releases-line-naming-an-older-branch-sets-a
+**Claimed:** 2026-08-26
 
 Judge this feedback before fixing what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

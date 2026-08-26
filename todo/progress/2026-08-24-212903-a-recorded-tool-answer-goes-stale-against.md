@@ -2,6 +2,8 @@
 
 **Serves:** documentation/server/tools/
 **Priority:** low
+**Branch:** todo/a-recorded-tool-answer-goes-stale-against
+**Claimed:** 2026-08-26
 
 `tools:index` writes the eight derived pages and `tools:check` holds them, while
 a recorded page is carried over as it stands. So a change to

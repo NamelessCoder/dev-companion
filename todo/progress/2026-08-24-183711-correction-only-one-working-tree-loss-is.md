@@ -1,7 +1,9 @@
-# Reviewing open Gerrit changes materialises refs in the user's working checkout
+# correction: only one working-tree loss is confirmed, and the staging I blamed on a suite was the ...
 
-**Serves:** feedback/2026-08-24-195307-reviewing-open-gerrit-changes-materialises-refs.md
+**Serves:** feedback/2026-08-24-183711-correction-only-one-working-tree-loss-is.md
 **Priority:** low
+**Branch:** todo/correction-only-one-working-tree-loss-is
+**Claimed:** 2026-08-26
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

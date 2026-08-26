@@ -1,7 +1,9 @@
-# correction: only one working-tree loss is confirmed, and the staging I blamed on a suite was the ...
+# Read DefaultConfiguration.php by hand four times without ever trying typo3_configuration_lookup
 
-**Serves:** feedback/2026-08-24-183711-correction-only-one-working-tree-loss-is.md
+**Serves:** feedback/2026-08-24-205113-read-defaultconfiguration-php-by-hand-four.md
 **Priority:** low
+**Branch:** todo/read-defaultconfiguration-php-by-hand-four
+**Claimed:** 2026-08-26
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

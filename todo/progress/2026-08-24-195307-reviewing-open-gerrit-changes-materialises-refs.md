@@ -1,7 +1,9 @@
-# Read DefaultConfiguration.php by hand four times without ever trying typo3_configuration_lookup
+# Reviewing open Gerrit changes materialises refs in the user's working checkout
 
-**Serves:** feedback/2026-08-24-205113-read-defaultconfiguration-php-by-hand-four.md
+**Serves:** feedback/2026-08-24-195307-reviewing-open-gerrit-changes-materialises-refs.md
 **Priority:** low
+**Branch:** todo/reviewing-open-gerrit-changes-materialises-refs
+**Claimed:** 2026-08-26
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

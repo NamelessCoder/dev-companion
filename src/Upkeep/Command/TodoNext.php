@@ -70,7 +70,7 @@ final class TodoNext
         // look wrong — which is why the branch is read before anything else.
         $claim = Todo::claimed();
         if ($claim !== null) {
-            return self::present($output, $claim, self::perform($application, $claim['run'])[0]);
+            return self::present($output, $claim, self::perform($application, $claim['run'])[0], null, Todo::standing());
         }
 
         // A worktree exists because somebody took a todo on, so one standing on
@@ -100,9 +100,17 @@ final class TodoNext
             }
         }
 
-        $items = Todo::items();
-        if ($items !== []) {
-            return self::present($output, $items[0], self::perform($application, $items[0]['run'])[0], count($items) - 1);
+        // What somebody has in hand stays in the queue and is offered to nobody
+        // else — the worktree standing on its branch is what says so, and it is
+        // the whole of what `todo/progress/` used to say (`D-DOC-060`,
+        // `R-FBK-010`).
+        $held = Todo::held();
+        $free = array_values(array_filter(
+            Todo::items(),
+            static fn(array $todo): bool => !isset($held[Todo::branch($todo)]),
+        ));
+        if ($free !== []) {
+            return self::present($output, $free[0], self::perform($application, $free[0]['run'])[0], count($free) - 1);
         }
 
         foreach (Todo::sightings() as $todo) {
@@ -117,10 +125,11 @@ final class TodoNext
         // An empty queue with todos in hand is not an empty repository, and the
         // difference matters here more than anywhere: this is the one branch
         // that invites a session to go find work of its own.
-        if (Todo::progress() !== []) {
+        $inHand = count($held);
+        if ($inHand > 0) {
             $output->writeln(sprintf(
                 '%d todos are in hand elsewhere and are nobody else\'s to start — `bin/cli todo:list`.',
-                count(Todo::progress()),
+                $inHand,
             ));
         }
         if (Todo::waiting() !== []) {
@@ -178,11 +187,11 @@ final class TodoNext
         $branch = Todo::standing();
         Cli::errors($output)->writeln(sprintf(
             "This is a worktree, so it was made for a claim, and it is standing on none:\n"
-            . "nothing in `todo/progress/` names %s.\n"
+            . "no todo in `todo/open/` derives %s.\n"
             . "\n"
-            . "Either it is not the branch the claim was taken for — `bin/cli todo:list` prints\n"
-            . "each claim with its own — or the claim had not been committed to `main` when this\n"
-            . "worktree was cut from it, and no file here can say otherwise.\n"
+            . "Either it is not the branch the worktree was cut for — `bin/cli todo:list` prints\n"
+            . "each todo in hand with its own — or the todo it was cut for has been finished or\n"
+            . "renamed since, and no file here derives that name any more.\n"
             . "\n"
             . "The queue is not the answer either way. What is at the front of it is work the\n"
             . 'session that took it on is already doing: %s.',
@@ -203,13 +212,14 @@ final class TodoNext
      * it can finish and can read nowhere — left unsaid it is looked for, and
      * every call costs the whole context again (`D-FBK-020`).
      *
-     * @param array{title: string, kind: string, claimed: string, every: string, branch: string, path: string, serves: array<int, string>, body: string, ...} $todo
+     * @param array{title: string, kind: string, every: string, path: string, serves: array<int, string>, body: string, ...} $todo
+     * @param string                                                                                                          $branch the branch this session is working it on, where it is one of several
      */
-    private static function present(OutputInterface $output, array $todo, string $reading, ?int $after = null): int
+    private static function present(OutputInterface $output, array $todo, string $reading, ?int $after = null, string $branch = ''): int
     {
         $meta = [$todo['path'], 'serves ' . implode(', ', $todo['serves'])];
         $meta[] = match (true) {
-            $todo['kind'] === 'progress' => 'in hand since ' . $todo['claimed'],
+            $branch !== '' => 'in hand on ' . $branch,
             $todo['every'] === '' => 'queued',
             default => 'every ' . $todo['every'],
         };
@@ -222,7 +232,7 @@ final class TodoNext
         // several reads that as "nothing else is happening". Its own claim is
         // not one of them — a session counting itself among the others would
         // read one claim as two sessions at work.
-        $inHand = count(Todo::progress()) - ($todo['kind'] === 'progress' ? 1 : 0);
+        $inHand = count(Todo::held()) - ($branch === '' ? 0 : 1);
         if ($inHand > 0) {
             $meta[] = $inHand . ' in hand elsewhere — `bin/cli todo:list`';
         }
@@ -256,7 +266,7 @@ final class TodoNext
             // than put in the prompt because two of them name the branch, and
             // the branch is the one thing the prompt is not allowed to carry:
             // what is filled in per session is what gets filled in wrong.
-            $todo['kind'] === 'progress' => sprintf(
+            $branch !== '' => sprintf(
                 "Commit it on the branch it was claimed for, never on `main` — this file included:\n"
                 . "    %s\n"
                 . "Leave the listing at the foot of a `requirements/` or `decisions/` group readme\n"
@@ -264,7 +274,7 @@ final class TodoNext
                 . "branch at once. Merge nothing yourself, and do not remove this worktree.\n"
                 . "Done means the file says so, on this branch: deleted, or left here with the\n"
                 . 'question in `**Waiting on:**` and the work behind it. %s is the rest.',
-                $todo['branch'],
+                $branch,
                 Todo::PARALLEL,
             ),
             $todo['every'] === '' => 'Done means the file says so: deleted, or trimmed to the part that is left.',

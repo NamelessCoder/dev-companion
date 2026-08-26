@@ -15,24 +15,37 @@ about one file, and it is not worth doing for one.
 
 .. image:: ../images/parallel-todos.svg
     :zoomable:
-    :alt: Main carries the shared claim state while one branch and worktree
-          carries each session's unfinished work; completed branches return one
-          at a time through rebase, checks and a fast-forward merge.
+    :alt: A worktree per todo says which session has it, and one branch carries
+          each session's unfinished work; completed branches return one at a
+          time through rebase, checks and a fast-forward merge.
 
-Main and the branch
--------------------
+The worktree and the branch
+---------------------------
 
-**``main`` carries the state, the branch carries the work.**
+**The worktree says who has what, the branch carries the work.**
 
-That is the whole arrangement, and every rule below follows from it. Who has
-what in hand is on ``main``, where all of them read it. The half-finished diff
-is on a branch, where nobody else has to look at it. A question that stopped a
-session comes back to ``main`` on its own — the branch it was asked on stays
-where it is.
+That is the whole arrangement, and every rule below follows from it. A todo one
+worktree stands on is one somebody has in hand, and every command that hands out
+work passes over it. The half-finished diff is on that worktree's branch, where
+nobody else has to look at it.
 
-The reason is that ``todo/`` is the one thing every session writes. One todo is
-one file, and that was already true before anybody worked two at once; it is
-what makes this possible at all. Each session touches its own file and no other.
+Nothing is written down to say so — ``D-DOC-060``. The branch is derived from
+the todo's own name and the worktree is named after the branch, so
+``bin/cli todo:list`` answers the question from what is standing and cannot
+disagree with itself. It was a file in ``todo/progress/`` until 2026-08-27,
+committed onto ``main`` before the worktrees were cut from it: a third copy of
+what the branch and the worktree already said, and the one copy that outlived
+them.
+
+**A todo is named by its id**, ``T-<yymmdd>-<hash>``, which every listing prints
+and every command takes. That the work happens in a worktree is how this
+repository holds a todo in hand, not something a caller has to know — so
+``todo:home`` and ``todo:drop`` take the id, and accept the worktree's directory
+name because it is there.
+
+What that buys is that taking a todo on and giving it back are not moves. A todo
+whose worktree came down is workable again with nothing to put back, and a todo
+that was finished is a deletion the branch already carries.
 
 Taking them on
 --------------
@@ -41,26 +54,19 @@ Taking them on
 
     bin/cli todo:claim 3
 
-**That command is the whole setup.** Three todos come out of the queue into
-``todo/progress/``, each with the branch it will be worked on and today's date;
-from then on ``bin/cli todo:next`` offers them to nobody, and the fourth session
-is handed the item behind them. Then the commit that carries the claims, a
-worktree apiece with its own ``composer install``, and the message the three
-sessions are started with. What is left to do is start them.
+**That command is the whole setup.** Three worktrees, one per todo, each on the
+branch that todo's name derives and each with its own ``composer install``; from
+then on ``bin/cli todo:next`` offers those three to nobody, and the fourth
+session is handed the item behind them. Then the message the three sessions are
+started with. What is left to do is start them.
 
-It carries that out rather than printing it because of the order, not the
-typing. A claim has to be on ``main`` before the worktree is cut from it, or the
-worktree carries no file saying what it was made for — and that failure surfaces
-in the session, hours later, as a refusal nobody can place. Three steps that
-have to happen in one order are one step.
+Nothing is moved and nothing is committed. The queue is the same file it was —
+what changed is that three of its todos now have a worktree standing on them.
 
-Where a todo has been worked before, the branch it derives to and the worktree
-named after it are both still there. Neither is refused and neither is reused:
-the claim is given the first free name — ``todo/<name>-2``,
-``.worktrees/<name>-2`` — and records it, because a worktree that quietly
-attaches to an old branch is the one failure here that looks like success.
-``**Branch:**`` on the claim is what says which is which, which is what it was
-always for.
+Where a todo has been worked before, the branch it derives to may still be
+there. It is passed over and named rather than reused or deleted, because that
+branch still holds the half that is done — a worktree that quietly attaches to
+an old branch is the one failure here that looks like success.
 
 What it prints besides the branches is an overlap, in the three ways two claims
 can have one. Nothing here knows which lines a step will touch, so all three are
@@ -83,10 +89,16 @@ the other as ``src/Installation/Extension.php``. Neither is a declaration and
 neither had to be: it is a session saying where it is going, in the file the
 claim reads anyway.
 
-``bin/cli todo:release <name>`` is the way back out, for a claim nobody is
-working — a branch that came home with a question left over, one that was
-abandoned, a session that never started. Where it goes is read off the claim,
-and the branch is left alone either way.
+``bin/cli todo:drop <id>`` is the way back out, for a todo nobody is working — a
+session that never started, one that was abandoned, a claim taken by mistake.
+There is nothing to put back: the todo is where it always was, and the worktree
+coming down is what offers it again.
+
+What it decides is the branch. One carrying commits is left alone, because it is
+the only place that work exists; one carrying none is deleted, because a branch
+nobody takes down is a todo ``todo:claim`` passes over for good.
+``bin/cli todo:home`` is the other end, for work that is finished — it rebases,
+checks and merges, none of which means anything for a branch carrying nothing.
 
 The worktree
 ------------
@@ -221,32 +233,32 @@ not the exception, and a session working alone asks and waits. One of several
 cannot: waiting blocks a worktree on a person who is answering three others.
 
 So it does not ask, it records. The question goes into a ``**Waiting on:**``
-line on the claim in ``progress/``, in the words it would have been asked in,
-together with what the reading already established. Then the session commits
-what it has and ends. The branch keeps the half that is done.
+line on the todo itself, in the words it would have been asked in, together with
+what the reading already established. Then the session commits what it has and
+ends. The branch keeps the half that is done.
 
 What happens next depends on whether the work behind the question stands on its
 own. Most of the time it does — the session settled one half of its todo and the
 question is about the other — and then the branch merges like any other and the
-trimmed claim comes with it. Where it does not, only the claim comes back:
+todo carrying the question comes with it. Where it does not, only the todo comes
+back:
 
 .. code-block:: bash
 
-    git checkout <branch> -- todo/progress/<name>.md
+    git checkout <branch> -- todo/open/<id>-<name>.md
 
 That keeps ``main`` free of a half-finished change while still saying, in one
 place, what is open and where the work behind it is.
 
-**A claim whose branch is gone does not stay in ``progress/``.** That state is
-for as long as a branch is live. Once the work is merged and the branch deleted,
-``**Branch:**`` names something nobody can look at, and the todo is blocked on a
-person — which is what ``waiting/`` is. ``bin/cli todo:release`` reads that off
-the claim: one carrying a ``**Waiting on:**`` goes to ``waiting/``, one carrying
-none goes to the end of the queue. Neither touches the branch.
+**A todo carrying a question does not stay in the queue.** It would be offered
+to the next session as ordinary work, and what it needs is a person.
+``bin/cli todo:park`` moves every queued todo that names one into ``waiting/``,
+and ``todo:home`` runs it in the worktree so the move reaches ``main`` in the
+commit the work is in.
 
-A claim in ``progress/`` with no ``**Waiting on:**`` and an old ``**Claimed:**``
-is the other thing to look for. Nobody is working it, and nothing will notice on
-its own — ``bin/cli todo:list`` prints the date for exactly that reading.
+A worktree standing on a todo nobody is working is the other thing to look for.
+Nothing notices on its own — ``bin/cli todo:home`` with no argument prints what
+is standing and whether anything on it is uncommitted, which is that reading.
 
 Bringing the branches home
 --------------------------
@@ -262,7 +274,7 @@ sequences of the same steps, started whenever their session ends.
 
 .. code-block:: bash
 
-    bin/cli todo:home <worktree>
+    bin/cli todo:home <id>
 
 **That command is the whole of it**, the way ``todo:claim`` is the whole of the
 setup, and it is here for the reason that one is: the steps below have to happen
@@ -271,9 +283,9 @@ no name it reports what is standing and which of those has a tree nobody
 committed. It refuses in a worktree and it refuses off ``main``, because a
 fast-forward onto somebody's branch is the failure that looks like success.
 
-Nothing here decides that a session has ended, and nothing can: the names are
-the caller's. What the command carries out for each of them is this, and a
-worktree made or merged some other way has to do the same.
+Nothing here decides that a session has ended, and nothing can: the todos are
+the caller's to name. What the command carries out for each of them is this, in
+the worktree that todo is being worked in.
 
 .. code-block:: bash
 
@@ -386,14 +398,10 @@ conflict in the file. Usually both paragraphs belong — each is an account of o
 reading, which is what a **Since then** carries, so the resolution is a heading
 each rather than a choice between them.
 
-**A claim left in ``progress/`` is released here**, and it is the one thing the
-session could not release itself. It ended on a question and left the claim
-there on purpose — the branch was live and held the half that is done — and
-deleting that branch is what turns the same file into a lock on a todo with
-nothing behind it. ``todo:home`` therefore releases what the session left
-standing, in the worktree and beside the listings, so the release reaches
-``main`` in the commit the work is in — to ``waiting/`` where the claim carries
-a question, to the queue where it carries none. ``bin/cli todo:release <name>``
-is the same move made by hand, for a claim whose branch went some other way, and
-``bin/cli todo:check`` reports a claim whose branch is gone so that forgetting
-costs a line rather than a todo.
+**A todo carrying a question is parked here**, and it is the one thing the
+session could not do itself. It ended on the question and left the todo in the
+queue, where the next session would be offered it as ordinary work.
+``todo:home`` therefore runs ``bin/cli todo:park`` in the worktree and beside
+the listings, so the move reaches ``main`` in the commit the work is in. Giving
+the todo back needs nothing at all: the worktree comes down two steps later, and
+that is what offered it to nobody.

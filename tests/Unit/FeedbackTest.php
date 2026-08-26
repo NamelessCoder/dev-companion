@@ -17,6 +17,7 @@ use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\RecordedFeedback;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\Registry;
+use TYPO3\DevCompanion\Upkeep\Todo;
 
 /**
  * Feedback is the one part of the server that writes, so these tests write too.
@@ -211,8 +212,17 @@ final class FeedbackTest extends TestCase
             'subject' => self::MARKER . ' the lookup found nothing',
         ]);
 
+        // The card's id is derived from the feedback and from nothing else, so
+        // the pair is found from either end without either name being looked up
+        // — `D-DOC-061`. It carries the day the report arrived, which is what
+        // the queue is ordered by.
+        // A feedback is named `<date>-<time>-<slug>`, so the day and the slug are
+        // read off it by position rather than by a pattern the card does not use.
+        $name = basename($file, '.md');
+        $day = substr($name, 2, 2) . substr($name, 5, 2) . substr($name, 8, 2);
+
         $card = Card::path($file);
-        self::assertSame('todo/open/' . basename($file), $card);
+        self::assertSame('todo/open/' . Todo::id($name, $day) . '-' . substr($name, 18) . '.md', $card);
 
         $contents = (string) file_get_contents($this->inStore($card));
         self::assertStringContainsString('# ' . self::MARKER . ' the lookup found nothing', $contents);

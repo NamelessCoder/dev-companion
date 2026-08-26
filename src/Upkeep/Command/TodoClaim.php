@@ -18,28 +18,31 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  *
  * `bin/cli todo:next` hands the same first todo to everybody who asks, because
  * the queue is an order rather than an assignment. That is what has to change
- * before two sessions can work at once, and this is the change: the todos come
- * out of the queue in one move, so the second session is offered the item behind
- * them rather than the one somebody is already writing.
+ * before two sessions can work at once, and the worktree is the change: a todo
+ * whose branch one stands on is one somebody has in hand, so the second session
+ * is offered the item behind it rather than the one somebody is already writing.
+ *
+ * Nothing is moved and nothing is committed — `D-DOC-060`. The claim used to be
+ * a file in `todo/progress/` carried onto `main` before the worktrees were cut
+ * from it, which is a third copy of what the branch and the worktree say and the
+ * one copy that could outlive them.
  *
  * It carries the setup out rather than printing it, and the reason is the order
- * rather than the typing. A claim has to be committed to `main` before the
- * worktree is cut from it, or the worktree carries no file saying what it was
- * made for; the failure surfaces in the session, hours later, as a refusal
- * nobody can place. Three steps that must happen in one order are one step, and
- * this is it: the claims, the commit that carries them, a worktree apiece with
- * its own `composer install`, and the message the sessions are started with.
+ * rather than the typing: a worktree apiece with its own `composer install`, and
+ * the message the sessions are started with.
  *
  * The branch is derived from the todo and the worktree named after the branch,
- * so a second claim of a todo somebody once worked would land on both. Neither
- * is refused and neither is reused: the claim is given the first free name and
- * records it, because a worktree that quietly attaches to an old branch is the
+ * so a todo somebody has in hand and one whose branch nobody took down are both
+ * visible before anything is cut. Both are passed over rather than given a
+ * second name, because a worktree that quietly attaches to an old branch is the
  * one failure here that looks like success.
  *
  * The overlap it reports is the only one it can see. Two todos that serve the
  * same entry are two sessions likely to edit one file, and nothing here knows
  * which files a step will touch — so it is a warning to read before the
  * sessions start, not a refusal.
+ *
+ * @phpstan-import-type Section from Todo
  */
 #[AsCommand(
     name: 'todo:claim',
@@ -63,14 +66,12 @@ final class TodoClaim
         #[Argument('how many sessions are going to work at once')]
         int $count = 1,
     ): int {
-        // Claims are taken where `main` is. Asked in a worktree it would move
-        // files nobody else can see, commit them onto somebody's branch and cut
-        // worktrees from that — every step working, and the arrangement it is
-        // setting up gone.
+        // Worktrees are cut where `main` is. Asked in a worktree, every one it
+        // made would be cut from somebody's half-finished branch.
         if (Todo::linked()) {
             Cli::errors($output)->writeln(
                 "This is a worktree, and claims are taken in the checkout it was cut from.\n"
-                . 'Everything here would go onto this branch, where no other session reads it.',
+                . 'Everything cut here would stand on this branch, which is somebody else\'s work.',
             );
 
             return 1;
@@ -87,28 +88,33 @@ final class TodoClaim
 
             return 1;
         }
-        if ($count > count($items)) {
+
+        $root = Paths::root();
+        $free = self::untaken($output, $root, $items);
+        if ($free === []) {
+            Cli::errors($output)->writeln('Every queued todo is in hand or has a branch standing, so there is none to take.');
+
+            return 1;
+        }
+        if ($count > count($free)) {
             $output->writeln(sprintf(
-                'The queue holds %d, which is what %d sessions get.',
-                count($items),
-                count($items),
+                'There are %d nobody has, which is what %d sessions get.',
+                count($free),
+                count($free),
             ));
         }
 
-        $taken = array_slice($items, 0, $count);
-        $root = Paths::root();
+        $taken = array_slice($free, 0, $count);
         $claims = [];
         foreach ($taken as $todo) {
-            [$branch, $directory] = self::free($root, Todo::branch($todo));
+            $branch = Todo::branch($todo);
             $claims[] = [
                 'title' => $todo['title'],
                 'branch' => $branch,
-                'directory' => $directory,
-                'from' => $todo['path'],
-                'to' => Todo::claim($todo, null, $branch),
+                'directory' => '.worktrees/' . basename($branch),
             ];
             $output->writeln($todo['title']);
-            $output->writeln(sprintf('    %s · %s', end($claims)['to'], $branch));
+            $output->writeln(sprintf('    %s · %s', $todo['path'], $branch));
         }
         $output->writeln('');
 
@@ -119,9 +125,6 @@ final class TodoClaim
             }
         }
 
-        if (!self::record($output, $root, $claims)) {
-            return 1;
-        }
         $standing = self::worktrees($output, $root, $claims);
         $byHand = self::start($output, $root, $standing);
         if ($byHand !== []) {
@@ -133,85 +136,45 @@ final class TodoClaim
     }
 
     /**
-     * The first name this claim can have to itself, as the branch and the
-     * directory named after it.
+     * The queued todos nobody has, which is what there is to take on.
      *
-     * Both are derived from the todo, so both are taken in exactly the same
-     * case: the todo was claimed once before, by a session whose branch is
-     * still there. The two are found together and carry the same number,
-     * because a worktree whose name says one thing and whose branch says
-     * another is worse than either collision.
+     * Two ways a todo is not free, and they are named apart because they are
+     * different things to do about it. One with a worktree is being worked, and
+     * that is the arrangement doing its job. One whose branch is standing with no
+     * worktree on it is work somebody left: the branch still holds the half that
+     * is done, so it is neither reused nor deleted here.
      *
-     * @return array{0: string, 1: string} the branch and the directory below the checkout
+     * The branches are read in one call rather than one per todo, which is the
+     * same reading `Todo::inHand()` makes of the worktrees.
+     *
+     * @param array<int, Section> $items
+     *
+     * @return array<int, Section>
      */
-    private static function free(string $root, string $derived): array
+    private static function untaken(OutputInterface $output, string $root, array $items): array
     {
-        for ($number = 1;; $number++) {
-            $suffix = $number === 1 ? '' : '-' . $number;
-            $directory = '.worktrees/' . basename($derived) . $suffix;
-            [$exists] = Checkouts::run(['git', '-C', $root, 'rev-parse', '--verify', '--quiet', 'refs/heads/' . $derived . $suffix]);
-            if ($exists !== 0 && !file_exists($root . '/' . $directory)) {
-                return [$derived . $suffix, $directory];
+        $held = array_flip(Todo::inHand($root));
+        [$read, $said] = Checkouts::run(['git', '-C', $root, 'for-each-ref', '--format=%(refname:short)', 'refs/heads/todo/']);
+        $branches = $read === 0 ? array_flip(array_filter(array_map(trim(...), preg_split('/\R/', trim($said)) ?: []))) : [];
+
+        $free = [];
+        foreach ($items as $todo) {
+            $branch = Todo::branch($todo);
+            if (isset($held[$branch])) {
+                continue;
             }
-        }
-    }
+            if (isset($branches[$branch])) {
+                $output->writeln(sprintf('%s is left on %s, which nothing here reuses or deletes.', $todo['title'], $branch));
+                continue;
+            }
 
-    /**
-     * The claims onto `main`, in the commit the worktrees are cut from.
-     *
-     * Exactly the files this command moved and nothing beside them: the
-     * checkout it runs in is one somebody is working, and a claim that swept up
-     * half of their afternoon is worse than one nobody committed. `--only` is
-     * that, and it leaves whatever else was staged where it was.
-     *
-     * @param array<int, array{title: string, branch: string, from: string, to: string, ...}> $claims
-     */
-    private static function record(OutputInterface $output, string $root, array $claims): bool
-    {
-        $paths = [];
-        foreach ($claims as $claim) {
-            $paths[] = $claim['from'];
-            $paths[] = $claim['to'];
+            $free[] = $todo;
+        }
+        if ($free !== $items) {
+            $output->writeln('');
         }
 
-        [$staged, $said] = Checkouts::run(array_merge(['git', '-C', $root, 'add', '--'], $paths));
-        if ($staged !== 0) {
-            Cli::errors($output)->writeln('The claims could not be staged, so nothing was committed: ' . trim($said));
-
-            return false;
-        }
-
-        $lines = [];
-        foreach ($claims as $claim) {
-            $lines[] = '- ' . $claim['title'] . ' — ' . $claim['branch'];
-        }
-        [$committed, $said] = Checkouts::run(array_merge([
-            'git', '-C', $root, 'commit', '--only',
-            '--message', count($claims) === 1
-                ? '[TASK] Take one todo out of the queue into a session of its own'
-                : sprintf('[TASK] Take %s todos out of the queue into as many hands', self::counted(count($claims))),
-            '--message', "Each claim names the branch its work is on and the day it was taken, so\n"
-                . "the worktrees are cut from a `main` that already says who has what.\n\n"
-                . implode("\n", $lines),
-            '--',
-        ], $paths));
-        if ($committed !== 0) {
-            Cli::errors($output)->writeln(
-                "The claims are moved but not committed, and a worktree cut now would stand on\n"
-                . 'nothing: ' . trim($said),
-            );
-
-            return false;
-        }
-
-        [, $revision] = Checkouts::run(['git', '-C', $root, 'rev-parse', '--short', 'HEAD']);
-        $output->writeln(sprintf(
-            'On `main` as %s, which is what the worktrees are cut from.',
-            trim($revision),
-        ));
-        $output->writeln('');
-
-        return true;
+        return $free;
     }
 
     /**
@@ -308,18 +271,22 @@ final class TodoClaim
             return $standing;
         }
 
+        // One file for every session there has ever been, because nothing in the
+        // briefing is per-session: which todo is whose is read out of the
+        // worktree. Written per worktree it left a copy of one constant behind
+        // for each, and 484 of them had accumulated by 2026-08-27.
+        $message = $logs . '/briefing.message';
+        if (file_put_contents($message, Todo::BRIEFING . "\n") === false) {
+            Cli::errors($output)->writeln($message . ' could not be written, so no session has anything to be sent.');
+
+            return $standing;
+        }
+
         $output->writeln('');
         $byHand = [];
         foreach ($standing as $directory) {
             $name = basename($directory);
-            $message = $logs . '/' . $name . '.message';
             $log = $logs . '/' . $name . '.log';
-            if (file_put_contents($message, Todo::BRIEFING . "\n") === false) {
-                Cli::errors($output)->writeln($name . ' has no message to be sent, so it was not started.');
-                $byHand[] = $directory;
-                continue;
-            }
-
             $started = proc_open(
                 ['sh', '-c', sprintf('%s < %s > %s 2>&1 &', $command, escapeshellarg($message), escapeshellarg($log))],
                 [],
@@ -341,7 +308,7 @@ final class TodoClaim
             $output->writeln(sprintf(
                 "Started from %s, one session per worktree, each in its own directory and each\n"
                 . "sent the same message. One that reports comes home with `bin/cli todo:home\n"
-                . '<worktree>`, whenever it reports and without waiting for the rest: %s.',
+                . '<id>`, whenever it reports and without waiting for the rest: %s.',
                 self::LAUNCH,
                 Todo::PARALLEL,
             ));
@@ -417,23 +384,13 @@ final class TodoClaim
         $lines[] = '';
         $lines[] = sprintf(
             "What a session started from a command line has to be given: %s.\n"
-            . "One that reports comes home with `bin/cli todo:home <worktree>`, and what\n"
+            . "One that reports comes home with `bin/cli todo:home <id>`, and what\n"
             . 'that carries out is %s.',
             Todo::LAUNCH,
             Todo::PARALLEL,
         );
 
         return implode("\n", $lines);
-    }
-
-    /**
-     * A small count as the word it is read as, for the one line of this that a
-     * person reads back later. Above nine the numeral is what a reader wants
-     * anyway, and this repository has never claimed that many at once.
-     */
-    private static function counted(int $count): string
-    {
-        return [1 => 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][$count] ?? (string) $count;
     }
 
     private static function indent(string $block): string

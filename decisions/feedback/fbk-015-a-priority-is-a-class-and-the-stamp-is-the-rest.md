@@ -4,7 +4,6 @@ title: A priority is a class, and the stamp is the rest
 date: 2026-08-02
 status: open
 coveredBy:
-  - TodoTest::aClaimIsOneMoveThatGoesBothWays
   - TodoTest::theQueueIsReadByPriorityAndThenByAge
 ---
 
@@ -104,3 +103,13 @@ The first **Wrong if** above still stands and is now the whole of the watch: if
 everything on the board is `high`, the rank has come back through the
 vocabulary. The second half of it — *nothing carries a priority at all* — is no
 longer a way this can go wrong, because a file like that is reported.
+
+## Since then
+
+The stamp is an id — `T-<yymmdd>-<hash>` — and the day in it is what this entry
+called the arrival time. `D-DOC-061` made that change for the reason this one
+rejected the number: an id read off what already exists is one two sessions both
+take, which is what happened to `D-ANS-114` on two branches cut from one `main`.
+The day still orders the queue below the three words, and nothing is renamed to
+move.
+

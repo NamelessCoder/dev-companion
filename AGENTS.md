@@ -83,8 +83,7 @@ skills/base.md     # the order every task starts in, copied into each published 
 requirements/      # what must hold, and what holds it there: one per file; open ones are not built yet
 decisions/         # what a change assumed, and what would show it to be wrong: one per file
 todo/              # the order of the work: one todo per file, and where a file sits is the stage it is in
-todo/open/         # the queue, read by the priority in each head and then by the date in each name
-todo/progress/     # what a session has in hand, naming the branch the work is on
+todo/open/         # the queue, read by the priority in each head and then by the day in each id
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on
 documentation/     # what the server is and how a procedure is carried out; published whole as the site; reStructuredText, where everything around it is markdown — D-DOC-029
 documentation/usage/   # having this server answer in somebody's own project
@@ -151,11 +150,12 @@ How `next` decides what is due, and how the work moves between `feedback/`,
 [documentation/records/readme.rst](documentation/records/readme.rst).
 
 Several sessions at once is `bin/cli todo:claim <n>`, one worktree and one
-branch each, and `bin/cli todo:home <worktree>` is how one of them comes back.
-Both carry their step out rather than printing it, so neither is a reason to
-read anything first. `main` carries who has what in hand, the branch carries the
-half-finished work, and `todo:next` in a worktree hands over that worktree's
-claim rather than the front of the queue. What that costs and what still
+branch each, and `bin/cli todo:home <id>` is how one of them comes back.
+`bin/cli todo:drop <id>` gives one back unmerged. All three carry their step out
+rather than printing it, so none is a reason to read anything first. The
+worktree standing on a todo's branch is what says somebody has it in hand, so
+`todo:next` in one hands over that todo rather than the front of the queue, and
+every command that hands out work passes over it. What that costs and what still
 collides:
 [documentation/records/working-todos-in-parallel.rst](documentation/records/working-todos-in-parallel.rst).
 

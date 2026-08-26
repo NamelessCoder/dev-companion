@@ -36,31 +36,35 @@ final class TodoList
         // what put each one where it is rather than repeating the order as a
         // count. A blank there is a todo carrying no priority, which
         // `bin/cli todo:check` reports — the gap is the point.
+        // What somebody has in hand is in the queue like everything else, and is
+        // marked rather than listed apart: it is the worktree that says so, and a
+        // todo whose worktree came down is workable again with nothing rewritten.
+        $held = [];
+        foreach (Todo::held() as $branch => $todo) {
+            $held[$todo['path']] = $branch;
+        }
         $items = Todo::items();
         foreach ($items as $item) {
-            $output->writeln(sprintf('%-12s %s', $item['priority'], $item['title']));
+            $branch = $held[$item['path']] ?? '';
+            $output->writeln(sprintf(
+                '%-12s %-16s %s',
+                $branch === '' ? $item['priority'] : 'in hand',
+                Todo::identifier($item),
+                $item['title'],
+            ));
         }
         if ($items === []) {
             $output->writeln('The queue is empty.');
         }
 
-        // A claim is the one line here that goes stale on its own: the session
-        // holding it may have ended without coming back, and nothing notices.
-        // So it is printed with the date it was taken on, and whoever reads an
-        // old one decides whether the branch is still being worked.
-        foreach (Todo::progress() as $todo) {
-            $output->writeln(sprintf(
-                '%-12s %s — %s since %s%s',
-                'in hand',
-                $todo['title'],
-                $todo['branch'],
-                $todo['claimed'],
-                $todo['waitingOn'] === '' ? '' : ', waiting on ' . $todo['waitingOn'],
-            ));
-        }
-
         foreach (Todo::waiting() as $todo) {
-            $output->writeln(sprintf('%-12s %s — %s', 'waiting', $todo['title'], $todo['waitingOn']));
+            $output->writeln(sprintf(
+                '%-12s %-16s %s — %s',
+                'waiting',
+                Todo::identifier($todo),
+                $todo['title'],
+                $todo['waitingOn'],
+            ));
         }
 
         foreach (Todo::references() as $reference) {

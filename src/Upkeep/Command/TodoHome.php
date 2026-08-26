@@ -51,13 +51,13 @@ use TYPO3\DevCompanion\Upkeep\Todo;
 final class TodoHome
 {
     /**
-     * @param array<int, string> $worktree
+     * @param array<int, string> $todo
      */
     public function __invoke(
         OutputInterface $output,
         Application $application,
-        #[Argument('the worktrees whose sessions have ended, by directory name')]
-        array $worktree = [],
+        #[Argument('the todos whose sessions have ended, by id — or by the worktree standing on one')]
+        array $todo = [],
     ): int {
         // The mirror of the refusal in `todo:claim`, and for the mirrored
         // reason. There the claims would go onto somebody's branch; here the
@@ -73,8 +73,8 @@ final class TodoHome
             return 1;
         }
 
-        $standing = self::standing($root);
-        if ($worktree === []) {
+        $standing = array_keys(Todo::worktrees($root));
+        if ($todo === []) {
             return self::report($output, $root, $standing);
         }
 
@@ -90,11 +90,11 @@ final class TodoHome
         }
 
         $home = [];
-        foreach ($worktree as $one) {
-            $name = basename(rtrim((string) $one, '/'));
-            if (!in_array($name, $standing, true)) {
+        foreach ($todo as $one) {
+            $name = Todo::worktreeNamed($one, $root);
+            if ($name === null) {
                 Cli::errors($output)->writeln(sprintf(
-                    '%s is no worktree below .worktrees/ — `bin/cli todo:home` names the ones that are.',
+                    '%s is no todo anybody has in hand — `bin/cli todo:list` prints the ones that are.',
                     $one,
                 ));
 
@@ -115,7 +115,7 @@ final class TodoHome
         $output->writeln('── repository:check');
         $worst = $application->doRun(new StringInput('repository:check'), $output);
 
-        return count($home) === count($worktree) ? $worst : max(1, $worst);
+        return count($home) === count($todo) ? $worst : max(1, $worst);
     }
 
     /**
@@ -168,7 +168,7 @@ final class TodoHome
         }
         $output->writeln('    rebased onto main');
 
-        self::owed($output, $path, $branch);
+        self::owed($output, $path);
 
         [$green, $said] = Checkouts::run(['composer', 'ci'], $path);
         if ($green !== 0) {
@@ -210,26 +210,20 @@ final class TodoHome
      *
      * Two things a session cannot get right and a rebased worktree can: the
      * generated listing at the foot of a group readme, which a session sees only
-     * its own entry of, and the claim in `progress/`, which is a state for as
-     * long as the branch is live. Amended rather than committed beside the work,
-     * because a listing line and the entry it lists are one change — `D-FBK-011`.
-     * Before `composer ci`, so the suite runs on the tree that merges.
+     * its own entry of, and a todo left carrying the question the session
+     * stopped on, which belongs where nobody is offered it. Amended rather than
+     * committed beside the work, because a listing line and the entry it lists
+     * are one change — `D-FBK-011`. Before `composer ci`, so the suite runs on
+     * the tree that merges.
+     *
+     * Run in the worktree, which is where the session wrote the question. A todo
+     * it finished is a deletion the branch already carries and a todo it left is
+     * back in the queue the moment this worktree comes down, so neither needs
+     * anything doing to it here — `D-DOC-060`.
      */
-    private static function owed(OutputInterface $output, string $path, string $branch): void
+    private static function owed(OutputInterface $output, string $path): void
     {
-        $commands = [];
-        foreach (Todo::progress() as $claim) {
-            // Read off `main`, which is where a claim names its branch, and
-            // released in the worktree, which is where the session may have
-            // written the question it stopped on. A todo it finished is a
-            // deletion this branch already carries, and there is nothing left
-            // to put back.
-            if ($claim['branch'] === $branch && is_file($path . '/' . $claim['path'])) {
-                $commands[] = ['todo:release', basename($claim['path'], '.md')];
-            }
-        }
-        $commands[] = ['requirements:index'];
-        $commands[] = ['decisions:index'];
+        $commands = [['todo:park'], ['requirements:index'], ['decisions:index']];
 
         foreach ($commands as $command) {
             [$ran, $said] = Checkouts::run(array_merge([PHP_BINARY, $path . '/bin/cli'], $command), $path);
@@ -272,67 +266,36 @@ final class TodoHome
     /**
      * What is standing, for a caller who has not said which branch is done.
      *
-     * The state of each rather than the name alone: which branch it is on, and
-     * whether anything on it is uncommitted. A worktree with a dirty tree is
-     * the one this command will refuse, and finding that out before naming it
-     * costs nothing.
+     * The state of each rather than the id alone: which todo it is, and whether
+     * anything on it is uncommitted. A worktree with a dirty tree is the one
+     * this command will refuse, and finding that out before naming it costs
+     * nothing.
      *
      * @param array<int, string> $standing
      */
     private static function report(OutputInterface $output, string $root, array $standing): int
     {
         if ($standing === []) {
-            $output->writeln('No worktree is standing, so no branch is waiting to come home.');
+            $output->writeln('Nobody has a todo in hand, so no work is waiting to come home.');
 
             return 0;
         }
 
+        $held = Todo::held($root);
+        $branches = Todo::worktrees($root);
         foreach ($standing as $name) {
-            $path = $root . '/.worktrees/' . $name;
-            [, $branch] = Checkouts::run(['git', '-C', $path, 'rev-parse', '--abbrev-ref', 'HEAD']);
-            [, $dirty] = Checkouts::run(['git', '-C', $path, 'status', '--porcelain']);
-            $output->writeln($name);
-            $output->writeln(sprintf(
-                '    %s · %s',
-                trim($branch) === '' ? 'on no branch' : trim($branch),
-                trim($dirty) === '' ? 'nothing uncommitted' : 'changes nobody committed',
-            ));
+            $todo = $held[$branches[$name] ?? ''] ?? null;
+            [, $dirty] = Checkouts::run(['git', '-C', $root . '/.worktrees/' . $name, 'status', '--porcelain']);
+            $output->writeln($todo === null
+                ? '—                ' . $name . ' holds no todo'
+                : sprintf('%-16s %s', Todo::identifier($todo), $todo['title']));
+            $output->writeln('    ' . (trim($dirty) === '' ? 'nothing uncommitted' : 'changes nobody committed'));
         }
 
         $output->writeln('');
-        $output->writeln('One of them at a time: `bin/cli todo:home <worktree>`.');
+        $output->writeln('One of them at a time: `bin/cli todo:home <id>`.');
 
         return 0;
-    }
-
-    /**
-     * The worktrees below `.worktrees/`, which is where a claim puts one.
-     *
-     * Read off git rather than off the directory: a `.worktrees/` entry git has
-     * forgotten is not one this command can merge, and the logs `todo:claim`
-     * writes live in there beside the real ones.
-     *
-     * @return array<int, string>
-     */
-    private static function standing(string $root): array
-    {
-        [$listed, $said] = Checkouts::run(['git', '-C', $root, 'worktree', 'list', '--porcelain']);
-        if ($listed !== 0) {
-            return [];
-        }
-
-        $names = [];
-        foreach (preg_split('/\R/', trim($said)) ?: [] as $line) {
-            if (!str_starts_with($line, 'worktree ')) {
-                continue;
-            }
-            $path = substr($line, strlen('worktree '));
-            if (str_starts_with($path, $root . '/.worktrees/')) {
-                $names[] = basename($path);
-            }
-        }
-
-        return $names;
     }
 
     /** The end of a captured run, which is where a suite says what failed. */

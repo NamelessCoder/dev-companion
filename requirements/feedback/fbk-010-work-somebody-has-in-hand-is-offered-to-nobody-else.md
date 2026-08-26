@@ -3,25 +3,26 @@ id: R-FBK-010
 title: 'Work somebody has in hand is offered to nobody else'
 status: held
 heldBy:
-  - TodoTest::aClaimIsOneMoveThatGoesBothWays
+  - TodoTest::aTodoThatNamesAQuestionIsParkedWhereNobodyIsOfferedIt
   - TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim
-  - TodoTest::whatIsInHandIsOfferedToNobodyElse
+  - TodoTest::whatIsInHandIsTheTodoAWorktreeStandsOn
 ---
 
 # R-FBK-010 — Work somebody has in hand is offered to nobody else
 
-**A todo a session has taken on is out of the queue, and the command that hands
-out work does not hand out that one.**
+**A todo a session has taken on is one the command that hands out work does not
+hand out.**
 
 The queue is an order, not an assignment. `bin/cli todo:next` reads the same
 first item for everybody who asks, which is exactly right while one session
 works at a time. It is wrong the moment two do: both are handed the same todo,
 and the second finds out by writing a change the first has already written.
 
-So taking one on is a move — out of the queue and into `todo/progress/`, the way
-finishing one is a deletion and blocking on one is a move to `waiting/`. Where a
-file sits is what it is, and a claim that lived in a field of a file still in
-the queue would be a claim only the checkout it was set in can see.
+So taking one on is cutting a worktree on the branch the todo derives, and the
+command that hands out work passes over every todo one stands on — `D-DOC-060`.
+The todo does not move. It was a move into `todo/progress/` until 2026-08-27,
+which said a third time what the branch and the worktree already said, and said
+it in the one copy that outlives them.
 
 What it took on stays taken on. A requirement whose todo dropped off the list of
 what is answered for would go back onto `bin/cli unresolved:list` while somebody
@@ -45,8 +46,9 @@ the whole of `todo/` was built around one session at a time.
 
 ## Held by
 
-- `TodoTest::whatIsInHandIsOfferedToNobodyElse` for the queue a claim leaves
+- `TodoTest::whatIsInHandIsTheTodoAWorktreeStandsOn` for what says a todo is
+  taken.
 - `TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim` for what
-- `bin/cli todo:next` answers in a worktree, and
-- `TodoTest::aClaimIsOneMoveThatGoesBothWays` for the way back out. That the
-- Branch and the date are there at all is `bin/cli todo:check`.
+  `bin/cli todo:next` answers in a worktree.
+- `TodoTest::aTodoThatNamesAQuestionIsParkedWhereNobodyIsOfferedIt` for the way
+  out that is not a deletion.

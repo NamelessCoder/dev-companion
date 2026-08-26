@@ -4,7 +4,7 @@ title: Every stage is a directory, and closing is none
 date: 2026-08-02
 status: confirmed
 coveredBy:
-  - TodoTest::aClaimIsOneMoveThatGoesBothWays
+  - TodoTest::aTodoThatNamesAQuestionIsParkedWhereNobodyIsOfferedIt
 ---
 
 # D-FBK-014 — Every stage is a directory, and closing is none
@@ -22,7 +22,7 @@ built a path.
   and four directories, of which `progress/`, `waiting/` and `recurring/` held
   todos and `reference/` held two pages that are not work at all. `Todo::read()`
   addressed the queue as the empty string, `Todo::parse()` built the path from a
-  ternary on the kind, and `Todo::release()` wrote a bare `todo/` prefix. One
+  ternary on the kind, and putting a claim back wrote a bare `todo/` prefix. One
   state of four, spelled differently in three places.
 - Nothing has ever been kept because it was done. `feedback/archive/` is the
   only directory here that holds what was closed, and
@@ -90,3 +90,16 @@ three items it bundled are no longer a machine's business at all, because
 `bin/cli environment:create` makes those installations, so what is left is what
 a scaffold cannot produce. That is the third **Wrong if** answered the other way
 round: the page was read and emptied instead of a second one being started.
+
+## Since then
+
+There are two stages rather than three. `progress/` was the state a claim was
+kept in, and `D-DOC-060` reads it off the worktree instead, so a todo somebody
+has in hand is a file in `open/` that has not moved. What this entry decided is
+untouched by that: where a file sits still says which stage it is in, and
+closing is still a deletion.
+
+The second **Wrong if** watched for a fourth directory arriving beside the
+three. What arrived is the opposite — one of the three turned out to be
+answerable from git — and the split into stages and non-stages held it.
+

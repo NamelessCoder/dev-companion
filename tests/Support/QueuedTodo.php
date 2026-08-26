@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Support;
 
 use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Finder\Finder;
+use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Todo;
 
@@ -32,6 +33,17 @@ trait QueuedTodo
     /** The queue this case is writing into, made on the first write. */
     private ?string $ownQueue = null;
 
+    /**
+     * How many this case has queued, which is what keeps two of them apart.
+     *
+     * An id is derived from what the todo is named after (`D-DOC-061`), and two
+     * fixtures of one case are named after the same thing on the same day. The
+     * count is what the repository has instead — the instant a card or a hand
+     * written todo is created — and it is per case, so a name is the same on
+     * every run.
+     */
+    private int $queued = 0;
+
     #[After]
     public function removeQueuedTodos(): void
     {
@@ -47,6 +59,7 @@ trait QueuedTodo
 
         $queue = $this->ownQueue;
         $this->ownQueue = null;
+        $this->queued = 0;
         if (!is_dir($queue)) {
             return;
         }
@@ -85,7 +98,7 @@ trait QueuedTodo
         // relative to that root and moving one resolves the two against each
         // other.
         $root = sys_get_temp_dir() . '/' . self::MARKER . '-' . getmypid() . '-' . bin2hex(random_bytes(6));
-        foreach (['open', 'progress', 'waiting', 'recurring', 'reference'] as $stage) {
+        foreach (['open', 'waiting', 'recurring', 'reference'] as $stage) {
             mkdir($root . '/todo/' . $stage, 0o777, true);
         }
 
@@ -97,9 +110,9 @@ trait QueuedTodo
     /**
      * One queued todo, behind whatever this case has already queued.
      *
-     * It is `low` and stamped today, which is what puts it last: below
+     * It is `low` and carries today's id, which is what puts it last: below
      * everything judged higher and behind the other `low` ones because they
-     * are older. A case about the order says which priority and which stamp it
+     * are older. A case about the order says which priority and which day it
      * needs instead.
      *
      * What it serves and what its step says are the same two parameters: a case
@@ -111,11 +124,12 @@ trait QueuedTodo
      */
     private function queueATodo(
         string $priority = 'low',
-        ?string $stamp = null,
+        ?string $day = null,
         string $serves = 'todo/',
         string $step = 'The step this fixture stands for.',
+        string $slug = self::MARKER,
     ): array {
-        $name = sprintf('%s-%s.md', $stamp ?? date('Y-m-d-His'), self::MARKER);
+        $name = sprintf('%s-%s.md', Todo::id($slug . ++$this->queued, $day), $slug);
         file_put_contents(
             $this->ownQueue() . '/todo/open/' . $name,
             '# ' . self::MARKER . "\n\n**Serves:** " . $serves . "\n**Priority:** " . $priority
@@ -126,21 +140,16 @@ trait QueuedTodo
     }
 
     /**
-     * One claim in hand, as a session working it would have left it.
+     * One queued todo a worktree stands on, as the git this case is given
+     * answers for it.
      *
-     * Written here rather than in the cases because three of them wrote the
-     * same file by hand into the real `todo/progress/`, and a write that is
-     * spelled out four times is four places to forget where it goes.
+     * A claim is a worktree and nothing else — `D-DOC-060` — so what a case
+     * about one arranges is the answer `git worktree list` gives, not a file.
      */
-    private function claimInProgress(string $branch, string $claimed = '2026-08-01', string $waitingOn = ''): void
+    private function worktreeOn(string $branch, string $directory = self::MARKER): string
     {
-        file_put_contents(
-            $this->ownQueue() . '/todo/progress/' . self::MARKER . '.md',
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . $branch
-                . "\n**Claimed:** " . $claimed
-                . ($waitingOn === '' ? '' : "\n**Waiting on:** " . $waitingOn)
-                . "\n\nThe step this claim was taken for.\n",
-        );
+        return 'worktree ' . $this->ownQueue() . '/.worktrees/' . $directory
+            . "\nHEAD 0000000000000000000000000000000000000000\nbranch refs/heads/" . $branch . "\n";
     }
 
     /**
@@ -168,6 +177,49 @@ trait QueuedTodo
             . ($run === '' ? '' : "\n**Run:** " . $run)
             . "\n\nThe reading this fixture stands for.\n",
         );
+    }
+
+    /**
+     * A git that answers the same thing whatever it is asked.
+     *
+     * What these cases are about is what this repository does with the answer,
+     * and every one of them asks git once. A real worktree would be a directory
+     * and a branch made on the machine the suite runs on, which is what
+     * `R-COD-003` is about.
+     */
+    private function gitSaying(string $output): CommandRunner
+    {
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(['ok' => true, 'exitCode' => 0, 'output' => $output, 'error' => '']);
+
+        return $git;
+    }
+
+    /**
+     * A git that answers each command by what it is asked, and records the lot.
+     *
+     * A case about a sequence of git calls needs different answers to different
+     * questions, which the one-answer stub above cannot give. The key is the
+     * first argument after the `-C <path>` pair, so a case says `worktree` or
+     * `rev-list` rather than repeating the whole line.
+     *
+     * @param array<string, array{0: int, 1: string}> $answers by the git subcommand
+     * @param array<int, string>                      $asked   filled in with every command run
+     */
+    private function gitAnswering(array $answers, array &$asked): CommandRunner
+    {
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturnCallback(
+            static function (array $command) use ($answers, &$asked): array {
+                $asked[] = implode(' ', $command);
+                $subcommand = $command[3] ?? '';
+                [$exitCode, $output] = $answers[$subcommand] ?? [0, ''];
+
+                return ['ok' => $exitCode === 0, 'exitCode' => $exitCode, 'output' => $output, 'error' => ''];
+            },
+        );
+
+        return $git;
     }
 
     /** One todo blocked on an answer, which is what `bin/cli todo:waiting` reports. */

@@ -171,13 +171,13 @@ final class TodoHomeTest extends TestCase
     }
 
     /**
-     * A name that is no worktree is a caller working from a stale listing, and
+     * A todo nobody has in hand is a caller working from a stale listing, and
      * the four steps would otherwise be carried out against a directory git has
-     * never heard of. Nothing runs, and the message names where the real ones
-     * are read from.
+     * never heard of. Nothing runs, and the message names where what is in hand
+     * is read from.
      */
     #[Test]
-    public function aNameThatIsNoWorktreeRunsNothing(): void
+    public function aTodoNobodyHasInHandRunsNothing(): void
     {
         $this->gitThatAnswers([]);
         $output = new BufferedOutput();
@@ -185,7 +185,7 @@ final class TodoHomeTest extends TestCase
         $exitCode = (new TodoHome())($output, Cli::application(), ['a-worktree-nobody-cut']);
 
         self::assertSame(1, $exitCode);
-        self::assertStringContainsString('is no worktree below .worktrees/', $output->fetch());
+        self::assertStringContainsString('is no todo anybody has in hand', $output->fetch());
         self::assertSame([], $this->matching('rebase'));
     }
 

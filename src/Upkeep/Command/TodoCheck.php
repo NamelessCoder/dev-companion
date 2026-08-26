@@ -6,8 +6,6 @@ namespace TYPO3\DevCompanion\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\DevCompanion\Paths;
-use TYPO3\DevCompanion\Upkeep\Checkouts;
 use TYPO3\DevCompanion\Upkeep\Cli;
 use TYPO3\DevCompanion\Upkeep\OpenFeedback;
 use TYPO3\DevCompanion\Upkeep\Todo;
@@ -23,9 +21,8 @@ use TYPO3\DevCompanion\Upkeep\Todo;
  * feedback is the reason it is in the queue, and when it goes the todo is either
  * done or needs trimming to the part that is left. A todo in `waiting/` is held
  * to the one thing it exists to carry — the question it is blocked on, in the
- * words it was asked in — because no session is offered it to ask again, and
- * one in `progress/` to the branch and the date, because a claim nobody can
- * date is one nobody dares take back.
+ * words it was asked in,
+ * because no session is offered it to ask again.
  *
  * The last two things it says are about the other direction, where the fault is
  * in the relation between a feedback and the todos rather than in one file: an
@@ -84,14 +81,15 @@ final class TodoCheck
             // without one is a file that says nothing about where it stands,
             // which is exactly what could not be reported while absence meant
             // something.
-            if (in_array($todo['kind'], ['queue', 'progress', 'waiting'], true)) {
+            if (in_array($todo['kind'], ['queue', 'waiting'], true)) {
                 if ($todo['priority'] === '') {
                     $problems[] = $where . ' carries no `**Priority:**`, so nothing says where it stands';
                 }
-                // The stamp is the second half of the order, so a todo in a
-                // stage that has none sorts wherever the file system puts it.
+                // The id is the second half of the order and the only way to
+                // cite one, so a todo in a stage without it sorts wherever the
+                // file system puts it and is named by seventy characters.
                 if (preg_match(Todo::STAMP, basename($where)) !== 1) {
-                    $problems[] = $where . ' is named by no date, so nothing says how long it has been waiting';
+                    $problems[] = $where . ' opens with no `T-<yymmdd>-<hash>`, so nothing orders or cites it';
                 }
             } elseif ($todo['priority'] !== '') {
                 $problems[] = $where . ' recurs and carries a priority, where the cadence is what orders it';
@@ -109,34 +107,6 @@ final class TodoCheck
                 $reading[$command][] = $todo['title'];
             }
 
-            if ($todo['kind'] === 'progress') {
-                // A claim locks everybody else out of one todo, so it owes the
-                // two things that tell it from one nobody came back to: where
-                // the work is, and when it was taken on.
-                if ($todo['branch'] === '') {
-                    $problems[] = $where . ' is in hand and does not say where — `**Branch:**` is where the work is';
-                }
-                if (strtotime($todo['claimed']) === false) {
-                    $problems[] = $where . ' is in hand since '
-                        . ($todo['claimed'] === '' ? 'never — `**Claimed:**` is what dates a claim' : $todo['claimed']);
-                }
-                // A claim is right for as long as its branch is. The session
-                // that ended on a question leaves one here on purpose, because
-                // the branch still holds the half that is done — and the moment
-                // that branch is merged and deleted the same file becomes a
-                // lock on a todo with nothing behind it. Nothing noticed that
-                // before: the field was checked for being written, never for
-                // naming something that exists.
-                if ($todo['branch'] !== '' && !self::branchExists($todo['branch'])) {
-                    $problems[] = $where . ' is in hand on ' . $todo['branch']
-                        . ', which is gone — `bin/cli todo:release ' . basename($where) . '`';
-                }
-                continue;
-            }
-            if ($todo['branch'] !== '' || $todo['claimed'] !== '') {
-                $problems[] = $where . ' carries a claim and is not in todo/progress/';
-            }
-
             if ($todo['kind'] === 'waiting') {
                 // The question is the whole of what a waiting todo adds: it is
                 // offered to no session, so nothing else will ask it again.
@@ -146,7 +116,7 @@ final class TodoCheck
                 continue;
             }
             if ($todo['waitingOn'] !== '') {
-                $problems[] = $where . ' says what it waits on and is not in todo/waiting/';
+                $problems[] = $where . ' says what it waits on and is not in todo/waiting/ — `bin/cli todo:park`';
             }
 
             if ($todo['kind'] === 'queue') {
@@ -208,11 +178,11 @@ final class TodoCheck
             $errors->writeln($problem);
         }
         $output->writeln(sprintf(
-            '%d files, %d recurring, %d queued, %d in hand, %d waiting, %d problems',
+            '%d files, %d recurring, %d queued, %d of them in hand, %d waiting, %d problems',
             count(Todo::all()),
             count(Todo::recurring()),
             count(Todo::items()),
-            count(Todo::progress()),
+            count(Todo::held()),
             count(Todo::waiting()),
             count($problems),
         ));
@@ -220,20 +190,4 @@ final class TodoCheck
         return $problems === [] ? 0 : 1;
     }
 
-    /**
-     * Whether the branch a claim names is still there.
-     *
-     * Asked of git rather than of the worktree list, because a branch outlives
-     * the worktree it was checked out in and it is the branch that carries the
-     * work. `--quiet` keeps a missing one off the error stream, where it would
-     * read as this command failing.
-     */
-    private static function branchExists(string $branch): bool
-    {
-        [$exitCode] = Checkouts::run([
-            'git', '-C', Paths::root(), 'rev-parse', '--verify', '--quiet', 'refs/heads/' . $branch,
-        ]);
-
-        return $exitCode === 0;
-    }
 }

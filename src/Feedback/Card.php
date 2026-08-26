@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TYPO3\DevCompanion\Feedback;
 
+use TYPO3\DevCompanion\Upkeep\Todo;
+
 /**
  * The card a feedback brings with it: one todo in the queue, asking for the
  * judgement nobody has made yet.
@@ -54,14 +56,19 @@ final class Card
      * Where the card for one feedback sits, relative to the checkout both are
      * in. The feedback is named the way it names itself — `feedback/<name>.md`.
      *
-     * The feedback's own name is already a stamp and a slug, which is what a
-     * card is named by — so the two are visibly one pair, and the card's age is
-     * when the report arrived rather than when somebody got round to writing it
-     * down.
+     * The id is derived from the feedback and from nothing else, so writing the
+     * card twice writes one file and the pair can be found from either end
+     * without either name being looked up — `D-DOC-061`. The day it carries is
+     * the day the report arrived rather than the day somebody got round to
+     * writing it down, which is what a listing sorts the queue by.
      */
     public static function path(string $feedback): string
     {
-        return 'todo/open/' . basename($feedback);
+        $name = basename($feedback, '.md');
+        preg_match('/^\d{2}(\d{2})-(\d{2})-(\d{2})-/', $name, $arrived);
+
+        return 'todo/open/' . Todo::id($name, implode('', array_slice($arrived, 1)) ?: null)
+            . '-' . preg_replace('/^\d{4}-\d{2}-\d{2}-\d{6}-/', '', $name) . '.md';
     }
 
     /**

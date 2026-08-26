@@ -256,7 +256,7 @@ request. Measured in this checkout on 2026-08-24, the longest assembly is 2028
 characters of the 2048 `D-AUD-011` holds. Twenty characters are free and the
 sentence names two skills and three request shapes, so it is unaffordable before
 it is weighed — and whether 2048 is still the boundary to design against is what
-[`todo/waiting/2026-08-19-090401`](../../todo/waiting/2026-08-19-090401-tools-arrived-as-bare-names-with-no-schemas-and.md)
+[`todo/waiting/2026-08-19-090401`](../../todo/waiting/T-260819-dcaf-tools-arrived-as-bare-names-with-no-schemas-and.md)
 is waiting on.
 
 ### 2026-08-25 — one session, one description that matched and one that said nothing

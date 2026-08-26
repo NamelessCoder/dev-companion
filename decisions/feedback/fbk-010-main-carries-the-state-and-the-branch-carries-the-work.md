@@ -2,10 +2,7 @@
 id: D-FBK-010
 title: '`main` carries the state and the branch carries the work'
 date: 2026-08-01
-status: open
-coveredBy:
-  - TodoTest::aClaimCarriesTheBranchItWasGiven
-  - TodoTest::aClaimIsOneMoveThatGoesBothWays
+status: revoked
 ---
 
 # D-FBK-010 — `main` carries the state and the branch carries the work
@@ -109,3 +106,20 @@ worktree they happened in, and none cost a revert off `main`. What homing per
 branch bought is in the same measurement: a round's fastest session finished in
 5 minutes and its slowest in 25, and the slow one carried the file conflict, so
 it rebased onto a `main` that had already absorbed the other seven.
+
+## Revoked on 2026-08-27
+
+`main` does not carry the state any more, which is the half of the title this
+entry was about. `D-DOC-060` reads what is in hand off the worktree standing on
+the todo's branch, so the fifth place the first **Decided** made, the commit
+that carried it onto `main` and the release that moved one back are all gone.
+
+What it got right is what survives it: a branch and a worktree apiece, a session
+handed its own todo by the branch it stands on, and a question recorded rather
+than asked. The third and fourth **Decided** hold unchanged.
+
+The first **Wrong if** is what came true, in the shape it did not predict. It
+watched for a claim nobody released in a fortnight; what happened instead was
+that the claim was a third copy of what the branch and the worktree already
+said, and the copy was the one that could go stale — `D-DOC-060` has the
+reading.

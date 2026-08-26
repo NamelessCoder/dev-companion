@@ -3,7 +3,13 @@ id: D-DOC-060
 title: 'The worktree says a todo is in hand'
 date: 2026-08-27
 status: open
-coveredBy: not guarded
+coveredBy:
+  - CliTest::aWorktreeWithUncommittedWorkIsNotDropped
+  - CliTest::droppingAWorktreeDeletesABranchThatCarriedNothing
+  - CliTest::droppingAWorktreeKeepsABranchThatCarriesWork
+  - TodoTest::aTodoThatNamesAQuestionIsParkedWhereNobodyIsOfferedIt
+  - TodoTest::aWorktreeOnNoTodosBranchHoldsNothing
+  - TodoTest::whatIsInHandIsTheTodoAWorktreeStandsOn
 ---
 
 # D-DOC-060 — The worktree says a todo is in hand

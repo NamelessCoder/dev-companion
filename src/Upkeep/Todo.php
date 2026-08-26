@@ -20,7 +20,7 @@ use TYPO3\DevCompanion\Paths;
  * `todo/readme.md` is that form — the stages, the labelled lines, the one
  * paragraph under them — and this reads it rather than restating it.
  *
- * @phpstan-type Section array{title: string, kind: string, priority: string, path: non-empty-string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, priority: string, path: non-empty-string, every: string, checked: string, waitingOn: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
@@ -46,13 +46,29 @@ final class Todo
     public const PRIORITIES = ['high', 'normal', 'low'];
 
     /**
-     * What a todo in a stage is named by: the day and time it arrived.
+     * What a todo in a stage is named by: the id its file name opens with.
      *
-     * The same shape a feedback is named in, so one habit covers the store, and
-     * it is what a listing sorts by — within a priority the older one comes
-     * first, and that is the whole of the order below the three words.
+     * The day is what a listing sorts by — within a priority the older one comes
+     * first, and that is the whole of the order below the three words. The digest
+     * beside it is what two writers in one second cannot both produce, which the
+     * day and the time on their own could.
      */
-    public const STAMP = '/^\d{4}-\d{2}-\d{2}-\d{6}-/';
+    public const STAMP = '/^T-\d{6}-[0-9a-f]{4}-/';
+
+    /**
+     * The id a todo is cited by, which is also what its file name opens with.
+     *
+     * Derived from what the todo is named after rather than counted off what
+     * exists — `D-DOC-061`. Two branches cut from one `main` each allocated
+     * `D-ANS-114` by counting, and todos are claimed in batches, so the same
+     * count would collide more often. The seed is the feedback a card serves, or
+     * the title and the instant where somebody wrote one by hand: the same todo
+     * derives the same id wherever it is derived.
+     */
+    public static function id(string $seed, ?string $day = null): string
+    {
+        return 'T-' . ($day ?? date('ymd')) . '-' . substr(sha1($seed), 0, 4);
+    }
 
     /**
      * How a todo is worked, handed over with every todo that is handed over.
@@ -187,17 +203,14 @@ final class Todo
      * The branch a todo is worked on, derived rather than chosen.
      *
      * Two sessions that name their own branches produce two names for one piece
-     * of work, and the claim in `progress/` is then the only thing that says
-     * which is which — while the whole point of the field is that somebody who
-     * finds a stale claim can go and look at the work. Deriving it means the
-     * branch can be found from the todo and the todo from the branch.
+     * of work, and nothing then says which is which. Deriving it means the
+     * branch can be found from the todo and the todo from the branch, which is
+     * what lets the worktree standing on it say the todo is in hand —
+     * `D-DOC-060`.
      *
-     * It is the name the work wants, not necessarily the one it gets. A todo
-     * claimed, released and claimed again derives the same branch as the run
-     * that left one standing, and two pieces of work under one name are worse
-     * than a name that has to be looked up — so the claim is given a free one
-     * and carries it in `**Branch:**`, which is where every reader was already
-     * looking.
+     * So a name is never given out twice. Where the derived branch is already
+     * there, the todo is one somebody has in hand or one whose branch nobody
+     * took down, and both are answered by looking rather than by a second name.
      *
      * @param Section $todo
      */
@@ -207,74 +220,26 @@ final class Todo
     }
 
     /**
-     * Taking a queued todo on: out of the queue, into `progress/`, carrying the
-     * branch the work will be on and the day it was taken.
+     * A todo whose remaining step is an answer nobody here can give, moved to
+     * where it is offered to no session.
      *
-     * It keeps its name through every stage, which is what the stamp bought
-     * over the number it replaced. A number was a place in one order and had to
-     * be dropped where that order did not reach; the stamp is when the work
-     * arrived, and that is as true in hand as it is in the queue. So a claim
-     * and a release are moves and nothing else, and `**Claimed:**` is what says
-     * how long this one has been held.
+     * The one move left. Taking a todo on is cutting a worktree and finishing it
+     * is deleting the file, so neither writes anything for the other to undo —
+     * a todo nobody is working is in `open/` because the worktree is gone,
+     * rather than because a command put it back.
      *
-     * @param Section     $todo
-     * @param string|null $branch the free name the work was given, where the
-     *                            derived one was taken by an earlier claim
-     *
-     * @return string the path it has from now on
-     */
-    public static function claim(array $todo, ?string $today = null, ?string $branch = null): string
-    {
-        $to = 'todo/progress/' . basename($todo['path']);
-        $head = $todo['head'] . "\n**Branch:** " . ($branch ?? self::branch($todo))
-            . "\n**Claimed:** " . ($today ?? date('Y-m-d'));
-
-        return self::move($todo, $to, $head);
-    }
-
-    /**
-     * Putting one back: out of `progress/`, to whichever of the two states the
-     * claim itself says it is in.
-     *
-     * A claim carrying a question goes to `waiting/`, because that is what it
-     * is: blocked on an answer nothing here can produce. The rest go back to
-     * `open/` exactly as they came, keeping their name and their priority.
-     *
-     * Reading it off the file rather than asking is what keeps the two apart
-     * without a second command. The question was written by the session that
-     * hit it, and a todo whose remaining step is "wait for somebody to answer"
-     * parked among the workable ones reads as ordinary work while it is
-     * actually waiting on a person.
-     *
-     * What it no longer does is re-rank. A released todo used to be renumbered
-     * to the end of the queue, because the queue was one order and there was no
-     * other way to say "later"; the two things that meant are now said
-     * separately and by somebody rather than by a command. Where it cannot be
-     * worked at all, `waiting/` is the answer. Where it can and should not be
-     * next, the answer is a lower `**Priority:**`, which is a line somebody
-     * writes and can be disagreed with.
-     *
-     * What it was claimed for is dropped either way. A branch nobody is on and
-     * a date nobody is counting from are worse than no fields at all, because
-     * the next reader cannot tell them from a live claim — and after the work
-     * is merged, the branch they name is one somebody is about to delete.
+     * The question is read off the file rather than asked for. It was written by
+     * the session that hit it, and a todo whose remaining step is "wait for
+     * somebody to answer" parked among the workable ones reads as ordinary work
+     * while it is actually waiting on a person.
      *
      * @param Section $todo
      *
      * @return string the path it has from now on
      */
-    public static function release(array $todo): string
+    public static function park(array $todo): string
     {
-        $head = implode("\n", array_filter(
-            preg_split('/\R/', $todo['head']) ?: [],
-            static fn(string $line): bool => !str_starts_with($line, '**Branch:**') && !str_starts_with($line, '**Claimed:**'),
-        ));
-
-        return self::move(
-            $todo,
-            'todo/' . ($todo['waitingOn'] !== '' ? 'waiting/' : 'open/') . basename($todo['path']),
-            $head,
-        );
+        return self::move($todo, 'todo/waiting/' . basename($todo['path']), $todo['head']);
     }
 
     /**
@@ -305,13 +270,17 @@ final class Todo
 
     /**
      * Every todo there is: the queue in its order, then what recurs, then what
-     * a session has in hand, then what waits, then what is none of the four.
+     * waits, then what is none of the three.
+     *
+     * What a session has in hand is not a stage of its own. It is a todo in the
+     * queue with a worktree standing on its branch, which is what `inHand()`
+     * answers — `D-DOC-060`.
      *
      * @return array<int, Section>
      */
     public static function all(): array
     {
-        return array_merge(self::items(), self::recurring(), self::progress(), self::waiting(), self::references());
+        return array_merge(self::items(), self::recurring(), self::waiting(), self::references());
     }
 
     /**
@@ -358,27 +327,134 @@ final class Todo
     }
 
     /**
-     * What a session has in hand, and is therefore offered to no other.
+     * What a session has in hand, as the branch each worktree stands on and the
+     * directory it stands in.
      *
      * The queue is an order, not an assignment, and `bin/cli todo:next` reads
      * the same first item for everybody who asks. That is right while one
      * session works at a time and wrong the moment two do: both are handed the
      * same todo, and the second finds out by writing a change somebody else has
-     * already written. So taking one on is a move, the way finishing one is a
-     * deletion — the claim is a file in a directory rather than a field nobody
-     * can see from outside the checkout it was set in.
+     * already written.
      *
-     * It carries the two things a claim nobody came back to cannot be told from
-     * a live one without: `**Branch:**`, where the work is, because a claim
-     * whose half-finished diff cannot be found is worth less than no claim; and
-     * `**Claimed:**`, the date, because a state that locks everybody else out
-     * has to be readable as stale.
+     * What says a todo is taken is the worktree cut for it — `D-DOC-060`. It was
+     * a file in `todo/progress/` as well, which is a third copy of what the
+     * branch name and the worktree already carry, and the copy was the one that
+     * could go stale: a claim outlived the branch it named often enough to need
+     * a check of its own.
      *
-     * @return array<int, Section>
+     * Read as one call rather than one per worktree, because every caller here
+     * wants the whole set.
+     *
+     * @return array<string, string> the branch of each, by the directory it is checked out in
      */
-    public static function progress(): array
+    public static function inHand(?string $root = null): array
     {
-        return self::read('progress', 'progress');
+        return array_filter(self::worktrees($root));
+    }
+
+    /**
+     * Every worktree below `.worktrees/`, and the branch it stands on.
+     *
+     * Read off git rather than off the directory: a `.worktrees/` entry git has
+     * forgotten is not one anything here can merge, and the logs `todo:claim`
+     * writes live in there beside the real ones.
+     *
+     * A detached one answers with the empty string and holds no todo, which is
+     * the difference between this and `inHand()`. It is still a worktree
+     * somebody has to be able to name, so it is not left out here.
+     *
+     * @return array<string, string> the branch of each, by the directory it is checked out in
+     */
+    public static function worktrees(?string $root = null): array
+    {
+        $root ??= Paths::root();
+        [$listed, $said] = Checkouts::run(['git', '-C', $root, 'worktree', 'list', '--porcelain']);
+        if ($listed !== 0) {
+            return [];
+        }
+
+        $standing = [];
+        $name = '';
+        foreach (preg_split('/\R/', trim($said)) ?: [] as $line) {
+            if (str_starts_with($line, 'worktree ')) {
+                $path = substr($line, strlen('worktree '));
+                $name = str_starts_with($path, $root . '/.worktrees/') ? basename($path) : '';
+                if ($name !== '') {
+                    $standing[$name] = '';
+                }
+                continue;
+            }
+            // A detached worktree says `detached` here instead, and stands on no
+            // branch a todo could be found from.
+            if ($name !== '' && str_starts_with($line, 'branch refs/heads/')) {
+                $standing[$name] = substr($line, strlen('branch refs/heads/'));
+            }
+        }
+
+        return $standing;
+    }
+
+    /**
+     * The id a todo is cited by, read off the file name it opens.
+     *
+     * @param Section $todo
+     */
+    public static function identifier(array $todo): string
+    {
+        preg_match(self::STAMP, basename($todo['path']), $id);
+
+        return rtrim($id[0] ?? '', '-');
+    }
+
+    /**
+     * The worktree a caller named, or null where nothing here is that.
+     *
+     * A todo is named by its id and a worktree is an implementation of having
+     * one in hand, so both are accepted and the id is the one written down.
+     * Anything a caller pastes resolves: the id, the whole file name, the path,
+     * or the worktree's own directory.
+     */
+    public static function worktreeNamed(string $reference, ?string $root = null): ?string
+    {
+        $named = basename(rtrim($reference, '/'), '.md');
+        $standing = self::worktrees($root);
+        if (array_key_exists($named, $standing)) {
+            return $named;
+        }
+
+        $wanted = preg_match(self::STAMP, $named . '-') === 1 ? rtrim($named, '-') : '';
+        foreach (self::items() as $todo) {
+            if (self::identifier($todo) !== $wanted && basename($todo['path'], '.md') !== $named) {
+                continue;
+            }
+
+            $branch = self::branch($todo);
+            $at = array_search($branch, $standing, true);
+
+            return $at === false ? null : (string) $at;
+        }
+
+        return null;
+    }
+
+    /**
+     * The todos somebody has in hand, by the branch each is being worked on.
+     *
+     * @return array<string, Section>
+     */
+    public static function held(?string $root = null): array
+    {
+        $branches = array_flip(self::inHand($root));
+
+        $held = [];
+        foreach (self::items() as $todo) {
+            $branch = self::branch($todo);
+            if (isset($branches[$branch])) {
+                $held[$branch] = $todo;
+            }
+        }
+
+        return $held;
     }
 
     /**
@@ -391,9 +467,9 @@ final class Todo
      * the command everything else points it at. Getting that wrong is silent:
      * it reads a todo, it is a real todo, and it is somebody else's.
      *
-     * The branch is what answers, because the branch is what the claim named.
-     * A checkout on `main` is on no claim and gets the queue, which is every
-     * session this repository had before there were two.
+     * The branch is what answers, because the branch is derived from the todo
+     * and from nothing else. A checkout on `main` is on no claim and gets the
+     * queue, which is every session this repository had before there were two.
      *
      * @return Section|null
      */
@@ -404,8 +480,8 @@ final class Todo
             return null;
         }
 
-        foreach (self::progress() as $todo) {
-            if ($todo['branch'] === $branch) {
+        foreach (self::items() as $todo) {
+            if (self::branch($todo) === $branch) {
                 return $todo;
             }
         }
@@ -522,18 +598,19 @@ final class Todo
      * requirements/ or decisions/, or a feedback in feedback/, into work
      * somebody has taken on.
      *
-     * Read from the queue, from what a session has in hand and from what waits,
-     * which are the three states of work somebody has taken on. What is kept in
-     * `reference/` names ids too, and one of those pages is the list of what is
-     * deliberately *not* queued — the opposite of somebody having it in hand. A
-     * recurring todo is not a taking-on either: it is owed every session.
+     * Read from the queue and from what waits, which are the two states of work
+     * somebody has taken on — one in hand is in the queue with a worktree on it.
+     * What is kept in `reference/` names ids too, and one of those pages is the
+     * list of what is deliberately *not* queued — the opposite of somebody
+     * having it in hand. A recurring todo is not a taking-on either: it is owed
+     * every session.
      *
      * @return array<int, string>
      */
     public static function serves(): array
     {
         $served = [];
-        foreach (array_merge(self::items(), self::progress(), self::waiting()) as $item) {
+        foreach (array_merge(self::items(), self::waiting()) as $item) {
             foreach ($item['serves'] as $what) {
                 $served[$what] = true;
             }
@@ -554,7 +631,7 @@ final class Todo
      */
     public static function folded(): array
     {
-        $todos = array_merge(self::items(), self::progress(), self::waiting());
+        $todos = array_merge(self::items(), self::waiting());
 
         $serving = [];
         foreach ($todos as $todo) {
@@ -708,8 +785,6 @@ final class Todo
         $every = '';
         $checked = '';
         $waitingOn = '';
-        $branch = '';
-        $claimed = '';
         $priority = '';
         $serves = [];
         $run = [];
@@ -721,8 +796,6 @@ final class Todo
                 'Every' => $every = $value,
                 'Checked' => $checked = $value,
                 'Waiting on' => $waitingOn = $value,
-                'Branch' => $branch = $value,
-                'Claimed' => $claimed = $value,
                 'Run' => $run[] = $value,
                 default => $strays[] = '**' . $label . ':** ' . $value,
             };
@@ -736,8 +809,6 @@ final class Todo
             'every' => $every,
             'checked' => $checked,
             'waitingOn' => $waitingOn,
-            'branch' => $branch,
-            'claimed' => $claimed,
             'serves' => $serves,
             'run' => $run,
             'head' => trim((string) $head),

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use TYPO3\DevCompanion\Paths;
 use TYPO3\DevCompanion\Process\CommandRunner;
 use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\QueuedTodo;
@@ -141,7 +142,7 @@ final class CliTest extends TestCase
      * The one directory listing a session should never have to make.
      *
      * A todo is finished by deleting or trimming the file it is, and that file
-     * is named by a stamp nobody retypes. Handed the todo without its path, a
+     * is named by an id nobody retypes. Handed the todo without its path, a
      * session goes and looks: the 82 sessions of 2026-08-02 spent 207 listings
      * of `todo/` on a file the command had just read. So the path is printed
      * whichever of the three kinds of todo comes up — `D-FBK-020`.
@@ -159,7 +160,7 @@ final class CliTest extends TestCase
         // The title is the first line and the meta the second, which is what
         // makes this readable at all: a todo named anywhere else in the output
         // is one a reading mentioned, not the one being handed over.
-        foreach (array_merge(Todo::progress(), Todo::appointments(), Todo::items(), Todo::sightings()) as $todo) {
+        foreach (array_merge(Todo::appointments(), Todo::items(), Todo::sightings()) as $todo) {
             if ($todo['title'] !== $printed[0]) {
                 continue;
             }
@@ -294,7 +295,117 @@ final class CliTest extends TestCase
 
         self::assertSame(0, $exit);
         self::assertStringContainsString($claim['title'], $printed, 'the claim under the session is not what it was handed');
-        self::assertStringContainsString($claim['branch'], $printed, 'nothing says which branch the work is committed on');
+        self::assertStringContainsString(
+            Todo::branch($claim),
+            $printed,
+            'nothing says which branch the work is committed on',
+        );
+    }
+
+    /**
+     * A branch that carried nothing is deleted with its worktree, because one
+     * nobody takes down is a todo `todo:claim` passes over for good.
+     *
+     * That is the failure this command exists to prevent. Nothing moves when a
+     * todo is claimed, so what offers it again is the worktree coming down —
+     * and a branch left standing beside it says the work is somewhere, which
+     * for a session that never started is not true.
+     */
+    #[Decision('D-DOC-060')]
+    #[Test]
+    public function droppingAWorktreeDeletesABranchThatCarriedNothing(): void
+    {
+        $asked = [];
+        Checkouts::useRunner($this->gitAnswering([
+            'worktree' => [0, 'worktree ' . Paths::root() . "/.worktrees/alpha\nHEAD 0000\nbranch refs/heads/todo/alpha\n"],
+            'rev-list' => [0, "0\n"],
+            'status' => [0, ''],
+            'branch' => [0, ''],
+            'rev-parse' => [1, ''],
+        ], $asked));
+
+        $buffer = new BufferedOutput();
+        $exit = Cli::application()->doRun(new StringInput('todo:drop alpha'), $buffer);
+        $printed = $buffer->fetch();
+
+        self::assertSame(0, $exit, $printed);
+        self::assertStringContainsString('carried nothing and is deleted', $printed);
+        self::assertContains('git -C ' . Paths::root() . ' branch -d todo/alpha', $asked);
+    }
+
+    /**
+     * A todo is named by its id, and the worktree is how this repository holds
+     * one in hand rather than something a caller has to know.
+     *
+     * Both are accepted for the same reason the id is what is written down: a
+     * caller reading `bin/cli todo:list` has the id in front of them, and one
+     * who has been in the directory has its name.
+     */
+    #[Decision('D-DOC-061')]
+    #[Test]
+    public function aTodoIsNamedByItsIdAndNotByTheWorktreeHoldingIt(): void
+    {
+        $queued = $this->queueATodo();
+        $branch = Todo::branch($queued);
+        Checkouts::useRunner($this->gitSaying($this->worktreeOn($branch, 'some-directory-name')));
+
+        self::assertSame(
+            'some-directory-name',
+            Todo::worktreeNamed(Todo::identifier($queued), $this->ownQueue()),
+            'the id a listing prints does not name the todo it prints it for',
+        );
+        self::assertSame('some-directory-name', Todo::worktreeNamed('some-directory-name', $this->ownQueue()));
+        self::assertNull(Todo::worktreeNamed('T-260101-0000', $this->ownQueue()), 'an id nothing has resolved anyway');
+    }
+
+    /**
+     * A branch carrying commits is left where it is, because it is the only
+     * place that work exists.
+     */
+    #[Decision('D-DOC-060')]
+    #[Test]
+    public function droppingAWorktreeKeepsABranchThatCarriesWork(): void
+    {
+        $asked = [];
+        Checkouts::useRunner($this->gitAnswering([
+            'worktree' => [0, 'worktree ' . Paths::root() . "/.worktrees/alpha\nHEAD 0000\nbranch refs/heads/todo/alpha\n"],
+            'rev-list' => [0, "3\n"],
+            'status' => [0, ''],
+            'rev-parse' => [1, ''],
+        ], $asked));
+
+        $buffer = new BufferedOutput();
+        $exit = Cli::application()->doRun(new StringInput('todo:drop alpha'), $buffer);
+        $printed = $buffer->fetch();
+
+        self::assertSame(0, $exit, $printed);
+        self::assertStringContainsString('carries 3 commits nothing else does, so it stays', $printed);
+        self::assertNotContains('git -C ' . Paths::root() . ' branch -d todo/alpha', $asked);
+    }
+
+    /**
+     * What nobody committed is on no branch, so taking the worktree down is
+     * what throws it away — the same refusal `todo:home` makes.
+     */
+    #[Decision('D-DOC-060')]
+    #[Test]
+    public function aWorktreeWithUncommittedWorkIsNotDropped(): void
+    {
+        $asked = [];
+        Checkouts::useRunner($this->gitAnswering([
+            'worktree' => [0, 'worktree ' . Paths::root() . "/.worktrees/alpha\nHEAD 0000\nbranch refs/heads/todo/alpha\n"],
+            'status' => [0, " M src/Upkeep/Todo.php\n"],
+            'rev-parse' => [1, ''],
+        ], $asked));
+
+        $buffer = new BufferedOutput();
+        $exit = Cli::application()->doRun(new StringInput('todo:drop alpha'), $buffer);
+
+        self::assertSame(1, $exit);
+        self::assertStringContainsString('changes nobody committed', $buffer->fetch());
+        foreach ($asked as $command) {
+            self::assertStringNotContainsString('worktree remove', $command, 'the worktree came down over uncommitted work');
+        }
     }
 
     /**

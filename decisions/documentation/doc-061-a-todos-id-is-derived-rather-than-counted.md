@@ -3,7 +3,8 @@ id: D-DOC-061
 title: "A todo's id is derived rather than counted"
 date: 2026-08-27
 status: open
-coveredBy: not guarded
+coveredBy:
+  - CliTest::aTodoIsNamedByItsIdAndNotByTheWorktreeHoldingIt
 ---
 
 # D-DOC-061 — A todo's id is derived rather than counted

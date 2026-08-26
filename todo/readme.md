@@ -10,28 +10,30 @@ Nobody reads it to start. `bin/cli todo:next` prints the one todo that is due
 and nothing else, `bin/cli todo:list` is the overview, and this is where both of
 them read from.
 
-One todo is one file, and where it sits says what it is. Three of the
-directories are the stages one runs through, and moving between them is the
-whole of what happens to a todo; the other two sit beside the stages rather than
-among them.
+One todo is one file, and where it sits says what it is. Two of the directories
+are the stages one runs through, and the other two sit beside the stages rather
+than among them. What a session has in hand is not a stage: it is a todo in the
+queue with a worktree standing on the branch its name derives — `D-DOC-060`.
 
 - **`open/`** — the queue, read by the priority in each head and, where two say
   the same, by the date in each name. Nothing here is a position, so moving a
   todo is editing one line rather than renaming a run of files, and two sessions
   adding work at once cannot pick the same place. One that is finished is
   deleted, and a new one is a new file.
-- **`progress/`** — what a session has in hand. The queue is an order, not an
-  assignment, so `bin/cli todo:next` hands the same first item to everybody who
-  asks; where two sessions work at once, taking one on is a move out of the
-  queue, and it is offered to nobody else from then on. It says on which branch
-  the work is and since when, because a claim nobody came back to has to be
-  readable as one. Finishing it is still a deletion, and the answer to a
-  question it carries is what puts it back.
 - **`waiting/`** — what no session can start, because it is blocked on an answer
   nothing here can produce. It says what it waits on, `bin/cli todo:next` offers
   it to nobody, and the answer is what moves it back into the queue. A recurring
   todo asks every seven days what is in here, so a question waits rather than
-  disappears.
+  disappears. `bin/cli todo:park` is what moves one here, off the question it
+  names.
+
+The queue is an order, not an assignment, so `bin/cli todo:next` would hand the
+same first item to everybody who asks. What keeps two sessions off one todo is
+the worktree: `bin/cli todo:claim` cuts one per todo it takes, on the branch
+that todo's name derives, and every command that hands out work passes over a
+todo one stands on. Nothing moves and nothing is written, so a todo whose
+worktree came down is workable again with nothing to put back —
+`bin/cli todo:home` takes the worktree down when the branch is merged.
 
 There is no fourth stage for what is done. A finished todo is deleted, and the
 commit that finished it is the record — a directory of them would be a second
@@ -44,8 +46,10 @@ report has no git to read the deletion out of.
 - **`reference/`** — not work at all: what a session would otherwise rediscover
   and mistake for some.
 
-A todo in a stage is named by the day and time it arrived — the shape a feedback
-is named in, so one habit covers both — and that is what a listing sorts by.
+A todo in a stage is named by its id, `T-<yymmdd>-<hash>`, and the file name
+opens with it. The day is what a listing sorts by and the digest is what two
+writers in one second cannot both produce; a card's is derived from the feedback
+it serves, so the pair is found from either end — `D-DOC-061`.
 
 Each file opens with its title, then a head of labelled lines:
 
@@ -69,13 +73,10 @@ Each file opens with its title, then a head of labelled lines:
   ones this repository owns and names the rest.
 - `**Waiting on:** <the question>` — what a todo is blocked on, in the words it
   was asked in, wrapped onto indented lines where it is longer than one.
-  `bin/cli todo:waiting` is what asks it again. In `waiting/` it is the whole of
-  the file; in `progress/` it is a question that arrived mid-work, and the
-  branch is what still holds the half that is done.
-- `**Branch:** <branch>` — where the work on a todo in `progress/` is. A claim
-  whose half-finished diff cannot be found is worth less than no claim.
-- `**Claimed:** <date>` — when it was taken on. A state that locks everybody
-  else out of one todo has to be readable as stale.
+  `bin/cli todo:waiting` is what asks it again, and `bin/cli todo:park` is what
+  moves a todo carrying one out of the queue. Written mid-work it stays in
+  `open/` until the branch comes home, where the branch still holds the half
+  that is done.
 
 Then one paragraph, and one only: the **next concrete step**, in enough detail
 that someone who has read nothing else can start. "Continue with the bindings"

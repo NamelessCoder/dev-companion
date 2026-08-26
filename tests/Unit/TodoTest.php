@@ -127,18 +127,18 @@ final class TodoTest extends TestCase
     public function theCardAJudgementReplacedIsFoundByTheStepItStillCarries(): void
     {
         $feedback = 'feedback/' . self::MARKER . '.md';
-        $card = $this->queueATodo('low', '2026-08-02-090000', $feedback, Card::STEP);
+        $card = $this->queueATodo('low', '260802', $feedback, Card::STEP);
 
         self::assertSame([], Todo::folded(), 'a card nobody has judged yet is one somebody has');
 
-        $judged = $this->queueATodo('normal', '2026-08-03-090000', $feedback);
+        $judged = $this->queueATodo('normal', '260803', $feedback);
 
         self::assertSame(
             [['card' => $card['path'], 'feedback' => $feedback, 'judged' => [$judged['path']]]],
             Todo::folded(),
         );
 
-        $split = $this->queueATodo('normal', '2026-08-03-090001', $feedback);
+        $split = $this->queueATodo('normal', '260803', $feedback);
 
         self::assertSame(
             [['card' => $card['path'], 'feedback' => $feedback, 'judged' => [$judged['path'], $split['path']]]],
@@ -192,7 +192,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function everyTodoAnswersForSomethingThatCanStillBeRead(): void
     {
-        $todos = array_merge(Todo::recurring(), Todo::items(), Todo::progress(), Todo::waiting());
+        $todos = array_merge(Todo::recurring(), Todo::items(), Todo::waiting());
 
         // Not the queue, which empties and is meant to: what is never empty is
         // what recurs, because a recurring todo is never deleted.
@@ -287,122 +287,77 @@ final class TodoTest extends TestCase
      * it is one a second session queues all over again.
      */
     #[Requirement('R-FBK-010')]
+    #[Decision('D-DOC-060')]
     #[Test]
-    public function whatIsInHandIsOfferedToNobodyElse(): void
+    public function whatIsInHandIsTheTodoAWorktreeStandsOn(): void
     {
-        $this->queueATodo();
-        $queued = Todo::items();
-        $this->claimInProgress('todo/' . self::MARKER);
+        $queued = $this->queueATodo();
+        $branch = Todo::branch($queued);
+        Checkouts::useRunner($this->gitSaying($this->worktreeOn($branch)));
 
-        $inHand = $this->ownTodos(Todo::progress());
+        $held = Todo::held($this->ownQueue());
 
-        self::assertCount(1, $inHand);
-        self::assertSame('progress', $inHand[0]['kind']);
-        self::assertSame('todo/' . self::MARKER, $inHand[0]['branch']);
-        self::assertSame('2026-08-01', $inHand[0]['claimed']);
-        self::assertSame($queued, Todo::items(), 'a todo in hand is still in the queue somebody else reads');
+        self::assertSame([$branch], array_keys($held), 'the worktree standing on it is what says a todo is in hand');
+        self::assertSame($queued['path'], $held[$branch]['path']);
+        self::assertSame([$queued], $this->ownTodos(Todo::items()), 'a todo in hand is still the file it was');
         self::assertContains('todo/', Todo::serves(), 'a todo in hand answers for nothing it took on');
     }
 
     /**
-     * The branch a claim carries is the one it was given, not the one its name
-     * derives to.
+     * A worktree standing on no branch of a todo holds none.
      *
-     * They are the same claim after claim until a todo is worked twice: one
-     * released and taken on again derives the branch the first session left
-     * standing, and `git worktree add -b` there fails on a name that is already
-     * a piece of half-finished work. So the second claim is given a free name
-     * and the file records it — which is what `claimed()` matches on, so a
-     * session in that worktree is handed its own todo and not nothing.
+     * The two cases it is told from are the ones that reach the same line: a
+     * detached worktree, which stands on no branch at all, and one on a branch
+     * no queued todo derives — a todo finished, or renamed since it was cut.
      */
-    #[Decision('D-FBK-010')]
+    #[Decision('D-DOC-060')]
     #[Test]
-    public function aClaimCarriesTheBranchItWasGiven(): void
+    public function aWorktreeOnNoTodosBranchHoldsNothing(): void
     {
-        $queued = $this->queueATodo();
+        $this->queueATodo();
+        Checkouts::useRunner($this->gitSaying(
+            'worktree ' . $this->ownQueue() . "/.worktrees/detached\nHEAD 0000\ndetached\n\n"
+            . 'worktree ' . $this->ownQueue() . "/.worktrees/gone\nHEAD 0000\nbranch refs/heads/todo/nothing-derives-this\n",
+        ));
 
-        Todo::claim($queued, '2026-08-01', Todo::branch($queued) . '-2');
-
-        $inHand = $this->ownTodos(Todo::progress())[0];
-        self::assertSame('todo/' . self::MARKER . '-2', $inHand['branch']);
-        self::assertNotSame(
-            Todo::branch($queued),
-            $inHand['branch'],
-            'the claim records the derived branch, so a second one would be cut on the first one\'s work',
-        );
+        self::assertSame(['gone' => 'todo/nothing-derives-this'], Todo::inHand($this->ownQueue()));
+        self::assertSame([], Todo::held($this->ownQueue()), 'a branch no todo derives holds no todo');
     }
 
     /**
-     * Taking one on and putting it back are one move in two directions, and the
-     * second is what keeps the first usable: a session ends where it ends, and
-     * a state that can only be entered fills up with claims nobody is working
-     * and nobody else is offered.
+     * The one move left in the queue, and the state it exists for.
      *
-     * What the round trip has to leave intact is the todo — a claim rewrites
-     * the head and nothing else, because the step is the part somebody else has
-     * to be able to start from. What it must not leave is the claim itself: a
-     * branch nobody is on reads exactly like a branch somebody is on.
+     * A session that hits a question nothing here can answer writes it onto its
+     * todo and ends. Left in `open/` the next session is offered it as ordinary
+     * work, and what it actually needs is a person.
      *
-     * The name survives both moves, which is what the stamp bought over the
-     * number: a released todo comes back where it was, at the priority somebody
-     * gave it, rather than at the end of a queue it never asked to leave.
-     * Putting it further down is a judgement now, and judgements are written —
-     * `D-FBK-014`, `D-FBK-015`.
+     * Taking a todo on and finishing one write nothing this has to undo: the
+     * worktree says the first and a deletion says the second, so a todo nobody
+     * is working is back in the queue because the worktree came down rather
+     * than because a command put it back — `D-DOC-060`.
      */
-    #[Decision('D-FBK-010')]
-    #[Requirement('R-FBK-010')]
+    #[Decision('D-DOC-060')]
     #[Decision('D-FBK-014')]
-    #[Decision('D-FBK-015')]
+    #[Requirement('R-FBK-010')]
     #[Test]
-    public function aClaimIsOneMoveThatGoesBothWays(): void
+    public function aTodoThatNamesAQuestionIsParkedWhereNobodyIsOfferedIt(): void
     {
         $queued = $this->queueATodo();
+        file_put_contents(
+            $this->ownQueue() . '/' . $queued['path'],
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Priority:** low\n"
+            . "**Waiting on:** which of the two shapes is wanted.\n\n" . $queued['body'] . "\n",
+        );
+        $carrying = $this->ownTodos(Todo::items())[0];
 
-        $claimed = Todo::claim($queued, '2026-08-01');
+        $parked = Todo::park($carrying);
 
-        self::assertSame('todo/progress/' . basename($queued['path']), $claimed);
-        $inHand = $this->ownTodos(Todo::progress())[0];
-        self::assertSame('todo/' . self::MARKER, $inHand['branch']);
-        self::assertSame('2026-08-01', $inHand['claimed']);
-        self::assertSame($queued['title'], $inHand['title']);
-        self::assertSame($queued['body'], $inHand['body'], 'the step is what somebody else has to start from');
-        self::assertSame($queued['serves'], $inHand['serves']);
-
-        $released = Todo::release($inHand);
-
-        self::assertSame($queued['path'], $released, 'a released todo comes back somewhere else');
-        $back = $this->ownTodos(Todo::items())[0];
-        self::assertSame([], $this->ownTodos(Todo::progress()));
-        self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');
-        self::assertSame('', $back['claimed']);
-        self::assertSame($queued['body'], $back['body']);
-        self::assertSame($queued['priority'], $back['priority'], 'a release re-ranks what nobody asked it to');
-    }
-
-    /**
-     * The other way out of `progress/`, and the one the first parallel run
-     * produced: the work came home and a question was left over.
-     *
-     * `progress/` is for as long as a branch is live. Once the branch is merged
-     * and deleted, a claim still sitting there names a branch nobody can look
-     * at — and the todo itself is blocked on a person, which is the state
-     * `waiting/` already existed for. Which of the two it is, is written in the
-     * claim by the session that hit the question, so nothing has to be asked.
-     */
-    #[Test]
-    public function aClaimThatCarriesAQuestionIsReleasedIntoWaiting(): void
-    {
-        $this->claimInProgress('todo/' . self::MARKER, '2026-08-01', 'which of the two shapes is wanted.');
-        $inHand = $this->ownTodos(Todo::progress())[0];
-
-        $released = Todo::release($inHand);
-
-        self::assertSame('todo/waiting/' . self::MARKER . '.md', $released);
+        self::assertSame('todo/waiting/' . basename($queued['path']), $parked, 'a parked todo keeps its id');
         $waiting = $this->ownTodos(Todo::waiting())[0];
         self::assertSame('which of the two shapes is wanted.', $waiting['waitingOn'], 'the question is what the state carries');
-        self::assertSame('', $waiting['branch'], 'a waiting todo names a branch somebody is about to delete');
-        self::assertSame('', $waiting['claimed']);
-        self::assertSame([], $this->ownTodos(Todo::items()), 'a todo blocked on a person is queued behind work nobody is blocked on');
+        self::assertSame($queued['body'], $waiting['body'], 'the step is what somebody else has to start from');
+        self::assertSame($queued['priority'], $waiting['priority']);
+        self::assertSame([], $this->ownTodos(Todo::items()), 'a todo blocked on a person is offered as ordinary work');
     }
 
     /**
@@ -429,21 +384,16 @@ final class TodoTest extends TestCase
         // this case's own rather than from whatever the checkout is carrying.
         $this->ownQueue();
 
-        $branch = 'todo/' . self::MARKER;
-        $git = self::createStub(CommandRunner::class);
-        $git->method('run')->willReturn(
-            ['ok' => true, 'exitCode' => 0, 'output' => $branch . "\n", 'error' => ''],
-        );
-        Checkouts::useRunner($git);
+        Checkouts::useRunner($this->gitSaying("todo/nothing-derives-this\n"));
         $before = Todo::claimed();
 
-        $this->claimInProgress($branch);
+        $queued = $this->queueATodo();
+        Checkouts::useRunner($this->gitSaying(Todo::branch($queued) . "\n"));
         $onTheClaim = Todo::claimed();
 
-        self::assertNull($before, 'a claim was matched before one was written');
-        self::assertNotNull($onTheClaim, 'a checkout standing on a claim is handed the queue');
-        self::assertSame($branch, $onTheClaim['branch']);
-        self::assertSame('progress', $onTheClaim['kind']);
+        self::assertNull($before, 'a todo was matched on a branch none of them derives');
+        self::assertNotNull($onTheClaim, 'a checkout standing on a todo\'s branch is handed the queue');
+        self::assertSame($queued['path'], $onTheClaim['path']);
     }
 
     /**
@@ -525,10 +475,10 @@ final class TodoTest extends TestCase
     #[Test]
     public function theQueueIsReadByPriorityAndThenByAge(): void
     {
-        $older = $this->queueATodo('low', '2026-07-01-090000');
-        $newer = $this->queueATodo('low', '2026-07-02-090000');
-        $ordinary = $this->queueATodo('normal', '2026-07-03-090000');
-        $urgent = $this->queueATodo('high', '2026-07-04-090000');
+        $older = $this->queueATodo('low', '260701');
+        $newer = $this->queueATodo('low', '260702');
+        $ordinary = $this->queueATodo('normal', '260703');
+        $urgent = $this->queueATodo('high', '260704');
 
         $queued = array_column($this->ownTodos(Todo::items()), 'path');
 
@@ -552,7 +502,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function everyTodoInAStageSaysWhereItStands(): void
     {
-        foreach (array_merge(Todo::items(), Todo::progress(), Todo::waiting()) as $todo) {
+        foreach (array_merge(Todo::items(), Todo::waiting()) as $todo) {
             self::assertContains($todo['priority'], Todo::PRIORITIES, $todo['path'] . ' says nothing about where it stands');
         }
 

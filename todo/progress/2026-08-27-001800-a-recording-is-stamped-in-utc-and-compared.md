@@ -2,6 +2,8 @@
 
 **Serves:** D-DOC-058
 **Priority:** normal
+**Branch:** todo/a-recording-is-stamped-in-utc-and-compared
+**Claimed:** 2026-08-26
 
 The two halves of the drift report read different clocks, so for the hours
 between midnight local and midnight UTC the report claims a staleness that is

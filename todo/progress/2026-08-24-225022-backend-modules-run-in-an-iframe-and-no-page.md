@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-225022-backend-modules-run-in-an-iframe-and-no-page.md
 **Priority:** low
+**Branch:** todo/backend-modules-run-in-an-iframe-and-no-page
+**Claimed:** 2026-08-26
 
 Judge this feedback before fixing what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** requirements/
 **Priority:** normal
+**Branch:** todo/one-word-s-weight-decides-whether-a-hint-is
+**Claimed:** 2026-08-26
 
 `R-KNW-053` is held by a margin of one word. Writing an unrelated hint into
 `knowledge/hints/php.json` on 2026-08-26 used the word "test" twice, which

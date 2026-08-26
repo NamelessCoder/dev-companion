@@ -33,6 +33,69 @@
     ]
   },
   {
+    "id": "frontend-render-pipeline-state",
+    "title": "What a Frontend Request Fills and Clears in PageRenderer",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Page/PageRenderer.php",
+      "frontend/Classes/Http/RequestHandler.php",
+      "PageRenderer",
+      "bodyContent",
+      "addBodyContent",
+      "renderPageWithUncachedObjects",
+      "renderJavaScriptAndCssForProcessingOfUncachedContentObjects",
+      "processHtmlBasedRenderingSettings",
+      "generatePageContent",
+      "pageRendererState",
+      "INTincScript",
+      "USER_INT",
+      "COA_INT",
+      "disableAllHeaderCode",
+      "uncached content objects",
+      "page renderer state",
+      "what reset does not reset"
+    ],
+    "hints": [
+      "The renderer is filled in one order and emptied in another, and a diff on either class is read against that order. `RequestHandler::generatePageBodyContent()` goes first and touches the renderer not at all: it renders the cacheable body from the page TypoScript and leaves a placeholder where each USER_INT and COA_INT sits.",
+      "`config.disableAllHeaderCode` returns from `generatePageContent()` at that point, before anything populates the renderer and before anything renders it, so the body is the whole response and the renderer stays empty for the rest of the request.",
+      "`processHtmlBasedRenderingSettings()` is the phase that fills the head — doctype, the html and head tags, the favicon, the CSS and JavaScript the page TypoScript includes, headerData, footerData, the title, the inline settings and the inline language labels — and it adds the body tag through `addBodyContent()`. `generatePageContent()` appends the page content with the same call afterwards, so `bodyContent` is the body tag followed by the content, in that order.",
+      {
+        "text": "Then one of two exits. A page with no uncached content elements is rendered whole by `renderFrontendPage()` — the frontend's own, beside `render()` which is the backend's — and that call resets the renderer as its last step.",
+        "since": 14
+      },
+      {
+        "text": "Then one of two exits. A page with no uncached content elements is rendered whole by `render()`, which serves the backend and the frontend both, and that call resets the renderer as its last step.",
+        "until": 13
+      },
+      "The other exit is `renderPageWithUncachedObjects()`, which writes a placeholder comment for every head marker and deliberately does not reset: the renderer is serialised whole and cached beside the content, to be picked up again when the uncached objects run. `getState()` is what is serialised — every property of the renderer, plus the meta tag registry's state and the JavaScript renderer's, minus the injected services.",
+      {
+        "text": "That state is the `pageRendererState` entry of the page cache row, and the `PrepareTypoScriptFrontendRendering` middleware restores it with `updateState()` on a cache hit.",
+        "since": 14
+      },
+      {
+        "text": "That state is `config['INTincScript_ext']['pageRendererState']` on TypoScriptFrontendController, and `INTincScript()` restores it with `updateState()` before it substitutes anything.",
+        "until": 13
+      },
+      "The uncached objects then run with that whole state populated rather than with an empty renderer, which is why an asset a USER_INT registers is added on top of what the cached page already carried. `renderJavaScriptAndCssForProcessingOfUncachedContentObjects()` substitutes the head placeholders last, and resets at the end of it.",
+      {
+        "text": "`renderPageWithUncachedObjects()` empties `bodyContent` before it returns, so the body is cached as the content and not a second time inside the serialised state.",
+        "since": 14
+      },
+      {
+        "text": "`renderPageWithUncachedObjects()` leaves `bodyContent` standing, so the body is cached twice — once as the content, once inside the serialised state — and a render that follows it on the same instance starts from that body rather than from an empty one.",
+        "until": 13
+      },
+      "`reset()` is not the mirror image of what filled the renderer, and the leftovers are where a page ends up wearing the previous one's head. It clears `bodyContent`, the JavaScript and CSS files and inline blocks, `jsLibs`, the inline comments, headerData, footerData, the locale, the doctype, the template file and the JavaScript renderer. It does not clear `cssLibs`, the title, the favicon, the inline settings or the inline language labels, and the meta tag registry is a service of its own that nothing in `reset()` touches — so a meta tag set for one page is still set for whatever renders next in the same process.",
+      {
+        "text": "`reset()` does not clear `bodyContent` on this line either: the property is only ever overwritten by `setBodyContent()`, so every render after the first starts from what the one before it left.",
+        "until": 12
+      },
+      "This is the state the request holds, not which template produced the body: frontend-page-rendering answers that one, and typo3_rule_lookup(documentId \"core/testing/proving-a-rendering\") is how a rendering is proved."
+    ]
+  },
+  {
     "id": "page-content-areas",
     "title": "Addressing a Content Area in a Page Template",
     "domains": [

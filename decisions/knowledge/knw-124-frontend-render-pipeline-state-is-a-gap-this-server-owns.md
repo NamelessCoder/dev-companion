@@ -3,6 +3,10 @@ id: D-KNW-124
 title: Frontend render pipeline state is a gap this server owns
 date: 2026-08-25
 status: open
+coveredBy:
+  - HintsTest::theFixtureThatCanAssertNoHeadOutputIsNamed
+  - HintsTest::theStateAFrontendRequestLeavesInTheRendererIsAnswered
+  - HintsTest::whatBecomesOfTheRenderedBodyIsStatedPerMajor
 ---
 
 # D-KNW-124 — Frontend render pipeline state is a gap this server owns
@@ -61,11 +65,11 @@ which do not bear on the diff.
   `proving-a-rendering`, and how an asset reaches a page with
   `how-an-asset-reaches-a-page`.
 - Bound per major rather than written flat, because the reading already shows a
-  boundary the feedback did not. Read on all four covered lines: 12.4 has no
-  `bodyContent` property at all; 13.4 clears it in `reset()` alone; 14.3 and
-  `main` clear it in `renderPageWithUncachedObjects()` as well, at
-  `PageRenderer.php:1068` and `:1000`. So the symptom the reported patch names
-  is gone on 14 and up and stands on 13.4.
+  boundary the feedback did not. Read on all four covered lines: 13.4 clears
+  `bodyContent` in `reset()` alone; 14.3 and `main` clear it in
+  `renderPageWithUncachedObjects()` as well, at `PageRenderer.php:1068` and
+  `:1000`. So the symptom the reported patch names is gone on 14 and up and
+  stands on 13.4.
 - `reset()` on `main` clears `bodyContent`, `jsFiles`, `jsInline`, `jsLibs`,
   `cssFiles`, `cssInline`, `inlineComments`, `headerData`, `footerData` and the
   JavaScript renderer, and touches neither `cssLibs` nor the meta tag registry.
@@ -84,8 +88,9 @@ which do not bear on the diff.
 - That the phase order is one hint rather than a document. It is a mechanism a
   reviewer holds while reading a diff, not a procedure carried out step by step,
   which is what the documents below `knowledge/documents/` are for.
-- That the 12.4 shape is worth a statement. The property is absent there, so the
-  question a caller on that line asks has another answer rather than none.
+- That the 12.4 shape is worth a statement. `reset()` never touches the property
+  there, so the question a caller on that line asks has another answer rather
+  than none.
 
 ## Wrong if
 
@@ -98,3 +103,25 @@ which do not bear on the diff.
   What a Service Holds Mid-Request" section already carries one sentence of the
   lifecycle, as the caveat that a `bodyContent` of length 0 is the probe
   standing in the wrong moment.
+
+## Since then
+
+The hint was written on 2026-08-26, as `frontend-render-pipeline-state` in
+`knowledge/hints/page-rendering.json`, and the fixture trap as a statement on
+`core-tests`. Writing it corrected one reading above: 12.4 does have a
+`bodyContent` property — `PageRenderer.php:247`, untyped — and what is absent
+there is its line in `reset()`, so on that line every render starts from what
+the one before it left. The bullets carry the corrected reading and this says
+what moved.
+
+Two further readings the entry did not have, both unbound because they hold on
+all four: `reset()` also restores the locale, the doctype and the template file,
+and it leaves `headTag` standing beside the title and the favicon; and what
+carries the serialised state across the uncached pass is
+`PrepareTypoScriptFrontendRendering` from the page cache row on 14 and up,
+against `TypoScriptFrontendController::INTincScript()` reading
+`config['INTincScript_ext']` until 13.
+
+The **Wrong if** are untouched by that. Whether a session with the hint
+installed still goes to the checkout is a forward run, and nothing here can
+answer it.

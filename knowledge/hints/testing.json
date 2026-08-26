@@ -44,7 +44,11 @@
         "scope": "core"
       },
       "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock.",
-      "A backend route in a test is TYPO3\\CMS\\Backend\\Routing\\Route, which takes a path and options; the core class of the same name takes defaults before its options. Built from the wrong one, getOption() answers null with no error and the test passes without reaching what it is named after."
+      "A backend route in a test is TYPO3\\CMS\\Backend\\Routing\\Route, which takes a path and options; the core class of the same name takes defaults before its options. Built from the wrong one, getOption() answers null with no error and the test passes without reaching what it is named after.",
+      {
+        "text": "A functional test that loads EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript can observe nothing the PageRenderer assembles. That file is the shared base the SiteHandling and DataScenarios tests build their site on, with a fixture of their own layered over it, and it sets config.disableAllHeaderCode = 1 — so RequestHandler::generatePageContent() returns the body before the renderer is populated. No assertion in such a test can fail on a meta tag, a stylesheet, a script or the page title, whatever the change did to them, and a test about any of those needs a TypoScript fixture that does not include that base. frontend-render-pipeline-state is where that phase sits.",
+        "scope": "core"
+      }
     ]
   },
   {

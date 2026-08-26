@@ -2880,6 +2880,95 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `D-KNW-124`. The call that missed was path-scoped: probed with the two
+     * classes the session read, the first hit was `system-extension-boundaries`,
+     * whose `appliesTo` is every core file there is. So the paths are asserted
+     * beside the three questions, because a hint the words reach and the path
+     * does not is the same miss again.
+     */
+    #[Decision('D-KNW-124')]
+    #[Test]
+    public function theStateAFrontendRequestLeavesInTheRendererIsAnswered(): void
+    {
+        $reached = static fn(array $paths, string $task): array => array_column(
+            Hints::find($paths, $task, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertSame('frontend-render-pipeline-state', $reached(
+            [
+                'typo3/sysext/core/Classes/Page/PageRenderer.php',
+                'typo3/sysext/frontend/Classes/Http/RequestHandler.php',
+            ],
+            '',
+        )[0]);
+
+        foreach ([
+            'when is PageRenderer bodyContent populated and cleared during a frontend request',
+            'which PageRenderer properties does reset() not reset',
+            'does config.disableAllHeaderCode skip PageRenderer head assembly',
+        ] as $question) {
+            self::assertContains('frontend-render-pipeline-state', $reached([], $question), $question);
+        }
+    }
+
+    /**
+     * `D-KNW-124`. What the renderer does with the body it just rendered is the
+     * half that moved: it is emptied where the state is serialised on 14 and up,
+     * left standing on 13, and never cleared at all on 12. The phases around it
+     * did not move, so they are unbound — a hint that is a table of versions is
+     * what this entry named as its own failure.
+     */
+    #[Decision('D-KNW-124')]
+    #[Test]
+    public function whatBecomesOfTheRenderedBodyIsStatedPerMajor(): void
+    {
+        $texts = static fn(int $major): string => implode("\n", array_column(
+            Hints::byId('frontend-render-pipeline-state', $major)['hints'],
+            'text',
+        ));
+
+        foreach ([12, 13] as $major) {
+            self::assertStringContainsString('leaves `bodyContent` standing', $texts($major));
+            self::assertStringNotContainsString('empties `bodyContent`', $texts($major));
+        }
+        foreach ([14, 15] as $major) {
+            self::assertStringContainsString('empties `bodyContent`', $texts($major));
+            self::assertStringNotContainsString('leaves `bodyContent` standing', $texts($major));
+        }
+
+        // `reset()` clears the body everywhere it has one, and on 12 it does not
+        // touch the property at all — so the render after it starts from what
+        // the one before left, which is the case the enumeration exists for.
+        self::assertStringContainsString('only ever overwritten by `setBodyContent()`', $texts(12));
+        self::assertStringNotContainsString('only ever overwritten', $texts(13));
+
+        // The asymmetry itself holds on every covered line and says so by
+        // carrying no binding.
+        foreach ([12, 13, 14, 15] as $major) {
+            self::assertStringContainsString('It does not clear `cssLibs`', $texts($major));
+            self::assertStringContainsString('the meta tag registry is a service of its own', $texts($major));
+        }
+    }
+
+    /**
+     * `D-KNW-124`. The same silence twice: a session wrote a functional test
+     * against a fixture that cannot fail on what the renderer assembles, and
+     * nothing said so. The trap is the shared base rather than the fixture
+     * layered over it, so the statement names the file that carries the flag.
+     */
+    #[Decision('D-KNW-124')]
+    #[Test]
+    public function theFixtureThatCanAssertNoHeadOutputIsNamed(): void
+    {
+        $statements = self::statementsOf('core-tests');
+
+        self::assertStringContainsString('EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript', $statements);
+        self::assertStringContainsString('config.disableAllHeaderCode = 1', $statements);
+        self::assertStringContainsString('frontend-render-pipeline-state', $statements);
+    }
+
+    /**
      * `D-KNW-087`. The hint said an area the layout never declared "renders
      * empty with no error", and a session that skipped it got HTTP 500 on every
      * page instead. `ContentAreaViewHelper::render()` throws for anything that

@@ -20,6 +20,11 @@ against, publishes it on a local port and leaves it up; `typo3_test_run_guide`
 names it and prints what it costs. That instance is a styleguide: it
 demonstrates components, and it carries no content of its own beyond them.
 
+The backend on it is entered as `admin` with the password `password`.
+`Build/tests/playwright/config.ts` is where those two are the defaults, under
+`ACCESSIBILITY_BACKEND_ADMIN_USERNAME` and
+`ACCESSIBILITY_BACKEND_ADMIN_PASSWORD`, which is also how a run overrides them.
+
 Where the case needs content — several languages, a page long enough to scroll,
 a particular TCA or a record that only one installation has — the installation
 that has it is the one to look at. That is usually a running DDEV project, and

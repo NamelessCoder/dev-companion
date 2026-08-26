@@ -52,6 +52,15 @@
       "scope": "core"
     },
     {
+      "topic": "The JavaScript and CSS the core commits beside the sources they are built from",
+      "depth": "Curated prose, command level. Which source tree produces which committed file, how a minified one is diffed at all, and rebuilding one in a worktree branched off the target branch so the checkout you work in stays as it is. It carries the question that needs the generated files deleted first, and what resolves a backport that conflicted in one. Which suite builds a given branch is typo3_test_run_guide's answer rather than this page's.",
+      "tools": [
+        "typo3_rule_lookup"
+      ],
+      "source": "typo3://guides/core/contribution/committed-build-output",
+      "scope": "core"
+    },
+    {
       "topic": "What a Forge issue says and what was decided about it, which other issues describe the same thing, and what stands open in the core's backlog",
       "depth": "The tracker's own API, read live. By number: subject, tracker, status, target version, who it is assigned to, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported. As a backlog: the issues of the core project, ordered by when they were filed or by how long nobody has touched them, narrowed by tracker, by area in the caller's own words, by date and by person — what somebody filed, what they hold, or both at once — and reaching the closed ones where a status asks for them, each with who filed it, who holds it and both dates, and the count of everything that matched beside the page. As a shape: how a matched set is distributed over statuses, trackers, areas and years, which is what answers a set larger than the fifty rows a page carries. The areas are read from the project itself and a person is resolved from the project's members and from the issues carrying the name, so a word naming none of either is answered with the ones that exist rather than with the unfiltered backlog.",
       "tools": [

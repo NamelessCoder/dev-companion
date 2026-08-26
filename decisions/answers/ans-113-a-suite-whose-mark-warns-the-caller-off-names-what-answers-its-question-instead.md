@@ -3,7 +3,8 @@ id: D-ANS-113
 title: 'A suite whose mark warns the caller off names what answers its question instead'
 date: 2026-08-26
 status: open
-coveredBy: []
+coveredBy:
+  - HintsTest::everySuiteThatRunsGitNamesTheDocumentAnsweringItsQuestion
 ---
 
 # D-ANS-113 — A suite whose mark warns the caller off names what answers its question instead
@@ -113,3 +114,24 @@ not run it, and each invented the same replacement.
   platform check named in the precondition does not exist where it is needed.
 - No session ever reaches an older revision without rebasing first, which would
   say the platform check is a failure nobody meets.
+
+## Since then
+
+Measured on 2026-08-26 in throwaway worktrees off `.checkouts/typo3.git`, one at
+the tip of 14.3 and one at the tip of main: `-s build` ran in both without a
+`composerInstall`, succeeded, and left `git status` empty. The second **Assumed**
+therefore holds and the third **Wrong if** does not — the procedure is a
+worktree and not a clone. Reverting one commit's TypeScript hunk on 14.3 and
+building again modified the source and the one generated file belonging to it.
+
+`checkGruntClean` was run in the same worktree to see what its warning is:
+the build succeeded, each git call failed with
+`fatal: not a git repository: <the worktree's gitdir>`, and the suite reported
+FAILURE over a tree that was clean. Its `find`-and-delete body is the part a
+plain build does not do, so the document carries it as the way to ask about
+output no source produces any more.
+
+The answer is `knowledge/documents/core/contribution/committed-build-output`,
+named from both suite entries and from the backport section of
+`core/contribution/gerrit-workflow`. The first **Assumed** stands as written: it
+is one procedure, and the page states one.

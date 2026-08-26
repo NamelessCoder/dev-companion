@@ -286,3 +286,11 @@ original change is kept unchanged — that is what lets Gerrit link the backport
 to it. Everything below the `Change-Id` line (`Reviewed-by:`, `Tested-by:`, and
 the blank lines) is removed, and the code is adjusted to the older branch where
 it no longer applies cleanly.
+
+A generated file is where "adjusted" is not what happens to it. The JavaScript
+and CSS committed beside a `Build/Sources/` change conflict whenever the two
+branches' sources have diverged anywhere in the same module, and neither side of
+that conflict is a resolution — `typo3_rule_lookup` with
+`documentId="core/contribution/committed-build-output"` has what is. Gerrit's
+"Cherry pick" action commits the conflict markers rather than refusing, so a
+backport made that way is searched for them before anything else.

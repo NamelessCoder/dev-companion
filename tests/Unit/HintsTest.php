@@ -5616,6 +5616,42 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A suite marked `git` names the way to its own answer that leaves the
+     * checkout alone, and the caller warned off meets it in the same answer —
+     * `D-ANS-113`.
+     *
+     * Three sessions in two days read `checkGruntClean`'s warning, did not run
+     * the suite, and each invented the procedure the entry withheld.
+     */
+    #[Decision('D-ANS-113')]
+    #[Test]
+    public function everySuiteThatRunsGitNamesTheDocumentAnsweringItsQuestion(): void
+    {
+        $documents = array_column(Documents::documents(), 'id');
+        $marked = array_filter(
+            TestSuiteHints::load(),
+            static fn(array $suite): bool => $suite['runs'] === 'git',
+        );
+
+        self::assertNotSame([], $marked, 'no suite carries the mark this holds for');
+        foreach ($marked as $suite) {
+            preg_match('/documentId="([^"]+)"/', $suite['whenToUse'], $named);
+            self::assertContains(
+                $named[1] ?? '',
+                $documents,
+                $suite['suite'] . ' warns the caller off and names no document that answers it',
+            );
+        }
+
+        $answer = Registry::call('typo3_test_run_guide', [
+            'paths' => ['Build/Sources/TypeScript/form/backend/form-editor/view-model.ts'],
+            'targetVersion' => 'main',
+        ]);
+
+        self::assertStringContainsString('core/contribution/committed-build-output', $answer->text);
+    }
+
+    /**
      * How a suite is confirmed to exist on a branch, and the glob that makes
      * the obvious grep answer nothing.
      *

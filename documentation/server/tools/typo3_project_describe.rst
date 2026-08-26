@@ -434,10 +434,10 @@ The answer carries exactly one of these sets of fields: ``root``, ``installed``,
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
+15.0.0-dev, the main core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Its dependencies are not installed —
 vendor/autoload.php is not there either, and composer install writes both.
@@ -457,18 +457,18 @@ Called with:
 
     {}
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
 
 .. code-block:: text
 
-    <installation> — core-checkout, TYPO3 14.3.7-dev, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
+    <installation> — core-checkout, TYPO3 15.0.0-dev, PHP ^8.5, and the installed core requires ^8.5 — the lowest a package here may declare
 
     There is a composer.lock here and no Composer metadata below the vendor directory it declares, so the packages it names are not on disk at all. Run "CI=true ./Build/Scripts/runTests.sh -s composerInstall" before any suite here. What a run reports otherwise is the absent install rather than the code.
 
-    Those PHP numbers, as they stand to each other. This project promises 8.2. The installed core requires 8.2 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
+    Those PHP numbers, as they stand to each other. This project promises 8.5. The installed core requires 8.5 as well, so the two agree. No environment here states a PHP, so there is nothing to say which of the versions in that range gets run. Nothing here bounds the interpreter — there is no composer/platform_check.php below the vendor directory to read one out of — so no PHP version stops a command below from starting. All of it read from these files. Nothing was executed on any of these versions, and only the floors were compared — a version over what a constraint's own upper bound allows reads here like one inside it.
 
     Extensions: none beyond TYPO3's own.
 
@@ -503,8 +503,10 @@ Text:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
     - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
+    - core/contribution/changelog — The Changelog Entry a Core Patch Owes
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
+    - core/contribution/reporting-an-issue — Filing a TYPO3 Core Bug Report
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
@@ -528,14 +530,14 @@ Data:
             "state": "not-installed",
             "packages": []
         },
-        "typo3Version": "14.3.7-dev",
-        "phpConstraint": "^8.2",
+        "typo3Version": "15.0.0-dev",
+        "phpConstraint": "^8.5",
         "coreConstraint": null,
-        "corePhpConstraint": "^8.2",
+        "corePhpConstraint": "^8.5",
         "installedPhpBound": null,
         "phpRelation": {
-            "floor": "8.2",
-            "coreFloor": "8.2",
+            "floor": "8.5",
+            "coreFloor": "8.5",
             "againstCore": "same",
             "inEnvironment": null,
             "bound": null,
@@ -693,12 +695,20 @@ Data:
                 "title": "Proving a TypoScript Condition Verdict"
             },
             {
+                "id": "core/contribution/changelog",
+                "title": "The Changelog Entry a Core Patch Owes"
+            },
+            {
                 "id": "core/contribution/commit-messages",
                 "title": "TYPO3 Core Commit Message Rules"
             },
             {
                 "id": "core/contribution/gerrit-workflow",
                 "title": "TYPO3 Gerrit Workflow"
+            },
+            {
+                "id": "core/contribution/reporting-an-issue",
+                "title": "Filing a TYPO3 Core Bug Report"
             },
             {
                 "id": "core/contribution/rules",
@@ -775,8 +785,10 @@ Text:
     - any/security/reporting-a-vulnerability — Reporting a TYPO3 Vulnerability
     - any/testing/browser-check — Looking at a Change in a Real Browser
     - any/testing/proving-a-condition — Proving a TypoScript Condition Verdict
+    - core/contribution/changelog — The Changelog Entry a Core Patch Owes
     - core/contribution/commit-messages — TYPO3 Core Commit Message Rules
     - core/contribution/gerrit-workflow — TYPO3 Gerrit Workflow
+    - core/contribution/reporting-an-issue — Filing a TYPO3 Core Bug Report
     - core/contribution/rules — TYPO3 Core Contribution Rules
     - core/contribution/sources — TYPO3 Contribution Sources
     - core/testing/proving-a-rendering — Proving What a Rendering Change Renders
@@ -879,12 +891,20 @@ Data:
                 "title": "Proving a TypoScript Condition Verdict"
             },
             {
+                "id": "core/contribution/changelog",
+                "title": "The Changelog Entry a Core Patch Owes"
+            },
+            {
                 "id": "core/contribution/commit-messages",
                 "title": "TYPO3 Core Commit Message Rules"
             },
             {
                 "id": "core/contribution/gerrit-workflow",
                 "title": "TYPO3 Gerrit Workflow"
+            },
+            {
+                "id": "core/contribution/reporting-an-issue",
+                "title": "Filing a TYPO3 Core Bug Report"
             },
             {
                 "id": "core/contribution/rules",

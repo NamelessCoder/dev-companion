@@ -489,6 +489,8 @@ Data:
         "changes": [
             {
                 "number": 95040,
+                "message": null,
+                "files": null,
                 "changeId": "Ib755fc396e94a1ee4273338163804782768dc707",
                 "subject": "[TASK] Deprecate AssetCollector media handling",
                 "status": "MERGED",
@@ -587,6 +589,45 @@ Text:
     Verified: satisfied · Stefan Bürk +1 · Christian Kuhn +2 · core-ci +1 · Benni Mack +1
     Code-Review: satisfied · Stefan Bürk +1 · Christian Kuhn +2 · core-ci 0 · Benni Mack +1
 
+    ### Commit message
+
+      [TASK] Raise --dev phpunit/phpunit:^11.5.17
+
+      As a drive by change we change the deprecated function
+      isType towards its alternative. This is a preparation for PHPunit 12
+
+      > composer req nikic/php-parser:^5.4.0
+      > composer require -d typo3/sysext/install --no-update \
+          "nikic/php-parser":"^5.4.0"
+      > composer req --dev phpunit/phpunit:^11.5.17 -w
+
+      Resolves: #106535
+      Releases: main,13.4
+      Change-Id: If7a109358c5432f55cc2947a1f6d0f437b830183
+      Reviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011
+      Reviewed-by: Benni Mack <benni@typo3.org>
+      Tested-by: Christian Kuhn <lolli@schwarzbu.ch>
+      Tested-by: Stefan Bürk <stefan@buerk.tech>
+      Tested-by: core-ci <typo3@b13.com>
+      Reviewed-by: Stefan Bürk <stefan@buerk.tech>
+      Tested-by: Benni Mack <benni@typo3.org>
+      Reviewed-by: Christian Kuhn <lolli@schwarzbu.ch>
+
+    ### Files (13)
+    - modified composer.json · +2 -2
+    - modified composer.lock · +129 -73
+    - modified typo3/sysext/backend/Tests/Unit/Controller/EditDocumentControllerTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DataHandling/Localization/StateTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DependencyInjection/ConsoleCommandPassTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/Domain/RecordFactoryTest.php · +3 -3
+    - modified typo3/sysext/core/Tests/Unit/Localization/LocalizationFactoryTest.php · +2 -2
+    - modified typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/Schema/TcaSchemaFactoryTest.php · +4 -4
+    - modified typo3/sysext/core/Tests/Unit/Type/File/ImageInfoTest.php · +1 -1
+    - modified typo3/sysext/frontend/Tests/Functional/SiteHandling/RequestHandlerTest.php · +1 -1
+    - modified typo3/sysext/install/composer.json · +1 -1
+
     ### Issues named in the commit message (1)
     - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w · https://forge.typo3.org/issues/106535
 
@@ -608,8 +649,45 @@ Text:
     Verified: satisfied · Christian Kuhn +2 · core-ci +1
     Code-Review: satisfied · Christian Kuhn +2 · core-ci 0
 
+    ### Commit message
+
+      [TASK] Raise --dev phpunit/phpunit:^11.5.17
+
+      As a drive by change we change the deprecated function
+      isType towards its alternative. This is a preparation for PHPunit 12
+
+      > composer req nikic/php-parser:^5.4.0
+      > composer require -d typo3/sysext/install --no-update \
+          "nikic/php-parser":"^5.4.0"
+      > composer req --dev phpunit/phpunit:^11.5.17 -w
+
+      Resolves: #106535
+      Releases: main,13.4
+      Change-Id: If7a109358c5432f55cc2947a1f6d0f437b830183
+      Reviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89012
+      Tested-by: core-ci <typo3@b13.com>
+      Tested-by: Christian Kuhn <lolli@schwarzbu.ch>
+      Reviewed-by: Christian Kuhn <lolli@schwarzbu.ch>
+
+    ### Files (13)
+    - modified composer.json · +2 -2
+    - modified composer.lock · +131 -75
+    - modified typo3/sysext/backend/Tests/Unit/Controller/EditDocumentControllerTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DataHandling/Localization/StateTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/DependencyInjection/ConsoleCommandPassTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/Domain/RecordFactoryTest.php · +3 -3
+    - modified typo3/sysext/core/Tests/Unit/Localization/LocalizationFactoryTest.php · +2 -2
+    - modified typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php · +1 -1
+    - modified typo3/sysext/core/Tests/Unit/Schema/TcaSchemaFactoryTest.php · +4 -4
+    - modified typo3/sysext/core/Tests/Unit/Type/File/ImageInfoTest.php · +1 -1
+    - modified typo3/sysext/frontend/Tests/Functional/SiteHandling/RequestHandlerTest.php · +1 -1
+    - modified typo3/sysext/install/composer.json · +1 -1
+
     ### Issues named in the commit message (1)
     - resolves #106535 — Task · Closed · Raise --dev phpunit/phpunit:^11.5.17 -w · https://forge.typo3.org/issues/106535
+
+    The paths above are what the current patch set touches, and they are the argument the work after this takes: `typo3_hint_lookup` for the conventions of each subsystem in the list, `typo3_test_run_guide` for the suites that can fail on them. What is not here is the diff — the hunks are what a fetch is for, and a shortlist is triaged without fetching anything.
 
     The issues above are what the commit message names, and a status there is the issue's own rather than this change's. Pass one to `typo3_forge_lookup` as `issue` to read it whole, which is where a maintainer said why something was closed or reassigned.
 
@@ -629,7 +707,7 @@ Text:
 
     ## What a patch set in front of you opens
     One of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:
-    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. The target branch decides which conventions apply.
+    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. All four are above, so this costs no fetch — the target branch decides which conventions apply.
     - Three ways in, and a branch of your own naming is none of them: the branch the change targets, a worktree beside the checkout, or current code on `review/<change number>`. The third makes a commit that exists nowhere else, so say which of the two each result is about.
     - A patch that no longer applies is the finding. Resolving past it produces a patch nobody wrote.
     - Reading is the whole of the review: voting, commenting and uploading stay yours. An instruction to change the patch — fix it, amend it, answer the comments — ends the review and opens `typo3-core-patch-development`.
@@ -645,6 +723,113 @@ Data:
         "changes": [
             {
                 "number": 89011,
+                "message": "[TASK] Raise --dev phpunit/phpunit:^11.5.17\n\nAs a drive by change we change the deprecated function\nisType towards its alternative. This is a preparation for PHPunit 12\n\n> composer req nikic/php-parser:^5.4.0\n> composer require -d typo3/sysext/install --no-update \\\n    \"nikic/php-parser\":\"^5.4.0\"\n> composer req --dev phpunit/phpunit:^11.5.17 -w\n\nResolves: #106535\nReleases: main,13.4\nChange-Id: If7a109358c5432f55cc2947a1f6d0f437b830183\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011\nReviewed-by: Benni Mack <benni@typo3.org>\nTested-by: Christian Kuhn <lolli@schwarzbu.ch>\nTested-by: Stefan Bürk <stefan@buerk.tech>\nTested-by: core-ci <typo3@b13.com>\nReviewed-by: Stefan Bürk <stefan@buerk.tech>\nTested-by: Benni Mack <benni@typo3.org>\nReviewed-by: Christian Kuhn <lolli@schwarzbu.ch>\n",
+                "files": [
+                    {
+                        "path": "composer.json",
+                        "action": "modified",
+                        "insertions": 2,
+                        "deletions": 2,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "composer.lock",
+                        "action": "modified",
+                        "insertions": 129,
+                        "deletions": 73,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Tests/Unit/Controller/EditDocumentControllerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DataHandling/Localization/StateTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DependencyInjection/ConsoleCommandPassTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Domain/RecordFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 3,
+                        "deletions": 3,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Localization/LocalizationFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 2,
+                        "deletions": 2,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Schema/TcaSchemaFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 4,
+                        "deletions": 4,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Type/File/ImageInfoTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/frontend/Tests/Functional/SiteHandling/RequestHandlerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/install/composer.json",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    }
+                ],
                 "changeId": "If7a109358c5432f55cc2947a1f6d0f437b830183",
                 "subject": "[TASK] Raise --dev phpunit/phpunit:^11.5.17",
                 "status": "MERGED",
@@ -755,6 +940,113 @@ Data:
             },
             {
                 "number": 89012,
+                "message": "[TASK] Raise --dev phpunit/phpunit:^11.5.17\n\nAs a drive by change we change the deprecated function\nisType towards its alternative. This is a preparation for PHPunit 12\n\n> composer req nikic/php-parser:^5.4.0\n> composer require -d typo3/sysext/install --no-update \\\n    \"nikic/php-parser\":\"^5.4.0\"\n> composer req --dev phpunit/phpunit:^11.5.17 -w\n\nResolves: #106535\nReleases: main,13.4\nChange-Id: If7a109358c5432f55cc2947a1f6d0f437b830183\nReviewed-on: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89012\nTested-by: core-ci <typo3@b13.com>\nTested-by: Christian Kuhn <lolli@schwarzbu.ch>\nReviewed-by: Christian Kuhn <lolli@schwarzbu.ch>\n",
+                "files": [
+                    {
+                        "path": "composer.json",
+                        "action": "modified",
+                        "insertions": 2,
+                        "deletions": 2,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "composer.lock",
+                        "action": "modified",
+                        "insertions": 131,
+                        "deletions": 75,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Tests/Unit/Controller/EditDocumentControllerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DataHandling/Localization/StateTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/DependencyInjection/ConsoleCommandPassTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Domain/RecordFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 3,
+                        "deletions": 3,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Localization/LocalizationFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 2,
+                        "deletions": 2,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Schema/TcaSchemaFactoryTest.php",
+                        "action": "modified",
+                        "insertions": 4,
+                        "deletions": 4,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Unit/Type/File/ImageInfoTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/frontend/Tests/Functional/SiteHandling/RequestHandlerTest.php",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/install/composer.json",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 1,
+                        "binary": false,
+                        "movedFrom": null
+                    }
+                ],
                 "changeId": "If7a109358c5432f55cc2947a1f6d0f437b830183",
                 "subject": "[TASK] Raise --dev phpunit/phpunit:^11.5.17",
                 "status": "MERGED",
@@ -885,6 +1177,51 @@ Text:
     Verified: needs a vote · core-ci +1
     Code-Review: needs a vote · core-ci 0
 
+    ### Commit message
+
+      [WIP][FEATURE] Introduce Action API
+
+      The Action API acts as a multi purpose action
+      RPC mechanism, that provides JsonSchema and will support
+      OpenAPI (3.1) and MCP in order to provide interaction
+      points for remote systems interacting with TYPO3.
+
+        composer require justinrainbow/json-schema:^6.8
+        composer require -d typo3/sysext/core --no-update \
+          justinrainbow/json-schema:^6.8
+
+      Releases: main
+      Resolves: #
+      Change-Id: I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2
+
+    ### Files (26)
+    - modified composer.json · +2 -0
+    - modified composer.lock · +149 -149
+    - modified typo3/sysext/backend/Classes/Controller/BackendController.php · +4 -2
+    - added typo3/sysext/backend/Classes/Http/ActionHandler.php · +74 -0
+    - modified typo3/sysext/backend/Classes/Middleware/BackendUserAuthenticator.php · +11 -0
+    - added typo3/sysext/backend/Tests/Functional/Http/ActionHandlerTest.php · +196 -0
+    - added typo3/sysext/core/Classes/Action/ActionContext.php · +38 -0
+    - added typo3/sysext/core/Classes/Action/ActionDescriptor.php · +52 -0
+    - added typo3/sysext/core/Classes/Action/ActionException.php · +26 -0
+    - added typo3/sysext/core/Classes/Action/ActionExceptionInterface.php · +26 -0
+    - added typo3/sysext/core/Classes/Action/ActionRegistry.php · +149 -0
+    - added typo3/sysext/core/Classes/Action/ActionType.php · +54 -0
+    - added typo3/sysext/core/Classes/Action/Error/NotFoundError.php · +28 -0
+    - added typo3/sysext/core/Classes/Action/RouteHandler.php · +237 -0
+    - added typo3/sysext/core/Classes/Attribute/AsAction.php · +40 -0
+    - added typo3/sysext/core/Classes/DependencyInjection/ActionPass.php · +291 -0
+    - added typo3/sysext/core/Classes/Scope/ContentReadScope.php · +53 -0
+    - added typo3/sysext/core/Classes/Scope/ContentWriteScope.php · +44 -0
+    - added typo3/sysext/core/Classes/Scope/ScopeInterface.php · +32 -0
+    - added typo3/sysext/core/Classes/Scope/ScopeRegistry.php · +60 -0
+    - added typo3/sysext/core/Classes/Scope/ScopeUser.php · +27 -0
+    - modified typo3/sysext/core/Configuration/Services.php · +18 -0
+    - added typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/Classes/Action/TestAction.php · +110 -0
+    - added typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/Configuration/Services.yaml · +8 -0
+    - added typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/composer.json · +23 -0
+    - modified typo3/sysext/core/composer.json · +1 -0
+
     ### Relation chain (15 changes, 13 stacked on this one and 1 under it)
     - 92197 · NEW · [WIP][FEATURE] Provide Record Actions · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92197
     - 92196 · NEW · [WIP][TASK] Add record serializer · https://review.typo3.org/c/Packages/TYPO3.CMS/+/92196
@@ -902,6 +1239,8 @@ Text:
     - 91563 · NEW · [WIP][FEATURE] Introduce Action API · this change · https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563
     - 93064 · NEW · [TASK] Introduce JSON SchemaBuilder and Schema based Hydrator · https://review.typo3.org/c/Packages/TYPO3.CMS/+/93064
 
+    The paths above are what the current patch set touches, and they are the argument the work after this takes: `typo3_hint_lookup` for the conventions of each subsystem in the list, `typo3_test_run_guide` for the suites that can fail on them. What is not here is the diff — the hunks are what a fetch is for, and a shortlist is triaged without fetching anything.
+
     A relation chain is a stack of different changes built on one another, listed child first: what stands above a change is stacked on it, and what stands below it is what it is built on. Each entry's status is that entry's own, so a MERGED entry says that change landed and says nothing about the change you asked for. Gerrit relates a chain by the commits, which is not the Change-Id relation a backport keeps, and neither set contains the other.
 
     An entry chained at an earlier patch set than it stands at now has moved on since the stack was built on it. Read it by its number rather than acting on the patch set the chain names.
@@ -918,7 +1257,7 @@ Text:
 
     ## What a patch set in front of you opens
     One of two workflows: `typo3-core-patch-review` reviews it, and `typo3-core-patch-checkout` fetches it into a checkout and backs out again. Open the one this task is before reading the diff, and start it at `typo3_project_describe`. Where neither is open, this is the order:
-    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. The target branch decides which conventions apply.
+    - Establish the patch before judging it: the changed paths, the branch it targets, the commit message and the issue it names. All four are above, so this costs no fetch — the target branch decides which conventions apply.
     - Three ways in, and a branch of your own naming is none of them: the branch the change targets, a worktree beside the checkout, or current code on `review/<change number>`. The third makes a commit that exists nowhere else, so say which of the two each result is about.
     - A patch that no longer applies is the finding. Resolving past it produces a patch nobody wrote.
     - Reading is the whole of the review: voting, commenting and uploading stay yours. An instruction to change the patch — fix it, amend it, answer the comments — ends the review and opens `typo3-core-patch-development`.
@@ -934,6 +1273,217 @@ Data:
         "changes": [
             {
                 "number": 91563,
+                "message": "[WIP][FEATURE] Introduce Action API\n\nThe Action API acts as a multi purpose action\nRPC mechanism, that provides JsonSchema and will support\nOpenAPI (3.1) and MCP in order to provide interaction\npoints for remote systems interacting with TYPO3.\n\n  composer require justinrainbow/json-schema:^6.8\n  composer require -d typo3/sysext/core --no-update \\\n    justinrainbow/json-schema:^6.8\n\nReleases: main\nResolves: #\nChange-Id: I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2\n",
+                "files": [
+                    {
+                        "path": "composer.json",
+                        "action": "modified",
+                        "insertions": 2,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "composer.lock",
+                        "action": "modified",
+                        "insertions": 149,
+                        "deletions": 149,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Classes/Controller/BackendController.php",
+                        "action": "modified",
+                        "insertions": 4,
+                        "deletions": 2,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Classes/Http/ActionHandler.php",
+                        "action": "added",
+                        "insertions": 74,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Classes/Middleware/BackendUserAuthenticator.php",
+                        "action": "modified",
+                        "insertions": 11,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/backend/Tests/Functional/Http/ActionHandlerTest.php",
+                        "action": "added",
+                        "insertions": 196,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionContext.php",
+                        "action": "added",
+                        "insertions": 38,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionDescriptor.php",
+                        "action": "added",
+                        "insertions": 52,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionException.php",
+                        "action": "added",
+                        "insertions": 26,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionExceptionInterface.php",
+                        "action": "added",
+                        "insertions": 26,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionRegistry.php",
+                        "action": "added",
+                        "insertions": 149,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/ActionType.php",
+                        "action": "added",
+                        "insertions": 54,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/Error/NotFoundError.php",
+                        "action": "added",
+                        "insertions": 28,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Action/RouteHandler.php",
+                        "action": "added",
+                        "insertions": 237,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Attribute/AsAction.php",
+                        "action": "added",
+                        "insertions": 40,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/DependencyInjection/ActionPass.php",
+                        "action": "added",
+                        "insertions": 291,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Scope/ContentReadScope.php",
+                        "action": "added",
+                        "insertions": 53,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Scope/ContentWriteScope.php",
+                        "action": "added",
+                        "insertions": 44,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Scope/ScopeInterface.php",
+                        "action": "added",
+                        "insertions": 32,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Scope/ScopeRegistry.php",
+                        "action": "added",
+                        "insertions": 60,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Classes/Scope/ScopeUser.php",
+                        "action": "added",
+                        "insertions": 27,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Configuration/Services.php",
+                        "action": "modified",
+                        "insertions": 18,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/Classes/Action/TestAction.php",
+                        "action": "added",
+                        "insertions": 110,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/Configuration/Services.yaml",
+                        "action": "added",
+                        "insertions": 8,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_action/composer.json",
+                        "action": "added",
+                        "insertions": 23,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    },
+                    {
+                        "path": "typo3/sysext/core/composer.json",
+                        "action": "modified",
+                        "insertions": 1,
+                        "deletions": 0,
+                        "binary": false,
+                        "movedFrom": null
+                    }
+                ],
                 "changeId": "I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
                 "subject": "[WIP][FEATURE] Introduce Action API",
                 "status": "NEW",
@@ -1223,6 +1773,8 @@ Data:
         "changes": [
             {
                 "number": 90384,
+                "message": null,
+                "files": null,
                 "changeId": "Idd97aba049114c733f3b5f3367ba7845a6b081db",
                 "subject": "[BUGFIX] Ensure invalid pages should not stop DataHandler",
                 "status": "NEW",
@@ -1265,6 +1817,8 @@ Data:
             },
             {
                 "number": 91431,
+                "message": null,
+                "files": null,
                 "changeId": "Iefe08029a0dc95c061ce94d39ed7781d02640b20",
                 "subject": "[FEATURE] Add H6 in header layouts",
                 "status": "NEW",
@@ -1307,6 +1861,8 @@ Data:
             },
             {
                 "number": 91606,
+                "message": null,
+                "files": null,
                 "changeId": "Ifdb6cc9273a837a6cce72ce310ffcd05e800acf4",
                 "subject": "[TASK] Change appearance and position of Install Tool login buttons",
                 "status": "NEW",

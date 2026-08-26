@@ -110,10 +110,10 @@ The answer carries exactly one of these sets of fields: ``query``, ``resource``,
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
+15.0.0-dev, the main core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Its dependencies are not installed —
 vendor/autoload.php is not there either, and composer install writes both.
@@ -135,14 +135,14 @@ Called with:
         "query": "save"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
 
 .. code-block:: text
 
-    106 label(s) in <installation> match "save" — showing the first 25:
+    103 label(s) in <installation> match "save" — showing the first 25:
     - backend.alt_doc:buttons.confirm.duplicate_record_changed.yes
       "Yes, save and duplicate this record"
       EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf
@@ -234,7 +234,7 @@ Data:
     {
         "query": "save",
         "resource": null,
-        "matchCount": 106,
+        "matchCount": 103,
         "labels": [
             {
                 "ref": "backend.alt_doc:buttons.confirm.duplicate_record_changed.yes",
@@ -415,7 +415,7 @@ Data:
         "terms": [
             {
                 "term": "save",
-                "matchCount": 106
+                "matchCount": 103
             }
         ],
         "answeredBy": "packages"
@@ -496,7 +496,7 @@ Called with:
         "query": "quantumflux"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:

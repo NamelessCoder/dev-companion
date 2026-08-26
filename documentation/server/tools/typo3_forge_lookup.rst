@@ -475,7 +475,7 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-25 by ``bin/cli tools:record``. Answered against
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Answered against
 core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
@@ -1491,7 +1491,7 @@ Text:
     TYPO3 issue tracker: no issue matches "file renderer RendererRegistry FileRendererInterface" at https://forge.typo3.org.
     These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a full-text search.
     Every word has to be in the same issue, so one word nobody wrote empties the answer whatever else is in it.
-    Asked one word at a time: "file" reaches 13944 · "renderer" reaches 1173 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
+    Asked one word at a time: "file" reaches 13944 · "renderer" reaches 1174 · "RendererRegistry" reaches 5 · "FileRendererInterface" reaches 0.
     No issue on the tracker carries "FileRendererInterface". A query it is in is empty whatever else is in it, so drop it.
     "RendererRegistry" is the narrowest of the rest and reaches something: ask it on its own, then read the subjects.
     What no wording of the report reaches is enumerated instead: open "stale" with category in your own words for the area — "import export", "rte" — and limit 50.
@@ -1515,7 +1515,7 @@ Data:
             },
             {
                 "word": "renderer",
-                "total": 1173
+                "total": 1174
             },
             {
                 "word": "RendererRegistry",
@@ -1551,7 +1551,7 @@ Text:
 
 .. code-block:: text
 
-    TYPO3 issue tracker: 3 of 2492 open issues of the TYPO3 Core project, oldest filed first
+    TYPO3 issue tracker: 3 of 2483 open issues of the TYPO3 Core project, oldest filed first
     This is a page and not the set. What comes after it is reached by a narrower filter — an earlier date, one tracker — rather than by a larger limit, because the order is the tracker's own and more of it is more of the same end. breakdown answers how the whole of it is distributed.
     Age is a candidate and never a finding: read one whole by passing its number as issue, and what it still claims is established in the checkout rather than off this list.
     A row carries what the page came back with: the issues it is filed against, the files hanging off it, and the changes on review.typo3.org whose commit message names it, each with the state it is in. That state is where a change stands and not a verdict on the issue: an ABANDONED one is grounds to read the argument on it with typo3_gerrit_lookup, where the objection was written down and is regularly to the approach rather than to the defect. A row with no such line is one nothing there names — or one the review server did not answer for, which this list does not separate.
@@ -1580,6 +1580,15 @@ Text:
     Review: change 2544 · ABANDONED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/2544
     Review: change 1186 · MERGED · https://review.typo3.org/c/Packages/TYPO3.CMS/+/1186
 
+    ## What a page of the backlog opens
+    `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
+    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
+    - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
+    - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
+    - What the suite already models. A case added to a test file that exists is a reproduction with no fixture to build.
+    `typo3_changelog_lookup` is what says whether the area was reworked since, which is what turns a valid report into one about code that is gone. Say which reading decided, and say of the rows you passed over that you passed over them.
+
 Data:
 
 .. code-block:: json
@@ -1589,7 +1598,7 @@ Data:
         "source": "https://forge.typo3.org",
         "url": "https://forge.typo3.org/projects/typo3cms-core/issues.json?limit=3&include=relations%2Cattachments&status_id=open&sort=created_on%3Aasc",
         "query": "",
-        "total": 2492,
+        "total": 2483,
         "terms": [],
         "categories": [],
         "categoriesUsed": [],
@@ -1794,6 +1803,15 @@ Text:
     Relation: relates #91160 — Bug · Closed · Links to content element (anchor) in link wizard not possible when not in default language · https://forge.typo3.org/issues/91160
     Relation: relates #88382 — Bug · Closed · Link wizard lists all content elements of a page regardless of source language · https://forge.typo3.org/issues/88382
     Relation: relates #92809 — Bug · Accepted · Anchor Links in Link Wizard not translated correctly · https://forge.typo3.org/issues/92809
+
+    ## What a page of the backlog opens
+    `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
+    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
+    - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
+    - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
+    - What the suite already models. A case added to a test file that exists is a reproduction with no fixture to build.
+    `typo3_changelog_lookup` is what says whether the area was reworked since, which is what turns a valid report into one about code that is gone. Say which reading decided, and say of the rows you passed over that you passed over them.
 
 Data:
 
@@ -2059,6 +2077,15 @@ Text:
     Relation: relates #18504 — Bug · Closed · XCLASSes are not working with AJAX calls in t3lib_TCEforms_inline · https://forge.typo3.org/issues/18504
     Files (2): 0007759_41.patch, 0007759_42.patch
 
+    ## What a page of the backlog opens
+    `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
+    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
+    - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
+    - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
+    - What the suite already models. A case added to a test file that exists is a reproduction with no fixture to build.
+    `typo3_changelog_lookup` is what says whether the area was reworked since, which is what turns a valid report into one about code that is gone. Say which reading decided, and say of the rows you passed over that you passed over them.
+
 Data:
 
 .. code-block:: json
@@ -2258,6 +2285,15 @@ Text:
     Bug · Accepted · Pagetree · filed by Frank Nägler · unassigned · filed 2024-09-11 · last touched 2024-10-15 · https://forge.typo3.org/issues/104918
     Relation: relates #104697 — Bug · Accepted · Unexpected behaviour - placing new items in the page tree. Safari Desktop · https://forge.typo3.org/issues/104697
     Relation: duplicates #106028 — Bug · Closed · Cannot create/move page at end of tree using d&d · https://forge.typo3.org/issues/106028
+
+    ## What a page of the backlog opens
+    `typo3-core-issue-triage` is the workflow a caller holding this page is in, and opening it comes before deciding anything about a row. Hand the page over rather than choosing from it: triaging a backlog and triaging one issue are two jobs, and the second takes a number. Where the choice is yours, read these in order and stop at the first that decides:
+    - What has already happened to it, which `typo3_gerrit_lookup` answers by the number before the checkout is opened. An abandoned change is a verdict somebody wrote down.
+    - The category, against the branch you are standing on. One naming a subsystem the branch no longer ships settles the issue unread.
+    - Where the symptom appears. A rendered fragment, a stored row or a resolved value needs no installation; one that shows only after a backend interaction needs one standing up.
+    - How far the mechanism reaches. One class and the behaviour in it is the settleable shape, and several with the order between them is an interaction.
+    - What the suite already models. A case added to a test file that exists is a reproduction with no fixture to build.
+    `typo3_changelog_lookup` is what says whether the area was reworked since, which is what turns a valid report into one about code that is gone. Say which reading decided, and say of the rows you passed over that you passed over them.
 
 Data:
 

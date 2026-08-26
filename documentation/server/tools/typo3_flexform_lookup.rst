@@ -181,10 +181,10 @@ The answer carries exactly one of these sets of fields: ``table``, ``field``,
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
+15.0.0-dev, the main core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Its dependencies are not installed —
 vendor/autoload.php is not there either, and composer install writes both.
@@ -210,7 +210,7 @@ Called with:
         }
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
@@ -229,6 +229,7 @@ Data:
         "unsupported": {
             "cause": "installation-not-answering",
             "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
+            "repositoryState": "installed",
             "diagnosis": "",
             "searched": [
                 "<installation>"
@@ -373,7 +374,7 @@ Called with:
         "field": "bodytext"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
@@ -392,6 +393,7 @@ Data:
         "unsupported": {
             "cause": "installation-not-answering",
             "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed — vendor/autoload.php is not there either, and composer install writes both",
+            "repositoryState": "installed",
             "diagnosis": "",
             "searched": [
                 "<installation>"

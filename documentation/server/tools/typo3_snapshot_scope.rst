@@ -79,8 +79,8 @@ Answers with
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Answered against
-core-checkout, TYPO3 14.3.7-dev, the 14.3 core checkout below .checkouts/,
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Answered against
+core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Its dependencies are not installed
 — vendor/autoload.php is not there either, and composer install writes both.
@@ -101,7 +101,7 @@ Text:
 .. code-block:: text
 
     Installed component contract
-    For TYPO3 v14, 22 of the 22 curated component entries were found in the installed backend CSS or JavaScript. Their class and custom-property contracts were read from those packages.
+    For TYPO3 v15, 22 of the 22 curated component entries were found in the installed backend CSS or JavaScript. Their class and custom-property contracts were read from those packages.
     The bundled catalog remains the curated search index and markup fallback; it does not override installed classes.
 
     Bundled fallback source checkout
@@ -132,7 +132,7 @@ Data:
             "version": "15.0",
             "commit": "4c8b38b2dd07856c3e2666fbdfd77beead87ffe0",
             "verifiedAt": "2026-07-28",
-            "installedVersion": "14.3.7-dev",
+            "installedVersion": "15.0.0-dev",
             "skew": null
         },
         "verifyCommand": "bin/cli components:paths /path/to/typo3-core-checkout",
@@ -144,7 +144,7 @@ Data:
             "components": 22,
             "systemExtensions": 38
         },
-        "targetVersion": 14,
+        "targetVersion": 15,
         "verifiedCount": 22,
         "componentSource": "installation",
         "withheld": []

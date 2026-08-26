@@ -195,10 +195,10 @@ The answer carries exactly one of these sets of fields: ``query``,
 Answered
 --------
 
-Recorded on 2026-08-24 by ``bin/cli tools:record``. Of two working directories,
+Recorded on 2026-08-26 by ``bin/cli tools:record``. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.7-dev, the 14.3 core checkout below .checkouts/, whose console could not
+15.0.0-dev, the main core checkout below .checkouts/, whose console could not
 be reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Its dependencies are not installed —
 vendor/autoload.php is not there either, and composer install writes both.
@@ -220,7 +220,7 @@ Called with:
         "query": "ext_tables.php"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
@@ -260,6 +260,7 @@ Data:
             }
         ],
         "versions": [
+            "15.0",
             "14.3",
             "14.3.x",
             "14.2",
@@ -316,9 +317,7 @@ Data:
             "7.0"
         ],
         "answeredBy": "packages",
-        "versionsFromTheManual": [
-            "15.0"
-        ],
+        "versionsFromTheManual": [],
         "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
     }
 
@@ -437,7 +436,7 @@ Called with:
         "tag": "FullyScanned"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
@@ -446,13 +445,13 @@ Text:
 
     388 of the 969 entries narrowed by version and type are tagged "FullyScanned" — showing the first 20:
     - 15.0 Deprecation: Experimental backend ViewHelpers (#110148) — removed in v16.0
-      https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html — Fluid, FullyScanned, ext:fluid
+      EXT:core/Documentation/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.rst — Fluid, FullyScanned, ext:fluid
     - 15.0 Deprecation: StringUtility::multibyteStringPad() method (#110202) — removed in v16.0
-      https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html — PHP-API, FullyScanned, ext:core
+      EXT:core/Documentation/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.rst — PHP-API, FullyScanned, ext:core
     - 15.0 Deprecation: DataHandler->setCorrelationId() (#110285) — removed in v16.0
-      https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html — PHP-API, FullyScanned, ext:core
+      EXT:core/Documentation/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.rst — PHP-API, FullyScanned, ext:core
     - 15.0 Deprecation: AbstractXmlSitemapDataProvider (#110334) — removed in v16.0
-      https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html — PHP-API, FullyScanned, ext:seo
+      EXT:core/Documentation/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.rst — PHP-API, FullyScanned, ext:seo
     - 14.3 Deprecation: Lowlevel DatabaseIntegrityCheck class (#107931) — removed in v15.0
       EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst — PHP-API, FullyScanned, ext:lowlevel
     - 14.3 Deprecation: BackendUtility item list label methods (#109519) — removed in v15.0
@@ -487,7 +486,6 @@ Text:
       EXT:core/Documentation/Changelog/14.1/Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst — PHP-API, FullyScanned, ext:core
 
     Read the file for the description and the migration. A Deprecation or Breaking entry tagged FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can find the call sites for you.
-    Entries above 14.3 come from docs.typo3.org rather than from this installation: they are what the host publishes today, they are linked by URL instead of by EXT: path, and for a major that is not released yet they are still being written. An identifier search does not reach them — their text is not on disk, so they are searched by name and by the title the manual states.
     A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned.
 
 Data:
@@ -568,8 +566,8 @@ Data:
                     "FullyScanned",
                     "ext:fluid"
                 ],
-                "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.html",
-                "publishedIn": "manual"
+                "file": "EXT:core/Documentation/Changelog/15.0/Deprecation-110148-ExperimentalBackendViewHelpers.rst",
+                "publishedIn": "installation"
             },
             {
                 "type": "Deprecation",
@@ -582,8 +580,8 @@ Data:
                     "FullyScanned",
                     "ext:core"
                 ],
-                "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.html",
-                "publishedIn": "manual"
+                "file": "EXT:core/Documentation/Changelog/15.0/Deprecation-110202-StringUtilityMultibyteStringPad.rst",
+                "publishedIn": "installation"
             },
             {
                 "type": "Deprecation",
@@ -596,8 +594,8 @@ Data:
                     "FullyScanned",
                     "ext:core"
                 ],
-                "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.html",
-                "publishedIn": "manual"
+                "file": "EXT:core/Documentation/Changelog/15.0/Deprecation-110285-DataHandlerSetCorrelationId.rst",
+                "publishedIn": "installation"
             },
             {
                 "type": "Deprecation",
@@ -610,8 +608,8 @@ Data:
                     "FullyScanned",
                     "ext:seo"
                 ],
-                "file": "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.html",
-                "publishedIn": "manual"
+                "file": "EXT:core/Documentation/Changelog/15.0/Deprecation-110334-AbstractXmlSitemapDataProvider.rst",
+                "publishedIn": "installation"
             },
             {
                 "type": "Deprecation",
@@ -844,6 +842,7 @@ Data:
             }
         ],
         "versions": [
+            "15.0",
             "14.3",
             "14.3.x",
             "14.2",
@@ -900,9 +899,7 @@ Data:
             "7.0"
         ],
         "answeredBy": "packages",
-        "versionsFromTheManual": [
-            "15.0"
-        ],
+        "versionsFromTheManual": [],
         "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
     }
 
@@ -1388,7 +1385,7 @@ Called with:
         "query": "quantumflux"
     }
 
-From the 14.3 core checkout
+From the main core checkout
 """""""""""""""""""""""""""
 
 Text:
@@ -1396,7 +1393,8 @@ Text:
 .. code-block:: text
 
     No changelog entry in this installation carries all of "quantumflux".
-    This installation ships 14.3, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x, 13.3 and older. Above that, 15.0 is read from docs.typo3.org — what the host publishes today, which for a major that is not released yet is still being written.
+    A changelog records change events, so a miss can mean the question belongs to another corpus. Whether a mechanism nobody changed still holds is typo3_documentation_lookup with targetVersion; whether a core patch of your own owes an entry is typo3_rule_lookup with documentId "core/contribution/changelog".
+    This installation ships 15.0, 14.3, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x and older. Nothing above that is published yet.
 
 Data:
 
@@ -1408,6 +1406,7 @@ Data:
         "tags": [],
         "entries": [],
         "versions": [
+            "15.0",
             "14.3",
             "14.3.x",
             "14.2",
@@ -1464,9 +1463,7 @@ Data:
             "7.0"
         ],
         "answeredBy": "packages",
-        "versionsFromTheManual": [
-            "15.0"
-        ],
+        "versionsFromTheManual": [],
         "termCounts": [
             {
                 "term": "quantumflux",
@@ -1483,6 +1480,7 @@ Text:
 .. code-block:: text
 
     No changelog entry in this installation carries all of "quantumflux".
+    A changelog records change events, so a miss can mean the question belongs to another corpus. Whether a mechanism nobody changed still holds is typo3_documentation_lookup with targetVersion; whether a core patch of your own owes an entry is typo3_rule_lookup with documentId "core/contribution/changelog".
     This installation ships 14.3 and older. Above that, 15.0, 14.3.x, 14.2, 14.1, 14.0, 13.4, 13.4.x, 13.3, 13.2, 13.1, 13.0, 12.4, 12.4.x, 12.3, 12.2, 12.1, 12.0, 11.5, 11.5.x, 11.4, 11.3, 11.2, 11.1, 11.0, 10.4, 10.4.x, 10.3, 10.2, 10.1, 10.0, 9.5, 9.5.x, 9.4, 9.3, 9.2, 9.1, 9.0, 8.7, 8.7.x, 8.6, 8.5, 8.4, 8.3, 8.2, 8.1, 8.0, 7.6, 7.6.x, 7.5, 7.4, 7.3, 7.2, 7.1, 7.0 are read from docs.typo3.org — what the host publishes today, which for a major that is not released yet is still being written.
 
 Data:

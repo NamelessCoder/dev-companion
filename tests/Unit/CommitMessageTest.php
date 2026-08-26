@@ -103,7 +103,10 @@ final class CommitMessageTest extends TestCase
             'workflow' => CommitMessage::WORKFLOW_CORE,
         ]);
 
-        self::assertSame(['no-issues-found', 'breaking-not-assessed'], array_column($result['checks'], 'code'));
+        self::assertSame(
+            ['no-issues-found', 'line-length-boundary', 'breaking-not-assessed'],
+            array_column($result['checks'], 'code')
+        );
         self::assertStringContainsString("\n    ./Build/Scripts/runTests.sh -s cgl -n", $result['message']);
     }
 
@@ -251,7 +254,10 @@ final class CommitMessageTest extends TestCase
             'workflow' => CommitMessage::WORKFLOW_CORE,
         ]);
 
-        self::assertSame(['no-issues-found', 'breaking-not-assessed'], array_column($result['checks'], 'code'));
+        self::assertSame(
+            ['no-issues-found', 'line-length-boundary', 'breaking-not-assessed'],
+            array_column($result['checks'], 'code')
+        );
     }
 
     #[Requirement('R-GUI-001')]

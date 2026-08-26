@@ -6,6 +6,7 @@ namespace TYPO3\DevCompanion\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use TYPO3\DevCompanion\Tests\Support\Decision;
 use TYPO3\DevCompanion\Tests\Support\Requirement;
 use TYPO3\DevCompanion\Tool\CommitMessageGuide;
 
@@ -69,6 +70,63 @@ final class CommitMessageGuideTest extends TestCase
         self::assertSame('project', $result->data['workflow']);
         self::assertStringContainsString("\nResolves: #348", $result->data['message']);
         self::assertStringContainsString('Resolves: and Related: lines carry the issues this call passed', $result->text);
+    }
+
+    /**
+     * The width is what the draft is wrapped to, and the boundary is what
+     * refuses a commit. Only the second settles a checkout whose own rule is one
+     * character stricter than the hook it cites — `D-GUI-020`.
+     */
+    #[Decision('D-GUI-020')]
+    #[Test]
+    public function theCoreAnswerNamesWhereTheHooksLengthBoundaryRuns(): void
+    {
+        $call = [
+            'changeType' => 'BUGFIX',
+            'summary' => 'Show hidden records in the import preview',
+            'issue' => '106123',
+            'releases' => ['main'],
+        ];
+
+        $core = array_column(
+            CommitMessageGuide::answer($call + ['workflow' => 'core'])->data['checks'],
+            'message',
+            'code'
+        );
+        $project = array_column(CommitMessageGuide::answer($call)->data['checks'], 'message', 'code');
+
+        self::assertArrayHasKey('line-length-boundary', $core);
+        self::assertStringContainsString(
+            'accepts a line of 72 characters and refuses one of 73',
+            $core['line-length-boundary']
+        );
+        // Outside the core no hook runs, so there is no boundary to state —
+        // `D-GUI-003`.
+        self::assertArrayNotHasKey('line-length-boundary', $project);
+    }
+
+    /** The check that fired says it, so the answer states the boundary once. */
+    #[Decision('D-GUI-020')]
+    #[Test]
+    public function theOverlongLineCheckCarriesTheBoundaryItself(): void
+    {
+        $result = CommitMessageGuide::answer([
+            'changeType' => 'TASK',
+            'summary' => 'Document it',
+            'issue' => '106123',
+            'releases' => ['main'],
+            'body' => 'See https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/'
+                . 'Appendix/CommitMessage.html for details.',
+            'workflow' => 'core',
+        ]);
+
+        $checks = array_column($result->data['checks'], 'message', 'code');
+        self::assertArrayHasKey('body-line-too-long', $checks);
+        self::assertStringContainsString(
+            'accepts a line of 72 characters and refuses one of 73',
+            $checks['body-line-too-long']
+        );
+        self::assertArrayNotHasKey('line-length-boundary', $checks);
     }
 
     /** An answer the caller gave in the call wins over the one the subject withholds. */

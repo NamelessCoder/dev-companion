@@ -3,7 +3,9 @@ id: D-GUI-020
 title: The commit guide states the longest line the hook accepts
 date: 2026-08-26
 status: open
-coveredBy: []
+coveredBy:
+  - CommitMessageGuideTest::theCoreAnswerNamesWhereTheHooksLengthBoundaryRuns
+  - CommitMessageGuideTest::theOverlongLineCheckCarriesTheBoundaryItself
 ---
 
 # D-GUI-020 — The commit guide states the longest line the hook accepts
@@ -12,9 +14,9 @@ coveredBy: []
 and the first it refuses, so a caller holding a stricter written rule can tell
 which one runs.**
 
-The width is stated today as a property of the draft — "the body is wrapped at
-72 characters" — and the hook is named only by `body-line-too-long`, which fires
-when the draft is already over. A caller whose draft is clean is told nothing
+The width was stated as a property of the draft — "the body is wrapped at 72
+characters" — and the hook was named only by `body-line-too-long`, which fires
+when the draft is already over. A caller whose draft was clean was told nothing
 about the boundary at all.
 
 ## Evidence
@@ -68,10 +70,11 @@ about the boundary at all.
   report a defect the commit does not have.
 - Rejected: reporting a line of exactly 72 as a warning. Same objection, one
   step quieter — a caller who acts on it shortens a line nothing refused.
-- `coveredBy` is empty because what is decided here is a sentence in an answer,
-  and the boundary it states is read from a checkout no unit test may reach.
-  What a test can hold is the width the guide wraps to, which
-  `CommitMessageGuideTest` already covers for `D-GUI-003`.
+- `CommitMessageGuideTest` holds that the answer states it, in both places it
+  can be stated: the `line-length-boundary` check on a clean core draft, and
+  `body-line-too-long` on one that has a line over the width. That the two
+  numbers are the right ones is not held by anything, because the regex they
+  were read from is in a checkout no unit test may reach.
 
 ## Assumed
 

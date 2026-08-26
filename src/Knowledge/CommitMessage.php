@@ -682,7 +682,8 @@ final class CommitMessage
         // The level follows the tooling that enforces it: the core's
         // `Build/git-hooks/commit-msg` refuses the commit, and outside it no
         // hook runs — D-GUI-003.
-        foreach (self::overlongBodyLines($body) as $line) {
+        $overlong = self::overlongBodyLines($body);
+        foreach ($overlong as $line) {
             $checks[] = [
                 'level' => $isCore ? 'error' : 'warning',
                 'code' => 'body-line-too-long',
@@ -693,8 +694,8 @@ final class CommitMessage
                     $line['length'],
                     self::BODY_WIDTH,
                     $isCore
-                        ? 'Shorten or break it yourself: the commit-msg hook refuses every line over the width, '
-                            . 'indented, fenced and URL alike.'
+                        ? 'Shorten or break it yourself: ' . self::lineLengthBoundary()
+                            . ', indented, fenced and URL alike.'
                         : 'Shorten it if it is prose.',
                 ),
             ];
@@ -730,6 +731,20 @@ final class CommitMessage
 
         if ($checks === []) {
             $checks[] = ['level' => 'info', 'code' => 'no-issues-found', 'message' => 'No commit message readiness issues found by the local checks.'];
+        }
+
+        // The boundary rather than the width, and beside the clearance rather
+        // than inside it. Where `body-line-too-long` fired it carries the same
+        // sentence, so the answer states the boundary once — `D-GUI-020`.
+        if ($isCore && $overlong === []) {
+            $checks[] = [
+                'level' => 'info',
+                'code' => 'line-length-boundary',
+                'message' => self::lineLengthBoundary()
+                    . '. It measures every line, not the body alone: the subject and the trailers are read the '
+                    . 'same way. Where the checkout you are working in states the rule more strictly, that is the '
+                    . 'boundary the commit runs through.',
+            ];
         }
 
         // Beside whatever else the checks found rather than inside the
@@ -872,6 +887,22 @@ final class CommitMessage
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * Where the hook's length gate runs, in the words both checks state it in.
+     *
+     * The width alone settles nothing for a caller whose own checkout writes
+     * the rule one character stricter, which is the reading three sessions
+     * worked from — `D-GUI-020`.
+     */
+    private static function lineLengthBoundary(): string
+    {
+        return sprintf(
+            'Build/git-hooks/commit-msg accepts a line of %d characters and refuses one of %d',
+            self::BODY_WIDTH,
+            self::BODY_WIDTH + 1,
+        );
     }
 
     /**

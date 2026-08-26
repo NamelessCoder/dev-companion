@@ -82,6 +82,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 - [`D-ANS-110`][D-ANS-110] — A changelog miss with no re-query names the manual and the rules · 2026-08-26
 - [`D-ANS-111`][D-ANS-111] — A change answer says which comment thread is open · 2026-08-26
+- [`D-ANS-112`][D-ANS-112] — A change answer establishes the patch without a fetch · 2026-08-26
 - [`D-ANS-105`][D-ANS-105] — The unsupported answer says what would make it answerable · 2026-08-25
 - [`D-ANS-106`][D-ANS-106] — A commit in a checkout is a handle the review lookup takes · 2026-08-25
 - [`D-ANS-107`][D-ANS-107] — The review backlog is enumerated the way the tracker is · 2026-08-25
@@ -189,6 +190,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 [D-ANS-110]: answers/ans-110-a-changelog-miss-with-no-re-query-names-the-manual-and-the-rules.md
 [D-ANS-111]: answers/ans-111-a-change-answer-says-which-comment-thread-is-open.md
+[D-ANS-112]: answers/ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md
 [D-ANS-105]: answers/ans-105-the-unsupported-answer-says-what-would-make-it-answerable.md
 [D-ANS-106]: answers/ans-106-a-commit-in-a-checkout-is-a-handle-the-review-lookup-takes.md
 [D-ANS-107]: answers/ans-107-the-review-backlog-is-enumerated-the-way-the-tracker-is.md

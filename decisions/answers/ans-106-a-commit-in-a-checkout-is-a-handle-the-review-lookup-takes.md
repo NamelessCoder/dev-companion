@@ -120,3 +120,34 @@ what the server matched against what it says, so one rule covers every path —
 the trailer is read wherever the message came back, and `null` is a message that
 was not. What stays outside is the search by words and by path, which asks for
 no message at all.
+
+### 2026-08-26 — the handle answers whether a local branch is safe to delete
+
+`feedback/2026-08-24-195307` describes a cleanup this entry was not written for
+and answers whole. Asked to delete the branches that were his, the session could
+not execute the instruction: three branches carried a `Change-Id` that resolved
+to nothing on the server and five more sat on commits that were no patch set of
+their change, so a delete would have been unrecoverable. It established that per
+branch, with a `Change-Id` query for `o=ALL_REVISIONS` and a membership test of
+the local tip against the revisions map.
+
+That is `commit` with the branch tip, and it is one call. Measured against
+`review.typo3.org` on 2026-08-26 on change 95369, whose six patch sets
+`git ls-remote` lists: the current revision `205541b5632`, the superseded
+`7e9e4726904` of patch set 5 and `dc97d767f82` of patch set 1 each answer the
+change, so the handle reaches a patch set nobody is looking at any more — which
+is the case a stale local branch is. A commit nothing pushed answers `empty`,
+and `indistinguishable` says there that a private or work-in-progress change
+looks the same from here. The feedback's own test states that outcome as
+"deletion is unrecoverable" flatly, so what the tool answers is the more careful
+of the two.
+
+The card the feedback carries is
+[`D-ANS-112`](ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md),
+and this half of it is routing rather than a schema: nothing points a session at
+the handle before a destructive delete. `typo3-core-patch-checkout` says of its
+forced branch deletion that git's refusal "is the last moment anything asks
+whether it is really disposable", which this handle makes untrue.
+
+The second **Assumed** above holds unchanged. Eleven characters answered again
+on 2026-08-26, and where the floor is is still unmeasured.

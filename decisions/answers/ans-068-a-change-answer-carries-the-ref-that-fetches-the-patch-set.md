@@ -136,3 +136,20 @@ Re-run on 2026-08-12: `change: "94686"` answers patch set 5 at
 has merged since that review, so the ref follows the current patch set exactly
 as this entry says it does — and a session holding the old one has to read the
 number beside it.
+
+### 2026-08-26 — a triage fetched the shortlist because the ref was the only read offered
+
+`feedback/2026-08-24-195307` reports the other side of this boundary. The
+session was triaging eight open changes, needed no checkout for any of them, and
+fetched every one into the user's own working checkout — which the user stopped
+it over. The ref was not misread: it was the only thing in the answer that
+reaches what a patch is, so a session wanting to read a change reaches for the
+one field that puts it on disk.
+
+That is none of the three **Wrong if** above and it does not touch the
+derivation. What it bears on is the entry's reach rather than its claim: the ref
+answers "how do I get this patch" and was standing in for "what is in this
+patch", which nothing beside it answered.
+[`D-ANS-112`](ans-112-a-change-answer-establishes-the-patch-without-a-fetch.md)
+is what takes that half, and this entry keeps its own — a fetch is still what a
+suite run and a line-level reading need.

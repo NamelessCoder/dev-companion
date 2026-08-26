@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-205132-the-guide-wraps-bodies-at-exactly-72-characters.md, D-GUI-020
 **Priority:** normal
+**Branch:** todo/the-guide-wraps-bodies-at-exactly-72-characters
+**Claimed:** 2026-08-26
 
 Judged on 2026-08-26 as step 4 of the ladder, wording: the boundary is here and
 the answer never states it. Make `CommitMessage::checks()` say, under

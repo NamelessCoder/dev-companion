@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-205158-typo3-core-patch-checkout-never-activated.md
 **Priority:** normal
+**Branch:** todo/typo3-core-patch-checkout-never-activated
+**Claimed:** 2026-08-26
 
 Judged on 2026-08-26 as the ladder's step 4, and the dated section on
 `D-SKL-022` is the reading: `R-SKL-018` was written on 2026-08-07 and never

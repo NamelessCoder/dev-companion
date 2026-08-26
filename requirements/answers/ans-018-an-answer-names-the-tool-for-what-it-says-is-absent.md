@@ -5,6 +5,7 @@ status: held
 restsOn: [D-ANS-031]
 heldBy:
   - PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskNext
+  - PackageSourcesTest::aMissWithNoRequeryToOfferNamesBothCorporaThatAnswer
   - ProjectTest::whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt
 ---
 

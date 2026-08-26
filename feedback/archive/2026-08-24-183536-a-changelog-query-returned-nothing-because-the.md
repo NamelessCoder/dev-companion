@@ -1,7 +1,8 @@
 ---
 date: 2026-08-24T18:35:36+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-26
 model: claude-opus-5
 tool: typo3_changelog_lookup
 directory: /home/benji/projects/typo3-cms

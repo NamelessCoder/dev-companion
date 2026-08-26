@@ -429,6 +429,43 @@ final class PackageSourcesTest extends TestCase
         );
     }
 
+    /**
+     * The branch the session of 2026-08-24 landed in, which named no tool at
+     * all: `Subsets` skips a carried set the size of the query, so a miss of
+     * two words offers none whatever the changelog holds, and `R-ANS-018` was
+     * held over the offering branch alone. Both corpora, because nothing in a
+     * miss says which of the two shapes the question had and a caller with no
+     * re-query left cannot recover from the wrong one — `D-ANS-110`.
+     */
+    #[Requirement('R-ANS-018')]
+    #[Decision('D-ANS-110')]
+    #[Test]
+    public function aMissWithNoRequeryToOfferNamesBothCorporaThatAnswer(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.2', 'Breaking-1-VisibilityOfTheDispatcher', 'Breaking: #1 - Dispatcher visibility', []);
+        $this->changelogEntry($root, '14.2', 'Feature-2-PublicRegistry', 'Feature: #2 - Public registry', []);
+        Instance::discoverFrom($root);
+
+        $query = ['query' => 'visibility public'];
+        $text = Registry::call('typo3_changelog_lookup', $query)->text;
+
+        self::assertStringNotContainsString('No entry carries more than', $text, 'two words leave no subset');
+        self::assertStringContainsString('typo3_documentation_lookup with targetVersion', $text);
+        self::assertStringContainsString('typo3_rule_lookup with documentId "core/contribution/changelog"', $text);
+
+        // Withheld where the answer already names a way back into this corpus:
+        // a version that emptied it, and a tag the subsets were withheld under.
+        self::assertStringNotContainsString(
+            'belongs to another corpus',
+            Registry::call('typo3_changelog_lookup', $query + ['version' => '13.4'])->text,
+        );
+        self::assertStringNotContainsString(
+            'belongs to another corpus',
+            Registry::call('typo3_changelog_lookup', $query + ['tag' => 'ext:core'])->text,
+        );
+    }
+
     #[Requirement('R-ANS-006')]
     #[Test]
     public function whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith(): void

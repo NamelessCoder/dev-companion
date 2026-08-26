@@ -384,6 +384,23 @@ final class ChangelogLookup extends ReadOnlyTool
                 $lines[] = 'Where that comes back empty too, ask typo3_documentation_lookup with targetVersion: a '
                     . 'changelog records change events, so a mechanism nobody changed has no entry here, and '
                     . 'whether one still holds in a version is what the manual answers.';
+            } elseif ($terms !== [] && $outside === [] && $tag === '') {
+                // Nothing was computed to ask this corpus again with, so the
+                // next call is a different corpus rather than a different query
+                // — `R-ANS-018`, which the branch above held alone. Both of
+                // them, because a miss says nothing about which of the two
+                // shapes the question had, and a caller with no re-query left
+                // cannot recover from being sent to the wrong one —
+                // `D-ANS-110`.
+                //
+                // Not where a filter or a tag emptied the answer: those name
+                // their own way back into this corpus, and routing out of it
+                // ahead of a re-query that answers is what `D-ANS-043`
+                // declined.
+                $lines[] = 'A changelog records change events, so a miss can mean the question belongs to another '
+                    . 'corpus. Whether a mechanism nobody changed still holds is typo3_documentation_lookup with '
+                    . 'targetVersion; whether a core patch of your own owes an entry is typo3_rule_lookup with '
+                    . 'documentId "core/contribution/changelog".';
             }
             $lines[] = self::covers($versions, $ahead, $asksBeyond, $published === null);
 

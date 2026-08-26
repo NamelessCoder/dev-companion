@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-24-195307-reviewing-open-gerrit-changes-materialises-refs.md
 **Priority:** normal
+**Branch:** todo/reviewing-open-gerrit-changes-materialises-refs
+**Claimed:** 2026-08-26
 
 Judged on 2026-08-26 as step 1b, a missing shape, and `D-ANS-112` is the entry.
 A change read by name answers everything about the review and nothing about the

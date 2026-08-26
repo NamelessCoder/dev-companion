@@ -1,7 +1,9 @@
-# The guide wraps bodies at exactly 72 characters, which this repository's own rule forbids
+# typo3-core-patch-checkout never activated across three separate patch fetches in one session
 
-**Serves:** feedback/2026-08-24-205132-the-guide-wraps-bodies-at-exactly-72-characters.md
+**Serves:** feedback/2026-08-24-205158-typo3-core-patch-checkout-never-activated.md
 **Priority:** low
+**Branch:** todo/typo3-core-patch-checkout-never-activated
+**Claimed:** 2026-08-26
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

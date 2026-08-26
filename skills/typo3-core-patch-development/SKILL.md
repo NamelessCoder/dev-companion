@@ -234,8 +234,14 @@ Then re-run the checks on the new base. Inspect the commits you rebased over
 where any of them touch the same files: the suite passing before the rebase is
 evidence about the old base.
 
-Fetching somebody else's patch out of review and putting it on a branch is a
-different job and belongs to `typo3-core-patch-checkout`.
+**Where the commit to be changed is a patch set on the review server rather than
+one written here, invoke `typo3-core-patch-checkout` for that one change and
+work from the copy it leaves.** Somebody else's change picked up to be finished
+arrives that way, and so does your own where this checkout no longer holds it.
+The ref, the remote, which of the three destinations the patch goes to and
+putting the checkout back afterwards are that workflow's whole subject. What
+crosses back here is the working copy the patch sits in, the patch set that was
+fetched, and whether it had to be carried onto current code to apply.
 
 Pushing is a step of its own and is taken when it is asked for. Everything above
 is local and reversible; the push is neither.

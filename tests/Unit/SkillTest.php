@@ -3973,7 +3973,12 @@ final class SkillTest extends TestCase
             // patch from the review server now, so needing it on disk is a
             // moment rather than the premise the workflow opened on.
             'typo3-core-patch-review' => ['typo3-core-patch-development', 'typo3-core-patch-checkout'],
-            'typo3-core-patch-development' => ['typo3-core-patch-review'],
+            // The second one closes the edge the sweep of 2026-08-09 missed by
+            // direction: it read the crossings running out of the three core
+            // skills, and the one running into the checkout was counted
+            // nowhere. `feedback/2026-08-24-205158` then fetched three patches
+            // while holding these two skills and opened it for none of them.
+            'typo3-core-patch-development' => ['typo3-core-patch-review', 'typo3-core-patch-checkout'],
             'typo3-content-element-development' => [
                 'typo3-extension-testing',
                 'typo3-extension-documentation',

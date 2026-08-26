@@ -95,3 +95,11 @@ same lead-in stands over a command block and over a sentence somebody broke at
 column 40, and only the caller can tell them apart. Indentation is a mark the
 caller wrote on purpose, which is why it stays the one thing block recognition
 reads.
+
+The width was measured against the hook again on 2026-08-26, from the other
+side: not a line the wrapping left too long, but one it produced at exactly the
+width. `checkForLineLength()` accepts 72 characters and refuses 73, so the
+threshold and the level this entry set are the hook's own, and the **Wrong if**
+about a caller shortening a line the hook then refuses anyway has not happened.
+What the reading found instead is that the answer never says so, which is
+`D-GUI-020`.

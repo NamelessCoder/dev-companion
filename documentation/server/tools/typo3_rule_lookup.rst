@@ -285,7 +285,7 @@ Text:
     - Security-sensitive behavior needs extra care and focused tests.
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 8 of its 12 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, The Trailers A Core Commit Carries, What The Commit Hook Writes, The Changelog Entry a Message Announces.
+    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 9 of its 13 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, The Longest Line The Hook Accepts, Relationships, The Trailers A Core Commit Carries, What The Commit Hook Writes, The Changelog Entry a Message Announces.
     - core/contribution/changelog — The Changelog Entry a Core Patch Owes: 5 of its 6 headings are not above — Which Change Owes a Changelog File, Where a Changelog File Goes, What a Changelog File Is Called, What a Changelog File Carries, What Checks a Changelog File.
     - core/contribution/rules — TYPO3 Core Contribution Rules: 4 of its 5 headings are not above — Contribution Flow, Code Style, Testing, Documentation.
 
@@ -402,7 +402,7 @@ Text:
     - Looking at a Change in a Real Browser: Which Installation Shows It, Reaching a DDEV Site From a Container, Where the Harness and Its Output Go
     - Proving a TypoScript Condition Verdict: What Does Not Answer It, The Marker Only the Branch Produces, A Marker Put There on Purpose, Which URL Is Requested, The Negative Control, What Stands Between Two Runs
     - The Changelog Entry a Core Patch Owes: Which Change Owes a Changelog File, Where a Changelog File Goes, What a Changelog File Is Called, What a Changelog File Carries, What Checks a Changelog File, Reading Changelog Entries Instead of Writing One
-    - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, The Trailers A Core Commit Carries, What The Commit Hook Writes, Breaking Changes, Changed Signatures, Deprecations, The Changelog Entry a Message Announces
+    - TYPO3 Core Commit Message Rules: Who Reads It, Summary Line, Work in Progress, Body, The Longest Line The Hook Accepts, Relationships, Release Targets, The Trailers A Core Commit Carries, What The Commit Hook Writes, Breaking Changes, Changed Signatures, Deprecations, The Changelog Entry a Message Announces
     - TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Fetch a Change Into This Checkout, Carry a Change Onto Current Code, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
     - Filing a TYPO3 Core Bug Report: What a Report Carries, The Area, The Target Version, The Markup, What the Description Says
     - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Documentation, Review Readiness
@@ -508,6 +508,7 @@ Data:
                     "Summary Line",
                     "Work in Progress",
                     "Body",
+                    "The Longest Line The Hook Accepts",
                     "Relationships",
                     "Release Targets",
                     "The Trailers A Core Commit Carries",

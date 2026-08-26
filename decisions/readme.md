@@ -599,6 +599,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### guides
 
 - [`D-GUI-019`][D-GUI-019] — The audit brief names the lookup that reads a configuration default · 2026-08-26
+- [`D-GUI-020`][D-GUI-020] — The commit guide states the longest line the hook accepts · 2026-08-26
 - [`D-GUI-017`][D-GUI-017] — An issue the caller passed is written in either workflow · 2026-08-21
 - [`D-GUI-018`][D-GUI-018] — Keeping a package on the majors it declares is an intent · 2026-08-21
 - [`D-GUI-015`][D-GUI-015] — A case's own prompt reaches less than the brief · 2026-08-19
@@ -618,6 +619,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 
 [D-GUI-019]: guides/gui-019-the-audit-brief-names-the-lookup-that-reads-a-configuration-default.md
+[D-GUI-020]: guides/gui-020-the-commit-guide-states-the-longest-line-the-hook-accepts.md
 [D-GUI-017]: guides/gui-017-an-issue-the-caller-passed-is-written-in-either-workflow.md
 [D-GUI-018]: guides/gui-018-keeping-a-package-on-the-majors-it-declares-is-an-intent.md
 [D-GUI-015]: guides/gui-015-a-cases-own-prompt-reaches-less-than-the-brief.md

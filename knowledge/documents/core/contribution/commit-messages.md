@@ -29,8 +29,8 @@ Guide.
 - Add `[!!!]` before the keyword for breaking changes.
 - `[!!!]` is the only prefix a merge-ready subject carries.
 - Do not use `[SECURITY]` unless this is handled by the TYPO3 Security Team.
-- Keep the summary below 52 characters if possible and below 72 characters in
-  any case.
+- Keep the summary below 52 characters if possible, and the subject line no
+  longer than 72.
 - Use imperative present tense, for example `Fix`, `Add`, `Improve`, or
   `Remove`.
 - Describe what the patch changes, not what used to be broken.
@@ -54,7 +54,25 @@ Guide.
 - Separate the summary and body with a blank line.
 - Keep the body brief and focused on what changed and why.
 - Do not repeat full reproduction instructions from the Forge issue.
-- Wrap body lines manually after 72 characters.
+- Wrap body lines manually at 72 characters.
+
+## The Longest Line The Hook Accepts
+
+A line of 72 characters passes and a line of 73 is refused.
+`Build/git-hooks/commit-msg` draws that boundary in `checkForLineLength()`,
+which is `grep -q -E '^[^#].{72}'`: one character for `[^#]` and 72 after it, so
+73 is the shortest line that matches.
+
+- Every line is measured, not only the body. The subject, the trailers and the
+  `Change-Id:` the hook writes are read the same way, and a line beginning with
+  `#` is the only exemption.
+- The checkout's own `AGENTS.md` puts it as "no line of the message may reach 72
+  characters", one character stricter than the hook it cites. Where the two are
+  read together, the hook is what refuses a commit.
+- `typo3_commit_message_guide` wraps to that width, so a draft it returns with
+  no `body-line-too-long` check is one the hook takes as it stands.
+- The check is the same on every maintained branch, so which one a patch targets
+  does not change it.
 
 ## Relationships
 

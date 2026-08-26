@@ -390,7 +390,7 @@ Text:
       against the changelog.
 
     Each excerpt above is one section of a longer document, and each page below carries the `##` headings that are not above. Where the task is the whole procedure rather than the fact you searched for, read the page — typo3_rule_lookup with documentId, which needs no resource list:
-    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 10 of its 12 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, Relationships, Release Targets, The Trailers A Core Commit Carries, What The Commit Hook Writes, Changed Signatures, The Changelog Entry a Message Announces.
+    - core/contribution/commit-messages — TYPO3 Core Commit Message Rules: 11 of its 13 headings are not above — Who Reads It, Summary Line, Work in Progress, Body, The Longest Line The Hook Accepts, Relationships, Release Targets, The Trailers A Core Commit Carries, What The Commit Hook Writes, Changed Signatures, The Changelog Entry a Message Announces.
 
     Relevant TYPO3 core checks — the list to run, whatever this task turns out to be:
     - `CI=true ./Build/Scripts/runTests.sh -s unit`
@@ -735,7 +735,7 @@ Data:
                 "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
                 "versions": "",
                 "coverage": 1,
-                "score": 65,
+                "score": 67,
                 "truncated": false
             },
             {
